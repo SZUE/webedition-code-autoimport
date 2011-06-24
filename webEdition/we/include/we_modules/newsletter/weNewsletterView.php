@@ -206,9 +206,9 @@ class weNewsletterView {
 
 		$we_button = new we_button();
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 	  	$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
 
 		return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",' readonly',"text",$width,0),
@@ -224,7 +224,7 @@ class weNewsletterView {
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "",$acObject=null,$contentType="") {
 		$we_button = new we_button();
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 	  	$button =  $we_button->create_button("select","javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
 		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,"",'readonly',"text",$width,0),
@@ -244,9 +244,9 @@ class weNewsletterView {
 
 		$we_button = new we_button();
 			//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 		$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','','$open_doc')");
 		if(is_object($acObject)){
 
@@ -278,9 +278,9 @@ class weNewsletterView {
 
 	  $we_button = new we_button();
 	 	//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")"
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 
 	  $button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
 		if(is_object($acObject)){
@@ -316,9 +316,9 @@ class weNewsletterView {
 
 		$we_button = new we_button();
 		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 
 		$button =  $we_button->create_button("select","javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['$IDName'].value,'".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		if(is_object($acObject)){

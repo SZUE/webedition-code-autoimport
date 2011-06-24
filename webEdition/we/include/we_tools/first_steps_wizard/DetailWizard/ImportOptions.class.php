@@ -57,8 +57,8 @@ class ImportOptions extends leWizardStepBase
 				388);
 		$MastertemplateHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\" />";
 			//javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weTmpl',1)
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.getElementById('$idname').value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.getElementById('$textname').value");
+			$wecmdenc1= we_cmd_enc("document.getElementById('$idname').value");
+			$wecmdenc2= we_cmd_enc("document.getElementById('$textname').value");
 			$wecmdenc3= '';
 		$MastertemplateButton = $we_button->create_button(
 				"select",
@@ -108,8 +108,8 @@ class ImportOptions extends leWizardStepBase
 				388);
 		$DocumentHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\" />";
 		//javascript:we_cmd('openDirselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weFolder',1)
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.getElementById('$idname').value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.getElementById('$textname').value");
+		$wecmdenc1= we_cmd_enc("document.getElementById('$idname').value");
+		$wecmdenc2= we_cmd_enc("document.getElementById('$textname').value");
 		$wecmdenc3= '';
 		$DocumentButton = $we_button->create_button(
 				"select",

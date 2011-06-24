@@ -578,8 +578,8 @@
 
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'".FILE_TABLE."','document.we_form.elements[\\'link[Attributes][InternLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][InternLinkPath]\\'].value','','".session_id()."','$_rootDirID')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][InternLinkID]'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkID]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
 			$wecmdenc3= '';
 			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','$_rootDirID')";
 			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
@@ -699,9 +699,9 @@
 
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','document.we_form.elements[\\'link[Attributes][ObjectLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][ObjectLinkPath]\\'].value','opener.we_cmd(\\'populateWorkspaces\\');','".session_id()."','$_rootDirID','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1)."
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][ObjectLinkID]'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value");
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.we_cmd('populateWorkspaces');");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][ObjectLinkID]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value");
+			$wecmdenc3= we_cmd_enc("opener.we_cmd('populateWorkspaces');");
 			$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$_rootDirID','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")" : '';
 			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
 
@@ -803,9 +803,9 @@
 
 			$_rootDirID = 0;
 			//javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'".CATEGORY_TABLE."','document.we_form.elements[\\'link[Attributes][CategoryLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][CategoryLinkPath]\\'].value','opener.setHot();','".session_id()."','$_rootDirID')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][CategoryLinkID]'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value");
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.setHot();");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryLinkID]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value");
+			$wecmdenc3= we_cmd_enc("opener.setHot();");
 
 			$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'".CATEGORY_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$_rootDirID')";
 			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
@@ -821,8 +821,8 @@
 
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value");
 			$wecmdenc3= '';
 			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','$_rootDirID')";
 			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);

@@ -273,8 +273,8 @@ class we_import_files
 
 		$path = id_to_path($store_id);
 		//javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','document.we_startform.importToID.value','document.we_startform.egal.value','','','0')"
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_startform.importToID.value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_startform.egal.value");
+		$wecmdenc1= we_cmd_enc("document.we_startform.importToID.value");
+		$wecmdenc2= we_cmd_enc("document.we_startform.egal.value");
 		$wecmdenc3= '';
 		$button = $we_button->create_button(
 				"select",

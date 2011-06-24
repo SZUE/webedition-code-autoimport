@@ -5421,7 +5421,7 @@ else {
 
 			    if( we_image_edit::gd_version() > 0 ){   //  gd lib ist installiert
 					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
-					$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['thumbnail_dir'].value");
+					$wecmdenc1= we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
 					$wecmdenc4= '';
 			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
@@ -5441,7 +5441,7 @@ else {
 			     * set pageLogger dir
 			     */
 				//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['we_tracker_dir'].value");
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['we_tracker_dir'].value");
 				$wecmdenc4= '';
 			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
 				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
@@ -5616,8 +5616,8 @@ else {
 
 
 				//javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['error_document_no_objectfile'].value");
-				$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms[0].elements['error_document_no_objectfile_text'].value");
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['error_document_no_objectfile'].value");
+				$wecmdenc2= we_cmd_enc("document.forms[0].elements['error_document_no_objectfile_text'].value");
 				$wecmdenc3= '';
 				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','', 'text/webEdition', 1)");
 				  $_acButton2 = $we_button->create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');

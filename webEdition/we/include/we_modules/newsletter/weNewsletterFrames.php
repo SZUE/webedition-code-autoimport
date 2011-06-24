@@ -797,9 +797,9 @@ class weNewsletterFrames extends weModuleFrames {
 		$out.=$this->View->htmlHidden($IDName,0);
 		$out.=$this->View->htmlHidden($Pathname,"");
 		//javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'".NEWSLETTER_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','opener.we_cmd(\\'copy_newsletter\\');','".session_id()."','".get_ws(NEWSLETTER_TABLE)."')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.we_cmd('copy_newsletter');");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc("opener.we_cmd('copy_newsletter');");
 		$out .= $we_button->create_button("select","javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'".NEWSLETTER_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','".get_ws(NEWSLETTER_TABLE)."')");
 
 		return $out;
@@ -846,7 +846,7 @@ class weNewsletterFrames extends weModuleFrames {
 		$addbut="";
 
 		$delallbut = $we_button->create_button("delete_all","javascript:we_cmd('del_all_files',".$group.")");
-		$wecmdenc4= 'WECMDENC_'.base64_encode("opener.we_cmd('add_file',top.currentID,$group);");
+		$wecmdenc4= we_cmd_enc("opener.we_cmd('add_file',top.currentID,$group);");
 		$addbut = $we_button->create_button("add", "javascript:we_cmd('browse_server','fileselect','','/','".$wecmdenc4."');");
 
 

@@ -255,7 +255,7 @@ class we_docTypes extends we_class {
 		//javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)
 		$wecmdenc1= '';
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
 
 		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','".$wecmdenc3."', '', '', 'text/weTmpl', 1,1)");
 
@@ -381,8 +381,8 @@ class we_docTypes extends we_class {
 
 		$we_button = new we_button();
 		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $idname . "'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $textname  . "'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['" . $textname  . "'].value");
 		$wecmdenc3= '';
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '".$wecmdenc1."', '".$wecmdenc2."', '', '" . session_id() . "')");
 		$yuiSuggest->setAcId("Path");

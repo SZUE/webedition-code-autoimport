@@ -195,8 +195,8 @@ class weNavigationRuleFrames
 		$yuiSuggest->setSelector("Dirselector");
 		$yuiSuggest->setWidth(275);
 		//javascript:we_cmd('openDirselector', document.we_form.elements['FolderID'].value, '" . FILE_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['FolderID'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['FolderIDPath'].value");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['FolderID'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['FolderIDPath'].value");
 		$wecmdenc3= '';
 		$yuiSuggest->setSelectButton(
 				$we_button->create_button(
@@ -242,9 +242,9 @@ class weNavigationRuleFrames
 			$yuiSuggest->setTable(OBJECT_TABLE);
 			$yuiSuggest->setWidth(275);
 			//javascript:we_cmd('openDocselector', document.we_form.elements['ClassID'].value, '" . OBJECT_TABLE . "', 'document.we_form.elements[\\'ClassID\\'].value', 'document.we_form.elements[\\'ClassIDPath\\'].value', 'top.opener.we_cmd(\"get_workspaces\");')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['ClassID'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['ClassIDPath'].value");
-			$wecmdenc3= 'WECMDENC_'.base64_encode("top.opener.we_cmd('get_workspaces');");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['ClassID'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['ClassIDPath'].value");
+			$wecmdenc3= we_cmd_enc("top.opener.we_cmd('get_workspaces');");
 			$yuiSuggest->setSelectButton(
 					$we_button->create_button(
 							'select', 
