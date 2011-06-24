@@ -888,7 +888,7 @@ class weBannerView extends weBannerBase{
 		//javascript:top.content.setHot(); we_cmd('openDocselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_file\\',top.allIDs);','','','text/webedition','',1)
 		$wecmdenc1= '';
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_file',top.allIDs);");
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_file',top.allIDs);");
 		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot(); we_cmd('openDocselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','text/webedition','',1)");
 
 		$dirs = new MultiDirChooser(495,$this->banner->FileIDs,"del_file",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE);
@@ -907,7 +907,7 @@ class weBannerView extends weBannerBase{
 		//javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_folder\\',top.allIDs);','','','',1)
 		$wecmdenc1= '';
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','',1)");
 
 		$dirs = new MultiDirChooser(495,$this->banner->FolderIDs,"del_folder",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE);
@@ -1122,9 +1122,9 @@ class weBannerView extends weBannerBase{
 		$Pathname = md5(uniqid(rand()));
 		$we_button = new we_button();
 		//javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','',0,'image/*')"
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 		$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['$IDName'].value != 0) ? document.we_form.elements['$IDName'].value : ''),'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','',0,'image/*')");
 
 		$yuiSuggest->setAcId("Image");
@@ -1146,9 +1146,9 @@ class weBannerView extends weBannerBase{
 		$textname = md5(uniqid(rand()));
 		$we_button = new we_button();
 		//javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'document.we_form.elements[\'$idname\'].value','document.we_form.elements[\'$textname\'].value','".$cmd."')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 		$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('openBannerDirselector',document.we_form.elements['$idname'].value,'".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."')");
 
 		$yuiSuggest->setAcId($acID);
@@ -1231,9 +1231,9 @@ class weBannerView extends weBannerBase{
 
 		$we_button = new we_button();
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'".FILE_TABLE."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','',0,'')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$Pathname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode(str_replace('\\','',$cmd));
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','',0,'')");
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");

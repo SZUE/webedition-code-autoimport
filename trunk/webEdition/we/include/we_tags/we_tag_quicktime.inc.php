@@ -50,8 +50,8 @@ function we_tag_quicktime($attribs, $content){
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$we_button = new we_button();
 		//"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "',". $parentid . ", 'video/quicktime', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc3= we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 
 		$quicktime_button = $we_button->create_button(
 				"image:btn_edit_quicktime",

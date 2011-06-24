@@ -41,8 +41,8 @@ class we_makenewtemplate extends we_template
 		eval('$path = $this->'.$Pathname.';');
 		eval('$myid = $this->'.$IDName.';');
 		//javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3= '';
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),

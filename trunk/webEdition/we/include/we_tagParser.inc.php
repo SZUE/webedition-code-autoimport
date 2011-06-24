@@ -1308,9 +1308,9 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 		$table = OBJECT_FILES_TABLE;
 		$we_button = new we_button();
 		//javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');
-		$wecmdenc1= "WECMDENC_".base64_encode("document.forms[\'we_form\'].elements[\'$idname\'].value");
-		$wecmdenc2= "WECMDENC_".base64_encode("document.forms[\'we_form\'].elements[\'$textname\'].value");
-		$wecmdenc3= "WECMDENC_".base64_encode("opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc1= we_cmd_enc("document.forms[\'we_form\'].elements[\'$idname\'].value");
+		$wecmdenc2= we_cmd_enc("document.forms[\'we_form\'].elements[\'$textname\'].value");
+		$wecmdenc3= we_cmd_enc("opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);");
 
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openDocselector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'.$wecmdenc1.\',\'.$wecmdenc2.\',\'.$wecmdenc3.\',\'".session_id()."\',\'$rootDirID\',\'objectFile\',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");

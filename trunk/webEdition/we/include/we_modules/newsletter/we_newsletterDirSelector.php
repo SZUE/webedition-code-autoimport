@@ -22,9 +22,9 @@
 	protect();
 
 	$_SERVER["PHP_SELF"] = "/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php";
-		if (isset($_REQUEST["JSIDName"]) && strpos($_REQUEST["JSIDName"],'WECMDENC_')!==false){$_REQUEST["JSIDName"]=base64_decode( substr($_REQUEST["JSIDName"],9));}
-		if (isset($_REQUEST["JSTextName"]) && strpos($_REQUEST["JSTextName"],'WECMDENC_')!==false){$_REQUEST["JSTextName"]=base64_decode( substr($_REQUEST["JSTextName"],9));}
-		if (isset($_REQUEST["JSCommand"]) && strpos($_REQUEST["JSCommand"],'WECMDENC_')!==false){$_REQUEST["JSCommand"]=base64_decode( substr($_REQUEST["JSCommand"],9));}
+		if (isset($_REQUEST["JSIDName"]) && strpos($_REQUEST["JSIDName"],'WECMDENC_')!==false){$_REQUEST["JSIDName"]=base64_decode( urldecode(substr($_REQUEST["JSIDName"],9)));}
+		if (isset($_REQUEST["JSTextName"]) && strpos($_REQUEST["JSTextName"],'WECMDENC_')!==false){$_REQUEST["JSTextName"]=base64_decode( urldecode(substr($_REQUEST["JSTextName"],9)));}
+		if (isset($_REQUEST["JSCommand"]) && strpos($_REQUEST["JSCommand"],'WECMDENC_')!==false){$_REQUEST["JSCommand"]=base64_decode( urldecode(substr($_REQUEST["JSCommand"],9)));}
 
 	$fs = new weNewsletterDirSelector(
 		isset( $id ) ? $id : ( isset( $_REQUEST["id"] ) ? $_REQUEST["id"] : '' ),
@@ -40,5 +40,3 @@
 	);		
 		
 	$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
-
-?>

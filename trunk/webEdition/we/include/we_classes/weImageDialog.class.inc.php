@@ -281,8 +281,8 @@ class weImageDialog extends weDialog{
 
 		}else{
 			//javascript:we_cmd('browse_server','document.we_form.elements[\\'we_dialog_args[extSrc]\\'].value','',document.we_form.elements['we_dialog_args[extSrc]'].value,'opener.document.we_form.elements[\\'we_dialog_args[type]\\'][0].checked=true;opener.imageChanged();')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[extSrc]'].value");
-			$wecmdenc4= 'WECMDENC_'.base64_encode("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[extSrc]'].value");
+			$wecmdenc4= we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
 			$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 				$we_button->create_button(	"select",
 											"javascript:we_cmd('browse_server','".$wecmdenc1."','',document.we_form.elements['we_dialog_args[extSrc]'].value,'".$wecmdenc4."')"
@@ -304,9 +304,9 @@ class weImageDialog extends weDialog{
 											"","","",0
 										);
 			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[fileID]\\'].value','document.we_form.elements[\\'we_dialog_args[fileSrc]\\'].value','opener.document.we_form.elements[\\'we_dialog_args[type]\\'][1].checked=true;opener.imageChanged();','','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[fileID]'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[fileSrc]'].value");
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[fileID]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['we_dialog_args[fileSrc]'].value");
+			$wecmdenc3= we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
 
 			$but      = $we_button->create_button(	"select",
 													"javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
@@ -319,7 +319,7 @@ class weImageDialog extends weDialog{
 		
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
-			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gefüllt ist
+			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gefï¿½llt ist
 			//$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"imageChanged()"));
 			$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"document.we_form.elements['we_dialog_args[type]'][1].checked=true;"));
 			//Bug #3556 imageChanged wird aufgerufen wenn das input feld verlassen wird, nicht ideal, macht es aber nutzbar
@@ -356,8 +356,8 @@ class weImageDialog extends weDialog{
 				$thumbnails = "";
 			}
 			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[longdescid]\\'].value','document.we_form.elements[\\'we_dialog_args[longdescsrc]\\'].value','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[longdescid]'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[longdescid]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
 			$wecmdenc3= '';
 
 			$but      = $we_button->create_button(	"select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
