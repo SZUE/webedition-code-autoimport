@@ -353,7 +353,7 @@ $contentDiff .= '</td></tr>';
 
 			$contentDiff .= '<tr>';
 			$contentDiff .= '<td width="33%" style="'.$mark.'"><strong>'.$name.'</strong></td>';
-			if($isTempl && class_exists('Text_Diff') && $pre!=''){
+			if($isTempl && class_exists('Text_Diff',false) && $pre!=''){
 				$oldVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$oldVal)));
         $newVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$newVal)));
         $diff = new Text_Diff('native', array(($oldVersion?$oldVal:''),$newVal));
