@@ -33,13 +33,14 @@ function we_tag_writeShopData($attribs,$content) {
 	global $DB_WE;
 
 	$name = we_getTagAttribute('name',$attribs);
-	$foo = attributFehltError($attribs,'pricename','writeShopData');
-	if($foo)
+	if(($foo = attributFehltError($attribs,'pricename','writeShopData'))){
 		return $foo;
-	if(!$name)
-		$foo = attributFehltError($attribs,'shopname','writeShopData');
-	if($foo)
-		return $foo;
+	}
+	if(!$name){
+		if(($foo = attributFehltError($attribs,'shopname','writeShopData'))){
+			return $foo;
+		}
+	}
 
 	$shopname = we_getTagAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
@@ -65,6 +66,8 @@ function we_tag_writeShopData($attribs,$content) {
 		$weShopVatRule = weShopVatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
 	}
+	require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
+
 
 	// Check for Shop being set
 	if (isset($GLOBALS[$shopname])) {
@@ -78,18 +81,10 @@ function we_tag_writeShopData($attribs,$content) {
 			return;
 		}
 
-		$DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
+		$DB_WE = !isset($GLOBALS['DB_WE']) ? new DB_WE : $GLOBALS['DB_WE'];
 
-		$sql = "SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE;
-		$DB_WE->connect();
-
-		if (!$DB_WE->query($sql)) {
-			echo "Data Insert Failed";
-			return;
-		}
-
-		$DB_WE->next_record();
-		$maxOrderID = $DB_WE->f('max');
+		$DB_WE->lock(array(SHOP_TABLE,ERROR_LOG_TABLE));
+		$orderID = abs(f("SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE,'max',$DB_WE))+1;
 
 		$totPrice = 0;
 
@@ -117,7 +112,6 @@ function we_tag_writeShopData($attribs,$content) {
 			}
 
 			// foreach article we must determine the correct tax-rate
-			require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 			$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 			$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 			if ($shopVat) { // has selected or standard shop rate
@@ -129,9 +123,8 @@ function we_tag_writeShopData($attribs,$content) {
 			}
 
 			$sql = "INSERT INTO " . SHOP_TABLE . " (intOrderID, IntArticleID, IntQuantity, Price, IntCustomerID, DateOrder, DateShipping, DatePayment, strSerial) ";
-			$sql .= "VALUES (" . abs($maxOrderID + 1) . ", " . abs($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".$DB_WE->escape($preis)."' , " . abs($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
+			$sql .= "VALUES (" . $orderID . ", " . abs($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".$DB_WE->escape($preis)."' , " . abs($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
 
-			$DB_WE->connect();
 			if (!$DB_WE->query($sql)) {
 				echo "Data Insert Failed";
 				return;
@@ -153,7 +146,10 @@ emosBasketPageArray[$articleCount][7]='NULL';
 			}
 			$articleCount++;
 		}
-
+		//all critical data is set, unlock tables again
+		$DB_WE->unlock();
+		$basket->setOrderID($orderID);
+		
 		// second part: add cart fields to table order.
 		//{
 			// add shopcartfields to table
@@ -186,7 +182,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 			$cartSql = '
 				UPDATE ' . SHOP_TABLE . '
 				set strSerialOrder=\'' . $DB_WE->escape(serialize($cartField)) . '\'
-				WHERE intOrderID="' . ($maxOrderID + 1) . '"
+				WHERE intOrderID="' . $orderID . '"
 			';
 
 			if (!$DB_WE->query($cartSql)) {
@@ -197,7 +193,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 		if (isset($_GLOBALS['weEconda'])){
 			$GLOBALS['weEconda']['emosBilling'] .= "
 if(typeof emosBillingPageArray == 'undefined') var emosBillingPageArray = new Array();
-emosBillingPageArray [0]='".($maxOrderID+1)."';
+emosBillingPageArray [0]='".$orderID."';
 emosBillingPageArray [1]='".md5($_SESSION["webuser"]["ID"])."';
 emosBillingPageArray [2]='".rawurlencode($_SESSION["webuser"]["Contact_Country"])."/".rawurlencode($_SESSION["webuser"]["Contact_Address2"])."/".rawurlencode($_SESSION["webuser"]["Contact_Address1"])."';
 emosBillingPageArray [3]='".$totPrice."';
@@ -207,7 +203,7 @@ emosBillingPageArray [3]='".$totPrice."';
 		$lang=substr($doc->Language,0,2);
 		require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
-		$weShopStatusMails->checkAutoMailAndSend('Order',abs($maxOrderID + 1),$_customer,$lang);
+		$weShopStatusMails->checkAutoMailAndSend('Order',$orderID,$_customer,$lang);
 	}
 
 	return;

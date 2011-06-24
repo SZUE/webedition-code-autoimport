@@ -221,29 +221,25 @@ class DB_Sql
 	}
 
 	/* public: table locking */
-	function lock($table, $mode = "write")
-	{
-		$this->connect();
 
-		$query = "lock tables ";
+	function lock($table, $mode = "write") {
+		if (!$this->connect()) {
+			return false;
+		}
+		$query = '';
 		if (is_array($table)) {
-			while (list($key, $value) = each($table)) {
-				if ($key == "read" && $key != 0) {
-					$query .= "$value read, ";
+			foreach ($table as $key => $value) {
+				if (is_numeric($key)) {
+					$query.= $value . ' ' . $mode . ',';
 				} else {
-					$query .= "$value $mode, ";
+					$query.= $key . ' ' . $value . ',';
 				}
 			}
-			$query = substr($query, 0, -2);
+			$query = substr($query, 0, -1);
 		} else {
-			$query .= "$table $mode";
+			$query = $table . ' ' . $mode;
 		}
-		$res = @mysql_query($query, $this->Link_ID);
-		if (!$res) {
-			$this->halt("lock($table, $mode) failed.");
-			return 0;
-		}
-		return $res;
+		return @mysql_query('lock tables ' . $query, $this->Link_ID);
 	}
 
 	function unlock()
