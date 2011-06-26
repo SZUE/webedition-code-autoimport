@@ -152,8 +152,8 @@ class we_objectFile extends we_document{
 		$idname = 'we_'.$this->Name.'_CopyID';
 		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
 		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDirId."','".$this->ContentType."');"		
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 		$but = $we_button->create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','".$wecmdenc2."','','".$wecmdenc3."','".session_id()."','".$rootDirId."','".$this->ContentType."');");
 		$content = $this->htmlHidden($idname,$this->CopyID).$but;
 		return $content;
@@ -930,9 +930,9 @@ class we_objectFile extends we_document{
 
 			$_buttons = array();
 			//"javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\'change_objectlink\',\'".$GLOBALS['we_transaction']."\',\'object_".$pid."\');','".session_id()."','$pid','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")"
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','".$GLOBALS['we_transaction']."','object_".$pid."');");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+			$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('change_objectlink','".$GLOBALS['we_transaction']."','object_".$pid."');");
 
 			$_buttons[] = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$pid','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
@@ -1059,9 +1059,9 @@ class we_objectFile extends we_document{
 				}
 				$alerttext = g_l('modules_object','[multiobject_recursion]');
 				//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) ."opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';;};".$reloadEntry."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")"
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-				$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
-				$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) ."opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';;};".$reloadEntry."");
+				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) ."opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';;};".$reloadEntry."");
 
 				$selectObject = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
@@ -1560,9 +1560,9 @@ class we_objectFile extends we_document{
 				$content .= $img->getHtml();
 			}
 			//javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["img_$name"]['defaultdir'])?$this->DefArray["img_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'img_".$name."\\');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();','".session_id()."', ".(isset($this->DefArray["img_$name"]['rootdir'])&&$this->DefArray["img_$name"]['rootdir']!=""?$this->DefArray["img_$name"]['rootdir']:0).",'image/*')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['".$fname."'].value");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['".$fname."'].value");
 			$wecmdenc2= '';
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','img_".$name."');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
+			$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','img_".$name."');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
 
 			$content .= $we_button->create_button_table( array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["img_$name"]['defaultdir'])?$this->DefArray["img_$name"]['defaultdir']:0))."','".FILE_TABLE."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."', ".(isset($this->DefArray["img_$name"]['rootdir'])&&$this->DefArray["img_$name"]['rootdir']!=""?$this->DefArray["img_$name"]['rootdir']:0).",'image/*')"),
 																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."','img_".$name."');setScrollTo();")));
@@ -1592,9 +1592,9 @@ class we_objectFile extends we_document{
 			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
 			$content .= $img->getHtml();
 			//javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["binary_$name"]['defaultdir'])?$this->DefArray["binary_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'binary_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."', ".(isset($this->DefArray["binary_$name"]['rootdir'])&&$this->DefArray["binary_$name"]['rootdir']!=""?$this->DefArray["binary_$name"]['rootdir']:0).",'application/*')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['".$fname."'].value");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['".$fname."'].value");
 			$wecmdenc2= '';
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','binary_".$name."');opener._EditorFrame.setEditorIsHot(true);");
+			$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','binary_".$name."');opener._EditorFrame.setEditorIsHot(true);");
 
 			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["binary_$name"]['defaultdir'])?$this->DefArray["binary_$name"]['defaultdir']:0))."','".FILE_TABLE."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."', ".(isset($this->DefArray["binary_$name"]['rootdir'])&&$this->DefArray["binary_$name"]['rootdir']!=""?$this->DefArray["binary_$name"]['rootdir']:0).",'application/*')"),
 																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."','binary_".$name."')")));
@@ -1619,9 +1619,9 @@ class we_objectFile extends we_document{
 			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
 			$content .= $img->getHtml();
 			//javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["flashmovie_$name"]['defaultdir'])?$this->DefArray["flashmovie_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'flashmovie_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."', ".(isset($this->DefArray["flashmovie_$name"]['rootdir'])&&$this->DefArray["flashmovie_$name"]['rootdir']!=""?$this->DefArray["flashmovie_$name"]['rootdir']:0).",'application/x-shockwave-flash')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['".$fname."'].value");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['".$fname."'].value");
 			$wecmdenc2= '';
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','flashmovie_".$name."');opener._EditorFrame.setEditorIsHot(true);");
+			$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','flashmovie_".$name."');opener._EditorFrame.setEditorIsHot(true);");
 
 			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["flashmovie_$name"]['defaultdir'])?$this->DefArray["flashmovie_$name"]['defaultdir']:0))."','".FILE_TABLE."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."', ".(isset($this->DefArray["flashmovie_$name"]['rootdir'])&&$this->DefArray["flashmovie_$name"]['rootdir']!=""?$this->DefArray["flashmovie_$name"]['rootdir']:0).",'application/x-shockwave-flash')"),
 																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."','flashmovie_".$name."')")));
@@ -1646,9 +1646,9 @@ class we_objectFile extends we_document{
 			$content .= '<input type=hidden name="'.$fname.'" value="'.$this->getElement($name).'" />';
 			$content .= $img->getHtml();
 			//javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["quicktime_$name"]['defaultdir'])?$this->DefArray["quicktime_$name"]['defaultdir']:0))."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_object\\',\\'".$GLOBALS['we_transaction']."\\',\\'quicktime_".$name."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."', ".(isset($this->DefArray["quicktime_$name"]['rootdir'])&&$this->DefArray["quicktime_$name"]['rootdir']!=""?$this->DefArray["quicktime_$name"]['rootdir']:0).",'video/quicktime')
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['".$fname."'].value");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['".$fname."'].value");
 			$wecmdenc2= '';
-			$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','quicktime_".$name."');opener._EditorFrame.setEditorIsHot(true);");
+			$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_object','".$GLOBALS['we_transaction']."','quicktime_".$name."');opener._EditorFrame.setEditorIsHot(true);");
 
 			$content .= $we_button->create_button_table(array(	$we_button->create_button("edit", "javascript:we_cmd('openDocselector','".($id!=0?$id:(isset($this->DefArray["quicktime_$name"]['defaultdir'])?$this->DefArray["quicktime_$name"]['defaultdir']:0))."','".FILE_TABLE."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."', ".(isset($this->DefArray["quicktime_$name"]['rootdir'])&&$this->DefArray["quicktime_$name"]['rootdir']!=""?$this->DefArray["quicktime_$name"]['rootdir']:0).",'video/quicktime')"),
 																$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_object','".$GLOBALS['we_transaction']."',quicktime_".$name."')")));

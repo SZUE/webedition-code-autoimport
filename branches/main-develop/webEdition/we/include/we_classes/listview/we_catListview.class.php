@@ -94,9 +94,9 @@ class we_catListview extends listviewBase {
 		$this->anz_all = $this->DB_WE->num_rows();
 
 		if($this->order == "random()"){
-			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail ORDER BY RANDOM". (($this->rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+			$q = "SELECT *, RAND() as RANDOM FROM " . CATEGORY_TABLE ." WHERE $tail ORDER BY RANDOM". (($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
 		}else{
-			$q = "SELECT * FROM " . CATEGORY_TABLE ." WHERE $tail $orderstring". (($this->rows > 0) ? (" limit ".$this->start.",".$this->rows) : "");
+			$q = "SELECT * FROM " . CATEGORY_TABLE ." WHERE $tail $orderstring". (($this->maxItemsPerPage > 0) ? (" limit ".$this->start.",".$this->maxItemsPerPage) : "");
 		}
 
 		$this->DB_WE->query($q);
@@ -127,13 +127,17 @@ class we_catListview extends listviewBase {
 
 			$this->count++;
 			return true;
-		} else if($this->cols && ($this->count < $this->rows)){
-			$this->DB_WE->Record = array();
-			$this->DB_WE->Record["WE_PATH"] = "";
-			$this->DB_WE->Record["WE_TEXT"] = "";
-			$this->DB_WE->Record["WE_ID"] = "";
-			$this->count++;
-			return true;
+		} else {
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->Record=array();
+				$this->DB_WE->Record = array();
+				$this->DB_WE->Record["WE_PATH"] = "";
+				$this->DB_WE->Record["WE_TEXT"] = "";
+				$this->DB_WE->Record["WE_ID"] = "";
+				$this->count++;
+				return true;
+			}
 		}
 		return false;
 	}

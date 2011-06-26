@@ -136,16 +136,16 @@ class we_class {
 			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['".$intID_elem_Name."'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			if(($directory && $file) || $file){
 				//javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "").$extraCmd."','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).",'',".($directory ? 0 : 1).");
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$intID_elem_Name'].value");
-				$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$Path_elem_Name'].value");
-				$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "").str_replace('\\','',$extraCmd)."");
+				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
+				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "").str_replace('\\','',$extraCmd)."");
 
 				$but      = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).",'',".($directory ? 0 : 1).");");
 			}else{
 				//javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "").$extraCmd."','".session_id()."',0);
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$intID_elem_Name'].value");
-				$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$Path_elem_Name'].value");
-				$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "").str_replace('\\','',$extraCmd)."");
+				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
+				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "").str_replace('\\','',$extraCmd)."");
 				$but      = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."',0);");
 			}
 		}else{
@@ -153,15 +153,15 @@ class we_class {
 			if(($directory && $file) || $file){
 				
 				//javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['$Path_elem_Name'].value");
-				$wecmdenc4= 'WECMDENC_'.base64_encode("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
+				$wecmdenc4= we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
 				$but      = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 					$we_button->create_button("select", "javascript:we_cmd('browse_server','".$wecmdenc1."','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'".$wecmdenc4."')"):
 					"";
 			}else{
 				//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
-				$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms[0].elements['$Path_elem_Name'].value");
-				$wecmdenc4= 'WECMDENC_'.base64_encode("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
+				$wecmdenc4= we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
 				$but      = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 					$we_button->create_button("select", "javascript:we_cmd('browse_server','".$wecmdenc1."','folder',document.forms[0].elements['$Path_elem_Name'].value,'".$wecmdenc4."')"):
 					"";

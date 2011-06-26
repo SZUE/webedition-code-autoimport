@@ -483,7 +483,7 @@ class we_rebuild_wizard{
 		$we_button = new we_button();
 
 		$delallbut = $we_button->create_button("delete_all","javascript:".($thumnailpage ? "" : "document.we_form.btype[2].checked=true;")."we_cmd('del_all_folders')");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut    = $we_button->create_button("add", "javascript:".($thumnailpage ? "" : "document.we_form.btype[2].checked=true;")."we_cmd('openDirselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','',1)");
 
 		$dirs = new MultiDirChooser($width,$folders,"del_folder",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE);

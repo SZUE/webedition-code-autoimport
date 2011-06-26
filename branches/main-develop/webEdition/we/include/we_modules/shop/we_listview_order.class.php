@@ -106,7 +106,7 @@ class we_listview_order extends listviewBase {
 		$this->anz_all = $this->DB_WE->num_rows();
 
 		$q = 'SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder, UNIX_TIMESTAMP(DateShipping) as DateShipping, UNIX_TIMESTAMP(DatePayment) as DatePayment, UNIX_TIMESTAMP(DateOrder) as DateOrder, UNIX_TIMESTAMP(DateConfirmation) as DateConfirmation, UNIX_TIMESTAMP(DateCustomA) as DateCustomA, UNIX_TIMESTAMP(DateCustomB) as DateCustomB, UNIX_TIMESTAMP(DateCustomC) as DateCustomC, UNIX_TIMESTAMP(DateCancellation) as DateCancellation, UNIX_TIMESTAMP(DateFinished) as DateFinished,
-		UNIX_TIMESTAMP(MailShipping) as MailShipping, UNIX_TIMESTAMP(MailPayment) as MailPayment, UNIX_TIMESTAMP(MailOrder) as MailOrder, UNIX_TIMESTAMP(MailConfirmation) as MailConfirmation, UNIX_TIMESTAMP(MailCustomA) as MailCustomA, UNIX_TIMESTAMP(MailCustomB) as MailCustomB, UNIX_TIMESTAMP(MailCustomC) as MailCustomC, UNIX_TIMESTAMP(MailCancellation) as MailCancellation, UNIX_TIMESTAMP(MailFinished) as MailFinished FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($rows > 0) ? (' limit '.$this->start.','.$this->rows) : '');;
+		UNIX_TIMESTAMP(MailShipping) as MailShipping, UNIX_TIMESTAMP(MailPayment) as MailPayment, UNIX_TIMESTAMP(MailOrder) as MailOrder, UNIX_TIMESTAMP(MailConfirmation) as MailConfirmation, UNIX_TIMESTAMP(MailCustomA) as MailCustomA, UNIX_TIMESTAMP(MailCustomB) as MailCustomB, UNIX_TIMESTAMP(MailCustomC) as MailCustomC, UNIX_TIMESTAMP(MailCancellation) as MailCancellation, UNIX_TIMESTAMP(MailFinished) as MailFinished FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit '.$this->start.','.$this->maxItemsPerPage) : '');;
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
@@ -157,13 +157,16 @@ class we_listview_order extends listviewBase {
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?we_orderid=".$this->DB_WE->Record["OrderID"];
 			$this->count++;
 			return true;
-		}else if($this->cols && ($this->count < $this->rows)){
-			$this->DB_WE->Record = array();
-			$this->DB_WE->Record["WE_PATH"] = "";
-			$this->DB_WE->Record["WE_TEXT"] = "";
-			$this->DB_WE->Record["WE_ID"] = "";
-			$this->count++;
-			return true;
+		}else {
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->DB_WE->Record = array();
+				$this->DB_WE->Record["WE_PATH"] = "";
+				$this->DB_WE->Record["WE_TEXT"] = "";
+				$this->DB_WE->Record["WE_ID"] = "";
+				$this->count++;
+				return true;
+			}
 		}
 
 		return false;

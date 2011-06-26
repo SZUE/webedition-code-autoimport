@@ -423,9 +423,9 @@ class weVotingFrames extends weModuleFrames {
 			$idname = 'owner_id';
 			$textname = 'owner_text';
 			//javascript:top.content.setHot(); we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_owner\\',top.allPaths,top.allIsFolder)','','',1);
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
-			$wecmdenc5= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_owner',top.allPaths,top.allIsFolder);");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+			$wecmdenc5= we_cmd_enc("fillIDs();opener.we_cmd('add_owner',top.allPaths,top.allIsFolder);");
 			$table->setCol(2,0,array('colspan'=>'2','align'=>'right'),
 				we_htmlElement::htmlHidden(array('name'=>$idname,'value'=>'')) .
 				we_htmlElement::htmlHidden(array('name'=>$textname,'value'=>'')) .
@@ -950,9 +950,9 @@ class weVotingFrames extends weModuleFrames {
 		$we_button = new we_button();
 		$path = id_to_path($this->View->voting->ParentID,VOTING_TABLE);
 		//javascript:top.content.setHot(); we_cmd('openVotingDirselector',document.we_form.elements['ParentID'].value,'document.we_form.elements[\'ParentID\'].value','document.we_form.elements[\'ParentPath\'].value','')"
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['ParentID'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['ParentPath'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("top.opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['ParentID'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['ParentPath'].value");
+		$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
 		$button = $we_button->create_button('select', "javascript:top.content.setHot(); we_cmd('openVotingDirselector',document.we_form.elements['ParentID'].value,'".$wecmdenc1."','".$wecmdenc2."','')");
 		$width = "416";
 
@@ -1152,7 +1152,7 @@ class weVotingFrames extends weModuleFrames {
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "") {
 		$we_button = new we_button();
 		//javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$IDName'].value");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 	  	$button =  $we_button->create_button("select","javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
 		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,"",'readonly onchange="top.content.setHot();"',"text",$width,0),

@@ -1417,10 +1417,10 @@ class we_object extends we_document
 			$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
 			$table = OBJECT_FILES_TABLE;
 			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
-			$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-			$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
-			$wecmdenc3= 'WECMDENC_'.base64_encode("top.opener._EditorFrame.setEditorIsHot(true);");
-			$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',opener.document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+			$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
+			$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 			$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value='';document.forms['we_form'].elements['$textname'].value=''");
 /*
 DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
@@ -1467,9 +1467,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$table = OBJECT_FILES_TABLE;
 		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("top.opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
 
 		$selectObject = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
@@ -1607,9 +1607,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$idname = 'userIDTmp';
 		$delallbut = $we_button->create_button("delete_all","javascript:we_cmd('del_all_users','')",true,-1,-1,"","",$this->Users ? false : true);
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_user\\',top.allIDs)','','',1)
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc5= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_user',top.allIDs)");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc5= we_cmd_enc("fillIDs();opener.we_cmd('add_user',top.allIDs)");
 		$addbut = $canChange ?
 		$this->htmlHidden($idname,"").$this->htmlHidden($textname,""). $we_button->create_button("add", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',document.forms[0].elements['$idname'].value,'".$wecmdenc5."','','',1)")
 		: "";
@@ -1695,9 +1695,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
 		
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= $we_button->create_button_table(array(
 															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'image/*')"),
@@ -1743,9 +1743,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/x-shockwave-flash')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= $we_button->create_button_table(array(
 															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'application/x-shockwave-flash')"),
@@ -1773,9 +1773,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'video/quicktime')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= $we_button->create_button_table(array(
 															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'video/quicktime')"),
@@ -1800,9 +1800,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
 		//javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= $we_button->create_button_table(array(
 															$we_button->create_button("select", "javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'application/*')"),
@@ -2077,7 +2077,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		//javascript:we_cmd('openDirselector','','".FILE_TABLE."','','','opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd(\\'add_workspace\\',top.allIDs);','','','',1
 		$wecmdenc1= '';
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('add_workspace',top.allIDs);");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('add_workspace',top.allIDs);");
 		$button = $we_button->create_button("add", "javascript:we_cmd('openDirselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','',1)");
 
 		$addbut = $button;
@@ -2110,7 +2110,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		//javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_css\\', top.allIDs);', '', '', 'text/css', 1,1)
 		$wecmdenc1= '';
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("fillIDs();opener.we_cmd('add_css', top.allIDs);");
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
 
 		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','".$wecmdenc3."','','','text/css', 1,1)");
 		$css = new MultiDirChooser(510,$this->CSS,"del_css",$addbut,"","Icon,Path", FILE_TABLE);
@@ -2151,9 +2151,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$idname = 'we_'.$this->Name.'_CopyID';
 		$rootDIrID = 0;
 		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDIrID."','".$this->ContentType."');
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= '';
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 
 		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."','".$rootDIrID."','".$this->ContentType."');");
 		$content = $this->htmlHidden($idname,$this->CopyID).$but;
@@ -2632,9 +2632,9 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$textname = 'we_'.$this->Name.'_'.$Pathname . ($identifier!="" ?  "_".$identifier : "");
 		$idname = 'we_'.$this->Name.'_'.$IDName;
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".str_replace('\\','',$cmd)."");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".str_replace('\\','',$cmd)."");
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),
 			"",

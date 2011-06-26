@@ -211,13 +211,16 @@ class we_langlink_listview extends listviewBase {
 
 			$this->count++;
 			return true;
-		} else if($this->cols && ($this->count < $this->rows)){
-			$this->Record = array();
-			$this->Record["WE_PATH"] = "";
-			$this->Record["WE_TEXT"] = "";
-			$this->Record["WE_ID"] = "";
-			$this->count++;
-			return true;
+		} else {
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->Record = array();
+				$this->Record["WE_PATH"] = "";
+				$this->Record["WE_TEXT"] = "";
+				$this->Record["WE_ID"] = "";
+				$this->count++;
+				return true;
+			}
 		}
 		return false;
 	}

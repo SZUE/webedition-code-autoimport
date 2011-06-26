@@ -731,9 +731,9 @@ class weSiteImport
 		$idname = 'templateID';
 		$path = f("SELECT Path FROM ".$GLOBALS['DB_WE']->escape($table)." WHERE ID='".abs($tid)."'", "Path", $GLOBALS['DB_WE']);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener.displayTable();','" . session_id() . "','','text/weTmpl',1)
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['$textname'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.displayTable();");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener.displayTable();");
 
 		$button = $we_button->create_button(
 				"select",
@@ -766,7 +766,7 @@ class weSiteImport
 
 		// Suorce Directory
 		//javascript:we_cmd('browse_server', 'document.we_form.elements[\\'from\\'].value', 'folder', document.we_form.elements['from'].value)
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['from'].value");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['from'].value");
 		$_from_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
 				"select",
 				"javascript:we_cmd('browse_server', '".$wecmdenc1."','folder',document.we_form.elements['from'].value)") : "";
@@ -787,8 +787,8 @@ class weSiteImport
 
 		// Destination Directory
 		//javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'to\\'].value','document.we_form.elements[\\'toPath\\'].value','','','0')"
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.we_form.elements['to'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.we_form.elements['toPath'].value");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['to'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['toPath'].value");
 		$wecmdenc3= '';
 		$_to_button = $we_button->create_button(
 				"select",
@@ -1380,8 +1380,8 @@ class weSiteImport
 		$textname = 'templateDirName';
 		$idname = 'templateParentID';
 		//javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','" . session_id() . "')
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$idname'].value");
-		$wecmdenc2= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3= '';
 		$button = $we_button->create_button(
 				"select",

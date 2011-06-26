@@ -100,42 +100,6 @@ protected function ping(){
 		return @mysql_data_seek($this->Query_ID, $pos);
 	}
 
-	/* public: table locking */
-	/*public function lock($table, $mode) {
-		$this->connect();
-
-		$query = "lock tables ";
-		if (is_array($table)) {
-			while (list($key, $value) = each($table)) {
-				if ($key == "read" && $key != 0) {
-					$query .= "$value read, ";
-				} else {
-					$query .= "$value $mode, ";
-				}
-			}
-			$query = substr($query, 0, -2);
-		} else {
-			$query .= "$table $mode";
-		}
-		$res = @mysql_query($query, $this->Link_ID);
-		if (!$res) {
-			$this->halt("lock($table, $mode) failed.");
-			return 0;
-		}
-		return $res;
-	}
-
-	public function unlock() {
-		$this->connect();
-
-		$res = @mysql_query("unlock tables");
-		if (!$res) {
-			$this->halt("unlock() failed.");
-			return 0;
-		}
-		return $res;
-	}
-*/
 	/* public: evaluate the result (size, width) */
 
 	public function affected_rows() {

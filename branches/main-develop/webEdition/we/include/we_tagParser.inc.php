@@ -29,9 +29,6 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weTagListviewCache.class.php");
 
 class we_tagParser{
-
-	var $DB_WE;
-
 	var $lastpos = 0;
 
 	var $tags = array();
@@ -258,7 +255,7 @@ class we_tagParser{
 	}
 
 	function searchEndtag($code, $tagPos){
-		eregi("we:([^ >]+)", $this->tags[$this->ipos], $regs);
+		preg_match('|we:([^ >]+)|i', $this->tags[$this->ipos], $regs);
 		$tagname = $regs[1];
 
 		if ($tagname != 'back' && $tagname != 'next' && $tagname != 'printVersion' && $tagname != 'listviewOrder') {
@@ -818,9 +815,9 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 		$table = OBJECT_FILES_TABLE;
 		$we_button = new we_button();
 		//javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');
-		$wecmdenc1= "WECMDENC_".base64_encode("document.forms[\'we_form\'].elements[\'$idname\'].value");
-		$wecmdenc2= "WECMDENC_".base64_encode("document.forms[\'we_form\'].elements[\'$textname\'].value");
-		$wecmdenc3= "WECMDENC_".base64_encode("opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc1= we_cmd_enc("document.forms[\'we_form\'].elements[\'$idname\'].value");
+		$wecmdenc2= we_cmd_enc("document.forms[\'we_form\'].elements[\'$textname\'].value");
+		$wecmdenc3= we_cmd_enc("opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);");
 
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openDocselector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'.$wecmdenc1.\',\'.$wecmdenc2.\',\'.$wecmdenc3.\',\'".session_id()."\',\'$rootDirID\',\'objectFile\',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");

@@ -89,6 +89,8 @@ function we_tag_img($attribs, $content){
 		$title = $GLOBALS['we_doc']->getElement($titleField);
 		if ($showThumb){
 				$thumb = $GLOBALS['we_doc']->getElement($thumbField);
+				$thumbattr = $thumb;
+				$attribs['thumbnail'] = $thumbattr;
 		}
 	} elseif (isset($GLOBALS['we_doc'])) {
 		$altattr = $GLOBALS['we_doc']->getElement($altField);
@@ -177,8 +179,8 @@ function we_tag_img($attribs, $content){
 					"javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )");
 		}
 		//"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value', '', 'opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd(\\'reload_editpage\\',\\'" . $name . "\\',\\'change_image\\'); opener.top.hot = 1;', '" . session_id() . "', " . $parentid . ", 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
-		$wecmdenc1= 'WECMDENC_'.base64_encode("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc3= 'WECMDENC_'.base64_encode("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc3= we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
 		
 		$out .= $we_button->create_button_table(
 				array(

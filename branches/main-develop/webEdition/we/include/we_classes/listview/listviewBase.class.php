@@ -49,6 +49,8 @@ abstract class listviewBase{
 	var $name;             /* name of listview */
 	var $rows = -1;        /* Number of rows */
 	var $cols = 0;        /* Number of cols */
+	var $maxItemsPerPage = 1;
+	var $stop_next_row = false;
 	var $start = 0;        /* Where to start output */
 	var $search = '';      /* search words */
 	var $offset = 0;       /* start offset of first page */
@@ -95,7 +97,8 @@ abstract class listviewBase{
 		$this->search = ((!isset($_REQUEST['we_lv_search_'.$this->name])) && (isset($_REQUEST['we_from_search_'.$this->name]))) ?  '���������' : isset($_REQUEST['we_lv_search_'.$this->name]) ? $_REQUEST['we_lv_search_'.$this->name] : '';
 		$this->search = str_replace('"','',str_replace('\\"','',trim($this->search)));
 		$this->DB_WE = new DB_WE;
-		$this->rows = $cols ? ($rows * $cols) : $rows;
+		$this->rows = $rows;
+		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
 		$this->cols=(($cols=='' && ($calendar=='month' || $calendar=='month_table'))?7:$cols);
 		$this->offset = abs($offset);
 		$this->start = (isset($_REQUEST['we_lv_start_'.$this->name]) && $_REQUEST['we_lv_start_'.$this->name]) ? abs($_REQUEST['we_lv_start_'.$this->name]) : 0;
@@ -108,6 +111,7 @@ abstract class listviewBase{
 		$this->workspaceID = $workspaceID ? $workspaceID : '';
 		$this->customerFilterType = $customerFilterType;
 		$this->id = $id;
+		$this->stop_next_row = false;
 
 		$this->calendar_struct=array(
 			'calendar'=>$calendar,
@@ -302,7 +306,7 @@ abstract class listviewBase{
 		}
 		else if($this->hasPrevPage()){
 
-			$foo = $this->start - $this->rows;
+			$foo = $this->start - $this->maxItemsPerPage;
 			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
@@ -434,7 +438,7 @@ abstract class listviewBase{
 		}
 		else if($this->hasNextPage()){
 
-			$foo = $this->start + $this->rows;
+			$foo = $this->start + $this->maxItemsPerPage;
 			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
@@ -457,7 +461,8 @@ abstract class listviewBase{
 
 	function shouldPrintEndTR(){
 		if($this->cols){
-			return ( (($this->count) % $this->cols) == 0) || ($this->count == $this->anz);
+			//return ( (($this->count) % $this->cols) == 0) || ($this->count == $this->anz);
+			return (($this->count % $this->cols) == 0);
 		}
 		return false;
 	}
@@ -478,7 +483,8 @@ abstract class listviewBase{
 			$_rows = floor($this->anz_all / $this->cols);
 			$_rest = ($this->anz_all % $this->cols);
 			$_add = $_rest ? $this->cols - $_rest : 0;
-			$this->rows = min($this->rows, $_rows+$_add);
+			//$this->rows = min($this->rows, $_rows+$_add);//all dies ist obsolet mit den wegen #5361 eingeführten Änderungen
+			
 		}
 	}
 

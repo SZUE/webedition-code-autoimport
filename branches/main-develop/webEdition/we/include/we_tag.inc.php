@@ -603,12 +603,13 @@ function we_tag_linkToSEEM($attribs, $content){
 }
 
 function we_tag_listviewPageNr($attribs, $content){
-	return $GLOBALS['lv']->rows ? (((abs($GLOBALS['lv']->start) - abs($GLOBALS['lv']->offset)) / $GLOBALS['lv']->rows) + 1) : 1;
+	return $GLOBALS['lv']->rows ? (((abs($GLOBALS['lv']->start) - abs($GLOBALS['lv']->offset)) / $GLOBALS['lv']->maxItemsPerPage) + 1) : 1;
 }
 
 function we_tag_listviewPages($attribs, $content){
+	$cols= $GLOBALS['lv']->cols ? $GLOBALS['lv']->cols:1;
 	return $GLOBALS['lv']->rows ? ceil(
-			((float)$GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / (float)$GLOBALS['lv']->rows) : 1;
+			((float)$GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float)$GLOBALS['lv']->maxItemsPerPage )) : 1;
 }
 
 function we_tag_listviewRows($attribs, $content){

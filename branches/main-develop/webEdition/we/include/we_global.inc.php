@@ -2401,7 +2401,7 @@ function p_r($val) {
 function t_e($type='warning'){
 	$inc=false;
 	$data=array();
-	switch(strtolower($type)){
+	switch(is_string($type)?strtolower($type):-1){
 		case 'error':
 			$inc=true;
 			$type=E_USER_ERROR;
@@ -3733,4 +3733,16 @@ function show_SeoLinks(){
 	}
 	return true;
 
+}
+
+function we_cmd_enc($str) {
+	return (str==''?'':'WECMDENC_' . urlencode(base64_encode($str)));
+}
+
+function we_cmd_dec($no,$default='') {
+	if (isset($_REQUEST['we_cmd'][$no]) && strpos($_REQUEST['we_cmd'][$no], 'WECMDENC_') !== false) {
+		$_REQUEST['we_cmd'][$no] = base64_decode(urldecode(substr($_REQUEST['we_cmd'][2], 9)));
+		return $_REQUEST['we_cmd'][$no];
+	}
+	return $default;
 }
