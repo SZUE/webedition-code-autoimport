@@ -51,7 +51,7 @@ public class WeSettings{
 
 	private String buildVersion="5.1_9";
 	
-	private String defRegistryCompanyDir="living-e";
+	private String defRegistryCompanyDir="webedition.org";
 	private String defRegistryProductDir="editorPlugin";
 	
 	private String defEditorFile="editor.xml";
@@ -181,7 +181,9 @@ public class WeSettings{
 			
 			System.out.println(appDataPath);
 			
-		} else {
+		} else if(OS.equalsIgnoreCase("Linux")){
+		defRegistryCompanyDir="."+defRegistryCompanyDir;
+	}else{
 			System.out.println("Only Mac OSX and Windows are supported by the editor plugin!");
 		}
 		 
