@@ -130,7 +130,43 @@ class we_binaryDocument extends we_document
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
 		return (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
 	}
+	
+	function i_writeDocument(){
+		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
+			if (!we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath())){
+				return false;
+			}
+			if (!we_util_File::copyFile($this->elements["data"]["dat"],$this->getRealPath())){
+				return false;
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	function i_writeSiteDir($doc) {
+		$is_ok = false;
+		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
+			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath());
+			if($this->i_isMoved()) {
+				we_util_File::delete($this->getSitePath(1));
+			}
+		}
+		return $is_ok;
+	}
 
+	function i_writeMainDir($doc) {
+		$is_ok = false;
+		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
+			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"],$this->getRealPath());
+			if($this->i_isMoved()) {
+				we_util_File::delete($this->getRealPath(1));
+			}
+		}
+		return $is_ok;
+	}
+	
 	/* gets the filesize of the document */
 	function getFilesize(){
 		return filesize($this->elements["data"]["dat"]);
