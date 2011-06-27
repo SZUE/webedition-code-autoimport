@@ -18,7 +18,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-switch ($_REQUEST["we_cmd"][0]) {
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+
+	switch ($_REQUEST["we_cmd"][0]) {
 	case "openCatselector" :
 		$noChoose = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
 	case "openDirselector" :
