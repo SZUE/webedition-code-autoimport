@@ -40,8 +40,8 @@ $_credits = '<br /><span style="line-height:160%">'
 			.$l_global["with"].' <b><a href="http://www.webedition.org/credits/?version='.str_replace(".","",WE_VERSION).'&language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.$l_global["credits_team"].'</a></b></span><br/>';
 
 
-$we_version = /*preg_replace('/\.0$/','',*/ WE_VERSION/*)*/;
-if(defined("WE_SVNREV") && WE_SVNREV!='0000' && !isset($GLOBALS["loginpage"])) $we_version .= " (SVN-Revision: ".WE_SVNREV.")";
+$we_version = WE_VERSION;
+if(defined('WE_SVNREV') && WE_SVNREV!='0000' && !isset($GLOBALS['loginpage'])) $we_version .= ' (SVN-Revision: '.WE_SVNREV.')';
 if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' && !isset($GLOBALS["loginpage"]) ) $we_version .= ' '.$l_global[WE_VERSION_SUPP];
 if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' && !isset($GLOBALS["loginpage"]) ) $we_version .= WE_VERSION_SUPP_VERSION;
 
