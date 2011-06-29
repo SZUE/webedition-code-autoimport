@@ -797,8 +797,7 @@ class we_document extends we_root {
 
 		$this->i_setText();
 
-		if(!we_root::we_save($resave))
-			return false;
+		if(!we_root::we_save($resave))	return false;
 		$ret = $this->i_writeDocument();
 		$this->OldPath = $this->Path;
 

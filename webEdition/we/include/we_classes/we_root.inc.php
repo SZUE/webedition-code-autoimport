@@ -838,13 +838,12 @@ function formTriggerDocument($isclass=false){
 			$this->ModDate = time();
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		}
-		if(!we_class::we_save($resave)) return false;
+		if(!we_class::we_save($resave)) return false;	
 		$a = $this->i_saveContentDataInDB();
 		if($resave==0 && $this->ClassName!="we_class_folder"){
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 		}
-
 		return $a;
 	}
 
