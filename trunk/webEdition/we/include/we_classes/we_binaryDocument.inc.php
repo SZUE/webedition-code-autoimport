@@ -133,8 +133,10 @@ class we_binaryDocument extends we_document
 	
 	function i_writeDocument(){
 		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
-			if (!we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath())){
-				return false;
+			if ($this->elements["data"]["dat"]!=$this->getSitePath()){				
+				if(!we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath())){
+					return false;
+				}
 			}
 			if (!we_util_File::copyFile($this->elements["data"]["dat"],$this->getRealPath())){
 				return false;
