@@ -383,7 +383,7 @@ $l_prefs = array(
 		'error_deprecated' => "veraltet Hinweise",
 		'error_warnings' => "Warnungen",
 		'error_errors' => "Fehler",
-		'error_notices_warning' => 'Option für Entwickler! Nicht auf Live-System aktivieren.',
+		'error_notices_warning' => 'Wir empfehlen, die Option -Fehler protokollieren- immer aktiviert zu lassen; -Fehler anzeigen- sollte dagegen nicht auf Live-Systemen, sondern nur während der Entwicklung aktiviert sein.',
 		/**
 		 * ERROR DISPLAY
 		 */
