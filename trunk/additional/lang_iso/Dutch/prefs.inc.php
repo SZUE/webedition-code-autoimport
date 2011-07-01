@@ -458,7 +458,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["error_warnings"] = "Waarschuwingen";
 	$l_prefs["error_errors"] = "Fouten";
 
-	$l_prefs["error_notices_warning"] = 'Optie voor ontwikkelaars! Niet activeren op live-systemen.';
+	$l_prefs["error_notices_warning"] = 'We recommend to aktivate the option -Log errors- on all systems; the option -Show errors- should be activated only during development.';
 
 	/**
 	 * ERROR DISPLAY

@@ -459,7 +459,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["error_warnings"] = "Warnings";
 	$l_prefs["error_errors"] = "Errors";
 
-	$l_prefs["error_notices_warning"] = 'Option for developers! Do not activate on live-systems.';
+	$l_prefs["error_notices_warning"] = 'We recommend to aktivate the option -Log errors- on all systems; the option -Show errors- should be activated only during development.';
 
 	/**
 	 * ERROR DISPLAY

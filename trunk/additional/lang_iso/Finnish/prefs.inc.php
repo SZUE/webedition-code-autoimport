@@ -455,7 +455,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["error_warnings"] = "Varoitukset";
 	$l_prefs["error_errors"] = "Virheet";
 
-	$l_prefs["error_notices_warning"] = 'Ominaisuus kehittäjille! Älä aktivoi tuotantokäytössä!.';
+	$l_prefs["error_notices_warning"] = 'We recommend to aktivate the option -Log errors- on all systems; the option -Show errors- should be activated only during development.';//TRANSLATE
 
 	/**
 	 * ERROR DISPLAY

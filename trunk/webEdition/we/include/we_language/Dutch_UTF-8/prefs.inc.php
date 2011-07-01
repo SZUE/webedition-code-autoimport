@@ -398,7 +398,7 @@ $l_prefs = array(
 		'error_deprecated' => "deprecated Notities", //TRANSLATE
 		'error_warnings' => "Waarschuwingen",
 		'error_errors' => "Fouten",
-		'error_notices_warning' => 'Optie voor ontwikkelaars! Niet activeren op live-systemen.',
+		'error_notices_warning' => 'We recommend to aktivate the option -Log errors- on all systems; the option -Show errors- should be activated only during development.',//TRANSLATE
 		/**
 		 * ERROR DISPLAY
 		 */
