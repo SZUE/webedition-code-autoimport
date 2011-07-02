@@ -458,11 +458,11 @@ function get_value($settingvalue) {
 		 *********************************************************************/
 
 		case "we_error_handler":
-			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : false;
+			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : true;
 			break;
 
 		case "error_handling_notices":
-			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : false;
+			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : true;
 			break;
 
 		case "error_handling_deprecated":
@@ -478,7 +478,7 @@ function get_value($settingvalue) {
 			break;
 
 		case "error_display_errors":
-			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : true;
+			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : false;
 			break;
 
 		case "error_log_errors":

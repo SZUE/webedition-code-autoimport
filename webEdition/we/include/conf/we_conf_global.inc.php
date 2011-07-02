@@ -48,21 +48,21 @@ define("WE_SEEM", 1);
  *****************************************************************************/
 
 // Show errors that occur in webEdition
-define("WE_ERROR_HANDLER", 0);
+define("WE_ERROR_HANDLER", 1);
 
 
 // Handle notices
-define("WE_ERROR_NOTICES", 0);
+define("WE_ERROR_NOTICES", 1);
 
 
 // Handle warnings
-define("WE_ERROR_WARNINGS", 0);
+define("WE_ERROR_WARNINGS", 1);
 
 // Handle deprecated warnings
 define("WE_ERROR_DEPRECATED", 0);
 
 // Handle errors
-define("WE_ERROR_ERRORS", 0);
+define("WE_ERROR_ERRORS", 1);
 
 
 // Show errors
@@ -70,7 +70,7 @@ define("WE_ERROR_SHOW", 0);
 
 
 // Log errors
-define("WE_ERROR_LOG", 0);
+define("WE_ERROR_LOG", 1);
 
 
 // Mail errors
