@@ -55,6 +55,7 @@ class weSuggest {
 	var $containerfields      = array();
 	var $containerwidth       = array();
 	var $tables               = array();
+	var $rootDirs			  = array();
 	var $contentTypes         = array();
 	var $weMaxResults         = array();
 	var $queryDelay           = array();
@@ -66,6 +67,7 @@ class weSuggest {
 	var $inputMayBeEmpty      = array();
 	var $_doOnItemSelect      = array();
 	var $_doOnTextfieldBlur   = array();
+	
 
 
 	var $preCheck = "";
@@ -204,6 +206,7 @@ HTS;
 
 		$inputfields   = "";
 		$tables        = "";
+		$rootDirs		="";
 		$oACDS         = "";
 		$oACDSInit     = "";
 		$oAutoCompInit = "";
@@ -530,7 +533,7 @@ HTS;
 			oACDS_'.$i.'.responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
 			oACDS_'.$i.'.maxCacheEntries = 60;
 			oACDS_'.$i.'.queryMatchSubset = false;
-			oACDS_'.$i.'.scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+yuiAcFields.set_'.$i.'.table+"&we_cmd[3]="+yuiAcFields.set_'.$i.'.cTypes+"&we_cmd[4]='.$weSelfContentType.'&we_cmd[5]='.$weSelfID.'&we_cmd[6]='.$this->rootDir.'";
+			oACDS_'.$i.'.scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+yuiAcFields.set_'.$i.'.table+"&we_cmd[3]="+yuiAcFields.set_'.$i.'.cTypes+"&we_cmd[4]='.$weSelfContentType.'&we_cmd[5]='.$weSelfID.'&we_cmd[6]='.$this->rootDirs[$i].'";
 			oACDS_'.$i.'.scriptQueryParam  = "we_cmd[1]";
 			var myInput = document.getElementById("'.$this->inputfields[$i].'");
 			var myContainer = document.getElementById("'.$this->containerfields[$i].'");
@@ -1003,7 +1006,7 @@ function doDebugResizeH(){
 		$resultId = empty($this->resultId) ? "yuiAcResult".$this->acId : $this->resultId;
 		$containerWidth = (empty($this->containerWidth)?$this->width:$this->containerWidth);
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($BROWSER=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty);
+		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($BROWSER=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty,$this->rootDir);
 		$inputField  = $this->_htmlTextInput($this->inputName,30,$this->inputValue,"", 'id="'.$inputId.'" '.$this->inputAttribs,"text", $this->width, 0,"", $this->inputDisabled);
 		$resultField = hidden($this->resultName,$this->resultValue,array('id' => $resultId));
 		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">".$inputField."<div id=\"yuiAcContainer{$this->acId}\"></div></div>".getPixel(1,1);
@@ -1255,10 +1258,11 @@ function doDebugResizeH(){
 	 * @param unknown_type $checkFieldsValue
 	 * @param unknown_type $containerwidth
 	 */
-	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType="", $selector="", $maxResults=10, $queryDelay=0, $layerId=null, $setOnSelectFields=null, $checkFieldsValue=true, $containerwidth="100%",$inputMayBeEmpty='true') {
+	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType="", $selector="", $maxResults=10, $queryDelay=0, $layerId=null, $setOnSelectFields=null, $checkFieldsValue=true, $containerwidth="100%",$inputMayBeEmpty='true',$rootDir='') {
 		array_push($this->inputfields,$inputFieldId);
 		array_push($this->containerfields,$containerFieldId);
 		array_push($this->tables,$table);
+		array_push($this->rootDirs,$rootDir);
 		array_push($this->contentTypes,$contentType);
 		array_push($this->selectors, $selector);
 		array_push($this->weMaxResults, $maxResults);

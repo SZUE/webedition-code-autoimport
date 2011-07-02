@@ -290,7 +290,7 @@ class we_root extends we_class
 		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 
 		$yuiSuggest->setAcId("Path",id_to_path(array($rootDirID),$table));
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType("folder,class_folder");
 		$yuiSuggest->setInput($textname,$path,array("onBlur"=>$_parentPathChangedBlur));
 		$yuiSuggest->setLabel($l_we_class["dir"]);
 		$yuiSuggest->setMaxResults(10);
@@ -300,7 +300,6 @@ class we_root extends we_class
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-
 		return $yuiSuggest->getHTML();
 		//return $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 	}
@@ -615,11 +614,10 @@ function formTriggerDocument($isclass=false){
 		$yuiSuggest->setTrashButton($trashButton);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
-
 		return $yuiSuggest->getHTML();
 
 	}
-	function formLanguageDocument($headline, $langkey,$LDID=0,$table = FILE_TABLE,$rootDir=0){
+	function formLanguageDocument($headline, $langkey,$LDID=0,$table = FILE_TABLE,$rootDirID=0){
 		global $l_we_class, $BROWSER;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
@@ -631,8 +629,12 @@ function formTriggerDocument($isclass=false){
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
 		//$myid = $this->TriggerID ? $this->TriggerID : "";
 		$myid = $LDID ? $LDID:'';
+		
 		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$yuiSuggest->setAcId($ackeyshort,$rootDir);
+		if($rootDirID && $path==''){
+			$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($rootDirID)."'","Path",$this->DB_WE);
+		}
+		$yuiSuggest->setAcId($ackeyshort,$path);
 		if ($table == FILE_TABLE){
 			$yuiSuggest->setContentType("folder,text/webedition");
 			$ctype='text/webedition';
@@ -647,7 +649,7 @@ function formTriggerDocument($isclass=false){
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
 
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','" . $rootDir . "','".$ctype."',1)");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','" . $rootDirID . "','".$ctype."',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = $we_button->create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'".$ctype."','".$etype."'); }");
 		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){			
@@ -671,7 +673,6 @@ function formTriggerDocument($isclass=false){
 		$yuiSuggest->setOpenButton($openbutton);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
-
 		return $yuiSuggest->getHTML();
 
 	}
