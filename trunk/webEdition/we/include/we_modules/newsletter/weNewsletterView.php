@@ -1880,7 +1880,7 @@ class weNewsletterView {
 									    $mailrecip = (str_replace(" ", "", $dat[$col])=="")? "--- ".$l_newsletter["email_missing"]." ---" : $dat[$col];
 									    if(!empty($mailrecip) && !in_array($mailrecip,$mailListArray)) {
 											$row[]=		$mailrecip.",".
-												( ($importHTML  && isset($dat[$hmcol])) ? $dat[$hmcol] : $hmcol=$this->settings["default_htmlmail"]).",".
+												( ($importHTML  && isset($dat[$hmcol])) ? $dat[$hmcol] : "").",".
 												( ($importSalutation && isset($dat[$salutationcol])) ? $dat[$salutationcol] : "").",".
 												( ($importTitle && isset($dat[$titlecol])) ? $dat[$titlecol] : "").",".
 												( ($importFirstname && isset($dat[$firstnamecol])) ? $dat[$firstnamecol] : "").",".
@@ -2666,8 +2666,8 @@ class weNewsletterView {
 			foreach ($customers as $customer) {
 				$foo = getHash("SELECT * FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customer).($filtersql!="" ?  " AND ($filtersql)": ""),$this->db);
 				if (isset($foo[$this->settings["customer_email_field"]]) && $foo[$this->settings["customer_email_field"]]) {
-					$email = $foo[$this->settings["customer_email_field"]];
-					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && $foo[$this->settings["customer_html_field"]]!='') ? $foo[$this->settings["customer_html_field"]] : $_default_html;
+					$email = trim($foo[$this->settings["customer_email_field"]]);
+					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && trim($foo[$this->settings["customer_html_field"]])!='') ? trim($foo[$this->settings["customer_html_field"]]) : $_default_html;
 					$salutation = (isset($foo[$this->settings["customer_salutation_field"]]) && $foo[$this->settings["customer_salutation_field"]]) ? $foo[$this->settings["customer_salutation_field"]] : "";
 					$title = (isset($foo[$this->settings["customer_title_field"]]) && $foo[$this->settings["customer_title_field"]]) ? $foo[$this->settings["customer_title_field"]] : "";
 					$firstname = (isset($foo[$this->settings["customer_firstname_field"]]) && $foo[$this->settings["customer_firstname_field"]]) ? $foo[$this->settings["customer_firstname_field"]] : "";
