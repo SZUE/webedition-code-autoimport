@@ -4018,8 +4018,10 @@ function we_cmd_enc($str) {
 }
 
 function we_cmd_dec($no,$default='') {
-	if (isset($_REQUEST['we_cmd'][$no]) && strpos($_REQUEST['we_cmd'][$no], 'WECMDENC_') !== false) {
-		$_REQUEST['we_cmd'][$no] = base64_decode(urldecode(substr($_REQUEST['we_cmd'][$no], 9)));
+	if (isset($_REQUEST['we_cmd'][$no])){
+		if(strpos($_REQUEST['we_cmd'][$no], 'WECMDENC_') !== false) {
+			$_REQUEST['we_cmd'][$no] = base64_decode(urldecode(substr($_REQUEST['we_cmd'][$no], 9)));
+		}
 		return $_REQUEST['we_cmd'][$no];
 	}
 	return $default;
