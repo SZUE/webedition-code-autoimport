@@ -41,7 +41,6 @@ function we_tag_sessionField($attribs, $content) {
 
 	$autofill = we_getTagAttribute('autofill', $attribs, false);
 	if ($autofill) {
-		//$condition = array('caps'=>3, 'small'=>4, 'nums'=>3, 'specs'=>2);
 		if ($name == 'Username') {
 			$condition = array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0);
 		} else {
