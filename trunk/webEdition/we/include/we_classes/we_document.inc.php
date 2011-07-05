@@ -51,7 +51,7 @@ class we_document extends we_root {
 	/* Extension of the document */
 	var $Extension='';
 
-	/* Array of possible extensions for the document */
+	/* Array of possible filename extensions for the document */
 	var $Extensions;
 	var $Published=0;
 

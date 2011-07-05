@@ -254,4 +254,3 @@ function getCSS()
 	
 	return $_css;
 }
-?>
