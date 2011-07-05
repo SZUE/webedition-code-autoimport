@@ -42,4 +42,3 @@ $aLang = array(
 	$l_cockpit['notes'] . " - " . base64_decode($pad_header_enc), ""
 );
 
-?>
