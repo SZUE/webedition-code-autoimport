@@ -14,13 +14,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.registry;
+package org.webedition.eplugin.registry;
 
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import com.livinge.eplugin.util.CmdProxy;
+import org.webedition.eplugin.util.CmdProxy;
 
 public class WinRegistry implements Registry {
     

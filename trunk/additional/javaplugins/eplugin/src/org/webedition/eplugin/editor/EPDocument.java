@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.editor;
+package org.webedition.eplugin.editor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,11 +24,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.AccessController;
 
-import com.livinge.eplugin.privileged.PrivilegedCheck;
-import com.livinge.eplugin.privileged.PrivilegedMkDirs;
-import com.livinge.eplugin.privileged.PrivilegedPrepareEditFile;
-import com.livinge.eplugin.privileged.PrivilegedSave;
-import com.livinge.eplugin.util.HttpRequest;
+import org.webedition.eplugin.privileged.PrivilegedCheck;
+import org.webedition.eplugin.privileged.PrivilegedMkDirs;
+import org.webedition.eplugin.privileged.PrivilegedPrepareEditFile;
+import org.webedition.eplugin.privileged.PrivilegedSave;
+import org.webedition.eplugin.util.HttpRequest;
 
 public class EPDocument {
 

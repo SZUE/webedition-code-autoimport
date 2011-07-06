@@ -14,16 +14,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.registry;
+package org.webedition.eplugin.registry;
 
 
 import java.io.File;
 import java.net.URL;
 import java.util.Vector;
 
-import com.livinge.eplugin.editor.WeSettings;
-import com.livinge.eplugin.util.CmdProxy;
-import com.livinge.eplugin.util.CopyUtility;
+import org.webedition.eplugin.editor.WeSettings;
+import org.webedition.eplugin.util.CmdProxy;
+import org.webedition.eplugin.util.CopyUtility;
 
 
 public class MacRegistry implements Registry {

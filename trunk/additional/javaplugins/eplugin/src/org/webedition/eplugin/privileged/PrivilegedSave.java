@@ -14,14 +14,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.privileged;
+package org.webedition.eplugin.privileged;
 import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.security.PrivilegedAction;
 
-import com.livinge.eplugin.editor.WeSettings;
+import org.webedition.eplugin.editor.WeSettings;
 
 
 public class PrivilegedSave implements PrivilegedAction {

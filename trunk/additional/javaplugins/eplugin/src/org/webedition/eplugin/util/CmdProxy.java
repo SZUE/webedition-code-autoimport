@@ -14,11 +14,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.util;
+package org.webedition.eplugin.util;
 
 import java.security.AccessController;
 
-import com.livinge.eplugin.privileged.PrivilegedRun;
+import org.webedition.eplugin.privileged.PrivilegedRun;
 
 
 /**

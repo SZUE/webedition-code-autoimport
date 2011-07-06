@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.editor;
+package org.webedition.eplugin.editor;
 
 
 import java.io.BufferedReader;
@@ -42,16 +42,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.livinge.eplugin.privileged.PrivilegedSave;
-import com.livinge.eplugin.registry.MacRegistry;
-import com.livinge.eplugin.registry.WinRegistry;
+import org.webedition.eplugin.privileged.PrivilegedSave;
+import org.webedition.eplugin.registry.MacRegistry;
+import org.webedition.eplugin.registry.WinRegistry;
 
 
 public class WeSettings{
 
 	private String buildVersion="5.1_9";
 	
-	private String defRegistryCompanyDir="webedition.org";
+	private String defRegistryCompanyDir="webedition_e.V.";
 	private String defRegistryProductDir="editorPlugin";
 	
 	private String defEditorFile="editor.xml";
@@ -184,7 +184,7 @@ public class WeSettings{
 		} else if(OS.equalsIgnoreCase("Linux")){
 		defRegistryCompanyDir="."+defRegistryCompanyDir;
 	}else{
-			System.out.println("Only Mac OSX and Windows are supported by the editor plugin!");
+			System.out.println("Only Mac OSX, Linux and Windows are supported by the editor plugin! What do you use?");
 		}
 		 
 		registryDir=appDataPath+defRegistryCompanyDir+sep+defRegistryProductDir+sep;

@@ -14,41 +14,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.privileged;
+package org.webedition.eplugin.privileged;
 
-import java.io.File;
 import java.security.PrivilegedAction;
 
-public class PrivilegedMkDirs implements PrivilegedAction {
+public class PrivilegedSystemProperties implements PrivilegedAction{
 
+	public String Property = "";
+	public String Value = "";
 	
-	private String Path;
-	
-	public PrivilegedMkDirs(String p){
+	public PrivilegedSystemProperties(String prop) {
 		
-		Path = p;
+		Property = prop;
 		
 	}
 	
-	
-	public Object run() {
-		
-		 String out="";
-		  
-		 try { 
-		    
-			 File d = new File(Path);
-			 if (!d.exists()){
-			    	d.mkdirs();
-			 }
-			 return d.getPath();
-			  
-		 } catch (Exception e) { 
-		      
-		 }
-		  
-		  return out;		
+	public Object run(){
+		try{
 
+			Value =  System.getProperty(Property);
+
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
-
+	
 }

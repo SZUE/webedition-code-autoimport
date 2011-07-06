@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.editor;
+package org.webedition.eplugin.editor;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;

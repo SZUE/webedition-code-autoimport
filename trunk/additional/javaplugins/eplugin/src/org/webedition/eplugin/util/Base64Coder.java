@@ -1,4 +1,4 @@
-package com.livinge.eplugin.util;
+package org.webedition.eplugin.util;
 
 /**************************************************************************
 *
