@@ -2438,8 +2438,13 @@ class we_objectFile extends we_document{
 		}
 		/* hook */
 		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
+			$hook = new weHook('save', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $a;
@@ -2580,7 +2585,12 @@ class we_objectFile extends we_document{
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('publish', '', array($this));
-			$hook->executeHook();
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $this->insertAtIndex();
@@ -2601,7 +2611,12 @@ class we_objectFile extends we_document{
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('unpublish', '', array($this));
-			$hook->executeHook();
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID);
