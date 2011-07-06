@@ -182,7 +182,8 @@ public class WeSettings{
 			System.out.println(appDataPath);
 			
 		} else if(OS.equalsIgnoreCase("Linux")){
-		defRegistryCompanyDir=System.getProperty("user.home")+ sep +"."+defRegistryCompanyDir;
+			appDataPath = System.getProperty("user.home")+ sep;
+		defRegistryCompanyDir="."+defRegistryCompanyDir;
 	}else{
 			System.out.println("Only Mac OSX, Linux and Windows are supported by the editor plugin! What do you use?");
 		}
