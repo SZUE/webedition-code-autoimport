@@ -362,8 +362,13 @@ class we_textContentDocument extends we_textDocument{
 
 		/* hook */
 		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
+			$hook = new weHook('save', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $ret;
@@ -405,7 +410,12 @@ class we_textContentDocument extends we_textDocument{
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('publish', '', array($this));
-			$hook->executeHook();
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $this->insertAtIndex();
@@ -437,7 +447,12 @@ class we_textContentDocument extends we_textDocument{
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('unpublish', '', array($this));
-			$hook->executeHook();
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		$this->DB_WE->query('SELECT DID FROM ' . INDEX_TABLE . ' WHERE DID=' . abs($this->ID));
