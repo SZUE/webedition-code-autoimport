@@ -19,7 +19,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_document.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_document.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
@@ -32,8 +32,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 /* a class for handling templates */
-class we_object extends we_document
-{
+class we_object extends we_document {
 	//######################################################################################################################################################
 	//##################################################################### Variables ######################################################################
 	//######################################################################################################################################################

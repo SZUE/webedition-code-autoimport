@@ -421,14 +421,14 @@ else {
 				} else if(!$we_doc->i_checkPathDiffAndCreate()) {
 					$we_responseText = sprintf($GLOBALS["l_we_class"]["notValidFolder"],$we_doc->Url);
 					$we_responseTextType = WE_MESSAGE_ERROR;
-				} else if($n = $we_doc->i_check_requiredFields()) {
+				} else if(($n = $we_doc->i_check_requiredFields())) {
 					$we_responseText = sprintf($l_we_editor["required_field_alert"],$n);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($we_doc->i_scheduleToBeforeNow()) {
 					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/schedule.inc.php");
 					$we_responseText = $l_schedule["toBeforeNow"];
 					$we_responseTextType = WE_MESSAGE_ERROR;
-				} else if($n = $we_doc->i_hasDoubbleFieldNames()) {
+				} else if(($n = $we_doc->i_hasDoubbleFieldNames())) {
 					$we_responseText = sprintf($l_we_editor["doubble_field_alert"],$n);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if(!$we_doc->i_areVariantNamesValid()) {
@@ -646,6 +646,7 @@ else {
 
 					}
 				}
+				$we_responseText.=$we_doc->getErrMsg();
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 
 				if(defined("SCHEDULE_TABLE")){

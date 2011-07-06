@@ -325,7 +325,18 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 	function we_save($resave=0,$skipHook=0){
+		$this->errMsg='';
 		$this->i_setText();
+		if ($skipHook==0){
+			$hook = new weHook('preSave', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
+		}
+		
 		if(!$this->ID){  // when no ID, then allways save before in main table
 			if(!we_root::we_save(0)) return false;
 		}
@@ -359,6 +370,14 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
+		if ($skipHook==0){
+			$hook = new weHook('prePublish', '', array($this));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				return false;
+			}
+		}
 		if($saveinMainDB){
 			if(!we_root::we_save(1)) return false; // calls the root function, so the document will be saved in main-db but it will not be written!
 		}

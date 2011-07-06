@@ -791,11 +791,20 @@ class we_document extends we_root {
 	}
 
 	function we_save($resave=0,$skipHook=0){
+		$this->errMsg='';
+		$this->i_setText();
 
+		if ($skipHook==0){
+			$hook = new weHook('preSave', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
+		}
 		/* version */
 		$version = new weVersions();
-
-		$this->i_setText();
 
 		if(!we_root::we_save($resave))	return false;
 		$ret = $this->i_writeDocument();
