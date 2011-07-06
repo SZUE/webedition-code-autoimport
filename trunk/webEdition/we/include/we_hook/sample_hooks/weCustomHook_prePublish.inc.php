@@ -19,9 +19,10 @@
  */
 
 
+
 	/**
 	 * if hook execution is enabled this function will be executed
-	 * when saving a document, template, object or class
+	 * when publishing a document, template, object or class
 	 * The array $param has all information about the respective document.
 	 *
 	 * IMPORTANT!
@@ -30,11 +31,13 @@
 	 *
 	 * @param array $param
 	 */
-	function weCustomHook_save($param) {
+	function weCustomHook_prePublish($param) {
 		$hookHandler=$param['hookHandler'];
 		/*$obj=$param[0];
 		switch(get_class($obj)){
 		}*/
+		//don't publish, with err msg
+		//$hookHandler->setErrorString('I don\'t like you! Go away.');
 
 		/**
 		 * e.g.:
@@ -43,6 +46,5 @@
 		 * print_r($param);
 		 * ob_end_clean();
 		 */
-
 
 	}

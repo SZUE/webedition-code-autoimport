@@ -30,11 +30,13 @@
 	 *
 	 * @param array $param
 	 */
-	function weCustomHook_save($param) {
+	function weCustomHook_preSave($param) {
 		$hookHandler=$param['hookHandler'];
 		/*$obj=$param[0];
 		switch(get_class($obj)){
 		}*/
+		//don't save, with err msg
+		//$hookHandler->setErrorString('I don\'t like you! Go away.');
 
 		/**
 		 * e.g.:

@@ -19,8 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_stripslashes(&$arr)
-{
+function we_stripslashes(&$arr){
 	foreach ($arr as $n => $v) {
 		if (is_array($v)) {
 			we_stripslashes($arr[$n]);
@@ -62,14 +61,16 @@ define('LOAD_REVERT_DB', 2);
 define('LOAD_SCHEDULE_DB', 3);
 
 define('WE_TREE_DEFAULT_WIDTH', 300);
+define('WEBEDITION_DIR', '/webEdition/');
+define('WEBEDITION_INCLUDES_PATH',WEBEDITION_DIR.'we/include/');
+define('WEBEDITION_INCLUDES_DIR', $_SERVER['DOCUMENT_ROOT'].WEBEDITION_INCLUDES_PATH);
 
 // Activate the webEdition error handler
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_error_handler.inc.php');
+include_once (WEBEDITION_INCLUDES_DIR.'we_classes/base/we_error_handler.inc.php');
 if (!defined('WE_ERROR_HANDLER_SET')){ we_error_handler();}
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_version.php');
+include_once (WEBEDITION_INCLUDES_DIR . 'we_version.php');
 
-define('WEBEDITION_DIR', '/webEdition/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
@@ -175,12 +176,12 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/fragments'); // important noot to add a slash at the end!
-define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/');
-define('WE_MODULE_PATH', '/webEdition/we/include/we_modules/');
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
+define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH.'we_modules/');
+define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
-define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/');
-define('WE_TOOLS_PATH', '/webEdition/apps/');
+define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
+define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
 
 if (!defined('LOGIN_FAILED_TIME')) {
 	define('LOGIN_FAILED_TIME', 2); // in minutes
@@ -199,8 +200,7 @@ define('ERROR_LOG_HOLDTIME', 30); // in days
 
 
 
-define(
-		'WE_WYSIWYG_COMMANDS',
+define('WE_WYSIWYG_COMMANDS',
 		'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
 
 if(!defined('WE_SERVER_URL')){
