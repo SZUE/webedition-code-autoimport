@@ -442,9 +442,7 @@ class we_objectFile extends we_document{
 	function i_check_requiredFields(){
 		foreach($this->DefArray as $n=>$v){
 			if(is_array($v) && isset($v['required']) && $v['required']){
-				$foo = explode('_',$n);
-				$type = $foo[0];unset($foo[0]);
-				$name = implode('_', $foo);
+				list($type,$name) = explode('_',$n,1);
 				switch($type){
 					case 'object':
 						$val = $this->getElement('we_object_'.$name);
@@ -2358,6 +2356,7 @@ class we_objectFile extends we_document{
 	}
 
 	function we_save($resave=0,$skipHook=0){
+		$this->errMsg='';
 
 		$foo = getHash("SELECT strOrder,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
@@ -2379,6 +2378,17 @@ class we_objectFile extends we_document{
 
 		$_resaveWeDocumentCustomerFilter = true;
 		$this->correctWorkspaces();
+
+		if ($skipHook==0){
+			$hook = new weHook('preSave', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
+		}
+		
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
 			if(!we_document::we_save($resave,1)) return false;
@@ -2416,8 +2426,13 @@ class we_objectFile extends we_document{
 		}
 		/* hook */
 		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
+			$hook = new weHook('save', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $a;
@@ -2537,6 +2552,15 @@ class we_objectFile extends we_document{
 	}
 
 	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
+		if ($skipHook==0){
+			$hook = new weHook('prePublish', '', array($this));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				return false;
+			}
+		}
+
 		if($saveinMainDB){
 			if(!we_root::we_save(1)) return false;
 		}
@@ -2549,7 +2573,12 @@ class we_objectFile extends we_document{
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('publish', '', array($this));
-			$hook->executeHook();
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $this->insertAtIndex();
@@ -2570,7 +2599,12 @@ class we_objectFile extends we_document{
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('unpublish', '', array($this));
-			$hook->executeHook();
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 
 		return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID);

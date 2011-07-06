@@ -53,7 +53,7 @@ class we_document extends we_root {
 	/* Extension of the document */
 	var $Extension='';
 
-	/* Array of possible extensions for the document */
+	/* Array of possible filename extensions for the document */
 	var $Extensions;
 	var $Published=0;
 
@@ -782,14 +782,22 @@ class we_document extends we_root {
 	}
 
 	function we_save($resave=0,$skipHook=0){
+		$this->errMsg='';
+		$this->i_setText();
 
+		if ($skipHook==0){
+			$hook = new weHook('preSave', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
+		}
 		/* version */
 		$version = new weVersions();
 
-		$this->i_setText();
-
-		if(!we_root::we_save($resave))
-			return false;
+		if(!we_root::we_save($resave))	return false;
 		$ret = $this->i_writeDocument();
 		$this->OldPath = $this->Path;
 
@@ -808,8 +816,13 @@ class we_document extends we_root {
 
 		/* hook */
 		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
+			$hook = new weHook('save', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 		return $ret;
 	}

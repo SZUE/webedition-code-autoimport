@@ -31,11 +31,15 @@
 	 *
 	 * IMPORTANT!
 	 * Copy this file to the custom_hooks folder when doing any changes
-	 * Files in the sample_hooks folder are not update-safe and will be overwritten by the next webEdition update
+	 * Files in the sample_hooks folder are not executed and are not update-safe and will be overwritten by the next webEdition update
 	 *
 	 * @param array $param
 	 */
 	function weCustomHook_delete($param) {
+		$hookHandler=$param['hookHandler'];
+		/*$obj=$param[0];
+		switch(get_class($obj)){
+		}*/
 
 		/**
 		 * e.g.:

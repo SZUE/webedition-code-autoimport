@@ -982,7 +982,11 @@ class we_import_files
 				$_FILES['we_File']["size"] = 1;
 			}
 			if ($fh) {
-				$we_fileData = fread($fh, $_FILES['we_File']["size"]);
+				if  (isset($we_doc->IsBinary) && $we_doc->IsBinary){
+					
+				} else {
+					$we_fileData = fread($fh, $_FILES['we_File']["size"]);
+				}
 				fclose($fh);
 			} else {
 				return array(

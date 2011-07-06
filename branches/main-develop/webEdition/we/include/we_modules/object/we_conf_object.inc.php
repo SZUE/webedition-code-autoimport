@@ -32,5 +32,3 @@ define("WE_OBJECT_MODULE_PATH","/webEdition/we/include/we_modules/object/");
 
 // Number of displayed objects in the left navigation
 define("OBJECT_FILES_TREE_COUNT", 20);
-
-?>

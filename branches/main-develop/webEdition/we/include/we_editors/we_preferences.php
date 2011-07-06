@@ -458,11 +458,11 @@ function get_value($settingvalue) {
 		 *********************************************************************/
 
 		case "we_error_handler":
-			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : false;
+			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : true;
 			break;
 
 		case "error_handling_notices":
-			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : false;
+			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : true;
 			break;
 
 		case "error_handling_deprecated":
@@ -478,7 +478,7 @@ function get_value($settingvalue) {
 			break;
 
 		case "error_display_errors":
-			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : true;
+			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : false;
 			break;
 
 		case "error_log_errors":
@@ -5759,7 +5759,7 @@ $_needed_JavaScript .= "
 			 */
 
 			// Create checkboxes
-			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 9, 1);
+			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 8, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_handling_errors"), "error_handling_errors", g_l('prefs','[error_errors]'), false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(1, 0, null, getPixel(1, 5));
@@ -5771,8 +5771,6 @@ $_needed_JavaScript .= "
 				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", g_l('prefs','[error_deprecated]'), false, "defaultfont", "", !get_value("we_error_handler")));
 				$_error_handling_table->setCol(7, 0, null, getPixel(1, 5));
 			}
-			$_error_handling_table->setCol(8, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox(g_l('prefs','[error_notices_warning]'),1,220));
-
 
 			// Build dialog if user has permission
 			if (we_hasPerm("ADMINISTRATOR")) {
@@ -5784,13 +5782,14 @@ $_needed_JavaScript .= "
 			 *********************************************************************/
 
 			// Create checkboxes
-			$_error_display_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 7, 1);
+			$_error_display_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 8, 1);
+			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox(g_l('prefs','[error_notices_warning]'),1,260));
 
-			$_error_display_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_display_errors"), "error_display_errors", g_l('prefs','[error_display]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_display_table->setCol(1, 0, null, getPixel(1, 5));
-			$_error_display_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("error_log_errors"), "error_log_errors", g_l('prefs','[error_log]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_display_table->setCol(3, 0, null, getPixel(1, 5));
-			$_error_display_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_mail_errors"), "error_mail_errors", g_l('prefs','[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("we_error_handler")));
+			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("error_display_errors"), "error_display_errors", g_l('prefs','[error_display]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_display_table->setCol(2, 0, null, getPixel(1, 5));
+			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("error_log_errors"), "error_log_errors", g_l('prefs','[error_log]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_display_table->setCol(4, 0, null, getPixel(1, 5));
+			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("error_mail_errors"), "error_mail_errors", g_l('prefs','[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("we_error_handler")));
 
 			// Create specify mail address input
 			$_error_mail_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 4);
@@ -5803,8 +5802,8 @@ $_needed_JavaScript .= "
 
 			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), htmlTextInput("error_mail_address", 6, (get_value("error_mail_errors") != 0 ? get_value("error_mail_address") : ""), 100, ((!get_value("error_mail_errors") || !get_value("we_error_handler")) ? "disabled=\"disabled\"" : ""), "text", 105));
 
-			$_error_display_table->setCol(5, 0, null, getPixel(1, 10));
-			$_error_display_table->setCol(6, 0, null, $_error_mail_specify_table->getHtmlCode());
+			$_error_display_table->setCol(6, 0, null, getPixel(1, 10));
+			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtmlCode());
 
 			// Build dialog if user has permission
 			if (we_hasPerm("ADMINISTRATOR")) {

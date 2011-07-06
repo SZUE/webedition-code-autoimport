@@ -422,13 +422,13 @@ else {
 				} else if(!$we_doc->i_checkPathDiffAndCreate()) {
 					$we_responseText = sprintf(g_l('weClass',"[notValidFolder]"),$we_doc->Url);
 					$we_responseTextType = WE_MESSAGE_ERROR;
-				} else if($n = $we_doc->i_check_requiredFields()) {
+				} else if(($n = $we_doc->i_check_requiredFields())) {
 					$we_responseText = sprintf(g_l('weEditor',"[required_field_alert]"),$n);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if($we_doc->i_scheduleToBeforeNow()) {
 					$we_responseText = g_l('modules_schedule','[toBeforeNow]');
 					$we_responseTextType = WE_MESSAGE_ERROR;
-				} else if($n = $we_doc->i_hasDoubbleFieldNames()) {
+				} else if(($n = $we_doc->i_hasDoubbleFieldNames())) {
 					$we_responseText = sprintf(g_l('weEditor',"[doubble_field_alert]"),$n);
 					$we_responseTextType = WE_MESSAGE_ERROR;
 				} else if(!$we_doc->i_areVariantNamesValid()) {
@@ -646,6 +646,7 @@ else {
 
 					}
 				}
+				$we_responseText.=$we_doc->getErrMsg();
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 
 				if(defined("SCHEDULE_TABLE")){

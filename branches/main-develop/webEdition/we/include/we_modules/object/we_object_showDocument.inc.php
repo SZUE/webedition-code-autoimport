@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("NO_SESS",1);
+if(!defined('NO_SESS')){define('NO_SESS',1);}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_objectFile.inc.php");

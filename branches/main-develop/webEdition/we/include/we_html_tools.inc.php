@@ -794,14 +794,11 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 	return $retVal;
 }
 
-function htmlTop($title = "webEdition", $charset = "")
-{
+function htmlTop($title = 'webEdition', $charset = ''){
 	print getHtmlTop($title, $charset);
 }
 
-function getHtmlTop($title = "webEdition", $charset = "", $useMessageBox = true)
-{
-
+function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true){
 	$_title = we_htmlElement::htmlTitle($title);
 	$_meta_expires = we_htmlElement::htmlMeta(array(
 		"http-equiv" => "expires", "content" => 0
@@ -828,17 +825,14 @@ function getHtmlTop($title = "webEdition", $charset = "", $useMessageBox = true)
 		"src" => JS_DIR . "attachKeyListener.js"
 	)) : "";
 
-	return " <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
-            <html>
-				<head>
-					$_title
-					$_meta_expires
-					$_meta_no_cache
-					$_meta_content_type
-					$_meta_imagetoolbar_type
-					$_meta_generator
-					$_showMessage
-	";
+	return '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head>'.
+					$_title.
+					$_meta_expires.
+					$_meta_no_cache.
+					$_meta_content_type.
+					$_meta_imagetoolbar_type.
+					$_meta_generator.
+					$_showMessage;
 }
 
 /**

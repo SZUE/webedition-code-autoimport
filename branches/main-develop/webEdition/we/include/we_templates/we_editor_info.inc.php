@@ -35,8 +35,7 @@ htmlTop();
 
 $we_button = new we_button();
 
-?>
-<?php print STYLESHEET; ?>
+print STYLESHEET; ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script type="text/javascript">
 	function revertToPublished() {

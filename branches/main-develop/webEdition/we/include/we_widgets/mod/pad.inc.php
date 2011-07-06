@@ -68,8 +68,8 @@ switch ($_REQUEST["we_cmd"][2]) {
 		$entText = str_replace("'", '&#039;', $entText);
 		$entText = str_replace('"', '&quot;', $entText);
 		$_sql = "UPDATE " . escape_sql_query($_table) . " SET
-			Title = '" . escape_sql_query($_REQUEST['we_cmd'][7]) . "',
-			Text = '" . escape_sql_query($_REQUEST['we_cmd'][8]) . "',
+			Title = '" . escape_sql_query($entTitle) . "',
+			Text = '" . escape_sql_query($entText) . "',
 			Priority = '" . escape_sql_query($q_Priority) . "',
 			Valid = '" . escape_sql_query($q_Valid) . "',
 			ValidFrom = '" . escape_sql_query($q_ValidFrom) . "',
@@ -105,8 +105,8 @@ switch ($_REQUEST["we_cmd"][2]) {
 			'" . ($_title) . "',
 			" . abs($_SESSION['user']['ID']) . ",
 			DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-			'" . escape_sql_query($_REQUEST['we_cmd'][7]) . "',
-			'" . escape_sql_query($_REQUEST['we_cmd'][8]) . "',
+			'" . escape_sql_query($entTitle) . "',
+			'" . escape_sql_query($entText) . "',
 			'" . escape_sql_query($q_Priority) . "',
 			'" . escape_sql_query($q_Valid) . "',
 			'" . escape_sql_query($q_ValidFrom) . "',

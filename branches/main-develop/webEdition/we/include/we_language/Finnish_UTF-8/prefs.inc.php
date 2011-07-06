@@ -399,7 +399,7 @@ $l_prefs = array(
 		'error_deprecated' => "deprecated Notices", //TRANSLATE
 		'error_warnings' => "Varoitukset",
 		'error_errors' => "Virheet",
-		'error_notices_warning' => 'Ominaisuus kehittäjille! Älä aktivoi tuotantokäytössä!.',
+		'error_notices_warning' => 'We recommend to aktivate the option -Log errors- on all systems; the option -Show errors- should be activated only during development.',//TRANSLATE
 		/**
 		 * ERROR DISPLAY
 		 */

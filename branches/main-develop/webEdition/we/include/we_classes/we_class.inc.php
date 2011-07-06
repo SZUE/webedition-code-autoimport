@@ -61,6 +61,7 @@ class we_class {
 	var $IsTextContentDoc = false;
 	var $LoadBinaryContent = false;
 	var $fileExists = 1;
+	protected $errMsg='';
 
 	######################################################################################################################################################
 	##################################################################### FUNCTIONS ######################################################################
@@ -730,4 +731,9 @@ class we_class {
 		}
 	}
 
+	/**returns error-messages recorded during an operation, currently only save is used*/
+	function getErrMsg(){
+		return ($this->errMsg?'\n'.$this->errMsg:'');
 	}
+	
+}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,65 +22,48 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_conf_global.inc.php");
 
 /**
  * class to handle hooks in webEdition and in applications
  */
-class weHook{
+class weHook {
 
-	protected $_action;
-
-	protected $_appName;
-
-	protected $_param;
-
+	protected $action;
+	protected $appName;
+	protected $param;
+	private $file='';
+	private $func;
+	private $errStr='';
 
 	function __construct($action, $appName='', $param=array()) {
-
-		$this->_action = $action;
-		$this->_appName = $appName;
-		$this->_param = $param;
-
+		if (!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)) {
+			return;
+		}
+		$this->action = $action;
+		$this->appName = $appName;
+		$this->param = $param;
+		$this->param['hookHandler']=$this;
+		$this->findHookFile();
+		$this->func='weCustomHook_' . ($appName != ''?$appName . '_':'') . $action;
 	}
-
 
 	function executeHook() {
-
-		if(!defined('EXECUTE_HOOKS')) {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf_global.inc.php");
+		if (!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)) {
+			return;
 		}
 
-		if(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS) {
-
-			$hookFile = '';
-			$action = $this->_action;
-			$param = $this->_param;
-			$appName = $this->_appName;
-
-			if($action!='' && is_array($param)) {
-
-				if($appName!='') {
-					$functionName = 'weCustomHook_'.$appName.'_'.$action;
-				}
-				else {
-					$functionName = 'weCustomHook_'.$action;
-				}
-
-				$hookFile = $this->getHookFile($action, $appName);
-
-				if ($hookFile!='') {
-					include_once($hookFile);
-
-					if(function_exists($functionName)) {
-						eval($functionName.'($param);');
-					}
-				}
+		if ($this->action != '' && is_array($this->param) && $this->file != '') {
+			include_once($this->file);
+			if (function_exists($this->func)) {
+				eval($this->func . '($this->param);');
+				return ($this->errStr=='');
 			}
 		}
+		return;
 	}
-
+	
 	/**
 	 * get custom hook file
 	 *
@@ -88,40 +72,30 @@ class weHook{
 	 *
 	 * return string
 	 */
-	function getHookFile($action, $appName) {
-
+	function findHookFile() {
 		$hookFile = '';
 
-		if($appName!='') {
-			$filename = 'weCustomHook_'.$appName.'_' . $action . '.inc.php';
+		if ($this->appName != '') {
+			$filename = 'weCustomHook_' . $this->appName . '_' . $this->action . '.inc.php';
 			// look in app folder
-			$toolHookFile = $_SERVER['DOCUMENT_ROOT'].'/webEdition/apps/'.$appName.'/hook/custom_hooks/'.$filename;
-			if(file_exists($toolHookFile) && is_readable($toolHookFile)) {
-		  		$hookFile = $toolHookFile;
-			}
-		}
-		else {
-			$filename = 'weCustomHook_'. $action . '.inc.php';
+			$hookFile = WE_TOOLS_DIR . $this->appName . '/hook/custom_hooks/' . $filename;
+		} else {
+			$filename = 'weCustomHook_' . $this->action . '.inc.php';
 			// look in we_hook/custom_hooks folder
-	  		$weHookFile = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/custom_hooks/'.$filename;
-	  		if(file_exists($weHookFile) && is_readable($weHookFile)) {
-	  			$hookFile = $weHookFile;
-	  		}  else {
-				$weHookFile = $_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/sample_hooks/'.$filename;
-				if(file_exists($weHookFile) && is_readable($weHookFile)) {
-	  				$hookFile = $weHookFile;
-				}
-	  		}
+			$hookFile = WEBEDITION_INCLUDES_DIR . 'we_hook/custom_hooks/' . $filename;
+			//no more check for sample hooks - they are overwritten on update
 		}
-
-		return $hookFile;
+		if (file_exists($hookFile) && is_readable($hookFile)) {
+			$this->file=$hookFile;
+		}
 	}
 
-
-	function __destruct() {
-
-		unset($this);
-
+	function setErrorString($str){
+		$this->errStr=$str;
 	}
-
+	
+	function getErrorString(){
+		return $this->errStr;
+	}
+	
 }

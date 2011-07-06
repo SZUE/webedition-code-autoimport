@@ -258,10 +258,10 @@ function log_error_message($type, $message, $file, $_line) {
 	$_type = translate_error_type($type);
 
 	// Error message
-	$_text = str_replace($_SERVER['DOCUMENT_ROOT'], '', $message);
+	$_text = str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message);
 
 	// Script name
-	$_file = str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);
+	$_file = str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file);
 
 
 //FIXME: mysql_ => should this be handled by DB_WE?
@@ -317,10 +317,10 @@ function mail_error_message($type, $message, $file, $line) {
 	$_detailedError .= 'Error type: ' . translate_error_type($type) . ",\n";
 
 	// Error message
-	$_detailedError .= 'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $message) . ",\n";
+	$_detailedError .= 'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . ",\n";
 
 	// Script name
-	$_detailedError .= 'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $file) . ",\n";
+	$_detailedError .= 'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . ",\n";
 
 	// Line
 	$_detailedError .= 'Line number: ' . $line . ",\n";
