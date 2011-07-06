@@ -15,7 +15,7 @@
  */
 
 
-package com.livinge.eplugin.editor;
+package org.webedition.eplugin.editor;
 
 import java.lang.reflect.*;
 import java.util.Vector;

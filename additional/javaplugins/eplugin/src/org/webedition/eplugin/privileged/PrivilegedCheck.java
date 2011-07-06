@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.privileged;
+package org.webedition.eplugin.privileged;
 import java.io.File;
 import java.security.PrivilegedAction;
 

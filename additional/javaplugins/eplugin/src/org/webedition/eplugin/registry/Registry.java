@@ -14,31 +14,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.privileged;
+package org.webedition.eplugin.registry;
 
-import java.security.PrivilegedAction;
+import java.util.Vector;
 
-public class PrivilegedSystemProperties implements PrivilegedAction{
-
-	public String Property = "";
-	public String Value = "";
-	
-	public PrivilegedSystemProperties(String prop) {
-		
-		Property = prop;
-		
-	}
-	
-	public Object run(){
-		try{
-
-			Value =  System.getProperty(Property);
-
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+public interface Registry {
+ 
+    public Vector getAppList(String extension);
+    
 }

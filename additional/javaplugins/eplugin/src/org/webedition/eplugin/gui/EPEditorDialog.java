@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.gui;
+package org.webedition.eplugin.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,9 +48,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-import com.livinge.eplugin.editor.EPDocument;
-import com.livinge.eplugin.editor.WeEditor;
-import com.livinge.eplugin.editor.WeSettings;
+import org.webedition.eplugin.editor.EPDocument;
+import org.webedition.eplugin.editor.WeEditor;
+import org.webedition.eplugin.editor.WeSettings;
 
 public class EPEditorDialog extends JFrame implements ActionListener {
 										 	

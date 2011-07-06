@@ -14,7 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.util;
+package org.webedition.eplugin.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

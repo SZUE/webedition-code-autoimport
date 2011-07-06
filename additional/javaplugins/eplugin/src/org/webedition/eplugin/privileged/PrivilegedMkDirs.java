@@ -14,12 +14,41 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-package com.livinge.eplugin.registry;
+package org.webedition.eplugin.privileged;
 
-import java.util.Vector;
+import java.io.File;
+import java.security.PrivilegedAction;
 
-public interface Registry {
- 
-    public Vector getAppList(String extension);
-    
+public class PrivilegedMkDirs implements PrivilegedAction {
+
+	
+	private String Path;
+	
+	public PrivilegedMkDirs(String p){
+		
+		Path = p;
+		
+	}
+	
+	
+	public Object run() {
+		
+		 String out="";
+		  
+		 try { 
+		    
+			 File d = new File(Path);
+			 if (!d.exists()){
+			    	d.mkdirs();
+			 }
+			 return d.getPath();
+			  
+		 } catch (Exception e) { 
+		      
+		 }
+		  
+		  return out;		
+
+	}
+
 }
