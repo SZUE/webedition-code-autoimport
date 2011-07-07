@@ -634,15 +634,15 @@ class we_class
 			foreach ($LangLinkArray as $locale => $LDID){
 				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
 					if ($LDID>0){
-						$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
+						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
 					} else {
-						$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='0',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
+						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='0',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
 					}
 					$this->DB_WE->query($q);
 				} else {
 					if($locale!=$this->Language){
 						if ($LDID>0){
-							$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."',DLocale='".$this->Language."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
+							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($this->ID)."',DLocale='".$this->Language."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
 							$this->DB_WE->query($q);
 						}
 					}
@@ -651,14 +651,14 @@ class we_class
 					$q='';
 					if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
 						if ($LDID>0){
-							$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
 						}
 						if ($LDID<0){
-							$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='0',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='0',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
 						}  
 					} else {
 						if ($LDID>0){
-							$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
 						}
 					}
 					if($q){$this->DB_WE->query($q);}
@@ -667,11 +667,11 @@ class we_class
 					$q='';
 					if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
 						if ($LDID>0){
-							$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
 						} 
 					} else {
 						if ($LDID>0){
-							$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
 						}
 					}
 					if($q){$this->DB_WE->query($q);}
@@ -690,15 +690,15 @@ class we_class
 							for($i=0;$i<count($rows)-1;$i++){
 								if($rows[$i]['LDID']  && $rows[$i+1]['LDID']){
 									if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i]['LDID'])."' AND DLocale='".$rows[$i]['Locale']."' AND LDID='".abs($rows[$i+1]['LDID'])."' AND Locale='".$rows[$i+1]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
-										$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."',Locale='".$rows[$i+1]['Locale']."' WHERE ID='".abs($ID)."'";
+										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."',Locale='".$rows[$i+1]['Locale']."' WHERE ID='".abs($ID)."'";
 									} else {
-										$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."', Locale='".$rows[$i+1]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
+										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."', Locale='".$rows[$i+1]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
 									}
 									$this->DB_WE->query($q);
 									if($rows[$i+1]['LDID'] && $ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i+1]['LDID'])."' AND DLocale='".$rows[$i+1]['Locale']."' AND LDID='".abs($rows[$i]['LDID'])."' AND Locale='".$rows[$i]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
-										$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."',Locale='".$rows[$i]['Locale']."' WHERE ID='".abs($ID)."'";
+										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."',Locale='".$rows[$i]['Locale']."' WHERE ID='".abs($ID)."'";
 									} else {
-										$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."', Locale='".$rows[$i]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
+										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."', Locale='".$rows[$i]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
 									}
 									$this->DB_WE->query($q);
 								}
@@ -712,7 +712,7 @@ class we_class
 							$this->DB_WE->query($q);
 							while($this->DB_WE->next_record()){
 								$delRowID = $this->DB_WE->Record['ID'];
-								$qd= "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='0' WHERE ID='".abs($delRowID)."'";
+								$qd= "UPDATE ".LANGLINK_TABLE." SET LDID='0' WHERE ID='".abs($delRowID)."'";
 								$db->query($qd);
 							}
 						}
@@ -721,7 +721,7 @@ class we_class
 							$this->DB_WE->query($q);
 							while($this->DB_WE->next_record()){
 								$delRowID = $this->DB_WE->Record['ID'];
-								$qd= "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='0' WHERE ID='".abs($delRowID)."'";
+								$qd= "UPDATE ".LANGLINK_TABLE." SET LDID='0' WHERE ID='".abs($delRowID)."'";
 								$db->query($qd);
 							}
 						}

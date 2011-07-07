@@ -990,6 +990,10 @@ class we_wizard_import extends we_wizard {
  			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall($l_import["invalid_path"], WE_MESSAGE_ERROR) . "break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
+			"			}\n" .
+			"			else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {\n" .
+			"				ext = fl.substr(fl.length-4,4);\n" .
+			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			} else if (fs=='/' || fl=='') {\n" .
 			"				" . we_message_reporting::getShowMessageCall($l_import["select_source_file"], WE_MESSAGE_ERROR) . "break;\n" .
 			"			}\n".
@@ -1732,6 +1736,10 @@ HTS;
  			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall($l_import["invalid_path"], WE_MESSAGE_ERROR) . "break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
+			"			}\n" .
+			"			else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {\n" .
+			"				ext = fl.substr(fl.length-4,4);\n" .
+			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			}\n" .
 			"			else if (fs=='/' || fl=='') {\n" .
 			"				" . we_message_reporting::getShowMessageCall($l_import["select_source_file"], WE_MESSAGE_ERROR) . "break;\n" .
