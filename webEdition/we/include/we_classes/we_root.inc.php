@@ -630,9 +630,9 @@ function formTriggerDocument($isclass=false){
 		//$myid = $this->TriggerID ? $this->TriggerID : "";
 		$myid = $LDID ? $LDID:'';
 		
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
 		if($rootDirID && $path==''){
-			$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($rootDirID)."'","Path",$this->DB_WE);
+			$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($rootDirID)."'","Path",$this->DB_WE);
 		}
 		$yuiSuggest->setAcId($ackeyshort,$path);
 		if ($table == FILE_TABLE){
