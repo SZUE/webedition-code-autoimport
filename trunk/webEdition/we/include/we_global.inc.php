@@ -2376,9 +2376,9 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 		} else {$objecturl='';}
 		if ($objectseourls && $objecturl!=''){
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
-				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . "?pid=" . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl .  ($pid) ? "?pid=" . abs($pid):'';
 			} else {
-				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . "?pid=" . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . ($pid) ? "?pid=" . abs($pid):'';
 			}
 		} else {
 			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
