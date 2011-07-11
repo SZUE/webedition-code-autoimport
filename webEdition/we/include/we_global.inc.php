@@ -1772,41 +1772,29 @@ function we_isOwner($csvOwners) {
 }
 
 function makeArrayFromCSV($csv) {
+	$csv = trim(str_replace('\\,', '###komma###', $csv),',');
 
-	$csv = str_replace("\\,", "###komma###", $csv);
-
-	if (substr($csv, 0, 1) == ",") {
-		$csv = substr($csv, 1);
+	if ($csv == '' && $csv != '0') {
+		return array();
 	}
 
-	if (substr($csv, -1) == ",") {
-		$csv = substr($csv, 0, strlen($csv) - 1);
-	}
-
-	if ($csv == "" && $csv != "0") {
-
-		$foo = array();
-	} else {
-
-		$foo = explode(",", $csv);
-
-		for ($i = 0; $i < sizeof($foo); $i++) {
-
-			$foo[$i] = str_replace("###komma###", ",", $foo[$i]);
+		$foo = explode(',', $csv);
+		foreach ($foo as &$f) {
+			$f = str_replace('###komma###', ',', $f);
 		}
-	}
+	
 	return $foo;
 }
 
-function makeCSVFromArray($arr, $prePostKomma = false, $sep = ",") {
+function makeCSVFromArray($arr, $prePostKomma = false, $sep = ',') {
 	if (!sizeof($arr))
-		return "";
+		return '';
 
 	$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
 
 	if ($replaceKomma) {
-		for ($i = 0; $i < sizeof($arr); $i++) {
-			$arr[$i] = str_replace($sep, "###komma###", $arr[$i]);
+		foreach ($arr as &$a) {
+			$a = str_replace($sep, '###komma###', $a);
 		}
 	}
 	$out = implode($sep, $arr);
@@ -1814,7 +1802,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ",") {
 		$out = $sep . $out . $sep;
 	}
 	if ($replaceKomma) {
-		$out = str_replace("###komma###", "\\$sep", $out);
+		$out = str_replace('###komma###', '\\'.$sep, $out);
 	}
 	return $out;
 }
@@ -1941,7 +1929,7 @@ function weConvertToIds($paths, $table) {
 	return $ids;
 }
 
-function path_to_id_ct($path, $table = FILE_TABLE, &$contentType) {
+function path_to_id_ct($path, $table, &$contentType) {
 	$db = new DB_WE();
 	if ($path == "/") {
 		return 0;
@@ -1983,7 +1971,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = "", $prePostKomma = false, 
 	}
 }
 
-function getHashArrayFromCSV($csv, $firstEntry = "", $db) {
+function getHashArrayFromCSV($csv, $firstEntry, $db) {
 	if (!$csv)
 		return array();
 	if (!$db)
@@ -2159,7 +2147,7 @@ function getWsQueryForSelector($tab, $includingFolders = true) {
 		return '';
 	}
 
-	if ($ws = makeArrayFromCSV(get_ws($tab))) {
+	if (($ws = makeArrayFromCSV(get_ws($tab)))) {
 		$paths = id_to_path($ws, $tab, '', false, true);
 		$wsQuery .= ' AND (';
 		foreach ($paths as $path) {
