@@ -45,6 +45,7 @@ function we_tag_field($attribs, $content){
 	$xml = we_getTagAttribute("xml", $attribs, "");
 	$striphtml = we_getTagAttribute("striphtml", $attribs, false, true);
 	$only = we_getTagAttribute("only", $attribs);
+	$usekey = we_getTagAttribute("usekey", $attribs, false, true);
 	$triggerid = we_getTagAttribute("triggerid", $attribs);
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
@@ -257,9 +258,13 @@ function we_tag_field($attribs, $content){
 				}
 				
 			} else {
+				$testtype=$type;
+				if ($type='select' && $usekey){
+					$testtype='text';
+				}
 				$normVal = we_document::getFieldByVal(
 					$GLOBALS["lv"]->f($name),
-					$type,
+					$testtype,
 					$attribs,
 					false,
 					$GLOBALS["we_doc"]->ParentID,
@@ -283,10 +288,13 @@ function we_tag_field($attribs, $content){
 				foreach ($GLOBALS["lv"]->DB_WE->Record as $_glob_key => $_val) {
 
 					if (substr($_glob_key, 0, 13) == "we_we_object_") {
-
+						$testtype=$type;
+						if ($type='select' && $usekey){
+							$testtype='text';
+						}
 						$normVal = we_document::getFieldByVal(
 								$GLOBALS["lv"]->f($name),
-								$type,
+								$testtype,
 								$attribs,
 								false,
 								$GLOBALS["we_doc"]->ParentID,
