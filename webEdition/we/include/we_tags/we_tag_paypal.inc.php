@@ -50,9 +50,14 @@ function we_tag_paypal($attribs, $content) {
 	$shipping = we_getTagAttribute('shipping', $attribs);
 	$shippingIsNet = we_getTagAttribute('shippingisnet', $attribs);
 	$shippingVatRate = we_getTagAttribute('shippingvatrate', $attribs);
-	$messageRedirectAuto = we_getTagAttribute('messageredirectauto', $attribs);
-
-	$messageRedirectMan = we_getTagAttribute('messageredirectman', $attribs);
+	$messageRedirectAuto = we_getTagAttribute('messageredirectAuto', $attribs);
+	if ($messageRedirectAuto==''){
+		$messageRedirectAuto = we_getTagAttribute('messageredirectauto', $attribs);
+	}
+	$messageRedirectMan = we_getTagAttribute('messageredirectMan', $attribs);
+	if ($messageRedirectMan==''){
+		$messageRedirectMan = we_getTagAttribute('messageredirectman', $attribs);
+	}
 	$formTagOnly = we_getTagAttribute('formtagonly', $attribs, 'false', true);
 	$charset = we_getTagAttribute('charset', $attribs);
 
