@@ -259,7 +259,7 @@ function we_tag_field($attribs, $content){
 				
 			} else {
 				$testtype=$type;
-				if ($type='select' && $usekey){
+				if ($type=='select' && $usekey){
 					$testtype='text';
 				}
 				$normVal = we_document::getFieldByVal(
@@ -289,7 +289,7 @@ function we_tag_field($attribs, $content){
 
 					if (substr($_glob_key, 0, 13) == "we_we_object_") {
 						$testtype=$type;
-						if ($type='select' && $usekey){
+						if ($type=='select' && $usekey){
 							$testtype='text';
 						}
 						$normVal = we_document::getFieldByVal(
