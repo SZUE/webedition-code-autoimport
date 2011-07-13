@@ -3123,6 +3123,7 @@ function weWysiwygPopupMenu_enable(){
 		var img = p.getElementsByTagName("IMG");
 		inp.style.color="black";
 		tds[0].style.backgroundImage="url(/webEdition/images/wysiwyg/menuback.gif)";
+		tds[0].style.backgroundRepeat="no-repeat";
 		img[0].src = "/webEdition/images/wysiwyg/menudown.gif";
 
 		p.style.cursor = weIE55 ? "hand" : "pointer";
