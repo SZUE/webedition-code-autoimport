@@ -27,16 +27,16 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html
 
 $parts = array();
 
-if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be determined in template
-	header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+if (isset($we_doc->elements['Charset']['dat'])) { //	send charset which might be determined in template
+	header('Content-Type: text/html; charset=' . $we_doc->elements['Charset']['dat']);
 }
 
 if ($we_editmode) {
-	htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
+	htmlTop('', isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '');
 	?>
 	<script language="JavaScript" type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	<?php
-	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_editor_script.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_editor_script.inc.php');
 	print STYLESHEET;
 
 	$we_button = new we_button();
@@ -297,54 +297,48 @@ if ($we_editmode) {
 }
 
 if ($we_editmode) {
-	if (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) {
-		$wrap = "virtual";
-	} else {
-		$wrap = "off";
-	}
+	$wrap = (isset($_SESSION['we_wrapcheck']) && $_SESSION['we_wrapcheck'] ? 'virtual' : 'off');
 
-	$code = $we_doc->getElement("data");
-	if ($we_doc->ClassName == "we_htmlDocument") {
+	$code = $we_doc->getElement('data');
+	if ($we_doc->ClassName == 'we_htmlDocument') {
 		$code = $we_doc->getDocumentCode();
 	}
 
-	$maineditor = '<table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-            <td>
-            	';
+	$maineditor = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>';
 
 	if ($_useJavaEditor) {
 
-		$maineditor .= '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
-            <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="http://' . $SERVER_NAME . ((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ":" . $SERVER_PORT : "") . '/webEdition/editors/template/editor">
-            	<param name="phpext" value=".php">';
+		$maineditor .= '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />'.
+    '<applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="'.getServerProtocol(true). $SERVER_NAME . ((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ':' . $SERVER_PORT : '') . '/webEdition/editors/template/editor">'.
+    '<param name="phpext" value=".php">';
 
-		if ($_SESSION["prefs"]["editorFont"] == 1) {
+		if ($_SESSION['prefs']['editorFont'] == 1) {
 			// translate html font names into java font names
-			if ($_SESSION["prefs"]["editorFontname"] == "mono") {
-				$fontname = "monospaced";
-			} else if ($_SESSION["prefs"]["editorFontname"] == "sans-serif") {
-				$fontname = "sansserif";
-			} else {
-				$fontname = $_SESSION["prefs"]["editorFontname"];
+			switch($_SESSION['prefs']['editorFontname']){
+			case 'mono':
+				$fontname = 'monospaced';
+				break;
+			case 'sans-serif':
+				$fontname = 'sansserif';
+				break;
+			default:
+				$fontname = $_SESSION['prefs']['editorFontname'];
 			}
-			$maineditor .= '<param name="fontName" value="' . $fontname . '">';
-			$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '">';
+			$maineditor .= '<param name="fontName" value="' . $fontname . '">'.
+			'<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '">';
 		}
 
 		if ($_SESSION["prefs"]["specify_jeditor_colors"] == 1) {
-			$maineditor .= '<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">';
-			$maineditor .= '<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">';
-			$maineditor .= '<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">';
-			$maineditor .= '<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">';
-			$maineditor .= '<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">';
-			$maineditor .= '<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">';
-			$maineditor .= '<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
+			$maineditor .= '<param name="normalColor" value="' . $_SESSION["prefs"]["editorFontcolor"] . '">'.
+			'<param name="weTagColor" value="' . $_SESSION["prefs"]["editorWeTagFontcolor"] . '">'.
+			'<param name="weAttributeColor" value="' . $_SESSION["prefs"]["editorWeAttributeFontcolor"] . '">'.
+			'<param name="HTMLTagColor" value="' . $_SESSION["prefs"]["editorHTMLTagFontcolor"] . '">'.
+			'<param name="HTMLAttributeColor" value="' . $_SESSION["prefs"]["editorHTMLAttributeFontcolor"] . '">'.
+			'<param name="piColor" value="' . $_SESSION["prefs"]["editorPiTagFontcolor"] . '">'.
+			'<param name="commentColor" value="' . $_SESSION["prefs"]["editorCommentFontcolor"] . '">';
 		}
 
-		$maineditor .= '
-	            	</applet>
-	            	';
+		$maineditor .= '</applet>';
 	} else {
 		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($BROWSER == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
 						. htmlspecialchars($code) . '</textarea>';
@@ -912,15 +906,15 @@ if ($we_editmode) {
 		</tr>
 	</table>';
 
-		array_push($parts, array("headline" => "", "html" => $tagWizardHtml, "space" => 0));
-		$wepos = weGetCookieVariable("but_weTMPLDocEdit");
+		array_push($parts, array('headline' => '', 'html' => $tagWizardHtml, 'space' => 0));
+		$wepos = weGetCookieVariable('but_weTMPLDocEdit');
 		$znr = 1;
 	}
 	print we_multiIconBox::getJS();
 	print '<div id="bodydiv" style="display:none;">' . we_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, $GLOBALS["l_we_class"]["showTagwizard"], $GLOBALS["l_we_class"]["hideTagwizard"], ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
 	?></body>
-
 	<?php
+
 	if (isset($selectedGroup)) {
 		echo "<script type='text/javascript'>
 	selectTagGroup('$selectedGroup');
@@ -928,4 +922,4 @@ if ($we_editmode) {
 	}
 	?>
 	</html>
-<?php } 
+<?php }

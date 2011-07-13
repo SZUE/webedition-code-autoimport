@@ -2801,17 +2801,7 @@ function we_getObjectFileByID($id, $includepath = "") {
  * @desc returns the protocol, the webServer is running, http or https, when slash is true - :// is added to protocol
  */
 function getServerProtocol($slash = false) {
-
-	$_prot = "http";
-
-	if (we_isHttps ()) {
-		$_prot = "https";
-	}
-	if ($slash) {
-		return $_prot . "://";
-	} else {
-		return $_prot;
-	}
+	return (we_isHttps ()?'https':'http').($slash?'://':'');
 }
 
 function we_check_email($email) {	 // Zend validates only the pure address
@@ -3482,7 +3472,7 @@ function we_getIcon($contentType, $extension) {
 }
 
 function we_isHttps() {
-	return isset($_SERVER["HTTPS"]) && (strtoupper($_SERVER["HTTPS"]) == "ON" || $_SERVER["HTTPS"] == 1);
+	return isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS']) == 'ON' || $_SERVER['HTTPS'] == 1);
 }
 
 //check if number is positive
