@@ -273,7 +273,7 @@ function log_error_message($type, $message, $file, $_line) {
 		$_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
 			or die('Cannot log error! Could not connect: ' . mysql_error());
 
-		mysql_select_db(DB_DATABASE) or die('Cannot log error! Could not select database.');
+		mysql_select_db(DB_DATABASE, $_link) or die('Cannot log error! Could not select database.');
 		$tbl=defined('ERROR_LOG_TABLE')?ERROR_LOG_TABLE:TBL_PREFIX . 'tblErrorLog';
 		$_query = 'INSERT INTO ' . $tbl . ' SET Type=\''.mysql_real_escape_string($_type).'\',
 			`Function`=\''.mysql_real_escape_string($_caller).'\',
