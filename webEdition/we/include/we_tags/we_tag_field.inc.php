@@ -498,17 +498,21 @@ function we_tag_field($attribs, $content){
 							$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 							if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 						}
+						$pidstr='';
+						if ($GLOBALS["lv"]->f("WorkspaceID")){$pidstr='?pid='.abs($GLOBALS["lv"]->f("WorkspaceID"));}
+						$pidstr='?pid='.abs($GLOBALS["lv"]->f("WorkspaceID"));
 						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 							} else {
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
 							 }
 						} else {
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl. '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl. $pidstr;
 							} else {
-								$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
 							}
 						}		
 						$_linkAttribs['href'] = $_linkAttribs['href'] . $tail;

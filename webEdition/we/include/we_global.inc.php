@@ -2362,16 +2362,17 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 		} else {$objecturl='';}
+		$pidstr='';
+		if ($pid){$pidstr='?pid='.abs($pid);}
 		if ($objectseourls && $objecturl!=''){
-			$pidstr='';
-			if ($pid){$pidstr='?pid='.abs($pid);}
+			
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
 				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 			} else {
 				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . $pidstr;
 			}
 		} else {
-			return $path . "?we_objectID=" . abs($id) . "&amp;pid=" . abs($pid);
+			return $path . "?we_objectID=" . abs($id) . str_replace('?','&amp;',$pidstr);
 		}
 	} else {
 		if ($foo["Workspaces"]) {
