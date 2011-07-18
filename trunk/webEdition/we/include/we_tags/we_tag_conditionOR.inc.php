@@ -22,9 +22,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_conditionOR($attribs, $content){
-	if (isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
-		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= " OR ";
-	}
-	return "";
-}
+//Fix until 6.3
+include_once('we_tag_conditionOr.php');
