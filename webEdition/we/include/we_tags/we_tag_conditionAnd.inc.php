@@ -22,5 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-//Fix until 6.3
-include_once('we_tag_conditionAnd.php');
+function we_tag_conditionAnd($attribs, $content){
+	if (isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
+		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= " AND ";
+	}
+	return "";
+}
