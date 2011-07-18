@@ -763,7 +763,8 @@ function we_tag_ifvotingexists($attribs, $content) {
 //FIXME: remove in next Versions
 function include_all_we_tags(){
 	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
-		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition','css','date','dateSelect',
+		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition',
+				'conditionAdd','conditionAnd','conditionOr','css','date','dateSelect',
 			'delete','description','docType','field','flashmovie','formfield','hidden','href','icon','ifBack','ifCaptcha','ifCat','ifClient',
 			'ifCurrentDate','ifDoctype','ifEqual','ifField','ifHasChildren','ifHasCurrentEntry','ifHasEntries','ifNotShopField','ifPosition',
 			'ifSearch','ifSelf','ifRegisteredUserCanChange','ifShopField','ifShopFieldEmpty','ifTemplate',
