@@ -1034,55 +1034,54 @@ function formTriggerDocument($isclass=false){
 
 	function i_saveContentDataInDB(){
 		if(!deleteContentFromDB($this->ID,$this->Table)) return false;
-		if(is_array($this->elements)){
+		if(!is_array($this->elements)){
+			return true;
+		}
 
-			foreach($this->elements as $k=>$v){
-				if($this->i_isElement($k)){
+		foreach($this->elements as $k=>$v){
+			if($this->i_isElement($k)){
+				if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
 
-//					if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"])) && (!isset($v["type"]) || $v["type"] != "variants")){
-					if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
-
-						$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
-						$keys = "";
-						$vals = "";
-						for($i=0;$i<sizeof($tableInfo);$i++){
-							$fieldName = $tableInfo[$i]["name"];
-							$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : "";
-							if($k=="data" && $this->IsBinary){
-								break;
-							}
-							if($fieldName == "Dat" && (isset($v["ffname"]) && $v["ffname"])){
-								$v["type"] = "formfield";
-								$val = serialize($v);
-								// Artjom garbage fix
-							}
-
-							if(!isset($v["type"]) || $v["type"] == ""){
-								$v["type"] = "txt";
-							}
-							if($v["type"] == "date"){
-								$val = sprintf("%016d",$val);
-							}
-							if($fieldName != "ID"){
-								$keys .= $fieldName.",";
-								$vals .= "'".addslashes($val)."',";
-							}
+					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
+					$keys = array();
+					$vals = '';
+					for($i=0;$i<sizeof($tableInfo);$i++){
+						$fieldName = $tableInfo[$i]["name"];
+						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+						if($k=="data" && $this->IsBinary){
+							break;
 						}
-						if($keys){
-							$keys = "(".substr($keys,0,strlen($keys)-1).")";
-							$vals = "VALUES(".substr($vals,0,strlen($vals)-1).")";
-							$q = "INSERT INTO " . CONTENT_TABLE . " $keys $vals";
-							if(isset($debug) && $debug) print "$q<br>\n";
-							else $this->DB_WE->query($q);
-							$cid = f("SELECT max(ID) as ID FROM " . CONTENT_TABLE, "ID", $this->DB_WE);
-							$this->elements[$k]["id"]=$cid; // update Object itself
-							$q = "INSERT INTO " . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".abs($cid).",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
-							if(!$this->DB_WE->query($q)) return false;
+						if($fieldName == "Dat" && (isset($v["ffname"]) && $v["ffname"])){
+							$v["type"] = "formfield";
+							$val = serialize($v);
+							// Artjom garbage fix
+						}
+
+						if(!isset($v["type"]) || $v["type"] == ""){
+							$v["type"] = "txt";
+						}
+						if($v["type"] == "date"){
+							$val = sprintf("%016d",$val);
+						}
+						if($fieldName != "ID"){
+							$keys .= $fieldName.",";
+							$vals .= "'".addslashes($val)."',";
+						}
+					}
+					if(count($keys)){
+						$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
+						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).')'.' '.$vals);
+						$cid=$this->DB_WE->getInsertId();
+						$this->elements[$k]['id']=$cid; // update Object itself
+						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
+						if(!$this->DB_WE->query($q)){
+							return false;
 						}
 					}
 				}
 			}
 		}
+		
 		return true;
 	}
 
