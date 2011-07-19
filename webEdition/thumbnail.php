@@ -18,10 +18,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
+//include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
+include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.inc.php");
 
-protect();
+//protect();
 
 if(!isset($_REQUEST['id']) || $_REQUEST['id']=='') {
 	exit();
@@ -38,7 +40,12 @@ if(!isset($_REQUEST['extension']) || $_REQUEST['extension']=='') {
 
 $imageId = $_REQUEST['id'];
 $imagePath = $_REQUEST['path'];
-$imageSize = $_REQUEST['size'];
+$imageSizeW = $_REQUEST['size'];
+if (isset($_REQUEST['size2'])){
+	$imageSizeH =$_REQUEST['size2'];
+} else {
+	$imageSizeH =$imageSizeW ;
+}
 
 $whiteList = array();
 $exts = isset($GLOBALS["WE_CONTENT_TYPES"]["image/*"]["Extension"]) ? $GLOBALS["WE_CONTENT_TYPES"]["image/*"]["Extension"] : "";
@@ -54,9 +61,7 @@ $imageExt = substr($_REQUEST['extension'], 1, strlen($_REQUEST['extension']));
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
-$thumbpath = we_image_edit::createPreviewThumb($imagePath, $imageId, $imageSize, $imageSize, substr($_REQUEST['extension'], 1));
-
+$thumbpath = we_image_edit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($_REQUEST['extension'], 1));
 header("Content-type: image/" . $imageExt . "");
-
 readfile($_SERVER["DOCUMENT_ROOT"] . $thumbpath);
 

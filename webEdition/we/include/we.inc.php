@@ -28,21 +28,9 @@ if (isset($_SERVER["DOCUMENT" . "_ROOT"]) && substr($_SERVER["DOCUMENT" . "_ROOT
 	$_SERVER["DOCUMENT" . "_ROOT"] = substr($_SERVER["DOCUMENT" . "_ROOT"], 0, -1);
 }
 
-// Set PHP flags
-@$_memlimit = abs(ini_get("memory_limit"));
-if ($_memlimit < 32) {
-	@ini_set("memory_limit", "32M");
-}
-@ini_set("allow_url_fopen", "1");
-@ini_set("file_uploads", "1");
-@ini_set("session.use_trans_sid", "0");
-
-// Activate the webEdition error handler
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
-if (!defined("WE_ERROR_HANDLER_SET")){ we_error_handler();}
-
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_global.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_util.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_inc_min.inc.php');//	New absolute minimum include for any we-file, reduces memory consumption for special usages about 20 MB.
+include_once ($_SERVER["DOCUMENT_ROOT"] . '/webEdition/we/include/we_classes/we_util.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
@@ -65,7 +53,7 @@ for ($i = 0; $i < sizeof($_we_active_modules); $i++) {
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db.inc.php");
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db_tools.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_defines.inc.php");
+//include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_defines.inc.php"); moved to we_inc_min
 
 if (!defined("NO_SESS")) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_session.inc.php");
