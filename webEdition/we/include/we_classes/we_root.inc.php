@@ -1064,7 +1064,7 @@ function formTriggerDocument($isclass=false){
 							$val = sprintf("%016d",$val);
 						}
 						if($fieldName != "ID"){
-							$keys .= $fieldName.",";
+							$keys[] = $fieldName;
 							$vals .= "'".addslashes($val)."',";
 						}
 					}
