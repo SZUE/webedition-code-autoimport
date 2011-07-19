@@ -813,7 +813,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					} else {
 						$_imagesize = getimagesize($_SERVER["DOCUMENT_ROOT"].$result['Path']);
 						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-						$_thumbpath = we_image_edit::createPreviewThumb($result['Path'], $this->id, 150, 200, substr($result['Extension'],1));
+						$_thumbpath = '/webEdition/thumbnail.php?id=' . $this->id . '&size=150&path=' .str_replace($_SERVER['DOCUMENT_ROOT'],'',$result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 						$_imagepreview = "<a href='".$result['Path']."' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
 					}
 				}
