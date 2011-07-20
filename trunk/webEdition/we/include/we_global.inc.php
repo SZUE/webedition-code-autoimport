@@ -3068,7 +3068,7 @@ function getHtmlTag($element, $attribs = array(), $content = "", $forceEndTag = 
 
 	//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array(
-							"xml", "xmltype"
+							"xml", "xmltype",'to','nameto'
 					));
 	if ($element =='img' && defined("HIDENAMEATTRIBINWEIMG_DEFAULT") && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array("name"));
