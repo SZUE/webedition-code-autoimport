@@ -32,7 +32,9 @@ function we_tag_position($attribs, $content){
 	$type = we_getTagAttribute("type", $attribs);
 	$_reference = we_getTagAttribute("reference", $attribs);
 	$format = we_getTagAttribute("format", $attribs, 1);
-
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
+	
 	//	this value we will return later
 	$_retPos = "";
 
@@ -77,15 +79,15 @@ function we_tag_position($attribs, $content){
 	switch ($format) {
 
 		case "a" :
-			return number2System($_retPos);
+			return we_redirect_tagoutput(number2System($_retPos), $nameTo, $to);
 			break;
 
 		case "A" :
-			return strtoupper(number2System($_retPos));
+			return we_redirect_tagoutput(strtoupper(number2System($_retPos)), $nameTo, $to); ;
 			break;
 
 		default :
-			return $_retPos;
+			return we_redirect_tagoutput($_retPos, $nameTo, $to);
 			break;
 	}
 }

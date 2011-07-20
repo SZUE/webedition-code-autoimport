@@ -33,6 +33,9 @@ function we_tag_category($attribs, $content){
 	$id = abs(we_getTagAttribute("id", $attribs));
 	$separator = we_getTagAttribute("separator", $attribs, "/");
 	$onlyindir = we_getTagAttribute("onlyindir", $attribs, "");
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
+
 
 	// end initialize possible Attributes
 	if ($id) {
@@ -62,7 +65,7 @@ function we_tag_category($attribs, $content){
 				"\\,",
 				",",
 				we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir)) : "";
-		return str_replace("/", $separator, $category);
+		return we_redirect_tagoutput(str_replace("/", $separator, $category), $nameTo, $to);
 
 	} else {
 		$doc = we_getDocForTag($docAttr, false);
@@ -70,6 +73,6 @@ function we_tag_category($attribs, $content){
 				"\\,",
 				",",
 				we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir));
-		return str_replace("/", $separator, $category);
+		return we_redirect_tagoutput(str_replace("/", $separator, $category), $nameTo, $to);
 	}
 }
