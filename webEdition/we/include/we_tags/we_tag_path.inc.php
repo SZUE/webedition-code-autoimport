@@ -27,6 +27,8 @@ function we_tag_path($attribs, $content){
 	$fieldforfolder =we_getTagAttribute("fieldforfolder", $attribs,'',true);
 	$docAttr = we_getTagAttribute("doc", $attribs);
 	$doc = we_getDocForTag($docAttr, true);
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
 
 	$pID = $doc->ParentID;
 
@@ -121,5 +123,5 @@ function we_tag_path($attribs, $content){
 	} else {
 		$show = $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post;
 	}
-	return $show . $path;
+	return we_redirect_tagoutput($show . $path, $nameTo, $to);
 }

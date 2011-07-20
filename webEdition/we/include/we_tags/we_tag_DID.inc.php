@@ -4,14 +4,16 @@ function we_tag_DID($attribs, $content){
 	if (!$docAttr) {
 		$docAttr = we_getTagAttribute("type", $attribs); // for Compatibility Reasons
 	}
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
 
 	switch ($docAttr) {
 		case "top" :
-			return $GLOBALS["WE_MAIN_DOC"]->ID;
+			return we_redirect_tagoutput($GLOBALS["WE_MAIN_DOC"]->ID, $nameTo, $to);
 		case "listview" :
-			return $GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1];
+			return we_redirect_tagoutput($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1], $nameTo, $to);
 		case "self" :
 		default :
-			return $GLOBALS["we_doc"]->ID;
+			return we_redirect_tagoutput($GLOBALS["we_doc"]->ID, $nameTo, $to);
 	}
 }
