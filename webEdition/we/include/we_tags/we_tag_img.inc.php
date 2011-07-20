@@ -42,7 +42,9 @@ function we_tag_img($attribs, $content){
 			0,
 			true,
 			defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true);
-
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
+	
 	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS["we_doc"]->getElement($name);
 	$id = $id ? $id : we_getTagAttribute("id", $attribs);
@@ -194,5 +196,9 @@ function we_tag_img($attribs, $content){
 				),
 				5) . "</td></tr></table>";
 	}
-	return $out;
+	if ($GLOBALS['we_editmode']){
+		return $out;
+	} else {
+		we_redirect_tagoutput($out, $nameTo, $to);
+	}
 }

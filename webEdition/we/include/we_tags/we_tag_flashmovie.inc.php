@@ -34,9 +34,10 @@ function we_tag_flashmovie($attribs, $content){
 	$parentid = we_getTagAttribute("parentid", $attribs, "0");
 	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "true", true, true);
 	$showflash = we_getTagAttribute("showflash", $attribs, "true", true, true);
-
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
 	$attribs = removeAttribs($attribs, array(
-		'showcontrol', 'showflash'
+		'showcontrol', 'showflash','to','nameto'
 	));
 
 	if ($GLOBALS['we_editmode'] && !$showflash) {
@@ -85,5 +86,9 @@ function we_tag_flashmovie($attribs, $content){
 		), 5) . "</td></tr></table>";
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
-	return $out;
+	if ($GLOBALS['we_editmode']){
+		return $out;
+	} else {
+		we_redirect_tagoutput($out, $nameTo, $to);
+	}
 }
