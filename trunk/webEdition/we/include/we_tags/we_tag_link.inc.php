@@ -25,6 +25,8 @@ function we_tag_link($attribs, $content){
 	$text = we_getTagAttribute("text", $attribs, "");
 	$imageid = we_getTagAttribute("imageid", $attribs, 0);
 	$id = we_getTagAttribute("id", $attribs);
+	$nameTo = we_getTagAttribute('nameto', $attribs);
+	$to = we_getTagAttribute('to', $attribs, 'screen');
 
 	// check if target document exists (Bug #7167)
 	if ($id != 0) {
@@ -43,12 +45,12 @@ function we_tag_link($attribs, $content){
 	}
 
 	$attribs = removeAttribs($attribs, array(
-		'text', 'id', 'imageid'
+		'text', 'id', 'imageid','to','nameto'
 	));
 
 	$link = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();
 	if (!$GLOBALS['we_editmode']) {
-		return $GLOBALS["we_doc"]->getField($attribs, "link");
+		return we_redirect_tagoutput($GLOBALS["we_doc"]->getField($attribs, "link"), $nameTo, $to);
 	} else {
 		if (is_array($link)) {
 			if (!sizeof($link)) {
