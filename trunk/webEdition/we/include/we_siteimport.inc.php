@@ -591,7 +591,7 @@ class weSiteImport
 
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;" src="about:blank" id="iloadframe" name="iloadframe" width="400" height="200"></iframe>
-					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['PHP_SELF'] . '" target="iloadframe">
+					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">
 					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings" />
 					<input type="hidden" name="ok" value="1" />' . we_multiIconBox::getJS();
 

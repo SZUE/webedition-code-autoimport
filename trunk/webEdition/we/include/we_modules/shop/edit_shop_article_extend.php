@@ -61,7 +61,7 @@ function getTitleLinkObj($text, $orderKey) {
 
 	global $typeObj, $actPage, $classid, $orderBy;
 
-	$_href =	$_SERVER['PHP_SELF'] .
+	$_href =	$_SERVER['SCRIPT_NAME'] .
 				'?typ=' . $typeObj .
 				'&orderBy=' . $orderKey .
 				'&ViewClass=' . $classid .
@@ -88,7 +88,7 @@ function getPagerLinkObj() {
 
 	global $typeObj, $actPage, $classid, $orderBy;
 
-	return 	$_SERVER['PHP_SELF'] .
+	return 	$_SERVER['SCRIPT_NAME'] .
 			'?typ=' . $typeObj .
 			'&orderBy=' . $orderBy .
 			'&ViewClass=' . $classid .
@@ -100,7 +100,7 @@ function getTitleLinkDoc($text, $orderKey) {
 
 	global $typeDoc, $actPage, $orderBy;
 
-	$_href =	$_SERVER['PHP_SELF'] .
+	$_href =	$_SERVER['SCRIPT_NAME'] .
 				'?typ=' . $typeDoc .
 				'&orderBy=' . $orderKey .
 				'&actPage=' . $actPage .
@@ -126,7 +126,7 @@ function getPagerLinkDoc() {
 
 	global $typeDoc, $actPage, $orderBy;
 
-	return 	$_SERVER['PHP_SELF'] .
+	return 	$_SERVER['SCRIPT_NAME'] .
 			'?typ=' . $typeDoc .
 			'&orderBy=' . $orderBy .
 			'&actPage=' . $actPage .
@@ -244,7 +244,7 @@ if (isset($daten)){
             $fe = array(0);
         }
         $menu = "<label for=\"".$select_name."\">".$label."</label>\n";
-        $menu .="<select name=\"".$select_name."\" onChange=\"document.location.href='".$_SERVER['PHP_SELF']."?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
+        $menu .="<select name=\"".$select_name."\" onChange=\"document.location.href='".$_SERVER['SCRIPT_NAME']."?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
 
         foreach($fe as $key => $val) {
 			if ($val!="") {

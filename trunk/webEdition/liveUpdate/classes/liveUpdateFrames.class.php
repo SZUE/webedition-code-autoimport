@@ -375,8 +375,8 @@ class liveUpdateFrames {
 	<title>webEdition Update</title>
 </head>
 <frameset rows="30, *, 0" border="0" framespacing="0" frameborder="no">
-	<frame name="updatetabs" src="' . $_SERVER['PHP_SELF'] . '?section=tabs' . $active . '"  noresize scrolling="no" />
-	<frame name="updatecontent" src="' . $_SERVER['PHP_SELF'] . $show . '"  noresize scrolling="no" />
+	<frame name="updatetabs" src="' . $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active . '"  noresize scrolling="no" />
+	<frame name="updatecontent" src="' . $_SERVER['SCRIPT_NAME'] . $show . '"  noresize scrolling="no" />
 	<frame name="updateload" src="about:blank" />
 </frameset>
 </html>';

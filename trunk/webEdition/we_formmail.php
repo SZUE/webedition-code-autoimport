@@ -75,7 +75,7 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 }
 
 if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC){
-	if($_SERVER['PHP_SELF'] == '/webEdition/we_formmail.php') $_blocked = true;
+	if($_SERVER['SCRIPT_NAME'] == '/webEdition/we_formmail.php') $_blocked = true;
 }
 
 if ($_blocked) {

@@ -256,7 +256,7 @@ class weImageDialog extends weDialog{
 		if(!$this->JsOnly) {
 			$target = ' target="we_'.$this->ClassName.'_cmd_frame"';
 		}
-		return '<form name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post"' . $target . ' onsubmit="return fsubmit(this)" >'.$hiddens;
+		return '<form name="we_form" action="'.$_SERVER["SCRIPT_NAME"].'" method="post"' . $target . ' onsubmit="return fsubmit(this)" >'.$hiddens;
 	}
 
 	function getDialogContentHTML(){

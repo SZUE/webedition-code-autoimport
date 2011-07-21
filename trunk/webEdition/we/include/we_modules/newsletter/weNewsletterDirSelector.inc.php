@@ -287,7 +287,7 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 	if(top.we_editDirID){
 		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
 		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');

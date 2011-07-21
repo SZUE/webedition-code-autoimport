@@ -6615,7 +6615,7 @@ if ($doSave && !$acError) {
 	print we_htmlElement::htmlBody(array("class" => "weDialogBody","onload"=>"doClose()"), build_dialog("saved")) . "</html>";
 
 } else {
-	$_form = we_htmlElement::htmlForm(array("onSubmit"=>"return false;", "name" => "we_form", "method" => "post", "action" => $_SERVER["PHP_SELF"]), we_htmlElement::htmlHidden(array("name" => "save_settings", "value" => "false")) . render_dialog());
+	$_form = we_htmlElement::htmlForm(array("onSubmit"=>"return false;", "name" => "we_form", "method" => "post", "action" => $_SERVER["SCRIPT_NAME"]), we_htmlElement::htmlHidden(array("name" => "save_settings", "value" => "false")) . render_dialog());
 
 	$_we_cmd_js = we_htmlElement::jsElement('function we_cmd(){
 

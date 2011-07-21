@@ -76,7 +76,7 @@
 
 				$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 				if($start> 0){
-					$nextprev .= $we_button->create_button("back", $_SERVER['PHP_SELF'] . "?start=".($start-$count)); //bt_back
+					$nextprev .= $we_button->create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=".($start-$count)); //bt_back
 				}else{
 					$nextprev .= $we_button->create_button("back", "", false, 100, 22, "", "", true);
 				}
@@ -90,7 +90,7 @@
 				$next = $start + $count;
 
 				if($next < $num_all){
-					$nextprev .= $we_button->create_button("next", $_SERVER['PHP_SELF'] . "?start=".$next); //bt_next
+					$nextprev .= $we_button->create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=".$next); //bt_next
 				}else{
 					$nextprev .= $we_button->create_button("next", "", "", 100, 22, "", "", true);
 				}
@@ -129,7 +129,7 @@
 
 function clearLog() {
 	if (confirm("'.addslashes($l_prefs['clear_log_question']).'")) {
-		document.location="'.$_SERVER['PHP_SELF'].'?clearlog=1";
+		document.location="'.$_SERVER['SCRIPT_NAME'].'?clearlog=1";
 	}
 }
 function clearEntry(id,ip) {
@@ -137,7 +137,7 @@ function clearEntry(id,ip) {
 
 
 	if (confirm(txt.replace(/%s/,ip))) {
-		document.location="'.$_SERVER['PHP_SELF'].'?clearEntry="+id;
+		document.location="'.$_SERVER['SCRIPT_NAME'].'?clearEntry="+id;
 	}
 }
 

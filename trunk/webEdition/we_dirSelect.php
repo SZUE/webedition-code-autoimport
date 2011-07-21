@@ -22,7 +22,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
 protect();
 
-$_SERVER["PHP_SELF"] = "/webEdition/we_dirSelect.php";
+$_SERVER['SCRIPT_NAME'] = "/webEdition/we_dirSelect.php";
 
 $fs = new we_dirSelector(
 		isset( $id ) ? $id : ( isset( $_REQUEST["id"] ) ? $_REQUEST["id"] : '' ),

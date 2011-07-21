@@ -22,7 +22,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_delSelector.inc.php");
 protect();
 
-$_SERVER["PHP_SELF"] = "/webEdition/we_delSelect.php";
+$_SERVER['SCRIPT_NAME'] = "/webEdition/we_delSelect.php";
 
 
 $fs = new we_delSelector(
