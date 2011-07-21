@@ -1,19 +1,36 @@
 <?php
+/**
+ * webEdition CMS
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
 function we_tag_DID($attribs, $content){
 	$docAttr = we_getTagAttribute("doc", $attribs);
 	if (!$docAttr) {
 		$docAttr = we_getTagAttribute("type", $attribs); // for Compatibility Reasons
 	}
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
 
 	switch ($docAttr) {
 		case "top" :
-			return we_redirect_tagoutput($GLOBALS["WE_MAIN_DOC"]->ID, $nameTo, $to);
+			return $GLOBALS["WE_MAIN_DOC"]->ID;
 		case "listview" :
-			return we_redirect_tagoutput($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1], $nameTo, $to);
+			return $GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1];
 		case "self" :
 		default :
-			return we_redirect_tagoutput($GLOBALS["we_doc"]->ID, $nameTo, $to);
+			return $GLOBALS["we_doc"]->ID;
 	}
 }
