@@ -26,31 +26,29 @@ function we_tag_var($attribs, $content){
 	$name = we_getTagAttribute("name", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
     $htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true); // #3771
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch ($type) {
 		case "session" :
 		    $return = (isset($_SESSION[$name])) ? $_SESSION[$name] : "";
 		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
-			return we_redirect_tagoutput($return, $nameTo, $to);
+			return $return;
 		case "request" :
 			$return = removePHP(isset($_REQUEST[$name]) ? $_REQUEST[$name] : "");
 		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
-			return we_redirect_tagoutput($return, $nameTo, $to);
+			return $return;
 		case "post" :
 			$return = removePHP(isset($_POST[$name]) ? $_POST[$name] : "");
 		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
-			return we_redirect_tagoutput($return, $nameTo, $to);
+			return $return;
 		case "get" :
 			$return = removePHP(isset($_GET[$name]) ? $_GET[$name] : "");
 		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
-			return we_redirect_tagoutput($return, $nameTo, $to);
+			return $return;
 		case "global" :
 		    $return = (isset($GLOBALS[$name])) ? $GLOBALS[$name] : "";
 		    if ($htmlspecialchars) $return = htmlspecialchars($return); // #3771
-			return we_redirect_tagoutput($return, $nameTo, $to);
+			return $return;
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
 			if (isset($data['objects']) && sizeof($data['objects']) > 0) {
@@ -58,7 +56,7 @@ function we_tag_var($attribs, $content){
 			} else {
 				$out = "";
 			}
-			return we_redirect_tagoutput($out, $nameTo, $to);
+			return $out;
 
 		case "property" :
 			if (isset($GLOBALS["we_obj"])) {
@@ -66,15 +64,15 @@ function we_tag_var($attribs, $content){
 			} else {
 				eval('$var = $doc->' . $name . ';');
 			}
-			return we_redirect_tagoutput($var, $nameTo, $to);
+			return $var;
 		case 'shopVat' :
 			if (defined('SHOP_TABLE')) {
 
 				require_once (WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 				$vatId = $GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME);
-				return we_redirect_tagoutput(weShopVats::getVatRateForSite($vatId), $nameTo, $to);
+				return weShopVats::getVatRateForSite($vatId);
 			}
-		case 'link' : return we_redirect_tagoutput($doc->getField($attribs, $type, false), $nameTo, $to);break; // bugfix #3634
+		case 'link' : return $doc->getField($attribs, $type, false);break; // bugfix #3634
 		default :
 			$normVal = $doc->getField($attribs, $type, true);
 			// bugfix 7557
@@ -125,9 +123,9 @@ function we_tag_var($attribs, $content){
 			// EOF bugfix 7557
 
 
-			return we_redirect_tagoutput($normVal, $nameTo, $to);
+			return $normVal;
 			break;
 	}
-	return we_redirect_tagoutput($var, $nameTo, $to);
+	return $var;
 
 }

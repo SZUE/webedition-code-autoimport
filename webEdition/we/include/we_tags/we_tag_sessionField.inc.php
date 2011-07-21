@@ -213,13 +213,11 @@ function we_tag_sessionField($attribs, $content) {
 		case 'print':
 			$ascountry = we_getTagAttribute('ascountry', $attribs, 'false', true);
 			$aslanguage = we_getTagAttribute('aslanguage', $attribs, 'false', true);
-			$nameTo = we_getTagAttribute('nameto', $attribs);
-			$to = we_getTagAttribute('to', $attribs, 'screen');
 			if (!$ascountry && !$aslanguage) {
 				if (is_numeric($orgVal) && !empty($dateformat)) {
-					return we_redirect_tagoutput(date($dateformat, $orgVal), $nameTo, $to);
+					return date($dateformat, $orgVal);
 				} elseif (!empty($dateformat) && $weTimestemp = new DateTime($orgVal)) {
-					return we_redirect_tagoutput($weTimestemp->format($dateformat), $nameTo, $to);
+					return $weTimestemp->format($dateformat);
 				}
 			} else {
 				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
@@ -234,13 +232,13 @@ function we_tag_sessionField($attribs, $content) {
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
 				if ($ascountry) {
-					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode)), $nameTo, $to);
+					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode));
 				}
 				if ($aslanguage) {
-					return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'language', $langcode)), $nameTo, $to);
+					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'language', $langcode));
 				}
 			}
-			return we_redirect_tagoutput($orgVal, $nameTo, $to);
+			return $orgVal;
 		case 'hidden':
 			$usevalue = we_getTagAttribute('usevalue',$attribs,'false',true);
 			$languageautofill = we_getTagAttribute('languageautofill', $attribs, 'false', true);

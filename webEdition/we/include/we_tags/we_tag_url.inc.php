@@ -26,8 +26,6 @@ function we_tag_url($attribs, $content){
 	static $objurls = array();
 	$type=we_getTagAttribute("type", $attribs,'document');
 	$id = we_getTagAttribute("id", $attribs);
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
 	$triggerid = we_getTagAttribute("triggerid", $attribs,'0');
 	if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
 		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true,true);
@@ -41,11 +39,11 @@ function we_tag_url($attribs, $content){
 	}
 	if ($type=='document'){
 		if (isset($urls[$id])) { // do only work you have never done before
-			return we_redirect_tagoutput($urls[$id], $nameTo, $to);
+			return $urls[$id];
 		}
 	} else {
 		if (isset($objurls[$id])) { // do only work you have never done before
-			return we_redirect_tagoutput($objurls[$id], $nameTo, $to);
+			return $objurls[$id];
 		}
 	}
 	if ($id == '0') {
@@ -120,6 +118,6 @@ function we_tag_url($attribs, $content){
 	} else {
 		$objurls[$id] = $url;
 	}
-	return we_redirect_tagoutput($url, $nameTo, $to);
+	return $url;
 
 }

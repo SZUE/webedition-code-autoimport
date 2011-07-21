@@ -47,8 +47,6 @@ function we_tag_field($attribs, $content){
 	$only = we_getTagAttribute("only", $attribs);
 	$usekey = we_getTagAttribute("usekey", $attribs, false, true);
 	$triggerid = we_getTagAttribute("triggerid", $attribs);
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
 
 	$out = "";
 
@@ -86,7 +84,7 @@ function we_tag_field($attribs, $content){
 	}
 
 	if (!$GLOBALS["lv"]->f("WE_ID") && $GLOBALS["lv"]->calendar_struct["calendar"] == "") {
-		return we_redirect_tagoutput("",$nameTo,$to);
+		return "";
 	}
 
 	switch ($type) {
@@ -595,5 +593,5 @@ function we_tag_field($attribs, $content){
 		' . $out;
 
 	}
-	return we_redirect_tagoutput($out,$nameTo,$to);
+	return $out;
 }

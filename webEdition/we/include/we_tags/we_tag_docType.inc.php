@@ -20,8 +20,6 @@
 
 function we_tag_docType($attribs, $content){
 	$docAttr = we_getTagAttribute("doc", $attribs);
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
 	$doctype = "";
 	switch ($docAttr) {
 		case "self" :
@@ -49,5 +47,5 @@ function we_tag_docType($attribs, $content){
 			}
 			break;
 	}
-	return we_redirect_tagoutput($doctype, $nameTo, $to);;
+	return $doctype;
 }

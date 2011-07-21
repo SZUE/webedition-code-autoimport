@@ -53,10 +53,8 @@ function we_tag_href($attribs, $content){
 
 	$file = we_getTagAttribute("file", $attribs, '', true, true);
 	$directory = we_getTagAttribute("directory", $attribs, '', true);
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
 	$attribs = removeAttribs($attribs, array(
-		"rootdir",'to','nameto'
+		"rootdir"
 	));
 
 	if ($GLOBALS["we_doc"]->ClassName == "we_objectFile") {
@@ -65,7 +63,7 @@ function we_tag_href($attribs, $content){
 			$hrefArr = array();
 		}
 		$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
-		return we_redirect_tagoutput($out, $nameTo, $to);
+		return $out;
 	}
 
 	$nint = $name . "_we_jkhdsf_int";
@@ -193,7 +191,7 @@ function we_tag_href($attribs, $content){
 			if ($include) {
 				return $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
 			} else {
-				return we_redirect_tagoutput($href, $nameTo, $to);
+				return $href;
 			}
 		}
 	} else
@@ -249,7 +247,7 @@ function we_tag_href($attribs, $content){
 				if ($include) {
 					return $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
 				} else {
-					return we_redirect_tagoutput($href, $nameTo, $to);
+					return $href;
 				}
 			}
 		} else {
@@ -303,7 +301,7 @@ function we_tag_href($attribs, $content){
 				if ($include) {
 					return $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
 				} else {
-					return we_redirect_tagoutput($href, $nameTo, $to);
+					return $href;
 				}
 			}
 		}

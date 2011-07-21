@@ -39,8 +39,18 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_tag($name, $attribs=array(), $content = ''){
+	$nameTo = we_getTagAttribute("nameto", $attribs);
+	$to = we_getTagAttribute("to", $attribs,'screen');
 	//make sure comment attribute is never shown
-	$attribs = removeAttribs($attribs, array('comment'));
+	if ($name=='setVar'){//special handling inside this tag
+		$attribs = removeAttribs($attribs, array('comment'));
+		$nameTo = '';
+		$to = 'screen';
+	} else {
+		$nameTo = we_getTagAttribute("nameto", $attribs);
+		$to = we_getTagAttribute("to", $attribs,'screen');
+		$attribs = removeAttribs($attribs, array('comment','to','nameto'));
+	}
 
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
@@ -244,8 +254,11 @@ function we_tag($name, $attribs=array(), $content = ''){
 
 		}
 	$GLOBALS['we_editmode'] = $edMerk;
-
-	return $foo;
+	if ($edMerk){
+		return $foo;
+	} else {
+		return we_redirect_tagoutput($foo,$nameTo,$to);
+	}
 
 }
 

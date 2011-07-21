@@ -24,10 +24,6 @@ function we_tag_shipping($attribs, $content) {
 	$sumName = we_getTagAttribute('sum', $attribs);
 	$num_format = we_getTagAttribute('num_format', $attribs);
 	$type = we_getTagAttribute('type', $attribs, '');
-
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
-
 	$shippingCost = 0;
 
 	// shipping depends on total value of basket
@@ -111,7 +107,7 @@ function we_tag_shipping($attribs, $content) {
 		default:
 			$shippingCost=number_format($shippingCost,2,",",".");
 		}
-		return we_redirect_tagoutput($shippingCost,$nameTo,$to);
+		return $shippingCost;
 	}
 	return 0;
 }

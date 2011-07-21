@@ -28,8 +28,6 @@ function we_tag_votingField($attribs, $content) {
 		$type = we_getTagAttributeTagParser("type",$attribs);
 		$precision = we_getTagAttributeTagParser("precision",$attribs,0);
 		$num_format = we_getTagAttributeTagParser("num_format",$attribs,'');
-		$nameTo = we_getTagAttribute("nameto", $attribs);
-		$to = we_getTagAttribute("to", $attribs,'screen');
 
 		switch ($name){
 			case 'id':
@@ -254,35 +252,5 @@ function we_tag_votingField($attribs, $content) {
 		}
 
 	}
-	switch ($to) {
-		case "request" :
-			$_REQUEST[$nameTo] = $returnvalue;
-			break;
-		case "post" :
-			$_POST[$nameTo] = $returnvalue;
-			break;
-		case "get" :
-			$_GET[$nameTo] = $returnvalue;
-			break;
-		case "global" :
-			$GLOBALS[$nameTo] = $returnvalue;
-			break;
-		case "session" :
-			$_SESSION[$nameTo] = $returnvalue;
-			break;
-		case "top" :
-			$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $returnvalue);
-			break;
-		case "block" :
-		case "self" :
-			$GLOBALS["we_doc"]->setElement($nameTo, $returnvalue);
-			break;
-		case "sessionfield" :
-			if (isset($_SESSION["webuser"][$nameTo])){
-				$_SESSION["webuser"][$nameTo] = $returnvalue;
-			}
-			break;
-		case "screen": return $returnvalue;
-	}
-	return null;
+	return $returnvalue;
 }

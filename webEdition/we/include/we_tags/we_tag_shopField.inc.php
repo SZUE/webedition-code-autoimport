@@ -38,9 +38,6 @@ function we_tag_shopField($attribs,$content) {
 
 	$xml = we_getTagAttribute("xml",$attribs,"");
 
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
-
 	if ( $reference == 'article' ) { // name depends on value
 
 		$fieldname = WE_SHOP_ARTICLE_CUSTOM_FIELD . "[$name]";
@@ -108,7 +105,7 @@ function we_tag_shopField($attribs,$content) {
 		break;
 
 		case 'print':
-			return we_redirect_tagoutput($savedVal,$nameTo,$to);
+			return $savedVal;
 		break;
 
 		case 'select':

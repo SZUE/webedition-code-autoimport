@@ -35,11 +35,9 @@ function we_tag_quicktime($attribs, $content){
 
 	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "true", true, true);
 	$showquicktime = we_getTagAttribute("showquicktime", $attribs, "true", true, true);
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
-	
+
 	$attribs = removeAttribs($attribs, array(
-		'showcontrol', 'showquicktime', 'startid', 'parentid','to','nameto'
+		'showcontrol', 'showquicktime', 'startid', 'parentid'
 	));
 
 	if ($GLOBALS['we_editmode'] && !$showquicktime) {
@@ -79,9 +77,5 @@ function we_tag_quicktime($attribs, $content){
 		), 5) . "</td></tr></table>";
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
-	if ($GLOBALS['we_editmode']){
-		return $out;
-	} else {
-		we_redirect_tagoutput($out, $nameTo, $to);
-	}
+	return $out;
 }
