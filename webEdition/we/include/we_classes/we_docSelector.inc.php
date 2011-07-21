@@ -189,7 +189,7 @@ class we_docSelector extends we_dirSelector {
 	}
 
 	function getFsQueryString($what) {
-		return $_SERVER["PHP_SELF"]."?what=$what&rootDirID=".$this->rootDirID."&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter.(isset($this->open_doc) ? ("&open_doc=".$this->open_doc) : "");
+		return $_SERVER["SCRIPT_NAME"]."?what=$what&rootDirID=".$this->rootDirID."&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter.(isset($this->open_doc) ? ("&open_doc=".$this->open_doc) : "");
 	}
 
 	function printFramesetJSFunctions() {
@@ -306,7 +306,7 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? ' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 
 	if(we_editDirID){
 	//if(top.we_editDirID){
@@ -368,7 +368,7 @@ function queryString(what,id,o,we_editDirID,filter){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
 	if(!filter) filter="<?php print $this->filter; ?>";
-	return '<?php print $_SERVER["PHP_SELF"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
+	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
 }
 
 <?php

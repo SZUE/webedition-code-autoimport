@@ -488,7 +488,7 @@ function we_tag_field($attribs, $content){
 						} else {
 							$tail = "";
 						}
-						$path_parts = pathinfo($_SERVER["PHP_SELF"]);
+						$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
 						if ($GLOBALS["lv"]->objectseourls){
 							$db = new DB_WE();
 							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($GLOBALS["lv"]->f("OID")) . "' LIMIT 1", "Url", $db);
@@ -510,7 +510,7 @@ function we_tag_field($attribs, $content){
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
 								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl. $pidstr;
 							} else {
-								$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
+								$_linkAttribs['href'] = $_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
 							}
 						}		
 						$_linkAttribs['href'] = $_linkAttribs['href'] . $tail;
@@ -525,7 +525,7 @@ function we_tag_field($attribs, $content){
 								array(),
 								"")) {
 							$parentidname = we_getTagAttribute('parentidname', $attribs, 'we_parentid');
-							$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?' . $parentidname . '=' . $GLOBALS["lv"]->f(
+							$_linkAttribs['href'] = $_SERVER["SCRIPT_NAME"] . '?' . $parentidname . '=' . $GLOBALS["lv"]->f(
 									"ID");
 
 							if ($name == 'we_href') {

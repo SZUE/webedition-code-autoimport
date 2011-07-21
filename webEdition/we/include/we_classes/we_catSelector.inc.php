@@ -115,7 +115,7 @@ class we_catSelector extends we_multiSelector{
 	}
 
 	function getFsQueryString($what){
-		return $_SERVER["PHP_SELF"]."?what=$what&table=".$this->table."&id=".$this->id."&order=".$this->order."&noChoose=".$this->noChoose;
+		return $_SERVER["SCRIPT_NAME"]."?what=$what&table=".$this->table."&id=".$this->id."&order=".$this->order."&noChoose=".$this->noChoose;
 	}
 
 	function printHeaderTable(){
@@ -300,10 +300,10 @@ function writeBody(d){
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || makeNewCat || we_editCatID) ? ' onload="document.we_form.we_EntryText_tmp.focus();document.we_form.we_EntryText_tmp.select();"' : '')+'>');
 <?php if ($GLOBALS['BROWSER'] == "IE" && substr($GLOBALS["WE_LANGUAGE"],-5) !== "UTF-8") { ?>
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
 
 <?php } else { ?>
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
 
 <?php } ?>
 	if(top.we_editCatID){
@@ -370,7 +370,7 @@ function writeBody(d){
 function queryString(what,id,o,we_editCatID){
 	if(!o) o=top.order;
 	if(!we_editCatID) we_editCatID="";
-	return '<?php print $_SERVER["PHP_SELF"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editCatID ? ("&we_editCatID="+we_editCatID) : "");
+	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editCatID ? ("&we_editCatID="+we_editCatID) : "");
 }
 
 <?php
@@ -1183,7 +1183,7 @@ function we_checkName() {
 ';
 		print STYLESHEET.'</head><body class="defaultfont" style="margin:0;padding: 15px 0 0 10px;background-image:url(/webEdition/images/backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
-	<form onsubmit="weWysiwygSetHiddenText();"; action="'.$_SERVER["PHP_SELF"].'" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.FS_CHANGE_CAT.'" /><input type="hidden" name="catid" value="'.$_REQUEST["catid"].'" />
+	<form onsubmit="weWysiwygSetHiddenText();"; action="'.$_SERVER["SCRIPT_NAME"].'" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.FS_CHANGE_CAT.'" /><input type="hidden" name="catid" value="'.$_REQUEST["catid"].'" />
 		'.$table->getHtmlCode()."<br />".$ta."<br />".$saveBut.'
 	</div>		' : '' ) .'
 </body></html>';

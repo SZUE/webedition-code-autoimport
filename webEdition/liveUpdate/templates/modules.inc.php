@@ -25,7 +25,7 @@
  */
 
 $we_button = new we_button();
-$nextButton = $we_button->create_button('next', $_SERVER['PHP_SELF'] . '?section=modules&update_cmd=modules&detail=selectModules');
+$nextButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=modules&update_cmd=modules&detail=selectModules');
 
 require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . LIVEUPDATE_LANGUAGE . '/javaMenu/module_information.inc.php');
 

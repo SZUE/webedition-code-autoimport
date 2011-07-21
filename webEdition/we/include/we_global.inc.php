@@ -2313,7 +2313,7 @@ function t_e($type='warning'){
 function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false,$objectseourls=false) {
 
 	if (!$path)
-		$path = $_SERVER["PHP_SELF"];
+		$path = $_SERVER["SCRIPT_NAME"];
 	if (!$DB_WE)
 		$DB_WE = new DB_WE();
 

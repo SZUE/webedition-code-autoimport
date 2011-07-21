@@ -70,7 +70,7 @@ class le_OnlineInstaller_Make {
 {$files}
 
 // check which file extension is requested
-\$pathinfo = pathinfo(\$_SERVER['PHP_SELF']);
+\$pathinfo = pathinfo(\$_SERVER['SCRIPT_NAME']);
 
 // file for cleaning up the installer file
 \$cleanUp = array(
@@ -209,7 +209,7 @@ EOIF;
 }
 \$http = "http" . (isset(\$_SERVER['HTTPS']) && \$_SERVER['HTTPS'] =='on' ? "s" : "") . "://";
 \$host = \$_SERVER['HTTP_HOST'];
-\$cleanUp = (dirname(\$_SERVER['PHP_SELF'])!=DIRECTORY_SEPARATOR?dirname(\$_SERVER['PHP_SELF']):"") . "/OnlineInstaller/DeleteMe." . \$pathinfo['extension'];
+\$cleanUp = (dirname(\$_SERVER['SCRIPT_NAME'])!=DIRECTORY_SEPARATOR?dirname(\$_SERVER['SCRIPT_NAME']):"") . "/OnlineInstaller/DeleteMe." . \$pathinfo['extension'];
 \$parameters = "";
 
 // Debug mode
@@ -364,7 +364,7 @@ session_start();
 
 \$http = "http" . (isset(\$_SERVER['HTTPS']) && \$_SERVER['HTTPS'] =='on' ? "s" : "") . "://";
 \$host = \$_SERVER['HTTP_HOST'];
-\$setup = (dirname(\$_SERVER['PHP_SELF'])!=DIRECTORY_SEPARATOR?dirname(\$_SERVER['PHP_SELF']):"") . "/setup.php";
+\$setup = (dirname(\$_SERVER['SCRIPT_NAME'])!=DIRECTORY_SEPARATOR?dirname(\$_SERVER['SCRIPT_NAME']):"") . "/setup.php";
 \$parameters = "";
 if(isset(\$_REQUEST['debug'])) {
 	\$parameters .= "debug=".\$_REQUEST['debug']."&";

@@ -230,7 +230,7 @@ function we_tag_a($attribs, $content){
 
 	if ($return) {
 		$urladd = ($urladd ? $urladd . "&" : '?') . "we_returnpage=" . rawurlencode(
-				$_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"]);
+				$_SERVER["SCRIPT_NAME"] . "?" . $_SERVER["QUERY_STRING"]);
 	}
 
 	if ($hrefonly) {

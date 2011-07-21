@@ -64,7 +64,7 @@ $jsFunction = '
 			break;
 
 			case "save":
-				we_submitForm("' . $_SERVER['PHP_SELF'] . '");
+				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 		}
 	}

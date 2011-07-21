@@ -21,7 +21,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/we_navigationDirSelector.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/navigation.inc.php');
 
-$_SERVER['PHP_SELF'] = '/webEdition/we/include/we_tools/navigation/we_navigationDirSelect.php';
+$_SERVER['SCRIPT_NAME'] = '/webEdition/we/include/we_tools/navigation/we_navigationDirSelect.php';
 $fs = new we_navigationDirSelector(
 		isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '')), 
 		isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : (isset(

@@ -233,7 +233,7 @@ class we_search_listview extends listviewBase {
 		if($ret){
 			if ($this->DB_WE->Record["OID"] && $this->objectseourls && show_SeoLinks()){
 				$db = new DB_WE();
-				$path_parts = pathinfo($_SERVER["PHP_SELF"]);
+				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
 				$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->DB_WE->Record["OID"]) . "' LIMIT 1", $db);
 				$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 				if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
@@ -249,7 +249,7 @@ class we_search_listview extends listviewBase {
 					if($objecturl!=''){
 						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl. $pidstr;
 					} else {
-						$this->DB_WE->Record["WE_PATH"] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?','&amp;',$pidstr);
+						$this->DB_WE->Record["WE_PATH"] = $_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?','&amp;',$pidstr);
 					}
 				}
 				$this->DB_WE->Record["wedoc_Path"] =$this->DB_WE->Record["WE_PATH"];		
