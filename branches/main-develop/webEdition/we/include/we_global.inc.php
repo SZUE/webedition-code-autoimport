@@ -142,13 +142,7 @@ function we_getIndexObjectIDs($db) {
 }
 
 function correctUml($in) {
-	$in = str_replace('ä', 'ae', $in);
-	$in = str_replace('ö', 'oe', $in);
-	$in = str_replace('ü', 'ue', $in);
-	$in = str_replace('Ä', 'Ae', $in);
-	$in = str_replace('Ö', 'Oe', $in);
-	$in = str_replace('Ü', 'Ue', $in);
-	return str_replace('ß', 'ss', $in);
+	return str_replace(array('ä','ö','ü','Ä','Ö','Ü','ss'), array('ae','oe','ue','Ae','Oe','Ue','ss'), $in);
 }
 
 function we_html2uml($text) {
@@ -999,312 +993,6 @@ function checkAndPrepareQuicktime($formname, $key = "we_document") {
 	}
 }
 
-function checkAndCreateImage($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_imgDataId) {
-		if (preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)) {
-			$_imgName = $regs[1];
-			$imgId = isset($_SESSION[$_imgDataId]["id"]) ? $_SESSION[$_imgDataId]["id"] : 0;
-			if (isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete'] == 1) {
-
-				if ($imgId) {
-					$imgDocument = new we_imageDocument();
-					$imgDocument->initByID($imgId);
-					if ($imgDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($imgId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_imgDataId]['serverPath'])) {
-				if (substr($_SESSION[$_imgDataId]['type'], 0, 6) == "image/") {
-					$imgDocument = new we_imageDocument();
-
-					if ($imgId) {
-						// document has already an image
-						// so change binary data
-						$imgDocument->initByID(
-										$imgId);
-					}
-
-					$imgDocument->Filename = $_SESSION[$_imgDataId]['fileName'];
-					$imgDocument->Extension = $_SESSION[$_imgDataId]['extension'];
-					$imgDocument->Text = $_SESSION[$_imgDataId]['text'];
-
-					if (!$imgId) {
-						$imgDocument->setParentID($_SESSION[$_imgDataId]['parentid']);
-					}
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Text;
-
-					$imgDocument->setElement("width", $_SESSION[$_imgDataId]["imgwidth"], "attrib");
-					$imgDocument->setElement("height", $_SESSION[$_imgDataId]["imgheight"], "attrib");
-					$imgDocument->setElement("origwidth", $_SESSION[$_imgDataId]["imgwidth"]);
-					$imgDocument->setElement("origheight", $_SESSION[$_imgDataId]["imgheight"]);
-
-					$imgDocument->setElement("type", 'image/*', "attrib");
-
-					$imgDocument->setElement("data", $_SESSION[$_imgDataId]["serverPath"], "image");
-
-					$imgDocument->setElement("filesize", $_SESSION[$_imgDataId]["size"], "attrib");
-
-					$imgDocument->Table = FILE_TABLE;
-					$imgDocument->Published = time();
-					$imgDocument->WebUserID = $webuserId;
-					$imgDocument->we_save();
-					$newId = $imgDocument->ID;
-
-					$t = explode('_', $imgDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$imgDocument->Filename = $fn;
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Filename . $imgDocument->Extension;
-					$imgDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_imgName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_imgDataId])) {
-				unset($_SESSION[$_imgDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateBinary($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_otherDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_binaryDataId) {
-		if (preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)) {
-			$_binaryName = $regs[1];
-			$binaryId = isset($_SESSION[$_binaryDataId]["id"]) ? $_SESSION[$_binaryDataId]["id"] : 0;
-			if (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] == 1) {
-
-				if ($binaryId) {
-					$binaryDocument = new we_otherDocument();
-					$binaryDocument->initByID($binaryId);
-					if ($binaryDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($binaryId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_binaryDataId]['serverPath'])) {
-				if (substr($_SESSION[$_binaryDataId]['type'], 0, 12) == "application/") {
-					$binaryDocument = new we_otherDocument();
-
-					if ($binaryId) {
-						// document has already an image
-						// so change binary data
-						$binaryDocument->initByID(
-										$binaryId);
-					}
-
-					$binaryDocument->Filename = $_SESSION[$_binaryDataId]['fileName'];
-					$binaryDocument->Extension = $_SESSION[$_binaryDataId]['extension'];
-					$binaryDocument->Text = $_SESSION[$_binaryDataId]['text'];
-
-					if (!$binaryId) {
-						$binaryDocument->setParentID($_SESSION[$_binaryDataId]['parentid']);
-					}
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Text;
-
-
-					$binaryDocument->setElement("type", 'application/*', "attrib");
-
-					$binaryDocument->setElement("data", $_SESSION[$_binaryDataId]["serverPath"], "application");
-
-					$binaryDocument->setElement("filesize", $_SESSION[$_binaryDataId]["size"], "attrib");
-
-					$binaryDocument->Table = FILE_TABLE;
-					$binaryDocument->Published = time();
-					$binaryDocument->WebUserID = $webuserId;
-					$binaryDocument->we_save();
-
-					$newId = $binaryDocument->ID;
-
-					$t = explode('_', $binaryDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$binaryDocument->Filename = $fn;
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Filename . $binaryDocument->Extension;
-					$binaryDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_binaryName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_binaryDataId])) {
-				unset($_SESSION[$_binaryDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateFlashmovie($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_flashDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_flashmovieDataId) {
-		if (preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)) {
-
-			$_flashName = $regs[1];
-			$flashId = isset($_SESSION[$_flashmovieDataId]["id"]) ? $_SESSION[$_flashmovieDataId]["id"] : 0;
-			if (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] == 1) {
-
-				if ($flashId) {
-					$flashDocument = new we_flashDocument();
-					$flashDocument->initByID($flashId);
-					if ($flashDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($flashId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_flashmovieDataId]['serverPath'])) {
-				if (substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == "application/x-shockwave-flash") {
-					$flashDocument = new we_flashDocument();
-
-					if ($flashId) {
-						// document has already an image
-						// so change binary data
-						$flashDocument->initByID(
-										$flashId);
-					}
-
-					$flashDocument->Filename = $_SESSION[$_flashmovieDataId]['fileName'];
-					$flashDocument->Extension = $_SESSION[$_flashmovieDataId]['extension'];
-					$flashDocument->Text = $_SESSION[$_flashmovieDataId]['text'];
-
-					if (!$flashId) {
-						$flashDocument->setParentID($_SESSION[$_flashmovieDataId]['parentid']);
-					}
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Text;
-
-					$flashDocument->setElement("width", $_SESSION[$_flashmovieDataId]["imgwidth"], "attrib");
-					$flashDocument->setElement("height", $_SESSION[$_flashmovieDataId]["imgheight"], "attrib");
-					$flashDocument->setElement("origwidth", $_SESSION[$_flashmovieDataId]["imgwidth"]);
-					$flashDocument->setElement("origheight", $_SESSION[$_flashmovieDataId]["imgheight"]);
-
-					$flashDocument->setElement("type", 'application/x-shockwave-flash', "attrib");
-
-					$flashDocument->setElement("data", $_SESSION[$_flashmovieDataId]["serverPath"], "image");
-
-					$flashDocument->setElement("filesize", $_SESSION[$_flashmovieDataId]["size"], "attrib");
-
-					$flashDocument->Table = FILE_TABLE;
-					$flashDocument->Published = time();
-					$flashDocument->WebUserID = $webuserId;
-					$flashDocument->we_save();
-					$newId = $flashDocument->ID;
-
-					$t = explode('_', $flashDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$flashDocument->Filename = $fn;
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Filename . $flashDocument->Extension;
-					$flashDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_flashName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_flashmovieDataId])) {
-				unset($_SESSION[$_flashmovieDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateQuicktime($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_quicktimeDataId) {
-		if (preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)) {
-			$_quicktimeName = $regs[1];
-			$quicktimeId = isset($_SESSION[$_quicktimeDataId]["id"]) ? $_SESSION[$_quicktimeDataId]["id"] : 0;
-			if (isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete'] == 1) {
-
-				if ($quicktimeId) {
-					$quicktimeDocument = new we_quicktimeDocument();
-					$quicktimeDocument->initByID($quicktimeId);
-					if ($quicktimeDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($quicktimeId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_quicktimeDataId]['serverPath'])) {
-				if (substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == "video/quicktime") {
-					$quicktimeDocument = new we_quicktimeDocument();
-
-					if ($quicktimeId) {
-						// document has already an image
-						// so change binary data
-						$quicktimeDocument->initByID(
-										$quicktimeId);
-					}
-
-					$quicktimeDocument->Filename = $_SESSION[$_quicktimeDataId]['fileName'];
-					$quicktimeDocument->Extension = $_SESSION[$_quicktimeDataId]['extension'];
-					$quicktimeDocument->Text = $_SESSION[$_quicktimeDataId]['text'];
-
-					if (!$quicktimeId) {
-						$quicktimeDocument->setParentID($_SESSION[$_quicktimeDataId]['parentid']);
-					}
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Text;
-
-					//$quicktimeDocument->setElement("width", $_SESSION[$_quicktimeDataId]["imgwidth"], "attrib");
-					//$quicktimeDocument->setElement("height", $_SESSION[$_quicktimeDataId]["imgheight"], "attrib");
-					//$quicktimeDocument->setElement("origwidth", $_SESSION[$_quicktimeDataId]["imgwidth"]);
-					//$quicktimeDocument->setElement("origheight", $_SESSION[$_quicktimeDataId]["imgheight"]);
-
-					$quicktimeDocument->setElement("type", 'video/quicktime', "attrib");
-
-					$quicktimeDocument->setElement("data", $_SESSION[$_quicktimeDataId]["serverPath"], "image");
-
-					$quicktimeDocument->setElement("filesize", $_SESSION[$_quicktimeDataId]["size"], "attrib");
-
-					$quicktimeDocument->Table = FILE_TABLE;
-					$quicktimeDocument->Published = time();
-					$quicktimeDocument->WebUserID = $webuserId;
-					$quicktimeDocument->we_save();
-					$newId = $quicktimeDocument->ID;
-
-					$t = explode('_', $quicktimeDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$quicktimeDocument->Filename = $fn;
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Filename . $quicktimeDocument->Extension;
-					$quicktimeDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_quicktimeName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_quicktimeDataId])) {
-				unset($_SESSION[$_quicktimeDataId]);
-			}
-		}
-	}
-}
-
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true) {
 	if (strlen($paths) == 0 || strlen($table) == 0)
 		return "";
@@ -1946,13 +1634,13 @@ function makeArrayFromCSV($csv) {
 
 	if ($csv == '' && $csv != '0') {
 		return array();
-	} else {
+	}
+
 		$foo = explode(',', $csv);
-		foreach($foo as &$f) {
+		foreach ($foo as &$f) {
 			$f = str_replace('###komma###', ',', $f);
 		}
 		return $foo;
-	}
 }
 
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ',') {
@@ -1971,7 +1659,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ',') {
 		$out = $sep . $out . $sep;
 	}
 	if ($replaceKomma) {
-		$out = str_replace('###komma###', "\\$sep", $out);
+		$out = str_replace('###komma###', '\\'.$sep, $out);
 	}
 	return $out;
 }
@@ -2085,7 +1773,7 @@ function weConvertToIds($paths, $table) {
 	return $ids;
 }
 
-function path_to_id_ct($path, $table,  &$contentType) {
+function path_to_id_ct($path, $table, &$contentType) {
 	$db = new DB_WE();
 	if ($path == '/') {
 		return 0;
@@ -2440,7 +2128,7 @@ function t_e($type='warning'){
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false,$objectseourls=false) {
 
 	if (!$path)
-		$path = $_SERVER['PHP_SELF'];
+		$path = $_SERVER['SCRIPT_NAME'];
 	if (!$DB_WE)
 		$DB_WE = new DB_WE();
 
@@ -2488,14 +2176,17 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 		} else {$objecturl='';}
+		$pidstr='';
+		if ($pid){$pidstr='?pid='.abs($pid);}
 		if ($objectseourls && $objecturl!=''){
+			
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
-				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . '?pid=' . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 			} else {
-				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . '?pid=' . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . $pidstr;
 			}
 		} else {
-			return $path . '?we_objectID=' . abs($id) . '&pid=' . abs($pid);
+			return $path . '?we_objectID=' . abs($id) . str_replace('?','&amp;',$pidstr);
 		}
 	} else {
 		if ($foo['Workspaces']) {
@@ -2895,7 +2586,7 @@ function we_getObjectFileByID($id, $includepath = '') {
  * @desc returns the protocol, the webServer is running, http or https, when slash is true - :// is added to protocol
  */
 function getServerProtocol($slash = false) {
-	return (we_isHttps ()?'https':'http') . ($slash?'://':'');
+	return (we_isHttps()?'https':'http').($slash?'://':'');
 }
 
 function we_check_email($email) {	 // Zend validates only the pure address
@@ -3119,7 +2810,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 
 	//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array(
-							'xml', 'xmltype'
+							'xml', 'xmltype','to','nameto'
 					));
 	if ($element =='img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array('name'));

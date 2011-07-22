@@ -126,7 +126,7 @@ top.close();
 
 	</head>
 	<body class="weDialogBody" onUnload="doUnload()">
-	<form name="we_form" action="<?php print $_SERVER["PHP_SELF"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>" />
+	<form name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>" />
 		<?php
 		$DefaultBannerID = f("SELECT pref_value FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'","pref_value",$DB_WE);
 		$content = formBannerChooser(300,BANNER_TABLE,$DefaultBannerID,"DefaultBannerID","");

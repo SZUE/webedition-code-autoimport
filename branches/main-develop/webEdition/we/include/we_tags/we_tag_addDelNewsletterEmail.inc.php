@@ -247,7 +247,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
 				$basehref=$protocol.SERVER_NAME.":".$port;
 
-				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER["PHP_SELF"];
+				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER["SCRIPT_NAME"];
 
 				$confirmLink .= "?confirmID=".$confirmID."&mail=".rawurlencode($f["subscribe_mail"]);
 

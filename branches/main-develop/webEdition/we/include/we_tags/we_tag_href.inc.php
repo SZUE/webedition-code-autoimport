@@ -56,7 +56,6 @@ function we_tag_href($attribs, $content){
 
 	$file = we_getTagAttribute("file", $attribs, '', true, true);
 	$directory = we_getTagAttribute("directory", $attribs, '', true);
-
 	$attribs = removeAttribs($attribs, array(
 		"rootdir"
 	));
@@ -66,7 +65,8 @@ function we_tag_href($attribs, $content){
 		if (!is_array($hrefArr)) {
 			$hrefArr = array();
 		}
-		return sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
+		$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
+		return $out;
 	}
 
 	$nint = $name . "_we_jkhdsf_int";

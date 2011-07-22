@@ -74,11 +74,18 @@ function we_include_tag_file($name){
 }
 
 function we_tag($name, $attribs=array(), $content = ''){
+	$nameTo = we_getTagAttribute("nameto", $attribs);
+	$to = we_getTagAttribute("to", $attribs,'screen');
 	//make sure comment attribute is never shown
-	$attribs = removeAttribs($attribs, array(
-		'cachelifetime',
-		'comment',
-	));
+	if ($name=='setVar'){//special handling inside this tag
+		$attribs = removeAttribs($attribs, array('cachelifetime','comment'));
+		$nameTo = '';
+		$to = 'screen';
+	} else {
+		$nameTo = we_getTagAttribute("nameto", $attribs);
+		$to = we_getTagAttribute("to", $attribs,'screen');
+		$attribs = removeAttribs($attribs, array('cachelifetime','comment','to','nameto'));
+	}
 
 	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
 	if(isset($attribs['name'])){
@@ -128,8 +135,12 @@ function we_tag($name, $attribs=array(), $content = ''){
 	}
 
 	$GLOBALS['we_editmode'] = $edMerk;
+	if ($edMerk){
+		return $foo;
+	} else {
+		return we_redirect_tagoutput($foo,$nameTo,$to);
+	}
 
-	return $foo;
 }
 
 ### tag utility functions ###
@@ -664,7 +675,8 @@ function we_post_tag_listview() {
 //FIXME: remove in next Versions
 function include_all_we_tags(){
 	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
-		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition','css','date','dateSelect',
+		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition',
+				'conditionAdd','conditionAnd','conditionOr','css','date','dateSelect',
 			'delete','description','docType','field','flashmovie','formfield','hidden','href','icon','ifBack','ifCaptcha','ifCat','ifClient',
 			'ifCurrentDate','ifDoctype','ifEqual','ifField','ifHasChildren','ifHasCurrentEntry','ifHasEntries','ifNotShopField','ifPosition',
 			'ifSearch','ifSelf','ifRegisteredUserCanChange','ifShopField','ifShopFieldEmpty','ifTemplate',

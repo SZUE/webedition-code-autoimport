@@ -54,9 +54,14 @@ function we_tag_paypal($attribs, $content) {
 	$shipping = we_getTagAttribute('shipping', $attribs);
 	$shippingIsNet = we_getTagAttribute('shippingisnet', $attribs);
 	$shippingVatRate = we_getTagAttribute('shippingvatrate', $attribs);
-	$messageRedirectAuto = we_getTagAttribute('messageredirectauto', $attribs);
-
-	$messageRedirectMan = we_getTagAttribute('messageredirectman', $attribs);
+	$messageRedirectAuto = we_getTagAttribute('messageredirectAuto', $attribs);
+	if ($messageRedirectAuto==''){
+		$messageRedirectAuto = we_getTagAttribute('messageredirectauto', $attribs);
+	}
+	$messageRedirectMan = we_getTagAttribute('messageredirectMan', $attribs);
+	if ($messageRedirectMan==''){
+		$messageRedirectMan = we_getTagAttribute('messageredirectman', $attribs);
+	}
 	$formTagOnly = we_getTagAttribute('formtagonly', $attribs, 'false', true);
 	$charset = we_getTagAttribute('charset', $attribs);
 
@@ -174,7 +179,7 @@ function we_tag_paypal($attribs, $content) {
 		$p->paypal_url = $paypalURL; // testing paypal url
 //$p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';	  // paypal url
 // setup a variable for this script (ie: 'http://www.webedition.org/shop/paypal.php')
-		$this_script = getServerProtocol(true) . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+		$this_script = getServerProtocol(true) . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
 
 // if there is not action variable, set the default action of 'process'
 		if (empty($_GET['action']))

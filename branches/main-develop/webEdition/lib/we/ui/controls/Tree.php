@@ -298,13 +298,14 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 		if($Classes != ''){$outClass= 'class=\"'.$Classes.'\"';} else $outClass = '';
 	
 		$out = 'var myobj = { ';
-				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">' . addslashes(htmlspecialchars($text)) . '</span>"';
+				$out .= 'label: "<span title=\"'.$id.'\" ' .$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">' . $text . '</span>"';
 				//$out .= ',';
 				//$out .= 'href: "javascript:'.$doOnClick.'"';
 				$out .= ',';
 				$out .= 'id: "'.$id.'"';
 				$out .= ',';
-				$out .= 'text: "'.addslashes(htmlspecialchars($text)).'"';
+				//$out .= 'text: "'.addslashes(htmlspecialchars($text)).'"';
+				$out .= 'text: "'.$text.'"';
 				$out .= ',';
 				$out .= 'title: "'.$id.'"';
 		$out .= '}; ';
@@ -501,12 +502,6 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement
 				YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init); 
 
 			})();
-			function tree_' . $this->_id . '_Init() { 
-					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");								
-					'.$this->getNodesJS().'
-							
-					tree_' . $this->_id . '.draw(); 
-				}
 		';
 		
 		$page = we_ui_layout_HTMLPage::getInstance();

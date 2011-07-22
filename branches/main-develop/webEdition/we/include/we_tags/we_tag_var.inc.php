@@ -30,7 +30,6 @@ function we_tag_var($attribs, $content){
 	//$_name_orig=we_getTagAttribute("_name_orig", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
     $htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true); // #3771
-
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch ($type) {

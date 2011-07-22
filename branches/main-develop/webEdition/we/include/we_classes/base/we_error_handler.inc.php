@@ -267,9 +267,14 @@ function log_error_message($type, $message, $file, $_line) {
 //FIXME: mysql_ => should this be handled by DB_WE?
 	// Log the error
 	if (defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')) {
-		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
-		$_query = 'INSERT INTO ' . $tbl . ' SET Type=\'' . escape_sql_query($_type) . '\',
-			`Function`=\'' . escape_sql_query($_caller) . '\',
+
+		$_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
+			or die('Cannot log error! Could not connect: ' . mysql_error());
+
+		mysql_select_db(DB_DATABASE, $_link) or die('Cannot log error! Could not select database.');
+		$tbl = defined('ERROR_LOG_TABLE')?ERROR_LOG_TABLE:TBL_PREFIX . 'tblErrorLog';
+		$_query = 'INSERT INTO ' . $tbl . ' SET Type=\''.escape_sql_query($_type).'\',
+			`Function`=\''.escape_sql_query($_caller).'\',
 			File=\'' . escape_sql_query($_file) . '\',
 			Line=\'' . abs($_line) . '\',
 			Text=\'' . escape_sql_query($_text) . '\',

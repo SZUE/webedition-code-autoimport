@@ -27,13 +27,13 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.livinge.eplugin.editor.DocumentManager;
-import com.livinge.eplugin.editor.EPDocument;
-import com.livinge.eplugin.editor.WeEditor;
-import com.livinge.eplugin.editor.WeSettings;
-import com.livinge.eplugin.gui.EPEditorDialog;
-import com.livinge.eplugin.privileged.PrivilegedSave;
-import com.livinge.eplugin.util.Base64Coder;
+import org.webedition.eplugin.editor.DocumentManager;
+import org.webedition.eplugin.editor.EPDocument;
+import org.webedition.eplugin.editor.WeEditor;
+import org.webedition.eplugin.editor.WeSettings;
+import org.webedition.eplugin.gui.EPEditorDialog;
+import org.webedition.eplugin.privileged.PrivilegedSave;
+import org.webedition.eplugin.util.Base64Coder;
 
 
 public class EPlugin extends JApplet {

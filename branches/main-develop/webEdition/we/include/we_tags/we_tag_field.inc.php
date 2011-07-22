@@ -49,9 +49,8 @@ function we_tag_field($attribs, $content){
 	$xml = we_getTagAttribute("xml", $attribs, "");
 	$striphtml = we_getTagAttribute("striphtml", $attribs, false, true);
 	$only = we_getTagAttribute("only", $attribs);
+	$usekey = we_getTagAttribute("usekey", $attribs, false, true);
 	$triggerid = we_getTagAttribute("triggerid", $attribs);
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
 	$seeMode = we_getTagAttribute("seeMode", $attribs, true, true, true);
 
 	$out = "";
@@ -90,7 +89,7 @@ function we_tag_field($attribs, $content){
 	}
 
 	if (!$GLOBALS["lv"]->f("WE_ID") && $GLOBALS["lv"]->calendar_struct["calendar"] == "") {
-		return we_redirect_tagoutput("",$nameTo,$to);
+		return "";
 	}
 
 	switch ($type) {
@@ -261,9 +260,13 @@ function we_tag_field($attribs, $content){
 				}
 
 			} else {
+				$testtype=$type;
+				if ($type=='select' && $usekey){
+					$testtype='text';
+				}
 				$normVal = we_document::getFieldByVal(
 					$GLOBALS["lv"]->f($name),
-					$type,
+					$testtype,
 					$attribs,
 					false,
 					$GLOBALS["we_doc"]->ParentID,
@@ -287,10 +290,13 @@ function we_tag_field($attribs, $content){
 				foreach ($GLOBALS["lv"]->DB_WE->Record as $_glob_key => $_val) {
 
 					if (substr($_glob_key, 0, 13) == "we_we_object_") {
-
+						$testtype=$type;
+						if ($type=='select' && $usekey){
+							$testtype='text';
+						}
 						$normVal = we_document::getFieldByVal(
 								$GLOBALS["lv"]->f($name),
-								$type,
+								$testtype,
 								$attribs,
 								false,
 								$GLOBALS["we_doc"]->ParentID,
@@ -486,7 +492,7 @@ function we_tag_field($attribs, $content){
 						} else {
 							$tail = "";
 						}
-						$path_parts = pathinfo($_SERVER["PHP_SELF"]);
+						$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
 						if ($GLOBALS["lv"]->objectseourls){
 							$db = new DB_WE();
 							$objecturl=f("SELECT DISTINCT Url FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($GLOBALS["lv"]->f("OID")) . "' LIMIT 1", "Url", $db);
@@ -494,17 +500,21 @@ function we_tag_field($attribs, $content){
 							$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 							if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 						}
+						$pidstr='';
+						if ($GLOBALS["lv"]->f("WorkspaceID")){$pidstr='?pid='.abs($GLOBALS["lv"]->f("WorkspaceID"));}
+						$pidstr='?pid='.abs($GLOBALS["lv"]->f("WorkspaceID"));
 						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS["lv"]->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 							} else {
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
 							 }
 						} else {
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl. '?pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl. $pidstr;
 							} else {
-								$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . '&amp;pid=' . $GLOBALS["lv"]->f("WorkspaceID");
+								$_linkAttribs['href'] = $_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
 							}
 						}
 						$_linkAttribs['href'] = $_linkAttribs['href'] . $tail;
@@ -519,7 +529,7 @@ function we_tag_field($attribs, $content){
 								array(),
 								"")) {
 							$parentidname = we_getTagAttribute('parentidname', $attribs, 'we_parentid');
-							$_linkAttribs['href'] = $_SERVER["PHP_SELF"] . '?' . $parentidname . '=' . $GLOBALS["lv"]->f(
+							$_linkAttribs['href'] = $_SERVER["SCRIPT_NAME"] . '?' . $parentidname . '=' . $GLOBALS["lv"]->f(
 									"ID");
 
 							if ($name == 'we_href') {
@@ -587,5 +597,5 @@ function we_tag_field($attribs, $content){
 		' . $out;
 
 	}
-	return we_redirect_tagoutput($out,$nameTo,$to);
+	return $out;
 }

@@ -38,8 +38,6 @@ function we_tag_input($attribs, $content) {
 	$reload = we_getTagAttribute('reload', $attribs, '', true);
 
 	$spellcheck = we_getTagAttribute('spellcheck', $attribs, 'false');
-	$nameTo = we_getTagAttribute('nameto', $attribs);
-	$to = we_getTagAttribute('to', $attribs, 'screen');
 
 	$val = htmlspecialchars(
 									isset($GLOBALS['we_doc']->elements[$name]['dat']) ? $GLOBALS['we_doc']->getElement($name) : $value);
@@ -185,9 +183,9 @@ function we_tag_input($attribs, $content) {
 		//not-editmode
 		switch ($type) {
 			case 'date':
-				return we_redirect_tagoutput($GLOBALS['we_doc']->getField($attribs, 'date'), $nameTo, $to);
+				return $GLOBALS['we_doc']->getField($attribs, 'date');
 			case 'checkbox':
-				return we_redirect_tagoutput($GLOBALS['we_doc']->getElement($name), $nameTo, $to);
+				return $GLOBALS['we_doc']->getElement($name);
 			case 'country':
 				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
 				if ($lang == '') {
@@ -200,7 +198,7 @@ function we_tag_input($attribs, $content) {
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
-				return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode)), $nameTo, $to);
+				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
 			case 'language':
 				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
 				if ($lang == '') {
@@ -213,14 +211,14 @@ function we_tag_input($attribs, $content) {
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
-				return we_redirect_tagoutput(CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'language', $langcode)), $nameTo, $to);
+				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'language', $langcode));
 			case 'choice':
-				return we_redirect_tagoutput($GLOBALS['we_doc']->getElement($name), $nameTo, $to);
+				return $GLOBALS['we_doc']->getElement($name);
 			case 'select':
-				return we_redirect_tagoutput($GLOBALS['we_doc']->getField($attribs, 'select'), $nameTo, $to);
+				return $GLOBALS['we_doc']->getField($attribs, 'select');
 			case 'text':
 			default:
-				return we_redirect_tagoutput($GLOBALS['we_doc']->getField($attribs), $nameTo, $to);
+				return $GLOBALS['we_doc']->getField($attribs);
 		}
 	}
 }

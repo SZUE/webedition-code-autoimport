@@ -159,7 +159,7 @@ $jsFunction = '
             switch (arguments[0]) {
 
             	case "save":
-            		we_submitForm("' . $_SERVER['PHP_SELF'] . '");
+            		we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
             	break;
 
             	case "close":
@@ -183,7 +183,7 @@ $jsFunction = '
 
             	case "delete":
             		if (confirm("' . g_l('modules_shop','[vat][js_confirm_delete]') . '")) {
-            			document.location = "' . $_SERVER['PHP_SELF'] . '?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
+            			document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
             		}
             	break;
 

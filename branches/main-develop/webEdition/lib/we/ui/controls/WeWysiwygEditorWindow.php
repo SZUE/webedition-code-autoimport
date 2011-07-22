@@ -90,7 +90,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	print IMAGE_DIR . 'backgrounds/aquaBackground.gif';
 	?>">
 <form action="<?php
-	print $_SERVER['PHP_SELF'];
+	print $_SERVER['SCRIPT_NAME'];
 	?>" name="we_form"
 	method="post"><input type="hidden" name="we_okpressed" value="1" />
 <?php

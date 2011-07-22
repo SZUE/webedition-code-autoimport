@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/conf/we_conf_language.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
 if (defined('CUSTOMER_FILTER_TABLE')) {

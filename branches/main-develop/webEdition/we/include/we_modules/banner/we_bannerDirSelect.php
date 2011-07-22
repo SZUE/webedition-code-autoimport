@@ -25,7 +25,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_bannerDirSelector.php");
 protect();
-$_SERVER["PHP_SELF"] = "/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php";
+$_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php";
 $fs = new we_bannerDirSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''),
 							isset($JSIDName) ? $JSIDName : (isset($_REQUEST["JSIDName"]) ? $_REQUEST["JSIDName"] : ''),
 							isset($JSTextName) ? $JSTextName : (isset($_REQUEST["JSTextName"]) ? $_REQUEST["JSTextName"] : ''),

@@ -70,7 +70,7 @@ define('WEBEDITION_INCLUDES_DIR', $_SERVER['DOCUMENT_ROOT'].WEBEDITION_INCLUDES_
 
 // Activate the webEdition error handler
 include_once (WEBEDITION_INCLUDES_DIR.'we_classes/base/we_error_handler.inc.php');
-if (!defined('WE_ERROR_HANDLER_SET')){ we_error_handler();}
+if (!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 

@@ -47,7 +47,7 @@ function we_tag_link($attribs, $content){
 	}
 
 	$attribs = removeAttribs($attribs, array(
-		'text', 'id', 'imageid'
+		'text', 'id', 'imageid','to','nameto'
 	));
 
 	$link = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();

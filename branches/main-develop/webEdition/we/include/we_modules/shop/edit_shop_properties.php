@@ -1807,21 +1807,21 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".g_l('modules_shop','[jsanz]')."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]'). "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".$l_shop["jsanz"]."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
 		<td></td>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".g_l('modules_shop','[jsbetrag]')."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" .g_l('modules_shop','[keinezahl]') ."'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".$l_shop["jsbetrag"]."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
 		<td></td>
 		<td class="shopContentfontR">' . numfom($articlePrice) . $waehr . '</td>
 		' . ($calcVat ? '
 			<td></td>
-			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[jsbetrag]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" .g_l('modules_shop','[keinezahl]'). "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
+			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[keinezahl]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . $l_shop['keinezahl'] . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
 			: '') . '
 		<td>' . $pixelImg . '</td>
-		<td>' . $we_button->create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER["PHP_SELF"]."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+		<td>' . $we_button->create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 	</tr>
 		';
 		// if this article has custom fields or is a variant - we show them in a extra rows
@@ -1919,7 +1919,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[plusVat]') . '</label>:</td>
 		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 	</tr>
 	';
 			foreach ($articleVatArray as $vatRate => $sum) {
@@ -1977,7 +1977,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[includedVat]') . '</label>:</td>
 		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 	</tr>
 			';
 			foreach ($articleVatArray as $vatRate => $sum) {
@@ -2012,7 +2012,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[edit_order][calculate_vat]') . '</label></td>
 		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 	</tr>
 	<tr>
 		<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
@@ -2031,7 +2031,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	<tr>
 		<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop','[edit_order][calculate_vat]') . '</label></td>
 		<td colspan="7"></td>
-		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['PHP_SELF'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+		<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 	</tr>';
 		}
 	}
@@ -2068,8 +2068,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 				<td>' . $pixelImg . '</td>
 				<td valign="top">' . $we_button->create_button('image:btn_edit_edit', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 				<td>' . $pixelImg . '</td>
-				<td valign="top">' . $we_button->create_button('image:btn_function_trash', "javascript:check=confirm('".sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field]')
-								, $key)."'); if (check) { document.location.href='".$_SERVER["PHP_SELF"]."?we_cmd[0]=delete_shop_cart_custom_field&bid=".$_REQUEST["bid"]."&cartfieldname=" . $key . "'; }") . '</td>
+				<td valign="top">' . $we_button->create_button('image:btn_function_trash', "javascript:check=confirm('".sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field]'), $key)."'); if (check) { document.location.href='".$_SERVER['SCRIPT_NAME']."?we_cmd[0]=delete_shop_cart_custom_field&bid=".$_REQUEST["bid"]."&cartfieldname=" . $key . "'; }") . '</td>
 			</tr>
 			<tr>
 				<td height="10"></td>
@@ -2105,7 +2104,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
     <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 	<script language="JavaScript" type="text/javascript">
 	function SendMail(was){
-		document.location = "<?php print $_SERVER["PHP_SELF"] . "?bid=".$_REQUEST["bid"]; ?>&SendMail=" + was ;
+		document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=".$_REQUEST["bid"]; ?>&SendMail=" + was ;
 	}
 	function doUnload() {
 		if (!!jsWindow_count) {
@@ -2118,7 +2117,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	function we_cmd(){
 
         var args = "";
-        var url = "<?php print $_SERVER['PHP_SELF']; ?>?";
+        var url = "<?php print $_SERVER['SCRIPT_NAME']; ?>?";
 
         for(var i = 0; i < arguments.length; i++){
             url += "we_cmd["+i+"]="+escape(arguments[i]);
@@ -2222,7 +2221,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	function CalendarChanged(calObject) {
 		// field:
 		_field = calObject.params.inputField;
-		document.location = "<?php print $_SERVER["PHP_SELF"] . "?bid=".$_REQUEST["bid"]; ?>&" + _field.name + "=" + _field.value;
+		document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=".$_REQUEST["bid"]; ?>&" + _field.name + "=" + _field.value;
 
 	}
 <?php if(!$weShopStatusMails->FieldsHidden['DateOrder']){ ?>

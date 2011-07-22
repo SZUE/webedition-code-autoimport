@@ -194,7 +194,7 @@ class we_flashDocument extends we_binaryDocument
 
 			//   handle with params
 			$params["movie"] = $src; //  always needed
-			$params = removeAttribs($params, array("xml"));
+			$params = removeAttribs($params, array("xml",'to','nameto'));
 
 			foreach($params AS $k => $v){
 				if ($v !== "") {

@@ -185,7 +185,7 @@ class we_langlink_listview extends listviewBase {
 				if(isset($this->foundlinks[$count]['TriggerID']) && $this->foundlinks[$count]['TriggerID']){
 					$path_parts = pathinfo(id_to_path($this->foundlinks[$count]['TriggerID']));
 				} else {
-					$path_parts = pathinfo($_SERVER['PHP_SELF']);
+					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 				}
 				$paramName="we_object_ID";
 				
@@ -201,7 +201,7 @@ class we_langlink_listview extends listviewBase {
 					if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 						$this->Record["WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'."?$paramName=".$this->Record["WE_ID"];
 					} else {
-						$this->Record["WE_PATH"] =$_SERVER['PHP_SELF']."?$paramName=".$this->Record["WE_ID"];
+						$this->Record["WE_PATH"] =$_SERVER['SCRIPT_NAME']."?$paramName=".$this->Record["WE_ID"];
 					}
 				}
 			}

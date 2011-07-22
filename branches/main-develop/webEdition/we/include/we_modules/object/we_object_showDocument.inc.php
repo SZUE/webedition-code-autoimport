@@ -211,7 +211,7 @@ if ( isset($GLOBALS["we_obj"]) && $GLOBALS["we_obj"]->documentCustomerFilter && 
 }
 
 if (!isset($pid) || !($pid) ) {
-	$pid = f("SELECT ParentID FROM " .FILE_TABLE. " WHERE Path='".$_SERVER["PHP_SELF"]."'","ParentID",$DB_WE);
+	$pid = f("SELECT ParentID FROM " .FILE_TABLE. " WHERE Path='".$_SERVER["SCRIPT_NAME"]."'","ParentID",$DB_WE);
 }
 
 if (!isset($tid) || !($tid) ) {

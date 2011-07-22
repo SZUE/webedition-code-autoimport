@@ -466,7 +466,7 @@ function setDir(id){
 
 
 	function getFsQueryString($what){
-		return $_SERVER["PHP_SELF"]."?what=$what&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter;
+		return $_SERVER["SCRIPT_NAME"]."?what=$what&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter;
 	}
 
 	function printFramesetJSFunctionQueryString(){
@@ -474,7 +474,7 @@ function setDir(id){
 
 function queryString(what,id,o){
 	if(!o) o=top.order;
-	return '<?php print $_SERVER["PHP_SELF"]; ?>?what='+what+'&table=<?php print $this->table; ?>&id='+id+"&order="+o+"&filter=<?php print $this->filter; ?>";
+	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&table=<?php print $this->table; ?>&id='+id+"&order="+o+"&filter=<?php print $this->filter; ?>";
 }
 
 <?php

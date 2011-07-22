@@ -26,7 +26,7 @@
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_catSelector.inc.php");
 protect();
 
-$_SERVER["PHP_SELF"] = "/webEdition/we_catSelect.php";
+$_SERVER['SCRIPT_NAME'] = "/webEdition/we_catSelect.php";
 
 
 $fs = new we_catSelector(

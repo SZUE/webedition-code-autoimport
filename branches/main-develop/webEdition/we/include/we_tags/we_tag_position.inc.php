@@ -35,8 +35,7 @@ function we_tag_position($attribs, $content){
 	//	here we get the needed attributes
 	$type = we_getTagAttribute("type", $attribs);
 	$_reference = we_getTagAttribute("reference", $attribs);
-	$format = we_getTagAttribute("format", $attribs, 1);
-
+	$format = we_getTagAttribute("format", $attribs, 1);	
 	//	this value we will return later
 	$_retPos = "";
 

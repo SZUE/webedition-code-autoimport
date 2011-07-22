@@ -178,7 +178,7 @@ class  taskFragment{
 			}
 		}
 
-		$onload = "document.location='".$_SERVER["PHP_SELF"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
+		$onload = "document.location='".$_SERVER["SCRIPT_NAME"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
 
 		if ($this->pause) {
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";
@@ -233,7 +233,7 @@ class  taskFragment{
 			}
 		}
 
-		$onload = "document.location='".$_SERVER["PHP_SELF"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
+		$onload = "document.location='".$_SERVER["SCRIPT_NAME"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
 
 		if ($this->pause) {
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";

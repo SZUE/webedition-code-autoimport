@@ -14,7 +14,9 @@ if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id823_parentid
 $GLOBALS['weTagWizard']['attribute']['id422_showcontrol'] = new weTagData_selectAttribute('422', 'showcontrol', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id423_showquicktime'] = new weTagData_selectAttribute('423', 'showquicktime', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
 $GLOBALS['weTagWizard']['attribute']['id849_sizingrel'] = new weTagData_textAttribute('849', 'sizingrel', false, '');
 $GLOBALS['weTagWizard']['attribute']['id860_sizingstyle'] = new weTagData_selectAttribute('860', 'sizingstyle', array(new weTagDataOption('none', false, ''), new weTagDataOption('em', false, ''), new weTagDataOption('ex', false, ''), new weTagDataOption('%', false, ''), new weTagDataOption('px', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id861_sizingbase'] = new weTagData_textAttribute('861', 'sizingbase', false, '');
+$GLOBALS['weTagWizard']['attribute']['id478_to'] = new weTagData_selectAttribute('478', 'to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id479_nameto'] = new weTagData_textAttribute('479', 'nameto', false, '');
+$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');

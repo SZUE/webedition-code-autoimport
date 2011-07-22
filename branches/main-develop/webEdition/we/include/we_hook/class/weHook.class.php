@@ -51,7 +51,7 @@ class weHook {
 
 	function executeHook() {
 		if (!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)) {
-			return;
+			return true;
 		}
 
 		if ($this->action != '' && is_array($this->param) && $this->file != '') {

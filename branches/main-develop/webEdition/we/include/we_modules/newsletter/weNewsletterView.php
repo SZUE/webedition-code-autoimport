@@ -2640,33 +2640,33 @@ class weNewsletterView {
 			$filtersql=implode(" ",$filterarr);
 
 			if ($this->newsletter->groups[$group-1]->SendAll) {
-				if ($filtersql !== "") {
-					$this->db->query("SELECT ID FROM ".CUSTOMER_TABLE . " WHERE $filtersql");
-				} else {
-					$this->db->query("SELECT ID FROM ".CUSTOMER_TABLE);
-				}
-
-				while ($this->db->next_record()) {
-					$customers[]=$this->db->f("ID");
-				}
+				$customers='SELECT ID FROM '.CUSTOMER_TABLE .' WHERE '.($filtersql !== ''?$filtersql:'1');
 			} else {
-				$customers=makeArrayFromCSV($this->newsletter->groups[$group-1]->Customers);
+				$customers=implode(',',array_map('intval',explode(',',$this->newsletter->groups[$group-1]->Customers)));
 			}
 
 			$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";','pref_value',$this->db);
-			foreach ($customers as $customer) {
-				$foo = getHash("SELECT * FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customer).($filtersql!="" ?  " AND ($filtersql)": ""),$this->db);
-				if (isset($foo[$this->settings["customer_email_field"]]) && $foo[$this->settings["customer_email_field"]]) {
-					$email = trim($foo[$this->settings["customer_email_field"]]);
-					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && trim($foo[$this->settings["customer_html_field"]])!='') ? trim($foo[$this->settings["customer_html_field"]]) : $_default_html;
-					$salutation = (isset($foo[$this->settings["customer_salutation_field"]]) && $foo[$this->settings["customer_salutation_field"]]) ? $foo[$this->settings["customer_salutation_field"]] : "";
-					$title = (isset($foo[$this->settings["customer_title_field"]]) && $foo[$this->settings["customer_title_field"]]) ? $foo[$this->settings["customer_title_field"]] : "";
-					$firstname = (isset($foo[$this->settings["customer_firstname_field"]]) && $foo[$this->settings["customer_firstname_field"]]) ? $foo[$this->settings["customer_firstname_field"]] : "";
-					$lastname = (isset($foo[$this->settings["customer_lastname_field"]]) && $foo[$this->settings["customer_lastname_field"]]) ? $foo[$this->settings["customer_lastname_field"]] : "";
-
+			$select=$this->settings['customer_email_field'].
+							($emails_only?'':
+							','.$this->settings['customer_html_field'].','.
+							$this->settings['customer_salutation_field'].','.
+							$this->settings['customer_title_field'].','.
+							$this->settings['customer_firstname_field'].','.
+							$this->settings['customer_lastname_field']
+							);
+			$this->db->query('SELECT '.$select.' FROM '.CUSTOMER_TABLE.' WHERE ID IN('.$customers.')'.($filtersql!='' ? ' AND ('.$filtersql.')': ''));
+			while ($this->db->next_record()) {
+				if ($this->db->f($this->settings["customer_email_field"])) {
+					$email = trim($this->db->f($this->settings["customer_email_field"]));
 					if ($emails_only) {
 						$customer_mail[] = $email;
-					} else {
+					}else{
+						$htmlmail = (trim($this->db->f($this->settings["customer_html_field"]))!='') ? trim($this->db->f($this->settings["customer_html_field"])) : $_default_html;
+						$salutation = $this->db->f($this->settings["customer_salutation_field"]);
+						$title = $this->db->f($this->settings["customer_title_field"]);
+						$firstname = $this->db->f($this->settings["customer_firstname_field"]);
+						$lastname = $this->db->f($this->settings["customer_lastname_field"]);
+
 						// damd: Parmeter $customer (Kunden ID in der Kundenverwaltung) und Flag dass es sich um Daten aus der Kundenverwaltung handelt angeh�ngt
 						$customer_mail[] = array($email, $htmlmail, $salutation, $title, $firstname, $lastname,$group,$this->getGroupBlocks($group),$customer,'customer');
 					}

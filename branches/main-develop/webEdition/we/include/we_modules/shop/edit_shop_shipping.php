@@ -127,7 +127,7 @@ $jsFunction = '
             switch (arguments[0]) {
 
             	case "save":
-            		we_submitForm("' . $_SERVER['PHP_SELF'] . '");
+            		we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
             	break;
 
             	case "close":
@@ -138,13 +138,13 @@ $jsFunction = '
             		if (confirm("' . 'M�chten sie den ausgew�hlten Portosatz wirklich l�schen?' . '")) {
             			var we_cmd_field = document.getElementById("we_cmd_field");
             			we_cmd_field.value = "deleteShipping";
-            			we_submitForm("' . $_SERVER['PHP_SELF'] . '");
+            			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 
             		}
             	break;
 
             	case "newEntry":
-            		document.location = "' . $_SERVER['PHP_SELF'] . '?we_cmd[0]=newShipping";
+            		document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=newShipping";
             	break;
 
             	case "addShippingCostTableRow":
@@ -279,7 +279,7 @@ $parts = array();
 		'space' => 200,
 		'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
 	<tr>
-		<td>' .	we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, 'onchange="document.location=\'' . $_SERVER['PHP_SELF'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;"', 'value', 200) . '</td>
+		<td>' .	we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, 'onchange="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;"', 'value', 200) . '</td>
 		<td width="10"></td>
 		<td valign="top">'
 			. $we_button->create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .

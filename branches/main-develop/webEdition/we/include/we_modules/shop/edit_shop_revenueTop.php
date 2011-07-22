@@ -55,7 +55,7 @@ function orderBy($a, $b) {
 
 function getTitleLink($text, $orderKey) {
 
-	$_href =	$_SERVER['PHP_SELF'] .
+	$_href =	$_SERVER['SCRIPT_NAME'] .
 				'?ViewYear=' . $GLOBALS['selectedYear'] .
 				'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 				'&orderBy=' . $orderKey .
@@ -79,7 +79,7 @@ function getTitleLink($text, $orderKey) {
 }
 
 function getPagerLink() {
-	return 	$_SERVER['PHP_SELF'] .
+	return 	$_SERVER['SCRIPT_NAME'] .
 			'?ViewYear=' . $GLOBALS['selectedYear'] .
 			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 			'&orderBy=' . $GLOBALS['orderBy'] .
