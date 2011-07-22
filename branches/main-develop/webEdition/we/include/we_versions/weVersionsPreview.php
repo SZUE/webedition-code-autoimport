@@ -282,7 +282,7 @@ $contentDiff .= '</table>';
 
 $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
-		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.$GLOBALS['l_versions']['contentElementsMod'].'</strong>';
+		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>'.g_l('versions','[contentElementsMod]').'</strong>';
 $contentDiff .= ($isTempl && class_exists('Text_Diff')?'':'<br/><b>PHP-Pear-Text_Diff not installed - Quirks mode.</b>');
 //g_l('versions','[textDiffNotInstalled]')
 $contentDiff .= '</td></tr>';

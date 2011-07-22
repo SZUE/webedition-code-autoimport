@@ -318,7 +318,6 @@ class weShopStatusMails {
 	}
 
 	function getEMailHandlerCode($was,$dateSet){
-		global $l_shop;
 		$datetimeform = "00.00.0000 00:00";
 		$dateform = "00.00.0000";
 		$we_button = new we_button();

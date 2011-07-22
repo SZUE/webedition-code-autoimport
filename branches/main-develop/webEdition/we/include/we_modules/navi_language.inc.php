@@ -27,5 +27,3 @@
 foreach ($_we_available_modules as $m) {
 	$l_navi[$m["name"]] = $m["text_short"];
 }
-
-?>

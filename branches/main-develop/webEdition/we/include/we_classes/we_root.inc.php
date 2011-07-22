@@ -596,7 +596,7 @@ function formTriggerDocument($isclass=false){
 
 	}
 	function formLanguageDocument($headline, $langkey,$LDID=0,$table = FILE_TABLE,$rootDirID=0){
-		global $l_we_class, $BROWSER;
+		global $BROWSER;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		

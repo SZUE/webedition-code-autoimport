@@ -986,11 +986,11 @@ class we_object extends we_document {
 			$content .= $this->htmlSelect("we_".$this->Name."_multiobject[".$name."class]",$vals,1,$this->getElement($name.'class',"dat"),"",'onChange="if(this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\']){this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.$identifier.'\',\''.$name.'\')"',"value",388);
 			$content .= '</td></tr>';
 			$content .= 	'<tr valign="top">'
-						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["max_objects"].'</td>'
-						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.$GLOBALS["l_object"]["no_maximum"].')</nobr></td>'
+						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[max_objects]').'</td>'
+						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.g_l('object','[no_maximum]').')</nobr></td>'
 						. 	'</tr>';
 
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"><table border="0">';
 			if(!isset($this->elements[$name."count"]["dat"])){
 			    $this->elements[$name."count"]["dat"] = 0;
@@ -1027,7 +1027,7 @@ class we_object extends we_document {
 			$content .= $fileSelect.getPixel(30,2)."directory".getPixel(8,2);
 			$content .= $dirSelect;
 			$content .= '</td></tr>';
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.$GLOBALS["l_object"]["default"].'</td>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlHref($name);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
 			$content .= '</td></tr>';

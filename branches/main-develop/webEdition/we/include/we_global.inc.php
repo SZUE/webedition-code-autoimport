@@ -115,30 +115,11 @@ function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFl
 }
 
 function we_getIndexFileIDs($db) {
-	$db->query(
-					'
-		SELECT ID
-		FROM ' . FILE_TABLE . '
-		WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )');
-	$anz = $db->num_rows();
-	$list = '';
-	while ($db->next_record())
-		$list .= $db->f('ID') . ',';
-	$list = rtrim($list, ',');
-	return $list;
+	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )','IDs',$db);
 }
 
 function we_getIndexObjectIDs($db) {
-	$db->query('
-		SELECT ID
-		FROM ' . OBJECT_FILES_TABLE . '
-		WHERE Published > 0 AND Workspaces != ""');
-	$anz = $db->num_rows();
-	$list = '';
-	while ($db->next_record())
-		$list .= $db->f('ID') . ',';
-	$list = rtrim($list, ',');
-	return $list;
+	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Workspaces != ""','IDs',$db);
 }
 
 function correctUml($in) {
@@ -173,19 +154,12 @@ function getAllowedClasses($db = '') {
 		if (abs($ws) == 0) {
 			$ws = 0;
 		}
-		$db->query('
-			SELECT ID,Workspaces,Path
-			FROM ' . OBJECT_TABLE . '
-			WHERE IsFolder=0');
+		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . 'WHERE IsFolder=0');
 
 		while ($db->next_record()) {
 			$path = $db->f('Path');
-			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace(
-											$db->f('Workspaces'),
-											$ws,
-											FILE_TABLE,
-											'',
-											true)) {
+			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || 
+							in_workspace($db->f('Workspaces'),$ws,FILE_TABLE,'',true)) {
 
 				$path2 = $path . '/';
 				if (!$ofWs || $_SESSION['perms']['ADMINISTRATOR']) {
@@ -240,29 +214,28 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {
 	$pid_tail = '';
 	if (!$db)
 		$db = new DB_WE();
-	if ($table == FILE_TABLE) {
-		$parentIDs = array();
-		array_push($parentIDs, $pid);
-		while ($pid != 0) {
-			$pid = f('
-				SELECT ParentID
-				FROM ' . FILE_TABLE . '
-				WHERE ID=' . abs($pid), 'ParentID', $db);
-			array_push($parentIDs, $pid);
-		}
-		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . abs($cid), 'DefaultValues', $db);
-		$fooArr = unserialize($foo);
-		$flag = (isset($fooArr['WorkspaceFlag'])?$fooArr['WorkspaceFlag']:1);
-		$pid_tail = ($flag ? ' ( ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ':' ( ');
-		foreach ($parentIDs as $pid)
-			$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . ".OF_Workspaces like '%," . abs($pid) . ",%' OR " . OBJECT_X_TABLE . abs($cid) . ".OF_ExtraWorkspacesSelected like '%," . abs($pid) . ",%' OR ";
-		$pid_tail = ereg_replace('^(.*)OR ', '\1', $pid_tail) . ")";
-		if (trim($pid_tail) == '( )')
-			return '1';
-	} else {
+	if ($table != FILE_TABLE) {
 		return '1';
 	}
-	return $pid_tail;
+	$parentIDs = array();
+	array_push($parentIDs, $pid);
+	while ($pid != 0) {
+		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($pid), 'ParentID', $db);
+		array_push($parentIDs, $pid);
+	}
+	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . abs($cid), 'DefaultValues', $db);
+	$fooArr = unserialize($foo);
+	$flag = (isset($fooArr['WorkspaceFlag'])?$fooArr['WorkspaceFlag']:1);
+	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ':'');
+	foreach ($parentIDs as $pid){
+		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . ".OF_Workspaces like '%," . abs($pid) . ",%' OR " . OBJECT_X_TABLE . abs($cid) . ".OF_ExtraWorkspacesSelected like '%," . abs($pid) . ",%' OR ";
+	}
+	$pid_tail = trim(ereg_replace('^(.*)OR ', '\1', $pid_tail));
+	if ($pid_tail == ''){
+		return '1';
+	}
+
+	return ' ('.$pid_tail.') ';
 }
 
 function we_getInputRadioField($name, $value, $itsValue, $atts) {
@@ -285,7 +258,6 @@ function we_getTextareaField($name, $value, $atts) {
 }
 
 function we_getInputTextInputField($name, $value, $atts) {
-	//  This function replaced we_getTextinputField, but that is still used by we_sessionField
 	$atts['type'] = 'text';
 	$atts['name'] = $name;
 	$atts['value'] = htmlspecialchars($value);
@@ -294,7 +266,6 @@ function we_getInputTextInputField($name, $value, $atts) {
 }
 
 function we_getInputPasswordField($name, $value, $atts) {
-	//  This function replaced we_getTextinputField, but that is still used by we_sessionField
 	$atts['type'] = 'password';
 	$atts['name'] = $name;
 	$atts['value'] = htmlspecialchars($value);
@@ -316,7 +287,6 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 	$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
 
 	if ($valuesIsHash) {
-
 		foreach ($values as $_val => $_text) {
 			$attsOpts['value'] = htmlspecialchars($_val);
 			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
@@ -1281,8 +1251,7 @@ function encode($in) {
 function deleteContentFromDB($id, $table) {
 	$DB_WE = new DB_WE();
 
-	$DB_WE->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
-	if(!$DB_WE->num_rows()){
+	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
 		return false;
 	}
 	
@@ -1294,25 +1263,23 @@ function deleteContentFromDB($id, $table) {
 function cleanTempFiles($cleanSessFiles = false) {
 	$db2 = new DB_WE();
 	$sess = $GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
-	if ($GLOBALS['DB_WE']->num_rows())
+	while ($GLOBALS['DB_WE']->next_record()) {
+		$p = $GLOBALS['DB_WE']->f('Path');
+		if (file_exists($p)){
+			deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+		}
+		$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+	}
+	if ($cleanSessFiles) {
+		$seesID = session_id();
+		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		while ($GLOBALS['DB_WE']->next_record()) {
 			$p = $GLOBALS['DB_WE']->f('Path');
 			if (file_exists($p)){
 				deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
-			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
-	if ($cleanSessFiles) {
-		$seesID = session_id();
-		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-		if ($GLOBALS['DB_WE']->num_rows())
-			while ($GLOBALS['DB_WE']->next_record()) {
-				$p = $GLOBALS['DB_WE']->f('Path');
-				if (file_exists($p)){
-					deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
-				}
-				$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-			}
 	}
 	$d = dir(TMP_DIR);
 	while (false !== ($entry = $d->read())) {
@@ -1430,35 +1397,18 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	$id = abs($id);
 
 	// Bug Fix 6615
-	if ($PublishedAndTemp) {
-		$where = ' temp_template_id=' . $id . ' OR ';
-		$where .= ' TemplateID=' . $id . ' OR ';
-		foreach ($returnIDs['templateIDs'] as $tid) {
-			$where .= ' temp_template_id=' . $tid . ' OR ';
-			$where .= ' TemplateID=' . $tid . ' OR ';
-		}
-	} else {
-		$where = ' TemplateID=' . $id . ' OR ';
-		foreach ($returnIDs['templateIDs'] as $tid) {
-			$where .= ' TemplateID=' . $tid . ' OR ';
-		}
-	}
-	// remove last OR
-	$where = substr($where, 0, strlen($where) - 3);
-	$where = '(' . $where . ')';
+	$tmpArray=$returnIDs['templateIDs'];
+	$tmpArray[]=$id;
+	$tmp=implode(',',$tmpArray);
+	unset($tmpArray);
+	$where=' ('.
+	  ($PublishedAndTemp?'temp_template_id IN (' . $tmp . ') OR ':'').
+		' TemplateID IN (' . $tmp.')'.
+		')'.
+	  ($staticOnly?' AND IsDynamic=0':'').
+		($publishedOnly?' AND Published>0':'');
 
-	if ($staticOnly) {
-		$where .= ' AND IsDynamic=0';
-	}
-
-	if ($publishedOnly) {
-		$where .= ' AND Published>0';
-	}
-
-	$GLOBALS['DB_WE']->query('
-		SELECT ID
-		FROM ' . FILE_TABLE . '
-		WHERE '.$where);
+	$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE '.$where);
 
 	while ($GLOBALS['DB_WE']->next_record()) {
 		array_push($returnIDs['documentIDs'], $GLOBALS['DB_WE']->f('ID'));
@@ -1467,10 +1417,10 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 }
 
 function ObjectUsedByObjectFile($id) {
-	if (!$id)
-		return 0;
-	$GLOBALS['DB_WE']->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . abs($id));
-	return $GLOBALS['DB_WE']->num_rows();
+	if (!$id){
+		return false;
+	}
+	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . abs($id).' LIMIT 0,1','cnt',$GLOBALS['DB_WE'])==1;
 }
 
 function deleteLocalFile($filename) {
@@ -2264,7 +2214,7 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 	if (preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 		for ($i = 0; $i < sizeof($regs); $i++) {
-			list($imgID, $thumbID) = explode(",", $regs[$i][1]);
+			list($imgID, $thumbID) = explode(',', $regs[$i][1]);
 			$thumbObj = new we_thumbnail();
 			if ($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)) {
 				$text = eregi_replace(
