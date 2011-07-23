@@ -1135,7 +1135,6 @@ HTS;
 		$myid = (isset($v["we_TemplateID"]))? $v["we_TemplateID"] : 0;
 		$path = f("SELECT Path FROM ".$DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$DB_WE);
 
-		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','self.frames[\\'wizbody\\'].document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_editpage');");
@@ -1158,7 +1157,7 @@ HTS;
 			$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID ='".abs($v["docType"])."'", $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo["Templates"]);
 			$paths_arr = id_to_path($foo["Templates"],TEMPLATES_TABLE,"",false,true);
-
+		
 			$optid = 0;
 			while (list(, $templateID) = each($ids_arr)) {
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
