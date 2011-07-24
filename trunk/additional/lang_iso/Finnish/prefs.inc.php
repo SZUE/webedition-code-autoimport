@@ -70,8 +70,9 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	/**
 	 * Countries
 	 */
-	$l_prefs["countries_information"]= "Select the countries, which are available in the customer module, shop-module and so on.";// TRANSLATE
+	$l_prefs["countries_information"]= "Select the countries, which are available in the customer module, shop-module and so on.  The default value (Code '--') - if filled - will be shown on top of the list, possible values are i.e. 'please choose' or '--'.";// TRANSLATE
 	$l_prefs["countries_headline"] = "Country selection";// TRANSLATE
+	$l_prefs["countries_default"] = "Default value";// TRANSLATE
 	$l_prefs["countries_country"] = "Country";// TRANSLATE
     $l_prefs["countries_top"] = "top list";// TRANSLATE
     $l_prefs["countries_show"] = "display";// TRANSLATE

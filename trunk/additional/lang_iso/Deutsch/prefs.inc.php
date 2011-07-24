@@ -64,7 +64,8 @@ $l_prefs = array(
 		/**
 		 * Countries
 		 */
-		'countries_information' => "Wählen Sie hier die Länder aus, die in der Kundenverwaltung, im Shop usw. ausgewählt werden können.",
+		'countries_information' => "Wählen Sie hier die Länder aus, die in der Kundenverwaltung, im Shop usw. ausgewählt werden können. Der Startwert (Code '--') wird - wenn mit einem Wert gefüllt - am oberen Ende der Liste angezeigt, mögliche Werte sind z.B. 'Bitte wählen:' oder '---'",
+		'countries_default' => "Startwert",
 		'countries_headline' => "Länderauswahl",
 		'countries_country' => "Land",
 		'countries_top' => "Top-Liste",

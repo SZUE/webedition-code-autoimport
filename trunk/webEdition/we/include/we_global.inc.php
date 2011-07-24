@@ -3531,7 +3531,6 @@ function CheckAndConvertISOfrontend($utf8data) {
 }
 
 function CheckAndConvertISObackend($utf8data) {
-
 	if ($GLOBALS["_language"]["charset"] != 'UTF-8') {
 		return iconv("UTF-8", $GLOBALS["_language"]["charset"] . "//TRANSLIT", $utf8data);
 	} else {

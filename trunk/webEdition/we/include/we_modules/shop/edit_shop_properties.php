@@ -895,7 +895,9 @@ if (isset($_REQUEST['we_cmd'][0])) {
 						setlocale(LC_ALL, $oldLocale);
 
 						$content='';
-
+						if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+							$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
+						}
 						foreach ($topCountries as $countrykey => &$countryvalue){
 							$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
 						}

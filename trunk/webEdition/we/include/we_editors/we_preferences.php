@@ -169,6 +169,7 @@ $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n
 //countries
 $global_config[] = array('define("WE_COUNTRIES_TOP",', '// top countries' . "\n" . 'define("WE_COUNTRIES_TOP", "DE,AT,CH");');
 $global_config[] = array('define("WE_COUNTRIES_SHOWN",', '// other shown countries' . "\n" . 'define("WE_COUNTRIES_SHOWN", "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");');
+$global_config[] = array('define("WE_COUNTRIES_DEFAULT",', '// shown if no coutry was choosen' . "\n" . 'define("WE_COUNTRIES_DEFAULT", "");');
 
 /*****************************************************************************
  * FUNCTIONS
@@ -320,6 +321,10 @@ function get_value($settingvalue) {
 		 * COUNRIES
 		 *********************************************************************/
 
+		case "countries_default":
+			return defined("WE_COUNTRIES_DEFAULT") ? WE_COUNTRIES_DEFAULT : "";
+			break;
+			
 		case "countries_top":
 			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
 			break;
@@ -909,6 +914,14 @@ function remember_value($settingvalue, $settingname) {
 			/*****************************************************************
 			 * Countries
 			 *****************************************************************/
+
+			case '$_REQUEST["countries_default"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_DEFAULT", $settingvalue);
+
+				$_update_prefs = true;
+				break;
 
 			case '$_REQUEST["countries_top"]':
 
@@ -2784,6 +2797,8 @@ function save_all_values() {
 		remember_value(implode(',',$countries_top), '$_REQUEST["countries_top"]');
 		remember_value(implode(',',$countries_shown), '$_REQUEST["countries_shown"]');
 	}
+	$_update_prefs = remember_value(isset($_REQUEST["countries_default"]) ? $_REQUEST["countries_default"] : null, '$_REQUEST["countries_default"]') || $_update_prefs;
+
 
 	/*************************************************************************
 	 * DEFAULT_CHARSET
@@ -3814,6 +3829,9 @@ function build_dialog($selected_setting = "ui") {
             $_information = htmlAlertAttentionBox($l_prefs["countries_information"], 2, 450, false);
 
 			array_push($_settings, array("headline" => $l_prefs["countries_headline"], "html" => $_information, "space" => 0,'noline'=>1));
+			$_countries_default = htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
+    		array_push($_settings, array("headline" => $l_prefs["countries_default"], "html" => $_countries_default, "space" => 200,"noline" => 1));
+			
             $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
             $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
