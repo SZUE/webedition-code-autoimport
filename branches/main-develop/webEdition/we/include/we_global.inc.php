@@ -154,7 +154,7 @@ function getAllowedClasses($db = '') {
 		if (abs($ws) == 0) {
 			$ws = 0;
 		}
-		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . 'WHERE IsFolder=0');
+		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
 
 		while ($db->next_record()) {
 			$path = $db->f('Path');
