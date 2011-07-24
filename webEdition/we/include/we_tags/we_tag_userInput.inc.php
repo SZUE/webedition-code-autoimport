@@ -705,6 +705,9 @@ function we_tag_userInput($attribs, $content){
 				setlocale(LC_ALL, $oldLocale);
 
 				$options='';
+				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+					$options.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') .WE_COUNTRIES_DEFAULT . '</option>' . "\n";
+				}
 				foreach ($topCountries as $countrykey => &$countryvalue){
 					$options.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
 				}

@@ -202,7 +202,11 @@ function we_tag_field($attribs, $content){
 				$lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 				$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
 			}
-			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'territory',$langcode));
+			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !='' && $GLOBALS["lv"]->f($name)=='--'){
+				$out = 	WE_COUNTRIES_DEFAULT;		
+			} else {
+				$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS["lv"]->f($name),'territory',$langcode));
+			}
 		break;
 		case 'language' :
 			$lang = we_getTagAttribute("outputlanguage", $attribs, "");

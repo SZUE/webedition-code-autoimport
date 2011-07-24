@@ -90,6 +90,9 @@ function we_tag_input($attribs, $content) {
 				setlocale(LC_ALL, $oldLocale);
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				$content = '';
+				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+					$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') .WE_COUNTRIES_DEFAULT . '</option>' . "\n";
+				}
 				foreach ($topCountries as $countrykey => &$countryvalue) {
 					$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>' . "\n";
 				}
@@ -194,7 +197,11 @@ function we_tag_input($attribs, $content) {
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
-				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
+				if ($GLOBALS['we_doc']->getElement($name)=='--') {
+					return '';
+				} else {
+					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
+				}
 			case 'language':
 				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
 				if ($lang == '') {

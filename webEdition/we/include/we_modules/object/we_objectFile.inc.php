@@ -1372,8 +1372,8 @@ class we_objectFile extends we_document{
 			setlocale(LC_ALL, $oldLocale);
 
 			$content='';
-			if (!$this->DefArray["country_".$name]["required"]){
-				$countryselect->addOption('--','');
+			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+				$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
 			}
 			foreach ($topCountries as $countrykey => &$countryvalue){
 				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
@@ -1394,7 +1394,7 @@ class we_objectFile extends we_document{
 
 			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["country_".$name]["required"] ? "*" : "")."</span>" .  (isset($this->DefArray["country_".$name]['editdescription']) && $this->DefArray["country_".$name]['editdescription'] ? '<br /><div class="objectDescription">' . $this->DefArray["country_".$name]['editdescription'] . '</div>' : '<br />' ) . $content;
 		} else {
-			if ($this->getElement($name)!='--' || $this->getElement($name)!=''){
+			if ($this->getElement($name)!= '--' || $this->getElement($name)!=''){
 				return '<div class="weObjectPreviewHeadline">'.$name. '</div><div class="defaultfont">'.CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name),'territory',$langcode) ).'</div>';
 			} else {
 				return '<div class="weObjectPreviewHeadline">'.$name. '</div>';

@@ -66,8 +66,9 @@ $l_prefs = array(
 		/**
 		 * Countries
 		 */
-		'countries_information' => "Select the countries, which are available in the customer module, shop-module and so on.", // TRANSLATE
+		'countries_information' => "Select the countries, which are available in the customer module, shop-module and so on.  The default value (Code '--') - if filled - will be shown on top of the list, possible values are i.e. 'please choose' or '--'.", // TRANSLATE
 		'countries_headline' => "Country selection", // TRANSLATE
+		'countries_default' => "Default value",
 		'countries_country' => "Country", // TRANSLATE
 		'countries_top' => "top list", // TRANSLATE
 		'countries_show' => "display", // TRANSLATE
