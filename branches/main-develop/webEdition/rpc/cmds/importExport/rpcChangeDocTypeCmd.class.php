@@ -43,13 +43,11 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 					//"onChange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
 					"style"		=> "width: 300px")
 				);
-
 				$optid = 0;
-				while (list(, $templateID) = each($ids_arr)) {
+				foreach($ids_arr as $templateID){
 					$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 					$optid++;
 				}
-
 				$templateElement = htmlFormElementTable($TPLselect->getHTMLCode(), g_l('import','[template]'), "left", "defaultfont");
 				if ($values["Category"]!="") {
 					$categories = $this->getCategories("doc",$values["Category"],'v[docCategories]');

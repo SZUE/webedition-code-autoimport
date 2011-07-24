@@ -107,6 +107,9 @@ function we_tag_sessionField($attribs, $content) {
 			setlocale(LC_ALL, $oldLocale);
 
 			$content = '';
+			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') .WE_COUNTRIES_DEFAULT . '</option>' . "\n";
+			}
 			foreach ($topCountries as $countrykey => &$countryvalue) {
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>' . "\n";
 			}
@@ -236,7 +239,11 @@ function we_tag_sessionField($attribs, $content) {
 					$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 				}
 				if ($ascountry) {
-					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode));
+					if ($orgVal=='--') {
+						return '';
+					} else {
+						return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'territory', $langcode));
+					}
 				}
 				if ($aslanguage) {
 					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, 'language', $langcode));
