@@ -1,4 +1,4 @@
-CREATE TABLE tblObject (
+CREATE TABLE ###TBLPREFIX###tblObject (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) NOT NULL default '0',
   strOrder text NOT NULL,

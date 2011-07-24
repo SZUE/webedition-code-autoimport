@@ -28,7 +28,7 @@
  */
 
 $we_button = new we_button();
-$nextButton = $we_button->create_button('next', $_SERVER['PHP_SELF'] . '?update_cmd=register&detail=registerForm');
+$nextButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?update_cmd=register&detail=registerForm');
 
 $content = '
 <div class="defaultfont">
@@ -40,5 +40,3 @@ $content = '
 ';
 
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['register']['headline'], $content);
-
-?>

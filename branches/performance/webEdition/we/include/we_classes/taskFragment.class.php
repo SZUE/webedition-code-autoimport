@@ -23,7 +23,6 @@
  */
 
 
-define("FRAGMENT_LOCATION",$_SERVER["DOCUMENT_ROOT"]."/webEdition/fragments/");
 
 /**
 * Class taskFragment()
@@ -93,7 +92,7 @@ class  taskFragment{
 		if($initdata){
 			$this->initdata = $initdata;
 		}
-		$filename = FRAGMENT_LOCATION.$this->name;
+		$filename = WE_FRAGMENT_DIR.'/'.$this->name;
 		$this->currentTask = isset($_GET["fr_".$this->name."_ct"]) ? $_GET["fr_".$this->name."_ct"] : 0;
 		if(file_exists($filename) && $this->currentTask){
 			$fp = fopen($filename,"rb");
@@ -179,7 +178,7 @@ class  taskFragment{
 			}
 		}
 
-		$onload = "document.location='".$_SERVER["PHP_SELF"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
+		$onload = "document.location='".$_SERVER["SCRIPT_NAME"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
 
 		if ($this->pause) {
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";
@@ -234,7 +233,7 @@ class  taskFragment{
 			}
 		}
 
-		$onload = "document.location='".$_SERVER["PHP_SELF"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
+		$onload = "document.location='".$_SERVER["SCRIPT_NAME"]."?fr_".rawurlencode($this->name)."_ct=".($nextTask).$tail."';";
 
 		if ($this->pause) {
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";

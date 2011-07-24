@@ -1,8 +1,8 @@
-CREATE TABLE tblFile (
+CREATE TABLE ###TBLPREFIX###tblFile (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
-  Icon varchar(64) NOT NULL default '',
+  Icon ENUM('pdf.gif','zip.gif','word.gif','excel.gif','powerpoint.gif','prog.gif','image.gif','html.gif','we_dokument.gif','we_template.gif','javascript.gif','css.gif','htaccess.gif''link.gif','folder.gif','class_folder.gif','flashmovie.gif','quicktime.gif','object.gif','objectFile.gif') NOT NULL,
   IsFolder tinyint(1) NOT NULL default '0',
   ContentType varchar(32) NOT NULL default '',
   CreationDate int(11) NOT NULL default '0',

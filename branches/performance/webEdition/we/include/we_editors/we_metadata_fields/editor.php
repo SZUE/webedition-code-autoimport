@@ -396,7 +396,7 @@ if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] 
 
 	print we_htmlElement::htmlBody(array( "class" => "weDialogBody"), build_dialog("saved")) . "</html>";
 } else {
-	$_form = we_htmlElement::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["PHP_SELF"]), we_htmlElement::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog());
+	$_form = we_htmlElement::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_htmlElement::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog());
 
 	print STYLESHEET . "</head>";
 

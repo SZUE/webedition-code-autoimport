@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-switch ($_REQUEST["we_cmd"][0]) {
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+
+	switch ($_REQUEST["we_cmd"][0]) {
 	case "openCatselector" :
 		$noChoose = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
 	case "openDirselector" :
@@ -31,9 +33,9 @@ switch ($_REQUEST["we_cmd"][0]) {
 	case "openDelSelector" :
 		$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 		$table = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
-		$JSIDName = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "";
-		$JSTextName = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : "";
-		$JSCommand = isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "";
+		$JSIDName = we_cmd_dec(3);
+		$JSTextName = we_cmd_dec(4);
+		$JSCommand = we_cmd_dec(5);
 		$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 		$filter = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
@@ -43,9 +45,9 @@ switch ($_REQUEST["we_cmd"][0]) {
 	case "openDocselector" :
 		$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 		$table = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
-		$JSIDName = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "";
-		$JSTextName = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : "";
-		$JSCommand = isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "";
+		$JSIDName = we_cmd_dec(3);
+		$JSTextName = we_cmd_dec(4);
+		$JSCommand = we_cmd_dec(5);
 		$sessionID = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : "";
 		$rootDirID = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 		$filter = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";

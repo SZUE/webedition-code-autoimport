@@ -64,16 +64,18 @@ define('LOAD_REVERT_DB', 2);
 define('LOAD_SCHEDULE_DB', 3);
 
 define('WE_TREE_DEFAULT_WIDTH', 300);
+define('WEBEDITION_DIR', '/webEdition/');
+define('WEBEDITION_INCLUDES_PATH',WEBEDITION_DIR.'we/include/');
+define('WEBEDITION_INCLUDES_DIR', $_SERVER['DOCUMENT_ROOT'].WEBEDITION_INCLUDES_PATH);
 
 // Activate the webEdition error handler
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_error_handler.inc.php');
-if (!defined('WE_ERROR_HANDLER_SET')) {
+include_once (WEBEDITION_INCLUDES_DIR.'we_classes/base/we_error_handler.inc.php');
+if (!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_version.php');
+include_once (WEBEDITION_INCLUDES_DIR . 'we_version.php');
 
-define('WEBEDITION_DIR', '/webEdition/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
@@ -123,19 +125,13 @@ define('SUB_DIR_YEAR_MONTH', 2);
 define('SUB_DIR_YEAR_MONTH_DAY', 3);
 
 // Initialize imageType array
-$IMAGE_TYPE = array(
-		'', 'image/gif', 'image/jpeg', 'image/png'
-);
+$IMAGE_TYPE = array('', 'image/gif', 'image/jpeg', 'image/png');
 
 // Refresh imageExt array
-$IMAGE_EXT = array(
-		'', '.gif', '.jpg', '.png'
-);
+$IMAGE_EXT = array('', '.gif', '.jpg', '.png');
 
 // Initialize gdImageType arrays
-$GDIMAGE_TYPE = array(
-		'.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png'
-);
+$GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
 
 define('IMAGE_CONTENT_TYPES', 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png');
 
@@ -149,7 +145,6 @@ define('FILE_TABLE', TBL_PREFIX . 'tblFile');
 define('INDEX_TABLE', TBL_PREFIX . 'tblIndex');
 define('LINK_TABLE', TBL_PREFIX . 'tblLink');
 define('LANGLINK_TABLE', TBL_PREFIX . 'tblLangLink');
-define('PASSWD_TABLE', TBL_PREFIX . 'tblPasswd');
 define('PREFS_TABLE', TBL_PREFIX . 'tblPrefs');
 define('RECIPIENTS_TABLE', TBL_PREFIX . 'tblRecipients');
 define('TEMPLATES_TABLE', TBL_PREFIX . 'tblTemplates');
@@ -168,31 +163,26 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/fragments'); // important noot to add a slash at the end!
-define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/');
-define('WE_MODULE_PATH', '/webEdition/we/include/we_modules/');
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
+define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH.'we_modules/');
+define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
-define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/');
-define('WE_TOOLS_PATH', '/webEdition/apps/');
+define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
+define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
 
-if (!defined('LOGIN_FAILED_TIME')) {
-	define('LOGIN_FAILED_TIME', 2); // in minutes
-}
+(!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 
-if (!defined('LOGIN_FAILED_NR')) {
-	define('LOGIN_FAILED_NR', 3);
-}
+(!defined('LOGIN_FAILED_NR')) && define('LOGIN_FAILED_NR', 3);
 
-if (!defined('LOGIN_FAILED_HOLDTIME')) {
-	define('LOGIN_FAILED_HOLDTIME', 30); // in days
-}
+(!defined('LOGIN_FAILED_HOLDTIME')) && define('LOGIN_FAILED_HOLDTIME', 30); // in days
+
 
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days
 
 
-define(
-				'WE_WYSIWYG_COMMANDS', 'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
+define('WE_WYSIWYG_COMMANDS',
+		'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
 
 if(!defined('WE_SERVER_URL')){
 	/* Determine the protocol used for the request */

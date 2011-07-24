@@ -39,7 +39,7 @@ if (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJECTFILE){
 if (defined('SUPPRESS404CODE') && SUPPRESS404CODE){
 	$suppresserrorcode = true;
 } else {
-	$suppresserrorcode = true;
+	$suppresserrorcode = false;
 }
 if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))  ){
 	$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);
@@ -51,8 +51,15 @@ if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAME
 
 if (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL']!=''){
 	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
-} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']!=''){
+} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL']!='' && $_SERVER['REDIRECT_URL']!='/webEdition/redirectSEOurls.php'){
 	$path_parts = pathinfo($_SERVER['REDIRECT_URL']);
+} elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']!=''){
+	if(strpos($_SERVER['REQUEST_URI'],'?')!==false){
+		$zw2= explode('?',$_SERVER['REQUEST_URI']);
+		$path_parts = pathinfo($zw2[0]);
+	} else {
+		$path_parts = pathinfo($_SERVER['REQUEST_URI']);
+	}
 }
 
 if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
@@ -61,7 +68,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	$objectid=0;
 	$searchfor ='';
 	$notfound=true;
-	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/'){
+	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname']!='/' && $path_parts['dirname']!='\\'){
 
 		$display=$path_parts['dirname'].DEFAULT_DYNAMIC_EXT;
 		$displayid=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
@@ -126,7 +133,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 
 		exit;
 	} elseif($error404doc) {
-		if(suppresserrorcode){
+		if($suppresserrorcode){
 			header("HTTP/1.0 200 OK", true,200);
 			header("Status: 200 OK", true,200);
 		} else {

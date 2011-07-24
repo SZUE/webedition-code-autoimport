@@ -52,7 +52,7 @@ class we_document extends we_root {
 	/* Extension of the document */
 	var $Extension='';
 
-	/* Array of possible extensions for the document */
+	/* Array of possible filename extensions for the document */
 	var $Extensions;
 	var $Published=0;
 
@@ -782,14 +782,22 @@ class we_document extends we_root {
 	}
 
 	function we_save($resave=0,$skipHook=0){
+		$this->errMsg='';
+		$this->i_setText();
 
+		if ($skipHook==0){
+			$hook = new weHook('preSave', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
+		}
 		/* version */
 		$version = new weVersions();
 
-		$this->i_setText();
-
-		if(!we_root::we_save($resave))
-			return false;
+		if(!we_root::we_save($resave))	return false;
 		$ret = $this->i_writeDocument();
 		$this->OldPath = $this->Path;
 
@@ -808,8 +816,13 @@ class we_document extends we_root {
 
 		/* hook */
 		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
+			$hook = new weHook('save', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 		return $ret;
 	}
@@ -1096,15 +1109,15 @@ class we_document extends we_root {
 				$only = we_getTagAttribute('only',$attribs,'');
 
 				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true);
+					$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, '', true, true);
 				} else {
-					$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
+					$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, '', true, false);
 				}
 
 				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true);
+					$objectseourls = we_getTagAttribute('objectseourls', $attribs, '', true, true);
 				} else {
-					$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
+					$objectseourls = we_getTagAttribute('objectseourls', $attribs, '', true, false);
 				}
 
 				if($pathOnly || $only == 'href'){
@@ -1141,9 +1154,9 @@ class we_document extends we_root {
 					    }
 					} else {
 
-    					if($content = we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$objectseourls)) {
+    					if(($content = we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$objectseourls))) {
 
-    						if( $startTag = we_document::getLinkStartTag($link,$attribs,$parentID,$path,$db,$img,$_useName,$hidedirindex,$objectseourls)) {
+    						if(($startTag = we_document::getLinkStartTag($link,$attribs,$parentID,$path,$db,$img,$_useName,$hidedirindex,$objectseourls))) {
     							return $startTag.$content.'</a>';
     						}
     						else {
@@ -1351,16 +1364,13 @@ class we_document extends we_root {
 				return '';
 			}else{
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Path',$db);
-
 				if (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition) {
-
 					return $path;
 				} else {
-
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
 					if ($published) {
-						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
-							$path_parts = pathinfo($path);
+						$path_parts = pathinfo($path);
+						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){	
 							$path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 						}
 						return $path;
@@ -1442,7 +1452,7 @@ class we_document extends we_root {
 			if (getXmlAttributeValueAsBoolean($xml) ) {
 				// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 				// as html_entity_decode is only available php > 4.3 we use a custom function
-				return htmlspecialchars( unhtmlentities($link['text']) );
+				return htmlspecialchars( html_entity_decode($link['text']) );
 			} else {
 				return $htmlspecialchars ? htmlspecialchars($link['text']) : $link['text'];
 			}

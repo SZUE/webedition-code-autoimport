@@ -1,4 +1,4 @@
-CREATE TABLE tblcustomerfilter (
+CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `id` bigint(20) NOT NULL auto_increment,
   `modelId` bigint(20) NOT NULL,
   `modelType` ENUM('folder','objectFile','text/webedition')  NOT NULL,
@@ -14,6 +14,5 @@ CREATE TABLE tblcustomerfilter (
   PRIMARY KEY  (`id`),
   KEY `mode` (`mode`),
   KEY `modelId` (`modelId`,`modelType`,`modelTable`),
-  KEY modelType (modelType),
-  KEY `accessControlOnTemplate` (`accessControlOnTemplate`)
+  KEY modelType (modelType,accessControlOnTemplate)
 ) ENGINE=MyISAM;

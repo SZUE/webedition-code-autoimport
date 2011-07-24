@@ -22,14 +22,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/newsletter/weNewsletterDirSelector.inc.php");
 	protect();
 
-	$_SERVER["PHP_SELF"] = "/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php";
+	$_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php";
+		if (isset($_REQUEST["JSIDName"]) && strpos($_REQUEST["JSIDName"],'WECMDENC_')!==false){$_REQUEST["JSIDName"]=base64_decode( urldecode(substr($_REQUEST["JSIDName"],9)));}
+		if (isset($_REQUEST["JSTextName"]) && strpos($_REQUEST["JSTextName"],'WECMDENC_')!==false){$_REQUEST["JSTextName"]=base64_decode( urldecode(substr($_REQUEST["JSTextName"],9)));}
+		if (isset($_REQUEST["JSCommand"]) && strpos($_REQUEST["JSCommand"],'WECMDENC_')!==false){$_REQUEST["JSCommand"]=base64_decode( urldecode(substr($_REQUEST["JSCommand"],9)));}
 
 	$fs = new weNewsletterDirSelector(
 		isset( $id ) ? $id : ( isset( $_REQUEST["id"] ) ? $_REQUEST["id"] : '' ),
-		isset( $JSIDName ) ? $JSIDName : ( isset( $_REQUEST["JSIDName" ] ) ? $_REQUEST["JSIDName"] : '' ),
+		isset( $JSIDName ) ? $JSIDName : ( isset( $_REQUEST["JSIDName"] ) ? $_REQUEST["JSIDName"] : '' ),
 		isset( $JSTextName ) ? $JSTextName : ( isset( $_REQUEST["JSTextName"] ) ? $_REQUEST["JSTextName"] : '' ),
 		isset( $JSCommand ) ? $JSCommand : ( isset( $_REQUEST["JSCommand"] ) ? $_REQUEST["JSCommand"] : '' ),
 		isset( $order ) ? $order : ( isset( $_REQUEST["order"] ) ? $_REQUEST["order"] : '' ),
@@ -41,5 +45,3 @@
 	);		
 		
 	$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
-
-?>

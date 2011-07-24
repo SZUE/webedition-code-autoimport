@@ -29,11 +29,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 }
 
 /* the parent class for tree-objects */
-class we_root extends we_class
-{
-	######################################################################################################################################################
-	##################################################################### Variables ######################################################################
-	######################################################################################################################################################
+class we_root extends we_class{
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName="we_root";
@@ -283,11 +279,14 @@ class we_root extends we_class
 		} else {
 			$width=0;
 		}
-
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .$cmd."','".session_id()."','$rootDirID')");
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .$cmd."','".session_id()."','$rootDirID')
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .str_replace('\\','',$cmd)."");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 
 		$yuiSuggest->setAcId("Path",id_to_path(array($rootDirID),$table));
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType("folder,class_folder");
 		$yuiSuggest->setInput($textname,$path,array("onBlur"=>$_parentPathChangedBlur));
 		$yuiSuggest->setLabel(g_l('weClass',"[dir]"));
 		$yuiSuggest->setMaxResults(10);
@@ -297,7 +296,6 @@ class we_root extends we_class
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
-
 		return $yuiSuggest->getHTML();
 		//return $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 	}
@@ -347,8 +345,11 @@ class we_root extends we_class
 
 			$inputFeld=$this->htmlTextInput($textname,24,$creator,"",$attribs,"",$width);
 			$idfield = $this->htmlHidden($idname,$this->CreatorID);
-
-			$button = $we_button->create_button("edit", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')");
+			//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);')
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+			$wecmdenc5= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
+			$button = $we_button->create_button("edit", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','user',document.forms[0].elements['$idname'].value,'".$wecmdenc5."')");
 
 			$out = $this->htmlFormElementTable($inputFeld,
 			g_l('weClass',"[maincreator]"),
@@ -401,8 +402,12 @@ class we_root extends we_class
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
 		$delallbut = $we_button->create_button("delete_all","javascript:we_cmd('del_all_owners','')",true,-1,-1,"","",$this->Owners ? false : true);
+		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc5= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");		
 		$addbut = $canChange ?
-				$this->htmlHidden($idname,"").$this->htmlHidden($textname,"").$we_button->create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);")
+				$this->htmlHidden($idname,"").$this->htmlHidden($textname,"").$we_button->create_button("add", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',document.forms[0].elements['$idname'].value,'".$wecmdenc5."','','',1);")
 				: "";
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500">
@@ -505,7 +510,11 @@ class we_root extends we_class
 	function formCopyDocument(){
 		$idname = 'we_'.$this->Name.'_CopyID';
 		$we_button = new we_button();
-		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd(\\'copyDocument\\', currentID);', '" . session_id() . "', '0', '" . $this->ContentType . "',1);");
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['".$idname."'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);");
+		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms[0].elements['".$idname."'].value, '" . $this->Table . "','".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "', '0', '" . $this->ContentType . "',1);");
 
 		$content = $this->htmlHidden($idname,$this->CopyID).$but;
 		return $content;
@@ -530,7 +539,10 @@ class we_root extends we_class
 			$username = f("SELECT username FROM " . USER_TABLE . " WHERE ID='".abs($userid)."'","username",$this->DB_WE);
 		}
 
-
+		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc5= '';
 		return we_root::htmlFormElementTable
 		(
 			we_root::htmlTextInput($textname,30,$username,"",' readonly',"text",$width,0),
@@ -539,7 +551,7 @@ class we_root extends we_class
 			"defaultfont",
 			we_root::htmlHidden($idname,$userid),
 			getPixel(20,4),
-			$we_button->create_button("select", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')")
+			$we_button->create_button("select", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','user')")
 		);
 
 
@@ -559,11 +571,15 @@ function formTriggerDocument($isclass=false){
 			$myid = $this->TriggerID ? $this->TriggerID : "";
 		}
 		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)"
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		
-		$yuiSuggest->setAcId("TriggerID");
-		$yuiSuggest->setContentType("text/webedition");
+		$yuiSuggest->setAcId("TriggerID");	
+		$yuiSuggest->setContentType("folder,text/webedition");
 		$yuiSuggest->setInput($textname,$path);
 		$yuiSuggest->setLabel(g_l('modules_object','[seourltrigger]'));
 		$yuiSuggest->setMaxResults(10);
@@ -576,12 +592,11 @@ function formTriggerDocument($isclass=false){
 		$yuiSuggest->setTrashButton($trashButton);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
-
 		return $yuiSuggest->getHTML();
 
 	}
-	function formLanguageDocument($headline, $langkey,$LDID=0,$table = FILE_TABLE,$rootDir=0){
-		global $l_we_class, $BROWSER;
+	function formLanguageDocument($headline, $langkey,$LDID=0,$table = FILE_TABLE,$rootDirID=0){
+		global $BROWSER;
 		$yuiSuggest =& weSuggest::getInstance();
 		$we_button = new we_button();
 		
@@ -592,8 +607,11 @@ function formTriggerDocument($isclass=false){
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
 		//$myid = $this->TriggerID ? $this->TriggerID : "";
 		$myid = $LDID ? $LDID:'';
-		$path = f("SELECT Path FROM ".mysql_real_escape_string($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
-		$yuiSuggest->setAcId($ackeyshort,$rootDir);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		if($rootDirID && $path==''){
+			$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($rootDirID)."'","Path",$this->DB_WE);
+		}
+		$yuiSuggest->setAcId($ackeyshort,$path);
 		if ($table == FILE_TABLE){
 			$yuiSuggest->setContentType("folder,text/webedition");
 			$ctype='text/webedition';
@@ -603,10 +621,21 @@ function formTriggerDocument($isclass=false){
 			$ctype='objectFile';
 			$etype=OBJECT_FILES_TABLE;
 		}
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)");
-		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $rootDir . "','".$ctype."',1)
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
+
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','" . $rootDirID . "','".$ctype."',1)");
+		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = $we_button->create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'".$ctype."','".$etype."'); }");
-		
+		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){			
+			$LDcoType = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID='".$this->DocType."' AND Locale='".$langkey."'",'LDID',new DB_WE());
+			if($LDcoType){
+				$createbutton = $we_button->create_button("image:add_doc", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','".$LDcoType."');");
+				$yuiSuggest->setCreateButton($createbutton);
+			}
+		}
 		$yuiSuggest->setInput($textname,$path,"",true);
 		//$yuiSuggest->setInput($textname);
 		$yuiSuggest->setLabel($headline);
@@ -621,7 +650,6 @@ function formTriggerDocument($isclass=false){
 		$yuiSuggest->setOpenButton($openbutton);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
-
 		return $yuiSuggest->getHTML();
 
 	}
@@ -789,13 +817,12 @@ function formTriggerDocument($isclass=false){
 			$this->ModDate = time();
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		}
-		if(!we_class::we_save($resave)) return false;
+		if(!we_class::we_save($resave)) return false;	
 		$a = $this->i_saveContentDataInDB();
 		if($resave==0 && $this->ClassName!="we_class_folder"){
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 		}
-
 		return $a;
 	}
 
@@ -833,16 +860,6 @@ function formTriggerDocument($isclass=false){
 			}
 		}
 		$this->i_setElementsFromHTTP();
-/* TODO: WECF  Brauchen wir das noch ?
-		// weDocumentCustomerFilter
-		if ( isset( $_REQUEST["we_edit_weDocumentCustomerFilter"] ) ) {
-			$this->documentCustomerFilter = weDocumentCustomerFilter::getCustomerFilterFromRequest($this);
-
-		} else if (isset($sessDat[3])) { // init webUser from session
-			$this->documentCustomerFilter = unserialize($sessDat[3]);
-
-		}
-*/
 	}
 
 	function i_initSerializedDat($sessDat){
@@ -985,55 +1002,54 @@ function formTriggerDocument($isclass=false){
 
 	function i_saveContentDataInDB(){
 		if(!deleteContentFromDB($this->ID,$this->Table)) return false;
-		if(is_array($this->elements)){
+		if(!is_array($this->elements)){
+			return true;
+		}
 
-			foreach($this->elements as $k=>$v){
-				if($this->i_isElement($k)){
+		foreach($this->elements as $k=>$v){
+			if($this->i_isElement($k)){
+				if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
 
-//					if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"])) && (!isset($v["type"]) || $v["type"] != "variants")){
-					if( (!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
-
-						$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
-						$keys = "";
-						$vals = "";
-						for($i=0;$i<sizeof($tableInfo);$i++){
-							$fieldName = $tableInfo[$i]["name"];
-							$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : "";
-							if($k=="data" && $this->IsBinary){
-								break;
-							}
-							if($fieldName == "Dat" && (isset($v["ffname"]) && $v["ffname"])){
-								$v["type"] = "formfield";
-								$val = serialize($v);
-								// Artjom garbage fix
-							}
-
-							if(!isset($v["type"]) || $v["type"] == ""){
-								$v["type"] = "txt";
-							}
-							if($v["type"] == "date"){
-								$val = sprintf("%016d",$val);
-							}
-							if($fieldName != "ID"){
-								$keys .= $fieldName.",";
-								$vals .= "'".addslashes($val)."',";
-							}
+					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
+					$keys = array();
+					$vals = '';
+					for($i=0;$i<sizeof($tableInfo);$i++){
+						$fieldName = $tableInfo[$i]["name"];
+						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+						if($k=="data" && $this->IsBinary){
+							break;
 						}
-						if($keys){
-							$keys = "(".substr($keys,0,strlen($keys)-1).")";
-							$vals = "VALUES(".substr($vals,0,strlen($vals)-1).")";
-							$q = "INSERT INTO " . CONTENT_TABLE . " $keys $vals";
-							if(isset($debug) && $debug) print "$q<br>\n";
-							else $this->DB_WE->query($q);
-							$cid = f("SELECT max(ID) as ID FROM " . CONTENT_TABLE, "ID", $this->DB_WE);
-							$this->elements[$k]["id"]=$cid; // update Object itself
-							$q = "INSERT INTO " . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".abs($cid).",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
-							if(!$this->DB_WE->query($q)) return false;
+						if($fieldName == "Dat" && (isset($v["ffname"]) && $v["ffname"])){
+							$v["type"] = "formfield";
+							$val = serialize($v);
+							// Artjom garbage fix
+						}
+
+						if(!isset($v["type"]) || $v["type"] == ""){
+							$v["type"] = "txt";
+						}
+						if($v["type"] == "date"){
+							$val = sprintf("%016d",$val);
+						}
+						if($fieldName != "ID"){
+							$keys[] = $fieldName;
+							$vals .= "'".addslashes($val)."',";
+						}
+					}
+					if(count($keys)){
+						$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
+						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).')'.' '.$vals);
+						$cid=$this->DB_WE->getInsertId();
+						$this->elements[$k]['id']=$cid; // update Object itself
+						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
+						if(!$this->DB_WE->query($q)){
+							return false;
 						}
 					}
 				}
 			}
 		}
+		
 		return true;
 	}
 

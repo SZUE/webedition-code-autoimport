@@ -49,12 +49,12 @@ function we_cmd(){
 	</div>
 	<div style="position:absolute;top:0;bottom:0;left:24px;right:0;border:0;" id="treeFrameDiv">
 		<div style="position:absolute;top:0;height:1px;left:0;right:0;" id="bm_vtabsDiv">
-			<iframe src="<?php print HTML_DIR ?>frameheader.html" name="bm_vtabs" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+			<iframe src="<?php print HTML_DIR ?>frameheader.html" name="treeheader" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<div style="position:absolute;bottom:0;height:40px;left:0;right:0;">
 			<iframe src="treeInfo.php" name="infoFrame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
-		<div style="position:absolute;top:1px;bottom:40px;left:0;right:0;overflow: auto;">
+		<div style="position:absolute;top:1px;bottom:40px;left:0;right:0;overflow: auto;" id="bm_mainDiv">
 			<iframe src="treeMain.php" name="bm_main" onload="top.start()" style="border:0;width:100%;height:100%;"></iframe>
 		</div>
 	</div>

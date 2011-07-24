@@ -160,5 +160,3 @@ if (isset($_REQUEST['update_cmd'])) {
 	$updateFrames = new liveUpdateFrames();
 	print $updateFrames->getFrame();
 }
-
-?>

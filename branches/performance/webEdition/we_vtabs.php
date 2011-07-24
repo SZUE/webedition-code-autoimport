@@ -134,8 +134,8 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 	var oldWidth = <?php print WE_TREE_DEFAULT_WIDTH; ?>;
 
 	function toggleTree() {
-		var w = top.getTreeWidth();
-/*
+/*		var w = top.getTreeWidth();
+
 		if (w <= 22) {
 			var newWidth = parseInt(oldWidth);
 			if(newWidth<=22){
@@ -150,11 +150,36 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 			top.setTreeArrow("right");
 			top.storeTreeWidth(22);
 		}*/
-										top.toggleTree();
+		top.toggleTree();
 	}
 
+	function incTree(){
+		var w = parseInt(top.getTreeWidth());
+		if((100<w) && (w<1000)){
+			w+=20;
+			top.setTreeWidth(w);
+		}
+		if(w>=1000){
+			w=1000;
+			self.document.getElementById("incBaum").style.backgroundColor="gray";
+		}
+	}
+
+	function decTree(){
+		var w = parseInt(top.getTreeWidth());
+		w-=20;
+		if(w>200){
+			top.setTreeWidth(w);
+			self.document.getElementById("incBaum").style.backgroundColor="";
+		}
+		if(w<=200 && ((w+20)>=200)){
+			toggleTree();
+		}
+	}
+	
+
 	function treeOut() {
-		if (top.getTreeWidth() <= 22) {
+		if (top.getTreeWidth() <= 30) {
 			toggleTree();
 		}
 	}
@@ -189,6 +214,8 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 					//-->
 					</script>
 		</div>
-		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 22) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
+		<img id="incBaum" src="<?php print IMAGE_DIR ?>button/icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:gray;' : ''; ?>" onClick="incTree();">
+		<img id="decBaum" src="<?php print IMAGE_DIR ?>button/icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:gray;' : ''; ?>" onClick="decTree();">
+		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 100) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
 	</body>
 </html>

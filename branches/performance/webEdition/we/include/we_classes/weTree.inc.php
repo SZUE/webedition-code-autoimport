@@ -311,25 +311,29 @@ class weTree{
 
 			if(treeData[i].id == object_name) {
 				if(treeData[i].checked==1) {
+					treeData[i].checked=0;
+					treeData[i].applylayout();
 					if(document.images) {
 						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
 					}
-					treeData[i].checked=0;
-					treeData[i].applylayout();
+					
 					break;
 				}
 				else {
+					treeData[i].checked=1;
+					treeData[i].applylayout();
 					if(document.images) {
 						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
 					}
-					treeData[i].checked=1;
-					treeData[i].applylayout();
+					
 					break;
 				}
 			}
 
 		}
-		if(!document.images) drawTree();
+		if(!document.images) {
+			drawTree();
+		}
 	}
 	';
  }

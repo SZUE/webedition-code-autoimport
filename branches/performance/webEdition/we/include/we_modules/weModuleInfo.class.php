@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_active_integrated_modules.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_installed_modules.inc.php");
 
 class weModuleInfo {

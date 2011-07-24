@@ -39,20 +39,20 @@ $l_charset = array(
 //	we/include/charset.inc.php
 // :ATTENTION: this code is used independent from charset, therefore we use htmlentities
 
-				'west_european' => "Westeurop&auml;isch", // ISO-8859-1
-				'central_european' => "Mitteleurop&auml;isch", // ISO-8859-2
-				'south_european' => "S&uuml;deurop&auml;isch", // ISO-8859-3
-				'north_european' => "Nordeurop&auml;isch", // ISO-8859-4
+				'west_european' => "Westeuropäisch", // ISO-8859-1
+				'central_european' => "Mitteleuropäisch", // ISO-8859-2
+				'south_european' => "Südeuropäisch", // ISO-8859-3
+				'north_european' => "Nordeuropäisch", // ISO-8859-4
 				'cyrillic' => "Kyrillisch", // ISO-8859-5
 				'arabic' => "Arabisch", // ISO-8859-6
 				'greek' => "Griechisch", // ISO-8859-7
-				'hebrew' => "Hebr&auml;isch", // ISO-8859-8
-				'turkish' => "T&uuml;rkisch", // ISO-8859-9
+				'hebrew' => "Hebräisch", // ISO-8859-8
+				'turkish' => "Türkisch", // ISO-8859-9
 				'nordic' => "Nordisch", // ISO-8859-10
-				'thai' => "Thail&auml;ndisch", // ISO-8859-11
+				'thai' => "Thailändisch", // ISO-8859-11
 				'baltic' => "Baltisch", // ISO-8859-13
 				'keltic' => "Keltisch", // ISO-8859-14
-				'extended_european' => "Europ&auml;isch (erweitert)", // ISO-8859-15
+				'extended_european' => "Europäisch (erweitert)", // ISO-8859-15
 
 				'unicode' => "Unicode", // UTF-8
 				'windows_1251' => "Windows-1251", // Windows-1251

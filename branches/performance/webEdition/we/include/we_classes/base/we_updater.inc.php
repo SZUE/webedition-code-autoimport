@@ -251,8 +251,8 @@
 	  $DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
 	  if($DB_WE->next_record()) return true; else return false;
 	}
-
-	function addTable($tab,$cols){
+	 
+	function addTable($tab,$cols,$keys=array()){
 	   global $DB_WE;
 
 	   if(!is_array($cols)) return;
@@ -261,6 +261,9 @@
 	   $key_sql=array();
 	   foreach($cols as $name=>$type){
 			$cols_sql[]=$name." ".$type;
+	   }
+	   foreach($keys as $name=>$type){
+			$key_sql[]=$name." ".$type;
 	   }
 	   $sql_array=array_merge($cols_sql,$key_sql);
 
@@ -726,6 +729,20 @@
 	}
 
 	function updateLock(){
+		if(!$this->isTabExist(LOCK_TABLE)){
+			$cols=array(
+				"ID"=>"bigint(20) NOT NULL default '0'",
+				"sessionID"=>"varchar(64) NOT NULL default ''",
+				"lockTime"=>"datetime NOT NULL",
+				"tbl"=>"varchar(32) NOT NULL default ''"
+				);
+			$keys=array(
+				"PRIMARY KEY"=>"(ID,tbl)",
+				"KEY UserID"=>"(UserID,sessionID)",
+				"KEY lockTime"=>"(lockTime)"
+				);
+			$this->addTable(LOCK_TABLE,$cols,$keys);	
+		}
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
 		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
 		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
@@ -746,6 +763,26 @@
 		}
 		return true;
 	}
+	function updateLangLink(){
+		if(!$this->isTabExist(LANGLINK_TABLE)){
+			$cols=array(
+				"ID"=>"int(11) NOT NULL AUTO_INCREMENT",
+				"DID"=>"DID int(11) NOT NULL default '0'",
+				"DLocale"=>"varchar(5) NOT NULL default ''",
+				"IsFolder"=>"tinyint(1) NOT NULL default '0'",
+				"IsObject"=>"tinyint(1) NOT NULL default '0'",
+				"LDID"=>"int(11) NOT NULL default '0'",
+				"Locale"=>" varchar(5) NOT NULL default ''",
+				"DocumentTable"=>"enum('tblFile','tblObjectFile','tblDocTypes') NOT NUL"
+				);
+			$keys=array(
+				"PRIMARY KEY"=>"(ID)",
+				"KEY DID"=>"(DID,Locale(5))"
+				);
+			$this->addTable(LOCK_TABLE,$cols,$keys);				
+		}
+		if(!$this->isColExist(LANGLINK_TABLE,'DLocale'))  $this->addCol(LANGLINK_TABLE,'DLocale',"varchar(5) NOT NULL default ''",' AFTER DID ');
+	}
 
 	function doUpdate(){
 		$this->updateTables();
@@ -759,6 +796,7 @@
 		$this->updateVersions();
 		$this->updateWorkflow();
 		$this->updateLock();
+		$this->updateLangLink();
 		$this->updateTableKeys();
 	}
 

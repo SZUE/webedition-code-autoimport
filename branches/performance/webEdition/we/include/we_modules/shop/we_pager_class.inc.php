@@ -116,7 +116,7 @@ class blaettern {
 	*
 	*	@access public
 	*	@param (int) $active_page						Zahl der aktuellen Seite, erhaelt man ungefaehr so: "$active_page=isset($_GET['ap']) ? $_GET['ap'] : 0;"
-	*	@param (int) $entries							Anzahl aller Ergebnisse; erhaelt man ungefaehr so: "$entries=mysql_num_rows($resource);"
+	*	@param (int) $entries							Anzahl aller Ergebnisse; erhaelt man ungefaehr so: "$entries=num_rows($resource);"
 	*/
 	function blaettern($active_page, $entries) {
 		$this->set_Active_Page($active_page);
@@ -551,7 +551,7 @@ class blaettern {
 	/** Setzt Wert fuer Gesamtzahl aller Eintraege
 	*
 	*	@access public
-	*	@param (int) $entries							Anzahl aller Ergebnisse; erhaelt man ungefaehr so: "$entries=mysql_num_rows($resource);"
+	*	@param (int) $entries							Anzahl aller Ergebnisse; erhaelt man ungefaehr so: "$entries=num_rows($resource);"
 	*	@return (bool)									Gibt false zurueck, wenn $entries keinen gueltigen Wert hat
 	*/
 	function set_Entries($entries) {

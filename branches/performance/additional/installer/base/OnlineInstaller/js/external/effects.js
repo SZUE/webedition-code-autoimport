@@ -78,8 +78,8 @@ var Effect = {
       return 1-pos;
     },
     flicker: function(pos) {
-      var pos = ((-Math.cos(pos*Math.PI)/4) + .75) + Math.random()/4;
-      return pos > 1 ? 1 : pos;
+      var mypos = ((-Math.cos(pos*Math.PI)/4) + .75) + Math.random()/4;
+      return mypos > 1 ? 1 : mypos;
     },
     wobble: function(pos) {
       return (-Math.cos(pos*Math.PI*(9*pos))/2) + .5;

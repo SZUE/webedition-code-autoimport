@@ -35,5 +35,3 @@ $LU_ParameterNames = array(
 	'clientTargetVersionNumber',
 	'decreaseSpeed'
 );
-
-?>

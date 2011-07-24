@@ -184,6 +184,3 @@ class weNewsletterGroup extends weNewsletterBase{
 
 	}
 }
-
-
-?>

@@ -28,5 +28,5 @@ $l_weCodeWizard = array(
 		'custom_snippets' => "Eigene Snippets",
 // Names of the Folders
 		'foldername' => "Formulare",
-		'foldername' => "&Uuml;bersichten",
+		'foldername' => "Übersichten",
 );

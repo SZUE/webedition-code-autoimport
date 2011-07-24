@@ -22,14 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//FIXME: check what todo with match in case of blocks!
+
 function we_tag_ifVar($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "ifVar");
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, "name", "ifVar"))) {
 		print($foo);
 		return "";
 	}
-	$foo = attributFehltError($attribs, "match", "ifVar", true);
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, "match", "ifVar", true))) {
 		print($foo);
 		return "";
 	}

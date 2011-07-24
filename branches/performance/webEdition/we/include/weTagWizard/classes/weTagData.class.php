@@ -123,11 +123,11 @@ class weTagData {
 		// include the selected tag, its either normal, or custom tag
 		if (file_exists(
 										$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php')) {
-			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
+			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/we_tag_' . $tagName . '.inc.php');
 		} else
 		if (file_exists(
 										$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')) {
-			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
+			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 		} else {
 			//Application Tags
 			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
@@ -147,21 +147,17 @@ class weTagData {
 				return false;
 			}
 		}
-		if (isset($GLOBALS['l_we_tag'][$tagName]['description'])) {
-			$description = isset($GLOBALS['l_we_tag'][$tagName]['description']);
-		} else {
 			if (isset($GLOBALS['weTagWizard']['weTagData']['description'])) {
 				$description = $GLOBALS['weTagWizard']['weTagData']['description'];
-			} else {
-				$description = '';
-			}
+			}else{
+				$description = g_l('weTag','['.$tagName.'][description]');
 		}
 		return new weTagData(
 						$tagName,
 						isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(),
 						$description,
 						$GLOBALS['weTagWizard']['weTagData']['needsEndtag'],
-						isset($GLOBALS['l_we_tag'][$tagName]['defaultvalue']) ? $GLOBALS['l_we_tag'][$tagName]['defaultvalue'] : '',
+						g_l('weTag','['.$tagName.'][defaultvalue]'),
 						isset($GLOBALS['weTagWizard']['weTagData']['noDocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['noDocuLink'] : '',
 						isset($GLOBALS['weTagWizard']['weTagData']['DocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['DocuLink'] : ''
 		);

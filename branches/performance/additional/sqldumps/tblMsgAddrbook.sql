@@ -1,4 +1,4 @@
-CREATE TABLE tblMsgAddrbook (
+CREATE TABLE ###TBLPREFIX###tblMsgAddrbook (
   ID int(11) NOT NULL auto_increment,
   UserID int(11) default NULL,
   strMsgType varchar(255) default NULL,

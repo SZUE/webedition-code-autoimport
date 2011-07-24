@@ -204,7 +204,7 @@ class liveUpdateHttp {
 			}
 		}
 
-		$html = '<html>
+		return '<html>
 <head>
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
@@ -216,6 +216,5 @@ class liveUpdateHttp {
 </form>
 </body>
 </html>';
-		return $html;
 	}
 }

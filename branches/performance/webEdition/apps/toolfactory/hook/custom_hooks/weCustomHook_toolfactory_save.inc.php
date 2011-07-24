@@ -27,7 +27,7 @@
 	/**
 	 * if hook execution is enabled this function will be executed 
 	 * when saving an entry or folder in the application toolfactory
-	 * The array $param has all information about the respective entry or folder.
+	 * Files in the sample_hooks folder are not executed and are not update-safe and will be overwritten by the next webEdition update
 	 * 
 	 * @param array $param
 	 */	
@@ -42,6 +42,3 @@
 		 */
 
 	}
-
-
-?>

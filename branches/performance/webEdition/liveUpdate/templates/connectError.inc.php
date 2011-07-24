@@ -110,5 +110,3 @@ $content = '
 '.$errorMessage;
 				
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['connect']['headline'], $content);
-
-?>

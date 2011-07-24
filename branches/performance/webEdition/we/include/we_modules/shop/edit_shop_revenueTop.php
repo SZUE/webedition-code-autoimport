@@ -55,7 +55,7 @@ function orderBy($a, $b) {
 
 function getTitleLink($text, $orderKey) {
 
-	$_href =	$_SERVER['PHP_SELF'] .
+	$_href =	$_SERVER['SCRIPT_NAME'] .
 				'?ViewYear=' . $GLOBALS['selectedYear'] .
 				'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 				'&orderBy=' . $orderKey .
@@ -79,7 +79,7 @@ function getTitleLink($text, $orderKey) {
 }
 
 function getPagerLink() {
-	return 	$_SERVER['PHP_SELF'] .
+	return 	$_SERVER['SCRIPT_NAME'] .
 			'?ViewYear=' . $GLOBALS['selectedYear'] .
 			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 			'&orderBy=' . $GLOBALS['orderBy'] .
@@ -168,11 +168,7 @@ print '
 <form>';
 
 // get some preferences!
-$query = 'SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "shop_pref"';
-	$DB_WE->query($query);
-	$DB_WE->next_record();
-
-$feldnamen = explode("|",$DB_WE->f("strFelder"));
+$feldnamen = explode('|',f('SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' WHERE strDateiname = "shop_pref"','strFelder',$DB_WE));
 	$waehr = "&nbsp;".htmlspecialchars($feldnamen[0]);
 	$numberformat = $feldnamen[2];
 	$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');

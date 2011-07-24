@@ -1,4 +1,4 @@
-CREATE TABLE tblnavigationrules (
+CREATE TABLE ###TBLPREFIX###tblnavigationrules (
   ID int(11) NOT NULL auto_increment,
   NavigationName varchar(255) default NULL,
   NavigationID int(11) NOT NULL default '0',

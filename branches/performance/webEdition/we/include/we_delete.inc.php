@@ -37,15 +37,6 @@ $wfchk = defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_
 $wfchk_html = "";
 $script = "";
 
-/*
-if($table==TEMPLATES_TABLE){
-	if(!we_hasPerm("DELETE_TEMPLATE")){
-		include_once(WE_USERS_MODULE_DIR . "we_users_permmessage.inc.php");
-		exit();
-
-	}
-}
-*/
 if (!$wfchk) {
 
 	if (isset($_REQUEST["sel"])) {
@@ -99,36 +90,48 @@ if (!$wfchk) {
 				$hasPerm = 1;
 			} else
 				if ($idInfos['IsFolder']) {
-					if ($table == FILE_TABLE && we_hasPerm("DELETE_DOC_FOLDER") && (!$idInfos['hasFiles'] || we_hasPerm(
-							"DELETE_DOCUMENT"))) {
-						$hasPerm = 1;
-					} else
-						if ($table == TEMPLATES_TABLE && we_hasPerm("DELETE_TEMP_FOLDER") && (!$idInfos['hasFiles'] || we_hasPerm(
-								"DELETE_TEMPLATE"))) {
-							$hasPerm = 1;
-						} else
-							if ($table == OBJECT_FILES_TABLE && we_hasPerm("DELETE_OBJECTFILE")) {
+					switch($table){
+						case FILE_TABLE:
+							if(we_hasPerm("DELETE_DOC_FOLDER") && (!$idInfos['hasFiles'] || we_hasPerm("DELETE_DOCUMENT"))) {
 								$hasPerm = 1;
-							} else {
-								$hasPerm = 0;
 							}
-				} else {
-					if ($table == FILE_TABLE && we_hasPerm("DELETE_DOCUMENT")) {
-						$hasPerm = 1;
-					} else
-						if ($table == TEMPLATES_TABLE && we_hasPerm("DELETE_TEMPLATE")) {
-							$hasPerm = 1;
-						} else
-							if ($table == OBJECT_FILES_TABLE && we_hasPerm("DELETE_OBJECTFILE")) {
+							break;
+						case TEMPLATES_TABLE:
+							if(we_hasPerm("DELETE_TEMP_FOLDER") && (!$idInfos['hasFiles'] || we_hasPerm("DELETE_TEMPLATE"))) {
 								$hasPerm = 1;
-							} else
-								if ($table == OBJECT_TABLE && we_hasPerm("DELETE_OBJECT")) {
+							}
+							break;
+						case OBJECT_FILES_TABLE:
+							if(we_hasPerm("DELETE_OBJECTFILE")) {
+								$hasPerm = 1;
+							}
+							break;
+					}
+				} else {
+					switch($table){
+					case FILE_TABLE:
+						if(we_hasPerm("DELETE_DOCUMENT")) {
+							$hasPerm = 1;
+						}
+						break;
+					
+					case TEMPLATES_TABLE:
+						if(we_hasPerm("DELETE_TEMPLATE")) {
+							$hasPerm = 1;
+						}
+						break;
+					case OBJECT_FILES_TABLE:
+						if(we_hasPerm("DELETE_OBJECTFILE")) {
+								$hasPerm = 1;
+						}
+						break;
+					case OBJECT_TABLE: 
+						if(we_hasPerm("DELETE_OBJECT")) {
 									$hasPerm = 1;
-								} else {
-									$hasPerm = 0;
-								}
+						}
+						break;
 				}
-
+			}
 			unset($idInfos);
 
 			if (!$hasPerm) {

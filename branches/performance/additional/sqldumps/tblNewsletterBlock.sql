@@ -1,4 +1,4 @@
-CREATE TABLE tblNewsletterBlock (
+CREATE TABLE ###TBLPREFIX###tblNewsletterBlock (
   ID bigint(20) NOT NULL auto_increment,
   NewsletterID bigint(20) NOT NULL default '0',
   Groups varchar(255) NOT NULL default '',

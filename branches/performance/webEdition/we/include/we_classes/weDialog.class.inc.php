@@ -186,7 +186,7 @@ class weDialog{
 			</script>
 
 			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
-				<frame src="' . $_SERVER["PHP_SELF"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
+				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
 				<frame src="/webEdition/html/white.html" name="we_'.$this->ClassName.'_cmd_frame" scrolling="no" noresize="noresize">
 			</frameset>';
 	}
@@ -252,7 +252,7 @@ class weDialog{
 		if(!$this->JsOnly) {
 			$target = ' target="we_'.$this->ClassName.'_cmd_frame"';
 		}
-		return '<form name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post"' . $target . '>'.$hiddens;
+		return '<form name="we_form" action="'.$_SERVER["SCRIPT_NAME"].'" method="post"' . $target . '>'.$hiddens;
 	}
 
 	function getHiddenArgs() {

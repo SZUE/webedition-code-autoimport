@@ -1,4 +1,4 @@
-CREATE TABLE tblWorkflowDocTask (
+CREATE TABLE ###TBLPREFIX###tblWorkflowDocTask (
   ID int(11) NOT NULL auto_increment,
   documentStepID bigint(20) NOT NULL default '0',
   workflowTaskID bigint(20) NOT NULL default '0',

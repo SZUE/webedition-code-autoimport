@@ -6,5 +6,5 @@ $GLOBALS['module_tags']['shop'] = array('addDelShopItem', 'addPercent', 'calcula
 $GLOBALS['module_tags']['voting'] = array('answers', 'cookie', 'ifNotVote', 'ifNotVoteIsRequired','ifNotVoteActive','ifNotVotingField','ifVote', 'ifVoteActive', 'ifVoteIsRequired','voting', 'votingField','ifVotingField','ifVotingFieldEmpty', 'ifVotingFieldNotEmpty', 'votingList', 'votingSelect','votingSession', 'writeVoting','ifvotingexists');
 $GLOBALS['module_tags']['users'] = array('author');
 $GLOBALS['module_tags']['banner'] = array('banner', 'bannerSelect', 'bannerSum','ifbannerexists');
-$GLOBALS['module_tags']['object'] = array('condition', 'conditionAdd', 'conditionAnd', 'conditionOr', 'ifField', 'ifNotField', 'ifNotObject','ifNotObjectLanguage', 'ifObject', 'ifObjectLanguage','objectLanguage','object','redirectObjectSeoUrls','ifobjektexists');
+$GLOBALS['module_tags']['object'] = array('condition', 'conditionAdd', 'conditionAnd', 'conditionOr', 'ifField', 'ifNotField', 'ifNotObject','ifNotObjectLanguage', 'ifObject', 'ifObjectLanguage','objectLanguage','object','ifobjektexists');
 $GLOBALS['module_tags']['customer'] = array('customer', 'ifLoginFailed','ifLogin','ifLogout', 'ifNotRegisteredUser', 'ifRegisteredUser', 'ifRegisteredUserCanChange', 'registeredUser', 'registerSwitch', 'saveRegisteredUser', 'sessionField', 'sessionLogout','ifcustomerexists');

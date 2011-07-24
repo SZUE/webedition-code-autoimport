@@ -53,9 +53,11 @@ $LU_Variables = array(
 	'clientInstalledLanguages' => liveUpdateFunctions::getInstalledLanguages(),
 	'clientInstalledAppMeta' => weToolLookup::getAllTools(true, false, true),
 	'clientInstalledAppTOC' => we_app_Common::readAppTOCasString(),
-	'clientUpdateUrl' => liveUpdateHttp::getServerProtocol() . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : "" ) . $_SERVER["PHP_SELF"],
+	'clientUpdateUrl' => liveUpdateHttp::getServerProtocol() . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : "" ) . $_SERVER['SCRIPT_NAME'],
 	'clientContent' => false,
-	'clientEncoding' => 'none'
+	'clientEncoding' => 'none',
+	'clientSessionName' => session_name(),
+	'clientSessionID' => session_id()
 );
 
 

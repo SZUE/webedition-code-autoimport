@@ -186,6 +186,7 @@ class weNewsletterBase{
 	function getEmailsFromList($emails,$emails_only=0,$group=0,$blocks=array()){
 		$ret=array();
 		$arr=array();
+		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";','pref_value',new DB_WE());
 		$arr=explode("\n",$emails);
 		if(count($arr)){
 			foreach($arr as $row){
@@ -194,7 +195,7 @@ class weNewsletterBase{
 					$arr2=explode(",",$row);
 					if(count($arr2)){
 						if($emails_only) $ret[]=$arr2[0];
-						else $ret[]=array($arr2[0],isset($arr2[1]) ? $arr2[1] : 0,isset($arr2[2]) ? $arr2[2] : "",isset($arr2[3]) ? $arr2[3] : "",isset($arr2[4]) ? $arr2[4] : "",isset($arr2[5]) ? $arr2[5] : "",$group,$blocks);
+						else $ret[]=array($arr2[0],(isset($arr2[1]) && trim($arr2[1])!='')? trim($arr2[1]) : $_default_html,isset($arr2[2]) ? trim($arr2[2]) : "",isset($arr2[3]) ? $arr2[3] : "",isset($arr2[4]) ? $arr2[4] : "",isset($arr2[5]) ? $arr2[5] : "",$group,$blocks);
 					}
 				}
 			}
@@ -224,9 +225,9 @@ class weNewsletterBase{
 							if($emails_only==1){
 								$ret[]=$dat[0];
 							} else if($emails_only==2) {
-								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");
+								$ret[]=array(trim($dat[0]),(isset($dat[1]) && trim($dat[1])!='') ? trim($dat[1]) : $_default_html,isset($dat[2]) ? trim($dat[2]) : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");
 							} else{
-								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
+								$ret[]=array(trim($dat[0]),(isset($dat[1]) && trim($dat[1])!='') ? trim($dat[1]) : $_default_html,isset($dat[2]) ? trim($dat[2]) : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
 							}
 						}
 					}
@@ -276,9 +277,9 @@ class weNewsletterBase{
 							if($emails_only==1){
 								$ret[]=$dat[0];
 							} else if($emails_only==2) {
-								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");
+								$ret[]=array(trim($dat[0]),(isset($dat[1]) && trim($dat[1])!='') ? trim($dat[1]) : $_default_html,isset($dat[2]) ? trim($dat[2]) : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "");
 							} else{
-								$ret[]=array($dat[0],(isset($dat[1]) && $dat[1]!='') ? $dat[1] : $_default_html,isset($dat[2]) ? $dat[2] : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
+								$ret[]=array(trim($dat[0]),(isset($dat[1]) && trim($dat[1])!='') ? trim($dat[1]) : $_default_html,isset($dat[2]) ? trim($dat[2]) : "",isset($dat[3]) ? $dat[3] : "",isset($dat[4]) ? $dat[4] : "",isset($dat[5]) ? $dat[5] : "",$group,$blocks);
 							}
 						}
 
@@ -303,6 +304,3 @@ class weNewsletterBase{
 
 
 }
-
-
-?>

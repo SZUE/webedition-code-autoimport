@@ -83,13 +83,20 @@ function getHTMLDirSelector($_selType)
 	$we_button = new we_button();
 	$rootDirID = 0;
 	$folderID = 0;
-
+	//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')
+	$wecmdenc1= we_cmd_enc("document.we_form.elements['FolderID'].value");
+	$wecmdenc2= we_cmd_enc("document.we_form.elements['FolderPath'].value");
+	$wecmdenc3= '';
 	$_button_doc = $we_button->create_button(
 			"select",
-			"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')");
+			"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','$rootDirID')");
+	//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')
+	$wecmdenc1= we_cmd_enc("document.we_form.elements['FolderID'].value");
+	$wecmdenc2= we_cmd_enc("document.we_form.elements['FolderPath'].value");
+	$wecmdenc3= '';
 	$_button_obj = defined('OBJECT_TABLE') ? $we_button->create_button(
 			"select",
-			"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','','" . session_id() . "','$rootDirID')") : '';
+			"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','$rootDirID')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
 	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "")));

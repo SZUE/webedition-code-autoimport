@@ -167,31 +167,25 @@ class XML_Parser {
 			$data = implode('', file($file));
 		}
 		else {
-			if (!is_dir($file)) {
-				//$this->addWarning(ERROR_FILE_NOT_FOUND, __LINE__, $this->fileName);
 				return FALSE;
-			}
-			else {
-				//$this->addWarning(ERROR_IS_DIR, __LINE__, $this->fileName);
-				return FALSE;
-			}
 		}
 
-		if(empty($force_encoding)) {
-
-			$head = substr($data,0,250);
-			$encoding = $this->getEncoding('',$head);
-
-		} else {
-
-			$encoding = $force_encoding;
-
-		}
-		$this->mainXmlEncoding = $encoding;
+		$encoding=$this->setEncoding($force_encoding, $data);
 
 		return $this->parseXML($data,$encoding);
 	}
 
+	function setEncoding($force_encoding,$data=''){
+		if(empty($force_encoding)) {
+			$encoding = $this->getEncoding('',$data);
+		} else {
+			$encoding = $force_encoding;
+		}
+
+		$this->mainXmlEncoding = $encoding;
+		return $encoding;
+	}
+	
 	/**
 	 * This method tries to parse the content of the given string and on success
 	 * stores the information retrieved into an array.
@@ -288,12 +282,9 @@ class XML_Parser {
 		//$data = $this->replaceEntities($data); // auskommentiert v. Holeg
 
 		// Add the character data.
-		if($this->mode=="backup")
-			$this->appendData($this->path, addslashes($data));
-		else
-			$this->appendData($this->path, addslashes(trim($data)));
+		$this->appendData($this->path, addslashes(($this->mode=='backup' ? $data : trim($data))));
 	}
-
+	
 	/**
 	 * All events not covered by the preceding handlers will be trapped and
 	 * resolved by this handler.
@@ -306,9 +297,12 @@ class XML_Parser {
 		do {
 			if ($this->path) {
 				// Increment the flag if the XML data contains a CDATA section.
-				if (!strcmp($data, '<![CDATA[')) $this->cdataSection++;
+				if (!strcmp($data, '<![CDATA[')){
+					$this->cdataSection++;
 				// Decrement the flag if the CDATA section is closed.
-				else if (!strcmp($data, ']]>')) $this->cdataSection--;
+				}else if (!strcmp($data, ']]>')){
+					$this->cdataSection--;
+				}
 				break;
 			}
 
@@ -342,7 +336,7 @@ class XML_Parser {
 	 * @see        parseXML()
 	 */
 	function parserHasContent() {
-		return (!empty($this->root)? TRUE : FALSE);
+		return !empty($this->root);
 	}
 
 	/**
@@ -353,7 +347,7 @@ class XML_Parser {
 	 */
 	function hasChildNodes($absoluteXPath) {
 		if (!isset($this->nodes[$absoluteXPath]['children'])) return FALSE;
-		return ((count($this->nodes[$absoluteXPath]['children']) > 0)? TRUE : FALSE);
+		return (count($this->nodes[$absoluteXPath]['children']) > 0);
 	}
 
 	/**
@@ -365,7 +359,7 @@ class XML_Parser {
 	 */
 	function hasAttributes($absoluteXPath) {
 		if (!isset($this->nodes[$absoluteXPath]['attributes'])) return FALSE;
-		return ((count($this->nodes[$absoluteXPath]['attributes']) > 0)? TRUE : FALSE);
+		return (count($this->nodes[$absoluteXPath]['attributes']) > 0);
 	}
 
 	/**
@@ -526,7 +520,7 @@ class XML_Parser {
 	 * @return     TRUE if the node has CDATA, FALSE if not
 	 */
 	function hasCdata($absoluteXPath) {
-		return (($this->nodes[$absoluteXPath]['data'] != '')? TRUE : FALSE);
+		return ($this->nodes[$absoluteXPath]['data'] != '');
 	}
 
 	/**
@@ -537,7 +531,7 @@ class XML_Parser {
 	 */
 	function hasCdataSection($absoluteXPath) {
 		if (!isset($this->nodes[$absoluteXPath])) return FALSE;
-		return (($this->nodes[$absoluteXPath]['cdata-section'] > 0)? TRUE : FALSE);
+		return ($this->nodes[$absoluteXPath]['cdata-section'] > 0);
 	}
 
 	/**
@@ -590,8 +584,7 @@ class XML_Parser {
 
 			// Set the attribute.
 			$parent['attributes'][$attribute] = $value;
-		}
-		else {
+		}	else {
 			// Set the character data of the node.
 			$this->nodes[$absoluteXPath]['data'] = $value;
 		}
@@ -716,12 +709,7 @@ class XML_Parser {
 			$this->xPath = $xPath;
 
 			// Replace all entities.
-			if(!function_exists("rhtmlentities")) {
-				$xPath = $this->replaceEntities($xPath);
-			} else {
-				$xPath = rhtmlentities($xPath);
-
-			}
+			$xPath = function_exists("rhtmlentities")?rhtmlentities($xPath):$this->replaceEntities($xPath);
 
 			// Split the XPath at every slash.
 			$steps = $this->splitSteps($xPath);
@@ -878,8 +866,7 @@ class XML_Parser {
 			// Split the step to extract the axis and the node-test.
 			$axis['axis']      = $this->prestr($step, '::');
 			$axis['node-test'] = $this->poststr($step, '::');
-		}
-		else {
+		}	else {
 			// Check if the step is empty.
 			if (empty($step)) {
 				// Set it to the default value.
@@ -891,8 +878,7 @@ class XML_Parser {
 				// Use the child axis and select all children.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = '*';
-			}
-			else if (strpos($step,'(')!==false) {
+			}	else if (strpos($step,'(')!==false) {
 				// Check if it is a method.
 				if ($this->isMethod($this->prestr($step, '('))) {
 					// Get the position of the first bracket.
@@ -913,39 +899,32 @@ class XML_Parser {
 					$axis['axis']      = 'method';
 					$axis['node-test'] = $this->evaluateMethod($before, $between,
 						$node);
-				}
-				else {
+				}	else {
 					// Use the child axis and a function.
 					$axis['axis']      = 'child';
 					$axis['node-test'] = $step;
 				}
-			}
-			else if (strpos($step,'@')===0) {
+			}	else if (strpos($step,'@')===0) {
 				// Use the attribute axis and select the attribute.
 				$axis['axis']      = 'attribute';
 				$axis['node-test'] = substr($step, 1);
-			}
-			else if (substr($step,-1)==']') {
+			}	else if (substr($step,-1)==']') {
 				// Use the child axis and select a position.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = substr($step, strpos($step, '['));
-			}
-			else if ($step == '.') {
+			}	else if ($step == '.') {
 				// Select the self axis.
 				$axis['axis']      = 'self';
 				$axis['node-test'] = '*';
-			}
-			else if ($step == '..') {
+			}	else if ($step == '..') {
 				// Select the parent axis.
 				$axis['axis']      = 'parent';
 				$axis['node-test'] = '*';
-			}
-			else if (ereg("^[a-zA-Z0-9\_-]+$", $step)) {
+			}	else if (ereg("^[a-zA-Z0-9\_-]+$", $step)) {
 				// Select the child axis and the child.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = $step;
-			}
-			else {
+			}	else {
 				// Use the child axis and a name.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = $step;
@@ -1018,8 +997,7 @@ class XML_Parser {
 	 * @see        evaluatePredicate(), getAxis()
 	 */
 	function isMethod($expression) {
-		if (in_array($expression, $this->XPathFunctions)) return TRUE;
-		else return FALSE;
+		return (in_array($expression, $this->XPathFunctions));
 	}
 
 	/**
@@ -1040,8 +1018,7 @@ class XML_Parser {
 				$nodes = array_merge($nodes,
 					$this->evaluateStep($path, $steps));
 			}
-		}
-		else {
+		}	else {
 			// Get this step.
 			$step = array_shift($steps);
 
@@ -1061,8 +1038,7 @@ class XML_Parser {
 					// Add the result to the list of contexts.
 					$contexts[] = $axis['node-test'];
 				}
-			}
-			else {
+			}	else {
 				// The name of the method.
 				$method = 'execAxis_'.str_replace('-', '_', $axis['axis']);
 
@@ -1088,8 +1064,7 @@ class XML_Parser {
 			if (count($steps) > 0) {
 				// Continue the evaluation with the next steps.
 				$nodes = $this->evaluateStep($contexts, $steps);
-			}
-			else {
+			}	else {
 				// Save contexts to the list of nodes.
 				$nodes = $contexts;
 			}
@@ -1116,14 +1091,8 @@ class XML_Parser {
 		$method = 'execMethod_'.str_replace('-', '_', $function);
 
 		// Check if the method exec_method is defined.
-		if (!method_exists($this, $method)) {
-			//$this->error_handler($l_xml_xpath['TYPE'].
-			//	$l_xml_xpath['FUNC_UNDEF'], $function);
-			return FALSE;
-		}
-
 		// Return the result of the method.
-		return call_user_func(array(&$this, $method),  $node, $args);
+		return (method_exists($this, $method) ? call_user_func(array(&$this, $method),  $node, $args) : false);
 	}
 
 	/**
@@ -1498,8 +1467,7 @@ class XML_Parser {
 				// Add this node to the list of nodes.
 				return TRUE;
 			}
-		}
-		else {
+		}	else {
 			//$this->error_handler($l_xml_xpath['TYPE'].
 			//	$l_xml_xpath['EMPTY_NODE_TEST'], $this->xPath);
 			return FALSE;
@@ -2098,8 +2066,7 @@ class XML_Parser {
 		$secondString = $this->evaluatePredicate($node, $secondString);
 
 		// Check if the second string is contained within the first string.
-		if (ereg($firstString, $secondString)) return TRUE;
-		else return FALSE;
+		return (ereg($firstString, $secondString));
 	}
 
 	/**
@@ -2125,8 +2092,7 @@ class XML_Parser {
 		$secondString = $this->evaluatePredicate($node, $secondString);
 
 		// Check if the first string starts with the second string.
-        if (ereg("^".$secondString, $firstString)) return TRUE;
-		else return FALSE;
+    return (ereg("^".$secondString, $firstString));
 	}
 
 	/**
@@ -2143,16 +2109,11 @@ class XML_Parser {
 	function execMethod_string($node, $args) {
 		// Check what type of parameter is given.
 		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || ereg("^\.[0-9]+$", $args)) {
-			// Convert the variable to a float value.
-			$value = doubleval($args);
-			// Return the string value
-			return strval($value);
-		}
-		else if (is_bool($args)) {
-			if ($args == TRUE) return 'TRUE';
-			else return 'FALSE';
-		}
-		else if (!empty($args)) {
+			// Convert the variable to a float value. && Return the string value
+			return strval(doubleval($args));
+		}	else if (is_bool($args)) {
+			return ($args == TRUE ?'TRUE':'FALSE');
+		}	else if (!empty($args)) {
 			// Evaluate the argument as an XPath expression.
 			$nodeSet = $this->evaluate($args, $node);
 
@@ -2161,9 +2122,9 @@ class XML_Parser {
 
 			// Return the first result as a string.
 			return $nodeSet[0];
+		}	else{
+			return (empty($args) ?$node:'');
 		}
-		else if (empty($args)) return $node;
-		else return '';
 	}
 
 	/**
@@ -2178,13 +2139,7 @@ class XML_Parser {
 	 * @see        evaluate(), evaluatePredicate()
 	 */
 	function execMethod_string_length($node, $args) {
-		// Trim the argument.
-		$args = trim($args);
-
-		// Evaluate the argument.
-		$args = $this->evaluatePredicate($node, $args);
-
-		return strlen(strval($args));
+		return strlen(strval($this->evaluatePredicate($node, trim($args))));
 	}
 
 	/**
@@ -2215,8 +2170,7 @@ class XML_Parser {
 		if (!empty($args[2])) {
 			// Return the substring.
 			return substr(strval($args[0]), $args[1]-1, $args[2]);
-		}
-		else {
+		} else {
 			// Return the substring.
 			return substr(strval($args[0]), $args[1]-1);
 		}
@@ -2318,13 +2272,7 @@ class XML_Parser {
 	 * @see        evaluate()
 	 */
 	function execMethod_ceiling($node, $args) {
-		// Trim the arguments.
-		$args = trim($args);
-
-		// Convert the arguments to float value.
-		$args = doubleval($args);
-
-		return ceil($args);
+		return ceil(doubleval(trim($args)));
 	}
 
 	/**
@@ -2339,13 +2287,7 @@ class XML_Parser {
 	 * @see        evaluate()
 	 */
 	function execMethod_floor($node, $args) {
-		// Trim the arguments.
-		$args = trim($args);
-
-		// Convert the arguments to a number.
-		$args = doubleval($args);
-
-		return floor($args);
+		return floor(doubleval(trim($args)));
 	}
 
 	/**
@@ -2365,10 +2307,8 @@ class XML_Parser {
 			ereg("^\.[0-9]+$", $args)) {
 			// Return the argument as a number.
 			return doubleval($args);
-		}
-		else if (is_bool($args)) {
-			if ($args == TRUE) return 1;
-			else return 0;
+		}	else if (is_bool($args)) {
+			return ($args == TRUE ? 1 : 0);
 		}
 	}
 
@@ -2384,13 +2324,7 @@ class XML_Parser {
 	 * @see        evaluate()
 	 */
 	function execMethod_round($node, $args) {
-		// Trim the arguments.
-		$args = trim($args);
-
-		// Convert the arguments to a number.
-		$args = doubleval($args);
-
-		return round($args);
+		return round(doubleval(trim($args)));
 	}
 
 	/**
@@ -2445,20 +2379,15 @@ class XML_Parser {
 
 		// Check the type of parameter.
 		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || ereg("^\.[0-9]+$", $args)) {
-			// Convert the digits to a number.
-			$number = doubleval($args);
-
-			// Check if the number is 0.
-			if ($number == 0) return FALSE;
-			else return TRUE;
-		}
-		else if (empty($args)) return FALSE;
-		else {
+			// Convert the digits to a number &&  Check if the number is 0.
+			return !(doubleval($args) == 0);
+		}	else if (empty($args)){
+			return FALSE;
+		}	else {
 			// Evaluate the argument as XPath expression.
 			$result = $this->evaluate($args, $node);
 
-			if (count($result) > 0) return TRUE;
-			else return FALSE;
+			return (count($result) > 0);
 		}
 	}
 
@@ -2502,17 +2431,14 @@ class XML_Parser {
 				// Check if there is a language definition.
 				if (!empty($this->nodes[$node]['attributes']['xml:lang'])) {
 					// Check if it is the requested language.
-					return (stripos($this->nodes[$node]
-						['attributes']['xml:lang'],$args)===0);
+					return (stripos($this->nodes[$node]['attributes']['xml:lang'],$args)===0);
 				}
 			}
 
 			return FALSE;
-		}
-		else {
+		}	else {
 			// Check if it is the requested language.
-			return (stripos($this->nodes[$node]['attributes']
-				['xml:lang'],$args)===0);
+			return (stripos($this->nodes[$node]['attributes']['xml:lang'],$args)===0);
 		}
 	}
 
@@ -2528,11 +2454,8 @@ class XML_Parser {
 	 * @see        evaluate(), evaluatePredicate()
 	 */
 	function execMethod_not($node, $args) {
-		// Trim the arguments.
-		$args = trim($args);
-
 		// Return TRUE if the condition argument is FALSE.
-		return !$this->evaluatePredicate($node, $args);
+		return !$this->evaluatePredicate($node, trim($args));
 	}
 
 	/**
@@ -2639,6 +2562,8 @@ class XML_Parser {
 
 			if(empty($data)) {
 				return false;
+			}else{
+				$data=substr($data, 0,256);
 			}
 
 			$match = array();

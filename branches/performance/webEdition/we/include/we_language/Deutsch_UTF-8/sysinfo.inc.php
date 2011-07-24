@@ -1,6 +1,5 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 /**
  * webEdition CMS
  *
@@ -63,4 +62,7 @@ $l_sysinfo = array(
 		'pcre' => 'PCRE-Extension',
 		'sdk_db' => 'SDK/Apps DB Unterstützung',
 		'phpext' => 'Minimal notwendige PHP-Extensions',
+		'not_set' => 'nicht gesetzt (off)',
+		'suhosin simulation'=>'Simulations Modus',
+
 	);

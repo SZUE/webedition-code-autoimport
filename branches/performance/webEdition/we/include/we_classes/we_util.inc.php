@@ -35,15 +35,6 @@
 class we_util{
 
 	/**
-	* Default constructor. WARNING !!! (not usefull).
-	*
-	* All functions in this class is static, and there is no logic to create instance of this class
-	*/
-	function we_global(){
-		die("Please don't create instance of class we_global");
-	}
-
-	/**
 	* Searches a string for matches to the regular expressions given in pattern
 	*
 	* @static
@@ -100,10 +91,7 @@ class we_util{
 	* @param mixed number
 	*/
 	function cleanNewLine($string){
-		$string = str_replace("\r\n","\n",$string);
-		$string = str_replace("\n\r","\n",$string);
-		$string = str_replace("\r","\n",$string);
-		return $string;
+		return str_replace("\r","\n",str_replace("\r\n","\n",str_replace("\n\r","\n",$string)));
 	}
 
 

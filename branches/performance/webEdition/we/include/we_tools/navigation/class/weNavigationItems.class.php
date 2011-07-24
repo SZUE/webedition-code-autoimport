@@ -1208,4 +1208,3 @@ class weNavigationItems
 	}
 
 }
-?>

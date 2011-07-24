@@ -14,9 +14,9 @@ way to fit your requirements.
 
 #nav {padding:0; margin:0; list-style:none; height:32px; position:relative; z-index:500; font-family:arial, verdana, sans-serif;}
 #nav li.top {display:block; float:left;}
-#nav li a.top_link {display:block; float:left; height:32px; line-height:27px; color:#ccc; text-decoration:none; font-size:11px; font-weight:bold; padding:0 0 0 12px; cursor:pointer;background: url(blank.gif);}
-#nav li a.top_link span {float:left; display:block; padding:0 24px 0 12px; height:32px;background:url(blank.gif) right top;}
-#nav li a.top_link span.down {float:left; display:block; padding:0 24px 0 12px; height:32px; background:url(blanka.gif) no-repeat right top;}
+#nav li a.top_link {display:block; float:left; height:32px; line-height:27px; color:black; text-decoration:none; font-size:11px; font-weight:bold; padding:0 0 0 12px; cursor:pointer;background: url(/webEdition/images/java_menu/background.gif);}
+#nav li a.top_link span {float:left; display:block; padding:0 24px 0 12px; height:32px;background:url(/webEdition/images/java_menu/background.gif) right top;}
+#nav li a.top_link span.down {float:left; display:block; padding:0 24px 0 12px; height:32px; background:url(/webEdition/images/java_menu/background.gif) no-repeat right top;}
 #nav li a.top_link:hover {color:#fff; background: url(blank_over.gif) no-repeat;}
 #nav li a.top_link:hover span {background:url(blank_over.gif) no-repeat right top;}
 #nav li a.top_link:hover span.down {background:url(blank_overa.gif) no-repeat right top;}
@@ -38,23 +38,23 @@ way to fit your requirements.
 {position:absolute; left:-9999px; top:-9999px; width:0; height:0; margin:0; padding:0; list-style:none;}
 
 #nav li:hover ul.sub
-{left:0; top:31px; background: #fff; padding:3px; border:1px solid #3a93d2; white-space:nowrap; width:90px; height:auto; z-index:300;}
+{left:0; top:31px; background: #fff; padding:3px; border:1px solid #3a93d2; white-space:nowrap; width:150px; height:auto; z-index:300;}
 #nav li:hover ul.sub li
-{display:block; height:20px; position:relative; float:left; width:90px; font-weight:normal;}
+{display:block; position:relative; float:left; width:150px; font-weight:normal;}
 #nav li:hover ul.sub li a
-{display:block; font-size:11px; height:20px; width:90px; line-height:20px; text-indent:5px; color:#000; text-decoration:none;}
+{display:block; font-size:11px; height:20px; width:150px; line-height:20px; text-indent:5px; color:#000; text-decoration:none;}
 #nav li ul.sub li a.fly
-{background:#fff url(arrow.gif) 80px 7px no-repeat;}
+{background:#fff url(arrow.gif) right 7px no-repeat;}
 #nav li:hover ul.sub li a:hover 
 {background:#3a93d2; color:#fff;}
 #nav li:hover ul.sub li a.fly:hover
-{background:#3a93d2 url(arrow_over.gif) 80px 7px no-repeat; color:#fff;}
+{background:#3a93d2 url(arrow_over.gif) right 7px no-repeat; color:#fff;}
 
-#nav li:hover ul li:hover > a.fly {background:#3a93d2 url(arrow_over.gif) 80px 7px no-repeat; color:#fff;} 
+#nav li:hover ul li:hover > a.fly {background:#3a93d2 url(arrow_over.gif) right 7px no-repeat; color:#fff;} 
 #nav li:hover ul li:hover ul,
 #nav li:hover ul li:hover ul li:hover ul,
 #nav li:hover ul li:hover ul li:hover ul li:hover ul,
 #nav li:hover ul li:hover ul li:hover ul li:hover ul li:hover ul
-{left:90px; top:-4px; background: #fff; padding:3px; border:1px solid #3a93d2; white-space:nowrap; width:90px; z-index:400; height:auto;}
+{left:150px; top:-4px; background: #fff; padding:3px; border:1px solid #3a93d2; white-space:nowrap; width:150px; z-index:400; height:auto;}
 
-#nav li.disabled{width:80px;text-decoration: line-through;}
+#nav li.disabled{height:0px;line-height:0px;padding:0;width:140px;border-bottom: 1px solid black;}

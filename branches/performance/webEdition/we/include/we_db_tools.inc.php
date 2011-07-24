@@ -27,16 +27,14 @@
 @param $query: SQL query; an empty query resets the cache
 */
 function getHash($query, $DB_WE){
-	static $cache=array();
+	static $cache = array();
 	if($query==''){
 		$cache=array();
-		return '';
+		return $cache;
 	}
-	if (isset($cache[$query])) {
-		return $cache[$query];
-	} else {
+	if (!isset($cache[$query])) {
 		$DB_WE->query($query);
-		$cache[$query]=($DB_WE->next_record()?$DB_WE->Record:array());
+		$cache[$query] = ($DB_WE->next_record() ? $DB_WE->Record :array());
 	}
 	return $cache[$query];
 }

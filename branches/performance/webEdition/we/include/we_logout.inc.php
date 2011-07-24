@@ -42,7 +42,7 @@ $DB_WE->query("
 <!--
 <?php
 
-cleanTempFiles(1);
+cleanTempFiles(true);
 
 if (isset($_SESSION["prefs"]["userID"])) { //	bugfix 2585, only update prefs, when userId is available
 	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], " WHERE userID=" . abs($_SESSION["prefs"]["userID"]));

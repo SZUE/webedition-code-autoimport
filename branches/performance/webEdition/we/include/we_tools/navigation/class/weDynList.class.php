@@ -74,7 +74,8 @@ class weDynList
 				}
 			}
 			if ($_sort['order'] == 'DESC') {
-				array_reverse(natcasesort($_arr[$_k]), true);
+				natcasesort($_arr[$_k]);
+				$_arr[$_k]= array_reverse($_arr[$_k]);
 			} else {
 				natcasesort ($_arr[$_k]);
 			}

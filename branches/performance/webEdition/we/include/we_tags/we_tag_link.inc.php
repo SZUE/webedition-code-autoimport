@@ -32,15 +32,13 @@ function we_tag_link($attribs, $content){
 
 	// check if target document exists (Bug #7167)
 	if ($id != 0) {
-		$row = getHash("SELECT count(*) as tmp FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
-		if ($row['tmp'] == 0) {
+		if(f("SELECT count(*) as tmp FROM " . FILE_TABLE . " WHERE ID=".abs($id), 'tmp',new DB_WE()) ==0){
 			$link = array();
 			$id = 0;
 		}
 	}
 	if ($imageid != 0) {
-		$row = getHash("SELECT count(*) as tmp FROM " . FILE_TABLE . " WHERE ID=".abs($imageid)."", new DB_WE());
-		if ($row['tmp'] == 0) {
+		if(f('SELECT count(*) as tmp FROM ' . FILE_TABLE . " WHERE ID=".abs($imageid), 'tmp',new DB_WE())==0){
 			$link = array();
 			$imageid = 0;
 			if (isset($id))
@@ -49,7 +47,7 @@ function we_tag_link($attribs, $content){
 	}
 
 	$attribs = removeAttribs($attribs, array(
-		'text', 'id', 'imageid'
+		'text', 'id', 'imageid','to','nameto'
 	));
 
 	$link = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();
@@ -133,5 +131,5 @@ function we_tag_link($attribs, $content){
 			}
 		}
 	}
-	return "";
+	return '';
 }

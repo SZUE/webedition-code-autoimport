@@ -134,7 +134,7 @@ function checkAndMakeFolder($path)
 
 function insertIntoErrorLog($text){
 	$DB_WE = new DB_WE();
-	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . $this->DB_WE->escape($text) . '\')');
+	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . $DB_WE->escape($text) . '\')');
 
 }
 

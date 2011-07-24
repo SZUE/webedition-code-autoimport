@@ -1,4 +1,4 @@
-CREATE TABLE tblContent (
+CREATE TABLE ###TBLPREFIX###tblContent (
   ID bigint(20) NOT NULL auto_increment,
   BDID int(11) NOT NULL default '0',
   Dat longtext,

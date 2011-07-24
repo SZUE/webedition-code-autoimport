@@ -28,8 +28,6 @@
 
 	$tableKeys[strtolower(LINK_TABLE)] = array('DID','CID');
 
-	$tableKeys[strtolower(PASSWD_TABLE)] = array('username');
-
 	$tableKeys[strtolower(PREFS_TABLE)] = array('userID');
 
 	$tableKeys[strtolower(METADATA_TABLE)] = array('id');

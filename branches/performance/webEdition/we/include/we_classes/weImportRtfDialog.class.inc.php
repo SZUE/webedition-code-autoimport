@@ -92,9 +92,9 @@ function importFile(){
 
 	function getFormHTML(){
 		if($this->pageNr == 1){
-			return '<form enctype="multipart/form-data" name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post" target="_self">';
+			return '<form enctype="multipart/form-data" name="we_form" action="'.$_SERVER["SCRIPT_NAME"].'" method="post" target="_self">';
 		}else{
-			return '<form name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post" target="we_'.$this->ClassName.'_cmd_frame">';
+			return '<form name="we_form" action="'.$_SERVER["SCRIPT_NAME"].'" method="post" target="we_'.$this->ClassName.'_cmd_frame">';
 		}
 	}
 

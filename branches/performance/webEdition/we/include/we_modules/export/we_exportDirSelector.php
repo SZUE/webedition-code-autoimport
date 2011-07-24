@@ -192,7 +192,7 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>">');
 	if(top.we_editDirID){
 		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
 		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
@@ -249,7 +249,7 @@ function writeBody(d){
 function queryString(what,id,o,we_editDirID){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
-	return '<?php print $_SERVER["PHP_SELF"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 }
 
 <?php
@@ -358,7 +358,7 @@ top.selectFile(top.currentID);
 	function query(){
 		$this->db->query("SELECT ".$this->db->escape($this->fields)." FROM ".
 		$this->db->escape($this->table).
-		" WHERE IsFolder=1 AND ParentID='".(is_null($this->dir)?$this->dir:mysql_affected_rows($this->dir))."'");
+		" WHERE IsFolder=1 AND ParentID='".(is_null($this->dir)?$this->dir:$this->db->affected_rows())."'");
 	}
 
 	function printDoRenameFolderHTML(){

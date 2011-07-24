@@ -57,10 +57,12 @@ function we_tag_flashmovie($attribs, $content){
 		$we_button = new we_button();
 
 		// Create "Edit Flash" button
+		//				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc3= we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 		$flash_button = $we_button->create_button(
 				"image:btn_edit_flash",
-				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm(
-						"CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
+				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', '".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 				true);
 
 		// Create "Delete/Clear Flash" button

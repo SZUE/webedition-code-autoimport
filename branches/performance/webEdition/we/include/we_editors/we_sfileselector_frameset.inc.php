@@ -33,6 +33,8 @@ htmltop();
 
 $docroot = $_SERVER["DOCUMENT_ROOT"];
 $docroot = str_replace("\\","/",(substr($docroot,-1) == "/") ? substr($docroot,0,strlen($docroot)-1) : $docroot);
+we_cmd_dec(4);
+we_cmd_dec(1);
 
 $filter = (isset($_REQUEST["we_cmd"][2]) && $_REQUEST["we_cmd"][2] != "") ? $_REQUEST["we_cmd"][2] : "all_Types";
 $currentDir = (  isset($_REQUEST["we_cmd"][3]) ? ($_REQUEST["we_cmd"][3] == "/") ? "" : ( is_dir($docroot.$_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : str_replace("\\","/",dirname($_REQUEST["we_cmd"][3])))  :  "");

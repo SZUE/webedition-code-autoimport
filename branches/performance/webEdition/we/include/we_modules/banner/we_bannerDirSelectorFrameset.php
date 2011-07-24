@@ -22,11 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
 
 protect();
 		$id = $_REQUEST["we_cmd"][1];
-		$JSIDName = $_REQUEST["we_cmd"][2];
-		$JSTextName = $_REQUEST["we_cmd"][3];
-		$JSCommand = $_REQUEST["we_cmd"][4];
+
+		$JSIDName = we_cmd_dec(2);
+		$JSTextName = we_cmd_dec(3);
+		$JSCommand = we_cmd_dec(4);
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php");

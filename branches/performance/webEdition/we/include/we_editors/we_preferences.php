@@ -41,6 +41,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/w
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weConfParser.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
 
 
 /*****************************************************************************
@@ -82,7 +83,7 @@ $global_config[] = array('define("WE_ERROR_ERRORS",', '// Handle errors' . "\n" 
 $global_config[] = array('define("WE_ERROR_SHOW",', '// Show errors' . "\n" . 'define("WE_ERROR_SHOW", 0);');
 $global_config[] = array('define("WE_ERROR_LOG",', '// Log errors' . "\n" . 'define("WE_ERROR_LOG", 0);');
 $global_config[] = array('define("WE_ERROR_MAIL",', '// Mail errors' . "\n" . 'define("WE_ERROR_MAIL", 0);');
-$global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@example.com");');
+$global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@www.example");');
 $global_config[] = array('define("ERROR_DOCUMENT_NO_OBJECTFILE",', '// Document to open when trying to open non-existing object' . "\n" . 'define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);');
 $global_config[] = array('define("DISABLE_TEMPLATE_TAG_CHECK",', '// Disable the check for missing close tags in templates' . "\n" . 'define("DISABLE_TEMPLATE_TAG_CHECK", 0);');
 
@@ -159,6 +160,7 @@ $global_config[] = array('define("SEOINSIDE_HIDEINWEBEDITION",', '// Flag if sho
 $global_config[] = array('define("SEOINSIDE_HIDEINEDITMODE",', '// Flag if should be displayed in Editmode ' . "\n" . 'define("SEOINSIDE_HIDEINEDITMODE", false);');
 $global_config[] = array('define("LANGLINK_SUPPORT",', '// Flag if automatic LanguageLinks should be supported ' . "\n" . 'define("LANGLINK_SUPPORT", true);');
 $global_config[] = array('define("LANGLINK_SUPPORT_BACKLINKS",', '// Flag if automatic backlinks should be generated ' . "\n" . 'define("LANGLINK_SUPPORT_BACKLINKS", true);');
+$global_config[] = array('define("LANGLINK_SUPPORT_RECURSIVE",', '// Flag if backlinks should be generated recursive ' . "\n" . 'define("LANGLINK_SUPPORT_RECURSIVE", true);');
 
 
 //default charset
@@ -167,6 +169,7 @@ $global_config[] = array('define("DEFAULT_CHARSET",', '// Default Charset' . "\n
 //countries
 $global_config[] = array('define("WE_COUNTRIES_TOP",', '// top countries' . "\n" . 'define("WE_COUNTRIES_TOP", "DE,AT,CH");');
 $global_config[] = array('define("WE_COUNTRIES_SHOWN",', '// other shown countries' . "\n" . 'define("WE_COUNTRIES_SHOWN", "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY");');
+$global_config[] = array('define("WE_COUNTRIES_DEFAULT",', '// shown if no coutry was choosen' . "\n" . 'define("WE_COUNTRIES_DEFAULT", "");');
 
 /*****************************************************************************
  * FUNCTIONS
@@ -318,6 +321,10 @@ function get_value($settingvalue) {
 		 * COUNRIES
 		 *********************************************************************/
 
+		case "countries_default":
+			return defined("WE_COUNTRIES_DEFAULT") ? WE_COUNTRIES_DEFAULT : "";
+			break;
+			
 		case "countries_top":
 			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
 			break;
@@ -448,7 +455,7 @@ function get_value($settingvalue) {
 			return defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
 			break;
 
-		case "backwardcompatibility_tagloading":
+		case "include_all_we_tags":
 			return defined("INCLUDE_ALL_WE_TAGS") ? INCLUDE_ALL_WE_TAGS : 0;
 
 		/*********************************************************************
@@ -456,11 +463,11 @@ function get_value($settingvalue) {
 		 *********************************************************************/
 
 		case "we_error_handler":
-			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : false;
+			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : true;
 			break;
 
 		case "error_handling_notices":
-			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : false;
+			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : true;
 			break;
 
 		case "error_handling_deprecated":
@@ -476,7 +483,7 @@ function get_value($settingvalue) {
 			break;
 
 		case "error_display_errors":
-			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : true;
+			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : false;
 			break;
 
 		case "error_log_errors":
@@ -595,6 +602,9 @@ function get_value($settingvalue) {
 			break;
 		case "langlink_support_backlinks":
 			return defined("LANGLINK_SUPPORT_BACKLINKS") ? LANGLINK_SUPPORT_BACKLINKS : true;
+			break;
+		case "langlink_support_recursive":
+			return defined("LANGLINK_SUPPORT_RECURSIVE") ? LANGLINK_SUPPORT_RECURSIVE : true;
 			break;
 
 		/*********************************************************************
@@ -908,6 +918,14 @@ function remember_value($settingvalue, $settingname) {
 			/*****************************************************************
 			 * Countries
 			 *****************************************************************/
+
+			case '$_REQUEST["countries_default"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_COUNTRIES_DEFAULT", $settingvalue);
+
+				$_update_prefs = true;
+				break;
 
 			case '$_REQUEST["countries_top"]':
 
@@ -1379,15 +1397,7 @@ $_we_active_integrated_modules = array();
 
 				$_file = &$GLOBALS['config_files']['conf']['content'];
 
-				if ($settingvalue == 0) {
-					if (DB_CONNECT == "pconnect") {
-						$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', 'connect');
-					}
-				} else if ($settingvalue == 1) {
-					if (DB_CONNECT == "connect") {
-						$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', 'pconnect');
-					}
-				}
+				$_file = weConfParser::changeSourceCode("define", $_file, 'DB_CONNECT', $settingvalue);
 
 				$_update_prefs = true;
 				break;
@@ -1569,7 +1579,7 @@ $_we_active_integrated_modules = array();
 				if ($settingvalue == 0) {
 					if (WE_ERROR_MAIL == 1) {
 						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 					}
 				} else if ($settingvalue == 1) {
 					if (WE_ERROR_MAIL == 0) {
@@ -1591,19 +1601,19 @@ $_we_active_integrated_modules = array();
 								$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", $settingvalue);
 							}
 						} else {
-							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 							$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
 
 							$email_saved = false;
 						}
 					} else {
-						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 						$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL", 0);
 
 						$email_saved = false;
 					}
 				} else {
-					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+					$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 				}
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1819,6 +1829,17 @@ $_we_active_integrated_modules = array();
 
 				
 				break;
+			case '$_REQUEST["langlink_support_recursive"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "LANGLINK_SUPPORT_RECURSIVE", $settingvalue);
+
+				$_update_prefs = false;
+
+				$_update_prefs = false;
+
+				
+				break;
 
 			/*****************************************************************
 			 * DEFAULT CHARSET
@@ -1979,9 +2000,9 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = false;
 				break;
 
-			case '$_REQUEST["backwardcompatibility_tagloading"]':
+			case '$_REQUEST["include_all_we_tags"]':
 
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];		
 				$_file = weConfParser::changeSourceCode("define", $_file, "INCLUDE_ALL_WE_TAGS", $settingvalue);
 
 				$_update_prefs = false;
@@ -2632,7 +2653,7 @@ $_we_active_integrated_modules = array();
 			case '$_REQUEST["error_mail_address"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@example.com");
+				$_file = weConfParser::changeSourceCode("define", $_file, "WE_ERROR_MAIL_ADDRESS", "mail@www.example");
 
 				$_update_prefs = true;
 				break;
@@ -2709,7 +2730,7 @@ function save_all_values() {
 
 	// we_active_integrated_modules.inc.php
 	$GLOBALS['config_files']['active_integrated_modules'] = array();
-	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_active_integrated_modules.inc.php";
+	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_active_integrated_modules.inc.php";
 	$GLOBALS['config_files']['active_integrated_modules']['content'] = weFile::load($GLOBALS['config_files']['active_integrated_modules']['filename']);
 
 
@@ -2780,6 +2801,8 @@ function save_all_values() {
 		remember_value(implode(',',$countries_top), '$_REQUEST["countries_top"]');
 		remember_value(implode(',',$countries_shown), '$_REQUEST["countries_shown"]');
 	}
+	$_update_prefs = remember_value(isset($_REQUEST["countries_default"]) ? $_REQUEST["countries_default"] : null, '$_REQUEST["countries_default"]') || $_update_prefs;
+
 
 	/*************************************************************************
 	 * DEFAULT_CHARSET
@@ -2863,7 +2886,7 @@ function save_all_values() {
 		$_update_prefs = remember_value(isset($_REQUEST["thumbnail_dir"]) ? $_REQUEST["thumbnail_dir"] : null, '$_REQUEST["thumbnail_dir"]') || $_update_prefs;
         $_update_prefs = remember_value(isset($_REQUEST["we_tracker_dir"]) ? $_REQUEST["we_tracker_dir"] : null, '$_REQUEST["we_tracker_dir"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["execute_hooks"]) ? $_REQUEST["execute_hooks"] : null, '$_REQUEST["execute_hooks"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["backwardcompatibility_tagloading"]) ? $_REQUEST["backwardcompatibility_tagloading"] : null, '$_REQUEST["backwardcompatibility_tagloading"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["include_all_we_tags"]) ? $_REQUEST["include_all_we_tags"] : null, '$_REQUEST["include_all_we_tags"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["inlineedit_default"]) ? $_REQUEST["inlineedit_default"] : null, '$_REQUEST["inlineedit_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["removefirstparagraph_default"]) ? $_REQUEST["removefirstparagraph_default"] : null, '$_REQUEST["removefirstparagraph_default"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["hidenameattribinweimg_default"]) ? $_REQUEST["hidenameattribinweimg_default"] : null, '$_REQUEST["hidenameattribinweimg_default"]') || $_update_prefs;
@@ -2886,6 +2909,7 @@ function save_all_values() {
 		
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, '$_REQUEST["langlink_support_backlinks"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_recursive"]) ? $_REQUEST["langlink_support_recursive"] : null, '$_REQUEST["langlink_support_recursive"]') || $_update_prefs;
 
 		$_update_prefs = remember_value(isset($_REQUEST["wysiwyg_type"]) ? $_REQUEST["wysiwyg_type"] : null, '$_REQUEST["wysiwyg_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["safari_wysiwyg"]) ? $_REQUEST["safari_wysiwyg"] : null, '$_REQUEST["safari_wysiwyg"]') || $_update_prefs;
@@ -3296,6 +3320,7 @@ function build_dialog($selected_setting = "ui") {
 			 ***************************************************/
 
 			if (we_hasPerm("CHANGE_START_DOCUMENT")) {
+
 				// Generate needed JS
 				$_needed_JavaScript .= "
 						<script language=\"JavaScript\" type=\"text/javascript\"><!--
@@ -3335,7 +3360,6 @@ function build_dialog($selected_setting = "ui") {
 								if(document.getElementById('seem_start_type').value == 'object') {
 								";
 				if(defined("OBJECT_FILES_TABLE")) {
-					//$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");";
 					$_needed_JavaScript .=	"parent.opener.top.we_cmd('openDocselector', myWind.frames['we_preferences'].document.forms[0].elements['seem_start_object'].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object\'].value', myWindStr + '.frames[\'we_preferences\'].document.forms[0].elements[\'seem_start_object_name\'].value', '', '" . session_id() . "', '', 'objectFile',1);";
 				}
 				$_needed_JavaScript .= "
@@ -3810,6 +3834,9 @@ function build_dialog($selected_setting = "ui") {
             $_information = htmlAlertAttentionBox(g_l('prefs','[countries_information]'), 2, 450, false);
 
 			array_push($_settings, array("headline" => g_l('prefs','[countries_headline]'), "html" => $_information, "space" => 0,'noline'=>1));
+			$_countries_default = htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
+    		array_push($_settings, array("headline" => $l_prefs["countries_default"], "html" => $_countries_default, "space" => 200,"noline" => 1));
+			
             $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
             $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
@@ -4113,18 +4140,28 @@ EOF;
 				array_push($_settings, array("headline" => g_l('prefs','[locale_add]'), "html" => $_add_html, "space" => 200));
 
 
-
+				$_information = htmlAlertAttentionBox(g_l('prefs','[langlink_information]'), 2, 450, false);
+				array_push($_settings, array("headline" => g_l('prefs','[langlink_headline]'), "html" =>  $_information, "space" => 0,"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support"));
-				array_push($_settings, array("headline" => $l_prefs["langlink_support"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[langlink_support]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
+				$_information = htmlAlertAttentionBox(g_l('prefs','[langlink_support_backlinks_information]'), 2, 250, false,40);
+				array_push($_settings, array( "html" =>  $_information, "space" => 200,"noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_backlinks","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
-				array_push($_settings, array("headline" => $l_prefs["langlink_support_backlinks"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				array_push($_settings, array("headline" => g_l('prefs','[langlink_support_backlinks]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
+				$_information = htmlAlertAttentionBox(g_l('prefs','[langlink_support_recursive_information]'), 2, 250, false,40);
+				array_push($_settings, array( "html" =>  $_information, "space" => 200,"noline" => 1));
+				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_recursive","class"=>"weSelect"));
+				$_php_setting->addOption(0,"false");
+				$_php_setting->addOption(1,"true");
+				$_php_setting->selectOption(get_value("langlink_support_recursive"));
+				array_push($_settings, array("headline" => g_l('prefs','[langlink_support_recursive]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
 
 				/*****************************************************************
 				 * Dialog
@@ -5187,9 +5224,9 @@ else {
 					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
 
 					// Set selected setting
-					if ($i == 0 && !get_value("removefirstparagraph_default_default")) {
+					if ($i == 0 && !get_value("removefirstparagraph_default")) {
 						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("removefirstparagraph_default_default")) {
+					} else if ($i == 1 && get_value("removefirstparagraph_default")) {
 						$_php_setting->selectOption($i);
 					}
 				}
@@ -5330,16 +5367,13 @@ else {
 
 				// Build db select box
 				$_db_connect = new we_htmlSelect(array("name" => "db_connect", "class" => "weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_db_connect->addOption($i, $i == 0 ? "connect" : "pconnect");
-
-					// Set selected setting
-					if ($i == 0 && DB_CONNECT == "connect") {
-						$_db_connect->selectOption($i);
-					} else if ($i == 1 && DB_CONNECT == "pconnect") {
-						$_db_connect->selectOption($i);
-					}
-				}
+					$_db_connect->addOption('connect', "connect");
+					$_db_connect->addOption('pconnect', "pconnect");
+					$_db_connect->addOption('mysqli_connect', "mysqli_connect");
+					$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
+					/*$_db_connect->addOption(4, "pdo_connect");
+					$_db_connect->addOption(5, "pdo_pconnect");*/
+					$_db_connect->selectOption(DB_CONNECT);
 				array_push($_settings, array("headline" => g_l('prefs','[db_connect]'), "html" => $_db_connect->getHtmlCode(), "space" => 200, "noline" => 1));
 
 				// Build db charset select box
@@ -5416,8 +5450,10 @@ else {
 			    include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_classes/base/we_image_edit.class.php');
 
 			    if( we_image_edit::gd_version() > 0 ){   //  gd lib ist installiert
-
-			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
+					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
+					$wecmdenc1= we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
+					$wecmdenc4= '';
+			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
                     $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but));
 
@@ -5433,7 +5469,10 @@ else {
 			    /**
 			     * set pageLogger dir
 			     */
-			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
+				//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['we_tracker_dir'].value");
+				$wecmdenc4= '';
+			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
 				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
                 $_we_tracker_dir = $we_button->create_button_table(array($_inp,$_but));
 			    array_push($_settings, array("headline" => g_l('prefs','[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200));
@@ -5488,7 +5527,7 @@ else {
 
 				$_backwardcompatibility_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
 
-				$_backwardcompatibility_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("backwardcompatibility_tagloading"), "backwardcompatibility_tagloading", g_l('prefs','[backwardcompatibility_tagloading]'), false, "defaultfont"));
+				$_backwardcompatibility_table->setCol(0, 0, null, we_forms::checkboxWithHidden(get_value("include_all_we_tags"), "include_all_we_tags", g_l('prefs','[backwardcompatibility_tagloading]'), false, "defaultfont"));
 				$_backwardcompatibility_table->setCol(1, 0, null, getPixel(1, 5));
 
 				$_backwardcompatibility_table->setCol(2, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 0px;'), htmlAlertAttentionBox(g_l('prefs','[backwardcompatibility_tagloading_message]'),1,245,false));
@@ -5603,8 +5642,12 @@ else {
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
 				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideinwebedition]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
-				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)");
-				  $_acButton2 = $we_button->create_button('image:function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
+				//javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', 'document.forms[0].elements[\\'error_document_no_objectfile\\'].value', 'document.forms[0].elements[\\'error_document_no_objectfile_text\\'].value', '', '" . session_id() . "', '', 'text/webEdition', 1)
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['error_document_no_objectfile'].value");
+				$wecmdenc2= we_cmd_enc("document.forms[0].elements['error_document_no_objectfile_text'].value");
+				$wecmdenc3= '';
+				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','', 'text/webEdition', 1)");
+				  $_acButton2 = $we_button->create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
 				  $yuiSuggest->setAcId("doc2");
 				  $yuiSuggest->setContentType("folder,text/webEdition,text/html");
@@ -5617,13 +5660,13 @@ else {
 				  $yuiSuggest->setSelectButton($_acButton1,10);
 				  $yuiSuggest->setTrashButton($_acButton2,4);
 
-				  array_push($_settings, array('headline' => $l_prefs['error_no_object_found'], 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
+				  array_push($_settings, array('headline' => g_l('prefs','[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200,"noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "suppress404code","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("suppress404code"));
-				array_push($_settings, array("headline" => $l_prefs["suppress404code"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 0));
+				array_push($_settings, array("headline" => g_l('prefs','[suppress404code]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 0));
 
 				$_dialog = create_dialog("", g_l('prefs','[tab_seolinks]'), $_settings, -1, "", "", null, $_needed_JavaScript);
 
@@ -5734,7 +5777,7 @@ $_needed_JavaScript .= "
 			 */
 
 			// Create checkboxes
-			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 9, 1);
+			$_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 8, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_handling_errors"), "error_handling_errors", g_l('prefs','[error_errors]'), false, "defaultfont", "", !get_value("we_error_handler")));
 			$_error_handling_table->setCol(1, 0, null, getPixel(1, 5));
@@ -5746,8 +5789,6 @@ $_needed_JavaScript .= "
 				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", g_l('prefs','[error_deprecated]'), false, "defaultfont", "", !get_value("we_error_handler")));
 				$_error_handling_table->setCol(7, 0, null, getPixel(1, 5));
 			}
-			$_error_handling_table->setCol(8, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox(g_l('prefs','[error_notices_warning]'),1,220));
-
 
 			// Build dialog if user has permission
 			if (we_hasPerm("ADMINISTRATOR")) {
@@ -5759,13 +5800,14 @@ $_needed_JavaScript .= "
 			 *********************************************************************/
 
 			// Create checkboxes
-			$_error_display_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 7, 1);
+			$_error_display_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 8, 1);
+			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox(g_l('prefs','[error_notices_warning]'),1,260));
 
-			$_error_display_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_display_errors"), "error_display_errors", g_l('prefs','[error_display]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_display_table->setCol(1, 0, null, getPixel(1, 5));
-			$_error_display_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("error_log_errors"), "error_log_errors", g_l('prefs','[error_log]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_display_table->setCol(3, 0, null, getPixel(1, 5));
-			$_error_display_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_mail_errors"), "error_mail_errors", g_l('prefs','[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("we_error_handler")));
+			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("error_display_errors"), "error_display_errors", g_l('prefs','[error_display]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_display_table->setCol(2, 0, null, getPixel(1, 5));
+			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("error_log_errors"), "error_log_errors", g_l('prefs','[error_log]'), false, "defaultfont", "", !get_value("we_error_handler")));
+			$_error_display_table->setCol(4, 0, null, getPixel(1, 5));
+			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("error_mail_errors"), "error_mail_errors", g_l('prefs','[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("we_error_handler")));
 
 			// Create specify mail address input
 			$_error_mail_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 4);
@@ -5778,8 +5820,8 @@ $_needed_JavaScript .= "
 
 			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), htmlTextInput("error_mail_address", 6, (get_value("error_mail_errors") != 0 ? get_value("error_mail_address") : ""), 100, ((!get_value("error_mail_errors") || !get_value("we_error_handler")) ? "disabled=\"disabled\"" : ""), "text", 105));
 
-			$_error_display_table->setCol(5, 0, null, getPixel(1, 10));
-			$_error_display_table->setCol(6, 0, null, $_error_mail_specify_table->getHtmlCode());
+			$_error_display_table->setCol(6, 0, null, getPixel(1, 10));
+			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtmlCode());
 
 			// Build dialog if user has permission
 			if (we_hasPerm("ADMINISTRATOR")) {
@@ -6599,7 +6641,7 @@ if ($doSave && !$acError) {
 	print we_htmlElement::htmlBody(array("class" => "weDialogBody","onload"=>"doClose()"), build_dialog("saved")) . "</html>";
 
 } else {
-	$_form = we_htmlElement::htmlForm(array("onSubmit"=>"return false;", "name" => "we_form", "method" => "post", "action" => $_SERVER["PHP_SELF"]), we_htmlElement::htmlHidden(array("name" => "save_settings", "value" => "false")) . render_dialog());
+	$_form = we_htmlElement::htmlForm(array("onSubmit"=>"return false;", "name" => "we_form", "method" => "post", "action" => $_SERVER["SCRIPT_NAME"]), we_htmlElement::htmlHidden(array("name" => "save_settings", "value" => "false")) . render_dialog());
 
 	$_we_cmd_js = we_htmlElement::jsElement('function we_cmd(){
 

@@ -28,29 +28,23 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 
+// Tag and TagBlock Cache
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCache.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weTagCache.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weTagBlockCache.class.php');
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_tag($name, $attribs=array(), $content = ''){
-	$fn = 'we_tag_'.$name;
 	//make sure comment attribute is never shown
-	$attribs = removeAttribs($attribs, array(
-		'cachelifetime',
-		'comment',
-	));
+	$attribs = removeAttribs($attribs, array('comment'));
 
-	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
-	if(isset($attribs['name'])){
-		$attribs['_name_orig'] = $attribs['name'];
-	}
-
-	//FIXME: after changing block etc. this is obsolete
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
 	}
-
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
 		if (isset($attribs['user']) && $attribs['user']) {
@@ -69,19 +63,53 @@ function we_tag($name, $attribs=array(), $content = ''){
 	}
 
 	// as default: all tag_functions are in this file.
-	if (function_exists($fn)||$fn=='we_tag_noCache') {
-		// do noting
+	$fn = "we_tag_$name";
+	if (isset($GLOBALS['weNoCache']) && $GLOBALS['weNoCache'] == true) {
+		$attribs['cachelifetime'] = 0;
+		$CacheType = 'none';
 	} else {
+		if (isset($GLOBALS['we_doc']->CacheType) ){
+			$CacheType = $GLOBALS['we_doc']->CacheType;
+		} else {
+			$CacheType = 'none';
+			$attribs['cachelifetime'] = 0;
+		}
+	}
+
+	if ($name == 'navigation') {
+		$configFile = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php';
+		if (!file_exists($configFile) || !is_file($configFile)) {
+			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php');
+			weNavigationSettingControl::saveSettings(true);
+		}
+		include ($configFile);
+		$lifeTime = isset($attribs['cachelifetime']) ? $attribs['cachelifetime'] : ($GLOBALS['weDefaultNavigationCacheLifetime'] != '' && $GLOBALS['weDefaultNavigationCacheLifetime'] != '0' ? $GLOBALS['weDefaultNavigationCacheLifetime'] : $GLOBALS['we_doc']->CacheLifeTime);
+	} else {
+		$lifeTime = isset($attribs['cachelifetime']) ? $attribs['cachelifetime'] : $GLOBALS['we_doc']->CacheLifeTime;
+	}
+
+	$attribs = removeAttribs($attribs, array(
+		'cachelifetime'
+	));
+	$OtherCacheActive = (isset($GLOBALS['weTagListviewCacheActive']) && $GLOBALS['weTagListviewCacheActive']) || (isset(
+			$GLOBALS['weTagBlockCache']) && $GLOBALS['weTagBlockCache'] >= 1);
+	$toolinc = '';
+
+	if (function_exists($fn)) {
+		// do noting
+	} else
 		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_$name.inc.php")) {
 			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_$name.inc.php");
 
-		} else{
+		} else
+			if ($fn == 'we_tag_noCache') {
+
+			} else
 				if (file_exists(
 						$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . "we_tag_$name.inc.php")) {
 					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . "we_tag_$name.inc.php");
 				} else {
 					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
-					$toolinc = '';
 					if (weToolLookup::getToolTag($name, $toolinc,true)) {
 						include_once ($toolinc);
 					} else {
@@ -93,22 +121,132 @@ function we_tag($name, $attribs=array(), $content = ''){
 					}
 
 				}
-		}
+
+	if ($name == 'block' || $name == 'list' || $name == 'linklist') {
+		$weTagCache = new weTagBlockCache($name, $attribs, $content, $lifeTime);
+
+	} else {
+		$weTagCache = new weTagCache($name, $attribs, $content, $lifeTime);
 	}
 
 	$foo = '';
 
 	if ($fn == 'we_tag_setVar') {
 		$fn($attribs, $content);
-	}else if ($fn == 'we_tag_noCache') {
-		$foo = eval('?>' . $content);
-	} else {
-		$foo = $fn($attribs, $content);
 	}
 
+	// Use Document Cache
+	if ($CacheType == 'document' && (!isset($GLOBALS['weNoCache']) || !$GLOBALS['weNoCache']) && (!isset(
+			$GLOBALS['weCacheOutput']) || !$GLOBALS['weCacheOutput'])) {
+
+		// Cache LifeTime > 0
+		if ($GLOBALS['we_doc']->CacheLifeTime > 0 && get_class($weTagCache) != 'weTagBlockCache') {
+
+			if ($fn == 'we_tag_noCache') {
+				echo $content;
+				ob_start();
+				$GLOBALS['weNoCache'] = true;
+				eval('?>' . $content);
+				$GLOBALS['weNoCache'] = false;
+				ob_end_clean();
+
+			// Tag is cacheable
+			} else
+				if ($weTagCache->isCacheable()) {
+					//echo $fn($attribs, $content);
+					$foo = $fn($attribs, $content); // Bug Fix #8250
+
+
+				// Tag is not cacheable
+				} else {
+					if (stripos($fn,'we_tag_if')===0) {
+						if (isset($GLOBALS['weTagListviewCacheActive']) && $GLOBALS['weTagListviewCacheActive'] == true) {
+							$foo = $fn($attribs, $content);
+
+						} else {
+							$foo = "<?php if(we_tag('$name', unserialize('" . serialize($attribs) . "'))) {\n$content ?>";
+
+						}
+
+					} else {
+						echo "<?php printElement(we_tag('$name', unserialize('" . serialize($attribs) . "'), '$content')); ?>";
+
+					}
+
+				}
+
+		// normal use
+		} else {
+			if ($fn == 'we_tag_noCache') {
+				$GLOBALS['weNoCache'] = true;
+				$foo = eval('?>' . $content);
+				$GLOBALS['weNoCache'] = false;
+
+			} else {
+				$foo = $fn($attribs, $content);
+
+			}
+
+		}
+
+	} else
+		if ($CacheType == 'full' && $weTagCache->lifeTime > 0) {
+			$foo = $fn($attribs, $content);
+
+		} else {
+
+			// Use Tag Cache
+			if ($CacheType == 'tag' || $weTagCache->lifeTime > 0) {
+
+				// Tag is cacheable
+				if ($weTagCache->isCacheable()) { // lifeTime is checked in isCacheable()
+
+
+					// generate the cache
+					if ($weTagCache->start()) {
+						echo $fn($attribs, $content);
+						$weTagCache->end();
+
+					}
+					$foo = $weTagCache->get();
+
+				// Tag is not cacheable
+				} else {
+
+					if ($fn == 'we_tag_noCache') {
+						echo $content;
+						ob_start();
+						$GLOBALS['weNoCache'] = true;
+						eval('?>' . $content);
+						$GLOBALS['weNoCache'] = false;
+						ob_end_clean();
+
+					} else {
+						$foo = $fn($attribs, $content);
+
+					}
+
+				}
+
+			// Do not use Cache
+			} else {
+				if ($fn == 'we_tag_noCache') {
+					$GLOBALS['weNoCache'] = true;
+					$foo = eval('?>' . $content);
+					$GLOBALS['weNoCache'] = false;
+
+				} else {
+					$foo = $fn($attribs, $content);
+
+				}
+
+			}
+
+		}
 	$GLOBALS['we_editmode'] = $edMerk;
 
 	return $foo;
+
 }
 
 ### tag utility functions ###
@@ -592,13 +730,13 @@ function we_tag_listviewPages($attribs, $content){
 
 function we_tag_listviewRows($attribs, $content){
 	return $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset);
- }
+}
 
-function we_tag_listviewStart($attribs, $content) {
+function we_tag_listviewStart($attribs, $content){
 	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
 }
 
-function we_tag_makeMail($attribs, $content) {
+function we_tag_makeMail($attribs, $content){
 	return '';
 }
 
@@ -625,7 +763,6 @@ function we_tag_ifbannerexists($attribs, $content) {
 function we_tag_ifvotingexists($attribs, $content) {
 	return defined("VOTING_TABLE");
 }
-
 
 //FIXME: remove in next Versions
 function include_all_we_tags(){

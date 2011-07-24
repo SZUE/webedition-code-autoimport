@@ -346,7 +346,7 @@ class we_user {
 				$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
 				$q = 'INSERT INTO '.$this->DB_WE->escape($this->Table)." $keys $vals";
 				$this->DB_WE->query($q);
-				$this->ID = f("SELECT max(ID) as ID from ".$this->DB_WE->escape($this->Table),"ID",$this->DB_WE);
+				$this->ID = $this->DB->getInsertId();
 			}
 		}
 	}

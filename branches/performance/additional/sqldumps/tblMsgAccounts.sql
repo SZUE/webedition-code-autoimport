@@ -1,4 +1,4 @@
-CREATE TABLE tblMsgAccounts (
+CREATE TABLE ###TBLPREFIX###tblMsgAccounts (
   ID int(11) NOT NULL auto_increment,
   UserID int(11) default NULL,
   name varchar(255) NOT NULL default '',

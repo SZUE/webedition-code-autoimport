@@ -307,6 +307,9 @@ function we_tag_formfield($attribs, $content){
 				setlocale(LC_ALL, $oldLocale);
 
 				$tagContent='';
+				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+					$tagContent.='<option value="--" '. ($orgVal == '--' ? ' selected="selected">': '>').WE_COUNTRIES_DEFAULT.'</option>'."\n";
+				}
 				foreach ($topCountries as $countrykey => &$countryvalue){
 					$tagContent.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
 				}

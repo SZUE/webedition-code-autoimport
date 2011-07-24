@@ -1044,7 +1044,7 @@ class we_versions_wizard
 
 		$taskname = md5(session_id() . "_version_wizard");
 		$currentTask = isset($_GET["fr_" . $taskname . "_ct"]) ? $_GET["fr_" . $taskname . "_ct"] : 0;
-		$taskFilename = FRAGMENT_LOCATION . $taskname;
+		$taskFilename = WE_FRAGMENT_DIR.'/' . $taskname;
 
 		$js = "";
 		if (!(file_exists($taskFilename) && $currentTask)) {
@@ -1454,7 +1454,7 @@ class we_versions_wizard
 		}
 
 		$taskname = md5(session_id() . "_version_wizard");
-		$taskFilename = FRAGMENT_LOCATION . $taskname;
+		$taskFilename = WE_FRAGMENT_DIR.'/' . $taskname;
 		if (file_exists($taskFilename)) {
 			@unlink($taskFilename);
 		}

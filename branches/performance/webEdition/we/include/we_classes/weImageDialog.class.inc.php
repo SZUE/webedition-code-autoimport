@@ -257,7 +257,7 @@ class weImageDialog extends weDialog{
 		if(!$this->JsOnly) {
 			$target = ' target="we_'.$this->ClassName.'_cmd_frame"';
 		}
-		return '<form name="we_form" action="'.$_SERVER["PHP_SELF"].'" method="post"' . $target . ' onsubmit="return fsubmit(this)" >'.$hiddens;
+		return '<form name="we_form" action="'.$_SERVER["SCRIPT_NAME"].'" method="post"' . $target . ' onsubmit="return fsubmit(this)" >'.$hiddens;
 	}
 
 	function getDialogContentHTML(){
@@ -280,9 +280,12 @@ class weImageDialog extends weDialog{
 												g_l('weClass',"[longdesc_text]"));
 
 		}else{
+			//javascript:we_cmd('browse_server','document.we_form.elements[\\'we_dialog_args[extSrc]\\'].value','',document.we_form.elements['we_dialog_args[extSrc]'].value,'opener.document.we_form.elements[\\'we_dialog_args[type]\\'][0].checked=true;opener.imageChanged();')
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[extSrc]'].value");
+			$wecmdenc4= we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
 			$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 				$we_button->create_button(	"select",
-											"javascript:we_cmd('browse_server','document.we_form.elements[\\'we_dialog_args[extSrc]\\'].value','',document.we_form.elements['we_dialog_args[extSrc]'].value,'opener.document.we_form.elements[\\'we_dialog_args[type]\\'][0].checked=true;opener.imageChanged();')"
+											"javascript:we_cmd('browse_server','".$wecmdenc1."','',document.we_form.elements['we_dialog_args[extSrc]'].value,'".$wecmdenc4."')"
 										  )
 					: "";
 
@@ -300,9 +303,13 @@ class weImageDialog extends weDialog{
 											$but,
 											"","","",0
 										);
+			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[fileID]\\'].value','document.we_form.elements[\\'we_dialog_args[fileSrc]\\'].value','opener.document.we_form.elements[\\'we_dialog_args[type]\\'][1].checked=true;opener.imageChanged();','','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[fileID]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['we_dialog_args[fileSrc]'].value");
+			$wecmdenc3= we_cmd_enc("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
 
 			$but      = $we_button->create_button(	"select",
-													"javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[fileID]\\'].value','document.we_form.elements[\\'we_dialog_args[fileSrc]\\'].value','opener.document.we_form.elements[\\'we_dialog_args[type]\\'][1].checked=true;opener.imageChanged();','','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
+													"javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
 													);
 
 			$radioBut = we_forms::radiobutton(	"int",
@@ -348,7 +355,12 @@ class weImageDialog extends weDialog{
 			}else{
 				$thumbnails = "";
 			}
-			$but      = $we_button->create_button(	"select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[longdescid]\\'].value','document.we_form.elements[\\'we_dialog_args[longdescsrc]\\'].value','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
+			//javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'we_dialog_args[longdescid]\\'].value','document.we_form.elements[\\'we_dialog_args[longdescsrc]\\'].value','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
+			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[longdescid]'].value");
+			$wecmdenc2= we_cmd_enc("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
+			$wecmdenc3= '';
+
+			$but      = $we_button->create_button(	"select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
 			$but2     = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");
 
 			$yuiSuggest->setAcId("Longdesc");

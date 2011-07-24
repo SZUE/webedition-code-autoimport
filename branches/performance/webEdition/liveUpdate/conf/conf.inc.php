@@ -59,5 +59,3 @@ if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && 
 }
 
 //Beta-Switch
-
-?>

@@ -179,9 +179,14 @@ $delallbut = $we_button->create_button(
 		"",
 		"",
 		(count($users)) ? false : true);
+
+//javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].addUserToField()','','',1);
+$wecmdenc1= we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST["we_cmd"][0] . "'].document.forms[0].elements['UserIDTmp'].value");
+$wecmdenc2= we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST["we_cmd"][0] . "'].document.forms[0].elements['UserNameTmp'].value");
+$wecmdenc5= we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST["we_cmd"][0] . "'].addUserToField();");
 $addbut = $we_button->create_button(
 		"add",
-		"javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].addUserToField()','','',1);");
+		"javascript:opener.getUser('browse_users','".$wecmdenc1."','".$wecmdenc2."','','','".$wecmdenc5."','','',1);");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">';
 $content .= '<tr><td>' . getPixel(20, 2) . '</td><td>' . getPixel(254, 2) . '</td><td>' . getPixel(26, 2) . '</td></tr>' . "\n";

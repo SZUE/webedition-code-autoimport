@@ -95,7 +95,7 @@ function we_tag_writeVoting($attribs, $content) {
 	}
 	if ($allowredirect && !$GLOBALS["WE_MAIN_DOC"]->InWebEdition && isset($GLOBALS['_we_voting_SuccessorID']) && $GLOBALS['_we_voting_SuccessorID'] > 0) {
 		$mypath = id_to_path($GLOBALS['_we_voting_SuccessorID']);
-		if ($mypath != $_SERVER['PHP_SELF']) {
+		if ($mypath != $_SERVER['SCRIPT_NAME']) {
 			header("Location: ".$mypath); /* Redirect browser */
 
 		/* Make sure that code below does not get executed when we redirect. */

@@ -87,11 +87,13 @@ class we_docTypes extends we_class {
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
-		/*
+		
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
-			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
+			if(isset($_REQUEST["we_".$this->Name."_LangDocType"])){
+				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
+			}
 		}
-		*/
+		
 		return we_class::we_save($resave);
 	}
 
@@ -163,8 +165,8 @@ class we_docTypes extends we_class {
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
-		$showme=false; //zum temporären abschalten, bis die Create-Funktion  aktiviert wird
-		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && $showme){
+		
+		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 
 			$htmlzw='';
 			foreach ($_languages as $langkey => $lang){
@@ -247,7 +249,12 @@ class we_docTypes extends we_class {
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
-		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)");
+		//javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)
+		$wecmdenc1= '';
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
+
+		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','".$wecmdenc3."', '', '', 'text/weTmpl', 1,1)");
 
 		$templ = new MultiDirChooser(521,$this->Templates,"delete_dt_template",$addbut,"","Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
@@ -364,7 +371,11 @@ class we_docTypes extends we_class {
 		$idname = 'we_'.$this->Name.'_ParentID';
 
 		$we_button = new we_button();
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')");
+		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['" . $textname  . "'].value");
+		$wecmdenc3= '';
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '".$wecmdenc1."', '".$wecmdenc2."', '', '" . session_id() . "')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname,$this->ParentPath);

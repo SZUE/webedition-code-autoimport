@@ -205,7 +205,11 @@ class weNewsletterView {
 		$Pathvalue = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=" . abs($IDValue), "Path", $this->db);
 
 		$we_button = new we_button();
-	  	$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
+	  	$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
 
 		return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",' readonly',"text",$width,0),
 			"",
@@ -220,7 +224,8 @@ class weNewsletterView {
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "",$acObject=null,$contentType="") {
 		$we_button = new we_button();
-	  	$button =  $we_button->create_button("select","javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);");
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+	  	$button =  $we_button->create_button("select","javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
 		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,"",'readonly',"text",$width,0),
 			"",
@@ -238,7 +243,11 @@ class weNewsletterView {
 		}
 
 		$we_button = new we_button();
-		$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')");
+			//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
+		$button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','','$open_doc')");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -268,7 +277,12 @@ class weNewsletterView {
       if($Pathvalue=="") $Pathvalue=f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=".abs($IDValue),"Path",$this->db);
 
 	  $we_button = new we_button();
-	  $button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
+	 	//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")"
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
+
+	  $button =  $we_button->create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -301,7 +315,12 @@ class weNewsletterView {
 		}
 
 		$we_button = new we_button();
-		$button =  $we_button->create_button("select","javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['$IDName'].value,'document.we_form.elements[\'$IDName\'].value','document.we_form.elements[\'$Pathname\'].value','".$cmd."','".session_id()."','$rootDirID')");
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
+
+		$button =  $we_button->create_button("select","javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['$IDName'].value,'".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId("PathGroup");
@@ -1854,7 +1873,7 @@ class weNewsletterView {
 									    $mailrecip = (str_replace(" ", "", $dat[$col])=="")? "--- ".g_l('modules_newsletter','[email_missing]')." ---" : $dat[$col];
 									    if(!empty($mailrecip) && !in_array($mailrecip,$mailListArray)) {
 											$row[]=		$mailrecip.",".
-												( ($importHTML  && isset($dat[$hmcol])) ? $dat[$hmcol] : $hmcol=$this->settings["default_htmlmail"]).",".
+												( ($importHTML  && isset($dat[$hmcol])) ? $dat[$hmcol] : "").",".
 												( ($importSalutation && isset($dat[$salutationcol])) ? $dat[$salutationcol] : "").",".
 												( ($importTitle && isset($dat[$titlecol])) ? $dat[$titlecol] : "").",".
 												( ($importFirstname && isset($dat[$firstnamecol])) ? $dat[$firstnamecol] : "").",".
@@ -2621,33 +2640,33 @@ class weNewsletterView {
 			$filtersql=implode(" ",$filterarr);
 
 			if ($this->newsletter->groups[$group-1]->SendAll) {
-				if ($filtersql !== "") {
-					$this->db->query("SELECT ID FROM ".CUSTOMER_TABLE . " WHERE $filtersql");
-				} else {
-					$this->db->query("SELECT ID FROM ".CUSTOMER_TABLE);
-				}
-
-				while ($this->db->next_record()) {
-					$customers[]=$this->db->f("ID");
-				}
+				$customers='SELECT ID FROM '.CUSTOMER_TABLE .' WHERE '.($filtersql !== ''?$filtersql:'1');
 			} else {
-				$customers=makeArrayFromCSV($this->newsletter->groups[$group-1]->Customers);
+				$customers=implode(',',array_map('intval',explode(',',$this->newsletter->groups[$group-1]->Customers)));
 			}
 
 			$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";','pref_value',$this->db);
-			foreach ($customers as $customer) {
-				$foo = getHash("SELECT * FROM ".CUSTOMER_TABLE." WHERE ID=".abs($customer).($filtersql!="" ?  " AND ($filtersql)": ""),$this->db);
-				if (isset($foo[$this->settings["customer_email_field"]]) && $foo[$this->settings["customer_email_field"]]) {
-					$email = $foo[$this->settings["customer_email_field"]];
-					$htmlmail = (isset($foo[$this->settings["customer_html_field"]]) && $foo[$this->settings["customer_html_field"]]!='') ? $foo[$this->settings["customer_html_field"]] : $_default_html;
-					$salutation = (isset($foo[$this->settings["customer_salutation_field"]]) && $foo[$this->settings["customer_salutation_field"]]) ? $foo[$this->settings["customer_salutation_field"]] : "";
-					$title = (isset($foo[$this->settings["customer_title_field"]]) && $foo[$this->settings["customer_title_field"]]) ? $foo[$this->settings["customer_title_field"]] : "";
-					$firstname = (isset($foo[$this->settings["customer_firstname_field"]]) && $foo[$this->settings["customer_firstname_field"]]) ? $foo[$this->settings["customer_firstname_field"]] : "";
-					$lastname = (isset($foo[$this->settings["customer_lastname_field"]]) && $foo[$this->settings["customer_lastname_field"]]) ? $foo[$this->settings["customer_lastname_field"]] : "";
-
+			$select=$this->settings['customer_email_field'].
+							($emails_only?'':
+							','.$this->settings['customer_html_field'].','.
+							$this->settings['customer_salutation_field'].','.
+							$this->settings['customer_title_field'].','.
+							$this->settings['customer_firstname_field'].','.
+							$this->settings['customer_lastname_field']
+							);
+			$this->db->query('SELECT '.$select.' FROM '.CUSTOMER_TABLE.' WHERE ID IN('.$customers.')'.($filtersql!='' ? ' AND ('.$filtersql.')': ''));
+			while ($this->db->next_record()) {
+				if ($this->db->f($this->settings["customer_email_field"])) {
+					$email = trim($this->db->f($this->settings["customer_email_field"]));
 					if ($emails_only) {
 						$customer_mail[] = $email;
-					} else {
+					}else{
+						$htmlmail = (trim($this->db->f($this->settings["customer_html_field"]))!='') ? trim($this->db->f($this->settings["customer_html_field"])) : $_default_html;
+						$salutation = $this->db->f($this->settings["customer_salutation_field"]);
+						$title = $this->db->f($this->settings["customer_title_field"]);
+						$firstname = $this->db->f($this->settings["customer_firstname_field"]);
+						$lastname = $this->db->f($this->settings["customer_lastname_field"]);
+
 						// damd: Parmeter $customer (Kunden ID in der Kundenverwaltung) und Flag dass es sich um Daten aus der Kundenverwaltung handelt angeh�ngt
 						$customer_mail[] = array($email, $htmlmail, $salutation, $title, $firstname, $lastname,$group,$this->getGroupBlocks($group),$customer,'customer');
 					}
@@ -2942,6 +2961,4 @@ class weNewsletterView {
 		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);
 		return weFile::save($filename,$content);
 	}
-
-
 }

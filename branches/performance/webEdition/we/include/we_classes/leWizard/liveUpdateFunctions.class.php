@@ -543,10 +543,8 @@ class liveUpdateFunctions {
 
 		foreach ($queries as $query) {
 
-			if (LIVEUPDATE_TABLE_PREFIX) {
-
-				$query = preg_replace("/^DROP TABLE IF EXISTS /", "DROP TABLE IF EXISTS " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			}
+		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+		$query=str_replace('###UPDATEONLY###', '', $query);
 
 			if (!$leDB->query($query)) {
 
@@ -605,20 +603,26 @@ class liveUpdateFunctions {
 		// change fields when needed.
 
 		$query = trim($query);
+		
+		if (strpos($query,'###INSTALLONLY###')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+			return true;
+		}
 
-		// first of all we need to check if there is a tblPrefix
-		if (LIVEUPDATE_TABLE_PREFIX) {
+		$query=str_replace('###UPDATEONLY###', '', $query);
+		if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
 			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
+			$query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-
+			
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
+		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 
 			// second, we need to check if there is a collation
 			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {

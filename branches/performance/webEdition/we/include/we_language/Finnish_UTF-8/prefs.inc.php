@@ -69,8 +69,9 @@ $l_prefs = array(
 		/**
 		 * Countries
 		 */
-		'countries_information' => "Select the countries, which are available in the customer module, shop-module and so on.", // TRANSLATE
+		'countries_information' => "Select the countries, which are available in the customer module, shop-module and so on.  The default value (Code '--') - if filled - will be shown on top of the list, possible values are i.e. 'please choose' or '--'.", // TRANSLATE
 		'countries_headline' => "Country selection", // TRANSLATE
+		'countries_default' => "Default value",
 		'countries_country' => "Country", // TRANSLATE
 		'countries_top' => "top list", // TRANSLATE
 		'countries_show' => "display", // TRANSLATE
@@ -199,8 +200,13 @@ $l_prefs = array(
 		'language_already_exists' => "Tämä kieli on jo olemassa",
 		'language_country_missing' => "Please select also a country", // TRANSLATE
 		'add_dictionary_question' => "Haluatko päivittää sanaston tälle kielelle?",
-		'langlink_support' => "Automatic language links",// TRANSLATE,
+		'langlink_headline' => "Support for setting links between different languages",
+		'langlink_information' => "With this option, you can set the links to corresponding language versions of documents/objects in the backend and open/create etc. these documents/oobjects.<br/>For the frontend you can display these links in a listview type=languagelink.<br/><br/>For folders, you can define a <b>document</b> in each language, which is used if for a document within the folder no corresponding document in the other language is set.",
+		'langlink_support' => "active",
 		'langlink_support_backlinks' => "Generate back links automatically",// TRANSLATE
+		'langlink_support_backlinks_information' => "Back links can be generated automatically for documents/objects (not folders). The other document should not be open in an editor tab!",
+		'langlink_support_recursive' => "Generate language links recursive",// TRANSLATE
+		'langlink_support_recursive_information' => "Setting of langauge links can be done recursively for documents/objects (but not folders). This sets all possible links and tries to establish the language-circle as fast as possible. The other documents should not be open in an editor tab!",
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */
@@ -394,7 +400,7 @@ $l_prefs = array(
 		'error_deprecated' => "deprecated Notices", //TRANSLATE
 		'error_warnings' => "Varoitukset",
 		'error_errors' => "Virheet",
-		'error_notices_warning' => 'Ominaisuus kehittäjille! Älä aktivoi tuotantokäytössä!.',
+		'error_notices_warning' => 'We recommend to aktivate the option -Log errors- on all systems; the option -Show errors- should be activated only during development.',//TRANSLATE
 		/**
 		 * ERROR DISPLAY
 		 */

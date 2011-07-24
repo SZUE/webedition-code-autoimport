@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-include_once(WE_GLOSSARY_MODULE_DIR.'weGlossary.php');
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once(WE_GLOSSARY_MODULE_DIR."weGlossary.php");
 
 /**
  * this class implements the cache functionality for the glossary
@@ -36,14 +36,14 @@ class weGlossaryCache {
 	 *
 	 * @var string
 	 */
-	var $language = '';
+	var $language = "";
 
 	/**
 	 * internal id of the cache
 	 *
 	 * @var string
 	 */
-	var $_cacheId = '';
+	var $_cacheId = "";
 
 
 	/**
@@ -95,7 +95,7 @@ class weGlossaryCache {
 	 */
 	function cacheIdToFilename($id) {
 
-		return WE_GLOSSARY_MODULE_DIR . 'cache/cache_' . $id . '.php';
+		return WE_GLOSSARY_MODULE_DIR . "cache/cache_" . $id . ".php";
 
 	}
 
@@ -110,7 +110,7 @@ class weGlossaryCache {
 	 */
 	function filenameToCacheId($filename) {
 
-		return ereg_replace('^' . WE_GLOSSARY_MODULE_DIR . 'data/cache_', ereg_replace('.php$', $filename));
+		return ereg_replace("^" . WE_GLOSSARY_MODULE_DIR . "data/cache_", ereg_replace(".php$", $filename));
 
 	}
 
@@ -178,101 +178,101 @@ class weGlossaryCache {
 
 			$Title = htmlspecialchars($Title, ENT_QUOTES);
 
-			if(trim($Title) != '') {
+			if(trim($Title) != "") {
 				$temp['title'] = trim($Title);
 			}
 
 			// Language
-			if(isset($Attributes['lang']) && trim($Attributes['lang']) != '') {
+			if(isset($Attributes['lang']) && trim($Attributes['lang']) != "") {
 				$temp['lang'] = trim($Attributes['lang']);
 				$temp['xml:lang'] = trim($Attributes['lang']);
 			}
 
-			$attributes = '';
+			$attributes = "";
 
 			// Language
 			if($Type == 'link') {
 
-				$urladd = '';
+				$urladd = "";
 
 				if(isset($Attributes['mode'])){
 					$Attributes['mode']=trim($Attributes['mode']);
 					switch($Attributes['mode']){
 				// External Link
-				case 'extern':
+				case "extern":
 
 					// Href
-					$temp['href'] = '';
-					if(isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != ''&& trim($Attributes['ExternUrl']) != 'http://') {
+					$temp['href'] = "";
+					if(isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != ""&& trim($Attributes['ExternUrl']) != "http://") {
 						$temp['href'] .= trim($Attributes['ExternUrl']);
 					}
 
 					// Parameter
-					if(isset($Attributes['ExternParameter']) && trim($Attributes['ExternParameter']) != '') {
+					if(isset($Attributes['ExternParameter']) && trim($Attributes['ExternParameter']) != "") {
 						$urladd .= ($urladd ? $urladd . '&' : '?') . trim($Attributes['ExternParameter']);
 					}
 					break;
 				// Internal Link
-				case 'intern':
+				case "intern":
 
 					// LinkID
-					$temp['href'] = '';
+					$temp['href'] = "";
 					if(isset($Attributes['InternLinkID']) && trim($Attributes['InternLinkID']) != 0) {
 						$temp['href'] .= id_to_path($Attributes['InternLinkID']);
 					}
 
 					// Parameter
-					if(isset($Attributes['InternParameter']) && trim($Attributes['InternParameter']) != '') {
+					if(isset($Attributes['InternParameter']) && trim($Attributes['InternParameter']) != "") {
 						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['InternParameter']);
 					}
 					break;
 				// Object Link
-				case 'object':
+				case "object":
 
 					// LinkID
-					$temp['href'] = '';
-					if(isset($Attributes['ObjectLinkPath']) && trim($Attributes['ObjectLinkPath']) != '') {
+					$temp['href'] = "";
+					if(isset($Attributes['ObjectLinkPath']) && trim($Attributes['ObjectLinkPath']) != "") {
 						$temp['href'] .= trim($Attributes['ObjectLinkPath']);
 					}
 
-					if(isset($Attributes['ObjectLinkID']) && trim($Attributes['ObjectLinkID']) != '') {
+					if(isset($Attributes['ObjectLinkID']) && trim($Attributes['ObjectLinkID']) != "") {
 						$urladd = ($urladd ? $urladd . '&' : '?') . 'we_objectID=' . trim($Attributes['ObjectLinkID']);
 					}
 
 					// Parameter
-					if(isset($Attributes['ObjectParameter']) && trim($Attributes['ObjectParameter']) != '') {
+					if(isset($Attributes['ObjectParameter']) && trim($Attributes['ObjectParameter']) != "") {
 						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['ObjectParameter']);
 					}
 					break;
 				// Category Link
-				case 'category':
+				case "category":
 
-					$temp['href'] = '';
-					if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) == 'intern') {
+					$temp['href'] = "";
+					if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) == "intern") {
 
 						// LinkID
-						if(isset($Attributes['CategoryInternLinkID']) && trim($Attributes['CategoryInternLinkID']) != '') {
+						if(isset($Attributes['CategoryInternLinkID']) && trim($Attributes['CategoryInternLinkID']) != "") {
 							$temp['href'] .= id_to_path($Attributes['CategoryInternLinkID']);
 						}
 
 					} else {
 
 						// Href
-						if(isset($Attributes['CategoryUrl']) && trim($Attributes['CategoryUrl']) != '') {
+						if(isset($Attributes['CategoryUrl']) && trim($Attributes['CategoryUrl']) != "") {
 							$temp['href'] .= trim($Attributes['CategoryUrl']);
 						}
 
 					}
 
 					// Cat Parameter & Cat ID
-					if(isset($Attributes['CategoryCatParameter']) && trim($Attributes['CategoryCatParameter']) != ''
-						&& isset($Attributes['CategoryLinkID']) && trim($Attributes['CategoryLinkID']) != '') {
-						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['CategoryCatParameter']) . '=' . trim($Attributes['CategoryLinkID']);
+					if(isset($Attributes['CategoryCatParameter']) && trim($Attributes['CategoryCatParameter']) != ""
+						&& isset($Attributes['CategoryLinkID']) && trim($Attributes['CategoryLinkID']) != "") {
+						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['CategoryCatParameter']) . "=" . trim($Attributes['CategoryLinkID']);
 
 					}
 
 					// Parameter
-					if(isset($Attributes['CategoryParameter']) && trim($Attributes['CategoryParameter']) != '') {
+					if(isset($Attributes['CategoryParameter']) && trim($Attributes['CategoryParameter']) != "") {
 						$urladd = ($urladd ? $urladd . '&' : '?') . trim($Attributes['CategoryParameter']);
 					}
 					break;
@@ -280,42 +280,42 @@ class weGlossaryCache {
 				}
 
 				// Attribute
-				if(isset($Attributes['attribute']) && trim($Attributes['attribute']) != '') {
-					$temp['attribute'] = ' '.addslashes(trim($Attributes['attribute']) . ' ');
+				if(isset($Attributes['attribute']) && trim($Attributes['attribute']) != "") {
+					$temp['attribute'] = " ".addslashes(trim($Attributes['attribute']) . " ");
 				}
 
 				// Anchor
-				if(isset($Attributes['anchor']) && trim($Attributes['anchor']) != '') {
+				if(isset($Attributes['anchor']) && trim($Attributes['anchor']) != "") {
 					$urladd .= '#' . trim($Attributes['anchor']);
 				}
 
 				// Target
-				if(isset($Attributes['target']) && trim($Attributes['target']) != '') {
+				if(isset($Attributes['target']) && trim($Attributes['target']) != "") {
 					$temp['target'] = trim($Attributes['target']);
 				}
 
 				// hreflang
-				if(isset($Attributes['hreflang']) && trim($Attributes['hreflang']) != '') {
+				if(isset($Attributes['hreflang']) && trim($Attributes['hreflang']) != "") {
 					$temp['hreflang'] = trim($Attributes['hreflang']);
 				}
 
 				// Accesskey
-				if(isset($Attributes['accesskey']) && trim($Attributes['accesskey']) != '') {
+				if(isset($Attributes['accesskey']) && trim($Attributes['accesskey']) != "") {
 					$temp['accesskey'] = trim($Attributes['accesskey']);
 				}
 
 				// tabindex
-				if(isset($Attributes['tabindex']) && trim($Attributes['tabindex']) != '') {
+				if(isset($Attributes['tabindex']) && trim($Attributes['tabindex']) != "") {
 					$temp['tabindex'] = trim($Attributes['tabindex']);
 				}
 
 				// rel
-				if(isset($Attributes['rel']) && trim($Attributes['rel']) != '') {
+				if(isset($Attributes['rel']) && trim($Attributes['rel']) != "") {
 					$temp['rel'] = trim($Attributes['rel']);
 				}
 
 				// rev
-				if(isset($Attributes['rev']) && trim($Attributes['rev']) != '') {
+				if(isset($Attributes['rev']) && trim($Attributes['rev']) != "") {
 					$temp['rev'] = trim($Attributes['rev']);
 				}
 
@@ -327,45 +327,45 @@ class weGlossaryCache {
 					$temp['onclick'] = "var we_winOpts = '';";
 
 					// popup_width
-					if(isset($Attributes['popup_width']) && trim($Attributes['popup_width']) != '') {
+					if(isset($Attributes['popup_width']) && trim($Attributes['popup_width']) != "") {
 						$width = trim($Attributes['popup_width']);
 					} else {
 						$width = 100;
 					}
 
 					// popup_height
-					if(isset($Attributes['popup_height']) && trim($Attributes['popup_height']) != '') {
+					if(isset($Attributes['popup_height']) && trim($Attributes['popup_height']) != "") {
 						$height = trim($Attributes['popup_height']);
 					} else {
 						$height = 100;
 					}
 
 					// popup_center
-					if(isset($Attributes['popup_center']) && trim($Attributes['popup_center']) != '') {
-						$temp['onclick'] .= 		'if (window.screen) {'
-											.	'var w=' . $width . ';'
-											.	'var h=' . $height . ';'
-											.	'var screen_height = screen.availHeight - 70;'
-											.	'var screen_width = screen.availWidth-10;'
-											.	'var w = Math.min(screen_width,w);'
-											.	'var h = Math.min(screen_height,h);'
-											.	'var h = Math.min(screen_height,h);'
-											.	'var x = (screen_width - w) / 2;'
-											.	'var y = (screen_height - h) / 2;'
+					if(isset($Attributes['popup_center']) && trim($Attributes['popup_center']) != "") {
+						$temp['onclick'] .= 		"if (window.screen) {"
+											.	"var w=" . $width . ";"
+											.	"var h=" . $height . ";"
+											.	"var screen_height = screen.availHeight - 70;"
+											.	"var screen_width = screen.availWidth-10;"
+											.	"var w = Math.min(screen_width,w);"
+											.	"var h = Math.min(screen_height,h);"
+											.	"var h = Math.min(screen_height,h);"
+											.	"var x = (screen_width - w) / 2;"
+											.	"var y = (screen_height - h) / 2;"
 											.	"we_winOpts = 'left='+x+',top='+y;"
-											.	'} else {'
+											.	"} else {"
 											.	"we_winOpts='';"
-											.	'}';
+											.	"}";
 
 					} else {
 
 						// popup_xposition
-						if(isset($Attributes['popup_xposition']) && trim($Attributes['popup_xposition']) != '') {
+						if(isset($Attributes['popup_xposition']) && trim($Attributes['popup_xposition']) != "") {
 							$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'left=" . trim($Attributes['popup_xposition']) ."';";
 						}
 
 						// popup_yposition
-						if(isset($Attributes['popup_yposition']) && trim($Attributes['popup_yposition']) != '') {
+						if(isset($Attributes['popup_yposition']) && trim($Attributes['popup_yposition']) != "") {
 							$temp['onclick'] .= "we_winOpts += (we_winOpts ? ',' : '')+'top=" . trim($Attributes['popup_yposition']) ."';";
 						}
 
@@ -397,9 +397,9 @@ class weGlossaryCache {
 
 					$temp['onclick'] .= "var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);";
 
-					$temp['onclick'] = str_replace("'", '@@@we@@@', $temp['onclick']);
+					$temp['onclick'] = str_replace("'", "@@@we@@@", $temp['onclick']);
 
-					$temp['href'] = '#';
+					$temp['href'] = "#";
 
 				}
 
@@ -423,8 +423,8 @@ class weGlossaryCache {
 
 		foreach($Items as $Text => $Value) {
 
-			$prefix = '';
-			$postfix = '';
+			$prefix = "";
+			$postfix = "";
 			foreach($Value as $Type => $AttributeList) {
 
 				switch($Type) {
@@ -451,7 +451,7 @@ class weGlossaryCache {
 
 				}
 
-				$prefix .= '<' . $Tag;
+				$prefix .= "<" . $Tag;
 				foreach($AttributeList as $Attribute => $Val) {
 					$prefix .= ($Attribute == 'attribute'?$Val:' ' . $Attribute . '=\"' . $Val . '\"');
 				}
@@ -483,7 +483,7 @@ class weGlossaryCache {
 
 		}
 
-		$fh = fopen($cacheFilename, 'w+');
+		$fh = fopen($cacheFilename, "w+");
 		if(!$fh) {
 			return false;
 		}

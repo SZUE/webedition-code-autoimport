@@ -25,7 +25,7 @@
 class DB_Sql {
 	/* public: connection parameters */
 
-	var $Database = '';
+	var $Database = "";
 
 	/* public: configuration parameters */
 	var $Auto_Free = 0; ## Set to 1 for automatic mysql_free_result()
@@ -39,14 +39,15 @@ class DB_Sql {
 
 	/* public: current error number and error text */
 	var $Errno = 0;
-	var $Error = '';
+	var $Error = "";
 
 	/* private: link and query handles */
 	var $Link_ID = 0;
 	var $Query_ID = 0;
 
 	/* public: constructor */
-	function DB_Sql($query = ''){
+
+	function DB_Sql($query = "") {
 		$this->query($query);
 	}
 
@@ -61,7 +62,9 @@ class DB_Sql {
 	}
 
 	/* public: connection management */
-	function connect($Database = '', $Host = '', $User = '', $Password = ''){
+
+	function connect($Database = "", $Host = "", $User = "", $Password = "") {
+
 		/* establish connection, select database */
 		if (0 == $this->Link_ID) {
 
@@ -91,7 +94,7 @@ class DB_Sql {
 
 	function query($Query_String) {
 		/* No empty queries, please, since PHP4 chokes on them. */
-		if ($Query_String == '')
+		if ($Query_String == "")
 		/* The empty query string is passed on from the constructor,
 		* when calling the class without a query, e.g. in situations
 		* like these: '$db = new DB_Sql_Subclass;'
@@ -252,7 +255,7 @@ class DB_Sql {
 	}
 
 	function f($Name) {
-		return isset($this->Record[$Name]) ? $this->Record[$Name] : '';
+		return isset($this->Record[$Name]) ? $this->Record[$Name] : "";
 	}
 
 	function p($Name) {
@@ -359,8 +362,8 @@ class DB_Sql {
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
 
-	function table_names($like = ''){
-		$this->query("SHOW TABLES" . (($like != '') ? " LIKE '" . $like . "' " : ''));
+	function table_names($like = "") {
+		$this->query("SHOW TABLES" . (($like != "") ? " LIKE '" . $like . "' " : ""));
 		$i = 0;
 		while ($info = mysql_fetch_row($this->Query_ID)) {
 			$return[$i]["table_name"] = $info[0];

@@ -726,19 +726,22 @@ class searchtoolsearch extends we_search
 						}
 					}
 				}
+				if(count($fields)==0){
+					continue;
+				}
 				$field = array();
 				foreach ($fields as $k => $v) {
 					$field[] = $v['name'];
 				}
-				$where = " ";
+				$where = '';
 				foreach ($field as $k => $v) {
 					if ($k != 0) {
 						$where .= " OR ";
 					}
 					$where .= $v . " LIKE '%" . escape_sql_query(trim($keyword)) . "%' ";
 				}
-
-				$_db->query("SELECT " . escape_sql_query($_obj_table) . ".OF_ID FROM " . escape_sql_query($_obj_table) . " WHERE " . $where . "");
+				
+				$_db->query('SELECT ' . escape_sql_query($_obj_table) . '.OF_ID FROM ' . escape_sql_query($_obj_table) . ' WHERE ' . $where);
 				while ($_db->next_record()) {
 					$Ids[] = $_db->f('OF_ID');
 				}

@@ -51,20 +51,9 @@ $ignore_browser = isset($_REQUEST['ignore_browser']) &&  ($_REQUEST['ignore_brow
 function getValueLoginMode($val) {
 	switch ($val) {
 		case 'seem' :
-			if (isset($_COOKIE['we_mode']) && $_COOKIE['we_mode'] == 'seem') { // last mode was seem mode
-				return ' checked="checked"';
-			} else {
-				return '';
-			}
-			break;
-
-		case 'normal' :
-			if (!isset($_COOKIE['we_mode']) || $_COOKIE['we_mode'] != 'seem') { // start normal mode
-				return ' checked="checked"';
-			} else {
-				return '';
-			}
-			break;
+			return (isset($_COOKIE['we_mode']) && $_COOKIE['we_mode'] == 'seem')?' checked="checked"':'';
+		case 'normal' :// start normal mode
+			return (!isset($_COOKIE['we_mode']) || $_COOKIE['we_mode'] != 'seem')  ? ' checked="checked"' :'';
 	}
 }
 
@@ -79,8 +68,8 @@ if (!is_dir($_SERVER['DOCUMENT_ROOT'].ZENDCACHE_DIR)) {
 	createLocalFolder($_SERVER['DOCUMENT_ROOT'].ZENDCACHE_DIR);
 }
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/taskFragment.class.php');
-if (!is_dir(FRAGMENT_LOCATION)) {
-	createLocalFolder(FRAGMENT_LOCATION);
+if (!is_dir(WE_FRAGMENT_DIR)) {
+	createLocalFolder(WE_FRAGMENT_DIR);
 }
 if (!is_dir($_SERVER['DOCUMENT_ROOT'].VERSION_DIR)) {
 	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR);
@@ -144,7 +133,7 @@ if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_t
  * CLEAN Temporary Data left over from last logout  bug #4240
  *****************************************************************************/
 
-cleanTempFiles(1);
+cleanTempFiles(true);
 //clean Error-Log-Table
 $DB_WE->query('DELETE FROM '.ERROR_LOG_TABLE.' WHERE `Date` < DATE_SUB(NOW(), INTERVAL '.ERROR_LOG_HOLDTIME.' DAY)');
 
@@ -155,10 +144,9 @@ $DB_WE->query('DELETE FROM '.ERROR_LOG_TABLE.' WHERE `Date` < DATE_SUB(NOW(), IN
 
 $DB_WE->query('DELETE FROM '.FAILED_LOGINS_TABLE.' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL '.LOGIN_FAILED_HOLDTIME.' DAY)');
 
-$DB_WE->query('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(), INTERVAL '.abs(LOGIN_FAILED_TIME).' HOUR)');
-$DB_WE->next_record();
+$count=f('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(), INTERVAL '.abs(LOGIN_FAILED_TIME).' MINUTE)','count',$DB_WE);
 
-if ($DB_WE->f('count') >= LOGIN_FAILED_NR) {
+if ($count >= LOGIN_FAILED_NR) {
 	htmlTop('webEdition ' . WE_VERSION);
 	print we_htmlElement::jsElement(
 		we_message_reporting::getShowMessageCall( sprintf(g_l('alert','[3timesLoginError]'), LOGIN_FAILED_NR,LOGIN_FAILED_TIME), WE_MESSAGE_ERROR )
@@ -298,7 +286,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
-} else if(!$DB_WE->connect() || $DB_WE->Error=='No database selected') {
+} else if(!$DB_WE->isConnected() || $DB_WE->Error=='No database selected') {
 	$_error = we_htmlElement::htmlB(g_l('start','[no_db_connection]'));
 
 	$_error_count = 0;
@@ -537,19 +525,18 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 			}
 
 			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert',"[popupLoginError]") . "', '/webEdition/index.php'); }";
+			header ('HTTP/1.1 303 See Other'); 
+			header ('Location: '.WEBEDITION_DIR . 'webEdition.php');
 			break;
 		case 1:
-			$DB_WE->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
+			$DB_WE->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET UserTable="tblUser", Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
 
-			/*			 * ***************************************************************************
+			/* ****************************************************************************
 			 * CHECK FOR FAILED LOGIN ATTEMPTS
 			 * *************************************************************************** */
-			$DB_WE->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE LoginDate < DATE_SUB(NOW(), INTERVAL ' . LOGIN_FAILED_HOLDTIME . ' DAY)');
+			$cnt=f('SELECT COUNT(ID) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="' . addslashes($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . abs(LOGIN_FAILED_TIME) . ' MINUTE)','count',$DB_WE);
 
-			$DB_WE->query('SELECT COUNT(ID) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="' . addslashes($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . abs(LOGIN_FAILED_TIME) . ' MINUTE)');
-			$DB_WE->next_record();
-
-			if ($DB_WE->f('count') >= LOGIN_FAILED_NR) {
+			if ($cnt >= LOGIN_FAILED_NR) {
 				$_body_javascript = we_message_reporting::getShowMessageCall(sprintf(g_l('alert',"[3timesLoginError]"), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), WE_MESSAGE_ERROR);
 			} else {
 				$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_failed]"), WE_MESSAGE_ERROR);
@@ -561,6 +548,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 		case 4:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_denied_for_user]"), WE_MESSAGE_ERROR);
 			break;
+		default: 
 	}
 
 

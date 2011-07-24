@@ -59,7 +59,7 @@
 		$referer = parse_url($_SERVER["SCRIPT_URI"]);
 		if ($_SERVER["HTTP_HOST"] != $referer["host"]) {
 			$protocol = "http" . (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] =='on' ? "s" : "") . "://";
-			header("location: ".$protocol.$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"].'?'.$_SERVER["QUERY_STRING"]);
+			header("location: ".$protocol.$_SERVER["HTTP_HOST"].$_SERVER['SCRIPT_NAME'].'?'.$_SERVER["QUERY_STRING"]);
 		}
 	}
 	
@@ -198,9 +198,11 @@
 		'clientDomain' => urlencode($_SERVER['HTTP_HOST']),
 		'clientInstalledModules' => array(),
 		'clientInstalledLanguages' => array($_SESSION["leInstallerLanguage"]),
-		'clientUpdateUrl' => str_replace("\\", "/", _getServerProtocol() . $_SERVER['HTTP_HOST']) . $_SERVER['PHP_SELF'], // REQUEST_URI is not always available so we use PHP_SELF 
+		'clientUpdateUrl' => str_replace("\\", "/", _getServerProtocol() . $_SERVER['HTTP_HOST']) . $_SERVER['SCRIPT_NAME'], // REQUEST_URI is not always available so we use PHP_SELF 
 		'clientContent' => (isset($_SESSION["le_install_demo"]) ? $_SESSION["le_install_demo"] : true),
 		'clientEncoding' => (isset($_SESSION["le_Encoding"]) ? $_SESSION["le_Encoding"] : "none"),
+		'clientSessionName' => session_name(),
+		'clientSessionID' => session_id()
 	);
 	unset($_tmp);
 

@@ -124,7 +124,7 @@
                 $selectedName = $_REQUEST['validationService'];
                 break;
             case 'newService':
-                $selectedService = new validationService(0,'custom','accessible',g_l('validation','[edit_service][new]'),'example.com','/path', 'get', 'varname','url','text/html','','.html',1);
+                $selectedService = new validationService(0,'custom','accessible',g_l('validation','[edit_service][new]'),'www.example','/path', 'get', 'varname','url','text/html','','.html',1);
                 break;
         }
     }

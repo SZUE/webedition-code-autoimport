@@ -68,7 +68,8 @@ $l_prefs = array(
 		/**
 		 * Countries
 		 */
-		'countries_information' => "Wählen Sie hier die Länder aus, die in der Kundenverwaltung, im Shop usw. ausgewählt werden können.",
+		'countries_information' => "Wählen Sie hier die Länder aus, die in der Kundenverwaltung, im Shop usw. ausgewählt werden können. Der Startwert (Code '--') wird - wenn mit einem Wert gefüllt - am oberen Ende der Liste angezeigt, mögliche Werte sind z.B. 'Bitte wählen:' oder '---'",
+		'countries_default' => "Startwert",
 		'countries_headline' => "Länderauswahl",
 		'countries_country' => "Land",
 		'countries_top' => "Top-Liste",
@@ -188,7 +189,7 @@ $l_prefs = array(
 		/**
 		 * Languages
 		 */
-		'locale_information' => "Fügen Sie hier alle Sprachen hinzu, für welche Sie eine Webseite mit webEdition erstellen möchten.<br /><br />Diese Einstellung wird für das Glossar und die Rechtschreibprüfung einzelner Dokumente verwendet.",
+		'locale_information' => "Fügen Sie hier alle Sprachen (Locales) hinzu, für welche Sie eine Webseite mit webEdition erstellen möchten.<br />Sie können dann das Locale den einzelnen Dokumenten/Objekten und Verzeichnissen zuweisen.<br />Diese Einstellung wird für das Glossar und die Rechtschreibprüfung einzelner Dokumente verwendet, steht aber auch z.B. für listviews als Selektionskriterium zur Verfügung",
 		'locale_languages' => "Sprache",
 		'locale_countries' => "Land",
 		'locale_add' => "Sprache hinzufügen",
@@ -196,8 +197,14 @@ $l_prefs = array(
 		'language_already_exists' => "Diese Sprache wurde bereits angelegt.",
 		'language_country_missing' => "Bitte wählen Sie auch ein Land aus",
 		'add_dictionary_question' => "Möchten Sie gleich das Wörterbuch für diese Sprache hinzufügen?",
-		'langlink_support' => "Automatische Sprachverlinkung",
-		'langlink_support_backlinks' => "Erzeuge automatisch die Backlinks",
+		'langlink_headline' => "Unterstützung für die Verlinkung zwischen verschiedenen Sprachen",
+		'langlink_information' => "Mit dieser Option können Sie im Backend die verschiedenen korrespondierenden Sprachversionen eines Dokumentes/Objektes verwalten und diese Dokumente zuweisen, aufrufen usw.<br/>Eine Ausgabe im Frontend erfolgt dann über eine listview type=languagelink.<br/><br/>Für Verzeichnisse kann dann ein <b>Dokument</b> in der jeweiligen Sprache gewählt werden, auf das zurückgegriffen wird, wenn einzelnen Dokumenten im Verzeichnis selbst kein korrespondierendes Sprachdokument zugewiesen wurde.",
+		'langlink_support' => "Aktiviert",
+		'langlink_support_backlinks' => "Erzeuge automatisch die Rücklinks",
+		'langlink_support_backlinks_information' => "Rücklinks können für Dokumente (nicht Verzeichnisse!) automatisch generiert werden. Dabei sollte das verlinkte Dokument nicht in einem Editor-Tab geöffnet sein!",
+		'langlink_support_recursive' => "Erzeuge die Sprachenlinks rekursiv",
+		'langlink_support_recursive_information' => "Recursives Setzen der Sprachlinks generiert für Dokumente (nicht Verzeichnisse!) alle verfügbaren Links und versucht den Sprachenkreis schnellstmöglich zu schließen. Dabei sollten die verlinkten Dokument nicht in einem Editor-Tab geöffnet sein!",
+
 		/*		 * ***************************************************************************
 		 * EDITOR
 		 * *************************************************************************** */
@@ -317,7 +324,7 @@ $l_prefs = array(
 		'general_objectseourls' => "Erzeuge Objekt SEO-Urls ",
 		'navigation_objectseourls' => "in der Navigation",
 		'wysiwyglinks_objectseourls' => "bei Links aus dem WYSIWYG-Editor",
-		'general_objectseourls_description' => "Für die Tags <we:link>, <we:linklist>, <we:listview>, <we:object> kann das Attribut 'objectseourls' verwendet, oder die folgende Voreinstallung vorgenommen werden:",
+		'general_objectseourls_description' => "Für die Tags <we:link>, <we:linklist>, <we:listview>, <we:object> kann das Attribut 'objectseourls' verwendet, oder die folgende Voreinstellung vorgenommen werden:",
 		'taglinks_directoryindex_hide' => "Voreinstellung für Tags",
 		'taglinks_objectseourls' => "Voreinstellung für Tags",
 		'urlencode_objectseourls' => "URLencode die SEO-Links",
@@ -383,7 +390,7 @@ $l_prefs = array(
 		'error_deprecated' => "veraltet Hinweise",
 		'error_warnings' => "Warnungen",
 		'error_errors' => "Fehler",
-		'error_notices_warning' => 'Option für Entwickler! Nicht auf Live-System aktivieren.',
+		'error_notices_warning' => 'Wir empfehlen, die Option -Fehler protokollieren- immer aktiviert zu lassen; -Fehler anzeigen- sollte dagegen nicht auf Live-Systemen, sondern nur während der Entwicklung aktiviert sein.',
 		/**
 		 * ERROR DISPLAY
 		 */

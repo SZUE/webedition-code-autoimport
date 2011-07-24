@@ -182,9 +182,11 @@ class weCustomerFrames extends weModuleFrames {
 				asort($topCountries, SORT_LOCALE_STRING);
 				asort($shownCountries, SORT_LOCALE_STRING);
 				setlocale(LC_ALL, $oldLocale);
-
+				
 				$content = '';
-
+				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
+					$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
+				}
 				foreach ($topCountries as $countrykey => &$countryvalue) {
 					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 				}
@@ -290,8 +292,11 @@ class weCustomerFrames extends weModuleFrames {
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="center">';
-
-				$out .= $we_button->create_button_table(array($we_button->create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $field . "\\'].value', '', 'opener.refreshForm()', '" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), $we_button->create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
+				//javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $field . "\\'].value', '', 'opener.refreshForm()', '" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
+				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
+				$wecmdenc2= '';
+				$wecmdenc3= we_cmd_enc("opener.refreshForm()");
+				$out .= $we_button->create_button_table(array($we_button->create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), $we_button->create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
 								'</td>
 						</tr>
 					</table>';

@@ -555,9 +555,9 @@ class we_imageDocument extends we_binaryDocument {
 			//   attribs for the image tag
 			$attribs['src'] = $src;
 
-			$filter = array('filesize','type','id','showcontrol','thumbnail','href','longdescid','showimage', 'showinputs','listviewname','parentid','startid');   //  dont use these array-entries
+			$filter = array('filesize','type','id','showcontrol','showthumbcontrol','thumbnail','href','longdescid','showimage', 'showinputs','listviewname','parentid','startid');   //  dont use these array-entries
 
-			if (defined(HIDENAMEATTRIBINWEIMG_DEFAULT) && HIDENAMEATTRIBINWEIMG_DEFAULT){
+			if (defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
 			}
 
@@ -588,7 +588,11 @@ class we_imageDocument extends we_binaryDocument {
 			/********************************************************/
 
 			if (isset($attribs['only'])) {
-				$this->html = $attribs[$attribs['only']];
+				if (array_key_exists($attribs['only'], $attribs)) {
+					$this->html = $attribs[$attribs['only']];
+				} else {
+					$this->html = '';
+				}
 				return $this->html;
 			} else if (isset($attribs['pathonly']) && $attribs['pathonly']) {
 				$this->html = $attribs['src'];
@@ -724,7 +728,12 @@ class we_imageDocument extends we_binaryDocument {
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector("Docselector");
 		$yuiSuggest->setWidth(328);
-		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$longdesc_id_name\\'].value','document.we_form.elements[\\'$longdesc_text_name\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/webedition,text/plain,text/html',1)"));
+		//javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$longdesc_id_name\\'].value','document.we_form.elements[\\'$longdesc_text_name\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/webedition,text/plain,text/html',1)
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$longdesc_id_name'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$longdesc_text_name'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
+
+		$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition,text/plain,text/html',1)"));
 		$yuiSuggest->setTrashButton($we_button->create_button('image:btn_function_trash',"javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('".$yuiSuggest->getInputId()."')"));
 		$_content->setCol(7, 0, array("colspan" => 5), getPixel(1, 5));
 		$_content->setCol(8, 0, array("valign" => "bottom", 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
@@ -781,8 +790,7 @@ class we_imageDocument extends we_binaryDocument {
 
 	function getThumbnail() {
 		if ($this->getElement("data") && is_readable($this->getElement("data"))) {
-			$_thumbSrc = we_image_edit::createPreviewThumb($this->getElement("data"), 0, 150, 200, substr($this->Extension,1), 75, $GLOBALS['we_transaction']);
-			return '<img src="'.WEBEDITION_DIR.'showTempFile.php?file='.$_thumbSrc.'" alt="" border="0" />';
+			return '<img src="/webEdition/thumbnail.php?id=' . $this->ID . '&size=150&path=' .str_replace($_SERVER['DOCUMENT_ROOT'],'',$this->getElement("data")) . '&extension=' . $this->Extension . '&size2=200" border="0" /></a>';
 		} else {
 			return $this->getHtml();
 		}
@@ -906,19 +914,35 @@ class we_imageDocument extends we_binaryDocument {
 		$RollOverPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = '$RollOverID='", "Path", $this->DB_WE);
 
 		$checkFlagName = "check_" . $this->Name . "_RollOverFlag";
+		
+		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][2].checked=true;','',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_".$this->Name."_txt[LinkType]'][2].checked=true;");
+		$but1 = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
 
-		$but1 = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][2].checked=true;','',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
-		$but2 = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$RollOverIDName\'].value','document.forms[\'we_form\'].elements[\'$RollOverPathname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\'$RollOverFlagName\'].value=1;opener.document.we_form.elements[\'$checkFlagName\'].checked=true;','',0,'image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
+		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$RollOverIDName\'].value','document.forms[\'we_form\'].elements[\'$RollOverPathname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\'$RollOverFlagName\'].value=1;opener.document.we_form.elements[\'$checkFlagName\'].checked=true;','',0,'image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$RollOverIDName'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$RollOverPathname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['$RollOverFlagName'].value=1;opener.document.we_form.elements['$checkFlagName'].checked=true;");
+		$but2 = $we_button->create_button("select", "javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$RollOverIDName'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','',0,'image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
 
+		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$extname'].value");
+		$wecmdenc4= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_".$this->Name."_txt[LinkType]'][1].checked=true;");
 		$butExt = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-					$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[\'we_form\'].elements[\'$extname\'].value','',document.forms['we_form'].elements['$extname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][1].checked=true;')")
+					$we_button->create_button("select", "javascript:we_cmd('browse_server','".$wecmdenc1."','',document.forms['we_form'].elements['$extname'].value,'".$wecmdenc4."')")
 					:	"";
 
 		if(defined("OBJECT_TABLE")) {
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
 			$objPath = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID = '".abs($this->getElement("ObjID"))."'", "Path", $this->DB_WE);
-			$butObj = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','document.forms[\'we_form\'].elements[\'$objidname\'].value','document.forms[\'we_form\'].elements[\'$objtextname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][3].checked=true;','','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");");
+			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','document.forms[\'we_form\'].elements[\'$objidname\'].value','document.forms[\'we_form\'].elements[\'$objtextname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][3].checked=true;','','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$objidname'].value");
+			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$objtextname'].value");
+			$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_".$this->Name."_txt[LinkType]'][3].checked=true;");
+			$butObj = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");");
 		}
 
 		// Create table

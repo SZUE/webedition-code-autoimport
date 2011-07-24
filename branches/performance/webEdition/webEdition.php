@@ -316,11 +316,17 @@ function toggleTree(){
 		storeTreeWidth(24);
 		setTreeArrow("right");
 	}
-	var x=xfd.bla;
 }
 
 function setTreeArrow(direction) {
 	self.rframe.bframe.bm_vtabs.document.getElementById("arrowImg").src = "<?php print IMAGE_DIR ?>button/icons/direction_" + direction+ ".gif";
+	if(direction=="right"){
+		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="gray";
+		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="gray";
+	}else{
+		self.rframe.bframe.bm_vtabs.document.getElementById("incBaum").style.backgroundColor="";
+		self.rframe.bframe.bm_vtabs.document.getElementById("decBaum").style.backgroundColor="";
+	}
 }
 
 function getTreeWidth() {
@@ -536,26 +542,45 @@ function we_cmd() {
 			if(wePerms.ADMINISTRATOR) {
 				hasPerm = 1;
 			} else if(isFolder) {
-				if(eTable == "<?php echo FILE_TABLE; ?>"  && wePerms.DELETE_DOC_FOLDER) {
-					hasPerm = 1;
-				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMP_FOLDER) {
-					hasPerm = 1;
-				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
-					hasPerm = 1; <?php } ?>
-				} else {
-					hasPerm = 0;
-				}
+				switch(eTable){
+					case "<?php echo FILE_TABLE; ?>":
+						if(wePerms.DELETE_DOC_FOLDER) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo TEMPLATES_TABLE; ?>":
+						if(wePerms.DELETE_TEMP_FOLDER) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo defined("OBJECT_FILES")?OBJECT_FILES_TABLE:-1;?>":
+						if(wePerms.DELETE_OBJECTFILE) {
+							hasPerm = 1;
+						}
+						break;
+					}
 			} else {
-				if(eTable == "<?php echo FILE_TABLE; ?>"  && wePerms.DELETE_DOCUMENT) {
-					hasPerm = 1;
-				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMPLATE) {
-					hasPerm = 1;
-				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
-					hasPerm = 1;
-				} else if(eTable == "<?php echo OBJECT_TABLE; ?>"  && wePerms.DELETE_OBJECT) {
-					hasPerm = 1; <?php } ?>
-				} else {
-					hasPerm = 0;
+				switch(eTable){
+					case "<?php echo FILE_TABLE; ?>":
+						if(wePerms.DELETE_DOCUMENT) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo TEMPLATES_TABLE; ?>":
+						if(wePerms.DELETE_TEMPLATE) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo defined('OBJECT_FILES_TABLE')?OBJECT_FILES_TABLE:-1;?>":
+						if(wePerms.DELETE_OBJECTFILE) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo OBJECT_TABLE; ?>":
+						if(wePerms.DELETE_OBJECT) {
+							hasPerm = 1;
+						}
+						break;
 				}
 			}
 
@@ -1043,7 +1068,7 @@ function we_cmd() {
 				}
 
 			} else {
-				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]",false); ?>");
 
 			}
 			break;
@@ -1066,7 +1091,7 @@ function we_cmd() {
 				we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 
 			} else {
-				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]",false); ?>");
 
 			}
 			break;
@@ -1339,7 +1364,7 @@ function we_cmd() {
 				top.weEditorFrameController.toggleFrames();
 
 			} else {
-				<?php we_message_reporting::getShowMessageCall(g_l('multiEditor',"[no_editor_left]"), WE_MESSAGE_INFO); ?>
+				<?php we_message_reporting::getShowMessageCall(g_l('multiEditor',"[no_editor_left]",false), WE_MESSAGE_INFO); ?>
 			}
 	}
 

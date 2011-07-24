@@ -146,6 +146,8 @@ class Basket {
 	 */
 	var $CartFields = array();
 
+	private $orderID=0;
+	
 	/**
 	 * constructor
 	 *
@@ -471,4 +473,13 @@ class Basket {
 		}
 		return false;
 	}
+	
+	function getOrderID(){
+		return $this->orderID;
+	}
+	
+	function setOrderID($id){
+		$this->orderID=$id;
+	}
+	
 }

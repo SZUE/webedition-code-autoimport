@@ -1,4 +1,4 @@
-CREATE TABLE tblversions (
+CREATE TABLE ###TBLPREFIX###tblversions (
   `ID` bigint(20) NOT NULL auto_increment,
   `documentID` bigint(20) NOT NULL,
   `documentTable` varchar(64) NOT NULL,

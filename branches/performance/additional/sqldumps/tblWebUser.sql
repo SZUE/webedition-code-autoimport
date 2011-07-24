@@ -1,4 +1,4 @@
-CREATE TABLE tblWebUser (
+CREATE TABLE ###TBLPREFIX###tblWebUser (
   ID bigint(20) NOT NULL auto_increment,
   Username varchar(255) NOT NULL default '',
   `Password` varchar(255) NOT NULL default '',

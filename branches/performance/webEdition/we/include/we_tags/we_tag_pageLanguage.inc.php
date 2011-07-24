@@ -27,9 +27,6 @@ function we_tag_pageLanguage($attribs, $content){
 	$docAttr = we_getTagAttribute("doc", $attribs, "self");
 	$type = we_getTagAttribute("type", $attribs, "complete");
 	$case = we_getTagAttribute("case", $attribs, "unchanged");
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
-
 	$doc = we_getDocForTag($docAttr);
 
 	$lang=$doc->Language;
@@ -55,36 +52,5 @@ function we_tag_pageLanguage($attribs, $content){
 		default:
 			$out=$out;
 	}
-	switch ($to) {
-		case "request" :
-			$_REQUEST[$nameTo] = $out;
-			break;
-		case "post" :
-			$_POST[$nameTo] = $out;
-			break;
-		case "get" :
-			$_GET[$nameTo] = $out;
-			break;
-		case "global" :
-			$GLOBALS[$nameTo] = $out;
-			break;
-		case "session" :
-			$_SESSION[$nameTo] = $out;
-			break;
-		case "top" :
-			$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $out);
-			break;
-		case "block" :
-		case "self" :
-			$GLOBALS["we_doc"]->setElement($nameTo, $out);
-			break;
-		case "sessionfield" :
-			if (isset($_SESSION["webuser"][$nameTo])){
-				$_SESSION["webuser"][$nameTo] = $out;
-			}
-			break;
-		case "screen": return $out;
-	}
-	return null;
-
+	return $out;
 }

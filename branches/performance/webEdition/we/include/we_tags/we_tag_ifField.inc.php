@@ -24,28 +24,25 @@
 
 
 function we_tag_ifField($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "ifField");
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, "name", "ifField"))) {
 		print($foo);
 		return "";
 	}
-	$foo = attributFehltError($attribs, "match", "ifField", true);
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, "match", "ifField", true))) {
 		print($foo);
 		return "";
 	}
-	$foo = attributFehltError($attribs, "type", "ifField", true);
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, "type", "ifField", true))) {
 		print($foo);
 		return "";
 	}
 
 	$match = we_getTagAttribute("match", $attribs);
 	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
+	/*if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
 		$matchA = explode("blk_",$match);
 		$match = $matchA[0];
-	}
+	}*/
 	// quickfix 4192
 	$matchArray = makeArrayFromCSV($match);
 

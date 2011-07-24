@@ -42,7 +42,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 	*/
 	function pWebEdition_JSFunctions(){?>
 function toggleBusy(w) {
-	if(w == busy || firstLoad==false)
+	if(w == busy || firstLoad==false)	
 		return;
 	if(self.header) {
 		if(self.header.toggleBusy) {
@@ -142,6 +142,7 @@ var widthBeforeDeleteModeSidebar = 0;
 			drawTree();
 
 			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "1px";
+			self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "1px";
 			top.setTreeWidth(widthBeforeDeleteMode);
 			top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			break;
@@ -154,6 +155,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				drawTree();
 			}
 			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "150px";
+			self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "150px";
 
 			var width = top.getTreeWidth();
 
@@ -179,6 +181,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				drawTree();
 			}
 			self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "160px";
+			self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "160px";
 
 			var width = top.getTreeWidth();
 

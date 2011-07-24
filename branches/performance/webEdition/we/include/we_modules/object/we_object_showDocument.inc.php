@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("NO_SESS",1);
+if(!defined('NO_SESS')){define('NO_SESS',1);}
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_objectFile.inc.php");
@@ -57,10 +57,12 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 	//	If wrong workspace or no template can be found, just show the name/value pairs.
 
 	// init document
-	$we_transaction = $_REQUEST["we_transaction"];
-	if (!eregi("^([a-f0-9]){32}$", $we_transaction)) {
-		exit();
-	}
+	if (isset($_REQUEST["we_transaction"])){
+		$we_transaction = $_REQUEST["we_transaction"];
+		if (!eregi("^([a-f0-9]){32}$", $we_transaction)) {
+			exit();
+		}
+	} else {exit();}
 
 	$we_dt = $_SESSION["we_data"][$we_transaction];
 
@@ -171,6 +173,8 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 	$GLOBALS["we_doc"]->OF_ID=$GLOBALS["we_obj"]->ID;
 	$GLOBALS["we_doc"]->Charset=$GLOBALS["we_obj"]->Charset;
 	$GLOBALS["we_doc"]->Language=$GLOBALS["we_obj"]->Language;
+	$GLOBALS["we_doc"]->Url=$GLOBALS["we_obj"]->Url;
+	$GLOBALS["we_doc"]->TriggerID=$GLOBALS["we_obj"]->TriggerID;
 	$GLOBALS["we_doc"]->elements['Charset']['dat'] = $GLOBALS["we_obj"]->Charset; // for charset-tag
 	$GLOBALS["TITLE"] = $GLOBALS["we_doc"]->getElement("Title");
 	$GLOBALS["KEYWORDS"] = $GLOBALS["we_doc"]->getElement("Keywords");
@@ -207,7 +211,7 @@ if ( isset($GLOBALS["we_obj"]) && $GLOBALS["we_obj"]->documentCustomerFilter && 
 }
 
 if (!isset($pid) || !($pid) ) {
-	$pid = f("SELECT ParentID FROM " .FILE_TABLE. " WHERE Path='".$_SERVER["PHP_SELF"]."'","ParentID",$DB_WE);
+	$pid = f("SELECT ParentID FROM " .FILE_TABLE. " WHERE Path='".$_SERVER["SCRIPT_NAME"]."'","ParentID",$DB_WE);
 }
 
 if (!isset($tid) || !($tid) ) {

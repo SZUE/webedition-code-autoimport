@@ -41,8 +41,6 @@ function we_tag_showShopItemNumber($attribs,$content) {
 	$num_format = we_getTagAttribute("num_format",$attribs);
 	$floatquantities = we_getTagAttributeTagParser("floatquantities",$attribs,'',true);
 	$floatquantities = empty($floatquantities) ? false : $floatquantities;
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
 
 	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname','nameto','to','floatquantities','$num_format'));
 
@@ -117,6 +115,6 @@ function we_tag_showShopItemNumber($attribs,$content) {
 				$itemQuantity = number_format($itemQuantity, 2, ".", "'");
 			}
 		}
-		return we_redirect_tagoutput($itemQuantity,$nameTo,$to);
+		return $itemQuantity;
 	}
 }

@@ -1,4 +1,4 @@
-CREATE TABLE tblformmaillog (
+CREATE TABLE ###TBLPREFIX###tblformmaillog (
   id bigint(20) NOT NULL auto_increment,
   ip varchar(15) NOT NULL,
   unixTime int(11) NOT NULL,

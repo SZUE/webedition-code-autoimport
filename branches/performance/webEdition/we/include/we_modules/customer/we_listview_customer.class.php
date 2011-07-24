@@ -90,7 +90,7 @@ class we_listview_customer extends listviewBase {
 		$this->DB_WE->query($q);
 		$this->anz_all = $this->DB_WE->num_rows();
 
-		$q = 'SELECT * FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($rows > 0) ? (' limit '.$this->start.','.$this->rows) : '');;
+		$q = 'SELECT * FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit '.$this->start.','.$this->maxItemsPerPage) : '');;
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
@@ -108,13 +108,16 @@ class we_listview_customer extends listviewBase {
 			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath."?we_cid=".$this->DB_WE->Record["ID"];
 			$this->count++;
 			return true;
-		}else if($this->cols && ($this->count < $this->rows)){
-			$this->DB_WE->Record = array();
-			$this->DB_WE->Record["WE_PATH"] = "";
-			$this->DB_WE->Record["WE_TEXT"] = "";
-			$this->DB_WE->Record["WE_ID"] = "";
-			$this->count++;
-			return true;
+		}else {
+			$this->stop_next_row = $this->shouldPrintEndTR();
+			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+				$this->DB_WE->Record = array();
+				$this->DB_WE->Record["WE_PATH"] = "";
+				$this->DB_WE->Record["WE_TEXT"] = "";
+				$this->DB_WE->Record["WE_ID"] = "";
+				$this->count++;
+				return true;
+			}
 		}
 
 		return false;

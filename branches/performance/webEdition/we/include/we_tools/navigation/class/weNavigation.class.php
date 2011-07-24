@@ -901,8 +901,11 @@ class weNavigation extends weModelBase
 						$objecturl='';
 						if (defined("NAVIGATION_OBJECTSEOURLS") && NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
-							$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", $_db);
-							$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
+							//$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->LinkID) . "' LIMIT 1", $_db);
+							$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($_id) . "' LIMIT 1", $_db);
+							if(isset($objectdaten['Url'])){
+								$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
+							} else {$objecturl='';$objecttriggerid='';}
 							if($objecturl==''){
 								$_param = 'we_objectID='. $_id . (!empty($_param) ? '&' : '') . $_param;
 							}

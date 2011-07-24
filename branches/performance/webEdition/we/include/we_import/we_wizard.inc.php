@@ -858,7 +858,7 @@ HTS;
 					"	we_form.elements['v[mode]'].value = mode;\n" .
 					"	we_form.elements['v[cid]'].value = cid;\n" .
 					"	we_form.target = '" . ($type == "first_steps_wizard" ? "_self" : "wizcmd" ) ."';\n" .
-					"	we_form.action = '" . ($type == "first_steps_wizard" ? $_SERVER['PHP_SELF'] . "?leWizard=" . $_REQUEST['leWizard'] . "&leStep=" . $_REQUEST['leStep'] . "&we_cmd[0]=" . $_REQUEST['we_cmd'][0] : $this->path."?pnt=wizcmd" ) . "';\n" .
+					"	we_form.action = '" . ($type == "first_steps_wizard" ? $_SERVER['SCRIPT_NAME'] . "?leWizard=" . $_REQUEST['leWizard'] . "&leStep=" . $_REQUEST['leStep'] . "&we_cmd[0]=" . $_REQUEST['we_cmd'][0] : $this->path."?pnt=wizcmd" ) . "';\n" .
 					"	we_form.method = 'post';\n" .
 					"	we_form.submit();\n" .
 					"}\n" .

@@ -1,4 +1,4 @@
-CREATE TABLE tblTODOHistory (
+CREATE TABLE ###TBLPREFIX###tblTODOHistory (
   ID int(11) NOT NULL auto_increment,
   ParentID int(11) NOT NULL default '0',
   UserID int(11) NOT NULL default '0',

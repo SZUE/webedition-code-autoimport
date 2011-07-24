@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_document.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_document.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
@@ -31,8 +31,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GL
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 /* a class for handling templates */
-class we_object extends we_document
-{
+class we_object extends we_document {
 	//######################################################################################################################################################
 	//##################################################################### Variables ######################################################################
 	//######################################################################################################################################################
@@ -986,7 +985,22 @@ class we_object extends we_document
 			}
 			$content .= $this->htmlSelect("we_".$this->Name."_multiobject[".$name."class]",$vals,1,$this->getElement($name.'class',"dat"),"",'onChange="if(this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\']){this.form.elements[\''."we_".$this->Name."_input[".$name."default]".'\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'change_multiobject_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.$identifier.'\',\''.$name.'\')"',"value",388);
 			$content .= '</td></tr>';
-		break;
+			$content .= 	'<tr valign="top">'
+						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[max_objects]').'</td>'
+						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.g_l('object','[no_maximum]').')</nobr></td>'
+						. 	'</tr>';
+
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[default]').'</td>';
+			$content .= '<td width="170" class="defaultfont"><table border="0">';
+			if(!isset($this->elements[$name."count"]["dat"])){
+			    $this->elements[$name."count"]["dat"] = 0;
+			}
+			for($f=0; $f <= $this->elements[$name."count"]["dat"]; $f++) {
+				$content .= $this->getMultiObjectFieldHTML($name, $identifier, $f);
+			}
+
+			$content .=	'</tr></table></td></tr>';
+			break;
 
 		case 'href':
 			$typeVal = $this->getElement($name."hreftype","dat");
@@ -1013,8 +1027,12 @@ class we_object extends we_document
 			$content .= $fileSelect.getPixel(30,2)."directory".getPixel(8,2);
 			$content .= $dirSelect;
 			$content .= '</td></tr>';
+			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[default]').'</td>';
+			$content .= '<td width="170" class="defaultfont">';
+			$content .= $this->htmlHref($name);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
+			$content .= '</td></tr>';
+			break;
 
-		break;
 
 		// default
 		/*
@@ -1030,7 +1048,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'img':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1047,7 +1064,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'flashmovie':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1064,7 +1080,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'quicktime':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1081,7 +1096,6 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'binary':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[rootdir]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
 			$content .= $this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[".$name."rootdir]", "", $this->getElement($name."rootdir","dat"),$identifier);
@@ -1097,13 +1111,13 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'date':
-			/*
+			
 			$d = abs($this->getElement($name."default","dat"));
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= getDateInput2("we_".$this->Name."_date[".$name."default]",($d ? $d : time()),true);
 			$content .= '</td></tr>';
-			*/
+			
 			break;
 		case 'text':
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
@@ -1114,16 +1128,12 @@ class we_object extends we_document
 			$content .= '</td></tr>';
 			break;
 		case 'object':
-
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"  valign="top">';
-
 			$content .= $this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "");
-
 			$content .= '</td></tr>';
-
+			break;
 		case 'meta':
-
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
 			if(!isset($this->elements[$name."count"]["dat"])){
@@ -1161,24 +1171,6 @@ class we_object extends we_document
 			}
 			$content .= '</table></td></tr>';
 			break;
-		case 'multiobject':
-
-			$content .= 	'<tr valign="top">'
-						.	'<td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[max_objects]').'</td>'
-						.	'<td class="defaultfont"><nobr>'.$this->htmlTextInput("we_".$this->Name."_multiobject[".$name."max]",5,$this->getElement($name."max","dat"),3,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_entry_at_class\',\''.$GLOBALS['we_transaction'].'\',\''.($identifier).'\');"',"text",50).' ('.g_l('modules_object','[no_maximum]').')</nobr></td>'
-						. 	'</tr>';
-
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
-			$content .= '<td width="170" class="defaultfont"><table border="0">';
-			if(!isset($this->elements[$name."count"]["dat"])){
-			    $this->elements[$name."count"]["dat"] = 0;
-			}
-			for($f=0; $f <= $this->elements[$name."count"]["dat"]; $f++) {
-				$content .= $this->getMultiObjectFieldHTML($name, $identifier, $f);
-			}
-
-			$content .=	'</tr></table></td></tr>';
-			break;
 		case 'country':
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
@@ -1195,12 +1187,6 @@ class we_object extends we_document
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= $this->htmlLinkInput($name, $identifier);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
-			$content .= '</td></tr>';
-			break;
-		case 'href':
-			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('modules_object','[default]').'</td>';
-			$content .= '<td width="170" class="defaultfont">';
-			$content .= $this->htmlHref($name);//,40,$this->getElement($name."default","dat"),255,'onChange="_EditorFrame.setEditorIsHot(true);"',"text",388
 			$content .= '</td></tr>';
 			break;
 		case 'shopVat':
@@ -1429,9 +1415,11 @@ class we_object extends we_document
 			$path = $path ? $path : ($myid?f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid","Path",$db):'');
 			$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
 			$table = OBJECT_FILES_TABLE;
-
-
-			$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
+			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+			$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
+			$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 			$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['$idname'].value='';document.forms['we_form'].elements['$textname'].value=''");
 /*
 DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
@@ -1477,7 +1465,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$rootDir = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='$classPath'","ID",$db);
 
 		$table = OBJECT_FILES_TABLE;
-		$selectObject = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
+		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
+
+		$selectObject = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
 		$upbut       = $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_meta_at_class','".$GLOBALS['we_transaction']."','".($i)."','".$name."','".($f)."')", true, 21, 22);
 		$upbutDis    = $we_button->create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
@@ -1612,9 +1605,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
 		$delallbut = $we_button->create_button("delete_all","javascript:we_cmd('del_all_users','')",true,-1,-1,"","",$this->Users ? false : true);
-
+		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_user\\',top.allIDs)','','',1)
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc5= we_cmd_enc("fillIDs();opener.we_cmd('add_user',top.allIDs)");
 		$addbut = $canChange ?
-		$this->htmlHidden($idname,"").$this->htmlHidden($textname,""). $we_button->create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'fillIDs();opener.we_cmd(\\'add_user\\',top.allIDs)','','',1)")
+		$this->htmlHidden($idname,"").$this->htmlHidden($textname,""). $we_button->create_button("add", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',document.forms[0].elements['$idname'].value,'".$wecmdenc5."','','',1)")
 		: "";
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
@@ -1696,8 +1692,14 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
+		
+		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+
 		$content .= $we_button->create_button_table(array(
-															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')"),
+															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'image/*')"),
 															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."')")
 														 )
 													)
@@ -1739,8 +1741,13 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
+		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/x-shockwave-flash')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+
 		$content .= $we_button->create_button_table(array(
-															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/x-shockwave-flash')"),
+															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'application/x-shockwave-flash')"),
 															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."')")
 														 )
 													)
@@ -1764,8 +1771,13 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
+		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'video/quicktime')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+
 		$content .= $we_button->create_button_table(array(
-															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'video/quicktime')"),
+															$we_button->create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'video/quicktime')"),
 															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."')")
 														 )
 													)
@@ -1786,8 +1798,13 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$other->initByID($id,FILE_TABLE,false);
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
+		//javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_entry_at_class','".$GLOBALS['we_transaction']."','".$i."');opener._EditorFrame.setEditorIsHot(true);");
+
 		$content .= $we_button->create_button_table(array(
-															$we_button->create_button("select", "javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','document.forms[\\'we_form\\'].elements[\\'".$fname."\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'application/*')"),
+															$we_button->create_button("select", "javascript:we_cmd('openDocselector','".$id."','".FILE_TABLE."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."',0,'application/*')"),
 															$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('remove_image_at_class','".$GLOBALS['we_transaction']."','".$i."','".$name."');")
 															)
 													);
@@ -2056,7 +2073,11 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$this->Templates = makeCSVFromArray($_newTmplArr,true);
 		$this->DefaultWorkspaces = makeCSVFromArray($_newDefaultArr,true);
 
-		$button = $we_button->create_button("add", "javascript:we_cmd('openDirselector','','".FILE_TABLE."','','','opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd(\\'add_workspace\\',top.allIDs);','','','',1)");
+		//javascript:we_cmd('openDirselector','','".FILE_TABLE."','','','opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd(\\'add_workspace\\',top.allIDs);','','','',1
+		$wecmdenc1= '';
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('add_workspace',top.allIDs);");
+		$button = $we_button->create_button("add", "javascript:we_cmd('openDirselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','',1)");
 
 		$addbut = $button;
 
@@ -2085,7 +2106,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	function formCSS(){
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 		$we_button = new we_button();
-		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_css\\', top.allIDs);', '', '', 'text/css', 1,1)");
+		//javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_css\\', top.allIDs);', '', '', 'text/css', 1,1)
+		$wecmdenc1= '';
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_css', top.allIDs);");
+
+		$addbut = $we_button->create_button("add", "javascript:we_cmd('openDocselector', '', '" . FILE_TABLE . "','','','".$wecmdenc3."','','','text/css', 1,1)");
 		$css = new MultiDirChooser(510,$this->CSS,"del_css",$addbut,"","Icon,Path", FILE_TABLE);
 		return $css->get();
 	}
@@ -2123,7 +2149,12 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$we_button = new we_button();
 		$idname = 'we_'.$this->Name.'_CopyID';
 		$rootDIrID = 0;
-		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDIrID."','".$this->ContentType."');");
+		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDIrID."','".$this->ContentType."');
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= '';
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
+
+		$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','".$wecmdenc1."','','".$wecmdenc3."','".session_id()."','".$rootDIrID."','".$this->ContentType."');");
 		$content = $this->htmlHidden($idname,$this->CopyID).$but;
 		return $content;
 	}
@@ -2499,8 +2530,13 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		/* hook */
 		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this));
-			$hook->executeHook();
+			$hook = new weHook('save', '', array($this,'resave'=>$resave));
+			$ret=$hook->executeHook();
+			//check if doc should be saved
+			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
+				return false;
+			}
 		}
 		return true;
 	}
@@ -2584,7 +2620,11 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		if(!$table) $table = $this->Table;
 		$textname = 'we_'.$this->Name.'_'.$Pathname . ($identifier!="" ?  "_".$identifier : "");
 		$idname = 'we_'.$this->Name.'_'.$IDName;
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')");
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".str_replace('\\','',$cmd)."");
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),
 			"",
 			"left",

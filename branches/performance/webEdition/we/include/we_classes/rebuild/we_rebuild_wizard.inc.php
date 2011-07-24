@@ -378,7 +378,7 @@ class we_rebuild_wizard{
 
 		$taskname = md5(session_id()."_rebuild");
 		$currentTask = isset($_GET["fr_".$taskname."_ct"]) ? $_GET["fr_".$taskname."_ct"] : 0;
-		$taskFilename = FRAGMENT_LOCATION.$taskname;
+		$taskFilename = WE_FRAGMENT_DIR.'/'.$taskname;
 
 
 		$js = 'function set_button_state() {'."\n" .
@@ -483,7 +483,8 @@ class we_rebuild_wizard{
 		$we_button = new we_button();
 
 		$delallbut = $we_button->create_button("delete_all","javascript:".($thumnailpage ? "" : "document.we_form.btype[2].checked=true;")."we_cmd('del_all_folders')");
-		$addbut    = $we_button->create_button("add", "javascript:".($thumnailpage ? "" : "document.we_form.btype[2].checked=true;")."we_cmd('openDirselector','','".FILE_TABLE."','','','fillIDs();opener.we_cmd(\\'add_folder\\',top.allIDs);','','','',1)");
+		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
+		$addbut    = $we_button->create_button("add", "javascript:".($thumnailpage ? "" : "document.we_form.btype[2].checked=true;")."we_cmd('openDirselector','','".FILE_TABLE."','','','".$wecmdenc3."','','','',1)");
 
 		$dirs = new MultiDirChooser($width,$folders,"del_folder",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE);
 
@@ -807,7 +808,7 @@ class we_rebuild_wizard{
 
 
 		$taskname = md5(session_id()."_rebuild");
-		$taskFilename = FRAGMENT_LOCATION.$taskname;
+		$taskFilename = WE_FRAGMENT_DIR.'/'.$taskname;
 		if(file_exists($taskFilename)){
 			@unlink($taskFilename);
 		}

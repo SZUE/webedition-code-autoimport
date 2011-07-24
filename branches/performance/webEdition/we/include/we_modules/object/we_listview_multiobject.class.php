@@ -441,7 +441,7 @@ class we_listview_multiobject extends listviewBase {
 
 			if($this->count < sizeof($this->Record)) {
 				$paramName = "we_objectID";
-				$this->DB_WE->record($this->Record[$this->count]);
+				$this->DB_WE->Record($this->Record[$this->count]);
 				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 				$path_parts = pathinfo($this->Path);
 				if ($this->objectseourls && $this->DB_WE->Record['OF_Url']!='' && show_SeoLinks()){
@@ -472,14 +472,16 @@ class we_listview_multiobject extends listviewBase {
 				$this->count++;
 				return true;
 
-			} else if($this->cols && ($this->count < $this->rows)) {
-
-				$this->DB_WE->Record = array();
-				$this->DB_WE->Record["WE_PATH"] = "";
-				$this->DB_WE->Record["WE_TEXT"] = "";
-				$this->DB_WE->Record["WE_ID"] = "";
-				$this->count++;
+			} else {
+				$this->stop_next_row = $this->shouldPrintEndTR();
+				if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+					$this->DB_WE->Record = array();
+					$this->DB_WE->Record["WE_PATH"] = "";
+					$this->DB_WE->Record["WE_TEXT"] = "";
+					$this->DB_WE->Record["WE_ID"] = "";
+					$this->count++;
 				return true;
+				}
 
 			}
 

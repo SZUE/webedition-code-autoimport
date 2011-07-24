@@ -23,14 +23,13 @@
  */
 
 function we_tag_var($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "var");
-	if ($foo)
+	if (($foo = attributFehltError($attribs, "name", "var")))
 		return $foo;
 	$docAttr = we_getTagAttribute("doc", $attribs);
 	$name = we_getTagAttribute("name", $attribs);
+	//$_name_orig=we_getTagAttribute("_name_orig", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
     $htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true); // #3771
-
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch ($type) {
@@ -129,7 +128,6 @@ function we_tag_var($attribs, $content){
 
 
 			return $normVal;
-			break;
 	}
 	return $var;
 

@@ -1,4 +1,4 @@
-CREATE TABLE tblnavigation (
+CREATE TABLE ###TBLPREFIX###tblnavigation (
   ID bigint(20) NOT NULL auto_increment,
   ParentID bigint(20) NOT NULL default '0',
   Path varchar(255) NOT NULL default '',
@@ -47,4 +47,4 @@ CREATE TABLE tblnavigation (
   KEY ParentID (ParentID),
   KEY LinkID (LinkID),
   KEY Path (Path)
-) Type=MyISAM;
+) ENGINE=MyISAM;

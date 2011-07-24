@@ -22,6 +22,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+function we_parse_tag_checkForm($attribs,$content){
+	eval('$arr = ' . $attribs . ';');
+	if (($foo = attributFehltError($arr, 'match', 'checkForm')))	return $foo;
+	if (($foo = attributFehltError($arr, 'type', 'checkForm')))	return $foo;
+	//  then lets parse the content
+/*	$tp = new we_tagParser();
+	$tags = $tp->getAllTags($content);
+	$tp->parseTags($tags, $content);*/
+	//inner content should be parsed by main parser
+	//TODO: check if checkform tag is parsed correctly!
+	return '<?php we_tag(\'checkForm\','.$attribs.',\''.addcslashes($content,'\'').'\'); ?>';
+}
+
 /**
  * @return string
  * @param array $attribs
@@ -35,14 +48,12 @@ function we_tag_checkForm($attribs, $content){
 	}
 
 	//  check required Fields
-	$missingAttrib = attributFehltError($attribs, "match", "we_tag_checkForm");
-	if ($missingAttrib) {
+	if (($missingAttrib = attributFehltError($attribs, "match", "we_tag_checkForm"))) {
 		print $missingAttrib;
 		return "";
 	}
 
-	$missingAttrib = attributFehltError($attribs, "type", "we_tag_checkForm");
-	if ($missingAttrib) {
+	if (($missingAttrib = attributFehltError($attribs, "type", "we_tag_checkForm"))) {
 		print $missingAttrib;
 		return "";
 	}
@@ -50,20 +61,12 @@ function we_tag_checkForm($attribs, $content){
 	// get fields of $attribs
 	$match = we_getTagAttribute("match", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
-
 	$mandatory = we_getTagAttribute("mandatory", $attribs);
 	$email = we_getTagAttribute("email", $attribs);
 	$password = we_getTagAttribute("password", $attribs);
-
 	$onError = we_getTagAttribute("onError", $attribs);
 	$jsIncludePath = we_getTagAttribute("jsIncludePath", $attribs);
-
 	$xml = we_getTagAttribute("xml", $attribs, "");
-
-	//  then lets parse the content
-	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
-	$tp->parseTags($tags, $content);
 
 	//  Generate errorHandler:
 	if ($onError) {
@@ -117,47 +120,33 @@ function we_tag_checkForm($attribs, $content){
 	if ($jsIncludePath) {
 
 		if (is_numeric($jsIncludePath)) {
-			$jsTag = we_tag('js',array(
-				'id' => $jsIncludePath, 'xml' => $xml
-			));
+			$jsTag = we_tag('js',array('id' => $jsIncludePath, 'xml' => $xml));
 			if ($jsTag) {
 				$jsEventHandler = $jsTag;
 			} else {
 				$jsEventHandler = '';
 				return parseError(g_l('parser','[checkForm_jsIncludePath_not_found]'));
 			}
-
 		} else {
-			$jsEventHandler = '
-    <script type="text/javascript" src="' . $jsIncludePath . '"></script>
-            ';
+			$jsEventHandler = '<script type="text/javascript" src="' . $jsIncludePath . '"></script>';
 		}
-
 	} else {
-		$jsEventHandler = '
-    <script type="text/javascript" src="' . JS_DIR . 'external/weCheckForm.js"></script>
-    ';
+		$jsEventHandler = '<script type="text/javascript" src="' . JS_DIR . 'external/weCheckForm.js"></script>';
 	}
 
 	switch ($type) {
-
 		case "id" : //  id of formular is given
-
-
-			$initFunction = '
-    weCheckFormEvent.addEvent( window, "load", function(){
+			$initFunction = 'weCheckFormEvent.addEvent( window, "load", function(){
         initWeCheckForm_by_id("' . $match . '");
         }
-    );
-            ';
-			$checkFunction = '
-    function weCheckForm_id_' . $match . '(ev){
+    );';
+			$checkFunction = 'function weCheckForm_id_' . $match . '(ev){
 
         var missingReq = new Array(0);
         var wrongEmail = new Array(0);
         var pwError    = false;
 
-        formular = document.getElementById("' . $match . '");
+        formular = document.getElementById("' . $match . '"); 
 
         ' . $jsMandatory . '
 
@@ -177,28 +166,16 @@ function we_tag_checkForm($attribs, $content){
     }
             ';
 
-			$function = '
-    <script type="text/javascript">
-    <!--
-    ' . $initFunction . '
-    ' . $checkFunction . '
-    //-->
-    </script>';
+			$function = '<script type="text/javascript"><!-- ' . $initFunction . ' ' . $checkFunction . ' //--></script>';
 			break;
 
 		case "name" : //  name of formular is given
-
-
-			$initFunction = '
-    weCheckFormEvent.addEvent( window, "load", function(){
+			$initFunction = 'weCheckFormEvent.addEvent( window, "load", function(){
         initWeCheckForm_by_name("' . $match . '");
         }
-    );
-            ';
+    );';
 			$checkFunction = '
     function weCheckForm_n_' . $match . '(ev){
-
-
         var missingReq = new Array(0);
         var wrongEmail = new Array(0);
         var pwError    = false;
@@ -223,18 +200,9 @@ function we_tag_checkForm($attribs, $content){
     }
             ';
 
-			$function = '
-    <script type="text/javascript">
-    <!--
-    ' . $initFunction . '
-    ' . $checkFunction . '
-    //-->
-    </script>';
+			$function = '<script type="text/javascript"><!-- ' . $initFunction . ' ' . $checkFunction . ' //--></script>';
 			break;
 	}
 
-	return "
-            $jsEventHandler
-            $function
-           ";
+	return $jsEventHandler.$function;
 }

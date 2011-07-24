@@ -23,24 +23,18 @@
  */
 
 function we_tag_listdir($attribs, $content){
+	$dirID = we_getTagAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID);
+	$index = explode(',', we_getTagAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php'));
+	$name = we_getTagAttribute('field', $attribs);
+	$dirfield = we_getTagAttribute('dirfield', $attribs, $name);
+	$sort = we_getTagAttribute('order', $attribs, $name);
+	$desc = we_getTagAttribute('desc', $attribs, '', true);
 
-	$dirID = we_getTagAttribute("id", $attribs, $GLOBALS["we_doc"]->ParentID);
-
-	$foo = we_getTagAttribute("index", $attribs, "index.html,index.htm,index.php,default.htm,default.html,default.php");
-	$index = explode(",", $foo);
-
-	$name = we_getTagAttribute("field", $attribs);
-
-	$dirfield = we_getTagAttribute("dirfield", $attribs, $name);
-	$sort = we_getTagAttribute("order", $attribs, $name);
-
-	$desc = we_getTagAttribute("desc", $attribs, "", true);
-
-	$q = "";
+	$q = array();
 	foreach ($index as $i => $v) {
-		$q .= " Text='$v' OR ";
+		$q[] = " Text='$v'";
 	}
-	$q = ereg_replace("(.*) OR ", '\1', $q);
+	$q = implode(' OR ',$q);
 
 	$files = array();
 
@@ -49,7 +43,7 @@ function we_tag_listdir($attribs, $content){
 	$db3 = new DB_WE();
 
 	$db->query(
-			"SELECT ID,Text,IsFolder,Path FROM " . FILE_TABLE . " WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID='".abs($dirID)."'");
+			"SELECT ID,Text,IsFolder,Path FROM " . FILE_TABLE . " WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID=".abs($dirID));
 
 	while ($db->next_record()) {
 		$sortfield = "";
@@ -63,11 +57,7 @@ function we_tag_listdir($attribs, $content){
 					$db3->query(
 							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db2->f(
 									"ID")) . "' AND " . LINK_TABLE . ".Name='".$db3->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-					if ($db3->next_record()) {
-						$sortfield = $db3->f("Dat");
-					} else {
-						$sortfield = $db->f("Text");
-					}
+						$sortfield = ($db3->next_record()) ? $db3->f("Dat") : $db->f("Text");
 				} else {
 					$sortfield = $db->f("Text");
 				}
@@ -95,11 +85,7 @@ function we_tag_listdir($attribs, $content){
 				$db2->query(
 						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
 								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-				if ($db2->next_record()) {
-					$sortfield = $db2->f("Dat");
-				} else {
-					$sortfield = $db->f("Text");
-				}
+					$sortfield = ($db2->next_record()) ? $db2->f("Dat"):$db->f("Text");
 			} else {
 				$sortfield = $db->f("Text");
 			}
@@ -107,19 +93,11 @@ function we_tag_listdir($attribs, $content){
 				$db2->query(
 						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
 								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-				if ($db2->next_record()) {
-					$namefield = $db2->f("Dat");
-				} else {
-					$namefield = $db->f("Text");
-				}
+					$namefield = ($db2->next_record()) ? $db2->f("Dat") : $db->f("Text");
 			} else {
 				$namefield = $db->f("Text");
 			}
-			array_push(
-					$files,
-					array(
-						"properties" => $db->Record, "sort" => $sortfield, "name" => $namefield
-					));
+			array_push($files,array("properties" => $db->Record, "sort" => $sortfield, "name" => $namefield));
 		}
 	}
 
@@ -136,7 +114,7 @@ function we_tag_listdir($attribs, $content){
 			usort($files, "we_cmpText");
 		}
 	}
-	$out = "";
+	$out = '';
 
 	foreach ($files as $i => $v) {
 

@@ -69,6 +69,7 @@ function rmPhp($in) {
 	return $out;
 }
 
+<<<<<<< .working
 function decodetmlSpecialChars($in) {
 /*FIXME:remove
  * 	$out = str_replace('&lt;', '<', $in);
@@ -79,6 +80,8 @@ function decodetmlSpecialChars($in) {
 	return htmlspecialchars_decode($in);
 }
 
+=======
+>>>>>>> .merge-rechts.r3067
 function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
 	return we_getTagAttribute($name, $attribs, $default, $isFlag, $checkForFalse, $removeblk, false);
 }
@@ -90,10 +93,11 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 	}
 	$out = '';
 	if ($isFlag) {
+		$val = strtolower(trim($value));
 		if ($checkForFalse) {
-			$out = ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
+			return !($val == 'false' || $val == 'off' || $val == '0');
 		} else {
-			$out = ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
+			return ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
 		}
 	} else {
 		$out = strlen($value) ? $value : $default;
@@ -102,7 +106,7 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 		$outA = explode('blk_', $out);
 		$out = $outA[0];
 	}
-	return decodetmlSpecialChars($out);
+	return htmlspecialchars_decode($out);
 }
 
 // Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden
@@ -121,68 +125,31 @@ function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFl
 	} else {
 		$out = strlen($value) ? $value : $default;
 	}
-	return decodetmlSpecialChars($out);
+	return htmlspecialchars_decode($out);
 }
 
 function we_getIndexFileIDs($db) {
-	$db->query(
-					'
-		SELECT ID
-		FROM ' . FILE_TABLE . '
-		WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )');
-	$anz = $db->num_rows();
-	$list = '';
-	while ($db->next_record())
-		$list .= $db->f('ID') . ',';
-	$list = rtrim($list, ',');
-	return $list;
+	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )','IDs',$db);
 }
 
 function we_getIndexObjectIDs($db) {
-	$db->query('
-		SELECT ID
-		FROM ' . OBJECT_FILES_TABLE . '
-		WHERE Published > 0 AND Workspaces != ""');
-	$anz = $db->num_rows();
-	$list = '';
-	while ($db->next_record())
-		$list .= $db->f('ID') . ',';
-	$list = rtrim($list, ',');
-	return $list;
+	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Workspaces != ""','IDs',$db);
 }
 
 function correctUml($in) {
-	$in = str_replace('ä', 'ae', $in);
-	$in = str_replace('ö', 'oe', $in);
-	$in = str_replace('ü', 'ue', $in);
-	$in = str_replace('Ä', 'Ae', $in);
-	$in = str_replace('Ö', 'Oe', $in);
-	$in = str_replace('Ü', 'Ue', $in);
-	return str_replace('ß', 'ss', $in);
+	return str_replace(array('ä','ö','ü','Ä','Ö','Ü','ss'), array('ae','oe','ue','Ae','Oe','Ue','ss'), $in);
 }
 
 function we_html2uml($text) {
-
-	$text = str_replace('&uuml;', 'ü', $text);
-	$text = str_replace('&Uuml;', 'Ü', $text);
-	$text = str_replace('&auml;', 'ä', $text);
-	$text = str_replace('&Auml;', 'Ä', $text);
-	$text = str_replace('&ouml;', 'ö', $text);
-	$text = str_replace('&Ouml;', 'Ö', $text);
-	$text = str_replace('&szlig;', 'ß', $text);
-
-	return $text;
+	return corretUml(html_entity_decode($text));
 }
 
 function inWorkflow($doc) {
-	if (!defined('WORKFLOW_TABLE'))
-		return false;
-	if (!$doc->IsTextContentDoc)
+	if (!defined('WORKFLOW_TABLE')||!$doc->IsTextContentDoc)
 		return false;
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php');
-	if (!$doc->ID)
-		return false;
-	return weWorkflowUtility::inWorkflow($doc->ID, $doc->Table);
+
+	return ($doc->ID?weWorkflowUtility::inWorkflow($doc->ID, $doc->Table):false);
 }
 
 function getAllowedClasses($db = '') {
@@ -201,19 +168,12 @@ function getAllowedClasses($db = '') {
 		if (abs($ws) == 0) {
 			$ws = 0;
 		}
-		$db->query('
-			SELECT ID,Workspaces,Path
-			FROM ' . OBJECT_TABLE . '
-			WHERE IsFolder=0');
+		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
 
 		while ($db->next_record()) {
 			$path = $db->f('Path');
-			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || in_workspace(
-											$db->f('Workspaces'),
-											$ws,
-											FILE_TABLE,
-											'',
-											true)) {
+			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || 
+							in_workspace($db->f('Workspaces'),$ws,FILE_TABLE,'',true)) {
 
 				$path2 = $path . '/';
 				if (!$ofWs || $_SESSION['perms']['ADMINISTRATOR']) {
@@ -245,11 +205,7 @@ function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = '') {
 		if (abs($ws) == 0) {
 			$ws = 0;
 		}
-		$db->query(
-						'
-			SELECT ID,Path
-			FROM ' . OBJECT_FILES_TABLE . '
-			WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
+		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
 		while ($db->next_record()) {
 			if (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, '', true)) {
 				if ($rootPath == '/' || strlen($db->f('Path')) < strlen($rootPath)) {
@@ -265,47 +221,38 @@ function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = '') {
 function weFileExists($id, $table = FILE_TABLE, $db = '') {
 	if ($id == '0')
 		return true;
-	if (!$db)
-		$db = new DB_WE();
-
-
-	return f('SELECT ID FROM $table WHERE ID=' . abs($id), 'ID', $db);
+	return f('SELECT ID FROM $table WHERE ID=' . abs($id), 'ID', ($db?$db:$db=new DB_WE()));
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {
 	$pid_tail = '';
 	if (!$db)
 		$db = new DB_WE();
-	if ($table == FILE_TABLE) {
-		$parentIDs = array();
-		array_push($parentIDs, $pid);
-		while ($pid != 0) {
-			$pid = f('
-				SELECT ParentID
-				FROM ' . FILE_TABLE . '
-				WHERE ID=' . abs($pid), 'ParentID', $db);
-			array_push($parentIDs, $pid);
-		}
-		$foo = f('
-			SELECT DefaultValues
-			FROM ' . OBJECT_TABLE . '
-			WHERE ID=' . abs($cid), 'DefaultValues', $db);
-		$fooArr = unserialize($foo);
-		$flag = (isset($fooArr['WorkspaceFlag'])?$fooArr['WorkspaceFlag']:1);
-		$pid_tail = ($flag ? ' ( ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ':' ( ');
-		foreach ($parentIDs as $pid)
-			$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . ".OF_Workspaces like '%," . abs($pid) . ",%' OR " . OBJECT_X_TABLE . abs($cid) . ".OF_ExtraWorkspacesSelected like '%," . abs($pid) . ",%' OR ";
-		$pid_tail = ereg_replace('^(.*)OR ', '\1', $pid_tail) . ")";
-		if (trim($pid_tail) == '( )')
-			return '1';
-	} else {
+	if ($table != FILE_TABLE) {
 		return '1';
 	}
-	return $pid_tail;
+	$parentIDs = array();
+	array_push($parentIDs, $pid);
+	while ($pid != 0) {
+		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($pid), 'ParentID', $db);
+		array_push($parentIDs, $pid);
+	}
+	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . abs($cid), 'DefaultValues', $db);
+	$fooArr = unserialize($foo);
+	$flag = (isset($fooArr['WorkspaceFlag'])?$fooArr['WorkspaceFlag']:1);
+	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ':'');
+	foreach ($parentIDs as $pid){
+		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . ".OF_Workspaces like '%," . abs($pid) . ",%' OR " . OBJECT_X_TABLE . abs($cid) . ".OF_ExtraWorkspacesSelected like '%," . abs($pid) . ",%' OR ";
+	}
+	$pid_tail = trim(ereg_replace('^(.*)OR ', '\1', $pid_tail));
+	if ($pid_tail == ''){
+		return '1';
+	}
+
+	return ' ('.$pid_tail.') ';
 }
 
 function we_getInputRadioField($name, $value, $itsValue, $atts) {
-
 	//  This function replaced fnc: we_getRadioField
 	$atts['type'] = 'radio';
 	$atts['name'] = $name;
@@ -317,7 +264,6 @@ function we_getInputRadioField($name, $value, $itsValue, $atts) {
 }
 
 function we_getTextareaField($name, $value, $atts) {
-
 	$atts['name'] = $name;
 	$atts['rows'] = isset($atts['rows']) ? $atts['rows'] : 5;
 	$atts['cols'] = isset($atts['cols']) ? $atts['cols'] : 20;
@@ -326,8 +272,6 @@ function we_getTextareaField($name, $value, $atts) {
 }
 
 function we_getInputTextInputField($name, $value, $atts) {
-
-	//  This function replaced we_getTextinputField, but that is still used by we_sessionField
 	$atts['type'] = 'text';
 	$atts['name'] = $name;
 	$atts['value'] = htmlspecialchars($value);
@@ -336,8 +280,6 @@ function we_getInputTextInputField($name, $value, $atts) {
 }
 
 function we_getInputPasswordField($name, $value, $atts) {
-
-	//  This function replaced we_getTextinputField, but that is still used by we_sessionField
 	$atts['type'] = 'password';
 	$atts['name'] = $name;
 	$atts['value'] = htmlspecialchars($value);
@@ -350,23 +292,15 @@ function we_getHiddenField($name, $value, $xml = false) {
 }
 
 function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false) {
-
 	//  This function replaced we_getChoiceField
 	//  we need input="text" and select-box
 	//  First input='text'
 	//<input type="text"'.($size ? ' size="'.$size.'"' : '').' name="'.$name.'" value="'.htmlspecialchars($value).'" '.$attr.($xml ? " /" :"").'>
-	$textField = getHtmlTag(
-									'input',
-									array_merge($atts, array(
-											'type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value)
-									)));
+	$textField = getHtmlTag('input',array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
 
-	$opts = getHtmlTag('option', array(
-							'value' => ''
-									), '', true) . "\n";
+	$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
 
 	if ($valuesIsHash) {
-
 		foreach ($values as $_val => $_text) {
 			$attsOpts['value'] = htmlspecialchars($_val);
 			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($_text)) . "\n";
@@ -378,36 +312,37 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 			$attsOpts['xml'] = $atts['xml'];
 		}
 
+<<<<<<< .working
 		foreach($options AS $option){
 			$attsOpts['value'] = htmlspecialchars($option);
 			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
+=======
+		foreach ($options as $option) {
+			$attsOpts['value'] = htmlspecialchars($option);
+			$opts .= getHtmlTag('option', $attsOpts, htmlspecialchars($option)) . "\n";
+>>>>>>> .merge-rechts.r3067
 		}
 	}
 
 	// select menu
-	if ($mode == 'add') {
-		$onchange = 'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);';
-	} else {
-		$onchange = 'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;';
-	}
+	$onchange = ($mode == 'add'
+		?'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);'
+		:'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
+	
 	if (isset($atts['id'])) { //  use another ID!!!!
 		$atts['id'] = 'tmp_' . $atts['id'];
 	}
 	$atts['onchange'] = $onchange . 'this.selectedIndex=0;';
 	$atts['name'] = 'tmp_' . $name;
 	$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
-	$atts = removeAttribs($atts, array(
-							'size'
-					)); //  remove size for choice
+	$atts = removeAttribs($atts, array('size')); //  remove size for choice
 	$selectMenue = getHtmlTag('select', $atts, $opts, true);
 	return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 }
 
 function we_getInputCheckboxField($name, $value, $attr) {
-
 	//  returns a checkbox with associated hidden-field
 	//  This function replaced function: we_getCheckboxField, but is still used one time
-
 
 	$tmpname = md5(uniqid(time()));
 	if ($value) {
@@ -437,14 +372,10 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	$isin = 0;
 	for ($i = 0; $i < sizeof($options); $i++) {
 		if ($options[$i] == $value) {
-			$content .= getHtmlTag('option', array(
-									'value' => $options[$i], 'selected' => 'selected'
-											), $options[$i], true) . "\n";
+			$content .= getHtmlTag('option', array('value' => $options[$i], 'selected' => 'selected'), $options[$i], true) . "\n";
 			$isin = 1;
 		} else {
-			$content .= getHtmlTag('option', array(
-									'value' => $options[$i]
-											), $options[$i], true) . "\n";
+			$content .= getHtmlTag('option', array('value' => $options[$i]), $options[$i], true) . "\n";
 		}
 	}
 	if ((!$isin) && $addMissing) {
@@ -538,17 +469,18 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 
 	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
-	if (!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object'])))
+	if (!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
 		$GLOBALS['we_object'] = array();
+	}
 	$GLOBALS['we_object'][$formname] = new we_objectFile();
 	if ((!$session) || (!isset($_SESSION['we_object_session_'.$formname]))) {
 		if ($session) {
 			$_SESSION['we_object_session_'.$formname] = array();
 		}
 		$GLOBALS['we_object'][$formname]->we_new();
-		if (isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID'])
+		if (isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
 			$GLOBALS['we_object'][$formname]->initByID($_REQUEST['we_editObject_ID'], OBJECT_FILES_TABLE);
-		else {
+		} else {
 			$GLOBALS['we_object'][$formname]->TableID = $classID;
 			$GLOBALS['we_object'][$formname]->setRootDirID(true);
 			$GLOBALS['we_object'][$formname]->resetParentID();
@@ -561,10 +493,7 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 
 		// save parentid
 		if ($parentid) {
-
 			// check if parentid is in correct folder ...
-
-
 			$parentfolder = new we_class_folder();
 			$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 
@@ -659,7 +588,6 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 }
 
 function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = '') {
-
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 	//  check if a <we:sessionStart> Tag was before
 	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
@@ -690,19 +618,22 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 		if ($session)
 			$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
 	} else {
-		if (isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID'])
+		if (isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']){
 			$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
-		else
-		if ($session)
-			$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION["we_document_session_$formname"]);
+		}else{
+			if ($session){
+				$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION["we_document_session_$formname"]);
+			}
+		}
 		if (strlen($categories)) {
 			$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 			$GLOBALS['we_document'][$formname]->Category = $categories;
 		}
 	}
 
-	if (isset($_REQUEST['we_returnpage']))
+	if (isset($_REQUEST['we_returnpage'])){
 		$GLOBALS['we_document'][$formname]->setElement('we_returnpage', $_REQUEST['we_returnpage']);
+	}
 	if (isset($_REQUEST["we_ui_$formname"]) && is_array($_REQUEST["we_ui_$formname"])) {
 		$dates = array();
 		foreach ($_REQUEST["we_ui_$formname"] as $n => $v) {
@@ -714,7 +645,7 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 			}
 		}
 
-		foreach ($dates as $k => $v)
+		foreach ($dates as $k => $v){
 			$GLOBALS['we_document'][$formname]->setElement(
 							$k,
 							mktime(
@@ -724,6 +655,7 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 											$dates[$k]['month'],
 											$dates[$k]['day'],
 											$dates[$k]['year']));
+		}
 	}
 
 	if (isset($_REQUEST['we_ui_' . $formname . '_categories'])) {
@@ -913,10 +845,6 @@ function checkAndPrepareBinary($formname, $key = 'we_document') {
 															"\\1",
 															$tmp_Filename) : "";
 							$_SESSION[$_binaryDataId]["text"] = $_SESSION[$_binaryDataId]["fileName"] . $_SESSION[$_binaryDataId]["extension"];
-
-
-
-
 							$_SESSION[$_binaryDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$binaryName];
 							$_SESSION[$_binaryDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$binaryName];
 						}
@@ -995,371 +923,61 @@ function checkAndPrepareFlashmovie($formname, $key = "we_document") {
 
 function checkAndPrepareQuicktime($formname, $key = "we_document") {
 	// check to see if there is an image to create or to change
-	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
-
-		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
-		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
-			foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
-
-				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
-
-				if ($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])) {
-
-					$_SESSION[$_quicktimeDataId]['doDelete'] = false;
-
-					if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1) {
-						$_SESSION[$_quicktimeDataId]['doDelete'] = true;
-					} else
-					if ($filename) {
-						// file is selected, check to see if it is an image
-						$ct = getContentTypeFromFile($filename);
-						if ($ct == "video/quicktime") {
-							$quicktimeId = abs($GLOBALS[$key][$formname]->getElement($quicktimeName));
-
-							// move document from upload location to tmp dir
-							$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
-															uniqid(rand(), 1));
-							move_uploaded_file(
-											$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName],
-											$_SESSION[$_quicktimeDataId]["serverPath"]);
-
-
-
-							$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-															"/[^A-Za-z0-9._-]/",
-															"",
-															$_FILES["we_ui_$formname"]["name"][$quicktimeName]);
-
-							if ($quicktimeId) {
-								$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
-							}
-
-							$_SESSION[$_quicktimeDataId]["fileName"] = eregi_replace(
-															'^(.+)\..+$',
-															"\\1",
-															$tmp_Filename);
-							$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
-															'^.+(\..+)$',
-															"\\1",
-															$tmp_Filename) : "";
-							$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
-
-
-							//$_SESSION[$_quicktimeDataId]["imgwidth"] = $we_size[0];
-							//$_SESSION[$_quicktimeDataId]["imgheight"] = $we_size[1];
-							$_SESSION[$_quicktimeDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$quicktimeName];
-							$_SESSION[$_quicktimeDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$quicktimeName];
-						}
-					}
-				}
-			}
-		}
+	if (!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )) {
+		return;
 	}
-}
-
-function checkAndCreateImage($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_imgDataId) {
-		if (preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)) {
-			$_imgName = $regs[1];
-			$imgId = isset($_SESSION[$_imgDataId]["id"]) ? $_SESSION[$_imgDataId]["id"] : 0;
-			if (isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete'] == 1) {
-
-				if ($imgId) {
-					$imgDocument = new we_imageDocument();
-					$imgDocument->initByID($imgId);
-					if ($imgDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($imgId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_imgDataId]['serverPath'])) {
-				if (substr($_SESSION[$_imgDataId]['type'], 0, 6) == "image/") {
-					$imgDocument = new we_imageDocument();
-
-					if ($imgId) {
-						// document has already an image
-						// so change binary data
-						$imgDocument->initByID(
-										$imgId);
-					}
-
-					$imgDocument->Filename = $_SESSION[$_imgDataId]['fileName'];
-					$imgDocument->Extension = $_SESSION[$_imgDataId]['extension'];
-					$imgDocument->Text = $_SESSION[$_imgDataId]['text'];
-
-					if (!$imgId) {
-						$imgDocument->setParentID($_SESSION[$_imgDataId]['parentid']);
-					}
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Text;
-
-					$imgDocument->setElement("width", $_SESSION[$_imgDataId]["imgwidth"], "attrib");
-					$imgDocument->setElement("height", $_SESSION[$_imgDataId]["imgheight"], "attrib");
-					$imgDocument->setElement("origwidth", $_SESSION[$_imgDataId]["imgwidth"]);
-					$imgDocument->setElement("origheight", $_SESSION[$_imgDataId]["imgheight"]);
-
-					$imgDocument->setElement("type", 'image/*', "attrib");
-
-					$imgDocument->setElement("data", $_SESSION[$_imgDataId]["serverPath"], "image");
-
-					$imgDocument->setElement("filesize", $_SESSION[$_imgDataId]["size"], "attrib");
-
-					$imgDocument->Table = FILE_TABLE;
-					$imgDocument->Published = time();
-					$imgDocument->WebUserID = $webuserId;
-					$imgDocument->we_save();
-					$newId = $imgDocument->ID;
-
-					$t = explode('_', $imgDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$imgDocument->Filename = $fn;
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != "/") ? "/" : "") . $imgDocument->Filename . $imgDocument->Extension;
-					$imgDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_imgName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_imgDataId])) {
-				unset($_SESSION[$_imgDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateBinary($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_otherDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_binaryDataId) {
-		if (preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)) {
-			$_binaryName = $regs[1];
-			$binaryId = isset($_SESSION[$_binaryDataId]["id"]) ? $_SESSION[$_binaryDataId]["id"] : 0;
-			if (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] == 1) {
-
-				if ($binaryId) {
-					$binaryDocument = new we_otherDocument();
-					$binaryDocument->initByID($binaryId);
-					if ($binaryDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($binaryId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_binaryDataId]['serverPath'])) {
-				if (substr($_SESSION[$_binaryDataId]['type'], 0, 12) == "application/") {
-					$binaryDocument = new we_otherDocument();
-
-					if ($binaryId) {
-						// document has already an image
-						// so change binary data
-						$binaryDocument->initByID(
-										$binaryId);
-					}
-
-					$binaryDocument->Filename = $_SESSION[$_binaryDataId]['fileName'];
-					$binaryDocument->Extension = $_SESSION[$_binaryDataId]['extension'];
-					$binaryDocument->Text = $_SESSION[$_binaryDataId]['text'];
-
-					if (!$binaryId) {
-						$binaryDocument->setParentID($_SESSION[$_binaryDataId]['parentid']);
-					}
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Text;
-
-
-					$binaryDocument->setElement("type", 'application/*', "attrib");
-
-					$binaryDocument->setElement("data", $_SESSION[$_binaryDataId]["serverPath"], "application");
-
-					$binaryDocument->setElement("filesize", $_SESSION[$_binaryDataId]["size"], "attrib");
-
-					$binaryDocument->Table = FILE_TABLE;
-					$binaryDocument->Published = time();
-					$binaryDocument->WebUserID = $webuserId;
-					$binaryDocument->we_save();
-
-					$newId = $binaryDocument->ID;
-
-					$t = explode('_', $binaryDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$binaryDocument->Filename = $fn;
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != "/") ? "/" : "") . $binaryDocument->Filename . $binaryDocument->Extension;
-					$binaryDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_binaryName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_binaryDataId])) {
-				unset($_SESSION[$_binaryDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateFlashmovie($formname, $type = "we_document") {
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_flashDocument.inc.php");
-
-	foreach ($_REQUEST as $key => $_flashmovieDataId) {
-		if (preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)) {
-
-			$_flashName = $regs[1];
-			$flashId = isset($_SESSION[$_flashmovieDataId]["id"]) ? $_SESSION[$_flashmovieDataId]["id"] : 0;
-			if (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] == 1) {
-
-				if ($flashId) {
-					$flashDocument = new we_flashDocument();
-					$flashDocument->initByID($flashId);
-					if ($flashDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($flashId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
-					}
-				}
-			} else
-			if (isset($_SESSION[$_flashmovieDataId]['serverPath'])) {
-				if (substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == "application/x-shockwave-flash") {
-					$flashDocument = new we_flashDocument();
-
-					if ($flashId) {
-						// document has already an image
-						// so change binary data
-						$flashDocument->initByID(
-										$flashId);
-					}
-
-					$flashDocument->Filename = $_SESSION[$_flashmovieDataId]['fileName'];
-					$flashDocument->Extension = $_SESSION[$_flashmovieDataId]['extension'];
-					$flashDocument->Text = $_SESSION[$_flashmovieDataId]['text'];
-
-					if (!$flashId) {
-						$flashDocument->setParentID($_SESSION[$_flashmovieDataId]['parentid']);
-					}
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Text;
-
-					$flashDocument->setElement("width", $_SESSION[$_flashmovieDataId]["imgwidth"], "attrib");
-					$flashDocument->setElement("height", $_SESSION[$_flashmovieDataId]["imgheight"], "attrib");
-					$flashDocument->setElement("origwidth", $_SESSION[$_flashmovieDataId]["imgwidth"]);
-					$flashDocument->setElement("origheight", $_SESSION[$_flashmovieDataId]["imgheight"]);
-
-					$flashDocument->setElement("type", 'application/x-shockwave-flash', "attrib");
-
-					$flashDocument->setElement("data", $_SESSION[$_flashmovieDataId]["serverPath"], "image");
-
-					$flashDocument->setElement("filesize", $_SESSION[$_flashmovieDataId]["size"], "attrib");
-
-					$flashDocument->Table = FILE_TABLE;
-					$flashDocument->Published = time();
-					$flashDocument->WebUserID = $webuserId;
-					$flashDocument->we_save();
-					$newId = $flashDocument->ID;
-
-					$t = explode('_', $flashDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$flashDocument->Filename = $fn;
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != "/") ? "/" : "") . $flashDocument->Filename . $flashDocument->Extension;
-					$flashDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_flashName, $newId);
-				}
-			}
-			if (isset($_SESSION[$_flashmovieDataId])) {
-				unset($_SESSION[$_flashmovieDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateQuicktime($formname, $type = "we_document") {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
+	foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
 
-	foreach ($_REQUEST as $key => $_quicktimeDataId) {
-		if (preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)) {
-			$_quicktimeName = $regs[1];
-			$quicktimeId = isset($_SESSION[$_quicktimeDataId]["id"]) ? $_SESSION[$_quicktimeDataId]["id"] : 0;
-			if (isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete'] == 1) {
+		$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
 
-				if ($quicktimeId) {
-					$quicktimeDocument = new we_quicktimeDocument();
-					$quicktimeDocument->initByID($quicktimeId);
-					if ($quicktimeDocument->WebUserID == $webuserId) {
-						//everything ok, now delete
-						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
-						deleteEntry($quicktimeId, FILE_TABLE);
-						$GLOBALS["NOT_PROTECT"] = false;
-						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
-					}
-				}
+		if ($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])) {
+
+			$_SESSION[$_quicktimeDataId]['doDelete'] = false;
+
+			if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1) {
+				$_SESSION[$_quicktimeDataId]['doDelete'] = true;
 			} else
-			if (isset($_SESSION[$_quicktimeDataId]['serverPath'])) {
-				if (substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == "video/quicktime") {
-					$quicktimeDocument = new we_quicktimeDocument();
+			if ($filename) {
+				// file is selected, check to see if it is an image
+				$ct = getContentTypeFromFile($filename);
+				if ($ct == "video/quicktime") {
+					$quicktimeId = abs($GLOBALS[$key][$formname]->getElement($quicktimeName));
+
+					// move document from upload location to tmp dir
+					$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
+													uniqid(rand(), 1));
+					move_uploaded_file(
+									$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName],
+									$_SESSION[$_quicktimeDataId]["serverPath"]);
+
+
+
+					$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+													"/[^A-Za-z0-9._-]/","",
+													$_FILES["we_ui_$formname"]["name"][$quicktimeName]);
 
 					if ($quicktimeId) {
-						// document has already an image
-						// so change binary data
-						$quicktimeDocument->initByID(
-										$quicktimeId);
+						$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
 					}
 
-					$quicktimeDocument->Filename = $_SESSION[$_quicktimeDataId]['fileName'];
-					$quicktimeDocument->Extension = $_SESSION[$_quicktimeDataId]['extension'];
-					$quicktimeDocument->Text = $_SESSION[$_quicktimeDataId]['text'];
+					$_SESSION[$_quicktimeDataId]["fileName"] = eregi_replace(
+													'^(.+)\..+$',
+													"\\1",
+													$tmp_Filename);
+					$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
+													'^.+(\..+)$',
+													"\\1",
+													$tmp_Filename) : "";
+					$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
 
-					if (!$quicktimeId) {
-						$quicktimeDocument->setParentID($_SESSION[$_quicktimeDataId]['parentid']);
-					}
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Text;
 
-					//$quicktimeDocument->setElement("width", $_SESSION[$_quicktimeDataId]["imgwidth"], "attrib");
-					//$quicktimeDocument->setElement("height", $_SESSION[$_quicktimeDataId]["imgheight"], "attrib");
-					//$quicktimeDocument->setElement("origwidth", $_SESSION[$_quicktimeDataId]["imgwidth"]);
-					//$quicktimeDocument->setElement("origheight", $_SESSION[$_quicktimeDataId]["imgheight"]);
-
-					$quicktimeDocument->setElement("type", 'video/quicktime', "attrib");
-
-					$quicktimeDocument->setElement("data", $_SESSION[$_quicktimeDataId]["serverPath"], "image");
-
-					$quicktimeDocument->setElement("filesize", $_SESSION[$_quicktimeDataId]["size"], "attrib");
-
-					$quicktimeDocument->Table = FILE_TABLE;
-					$quicktimeDocument->Published = time();
-					$quicktimeDocument->WebUserID = $webuserId;
-					$quicktimeDocument->we_save();
-					$newId = $quicktimeDocument->ID;
-
-					$t = explode('_', $quicktimeDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$quicktimeDocument->Filename = $fn;
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != "/") ? "/" : "") . $quicktimeDocument->Filename . $quicktimeDocument->Extension;
-					$quicktimeDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_quicktimeName, $newId);
+					//$_SESSION[$_quicktimeDataId]["imgwidth"] = $we_size[0];
+					//$_SESSION[$_quicktimeDataId]["imgheight"] = $we_size[1];
+					$_SESSION[$_quicktimeDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$quicktimeName];
+					$_SESSION[$_quicktimeDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$quicktimeName];
 				}
-			}
-			if (isset($_SESSION[$_quicktimeDataId])) {
-				unset($_SESSION[$_quicktimeDataId]);
 			}
 		}
 	}
@@ -1469,13 +1087,10 @@ function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Ca
 function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true) {
 	if (!$db)
 		$db = new DB_WE();
-	$sql = "";
-	$q = "
-		SELECT DISTINCT ID
-		FROM " . CATEGORY_TABLE . "
-		WHERE Path LIKE '" . $db->escape($cat) . "/%' OR Path='" . $db->escape($cat) . "'";
+	$q = 'SELECT DISTINCT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"';
 
 	$db->query($q);
+	$sql = '';
 	$z = 0;
 	while ($db->next_record())
 		$sql .= " " . $table . "." . $fieldName . " like '%," . abs($db->f("ID")) . ",%' OR ";
@@ -1487,18 +1102,13 @@ function getHttpOption() {
 	if (ini_get('allow_url_fopen') != 1) {
 		@ini_set('allow_url_fopen', '1');
 		if (ini_get('allow_url_fopen') != 1) {
-			if (function_exists('curl_init')) {
-				return 'curl';
-			} else {
-				return 'none';
-			}
+			return (function_exists('curl_init') ? 'curl':'none');
 		}
 	}
 	return 'fopen';
 }
 
 function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = 'http', $username = '', $password = '', $header = false) {
-
 	$_response = array(
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error
@@ -1506,13 +1116,9 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 	);
 
 	$server = str_replace('http://', '', $server);
-
 	$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
-
 	$_pathA = explode('?', $path);
-
 	$_url = $protocol . '://' . $server . ':' . $port . $_pathA[0];
-
 	$_params = array();
 
 	$_session = curl_init();
@@ -1579,10 +1185,10 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 }
 
 function getHTTP($server, $url, $port = '', $username = '', $password = '') {
-
 	$_opt = getHttpOption();
 
-	if ($_opt == 'fopen') {
+	switch($_opt){
+	case 'fopen':
 
 		if (!$port) {
 			$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
@@ -1601,17 +1207,10 @@ function getHTTP($server, $url, $port = '', $username = '', $password = '') {
 			fclose($fh);
 		}
 		return $page;
-	} else
-	if ($_opt == 'curl') {
-
+	case 'curl':
 		$_response = getCurlHttp($server, $url, array(), $port, 'http', $username, $password);
-
-		if ($_response['status'] != 0) {
-			return $_response['error'];
-		} else {
-			return $_response['data'];
-		}
-	} else {
+		return ($_response['status'] != 0 ? $_response['error']:$_response['data']);
+	default:
 		return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 	}
 }
@@ -1632,7 +1231,8 @@ function modulFehltError($modul, $tag) {
 }
 
 function parseError($text) {
-	return '<b>' . g_l('parser','[error_in_template]') . ":</b> $text<br>\n";
+	trigger_error($text,E_USER_WARNING);
+	return "<b>" . g_l('parser','[error_in_template]') . ":</b> $text<br>\n".'<?php trigger_error(\''.$text.'\',E_USER_WARNING);?>';
 }
 
 function std_numberformat($content) {
@@ -1670,60 +1270,36 @@ function encode($in) {
 
 function deleteContentFromDB($id, $table) {
 	$DB_WE = new DB_WE();
-	$dbc = new DB_WE();
-	if (!$DB_WE->query(
-									'
-		SELECT *
-		FROM ' . LINK_TABLE . '
-		WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"')) {
+
+	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
 		return false;
 	}
-	while ($DB_WE->next_record())
-		$dbc->query('
-			DELETE
-			FROM ' . CONTENT_TABLE . '
-			WHERE ID=' . abs($DB_WE->f('CID')));
-	return $DB_WE->query(
-					'
-		DELETE
-		FROM ' . LINK_TABLE . '
-		WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
+	
+	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
+		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '")');
+	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
 }
 
-function cleanTempFiles($cleanSessFiles = 0) {
+function cleanTempFiles($cleanSessFiles = false) {
 	$db2 = new DB_WE();
-	$sess = $GLOBALS['DB_WE']->query('
-		SELECT Date,Path
-		FROM ' . CLEAN_UP_TABLE . '
-		WHERE Date <= ' . (time() - 300));
-	if ($GLOBALS['DB_WE']->num_rows())
-		while ($GLOBALS['DB_WE']->next_record()) {
-			$p = $GLOBALS['DB_WE']->f('Path');
-			if (file_exists($p))
-				deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
-			$db2->query(
-							'
-				DELETE
-				FROM ' . CLEAN_UP_TABLE . '
-				WHERE DATE=' . $GLOBALS['DB_WE']->f('Date') . ' AND Path="' . $GLOBALS['DB_WE']->f(
-											'Path') . '"');
+	$sess = $GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
+	while ($GLOBALS['DB_WE']->next_record()) {
+		$p = $GLOBALS['DB_WE']->f('Path');
+		if (file_exists($p)){
+			deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 		}
+		$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+	}
 	if ($cleanSessFiles) {
 		$seesID = session_id();
-		$GLOBALS['DB_WE']->query('
-			SELECT Date,Path
-			FROM ' . CLEAN_UP_TABLE . "
-			WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-		if ($GLOBALS['DB_WE']->num_rows())
-			while ($GLOBALS['DB_WE']->next_record()) {
-				$p = $GLOBALS['DB_WE']->f('Path');
-				if (file_exists($p))
-					deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
-				$db2->query('
-					DELETE
-					FROM ' . CLEAN_UP_TABLE . "
-					WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+		while ($GLOBALS['DB_WE']->next_record()) {
+			$p = $GLOBALS['DB_WE']->f('Path');
+			if (file_exists($p)){
+				deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
+			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
+		}
 	}
 	$d = dir(TMP_DIR);
 	while (false !== ($entry = $d->read())) {
@@ -1745,11 +1321,12 @@ function cleanTempFiles($cleanSessFiles = 0) {
 		if ($entry != '.' && $entry != '..') {
 			$foo = $dstr . $entry;
 			if (filemtime($foo) <= (time() - 300)) {
-				if (is_dir($foo))
+				if (is_dir($foo)){
 					deleteLocalFolder($foo, 1);
-				else
-				if (file_exists($foo) && is_writable($foo))
+				}else
+				if (file_exists($foo) && is_writable($foo)){
 					deleteLocalFile($foo);
+				}
 			}
 		}
 	}
@@ -1773,9 +1350,7 @@ function cleanTempFiles($cleanSessFiles = 0) {
 }
 
 function getUsedTemplatesOfTemplate($id, &$arr) {
-	$_hash = getHash(
-									'SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . abs($id),
-									$GLOBALS['DB_WE']);
+	$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . abs($id),$GLOBALS['DB_WE']);
 	$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : '';
 	$_masterTemplateID = isset($_hash['MasterTemplateID']) ? $_hash['MasterTemplateID'] : 0;
 
@@ -1805,28 +1380,27 @@ function getUsedTemplatesOfTemplate($id, &$arr) {
 }
 
 function getTemplatesOfTemplate($id, &$arr) {
-	$GLOBALS['DB_WE']->query(
-					'SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . abs($id) . " OR IncludedTemplates LIKE '%," . abs(
-									$id) . ",%'");
-	while ($GLOBALS['DB_WE']->next_record()) {
-		array_push($arr, $GLOBALS['DB_WE']->f('ID'));
+	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . abs($id) . " OR IncludedTemplates LIKE '%," . abs($id) . ",%'",'IDS',$GLOBALS['DB_WE']);
+	
+	if(!$foo){
+		return;
 	}
-	$foo = $arr;
 
-	$_len = count($foo);
-
+	$foo=explode(',',$foo);
+	$arr=array_merge($arr,$foo);
 	if (in_array($id, $arr)) {
 		return;
 	}
 
-	for ($i = 0; $i < $_len; $i++) {
-		getTemplatesOfTemplate($foo[$i], $arr);
+	foreach ($foo as $check) {
+		getTemplatesOfTemplate($check, $arr);
 	}
 }
 
 function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = false, $PublishedAndTemp = false) {
-	if (!$id)
+	if (!$id){
 		return 0;
+	}
 
 	$returnIDs = array();
 	$returnIDs['templateIDs'] = array();
@@ -1843,35 +1417,18 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	$id = abs($id);
 
 	// Bug Fix 6615
-	if ($PublishedAndTemp) {
-		$where = ' temp_template_id=' . $id . ' OR ';
-		$where .= ' TemplateID=' . $id . ' OR ';
-		foreach ($returnIDs['templateIDs'] as $tid) {
-			$where .= ' temp_template_id=' . $tid . ' OR ';
-			$where .= ' TemplateID=' . $tid . ' OR ';
-		}
-	} else {
-		$where = ' TemplateID=' . $id . ' OR ';
-		foreach ($returnIDs['templateIDs'] as $tid) {
-			$where .= ' TemplateID=' . $tid . ' OR ';
-		}
-	}
-	// remove last OR
-	$where = substr($where, 0, strlen($where) - 3);
-	$where = '(' . $where . ')';
+	$tmpArray=$returnIDs['templateIDs'];
+	$tmpArray[]=$id;
+	$tmp=implode(',',$tmpArray);
+	unset($tmpArray);
+	$where=' ('.
+	  ($PublishedAndTemp?'temp_template_id IN (' . $tmp . ') OR ':'').
+		' TemplateID IN (' . $tmp.')'.
+		')'.
+	  ($staticOnly?' AND IsDynamic=0':'').
+		($publishedOnly?' AND Published>0':'');
 
-	if ($staticOnly) {
-		$where .= ' AND IsDynamic=0';
-	}
-
-	if ($publishedOnly) {
-		$where .= ' AND Published>0';
-	}
-
-	$GLOBALS['DB_WE']->query('
-		SELECT ID
-		FROM ' . FILE_TABLE . '
-		WHERE '.$where);
+	$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE '.$where);
 
 	while ($GLOBALS['DB_WE']->next_record()) {
 		array_push($returnIDs['documentIDs'], $GLOBALS['DB_WE']->f('ID'));
@@ -1880,26 +1437,19 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 }
 
 function ObjectUsedByObjectFile($id) {
-	if (!$id)
-		return 0;
-	$GLOBALS['DB_WE']->query('
-		SELECT ID
-		FROM ' . OBJECT_FILES_TABLE . '
-		WHERE TableID=' . abs($id));
-	return $GLOBALS['DB_WE']->num_rows();
+	if (!$id){
+		return false;
+	}
+	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . abs($id).' LIMIT 0,1','cnt',$GLOBALS['DB_WE'])==1;
 }
 
 function deleteLocalFile($filename) {
-	if (!file_exists($filename))
-		return false;
-	return unlink($filename);
+	return (file_exists($filename)?unlink($filename):false);
 }
 
 function dbDateToTimeStamp($date, $time = '') {
 	list($y, $m, $d) = explode('-', $date);
-	list($hr, $min, $sec) = $time ? explode(':', $time) : array(
-			0, 0, 0
-					);
+	list($hr, $min, $sec) = $time ? explode(':', $time) : array(0, 0, 0);
 	return mktime($hr, $min, $sec, $m, $d, $y);
 }
 
@@ -1908,15 +1458,22 @@ function we_makeHiddenFields($filter = '') {
 	$hidden = '';
 	if ($_REQUEST) {
 		reset($_REQUEST);
-		while (list($key, $val) = each($_REQUEST))
+		while (list($key, $val) = each($_REQUEST)){
 			if (!in_array($key, $filterArr)) {
 				if (is_array($val)) {
+<<<<<<< .working
 					foreach($val AS $v){
 						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($v) . '" />';
 					}
+=======
+					foreach($val as $v){
+						$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($v) . '" />';
+					}
+>>>>>>> .merge-rechts.r3067
 				} else
 					$hidden .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($val) . '" />';
 			}
+		}
 	}
 	return $hidden;
 }
@@ -1954,12 +1511,9 @@ function debug2html($text) {
 }
 
 function we_hasPerm($perm) {
-
-	if (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) {
-		return true;
-	}
-
-	return ((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) || (!isset($_SESSION['perms'][$perm])));
+	return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
+					((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) || 
+					(!isset($_SESSION['perms'][$perm])));
 }
 
 function we_userCanEditModule($modName) {
@@ -2036,12 +1590,10 @@ function we_getParentIDs($table, $id, &$ids, $db = '') {
 function we_getAliases($id, &$ids, $db = "") {
 	if (!$db)
 		$db = new DB_WE();
-	$db->query("
-		SELECT ID
-		FROM " . USER_TABLE . "
-		WHERE Alias=" . abs($id), "ID", $db);
-	while ($db->next_record())
-		array_push($ids, $db->f("ID"));
+	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . abs($id), 'IDS', $db);
+	if($foo){
+		$ids=array_merge($ids,explode(',',$foo));
+	}
 }
 
 function we_isOwner($csvOwners) {
@@ -2050,36 +1602,27 @@ function we_isOwner($csvOwners) {
 		return true;
 	}
 	$ownersArray = makeArrayFromCSV($csvOwners);
-	if (in_array($_SESSION['user']['ID'], $ownersArray)) {
-		return true;
-	}
-	return isUserInUsers($_SESSION['user']['ID'], $csvOwners);
+	return (in_array($_SESSION['user']['ID'], $ownersArray)) || isUserInUsers($_SESSION['user']['ID'], $csvOwners);
 }
 
 function makeArrayFromCSV($csv) {
-
-	$csv = str_replace('\\,', '###komma###', $csv);
-
-	if (substr($csv, 0, 1) == ',') {
-		$csv = substr($csv, 1);
-	}
-
-	if (substr($csv, -1) == ',') {
-		$csv = substr($csv, 0, strlen($csv) - 1);
-	}
+	$csv = trim(str_replace('\\,', '###komma###', $csv),',');
 
 	if ($csv == '' && $csv != '0') {
-
-		$foo = array();
-	} else {
+		return array();
+	}
 
 		$foo = explode(',', $csv);
+<<<<<<< .working
 
 		foreach($foo AS &$var){
 			$var = str_replace("###komma###", ",", $var);
+=======
+		foreach ($foo as &$f) {
+			$f = str_replace('###komma###', ',', $f);
+>>>>>>> .merge-rechts.r3067
 		}
-	}
-	return $foo;
+		return $foo;
 }
 
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ',') {
@@ -2089,8 +1632,13 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ',') {
 	$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
 
 	if ($replaceKomma) {
+<<<<<<< .working
 		foreach($arr AS &$var){
 			$var = str_replace($sep, "###komma###", $var);
+=======
+		foreach ($arr as &$a) {
+			$a = str_replace($sep, '###komma###', $a);
+>>>>>>> .merge-rechts.r3067
 		}
 	}
 	$out = implode($sep, $arr);
@@ -2098,7 +1646,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ',') {
 		$out = $sep . $out . $sep;
 	}
 	if ($replaceKomma) {
-		$out = str_replace('###komma###', "\\$sep", $out);
+		$out = str_replace('###komma###', '\\'.$sep, $out);
 	}
 	return $out;
 }
@@ -2134,10 +1682,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = '') {
 			return false;
 		}
 		array_push($found, $p);
-		$p = f('
-			SELECT ParentID
-			FROM $table
-			WHERE ID=' . abs($p), 'ParentID', $db);
+		$p = f('SELECT ParentID FROM '.$table.' WHERE ID=' . abs($p), 'ParentID', $db);
 	} while ($p);
 	return false;
 }
@@ -2152,15 +1697,22 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 	if (!is_array($wsIDs)) {
 		$wsIDs = makeArrayFromCSV($wsIDs);
 	}
+<<<<<<< .working
 	if (empty($wsIDs)) {
+=======
+	if (!sizeof($wsIDs)|| !sizeof($IDs) || (in_array(0, $wsIDs))) {
+>>>>>>> .merge-rechts.r3067
 		return true;
 	}
+<<<<<<< .working
 	if (empty($IDs)) {
 		return true;
 	}
 	if (in_array(0, $wsIDs)) {
 		return true;
 	}
+=======
+>>>>>>> .merge-rechts.r3067
 	if ((!$objcheck) && in_array(0, $IDs)) {
 		return false;
 	}
@@ -2177,16 +1729,12 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, $db = '', $objcheck = f
 function userIsOwnerCreatorOfParentDir($folderID, $tab) {
 	if ($tab != FILE_TABLE && $tab != OBJECT_FILES_TABLE)
 		return true;
-	if ($_SESSION['perms']['ADMINISTRATOR'])
+	if ($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0)){
 		return true;
-	if ($folderID == 0)
-		return true;
+	}
 	include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 	$db = new DB_WE();
-	$db->query("
-		SELECT RestrictOwners,Owners,CreatorID
-		FROM $tab
-		WHERE ID=" . abs($folderID));
+	$db->query('SELECT RestrictOwners,Owners,CreatorID FROM '.$tab.' WHERE ID='.abs($folderID));
 	if ($db->next_record())
 		if ($db->f('RestrictOwners')) {
 			$ownersArr = makeArrayFromCSV($db->f('Owners'));
@@ -2200,7 +1748,7 @@ function userIsOwnerCreatorOfParentDir($folderID, $tab) {
 				return false;
 			}
 		} else {
-			$pid = f("SELECT ParentID FROM $tab WHERE ID=" . abs($folderID), 'ParentID', $db);
+			$pid = f('SELECT ParentID FROM '.$tab.' WHERE ID='.abs($folderID), 'ParentID', $db);
 			return userIsOwnerCreatorOfParentDir($pid, $tab);
 		}
 	return true;
@@ -2225,7 +1773,7 @@ function weConvertToIds($paths, $table) {
 	return $ids;
 }
 
-function path_to_id_ct($path, $table = FILE_TABLE, &$contentType) {
+function path_to_id_ct($path, $table, &$contentType) {
 	$db = new DB_WE();
 	if ($path == '/') {
 		return 0;
@@ -2267,7 +1815,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	}
 }
 
-function getHashArrayFromCSV($csv, $firstEntry = '', $db) {
+function getHashArrayFromCSV($csv, $firstEntry, $db) {
 	if (!$csv)
 		return array();
 	if (!$db)
@@ -2318,12 +1866,10 @@ function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $ws
 	$out = $first ? array(
 			'0' => $first
 					) : array();
-	$db->query(
-					"
-		SELECT ID,Path
-		FROM $table " . (($q || $q2 || $q3) ? "
-		WHERE " : "") . $q . (($q && $q2) ? " AND " : "") . $q2 . ((($q || $q2) && $q3) ? " AND " : "") . $q3 . "
-		ORDER BY $order");
+	$db->query('SELECT ID,Path
+		FROM '.$table  . (($q || $q2 || $q3) ? '
+		WHERE ' : '') . $q . (($q && $q2) ? ' AND ' : '') . $q2 . ((($q || $q2) && $q3) ? ' AND ' : '') . $q3 . '
+		ORDER BY '.$order);
 	while ($db->next_record())
 		$out[$db->f('ID')] = $db->f('Path');
 	return $out;
@@ -2342,11 +1888,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = '') {
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '') {
 	$db = new DB_WE();
 	array_push($arr, $id);
-	$db->query(
-					"
-		SELECT ID
-		FROM $table
-		WHERE ParentID=" . abs($id) . (($isFolder != "" || $isFolder == "0") ? (" AND IsFolder='" . $db->escape($isFolder) . "'") : ""));
+	$db->query('SELECT ID FROM '.$table.'WHERE ParentID=' . abs($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
 	while ($db->next_record())
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 }
@@ -2360,7 +1902,6 @@ function uniqueCSV($csv, $prePost = false) {
 }
 
 function get_ws($table = FILE_TABLE, $prePostKomma = false) {
-
 	switch ($table) {
 		case FILE_TABLE :
 			$type = 0;
@@ -2399,34 +1940,24 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false) {
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder') {
 	$db_temp = new DB_WE();
 	$db_temp1 = new DB_WE();
-	$db_temp->query("
-		SELECT ParentID
-		FROM $tab
-		WHERE ID=" . abs($id));
+	$db_temp->query('SELECT ParentID FROM '.$tab.' WHERE ID=' . abs($id));
 	while ($db_temp->next_record())
 		if ($db_temp->f('ParentID') == 0) {
 			array_push($parentlist, $db_temp->f('ParentID'));
 			break;
 		} else {
-			$db_temp1->query("
-				SELECT $match
-				FROM $tab
-				WHERE ID=" . abs($db_temp->f('ParentID')));
+			$db_temp1->query('SELECT '.$match.' FROM '.$tab.' WHERE ID=' . abs($db_temp->f('ParentID')));
 			if ($db_temp1->next_record())
 				if ($db_temp1->f($match) == $matchvalue) {
 					array_push($parentlist, $db_temp->f('ParentID'));
-					we_readParents($db_temp->f('ParentID'), $parentlist, $tab);
+					we_readParents($db_temp->f('ParentID'), $parentlist, $tab, $match, $matchvalue);
 				}
 		}
 }
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder') {
 	$db_temp = new DB_WE();
-	$db_temp->query(
-					"
-		SELECT ID,$match
-		FROM $tab
-		WHERE " . ($folderOnly ? " IsFolder=1 AND " : "") . "ParentID=" . abs($pid) . $where);
+	$db_temp->query('SELECT ID,'.$match.' FROM '.$tab.' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . abs($pid) . $where);
 	while ($db_temp->next_record()) {
 		if ($db_temp->f($match) == $matchvalue) {
 			we_readChilds($db_temp->f('ID'), $childlist, $tab, $folderOnly);
@@ -2436,14 +1967,13 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 }
 
 function getWsQueryForSelector($tab, $includingFolders = true) {
-
 	$wsQuery = '';
 
 	if ($_SESSION['perms']['ADMINISTRATOR']) {
 		return '';
 	}
 
-	if ($ws = makeArrayFromCSV(get_ws($tab))) {
+	if (($ws = makeArrayFromCSV(get_ws($tab)))) {
 		$paths = id_to_path($ws, $tab, '', false, true);
 		$wsQuery .= ' AND (';
 		foreach ($paths as $path) {
@@ -2475,10 +2005,7 @@ function getWsQueryForSelector($tab, $includingFolders = true) {
 }
 
 function getWsFileList($table, $childsOnly = false) {
-	if ($_SESSION['perms']['ADMINISTRATOR']) {
-		return '';
-	}
-	if ($table != FILE_TABLE && $table != TEMPLATES_TABLE) {
+	if ($_SESSION['perms']['ADMINISTRATOR'] || ($table != FILE_TABLE && $table != TEMPLATES_TABLE)) {
 		return '';
 	}
 	$db = new DB_WE();
@@ -2523,21 +2050,19 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false) {
 		return '';
 	$ws = '';
 
-	$foo = f(
-									'
-		SELECT workSpaceDef
-		FROM ' . USER_TABLE . '
-		WHERE ID=' . abs($_SESSION['user']['ID']),
-									'workSpaceDef',
-									new DB_WE());
+	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . abs($_SESSION['user']['ID']),'workSpaceDef',new DB_WE());
 	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
 
 	if ($ws == '') {
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
+<<<<<<< .working
 		if (!empty($wsA))
 			return $wsA[0];
 		else
 			return '';
+=======
+		return (sizeof($wsA)?$wsA[0]:'');
+>>>>>>> .merge-rechts.r3067
 	} else
 		return $ws;
 }
@@ -2553,24 +2078,71 @@ function getArrayKey($needle, $haystack) {
 	return '';
 }
 
+/**
+ * This function is equivalent to print_r, except that it adds addtional "pre"-headers
+ * @param * $val the variable to print
+ */
 function p_r($val) {
 	print '<pre>';
 	print_r($val);
 	print '</pre>';
 }
 
+/**
+ * This function triggers an error, which is logged to systemlog, and if enabled to we-log. This function can take any number of variables!
+ * @param string $type (optional) define the type of the log; possible values are: warning (default), error, notice, deprecated
+ * Note: type error causes we to stop execution, cause this is considered a major bug; but value is still logged.
+ */
+function t_e($type='warning'){
+	$inc=false;
+	$data=array();
+	switch(is_string($type)?strtolower($type):-1){
+		case 'error':
+			$inc=true;
+			$type=E_USER_ERROR;
+			break;
+		case 'notice':
+			$inc=true;
+			$type=E_USER_NOTICE;
+			break;
+		case 'deprecated':
+			$inc=true;
+			$type=E_USER_DEPRECATED;
+			break;
+		case 'warning':
+			$inc=true;
+		default:
+			$type=E_USER_WARNING;
+	}
+	foreach (func_get_args() as $value){
+		if($inc){
+			$inc=false;
+			continue;
+		}
+		if(is_array($value)||is_object($value)){
+			$data[]=print_r($value,true);
+		}else{
+			$data[]=$value;
+		}
+	}
+
+	if(count($data)>0){
+		trigger_error(implode("\n---------------------------------------------------\n",$data),$type);
+	}
+}
+
+
 function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false,$objectseourls=false) {
 
 	if (!$path)
-		$path = $_SERVER['PHP_SELF'];
+		$path = $_SERVER['SCRIPT_NAME'];
 	if (!$DB_WE)
 		$DB_WE = new DB_WE();
 
 	if (!$id) {
 		return '';
-	} else
+	}
 	if (!$GLOBALS['we_doc']->InWebEdition) {
-
 		// check if object is published.
 		$published = f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id),'Published',$DB_WE);
 		if (!$published) {
@@ -2611,14 +2183,17 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 		} else {$objecturl='';}
+		$pidstr='';
+		if ($pid){$pidstr='?pid='.abs($pid);}
 		if ($objectseourls && $objecturl!=''){
+			
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
-				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . '?pid=' . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 			} else {
-				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . '?pid=' . abs($pid);
+				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . $pidstr;
 			}
 		} else {
-			return $path . '?we_objectID=' . abs($id) . '&pid=' . abs($pid);
+			return $path . '?we_objectID=' . abs($id) . str_replace('?','&amp;',$pidstr);
 		}
 	} else {
 		if ($foo['Workspaces']) {
@@ -2660,13 +2235,7 @@ function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = '') {
 		}
 	foreach ($arr2 as $i => $ws)
 		if (in_workspace($pid, $arr4[$i])) {
-			return f(
-											'
-				SELECT Path
-				FROM ' . FILE_TABLE . "
-				WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($ws) . "%'",
-											'Path',
-											$DB_WE);
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND ContentType="text/webedition" AND IsDynamic=1 AND Path like "' . $DB_WE->escape($ws) . '%"','Path',$DB_WE);
 		}
 	return '';
 }
@@ -2677,15 +2246,9 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
 		for ($i = 0; $i < sizeof($regs); $i++) {
 			if (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition) {
-				$foo = getHash('
-					SELECT Path
-					FROM ' . FILE_TABLE . '
-					WHERE ID=' . abs($regs[$i][2]), $DB_WE);
+				$foo = getHash('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . abs($regs[$i][2]), $DB_WE);
 			} else {
-				$foo = getHash('
-					SELECT Path
-					FROM ' . FILE_TABLE . '
-					WHERE ID=' . abs($regs[$i][2]) . ' AND Published > 0',$DB_WE);
+				$foo = getHash('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . abs($regs[$i][2]) . ' AND Published > 0',$DB_WE);
 			}
 
 			if (isset($foo['Path'])) {
@@ -2708,7 +2271,7 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 	if (preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 		for ($i = 0; $i < sizeof($regs); $i++) {
-			list($imgID, $thumbID) = explode(",", $regs[$i][1]);
+			list($imgID, $thumbID) = explode(',', $regs[$i][1]);
 			$thumbObj = new we_thumbnail();
 			if ($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)) {
 				$text = eregi_replace(
@@ -2731,19 +2294,16 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 				}
 				if ($href) {
 					if ($regs[$i][2] == '?') {
-						$text = str_replace(
-														'href="object:' . $regs[$i][1] . '?',
+						$text = str_replace('href="object:' . $regs[$i][1] . '?',
 														'href="' . $href . "&amp;",
 														$text);
 					} else {
-						$text = str_replace(
-														'href="object:' . $regs[$i][1] . $regs[$i][2] . $regs[$i][3],
+						$text = str_replace('href="object:' . $regs[$i][1] . $regs[$i][2] . $regs[$i][3],
 														'href="' . $href . $regs[$i][2] . $regs[$i][3],
 														$text);
 					}
 				} else {
-					$text = eregi_replace(
-													'<a [^>]*href="object:' . $regs[$i][1] . '"[^>]*>([^<]+)</a>',
+					$text = eregi_replace('<a [^>]*href="object:' . $regs[$i][1] . '"[^>]*>([^<]+)</a>',
 													'\1',
 													$text);
 					$text = eregi_replace('<a [^>]*href="object:' . $regs[$i][1] . '"[^>]*>', '', $text);
@@ -2760,34 +2320,31 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 }
 
 function removeHTML($val) {
-	$val = eregi_replace('<br ?/?>', '###BR###', $val);
-	$val = eregi_replace('<\?', '###?###', $val);
-	$val = eregi_replace('\?>', '###/?###', $val);
-	$val = eregi_replace('<[^><]+>', '', $val);
-	$val = str_replace('###BR###', '<br>', $val);
-	$val = str_replace('###?###', '<?', $val);
-	$val = str_replace('###/?###', '?>', $val);
-	return $val;
+	$val = eregi_replace('<br ?/?>', '###BR###',
+					eregi_replace('<\?', '###?###', 
+									eregi_replace('\?>', '###/?###', 
+													eregi_replace('<[^><]+>', '', $val))));
+	return str_replace('###BR###', '<br>', 
+					str_replace('###?###', '<?', 
+									str_replace('###/?###', '?>', $val)));
 }
 
 function removePHP($val) {
-	$val = str_replace("<?", "", $val);
-	$val = str_replace("?>", "", $val);
-	$val = eregi_replace('<script +language[^p]+php[^>]*>', '', $val);
-	return $val;
+	$val = str_replace("<?", "", 
+					str_replace("?>", "", $val));
+	return preg_replace('|<script +language[^p]+php[^>]*>|si', '', $val);
 }
 
 function getMysqlVer($nodots = true) {
-
 	$DB_WE = new DB_WE();
-	$DB_WE->query('SELECT VERSION() AS Version');
+	$res=f('SELECT VERSION() AS Version','Version',$DB_WE);
 
-	if ($DB_WE->next_record()) {
-		$res = explode('-', $DB_WE->f('Version'));
+	if ($res) {
+		$res = explode('-', $res);
 	} else {
-		$DB_WE->query('SHOW VARIABLES LIKE "version"');
-		if ($DB_WE->next_record()) {
-			$res = explode('-', $DB_WE->f('Value'));
+		$res=f('SHOW VARIABLES LIKE "version"','Value',$DB_WE);
+		if ($res) {
+			$res = explode('-', $res);
 		}
 	}
 	if (isset($res)) {
@@ -2810,8 +2367,7 @@ function getMysqlVer($nodots = true) {
 }
 
 function we_mail($recipient, $subject, $txt, $from = '') {
-	if (runAtWin ()) {
-		if ($txt)
+	if (runAtWin () && $txt){
 			$txt = str_replace("\n", "\r\n", $txt);
 	}
 
@@ -2888,7 +2444,6 @@ function recGetParameters($array, $arrayname, $output = 'error_log') {
 		} else {
 
 			switch ($output) {
-
 				case 'html' :
 					print $arrayname . $key . ' = ' . $val . "<br>\n";
 					break;
@@ -2981,14 +2536,7 @@ function getMaxAllowedPacket($db = '') {
 	if (!$db) {
 		$db = new DB_WE();
 	}
-	$db->query('SHOW VARIABLES');
-	$max_allowed_packet = 0;
-
-	while ($db->next_record()) {
-		if ($db->f('Variable_name') == 'max_allowed_packet') {
-			return $db->f('Value');
-		}
-	}
+	return f('SHOW VARIABLES LIKE "max_allowed_packet"','Value',$db);
 }
 
 function we_convertIniSizes($in) {
@@ -3045,7 +2593,7 @@ function we_getObjectFileByID($id, $includepath = '') {
  * @desc returns the protocol, the webServer is running, http or https, when slash is true - :// is added to protocol
  */
 function getServerProtocol($slash = false) {
-	return (we_isHttps ()?'https':'http') . ($slash?'://':'');
+	return (we_isHttps()?'https':'http').($slash?'://':'');
 }
 
 function we_check_email($email) {	 // Zend validates only the pure address
@@ -3059,17 +2607,6 @@ function we_check_email($email) {	 // Zend validates only the pure address
 			return false;
 		$email = substr($_email[0], 1, strlen($_email[0]) - 2);
 	}
-	/*
-	  $tmp = str_replace("\@", "#####:::::at:::::#####", $email);
-	  $parts = split('@', $tmp);
-	  if (count($parts) != 2)
-	  return false;
-	  $parts[0] = str_replace("#####:::::at:::::#####", "\@", $parts[0]);
-	  $parts[0] = preg_replace('/"(.)*"/', "x", $parts[0]);
-	  $parts[0] = preg_replace('/\\\\(.)/', "y", $parts[0]);
-	  $parts[1] = str_replace("#####:::::at:::::#####", "\@", $parts[1]);
-	  return !preg_match('/[ ,;\\\\\[\]()\<\>�]/', implode("", $parts));
-	 */
 
 	$validator = new Zend_Validate_EmailAddress();
 	return $validator->isValid($email);
@@ -3077,12 +2614,14 @@ function we_check_email($email) {	 // Zend validates only the pure address
 
 function getRequestVar($name, $default, $yescode = '', $nocode = '') {
 	if (isset($_REQUEST[$name])) {
-		if ($yescode != '')
+		if ($yescode != ''){
 			eval($yescode);
+		}
 		return $_REQUEST[$name];
 	} else {
-		if ($nocode != '')
+		if ($nocode != ''){
 			eval($nocode);
+		}
 		return $default;
 	}
 }
@@ -3116,35 +2655,7 @@ function getThumbDirectory($realpath = false) {
 function number2System($value, $chars = array(), $str = '') {
 
 	if (!(is_array($chars) && sizeof($chars) > 1)) { //	in case of error take default-array
-		$chars = array(
-				'^',
-				'a',
-				'b',
-				'c',
-				'd',
-				'e',
-				'f',
-				'g',
-				'h',
-				'i',
-				'j',
-				'k',
-				'l',
-				'm',
-				'n',
-				'o',
-				'p',
-				'q',
-				'r',
-				's',
-				't',
-				'u',
-				'v',
-				'w',
-				'x',
-				'y',
-				'z'
-		);
+		$chars = array('^','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
 	}
 	$base = sizeof($chars);
 
@@ -3156,11 +2667,7 @@ function number2System($value, $chars = array(), $str = '') {
 	$str = $chars[$_rest] . $str;
 
 	//	2. Deal with remaining result
-	if ($_result > 0) {
-		return number2System($_result, $chars, $str);
-	} else {
-		return $str;
-	}
+	return ($_result > 0 ? number2System($_result, $chars, $str) : $str);
 }
 
 /**
@@ -3222,8 +2729,7 @@ function setUserPref($name, $value) {
 	if (isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']) {
 		$_SESSION['prefs'][$name] = $value;
 		$_db = new DB_WE();
-		$_db->query(
-						'UPDATE ' . PREFS_TABLE . ' SET ' . $name . '="' . $_db->escape($value) . '" WHERE userId=' . abs($_SESSION['prefs']['userID']));
+		$_db->query('UPDATE ' . PREFS_TABLE . ' SET ' . $name . '="' . $_db->escape($value) . '" WHERE userId=' . abs($_SESSION['prefs']['userID']));
 		return true;
 	}
 	return false;
@@ -3311,7 +2817,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 
 	//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array(
-							'xml', 'xmltype'
+							'xml', 'xmltype','to','nameto'
 					));
 	if ($element =='img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array('name'));
@@ -3359,13 +2865,17 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
  *
  */
 function getXmlAttributeValueAsBoolean($xml) {
-	if ($xml == 'true' || $xml == 'xml' || $xml == 'on' || $xml == 1) {
-		return true;
-	} else
-	if ($xml == 'false' || $xml == 'off') {
-		return false;
-	} else {
-		return (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false;
+	switch ($xml){
+		case 'true':
+		case 'xml':
+		case 'on':
+		case 1:
+			return true;
+		case 'false':
+		case 'off':
+			return false;
+		default:
+			return (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false;		
 	}
 }
 
@@ -3376,11 +2886,17 @@ function getXmlAttributeValueAsBoolean($xml) {
  * @desc removes all entries of $attribs, where the key from attribs is in values of $remove
  */
 function removeAttribs($attribs, $remove = array()) {
-
 	array_push($remove, 'user');
+<<<<<<< .working
 	foreach($remove AS $rem){
 		if (array_key_exists($rem, $attribs)) {
 			unset($attribs[$rem]);
+=======
+
+	foreach ($remove as $r) {
+		if (array_key_exists($r, $attribs)) {
+			unset($attribs[$r]);
+>>>>>>> .merge-rechts.r3067
 		}
 	}
 	return $attribs;
@@ -3393,7 +2909,6 @@ function removeAttribs($attribs, $remove = array()) {
  * @desc Removes all empty values from assoc array without the in $ignore given
  */
 function removeEmptyAttribs($atts, $ignore = array()) {
-
 	foreach ($atts as $k => $v) {
 		if (!in_array($k, $ignore) && $v == '') {
 			unset($atts[$k]);
@@ -3526,19 +3041,6 @@ function getDoctypeQuery($db = '') {
 	return '';
 }
 
-function unhtmlentities($string) {
-
-	// replace numeric entities
-	$string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
-	$string = preg_replace('~&#([0-9]+);~e', 'chr(\\1)', $string);
-
-	// replace literal entities
-	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
-	$trans_tbl = array_flip($trans_tbl);
-
-	return strtr($string, $trans_tbl);
-}
-
 /**
  * Makes a relative path from an absolute path
  *
@@ -3659,14 +3161,7 @@ function unsetSupportDebugging() {
 }
 
 function getObjectsForDocWorkspace($id) {
-
-	if (is_array($id)) {
-		$ids = $id;
-	} else {
-		$ids = array(
-				$id
-		);
-	}
+	$ids = (is_array($id))? $id : array($id);
 	$db = new DB_WE();
 
 	if (!defined('OBJECT_FILES_TABLE')) {
@@ -3697,6 +3192,7 @@ function we_filenameNotValid($filename) {
 }
 
 function we_getIcon($contentType, $extension) {
+	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
 	if ($contentType == 'application/*') {
 		switch ($extension) {
 			case '.pdf' :
@@ -3732,7 +3228,7 @@ function pos_number($val) {
 function convertCharsetEncoding($fromC, $toC, $string) {
 	if ($fromC != '' && $toC != '') {
 		if (function_exists('iconv')) {
-			$string = iconv($fromC, $toC . '//TRANSLIT', $string);
+			$string = iconv($fromC, $toC . '//TRANSLATE', $string);
 		} elseif ($fromC == 'UTF-8' && $toC == 'ISO-8859-1') {
 			$string = utf8_decode($string);
 		} elseif ($fromC == 'ISO-8859-1' && $toC == 'UTF-8') {
@@ -3760,9 +3256,7 @@ function correctSerDataISOtoUTF($serial_str) {
 }
 
 function convertExactCharsetString($fromC, $toC, $string) {
-	if ($string == $fromC)
-		return $toC;
-	return $string;
+	return ($string == $fromC ? $toC : $string);
 }
 
 function convertCharsetString($fromC, $toC, $string) {
@@ -3778,7 +3272,6 @@ function CheckAndConvertISOfrontend($utf8data) {
 }
 
 function CheckAndConvertISObackend($utf8data) {
-
 	if (g_l('charset','[charset]') != 'UTF-8') {
 		return iconv('UTF-8', g_l('charset','[charset]') . '//TRANSLATE', $utf8data);
 	} else {
@@ -3944,4 +3437,18 @@ function show_SeoLinks(){
 	}
 	return true;
 
+}
+
+function we_cmd_enc($str) {
+	return ($str==''?'':'WECMDENC_' . urlencode(base64_encode($str)));
+}
+
+function we_cmd_dec($no,$default='') {
+	if (isset($_REQUEST['we_cmd'][$no])){
+		if(strpos($_REQUEST['we_cmd'][$no], 'WECMDENC_') !== false) {
+			$_REQUEST['we_cmd'][$no] = base64_decode(urldecode(substr($_REQUEST['we_cmd'][$no], 9)));
+		}
+		return $_REQUEST['we_cmd'][$no];
+	}
+	return $default;
 }

@@ -166,6 +166,13 @@ function pWebEdition_Frameset(){
 	} else
 		if ($_SESSION["we_mode"] == "seem") { //	normal SeeMode
 			?>
+	<div style="position:fixed;top:0;left:0;right:0;bottom:0;border:0;">
+		<div style="position:absolute;top:0;left:0;right:0;height:32px;border-bottom: 1px solid black;">
+			<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/header.php");?>
+		</div>
+	</div>
+			
+			<!--
 <frameset rows="32,*,<?php
 			print (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0) ? 100 : 0;
 			?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload()">
@@ -174,13 +181,13 @@ function pWebEdition_Frameset(){
 	<frameset cols="25%,25%,30%,10%,10%" framespacing="0" border="0" frameborder="no">
 		<frame src="<?php	print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
 		<frame src="<?php	print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
-			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+			<!-- Bugfix Opera >=10.5  target name is always "ad" 
 		<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
 		<frame src="<?php	print WE_USERS_MODULE_PATH?>we_users_ping.php" name="ping" scrolling="no" noresize>
     <frame src="<?php	print HTML_DIR?>white.html" name="postframe" scrolling="no" noresize>
     <frame src="<?php	print HTML_DIR?>white.html" name="plugin" scrolling="no" noresize>
 	</frameset>
-</frameset>
+</frameset> -->
 <?php
 		}
 }

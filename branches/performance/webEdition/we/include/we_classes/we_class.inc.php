@@ -61,6 +61,7 @@ class we_class {
 	var $IsTextContentDoc = false;
 	var $LoadBinaryContent = false;
 	var $fileExists = 1;
+	protected $errMsg='';
 
 	######################################################################################################################################################
 	##################################################################### FUNCTIONS ######################################################################
@@ -132,23 +133,39 @@ class we_class {
 		} else {
 			$out .= '<input' . ($showRadio ? ' onChange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />';
 		}
-		if ($intID_elem_Name) {
-			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			if (($directory && $file) || $file) {
-				$but = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "") . $extraCmd . "','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");");
-			} else {
-				$but = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "") . $extraCmd . "','" . session_id() . "',0);");
+		if($intID_elem_Name){
+			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['".$intID_elem_Name."'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
+			if(($directory && $file) || $file){
+				//javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "").$extraCmd."','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).",'',".($directory ? 0 : 1).");
+				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
+				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "").str_replace('\\','',$extraCmd)."");
+
+				$but      = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).",'',".($directory ? 0 : 1).");");
+			}else{
+				//javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value','document.forms[\\'we_form\\'].elements[\\'$Path_elem_Name\\'].value','opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][0].checked=true;" : "").$extraCmd."','".session_id()."',0);
+				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$Path_elem_Name'].value");
+				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][0].checked=true;" : "").str_replace('\\','',$extraCmd)."");
+				$but      = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms[0].elements['$intID_elem_Name'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."',0);");
 			}
-		} else {
-			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			if (($directory && $file) || $file) {
-				$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-								$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','" . (($directory && $file) ? "filefolder" : "") . "',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "") . "')") :
-								"";
-			} else {
-				$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-								$we_button->create_button("select", "javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','folder',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "") . "')") :
-								"";
+		}else{
+			$trashbut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['".$Path_elem_Name."'].value='';_EditorFrame.setEditorIsHot(true);");
+			if(($directory && $file) || $file){
+				
+				//javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
+				$wecmdenc4= we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
+				$but      = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
+					$we_button->create_button("select", "javascript:we_cmd('browse_server','".$wecmdenc1."','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'".$wecmdenc4."')"):
+					"";
+			}else{
+				//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
+				$wecmdenc1= we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
+				$wecmdenc4= we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
+				$but      = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
+					$we_button->create_button("select", "javascript:we_cmd('browse_server','".$wecmdenc1."','folder',document.forms[0].elements['$Path_elem_Name'].value,'".$wecmdenc4."')"):
+					"";
 			}
 		}
 
@@ -594,25 +611,129 @@ class we_class {
 	}
 	
 	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
+		$db = new DB_WE;
 		if(is_array($LangLinkArray) ){
-			$q = "DELETE FROM ".mysql_real_escape_string(LANGLINK_TABLE)." WHERE LDID='".abs($this->ID)."' AND DID !='".abs($LDID)."' AND Locale='".$this->Language."' AND  DocumentTable='".$type."';";	
-			$this->DB_WE->query($q);		
+			$q="SELECT * FROM ".LANGLINK_TABLE." WHERE  DID='".abs($this->ID)."'";
+			$orig=array();
+			$this->DB_WE->query($q);
+			while($this->DB_WE->next_record()){
+				$orig[]=$this->DB_WE->Record;
+			}
+			$max= count($orig);			
+			for($j=0;$j<$max;$j++){
+				$q="SELECT * FROM ".LANGLINK_TABLE." WHERE  DID='".abs($orig[$j]['LDID'])."'";
+				$this->DB_WE->query($q);
+				while($this->DB_WE->next_record()){
+					$orig[]=$this->DB_WE->Record;
+				}
+			}
 			foreach ($LangLinkArray as $locale => $LDID){
-			  
 				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
-					$q = "UPDATE ".mysql_real_escape_string(LANGLINK_TABLE)." SET LDID='".abs($LDID)."' WHERE ID='".abs($ID)."'";
+					if ($LDID>0){
+						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
+					} else {
+						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='0',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
+					}
 					$this->DB_WE->query($q);
 				} else {
-					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($this->ID)."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
-					$this->DB_WE->query($q);
+					if($locale!=$this->Language){
+						if ($LDID>0){
+							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($this->ID)."',DLocale='".$this->Language."',IsFolder='".abs($isfolder)."', IsObject='".abs($isobject)."', LDID='".abs($LDID)."', Locale='".$locale."', DocumentTable='".$type."';";
+							$this->DB_WE->query($q);
+						}
+					}
 				}
-				if(defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS && !$isfolder and $LDID){
-					$q = "INSERT INTO ".mysql_real_escape_string(LANGLINK_TABLE)." SET DID='".abs($LDID)."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
-					$this->DB_WE->query($q);
+				if(( (defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS) || (defined('LANGLINK_SUPPORT_RECURSIVE') && LANGLINK_SUPPORT_RECURSIVE) ) && !$isfolder && $LDID && $LDID!=$this->ID){
+					$q='';
+					if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+						if ($LDID>0){
+							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+						}
+						if ($LDID<0){
+							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='0',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+						}  
+					} else {
+						if ($LDID>0){
+							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+						}
+					}
+					if($q){$this->DB_WE->query($q);}
+				}
+				if(( (defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS) || (defined('LANGLINK_SUPPORT_RECURSIVE') && LANGLINK_SUPPORT_RECURSIVE) ) && !$isfolder && $LDID<0&& $LDID!=$this->ID){
+					$q='';
+					if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+						if ($LDID>0){
+							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
+						} 
+					} else {
+						if ($LDID>0){
+							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
+						}
+					}
+					if($q){$this->DB_WE->query($q);}
+				}
+		  }	
+			if(defined('LANGLINK_SUPPORT_RECURSIVE') && LANGLINK_SUPPORT_RECURSIVE && !$isfolder){		
+				foreach ($LangLinkArray as $locale => $LDID){
+					if($LDID>0){
+						$rows=array();
+						$q= "SELECT * FROM ".LANGLINK_TABLE." WHERE  DID='".abs($this->ID)."'  AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'";
+						$this->DB_WE->query($q);
+						while($this->DB_WE->next_record()){
+							$rows[]=$this->DB_WE->Record;
+						}
+						if(count($rows)>1){
+							for($i=0;$i<count($rows)-1;$i++){
+								if($rows[$i]['LDID']  && $rows[$i+1]['LDID']){
+									if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i]['LDID'])."' AND DLocale='".$rows[$i]['Locale']."' AND LDID='".abs($rows[$i+1]['LDID'])."' AND Locale='".$rows[$i+1]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."',Locale='".$rows[$i+1]['Locale']."' WHERE ID='".abs($ID)."'";
+									} else {
+										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."', Locale='".$rows[$i+1]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
+									}
+									$this->DB_WE->query($q);
+									if($rows[$i+1]['LDID'] && $ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i+1]['LDID'])."' AND DLocale='".$rows[$i+1]['Locale']."' AND LDID='".abs($rows[$i]['LDID'])."' AND Locale='".$rows[$i]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."',Locale='".$rows[$i]['Locale']."' WHERE ID='".abs($ID)."'";
+									} else {
+										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."', Locale='".$rows[$i]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
+									}
+									$this->DB_WE->query($q);
+								}
+							}			
+						}
+					}
+				if ($LDID<0){
+					foreach($orig as $origrow){
+						if($origrow['DLocale']==$locale){
+							$q="SELECT ID FROM ".LANGLINK_TABLE." WHERE  DID='".abs($origrow['DID'])."' AND DLocale='".$locale."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'";
+							$this->DB_WE->query($q);
+							while($this->DB_WE->next_record()){
+								$delRowID = $this->DB_WE->Record['ID'];
+								$qd= "UPDATE ".LANGLINK_TABLE." SET LDID='0' WHERE ID='".abs($delRowID)."'";
+								$db->query($qd);
+							}
+						}
+						if($origrow['Locale']==$locale){
+							$q="SELECT ID FROM ".LANGLINK_TABLE." WHERE  LDID='".abs($origrow['LDID'])."' AND Locale='".$locale."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'";
+							$this->DB_WE->query($q);
+							while($this->DB_WE->next_record()){
+								$delRowID = $this->DB_WE->Record['ID'];
+								$qd= "UPDATE ".LANGLINK_TABLE." SET LDID='0' WHERE ID='".abs($delRowID)."'";
+								$db->query($qd);
+							}
+						}
+					}
+				}
+						
+						
 				}
 			  
-		  }
+			}
 		}
 	}
 
+	/**returns error-messages recorded during an operation, currently only save is used*/
+	function getErrMsg(){
+		return ($this->errMsg?'\n'.$this->errMsg:'');
 	}
+	
+}

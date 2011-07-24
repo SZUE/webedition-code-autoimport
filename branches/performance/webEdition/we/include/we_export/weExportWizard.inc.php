@@ -1585,7 +1585,10 @@ top.close();
 		');
 
 		$we_button = new we_button();
-	  	$button =  $we_button->create_button("select","javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);");
+		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc4= '';
+	  	$button =  $we_button->create_button("select","javascript:formFileChooser('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
 		return $js.htmlFormElementTable(getPixel(5,5).htmlTextInput($IDName,42,$IDValue,"",' readonly',"text",$width,0),
 			"",
@@ -1614,7 +1617,11 @@ top.close();
 		');
 
 		$we_button = new we_button();
-		$button = $we_button->create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
+		//javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
+		$button = $we_button->create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		return $js.htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",' readonly',"text",$width,0),
 			"",
 			"left",
@@ -1757,7 +1764,11 @@ top.close();
 		}
 
 		$we_button = new we_button();
-		$button =  $we_button->create_button("select","javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
+		//javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
+		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
+		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
+		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
+		$button =  $we_button->create_button("select","javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 
 		$yuiSuggest->setAcId("Dir");
 		$yuiSuggest->setContentType("folder");

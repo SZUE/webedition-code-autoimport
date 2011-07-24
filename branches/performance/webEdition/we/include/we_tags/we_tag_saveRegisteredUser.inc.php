@@ -123,7 +123,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					} elseif($_REQUEST["s"]["ID"] == $_SESSION["webuser"]["ID"]) { // Username existiert schon!
 
 						if(!$userexists){
-							$userexists = $l_customer["username_exists"];
+							$userexists = g_l('customer','[username_exists]');
 						}
 
 						// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -147,14 +147,14 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 
 						if(!$userempty){
-							$userempty = $l_customer["username_empty"];
+							$userempty = g_l('customer','[username_empty]');
 						}
                         print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($userempty, WE_MESSAGE_FRONTEND));
 
 					}else if(strlen($_REQUEST["s"]["Password"]) == 0){
 
 						if(!$passempty){
-							$passempty = $l_customer["password_empty"];
+							$passempty = g_l('customer','[password_empty]');
 						}
 						if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 							echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
@@ -213,7 +213,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					}else{
 
 						if(!$userexists){
-							$userexists = $l_customer["username_exists"];
+							$userexists = g_l('customer','[username_exists]');
 						}
 
 						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST["s"]["Username"]), WE_MESSAGE_FRONTEND) );

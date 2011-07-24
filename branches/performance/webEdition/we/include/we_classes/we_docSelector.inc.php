@@ -117,7 +117,7 @@ class we_docSelector extends we_dirSelector {
 			$_db = new DB_WE();
 			$_cid = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE PATH='".escape_sql_query($_path)."'", "ID", $_db);
 			$this->titleName = f("SELECT DefaultTitle FROM " .OBJECT_TABLE . " WHERE ID='".abs($_cid)."'","DefaultTitle", $_db);
-			if($this->titleName) {
+			if($this->titleName && strpos($this->titleName, '_')) {
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
 				while ($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
@@ -188,7 +188,7 @@ class we_docSelector extends we_dirSelector {
 	}
 
 	function getFsQueryString($what) {
-		return $_SERVER["PHP_SELF"]."?what=$what&rootDirID=".$this->rootDirID."&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter.(isset($this->open_doc) ? ("&open_doc=".$this->open_doc) : "");
+		return $_SERVER["SCRIPT_NAME"]."?what=$what&rootDirID=".$this->rootDirID."&table=".$this->table."&id=".$this->id."&order=".$this->order."&filter=".$this->filter.(isset($this->open_doc) ? ("&open_doc=".$this->open_doc) : "");
 	}
 
 	function printFramesetJSFunctions() {
@@ -304,7 +304,7 @@ function writeBody(d){
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"'+((makeNewFolder || top.we_editDirID) ? ' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"' : '')+'>');
-	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["PHP_SELF"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
+	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onSubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">');
 
 	if(we_editDirID){
 	//if(top.we_editDirID){
@@ -366,7 +366,7 @@ function queryString(what,id,o,we_editDirID,filter){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
 	if(!filter) filter="<?php print $this->filter; ?>";
-	return '<?php print $_SERVER["PHP_SELF"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
+	return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
 }
 
 <?php
@@ -811,7 +811,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					} else {
 						$_imagesize = getimagesize($_SERVER["DOCUMENT_ROOT"].$result['Path']);
 						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-						$_thumbpath = we_image_edit::createPreviewThumb($result['Path'], $this->id, 150, 200, substr($result['Extension'],1));
+						$_thumbpath = '/webEdition/thumbnail.php?id=' . $this->id . '&size=150&path=' .str_replace($_SERVER['DOCUMENT_ROOT'],'',$result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 						$_imagepreview = "<a href='".$result['Path']."' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
 					}
 				}

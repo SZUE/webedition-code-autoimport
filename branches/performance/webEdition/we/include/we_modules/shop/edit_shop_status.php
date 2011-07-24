@@ -66,7 +66,7 @@ $jsFunction = '
 			break;
 
 			case "save":
-				we_submitForm("' . $_SERVER['PHP_SELF'] . '");
+				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 		}
 	}
@@ -156,8 +156,8 @@ $tabEMail->setCol(1, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=
 				.'<br/>'.we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']) );
 $tabEMail->setCol(2, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  g_l('modules_shop','[statusmails][DocumentSubjectField]')
 				.'<br/>'.we_class::htmlTextInput("EMailData[DocumentSubjectField]",30,$weShopStatusMails->EMailData['DocumentSubjectField']));
-$tabEMail->setCol(3, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentAttachmentFieldA'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
-$tabEMail->setCol(3, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  $l_shop['statusmails']['DocumentAttachmentFieldB'].'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
+$tabEMail->setCol(3, 0, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  g_l('modules_shop','[statusmails][DocumentAttachmentFieldA]').'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
+$tabEMail->setCol(3, 1, array("class"=>"defaultfont","nowrap"=>"nowrap","width"=> 340),  g_l('modules_shop','[statusmails][DocumentAttachmentFieldB]').'<br/>'.we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]",30,$weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
 
 
 array_push($parts, array(

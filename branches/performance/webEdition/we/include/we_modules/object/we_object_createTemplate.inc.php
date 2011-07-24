@@ -41,7 +41,11 @@ class we_makenewtemplate extends we_template
 		$idname = 'we_'.$this->Name.'_'.$IDName;
 		eval('$path = $this->'.$Pathname.';');
 		eval('$myid = $this->'.$IDName.';');
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')");
+		//javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')
+		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
+		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
+		$wecmdenc3= '';
+		$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),
 			g_l('weClass',"[dir]"),
 			"left",
