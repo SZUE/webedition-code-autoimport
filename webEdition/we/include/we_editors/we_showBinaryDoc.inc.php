@@ -20,7 +20,7 @@
 
 
 //include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_min_inc.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 //protect();
 switch($_REQUEST["we_cmd"][1]) {
 	case "image/*":
