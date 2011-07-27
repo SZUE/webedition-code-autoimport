@@ -205,30 +205,36 @@ function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = '') {
 }
 
 function weFileExists($id, $table = FILE_TABLE, $db = '') {
-	if ($id == '0')
+	$id=intval($id);
+	if ($id == 0){
 		return true;
-	return f('SELECT ID FROM $table WHERE ID=' . abs($id), 'ID', ($db?$db:$db=new DB_WE()));
+	}
+	return f('SELECT ID FROM $table WHERE ID=' . $id, 'ID', ($db?$db:$db=new DB_WE()));
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {
-	$pid_tail = '';
-	if (!$db)
-		$db = new DB_WE();
 	if ($table != FILE_TABLE) {
 		return '1';
 	}
+
+	$pid_tail = '';
+	if (!$db){
+		$db = new DB_WE();
+	}
 	$parentIDs = array();
+	$pid=intval($pid);
 	array_push($parentIDs, $pid);
 	while ($pid != 0) {
-		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($pid), 'ParentID', $db);
+		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . $pid, 'ParentID', $db);
 		array_push($parentIDs, $pid);
 	}
-	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . abs($cid), 'DefaultValues', $db);
+	$cid=intval($cid);
+	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, 'DefaultValues', $db);
 	$fooArr = unserialize($foo);
 	$flag = (isset($fooArr['WorkspaceFlag'])?$fooArr['WorkspaceFlag']:1);
 	$pid_tail = ($flag ? OBJECT_X_TABLE . $cid . '.OF_Workspaces="" OR ':'');
 	foreach ($parentIDs as $pid){
-		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . ".OF_Workspaces like '%," . abs($pid) . ",%' OR " . OBJECT_X_TABLE . abs($cid) . ".OF_ExtraWorkspacesSelected like '%," . abs($pid) . ",%' OR ";
+		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces like "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%" OR ';
 	}
 	$pid_tail = trim(ereg_replace('^(.*)OR ', '\1', $pid_tail));
 	if ($pid_tail == ''){
@@ -1046,34 +1052,24 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 }
 
 function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true) {
-	if (!$db) {
-		$db = new DB_WE();
-	}
+	$db=($db?$db:new DB_WE());
 	// 1st get path of id
-	$query = '
-		SELECT Path
-		FROM ' . CATEGORY_TABLE . '
-		WHERE ID = ' . abs($cat);
+	$catPath=f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID = ' . intval($cat),'Path',$db);
 
-	$db->query($query);
-	if ($db->next_record()) {
-		$catPath = $db->f('Path');
-		return getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats);
-	} else {
-		return '';
-	}
+	return ($catPath ? 
+					getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats):
+					'');
 }
 
 function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Category", $getParentCats = true) {
-	if (!$db)
-		$db = new DB_WE();
+	$db=($db?$db:new DB_WE());
 	$q = 'SELECT DISTINCT ID FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"';
 
 	$db->query($q);
 	$sql = '';
 	$z = 0;
 	while ($db->next_record())
-		$sql .= " " . $table . "." . $fieldName . " like '%," . abs($db->f("ID")) . ",%' OR ";
+		$sql .= " " . $table . "." . $fieldName . " like '%," . intval($db->f("ID")) . ",%' OR ";
 	$sql = ereg_replace('^(.*)OR $', '\1', $sql);
 	return ($sql?"( $sql )":'');
 }
@@ -3236,7 +3232,7 @@ function getVarArray($arr, $string) {
 function g_l_encodeArray($tmp){
 	return (is_array($tmp)?
 					array_map('g_l_encodeArray',$tmp):
-					mb_convert_encoding($tmp, 'HTML-ENTITIES', 'UTF-8'));
+					mb_convert_encoding($tmp, $GLOBALS["WE_BACKENDCHARSET"], 'UTF-8'));
 }
 
 /**
@@ -3255,10 +3251,10 @@ function g_l($name, $specific, $useEntities=true) {
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 		if (!($tmp === false)) {
-			return ($useEntities?
+			return ($GLOBALS["WE_BACKENDCHARSET"]!='UTF-8'?
 								(is_array($tmp)?
 									array_map('g_l_encodeArray',$tmp):
-									mb_convert_encoding($tmp, 'HTML-ENTITIES', 'UTF-8')
+									mb_convert_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'], 'UTF-8')
 								):
 							$tmp);
 		}
@@ -3275,10 +3271,10 @@ function g_l($name, $specific, $useEntities=true) {
 		//get local variable
 		if($tmp !== false){
 			$cache["l_$name"]=${"l_$name"};
-			return ($useEntities?
+			return ($GLOBALS['WE_BACKENDCHARSET']!='UTF-8'?
 								(is_array($tmp)?
 									array_map('g_l_encodeArray',$tmp):
-									mb_convert_encoding($tmp, 'HTML-ENTITIES', 'UTF-8')
+									mb_convert_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'], 'UTF-8')
 									):
 								$tmp);
 		}else{
@@ -3286,7 +3282,7 @@ function g_l($name, $specific, $useEntities=true) {
 			return false;
 		}
 	}
-	trigger_error('Requested lang file '.$file.' not found!',E_USER_WARNING);
+	t_e('warning','Requested lang file '.$file.' not found!');
 	return '';
 }
 
