@@ -151,7 +151,7 @@ class weGlossaryCache {
 
 			$temp = array();
 
-			if(stristr($GLOBALS['WE_LANGUAGE'], '_UTF-8') === TRUE && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat']!='UTF-8') {
+			if($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat']!='UTF-8') {
 				$Text = utf8_decode($Text);
 				$Title = utf8_decode($Title);
 			}

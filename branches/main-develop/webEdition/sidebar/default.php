@@ -30,7 +30,7 @@ protect();
 	<title>webEdition</title>
 	<meta http-equiv="expires" content="0">
 	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>">
 
 	<link href="/webEdition/css/global.php?WE_LANGUAGE=<?php echo $GLOBALS["WE_LANGUAGE"]; ?>" rel="styleSheet" type="text/css" />
 

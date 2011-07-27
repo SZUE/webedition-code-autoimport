@@ -1604,19 +1604,19 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		$table->setCol(6,0,array("class"=>"defaultgray"),g_l('modules_newsletter','[title]'));
 		$table->setCol(6,1,array(),getPixel(15,10));
-		$table->setCol(6,2,array(),htmlTextInput("title",32,(strpos($GLOBALS["WE_LANGUAGE"],'UTF-8')===false ? utf8_decode($title):$title ),"","","text",310));
+		$table->setCol(6,2,array(),htmlTextInput("title",32,($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($title):$title ),"","","text",310));
 
 		$table->setCol(7,2,array(),getPixel(2,3));
 
 		$table->setCol(8,0,array("class"=>"defaultgray"),g_l('modules_newsletter','[firstname]'));
 		$table->setCol(8,1,array(),getPixel(15,10));
-		$table->setCol(8,2,array(),htmlTextInput("firstname",32,(strpos($GLOBALS["WE_LANGUAGE"],'UTF-8')===false ? utf8_decode($firstname):$firstname ),"","","text",310));
+		$table->setCol(8,2,array(),htmlTextInput("firstname",32,($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($firstname):$firstname ),"","","text",310));
 
 		$table->setCol(9,2,array(),getPixel(2,3));
 
 		$table->setCol(10,0,array("class"=>"defaultgray"),g_l('modules_newsletter','[lastname]'));
 		$table->setCol(10,1,array(),getPixel(15,10));
-		$table->setCol(10,2,array(),htmlTextInput("lastname",32,(strpos($GLOBALS["WE_LANGUAGE"],'UTF-8')===false ? utf8_decode($lastname):$lastname ),"","","text",310));
+		$table->setCol(10,2,array(),htmlTextInput("lastname",32,($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($lastname):$lastname ),"","","text",310));
 
 		$table->setCol(11,2,array(),getPixel(2,3));
 

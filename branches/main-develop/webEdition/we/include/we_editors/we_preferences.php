@@ -3267,7 +3267,7 @@ function build_dialog($selected_setting = "ui") {
 		 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
 			$_charsetHandler = new charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-			if (strpos($GLOBALS['WE_LANGUAGE'],'UTF') !== false){$charset="UTF-8";} else {$charset="ISO-8859-1";}
+			$charset=$GLOBALS['WE_BACKENDCHARSET'];
 			$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 			$_defaultCharset = htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
 			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false,"onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont",false);

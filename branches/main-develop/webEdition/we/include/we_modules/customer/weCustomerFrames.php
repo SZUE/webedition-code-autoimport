@@ -782,7 +782,7 @@ class weCustomerFrames extends weModuleFrames {
 		$out = "";
 
 		if (isset($_REQUEST["pid"])) {
-			if (!stristr($GLOBALS['WE_LANGUAGE'], '_UTF-8') === FALSE) {
+			if ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') {
 				$pid = utf8_encode($_REQUEST["pid"]);
 			} else {
 				$pid = $_REQUEST["pid"];

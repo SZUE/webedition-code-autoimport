@@ -2510,7 +2510,7 @@ function we_getDocumentByID($id, $includepath = '', $db = '', $charset = '') {
 	$content = $GLOBALS['we_doc']->i_getDocument($includepath);
 	$charset = $GLOBALS['we_doc']->getElement('Charset');
 	if (!$charset) {
-		$charset = 'ISO-8859-1';
+		$charset = 'UTF-8';
 	}
 
 	if (isset($backupdoc)) {

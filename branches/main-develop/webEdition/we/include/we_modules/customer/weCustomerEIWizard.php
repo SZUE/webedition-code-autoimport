@@ -730,7 +730,7 @@ class weCustomerEIWizard{
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
 				$_charsetHandler = new charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-				if (strpos($GLOBALS['WE_LANGUAGE'],'UTF') !== false){$charset="UTF-8";} else {$charset="ISO-8859-1";}
+				$charset=$GLOBALS['WE_BACKENDCHARSET'];
 				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 				$_importCharset = htmlTextInput('the_charset', 8, '', 255, "", "text", 100);
 				$_importCharsetChooser = htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false,"onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",160,"defaultfont",false);

@@ -1,7 +1,7 @@
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
-$isUTF8 = substr($GLOBALS['WE_LANGUAGE'], -5) == 'UTF-8';
+$isUTF8 = $GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8';
 
 $translate = we_core_Local::addTranslation('default.xml', '<?php print $TOOLNAME; ?>');
 

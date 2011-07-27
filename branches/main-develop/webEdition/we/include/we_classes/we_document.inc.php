@@ -507,11 +507,7 @@ class we_document extends we_root {
 					if(defined('DEFAULT_CHARSET')) {
 						$_naviItem->Charset = DEFAULT_CHARSET;
 					} else {
-						if(strpos($GLOBALS['[WE_LANGUAGE]'],'UTF')!== false ){
-							$_naviItem->Charset ='UTF-8';
-						} else {
-							$_naviItem->Charset ='ISO-8859-1';
-						}
+						$_naviItem->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 					}
 				}
 

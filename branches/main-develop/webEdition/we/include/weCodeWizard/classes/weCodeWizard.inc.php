@@ -51,7 +51,7 @@ class weCodeWizard {
 			$this->SnippetLanguage = WE_LANGUAGE;
 		}
 		if (!is_dir($this->SnippetPath . $this->SnippetLanguage)) {
-			$this->SnippetLanguage = "English_UTF-8";
+			$this->SnippetLanguage = "English";
 		}
 	}
 

@@ -111,7 +111,8 @@ if (defined("WE_WEBUSER_LANGUAGE")) {
 	} else {
 		$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 	}
-
+$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
+$GLOBALS["WE_LANGUAGE"] = str_replace('UTF-8','',$GLOBALS["WE_LANGUAGE"]);
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/define_styles.inc.php");
 if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
 	$MNEMONIC_EDITPAGES['11'] = 'variants';

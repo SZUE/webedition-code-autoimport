@@ -36,7 +36,7 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 	$we_button = new we_button();
 
 	// get orderdata of user here
-	$da = ( $GLOBALS['WE_LANGUAGE'] == "Deutsch"||$GLOBALS['WE_LANGUAGE'] == "Deutsch_UTF-8" )?"%d.%m.%Y":"%m/%d/%Y";
+	$da = ( $GLOBALS['WE_LANGUAGE'] == "Deutsch")?"%d.%m.%Y":"%m/%d/%Y";
 
 	$query = '
 		SELECT IntOrderID, DateOrder, DATE_FORMAT(DateOrder,"' . $da . '") AS formatDateOrder, DateConfirmation, DATE_FORMAT(DateConfirmation,"' . $da . '") AS formatDateConfirmation, DateCustomA, DATE_FORMAT(DateCustomA,"' . $da . '") AS formatDateCustomA, DateCustomB, DATE_FORMAT(DateCustomB,"' . $da . '") AS formatDateCustomB,DateCustomC, DATE_FORMAT(DateCustomC,"' . $da . '") AS formatDateCustomC,DateShipping, DATE_FORMAT(DateShipping,"' . $da . '") AS formatDateShipping, DateCustomD, DATE_FORMAT(DateCustomD,"' . $da . '") AS formatDateCustomD,DateCustomE, DATE_FORMAT(DateCustomE,"' . $da . '") AS formatDateCustomE, DatePayment, DATE_FORMAT(DatePayment,"' . $da . '") AS formatDatePayment,DateCustomF, DATE_FORMAT(DateCustomF,"' . $da . '") AS formatDateCustomF,DateCustomG, DATE_FORMAT(DateCustomG,"' . $da . '") AS formatDateCustomG,DateCancellation, DATE_FORMAT(DateCancellation,"' . $da . '") AS formatDateCancellation,DateCustomH, DATE_FORMAT(DateCustomH,"' . $da . '") AS formatDateCustomH,DateCustomI, DATE_FORMAT(DateCustomI,"' . $da . '") AS formatDateCustomI,DateCustomJ, DATE_FORMAT(DateCustomJ,"' . $da . '") AS formatDateCustomJ,DateFinished, DATE_FORMAT(DateFinished,"' . $da . '") AS formatDateFinished

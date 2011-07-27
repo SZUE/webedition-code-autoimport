@@ -14,6 +14,7 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   autostartPlugin tinyint(1) NOT NULL default '0',
   promptPlugin tinyint(1) NOT NULL default '0',
   `Language` varchar(64) NOT NULL default '',
+  `BackendCharset` varchar(22) NOT NULL default '',
   openFolders_tblObject text,
   openFolders_tblObjectFiles text,
   phpOnOff tinyint(1) NOT NULL default '0',

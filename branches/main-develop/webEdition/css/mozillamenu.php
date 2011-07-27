@@ -36,6 +36,11 @@ if (isset($_SESSION["prefs"]["Language"]) && $_SESSION["prefs"]["Language"] != "
 } else {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
+if (isset($_SESSION["prefs"]["BackendCharset"]) && $_SESSION["prefs"]["BackendCharset"] != "") {
+	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION["prefs"]["BackendCharset"];
+} else {
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
+}
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
 ?>
 window,

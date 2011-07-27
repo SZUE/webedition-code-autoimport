@@ -262,7 +262,7 @@ $out .= '		self.close();
 function writeBody(d){
 	d.open();
 	//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition Version <?php echo WE_VERSION; ?>">');
+	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition Version <?php echo WE_VERSION; ?>">');
 	d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');
@@ -275,7 +275,7 @@ function writeBody(d){
 	d.writeln('function weonclick(e){');
 	if(makeNewFolder || makeNewCat || we_editCatID){
 	d.writeln('if(!inputklick){');
-<?php if ($GLOBALS['BROWSER'] == "IE" && substr($GLOBALS["WE_LANGUAGE"],-5) !== "UTF-8") { ?>
+<?php if ($GLOBALS['BROWSER'] == "IE" && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') { ?>
 	d.writeln('document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);document.we_form.submit();');
 
 <?php } else { ?>
