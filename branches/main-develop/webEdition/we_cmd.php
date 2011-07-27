@@ -329,9 +329,6 @@ if(!$INCLUDE){
 		case "open_wysiwyg_window":
 			$INCLUDE = "wysiwygWindow.inc.php";
 			break;
-		case "not_installed_modules":
-			$INCLUDE = "notInstalledModules.inc.php";
-			break;
         //  stuff about accessibility/validation
         case 'checkDocument':
             $INCLUDE = 'accessibility/checkDocument.inc.php';    //  Here request is performed
