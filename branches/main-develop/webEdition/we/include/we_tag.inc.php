@@ -174,11 +174,11 @@ function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
 				$_SESSION['webuser'][$nameTo] = $returnvalue;
 			}
 			break;
+		default:
 		case 'screen':
 			return $returnvalue;
 	}
 	return null;
-
 }
 
 function mta($hash, $key){

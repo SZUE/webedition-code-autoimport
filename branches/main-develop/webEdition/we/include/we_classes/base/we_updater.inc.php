@@ -147,31 +147,21 @@
 	function fix_path(){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		if(defined("BIG_USER_MODULE") && in_array("busers",$GLOBALS["_pro_modules"])){
-			$db->query("SELECT ID,username,ParentID FROM " . USER_TABLE);
-			while($db->next_record()){
-			  @set_time_limit(30);
-			  $id = $db->f("ID");
-			  $pid = $db->f("ParentID");
-			  $path = "/".$db->f("username");
-			  while($pid > 0){
-				$db2->query("SELECT username,ParentID FROM " . USER_TABLE . " WHERE ID='".abs($pid)."'");
-				if($db2->next_record()){
-				  $path = "/".$db2->f("username").$path;
-				  $pid = $db2->f("ParentID");
-				}
-				else $pid=0;
-				}
-				  $db2->query("UPDATE " . USER_TABLE . " SET Path='".$db2->escape($path)."' WHERE ID='".abs($id)."'");
+		$db->query("SELECT ID,username,ParentID FROM " . USER_TABLE);
+		while($db->next_record()){
+			@set_time_limit(30);
+			$id = $db->f("ID");
+			$pid = $db->f("ParentID");
+			$path = "/".$db->f("username");
+			while($pid > 0){
+			$db2->query("SELECT username,ParentID FROM " . USER_TABLE . " WHERE ID='".abs($pid)."'");
+			if($db2->next_record()){
+				$path = "/".$db2->f("username").$path;
+				$pid = $db2->f("ParentID");
 			}
-		} else {
-			$db->query("SELECT ID,username FROM " . USER_TABLE);
-			while($db->next_record()){
-			  @set_time_limit(30);
-			  $id = $db->f("ID");
-			  $path = "/".$db->f("username");
-			  $db2->query("UPDATE " . USER_TABLE . " SET Path='".$db2->escape($path)."' WHERE ID='".abs($id)."'");
+			else $pid=0;
 			}
+				$db2->query("UPDATE " . USER_TABLE . " SET Path='".$db2->escape($path)."' WHERE ID='".abs($id)."'");
 		}
 	}
 

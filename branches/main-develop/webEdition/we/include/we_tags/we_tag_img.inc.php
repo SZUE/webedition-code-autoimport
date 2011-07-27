@@ -25,14 +25,9 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_ima
 
 
 function we_tag_img($attribs, $content){
-	if ($GLOBALS['we_editmode']) {
-		// Include we_button class
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-	}
-
-	$foo = attributFehltError($attribs, "name", "img");
-	if ($foo)
+	if (($foo = attributFehltError($attribs, 'name', 'img'))){
 		return $foo;
+	}
 
 	$name = we_getTagAttribute("name", $attribs);
 	$startid = we_getTagAttribute("startid", $attribs, "");
@@ -40,20 +35,14 @@ function we_tag_img($attribs, $content){
 	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "", true, true);
 	$showThumb = we_getTagAttribute("showthumbcontrol", $attribs, "", true, false);
 	$showimage = we_getTagAttribute("showimage", $attribs, "true", true, true);
-	$showinputs = we_getTagAttribute(
-			"showinputs",
-			$attribs,
-			0,
-			true,
-			defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true);
+	$showinputs = we_getTagAttribute("showinputs",$attribs,	0, true, (defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true) );
 
 	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS["we_doc"]->getElement($name);
 	$id = $id ? $id : we_getTagAttribute("id", $attribs);
 
 	//look if image exists in tblfile
-	$imgExists = f("SELECT ID FROM " . FILE_TABLE . " WHERE ID='" . abs($id) . "'", "ID", new DB_WE());
-	if ($imgExists == "") {
+	if (f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id), 'ID', new DB_WE()) !== '1') {
 		$id = 0;
 	}
 
@@ -119,6 +108,7 @@ function we_tag_img($attribs, $content){
 		}
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
+		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 		// Create object of we_button class
 		$we_button = new we_button();
 

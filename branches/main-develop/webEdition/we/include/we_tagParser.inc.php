@@ -336,8 +336,12 @@ class we_tagParser{
 
 		$attribs = '';
 		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
-		for ($i = 0; $i < sizeof($foo); $i++) {
-			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+
+		//remove comment-attribute (should never be seen), and obsolete cachelifetime
+		$attr = removeAttribs($attr, array('cachelifetime','comment'));
+
+		foreach($foo as $f) {
+			$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
 		}
 
 		if (!$endTag) {
