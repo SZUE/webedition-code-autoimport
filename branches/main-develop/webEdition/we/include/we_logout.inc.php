@@ -21,26 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/we_logout.inc.php") {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == '/we_logout.inc.php') {
 	exit();
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 
-$DB_WE->query('
-	DELETE
-	FROM ' . LOCK_TABLE . '
-	WHERE UserID="' . abs($_SESSION["user"]["ID"]) . '" AND sessionID="'.session_id().'"');
+$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID="' . abs($_SESSION["user"]["ID"]) . '" AND sessionID="' . session_id() . '"');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
-$DB_WE->query("
-	UPDATE " . USER_TABLE . "
-	SET Ping=0
-	WHERE ID='" . abs($_SESSION["user"]["ID"]) . "'");
-
-?>
-<script  type="text/javascript">
-<!--
-<?php
+$DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID='" . abs($_SESSION["user"]["ID"]) . "'");
 
 cleanTempFiles(true);
 
@@ -50,8 +39,6 @@ if (isset($_SESSION["prefs"]["userID"])) { //	bugfix 2585, only update prefs, wh
 
 //	getJSCommand
 if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with tag:linkToSuperEasyEditMode
-
-
 	$_path = $_SESSION["SEEM"]["startPath"];
 
 	$jsCommand = "top.location.replace('" . $_path . "');";
@@ -61,16 +48,14 @@ if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with
 			unset($_SESSION[$name]);
 		}
 	}
-
 } else { //	normal logout from webEdition.
-
-
-	$jsCommand = "top.close();\n";
-
+	$jsCommand = "top.location.replace('".WEBEDITION_DIR."');\n";
 }
-
-print $jsCommand;
-
 ?>
-//-->
+<script  type="text/javascript">
+	<!--
+<?php
+print $jsCommand;
+?>
+	//-->
 </script>
