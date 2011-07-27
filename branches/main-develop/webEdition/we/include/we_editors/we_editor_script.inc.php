@@ -156,7 +156,7 @@ function pathOfDocumentChanged() {
 		}
 
 		_filepath += _filetext;
-		parent.frames[0].we_setPath(_filepath, _filetext);
+		parent.frames[0].we_setPath(_filepath, _filetext, -1);
 		<?php
 			if ( defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS["we_doc"]->EditPageNrs) && isset($GLOBALS["we_doc"]->documentCustomerFilter) ) {
 				// only use this when customer filters are possible

@@ -173,7 +173,7 @@ if ($tab_head) {
 
 
 $_js_we_setPath = "
-function we_setPath(path, text) {
+function we_setPath(path, text, id) {
 
 	// update document-tab
 	_EditorFrame.initEditorFrameData({\"EditorDocumentText\":text,\"EditorDocumentPath\":path});
@@ -184,10 +184,18 @@ function we_setPath(path, text) {
 	if(document.getElementById) {
 		var div = document.getElementById('h_path');
 		div.innerHTML = path;
+		if(id>0){
+			var div = document.getElementById('h_id');
+			div.innerHTML = id;
+		}
 	}
 	else if(document.all) {
 		var div = document.all['h_path'];
 		div.innerHTML = path;
+		if(id>0){
+			var div = document.all['h_id'];
+			div.innerHTML = id;
+		}
 	}
 }
 
@@ -242,7 +250,7 @@ print STYLESHEET;
 </head>
 <body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 <div id="main" ><?php
-print getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span></div>'.getPixel(100,3);
+print getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span> (ID: <span id="h_id"></span>)</div>'.getPixel(100,3);
 
 if ($_SESSION["we_mode"] != "seem") {
 	print $we_tabs->getHTML();
@@ -260,6 +268,6 @@ $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $
 
 ?>
 
-we_setPath("<?php print $_path; ?>", "<?php print $_text; ?>");
+we_setPath("<?php print $_path; ?>", "<?php print $_text; ?>", "<?php print $we_doc->ID; ?>");
 
 </script>

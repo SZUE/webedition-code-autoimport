@@ -472,7 +472,7 @@ else {
 							if($we_doc->we_save()) {
 								$wasSaved = true;
 								$wasNew = (abs($we_doc->ID) == 0) ? true : false;
-								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."', '" . $we_doc->Text . "');\n";
+								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."', '" . $we_doc->Text ."', '" . $we_doc->ID . "');\n";
 								$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript().";\n";// save/ rename a document
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_ok]'),$we_doc->Path);
 								$we_responseTextType = WE_MESSAGE_NOTICE;
@@ -598,7 +598,7 @@ else {
 									}
 									$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[3].location.reload();\n";
 								}
-								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."','" . $we_doc->Text . "');\n";
+								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."','" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
 
 
 								if(!defined("SCHEDULE_TABLE")){
@@ -623,7 +623,7 @@ else {
 
 							$we_doc->makeSameNew();
 							if (isset($we_doc->NavigationItems)) $we_doc->NavigationItems = "";
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."','" . $we_doc->Text . "');\n";
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."','" . $we_doc->Text . "', '" . $we_doc->ID . "');\n";
 							//	switch to propertiy page, when user is allowed to do so.
 							if($_SESSION["we_mode"] == "seem"){
 

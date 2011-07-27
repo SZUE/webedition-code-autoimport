@@ -57,7 +57,7 @@ htmlTop();
 
 
 if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doImage_convert"){
-	print '<script  type="text/javascript">parent.frames[0].we_setPath("'.$we_doc->Path.'","' . $we_doc->Text . '");</script>'."\n";
+	print '<script  type="text/javascript">parent.frames[0].we_setPath("'.$we_doc->Path.'","' . $we_doc->Text . '", "' . $we_doc->ID . '");</script>'."\n";
 }
 
 ?>
