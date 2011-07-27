@@ -991,7 +991,8 @@ class we_wizard_import extends we_wizard {
 			"			else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {\n" .
 			"				ext = fl.substr(fl.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fl;\n" .
-			"			} else if (fs=='/' || fl=='') {\n" .
+			"			}\n" .
+			"			 else if (fs=='/' || fl=='') {\n" .
 			"				" . we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR) . "break;\n" .
 			"			}\n".
 			"			if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;\n";
@@ -1734,7 +1735,7 @@ HTS;
 			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			}\n" .
 			"			else if (fs=='/' || fl=='') {\n" .
-			"				" . we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR) . "break;\n" .
+			"				" . (we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR)) . "break;\n" .
 			"			}\n" .
 			"			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import',"[select_seperator]"), WE_MESSAGE_ERROR) . "}\n" .
 			"			if (fvalid) {\n" .

@@ -59,6 +59,16 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db.inc.php"
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db_tools.inc.php");
 //include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_defines.inc.php"); moved to we_inc_min
 
+if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
+	$MNEMONIC_EDITPAGES['11'] = 'variants';
+}
+if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
+	$MNEMONIC_EDITPAGES['14'] = 'customer';
+}
+
+$GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
+
+
 if (!defined("NO_SESS")) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_session.inc.php");
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
@@ -103,6 +113,15 @@ if (defined("WE_WEBUSER_LANGUAGE")) {
 	}
 
 include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/define_styles.inc.php");
+if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
+	$MNEMONIC_EDITPAGES['11'] = 'variants';
+}
+if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
+	$MNEMONIC_EDITPAGES['14'] = 'customer';
+}
+
+$GLOBALS['BIG_USER_MODULE'] = defined('BIG_USER_MODULE') ? BIG_USER_MODULE : '';
+
 
 if (!isset($GLOBALS["WE_IS_DYN"])) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
