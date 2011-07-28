@@ -148,7 +148,7 @@ function print_error($errortext){
 		'media' => 'screen',
 		'rel'	=> 'stylesheet',
 		'type'	=> 'text/css',
-		'href'	=> WEBEDITION_DIR.'css/global.php?WE_LANGUAGE='.$GLOBALS['WE_LANGUAGE'],
+		'href'	=> WEBEDITION_DIR.'css/global.php?WE_LANGUAGE='.$GLOBALS['WE_LANGUAGE'].'&amp;WE_BACKENDCHARSET='.$GLOBALS['WE_BACKENDCHARSET'],
 	);
 
 	print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';

@@ -1110,7 +1110,7 @@ ob_end_clean();
 		color:#000000;
 	}
 	</style>
-	<link href="/webEdition/css/global.php?WE_LANGUAGE=English_UTF-8" rel="styleSheet" type="text/css" />
+	<link href="/webEdition/css/global.php?WE_LANGUAGE=English&amp;WE_BACKENDCHARSET=UTF-8" rel="styleSheet" type="text/css" />
 	<?php echo $header; ?>
 </head>
 <body bgcolor="#386AAB" class="header" onLoad="" style="margin:0px">
