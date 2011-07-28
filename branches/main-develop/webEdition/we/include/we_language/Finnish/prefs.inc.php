@@ -80,12 +80,13 @@ $l_prefs = array(
 		/**
 		 * LANGUAGE
 		 */
-		'choose_language' => "Kieli",
-		'language_notice' => "Kielenmuutos tulee voimaan webEditionin uudelleenkäynnistyksen jälkeen.",
+		'choose_language' => "Backend language",// TRANSLATE
+		'language_notice' => "The backend language/charset change will only take effect everywhere after restarting webEdition.",// TRANSLATE
+		'choose_backendcharset' => "Backend charset",// TRANSLATE
 		/**
 		 * CHARSET
 		 */
-		'default_charset' => "Standard charset", // TRANSLATE
+		'default_charset' => "Standard frontend charset",// TRANSLATE
 
 		/**
 		 * SEEM

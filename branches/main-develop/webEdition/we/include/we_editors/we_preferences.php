@@ -231,6 +231,10 @@ function get_value($settingvalue) {
 			return $_SESSION["prefs"]["Language"];
 			break;
 
+		case "ui_charset":
+			return $_SESSION["prefs"]["BackendCharset"];
+			break;
+
 		case "ui_seem_start_file":
 			return $_SESSION["prefs"]["seem_start_file"];
 			break;
@@ -948,10 +952,11 @@ function remember_value($settingvalue, $settingname) {
 			 * WINDOW DIMENSIONS
 			 *****************************************************************/
 
-			case '$_REQUEST["Language"]':
+			case '$_REQUEST["Language"]':  //Handle both
 				$_SESSION["prefs"]["Language"] = $settingvalue;
+				$_SESSION["prefs"]["BackendCharset"] = $_REQUEST["BackendCharset"];
 
-				if ($settingvalue != $GLOBALS["WE_LANGUAGE"]) {
+				if ($settingvalue != $GLOBALS["WE_LANGUAGE"] || $_REQUEST["BackendCharset"] != $GLOBALS['WE_BACKENDCHARSET']) {
 					$save_javascript .= "
 
 						// reload current document => reload all open Editors on demand
@@ -2742,7 +2747,7 @@ function save_all_values() {
 	 *************************************************************************/
 
 	$_update_prefs = remember_value(isset($_REQUEST["Language"]) ? $_REQUEST["Language"] : null, '$_REQUEST["Language"]');
-
+	
 	$_update_prefs = remember_value(isset($_REQUEST["default_tree_count"]) ? $_REQUEST["default_tree_count"] : null, '$_REQUEST["default_tree_count"]') || $_update_prefs;
 	if($_REQUEST["seem_start_type"]=="cockpit") {
 		$_update_prefs = remember_value("cockpit", '$_REQUEST["seem_start_type"]') || $_update_prefs;
@@ -3213,7 +3218,6 @@ function build_dialog($selected_setting = "ui") {
 			  	if($entry != "." && $entry != "..") {
 					if (is_dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry)
 						&& is_file($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
-
 						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php");
 					} else {
 						// do nothing
@@ -3252,15 +3256,38 @@ function build_dialog($selected_setting = "ui") {
 </table>
 </div>';
 			 	// Build dialog
-			  	array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtmlCode()."<br><br>".$langNote, "space" => 200));
+			  	array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtmlCode()."<br><br>".$langNote, "space" => 200, 'noline' => 1));
 			} else { // Just one Language Installed, no select box needed
 				foreach ($_language["translation"] as $key=>$value) {
 			    	$_languages = $value;
 			  	}
 			  	// Build dialog
-			  	array_push($_settings, array("headline" =>g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200));
+			  	array_push($_settings, array("headline" =>g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 			}
+			
+			$_charset = new we_htmlSelect(array("name" => "BackendCharset", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
+			$_charset->addOption('UTF-8', 'UTF-8');
+			$_charset->addOption('ISO-8859-1','ISO-8859-1'); 
+			$_charset->addOption('ISO-8859-2','ISO-8859-2'); 
+			$_charset->addOption('ISO-8859-3','ISO-8859-3'); 
+			$_charset->addOption('ISO-8859-4','ISO-8859-4'); 
+			$_charset->addOption('ISO-8859-5','ISO-8859-5'); 
+			$_charset->addOption('ISO-8859-6','ISO-8859-6'); 
+			$_charset->addOption('ISO-8859-7','ISO-8859-7'); 
+			$_charset->addOption('ISO-8859-8','ISO-8859-8'); 
+			$_charset->addOption('ISO-8859-9','ISO-8859-9'); 
+			$_charset->addOption('ISO-8859-10','ISO-8859-10'); 
+			$_charset->addOption('ISO-8859-11','ISO-8859-11'); 
+			$_charset->addOption('ISO-8859-12','ISO-8859-12'); 
+			$_charset->addOption('ISO-8859-13','ISO-8859-13'); 
+			$_charset->addOption('ISO-8859-14','ISO-8859-14'); 
+			$_charset->addOption('ISO-8859-15','ISO-8859-15'); 
+			$_charset->addOption('Windows-1251','Windows-1251');
+			$_charset->addOption('Windows-1252','Windows-1252');
+			$_charset->selectOption(get_value("ui_charset"));
+			array_push($_settings, array("headline" => g_l('prefs','[choose_backendcharset]'), "html" => $_charset->getHtmlCode()."<br><br>".$langNote, "space" => 200));
 
+			
 			/*****************************************************************
 			 * DEFAULT CHARSET
 			 *****************************************************************/

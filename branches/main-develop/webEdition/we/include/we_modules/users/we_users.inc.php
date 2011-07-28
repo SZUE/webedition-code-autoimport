@@ -223,7 +223,7 @@ class we_user {
 		$this->Name = "user_".md5(uniqid(rand()));
 		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","CreatorID","CreateDate","ModifierID","ModifyDate","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");
 
-		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
+		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","BackendCharset","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
 
 		$this->DB_WE = new DB_WE;
 
@@ -467,6 +467,7 @@ class we_user {
 		";
 
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language');
+		$save_javascript .= $this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset');
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 		if(isset($this->Preferences['seem_start_type'])) {
 			if($this->Preferences['seem_start_type'] == "cockpit") {
@@ -757,6 +758,7 @@ function mapPermissions() {
 					.	"autostartPlugin, "
 					.	"promptPlugin, "
 					.	"Language,"
+					.	"BackendCharset,"
 					.	"seem_start_file,"
 					.	"seem_start_type,"
 					.	"editorSizeOpt,"
@@ -786,6 +788,7 @@ function mapPermissions() {
 					.	"'".($this->Preferences['autostartPlugin'] == '1' ? 1 : 0)."', "
 					.	"'".($this->Preferences['promptPlugin'] == '1' ? 1 : 0)."', "
 					.	"'".$this->Preferences['Language']."', "
+					.	"'".$this->Preferences['BackendCharset']."', "
 					.	"'".($this->Preferences['seem_start_file'] ? $this->Preferences['seem_start_file'] : 0)."', "
 					.	"'".$this->Preferences['seem_start_type']."', "
 					.	"'".($this->Preferences['editorSizeOpt'] == '1' ? 1 : 0)."', "
@@ -819,6 +822,62 @@ function mapPermissions() {
 					$_SESSION["prefs"]["Language"] = $settingvalue;
 
 					if ($settingvalue != $GLOBALS["WE_LANGUAGE"]) {
+						$save_javascript .= "
+							if (top.frames[0]) {
+								top.frames[0].location.reload();
+							}
+
+							if (parent.frames[0]) {
+								parent.frames[0].location.reload();
+							}
+
+							// Tabs Module User
+							if (top.content.user_resize.user_right.user_editor.user_edheader) {
+								top.content.user_resize.user_right.user_editor.user_edheader.location = top.content.user_resize.user_right.user_editor.user_edheader.location +'?tab='+top.content.user_resize.user_right.user_editor.user_edheader.activeTab;
+							}
+
+							// Editor Module User
+							if (top.content.user_resize.user_right.user_editor.user_properties) {
+								top.content.user_resize.user_right.user_editor.user_properties.location = top.content.user_resize.user_right.user_editor.user_properties.location +'?tab=".abs($_REQUEST['tab'])."&perm_branch='+top.content.user_resize.user_right.user_editor.user_properties.opened_group;
+							}
+
+							// Save Module User
+							if (top.content.user_resize.user_right.user_editor.user_edfooter) {
+								top.content.user_resize.user_right.user_editor.user_edfooter.location.reload();
+							}
+							if (top.opener.top.header) {
+								top.opener.top.header.location.reload();
+							}
+							if (top.opener.top.rframe && top.opener.top.rframe.bframe && top.opener.top.rframe.bframe.bm_vtabs) {
+								if (top.opener.top.table) {
+									top.opener.top.weEditorFrameController.getActiveDocumentReference().bm_vtabs.location='/webEdition/we_vtabs.php?table=' + top.opener.top.table;
+								}
+							}
+							if (top.opener.top.rframe.bframe.bm_vtabs) {
+								top.opener.top.rframe.bframe.bm_vtabs.location.reload();
+							}
+
+							// reload all frames of an editor
+							// reload current document => reload all open Editors on demand
+							var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+							for (frameId in _usedEditors) {
+
+								if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+									_usedEditors[frameId].setEditorReloadAllNeeded(true);
+									_usedEditors[frameId].setEditorIsActive(true);
+
+								} else {
+									_usedEditors[frameId].setEditorReloadAllNeeded(true);
+								}
+							}
+							_multiEditorreload = true;
+							";
+					}
+					break;
+				case 'BackendCharset':
+					$_SESSION["prefs"]["BackendCharset"] = $settingvalue;
+
+					if ($settingvalue != $GLOBALS["WE_BACKENDCHARSET"]) {
 						$save_javascript .= "
 							if (top.frames[0]) {
 								top.frames[0].location.reload();
@@ -2416,14 +2475,40 @@ function mapPermissions() {
 			}
 
 			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtmlCode(), "space" => 200));
+			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtmlCode(), "space" => 200, 'noline' => 1));
 		} else { // Just one Language Installed, no select box needed
 			foreach ($_language["translation"] as $key=>$value) {
 		    	$_languages = $value;
 		  	}
 			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200));
+			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 		}
+		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
+		$_charset->addOption('UTF-8', 'UTF-8');
+		$_charset->addOption('ISO-8859-1','ISO-8859-1'); 
+		$_charset->addOption('ISO-8859-2','ISO-8859-2'); 
+		$_charset->addOption('ISO-8859-3','ISO-8859-3'); 
+		$_charset->addOption('ISO-8859-4','ISO-8859-4'); 
+		$_charset->addOption('ISO-8859-5','ISO-8859-5'); 
+		$_charset->addOption('ISO-8859-6','ISO-8859-6'); 
+		$_charset->addOption('ISO-8859-7','ISO-8859-7'); 
+		$_charset->addOption('ISO-8859-8','ISO-8859-8'); 
+		$_charset->addOption('ISO-8859-9','ISO-8859-9'); 
+		$_charset->addOption('ISO-8859-10','ISO-8859-10'); 
+		$_charset->addOption('ISO-8859-11','ISO-8859-11'); 
+		$_charset->addOption('ISO-8859-12','ISO-8859-12'); 
+		$_charset->addOption('ISO-8859-13','ISO-8859-13'); 
+		$_charset->addOption('ISO-8859-14','ISO-8859-14'); 
+		$_charset->addOption('ISO-8859-15','ISO-8859-15'); 
+		$_charset->addOption('Windows-1251','Windows-1251');
+		$_charset->addOption('Windows-1252','Windows-1252');
+		if (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset']!=''){
+				$myCompChar = $this->Preferences['BackendCharset'];
+			} else {
+				$myCompChar = $GLOBALS['WE_BACKENDCHARSET'];
+			}
+		$_charset->selectOption($myCompChar);
+		array_push($_settings, array("headline" => g_l('prefs','[choose_backendcharset]'), "html" => $_charset->getHtmlCode(), "space" => 200));
 
 
 		/*****************************************************************

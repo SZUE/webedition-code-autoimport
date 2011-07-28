@@ -80,12 +80,13 @@ $l_prefs = array(
 		/**
 		 * LANGUAGE
 		 */
-		'choose_language' => "Taal",
-		'language_notice' => "Het wisselen van taal wordt pas zichtbaar na het opnieuw inloggen in webEdition.",
+		'choose_language' => "Backend language",// TRANSLATE
+		'language_notice' => "The backend language/charset change will only take effect everywhere after restarting webEdition.",// TRANSLATE
+		'choose_backendcharset' => "Backend charset",// TRANSLATE
 		/**
 		 * CHARSET
 		 */
-		'default_charset' => "Standard charset", // TRANSLATE
+		'default_charset' => "Standard frontend charset",// TRANSLATE
 
 		/**
 		 * SEEM

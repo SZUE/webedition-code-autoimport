@@ -79,12 +79,13 @@ $l_prefs = array(
 		/**
 		 * LANGUAGE
 		 */
-		'choose_language' => "Language",
-		'language_notice' => "The language change will only take effect everywhere after restarting webEdition.",
+		'choose_language' => "Backend language",
+		'language_notice' => "The backend language/charset change will only take effect everywhere after restarting webEdition.",
+		'choose_backendcharset' => "Backend charset",
 		/**
 		 * CHARSET
 		 */
-		'default_charset' => "Standard charset",
+		'default_charset' => "Standard frontend charset",
 		/**
 		 * SEEM
 		 */

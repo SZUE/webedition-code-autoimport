@@ -105,8 +105,12 @@ if (isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != '
 } else {
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
-$GLOBALS["WE_LANGUAGE"] = str_replace('UTF-8', '', $GLOBALS["WE_LANGUAGE"]);
+if (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '') {
+	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
+} else {
+	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
+}
+
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
 if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
 	$MNEMONIC_EDITPAGES['11'] = 'variants';

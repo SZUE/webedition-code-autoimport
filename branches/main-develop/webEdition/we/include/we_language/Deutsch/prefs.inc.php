@@ -78,12 +78,13 @@ $l_prefs = array(
 		/**
 		 * LANGUAGE
 		 */
-		'choose_language' => "Sprache",
-		'language_notice' => "Die Sprachumstellung wird erst nach einem Neustart von webEdition an allen Stellen durchgeführt.",
+		'choose_language' => "Backend Sprache",
+		'language_notice' => "Die Sprach-/Charset-umstellung wird erst nach einem Neustart von webEdition an allen Stellen durchgeführt.",
+		'choose_backendcharset' => "Backend Zeichensatz",
 		/**
 		 * CHARSET
 		 */
-		'default_charset' => "Standard-Charset",
+		'default_charset' => "Standard Frontend-Charset",
 		/**
 		 * SEEM
 		 */
