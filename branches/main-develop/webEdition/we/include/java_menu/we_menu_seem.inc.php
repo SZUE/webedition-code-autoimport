@@ -296,11 +296,11 @@ $we_menu["1000000"]["enabled"] = "1";
     $we_menu["1180000"]["perm"] = "REBUILD || ADMINISTRATOR";
 	$we_menu["1180000"]["enabled"] = "1";
 
-	$we_menu["1190000"]["text"] = g_l('javaMenu_global','[clear_cache]');
+	/*FIXME: remove $we_menu["1190000"]["text"] = g_l('javaMenu_global','[clear_cache]');
 	$we_menu["1190000"]["parent"] = "1000000";
 	$we_menu["1190000"]["cmd"] = "clear_cache";
 	$we_menu["1190000"]["perm"] = "ADMINISTRATOR";
-	$we_menu["1190000"]["enabled"] = "1";
+	$we_menu["1190000"]["enabled"] = "1";*/
 
 	$we_menu["1200000"]["parent"] = "1000000"; // separator
 

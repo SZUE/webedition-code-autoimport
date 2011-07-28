@@ -278,13 +278,13 @@ $we_menu['1080200']['enabled'] = '1';
 
 // File > Delete > Classes
 // File > Delete > Objects
-if (we_hasPerm('ADMINISTRATOR')) {
+/*if (we_hasPerm('ADMINISTRATOR')) {
 	$we_menu['1080500']['text'] = g_l('javaMenu_global', '[cache]') . ' (' . g_l('javaMenu_global', '[documents]') . ')';
 	$we_menu['1080500']['parent'] = '1080000';
 	$we_menu['1080500']['cmd'] = 'delete_documents_cache';
 	$we_menu['1080500']['perm'] = 'ADMINISTRATOR';
 	$we_menu['1080500']['enabled'] = '1';
-}
+}*/
 // File > Delete > Objectscache
 // File > Move
 $we_menu['1090000']['text'] = g_l('javaMenu_global', '[move]');
@@ -382,11 +382,12 @@ $we_menu['1180000']['cmd'] = 'rebuild';
 $we_menu['1180000']['perm'] = 'REBUILD || ADMINISTRATOR';
 $we_menu['1180000']['enabled'] = '1';
 
-$we_menu['1190000']['text'] = g_l('javaMenu_global', '[clear_cache]');
+/*FIXME: remove $we_menu['1190000']['text'] = g_l('javaMenu_global', '[clear_cache]');
 $we_menu['1190000']['parent'] = '1000000';
 $we_menu['1190000']['cmd'] = 'clear_cache';
 $we_menu['1190000']['perm'] = 'ADMINISTRATOR';
 $we_menu['1190000']['enabled'] = '1';
+*/
 
 $we_menu['1200000']['parent'] = '1000000'; // separator
 // File > Browse server

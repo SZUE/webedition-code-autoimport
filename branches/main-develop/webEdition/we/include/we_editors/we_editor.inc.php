@@ -696,16 +696,6 @@ else {
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 				$_serverDocRoot = $_SERVER["DOCUMENT_ROOT"];
 				if($_serverDocRoot!="" && substr(strtolower($we_include),0,strlen($_SERVER["DOCUMENT_ROOT"])) == strtolower($_SERVER["DOCUMENT_ROOT"])) {
-					// check if the template uses the document cache
-					// if is so, the output must be evaled
-					if($we_doc->ContentType == "text/weTmpl") {
-						$cacheType = $we_doc->CacheType;
-						$cacheLifeTime = $we_doc->CacheLifeTime;
-					} else {
-						$cacheType = f("SELECT CacheType FROM ".TEMPLATES_TABLE." WHERE ID='".abs($we_doc->TemplateID)."'","CacheType",$GLOBALS["DB_WE"]);
-						$cacheLifeTime = f("SELECT CacheLifeTime FROM ".TEMPLATES_TABLE." WHERE ID='".abs($we_doc->TemplateID)."'","CacheLifeTime",$GLOBALS["DB_WE"]);
-					}
-					define("CACHING_INSIDE_WEBEDITION", true);
 
                     ob_start();
 					if((!defined("WE_CONTENT_TYPE_SET")) && isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){	//	send charset which might be determined in template
@@ -716,18 +706,6 @@ else {
                     $contents = ob_get_contents();
                     ob_end_clean();
 
-                    // if document cache we must eval the template code, because there is some
-                    // PHP-Code inside which first is printed out and now have to be executed
-                    if($cacheType == "document" && $cacheLifeTime > 0) {
-                    	$GLOBALS['weCacheOutput'] = true;
-                    	ob_start();
-                    	$contents = str_replace("<?xml",'<?php print "<?xml"; ?>',$contents);
-                    	eval("?>".$contents);
-                   		$contents = ob_get_contents();
-                    	ob_end_clean();
-                    	$GLOBALS['weCacheOutput'] = false;
-                    }
-                    weCacheHelper::clearCache(weCacheHelper::getCacheDir());
 
 				    //  SEEM the file
 				    //  but only, if we are not in the template-editor

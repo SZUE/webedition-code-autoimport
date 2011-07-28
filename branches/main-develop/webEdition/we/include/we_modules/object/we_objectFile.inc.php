@@ -28,7 +28,6 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 }
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_class_folder.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_thumbnail.class.php');
 
@@ -2634,10 +2633,7 @@ class we_objectFile extends we_document{
 	}
 
 	function we_clearCache($id) {
-
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getObjectCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
+	//FIXME:remove	
 	}
 
 	function i_objectFileInit($makeSameNewFlag=false){

@@ -113,7 +113,7 @@ $l_javaMenu_global = array(
 
 		'documents' => "Dokumente",
 		'templates' => "Vorlagen",
-		'cache' => "Cache",
+		/*'cache' => "Cache",*/
 		##################################
 		######## End Submenu  ############
 		##################################

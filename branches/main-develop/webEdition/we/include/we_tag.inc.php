@@ -28,10 +28,6 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 
-// Tag and TagBlock Cache
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCache.class.php');
-
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');

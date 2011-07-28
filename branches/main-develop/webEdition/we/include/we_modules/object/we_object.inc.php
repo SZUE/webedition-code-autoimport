@@ -2524,21 +2524,6 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function we_save($resave=0,$skipHook=0){
-
-		// Check if the cachetype was changed and delete all
-		// cachefiles of the documents based on this template
-		$this->DB_WE->query("SELECT CacheType FROM ".OBJECT_TABLE." WHERE ID = '".$this->ID."'");
-		$OldCacheType = "";
-		while($this->DB_WE->next_record()) {
-			$OldCacheType = $this->DB_WE->f('CacheType');
-		}
-		if($OldCacheType != "" && $OldCacheType != "none" && $OldCacheType != $this->CacheType) {
-			$this->DB_WE->query("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE TableID='".$this->ID."'");
-			while($this->DB_WE->next_record()) {
-				$cacheDir = weCacheHelper::getObjectCacheDir($this->DB_WE->f('ID'));
-				weCacheHelper::clearCache($cacheDir);
-			}
-		}
 		$this->save();
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
 		we_history::insertIntoHistory($this);

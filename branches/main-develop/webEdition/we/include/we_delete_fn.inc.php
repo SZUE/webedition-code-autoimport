@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/cache/weCacheHelper.class.php');
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_hook/class/weHook.class.php');
@@ -215,9 +213,6 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		$DB_WE->query(
 				'DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID="' . abs($id) . '";');
 
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
 	}
 
 	if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) {
@@ -258,9 +253,6 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 			$DB_WE->query(
 					'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID="' . abs($id) . ' " AND ClassName="we_objectFile"');
 		}
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getObjectCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
 	}
 	$DB_WE->query("DELETE FROM $table WHERE ID=$id");
 	if (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) {

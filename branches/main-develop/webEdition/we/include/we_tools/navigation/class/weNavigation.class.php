@@ -324,13 +324,6 @@ class weNavigation extends weModelBase
 
 		parent::save();
 
-		// Clear the Cache if the option is set
-		if ($ClearCache) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-			$cacheDir = weCacheHelper::getCacheDir();
-			weCacheHelper::clearCache($cacheDir);
-		}
-
 		if ($order && isset($_oldPid) && $_oldPid != $this->ParentID) {
 			// the entry has been moved
 			$this->reorder($_oldPid);
@@ -390,13 +383,6 @@ class weNavigation extends weModelBase
 		if ($this->IsFolder)
 			$this->deleteChilds();
 		parent::delete();
-
-		// Clear the Cache if the option is set
-		if ($GLOBALS['weNavigationCacheDeleteAfterDelete']) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-			$cacheDir = weCacheHelper::getCacheDir();
-			weCacheHelper::clearCache($cacheDir);
-		}
 
 		weNavigationCache::cacheNavigationTree($this->ParentID);
 

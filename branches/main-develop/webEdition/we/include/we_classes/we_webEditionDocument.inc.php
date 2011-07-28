@@ -24,7 +24,6 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_textContentDocument.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 class we_webEditionDocument extends we_textContentDocument {
@@ -703,10 +702,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	}
 
 	function we_clearCache($id) {
-		// Clear cache for this document
-		$cacheDir = weCacheHelper::getDocumentCacheDir($id);
-		weCacheHelper::clearCache($cacheDir);
-
+		//FIXME:remove
 	}
 
 	function we_load($from=LOAD_MAID_DB) {

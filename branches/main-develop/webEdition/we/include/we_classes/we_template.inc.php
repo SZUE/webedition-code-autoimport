@@ -787,21 +787,6 @@ class we_template extends we_document
 			$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
 		}
 
-		// Check if the cachetype was changed and delete all
-		// cachefiles of the documents based on this template
-		$this->DB_WE->query("SELECT CacheType FROM ".TEMPLATES_TABLE." WHERE ID = '".abs($this->ID)."'");
-		$OldCacheType = "";
-		while($this->DB_WE->next_record()) {
-			$OldCacheType = $this->DB_WE->f('CacheType');
-		}
-		if($OldCacheType != "" && $OldCacheType != "none" && $OldCacheType != $this->CacheType) {
-			$this->DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE temp_template_id=".abs($this->ID)." OR (temp_template_id = 0 AND TemplateID = ".abs($this->ID).")");
-			while($this->DB_WE->next_record()) {
-				$cacheDir = weCacheHelper::getDocumentCacheDir($this->DB_WE->f('ID'));
-				weCacheHelper::clearCache($cacheDir);
-			}
-		}
-
 		$_ret = we_document::we_save($resave);
 		if ($_ret) {
 			$tmplPathWithTmplExt = parent::getRealPath();
