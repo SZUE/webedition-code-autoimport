@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_back($attribs, $content) {
+	return '<?php print we_tag(\'back\',' . $attribs . ');?>' . $content . '<?php print we_tag(\'back\',array(\'_type\'=>\'stop\'));?>';
+}
 
-function we_tag_back($attribs, $content){
-	if (isset($GLOBALS["_we_voting_list"]))
-		return $GLOBALS["_we_voting_list"]->getBackLink($attribs);
-	else
-		return $GLOBALS["lv"]->getBackLink($attribs);
+function we_tag_back($attribs, $content) {
+	$_type = we_getTagAttribute('_type', $attribs);
+	switch ($_type) {
+		default:
+			if (isset($GLOBALS["_we_voting_list"])) {
+				return $GLOBALS["_we_voting_list"]->getBackLink($attribs);
+			} else {
+				return $GLOBALS["lv"]->getBackLink($attribs);
+			}
+		case 'stop':
+			if (isset($GLOBALS["_we_voting_list"])) {
+				return ($GLOBALS["_we_voting_list"]->hasPrevPage() ? '</a>' : '');
+			} else {
+				return ($GLOBALS["lv"]->hasPrevPage() && $GLOBALS["lv"]->close_a() ? '</a>' : '');
+			}
+	}
 }

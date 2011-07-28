@@ -24,25 +24,22 @@
 
 function we_tag_list($attribs, $content){
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_tagParser.inc.php");
-	global $we_editmode;
 
-	if ($we_editmode)
+	if ($GLOBALS['we_editmode']){
 		$we_button = new we_button();
-
-	$foo = attributFehltError($attribs, "name", "list");
-	if ($foo)
+	}
+	
+	if (($foo = attributFehltError($attribs, "name", "list"))){
 		return $foo;
+	}
 	$name = we_getTagAttribute("name", $attribs);
 	$content = eregi_replace('<we:ref ?/?>', '<we_:_ref>', $content);
 	$tp = new we_tagParser();
 	$tags = $tp->getAllTags($content);
 	$names = implode(",", $tp->getNames($tags));
 	$isInListview = isset($GLOBALS["lv"]);
-	if ($isInListview) {
-		$list = $GLOBALS["lv"]->f($name);
-	} else {
-		$list = $GLOBALS["we_doc"]->getElement($name);
-	}
+	$list = ($isInListview ? $GLOBALS["lv"]->f($name): $GLOBALS["we_doc"]->getElement($name));
+	
 	$out = "";
 	if ($list) {
 		$listarray = unserialize($list);
@@ -55,7 +52,7 @@ function we_tag_list($attribs, $content){
 			$tp->parseTags($tags, $foo, $listRef);
 
 			$buts = "";
-			if ($we_editmode) {
+			if ($GLOBALS['we_editmode']) {
 				$upbut = $we_button->create_button(
 						"image:btn_direction_up",
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','$name','$i');");
@@ -94,7 +91,7 @@ function we_tag_list($attribs, $content){
 
 		}
 	}
-	if ($we_editmode) {
+	if ($GLOBALS['we_editmode']) {
 		$plusbut = $we_button->create_button(
 				"image:btn_add_listelement",
 				"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name')");
@@ -107,7 +104,7 @@ function we_tag_list($attribs, $content){
 		}
 	}
 
-	$out .= ((!$isInListview) && $we_editmode) ? ('<input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . ']" value="' . htmlspecialchars(
+	$out .= ((!$isInListview) && $GLOBALS['we_editmode']) ? ('<input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . ']" value="' . htmlspecialchars(
 			$list) . '" /><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $name . '#content]" value="' . htmlspecialchars(
 			$content) . '" />' . $plusbut) : '';
 	//	When in SEEM - Mode add edit-Button to tag - textarea

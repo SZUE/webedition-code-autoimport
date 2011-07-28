@@ -1178,6 +1178,8 @@ class we_document extends we_root {
 					$val = time();
 				}
 				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date','[format][default]');
+				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tags/we_tag_date.inc.php');
+
 				return date(correctDateFormat($format,$val),$val);
 			case 'select':
 				if(defined('OBJECT_TABLE')) {

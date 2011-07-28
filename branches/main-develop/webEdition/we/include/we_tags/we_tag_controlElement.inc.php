@@ -2,6 +2,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev: 2814 $
+ * $Author: mokraemer $
+ * $Date: 2011-04-24 22:23:28 +0200 (So, 24. Apr 2011) $
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_parse_tag_noCache($attribs, $content) {
-	//this tag is ignored!
-	return $content;
+function we_parse_tag_controlElement($attribs,$content){
+	return '';
 }

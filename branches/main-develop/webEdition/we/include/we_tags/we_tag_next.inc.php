@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_next($attribs, $content) {
+	return '<?php print we_tag(\'next\',' . $attribs . ');?>' . $content . '<?php print we_tag(\'next\',array(\'_type\'=>\'stop\'));?>';
+}
 
-
-function we_tag_next($attribs, $content){
-	if (isset($GLOBALS["_we_voting_list"])){
-		return $GLOBALS["_we_voting_list"]->getNextLink($attribs);
-	}else{
-		return $GLOBALS["lv"]->getNextLink($attribs);
+function we_tag_next($attribs, $content) {
+	$_type = we_getTagAttribute('_type', $attribs);
+	switch ($_type) {
+		default:
+			if (isset($GLOBALS["_we_voting_list"])) {
+				return $GLOBALS["_we_voting_list"]->getNextLink($attribs);
+			} else {
+				return $GLOBALS["lv"]->getNextLink($attribs);
+			}
+		case 'stop':
+			if (isset($GLOBALS["_we_voting_list"])) {
+				return ($GLOBALS["_we_voting_list"]->hasNextPage() ? '</a>' : '');
+			} else {
+				return ($GLOBALS["lv"]->hasNextPage() && $GLOBALS["lv"]->close_a() ? '</a>' : '');
+			}
 	}
 }

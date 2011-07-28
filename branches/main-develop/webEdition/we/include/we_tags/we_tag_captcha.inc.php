@@ -99,11 +99,7 @@ function we_parse_tag_captcha($attribs, $content) {
 				));
 
 		$attribs['src'] = $file;
-		$attr='';
-		foreach($attribs as $key=>$val){
-			$attr.='\''.$key.'\'=>\''.$val.'\',';
-		}
-	return '<?php if(we_tag(\'captcha\',array(' . $attr . '))){' . $content . '} we_post_tag_listview();?>';
+	return '<?php if(we_tag(\'captcha\',' . we_tagParserPrintArray($attribs) . ')){' . $content . '} we_post_tag_listview();?>';
 }
 
 function we_tag_captcha($attribs, $content) {

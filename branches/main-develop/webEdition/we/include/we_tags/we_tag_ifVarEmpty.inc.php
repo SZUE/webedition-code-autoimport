@@ -105,10 +105,9 @@ function we_isVarNotEmpty($attribs){
 }
 
 function we_tag_ifVarEmpty($attribs, $content){
-	$foo = attributFehltError($attribs, 'match', 'ifVarEmpty');
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, 'match', 'ifVarEmpty'))) {
 		print($foo);
-		return '';
+		return false;
 	}
 	return !we_isVarNotEmpty($attribs);
 }

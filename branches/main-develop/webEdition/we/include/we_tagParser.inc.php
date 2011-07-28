@@ -430,34 +430,13 @@ class we_tagParser{
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "repeatShopItem" :
-						$code = $this->parserepeatShopitem($tag, $code, $attribs);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
 					case "addDelShopItem" :
 						$code = $this->parseadddelShopitem($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
-					case "controlElement" :
-					case "hidePages" :
-						$code = $this->parseRemoveTags($tag, $code);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
 					case "xmlnode" :
 						$code = $this->parseXMLNode($tag, $code, $attribs);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
-					case "voting" :
-						$code = $this->parseVotingTag($tag, $code, $attribs);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
-					case "votingList" :
-						$code = $this->parseVotingListTag($tag, $code, $attribs);
 						$this->ipos++;
 						$this->lastpos = 0;
 						break;
@@ -630,30 +609,6 @@ class we_tagParser{
 								'<?php if(isset($GLOBALS["we_tag_start_printVersion"]) && $GLOBALS["we_tag_start_printVersion"]){ $GLOBALS["we_tag_start_printVersion"]=0; ?></a><?php } ?>',
 								$code);
 					} else
-						if ($tagname == "next") {
-							if (isset($GLOBALS["_we_voting_list_active"]))
-								$code = str_replace(
-										$tag,
-										'<?php if($GLOBALS["_we_voting_list"]->hasNextPage() ): ?></a><?php endif; ?>',
-										$code);
-							else
-								$code = str_replace(
-										$tag,
-										'<?php if($GLOBALS["lv"]->hasNextPage() && $GLOBALS["lv"]->close_a() ) echo \'</a>\';?>',
-										$code);
-						} else
-							if ($tagname == "back") {
-								if (isset($GLOBALS["_we_voting_list_active"]))
-									$code = str_replace(
-											$tag,
-											'<?php if($GLOBALS["_we_voting_list"]->hasPrevPage() ): ?></a><?php endif; ?>',
-											$code);
-								else
-									$code = str_replace(
-											$tag,
-											'<?php if($GLOBALS["lv"]->hasPrevPage()  && $GLOBALS["lv"]->close_a() ) echo \'</a>\'; ?>',
-											$code);
-							} else
 								if ($tagname == "form") {
 									$code = str_replace(
 											$tag,
@@ -698,12 +653,6 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 																'<?php $GLOBALS["we_lv_conditionCount"]--;$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= ")"; ?>',
 																$code);
 													} else
-															if ($tagname == "repeatShopItem") {
-																$code = str_replace(
-																		$tag,
-																		'<?php } unset($GLOBALS["lv"]); ?>',
-																		$code);
-															} else
 																if ($tagname == "xmlnode") {
 																	$code = str_replace(
 																			$tag,
@@ -716,14 +665,6 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 																				'<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']); ?>',
 																				$code);
 																	} else
-																		if ($tagname == "votingList") {
-																			unset(
-																					$GLOBALS['_we_voting_list_active']);
-																			$code = str_replace(
-																					$tag,
-																					'<?php unset($GLOBALS[\'_we_voting_list\']); ?>',
-																					$code);
-																		} else
 																				if ($tagname == "content") {
 																					$code = str_replace(
 																							$tag,
@@ -964,9 +905,8 @@ if($GLOBALS["lv"]->avail): ?>';
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
 
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Customer','customer'), $code); }
 	}
 
@@ -1205,32 +1145,6 @@ if($GLOBALS["lv"]->avail): ?>';
 
 			return $this->replaceTag($tag, $code, $pre . $php);
 		} else { return str_replace($tag, modulFehltError('Shop','"orderitem"'), $code); }
-	}
-
-	function parserepeatShopitem($tag, $code, $attribs = "")
-	{
-		if (defined("SHOP_TABLE")) {
-			eval('$arr = array(' . $attribs . ');');
-
-			$shopname = we_getTagAttributeTagParser("shopname", $arr);
-
-			$php = '<?php
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
-		$_SESSION["we_shopname"]="' . $shopname . '";
-
-		if (!isset($GLOBALS["' . $shopname . '"])||empty($GLOBALS["' . $shopname . '"])) {
-			echo parseError(sprintf(g_l(\'parser\',\'[missing_createShop]\',\'repeatShopItem\'));
-			return;
-		}
-
-
-		$GLOBALS["lv"] = new shop($GLOBALS["' . $shopname . '"]);
-
-		while($GLOBALS["lv"]->next_record()) {
-	?>';
-
-			return $this->replaceTag($tag, $code, $php);
-		} else { return str_replace($tag, modulFehltError('Shop','"repeatShopitem"'), $code); }
 	}
 
 	##########################################################################################
@@ -1751,12 +1665,6 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 	 * @desc removes the complete tag from the template. Information is only saved in database
 	 *		used to remove we:hidePages and we:controlElement
 	 */
-	function parseRemoveTags($tag, $code)
-	{
-
-		return $this->replaceTag($tag, $code, '');
-	}
-
 	function parseXMLNode($tag, $code, $attribs)
 	{
 
@@ -1883,91 +1791,16 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 	}
 
-	function parseVotingTag($tag, $code, $attribs)
-	{
-		if (defined("VOTING_TABLE")) {
-			eval('$arr = array(' . $attribs . ');');
-
-			$id = we_getTagAttributeTagParser("id", $arr, 0);
-			$name = we_getTagAttributeTagParser("name", $arr, '');
-			$version = we_getTagAttributeTagParser("version", $arr, 0);
-
-			$foo = attributFehltError($arr, 'name', 'voting');
-			if ($foo)
-				return str_replace($tag, $foo, $code);
-
-
-
-			$php = '<?php
-
-						include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVoting.php\');
-						$version = "' . $version . '";
-						$version = ($version > 0) ? ($version - 1) : 0;
-						$GLOBALS["_we_voting_namespace"] = "' . $name . '";
-						$GLOBALS[\'_we_voting\'] = new weVoting();
-
-						if(isset($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\'])) {
-							$GLOBALS[\'_we_voting\'] = new weVoting($GLOBALS[\'we_doc\']->elements[$GLOBALS[\'_we_voting_namespace\']][\'dat\']);
-						} else if(' . $id . '!=0) {
-							$GLOBALS[\'_we_voting\'] = new weVoting(' . $id . ');
-						} else {
-							$__voting_matches = array();
-							if(preg_match_all(\'/_we_voting_answer_([0-9]+)_?([0-9]+)?/\', implode(\',\',array_keys($_REQUEST)), $__voting_matches)){
-								$GLOBALS[\'_we_voting\'] = new weVoting($__voting_matches[1][0]);
-							}
-						}
-						if(isset($GLOBALS[\'_we_voting\'])) $GLOBALS[\'_we_voting\']->setDefVersion("$version");
-					?>';
-
-			return $this->replaceTag($tag, $code, $php);
-		} else { return str_replace($tag, modulFehltError('Voting','"Voting"'), $code); }
-	}
-
-	function parseVotingListTag($tag, $code, $attribs)
-	{
-		if (defined("VOTING_TABLE")) {
-			eval('$arr = array(' . $attribs . ');');
-
-			$name = we_getTagAttributeTagParser('name', $arr, '');
-			$groupid = we_getTagAttributeTagParser('groupid', $arr, 0);
-			$rows = we_getTagAttributeTagParser('rows', $arr, 0);
-			$desc = we_getTagAttributeTagParser('desc', $arr, "false");
-			$order = we_getTagAttributeTagParser('order', $arr, 'PublishDate');
-			$subgroup = we_getTagAttributeTagParser("subgroup", $arr, "false");
-			$version = we_getTagAttributeTagParser("version", $arr, 1);
-			$offset = we_getTagAttributeTagParser("offset", $arr, 0);
-
-			$foo = attributFehltError($arr, 'name', 'votingList');
-			if ($foo)
-				return str_replace($tag, $foo, $code);
-
-			$version = ($version > 0) ? ($version - 1) : 0;
-			$GLOBALS['_we_voting_list_active'] = 1;
-
-			$php = '<?php
-				include_once($_SERVER["DOCUMENT_ROOT"] . \'/webEdition/we/include/we_modules/voting/weVotingList.php\');
-				$GLOBALS[\'_we_voting_list\'] = new weVotingList(\'' . $name . '\',' . $groupid . ',' . $version . ',' . $rows . ', ' . $offset . ',' . $desc . ',"' . $order . '",' . $subgroup . ');
-			?>';
-
-			return $this->replaceTag($tag, $code, $php);
-		} else { return str_replace($tag, modulFehltError('Voting','"VotingList"'), $code); }
-	}
-
 	function parseCacheIfTag($content)
 	{
-
-		$notInListview = !isset($GLOBALS["weListviewCacheActiveIf"]) || $GLOBALS["weListviewCacheActiveIf"] <= 0;
-
-		// caching type
-		if (isset($GLOBALS['we_doc']) && $notInListview && isset($GLOBALS['we_doc']->CacheType) && $GLOBALS['we_doc']->CacheType == "document" && $GLOBALS['we_doc']->CacheLifeTime > 0) {
-			return "<?php echo '" . $content . "'; ?>";
-
-		// caching disabled
-		} else {
 			return $content;
-
-		}
-
 	}
 
+}
+function we_tagParserPrintArray($array){
+	$ret='';
+	foreach($array as $key=>$val){
+		$ret.='\''.$key.'\'=>\''.$val.'\',';
+	}
+	return 'array('.$ret.')';
 }
