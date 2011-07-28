@@ -41,6 +41,8 @@ if (isset($_REQUEST["WE_LANGUAGE"]) && $_REQUEST["WE_LANGUAGE"] != "") {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
 
+$GLOBALS['WE_BACKENDCHARSET']='UTF-8';
+
 /*if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/css.inc.php")) {
 	exit("Could not include language file!");
 }*/
