@@ -265,71 +265,6 @@ if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSIO
 	print we_SEEM::parseDocument($contents);
 } else {	//	Not in webEdition, just show the file.
 
-
-	// use the Document Cache
-	if( ($we_doc->CacheType == 'document' || $we_doc->CacheType == 'full') && $we_doc->CacheLifeTime > 0) {
-		$GLOBALS['weCacheOutput'] = false;
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weCacheHelper.class.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weCache.class.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/cache/weDocumentCache.class.php");
-
-		$weDocumentCache = new weDocumentCache($we_ID, $we_doc->CacheLifeTime);
-		if($weDocumentCache->start()) {
-
-			// The weDocumentCache must be pushed to a stack because otherwise it could be
-			// overwritten in one of the potential includes
-			if(!isset($weDocumentCaches) ||!is_array($weDocumentCaches)) {
-				$weDocumentCaches = array();
-
-			}
-			array_push($weDocumentCaches, $weDocumentCache);
-
-			include(TEMPLATE_DIR . $tmplPath);
-
-			// get the last weDocumentCache from the stack
-			$weDocumentCache = array_pop($weDocumentCaches);
-
-			$weDocumentCache->end();
-
-		}
-
-		$GLOBALS['weCacheOutput'] = true;
-
-
-		//
-		// --> Start Glossary Replacement
-		//
-
-		if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) {
-			if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
-				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
-	
-				weGlossaryReplace::start();
-			}
-
-		}
-
-		//
-		// --> Include Content
-		//
-
-		include($weDocumentCache->getCacheFilename());
-
-		//
-		// --> Finish Glossary Replacement
-		//
-
-		if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) {
-			if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-				weGlossaryReplace::end($GLOBALS["we_doc"]->Language);
-			}
-
-		}
-
-	// do not cache the document
-	} else {
-
 		//
 		// --> Start Glossary Replacement
 		//
@@ -361,6 +296,5 @@ if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSIO
 
 		}
 
-	}
 
 }
