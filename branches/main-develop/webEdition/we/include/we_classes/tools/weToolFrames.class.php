@@ -561,7 +561,7 @@ class weToolFrames extends weModuleFrames {
 		'<title>'.WE_DEFAULT_TITLE.'</title>
 		<meta http-equiv="expires" content="0">
 		<meta http-equiv="pragma" content="no-cache">
-		<meta http-equiv="content-type" content="text/html; charset=' . g_l('charset',"[charset]") . '">' .
+		<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
 		"\n" . STYLESHEET . "\n" .
 		we_htmlElement::jsElement('',array('src'=>JS_DIR.'attachKeyListener.js')) .
 		$head;

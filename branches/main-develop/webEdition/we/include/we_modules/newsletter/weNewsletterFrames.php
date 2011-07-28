@@ -1662,7 +1662,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 		header("Pragma: no-cache;");
 		header("Cache-Control: post-check=0, post-check=0, false");
-		header("Content-Type: text/html; charset= " . ($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : g_l('charset',"[charset]")) . ";");
+		header("Content-Type: text/html; charset= " . ($this->View->newsletter->Charset!="" ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']) . ";");
 
 
 		if (!$hm) {

@@ -2034,7 +2034,7 @@ class searchtoolView extends weToolView
 				if ((isset($_SESSION["weSearch"]["keyword"]) && $_SESSION["weSearch"]["keyword"] != "") && (isset(
 						$_REQUEST["tab"]) && $_REQUEST["tab"] == 1)) {
 					$this->Model->searchDocSearch[0] = ($_SESSION["weSearch"]["keyword"]);
-					if (g_l('charset',"[charset]") == "UTF-8") {
+					if ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8") {
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
 					}
 
@@ -2079,7 +2079,7 @@ class searchtoolView extends weToolView
 				if ((isset($_SESSION["weSearch"]["keyword"]) && $_SESSION["weSearch"]["keyword"] != "") && (isset(
 						$_REQUEST["tab"]) && $_REQUEST["tab"] == 2)) {
 					$this->Model->searchTmplSearch[0] = $_SESSION["weSearch"]["keyword"];
-					if (g_l('charset',"[charset]") == "UTF-8") {
+					if ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8") {
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
 					}
 					unset($_SESSION["weSearch"]["keyword"]);
@@ -2372,7 +2372,7 @@ class searchtoolView extends weToolView
 						if (isset($searchText[0])) {
 							if ($whichSearch == "AdvSearch" && isset($searchText[$i])) {
 								// $searchString = $searchText[$i];  Bug#4422
-								if (g_l('charset',"[charset]") == "UTF-8") {
+								if ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8") {
 									$searchString = utf8_encode($searchText[$i]);
 								} else {
 									$searchString = $searchText[$i];
@@ -2380,7 +2380,7 @@ class searchtoolView extends weToolView
 
 							} else {
 								//$searchString = $searchText[0]; Bug#4422
-								if (g_l('charset',"[charset]") == "UTF-8") {
+								if ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8") {
 									$searchString = utf8_encode($searchText[0]);
 								} else {
 									$searchString = $searchText[0];
@@ -3131,7 +3131,7 @@ class searchtoolView extends weToolView
 		if ((isset($_SESSION["weSearch"]["keyword"]) && $_SESSION["weSearch"]["keyword"] != "") && (isset(
 				$_REQUEST["tab"]) && $_REQUEST["tab"] == 3)) {
 			$this->Model->searchAdvSearch[0] = $_SESSION["weSearch"]["keyword"];
-			if (g_l('charset',"[charset]") == "UTF-8") {
+			if ($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8") {
 				$this->Model->searchAdvSearch[0] = utf8_encode($this->Model->searchAdvSearch[0]);
 			}
 			unset($_SESSION["weSearch"]["keyword"]);

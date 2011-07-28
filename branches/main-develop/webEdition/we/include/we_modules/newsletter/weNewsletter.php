@@ -101,7 +101,7 @@ class weNewsletter extends weNewsletterBase{
 		$this->isEmbedImages="";
 		$this->Step=0;
 		$this->Offset=0;
-		$this->Charset=g_l('charset',"[charset]");
+		$this->Charset=$GLOBALS['WE_BACKENDCHARSET'];
 		$this->log=array();
 		$this->blocks=array();
 		$this->groups=array();
@@ -127,7 +127,7 @@ class weNewsletter extends weNewsletterBase{
 		$this->Subject=stripslashes($this->Subject);
 		$this->groups=weNewsletterGroup::__getAllGroups($newsletterID);
 		$this->blocks=weNewsletterBlock::__getAllBlocks($newsletterID);
-		if($this->Charset == "") $this->Charset=g_l('charset',"[charset]");
+		if($this->Charset == "") $this->Charset=$GLOBALS['WE_BACKENDCHARSET'];
 	}
 
 	/**

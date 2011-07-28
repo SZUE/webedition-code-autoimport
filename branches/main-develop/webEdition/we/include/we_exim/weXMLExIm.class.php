@@ -226,7 +226,7 @@
 
 		function getHeader($encoding=''){
 			if($encoding==''){
-				$encoding = g_l('charset',"[charset]");
+				$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 			}
 			return "<?xml version=\"1.0\" encoding=\"" . $encoding . "\" standalone=\"yes\"?>"."\n".
 					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">"."\n";

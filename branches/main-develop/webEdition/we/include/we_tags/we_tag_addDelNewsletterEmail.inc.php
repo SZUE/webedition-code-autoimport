@@ -283,7 +283,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				}
 
 
-				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"]!="" ? $mywedoc->elements["Charset"]["dat"] : g_l('charset',"[charset]");
+				$charset = isset($mywedoc->elements["Charset"]["dat"]) && $mywedoc->elements["Charset"]["dat"]!="" ? $mywedoc->elements["Charset"]["dat"] : $GLOBALS['WE_BACKENDCHARSET'];
 				$mailtext = we_getDocumentByID($mailid,"","",$charset);
 
 				if($f["subscribe_title"]){

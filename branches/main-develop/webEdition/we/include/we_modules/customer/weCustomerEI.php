@@ -90,7 +90,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 				$fields=$customer->getFieldsDbProperties();
 
 				if(isset($options["firstexec"]) && $options["firstexec"]==-999){
-					$xml_out='<?xml version="1.0" encoding="'.g_l('charset',"[charset]").'" standalone="yes" ?>'."\n";
+					$xml_out='<?xml version="1.0" encoding="'.$GLOBALS['WE_BACKENDCHARSET'].'" standalone="yes" ?>'."\n";
 					$xml_out.='<webEdition>'."\n";
 				}
 				else $xml_out="";
@@ -353,7 +353,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 											);
 									}
 									$rootnode["content"]=$value;
-									$code='<?xml version="1.0" encoding="'.g_l('charset',"[charset]").'" standalone="yes" ?>'."\n";
+									$code='<?xml version="1.0" encoding="'.$GLOBALS['WE_BACKENDCHARSET'].'" standalone="yes" ?>'."\n";
 									$code.=weCustomerEI::buildXMLElement(array($rootnode));
 									weCustomerEI::save2File($path."temp_$fcount.xml",$code,"wb");
 									$fcount++;

@@ -38,8 +38,7 @@ $GLOBALS["WE_CONTENT_TYPES"] = array(
 				"DefaultCode" => '<html>' . "\n\t" .
 				'<head>' . "\n\t\t" .
 				'<title></title>' . "\n\t\t" .
-				'<meta http-equiv="Content-Type" content="text/html; ' . (
-				g_l('charset', "[charset]") !== false ? g_l('charset', "[charset]") : "UTF-8") . '">' . "\n\t" .
+				'<meta http-equiv="Content-Type" content="text/html; charset="' .$GLOBALS['WE_BACKENDCHARSET'] . '">' . "\n\t" .
 				'</head>' . "\n\t" .
 				'<body>' . "\n\t" .
 				'</body>' . "\n" .
@@ -163,8 +162,7 @@ $GLOBALS["WE_CONTENT_TYPES"] = array(
 		'text/xml' => array(
 				"Extension" => ".xml",
 				"Permission" => 'NEW_TEXT',
-				"DefaultCode" => '<?xml version="1.0" encoding="' . (
-				g_l('charset', "[charset]") !== false ? g_l('charset', "[charset]") : "UTF-8") . '" ?>',
+				"DefaultCode" => '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" ?>',
 				"IsRealFile" => "1",
 				"IsWebEditionFile" => "1",
 				"Icon" => "link.gif",

@@ -125,7 +125,7 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 	define('WE_DEFAULT_HEAD', '<title>' . WE_DEFAULT_TITLE . '</title>' .
 					'<meta http-equiv="expires" content="0">' .
 					'<meta http-equiv="pragma" content="no-cache">' .
-					'<meta http-equiv="content-type" content="text/html; charset=' . g_l('charset', "[charset]") . '">' .
+					'<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
 					'<script type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>' .
 					'<script type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>'
 	);

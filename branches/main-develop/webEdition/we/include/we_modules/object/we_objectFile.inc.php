@@ -1477,7 +1477,7 @@ class we_objectFile extends we_document{
 			if ( isset($this->Charset) ) {	//	send charset which might be determined in template
 				$charset = $this->Charset;
 			} else {
-				$charset = g_l('charset',"[charset]");
+				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 			}
 
 			$value = $this->getElement($name);

@@ -125,7 +125,7 @@ class weCodeWizardSnippet {
 		if ($charset == "") {
 			$charset = $GLOBALS['we_doc']->getElement('Charset');
 			if ($charset == "") {
-				$charset = g_l('charset',"[charset]");
+				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 
 			}
 		}

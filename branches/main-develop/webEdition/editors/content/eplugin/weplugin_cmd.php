@@ -55,7 +55,7 @@
 				if(isset($_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat']) && !empty($_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])) {
 					$charset = $_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
 				} else {
-					$charset = g_l('charset',"[charset]");
+					$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				}
 
 				$out = we_htmlElement::jsElement('
@@ -186,7 +186,7 @@
 
 		print we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
-				$_meta_content_type = we_htmlElement::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . ($charset ? $charset : g_l('charset',"[charset]"))))
+				$_meta_content_type = we_htmlElement::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
 			).
 			we_htmlElement::htmlBody(array("bgcolor"=>"white","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0"),
 				$out

@@ -23,12 +23,12 @@
  */
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-header("Content-Type: text/html; charset=" . g_l('charset',"[charset]"));
+header("Content-Type: text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']);
 
 ?><html>
 <head>
 
-<meta http-equiv="content-type" content="text/html; charset=<?php echo g_l('charset',"[charset]"); ?>">
+<meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>">
 <?php
 
 print '<script type="text/javascript">

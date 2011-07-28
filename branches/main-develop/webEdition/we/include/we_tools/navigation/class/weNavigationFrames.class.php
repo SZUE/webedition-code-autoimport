@@ -2157,7 +2157,7 @@ function onFolderSelectionChangeJS(elem) {
 	{
 
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/charsetHandler.class.php');
-		$value = ((isset($this->Model->Charset) && $this->Model->Charset) ? $this->Model->Charset : g_l('charset',"[charset]"));
+		$value = ((isset($this->Model->Charset) && $this->Model->Charset) ? $this->Model->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 
 		$charsetHandler = new charsetHandler();
 

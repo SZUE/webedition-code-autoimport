@@ -98,11 +98,9 @@ class we_util_Mailer extends Zend_Mail {
 	 */
 	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0)
 	{
-		if (g_l('charset',"[charset]")!==false){
-			$this->setCharSet(g_l('charset',"[charset]"));
-		} else {
-			setCharSet('UTF-8');
-		}
+		
+		setCharSet($GLOBALS['WE_BACKENDCHARSET']);
+		
 		if (defined("WE_MAILER")) {
 			switch (WE_MAILER) {
 				case 'smtp' :

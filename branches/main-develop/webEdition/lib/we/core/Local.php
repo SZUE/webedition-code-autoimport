@@ -171,12 +171,12 @@ class we_core_Local {
 			return self::$_charset;
 		}
 		$lang = self::getComputedUILang();
-		if (g_l('charset',"[charset]")===false) {
+		if ($GLOBALS['WE_BACKENDCHARSET']===false) {
 			//we_util_Log::errorlog('Error: No charset language file found, using UTF-8 now!');
 			self::$_charset = 'UTF-8';
 			return self::$_charset;
 		}
-		self::$_charset = g_l('charset',"[charset]");
+		self::$_charset = $GLOBALS['WE_BACKENDCHARSET'];
 		return self::$_charset;
 	}
 

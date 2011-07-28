@@ -810,7 +810,7 @@ function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true)
 			array(
 
 					"http-equiv" => "content-type",
-					"content" => "text/html; charset=" . ($charset ? $charset : g_l('charset',"[charset]"))
+					"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
 			));
 	$_meta_imagetoolbar_type = we_htmlElement::htmlMeta(array(
 		"http-equiv" => "imagetoolbar", "content" => "no"

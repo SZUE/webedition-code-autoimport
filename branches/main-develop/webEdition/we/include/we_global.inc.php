@@ -3282,7 +3282,7 @@ function g_l($name, $specific, $useEntities=true) {
 			return false;
 		}
 	}
-	t_e('warning','Requested lang file '.$file.' not found!');
+	//t_e('warning','Requested lang file '.$file.' not found!');
 	return '';
 }
 

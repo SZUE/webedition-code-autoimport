@@ -33,7 +33,7 @@ print
 		'<style type="text/css">div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . g_l('css','[font_family]') . ';}</style>';
 print '</head><body bgcolor="#F1F5FF">';
 
-$rss = & new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], g_l('charset',"[charset]"));
+$rss = & new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], $GLOBALS['WE_BACKENDCHARSET']);
 $rss->parse();
 $rss_out = '<div id="rss">';
 foreach ($rss->getItems() as $item) {

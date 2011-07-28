@@ -293,7 +293,7 @@ if ($we_editmode) {
 		}
 
 		function getCharset(){
-			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : g_l('charset',"[charset]"); ?>";
+			return "<?php print !empty($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
 		}
 
 		// ############ CodeMirror Functions ################
