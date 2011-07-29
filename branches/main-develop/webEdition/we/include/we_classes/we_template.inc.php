@@ -285,9 +285,6 @@ class we_template extends we_document
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tag.inc.php");
 	we_templateInit();?>';
-		if($this->CacheType=="document" && $this->CacheLifeTime > 0) {
-			$pre_code .= "<?php echo '".str_replace("'", "\'", $pre_code)."'; ?>";
-		}
 
 
 		$head = '<?php we_templateHead();?>';

@@ -121,9 +121,9 @@ if(!$INCLUDE){
 		case "dt_add_cat":
 			$INCLUDE = "we_editors/doctypeEdit.inc.php";
 			break;
-		case "clear_cache":
+		/*FIXME: remove case "clear_cache":
 			$INCLUDE = "clear_cache.inc.php";
-			break;
+			break;*/
 		case "rebuild":
 			$INCLUDE = "we_editors/we_rebuild.inc.php";
 			break;

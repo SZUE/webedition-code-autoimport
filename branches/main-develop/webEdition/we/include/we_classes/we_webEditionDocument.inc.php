@@ -888,27 +888,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 				$doc = $this->i_getDocument();
 
-				// Check if the cache type is "document" and the file extension is not .php
-				// if so, eval the source code because there is php code inside which have
-				// to be executed!!!
-				// ---> Start
-				$sql = "SELECT CacheType, Extension FROM " . TEMPLATES_TABLE . " WHERE ID = '" . abs($this->TemplateID) . "'";
-				$this->DB_WE->query($sql);
-				$CacheType = "none";
-				$Extension = ".php";
-				while($this->DB_WE->next_record()) {
-					$CacheType = $this->DB_WE->f("CacheType");
-					$Extension = $this->DB_WE->f("Extension");
-				}
-
-				if($CacheType == "document" && $Extension != ".php") {
-					ob_start();
-					eval("?>" . $doc);
-					$doc = ob_get_contents();
-					ob_end_clean();
-				}
-				// ---> End
-
 				//
 				// --> Glossary Replacement
 				//
