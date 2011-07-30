@@ -49,7 +49,7 @@ if (isset($_REQUEST["we_cmd"][6])) {
 	print $_REQUEST["we_cmd"][1];
 	?>&we_cmd[5]=<?php
 	print $_REQUEST["we_cmd"][5];
-	?><?php
+	
 
 	print $_we_cmd6;
 	?>";

@@ -82,9 +82,8 @@ if($we_doc->CSS){
 }
 print STYLESHEET;
 
-?>
 
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 </head>
 
 <body>

@@ -31,9 +31,8 @@ $row->addElement($input);
 
 <?php if($TABLEEXISTS) { ?>
 $row->addElement(_setupDirChooser($this, $translate->_('Folder'), 'ParentID', 'ParentPath'));
-<?php } ?>
-
-<?php if(!$TABLEEXISTS) { ?>
+<?php } 
+if(!$TABLEEXISTS) { ?>
 $info = new we_ui_layout_NoteDiv();
 $info->setType("info");
 $info->setStyle("margin:30px;");

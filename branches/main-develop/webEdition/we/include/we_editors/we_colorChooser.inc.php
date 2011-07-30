@@ -53,9 +53,8 @@ function setColor(){
 		opener._EditorFrame.setEditorIsHot(true);
 		opener.we_cmd("reload_editpage");
 
-	<?php } ?>
-
-<?php }else{ ?>
+	<?php } 
+	}else{ ?>
 	window.returnValue = document.we_form.colorvalue.value;
 <?php } ?>
 	window.close();

@@ -378,9 +378,8 @@ $form = '
 </form>
 ';
 
-?>
 
-<?php
+
 print
 		'</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">

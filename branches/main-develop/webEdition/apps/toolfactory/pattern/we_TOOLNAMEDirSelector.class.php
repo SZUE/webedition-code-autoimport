@@ -180,7 +180,7 @@ function writeBody(d){
 function queryString(what,id,o,we_editDirID){
 	if(!o) o=top.order;
 	if(!we_editDirID) we_editDirID="";
-	return '<?php print '<?php print $_SERVER["SCRIPT_NAME"]; ?>';?>?what='+what+'&rootDirID=<?php print '<?php print $this->rootDirID; ?><?php if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>';?>&table=<?php print '<?php print $this->table; ?>';?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+	return '<?php print '<?php print $_SERVER["SCRIPT_NAME"]; ?>';?>?what='+what+'&rootDirID=<?php print '<?php print $this->rootDirID;  if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>';?>&table=<?php print '<?php print $this->table; ?>';?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 }
 
 <?php print '<?php';?>

@@ -277,9 +277,8 @@ fr.write("&nbsp;");
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 			fr.write("</a>");
 
-<?php } ?>
-
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
+<?php } 
+if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
 			fr.write("<A HREF=\"javascript://\" onClick=\"doFolderClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 
 <?php } ?>

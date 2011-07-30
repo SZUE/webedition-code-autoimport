@@ -95,9 +95,8 @@ print STYLESHEET; ?>
 </head>
 
 <body class="weEditorBody" onUnload="doUnload()">
-	<form name="we_form" method="post"><?php $GLOBALS["we_doc"]->pHiddenTrans(); ?>
-
-<?php
+	<form name="we_form" method="post"><?php $GLOBALS["we_doc"]->pHiddenTrans(); 
+	
 if($_editMode){
 
 	echo we_multiIconBox::_getBoxStart("100%", g_l('weClass',"[edit]"), uniqid(""),30);

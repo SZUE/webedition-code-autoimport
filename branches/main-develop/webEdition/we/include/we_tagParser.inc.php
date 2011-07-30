@@ -196,8 +196,6 @@ class we_tagParser{
 				$this->parseTag($code, $postName);
 			}
 		}
-		//remove unwanted/-needed start/stop tags
-		$code=preg_replace("|;? *\?>\n?<\?php ?|si",";\n",$code);
 	}
 
 	function checkOpenCloseTags($TagsInTemplate, &$code){
@@ -438,7 +436,7 @@ class we_tagParser{
 						$attribs = "array(" . rtrim($attribs,',') . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-														$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')){ ?>\'; ?>',$code);
+														$code = str_replace($tag,'<?php if(we_tag("'.$tagname.'", '.$attribs.')){ ?>',$code);
 														$this->ipos++;
 														$this->lastpos = 0;
 													} else
@@ -585,7 +583,7 @@ class we_tagParser{
 
 			} else
 				if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-					$code = str_replace($tag,'<?php echo "<?php } ?>"; ?>',$code);
+					$code = str_replace($tag,'<?php } ?>',$code);
 				} else
 					if ($tagname == "printVersion") {
 						$code = str_replace(

@@ -203,9 +203,8 @@ if($we_ContentType == "image/*"){
 <script  type="text/javascript"><!--
 <?php if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
-} ?>
-
-<?php if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
+} 
+if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
  if($we_doc->ID){?>
 	var ref;
 	if(opener.top.opener && opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top;

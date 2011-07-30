@@ -467,7 +467,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 ?>
 	<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onUnload="doUnload()">
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no">
-		<frame <?php print setOnload(); ?> src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); ?><?php isset($parastr) ? print "&" . $parastr : print ""; ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
+		<frame <?php print setOnload(); ?> src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); isset($parastr) ? print "&" . $parastr : print ""; ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 		<frame  src="about:blank" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php print ( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ? "true" : "false" ) ?>" name="editFooter" scrolling=no noresize>
 	</frameset>
@@ -480,9 +480,9 @@ if(!isset($we_doc->elements['data']['dat'])){
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no">
 		<?php if ($showContentEditor) { ?>
 			<frame <?php print setOnload(); ?> src="about:blank" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
-			<frame  src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); ?><?php isset($parastr) ? print "&" . $parastr : print ""; ?>" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize>
+			<frame  src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); isset($parastr) ? print "&" . $parastr : print ""; ?>" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 		<?php } else { ?>
-			<frame <?php print setOnload(); ?> src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); ?><?php isset($parastr) ? print "&" . $parastr : print ""; ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
+			<frame <?php print setOnload(); ?> src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_editor"); isset($parastr) ? print "&" . $parastr : print ""; ?>" name="editor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 			<frame  src="about:blank" name="contenteditor_<?php print $_REQUEST["frameId"]; ?>" noresize>
 		<?php }  ?>
 		<frame src="<?php $we_doc->pUrl(WEBEDITION_DIR."we_cmd.php?we_cmd[0]=load_edit_footer"); ?>" name="editFooter" scrolling=no noresize>

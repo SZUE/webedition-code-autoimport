@@ -31,12 +31,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVer
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 /* a class for handling templates */
-class we_template extends we_document
-{
-    //######################################################################################################################################################
-    //##################################################################### Variables ######################################################################
-    //######################################################################################################################################################
-
+class we_template extends we_document{
     /* Name of the class => important for reconstructing the class from outside the class */
     var $ClassName="we_template";
 
@@ -56,16 +51,8 @@ class we_template extends we_document
     var $IncludedTemplates = "";
 	var $ContentType="text/weTmpl";
 
-    //######################################################################################################################################################
-    //##################################################################### FUNCTIONS ######################################################################
-    //######################################################################################################################################################
-
-
-    //##################################################################### INIT FUNCTIONS ######################################################################
-
    /* Constructor */
-    function we_template()
-    {
+    function we_template(){
         $this->we_document();
         $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
@@ -77,7 +64,9 @@ class we_template extends we_document
     }
 
     function copyDoc($id){
-  		if($id){
+  		if(!$id){
+				return;
+			}
 			$temp = new we_template();
 			$temp->InitByID($id,TEMPLATES_TABLE);
 			$parentIDMerk=$this->ParentID;
@@ -100,7 +89,6 @@ class we_template extends we_document
 				$this->setElement($k,$temp->getElement($k),"txt");
 			}
 			$this->EditPageNr=0;
-		}
     }
 
 
@@ -110,8 +98,7 @@ class we_template extends we_document
     //##################################################################### EDITOR FUNCTION ######################################################################
 
     /* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
-    function editor()
-    {
+    function editor() {
         switch($this->EditPageNr){
             case WE_EDITPAGE_PROPERTIES:
                 return "we_templates/we_editor_properties.inc.php";
@@ -150,26 +137,27 @@ class we_template extends we_document
 	function checkEndtags($tagname,$eq,$tags){
 		$start=0;
 		$end=0;
-		for($i=0;$i<sizeof($tags);$i++){
-			if(strpos($tags[$i],"ifNoJavaScript")===false){
+		foreach($tags as $tag){
+			if(strpos($tag,'ifNoJavaScript')===false){
 				if($eq){
-					if(ereg('<we:'.$tagname.'[> ]',$tags[$i])) $start ++;
-					if(ereg('</we:'.$tagname.'[> ]',$tags[$i])) $end ++;
+					if(ereg('<we:'.$tagname.'[> ]',$tag)) $start ++;
+					if(ereg('</we:'.$tagname.'[> ]',$tag)) $end ++;
 				}else{
-					if(strpos($tags[$i],'<we:'.$tagname)!==false) $start ++;
-					if(strpos($tags[$i],'</we:'.$tagname)!==false) $end ++;
+					if(strpos($tag,'<we:'.$tagname)!==false) $start ++;
+					if(strpos($tag,'</we:'.$tagname)!==false) $end ++;
 				}
 			}
 		}
 		if($start != $end){
 			return parseError(sprintf($this->Text.': '.g_l('parser','[start_endtag_missing]'),$tagname.((!$eq) ? "..." : "")));
 		}
-		return "";
+		return '';
 	}
+	
 	function removeDoppel($tags){
 		$out = array();
-		for($i=0;$i<sizeof($tags);$i++){
-			if(!in_array($tags[$i],$out)) array_push($out,$tags[$i]);
+		foreach($tags as $tag){
+			if(!in_array($tag,$out)) array_push($out,$tag);
 		}
 		return $out;
 	}
@@ -177,21 +165,20 @@ class we_template extends we_document
 	function findIfStart($tags,$nr){
 		if ($nr == 0) {
 			return -1;
-		} else {
-			$foo = array();
-			$regs = array();
-			for ($i = $nr; $i >= 0; $i--) {
-				if (ereg('</we:if([^> ]+) ?>?', $tags[$i], $regs)) {
-					$foo[trim($regs[1])] = isset($foo[trim($regs[1])]) ? abs($foo[trim($regs[1])]) + 1 : 1;
-				} else if (ereg('<we:if([^> ]+) ?>?', $tags[$i], $regs)) {
-					$tagname = trim($regs[1]);
-					if (sizeof($foo) == 0) {
-						return $i;
-					} else if (isset($foo[$tagname]) && abs($foo[$tagname])) {
-						$foo[$tagname] = abs($foo[$tagname]) - 1;
-					} else {
-						return $i;
-					}
+		} 
+		$foo = array();
+		$regs = array();
+		for ($i = $nr; $i >= 0; $i--) {
+			if (ereg('</we:if([^> ]+) ?>?', $tags[$i], $regs)) {
+				$foo[trim($regs[1])] = isset($foo[trim($regs[1])]) ? abs($foo[trim($regs[1])]) + 1 : 1;
+			} else if (ereg('<we:if([^> ]+) ?>?', $tags[$i], $regs)) {
+				$tagname = trim($regs[1]);
+				if (sizeof($foo) == 0) {
+					return $i;
+				} else if (isset($foo[$tagname]) && abs($foo[$tagname])) {
+					$foo[$tagname] = abs($foo[$tagname]) - 1;
+				} else {
+					return $i;
 				}
 			}
 		}
@@ -199,7 +186,9 @@ class we_template extends we_document
 	}
 
 	function findIfEnd($tags,$nr){
-		if($nr == sizeof($tags)) return -1;
+		if($nr == sizeof($tags)){
+			return -1;
+		}
 		$foo = array();
 		$regs = array();
 		for($i = $nr;$i < sizeof($tags);$i++){
@@ -221,15 +210,18 @@ class we_template extends we_document
 		for($i=0;$i<sizeof($tags);$i++){
 			if(strpos($tags[$i],'<we:else')!==false){
 				$ifStart = $this->findIfStart($tags,$i);
-				if($ifStart == -1) return parseError(g_l('parser','[else_start]'));
-				if($this->findIfEnd($tags,$i) == -1 ) return parseError(g_l('parser','[else_end]'));
+				if($ifStart == -1){
+					return parseError(g_l('parser','[else_start]'));
+				}
+				if($this->findIfEnd($tags,$i) == -1 ){
+					return parseError(g_l('parser','[else_end]'));
+				}
 			}
 		}
-		return "";
+		return '';
 	}
 
-	function parseTemplate()
-	{
+	function parseTemplate(){
 	    $code = $this->getTemplateCode(true);
 
 	 	$tp = new we_tagParser();
@@ -239,8 +231,12 @@ class we_template extends we_document
 		/*Bug #4432, #4186
 		$code = eregi_replace('(</?form[^>]*>)','<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>\1<?php } ?>',$code);
 		 */
-		$foo = $this->checkElsetags($tags);if($foo) return $foo;
-		$foo = $this->checkEndtags("if",0,$tags);if($foo) return $foo;
+		if(($foo = $this->checkElsetags($tags))){
+			return $foo;
+		}
+		if(($foo = $this->checkEndtags('if',0,$tags))){
+			return $foo;
+		}
 
 		$d = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags");
 		$needEndtags=array();
@@ -261,16 +257,12 @@ class we_template extends we_document
 
 		$d->close();
 		foreach($needEndtags as $tagname){
-			$foo = $this->checkEndtags($tagname,1,$tags);if($foo) return $foo;
+			if(($foo = $this->checkEndtags($tagname,1,$tags))){
+				return $foo;
+			}
 		}
 
 		$tp->parseTags($tags,$code);
-
-		/*$tags = $this->removeDoppel($tags);
-		for($i=0;$i<sizeof($tags);$i++){
-			$tp->parseTag($tags[$i],$code);
-		}*/
-
 
 		// Code must be executed every time a template is included,
 		// so it must be executed during the caching process when a cacheable document
@@ -293,34 +285,34 @@ class we_template extends we_document
 
 		$postContent = '<?php we_templatePostContent(); ?>';
 
-		if($this->hasStartAndEndTag("html",$code) && $this->hasStartAndEndTag("head",$code) && $this->hasStartAndEndTag("body",$code)){
+		if($this->hasStartAndEndTag("html",$code) && $this->hasStartAndEndTag('head',$code) && $this->hasStartAndEndTag('body',$code)){
 			$pre_code = '<?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>'.$pre_code;
 
 			//#### parse base href
 			$code = eregi_replace('(</title>)','\1'.'<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>',$code);
 
-			$code = eregi_replace("</head>","$head</head>",$code);
+			$code = str_replace('</head>',"$head</head>",$code);
 
-			$code = str_replace("?>","__WE_?__WE__",$code);
-			$code = str_replace("=>","__WE_=__WE__",$code);
+			$code = str_replace('?>','__WE_?__WE__',
+							str_replace('=>','__WE_=__WE__',$code));
 
 			$code = eregi_replace("(<body[^>]*)(>)","\\1<?php if(isset(\$GLOBALS[\"we_editmode\"]) && \$GLOBALS[\"we_editmode\"]) print ' onUnload=\"doUnload()\"'; ?>\\2$preContent",$code);
 
-			$code = str_replace("__WE_?__WE__","?>",$code);
-			$code = str_replace("__WE_=__WE__","=>",$code);
+			$code = str_replace('__WE_?__WE__','?>',
+							str_replace('__WE_=__WE__','=>',$code));
 
-			$code = eregi_replace("(</body>)","$postContent\\1",$code);
+			$code = str_replace('</body>',"$postContent</body>",$code);
 
 		}else if(!$this->hasStartAndEndTag("html",$code) && !$this->hasStartAndEndTag("head",$code) && !$this->hasStartAndEndTag("body",$code)){
-			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])){ ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>'.$head.'</head>
+			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>'.$head.'</head>
 <body <?php if(isset($we_editmode) && $we_editmode) print " onUnload=\"doUnload()\""; ?>>
 '.$preContent.'<?php } ?>'.$code.'<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)){ ?>'.$postContent.'
-</body></html><?php $WE_HTML_HEAD_BODY = true; ?><?php } ?>';
+</body></html><?php $WE_HTML_HEAD_BODY = true; } ?>';
 
 		}else{
 			return parseError(g_l('parser','[html_tags]'));
 		}
-		$code .= '<?php we_templatePost(); ?>';
+		$code .= '<?php we_templatePost();';
 
 		return $pre_code.$code;
 	}
@@ -354,8 +346,8 @@ class we_template extends we_document
 
 	function i_getDocument($includepath=""){
 		$this->_updateCompleteCode();
-		$d = $this->parseTemplate();
-        return $d;
+		/*remove unwanted/-needed start/stop parser tags (?><php)*/
+		return preg_replace("/(;|{|})( |\t)*\?>(\n)*<\?php ?/si","\\1\n",$this->parseTemplate());
   	}
 
 	function i_writeSiteDir($doc){
