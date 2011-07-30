@@ -165,15 +165,15 @@ class we_util_Sys_Server extends we_util_Sys
 	}
 
 	/**
-	 * identify docroot, either via $_SERVER["DOCUMENT_ROOT"] or path reproduction
+	 * identify docroot, either via $_SERVER['DOCUMENT_ROOT'] or path reproduction
 	 * 
 	 * @return string complete path of the servers docroot without a trailing slash
 	 * @author Alexander Lindenstruth
 	 */
 	public static function getDocroot()
 	{
-		if (isset($_SERVER["DOCUMENT" . "_ROOT"]) && !empty($_SERVER["DOCUMENT" . "_ROOT"])) {
-			return $_SERVER["DOCUMENT" . "_ROOT"];
+		if (isset($_SERVER["DOCUMENT" . "_ROOT"]) && !empty($_SERVER['DOCUMENT_ROOT'])) {
+			return $_SERVER['DOCUMENT_ROOT'];
 		} else {
 			// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
 			return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);

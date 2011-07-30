@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 protect();
 ?>
 
@@ -48,7 +48,7 @@ protect();
 <?php
     if (defined("MESSAGING_SYSTEM")) {
         include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-        include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+        include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
         $messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
         $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
         $messaging->add_msgobj('we_message', 1);

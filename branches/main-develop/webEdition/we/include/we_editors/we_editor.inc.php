@@ -25,7 +25,7 @@
 $we_EDITOR = true;
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 protect();
 // prevent persmissions overriding
@@ -35,7 +35,7 @@ $perms=$_SESSION["perms"];
 
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 $_insertReloadFooter = "";
 
@@ -211,10 +211,10 @@ switch($_REQUEST["we_cmd"][0]) {
 		$we_doc->convert("jpg",$_REQUEST["we_cmd"][1]);
 		break;
 	case "doImage_crop":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/PEAR.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/Transform.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/Transform/Driver/GD.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/PEAR.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/Transform.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/Transform/Driver/GD.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 		$filename = TMP_DIR . '/'. weFile::getUniqueId();
 
@@ -298,10 +298,10 @@ if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "pub
 	$we_include = $we_doc->editor();
 	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
     ob_start();
-    if(substr(strtolower($we_include),0,strlen($_SERVER["DOCUMENT_ROOT"])) == strtolower($_SERVER["DOCUMENT_ROOT"])) {
+    if(substr(strtolower($we_include),0,strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])) {
     	include($we_include);
     }else{
-     	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/".$we_include);
+     	include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/".$we_include);
     }
     $contents = ob_get_contents();
     ob_end_clean();
@@ -459,12 +459,12 @@ else {
 
 						if($_REQUEST["we_cmd"][2]) {
 							//this is the second call to save_document (see next else command)
-							include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_template_save_question.inc.php"); // this includes the gui for the save question dialog
+							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_template_save_question.inc.php"); // this includes the gui for the save question dialog
 							$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 							exit();
 						} else if(!$_REQUEST["we_cmd"][3] && $somethingNeedsToBeResaved) {
 							// this happens when the template is saved and there are documents which use the template and "automatic rebuild" is not checked!
-							include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_TemplateSave.inc.php"); // this calls again we_cmd with save_document and sets we_cmd[2]
+							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_TemplateSave.inc.php"); // this calls again we_cmd with save_document and sets we_cmd[2]
 							$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 							exit();
 						} else {
@@ -494,13 +494,13 @@ else {
 						if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2) {
 							$we_responseText = g_l('weEditor',"[text/weTmpl][no_template_save]");
 							$we_responseTextType = WE_MESSAGE_ERROR;
-							include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");exit();
+							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");exit();
 						}
 						if(isset($_REQUEST["we_cmd"][6]) && $_REQUEST["we_cmd"][6]) {
 							$we_JavaScript .= "\n".$_REQUEST["we_cmd"][6]."\n";
 						}
 					} else {
- 						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+ 						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 						if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType=="application/*" && in_array($we_doc->Extension, makeArrayFromCSV($GLOBALS["WE_CONTENT_TYPES"]["text/html"]["Extension"]))) {
 								$we_JavaScript = "";
 								$we_responseText = sprintf(g_l('weEditor',"[application/*][response_save_wrongExtension]"),$we_doc->Path,$we_doc->Extension);
@@ -513,13 +513,13 @@ else {
 							if (!$_SESSION["perms"]["ADMINISTRATOR"] && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile"  && !in_workspace($we_doc->ParentID,get_ws($we_doc->Table),$we_doc->Table)) {
 								$we_responseText = g_l('alert','['.FILE_TABLE.'][not_im_ws]');
 								$we_responseTextType = WE_MESSAGE_ERROR;
-								include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");
+								include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 								exit();
 							}
 							if(!$we_doc->userCanSave()) {
 								$we_responseText = g_l('alert',"[access_denied]");
 								$we_responseTextType = WE_MESSAGE_ERROR;
-								include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");
+								include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 								exit();
 							}
 
@@ -545,7 +545,7 @@ else {
 									else {
 										if($we_doc->we_publish()==true) {
 											if(defined("WORKFLOW_TABLE")) {
-												include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/"."weWorkflowUtility.php");
+												include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 												if(weWorkflowUtility::inWorkflow($we_doc->ID,$we_doc->Table)){
 													weWorkflowUtility::removeDocFromWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],"");
 												}
@@ -653,7 +653,7 @@ else {
 					trigger_schedule();
 					$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n";// save/ rename a document
 				}
-				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_save.inc.php");
+				include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 
 			} else {
 				exit(" ContentType Missing !!! ");
@@ -689,13 +689,13 @@ else {
 				$we_responseTextType = WE_MESSAGE_ERROR;
 
 			}
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_editor_publish.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_publish.inc.php");
 			break;
 		default:
 			if($we_include = $we_doc->editor()) {  // object does not handle html-output, so we need to include a template( return value)
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
-				$_serverDocRoot = $_SERVER["DOCUMENT_ROOT"];
-				if($_serverDocRoot!="" && substr(strtolower($we_include),0,strlen($_SERVER["DOCUMENT_ROOT"])) == strtolower($_SERVER["DOCUMENT_ROOT"])) {
+				$_serverDocRoot = $_SERVER['DOCUMENT_ROOT'];
+				if($_serverDocRoot!="" && substr(strtolower($we_include),0,strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])) {
 
                     ob_start();
 					if((!defined("WE_CONTENT_TYPE_SET")) && isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){	//	send charset which might be determined in template
@@ -758,9 +758,9 @@ else {
 				} else {
 				    //  These files were edited only in source-code mode, so no seeMode is needed.
 					if (preg_match('#^/webEdition/we/#',$we_include)) {
-						include($_SERVER["DOCUMENT_ROOT"].$we_include);
+						include($_SERVER['DOCUMENT_ROOT'].$we_include);
 					} else {
-						include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/".$we_include);
+						include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/".$we_include);
 					}
 					print $_insertReloadFooter;
 				}

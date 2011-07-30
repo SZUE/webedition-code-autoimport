@@ -23,12 +23,12 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 include_once(WE_CUSTOMER_MODULE_DIR."weCustomerEI.php");
@@ -699,13 +699,13 @@ class weCustomerEIWizard{
 			if(isset($_FILES['upload']) && $_FILES["upload"]["size"]){
 				// creating a temp name and copy the file to the we tmp directory with the new temp name
 				$filename="/webEdition/we/tmp/".md5(uniqid(rand(),1)).$ext;
-				$filesource=$_SERVER["DOCUMENT_ROOT"].$filename;
+				$filesource=$_SERVER['DOCUMENT_ROOT'].$filename;
 				move_uploaded_file($_FILES['upload']["tmp_name"],$filesource);
 			}
 		}
 		else{
 			$filename=$source;
-			$filesource=$_SERVER["DOCUMENT_ROOT"].$filename;
+			$filesource=$_SERVER['DOCUMENT_ROOT'].$filename;
 		}
 
 		$parts=array();
@@ -727,7 +727,7 @@ class weCustomerEIWizard{
 				$_file_encoding->addOption("mac", g_l('modules_customer','[mac]'));
 				$_file_encoding->selectOption($csv_lineend);
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/charsetHandler.class.php");
 				$_charsetHandler = new charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				$charset=$GLOBALS['WE_BACKENDCHARSET'];
@@ -753,7 +753,7 @@ class weCustomerEIWizard{
 
 			}else{
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
 
 				//invoke parser
 				$xp = new XML_Parser($filesource);
@@ -1027,7 +1027,7 @@ class weCustomerEIWizard{
 											),
 											$we_button->create_button("cancel", "javascript:top.close();")
 			);
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_progressBar.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 			$text = g_l('modules_customer','[exporting]');
 			$progress = 0;
 			$progressbar = new we_progressBar($progress);
@@ -1095,7 +1095,7 @@ class weCustomerEIWizard{
 											),
 											$we_button->create_button("cancel", "javascript:top.close();")
 				);
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_progressBar.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 				$text = g_l('modules_customer','[importing]');
 				$progress = 0;
 				$progressbar = new we_progressBar($progress);
@@ -1341,7 +1341,7 @@ class weCustomerEIWizard{
 					if(count($customers)){
 						$options=array();
 						$options["customers"]=array();
-						$options["filename"]=$_SERVER["DOCUMENT_ROOT"].$path."/".$filename;
+						$options["filename"]=$_SERVER['DOCUMENT_ROOT'].$path."/".$filename;
 						$options["format"]=$file_format;
 						$options["firstexec"]=$firstexec;
 
@@ -1407,7 +1407,7 @@ class weCustomerEIWizard{
 
 					if($file_format=="gxml"){
 
-						$file_name=$_SERVER["DOCUMENT_ROOT"].$path."/".$filename;
+						$file_name=$_SERVER['DOCUMENT_ROOT'].$path."/".$filename;
 						weCustomerEI::save2File($file_name,"</webEdition>");
 					}
 
@@ -1755,7 +1755,7 @@ class weCustomerEIWizard{
 		');
 
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$js.=we_htmlElement::jsElement($this->topFrame.'.customers="'.(isset($_REQUEST["customers"]) ? $_REQUEST["customers"] : "").'";');
 

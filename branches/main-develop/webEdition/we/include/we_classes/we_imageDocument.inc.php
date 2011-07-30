@@ -23,18 +23,18 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 if (!isset($GLOBALS["WE_IS_DYN"])) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 }
 
 /**
@@ -124,7 +124,7 @@ class we_imageDocument extends we_binaryDocument {
 		if (parent::we_save($resave)) {
 			if($docChanged){
 				$thumbs = $this->getThumbs();
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.php");
 				deleteThumbsByImageID($this->ID);
 				if(count($thumbs)){
 					foreach($thumbs as $thumbID) {
@@ -157,7 +157,7 @@ class we_imageDocument extends we_binaryDocument {
 			}else{
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . "/" . $this->Filename . $this->Extension;
-				return we_thumbnail::getimagesize($_SERVER["DOCUMENT_ROOT"]. (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
+				return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT']. (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
 		} else if(isset($this->elements["data"]["dat"]) && $this->elements["data"]["dat"]){
 			$arr = we_thumbnail::getimagesize($this->elements["data"]["dat"]);
@@ -467,7 +467,7 @@ class we_imageDocument extends we_binaryDocument {
 			$create = true;
 
 			// we need to create a thumbnail - check if image exists
-			if ( ($thumbname = $this->getElement("thumbnail")) && ($img_path && file_exists($_SERVER["DOCUMENT_ROOT"].$img_path)) ) {
+			if ( ($thumbname = $this->getElement("thumbnail")) && ($img_path && file_exists($_SERVER['DOCUMENT_ROOT'].$img_path)) ) {
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByThumbName($thumbname,$this->ID,$this->Filename,$this->Path,$this->Extension,0,0);
 				if($thumbObj->thumbID && $thumbObj->thumbName){
@@ -477,9 +477,9 @@ class we_imageDocument extends we_binaryDocument {
 						$create = false;
 					}else{
 
-						if((!$thumbObj->isOriginal()) && file_exists($_SERVER["DOCUMENT_ROOT"].$img_path)){
+						if((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'].$img_path)){
 							// open a file
-							if(abs(filectime($_SERVER["DOCUMENT_ROOT"].$img_path)) > abs($thumbObj->date)){
+							if(abs(filectime($_SERVER['DOCUMENT_ROOT'].$img_path)) > abs($thumbObj->date)){
 								$create = false;
 							}
 						}

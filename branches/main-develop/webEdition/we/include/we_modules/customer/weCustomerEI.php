@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 include_once(WE_CUSTOMER_MODULE_DIR."weCustomer.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 	class weCustomerEI{
@@ -140,8 +140,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 
 
 		function getXMLDataset($filename,$dataset){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
-			$xp = new XML_Parser($_SERVER["DOCUMENT_ROOT"].$filename);
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
+			$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$filename);
 			$nodeSet = $xp->evaluate($xp->root.'/'.$dataset.'[1]/child::*');
 			$nodes = array();
 			$attrs = array();
@@ -231,7 +231,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 				if (defined('DEFAULT_CHARSET')) {$charset = DEFAULT_CHARSET;} else {$charset = "UTF-8";}
 			}
 			if($delimiter=="\\t") $delimiter="\t";
-			$csvFile=$_SERVER["DOCUMENT_ROOT"].$filename;
+			$csvFile=$_SERVER['DOCUMENT_ROOT'].$filename;
 			$nodes = array();
 
 			if (file_exists($csvFile) && is_readable($csvFile)) {
@@ -294,10 +294,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 						$xml_to=$options["xml_to"];
 
 
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_splitFile.inc.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_splitFile.inc.php");
 
-						$parse = new XML_SplitFile($_SERVER["DOCUMENT_ROOT"].$filename);
+						$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'].$filename);
 						$parse->splitFile("*/".$dataset, $xml_from, $xml_to);
 
 						$ret["tmp_dir"]=str_replace(TMP_DIR."/","",$parse->path);
@@ -311,7 +311,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 						$csv_charset=$options["the_charset"];
 						$exim=$options["exim"];
 
-						$csvFile = $_SERVER["DOCUMENT_ROOT"].$filename;
+						$csvFile = $_SERVER['DOCUMENT_ROOT'].$filename;
 
 						if (file_exists($csvFile) && is_readable($csvFile)) {
 
@@ -379,7 +379,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 					$logfile=isset($options["logfile"]) ? $options["logfile"] : "";
 
 
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
 
 					$db=new DB_WE();
 
@@ -433,7 +433,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc
 
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/csv.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/csv.inc.php");
 
 class weCustomerCSVImport extends CSVImport{
 

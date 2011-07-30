@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 /**
@@ -91,7 +91,7 @@ class XML_SplitFile extends XML_Parser {
 		if (!$this->parserHasContent()) return FALSE;
 
 		// Save the path consisting of the temporary directory and a unique id.
-		$this->path = (defined("TMP_DIR"))? TMP_DIR : $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp";
+		$this->path = (defined("TMP_DIR"))? TMP_DIR : $_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp";
 		$this->path .= "/".$this->getUniqueId();
 
 		// Make the current directory.

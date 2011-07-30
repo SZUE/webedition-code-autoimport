@@ -125,7 +125,7 @@ emosECPageArray['var3']		= 'NULL';
 			$article = new we_document();
 			$article->initByID($_REQUEST["shop_artikelid"]);
 		} else {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 			$article = new we_objectFile();
 			$article->initByID($_REQUEST["shop_artikelid"], OBJECT_FILES_TABLE);
 		}

@@ -42,7 +42,7 @@ class weBrowser {
 		);
 
 		$tmp = explode("_",$_SERVER["HTTP_ACCEPT_LANGUAGE"]);
-		$lang = (isset ($map[$tmp[0]]) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $map[$tmp[0]]))
+		$lang = (isset ($map[$tmp[0]]) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $map[$tmp[0]]))
 						  ?  $map[$tmp[0]]  :  $GLOBALS["WE_LANGUAGE"];
 
 

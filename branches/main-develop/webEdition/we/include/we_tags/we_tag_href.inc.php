@@ -28,8 +28,8 @@ function we_tag_href($attribs, $content){
 
 	if ($we_editmode) {
 		// Include files
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 	}
 
 	$foo = attributFehltError($attribs, "name", "href");
@@ -105,7 +105,7 @@ function we_tag_href($attribs, $content){
 
 		if ($int) {
 			$href = $intPath;
-			$include_path = $href ? $_SERVER["DOCUMENT_ROOT"] . "/" . $href : "";
+			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 		} else {
 			//if (!$we_editmode) {
 			//	$extPath = htmlspecialchars($extPath);
@@ -202,7 +202,7 @@ function we_tag_href($attribs, $content){
 			$intID = $GLOBALS["we_doc"]->getElement($nintID);
 			$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($intID)."'", "Path", $GLOBALS["DB_WE"]);
 			$href = $intPath;
-			$include_path = $href ? $_SERVER["DOCUMENT_ROOT"] . "/" . $href : "";
+			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 
 			if ($we_editmode) {
 				if (($directory && $file) || $file) {
@@ -258,7 +258,7 @@ function we_tag_href($attribs, $content){
 			//	$extPath = htmlspecialchars($extPath);
 			//}
 			$href = $extPath;
-			$include_path = $href ? $_SERVER["DOCUMENT_ROOT"] . "/" . $href : "";
+			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 
 			if ($we_editmode) {
 				$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';

@@ -28,7 +28,7 @@ class rpcGetSearchParametersCmd extends rpcCmd {
 
 		$resp = new rpcResponse();
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
 
 		$pos = $_REQUEST['position'];
 

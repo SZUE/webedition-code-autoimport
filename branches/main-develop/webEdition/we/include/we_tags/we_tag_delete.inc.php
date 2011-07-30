@@ -39,7 +39,7 @@ function we_tag_delete($attribs, $content){
 		if (!isset($_REQUEST["we_delDocument_ID"])) {
 			return "";
 		}
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_webEditionDocument.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 		$docID = $_REQUEST["we_delDocument_ID"];
 		$doc = new we_webEditionDocument();
 		$doc->initByID($docID);
@@ -55,7 +55,7 @@ function we_tag_delete($attribs, $content){
 		if (!isset($_REQUEST["we_delObject_ID"])) {
 			return "";
 		}
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_modules/object/we_objectFile.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 		$docID = $_REQUEST["we_delObject_ID"];
 		$doc = new we_objectFile();
 		$doc->initByID($docID, OBJECT_FILES_TABLE);
@@ -89,7 +89,7 @@ function we_tag_delete($attribs, $content){
 
 	if ($isAdmin || $isOwner || $forceedit) {
 		$GLOBALS["NOT_PROTECT"] = true;
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
 		deleteEntry($docID, $table);
 		$GLOBALS["we_" . $type . "_delete_ok"] = true;
 		if ($mail) {

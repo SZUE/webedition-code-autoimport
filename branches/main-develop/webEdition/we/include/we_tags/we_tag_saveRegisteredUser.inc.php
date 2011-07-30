@@ -32,8 +32,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 	$protected = makeArrayFromCSV(we_getTagAttribute("protected",$attribs));
 
 	if(defined("CUSTOMER_TABLE") && isset ($_REQUEST["s"])){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/weCustomer.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weCustomer.php");
 
 		if(isset($_REQUEST["s"]["Password2"])) {
 			unset($_REQUEST["s"]["Password2"]);
@@ -64,8 +64,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						$values = "";
 
 						// Start Schnittstelle fuer save-Funktion
-						if(file_exists($_SERVER["DOCUMENT_ROOT"]."/WE_CUSTOMER_EXTERNAL_FN.php")){
-							include_once($_SERVER["DOCUMENT_ROOT"]."/WE_CUSTOMER_EXTERNAL_FN.php");
+						if(file_exists($_SERVER['DOCUMENT_ROOT']."/WE_CUSTOMER_EXTERNAL_FN.php")){
+							include_once($_SERVER['DOCUMENT_ROOT']."/WE_CUSTOMER_EXTERNAL_FN.php");
 							we_customer_saveFN($_REQUEST["s"]);
 						}
 						// Ende Schnittstelle fuer save-Funktion
@@ -173,8 +173,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						if(isset($_REQUEST["s"])){
 
 							// Start Schnittstelle fuer change-Funktion
-							if(file_exists($_SERVER["DOCUMENT_ROOT"]."/WE_CUSTOMER_EXTERNAL_FN.php")){
-								include_once($_SERVER["DOCUMENT_ROOT"]."/WE_CUSTOMER_EXTERNAL_FN.php");
+							if(file_exists($_SERVER['DOCUMENT_ROOT']."/WE_CUSTOMER_EXTERNAL_FN.php")){
+								include_once($_SERVER['DOCUMENT_ROOT']."/WE_CUSTOMER_EXTERNAL_FN.php");
 								we_customer_saveFN($_REQUEST["s"]);
 							}
 							// Ende Schnittstelle fuer change-Funktion
@@ -249,7 +249,7 @@ function we_saveCustomerImages() {
 					if ($imgDocument->WebUserID == $webuserId) {
 						//everything ok, now delete
 						$GLOBALS["NOT_PROTECT"] = true;
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.php");
 						deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS["NOT_PROTECT"] = false;
 						// reset image field
@@ -265,7 +265,7 @@ function we_saveCustomerImages() {
 					$_serverPath = TMP_DIR."/".md5(uniqid(rand(),1));
 					move_uploaded_file($_FILES["WE_SF_IMG_DATA"]["tmp_name"][$imgName], $_serverPath);
 
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 					$we_size = we_thumbnail::getimagesize($_serverPath);
 
 					if (count($we_size) > 0) {

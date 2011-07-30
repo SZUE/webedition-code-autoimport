@@ -94,7 +94,7 @@ class weMetaData {
 			$this->_valid = false;
 			return false;
 		}
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/conf/mapping.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/conf/mapping.inc.php");
 		$this->dataTypeMapping = $dataTypeMapping; // from mapping.inc.php
 		$this->imageTypeMap = $imageTypeMap; // from mapping.inc.php
 
@@ -196,7 +196,7 @@ class weMetaData {
 			}
 		} else {
 			// check if it is a temporary file (i.e. an uploaded image that has not been saved yet):
-			if(!is_readable($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/tmp/",$datasource)) {
+			if(!is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/tmp/",$datasource)) {
 				$this->_valid = false;
 				return false;
 			}
@@ -266,8 +266,8 @@ class weMetaData {
 	 */
 	function _getInstance($value="") {
 		if(!$this->_valid) return false;
-		if(is_readable($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php")) {
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php");
+		if(is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php")) {
+			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php");
 			$className = "weMetaData_".$value;
 			$this->_instance[$value] = new $className($this->filetype);
 			if(!$this->_instance[$value]->_checkDependencies()) {

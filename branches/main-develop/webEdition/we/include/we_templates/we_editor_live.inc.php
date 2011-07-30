@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 htmlTop();
  print STYLESHEET; ?>
 <script  type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>

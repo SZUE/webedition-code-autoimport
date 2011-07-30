@@ -78,8 +78,8 @@ class weMetaData_IPTC extends weMetaData {
 	}
 
 	function _checkDependencies() {
-		if(is_readable($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php")) {
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php");
+		if(is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php")) {
+			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php");
 			return true;
 		} else {
 			return false;

@@ -197,7 +197,7 @@
 		}
 
 		function getJSAddSortFunction() {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browserDetect.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
 			$insp=new we_browserDetect();
 			return '
 			function addSort(object){
@@ -255,7 +255,7 @@
  	}
 
 	function getHTMLContruct(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 		$style_code="";
 		foreach($this->styles as $st) $style_code.=$st."\n";
 

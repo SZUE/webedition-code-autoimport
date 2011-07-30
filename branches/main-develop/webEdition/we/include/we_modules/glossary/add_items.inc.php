@@ -25,9 +25,9 @@
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossary.php');
@@ -63,10 +63,10 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
 
 	if($ClassName == "we_objectFile") {
-		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
 
 	} else {
-		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$ClassName.".inc.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$ClassName.".inc.php");
 
 	}
 
@@ -870,10 +870,10 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
 
 	if($ClassName == "we_objectFile") {
-		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
 
 	} else {
-		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$ClassName.".inc.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$ClassName.".inc.php");
 
 	}
 

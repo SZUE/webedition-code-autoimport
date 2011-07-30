@@ -24,7 +24,7 @@
 
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
 
 

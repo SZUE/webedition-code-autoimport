@@ -28,7 +28,7 @@
  * In /webEdition/we/include/weClasses/we_template.inc.php is checked if ECONDA is activated and if the ECONDA-JS file is integrated.
  * If it is done the code to include this file in each template before the body-tag will be executed.
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weTracking/econda/weEmos.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/weTracking/econda/weEmos.class.inc.php");
 $emos = new weEmos();
 $emosJsCode = "";
 //if (isset($_REQUEST["we_oid"]) ||) ) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,75 +22,56 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 //TODO!!!
 function we_parse_tag_object($attribs, $content) {
-	if (!defined("WE_OBJECT_MODULE_DIR")) {
-		return modulFehltError('Object/DB','object');
-	}
 	eval('$arr = array(' . $attribs . ');');
-	
+	//return 
 }
-
 
 //TODO!!!
 function we_tag_object($attribs, $content) {
+	if (!defined('WE_OBJECT_MODULE_DIR')) {
+		return modulFehltError('Object/DB', 'object');
+	}
 
-			$condition = we_getTagAttributeTagParser("condition", $arr, 0);
-			$classid = we_getTagAttributeTagParser("classid", $arr);
-			$we_oid = we_getTagAttributeTagParser("id", $arr, 0);
-			$name = we_getTagAttributeTagParser("name", $arr);
-			$_showName = we_getTagAttributeTagParser("name", $arr);
-			$size = we_getTagAttributeTagParser("size", $arr, 30);
-			$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
-			$searchable = we_getTagAttributeTagParser("searchable", $arr, "", true);
-			if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "true", false);
-			} else {
-				$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, "false", false);
-			}
-			if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-				$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "true", false);
-			} else {
-				$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, "false", false);
-			}
-
-			$php = '<?php
+	$condition = we_getTagAttribute("condition", $arr, 0);
+	$classid = we_getTagAttributeTagParser("classid", $arr);
+	$we_oid = we_getTagAttributeTagParser("id", $arr, 0);
+	$name = we_getTagAttributeTagParser("name", $arr);
+	$_showName = we_getTagAttributeTagParser("name", $arr);
+	$size = we_getTagAttributeTagParser("size", $arr, 30);
+	$triggerid = we_getTagAttributeTagParser("triggerid", $arr, "0");
+	$searchable = we_getTagAttributeTagParser("searchable", $arr, "", true);
+	$hidedirindex = we_getTagAttributeTagParser("hidedirindex", $arr, 
+					(defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE?'true':'false'), false);
+	$objectseourls = we_getTagAttributeTagParser("objectseourls", $arr, 
+					(defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS ? 'true':'false'), false);
 
 if (!isset($GLOBALS["we_lv_array"])) {
 	$GLOBALS["we_lv_array"] = array();
 }
 
 include_once(WE_OBJECT_MODULE_DIR . "we_objecttag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-';
-			if ($classid) {
-				$php .= '$__id__='.$classid.';$classPath = f("SELECT Path FROM ".OBJECT_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]);
-$rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'","ID",$GLOBALS["DB_WE"]);
-';
-			} else {
-				$php .= '$rootDirID = 0;
-';
-			}
-			if ($name) {
-				if (strpos($name, " ") !== false) {
-					return parseError(sprintf(g_l('parser','[name_with_space]'), "object"));
-				}
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-				$php .= '
+	if ($classid) {
+		$__id__= $classid;
+		$classPath = f("SELECT Path FROM ".OBJECT_TABLE." WHERE ID=".intval($__id__),"Path",$GLOBALS["DB_WE"]);
+		$rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path='$classPath'","ID",$GLOBALS["DB_WE"]);
+	} else {
+		$rootDirID = 0;
+	}
+	if ($name) {
+		if (strpos($name, " ") !== false) {
+			return parseError(sprintf(g_l('parser', '[name_with_space]'), "object"));
+		}
+
 		$we_doc = $GLOBALS["we_doc"];
-		';
-				if (strpos($we_oid,'$')===false ){//Bug 4848
-					$php.='$we_oid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : ' . $we_oid . ';';
-				} else {
-					$php.='$we_oid = $we_doc->getElement("' . $name . '") ? $we_doc->getElement("' . $name . '") : isset('.$we_oid.') ? "'.$we_oid.'" : $GLOBALS["'.str_replace('$','', $we_oid). '"];';
-				}
+		$we_oid = $we_doc->getElement($name) ? $we_doc->getElement($name) : $we_oid;
 
-				$php .= '
-		$path = f("SELECT Path FROM ".OBJECT_FILES_TABLE." WHERE ID=\'$we_oid\'","Path",$GLOBALS["DB_WE"]);
-		$textname = \'we_\'.$we_doc->Name.\'_txt[' . $name . '_path]\';
-		$idname = \'we_\'.$we_doc->Name.\'_txt[' . $name . ']\';
+		$path = f("SELECT Path FROM ".OBJECT_FILES_TABLE." WHERE ID=".$we_oid,"Path",$GLOBALS["DB_WE"]);
+		$textname = 'we_'.$we_doc->Name.'_txt[' . $name . '_path]';
+		$idname = 'we_'.$we_doc->Name.'_txt[' . $name . ']';
 		$table = OBJECT_FILES_TABLE;
 		$we_button = new we_button();
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
@@ -108,35 +90,31 @@ if($GLOBALS["we_editmode"]){ ?>
 	</tr>
 </table><?php }
 ';
-			} else {
-				if (strpos($we_oid,'$')===false ){//Bug 4848
-					$php .='$we_oid=' . $we_oid . '	;
+	} else {
+		if (strpos($we_oid, '$') === false) {//Bug 4848
+			$php .='$we_oid=' . $we_oid . '	;
 					';
-				} else {
-					$php.='$we_oid =  isset('.$we_oid.') ? "'.$we_oid.'" : $GLOBALS["'.str_replace('$','', $we_oid). '"];';
-				}
+		} else {
+			$php.='$we_oid =  isset(' . $we_oid . ') ? "' . $we_oid . '" : $GLOBALS["' . str_replace('$', '', $we_oid) . '"];';
+		}
 
-				$php .='
+		$php .='
 
 $we_oid = $we_oid ? $we_oid : (isset($_REQUEST["we_oid"]) ? $_REQUEST["we_oid"] : 0);
 ';
-			}
-			$searchable = empty($searchable) ? 'false' : $searchable;
-			$php .= '$GLOBALS["lv"] = new we_objecttag("' . $classid . '",$we_oid,' . $triggerid . ',' . $searchable . ', "' . $condition . '",'.$hidedirindex.','.$objectseourls.');
+	}
+	$searchable = empty($searchable) ? 'false' : $searchable;
+	$php .= '$GLOBALS["lv"] = new we_objecttag("' . $classid . '",$we_oid,' . $triggerid . ',' . $searchable . ', "' . $condition . '",' . $hidedirindex . ',' . $objectseourls . ');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
 if($GLOBALS["lv"]->avail): ?>';
 
-			//	Add a sign for Super-Easy-Edit-Mode. to edit an Object.
-			$php .= '<?php
+	//	Add a sign for Super-Easy-Edit-Mode. to edit an Object.
+	$php .= '<?php
 		if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
 			print "<a href=\"$we_oid\" seem=\"object\"></a>";
 		}
 		?>';
 
-			if ($postName != "") {
-				$content = str_replace('$', '\$', $php); //	to test with blocks ...
-			}
-
-			return $this->replaceTag($tag, $code, $php);
+	return $this->replaceTag($tag, $code, $php);
 }

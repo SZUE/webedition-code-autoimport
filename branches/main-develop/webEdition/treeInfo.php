@@ -23,8 +23,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 
 if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"){
 	$mheight = "marginheight=4 topMargin=4";
@@ -40,7 +40,7 @@ if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"
 	<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table); return false;">
 		<div id="search" style="margin: 10px 0 0 10px;">
 			<?php
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 			$we_button=new we_button();
 			print $we_button->create_button_table(
 					array(

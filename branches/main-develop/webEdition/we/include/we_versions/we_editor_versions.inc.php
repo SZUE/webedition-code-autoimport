@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
 
 protect();
 
@@ -34,7 +34,7 @@ echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js">
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 $headCal = we_htmlElement::linkElement(array("rel"=>"stylesheet","type"=>"text/css","href"=>JS_DIR."jscalendar/skins/aqua/theme.css","title"=>"Aqua")).
 		   we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar.js")).

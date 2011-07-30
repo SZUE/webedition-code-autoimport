@@ -23,15 +23,15 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_root.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_root.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 if (defined("CUSTOMER_FILTER_TABLE")) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
 
 }
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolSearch.class.inc.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 /* a class for handling directories */
 class we_folder extends we_root
@@ -198,7 +198,7 @@ class we_folder extends we_root
 					$pid = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='".escape_sql_query($pa)."'","ID",new DB_WE());
 					if(!$pid){
 						if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
-							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 							$folder = new we_class_folder();
 						} else {
 							$folder = new we_folder();
@@ -282,7 +282,7 @@ class we_folder extends we_root
 		if(!we_root::we_save($resave)) return false;
 		if(!$this->writeFolder()) return false;
 		if(defined("OBJECT_TABLE") && $this->Table==OBJECT_TABLE){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 			$f = new we_class_folder();
 			$f->initByPath($this->Path,OBJECT_FILES_TABLE,0,1);
 		}
@@ -701,13 +701,13 @@ $content .='
 		$DB_WE = new DB_WE;
 		// Update Paths also in Doctype Table
 		$DB_WE->query("UPDATE " . DOC_TYPES_TABLE . " SET ParentPath='".$DB_WE->escape($this->Path)."' WHERE ParentID='".abs($this->ID)."'");
-		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($this->Table)." WHERE ParentID='".abs($this->ID)."'");
+		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($this->Table)." WHERE ParentID='".intval($this->ID)."'");
 		while($DB_WE->next_record()){
 			@set_time_limit(30);
-			if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php")){
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php");
+			if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php")){
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php");
 			}else{
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$DB_WE->f("ClassName").".inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$DB_WE->f("ClassName").".inc.php");
 			}
 			eval('$we_doc = new '.$DB_WE->f("ClassName").'();');
 			$we_doc->initByID($DB_WE->f("ID"),$this->Table, LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
@@ -728,8 +728,8 @@ $content .='
 
 			if(!$isTemplFolder){
 				// renames the folder on the local machine in the root-dir+site-dir
-				$path = $_SERVER["DOCUMENT_ROOT"].SITE_DIR.substr($this->Path,1);
-				$oldPath = $_SERVER["DOCUMENT_ROOT"].SITE_DIR.substr($this->OldPath,1);
+				$path = $_SERVER['DOCUMENT_ROOT'].SITE_DIR.substr($this->Path,1);
+				$oldPath = $_SERVER['DOCUMENT_ROOT'].SITE_DIR.substr($this->OldPath,1);
 				if(!rename($oldPath,$path)) return false;
 			}
 		}
@@ -744,11 +744,11 @@ $content .='
 			$path = $this->getPath();
 
 			// creates the folder on the local machine in the root-dir
-			if(!createLocalFolder(($isTemplFolder ? TEMPLATE_DIR : $_SERVER["DOCUMENT_ROOT"]),$path)) return false;
+			if(!createLocalFolder(($isTemplFolder ? TEMPLATE_DIR : $_SERVER['DOCUMENT_ROOT']),$path)) return false;
 
 			// creates the folder on the local machine in the root-dir+site-dir
 			if(!$isTemplFolder){
-				if(!createLocalFolder($_SERVER["DOCUMENT_ROOT"].SITE_DIR,$path)) return false;
+				if(!createLocalFolder($_SERVER['DOCUMENT_ROOT'].SITE_DIR,$path)) return false;
 			}
 		}
 		return true;

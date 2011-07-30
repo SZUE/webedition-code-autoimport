@@ -24,13 +24,13 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
 
 define("SHOP_TABLE", TBL_PREFIX . "tblOrders");
 define("ANZEIGE_PREFS_TABLE", TBL_PREFIX . "tblAnzeigePrefs");
 define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
-define("WE_SHOP_MODULE_DIR",$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/");
+define("WE_SHOP_MODULE_DIR",$_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/");
 define("WE_SHOP_MODULE_PATH","/webEdition/we/include/we_modules/shop/");
 
 define('WE_SHOP_VARIANTS_PREFIX', 'we__intern_variant___');

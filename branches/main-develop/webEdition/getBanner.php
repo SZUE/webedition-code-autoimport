@@ -45,8 +45,8 @@ $xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
 $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 
 if($type && $type != "pixel"){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/weBanner.php");
 	$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
 	$prot = getServerProtocol();
 	$code = weBanner::getBannerCode($did,$paths,$target,$width,$height,$dt,$cats,$bannername,$link,$referer,$bannerclick,$prot."://".SERVER_NAME.$port.$_SERVER['SCRIPT_NAME'],$type, $page, $nocount, $xml);
@@ -68,17 +68,17 @@ if($type=="js"){
 	print $code;
 }else{
 	if(!$id){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/weBanner.php");
 		$bannerData = weBanner::getBannerData($did,$paths,$dt,$cats,$bannername);
 		$id = $bannerData["ID"];
 		$bid = $bannerData["bannerID"];
 	}else{
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_defines.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_conf_banner.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db.inc.php");
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/we_conf_banner.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_conf.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
 	}
 	if(!$bid){
 		$id=f("SELECT pref_value FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'","pref_value",$DB_WE);
@@ -118,7 +118,7 @@ if($type=="js"){
 			header("Content-disposition: filename=".basename($bannerpath));
 			header("Content-Type: $contenttype");
 
-			readfile($_SERVER["DOCUMENT_ROOT"].$bannerpath);
+			readfile($_SERVER['DOCUMENT_ROOT'].$bannerpath);
 		}else{
 			header("Location: $bannerpath");exit();
 		}

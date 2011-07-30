@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 
 function we_tag_showShopItemNumber($attribs,$content) {
 

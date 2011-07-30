@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/PEAR.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/Parser.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/RSS.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Parser.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/RSS.php");
 
 htmlTop();
 print STYLESHEET;
@@ -33,7 +33,7 @@ print
 		'<style type="text/css">div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . g_l('css','[font_family]') . ';}</style>';
 print '</head><body bgcolor="#F1F5FF">';
 
-$rss = & new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], $GLOBALS['WE_BACKENDCHARSET']);
+$rss = new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], $GLOBALS['WE_BACKENDCHARSET']);
 $rss->parse();
 $rss_out = '<div id="rss">';
 foreach ($rss->getItems() as $item) {

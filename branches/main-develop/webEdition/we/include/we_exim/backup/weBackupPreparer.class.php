@@ -382,7 +382,7 @@
 		function clearVersionData(){
 			global $DB_WE;
 			$DB_WE->query('TRUNCATE TABLE '.VERSIONS_TABLE.';');
-			$path = $_SERVER["DOCUMENT_ROOT"].VERSION_DIR;
+			$path = $_SERVER['DOCUMENT_ROOT'].VERSION_DIR;
 			if($dir=opendir($path)) {
 				while($file=readdir($dir)) {
 					if (!is_dir($file) && $file != "." && $file != ".." && $file != "dummy") {

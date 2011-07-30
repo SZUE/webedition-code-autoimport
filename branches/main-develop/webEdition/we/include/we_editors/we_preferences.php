@@ -27,21 +27,21 @@
  * INCLUDES
  *****************************************************************************/
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_db_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weConfParser.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/weModuleInfo.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weConfParser.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/weModuleInfo.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 
 /*****************************************************************************
@@ -419,8 +419,8 @@ function get_value($settingvalue) {
 
 		case "proxy_proxy":
 			// Check for settings file
-			if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php")) {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php");
+			if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php")) {
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php");
 			}
 
 			return defined("WE_PROXYHOST");
@@ -2553,8 +2553,8 @@ $_we_active_integrated_modules = array();
 			case '$_REQUEST["useproxy"]':
 
 				// Delete proxy settings file
-				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php")) {
-					unlink($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php");
+				if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php")) {
+					unlink($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php");
 				}
 				$GLOBALS['config_files']['proxysettings'] = array();
 				unset($GLOBALS['config_files']['proxysettings']);
@@ -2720,22 +2720,22 @@ function save_all_values() {
 
 	// we_conf.inc.php
 	$GLOBALS['config_files']['conf'] = array();
-	$GLOBALS['config_files']['conf']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf.inc.php";
+	$GLOBALS['config_files']['conf']['filename'] = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_conf.inc.php";
 	$GLOBALS['config_files']['conf']['content'] = weFile::load($GLOBALS['config_files']['conf']['filename']);
 
 	// we_conf_global.inc.php
 	$GLOBALS['config_files']['conf_global'] = array();
-	$GLOBALS['config_files']['conf_global']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf_global.inc.php";
+	$GLOBALS['config_files']['conf_global']['filename'] = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_conf_global.inc.php";
 	$GLOBALS['config_files']['conf_global']['content'] = weFile::load($GLOBALS['config_files']['conf_global']['filename']);
 
 	// proxysettings.inc.php
 	$GLOBALS['config_files']['proxysettings'] = array();
-	$GLOBALS['config_files']['proxysettings']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php";
+	$GLOBALS['config_files']['proxysettings']['filename'] = $_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php";
 	$GLOBALS['config_files']['proxysettings']['content'] = weFile::load($GLOBALS['config_files']['proxysettings']['filename']);
 
 	// we_active_integrated_modules.inc.php
 	$GLOBALS['config_files']['active_integrated_modules'] = array();
-	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_active_integrated_modules.inc.php";
+	$GLOBALS['config_files']['active_integrated_modules']['filename'] = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_active_integrated_modules.inc.php";
 	$GLOBALS['config_files']['active_integrated_modules']['content'] = weFile::load($GLOBALS['config_files']['active_integrated_modules']['filename']);
 
 
@@ -3061,7 +3061,7 @@ function save_all_values() {
 		}
 
 		if(!empty($_SESSION['versions']['logPrefsChanged'])) {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
 			$versionslog = new versionsLog();
 			$versionslog->saveVersionsLog($_SESSION['versions']['logPrefsChanged'], WE_LOGGING_VERSIONS_PREFS);
 		}
@@ -3100,8 +3100,8 @@ function check_global_config($values) {
 	$_rewrite_config = false;
 
 	// Read the global configuration file
-	$_file_name = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf_global.inc.php";
-	$_temp_file_name = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/tmp_we_conf_global.inc.php";
+	$_file_name = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_conf_global.inc.php";
+	$_temp_file_name = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/tmp_we_conf_global.inc.php";
 	$_file = weFile::load($_file_name);
 
 	// Cut closing PHP tag from configuration file
@@ -3212,13 +3212,13 @@ function build_dialog($selected_setting = "ui") {
 			 */
 
 			//	Look which languages are installed ...
-			$_language_directory = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language");
+			$_language_directory = dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language");
 
 			while (false !== ($entry = $_language_directory->read())) {
 			  	if($entry != "." && $entry != "..") {
-					if (is_dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry)
-						&& is_file($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php");
+					if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry)
+						&& is_file($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php");
 					} else {
 						// do nothing
 					}
@@ -3291,7 +3291,7 @@ function build_dialog($selected_setting = "ui") {
 			/*****************************************************************
 			 * DEFAULT CHARSET
 			 *****************************************************************/
-		 	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
+		 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/charsetHandler.class.php");
 			$_charsetHandler = new charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			$charset=$GLOBALS['WE_BACKENDCHARSET'];
@@ -3818,11 +3818,11 @@ function build_dialog($selected_setting = "ui") {
 				 * Default Settings Cache for we:navigation
 				 *****************************************************************/
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/cache.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".basename($GLOBALS['WE_LANGUAGE'])."/cache.inc.php");
 
-				$configFile = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+				$configFile = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 				if(!file_exists($configFile) || !is_file($configFile)) {
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
 					weNavigationSettingControl::saveSettings(true);
 				}
 				include($configFile);
@@ -4218,7 +4218,7 @@ EOF;
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 			/**
 			 * webEdition extensions
@@ -5474,7 +5474,7 @@ else {
     			$_authpass = htmlTextInput("authpass", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
     			array_push($_settings, array("headline" => g_l('prefs','[authpass]'), "html" => $_authpass, "space" => 200));
 
-			    include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_classes/base/we_image_edit.class.php');
+			    include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_image_edit.class.php');
 
 			    if( we_image_edit::gd_version() > 0 ){   //  gd lib ist installiert
 					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
@@ -6178,7 +6178,7 @@ $_needed_JavaScript .= "
 
 			case 'versions':
 
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 	            $_settings = array();
 
@@ -6589,7 +6589,7 @@ $acError = false;
 $acErrorMsg = "";
 // Check if we need to save settings
 if (isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true") {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
 	$acQuery = new weSelectorQuery();
 
 	// check seemode start document | object

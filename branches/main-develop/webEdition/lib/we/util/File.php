@@ -534,7 +534,7 @@ class we_util_File
 		/* if the directory exists, we have nothing to do and then we return true  */
 		if (file_exists($path) && is_dir($path))
 			return true;
-		if (strtolower(rtrim($_SERVER["DOCUMENT_ROOT"],'/')) == strtolower(rtrim($path,'/')))
+		if (strtolower(rtrim($_SERVER['DOCUMENT_ROOT'],'/')) == strtolower(rtrim($path,'/')))
 			return true;
 			
 		// if instead of the directory a file exists, we delete the file and create the directory

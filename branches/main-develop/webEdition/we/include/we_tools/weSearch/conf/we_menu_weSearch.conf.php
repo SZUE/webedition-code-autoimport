@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/weSearch/conf/meta.conf.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/weSearch/conf/meta.conf.php");
 
 $we_menu_weSearch['000100']['text'] = g_l('searchtool','[menu_suche]');
 $we_menu_weSearch['000100']['parent'] = '000000';

@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 
 /**
  * This functions checks if the shops basket is empty

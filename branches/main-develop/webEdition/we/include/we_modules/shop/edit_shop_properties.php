@@ -24,11 +24,11 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browserDetect.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 	protect();
 
@@ -668,7 +668,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 		case 'edit_shipping_cost':
 
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
+			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 			require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 			$shopVats = weShopVats::getAllShopVATs();
@@ -773,7 +773,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 		case 'edit_order_customer'; // edit data of the saved customer.
 
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
+			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 
 			$we_button = new we_button();
 			$saveBut = $we_button->create_button('save', "javascript:document.we_form.submit();self.close();");
@@ -1997,7 +1997,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 		if (isset($shippingCostsNet)) {
 
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
+			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 			$totalPrice += $shippingCostsNet;
 
 			$orderTable .= '

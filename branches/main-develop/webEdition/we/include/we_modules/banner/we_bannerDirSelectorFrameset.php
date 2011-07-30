@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
 
 protect();
 		$id = $_REQUEST["we_cmd"][1];
@@ -31,4 +31,4 @@ protect();
 		$JSTextName = we_cmd_dec(3);
 		$JSCommand = we_cmd_dec(4);
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/we_bannerDirSelect.php");

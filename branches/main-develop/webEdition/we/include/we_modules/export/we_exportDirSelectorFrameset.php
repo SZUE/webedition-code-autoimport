@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
 
 	$id = $_REQUEST["we_cmd"][1];
 
@@ -30,5 +30,5 @@
 		$JSTextName = stripslashes(we_cmd_dec(3));
 		$JSCommand = stripslashes(we_cmd_dec(4));
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/export/we_exportDirSelect.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/export/we_exportDirSelect.php");
 protect();

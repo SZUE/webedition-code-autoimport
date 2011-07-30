@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 /**
 * Definition of WebEdition Newsletter Base
@@ -212,7 +212,7 @@ class weNewsletterBase{
 		if(count($arr)){
 			foreach($arr as $file){
 				if(strpos($file,'..')===false){
-					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
+					$data = weFile::load($_SERVER['DOCUMENT_ROOT'].$file);
 					$data = str_replace("\r\n","\n",$data);
 					$dataArr = explode("\n",$data);
 					if(!empty($dataArr)){
@@ -257,7 +257,7 @@ class weNewsletterBase{
 		if(count($arr)){
 			foreach($arr as $file){
 				if(strpos($file,'..')===false){
-					$data = weFile::load($_SERVER["DOCUMENT_ROOT"].$file);
+					$data = weFile::load($_SERVER['DOCUMENT_ROOT'].$file);
 					$data = str_replace("\r\n","\n",$data);
 					$dataArr = explode("\n",$data);
 					if(!empty($dataArr)){

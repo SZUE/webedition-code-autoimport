@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weContentProvider.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weContentProvider.class.php");
 if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/"."weWorkflowUtility.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
 
 class rpcPublishDocsCmd extends rpcCmd {

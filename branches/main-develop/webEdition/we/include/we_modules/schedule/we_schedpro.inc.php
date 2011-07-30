@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 }
 
 class we_schedpro{
@@ -181,7 +181,7 @@ class we_schedpro{
 			$extraheadl = g_l('modules_schedpro',"[doctype]");
 
 		}else if($this->task==SCHEDULE_CATEGORY){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 			$delallbut = $we_button->create_button("delete_all", "javascript:we_cmd('delete_all_schedcats',".$this->nr.")");
 			$addbut    = $we_button->create_button("add","javascript:we_cmd('openCatselector','','".CATEGORY_TABLE."','','','opener.setScrollTo();opener.top.we_cmd(\\'add_schedcat\\',top.currentID,".$this->nr.");')");
 			$cats = new MultiDirChooser(450,$this->CategoryIDs,"delete_schedcat",$we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path",CATEGORY_TABLE,"defaultfont",$this->nr);
@@ -354,9 +354,9 @@ $this->getSpacerRowHTML().
 	function processSchedule($id,$schedFile,$now,$DB_WE){
 		usort ($schedFile["value"], "weCmpSchedLast");
 		if($schedFile["ClassName"] == "we_objectFile"){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$schedFile["ClassName"].".inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$schedFile["ClassName"].".inc.php");
 		}else{
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$schedFile["ClassName"].".inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$schedFile["ClassName"].".inc.php");
 		}
 		$doc_save = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : NULL;
 		eval('$GLOBALS["we_doc"] = new '.$schedFile["ClassName"].'();');
@@ -369,7 +369,7 @@ $this->getSpacerRowHTML().
 
 			if($s["task"] == SCHEDULE_DELETE){
 				$GLOBALS["NOT_PROTECT"]=true;
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.php");
 				deleteEntry($id,$schedFile["table"]);
 				$deleted = true;
 				$changeTmpDoc = false;

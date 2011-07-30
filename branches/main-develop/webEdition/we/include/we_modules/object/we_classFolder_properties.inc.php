@@ -73,7 +73,7 @@ if($javascript != '') {
 	echo '<script  type="text/javascript">'.$javascript.'</script>';
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 print STYLESHEET;
 

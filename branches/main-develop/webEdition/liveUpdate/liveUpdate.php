@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php");
+if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php")){
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxysettings.inc.php");
 }
 
 /*

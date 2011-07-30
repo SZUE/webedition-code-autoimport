@@ -23,7 +23,7 @@
  */
 
 function we_tag_list($attribs, $content){
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_tagParser.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tagParser.inc.php");
 
 	if ($GLOBALS['we_editmode']){
 		$we_button = new we_button();

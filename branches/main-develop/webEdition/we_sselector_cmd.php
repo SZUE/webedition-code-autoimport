@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 protect();
 
@@ -192,7 +192,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 			} else if(eregi('[\'"<>/]',$_REQUEST["txt"])) {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR);
 			} else {
-				$path=str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]."/".$_REQUEST["txt"]);
+				$path=str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"]."/".$_REQUEST["txt"]);
 				if(!@is_dir($path)) {
 					$oldumask = @umask(0000);
 
@@ -224,8 +224,8 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR);
 				print "drawDir(top.currentDir);\n";
 			} else {
-				$old = str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]."/".$_REQUEST["sid"]);
-				$new = str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]."/".$_REQUEST["txt"]);
+				$old = str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"]."/".$_REQUEST["sid"]);
+				$new = str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"]."/".$_REQUEST["txt"]);
 				if ($old!=$new) {
 					if (!@is_dir($new)) {
 						if (!rename($old,$new)) {
@@ -248,8 +248,8 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR);
 				print "drawDir(top.currentDir);\n";
 			} else {
-				$old=str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"].'/'.$_REQUEST["sid"]);
-				$new=str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"].'/'.$_REQUEST["txt"]);
+				$old=str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"].'/'.$_REQUEST["sid"]);
+				$new=str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"].'/'.$_REQUEST["txt"]);
 				if($old!=$new) {
 					if (!@file_exists($new)) {
 						if (!rename($old,$new)) {
@@ -268,7 +268,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 			if(isset($_REQUEST["fid"])) {
 				$foo=0;
 				$foo=f("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($_REQUEST["fid"])."';",0,$DB_WE);
-				if(preg_match('|'.$_SERVER["DOCUMENT_ROOT"]."/webEdition/|",$_REQUEST["fid"]) || ($_REQUEST["fid"] == $_SERVER["DOCUMENT_ROOT"]."/webEdition") || strpos("..",$_REQUEST["fid"]) || $foo || $_REQUEST["fid"]==$_SERVER["DOCUMENT_ROOT"] || $_REQUEST["fid"]."/"==$_SERVER["DOCUMENT_ROOT"]) {
+				if(preg_match('|'.$_SERVER['DOCUMENT_ROOT']."/webEdition/|",$_REQUEST["fid"]) || ($_REQUEST["fid"] == $_SERVER['DOCUMENT_ROOT']."/webEdition") || strpos("..",$_REQUEST["fid"]) || $foo || $_REQUEST["fid"]==$_SERVER['DOCUMENT_ROOT'] || $_REQUEST["fid"]."/"==$_SERVER['DOCUMENT_ROOT']) {
 					print we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR);
 				} else {
 					if (is_dir($_REQUEST["fid"]) && ($_REQUEST["ask"])) {

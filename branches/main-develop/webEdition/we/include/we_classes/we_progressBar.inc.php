@@ -23,8 +23,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 	define("PROGRESS_H_IMAGE",IMAGE_DIR.'balken.gif');
 	define("PROGRESS_H_IMAGE_BG",IMAGE_DIR.'balken_bg.gif');
 

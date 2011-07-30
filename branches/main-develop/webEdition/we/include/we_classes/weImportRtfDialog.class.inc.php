@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weDialog.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDialog.class.inc.php");
 
 
 class weImportRtfDialog extends weDialog{
@@ -146,7 +146,7 @@ function importFile(){
 						$this->args["applyFontSize"]=isset($this->args["applyFontSize"]) ? $this->args["applyFontSize"] : false;
 						$this->args["applyFontColor"]=isset($this->args["applyFontColor"]) ? $this->args["applyFontColor"] : false;
 
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_rtf2html.inc.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_rtf2html.inc.php");
 						$rtf2html=new we_rtf2html($filename,$this->args["applyFontName"],$this->args["applyFontSize"],$this->args["applyFontColor"]);
 					}
 				}

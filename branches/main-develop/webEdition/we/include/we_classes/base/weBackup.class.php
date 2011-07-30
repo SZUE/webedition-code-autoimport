@@ -29,11 +29,11 @@
  * Provides functions for exporting and importing backups. Extends we_backup.
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_backup.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weContentProvider.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weTable.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weTableItem.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_backup.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weContentProvider.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weTable.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weTableItem.class.php");
 
 
 class weBackup extends we_backup{
@@ -89,8 +89,8 @@ class weBackup extends we_backup{
 
 		$this->mode="xml";
 
-		$this->backup_dir=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR;
-		$this->backup_dir_tmp=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/";
+		$this->backup_dir=$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR;
+		$this->backup_dir_tmp=$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp/";
 
 	}
 
@@ -100,7 +100,7 @@ class weBackup extends we_backup{
 		if($this->filename=="") return -1;
 		if($this->mode=="sql") return we_backup::splitFile($this->filename);
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 
 		return weXMLExIm::splitFile($this->filename,$this->backup_dir_tmp,$this->backup_steps);
 
@@ -296,11 +296,11 @@ class weBackup extends we_backup{
 	}
 
 	function recoverPrefs(&$object){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weConfParser.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weConfParser.class.php");
 		$file="/webEdition/we/tmp/we_conf_global.inc.php";
 		$object->Path=$file;
 		$object->save(true);
-		$parser = weConfParser::getConfParserByFile($_SERVER["DOCUMENT_ROOT"] . $file);
+		$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);
 
 		$newglobals = $parser->getData();
 
@@ -309,7 +309,7 @@ class weBackup extends we_backup{
 			 	weConfParser::setGlobalPref($k,$v);
 			 }
 		}
-		@unlink($_SERVER["DOCUMENT_ROOT"].$file);
+		@unlink($_SERVER['DOCUMENT_ROOT'].$file);
 	}
 
 	function recoverInfo($nodeset,&$xmlBrowser){
@@ -339,7 +339,7 @@ class weBackup extends we_backup{
 
 
 	function recover($chunk_file){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLBrowser.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLBrowser.class.php");
 			if(!is_readable($chunk_file)) return false;
 			@set_time_limit(240);
 
@@ -404,7 +404,7 @@ class weBackup extends we_backup{
 	 */
 
 	function exportTables() {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 
 		$tab=array();
 		$tabtmp=array();
@@ -521,7 +521,7 @@ class weBackup extends we_backup{
 
 	function printDump2BackupDir() {
 		@set_time_limit(240);
-		$backupfilename=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR.$this->filename;
+		$backupfilename=$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.$this->filename;
 		if($this->compress!="none" && $this->compress!=""){
 				$this->dumpfilename=weFile::compress($this->dumpfilename,$this->compress);
 				$this->filename=$this->filename.".".weFile::getZExtension($this->compress);
@@ -617,13 +617,13 @@ class weBackup extends we_backup{
 #==============================================================================#
 
 	function getFileList($dir="",$with_dirs=false,$rem_doc_root=true){
-		if($dir=="") $dir=$_SERVER["DOCUMENT_ROOT"];
+		if($dir=="") $dir=$_SERVER['DOCUMENT_ROOT'];
 
 		$d=dir($dir);
 		while (false !== ($entry=$d->read())) {
 			if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "webEdition" && $entry != "sql_dumps" && $entry!=".project" && $entry!=".trustudio.dbg.php" && $entry!="LanguageChanges.csv") {
 				$file=$dir."/".$entry;
-				if(!$this->isPathExist(str_replace($_SERVER["DOCUMENT_ROOT"],"",$file))){
+				if(!$this->isPathExist(str_replace($_SERVER['DOCUMENT_ROOT'],"",$file))){
 					if(is_dir($file)){
 						if($with_dirs){
 							$this->addToFileList($file,$rem_doc_root);
@@ -644,14 +644,14 @@ class weBackup extends we_backup{
 
 	function addToFileList($file,$rem_doc_root=true){
 		if($rem_doc_root){
-			$this->file_list[]=str_replace($_SERVER["DOCUMENT_ROOT"],"",$file);
+			$this->file_list[]=str_replace($_SERVER['DOCUMENT_ROOT'],"",$file);
 		} else {
 			$this->file_list[]=$file;
 		}
 	}
 
 	function getSiteFiles() {
-		$this->getFileList($_SERVER["DOCUMENT_ROOT"].'/webEdition/site',true,false);
+		$this->getFileList($_SERVER['DOCUMENT_ROOT'].'/webEdition/site',true,false);
 		$out = array();
 		foreach ($this->file_list as $file) {
 			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'].'/webEdition/site' , '' , $file)) . '";','ContentType',$this->backup_db);

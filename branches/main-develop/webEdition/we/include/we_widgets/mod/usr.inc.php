@@ -24,7 +24,7 @@
 if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=="/usr.inc.php") {
 	exit();
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_usersOnline.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_usersOnline.class.php");
 
 $UO = new usersOnline();
 

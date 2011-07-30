@@ -28,7 +28,7 @@
 
 		function Header(&$weGlossaryFrames) {
 
-			require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 			$we_tabs = new we_tabs();
 
@@ -47,7 +47,7 @@
 		function Body(&$weGlossaryFrames) {
 
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 			$_js = "";
 
@@ -388,7 +388,7 @@
 		function getHTMLPreferences(&$weGlossaryFrames, &$Search, $Type, $Language) {
 			global $we_transaction;
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 			$we_button = new we_button();
 			$button = $we_button->create_button("search", "javascript:SubmitForm();");
@@ -440,7 +440,7 @@
 
 		function getHTMLPrevNext(&$weGlossaryFrames, &$Search, $extended = false) {
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 			$we_button = new we_button();
 

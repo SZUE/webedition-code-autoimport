@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/java_menu/weJavaMenu.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/java_menu/weJavaMenu.inc.php");
 
 ?>
 <link rel="stylesheet" type="text/css" href="<?php print WEBEDITION_DIR; ?>css/menu/pro_drop_1.css" />
@@ -48,7 +48,7 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 	if( // menu for normalmode
 		isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "normal" ){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/we_menu.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/we_menu.inc.php");
 		ksort ($we_menu);
 	    $jmenu = new weJavaMenu($we_menu,SERVER_NAME,"top.load",getServerProtocol(),$port,$_menu_width,30);
 
@@ -57,7 +57,7 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 
 		if(permissionhandler::isUserAllowedForAction("header", "with_java")){
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/java_menu/we_menu_seem.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/we_menu_seem.inc.php");
 	    	ksort ($we_menu);
 	    	$jmenu = new weJavaMenu($we_menu,SERVER_NAME,"top.load",getServerProtocol(),$port,$_menu_width,30);
 

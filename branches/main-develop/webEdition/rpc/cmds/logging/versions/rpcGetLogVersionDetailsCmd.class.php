@@ -28,7 +28,7 @@ class rpcGetLogVersionDetailsCmd extends rpcCmd {
 
 		$resp = new rpcResponse();
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLogView.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_logging/versions/versionsLogView.class.php");
 
 
 		$id = $_REQUEST['id'];

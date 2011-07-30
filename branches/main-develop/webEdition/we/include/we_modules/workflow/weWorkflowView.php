@@ -25,7 +25,7 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -246,7 +246,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getFoldersHTML(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -269,7 +269,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getCategoryHTML(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -287,7 +287,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getObjCategoryHTML(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -305,7 +305,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getObjectHTML(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -325,7 +325,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getObjectFileFoldersHTML(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -1388,7 +1388,7 @@ class weWorkflowView extends weWorkflowBase{
 
 
 	function getObjectInfo(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 
 		$_parts = array();
@@ -1459,7 +1459,7 @@ class weWorkflowView extends weWorkflowBase{
 					);
 
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 		$out  = '<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>
 		<script  type="text/javascript">function openToEdit(tab,id,contentType){

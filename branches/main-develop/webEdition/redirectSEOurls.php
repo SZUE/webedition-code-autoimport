@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 $myRequest=array();
 if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']!=''){
@@ -129,7 +129,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 
 		header("HTTP/1.0 200 OK", true,200);
 		header("Status: 200 OK", true,200);
-		include($_SERVER["DOCUMENT_ROOT"] . $display);
+		include($_SERVER['DOCUMENT_ROOT'] . $display);
 
 		exit;
 	} elseif($error404doc) {
@@ -140,7 +140,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			header("HTTP/1.0 404 Not Found", true,404);
 			header("Status: 404 Not Found", true,404);
 		}
-		include($_SERVER["DOCUMENT_ROOT"] .id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
+		include($_SERVER['DOCUMENT_ROOT'] .id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
 
 		exit;
 	}

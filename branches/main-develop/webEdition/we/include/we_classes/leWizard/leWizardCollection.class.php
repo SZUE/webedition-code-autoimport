@@ -70,10 +70,10 @@ class leWizardCollection {
 	function __construct($WizardsFile) {
 
 		unset($leInstallerWizards);
-		if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition" . $WizardsFile)) {
-			require($_SERVER["DOCUMENT_ROOT"] . "/webEdition" . $WizardsFile);
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile)) {
+			require($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile);
 
-			$WizardPath = dirname($_SERVER["DOCUMENT_ROOT"] . "/webEdition" . $WizardsFile) . '/';
+			$WizardPath = dirname($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile) . '/';
 
 			for ($i = 0; $i<sizeof($leInstallerWizards); $i++) {
 				$temp = new leWizard($leInstallerWizards[$i], $WizardPath);

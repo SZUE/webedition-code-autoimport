@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/we/include/we_global.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_logging/versions/versionsLog.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/we/include/we_global.inc.php");
 
 class rpcDeleteVersionsWizardCmd extends rpcCmd {
 
@@ -50,7 +50,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd {
 //		}
 		if(isset($_SESSION['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['versions']['deleteWizardbinaryPath']) && !empty($_SESSION['versions']['deleteWizardbinaryPath'])) {
 			foreach($_SESSION['versions']['deleteWizardbinaryPath'] as $k=>$v) {
-				$binaryPath = $_SERVER["DOCUMENT_ROOT"].$v;
+				$binaryPath = $_SERVER['DOCUMENT_ROOT'].$v;
 				$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath='".$db->escape($v)."' LIMIT 1","binaryPath",$db);
 
 				if(file_exists($binaryPath) && $binaryPathUsed=="") {

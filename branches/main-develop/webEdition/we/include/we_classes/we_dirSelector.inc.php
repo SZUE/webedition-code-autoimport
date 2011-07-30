@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 define("FS_SETDIR",5);
 define("FS_NEWFOLDER",7);
@@ -791,10 +791,10 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][we_filename_notAllowed]"), WE_MESSAGE_ERROR);
 		}else{
 			if (defined('OBJECT_FILES_TABLE') && $this->table==OBJECT_FILES_TABLE) { //4076
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				$folder= new we_class_folder();
 			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 				$folder= new we_folder();
 			}
 
@@ -901,10 +901,10 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
 		}else{
 			if (defined('OBJECT_FILES_TABLE') && $this->table==OBJECT_FILES_TABLE) { //4076
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 				$folder= new we_class_folder();
 			} else {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 				$folder= new we_folder();
 			}
 
@@ -1053,7 +1053,7 @@ top.selectFile(top.currentID);
 					}
 				}
 
-				$fs = file_exists($_SERVER["DOCUMENT_ROOT"].$result['Path']) ? filesize($_SERVER["DOCUMENT_ROOT"].$result['Path']) : 0;
+				$fs = file_exists($_SERVER['DOCUMENT_ROOT'].$result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'].$result['Path']) : 0;
 
 				$filesize = $fs<1000 ? $fs.' byte' : ($fs<1024000?round(($fs/1024),2) . ' kb' : round(($fs/(1024*1024)),2) . ' mb');
 				$nextrowclass = "odd";
@@ -1085,15 +1085,15 @@ top.selectFile(top.currentID);
 				$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
 				switch ($result['ContentType']) {
 					case "image/*":
-						if (file_exists($_SERVER["DOCUMENT_ROOT"].$result['Path'])) {
-							$imagesize = getimagesize($_SERVER["DOCUMENT_ROOT"].$result['Path']);
+						if (file_exists($_SERVER['DOCUMENT_ROOT'].$result['Path'])) {
+							$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'].$result['Path']);
 							if ($imagesize[0]>150 || $imagesize[1]>150) {
 								$extension = substr($result['Extension'],1);
 								$thumbpath = '/webEdition/preview/' . $this->id .'.'.$extension;
-								$created = filemtime($_SERVER["DOCUMENT_ROOT"].$result['Path']);
-								if (!file_exists($_SERVER["DOCUMENT_ROOT"].$thumbpath) || ($created > filemtime($_SERVER["DOCUMENT_ROOT"].$thumbpath))) {
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-									$thumb = we_image_edit::edit_image($_SERVER["DOCUMENT_ROOT"].$result['Path'],$extension,$_SERVER["DOCUMENT_ROOT"].$thumbpath,null,150,200);
+								$created = filemtime($_SERVER['DOCUMENT_ROOT'].$result['Path']);
+								if (!file_exists($_SERVER['DOCUMENT_ROOT'].$thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'].$thumbpath))) {
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+									$thumb = we_image_edit::edit_image($_SERVER['DOCUMENT_ROOT'].$result['Path'],$extension,$_SERVER['DOCUMENT_ROOT'].$thumbpath,null,150,200);
 								}
 							} else {
 								$thumbpath = $result['Path'];

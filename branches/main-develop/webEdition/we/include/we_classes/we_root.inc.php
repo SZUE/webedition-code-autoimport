@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 }
 
 /* the parent class for tree-objects */
@@ -703,7 +703,7 @@ function formTriggerDocument($isclass=false){
 	}
 
 	function getMoveTreeEntryScript($select=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMainTree.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMainTree.inc.php");
 		$Tree=new weMainTree("webEdition.php","top","self.Tree","top.load");
 		return $Tree->getJSUpdateTreeScript($this,$select);
 	}
@@ -743,11 +743,11 @@ function formTriggerDocument($isclass=false){
 
 	/* get the Real-Path of the Object (Server-Path) */
 	function getRealPath($old=false){
-		return (($this->Table==FILE_TABLE) ? $_SERVER["DOCUMENT_ROOT"] : TEMPLATE_DIR).($old ? $this->OldPath : $this->getPath());
+		return (($this->Table==FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR).($old ? $this->OldPath : $this->getPath());
 	}
 	/* get the Site-Path of the Object */
 	function getSitePath($old=false){
-		$path = $_SERVER["DOCUMENT_ROOT"].SITE_DIR;
+		$path = $_SERVER['DOCUMENT_ROOT'].SITE_DIR;
 		return $path.substr(($old ? $this->OldPath : $this->getPath()),1);
 	}
 
@@ -792,7 +792,7 @@ function formTriggerDocument($isclass=false){
 
 	function we_new(){
 		we_class::we_new();
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		$this->CreatorID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
 			$this->Icon = $GLOBALS["WE_CONTENT_TYPES"][$this->ContentType]["Icon"];
@@ -822,7 +822,7 @@ function formTriggerDocument($isclass=false){
 		}
 		$a = $this->i_saveContentDataInDB();
 		if($resave==0 && $this->ClassName!='we_class_folder'){
-			include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_classes/we_history.class.php');
+			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_history.class.php');
 			we_history::insertIntoHistory($this);
 		}
 		return $a;
@@ -1130,7 +1130,7 @@ function formTriggerDocument($isclass=false){
 			if (!$this->IsTextContentDoc || empty($this->DocType)) {
 				return false;
 			} else if($this->IsTextContentDoc && $this->DocType) {
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_docTypes.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_docTypes.inc.php");
 				$doctype = new we_docTypes();
 				$doctype->initByID($this->DocType,DOC_TYPES_TABLE);
 				if (empty($doctype->SubDir) ) {

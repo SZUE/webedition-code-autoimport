@@ -61,9 +61,9 @@ class weGlossarySettingFrames {
 
 	function getHTMLContent() {
 
-		$configFile = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
+		$configFile = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
 		if(!file_exists($configFile) || !is_file($configFile)) {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php");
 			weGlossarySettingControl::saveSettings(true);
 		}
 		include($configFile);

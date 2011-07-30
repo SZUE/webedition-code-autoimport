@@ -23,10 +23,10 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 class we_wizard_import extends we_wizard {
 	var $TemplateID=0;
@@ -36,7 +36,7 @@ class we_wizard_import extends we_wizard {
 	}
 
 	function formCategory($obj, $categories) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 		$we_button = new we_button();
 		$js = (defined("OBJECT_TABLE"))?"opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;":"";
 		$addbut = $we_button->create_button("add","javascript:top.we_cmd('openCatselector','','".CATEGORY_TABLE."','','','".$js."fillIDs();opener.top.we_cmd(\\'add_".$obj."Cat\\',top.allIDs);')",false,100,22,"","",(!we_hasPerm("EDIT_KATEGORIE")));
@@ -44,7 +44,7 @@ class we_wizard_import extends we_wizard {
 		return $cats->get();
 	}
 	function formCategory2($obj, $categories) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser2.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser2.inc.php");
 		$we_button = new we_button();
 		$js = (defined("OBJECT_TABLE"))?"opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;":"";
 		$addbut = $we_button->create_button("add","javascript:top.we_cmd('openCatselector','','".CATEGORY_TABLE."','','','".$js."fillIDs();opener.top.we_cmd(\\'add_".$obj."Cat\\',top.allIDs);')",false,100,22,"","",(!we_hasPerm("EDIT_KATEGORIE")));
@@ -461,7 +461,7 @@ class we_wizard_import extends we_wizard {
 				} else {
 
 					$v["import_from"] = "/webEdition/we/tmp/".weFile::getUniqueId()."_w.xml";
-					move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+					move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 
 				}
 		}
@@ -1320,7 +1320,7 @@ HTS;
 		if ($v["rdofloc"]=="lLocal" && (isset($_FILES['uploaded_xml_file']) and $_FILES["uploaded_xml_file"]["size"])) {
 			$uniqueId = md5(uniqid(microtime()));
 			$v["import_from"] = "/webEdition/we/tmp/we_xml_".$uniqueId.".xml";
-			move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+			move_uploaded_file($_FILES["uploaded_xml_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 		}
 
 		$vars = array("rdofloc","fserver","flocal","importDataType","docCategories","objCategories","store_to_id","is_dynamic","import_from","docType",
@@ -1328,8 +1328,8 @@ HTS;
 		foreach ($vars as $var) $hdns.= we_htmlElement::htmlHidden(array("name"=>"v[$var]","value"=>(isset($v[$var]))?$v[$var]:""))."\n";
 		$hdns.= we_htmlElement::htmlHidden(array("name"=>"v[mode]","value"=>0))."\n".we_htmlElement::htmlHidden(array("name"=>"v[cid]","value"=>-2))."\n";
 
-		if ((file_exists($_SERVER["DOCUMENT_ROOT"].$v["import_from"]) && is_readable($_SERVER["DOCUMENT_ROOT"].$v["import_from"]))) {
-			$xp = new XML_Parser($_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+		if ((file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"]))) {
+			$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 			$xmlWellFormed = ($xp->parseError == "")? true : false;
 
 			if ($xmlWellFormed) {
@@ -1384,8 +1384,8 @@ HTS;
 		}
 		else {
 			$xmlWellFormed = $hasChildNode = false;
-			if (!file_exists($_SERVER["DOCUMENT_ROOT"].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER["DOCUMENT_ROOT"].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
-			else if (!is_readable($_SERVER["DOCUMENT_ROOT"].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER['DOCUMENT_ROOT'].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
+			else if (!is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
 		}
 
 		$functions = "\n".
@@ -1529,7 +1529,7 @@ HTS;
 				}
 			}
 		}
-		$xp = new XML_Parser($_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+		$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 		$nodeSet = $xp->evaluate($xp->root.'/'.$v["rcd"].'[1]/child::*');
 		$val_nodes = array();
 		$val_attrs = array();
@@ -1847,17 +1847,17 @@ HTS;
 				case "lLocal":
 					if(isset($_FILES["uploaded_csv_file"])){
 						$v["import_from"] = "/webEdition/we/tmp/we_csv_".$uniqueId.".csv";
-						move_uploaded_file($_FILES["uploaded_csv_file"]["tmp_name"], $_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
-						if ($v["file_format"]=="mac") $this->massReplace("\r", "\n", $_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+						move_uploaded_file($_FILES["uploaded_csv_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
+						if ($v["file_format"]=="mac") $this->massReplace("\r", "\n", $_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 					}
 					break;
 				case "lServer":
-					$fp = fopen($_SERVER["DOCUMENT_ROOT"].$v["import_from"],"r");
-					$contents = fread($fp, filesize($_SERVER["DOCUMENT_ROOT"].$v["import_from"]));
+					$fp = fopen($_SERVER['DOCUMENT_ROOT'].$v["import_from"],"r");
+					$contents = fread($fp, filesize($_SERVER['DOCUMENT_ROOT'].$v["import_from"]));
 					fclose($fp);
 					$v["import_from"] = "/webEdition/we/tmp/we_csv_".$uniqueId.".csv";
 					$replacement = preg_replace("/\r/i", "\n", $contents);
-					$fp = fopen($_SERVER["DOCUMENT_ROOT"].$v["import_from"],"w+");
+					$fp = fopen($_SERVER['DOCUMENT_ROOT'].$v["import_from"],"w+");
 					fputs($fp, $replacement);
 					fclose($fp);
 					break;
@@ -2187,7 +2187,7 @@ HTS;
 		$specifyDoc->setCol(0, 0, array(), htmlFormElementTable(getExtensionPopup("v[we_Extension]",(isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"),explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),"100"),g_l('import',"[extension]")));
 
 		$parts = array();
-		if ((file_exists($_SERVER["DOCUMENT_ROOT"].$v["import_from"]) && is_readable($_SERVER["DOCUMENT_ROOT"].$v["import_from"]))) {
+		if ((file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"]))) {
 			array_push($parts, array(
 				"headline"	=> (defined("OBJECT_TABLE"))?$radioDocs:g_l('import',"[documents]"),
 				"html"		=> $yuiSuggest->getYuiFiles() . $doctypeElement . getPixel(1,4) . $templateElement . getPixel(1,4) . $storeTo . $yuiSuggest->getYuiCode() . getPixel(1,4) . $specifyDoc->getHTMLCode() . getPixel(1,4) .
@@ -2213,8 +2213,8 @@ HTS;
 			}
 		}
 		else {
-			if (!file_exists($_SERVER["DOCUMENT_ROOT"].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER["DOCUMENT_ROOT"].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
-			else if (!is_readable($_SERVER["DOCUMENT_ROOT"].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER['DOCUMENT_ROOT'].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
+			else if (!is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
 		}
 
 
@@ -2334,7 +2334,7 @@ HTS;
 			}
 		}
 
-		$csvFile = $_SERVER["DOCUMENT_ROOT"].$v["import_from"];
+		$csvFile = $_SERVER['DOCUMENT_ROOT'].$v["import_from"];
 		if (file_exists($csvFile) && is_readable($csvFile)) {
 			switch ($v["csv_enclosed"]) {
 				case "double_quote": $encl = "\""; break;

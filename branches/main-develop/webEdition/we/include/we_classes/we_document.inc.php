@@ -770,7 +770,7 @@ class we_document extends we_root {
 	}
 
 	function i_setExtensions() {
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 	    if($this->ContentType) {
 			$exts = isset($GLOBALS['WE_CONTENT_TYPES'][$this->ContentType]['Extension']) ? $GLOBALS['WE_CONTENT_TYPES'][$this->ContentType]['Extension'] : '';
 			$this->Extensions = makeArrayFromCSV($exts);

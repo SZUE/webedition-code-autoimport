@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 
 htmlTop();
 
@@ -36,7 +36,7 @@ print STYLESHEET . "\n";
 	onload="self.focus();">
 <center>
 			<?php
-			include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_templates/we_info.inc.php");
+			include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_info.inc.php");
 			?>
 		</center>
 </body>

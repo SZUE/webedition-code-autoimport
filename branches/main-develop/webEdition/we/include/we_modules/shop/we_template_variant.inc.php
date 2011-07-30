@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 
@@ -35,7 +35,7 @@ protect();
 htmlTop();
 ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
+<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
 print STYLESHEET; ?>
 	</head>
 	<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onUnload="doUnload()">

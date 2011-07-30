@@ -41,7 +41,7 @@ if (!$wfchk) {
 
 	if (isset($_REQUEST["sel"])) {
 		$found = false;
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 		$selectedItems = explode(",", $_REQUEST["sel"]);
 		for ($i = 0; $i < sizeof($selectedItems); $i++) {
 			if (weWorkflowUtility::inWorkflow($selectedItems[$i], $table)) {

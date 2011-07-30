@@ -28,7 +28,7 @@
  * - $activeTab => current selected tab
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 // initialise tabs
 $tabs = new we_tabs();

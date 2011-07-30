@@ -267,11 +267,11 @@
 		}
 
 		function handlePrefs(&$object){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weConfParser.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weConfParser.class.php");
 			$file="/webEdition/we/tmp/we_conf_global.inc.php";
 			$object->Path=$file;
 			$object->save(true);
-			$parser = weConfParser::getConfParserByFile($_SERVER["DOCUMENT_ROOT"] . $file);
+			$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);
 
 			$newglobals = $parser->getData();
 
@@ -282,7 +282,7 @@
 					}
 				}
 			}
-			@unlink($_SERVER["DOCUMENT_ROOT"].$file);
+			@unlink($_SERVER['DOCUMENT_ROOT'].$file);
 
 		}
 

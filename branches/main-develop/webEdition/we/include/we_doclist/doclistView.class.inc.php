@@ -27,9 +27,9 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 
 class doclistView {
@@ -1227,7 +1227,7 @@ class doclistView {
 			} else
 
 			{
-				$fs = file_exists ( $_SERVER["DOCUMENT_ROOT"] . $_result [$f] ["Path"] ) ? filesize ( $_SERVER["DOCUMENT_ROOT"] . $_result [$f] ["Path"] ) : 0;
+				$fs = file_exists ( $_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"] ) ? filesize ( $_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"] ) : 0;
 				$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round ( ($fs / 1024), 2 ) . ' kb' : round ( ($fs / (1024 * 1024)), 2 ) . ' mb');
 
 				if ($_result [$f] ["ContentType"] == "image/*") {
@@ -1235,14 +1235,14 @@ class doclistView {
 					$bigSize = 140;
 
 					if ($fs > 0) {
-						$imagesize = getimagesize ( $_SERVER["DOCUMENT_ROOT"] . $_result [$f] ["Path"] );
-						if (file_exists ( $_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower ( $_result [$f] ["Extension"] ) )) {
+						$imagesize = getimagesize ( $_SERVER['DOCUMENT_ROOT'] . $_result [$f] ["Path"] );
+						if (file_exists ( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower ( $_result [$f] ["Extension"] ) )) {
 							$thumbpath = '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower ( $_result [$f] ["Extension"] );
 							$imageView = "<img src='$thumbpath' border='0' /></a>";
 						} else {
 							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result [$f] ["docID"] . "&size=" . $smallSize . "&path=" . $_result [$f] ["Path"] . "&extension=" . $_result [$f] ["Extension"] . "' border='0' /></a>";
 						}
-						if (file_exists ( $_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower ( $_result [$f] ["Extension"] ) )) {
+						if (file_exists ( $_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower ( $_result [$f] ["Extension"] ) )) {
 							$thumbpathPopup = '/webEdition/preview/' . $_result [$f] ["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower ( $_result [$f] ["Extension"] );
 							$imageViewPopup = "<img src='$thumbpathPopup' border='0' /></a>";
 						} else {
@@ -1410,7 +1410,7 @@ class doclistView {
 		} else {
 			$thisObj = $this;
 		}
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$we_button = new we_button();
 
 		 $publishButton = "";

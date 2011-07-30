@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/newsletter/weNewsletterBase.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/newsletter/weNewsletterBase.php");
 
 /**
 * Definition of WebEdition Newsletter Block

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/conf/we_conf_global.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf_global.inc.php");
 
 /**
  * class to handle hooks in webEdition and in applications

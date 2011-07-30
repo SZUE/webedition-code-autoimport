@@ -389,35 +389,35 @@
 								array_push($this->nodehierarchy,$noddata);
 								if($noddata=="we_object"){
 									if(defined("OBJECT_TABLE")) {
-										include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
+										include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
 										$object=new we_objectEx();
 									}
 								}else if($noddata=="we_objectFile"){
 									if(defined("OBJECT_FILES_TABLE")){
-										include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
+										include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 										$object=new we_objectFile();
 									}
 								}
 								else if($noddata=="weBinary"){
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weBinary.class.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weBinary.class.php");
 									$object=new $noddata();
 								}
 								else if($noddata=="weNavigation"){
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
 									$object=new $noddata();
 								}
 								else if($noddata=="weNavigationRule"){
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
 									$object=new $noddata();
 								}
 								else if($noddata=="we_thumbnail"){
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/we_thumbnail.class.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/we_thumbnail.class.php");
 									$object=new $noddata();
 								}
 								else if($noddata=="we_class_folder"){ //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
 								}
 								else{
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$noddata.".inc.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$noddata.".inc.php");
 									$object=new $noddata();
 								}
 							}

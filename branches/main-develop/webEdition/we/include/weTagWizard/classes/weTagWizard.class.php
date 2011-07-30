@@ -123,7 +123,7 @@ class weTagWizard {
 		if (!isset($GLOBALS['weTagWizard_applicationTags'])) {
 
 			$GLOBALS['weTagWizard_applicationTags'] = array();
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
 			$apptags = array();
 			$alltools = weToolLookup::getAllTools(true);
 			foreach ($alltools as $tool) {

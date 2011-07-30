@@ -23,8 +23,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 $yuiSuggest =& weSuggest::getInstance();
 
@@ -36,7 +36,7 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 htmlTop();
 ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
+<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
 print STYLESHEET; ?>
 	</head>
 	<body class="weEditorBody" onUnload="doUnload()">
@@ -46,36 +46,36 @@ print STYLESHEET; ?>
 	$implementYuiAC = false;
 	switch($we_doc->ContentType){
 		case "folder":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_folder_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_folder_properties.inc.php");
 			$implementYuiAC = true;
 			break;
 		case "text/webedition":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_webedition_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_webedition_properties.inc.php");
 			break;
 		case "text/xml":
 		case "text/css":
 		case "text/js":
 		case "text/htaccess":
 		case "text/plain":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_textfile_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_textfile_properties.inc.php");
 			break;
 		case "text/html":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_htmlfile_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_htmlfile_properties.inc.php");
 			break;
 		case "text/weTmpl":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_template_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_template_properties.inc.php");
 			break;
 		case "image/*":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_image_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_image_properties.inc.php");
 			break;
 		case "application/x-shockwave-flash":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_flash_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_flash_properties.inc.php");
 			break;
  		case "video/quicktime":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_quicktime_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_quicktime_properties.inc.php");
 			break;
         case "application/*":
-			include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_other_properties.inc.php");
+			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_other_properties.inc.php");
 			break;
 		default:
 
@@ -85,8 +85,8 @@ print STYLESHEET; ?>
 				$moduleDir .= "/";
 			}
 
-			if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/" . $moduleDir . "we_".$we_doc->ContentType."_properties.inc.php")){
-				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/" . $moduleDir . "we_".$we_doc->ContentType."_properties.inc.php");
+			if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $moduleDir . "we_".$we_doc->ContentType."_properties.inc.php")){
+				include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $moduleDir . "we_".$we_doc->ContentType."_properties.inc.php");
 			}else{
 				exit("Can NOT include property File");
 			}

@@ -23,7 +23,7 @@
  */
 
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weTree.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weTree.inc.php");
 
 
 	class weCustomerTree extends weTree{

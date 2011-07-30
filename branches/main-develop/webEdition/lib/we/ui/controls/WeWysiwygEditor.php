@@ -29,7 +29,7 @@ Zend_Loader::loadClass('we_ui_controls_Button');
 Zend_Loader::loadClass('we_ui_controls_Label');
 Zend_Loader::loadClass('we_ui_layout_Table');
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 /**
  * Class to display an webEdition Wysiwyg-Editor
  * 

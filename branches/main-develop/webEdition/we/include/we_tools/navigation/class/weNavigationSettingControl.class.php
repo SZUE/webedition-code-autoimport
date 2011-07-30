@@ -67,7 +67,7 @@ class weNavigationSettingControl
 ?>
 EOF;
 			
-			$languageFile = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+			$languageFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 			$fh = fopen($languageFile, "w+");
 			if (!$fh) {
 				return false;

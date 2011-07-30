@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/"."permissionhandler.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 protect();
 
 define("EDITFRAMESET",1);
@@ -95,9 +95,9 @@ if(isset($_SESSION["we_data"][$we_transaction])){
     $we_dt = $_SESSION["we_data"][$we_transaction];
 }
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 if (!$we_doc->fileExists){
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weInfoPages/weNoResource.inc.php");
+	include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/weInfoPages/weNoResource.inc.php");
 	exit();
 }
 $_needPerm = "";
@@ -112,7 +112,7 @@ if (isset($_REQUEST['we_cmd'][1])) {
 	}
 }
 if ($_needPerm !="" && !we_hasPerm($_needPerm)) {
-	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/weInfoPages/weNoPerms.inc.php");
+	include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/weInfoPages/weNoPerms.inc.php");
 	exit();
 }
 

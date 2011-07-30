@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_import/importFunctions.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_import/importFunctions.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 class we_wizard {
@@ -243,7 +243,7 @@ HTS;
 	}
 
 	function getWizBusy() {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$pb = $js = "";
 		if ($this->getPostGetVar("mode",0)==1) {
@@ -377,7 +377,7 @@ HTS;
 						}
 					}
 					else if ($v["type"]=="GXMLImport") {
-						$parse = new XML_SplitFile($_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+						$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 						$parse->splitFile(($v["type"]=="GXMLImport")? "*/".$v["rcd"] : "*/child::*",
 							(isset($v["from_elem"]))? $v["from_elem"] : FALSE, (isset($v["to_elem"]))? $v["to_elem"] : FALSE,1);
 					}
@@ -386,7 +386,7 @@ HTS;
 							case "double_quote": $encl = "\""; break; case "single_quote": $encl = "'"; break; case "none": $encl = ""; break;
 						}
 						$cp = new CSVImport;
-						$cp->setFile($_SERVER["DOCUMENT_ROOT"].$v["import_from"]);
+						$cp->setFile($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 						$del = ($v["csv_seperator"]!="\\t")? (($v["csv_seperator"]!="")? $v["csv_seperator"] : " ") : "	";
 						$cp->setDelim($del);
 						$cp->setEnclosure($encl);
@@ -394,7 +394,7 @@ HTS;
 						$num_files = 0;
 						$unique_id = md5(uniqid(microtime()));
 
-						$path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$unique_id;
+						$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$unique_id;
 						createLocalFolder($path);
 
 						if ($cp->isOK()) {
@@ -480,7 +480,7 @@ HTS;
 						$hiddens = $this->getHdns("v",$v);
 
 						if((int)$v['cid']==0){
-							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
+							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 							// clear session data
 							weXMLExIm::unsetPerserves();
 						}
@@ -488,7 +488,7 @@ HTS;
 						$ref=false;
 						if($v["cid"]>=$v["numFiles"]-1){ // finish import
 							//$this->denyTMPaccess();
-							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weImportUpdater.class.php");
+							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weImportUpdater.class.php");
 							$xmlExIm=new weImportUpdater();
 							$xmlExIm->loadPerserves();
 							$xmlExIm->setOptions(array(
@@ -590,7 +590,7 @@ HTS;
 
 						} else { // do import
 
-							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLImport.class.php");
+							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLImport.class.php");
 							$xmlExIm=new weXMLImport();
 							$chunk=$v["uniquePath"].basename($v["import_from"])."_".$v["cid"];
 							if(file_exists($chunk)){

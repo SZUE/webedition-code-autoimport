@@ -25,13 +25,13 @@
 if(!$_SESSION["user"]["Username"])
 	session_id;
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 htmltop();
 
-$docroot = $_SERVER["DOCUMENT_ROOT"];
+$docroot = $_SERVER['DOCUMENT_ROOT'];
 $docroot = str_replace("\\","/",(substr($docroot,-1) == "/") ? substr($docroot,0,strlen($docroot)-1) : $docroot);
 we_cmd_dec(4);
 we_cmd_dec(1);

@@ -204,7 +204,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
+					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION["user"]["ID"]);
 					$_SESSION["perms"] = $foo->getAllPermissions();
@@ -234,7 +234,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
-					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
+					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION["user"]["ID"]);
 					$_SESSION["perms"] = $foo->getAllPermissions();

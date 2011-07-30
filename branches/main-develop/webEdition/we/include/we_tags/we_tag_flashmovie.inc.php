@@ -24,7 +24,7 @@
 
 function we_tag_flashmovie($attribs, $content){
 	// Include Flash class
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 
 	$foo = attributFehltError($attribs, "name", "flashmovie");
 	if ($foo)
@@ -51,7 +51,7 @@ function we_tag_flashmovie($attribs, $content){
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
 		// Include button class
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		// Create new button object
 		$we_button = new we_button();

@@ -83,7 +83,7 @@ class Captcha {
 	 * @return boolean
 	 */
 	function getStorage() {
-		return $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/captchacodes.tmp";
+		return $_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/captchacodes.tmp";
 	} /* end: check */
 
 } /* end: Class */

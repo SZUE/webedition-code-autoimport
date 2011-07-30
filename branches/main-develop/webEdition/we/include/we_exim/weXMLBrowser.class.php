@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/xml_parser.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 class weXMLBrowser extends XML_Parser{
@@ -115,8 +115,8 @@ class weXMLBrowser extends XML_Parser{
 
 
 	function getFile($file) {
-		if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/updateinclude/proxysettings.php")) {
-			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/updateinclude/proxysettings.php");
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php")) {
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/updateinclude/proxysettings.php");
 		}
 		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName=$file;

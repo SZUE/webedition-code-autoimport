@@ -24,11 +24,11 @@
 
 //FIXME: is this file still used??!
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 
 protect();
 
@@ -110,11 +110,11 @@ function exit_close(){
 }";
 
 $_userName = $_SESSION['user']['Username'];
-@require ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/showme.inc.php");
+@require ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php");
 //$_dns = getDomainList($_userName,$_md5passwd);
 //if (defined('WE_TRACKER_DIR')) {
-include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/global.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/db.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/global.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/db.inc.php");
 $pl_db = new stat_db();
 $pl_tables = new stat_tables();
 $pl_tables->build_tables();

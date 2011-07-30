@@ -637,7 +637,7 @@ function processCommands() {
 		    				if(isset($_REQUEST[$_REQUEST['answers_name'].'_item'.$i])) $content[] = $enclose . addslashes($_REQUEST[$_REQUEST['answers_name'].'_item'.$i]) . $enclose . $delimiter . $this->voting->Scores[$i];
 						}
 					}
-					weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,implode($lineend,$content));
+					weFile::save($_SERVER['DOCUMENT_ROOT'].$fname,implode($lineend,$content));
 					$_REQUEST["lnk"]=$fname;
 				break;
 				case "exportGroup_csv":
@@ -734,7 +734,7 @@ function processCommands() {
 						$content[] = $myline;
 					}
 
-					weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,implode($lineend,$content));
+					weFile::save($_SERVER['DOCUMENT_ROOT'].$fname,implode($lineend,$content));
 					$_REQUEST["lnk"]=$fname;
 				break;
 

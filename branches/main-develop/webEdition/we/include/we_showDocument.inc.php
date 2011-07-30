@@ -31,8 +31,8 @@ if (isset($noSess) && $noSess) {
 		define("NO_SESS", 1);
 	}
 }
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_live_tools.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_live_tools.inc.php");
 
 
 //  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!
@@ -49,7 +49,7 @@ $we_Table = FILE_TABLE;
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
 
 // init document
-include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 if (isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != "ResetVersion" && $_REQUEST['cmd'] != "PublishDocs") {
 	if (isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC) { // when called showDoc.php
@@ -68,7 +68,7 @@ if (isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != "ResetVersion" && $_REQUEST['
 	}
 }
 if(isset($_REQUEST['vers_we_obj']) && ($_REQUEST['vers_we_obj']))  {
-	$f = $_SERVER["DOCUMENT_ROOT"] . VERSION_DIR.'tmpSavedObj.txt';
+	$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR.'tmpSavedObj.txt';
 	$_REQUEST['vers_we_obj'] = false;
  	$tempFile =weFile::load($f);
  	$obj = unserialize($tempFile);
@@ -113,7 +113,7 @@ if ($tmplID && ($we_doc->ContentType == "text/webedition")) { // if the document
 //$we_doc->setCache();
 
 if ($we_include = $we_doc->editor($baseHref)) {
-	if (substr(strtolower($we_include), 0, strlen($_SERVER["DOCUMENT_ROOT"])) == strtolower($_SERVER["DOCUMENT_ROOT"])) {
+	if (substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])) {
 		if ((!defined("WE_CONTENT_TYPE_SET")) && isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]) { //	send charset which might be determined in template
 			define("WE_CONTENT_TYPE_SET", 1);
 			//	@ -> to aware of unproper use of this element, f. ex in include-File
@@ -137,7 +137,7 @@ if ($we_include = $we_doc->editor($baseHref)) {
 
 	} else {
 		protect(); //	only inside webEdition !!!
-		include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . $we_include);
+		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/" . $we_include);
 	}
 } else {
 	exit("Nothing to include ...");

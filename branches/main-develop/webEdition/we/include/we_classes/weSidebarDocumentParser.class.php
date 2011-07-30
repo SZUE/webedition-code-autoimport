@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/JSON.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/JSON.php");
 
 
 class weSidebarDocumentParser {

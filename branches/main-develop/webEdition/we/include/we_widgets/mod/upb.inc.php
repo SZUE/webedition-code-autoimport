@@ -44,7 +44,7 @@ foreach ($tbls as $table) {
 	$wfDocsCSV = "";
 	$myWfDocsCSV = "";
 	if (defined("WORKFLOW_TABLE")) {
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 		$myWfDocsArray = weWorkflowUtility::getWorkflowDocsForUser(
 				$_SESSION["user"]["ID"],
 				$table,

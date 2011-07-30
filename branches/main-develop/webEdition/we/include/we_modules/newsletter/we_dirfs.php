@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
 
 	$id = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 
@@ -34,4 +34,4 @@
 	$filter = isset($_REQUEST["we_cmd"][7]) ? $_REQUEST["we_cmd"][7] : "";
 	$multiple = isset($_REQUEST["we_cmd"][8]) ? $_REQUEST["we_cmd"][8] : "";
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/newsletter/we_newsletterDirSelector.php");

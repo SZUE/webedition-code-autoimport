@@ -31,5 +31,5 @@ define("WE_LANGUAGE_ID","0");
 define("PING_TIME","30"); // 30 sec
 define("PING_TOLERANZ","40"); // 40 sec - allows 1 Ping missing
 
-define("WE_USERS_MODULE_DIR", $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/");
+define("WE_USERS_MODULE_DIR", $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/users/");
 define("WE_USERS_MODULE_PATH","/webEdition/we/include/we_modules/users/");

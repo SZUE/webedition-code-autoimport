@@ -23,20 +23,20 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 protect ();
 
 htmlTop ();
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_doclist/doclistView.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_doclist/doclistView.class.inc.php");
 
 echo '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
 echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_editor_script.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 $headCal = we_htmlElement::linkElement ( array ("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua" ) ) . we_htmlElement::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar.js" ) ) . we_htmlElement::jsElement ( "", array ("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js" ) ) . we_htmlElement::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar-setup.js" ) );
 

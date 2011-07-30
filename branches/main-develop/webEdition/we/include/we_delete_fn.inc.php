@@ -151,7 +151,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 	if (substr($path, 0, 3) == "/..") {
 		return;
 	}
-	$file = ((!$isTemplateFolder) ? $_SERVER["DOCUMENT_ROOT"] : TEMPLATE_DIR) . $path;
+	$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . $path;
 	if ($table == TEMPLATES_TABLE || $table == FILE_TABLE) {
 		if (!deleteLocalFolder($file)) {
 			if (is_array($GLOBALS["we_folder_not_del"])) {
@@ -160,7 +160,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 		}
 	}
 	if ($table == FILE_TABLE) {
-		$file = $_SERVER["DOCUMENT_ROOT"] . SITE_DIR . substr($path, 1);
+		$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
 		deleteLocalFolder($file, 1);
 	}
 	if (defined("OBJECT_TABLE") && defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE) {
@@ -186,7 +186,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 	$path = $path ? $path : f("SELECT Path FROM $table WHERE ID=".abs($id)."", "Path", $DB_WE);
 	deleteContentFromDB($id, $table);
 
-	$file = ((!$isTemplateFile) ? $_SERVER["DOCUMENT_ROOT"] : TEMPLATE_DIR) . $path;
+	$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . $path;
 
 	if ($table == TEMPLATES_TABLE) {
 		$file = preg_replace('/\.tmpl$/i', '.php', $file);
@@ -195,7 +195,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 	if ($table == TEMPLATES_TABLE || $table == FILE_TABLE)
 		deleteLocalFile($file);
 	if ($table == FILE_TABLE) {
-		$file = $_SERVER["DOCUMENT_ROOT"] . SITE_DIR . substr($path, 1);
+		$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
 		deleteLocalFile($file);
 
 	}
@@ -379,7 +379,7 @@ function deleteEntry($id, $table, $delR = true,$skipHook=0)
 
 	$DB_WE = new DB_WE();
 	if (defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))) {
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 		if (weWorkflowUtility::inWorkflow($id, $table))
 			weWorkflowUtility::removeDocFromWorkflow($id, $table, $_SESSION["user"]["ID"], g_l('modules_workflow','[doc_deleted]'));
 	}

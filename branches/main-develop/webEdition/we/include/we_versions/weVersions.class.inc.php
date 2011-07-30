@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 
 class weVersions {
@@ -762,8 +762,8 @@ class weVersions {
 
 		$this->contentTypes = $this->getContentTypesVersioning();
 
-		if (!is_dir($_SERVER["DOCUMENT_ROOT"].VERSION_DIR)) {
-			createLocalFolder($_SERVER["DOCUMENT_ROOT"], VERSION_DIR);
+		if (!is_dir($_SERVER['DOCUMENT_ROOT'].VERSION_DIR)) {
+			createLocalFolder($_SERVER['DOCUMENT_ROOT'], VERSION_DIR);
 		}
 
 		/**
@@ -809,7 +809,7 @@ class weVersions {
 
 		$contentTypes = array();
 		$contentTypes[] = 'all';
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		foreach($GLOBALS["WE_CONTENT_TYPES"] as $k => $v) {
 			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
 			if($k != "object"  && $k != "folder" && $k != "class_folder") {
@@ -1262,7 +1262,7 @@ class weVersions {
 					}
 					else {
 						$documentPath = substr($document["Path"], 1);
-						$siteFile = $_SERVER["DOCUMENT_ROOT"].SITE_DIR.$documentPath;
+						$siteFile = $_SERVER['DOCUMENT_ROOT'].SITE_DIR.$documentPath;
 
 						$vers = $this->getVersion();
 
@@ -1270,7 +1270,7 @@ class weVersions {
 						$binaryPath = VERSION_DIR.$versionName;
 
 						if($document["IsDynamic"]) {
-							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER["DOCUMENT_ROOT"].$binaryPath, $documentObj);
+							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'].$binaryPath, $documentObj);
 						}
 						elseif(file_exists($siteFile) && $document["Extension"]==".php" && ($document["ContentType"]=='text/webedition' || $document["ContentType"]=='text/html')) {
 
@@ -1288,7 +1288,7 @@ class weVersions {
 								ob_end_clean();
 							}
 
-							saveFile($_SERVER["DOCUMENT_ROOT"].$binaryPath,$contents);
+							saveFile($_SERVER['DOCUMENT_ROOT'].$binaryPath,$contents);
 
 							/*
 							$editPageNr = isset($_SESSION['EditPageNr']) ? $_SESSION['EditPageNr'] : 0;
@@ -1306,17 +1306,17 @@ class weVersions {
 						else {
 							if(isset($document['TemplatePath']) && $document['TemplatePath']!="" && substr($document['TemplatePath'], -18)!="/we_noTmpl.inc.php" && $document['ContentType']=="text/webedition") {
 								$includeTemplate = preg_replace('/.tmpl$/i','.php', $document['TemplatePath']);
-								$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER["DOCUMENT_ROOT"].$binaryPath, $documentObj);
+								$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'].$binaryPath, $documentObj);
 								/*
 								ob_start();
 								include($includeTemplate);
 								$contents = ob_get_contents();
 								ob_end_clean();
-								saveFile($_SERVER["DOCUMENT_ROOT"].$binaryPath,$contents);
+								saveFile($_SERVER['DOCUMENT_ROOT'].$binaryPath,$contents);
 								*/
 							}
 							else {
-								copy($siteFile,$_SERVER["DOCUMENT_ROOT"].$binaryPath);
+								copy($siteFile,$_SERVER['DOCUMENT_ROOT'].$binaryPath);
 							}
 						}
 
@@ -1637,7 +1637,7 @@ class weVersions {
  			$_opt = getHttpOption();
  			if($_opt!="none") {
  				$objTosave = serialize($we_doc);
- 				$f = $_SERVER["DOCUMENT_ROOT"] . VERSION_DIR.'tmpSavedObj.txt';
+ 				$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR.'tmpSavedObj.txt';
 	    		weFile::save($f,$objTosave);
 
  				$path = substr($we_doc->Path, 1);
@@ -1793,7 +1793,7 @@ class weVersions {
 				$_SESSION['versions']['logDeleteIds'][$db->f('ID')]['documentID'] = $db->f('documentID');
 			}
 
-			$filePath = $_SERVER["DOCUMENT_ROOT"].$binaryPath;
+			$filePath = $_SERVER['DOCUMENT_ROOT'].$binaryPath;
 			$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE ID!='".abs($ID)."' AND binaryPath='".$db->escape($binaryPath)."' LIMIT 1","binaryPath",$db);
 
 			if(file_exists($filePath) && $binaryPathUsed=="") {
@@ -1843,11 +1843,11 @@ class weVersions {
 			}
 
 			if(is_array($resetArray) && !empty($resetArray)) {
-				if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$resetArray["ClassName"].".inc.php")){
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$resetArray["ClassName"].".inc.php");
+				if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$resetArray["ClassName"].".inc.php")){
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$resetArray["ClassName"].".inc.php");
 				}
-				elseif(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$resetArray["ClassName"].".inc.php")){
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$resetArray["ClassName"].".inc.php");
+				elseif(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$resetArray["ClassName"].".inc.php")){
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$resetArray["ClassName"].".inc.php");
 				}
 
 				$resetDoc = new $resetArray["ClassName"]();
@@ -1892,7 +1892,7 @@ class weVersions {
 
 				if($resetDoc->ContentType=="image/*") {
 					$lastBinaryPath = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE documentID='".$resetArray["documentID"]."' AND documentTable='".$resetArray["documentTable"]."' AND version <='".$version."' AND binaryPath !='' ORDER BY version DESC LIMIT 1","binaryPath",$db);
-					$resetDoc->elements["data"]["dat"] = $_SERVER["DOCUMENT_ROOT"].$lastBinaryPath;
+					$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'].$lastBinaryPath;
 				}
 
 				$resetDoc->EditPageNr = $_SESSION['EditPageNr'];
@@ -1922,10 +1922,10 @@ class weVersions {
 
 								$parentID = (isset($_SESSION['versions']['lastPathID'])) ? $_SESSION['versions']['lastPathID'] : 0;
 								if(defined("OBJECT_FILES_TABLE") && $resetArray["documentTable"]==OBJECT_FILES_TABLE) {
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 									$folder = new we_class_folder();
 								} else {
-									include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_folder.inc.php");
+									include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 									$folder = new we_folder();
 								}
 								$folder->we_new();
@@ -1983,9 +1983,9 @@ class weVersions {
 
 
 				if(defined("WORKFLOW_TABLE")) {
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/"."weWorkflowUtility.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 				}
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
 
 				we_temporaryDocument::delete($resetDoc->ID,$resetDoc->Table);
 				//$resetDoc->initByID($resetDoc->ID);
@@ -1993,7 +1993,7 @@ class weVersions {
 				$resetDoc->Published = $resetArray["timestamp"];
 
 				$wasPublished = f("SELECT status FROM ".VERSIONS_TABLE." WHERE documentID= '".abs($resetArray["documentID"])."' AND documentTable= '".$db->escape($resetArray["documentTable"])."' and status='published' ORDER BY version DESC LIMIT 1 ","status",$db);
-				$publishedDoc = $_SERVER["DOCUMENT_ROOT"].$resetDoc->Path;
+				$publishedDoc = $_SERVER['DOCUMENT_ROOT'].$resetDoc->Path;
 				$publishedDocExists = true;
 				if($resetArray["ContentType"]!="objectFile") {
 					$publishedDocExists = file_exists($publishedDoc);

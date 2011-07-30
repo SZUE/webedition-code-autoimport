@@ -24,13 +24,13 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WEBEDITION_INCLUDES_DIR."we_classes/we_class.inc.php");
 include_once(WEBEDITION_INCLUDES_DIR."we_html_tools.inc.php");
 include_once(WEBEDITION_INCLUDES_DIR."we_classes/html/we_multibox.inc.php");
 include_once(WEBEDITION_INCLUDES_DIR."we_modules/shop/we_pager_class.inc.php");
 include_once(WEBEDITION_INCLUDES_DIR."we_classes/html/we_button.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"].'/webEdition/lib/we/util/Strings.php');
+include_once ($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/util/Strings.php');
 
 $selectedYear = isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date("Y");
 $selectedMonth = isset($_REQUEST['ViewMonth']) ? $_REQUEST['ViewMonth'] : '0';

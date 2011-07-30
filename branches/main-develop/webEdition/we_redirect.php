@@ -23,7 +23,7 @@
  */
 
 
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 $row = getHash("SELECT Path,IsDynamic FROM ".FILE_TABLE." WHERE ID=" . abs($_REQUEST["id"]),$DB_WE);
 srand ((double)microtime()*1000000);

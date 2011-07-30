@@ -24,10 +24,10 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletter.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 class weNewsletterView {
@@ -350,10 +350,10 @@ class weNewsletterView {
 
 	function getFields($id, $table) {
 		$ClassName = f("SELECT ClassName FROM ".$this->db->escape($table)." WHERE ID=" . abs($id), "ClassName", $this->db);
-		$include_path = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/";
+		$include_path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/";
 
 		if ($table == OBJECT_FILES_TABLE) {
-			$include_path=$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/";
+			$include_path=$_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/";
 		}
 
 		$foo = array();
@@ -375,7 +375,7 @@ class weNewsletterView {
 	function getObjectFields() {
 		$ClassName = f("SELECT ClassName FROM ".FILE_TABLE." WHERE ID=" . abs($id), "ClassName", $this->db);
 
-		include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . $ClassName . ".inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $ClassName . ".inc.php");
 
 		eval('$doc = new ' . $ClassName . '();');
 
@@ -1406,7 +1406,7 @@ class weNewsletterView {
 					if(isset($_REQUEST["ngroup"])){
 						$arr=makeArrayFromCSV($this->newsletter->groups[$_REQUEST["ngroup"]]->Extern);
 						if(isset($_REQUEST["nfile"])){
-							$_sd = str_replace("\\","/",$_SERVER["DOCUMENT_ROOT"]);
+							$_sd = str_replace("\\","/",$_SERVER['DOCUMENT_ROOT']);
 							$arr[]=str_replace($_sd,(substr($_sd,-1)=="/" ? "/" : ""),$_REQUEST["nfile"]);
 							$this->newsletter->groups[$_REQUEST["ngroup"]]->Extern=makeCSVFromArray($arr,true);
 						}
@@ -1855,7 +1855,7 @@ class weNewsletterView {
 						else{
 							$row = array();
 							$control = array();
-							$fh = @fopen($_SERVER["DOCUMENT_ROOT"].$filepath,"rb");
+							$fh = @fopen($_SERVER['DOCUMENT_ROOT'].$filepath,"rb");
 
 							if ($fh) {
 								$_mailListArray = explode("\n",$this->newsletter->groups[$importno]->Emails);
@@ -1909,7 +1909,7 @@ class weNewsletterView {
 						} else {
 							$fname=$_REQUEST["csv_dir".$exportno]."/emails_export_".time().".csv";
 						}
-						weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,$this->newsletter->groups[$exportno]->Emails);
+						weFile::save($_SERVER['DOCUMENT_ROOT'].$fname,$this->newsletter->groups[$exportno]->Emails);
 						print we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
 						print we_htmlElement::jsElement('
 							new jsWindow("'.$this->frameset.'?pnt=export_csv_mes&lnk='.$fname.'","edit_email",-1,-1,440,250,true,true,true,true);
@@ -1936,7 +1936,7 @@ class weNewsletterView {
 						$tempName = TMP_DIR."/".$unique;
 
 						if (move_uploaded_file($we_File["tmp_name"],$tempName)) {
-							$tempName = str_replace($_SERVER["DOCUMENT_ROOT"],"",$tempName);
+							$tempName = str_replace($_SERVER['DOCUMENT_ROOT'],"",$tempName);
 							print we_htmlElement::jsElement('
 									opener.document.we_form.csv_file'.$group.'.value="'.$tempName.'";
 									opener.we_cmd("import_csv");
@@ -1957,7 +1957,7 @@ class weNewsletterView {
 						$tempName = TMP_DIR."/".$unique;
 
 						if (move_uploaded_file($we_File["tmp_name"],$tempName)) {
-							$tempName = str_replace($_SERVER["DOCUMENT_ROOT"],"",$tempName);
+							$tempName = str_replace($_SERVER['DOCUMENT_ROOT'],"",$tempName);
 							print we_htmlElement::jsElement('
 								opener.document.we_form.csv_file.value="'.$tempName.'";
 								opener.document.we_form.sib.value=0;
@@ -1991,7 +1991,7 @@ class weNewsletterView {
 					}
 
 					if($csv_file){
-						weFile::save($_SERVER["DOCUMENT_ROOT"].$csv_file,$emails_out);
+						weFile::save($_SERVER['DOCUMENT_ROOT'].$csv_file,$emails_out);
 					}
 
 					break;
@@ -2010,7 +2010,7 @@ class weNewsletterView {
 						}
 
 						if($csv_file){
-							weFile::save($_SERVER["DOCUMENT_ROOT"].$csv_file,$emails_out);
+							weFile::save($_SERVER['DOCUMENT_ROOT'].$csv_file,$emails_out);
 						}
 					}
 					break;
@@ -2157,7 +2157,7 @@ class weNewsletterView {
 	 */
 
 	function initDocByObject(&$we_doc, $we_objectID) {
-		include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
 		$we_obj = new we_objectFile();
 		$we_obj->initByID($we_objectID,OBJECT_FILES_TABLE);
@@ -2178,7 +2178,7 @@ class weNewsletterView {
 	}
 
 	function initDoc(&$we_doc, $id = 0) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 
 		$we_doc = new we_webEditionDocument();
 
@@ -2227,11 +2227,11 @@ class weNewsletterView {
 						case WENBLOCK_DOCUMENT:
 							$path = "";
 							if($block->Field!="" && $block->Field!=0){
-								$path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($block->Field,TEMPLATES_TABLE));
+								$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($block->Field,TEMPLATES_TABLE));
 							}
 							else if($block->LinkID){
 								$tid=f("SELECT TemplateID FROM ".FILE_TABLE." WHERE ID='".$block->LinkID."';","TemplateID",$this->db);
-								$path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($tid,TEMPLATES_TABLE));
+								$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($tid,TEMPLATES_TABLE));
 							}
 							if($block->LinkID && $path)
 								$content .= we_getDocumentByID($block->LinkID,$path);
@@ -2245,7 +2245,7 @@ class weNewsletterView {
 						case WENBLOCK_OBJECT:
 							$path = "";
 							if($block->Field!="" && $block->Field!=0){
-								$path = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($block->Field,TEMPLATES_TABLE));
+								$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($block->Field,TEMPLATES_TABLE));
 							}
 							if($block->LinkID && $path)
 								$content = we_getObjectFileByID($block->LinkID,$path);
@@ -2290,9 +2290,9 @@ class weNewsletterView {
 							}
 							break;
 						case WENBLOCK_FILE:
-							$content = weFile::load($_SERVER["DOCUMENT_ROOT"].$block->Field);
+							$content = weFile::load($_SERVER['DOCUMENT_ROOT'].$block->Field);
 							if(!$content)
-								print g_l('modules_newsletter','[cannot_open]').": ".$_SERVER["DOCUMENT_ROOT"].$block->Field;
+								print g_l('modules_newsletter','[cannot_open]').": ".$_SERVER['DOCUMENT_ROOT'].$block->Field;
 							break;
 						case WENBLOCK_URL:
 							if($block->Field){
@@ -2472,7 +2472,7 @@ class weNewsletterView {
 				$path=f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".$this->db->f("LinkID"),"Path",$dbtmp);
 
 				if ($path) {
-					$atts[]=$_SERVER["DOCUMENT_ROOT"].$path;
+					$atts[]=$_SERVER['DOCUMENT_ROOT'].$path;
 				}
 			}
 		}

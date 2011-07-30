@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weModuleFrames.php");
 include_once(WE_BANNER_MODULE_DIR."weBannerView.php");
 
@@ -99,7 +99,7 @@ class weBannerFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader($mode=0){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#F0EFF0" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';

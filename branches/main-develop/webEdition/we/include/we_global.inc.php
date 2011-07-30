@@ -551,9 +551,9 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 	}
 	if (isset($_REQUEST['we_ui_'.$formname.'_Category'])){
 		if(is_array($_REQUEST['we_ui_'.$formname.'_Category'])) {
-			$_REQUEST['we_ui_'.$formname.'_Category'] = makeCSVFromArray($_REQUEST["we_ui_$formname"."_Category"],true);
+			$_REQUEST['we_ui_'.$formname.'_Category'] = makeCSVFromArray($_REQUEST['we_ui_'.$formname.'_Category'],true);
 		} else {
-			$_REQUEST["we_ui_$formname"."_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST["we_ui_$formname"."_Category"]), true);
+			$_REQUEST["we_ui_$formname"."_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_'.$formname.'_Category']), true);
 		}
 	}
 	foreach ($GLOBALS["we_object"][$formname]->persistent_slots as $slotname) {
@@ -788,7 +788,7 @@ function checkAndPrepareBinary($formname, $key = 'we_document') {
 
 		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_otherDocument.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
 			foreach ($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename) {
 
@@ -847,7 +847,7 @@ function checkAndPrepareFlashmovie($formname, $key = "we_document") {
 
 		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_flashDocument.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
 			foreach ($_FILES["we_ui_$formname"]["name"] as $flashName => $filename) {
 
@@ -913,7 +913,7 @@ function checkAndPrepareQuicktime($formname, $key = "we_document") {
 		return;
 	}
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 	foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
 
 		$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
@@ -2214,7 +2214,7 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 		}
 	}
 	if (preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)) {
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 		for ($i = 0; $i < sizeof($regs); $i++) {
 			list($imgID, $thumbID) = explode(',', $regs[$i][1]);
 			$thumbObj = new we_thumbnail();
@@ -3131,7 +3131,7 @@ function we_filenameNotValid($filename) {
 }
 
 function we_getIcon($contentType, $extension) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 	if ($contentType == 'application/*') {
 		switch ($extension) {
 			case '.pdf' :

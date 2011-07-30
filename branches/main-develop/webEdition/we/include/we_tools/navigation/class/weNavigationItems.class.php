@@ -25,7 +25,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 if (defined('CUSTOMER_TABLE')) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
 }
 
 /**

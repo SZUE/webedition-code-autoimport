@@ -23,15 +23,15 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-//include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weBackup.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+//include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weBackup.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 define("BACKUP_MODE",1);
 define("RECOVER_MODE",2);
@@ -476,10 +476,10 @@ class weBackupWizard{
 			$extra_files=array();
 			for ($i=0; $i<=1;$i++){
 				if ($i==0) {
-					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR;
+					$dstr = $_SERVER['DOCUMENT_ROOT'].BACKUP_DIR;
 					$adddatadir = '';
 				} else {
-					$dstr = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR.'data/';
+					$dstr = $_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'data/';
 					$adddatadir = 'data/';
 				}
 				$d = dir($dstr);
@@ -1102,7 +1102,7 @@ class weBackupWizard{
 		if (isset($_GET["backupfile"])) {
 			$_filename = urldecode($_GET["backupfile"]);
 
-			if (file_exists($_filename) && stripos($_filename,$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR)!==false){				// Does file exist and does it saved in backup dir?
+			if (file_exists($_filename) && stripos($_filename,$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR)!==false){				// Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
 				if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.
@@ -1200,7 +1200,7 @@ class weBackupWizard{
  	}
 
  	function  getHTMLBusy(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_progressBar.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET . "\n";
 		$body="";
@@ -1345,7 +1345,7 @@ class weBackupWizard{
 					break;
 					case 3:
 						if (defined("WORKFLOW_TABLE")) {
-							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 							if(count(weWorkflowUtility::getAllWorkflowDocs(FILE_TABLE))>0 || (defined("OBJECT_FILES_TABLE") && count(weWorkflowUtility::getAllWorkflowDocs(OBJECT_FILES_TABLE)))>0) {
 								$nextbut = $we_button->create_button("restore_backup", "javascript:if(confirm('".g_l('modules_workflow','[ask_before_recover]')."')) top.body.startImport();");
 							} else {
@@ -1390,7 +1390,7 @@ class weBackupWizard{
 			if (isset($_REQUEST["operation_mode"])) {
 				switch ($_REQUEST["operation_mode"]) {
 					case "backup":
-						if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
+						if(!is_writable($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp")){
 							print we_htmlElement::jsElement('
 												function setLocation(loc){
 													location.href=loc;
@@ -1495,7 +1495,7 @@ class weBackupWizard{
 						');
 					break;
 					case "import":
-						if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
+						if(!is_writable($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp")){
 							print we_htmlElement::jsElement('
 												function setLocation(loc){
 													location.href=loc;
@@ -1541,11 +1541,11 @@ class weBackupWizard{
 							$ok = false;
 
 							if ($backup_select) {
-								$we_backup_obj->filename = $_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR . $backup_select;
+								$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
 								$ok = true;
 							} else if ($we_upload_file && ($we_upload_file != "none")) {
-								$we_backup_obj->filename = $_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/".$_FILES["we_upload_file"]["name"];
-								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"],$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/".$_FILES["we_upload_file"]["name"])){
+								$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp/".$_FILES["we_upload_file"]["name"];
+								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"],$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp/".$_FILES["we_upload_file"]["name"])){
 									print we_htmlElement::jsElement('
 												top.busy.location="'.$this->frameset.'?pnt=busy";
 												' . we_message_reporting::getShowMessageCall( sprintf(g_l('backup',"[cannot_save_tmpfile]"),BACKUP_DIR), WE_MESSAGE_ERROR ) . '
@@ -1566,7 +1566,7 @@ class weBackupWizard{
 
 							if($handle_options["core"]){
 								$we_backup_obj->getSiteFiles();
-							 	$we_backup_obj->getFileList($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates",true,false);
+							 	$we_backup_obj->getFileList($_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates",true,false);
 							}
 
 							$we_backup_obj->getVersion($we_backup_obj->filename);
@@ -1612,7 +1612,7 @@ class weBackupWizard{
 
 						}
 						else if ($we_backup_obj->file_counter < $we_backup_obj->file_end) {
-							$filename_tmp = $_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
+							$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
 							$we_backup_obj->file_counter++;
 							$ok = $we_backup_obj->restoreChunk($filename_tmp);
 							$temp_filename = $we_backup_obj->saveState($temp_filename);
@@ -1641,7 +1641,7 @@ class weBackupWizard{
 						}
 						else{
 							$we_backup_obj->doUpdate();
-							if(is_file($_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR . "tmp/" .$temp_filename) && $we_backup_obj->rebuild && !count($we_backup_obj->errors)) unlink($_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR . "tmp/" .$temp_filename);
+							if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" .$temp_filename) && $we_backup_obj->rebuild && !count($we_backup_obj->errors)) unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" .$temp_filename);
 							print "\n".
 								we_htmlElement::jsElement('
 								top.opener.top.we_cmd("load", "'.FILE_TABLE.'");

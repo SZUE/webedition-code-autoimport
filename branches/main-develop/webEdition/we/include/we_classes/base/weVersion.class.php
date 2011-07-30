@@ -29,8 +29,8 @@
  * Provides functions for exporting and importing backups.
  */
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");	
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."weFile.class.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");	
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 	class weVersion{
 
@@ -64,7 +64,7 @@
 			if($this->db->next_record()){
 				$this->Path=$this->db->f("binaryPath");
 				if($this->Path && $loadData){
-					return $this->loadFile($_SERVER["DOCUMENT_ROOT"].SITE_DIR.$this->Path);
+					return $this->loadFile($_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path);
 				}
 				return false;
 			}
@@ -72,7 +72,7 @@
 		}
 
 		function loadFile($file){
-			$path=stri_replace($_SERVER["DOCUMENT_ROOT"],"",$file);
+			$path=stri_replace($_SERVER['DOCUMENT_ROOT'],"",$file);
 			$path=stri_replace(SITE_DIR,"",$path);
 			$this->Path=$path;
 			if($this->linkData)
@@ -83,20 +83,20 @@
 
 		function save($force=true){
 			if($this->ID){
-				$path=$_SERVER["DOCUMENT_ROOT"].$this->Path;
+				$path=$_SERVER['DOCUMENT_ROOT'].$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))) {
 					createLocalFolderByPath(dirname($path));
 				}
-				weFile::save($_SERVER["DOCUMENT_ROOT"].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
+				weFile::save($_SERVER['DOCUMENT_ROOT'].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
 			}
 			else{
-				$path=$_SERVER["DOCUMENT_ROOT"].$this->Path;
+				$path=$_SERVER['DOCUMENT_ROOT'].$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))){
 					createLocalFolderByPath(dirname($path));
 				}
-				weFile::save($_SERVER["DOCUMENT_ROOT"].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
+				weFile::save($_SERVER['DOCUMENT_ROOT'].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
 			}
 			return true;
 		}

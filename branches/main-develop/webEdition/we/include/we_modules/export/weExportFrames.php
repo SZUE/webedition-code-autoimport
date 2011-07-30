@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/"."weModuleFrames.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_export/"."weExportTree.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_export/weExportTree.inc.php");
 include_once(WE_EXPORT_MODULE_DIR."weExportView.php");
 include_once(WE_EXPORT_MODULE_DIR."weExportTreeMain.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
@@ -86,7 +86,7 @@ class weExportFrames extends weModuleFrames {
 
 
 	function getHTMLEditorHeader() {
-		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor"=>"#FFFFFF","background"=>"/webEdition/images/backgrounds/bgGrayLineTop.gif"),""));
 		}
@@ -213,7 +213,7 @@ class weExportFrames extends weModuleFrames {
 
 		');
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_progressBar.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$text = g_l('export','[working]');
 		$progress = 0;
@@ -558,7 +558,7 @@ class weExportFrames extends weModuleFrames {
 					}
 
 
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 					$_progress_update = '';
 					$exports=0;
@@ -575,7 +575,7 @@ class weExportFrames extends weModuleFrames {
 							$finalObjs = array();
 							$finalClasses = array();
 						}
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExport.class.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExport.class.php");
 						$xmlExIm = new weXMLExport();
 						$xmlExIm->getSelectedItems($this->View->export->Selection,
 													"wxml",
@@ -627,7 +627,7 @@ class weExportFrames extends weModuleFrames {
 
 					} else if($_SESSION['ExImPrepare']) {
 
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weExportPreparer.class.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weExportPreparer.class.php");
 						$xmlExIm = new weExportPreparer();
 
 						$xmlExIm->loadPerserves();
@@ -651,7 +651,7 @@ class weExportFrames extends weModuleFrames {
 								');
 							weFile::save($this->View->export->ExportFilename,$xmlExIm->getHeader(),"wb");
 							if($this->View->export->HandleOwners) {
-								include_once($_SERVER["DOCUMENT_ROOT"]. "/webEdition/we/include/we_exim/weXMLExport.class.php");
+								include_once($_SERVER['DOCUMENT_ROOT']. "/webEdition/we/include/we_exim/weXMLExport.class.php");
 								weFile::save($this->View->export->ExportFilename,weXMLExport::exportInfoMap($xmlExIm->RefTable->Users),"ab");
 							}
 
@@ -688,7 +688,7 @@ class weExportFrames extends weModuleFrames {
 
 					} else {
 
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExport.class.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExport.class.php");
 						$xmlExIm = new weXMLExport();
 						$xmlExIm->loadPerserves();
 						$exports=0;
@@ -813,9 +813,9 @@ class weExportFrames extends weModuleFrames {
 					if (isset($_GET["exportfile"])) {
 						$_filename = basename(urldecode($_GET["exportfile"]));
 
-						if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$_filename)								// Does file exist?
+						if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename)								// Does file exist?
 							&& !eregi("p?html?", $_filename) && stripos($_filename,"inc")===false && !eregi("php3?", $_filename)) {		// Security check
-							$_size = filesize($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$_filename);
+							$_size = filesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename);
 
 							if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.
 								header("Pragma: ");
@@ -833,7 +833,7 @@ class weExportFrames extends weModuleFrames {
 							header("Content-Description: " . trim(htmlentities($_filename)));
 							header("Content-Length: " . $_size);
 
-							$_filehandler = readfile($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$_filename);
+							$_filehandler = readfile($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename);
 							exit;
 						} else {
 
@@ -946,7 +946,7 @@ class weExportFrames extends weModuleFrames {
 		}
 
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$hiddens =	we_htmlElement::htmlHidden(array("name"=>"Categorys","value"=>$this->View->export->Categorys)).
 					we_htmlElement::htmlHidden(array("name"=>"cat","value"=>(isset($_REQUEST["cat"]) ? $_REQUEST["cat"] :"")));

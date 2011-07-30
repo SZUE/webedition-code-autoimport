@@ -214,13 +214,13 @@ function display_error_message($type, $message, $file, $line) {
 	// Error message
 	$_detailedError .= '	<tr valign="top">';
 	$_detailedError .= '		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>';
-	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i><pre>' . str_replace($_SERVER["DOCUMENT_ROOT"], "", $message) . '</pre></i></font></td>';
+	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></font></td>';
 	$_detailedError .= '	</tr>';
 
 	// Script name
 	$_detailedError .= '	<tr valign="top">';
 	$_detailedError .= '		<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>';
-	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . str_replace($_SERVER["DOCUMENT_ROOT"], "", $file) . '</i></font></td>';
+	$_detailedError .= '		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></font></td>';
 	$_detailedError .= '	</tr>';
 
 	// Line

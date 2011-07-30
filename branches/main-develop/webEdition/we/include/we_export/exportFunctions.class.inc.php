@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
 class exportFunctions {
 
@@ -63,7 +63,7 @@ class exportFunctions {
 	function fileCreate($format = "gxml", $filename, $path) {
 		switch ($format) {
 			case "gxml":
-				$_file_name = $_SERVER["DOCUMENT_ROOT"] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
+				$_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
 
 				$_continue = true;
 
@@ -89,7 +89,7 @@ class exportFunctions {
 
 				break;
 			case "csv":
-				$_file_name = $_SERVER["DOCUMENT_ROOT"] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
+				$_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
 
 				$_continue = true;
 
@@ -195,7 +195,7 @@ class exportFunctions {
 				break;
 		}
 
-		return array("file" => $_file, "filename" => ($_SERVER["DOCUMENT_ROOT"] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => (($tableid != null) ? $_tableid : ""));
+		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => (($tableid != null) ? $_tableid : ""));
 	}
 
 	/**
@@ -550,7 +550,7 @@ class exportFunctions {
 	 */
 
 	function exportDocument($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 
 		$_export_success = false;
 
@@ -678,7 +678,7 @@ class exportFunctions {
 			exportFunctions::fileFinish($format, $_file, $_doctype, $_file_name);
 
 		}
-		$_tmp_file_name = $_SERVER["DOCUMENT_ROOT"] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
+		$_tmp_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
 
 		if ($file_complete) {
 			exportFunctions::fileComplete($format, $_tmp_file_name);

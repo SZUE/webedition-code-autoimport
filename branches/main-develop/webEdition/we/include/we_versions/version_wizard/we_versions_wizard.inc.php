@@ -67,7 +67,7 @@ class we_versions_wizard
 	 */
 	function getBusy()
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
 
 		$WE_PB = new we_progressBar(0, 0, true);
@@ -1434,7 +1434,7 @@ class we_versions_wizard
 	 */
 	function getFrameset()
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$tail = "";
 		if (isset($_REQUEST["btype"])) {

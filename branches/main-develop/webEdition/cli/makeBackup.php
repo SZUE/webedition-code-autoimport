@@ -151,7 +151,7 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 //use we-error handler; ignore if logging is disabled!
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
 if(!defined('WE_ERROR_SHOW')){
 	define('WE_ERROR_SHOW',1);
 }
@@ -179,8 +179,8 @@ if (!isset($_SERVER['SERVER_NAME'])) {
 }
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/PEAR.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/Getopt.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/PEAR.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/Getopt.php");
 
 // Define exit codes for errors
 define('NO_ARGS',10);
@@ -332,7 +332,7 @@ if (isset($options[1][0])) {
 $_REQUEST['filename'] = basename($_backup_filename);
 
 // include needed libraries
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupPreparer.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupExport.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');

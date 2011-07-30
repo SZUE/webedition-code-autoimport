@@ -23,14 +23,14 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 
 class deleteProgressDialog{
 
 	function main(){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$WE_PB = new we_progressBar(0,0,true);
 		$WE_PB->setStudLen(490);
@@ -38,7 +38,7 @@ class deleteProgressDialog{
 		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$WE_BTN = new we_button();
 		$cancelButton = $WE_BTN->create_button("cancel","javascript:top.close();");
 		$pb = htmlDialogLayout($pb,g_l('delete',"[delete]"),$cancelButton);
@@ -55,7 +55,7 @@ class deleteProgressDialog{
 	}
 
 	function frameset(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$fst = new we_htmlFrameset(array(
 			"rows" => "*,0",
@@ -77,12 +77,12 @@ class deleteProgressDialog{
 
 	function cmd(){
 		if(isset($_SESSION["backup_delete"]) && $_SESSION["backup_delete"]){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/delete/delBackup.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/delete/delBackup.inc.php");
 			$taskname = md5(session_id()."_backupdel");
 			$fr = new delBackup($taskname,1,0);
 		}
 		else{
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/delete/delFragment.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/delete/delFragment.inc.php");
 			$taskname = md5(session_id()."_del");
 			$table = (isset($_REQUEST["table"]) && $_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
 			$fr = new delFragment($taskname,1,0,$table);

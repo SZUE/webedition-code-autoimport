@@ -23,12 +23,12 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
-$supportDebuggingFile = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we_sselector_inc.php";
+$supportDebuggingFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we_sselector_inc.php";
 $supportDebugging = false;
 if (file_exists($supportDebuggingFile)) {
 
@@ -148,7 +148,7 @@ function getDataType($dat){
     $org=$_REQUEST["dir"];
 }
 
- $dir=$_SERVER["DOCUMENT_ROOT"].$_REQUEST["dir"];
+ $dir=$_SERVER['DOCUMENT_ROOT'].$_REQUEST["dir"];
  if($dir != "/") $dir = ereg_replace("(.)/$",'\1',$dir);
  if(!isset($_REQUEST["ord"]))
     $_REQUEST["ord"]=10;
@@ -243,7 +243,7 @@ foreach ($final as $key => $entry) {
 
 	$indb = $DB_WE->next_record() ? true : false;
 	if($entry=="webEdition") $indb = true;
-	if((preg_match('|^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/|',$dir) || preg_match('|^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition$|',$dir)) && (!preg_match('|^'.$_SERVER["DOCUMENT_ROOT"].'/?webEdition/we_backup|',$dir) || $entry=="download" || $entry=="tmp")) $indb = true;
+	if((preg_match('|^'.$_SERVER['DOCUMENT_ROOT'].'/?webEdition/|',$dir) || preg_match('|^'.$_SERVER['DOCUMENT_ROOT'].'/?webEdition$|',$dir)) && (!preg_match('|^'.$_SERVER['DOCUMENT_ROOT'].'/?webEdition/we_backup|',$dir) || $entry=="download" || $entry=="tmp")) $indb = true;
 	if($supportDebugging) $indb = false;
 	$show = ($entry!=".") && ($entry!="..") && (($_REQUEST["fil"]==g_l('contentTypes','[all_Types]'))||($type==g_l('contentTypes','[folder]'))||($type==$_REQUEST["fil"] || $_REQUEST["fil"]==""));
 	$bgcol = ($_REQUEST["curID"] == ($dir."/".$entry) && (!( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder"))) ? "#DFE9F5" : "white";

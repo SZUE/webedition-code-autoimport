@@ -28,7 +28,7 @@ $preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://".$
 // force the download of this document
 if (isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download") {
 	$_filename = $we_doc->Filename.$we_doc->Extension;
-	$_size = filesize($_SERVER["DOCUMENT_ROOT"].$we_doc->Path);
+	$_size = filesize($_SERVER['DOCUMENT_ROOT'].$we_doc->Path);
 
 	if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.
 		header("Pragma: ");
@@ -45,12 +45,12 @@ if (isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "download") {
 	header("Content-Disposition: attachment; filename=\"" . trim(htmlentities($_filename)) . "\"");
 	header("Content-Description: " . trim(htmlentities($_filename)));
 
-	$_filehandler = readfile($_SERVER["DOCUMENT_ROOT"].$we_doc->Path);
+	$_filehandler = readfile($_SERVER['DOCUMENT_ROOT'].$we_doc->Path);
 	exit;
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 htmlTop();
@@ -65,7 +65,7 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 	<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 
 <?php
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 	print STYLESHEET;
 

@@ -869,8 +869,8 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/htm
 	), 1, ($img != "" ? 2 : 1));
 
 	if ($img != "") {
-		if (file_exists($_SERVER["DOCUMENT_ROOT"] . $img)) {
-			$size = getimagesize($_SERVER["DOCUMENT_ROOT"] . $img);
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . $img)) {
+			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
 			$content->setCol(
 					0,
 					0,

@@ -29,11 +29,11 @@ if(!isset($_REQUEST["we_cmd"])){
 //error_log($_REQUEST["we_cmd"][0]." (-): " . round(((memory_get_usage()/1024)/1024),3)  . " MB");
 
 if($_REQUEST["we_cmd"][0] != "show" && $_REQUEST["we_cmd"][0] != "getWeDocFromID"){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 }
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_defines.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.php");
 
 $INCLUDE = "";
 //	In we.inc.php all names of the active modules have already been searched
@@ -41,14 +41,14 @@ $INCLUDE = "";
 if(isset($_we_active_modules)){
 	for($i=0;$i<sizeof($_we_active_modules);$i++){
 
-		if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_cmd_" . $_we_active_modules[$i] . ".inc.php")){
+		if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_cmd_" . $_we_active_modules[$i] . ".inc.php")){
 
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_cmd_" . $_we_active_modules[$i] . ".inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_cmd_" . $_we_active_modules[$i] . ".inc.php");
 		}
 
 	}
 }
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/SEEM/"."we_SEEM.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 
 if(!$INCLUDE){
 	switch($_REQUEST["we_cmd"][0]){
@@ -385,10 +385,10 @@ if($INCLUDE){
     //	This is ONLY used in the edit-mode of the documents.
     $cmds_no_js = array('siteImport','mod_home','import_images','getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
     if(substr($INCLUDE, 0, 5)=='apps/') {
-    	include($_SERVER["DOCUMENT_ROOT"]."/webEdition/".$INCLUDE);
+    	include($_SERVER['DOCUMENT_ROOT']."/webEdition/".$INCLUDE);
     }
     else {
-   		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/".$INCLUDE);
+   		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/".$INCLUDE);
     }
     //  This statement prevents the page from being reloaded
     if(!in_array($_REQUEST["we_cmd"][0], $cmds_no_js)){

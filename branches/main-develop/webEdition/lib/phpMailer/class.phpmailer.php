@@ -1012,7 +1012,7 @@ class PHPMailer {
         break;
       case 'alt_attachments':
         $result .= sprintf("--%s%s", $this->boundary[1], $this->LE);
-        $result .= sprintf("Content-Type: %s;%s" . "\tboundary=\"%s\"%s", 'multipart/alternative', $this->LE, $this->boundary[2], $this->LE.$this->LE);
+        $result .= sprintf("Content-Type: %s;%s\tboundary=\"%s\"%s", 'multipart/alternative', $this->LE, $this->boundary[2], $this->LE.$this->LE);
         $result .= $this->GetBoundary($this->boundary[2], '', 'text/plain', '') . $this->LE; // Create text body
         $result .= $this->EncodeString($this->AltBody, $this->Encoding);
         $result .= $this->LE.$this->LE;

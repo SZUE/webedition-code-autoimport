@@ -27,9 +27,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSea
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolView.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolSearch.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolExp.class.inc.php');
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "weSuggest.class.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
 
 class searchtoolView extends weToolView
@@ -2828,8 +2828,8 @@ class searchtoolView extends weToolView
 			} else
 
 			{
-				$fs = file_exists($_SERVER["DOCUMENT_ROOT"] . $_result[$f]["Path"]) ? filesize(
-						$_SERVER["DOCUMENT_ROOT"] . $_result[$f]["Path"]) : 0;
+				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize(
+						$_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(
 						($fs / (1024 * 1024)),
 						2) . ' mb');
@@ -2839,9 +2839,9 @@ class searchtoolView extends weToolView
 					$bigSize = 140;
 
 					if ($fs > 0) {
-						$imagesize = getimagesize($_SERVER["DOCUMENT_ROOT"] . $_result[$f]["Path"]);
+						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
 						if (file_exists(
-								$_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower(
+								$_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower(
 										$_result[$f]["Extension"]))) {
 							$thumbpath = '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower(
 									$_result[$f]["Extension"]);
@@ -2850,7 +2850,7 @@ class searchtoolView extends weToolView
 							$imageView = "<img src='/webEdition/thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 						if (file_exists(
-								$_SERVER["DOCUMENT_ROOT"] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
+								$_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
 										$_result[$f]["Extension"]))) {
 							$thumbpathPopup = '/webEdition/preview/' . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower(
 									$_result[$f]["Extension"]);

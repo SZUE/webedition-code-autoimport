@@ -27,7 +27,7 @@ class rpcSelectorGetSelectedIdCmd extends rpcCmd {
 	function execute() {
 		$resp = new rpcResponse();
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
 
 		if (!isset($_REQUEST["we_cmd"][1]) || !isset($_REQUEST["we_cmd"][2])) exit();
 

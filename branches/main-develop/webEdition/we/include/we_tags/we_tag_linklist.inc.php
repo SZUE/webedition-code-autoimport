@@ -23,7 +23,7 @@
  */
 
 function we_tag_linklist($attribs, $content){
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_linklist.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
 	$name = we_getTagAttribute("name", $attribs);
 	$content = str_replace("we:link", "we_:_link", $content);
 	$foo = attributFehltError($attribs, "name", "linklist");

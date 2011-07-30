@@ -67,7 +67,7 @@ if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
 
 
 if (!defined('NO_SESS')) {
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_session.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_session.inc.php");
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
 	if (!empty($_tooldefines)) {

@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once( $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php" );
-include_once( $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php" );
+include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php" );
+include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php" );
 include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php" );
-include_once( $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/customer/weDocumentCustomerFilterView.class.php" );
+include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weDocumentCustomerFilterView.class.php" );
 
 protect();
 $parts = array();
@@ -63,7 +63,7 @@ array_push( $parts, $_docWebUser );
 
 print htmlTop();
 print STYLESHEET;
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print we_htmlElement::cssElement("
 .paddingLeft {
 	padding-left: 25px;
@@ -94,7 +94,7 @@ print "</body>";
 print "</html>";
 
 function formWebuser($canChange,$width=388){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$we_button = new we_button();
 
 	if(!$GLOBALS['we_doc']->WebUserID) $GLOBALS['we_doc']->WebUserID = 0;

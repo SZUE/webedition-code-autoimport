@@ -25,15 +25,15 @@
 /**
  * Global include file
  */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 /**
  * Class for creating a button
  */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 /**
  * The notepad widtget functions
  */
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_widgets/mod/wePadFunctions.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/mod/wePadFunctions.inc.php");
 
 protect();
 /**

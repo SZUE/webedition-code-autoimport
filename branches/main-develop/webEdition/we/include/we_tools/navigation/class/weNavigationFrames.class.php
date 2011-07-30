@@ -1518,7 +1518,7 @@ function onFolderSelectionChangeJS(elem) {
 		} elseif (isset($this->Model->$IDName) && !empty($this->Model->$IDName)) {
 			$_path = id_to_path($this->Model->$IDName, $table);
 		} else {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
 			$acQuery = new weSelectorQuery();
 			if (isset($IDValue) && $IDValue !== "") {
 				$acResponse = $acQuery->getItemById($IDValue, $table, array(
@@ -2705,8 +2705,8 @@ function onFolderSelectionChangeJS(elem) {
 		$parts = array();
 		$_space_size = 50;
 
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilterView.class.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilterView.class.php");
 
 		$_filter = new weNavigationCustomerFilter();
 		$_filter->initByNavModel($this->Model);

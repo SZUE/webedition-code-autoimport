@@ -23,11 +23,11 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/rebuild/rebuildFragment.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/rebuild/rebuildFragment.inc.php");
 
 
 
@@ -64,7 +64,7 @@ class we_rebuild_wizard{
 	* @return string
 	*/
 	function getBusy(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
 
 		$WE_PB = new we_progressBar(0,0,true);
@@ -176,7 +176,7 @@ class we_rebuild_wizard{
 			}
 		}
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
 		$parts = array();
 		array_push($parts, array(
@@ -219,7 +219,7 @@ class we_rebuild_wizard{
 			"space"		=> 0)
 		);
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_rebuildMetaDisabled = true;
@@ -437,7 +437,7 @@ class we_rebuild_wizard{
 	* @param boolean $catAnd if the categories should be connected with AND
 	*/
 	function formCategory($categories,$catAnd){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -478,7 +478,7 @@ class we_rebuild_wizard{
 	* @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	*/
 	function formFolders($folders,$thumnailpage=false, $width="495"){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -512,7 +512,7 @@ class we_rebuild_wizard{
 	}
 
 	function formMetadata($metaFields, $onlyEmpty) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_html = '<script type="text/javascript">document._errorMessage='.(count($metaFields) ? '""' : '"'.addslashes(g_l('rebuild',"[noFieldsChecked]")).'"').'</script>';
@@ -786,7 +786,7 @@ class we_rebuild_wizard{
 	* @return string
 	*/
 	function getFrameset(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$tail = "";
 		if(isset($_REQUEST["btype"])){

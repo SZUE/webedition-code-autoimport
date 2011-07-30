@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_bannerSelector.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/we_bannerSelector.php");
 
 protect();
 

@@ -193,7 +193,7 @@ function we_tag_write($attribs, $content){
 					}
 				}
 				if ($doWrite && $doworkflow) {
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 					$workflowID = weWorkflowUtility::getWorkflowID($workflowname);
 					$wf_text = "we:write ".$workflowname."  " ;
 					if($GLOBALS["we_doc"]->Table==FILE_TABLE) {
@@ -253,7 +253,7 @@ function we_tag_write($attribs, $content){
 
 function checkAndCreateFlashmovie($formname, $type = "we_document") {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_flashDocument.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 
 	foreach ($_REQUEST as $key => $_flashmovieDataId) {
 		if (preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)) {
@@ -268,7 +268,7 @@ function checkAndCreateFlashmovie($formname, $type = "we_document") {
 					if ($flashDocument->WebUserID == $webuserId) {
 						//everything ok, now delete
 						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
 						deleteEntry($flashId, FILE_TABLE);
 						$GLOBALS["NOT_PROTECT"] = false;
 						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
@@ -331,7 +331,7 @@ function checkAndCreateFlashmovie($formname, $type = "we_document") {
 
 function checkAndCreateQuicktime($formname, $type = "we_document") {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_quicktimeDocument.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 
 	foreach ($_REQUEST as $key => $_quicktimeDataId) {
 		if (preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)) {
@@ -345,7 +345,7 @@ function checkAndCreateQuicktime($formname, $type = "we_document") {
 					if ($quicktimeDocument->WebUserID == $webuserId) {
 						//everything ok, now delete
 						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
 						deleteEntry($quicktimeId, FILE_TABLE);
 						$GLOBALS["NOT_PROTECT"] = false;
 						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
@@ -408,7 +408,7 @@ function checkAndCreateQuicktime($formname, $type = "we_document") {
 
 function checkAndCreateImage($formname, $type = "we_document") {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_imageDocument.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 	foreach ($_REQUEST as $key => $_imgDataId) {
 		if (preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)) {
@@ -422,7 +422,7 @@ function checkAndCreateImage($formname, $type = "we_document") {
 					if ($imgDocument->WebUserID == $webuserId) {
 						//everything ok, now delete
 						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
 						deleteEntry($imgId, FILE_TABLE);
 						$GLOBALS["NOT_PROTECT"] = false;
 						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
@@ -485,7 +485,7 @@ function checkAndCreateImage($formname, $type = "we_document") {
 
 function checkAndCreateBinary($formname, $type = "we_document") {
 	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_otherDocument.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 
 	foreach ($_REQUEST as $key => $_binaryDataId) {
 		if (preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)) {
@@ -499,7 +499,7 @@ function checkAndCreateBinary($formname, $type = "we_document") {
 					if ($binaryDocument->WebUserID == $webuserId) {
 						//everything ok, now delete
 						$GLOBALS["NOT_PROTECT"] = true;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_delete_fn.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_delete_fn.inc.php");
 						deleteEntry($binaryId, FILE_TABLE);
 						$GLOBALS["NOT_PROTECT"] = false;
 						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);

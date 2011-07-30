@@ -34,7 +34,7 @@ class we_rebuild {
 		}
 
 		if($data["type"] == "navigation"){
-			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigationCache.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationCache.class.php");
 			if ($printIt) {
 				print ('Rebuilding Navigation Item with Id: ' . $data['id']);
 				flush();
@@ -54,7 +54,7 @@ class we_rebuild {
 			}
 		}else if($data["type"] == "thumbnail"){
 			$GLOBALS["WE_IS_IMG"] = 1;
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$imgdoc = new we_imageDocument();
 			$imgdoc->initByID($data["id"]);
 			if ($printIt) {
@@ -74,7 +74,7 @@ class we_rebuild {
 				flush();
 			}
 		}else if($data["type"] == "metadata"){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$imgdoc = new we_imageDocument();
 			$imgdoc->initByID($data["id"]);
 			if ($printIt) {
@@ -97,24 +97,24 @@ class we_rebuild {
 		}else{
 			switch($data["type"]){
 				case "document":
-				    if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$data["cn"].".inc.php")){
-				    	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$data["cn"].".inc.php");
+				    if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$data["cn"].".inc.php")){
+				    	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$data["cn"].".inc.php");
 					}else{  // it has to be an object
 				    	return false;
 					}
 				   	$table = FILE_TABLE;
 					break;
 				case "template":
-				    if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$data["cn"].".inc.php")){
-				    	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$data["cn"].".inc.php");
+				    if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$data["cn"].".inc.php")){
+				    	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$data["cn"].".inc.php");
 					}else{  // it has to be an object
 				    	return false;
 					}
 				   	$table = TEMPLATES_TABLE;
 				   	break;
 				case "object":
-				    if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$data["cn"].".inc.php")){
-				    	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$data["cn"].".inc.php");
+				    if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$data["cn"].".inc.php")){
+				    	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$data["cn"].".inc.php");
 					}else{  // it has to be an object
 				    	return false;
 					}
@@ -424,7 +424,7 @@ class we_rebuild {
 	* @return array
 	*/
 	function getObjects(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"."we_updater.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_updater.inc.php");
 		$updater=new we_updater();
 		$updater->updateObjectFilesX();
 		$data = array();

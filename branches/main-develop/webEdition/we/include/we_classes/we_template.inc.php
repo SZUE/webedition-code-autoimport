@@ -23,12 +23,12 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_document.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_linklist.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tagParser.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_document.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_linklist.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tagParser.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 /* a class for handling templates */
 class we_template extends we_document{
@@ -238,11 +238,11 @@ class we_template extends we_document{
 			return $foo;
 		}
 
-		$d = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags");
+		$d = dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tags");
 		$needEndtags=array();
 		while (false !== ($entry=$d->read())) {
 			if(substr($entry,0,7) == "we_tag_" && substr($entry,0,9) != "we_tag_if"){
-				$foo = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tags/".$entry;
+				$foo = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tags/".$entry;
 
 				$file = file($foo);
 				foreach($file as $foo){
@@ -271,11 +271,11 @@ class we_template extends we_document{
 		// echoed in templates with CacheType = document
 		$pre_code = '<?php
 	// Activate the webEdition error handler
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
 	we_error_handler(false);
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tag.inc.php");
+	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_global.inc.php");
+	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_tag.inc.php");
 	we_templateInit();?>';
 
 
@@ -767,7 +767,7 @@ class we_template extends we_document{
 	}
 
 	function we_save($resave=0){
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		$this->Extension = $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"]["Extension"];
 		$this->_updateCompleteCode();
 		if(defined('SHOP_TABLE')) {

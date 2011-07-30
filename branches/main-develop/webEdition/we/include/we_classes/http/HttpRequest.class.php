@@ -276,7 +276,7 @@ class HttpRequest{
 
                     $var = $this->vars[$i];
                     $body .= "--" . $boundary . "\r\n";
-                    $body .= "Content-Disposition: form-data; name=\"" . $var["name"] . "\"" . "\r\n";
+                    $body .= "Content-Disposition: form-data; name=\"" . $var["name"] . "\"\r\n";
                     $body .= "\r\n" . $var["value"] . "\r\n";
                 }
                 //  at last boundary we must attach '--'

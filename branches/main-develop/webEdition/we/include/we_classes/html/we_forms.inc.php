@@ -29,7 +29,7 @@
  * Provides functions for creating html tags used in forms.
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 
 class we_forms {
 
@@ -231,7 +231,7 @@ class we_forms {
 		if($wysiwyg) {
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : "520");
 			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : "200");
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
 			if(!$showmenues && (strlen($commands)==0)){
 				$commands = implode(",",we_wysiwyg::getAllCmds());
 				$commands = str_replace('formatblock,','',$commands);
@@ -318,7 +318,7 @@ class we_forms {
 			}
 		}
 		if(preg_match_all('/src="thumbnail:([^" ]+)/i',$text,$regs,PREG_SET_ORDER)){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 			for($i=0;$i<sizeof($regs);$i++) {
 				list($imgID,$thumbID) = explode(",",$regs[$i][1]);
 				$thumbObj = new we_thumbnail();

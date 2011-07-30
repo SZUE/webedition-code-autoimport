@@ -23,8 +23,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
 
 /*  a class for handling flashDocuments. */
@@ -394,7 +394,7 @@ class we_flashDocument extends we_binaryDocument
 	* @param boolean $resave
 	*/
 	function we_save($resave = 0) {
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement("origwidth");
@@ -441,7 +441,7 @@ class we_flashDocument extends we_binaryDocument
 			}else{
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . "/" . $this->Filename . $this->Extension;
-				return $this->getimagesize($_SERVER["DOCUMENT_ROOT"]. (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
+				return $this->getimagesize($_SERVER['DOCUMENT_ROOT']. (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
 		} else if(isset($this->elements["data"]["dat"]) && $this->elements["data"]["dat"]){
 			$arr = $this->getimagesize($this->elements["data"]["dat"]);

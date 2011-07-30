@@ -24,7 +24,7 @@
 
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 class importFunctions{
 
@@ -54,7 +54,7 @@ class importFunctions{
 	*/
 	function importDocument($parentID, $templateID, $fields, $doctypeID=0, $categories="", $filename="", $isDynamic=true, $extension=".php", $publish=true, $IsSearchable=true,$conflict='rename'){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 
 		// erzeugen eines neuen webEdition-Dokument-Objekts
 		$GLOBALS["we_doc"] = new we_webEditionDocument();
@@ -126,7 +126,7 @@ class importFunctions{
 	*/
 	function importObject($classID, $fields, $categories="", $filename="", $publish=true, $conflict='rename'){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
 		// INIT OBJECT
 		$object = new we_objectFile();

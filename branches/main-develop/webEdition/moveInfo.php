@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
 	$parts=array();
@@ -42,7 +42,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 			$table->setCol($i,0,null,getPixel(10,2));
 			$table->setCol($i,1,null,(isset($data["icon"]) ? we_htmlElement::htmlImg(array("src"=>ICON_DIR.$data["icon"])) : ""));
 			$table->setCol($i,2,null,getPixel(10,2));
-			$table->setCol($i,3,null,str_replace($_SERVER["DOCUMENT_ROOT"],"",$data["path"]));
+			$table->setCol($i,3,null,str_replace($_SERVER['DOCUMENT_ROOT'],"",$data["path"]));
 		}
 		$table->addRow();
 		$i++;

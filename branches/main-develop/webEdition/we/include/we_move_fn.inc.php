@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_exim/weContentProvider.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weContentProvider.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 $notprotect = isset($GLOBALS["NOT_PROTECT"]) && $GLOBALS["NOT_PROTECT"] && (!isset($_REQUEST["NOT_PROTECT"]));
 
@@ -214,32 +214,32 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems)
 		}
 
 		// move document file
-		if (!file_exists($_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath)) {
+		if (!file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 		if (!copy(
-				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath,
-				$_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $newPath . "/" . $fileName)) {
+				$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath,
+				$_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . "/" . $fileName)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
-		if (!unlink($_SERVER["DOCUMENT_ROOT"] . SITE_DIR . $oldPath)) {
+		if (!unlink($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)) {
 			array_push($notMovedItems, $item);
 			return false;
 		}
 
 		// move published document file
 		if ($isPublished) {
-			if (!file_exists($_SERVER["DOCUMENT_ROOT"] . $oldPath)) {
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath)) {
 				array_push($notMovedItems, $item);
 				return false;
 			}
-			if (!copy($_SERVER["DOCUMENT_ROOT"] . $oldPath, $_SERVER["DOCUMENT_ROOT"] . $newPath . "/" . $fileName)) {
+			if (!copy($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . "/" . $fileName)) {
 				array_push($notMovedItems, $item);
 				return false;
 			}
-			if (!unlink($_SERVER["DOCUMENT_ROOT"] . $oldPath)) {
+			if (!unlink($_SERVER['DOCUMENT_ROOT'] . $oldPath)) {
 				array_push($notMovedItems, $item);
 				return false;
 			}

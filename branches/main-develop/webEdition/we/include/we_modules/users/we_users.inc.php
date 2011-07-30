@@ -2440,13 +2440,13 @@ function mapPermissions() {
 		 *****************************************************************/
 
 		//	Look which languages are installed ...
-		$_language_directory = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language");
+		$_language_directory = dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language");
 
 		while (false !== ($entry = $_language_directory->read())) {
 		  	if($entry != "." && $entry != "..") {
-				if (is_dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry)
-					&& is_file($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php");
+				if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry)
+					&& is_file($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php");
 					$_languages["translation"][] = $entry;
 				} else {
 					// do nothing
@@ -3033,7 +3033,7 @@ function mapPermissions() {
 
 	function formHeader($tab = 0) {
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 		$big=false;
 		if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")) {

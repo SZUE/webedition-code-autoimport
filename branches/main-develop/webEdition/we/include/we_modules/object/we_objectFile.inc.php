@@ -1287,7 +1287,7 @@ class we_objectFile extends we_document{
 			if(!sizeof($link)){
 				$link = array("ctype"=>"text","type"=>"ext","href"=>"#","text"=>g_l('global',"[new_link]"));
 			}
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$img = new we_imageDocument();
 			$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
 
@@ -1470,7 +1470,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getTextareaHTML($name,$attribs,$editable=true,$variant=false){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 		if($editable){
 
 			if ( isset($this->Charset) ) {	//	send charset which might be determined in template
@@ -1507,7 +1507,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getImageHTML($name,$attribs,$editable=true, $variant=false){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_imageDocument();
 		$id = $this->getElement($name);
@@ -1573,7 +1573,7 @@ class we_objectFile extends we_document{
 	}
 
 	function getBinaryHTML($name,$attribs,$editable=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_otherDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_otherDocument();
 		$id = $this->getElement($name);
@@ -1600,7 +1600,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getFlashmovieHTML($name,$attribs,$editable=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_flashDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_flashDocument();
 		$id = $this->getElement($name);
@@ -1627,7 +1627,7 @@ class we_objectFile extends we_document{
 		}
 	}
 	function getQuicktimeHTML($name,$attribs,$editable=true){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 		$we_button = new we_button();
 		$img = new we_quicktimeDocument();
 		$id = $this->getElement($name);
@@ -1771,7 +1771,7 @@ class we_objectFile extends we_document{
 		$foo = getHash("SELECT Workspaces,Templates FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirAndTemplateChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirAndTemplateChooser.inc.php");
 
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws),"",$this->DB_WE);
 		foreach($values as $id=>$val){
@@ -1903,7 +1903,7 @@ class we_objectFile extends we_document{
 		$ws = $foo["Workspaces"];
 		$ts = $foo["Templates"];
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirAndTemplateChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirAndTemplateChooser.inc.php");
 
 		// values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws,true),"",$this->DB_WE);
@@ -2401,7 +2401,7 @@ class we_objectFile extends we_document{
 		$this->setUrl();
 
 		if($resave==0 && $this->ID) {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 
 		}
@@ -2994,7 +2994,7 @@ class we_objectFile extends we_document{
 		$glob = ereg_replace('(.*),$','\1',$glob);
 		eval('global '.$glob.';');  // globalen Namensraum herstellen.
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 		$we_doc = new we_webEditionDocument();
 		$we_doc->elements = $this->elements;
 		$we_doc->Templates = $this->Templates;

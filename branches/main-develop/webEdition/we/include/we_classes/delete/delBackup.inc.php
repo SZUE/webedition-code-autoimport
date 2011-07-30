@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/taskFragment.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 class delBackup extends taskFragment{
 
@@ -41,8 +41,8 @@ class delBackup extends taskFragment{
 
 			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".FILE_TABLE." ORDER BY IsFolder, Plen DESC;");
 			while($this->db->next_record()) {
-				$this->alldata[]=$_SERVER["DOCUMENT_ROOT"].$this->db->f("Path").",".$this->db->f("Icon");
-				$this->alldata[]=$_SERVER["DOCUMENT_ROOT"]. SITE_DIR .$this->db->f("Path").",".$this->db->f("Icon");
+				$this->alldata[]=$_SERVER['DOCUMENT_ROOT'].$this->db->f("Path").",".$this->db->f("Icon");
+				$this->alldata[]=$_SERVER['DOCUMENT_ROOT']. SITE_DIR .$this->db->f("Path").",".$this->db->f("Icon");
 			}
 			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM ".TEMPLATES_TABLE." ORDER BY IsFolder, Plen DESC;");
 			while($this->db->next_record()){
@@ -65,7 +65,7 @@ class delBackup extends taskFragment{
 				if(file_exists($item[0])) array_push($_SESSION["delete_files_nok"],array("icon"=>(isset($item[1]) ? $item[1] : ""),"path"=>$item[0]));
 		}
 		$percent = round((100/count($this->alldata))*(1+$this->currentTask));
-		$text=str_replace($_SERVER["DOCUMENT_ROOT"],"",clearPath($item[0]));
+		$text=str_replace($_SERVER['DOCUMENT_ROOT'],"",clearPath($item[0]));
 		if(strlen($text)>75){
 			$text = addslashes(substr($text,0,65) . '...' . substr($text,-10));
 		}

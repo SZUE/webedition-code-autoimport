@@ -61,7 +61,9 @@ function we_parse_tag_captcha($attribs, $content) {
 		$file = $path . "we_captcha_" . $GLOBALS['we_doc']->ID . ".php";
 
 		$fh = fopen($_SERVER['DOCUMENT_ROOT'] . $file, "w+");
-		$php = '<?php' . "\n" . "\n" . 'require_once($_SERVER["DOCUMENT_ROOT"]."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");' . "\n" . 'require_once($_SERVER["DOCUMENT_ROOT"]."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaMemory.class.php");' . "\n" . 'require_once($_SERVER["DOCUMENT_ROOT"]."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");' . "\n" . "\n" . "\$image = new CaptchaImage(" . $width . ", " . $height . ", " . $maxlength . ");\n";
+		$php = '<?php' . "\n" . "\n" . 'require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaImage.class.php");
+			require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captchaMemory.class.php");
+				require_once($_SERVER[\'DOCUMENT_ROOT\']."' . WEBEDITION_DIR . 'we/include/we_classes/captcha/captcha.class.php");' . "\n" . "\n" . "\$image = new CaptchaImage(" . $width . ", " . $height . ", " . $maxlength . ");\n";
 		if ($fontpath != "") {
 			$php .= "\$image->setFontPath('" . $fontpath . "');\n";
 		}

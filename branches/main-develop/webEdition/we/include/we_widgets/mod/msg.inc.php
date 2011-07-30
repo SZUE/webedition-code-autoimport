@@ -25,7 +25,7 @@
 
 if (defined("MESSAGING_SYSTEM")){
 	include_once(WE_MESSAGING_MODULE_DIR."we_message.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 	$_SESSION['we_data'][$_transact] = array();
 

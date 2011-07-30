@@ -25,7 +25,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_shopDirSelector.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_shopDirSelector.php");
 
 $_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/shop/we_shopDirSelect.php";
 $fs = new we_shopDirSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''),

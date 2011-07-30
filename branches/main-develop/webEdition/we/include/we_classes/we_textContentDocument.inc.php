@@ -23,19 +23,19 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_textDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_textDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/"."weWorkflowUtility.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
 
 if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 }
 class we_textContentDocument extends we_textDocument{
 
@@ -345,7 +345,7 @@ class we_textContentDocument extends we_textDocument{
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 			$this->ModDate = time();
 			$this->wasUpdate=1;
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 			$this->resaveWeDocumentCustomerFilter();
 		}
@@ -406,9 +406,9 @@ class we_textContentDocument extends we_textDocument{
 		if($saveinMainDB) {
 			$this->rewriteNavigation();
 		}
-		if(isset($_SESSION["Versions"]['fromScheduler']) && $_SESSION["Versions"]['fromScheduler'] && ($this->ContentType=="text/webedition" || $this->ContentType=="text/html")) {
+		if(isset($_SESSION['Versions']['fromScheduler']) && $_SESSION['Versions']['fromScheduler'] && ($this->ContentType=='text/webedition' || $this->ContentType=="text/html")) {
 			$version = new weVersions();
-			$version->save($this, "published");
+			$version->save($this, 'published');
 		}
 		/* hook */
 		if ($skipHook==0){

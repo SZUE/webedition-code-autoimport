@@ -23,13 +23,10 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_binaryDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
 
 /*  a class for handling quicktimeDocuments. */
 class we_quicktimeDocument extends we_binaryDocument {
-	######################################################################################################################################################
-	##################################################################### Variables ######################################################################
-	######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName="we_quicktimeDocument";
@@ -40,10 +37,6 @@ class we_quicktimeDocument extends we_binaryDocument {
 	/* Parameternames which are placed within the object-Tag */
 	var $ObjectParamNames = array("width","height","name","vspace","hspace","style");
 
-
-	######################################################################################################################################################
-	##################################################################### FUNCTIONS ######################################################################
-	######################################################################################################################################################
 
 
 	/* Constructor */

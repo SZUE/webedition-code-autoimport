@@ -130,7 +130,7 @@ class weTagData {
 			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 		} else {
 			//Application Tags
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
 			$apptags = array();
 			$alltools = weToolLookup::getAllTools(true);
 			$allapptags = array();

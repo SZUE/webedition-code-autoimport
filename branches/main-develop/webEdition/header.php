@@ -23,13 +23,13 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
 ?>
 		<div style="position:absolute;top:0;left:0;right:0;bottom:0;border:0;">
 			<div style="position:absolute;top:0;bottom:0;left:0;right:60px;"><?php
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/headermenu.php");?>
+				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/headermenu.php");?>
        </div>
 			<iframe src="/webEdition/headermenu.php" style="border:0;width:100%;overflow: hidden;" name="header_menu"></iframe>
 <?php

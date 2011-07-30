@@ -42,8 +42,8 @@ class weConfParser {
 
 
 	function setGlobalPref($name, $value, $comment="") {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-		$file_name = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_conf_global.inc.php";
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+		$file_name = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_conf_global.inc.php";
 		$parser = weConfParser::getConfParserByFile($file_name);
 		$settings = $parser->getData();
 		if(in_array($name,array_keys($settings))) {
@@ -166,8 +166,8 @@ class weConfParser {
  * Edit this file ONLY if you know exactly what you are doing!
  */
 
-if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_error_conf.inc.php")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/conf/we_error_conf.inc.php");
+if (file_exists($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/conf/we_error_conf.inc.php")) {
+	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/conf/we_error_conf.inc.php");
 }
 
 ';

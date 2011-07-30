@@ -189,7 +189,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				if(!$emailonly){
 					foreach($paths as $p){
 						if(!$emailExistsInOneOfTheLists){
-							$realPath = (substr($p,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $p) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $p);
+							$realPath = (substr($p,0,1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $p);
 							if(@file_exists($realPath)){
 								$fh=@fopen($realPath,"rb");
 								if($fh) {
@@ -372,7 +372,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 		} else { //confirmID wurde �bermittelt, eine Best�tigung liegt also vor
 			$emailwritten = 0;
 			if($customer) {
-				include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
+				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
 				$__db = new DB_WE();
 				$__id=f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"','ID',$__db);
 				if($__id=='') {
@@ -446,7 +446,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				if(!$emailonly){ //in die Liste eintragen
 					foreach($paths as $path){
 
-						$path = (substr($path,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $path) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $path);
+						$path = (substr($path,0,1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
 
 						if(!@file_exists(dirname($path))){
 							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR
@@ -579,7 +579,7 @@ function we_unsubscribeNL($db,$customer,$_customerFieldPrefs,$abos,$paths){
 
 			foreach($paths as $path){
 
-				$path = (substr($path,0,1) == "/") ? ($_SERVER["DOCUMENT_ROOT"] . $path) : ($_SERVER["DOCUMENT_ROOT"] . "/" . $path);
+				$path = (substr($path,0,1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
 
 				if(!@file_exists(dirname($path))){
 					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;  // FATAL ERROR

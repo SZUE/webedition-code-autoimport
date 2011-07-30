@@ -23,11 +23,11 @@
  */
 
 
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_element.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."modules/weModelBase.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weXMLComposer.class.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_element.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/modules/weModelBase.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weXMLComposer.class.php");
 
 	class weContentProvider {
 
@@ -43,38 +43,38 @@
 			$we_ID = $ID;
 		switch ($we_ContentType) {
 			case "doctype":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "we_docTypes.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_docTypes.inc.php");
 				$we_doc = new we_docTypes();
 				if ($ID != "") {
 					$we_doc->initByID($ID, $we_doc->Table);
 				}
 				break;
 			case "category":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "we_category.inc.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_category.inc.php");
 				$we_doc = new we_category();
 				$we_doc->load($ID);
 				break;
 			case "weNavigation":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
 				$we_doc = new weNavigation();
 				$we_doc->we_load($ID);
 				break;
 			case "weNavigationRule":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
 				$we_doc = new weNavigationRule();
 				$we_doc->we_load($ID);
 				break;
 			case "weThumbnail":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_exim/we_thumbnailEx.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/we_thumbnailEx.class.php");
 				$we_doc = new we_thumbnailEx();
 				$we_doc->we_load($ID);
 				break;
 			case "weTable":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weTable.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weTable.class.php");
 				$we_doc = new weTable($table);
 				break;
 			case "weTableItem":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weTableItem.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weTableItem.class.php");
 
 				$we_doc = new weTableItem($table);
 				if (!empty($ID))
@@ -82,19 +82,19 @@
 				break;
 
 			case "weBinary":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weBinary.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weBinary.class.php");
 				$we_doc = new weBinary();
 				$we_doc->load($ID, false);
 				break;
 			case "weVersion":
-				include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/weVersion.class.php");
+				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weVersion.class.php");
 				$we_doc = new weVersion();
 				$we_doc->load($ID, false);
 				break;
 			// fix for classes
 			case "object":
 				if (defined("OBJECT_TABLE")) {
-					include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
+					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
 					$we_doc = new we_objectEx();
 					$we_doc->initByID($ID, OBJECT_TABLE);
 				}
@@ -115,7 +115,7 @@
 				if (($we_ContentType == "object" && !defined("OBJECT_TABLE")) || ($we_ContentType == "objectFile" && !defined("OBJECT_FILES_TABLE")))
 					return $we_doc;
 
-				include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
+				include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 		}
 
 		return $we_doc;
@@ -270,9 +270,9 @@
 					$rsize=1048576;
 					do {
 						if($isWe) {
-							$path = $_SERVER["DOCUMENT_ROOT"].SITE_DIR.$object->Path;
+							$path = $_SERVER['DOCUMENT_ROOT'].SITE_DIR.$object->Path;
 						} else {
-							$path = $_SERVER["DOCUMENT_ROOT"].$object->Path;
+							$path = $_SERVER['DOCUMENT_ROOT'].$object->Path;
 						}
 						$data = weFile::loadPart($path,$offset,$rsize);
 						if(!empty($data)) {
@@ -312,7 +312,7 @@
 					$rsize=1048576;
 					do {
 
-						$path = $_SERVER["DOCUMENT_ROOT"].$object->Path;
+						$path = $_SERVER['DOCUMENT_ROOT'].$object->Path;
 						if($object->Path=="") break;
 						$data = weFile::loadPart($path,$offset,$rsize);
 

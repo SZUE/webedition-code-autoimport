@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tag.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php");
 ?><html>
 
 	<head>
@@ -43,7 +43,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tag.inc.php"
 		<?php if (isset($we_editmode) && $we_editmode) { ?>
 			<script  type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 			<?php
-			include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 		} else {
 			print we_tag("textarea", array("name" => "HEAD"));
 		}

@@ -25,7 +25,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/voting/we_votingDirSelector.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/we_votingDirSelector.php");
 
 protect();
 $_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/voting/we_votingDirSelect.php";

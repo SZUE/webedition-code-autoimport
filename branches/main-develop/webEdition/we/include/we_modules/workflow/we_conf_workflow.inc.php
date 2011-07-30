@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("WE_WORKFLOW_MODULE_DIR",$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/");
+define("WE_WORKFLOW_MODULE_DIR",$_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/");
 define("WE_WORKFLOW_MODULE_PATH","/webEdition/we/include/we_modules/workflow/");
 
 define("WORKFLOW_TABLE",TBL_PREFIX .  "tblWorkflowDef");

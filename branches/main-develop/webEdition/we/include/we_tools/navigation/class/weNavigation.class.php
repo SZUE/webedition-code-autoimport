@@ -245,9 +245,9 @@ class weNavigation extends weModelBase
 
 	function save($order = true)
 	{
-		$configFile = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 		if (!file_exists($configFile) || !is_file($configFile)) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
 			weNavigationSettingControl::saveSettings(true);
 		}
 		include ($configFile);
@@ -371,9 +371,9 @@ class weNavigation extends weModelBase
 
 	function delete()
 	{
-		$configFile = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
+		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 		if (!file_exists($configFile) || !is_file($configFile)) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
 			weNavigationSettingControl::saveSettings(true);
 		}
 		include ($configFile);

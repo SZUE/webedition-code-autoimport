@@ -91,9 +91,9 @@ class weWorkflowDocument extends weWorkflowBase{
 			if($this->db->next_record())
 				if($this->db->f("ClassName")){
 					if($this->workflow->Type==WE_WORKFLOW_OBJECT)
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/".$this->db->f("ClassName").".inc.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$this->db->f("ClassName").".inc.php");
 					else
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/".$this->db->f("ClassName").".inc.php");
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$this->db->f("ClassName").".inc.php");
 					eval('$this->document=new '.$this->db->f("ClassName").'();');
 					if($this->document){
 						$this->document->initByID($this->documentID,$docTable);

@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 protect();
 htmlTop();
 
@@ -98,25 +98,25 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 		 */
 
 		// Documents
-		if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/documents_normal.gif")) {
-			$_v_tab_documents = getimagesize($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/documents_normal.gif");
+		if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/documents_normal.gif")) {
+			$_v_tab_documents = getimagesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/documents_normal.gif");
 		}
 
 		// Templates
-		if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/templates_normal.gif")) {
-			$_v_tab_templates = getimagesize($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/templates_normal.gif");
+		if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/templates_normal.gif")) {
+			$_v_tab_templates = getimagesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/templates_normal.gif");
 		}
 
 		// Check for other tabs if Object module installed
 		if (defined("OBJECT_TABLE")) {
 			// Objects
-			if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/objects_normal.gif")) {
-				$_v_tab_objects = getimagesize($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/objects_normal.gif");
+			if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/objects_normal.gif")) {
+				$_v_tab_objects = getimagesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/objects_normal.gif");
 			}
 
 			// Classes
-			if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/classes_normal.gif")) {
-				$_v_tab_classes = getimagesize($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/classes_normal.gif");
+			if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/classes_normal.gif")) {
+				$_v_tab_classes = getimagesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/v-tabs/classes_normal.gif");
 			}
 		}
 

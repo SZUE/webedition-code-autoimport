@@ -24,5 +24,5 @@
 
     $SEEM_edit_include = true;
 
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/" . "webEdition.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/webEdition.php");
 

@@ -26,7 +26,7 @@
 
 include_once(WE_WORKFLOW_MODULE_DIR."weModuleFrames.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowView.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class weWorkflowFrames extends weModuleFrames{
 
@@ -89,7 +89,7 @@ class weWorkflowFrames extends weModuleFrames{
 
 	function getHTMLEditorHeader($mode=0){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 		if(isset($_REQUEST["home"])){
 			return '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';

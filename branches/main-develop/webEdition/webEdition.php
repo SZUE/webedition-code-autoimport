@@ -22,11 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 //make sure we know which browser is used
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
 
 
 //	we need some different functions for normal mode and seeMode
@@ -35,9 +35,9 @@ include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.
 //	file is included and the matching functions are included.
 
 if($_SESSION["we_mode"]         == "normal"){	//	working in normal mode
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/webEdition_normal.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/webEdition_normal.inc.php");
 } else if ($_SESSION["we_mode"] == "seem"){		//	working in super-easy-edit-mode
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/webEdition_seem.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/webEdition_seem.inc.php");
 }
 
 
@@ -50,7 +50,7 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
     }
 	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-    @chmod($_SERVER["DOCUMENT_ROOT"]."/webEdition/we_backup",0777);
+    @chmod($_SERVER['DOCUMENT_ROOT']."/webEdition/we_backup",0777);
 }
 
 
@@ -468,9 +468,9 @@ function we_cmd() {
 
 			for($i=0;$i<sizeof($_we_active_modules);$i++){
 
-				if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_webEditionCmd_" . $_we_active_modules[$i] . ".inc.php")){
+				if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_webEditionCmd_" . $_we_active_modules[$i] . ".inc.php")){
 
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_webEditionCmd_" . $_we_active_modules[$i] . ".inc.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_webEditionCmd_" . $_we_active_modules[$i] . ".inc.php");
 				}
 
 			}

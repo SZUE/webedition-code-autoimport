@@ -389,7 +389,7 @@ class we_image_edit {
 						break;
 				}
 				if(function_exists($fn)){
-					if(@$fn($_SERVER["DOCUMENT_ROOT"]."/webEdition/images/foo.".$t[$i])){
+					if(@$fn($_SERVER['DOCUMENT_ROOT']."/webEdition/images/foo.".$t[$i])){
 						array_push($sit,$t[$i]);
 					}
 				}
@@ -588,22 +588,22 @@ class we_image_edit {
 		if (we_image_edit::gd_version()==0) {
 			return IMAGE_DIR . "icons/doclist/image.gif";
 		}
-		if (substr($imgSrc,0,strlen($_SERVER["DOCUMENT_ROOT"])) == $_SERVER["DOCUMENT_ROOT"]) {  // it is no src, it is a server path
-			$imgSrc = substr($imgSrc, strlen($_SERVER["DOCUMENT_ROOT"]));
+		if (substr($imgSrc,0,strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']) {  // it is no src, it is a server path
+			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
 		}
 		if (substr($imgSrc,0,1) != "/") {
 			$imgSrc = "/" .$imgSrc;
 		}
 
 
-		$_imgPath = $_SERVER["DOCUMENT_ROOT"] . $imgSrc;
+		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . $imgSrc;
 		if(!($imagesize = getimagesize($_imgPath))){
 			$imagesize= array("","");
 		}
 		if ($imagesize[0] > $width || $imagesize[1] > $height) {
-			$_previewDir = $_SERVER["DOCUMENT_ROOT"].'/webEdition/preview/';
+			$_previewDir = $_SERVER['DOCUMENT_ROOT'].'/webEdition/preview/';
 			if (!file_exists($_previewDir) || !is_dir($_previewDir)) {
-				createLocalFolder($_SERVER["DOCUMENT_ROOT"], '/webEdition/preview/');
+				createLocalFolder($_SERVER['DOCUMENT_ROOT'], '/webEdition/preview/');
 			}
 			$_extension = preg_replace('|^.*\.|','.', $_imgPath);
 			if ($imgID) {
@@ -612,7 +612,7 @@ class we_image_edit {
 				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 				$_thumbSrc = '/webEdition/we/tmp/' . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat);
 			}
-			$_thumbPath = $_SERVER["DOCUMENT_ROOT"] . $_thumbSrc;
+			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);
 

@@ -22,15 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 
 
 if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
 protect();
 
@@ -39,7 +39,7 @@ $we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:0);
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 function getControlElement($type, $name){
 	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement) ){
@@ -62,22 +62,22 @@ switch ($we_doc->userHasAccess()){
 		break;
 
 	case -1 :	//	file is not in workspace of user
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/file_in_workspace_footer.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_in_workspace_footer.inc.php");
 		exit();
 		break;
 
 	case -2 :	//	access is restricted and user has no permission
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/file_restricted_footer.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_restricted_footer.inc.php");
 		exit;
 		break;
 
 	case -3 :	//	file is locked by another user
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/file_locked_footer.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_locked_footer.inc.php");
 		exit;
 		break;
 
 	case -4 :	//	user has not the right to save the file.
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/file_no_save_footer.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_no_save_footer.inc.php");
 		exit;
 		break;
 }
@@ -576,7 +576,7 @@ if(inWorkflow($we_doc)) {
 		}
 		//	Button properties
 		if ( in_array(WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_SCHEDULER) ){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/permissionhandler/"."permissionhandler.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
 			if (permissionhandler::isUserAllowedForAction("switch_edit_page","WE_EDITPAGE_PROPERTIES")) {
 				$_seeModeTable->addCol(2);
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), $we_button->create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));

@@ -82,7 +82,7 @@ function we_tag_link($attribs, $content){
 			}
 
 			// Include we_imageDocument class
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 
 			$img = new we_imageDocument();
 			$content = we_document::getLinkContent(
@@ -102,7 +102,7 @@ function we_tag_link($attribs, $content){
 					$img);
 
 			// Include we_button class
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 			$we_button = new we_button();
 

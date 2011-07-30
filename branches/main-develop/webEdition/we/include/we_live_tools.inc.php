@@ -103,7 +103,7 @@ function checkAndMakeFolder($path)
 	/* if the directory exists, we have nothing to do and then we return true  */
 	if (file_exists($path) && is_dir($path))
 		return true;
-	$docroot = ereg_replace('^(.*)/$', '\1', $_SERVER["DOCUMENT_ROOT"]);
+	$docroot = ereg_replace('^(.*)/$', '\1', $_SERVER['DOCUMENT_ROOT']);
 	$path2 = ereg_replace('^(.*)/$', '\1', $path);
 	if (strtolower($docroot) == strtolower($path2))
 		return true;

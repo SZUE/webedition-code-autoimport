@@ -22,12 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_browser_check.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/taskFragment.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class copyFolderFrag extends taskFragment
 {
@@ -255,13 +255,13 @@ class copyFolderFrag extends taskFragment
 	function getObjectFile()
 	{
 		if ($this->data["ContentType"] == 'folder') {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
 			$we_ContentType = $this->data["ContentType"];
 			$we_doc = new we_class_folder();
 
 		}
 		if ($this->data["ContentType"] == 'objectFile') {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 			$we_ContentType = $this->data["ContentType"];
 			$we_doc = new we_objectFile();
 		}
@@ -273,7 +273,7 @@ class copyFolderFrag extends taskFragment
 		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data["CopyToId"]);
 		$path = ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $this->data["Path"]);
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/" . $this->data["ClassName"] . ".inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $this->data["ClassName"] . ".inc.php");
 		$GLOBALS['we_doc'] = new $this->data["ClassName"]();
 		if ($this->data["IsFolder"]) {
 			$GLOBALS['we_doc']->initByPath($path);
@@ -300,7 +300,7 @@ class copyFolderFrag extends taskFragment
 					if ($this->data["CreateTemplate"]) {
 						$CreateMasterTemplate = isset($_REQUEST["CreateMasterTemplate"]) ? $_REQUEST["CreateTemplate"] : false;
 						$CreateIncludedTemplate = isset($_REQUEST["CreateIncludedTemplate"]) ? $_REQUEST["CreateTemplate"] : false;
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_template.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_template.inc.php");
 						// check if a template was created from prior doc
 						if (!(isset($_SESSION["WE_CREATE_TEMPLATE"]) && isset(
 								$_SESSION["WE_CREATE_TEMPLATE"][$GLOBALS['we_doc']->TemplateID]))) {
@@ -328,7 +328,7 @@ class copyFolderFrag extends taskFragment
 					}
 
 					if ($GLOBALS['we_doc']->DocType && $this->data["CreateDoctypes"]) {
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_docTypes.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_docTypes.inc.php");
 						// check if a doctype was created from prior doc
 						if (!(isset($_SESSION["WE_CREATE_DOCTYPE"]) && isset(
 								$_SESSION["WE_CREATE_DOCTYPE"][$GLOBALS['we_doc']->DocType]))) {
@@ -714,7 +714,7 @@ class copyFolderFrag extends taskFragment
 						}
 						break;
 					case "linklist" :
-						include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_linklist.inc.php");
+						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
 						$ll = new we_linklist($we_doc->elements[$k]["dat"]);
 						$changed = false;
 						for ($i = 0; $i < sizeof($ll->listArray); $i++) {
@@ -821,7 +821,7 @@ class copyFolderFrag extends taskFragment
 	function getDocument()
 	{
 		$we_ContentType = $this->data["ContentType"];
-		include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 		return $we_doc;
 	}
 
@@ -1055,7 +1055,7 @@ class copyFolderFinishFrag extends copyFolderFrag
 	function correctTemplate()
 	{
 
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_classes/we_template.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_template.inc.php");
 
 		$templ = new we_template();
 		;

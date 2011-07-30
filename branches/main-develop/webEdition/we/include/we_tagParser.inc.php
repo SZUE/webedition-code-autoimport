@@ -701,7 +701,7 @@ if (!isset($GLOBALS["we_lv_array"])) {
 }
 
 include_once(WE_OBJECT_MODULE_DIR . "we_objecttag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 ';
 			if ($classid) {
 				$php .= '$__id__='.$classid.';$classPath = f("SELECT Path FROM ".OBJECT_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]);
@@ -814,7 +814,7 @@ if (!isset($GLOBALS["we_lv_array"])) {
 }
 
 include_once(WE_CUSTOMER_MODULE_DIR . "we_customertag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 ';
 
 			if ($name) {
@@ -953,7 +953,7 @@ if (!isset($GLOBALS["we_lv_array"])) {
 }
 
 include_once(WE_SHOP_MODULE_DIR . "we_ordertag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 ';
 
 			if ($name) {
@@ -1051,7 +1051,7 @@ if (!isset($GLOBALS["we_lv_array"])) {
 }
 
 include_once(WE_SHOP_MODULE_DIR . "we_orderitemtag.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 ';
 
 			if ($name) {
@@ -1131,7 +1131,7 @@ if($GLOBALS["lv"]->avail): ?>';
 				$floatquantities = empty($floatquantities) ? 'false' : $floatquantities;
 				$php = '<?php
 				$floatquantities='.$floatquantities.';
-				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
+				include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 				$floatfilter = new Zend_Filter_LocalizedToNormalized();
 				if((isset($_REQUEST["shopname"]) && $_REQUEST["shopname"]=="' . $shopname . '") || !isset($_REQUEST["shopname"]) || $_REQUEST["shopname"]==""){
 					if ( isset($_REQUEST["shop_cart_id"]) && is_array($_REQUEST["shop_cart_id"]) ) {
@@ -1679,7 +1679,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 		// find feed
 		if (isset($attr["url"])) {
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_exim/weXMLBrowser.class.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLBrowser.class.php");
 			$php .= '
 			$' . $feed_name . '=new weXMLBrowser("' . $attr["url"] . '");
 			$GLOBALS["xpaths"][$' . $ind_name . ']["url"]="' . $attr["url"] . '";

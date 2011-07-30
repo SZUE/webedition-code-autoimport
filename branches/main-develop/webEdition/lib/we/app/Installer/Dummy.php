@@ -31,7 +31,7 @@ Zend_Loader::loadClass('we_app_Installer');
  * will be returned to the caller if no appropriate class for a specified source exista
  * to avoid a php error like "PHP Fatal error:  Call to a member function install() on a non-object"
  * when using code like
- * 		$myInstaller = new we_app_Installer($_SERVER["DOCUMENT_ROOT"]."/tmp/leer/");
+ * 		$myInstaller = new we_app_Installer($_SERVER['DOCUMENT_ROOT']."/tmp/leer/");
  * 		$myInstaller->getInstance()->install();
  * 
  * @category   we

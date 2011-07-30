@@ -23,7 +23,7 @@
  */
 
 function we_tag_textarea($attribs, $content){
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 	global $we_transaction;
 	$foo = attributFehltError($attribs, "name", "textarea");
 	if ($foo)

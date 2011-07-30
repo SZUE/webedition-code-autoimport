@@ -26,7 +26,7 @@
 function we_loadDefaultMasterTemplateConfig()
 {
 	
-	$file = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
+	$file = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
 	if (!file_exists($file) || !is_file($file)) {
 		we_writeDefaultMasterTemplateConfig(0);
 	
@@ -47,7 +47,7 @@ define("FSW_DEFAULT_MASTER_TEMPLATE", {$default});
 ?>
 EOF;
 	
-	$file = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
+	$file = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
 	$fh = fopen($file, "w+");
 	if (!$fh) {
 		return false;

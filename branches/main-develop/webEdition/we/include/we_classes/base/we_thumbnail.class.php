@@ -23,8 +23,8 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 define("WE_THUMB_OK",0);
@@ -388,9 +388,9 @@ class we_thumbnail {
 			createLocalFolder($_thumbdir);
 		}
 		$quality = $this->thumbQuality<1?10:($this->thumbQuality>10?100:$this->thumbQuality*10);
-		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath,
+		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath,
 												$this->outputFormat,
-												$_SERVER["DOCUMENT_ROOT"] . $this->outputPath,
+												$_SERVER['DOCUMENT_ROOT'] . $this->outputPath,
 												$quality,
 												$this->thumbWidth,
 												$this->thumbHeight,
@@ -417,7 +417,7 @@ class we_thumbnail {
 			return WE_THUMB_USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality<1?10:($this->thumbQuality>10?100:$this->thumbQuality*10);
-		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath,
+		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath,
 												$this->outputFormat,
 												"",
 												$quality,
@@ -643,7 +643,7 @@ class we_thumbnail {
 	*/
 	function _checkAndGetImageSizeIfNeeded(){
 		if(!($this->imageWidth && $this->imageHeight)){
-			$arr = $this->getimagesize($_SERVER["DOCUMENT_ROOT"].$this->imagePath);
+			$arr = $this->getimagesize($_SERVER['DOCUMENT_ROOT'].$this->imagePath);
 			if(count($arr) >=2){
 				$this->imageWidth = $arr[0];
 				$this->imageHeight = $arr[1];

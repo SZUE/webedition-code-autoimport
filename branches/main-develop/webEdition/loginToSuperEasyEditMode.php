@@ -25,7 +25,7 @@
 
 
 // Activate the webEdition error handler
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
 we_error_handler(false);
 
 if(!isset($_SESSION)) @session_start();
@@ -43,7 +43,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 	$_POST["password"] = $_SESSION["webuser"]["Password"];
 
 	//	Login
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 	if(isset($_SESSION["user"]["Username"])){	//	login ok!
 

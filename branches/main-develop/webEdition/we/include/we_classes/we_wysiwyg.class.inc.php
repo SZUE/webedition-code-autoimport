@@ -25,7 +25,7 @@
 
 
 //make sure we know which browser is used
-include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_browser_check.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
 
 class we_wysiwyg{
 
@@ -1054,7 +1054,7 @@ function tinyMCEchanged(inst){
 
 		list($tbwidth,$tbheight) = $this->getToolbarWidthAndHeight();
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$we_button = new we_button();
 		$fns = "";
 		foreach($this->fontnames as $fn){
@@ -1139,7 +1139,7 @@ function tinyMCEchanged(inst){
 			}
 		}
 		if(preg_match_all('/src="thumbnail:([^" ]+)/i',$editValue,$regs,PREG_SET_ORDER)){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 			for($i=0;$i<sizeof($regs);$i++){
 				list($imgID,$thumbID) = explode(",",$regs[$i][1]);
 				$thumbObj = new we_thumbnail();

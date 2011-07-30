@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
 class we_docSelector extends we_dirSelector {
@@ -798,19 +798,19 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 				 		break;
 				 }
 
-				$fs = file_exists($_SERVER["DOCUMENT_ROOT"].$result['Path']) ? filesize($_SERVER["DOCUMENT_ROOT"].$result['Path']) : 0;
+				$fs = file_exists($_SERVER['DOCUMENT_ROOT'].$result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'].$result['Path']) : 0;
 
 				$_filesize = $fs<1000 ? $fs.' byte' : ($fs<1024000?round(($fs/1024),2) . ' kb' : round(($fs/(1024*1024)),2) . ' mb');
 
 
-				if ($result['ContentType'] == "image/*" && file_exists($_SERVER["DOCUMENT_ROOT"].$result['Path'])) {
+				if ($result['ContentType'] == "image/*" && file_exists($_SERVER['DOCUMENT_ROOT'].$result['Path'])) {
 					if($fs===0) {
 						$_imagesize = array(0,0);
 						$_thumbpath = '/webEdition/images/icons/no_image.gif';
 						$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" .g_l('fileselector',"[image_not_uploaded]") . "</p>";
 					} else {
-						$_imagesize = getimagesize($_SERVER["DOCUMENT_ROOT"].$result['Path']);
-						include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+						$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'].$result['Path']);
+						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 						$_thumbpath = '/webEdition/thumbnail.php?id=' . $this->id . '&size=150&path=' .str_replace($_SERVER['DOCUMENT_ROOT'],'',$result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 						$_imagepreview = "<a href='".$result['Path']."' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
 					}
@@ -910,7 +910,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				// only binary data have additional metadata
 				if ($result['ContentType'] == "image/*" || $result['ContentType'] == "application/x-shockwave-flash" || $result['ContentType'] == "video/quicktime" || $result['ContentType'] == "application/*") {
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 					$metaDataFields = weMetaData::getDefinedMetaDataFields();
 					foreach($metaDataFields as $md) {
 						if ($md['tag'] != "Title" && $md['tag'] != "Description" && $md['tag'] != "Keywords") {

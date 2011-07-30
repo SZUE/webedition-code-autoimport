@@ -23,15 +23,15 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/modules/"."weModuleFrames.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterView.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterTree.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterDirSelector.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weNewsletterFrames extends weModuleFrames {
@@ -82,7 +82,7 @@ class weNewsletterFrames extends weModuleFrames {
 	 * @return String
 	 */
 	function getHTMLEditorHeader($mode = 0) {
-		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor"=>"#FFFFFF","background"=>"/webEdition/images/backgrounds/bgGrayLineTop.gif"),""));
@@ -787,7 +787,7 @@ class weNewsletterFrames extends weModuleFrames {
 	}
 
 	function getHTMLCustomer($group) {
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$out="";
 
@@ -815,7 +815,7 @@ class weNewsletterFrames extends weModuleFrames {
 
    function getHTMLExtern($group){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiFileChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiFileChooser.inc.php");
 		$we_button = new we_button();
 
 		$out="";
@@ -1805,7 +1805,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 					);
 				}
 				else{
-					$fh = @fopen($_SERVER["DOCUMENT_ROOT"].$filepath,"rb");
+					$fh = @fopen($_SERVER['DOCUMENT_ROOT'].$filepath,"rb");
 					if ($fh) {
 						while ($dat = fgetcsv($fh, 1000, $delimiter)) {
 							$_alldat = implode("",$dat);
@@ -1842,7 +1842,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 				} else {
 					$fname=$_REQUEST["csv_dir"]."/blacklist_export_".time().".csv";
 				}
-				weFile::save($_SERVER["DOCUMENT_ROOT"].$fname,str_replace(",","\n",$this->View->settings["black_list"]));
+				weFile::save($_SERVER['DOCUMENT_ROOT'].$fname,str_replace(",","\n",$this->View->settings["black_list"]));
 
 				$js.=we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
 				$js.=we_htmlElement::jsElement('
@@ -2447,7 +2447,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		}
 
 		$link="/webEdition/we_backup/download/log_".time().".csv";
-		if(!weFile::save($_SERVER["DOCUMENT_ROOT"].$link,$csv)) $link="";
+		if(!weFile::save($_SERVER['DOCUMENT_ROOT'].$link,$csv)) $link="";
 
 		$_REQUEST["lnk"]=$link;
 
@@ -2544,7 +2544,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 
 	function getHTMLSendBody(){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_progressBar.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 			$details="";
 
@@ -3095,7 +3095,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	 */
 	function getHTMLCharsetTable(){
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/charsetHandler.class.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/charsetHandler.class.php");
 
 		$value = (isset($this->View->newsletter->Charset) ? $this->View->newsletter->Charset : "");
 

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/weBanner.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/weBanner.php");
 
 function we_tag_bannerSelect($attribs, $content){
  	global $DB_WE;

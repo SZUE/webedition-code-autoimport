@@ -40,7 +40,7 @@ define ("WENBLOCK_ATTACHMENT", 6);
 //  URL based newsletter
 define ("WENBLOCK_URL", 7);
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/newsletter/weNewsletterBase.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/newsletter/weNewsletterBase.php");
 
 /**
 * Definition of WebEdition Newsletter Block

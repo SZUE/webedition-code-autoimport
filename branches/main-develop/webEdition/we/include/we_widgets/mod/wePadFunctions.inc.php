@@ -29,7 +29,7 @@
  * @param unknown_type $date
  * @return unknown
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 function convertDate($date)
 {

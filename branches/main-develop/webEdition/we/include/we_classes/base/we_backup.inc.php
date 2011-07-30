@@ -29,10 +29,10 @@
  * Provides functions for exporting and importing backups.
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_updater.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_updater.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 define("BACKUP_TABLE",TBL_PREFIX . "tblbackup");
 
@@ -315,7 +315,7 @@ class we_backup {
 	function putFileInDB($file) {
 		@set_time_limit(80);
 		$nl = "\n";
-		$rootdir = $_SERVER["DOCUMENT_ROOT"];
+		$rootdir = $_SERVER['DOCUMENT_ROOT'];
 		$rootdir = str_replace("\\","/",$rootdir);
 		if(substr($rootdir,-1) == "/")
 			$rootdir = substr($rootdir,0,strlen($rootdir)-1);
@@ -365,7 +365,7 @@ class we_backup {
 	function putDirInDB($dir) {
 		@set_time_limit(80);
 		$nl = "\n";
-		$rootdir = $_SERVER["DOCUMENT_ROOT"];
+		$rootdir = $_SERVER['DOCUMENT_ROOT'];
 		$rootdir = str_replace("\\","/",$rootdir);
 		if(substr($rootdir,-1) == "/"){
 			$rootdir = substr($rootdir,0,strlen($rootdir)-1);
@@ -471,7 +471,7 @@ class we_backup {
 		$ret=0;
 		if(!$this->tempfilename) {
 			$this->tempfilename=md5(uniqid(time())).".php";
-			$this->dumpfilename=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/".$this->tempfilename;
+			$this->dumpfilename=$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp/".$this->tempfilename;
 			$this->backup_step=0;
 			$this->backup_steps=$this->default_backup_steps;
 			$fh=@fopen($this->dumpfilename,"ab");
@@ -534,7 +534,7 @@ class we_backup {
 
 	function buildBackupTable() {
 		$this->current_description=g_l('backup',"[external_backup]");
-		$rootdir = $_SERVER["DOCUMENT_ROOT"];
+		$rootdir = $_SERVER['DOCUMENT_ROOT'];
 		$rootdir = str_replace("\\","/",$rootdir);
 		if(substr($rootdir,-1) != "/")
 			$rootdir .= "/";
@@ -761,7 +761,7 @@ class we_backup {
 
 	function printDump2BackupDir() {
 		if($this->export2server==1) {
-			$backupfilename=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."weBackup_".time().".php";
+			$backupfilename=$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."weBackup_".time().".php";
 			return @copy($this->dumpfilename,$backupfilename);
 		}
 		return true;
@@ -867,7 +867,7 @@ class we_backup {
 				$line=$mydb->Record;
 				@set_time_limit(80);
 				if($line["IsFolder"]) {
-					$dir=$_SERVER["DOCUMENT_ROOT"].$line["Path"];
+					$dir=$_SERVER['DOCUMENT_ROOT'].$line["Path"];
 					$sdir=dirname($dir);
 					$sdir = str_replace("\\","/",$sdir);
 					while((!file_exists($sdir))&&($sdir!="/")) {
@@ -880,9 +880,9 @@ class we_backup {
 					}
 				}
 				else {
-					$sdir=dirname($_SERVER["DOCUMENT_ROOT"].$line["Path"]);
+					$sdir=dirname($_SERVER['DOCUMENT_ROOT'].$line["Path"]);
 					$sdir = str_replace("\\","/",$sdir);
-					$fh=@fopen($_SERVER["DOCUMENT_ROOT"].$line["Path"],"wb");
+					$fh=@fopen($_SERVER['DOCUMENT_ROOT'].$line["Path"],"wb");
 					if($fh) {
 						@fwrite($fh,$line["Data"]);
 						@fclose($fh);
@@ -936,7 +936,7 @@ class we_backup {
 
 				if($open_new) {
 					$num++;
-					$filename_tmp=$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."/tmp/".basename($filename)."_".$num;
+					$filename_tmp=$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."/tmp/".basename($filename)."_".$num;
 					$fh_temp=fopen($filename_tmp,"wb");
 					$open_new=false;
 				}
@@ -1438,7 +1438,7 @@ class we_backup {
 		}
 
 		if($of=="") $of=md5(uniqid(time()));
-		$fp = fopen($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp/"."$of", "wb");
+		$fp = fopen($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'tmp/'.$of, "wb");
 		fputs($fp, $save);
 		fclose($fp);
 		return $of;
@@ -1453,7 +1453,7 @@ class we_backup {
 	 */
 
 	function restoreState($temp_filename) {
-		$_filename = fopen($_SERVER["DOCUMENT_ROOT"] . BACKUP_DIR . "tmp/" . $temp_filename, "rb");
+		$_filename = fopen($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb");
 		if ($_filename) {
 			while (!feof($_filename)) {
 				if (!isset($save)) {
@@ -1481,8 +1481,8 @@ class we_backup {
 
 	function getDownloadFile() {
 		$download_filename= "weBackup_".$_SESSION["user"]["Username"].".sql";
-		if(copy($this->dumpfilename,$_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."download/".$download_filename)) {
-			$this->backup_db->query("INSERT INTO ".CLEAN_UP_TABLE."(Path,Date) Values ('".$this->backup_db->escape($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."download/".$download_filename)."','".time()."')");
+		if(copy($this->dumpfilename,$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."download/".$download_filename)) {
+			$this->backup_db->query("INSERT INTO ".CLEAN_UP_TABLE."(Path,Date) Values ('".$this->backup_db->escape($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."download/".$download_filename)."','".time()."')");
 			return $download_filename;
 		}
 		else
@@ -1490,19 +1490,19 @@ class we_backup {
 	}
 
 	function clearOldTmp(){
-		if(!is_writable($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp")){
+		if(!is_writable($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp")){
 			$this->setError(sprintf(g_l('backup',"[cannot_save_tmpfile]"),BACKUP_DIR));
 			return -1;
 		}
 
-		$d = dir($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."tmp");
+		$d = dir($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."tmp");
 		$co=-1;
 		$limit=time();
 		$limit=$limit-86400;
 		while (false !== ($entry=$d->read())){
 			if($entry!="." && $entry!=".." && $entry!="CVS" && !@is_dir($entry)){
-			if(filemtime($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."/tmp/".$entry)<$limit){
-				unlink($_SERVER["DOCUMENT_ROOT"].BACKUP_DIR."/tmp/".$entry);
+			if(filemtime($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."/tmp/".$entry)<$limit){
+				unlink($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR."/tmp/".$entry);
 			}
 		}
 		}

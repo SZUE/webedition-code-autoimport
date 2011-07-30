@@ -23,10 +23,10 @@
  */
 
 
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_defines.inc.php");
-    include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."define_styles.inc.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/define_styles.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 
 	//	this file gets the output from a none webEdition-Document on the same web-server
@@ -48,7 +48,7 @@
 
     if(isset($content)){
 
-        include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/SEEM/"."we_SEEM.class.php");
+        include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
         print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
 
     } else {

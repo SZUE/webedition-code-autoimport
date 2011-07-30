@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_textContentDocument.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_textContentDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 class we_webEditionDocument extends we_textContentDocument {
@@ -482,7 +482,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		if($this->TemplateID)
 			$this->TemplatePath= TEMPLATE_DIR.f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"Path",$this->DB_WE);
 		else
-			$this->TemplatePath = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_templates/we_noTmpl.inc.php";
+			$this->TemplatePath = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_noTmpl.inc.php";
 	}
 
 	function setTemplateID($templID) {

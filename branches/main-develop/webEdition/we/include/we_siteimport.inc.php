@@ -22,15 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_ContentTypes.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_import/importFunctions.class.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/taskFragment.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/importFunctions.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 protect();
 
@@ -252,7 +252,7 @@ class weSiteImport
 	 */
 	function _getFieldsFromTemplate($tid)
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tagParser.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tagParser.inc.php");
 		$sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . substr(
 				TEMPLATES_TABLE,
 				strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='" . abs($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
@@ -760,7 +760,7 @@ class weSiteImport
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		$we_button = new we_button();
 
@@ -1232,7 +1232,7 @@ class weSiteImport
 			$this->_fillFiles();
 			if (count($this->_files) == 0) {
 				$importDirectory = ereg_replace("^(.*)/$",'\1',
-						ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"]) . $this->from);
+						ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT']) . $this->from);
 				if (count(scandir($importDirectory)) <= 2) {
 					return '<script type="text/javascript>alert(\'' . addslashes(
 							g_l('importFiles',"[emptyDir]")) . '\');top.close()</script>';
@@ -1372,7 +1372,7 @@ class weSiteImport
 	 */
 	function _formPathHTML($templateName = "neueVorlage", $myid = 0)
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 		$we_button = new we_button();
@@ -1701,7 +1701,7 @@ class weSiteImport
 				$newTemplateFilename = $templateFilename . $z;
 				$z++;
 			}
-			include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_template.inc.php");
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_template.inc.php");
 			$templateObject = new we_template();
 			$templateObject->we_new();
 			$templateObject->CreationDate = time();
@@ -1972,7 +1972,7 @@ class weSiteImport
 		// preparing Paths
 		$path = str_replace("\\", "/", $path); // change windoof backslashes to slashes
 		$sourcePath = str_replace("\\", "/", $sourcePath); // change windoof backslashes to slashes
-		$sizeofdocroot = strlen(ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"])); // make sure that no ending slash is there
+		$sizeofdocroot = strlen(ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT'])); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(ereg_replace("^(.*)/$", '\1', $sourcePath)); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
 		if ($destinationDir == "/") {
@@ -1980,7 +1980,7 @@ class weSiteImport
 		}
 		$destinationPath = $destinationDir . substr($path, $sizeofdocroot + $sizeofsourcePath);
 		$id = path_to_id($destinationPath);
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 		$GLOBALS["we_doc"] = new we_webEditionDocument();
 		$GLOBALS["we_doc"]->initByID($id);
 
@@ -2042,7 +2042,7 @@ class weSiteImport
 		// preparing Paths
 		$path = str_replace("\\", "/", $path); // change windoof backslashes to slashes
 		$sourcePath = str_replace("\\", "/", $sourcePath); // change windoof backslashes to slashes
-		$sizeofdocroot = strlen(ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"])); // make sure that no ending slash is there
+		$sizeofdocroot = strlen(ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT'])); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(ereg_replace("^(.*)/$", '\1', $sourcePath)); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
 		if ($destinationDir == "/") {
@@ -2065,7 +2065,7 @@ class weSiteImport
 		$we_ContentType = $contentType;
 
 		// initializing $we_doc
-		include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();
@@ -2213,7 +2213,7 @@ class weSiteImport
 		$importDirectory = ereg_replace(
 				"^(.*)/$",
 				'\1',
-				ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"]) . $this->from);
+				ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT']) . $this->from);
 
 		// when running on windows we have to change slashes to backslashes
 		if (runAtWin()) {
@@ -2259,7 +2259,7 @@ class weSiteImport
 
 		@set_time_limit(60);
 
-		$weDirectory = ereg_replace("^(.*)/$", '\1', $_SERVER["DOCUMENT_ROOT"]) . "/webEdition";
+		$weDirectory = ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT']) . "/webEdition";
 
 		if ($importDirectory == $weDirectory) { // we do not import stuff from the webEdition home dir
 			return;
@@ -2410,7 +2410,7 @@ class weSiteImport
 
 	function _getFrameset()
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$frameset = new we_htmlFrameset(array(
 			"framespacing" => "0", "border" => "0", "frameborder" => "no"
@@ -2476,7 +2476,7 @@ class siteimportFrag extends taskFragment
 
 	function doTask()
 	{
-		$path = substr($this->data["path"], strlen($_SERVER["DOCUMENT_ROOT"]));
+		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
 		$progress = (int)((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = shortenPath($path, 30);
 

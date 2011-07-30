@@ -166,17 +166,18 @@ abstract class listviewBase{
 				$month=date('m',$date);
 				$year=date('Y',$date);
 				$day=date('j',$date);
-				if($this->calendar_struct['calendar']=='year'){
+				switch($this->calendar_struct['calendar']){
+				case 'year':
 					$date=mktime(0,0,0,$calendarCount,$day,$year);
 					$start_date=mktime(0,0,0,$calendarCount,$day,$year);
 					$end_date=mktime(23,59,59,$calendarCount,getNumberOfDays($calendarCount,$year),$year);
-				}
-				else if($this->calendar_struct['calendar']=='day'){
+					break;
+				 case 'day':
 					$date=mktime($calendarCount,0,0,$month,$day,$year);
 					$start_date=mktime($calendarCount,0,0,$month,$day,$year);
 					$end_date=mktime($calendarCount,59,59,$month,$day,$year);
-				}
-				else{
+					break;
+				default :
 					$date=mktime(0,0,0,$month,$calendarCount,$year);
 					$start_date=mktime(0,0,0,$month,$calendarCount,$year);
 					$end_date=mktime(23,59,59,$month,$calendarCount,$year);
@@ -483,8 +484,6 @@ abstract class listviewBase{
 			$_rows = floor($this->anz_all / $this->cols);
 			$_rest = ($this->anz_all % $this->cols);
 			$_add = $_rest ? $this->cols - $_rest : 0;
-			//$this->rows = min($this->rows, $_rows+$_add);//all dies ist obsolet mit den wegen #5361 eingeführten Änderungen
-			
 		}
 	}
 
@@ -545,18 +544,18 @@ abstract class listviewBase{
 			case 'year':
 				return date('Y',$calendar['date']);
 			break;
-			case "dayname":
-			case "dayname_long":
+			case 'dayname':
+			case 'dayname_long':
 				return g_l('date','[day][long]['.date("w",$calendar["date"]).']');
 			break;
-			case "dayname_short":
+			case 'dayname_short':
 				return g_l('date','[day][short]['.date("w",$calendar["date"]).']');
 			break;
-			case "monthname":
-			case "monthname_long":
+			case 'monthname':
+			case 'monthname_long':
 				return g_l('date','[month][long]['.(date("n",$calendar["date"])-1).']');
 			break;
-			case "monthname_short":
+			case 'monthname_short':
 				return g_l('date','[month][short]['.(date("n",$calendar["date"])-1).']');
 			break;
 			case 'hour':
@@ -588,17 +587,18 @@ abstract class listviewBase{
 			$month=date('m',$this->calendar_struct['defaultDate']);
 			$year=date('Y',$this->calendar_struct['defaultDate']);
 
-			if($calendar=='year'){
+			switch($calendar){
+				case 'year':
 				$start_date=mktime(0,0,0,1,$day,$year);
  				$end_date=mktime(23,59,59,12,$day,$year);
  				$numofentries=12;
-			}
-			else if($calendar=='day'){
+				break;
+			case 'day':
 				$start_date=mktime(0,0,0,$month,$day,$year);
  				$end_date=mktime(23,59,59,$month,$day,$year);
  				$numofentries=24;
-			}
-			else{
+				break;
+			default:
 				$numofentries=getNumberOfDays($month,$year);
 				$start_date=mktime(0,0,0,$month,1,$year);
 				$end_date=mktime(23,59,59,$month,$numofentries,$year);
@@ -620,14 +620,16 @@ abstract class listviewBase{
 			}else{
 				if(count($matrix) && in_array($this->calendar_struct['datefield'],array_keys($matrix))){
 					$field=$matrix[$this->calendar_struct['datefield']]['table'].'.'.$matrix[$this->calendar_struct['datefield']]['type'].'_'.$this->calendar_struct['datefield'];
-				}
-				else{
+				}else{
 					$field=CONTENT_TABLE.'.Dat';
 				}
 
 				$calendar_select=','.$field.' AS Calendar ';
-				if($condition=='') $condition=$this->calendar_struct['datefield'].">=$start_date AND ".$this->calendar_struct['datefield']."<=$end_date";
-				else $condition.=' AND '.$this->calendar_struct['datefield'].">=$start_date AND ".$this->calendar_struct['datefield']."<=$end_date";
+				if($condition==''){
+					$condition=$this->calendar_struct['datefield'].">=$start_date AND ".$this->calendar_struct['datefield']."<=$end_date";
+				}else{
+					$condition.=' AND '.$this->calendar_struct['datefield'].">=$start_date AND ".$this->calendar_struct['datefield']."<=$end_date";
+				}
 			}
 
 		}

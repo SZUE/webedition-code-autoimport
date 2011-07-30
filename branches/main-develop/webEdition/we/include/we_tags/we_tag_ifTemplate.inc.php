@@ -32,7 +32,7 @@ function we_tag_ifTemplate($attribs, $content){
 		return in_array($GLOBALS['we_doc']->TemplateID, $idArray);
 	} else {
 		if ($workspaceID !== "") {
-			$TempPath = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/templates";
+			$TempPath = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates";
 			if (isset($GLOBALS['we_doc']->TemplatePath)) { // in documents
 				$curTempPath = $GLOBALS['we_doc']->TemplatePath;
 				$curTempPath = str_replace($TempPath,'',$curTempPath);

@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_forms.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 
 
 //	build table for login screen.
@@ -118,8 +118,8 @@ $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 							"colspan" => 3), getPixel($_widthTotal,10));
 
 //	7th agency
-if (is_readable($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'agency.php') ){
-	include_once($_SERVER["DOCUMENT_ROOT"].WEBEDITION_DIR.'agency.php');
+if (is_readable($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'agency.php') ){
+	include_once($_SERVER['DOCUMENT_ROOT'].WEBEDITION_DIR.'agency.php');
 	$_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 							"colspan" => 3), getPixel($_widthTotal,10));
 

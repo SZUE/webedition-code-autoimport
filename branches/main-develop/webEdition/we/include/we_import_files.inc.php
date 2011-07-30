@@ -238,7 +238,7 @@ class we_import_files
 
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		$_funct = isset($_REQUEST['step']) ? $_REQUEST['step'] : 1;
 		$_funct = 'getStep' . $_funct;
@@ -255,7 +255,7 @@ class we_import_files
 
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		// create Start Screen ##############################################################################
 
@@ -514,7 +514,7 @@ class we_import_files
 		// create Second Screen ##############################################################################
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		$but = we_htmlElement::htmlImg(
 				array(
@@ -690,7 +690,7 @@ class we_import_files
 		// create Second Screen ##############################################################################
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		$parts = array();
 
@@ -746,8 +746,8 @@ class we_import_files
 
 	function _getButtons()
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$bodyAttribs = array(
 			"class" => "weDialogButtonsBody"
@@ -896,7 +896,7 @@ class we_import_files
 
 	function importFile()
 	{
-		include($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_ContentTypes.inc.php");
+		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		if (isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])) {
 			$ct = getContentTypeFromFile($_FILES['we_File']["name"]);
 			if (!we_hasPerm($GLOBALS["WE_CONTENT_TYPES"][$ct]["Permission"])) {
@@ -906,7 +906,7 @@ class we_import_files
 			}
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
 			// initializing $we_doc
-			include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
+			include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 			$tempName = TMP_DIR . "/" . md5(uniqid(rand(), 1));
 			if (!@move_uploaded_file($_FILES['we_File']["tmp_name"], $tempName)) {
 				return array(
@@ -1124,7 +1124,7 @@ class we_import_files
 
 	function _getFrameset()
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$_step = isset($_REQUEST['step']) ? $_REQUEST['step'] : -1;
 

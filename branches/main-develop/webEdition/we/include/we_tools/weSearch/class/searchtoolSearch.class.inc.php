@@ -25,9 +25,9 @@
 
 define("SEARCH_TEMP_TABLE", md5(session_id()));
 
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/" . "we_search.inc.php");
-include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_db_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_versions/weVersions.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_search.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_db_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 class searchtoolsearch extends we_search
 {
@@ -667,7 +667,7 @@ class searchtoolsearch extends we_search
 			}
 
 			if (!empty($contents)) {
-				$w = " " . " " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")";
+				$w = "  " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")";
 			} else {
 				$w = "";
 			}
@@ -692,7 +692,7 @@ class searchtoolsearch extends we_search
 			}
 
 			if (!empty($contents)) {
-				$w = " " . " " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")";
+				$w = "  " . $table . ".ID IN (" . makeCSVFromArray($contents) . ")";
 			} else {
 				$w = "";
 			}
@@ -756,7 +756,7 @@ class searchtoolsearch extends we_search
 			}
 
 			if (!empty($Ids)) {
-				$w = " " . " " . OBJECT_FILES_TABLE . ".ID IN (" . makeCSVFromArray($Ids) . ")";
+				$w = "  " . OBJECT_FILES_TABLE . ".ID IN (" . makeCSVFromArray($Ids) . ")";
 			} else {
 				$w = "";
 			}

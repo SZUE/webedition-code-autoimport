@@ -23,16 +23,16 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_export/weExportTree.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/weFile.class.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_export/weExportTree.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 
 define("EXPORT_PATH","/webEdition/we/include/we_export/");
@@ -851,9 +851,9 @@ top.close();
 		if (isset($_GET["exportfile"])) {
 			$_filename = basename(urldecode($_GET["exportfile"]));
 
-			if (file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$_filename)								// Does file exist?
+			if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename)								// Does file exist?
 				&& !eregi("p?html?", $_filename) && stripos($_filename,"inc")===false && !eregi("php3?", $_filename)) {		// Security check
-				$_size = filesize($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$_filename);
+				$_size = filesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename);
 
 				if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
@@ -871,7 +871,7 @@ top.close();
 				header("Content-Description: " . trim(htmlentities($_filename)));
 				header("Content-Length: " . $_size);
 
-				$_filehandler = readfile($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/tmp/".$_filename);
+				$_filehandler = readfile($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename);
 
 				exit;
 			} else {
@@ -1129,7 +1129,7 @@ top.close();
 		}
 
 		if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "progress") {
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/"."we_progressBar.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 			$text = g_l('backup',"[working]");
 			$progress = 0;
@@ -1181,7 +1181,7 @@ top.close();
 					}
 				break;
 				case "export":
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					$xmlExIm=new weXMLExIm();
 					$finalDocs=array();
 					$finalTempl=array();
@@ -1246,7 +1246,7 @@ top.close();
 					}
 					else{
 						if ($this->exportVars["type"]=="doctype"){
-							include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/listview/"."we_listview.class.php");
+							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/listview/we_listview.class.php");
 							$doctypename=f("SELECT DocType FROM ".DOC_TYPES_TABLE." WHERE ID='".$this->exportVars["doctype"]."';","DocType",$this->db);
 
 							$catss="";
@@ -1265,7 +1265,7 @@ top.close();
 						}
 						else {
 							if (defined("OBJECT_FILES_TABLE")) {
-								include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
+								include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_listview_object.class.php");
 
 								$catss = "";
 
@@ -1342,7 +1342,7 @@ top.close();
 					);
 				break;
 				case "do_export":
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_export/exportFunctions.class.inc.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_export/exportFunctions.class.inc.php");
 					$this->getExportVars();
 
 					$file_format=$this->exportVars["extype"];
@@ -1435,7 +1435,7 @@ top.close();
 
 				break;
 				case "do_wexport":
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					$this->getExportVars();
 
 					$file_format=$this->exportVars["extype"];
@@ -1496,7 +1496,7 @@ top.close();
 						$_SESSION["exportVars"]["RefTable"]=$xmlExIm->RefTable->RefTable2Array();
 						$all=count($xmlExIm->RefTable);
 						$exports=0;
-						$_SESSION["exportVars"]["filename"]=($export_local ? TMP_DIR."/".$filename : $_SERVER["DOCUMENT_ROOT"].$path.$filename);
+						$_SESSION["exportVars"]["filename"]=($export_local ? TMP_DIR."/".$filename : $_SERVER['DOCUMENT_ROOT'].$path.$filename);
 						$ret=weFile::save($_SESSION["exportVars"]["filename"],$xmlExIm->getHeader(),"wb");
 					}
 					else{
@@ -1735,7 +1735,7 @@ top.close();
 		}
 
 
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		//$js=we_htmlElement::jsElement($this->topFrame.'.categories="'.(isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "").'";');
 

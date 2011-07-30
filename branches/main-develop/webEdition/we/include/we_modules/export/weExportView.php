@@ -23,7 +23,7 @@
  */
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_EXPORT_MODULE_DIR."weExport.php");
 
 class weExportView {
@@ -583,10 +583,10 @@ function processCommands() {
 
 				break;
 				case "start_export":
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_exim/weXMLExIm.class.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 					weXMLExIm::unsetPerserves();
 					$_REQUEST["cmd"] = "do_export";
-					$this->export->ExportFilename=($this->export->ExportTo == 'local' ? TMP_DIR . "/" . $this->export->Filename : $_SERVER["DOCUMENT_ROOT"] . $this->export->ServerPath . "/" . $this->export->Filename);
+					$this->export->ExportFilename=($this->export->ExportTo == 'local' ? TMP_DIR . "/" . $this->export->Filename : $_SERVER['DOCUMENT_ROOT'] . $this->export->ServerPath . "/" . $this->export->Filename);
 				break;
 				default:
 			}

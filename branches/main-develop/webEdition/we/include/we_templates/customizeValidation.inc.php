@@ -27,7 +27,7 @@
 
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validationService.class.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validation.class.php');
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
     protect();
     htmlTop();

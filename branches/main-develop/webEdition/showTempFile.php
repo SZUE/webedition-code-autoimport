@@ -18,12 +18,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 protect();
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/lib/we/core/autoload.php");
 
 $filename = $_SERVER['DOCUMENT_ROOT'].$_GET['file'];
 $mimetype='';

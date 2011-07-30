@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/weColorDialog.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weColorDialog.class.inc.php");
 protect();
 $dialog = new weColorDialog();
 $dialog->initByHttp();

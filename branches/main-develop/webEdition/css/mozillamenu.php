@@ -28,7 +28,7 @@ header("Content-Type: text/css");
 $show_stylesheet = true;
 
 // Activate the webEdition error handler
-   include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+   include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
    if (!defined("WE_ERROR_HANDLER_SET")){ we_error_handler();}
 
 if (isset($_SESSION["prefs"]["Language"]) && $_SESSION["prefs"]["Language"] != "") {
@@ -41,7 +41,7 @@ if (isset($_SESSION["prefs"]["BackendCharset"]) && $_SESSION["prefs"]["BackendCh
 } else {
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8';
 }
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_browser_check.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 ?>
 window,
 hbox {

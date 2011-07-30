@@ -41,7 +41,7 @@ if ($we_editmode) {
 	?>
 	<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	<?php
-	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_editors/we_editor_script.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
 
 	$we_button = new we_button();

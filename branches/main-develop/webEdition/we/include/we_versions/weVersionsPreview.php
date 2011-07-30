@@ -69,9 +69,9 @@ if(! ($isObj OR $isTempl) ) {
 	$prot = getServerProtocol();
 	$preurl = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? "$prot://".$_SERVER["HTTP_HOST"] : "";
 
-	$filePathNew = $_SERVER["DOCUMENT_ROOT"].$binaryPathNew;
+	$filePathNew = $_SERVER['DOCUMENT_ROOT'].$binaryPathNew;
 	if(!empty($oldDoc)) {
-		$filePathOld = $_SERVER["DOCUMENT_ROOT"].$binaryPathOld;
+		$filePathOld = $_SERVER['DOCUMENT_ROOT'].$binaryPathOld;
 	}
 	$fileNew = $preurl.$binaryPathNew;
 	if(!empty($oldDoc)) {
@@ -89,7 +89,7 @@ $we_button = new we_button();
 $_button = $we_button->create_button("close", "javascript:self.close();");
 
 //tabs
-require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 $we_tabs = new we_tabs();
 

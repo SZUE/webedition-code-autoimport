@@ -83,7 +83,7 @@ class weGlossarySettingControl {
 ?>
 EOF;
 
-		$configFile = $_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
+		$configFile = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
 		$fh = fopen($configFile, "w+");
 		if(!$fh) {
 			return false;

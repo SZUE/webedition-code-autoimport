@@ -24,9 +24,9 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
@@ -36,7 +36,7 @@ print STYLESHEET;
 
 $we_button = new we_button();
 
-$cpat=str_replace('//','/',$_SERVER["DOCUMENT_ROOT"].$_REQUEST["pat"]);
+$cpat=str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"]);
 
 function weFile($f){
     global $DB_WE;

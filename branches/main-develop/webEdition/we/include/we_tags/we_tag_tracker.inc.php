@@ -65,14 +65,14 @@ _my_stat_write(\'' . $websitename . '\',\'' . $trackerurl . '\'' . ($trackname ?
 ';
 	} else
 		if ($type == 'robot') {
-			include ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/spidertracker.php");
+			include ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/spidertracker.php");
 			@logspider($websitename);
 		} else
 			if ($type == 'fileserver') {
-				@include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/service/fileserver.php");
+				@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/service/fileserver.php");
 			} else
 				if ($type == 'downloads') {
-					@include_once ($_SERVER["DOCUMENT_ROOT"] . WE_TRACKER_DIR . "/includes/showcat.inc.php");
+					@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showcat.inc.php");
 					$category = we_getTagAttribute("category", $attribs);
 					$order = we_getTagAttribute("order", $attribs, "FILETITLE");
 					$desc = we_getTagAttribute("desc", $attribs, "", true, true);

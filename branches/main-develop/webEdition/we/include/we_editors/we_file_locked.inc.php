@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 protect();
 $foo = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=".abs($we_user_locked)."",$DB_WE);
 ?>

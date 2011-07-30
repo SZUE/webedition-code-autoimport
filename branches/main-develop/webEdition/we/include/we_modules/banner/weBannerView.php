@@ -24,10 +24,10 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weBanner.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/"."we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weBannerView extends weBannerBase{
@@ -215,7 +215,7 @@ class weBannerView extends weBannerBase{
 			$ct = f("SELECT ContentType FROM ".FILE_TABLE." WHERE ID='".$ID."'","ContentType",$this->db);
 			switch($ct){
 				case "image/*";
-					include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
+					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 					$img = new we_imageDocument();
 					$img->initByID($ID,FILE_TABLE);
 					$content = $img->getHTML();
@@ -875,7 +875,7 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formFiles(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 		$we_button = new we_button();
 
 		$delallbut = $we_button->create_button("delete_all","javascript:top.content.setHot(); we_cmd('del_all_files')");
@@ -892,7 +892,7 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formFolders(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -910,7 +910,7 @@ class weBannerView extends weBannerBase{
 	}
 
 	function formCategories(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$we_button = new we_button();
 
@@ -1063,7 +1063,7 @@ class weBannerView extends weBannerBase{
 	}
 
    function formCustomer(){
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 		$we_button = new we_button();
 		$delallbut = $we_button->create_button("delete_all","javascript:top.content.setHot();we_cmd('del_all_customers')");
 		$addbut    = $we_button->create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','".CUSTOMER_TABLE."','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");

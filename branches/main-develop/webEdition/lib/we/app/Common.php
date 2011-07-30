@@ -126,7 +126,7 @@ class we_app_Common
 		if (isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)) {
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml";
+			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
 		}
 		if (!is_readable($filename)) {
 			return false;
@@ -155,7 +155,7 @@ class we_app_Common
 		if (isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)) {
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml";
+			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
 		}
 		if (!is_readable($filename)) {
 			return false;
@@ -181,7 +181,7 @@ class we_app_Common
 		if (isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)) {
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
-			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml";
+			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml";
 		}
 		if (!is_readable($filename)) {
 			return false;
@@ -236,7 +236,7 @@ class we_app_Common
 		// We insert the new element as root (child of the document)
 		$doc->appendChild($root);
 		
-		file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml", $doc->saveXML());
+		file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml", $doc->saveXML());
 		self::readAppTOCsxmle(true);
 		self::readAppTOC(true);
 	}
@@ -321,7 +321,7 @@ class we_app_Common
 			error_log("invalid data");
 			return false;
 		}
-		$output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" . "<toc>\n";
+		$output = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<toc>\n";
 		foreach ($toc as $node) {
 			//error_log($node->asXML());
 			$output .= "\t" . $node->asXML() . "\n";
@@ -329,7 +329,7 @@ class we_app_Common
 		$output .= "</toc>\n";
 		//error_log($output);
 		// need to do it this way because the SimpleXML Object would not produce a complete and valid xml file 
-		file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/toc.xml", $output);
+		file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/toc.xml", $output);
 	
 	}
 
@@ -344,19 +344,19 @@ class we_app_Common
 			return self::$_config;
 		}
 		//error_log("loading config from file.");
-		$filename = $_SERVER["DOCUMENT_ROOT"] . '/webEdition/lib/we/app/defaults/config.xml';
+		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/app/defaults/config.xml';
 		if (!is_readable($filename)) {
 			//error_log("Could not find the configuration file from ".$filename.". Please check your installation.");
 			return false;
 		}
 		try {
 			self::$_config = new Zend_Config_Xml($filename, null, true);
-			// add $_SERVER["DOCUMENT_ROOT"] to <applicationpath> value
+			// add $_SERVER['DOCUMENT_ROOT'] to <applicationpath> value
 			if (isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)) {
 				if (substr(self::$_config->applicationpath, 0, 1) != "/") {
-					$newpath = $_SERVER["DOCUMENT_ROOT"] . "/" . self::$_config->applicationpath;
+					$newpath = $_SERVER['DOCUMENT_ROOT'] . "/" . self::$_config->applicationpath;
 				} else {
-					$newpath = $_SERVER["DOCUMENT_ROOT"] . self::$_config->applicationpath;
+					$newpath = $_SERVER['DOCUMENT_ROOT'] . self::$_config->applicationpath;
 				}
 				if (substr($newpath, -1) != "/") {
 					$newpath .= "/";
@@ -480,7 +480,7 @@ class we_app_Common
 			$filename = $source;
 		} else {
 			// seems to be an app name:
-			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
+			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
 		}
 		if (!is_readable($filename)) {
 			//error_log("file $filename not readable");
@@ -510,7 +510,7 @@ class we_app_Common
 			$filename = $source;
 		} else {
 			// seems to be an app name:
-			$filename = $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
+			$filename = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/apps/" . $source . "/conf/manifest.xml";
 		}
 		if (!is_readable($filename)) {
 			//error_log("file $filename not readable");
@@ -666,7 +666,7 @@ class we_app_Common
 		if (!is_null(self::$_defaultManifest)) {
 			return self::$_defaultManifest;
 		}
-		$filename = $_SERVER["DOCUMENT_ROOT"] . '/webEdition/lib/we/app/defaults/manifest.xml';
+		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/app/defaults/manifest.xml';
 		if (!is_readable($filename)) {
 			error_log("Could not find the default manifest file from " . $filename . ". Please check your installation.");
 			return false;
@@ -695,7 +695,7 @@ class we_app_Common
 			return false;
 		}
 		self::getDefaultManifest();
-		$filename = $_SERVER["DOCUMENT_ROOT"] . '/webEdition/apps/' . $application . '/conf/manifest.xml';
+		$filename = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $application . '/conf/manifest.xml';
 		if (!is_readable($filename)) {
 			error_log('Could not find the application\'s manifest file from application "' . $application . '". Using default values for this application.');
 			return false;

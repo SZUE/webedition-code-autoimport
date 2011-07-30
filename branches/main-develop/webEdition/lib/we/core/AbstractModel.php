@@ -24,7 +24,7 @@
  */
 Zend_Loader::loadClass('we_core_AbstractObject');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 /**
  * Base class for webEdition models
