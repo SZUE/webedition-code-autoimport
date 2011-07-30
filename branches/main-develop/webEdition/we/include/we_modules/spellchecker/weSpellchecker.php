@@ -164,11 +164,11 @@ print STYLESHEET;
   	}
 
   	function setDialog() {
-  		<?php if($_mode=='wysiwyg'):?>
+  		<?php if($_mode=='wysiwyg'){?>
   		editorObj = top.opener.weWysiwygObject_<?php print $_editname?>;
   		var text = getTextFromWysiwyg();
 
-  		<?php else:?>
+  		<?php }else{?>
 
   		var elements = top.opener.document.getElementsByName("<?php print $_editname?>");
 
@@ -177,7 +177,7 @@ print STYLESHEET;
   			var text = editorObj.value;
   		}
 
-  		<?php endif?>
+  		<?php }?>
 
   		orginal = text;
   		editPanel = document.getElementById('preview');
@@ -187,14 +187,14 @@ print STYLESHEET;
 
   	function getTextFromWysiwyg() {
   		var text = "";
-  		<?php if($_mode=='wysiwyg'):?>
+  		<?php if($_mode=='wysiwyg'){?>
   		editorObj = top.opener.weWysiwygObject_<?php print $_editname?>;
-  		<?php else:?>
+  		<?php }else{?>
   		var elements = top.opener.document.getElementsByName("<?php print $_editname?>");
   		if(elements[0]) {
   			editorObj = elements[0];
   		}
-  		<?php endif?>
+  		<?php }?>
 
   		if(editorObj.getSelectedText) {
   			text = editorObj.getSelectedText();

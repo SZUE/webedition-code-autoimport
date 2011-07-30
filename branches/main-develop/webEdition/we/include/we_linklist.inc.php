@@ -695,14 +695,14 @@ class we_linklist
 					$foo = eregi_replace('<we_:_path */? *>', $link . $this->getParams($i), $foo);
 					$foo = str_replace(
 							'<we_:_ifSelf>',
-							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"): ?>',
+							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"){ ?>',
 							$foo);
-					$foo = str_replace('</we_:_ifSelf>', '<?php endif ?>', $foo);
+					$foo = str_replace('</we_:_ifSelf>', '<?php } ?>', $foo);
 					$foo = str_replace(
 							'<we_:_ifNotSelf>',
-							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"): ?>',
+							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"){ ?>',
 							$foo);
-					$foo = str_replace('</we_:_ifNotSelf>', '<?php endif ?>', $foo);
+					$foo = str_replace('</we_:_ifNotSelf>', '<?php } ?>', $foo);
 
 					if (!isset($this->listArray[$i]["nr"])) {
 						$nr = $i;

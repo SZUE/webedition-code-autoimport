@@ -75,25 +75,25 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc
 
 					function setProgress(progress){
 						var koef=<?php print ($this->stud_len/100)?>;
-                  <?php if($this->orientation==1):?>
+                  <?php if($this->orientation==1){?>
 							document.images["progress_image"].height=koef*progress;
-							<?php if($this->showBack):?>document.images["progress_image_bg"].height=(koef*100)-(koef*progress);<?php endif?>
-						<?php else:?>
+							<?php if($this->showBack){?>document.images["progress_image_bg"].height=(koef*100)-(koef*progress);<?php }?>
+						<?php }else{?>
 							document.images["progress_image"].width=koef*progress;
-							<?php if($this->showBack):?>document.images["progress_image_bg"].width=(koef*100)-(koef*progress);<?php endif?>
-						<?php endif?>
+							<?php if($this->showBack){?>document.images["progress_image_bg"].width=(koef*100)-(koef*progress);<?php }?>
+						<?php }?>
 
 							if (progress==100) {
 								document.images["progress_image"].style.display="none";
 							}
 
-						<?php if($this->showProgressText):?>setProgressText("progress_text",progress+"%")<?php endif?>
-						<?php if($this->callback_code!=""):?>
-							if(progress<100) to=setTimeout('<?php print $this->callback_code;?>',<?php print $this->callback_timeout;?>);
-							else var to=clearTimeout(to);?>
-						<?endif?>
+						<?php if($this->showProgressText){?>setProgressText("progress_text",progress+"%")<?php }?>
+						<?php if($this->callback_code!=""){?>
+							if(progress<100){ to=setTimeout('<?php print $this->callback_code;?>',<?php print $this->callback_timeout;?>);
+							}else{ var to=clearTimeout(to);}?>
+						<?php }?>
 					}
-					<?php if($this->callback_code!=""):?>var to=setTimeout('<?php print $this->callback_code;?>',<?php print $this->callback_timeout;?>); <?php endif?>
+					<?php if($this->callback_code!=""){?>var to=setTimeout('<?php print $this->callback_code;?>',<?php print $this->callback_timeout;?>); <?php }?>
 				</script>
 
 			<?php */

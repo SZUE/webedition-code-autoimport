@@ -72,15 +72,15 @@ $content='<textarea name="editFile" id="editFile" style="width:540px;height:380p
 		ta.style.width=document.body.offsetWidth-60;
 		ta.style.height=document.body.offsetHeight-118;
 	}
-<?php if(isset($we_alerttext)): ?>
+<?php if(isset($we_alerttext)){ ?>
 <?php print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR); ?>
 self.close();
-<?php endif ?>
+<?php } ?>
 self.focus();
-<?php if(isset($_REQUEST["editFile"]) && (!isset($we_alerttext))): ?>
+<?php if(isset($_REQUEST["editFile"]) && (!isset($we_alerttext))){ ?>
     opener.top.fscmd.selectDir();
 	self.close();
-<?php endif ?>
+<?php } ?>
 //-->
 </script>
 </head>

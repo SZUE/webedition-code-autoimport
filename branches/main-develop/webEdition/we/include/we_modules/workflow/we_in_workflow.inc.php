@@ -81,7 +81,7 @@ if($cmd == "ok"){
 
 <body class="weDialogBody">
 	<center>
-		<?php if($cmd!="ok"): ?>
+		<?php if($cmd!="ok"){ ?>
 			<?php
 				if($we_doc->Table==FILE_TABLE) {
 					$wfDoc = weWorkflowUtility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID);
@@ -91,7 +91,7 @@ if($cmd == "ok"){
 				}
 				$wfID=$wfDoc->workflowID;
 			?>
-			<?php if($wfID): ?>
+			<?php if($wfID){ ?>
 				<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 					<?php
 						$wf_select = '<select name="wf_select" size="1">';
@@ -152,14 +152,13 @@ if($cmd == "ok"){
 							<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
 					?>
 				</form>
-			<?php else: ?>
+			<?php }else{ ?>
 				<script  type="text/javascript"><!--
 					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? g_l('modules_workflow','[no_wf_defined]') : g_l('modules_workflow','[no_wf_defined_object]') ), WE_MESSAGE_ERROR); ?>
 					top.close();
 				//-->
 				</script>
-			<?php endif ?>
-		<?php endif ?>
+			<?php }} ?>
 	</center>
 </body>
 

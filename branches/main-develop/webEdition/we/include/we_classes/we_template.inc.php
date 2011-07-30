@@ -237,7 +237,7 @@ class we_template extends we_document
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
 		$tags = $tp->getAllTags($code);
 		/*Bug #4432, #4186
-		$code = eregi_replace('(</?form[^>]*>)','<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>\1<?php endif ?>',$code);
+		$code = eregi_replace('(</?form[^>]*>)','<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>\1<?php } ?>',$code);
 		 */
 		$foo = $this->checkElsetags($tags);if($foo) return $foo;
 		$foo = $this->checkEndtags("if",0,$tags);if($foo) return $foo;
@@ -297,7 +297,7 @@ class we_template extends we_document
 			$pre_code = '<?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>'.$pre_code;
 
 			//#### parse base href
-			$code = eregi_replace('(</title>)','\1'.'<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]): ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php endif ?>',$code);
+			$code = eregi_replace('(</title>)','\1'.'<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>',$code);
 
 			$code = eregi_replace("</head>","$head</head>",$code);
 
@@ -312,10 +312,10 @@ class we_template extends we_document
 			$code = eregi_replace("(</body>)","$postContent\\1",$code);
 
 		}else if(!$this->hasStartAndEndTag("html",$code) && !$this->hasStartAndEndTag("head",$code) && !$this->hasStartAndEndTag("body",$code)){
-			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])): ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]): ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php endif ?>'.$head.'</head>
+			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])){ ?><?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>'.$head.'</head>
 <body <?php if(isset($we_editmode) && $we_editmode) print " onUnload=\"doUnload()\""; ?>>
-'.$preContent.'<?php endif ?>'.$code.'<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)): ?>'.$postContent.'
-</body></html><?php $WE_HTML_HEAD_BODY = true; ?><?php endif ?>';
+'.$preContent.'<?php } ?>'.$code.'<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)){ ?>'.$postContent.'
+</body></html><?php $WE_HTML_HEAD_BODY = true; ?><?php } ?>';
 
 		}else{
 			return parseError(g_l('parser','[html_tags]'));

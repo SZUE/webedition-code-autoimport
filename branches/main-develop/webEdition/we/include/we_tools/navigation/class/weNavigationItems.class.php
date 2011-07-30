@@ -1090,7 +1090,7 @@ class weNavigationItems
 		//			$rootTemplate = '<we:navigationEntries />';
 
 
-		$folderTemplate = '<li><a href="<?php printElement( we_tag("navigationField", array("name"=>"href"), "")); ?>"><?php printElement( we_tag("navigationField", array("name"=>"text"), "")); ?></a><?php if(we_tag("ifHasEntries", array())): ?><ul><?php printElement( we_tag("navigationEntries", array(), "")); ?></ul><?php endif ?></li>';
+		$folderTemplate = '<li><a href="<?php printElement( we_tag("navigationField", array("name"=>"href"), "")); ?>"><?php printElement( we_tag("navigationField", array("name"=>"text"), "")); ?></a><?php if(we_tag("ifHasEntries", array())){ ?><ul><?php printElement( we_tag("navigationEntries", array(), "")); ?></ul><?php } ?></li>';
 		$itemTemplate = '<li><a href="<?php printElement( we_tag("navigationField", array("name"=>"href"), "")); ?>"><?php printElement( we_tag("navigationField", array("name"=>"text"), "")); ?></a></li>';
 		$rootTemplate = '<?php printElement( we_tag("navigationEntries", array(), "")); ?>';
 

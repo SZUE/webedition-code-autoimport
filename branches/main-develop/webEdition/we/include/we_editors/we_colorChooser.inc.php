@@ -41,7 +41,7 @@ function selectColor(c){
 	document.we_form.colorvalue.value = c;
 }
 function setColor(){
-<?php if($_REQUEST["we_cmd"][0]): ?>
+<?php if($_REQUEST["we_cmd"][0]){ ?>
 	opener.document.we_form.elements["<?php print $_REQUEST["we_cmd"][1]; ?>"].value = document.we_form.colorvalue.value;
 
 	<?php if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) { ?>
@@ -55,25 +55,25 @@ function setColor(){
 
 	<?php } ?>
 
-<?php else: ?>
+<?php }else{ ?>
 	window.returnValue = document.we_form.colorvalue.value;
-<?php endif ?>
+<?php } ?>
 	window.close();
 }
 function init(){
 	top.focus();
-<?php if($_REQUEST["we_cmd"][0]): ?>
+<?php if($_REQUEST["we_cmd"][0]){ ?>
 	document.we_form.colorvalue.value = "<?php print $_REQUEST["we_cmd"][2]; ?>";
-<?php else: ?>
+<?php }else{ ?>
 	document.we_form.colorvalue.value = window.dialogArguments["bgcolor"];
-<?php endif ?>
+<?php } ?>
 }
 </script>
 	</head>
 
 
-<body class="weDialogBody"<?php if($_REQUEST["we_cmd"][0]): ?> onLoad="init()"<?php endif ?>>
-<form name="we_form" onSubmit="<?php if(!$_REQUEST["we_cmd"][0]): ?>setColor();<?php endif ?>return false">
+<body class="weDialogBody"<?php if($_REQUEST["we_cmd"][0]){ ?> onLoad="init()"<?php } ?>>
+<form name="we_form" onSubmit="<?php if(!$_REQUEST["we_cmd"][0]){ ?>setColor();<?php } ?>return false">
 		<?php
 $colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
 <script  type="text/javascript">

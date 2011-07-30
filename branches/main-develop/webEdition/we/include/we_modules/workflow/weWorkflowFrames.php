@@ -186,7 +186,7 @@ class weWorkflowFrames extends weModuleFrames{
 			}
 	</script>
 	</head>
-	<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode==0):?> onload="setStatusCheck()"<?php endif?>>
+	<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"<?php if($mode==0){?> onload="setStatusCheck()"<?php }?>>
     <form name="we_form">
 	<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
@@ -194,13 +194,13 @@ class weWorkflowFrames extends weModuleFrames{
 			</tr>
 	</table>
 	<table border="0" cellpadding="0" cellspacing="0" width="300">
-	<?php if($mode==0):?>
+	<?php if($mode==0){?>
 			<tr>
 				<td><?php print getPixel(15,5)?></td>
 				<td><?php print $we_button->create_button("save", "javascript:we_save();") ?></td>
 				<td class="defaultfont"><?php print $this->View->getStatusHTML();?></td>
 			</tr>
-	<?php endif?>
+	<?php }?>
 	</table>
     </form>
 	</body>

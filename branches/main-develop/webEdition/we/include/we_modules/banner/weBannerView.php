@@ -294,9 +294,9 @@ class weBannerView extends weBannerBase{
 						else setTimeout('we_cmd("new_bannergroup");',10);
 					break;
 					case "delete_banner":
-						<?php if(!we_hasPerm("DELETE_BANNER")):
+						<?php if(!we_hasPerm("DELETE_BANNER")){
 							print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_perms]'), WE_MESSAGE_ERROR);
-						else: ?>
+						}else{ ?>
 						if(top.content.resize.right.editor.edbody.loaded && top.content.resize.right.editor.edbody.we_is_home==undefined){
 							if(!confirm("<?php print g_l('modules_banner','[delete_question]')?>")) return;
 						}
@@ -306,10 +306,10 @@ class weBannerView extends weBannerBase{
 						}
 						top.content.resize.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.submitForm();
-						<?php endif?>
+						<?php }?>
 						break;
 					case "save_banner":
-						<?php if(we_hasPerm("EDIT_BANNER") || we_hasPerm("NEW_BANNER")):?>
+						<?php if(we_hasPerm("EDIT_BANNER") || we_hasPerm("NEW_BANNER")){?>
 						if(top.content.resize.right.editor.edbody.loaded && top.content.resize.right.editor.edbody.we_is_home==undefined){
 							if(!top.content.resize.right.editor.edbody.checkData()){
 								return;
@@ -321,7 +321,7 @@ class weBannerView extends weBannerBase{
 
 						top.content.resize.right.editor.edbody.document.we_form.ncmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.submitForm();
-						<?php endif?>
+						<?php }?>
 						top.content.usetHot();
 						break;
 					case "edit_banner":

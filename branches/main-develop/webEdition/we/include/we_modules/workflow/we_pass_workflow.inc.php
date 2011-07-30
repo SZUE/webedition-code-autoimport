@@ -74,8 +74,8 @@ top.close();
 <?php print STYLESHEET; ?>
 </head>
 <body class="weDialogBody"><center>
-<?php if($cmd=="ok"): ?>
-<?php else: ?>
+<?php if($cmd=="ok"){ ?>
+<?php }else{ ?>
 <form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 <?php
 
@@ -109,7 +109,7 @@ print '	<input type="hidden" name="cmd" value="ok" />
 		<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />';
 ?>
 </form>
-<?php endif ?>
+<?php } ?>
 </center>
 </body>
 </html>

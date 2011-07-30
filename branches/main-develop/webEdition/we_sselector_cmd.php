@@ -37,7 +37,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 	$_SESSION["user"]["LastDir"]=$last;
 }
 ?>
-<?php if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]!="save_last")):?>
+<?php if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]!="save_last")){?>
 <script  type="text/javascript"><!--
 
 	function drawNewFolder() {
@@ -62,9 +62,9 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 					a.length=j+1;a[j].selected=true;
 				}
 			}
-			<?php if(  isset($_REQUEST["filter"]) && ($_REQUEST["filter"]=="folder" || $_REQUEST["filter"]=="filefolder")): ?>
+			<?php if(  isset($_REQUEST["filter"]) && ($_REQUEST["filter"]=="folder" || $_REQUEST["filter"]=="filefolder")){ ?>
 			selectFile(dir);
-			<?php endif; ?>
+			<?php } ?>
 			top.currentDir=dir;
 			selectDir();
 		}
@@ -109,9 +109,9 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 
 
 		if(arguments[0]) {
-			<?php if(isset($_REQUEST["filter"]) && $_REQUEST["filter"]=="folder"): ?>
+			<?php if(isset($_REQUEST["filter"]) && $_REQUEST["filter"]=="folder"){ ?>
 			//selectFile(arguments[0],true);
-			<?php endif; ?>
+			<?php } ?>
 			if(top.currentDir=="/")
 				top.currentDir=top.currentDir+arguments[0];
 			else
@@ -290,7 +290,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 	?>
 //-->
 </script>
-<?php endif?>
+<?php }?>
 </head>
 
 	<body>

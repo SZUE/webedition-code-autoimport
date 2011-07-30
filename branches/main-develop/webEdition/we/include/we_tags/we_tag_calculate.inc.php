@@ -24,6 +24,7 @@
 
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tagParser.inc.php");
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_util.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/util/Strings.php');
 
 function we_tag_calculate($attribs, $content){
 	$sum = we_getTagAttribute("sum", $attribs);
@@ -67,23 +68,7 @@ function we_tag_calculate($attribs, $content){
 		}
 		$GLOBALS["summe"][$sum] += $result;
 	}
-	switch($num_format){
-		case "german":
-			$result = number_format($result, 2, ",", ".");
-			break;
-		case  "french":
-			$result = number_format($result, 2, ",", " ");
-			break;
-		case "english":
-			$result = number_format($result, 2, ".", "");
-			break;
-		case "swiss":
-			$result = number_format($result, 2, ".", "'");
-			break;
-	}
 	if ($print) {
-		return $result;
-	} else {
-		return;
+		return we_util_Strings::formatnumber($result, $num_format);
 	}
 }

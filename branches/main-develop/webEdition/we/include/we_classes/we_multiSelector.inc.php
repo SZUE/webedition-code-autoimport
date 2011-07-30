@@ -178,11 +178,11 @@ function writeBody(d){
 	d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 	d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 	d.writeln('}');
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 	d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-<?php else: ?>
+<?php }else{ ?>
 	d.writeln('top.unselectAllFiles();');
-<?php endif ?>
+<?php } ?>
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
@@ -220,7 +220,7 @@ function doClick(id,ct){
 			setTimeout('wasdblclick=0;',400);
 		}
 	}else{
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 		if(fsbody.shiftpressed){
 			var oldid = currentID;
 			var currendPos = getPositionByID(id);
@@ -237,11 +237,11 @@ function doClick(id,ct){
 
 		}else if(!fsbody.ctrlpressed){
 
-<?php endif ?>
+<?php } ?>
 
 			selectFile(id);
 
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 
 		}else{
 			if (isFileSelected(id)) {
@@ -251,7 +251,7 @@ function doClick(id,ct){
 			}
 		}
 
-<?php endif ?>
+<?php } ?>
 
 	}
 	if(fsbody.ctrlpressed){

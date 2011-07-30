@@ -94,8 +94,8 @@ function we_tag($name, $attribs=array(), $content = ''){
 	}
 
 	
-	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
-	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
+	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
+	if ($edMerk) {
 		if (isset($attribs['user']) && $attribs['user']) {
 			$uAr = makeArrayFromCSV($attribs['user']);
 			$userIds = array();
@@ -121,9 +121,6 @@ function we_tag($name, $attribs=array(), $content = ''){
 	case 'we_tag_setVar':
 		$fn($attribs, $content);
 		break;
-	case 'we_tag_noCache':
-		$foo = eval('?>' . $content);
-		break;
 	default:
 		$foo = $fn($attribs, $content);
 	}
@@ -140,6 +137,9 @@ function we_tag($name, $attribs=array(), $content = ''){
 ### tag utility functions ###
 
 function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
+	if(isset ($GLOBALS['calculate'])){
+		$to='calculate';
+	}
 	switch ($to) {
 		case 'request' :
 			$_REQUEST[$nameTo] = $returnvalue;
@@ -167,6 +167,9 @@ function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
 			if (isset($_SESSION['webuser'][$nameTo])){
 				$_SESSION['webuser'][$nameTo] = $returnvalue;
 			}
+			break;
+		case 'calculate':
+			return we_util::std_numberformat($returnvalue);
 			break;
 		case 'screen':
 		default:

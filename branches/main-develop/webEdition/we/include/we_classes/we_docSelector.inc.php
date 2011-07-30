@@ -295,11 +295,11 @@ function writeBody(d){
 	d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 	d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 	d.writeln('}');
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 	d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-<?php else: ?>
+<?php }else{ ?>
 	d.writeln('top.unselectAllFiles();');
-<?php endif ?>
+<?php } ?>
 	}
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');
@@ -1075,7 +1075,7 @@ function doClick(id,ct){
 		}
 	} else {
 		if(getEntry(id).contentType != "folder" || <?php print $this->canSelectDir ? "true" : "false"; ?>){
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 			if(fsbody.shiftpressed){
 				var oldid = currentID;
 				var currendPos = getPositionByID(id);
@@ -1097,15 +1097,15 @@ function doClick(id,ct){
 					unselectFile(id);
 				}else{
 
-<?php endif ?>
+<?php } ?>
 					selectFile(id);
 
-<?php if($this->multiple): ?>
+<?php if($this->multiple){ ?>
 
 				}
 			}
 
-<?php endif ?>
+<?php } ?>
 
 		} else {
 			showPreview(id);

@@ -176,28 +176,26 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 ?>
 <script type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script type="text/javascript"><!--
-	<?php if($we_show_response): ?>
-		<?php print $we_JavaScript ?>;
-		<?php if($we_responseText): ?>
+	<?php if($we_show_response){
+		print $we_JavaScript.';';
+		 if($we_responseText){ ?>
 			opener.top.toggleBusy(0);
-			<?php print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type); ?>
+			<?php print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type); 
 
-		<?php endif ?>
-	<?php endif ?>
-	<?php if($_REQUEST["we_cmd"][0] == "deleteDocType"): ?>
-		<?php if(!we_hasPerm("EDIT_DOCTYPE")):?>
-			<?php print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR); ?>
-		<?php else:?>
+	 }} 
+	 if($_REQUEST["we_cmd"][0] == "deleteDocType"){
+		if(!we_hasPerm("EDIT_DOCTYPE")){
+			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR); 
+		}else{?>
 			if(confirm("<?php printf(g_l('weClass',"[doctype_delete_prompt]"),$we_doc->DocType); ?>")) {
 				we_cmd("deleteDocTypeok","<?php print $_REQUEST["we_cmd"][1]; ?>");
 			}
-		<?php endif ?>
-	<?php endif ?>
-	<?php if($_REQUEST["we_cmd"][0] == "deleteDocTypeok"): ?>
+	<?php }}
+	if($_REQUEST["we_cmd"][0] == "deleteDocTypeok"){ ?>
 		opener.top.makefocus = self;
 		opener.top.header.document.location.reload();
-		<?php print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE); ?>
-	<?php endif ?>
+		<?php print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE); 
+	 } ?>
 
 	var countSaveLoop = 0;
 

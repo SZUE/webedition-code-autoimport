@@ -113,11 +113,11 @@ function writeBody(d){
 	d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 	d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 	d.writeln('}');
-<?php print '<?php if($this->multiple): ?>';?>
+<?php print '<?php if($this->multiple){ ?>';?>
 	d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
-<?php print '<?php else: ?>';?>
+<?php print '<?php }else{ ?>';?>
 	d.writeln('top.unselectAllFiles();');
-<?php print '<?php endif ?>';?>
+<?php print '<?php } ?>';?>
 	}
 	d.writeln('}');
 	d.writeln('</scr'+'ipt>');

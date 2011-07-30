@@ -102,13 +102,13 @@ $content = htmlDialogLayout($content,g_l('newFile',"[import_File_from_hd_title]"
 ?>
 <script  type="text/javascript"><!--
 self.focus();
-<?php if(isset($_FILES['we_uploadFile']) && (!$we_alerttext)):?>
+<?php if(isset($_FILES['we_uploadFile']) && (!$we_alerttext)){?>
  opener.top.fscmd.selectFile('<?php print $_FILES['we_uploadFile']["name"]; ?>');
    opener.top.fscmd.selectDir();
  self.close();
-<?php elseif($we_alerttext):
+<?php }elseif($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
-endif ?>
+} ?>
 //-->
 </script>
 </head>

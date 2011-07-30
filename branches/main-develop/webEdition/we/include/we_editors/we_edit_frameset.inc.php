@@ -344,17 +344,17 @@ if(!isset($we_doc->elements['data']['dat'])){
 
 				closeAllModalWindows();
 
-				<?php if($we_doc->userHasAccess()==1): ?>
+				<?php if($we_doc->userHasAccess()==1){ ?>
 				if(!unlock) {
 						if(!top.opener || top.opener.win){	//	login to super easy edit mode
 							unlock = true;
 						}
 					}
-				<?php endif ?>
+				<?php } ?>
 			}
 
 
-			<?php if(!$we_doc->ID): ?>
+			<?php if(!$we_doc->ID){ ?>
 				if (top.Tree && top.Tree.treeData && top.Tree.treeData.table != "<?php print $we_Table; ?>") {
 					top.we_cmd('load',"<?php print $we_Table ?>");
 
@@ -363,8 +363,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 					if(strpos($we_doc->ContentType,"image/")!==false || strpos($we_doc->ContentType,"application/")!==false) {
 						$we_doc->EditPageNr = 1;
 					}
-				?>
-			<?php endif ?>
+			 } ?>
 
 			if(top.treeData && (top.treeData.state==top.treeData.tree_states["select"] || top.treeData.state==top.treeData.tree_states["selectitem"])) {
 				top.we_cmd("exit_delete");

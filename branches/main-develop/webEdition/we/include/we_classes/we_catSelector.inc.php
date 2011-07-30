@@ -595,17 +595,17 @@ function doClick(id,ct){
 			setTimeout('wasdblclick=0;',400);
 		}else if(top.currentID == id){
 
-<?php if(we_hasPerm("EDIT_KATEGORIE")): ?>
+<?php if(we_hasPerm("EDIT_KATEGORIE")){ ?>
 			top.RenameEntry(id);
-<?php endif ?>
+<?php } ?>
 
 		}
 	}else{
 		if(top.currentID == id && (!fsbody.ctrlpressed)){
 
-<?php if(we_hasPerm("EDIT_KATEGORIE")): ?>
+<?php if(we_hasPerm("EDIT_KATEGORIE")){ ?>
 			top.RenameEntry(id);
-<?php endif ?>
+<?php } ?>
 
 		}else{
 			if(fsbody.shiftpressed){

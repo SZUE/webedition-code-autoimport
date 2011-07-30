@@ -127,19 +127,18 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("uploa
 
 
 <script type="text/javascript"><!--
-	<?php if($we_alerttext): ?>
-	<?php print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR); ?>
-		<?php if($error): ?>
+	<?php if($we_alerttext){ 
+	 print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
+		if($error){ ?>
 		top.close();
-		<?php endif ?>
-	<?php endif ?>
+		<?php }}
 
-	<?php if(isset($we_File) && (!$we_alerttext)) : ?>
+	 if(isset($we_File) && (!$we_alerttext)) { ?>
 		opener.we_cmd("update_file");
 		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
 		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
 		self.close();
-	<?php endif ?>
+	<?php } ?>
 //-->
 </script>
 </head>

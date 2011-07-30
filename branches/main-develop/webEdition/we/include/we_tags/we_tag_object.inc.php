@@ -95,7 +95,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openDocselector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',\'$rootDirID\',\'objectFile\',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
-if($GLOBALS["we_editmode"]): ?>
+if($GLOBALS["we_editmode"]){ ?>
 <table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 	<tr>
 		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
@@ -106,7 +106,7 @@ if($GLOBALS["we_editmode"]): ?>
 		<td>' . getPixel(6, 4) . '</td>
 		<td><?php print $delbutton; ?></td>
 	</tr>
-</table><?php endif;
+</table><?php }
 ';
 			} else {
 				if (strpos($we_oid,'$')===false ){//Bug 4848
@@ -138,7 +138,5 @@ if($GLOBALS["lv"]->avail): ?>';
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
-
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 }

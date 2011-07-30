@@ -25,11 +25,12 @@
 
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once(WEBEDITION_INCLUDES_DIR."we_classes/we_class.inc.php");
+include_once(WEBEDITION_INCLUDES_DIR."we_html_tools.inc.php");
+include_once(WEBEDITION_INCLUDES_DIR."we_classes/html/we_multibox.inc.php");
+include_once(WEBEDITION_INCLUDES_DIR."we_modules/shop/we_pager_class.inc.php");
+include_once(WEBEDITION_INCLUDES_DIR."we_classes/html/we_button.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"].'/webEdition/lib/we/util/Strings.php');
 
 $selectedYear = isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date("Y");
 $selectedMonth = isset($_REQUEST['ViewMonth']) ? $_REQUEST['ViewMonth'] : '0';
@@ -38,19 +39,8 @@ $actPage = isset($_REQUEST['actPage']) ? $_REQUEST['actPage'] : '0';
 
 function orderBy($a, $b) {
 
-	$true = true;
-	$false = false;
-
-	if (isset($_REQUEST['orderDesc'])) { // turn order!
-		$true = false;
-		$false = true;
-	}
-
-	if ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']]) {
-		return $true;
-	} else {
-		return $false;
-	}
+	$ret=($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']]);
+	return (isset($_REQUEST['orderDesc'])? !$ret:$ret);
 }
 
 function getTitleLink($text, $orderKey) {
@@ -86,17 +76,7 @@ function getPagerLink() {
 			(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
 }
 function numfom($result){
-	switch($GLOBALS['numberformat']){
-		case 'german':
-			return number_format($result,2,",",".");
-		case 'french':
-			return number_format($result,2,","," ");
-		case 'swiss':
-			return number_format($result,2,".","'");
-		case 'english':
-			return number_format($result,2,".","");
-	}
-		return $result;
+	return we_util_Strings::formatnumber($result, $GLOBALS['numberformat']);
 }
 
 function yearSelect($select_name) {

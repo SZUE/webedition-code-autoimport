@@ -39,9 +39,7 @@ class we_tagParser{
 
 	function parseAppListviewItemsTags($tagname,$tag, $code, $attribs = "", $postName = ""){
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
-
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 
 	}
 
@@ -440,12 +438,7 @@ class we_tagParser{
 						$attribs = "array(" . rtrim($attribs,',') . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 													if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-														/*$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')): ?>\'; ?>',$code);*/
-														$code = str_replace(
-																$tag,
-																$this->parseCacheIfTag(
-																		'<?php if(we_tag(\'' . $tagname . '\', ' . $attribs . ')): ?>'),
-																$code);
+														$code = str_replace($tag,'<?php echo \'<?php if(we_tag("'.$tagname.'", '.$attribs.')){ ?>\'; ?>',$code);
 														$this->ipos++;
 														$this->lastpos = 0;
 													} else
@@ -519,10 +512,7 @@ class we_tagParser{
 
 															} else
 																if ($tagname == "else") {
-																	$code = substr($code, 0, $tagPos) . $this->parseCacheIfTag(
-																			'<?php else: ?>') . substr(
-																			$code,
-																			$endeStartTag);
+																	$code = str_replace($tag, '<?php }else{ ?>', $code);
 
 																} else
 																	if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
@@ -591,12 +581,11 @@ class we_tagParser{
 
 			$this->ipos++;
 			if ($tagname == "ifHasEntries" || $tagname == "ifNotHasEntries" || $tagname == "ifHasCurrentEntry" || $tagname == "ifNotHasCurrentEntry" || $tagname == "ifshopexists" || $tagname == "ifobjektexists" || $tagname == "ifnewsletterexists" || $tagname == "ifcustomerexists" || $tagname == "ifbannerexists" || $tagname == "ifvotingexists") {
-				$code = str_replace($tag, '<?php endif; ?>', $code);
+				$code = str_replace($tag, '<?php } ?>', $code);
 
 			} else
 				if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-					/*$code = str_replace($tag,'<?php echo "<?php endif; ?>"; ?>',$code);*/
-					$code = str_replace($tag, $this->parseCacheIfTag('<?php endif; ?>'), $code);
+					$code = str_replace($tag,'<?php echo "<?php } ?>"; ?>',$code);
 				} else
 					if ($tagname == "printVersion") {
 						$code = str_replace(
@@ -607,7 +596,7 @@ class we_tagParser{
 								if ($tagname == "form") {
 									$code = str_replace(
 											$tag,
-											'<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?></form><?php endif; $GLOBALS["WE_FORM"] = ""; if (isset($GLOBALS["we_form_action"])) {unset($GLOBALS["we_form_action"]);} ?>',
+											'<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?></form><?php } $GLOBALS["WE_FORM"] = ""; if (isset($GLOBALS["we_form_action"])) {unset($GLOBALS["we_form_action"]);} ?>',
 											$code);
 								} else
 										if ($tagname == "listview") {
@@ -621,14 +610,14 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	} else {
 		unset($GLOBALS["lv"]);unset($GLOBALS["we_lv_array"]);
 	}
-}?>' . $this->getEndCacheCode($tag),
+}?>' ,
 													$code,1);
 
 										} else
 											if (in_array($tagname,$this->ListviewItemsTags)) {
 												$code = str_replace(
 														$tag,
-														'<?php endif;
+														'<?php }
 if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	array_pop($GLOBALS["we_lv_array"]);
 	if (count($GLOBALS["we_lv_array"])) {
@@ -636,7 +625,7 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 	} else {
 		unset($GLOBALS["lv"]);unset($GLOBALS["we_lv_array"]);
 	}
-} ?>' . $this->getEndCacheCode($tag), $code);
+} ?>' , $code);
 
 											} else
 												if ($tagname == "listviewOrder") {
@@ -669,16 +658,6 @@ if ( isset( $GLOBALS["we_lv_array"] ) ) {
 
 			$this->lastpos = 0;
 		}
-	}
-
-	function getStartCacheCode($tag, $attribs) //FIXME: remove
-	{
-		return '';
-	}
-
-	function getEndCacheCode($tag)// FIXME: remove
-	{
-		return '';
 	}
 
 
@@ -762,7 +741,7 @@ $rootDirID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE Path=\'$classPath\'"
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openDocselector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'.$wecmdenc1.\',\'.$wecmdenc2.\',\'.$wecmdenc3.\',\'".session_id()."\',\'$rootDirID\',\'objectFile\',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
-if($GLOBALS["we_editmode"]): ?>
+if($GLOBALS["we_editmode"]){ ?>
 <table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 	<tr>
 		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
@@ -773,7 +752,7 @@ if($GLOBALS["we_editmode"]): ?>
 		<td>' . getPixel(6, 4) . '</td>
 		<td><?php print $delbutton; ?></td>
 	</tr>
-</table><?php endif;
+</table><?php }
 ';
 			} else {
 				if (strpos($we_oid,'$')===false ){//Bug 4848
@@ -805,9 +784,8 @@ if($GLOBALS["lv"]->avail): ?>';
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
 
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Object/DB','object'), $code); }
 	}
 
@@ -865,7 +843,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
 
-if($GLOBALS["we_editmode"]): ?>
+if($GLOBALS["we_editmode"]){ ?>
 <table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 	<tr>
 		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
@@ -876,7 +854,7 @@ if($GLOBALS["we_editmode"]): ?>
 		<td>' . getPixel(6, 4) . '</td>
 		<td><?php print $delbutton; ?></td>
 	</tr>
-</table><?php endif;
+</table><?php }
 ';
 			} else {
 				if (strpos($we_cid,'$')===false ){//Bug 4848
@@ -894,7 +872,7 @@ $php .='$we_cid = $we_cid ? $we_cid : (isset($_REQUEST["we_cid"]) ? $_REQUEST["w
 			$php .= '$GLOBALS["lv"] = new we_customertag($we_cid,"' . $condition . '",'.$hidedirindex.');
 $lv = clone($GLOBALS["lv"]); // for backwards compatibility
 if(is_array($GLOBALS["we_lv_array"])) array_push($GLOBALS["we_lv_array"],clone($GLOBALS["lv"]));
-if($GLOBALS["lv"]->avail): ?>';
+if($GLOBALS["lv"]->avail){ ?>';
 
 			if ($postName != "") {
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
@@ -1004,7 +982,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
 
-if($GLOBALS["we_editmode"]): ?>
+if($GLOBALS["we_editmode"]){ ?>
 <table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 	<tr>
 		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
@@ -1015,7 +993,7 @@ if($GLOBALS["we_editmode"]): ?>
 		<td>' . getPixel(6, 4) . '</td>
 		<td><?php print $delbutton; ?></td>
 	</tr>
-</table><?php endif;
+</table><?php }
 ';
 			} else {
 				if (strpos($we_orderid,'$')===false ){//Bug 4848
@@ -1037,9 +1015,8 @@ if($GLOBALS["lv"]->avail): ?>';
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
 
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Shop','"order"'), $code); }
 	}
 
@@ -1102,7 +1079,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/w
 		$delbutton = $we_button->create_button("image:btn_function_trash", "javascript:document.forms[0].elements[\'$idname\'].value=0;document.forms[0].elements[\'$textname\'].value=\'\';_EditorFrame.setEditorIsHot(false);we_cmd(\'reload_editpage\');");
 		$button    = $we_button->create_button("select", "javascript:we_cmd(\'openSelector\',document.forms[0].elements[\'$idname\'].value,\'$table\',\'document.forms[\\\'we_form\\\'].elements[\\\'$idname\\\'].value\',\'document.forms[\\\'we_form\\\'].elements[\\\'$textname\\\'].value\',\'opener.we_cmd(\\\'reload_editpage\\\');opener._EditorFrame.setEditorIsHot(true);\',\'".session_id()."\',0,\'\',1)");
 
-if($GLOBALS["we_editmode"]): ?>
+if($GLOBALS["we_editmode"]){ ?>
 <table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 	<tr>
 		<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b>' . $_showName . '</b></span></td>
@@ -1113,7 +1090,7 @@ if($GLOBALS["we_editmode"]): ?>
 		<td>' . getPixel(6, 4) . '</td>
 		<td><?php print $delbutton; ?></td>
 	</tr>
-</table><?php endif;
+</table><?php }
 ';
 			} else {
 				if (strpos($we_orderitemid,'$')===false ){//Bug 4848
@@ -1136,9 +1113,7 @@ if($GLOBALS["lv"]->avail): ?>';
 				$content = str_replace('$', '\$', $php); //	to test with blocks ...
 			}
 
-			$pre = $this->getStartCacheCode($tag, $attribs);
-
-			return $this->replaceTag($tag, $code, $pre . $php);
+			return $this->replaceTag($tag, $code, $php);
 		} else { return str_replace($tag, modulFehltError('Shop','"orderitem"'), $code); }
 	}
 
@@ -1321,7 +1296,7 @@ if($GLOBALS["lv"]->avail): ?>';
 			case "shopliste" :
 				$formAttribs['action'] = '<?php print $GLOBALS["we_form_action"]; ?>';
 				$formAttribs['name'] = 'form<?php print (isset($GLOBALS["lv"]) && isset($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count-1]) && strlen($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count-1])) ? $GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count-1] : $we_doc->ID; ?>';
-				$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]) : ?>' . getHtmlTag(
+				$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]) { ?>' . getHtmlTag(
 						'form',
 						$formAttribs,
 						'',
@@ -1358,11 +1333,11 @@ if($GLOBALS["lv"]->avail): ?>';
 								'type' => 'hidden',
 								'name' => 't',
 								'value' => '<?php echo time(); ?>'
-						)) . '<?php endif; ?>';
+						)) . '<?php } ?>';
 				break;
 			case "object" :
 			case "document" :
-				$php .= '<?php if(!isset($_REQUEST["edit_' . $type . '"])): if(isset($GLOBALS["WE_SESSION_START"]) && $GLOBALS["WE_SESSION_START"]){ unset($_SESSION["we_' . $type . '_session_' . $formname . '"] );}  endif; ?>
+				$php .= '<?php if(!isset($_REQUEST["edit_' . $type . '"])){ if(isset($GLOBALS["WE_SESSION_START"]) && $GLOBALS["WE_SESSION_START"]){ unset($_SESSION["we_' . $type . '_session_' . $formname . '"] );}} ?>
 ';
 				$formAttribs['onsubmit'] = $onsubmit;
 				$formAttribs['name'] = $formname;
@@ -1393,7 +1368,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 ';
 					$typetmp = (($type == "object") ? "Object" : "Document");
 
-					$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>' . getHtmlTag(
+					$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>' . getHtmlTag(
 							'form',
 							$formAttribs,
 							'',
@@ -1410,14 +1385,14 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 									'name' => 'we_edit' . $typetmp . '_ID',
 									'value' => '<?php print isset($_REQUEST["we_edit' . $typetmp . '_ID"]) ? ($_REQUEST["we_edit' . $typetmp . '_ID"]) : 0; ?>',
 									'xml' => $xml
-							)) . '<?php endif;?>';
+							)) . '<?php }?>';
 				} else {
-					$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>' . getHtmlTag(
+					$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>' . getHtmlTag(
 							'form',
 							$formAttribs,
 							'',
 							false,
-							true) . '<?php endif;?>';
+							true) . '<?php }?>';
 				}
 				break;
 			case "formmail" :
@@ -1457,7 +1432,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 
 				//  now prepare all needed hidden-fields:
-				$php = '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>
+				$php = '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>
 				            ' . getHtmlTag('form', $formAttribs, "", false, true) . '
 				            <?php
 				            	$_recipientString = "' . $recipient . '";
@@ -1627,7 +1602,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 								'xml' => $xml
 						)) . '
 			                 </div>
-				        <?php endif;?>';
+				        <?php }?>';
 				break;
 			default :
 				if ($enctype) {
@@ -1640,17 +1615,15 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 				$formAttribs['onsubmit'] = $onsubmit;
 				$formAttribs['action'] = '<?php print $GLOBALS["we_form_action"]; ?>';
 
-				$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]): ?>' . getHtmlTag(
+				$php .= '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>' . getHtmlTag(
 						'form',
 						$formAttribs,
 						"",
 						false,
-						true) . "<?php endif; ?>\n";
+						true) . "<?php } ?>\n";
 		}
 
-		$pre = $this->getStartCacheCode($tag, $attribs);
-
-		return $this->replaceTag($tag, $code, $pre . $php);
+		return $this->replaceTag($tag, $code, $php);
 	}
 
 	/**
@@ -1786,10 +1759,6 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 	}
 
-	function parseCacheIfTag($content)
-	{
-			return $content;
-	}
 
 }
 function we_tagParserPrintArray($array){

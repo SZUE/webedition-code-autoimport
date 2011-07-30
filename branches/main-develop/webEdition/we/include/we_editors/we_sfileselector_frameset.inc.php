@@ -75,7 +75,7 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
      var allentries = new Array();
 
      function exit_close(){
-<?php if( isset($_REQUEST["we_cmd"][1]) && $_REQUEST["we_cmd"][1] !="") :?>
+<?php if( isset($_REQUEST["we_cmd"][1]) && $_REQUEST["we_cmd"][1] !="") {?>
      	var foo;
      	if(currentID){
      		if(currentID == sitepath) foo = "/";
@@ -89,10 +89,10 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
       	opener.postSelectorSelect('selectFile');
       }
 
-<?php endif?>
-<?php if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") :?>
+<?php }?>
+<?php if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") {?>
 	<?php print $_REQUEST["we_cmd"][4].";\n"; ?>
-<?php endif?>
+<?php }?>
      close();
      }
 

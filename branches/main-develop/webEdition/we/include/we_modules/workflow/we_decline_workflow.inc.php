@@ -75,7 +75,7 @@ if($cmd == "ok") {
 
 <body class="weDialogBody">
 	<center>
-		<?php if($cmd!="ok"): ?>
+		<?php if($cmd!='ok'){ ?>
 			<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
 					$we_button = new we_button();
@@ -105,7 +105,7 @@ if($cmd == "ok") {
 						<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />';
 				?>
 			</form>
-		<?php endif ?>
+		<?php } ?>
 	</center>
 
 </body>

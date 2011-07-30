@@ -108,7 +108,7 @@ function doScrollTo(){
 }
 
 function setScrollTo(){
-   parent.scrollToVal=<?php if($GLOBALS["BROWSER"] == "IE"): ?>document.body.scrollTop;<?php else: ?>pageYOffset;<?php endif ?>
+   parent.scrollToVal=<?php if($GLOBALS["BROWSER"] == "IE"){ ?>document.body.scrollTop;<?php }else{ ?>pageYOffset;<?php } ?>
 }
 
 function keypressed(e) {
@@ -321,25 +321,26 @@ foreach ($final as $key => $entry) {
 ?>
 
 </table>
-<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))):?>
+<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))){?>
    <input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"];?>" />
-   <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"):?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"]?>" />
-   <input type="hidden" name="oldtxt" value="" /><?php endif?>
+   <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"){?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"]?>" />
+   <input type="hidden" name="oldtxt" value="" /><?php }?>
    <input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : "" ?>" />
-<?php endif?>
+<?php }?>
 </form>
 
-<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))):?>
+<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"))&&($set_rename))){?>
     <script  type="text/javascript">
      document.forms["we_form"].elements["txt"].focus();
      document.forms["we_form"].elements["txt"].select();
-     <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"):?>
+     <?php if($_REQUEST["nf"]=="rename_folder" || $_REQUEST["nf"]=="rename_file"){?>
      document.forms["we_form"].elements["oldtxt"].value=document.forms["we_form"].elements["txt"].value;
-     <?php endif?>
+     <?php }?>
      document.forms["we_form"].elements["pat"].value=top.currentDir;
     </script>
-<?php endif?>
-<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" ||  $_REQUEST["nf"]=="rename_file"))&&($set_rename))):?>
-<?php endif?>
+<?php }
+if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"]=="new_folder")||(( isset($_REQUEST["nf"]) && ($_REQUEST["nf"]=="rename_folder" ||  $_REQUEST["nf"]=="rename_file"))&&($set_rename))){
+}
+?>
 </body>
 </html>

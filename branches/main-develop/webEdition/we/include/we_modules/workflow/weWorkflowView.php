@@ -615,9 +615,9 @@ class weWorkflowView extends weWorkflowBase{
 						top.content.resize.right.editor.edbody.submitForm();
 					break;
 					case "delete_workflow":
-						<?php if(!we_hasPerm("DELETE_WORKFLOW")):
+						<?php if(!we_hasPerm("DELETE_WORKFLOW")){
 							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
-						else:?>
+						}else{?>
 						if(top.content.resize.right.editor.edbody.loaded){
 							if(!confirm("<?php print g_l('modules_workflow','[delete_question]')?>")) return;
 						}
@@ -625,12 +625,12 @@ class weWorkflowView extends weWorkflowBase{
 
 						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.submitForm();
-						<?php endif?>
+						<?php }?>
 					break;
 					case "save_workflow":
-						<?php if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")):
+						<?php if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
 							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
-						else:?>
+						}else{?>
 						if(top.content.resize.right.editor.edbody.loaded){
 							top.content.resize.right.editor.edbody.setStatus(top.content.resize.right.editor.edfooter.document.we_form.status_workflow.value);
 							chk=top.content.resize.right.editor.edbody.checkData();
@@ -643,7 +643,7 @@ class weWorkflowView extends weWorkflowBase{
 						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.submitForm();
 						top.content.usetHot();
-						<?php endif?>
+						<?php }?>
 					break;
 					case "edit_workflow":
 					case "show_document":
@@ -767,7 +767,7 @@ class weWorkflowView extends weWorkflowBase{
 					f.method = "post";
 					f.submit();
 			}
-		<?php if(!$this->show):?>
+		<?php if(!$this->show){?>
 
 
 			function clickCheck(a){
@@ -912,7 +912,7 @@ class weWorkflowView extends weWorkflowBase{
 				return true;
 			}
 
-		<?php endif; ?>
+		<?php } ?>
 		</script>
 	<?php
 	}

@@ -788,16 +788,16 @@ function we_cmd() {
             new jsWindow(url,"info",-1,-1,432,350,true,false,true);
             break;
 		case "help":
-			<?php if($online_help):?>
+			<?php if($online_help){?>
 				if(arguments[1])
 					url="/webEdition/getHelp.php?hid="+arguments[1];
 				else
 					url="/webEdition/getHelp.php";
 				new jsWindow(url,"help",-1,-1,720,600,true,false,true,true);
-			<?php else:?>
+			<?php }else{?>
 				url="/webEdition/noAvailable.php";
 				new jsWindow(url,"help_no_available",-1,-1,380,140,true,false,true);
-			<?php endif?>
+			<?php }?>
 			break;
 		case "help_documentation":
 			<?php

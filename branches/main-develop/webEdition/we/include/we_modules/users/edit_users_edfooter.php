@@ -41,7 +41,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/
      }
 ?> 
 	</head>
-    <?php if(isset($user_object)):?> 
+    <?php if(isset($user_object)){?> 
 	<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">    
      <table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
@@ -55,6 +55,6 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/
 		</table>
     
 	</body>
-    <?php endif?> 
+    <?php } ?> 
 </html>
 

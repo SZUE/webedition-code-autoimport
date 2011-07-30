@@ -210,11 +210,11 @@ top.parentID = "'.$this->values["ParentID"].'";
 function selectFile(id){
 	if(id){
 		e=top.getEntry(id);
-<?php if($this->filter=="user"): ?>
+<?php if($this->filter=="user"){ ?>
 
 		if(!e.isFolder){
 
-<?php endif ?>
+<?php } ?>
 
 
 
@@ -231,11 +231,11 @@ function selectFile(id){
 		currentPath = e.path;
 		currentID = id;
 
-<?php if($this->filter=="user"): ?>
+<?php if($this->filter=="user"){ ?>
 
 		}
 
-<?php endif ?>
+<?php } ?>
 
 	}else{
 		top.fsfooter.document.we_form.fname.value = "";

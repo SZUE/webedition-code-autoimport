@@ -201,12 +201,12 @@ if($we_ContentType == "image/*"){
 
 ?>
 <script  type="text/javascript"><!--
-<?php if($we_alerttext):
+<?php if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
-endif ?>
+} ?>
 
-<?php if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)): ?>
-<?php if($we_doc->ID):?>
+<?php if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
+ if($we_doc->ID){?>
 	var ref;
 	if(opener.top.opener && opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top;
 	else if(opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) ref = opener.top.opener.top.opener.top;
@@ -221,9 +221,9 @@ endif ?>
 	opener.top.addEntry("<?php print $we_doc->ID?>","<?php print $we_doc->Icon?>","<?php print $we_doc->Text?>","<?php print $we_doc->IsFolder?>","<?php print $we_doc->Path?>");
 	opener.top.doClick(<?php print  $we_doc->ID; ?>,0);
 	setTimeout('opener.top.selectFile(<?php print  $we_doc->ID; ?>)',200);
-<?php endif?>
+<?php } ?>
 	setTimeout('self.close()',250);
-<?php endif ?>
+<?php } ?>
 //-->
 </script>
 </head>

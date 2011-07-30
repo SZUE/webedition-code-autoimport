@@ -52,11 +52,7 @@ if($_SESSION["perms"]["ADMINISTRATOR"]){
 htmlTop();
 ?>
 <script type="text/javascript"><!--
-	<?php if($ok): ?>
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_ok]"), WE_MESSAGE_NOTICE); ?>
-	<?php else: ?>
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_notok]"), WE_MESSAGE_ERROR); ?>
-	<?php endif ?>
+	<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[grant_owners_ok]"), ($ok?WE_MESSAGE_NOTICE:WE_MESSAGE_ERROR)); ?>
 //-->
 </script>
 </head>

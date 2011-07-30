@@ -227,32 +227,32 @@ function doUnload() {
 			if(ai == nf.laenge) fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 			else fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?> // make  in tree clickable
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
 			if(nf[ai].name != -1){
 			fr.write("<a href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
 			}
 
-<?php endif ?>
+<?php } ?>
 
 			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[edit_statustext]"); ?>\">");
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 			fr.write("</a>");
 
-<?php endif ?>
+<?php } ?>
 
 fr.write("&nbsp;");
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?> // make orders in tree clickable
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make orders in tree clickable
 			fr.write("<a href=\"javascript://\" onClick=\"doClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 
-<?php endif ?>
+<?php } ?>
 			fr.write("<font color=\"black\">"+(parseInt(nf[ai].published) ? " <b>" : "")+ nf[ai].text +(parseInt(nf[ai].published) ? " </b>" : "")+ "</font>");
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 			fr.write("</A>");
 
-<?php endif ?>
+<?php } ?>
 
 			fr.write("&nbsp;&nbsp;<BR>\n");
 		}else{
@@ -267,30 +267,30 @@ fr.write("&nbsp;");
 				fr.write("&nbsp;&nbsp;<A HREF=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu"+zusatz+".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[close_statustext]") ?>\"></A>");
 	        	var zusatz2 = "open";
 	        }
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 			fr.write("<a href=\"javascript://\" onClick=\"doFolderClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\" BORDER=0>");
 
-<?php endif ?>
+<?php } ?>
 
 			fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/folder"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree',"[edit_statustext]"); ?>\">");
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 			fr.write("</a>");
 
-<?php endif ?>
+<?php } ?>
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?> // make the month in tree clickable
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
 			fr.write("<A HREF=\"javascript://\" onClick=\"doFolderClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 
-<?php endif ?>
+<?php } ?>
 
 			fr.write("&nbsp;"+(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text +(parseInt(nf[ai].published) ? " </b>" : ""));
 
-<?php if(we_hasPerm("EDIT_SHOP_ORDER")): ?>
+<?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 
 			fr.write("</a>");
 
-<?php endif ?>
+<?php } ?>
 
 			fr.write("&nbsp;&nbsp;<BR>\n");
 			if (nf[ai].offen){
