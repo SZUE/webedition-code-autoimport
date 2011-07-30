@@ -543,7 +543,7 @@ else {
 										}
 									}
 									else {
-										if($we_doc->we_publish()) {
+										if($we_doc->we_publish()==true) {
 											if(defined("WORKFLOW_TABLE")) {
 												include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/"."weWorkflowUtility.php");
 												if(weWorkflowUtility::inWorkflow($we_doc->ID,$we_doc->Table)){

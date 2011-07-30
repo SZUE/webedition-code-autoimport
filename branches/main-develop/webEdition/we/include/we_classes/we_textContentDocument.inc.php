@@ -99,12 +99,12 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 	function insertAtIndex(){
-		$text = "";
+		$text = '';
 		if(isset($GLOBALS["INDEX_TYPE"]) && $GLOBALS["INDEX_TYPE"]=="PAGE"){
 			$text = $this->i_getDocument();
 		}else{
 
-			if ($this->ContentType == "text/webedition") {
+			if ($this->ContentType == 'text/webedition') {
 				// dont save not needed fields in index-table: @bugfix 8798
 				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode());
 				$fieldTypes["Title"] = "txt";
@@ -113,7 +113,7 @@ class we_textContentDocument extends we_textDocument{
 			}
 
 			$this->resetElements();
-			while(list($k,$v) = $this->nextElement("")){
+			while(list($k,$v) = $this->nextElement('')){
 				$_dat = (isset($v["dat"]) && is_string($v["dat"]) && substr($v["dat"],0,2) == "a:") ? unserialize($v["dat"]) : (isset($v["dat"]) ? $v["dat"] : "");
 				if ((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)) {
 					foreach($fieldTypes as $name=>$val) {
@@ -121,7 +121,7 @@ class we_textContentDocument extends we_textDocument{
 							if(!is_array($_dat) && $v["type"] == "txt" && ($k != "Charset")){
 								$text .= " ".$_dat;
 							} else if (is_array($_dat)) {
-								$text .= " ".$_dat['text'];
+								$text .= ' '.$_dat['text'];
 							}
 							break;
 						}
@@ -142,9 +142,9 @@ class we_textContentDocument extends we_textDocument{
 		}
 		$text = addslashes($text);
 
-		$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($this->ID));
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID='.intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES('".abs($this->ID)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."','".abs($this->ParentID)."','".$this->DB_WE->escape($this->Category)."','".$this->DB_WE->escape($this->DocType)."','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."','".$this->DB_WE->escape($this->Language)."')");
+			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES('".abs($this->ID)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."','".abs($this->ParentID)."','".$this->DB_WE->escape($this->Category)."','".$this->DB_WE->escape($this->DocType)."','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."','".$this->DB_WE->escape($this->Language)."')");
 		}
 		return true;
 
@@ -385,7 +385,9 @@ class we_textContentDocument extends we_textDocument{
 			}
 		}
 		if($saveinMainDB){
-			if(!we_root::we_save(1)) return false; // calls the root function, so the document will be saved in main-db but it will not be written!
+			if(!we_root::we_save(1)){
+				return false; // calls the root function, so the document will be saved in main-db but it will not be written!
+			}
 		}
 
 		$_oldPublished = $this->Published;
@@ -398,7 +400,7 @@ class we_textContentDocument extends we_textDocument{
 		}
 
 		if($DoNotMark==false){
-			if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='".abs($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
+			if(!$this->DB_WE->query('UPDATE '.$this->DB_WE->escape($this->Table)." SET Published='".intval($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
 		}
 
 		if($saveinMainDB) {

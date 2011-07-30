@@ -1244,11 +1244,17 @@ function encode($in) {
 	return $out;
 }
 
+/**
+ *
+ * @param type $id
+ * @param type $table
+ * @return bool true on success, or if not in DB 
+ */
 function deleteContentFromDB($id, $table) {
 	$DB_WE = new DB_WE();
 
-	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
-		return false;
+	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
+		return true;
 	}
 	
 	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (

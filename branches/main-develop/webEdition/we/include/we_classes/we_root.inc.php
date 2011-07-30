@@ -817,10 +817,12 @@ function formTriggerDocument($isclass=false){
 			$this->ModDate = time();
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		}
-		if(!we_class::we_save($resave)) return false;	
+		if(!we_class::we_save($resave)){
+			return false;	
+		}
 		$a = $this->i_saveContentDataInDB();
-		if($resave==0 && $this->ClassName!="we_class_folder"){
-			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_history.class.php");
+		if($resave==0 && $this->ClassName!='we_class_folder'){
+			include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_classes/we_history.class.php');
 			we_history::insertIntoHistory($this);
 		}
 		return $a;
@@ -839,7 +841,9 @@ function formTriggerDocument($isclass=false){
 	}
 
 	function we_delete(){
-		if(!we_class::we_delete()) return false;
+		if(!we_class::we_delete()){
+			return false;
+		}
 		return deleteContentFromDB($this->ID,$this->Table);
 	}
 
@@ -1001,7 +1005,9 @@ function formTriggerDocument($isclass=false){
 	}
 
 	function i_saveContentDataInDB(){
-		if(!deleteContentFromDB($this->ID,$this->Table)) return false;
+		if(!deleteContentFromDB($this->ID,$this->Table)){
+			return false;
+		}
 		if(!is_array($this->elements)){
 			return true;
 		}
@@ -1041,7 +1047,7 @@ function formTriggerDocument($isclass=false){
 						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).')'.' '.$vals);
 						$cid=$this->DB_WE->getInsertId();
 						$this->elements[$k]['id']=$cid; // update Object itself
-						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".abs($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
+						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".intval($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
 						if(!$this->DB_WE->query($q)){
 							return false;
 						}
