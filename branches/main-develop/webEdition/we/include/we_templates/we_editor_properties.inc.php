@@ -36,8 +36,8 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 htmlTop();
 ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
-<?php print STYLESHEET; ?>
+<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
+print STYLESHEET; ?>
 	</head>
 	<body class="weEditorBody" onUnload="doUnload()">
 		<form name="we_form" method="post" onSubmit="return false;"><?php $we_doc->pHiddenTrans(); ?>

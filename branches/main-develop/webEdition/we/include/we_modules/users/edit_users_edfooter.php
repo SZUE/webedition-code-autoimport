@@ -28,13 +28,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/users/we_users.inc.php");
-?>
-<?php
+
 	print STYLESHEET;
 
 	$we_button = new we_button();
-?>
-<?php
+
      if(isset($_SESSION["user_session_data"])){
          $user_object=new we_user();
          $user_object->setState($_SESSION["user_session_data"]);

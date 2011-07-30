@@ -70,12 +70,11 @@ top.close();
 </script>
 ';
 }
-?>
-<?php print STYLESHEET; ?>
+ print STYLESHEET; ?>
 </head>
 <body class="weDialogBody"><center>
-<?php if($cmd=="ok"){ ?>
-<?php }else{ ?>
+<?php if($cmd=="ok"){ 
+	}else{ ?>
 <form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 <?php
 

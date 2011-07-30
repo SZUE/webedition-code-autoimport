@@ -92,8 +92,7 @@ $we_button = new we_button();
 
 	echo hidden('fid', $_REQUEST['fid']);
 	}
-?>
-<?php
+
     if ($_REQUEST["mode"] == 'new') {
 
 	$heading = g_l('modules_messaging','[new_folder]');
@@ -143,8 +142,7 @@ $we_button = new we_button();
 													$we_button->create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
 										 	 )
 	;
-?>
-<?php print htmlDialogLayout($input_tbl, $heading, $_btn_tbl,"100%","30","","none"); ?></td>
+ print htmlDialogLayout($input_tbl, $heading, $_btn_tbl,"100%","30","","none"); ?></td>
     </form>
   </body>
 </html>

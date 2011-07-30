@@ -122,8 +122,8 @@ $_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", 
 </head>
 
 <body bgcolor="white" marginwidth="10" marginheight="10" leftmargin="10" topmargin="10" background="/webEdition/images/msg_white_bg.gif">
-<?php echo htmlMessageBox(400,120,$content,g_l('modules_messaging','[rm_folders]'), $_buttons)?>
-<?php echo $form ?>
+<?php echo htmlMessageBox(400,120,$content,g_l('modules_messaging','[rm_folders]'), $_buttons);
+echo $form ?>
 </body>
 
 </html>

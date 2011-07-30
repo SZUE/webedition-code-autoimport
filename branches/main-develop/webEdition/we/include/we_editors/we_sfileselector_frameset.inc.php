@@ -89,10 +89,10 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
       	opener.postSelectorSelect('selectFile');
       }
 
-<?php }?>
-<?php if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") {?>
-	<?php print $_REQUEST["we_cmd"][4].";\n"; ?>
-<?php }?>
+<?php }
+if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") {?>
+	<?php print $_REQUEST["we_cmd"][4].";\n"; 
+	}?>
      close();
      }
 

@@ -33,8 +33,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/java_m
 <?php $_BROWSER = new we_browserDetect();
 if($_BROWSER->getBrowser()== 'ie' && $_BROWSER->getBrowserVersion()<7){?>
 <script src="<?php print WEBEDITION_DIR; ?>css/menu/stuHover.js" type="text/javascript"></script>
-<?php }?>
-<?php
+<?php }
 
 //	width of java-/XUL-Menu
 $_menu_width = 360;

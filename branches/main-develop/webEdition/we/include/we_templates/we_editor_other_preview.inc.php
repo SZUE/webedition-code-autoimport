@@ -75,8 +75,7 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 
 <body class="weEditorBody">
 	<form name="we_form" method="post">
-		<?php $we_doc->pHiddenTrans(); ?>
-<?php
+		<?php $we_doc->pHiddenTrans(); 
 
 	switch(strtolower($we_doc->Extension)) {
 		case ".pdf":

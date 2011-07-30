@@ -105,14 +105,12 @@ function we_checkObjFieldname(i){
 </script>
 <?php
 	echo $jsGUI->getJS(WEBEDITION_DIR."js");
-?>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
+ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 
 </head>
 
 <body onUnload="doUnload()" class="weEditorBody">
-<form name="we_form" method="post"><?php $we_doc->pHiddenTrans(); ?>
-<?php
+<form name="we_form" method="post"><?php $we_doc->pHiddenTrans(); 
 
 if($we_doc->ID){
 	$ctable = OBJECT_X_TABLE.$we_doc->ID;

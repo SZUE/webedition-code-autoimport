@@ -75,8 +75,7 @@ if($cmd == "ok"){
 			//-->
 			</script>';
 	}
-?>
-<?php print STYLESHEET; ?>
+ print STYLESHEET; ?>
 </head>
 
 <body class="weDialogBody">

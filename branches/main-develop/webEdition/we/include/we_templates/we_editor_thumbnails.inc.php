@@ -30,9 +30,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/w
 
 
 htmlTop();
-?>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
-<?php print STYLESHEET; ?>
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
+print STYLESHEET; ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	</head>
 	<body class="weEditorBody">

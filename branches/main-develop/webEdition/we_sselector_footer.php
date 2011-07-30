@@ -92,8 +92,7 @@ if($_REQUEST["ret"]==1){
 												$yes_button,
 												null,
 												$cancel_button);
-?>
-<?php if($_REQUEST["filter"] == "all_Types"){ ?>
+ if($_REQUEST["filter"] == "all_Types"){ ?>
 				<tr>
 					<td></td>
 					<td class="defaultfont">

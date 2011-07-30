@@ -36,8 +36,7 @@ print STYLESHEET . "\n";
 if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 	$_SESSION["user"]["LastDir"]=$last;
 }
-?>
-<?php if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]!="save_last")){?>
+ if(!isset($_REQUEST["cmd"]) || (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]!="save_last")){?>
 <script  type="text/javascript"><!--
 
 	function drawNewFolder() {

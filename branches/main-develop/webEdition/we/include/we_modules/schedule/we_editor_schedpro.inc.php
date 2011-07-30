@@ -34,14 +34,13 @@ if(defined("SCHEDULE_TABLE")){
 }
 
 htmlTop();
-?>
-<?php include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
-<?php print STYLESHEET; ?>
+
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
+print STYLESHEET; ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	</head>
 	<body  class="weEditorBody" onunload="doUnload()">
-<form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans(); ?>
-<?php
+<form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans(); 
 
 $parts = array();
 $we_button = new we_button();

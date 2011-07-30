@@ -384,8 +384,7 @@ if(!isset($we_doc->elements['data']['dat'])){
     	var parameters = "<?php print $parastr; ?>";
 	<?php
     	}
-	?>
-<?php
+	
 
 	if($GLOBALS['we_doc']->ContentType != "text/weTmpl"){
 	?>

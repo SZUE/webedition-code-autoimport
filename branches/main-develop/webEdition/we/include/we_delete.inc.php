@@ -600,8 +600,7 @@ if ($_REQUEST["we_cmd"][0] == "do_delete") {
 	print "</head><body></body></html>";
 	exit();
 }
-?>
-<?php
+
 
 $we_button = new we_button();
 if ((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") || (defined("FILE_TABLE") && $table == FILE_TABLE . "_cache")) {

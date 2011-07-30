@@ -83,8 +83,7 @@ array_push($parts, array(	"headline"=>"",
 		);
 
 
-?>
-<?php print STYLESHEET; ?>
+ print STYLESHEET; ?>
 	</head>
 	<body class="weEditorBody">
 <?php
