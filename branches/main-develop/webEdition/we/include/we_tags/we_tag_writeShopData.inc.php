@@ -87,7 +87,7 @@ function we_tag_writeShopData($attribs,$content) {
 
 		$DB_WE = !isset($GLOBALS['DB_WE']) ? new DB_WE : $GLOBALS['DB_WE'];
 
-		$DB_WE->lock(array(SHOP_TABLE,ERROR_LOG_TABLE));
+		$DB_WE->lock(array(SHOP_TABLE=>'write',ERROR_LOG_TABLE=>'write',WE_SHOP_VAT_TABLE=>'read'));
 		$orderID = abs(f("SELECT MAX(IntOrderID) AS max FROM " . SHOP_TABLE,'max',$DB_WE))+1;
 
 		$totPrice = 0;

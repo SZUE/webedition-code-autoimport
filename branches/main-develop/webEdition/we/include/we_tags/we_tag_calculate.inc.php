@@ -22,11 +22,36 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_tagParser.inc.php");
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/we_util.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_util.inc.php");
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/util/Strings.php');
 
+/*function we_parse_tag_calculate($attribs,$content){
+	eval('$arr = ' . $attribs . ';');
+	$arr['_type']='pre';
+	$ret='<?php {we_tag(\'calculate\','.we_tagParser::printArray($arr).');@eval(\'$result = ('.$content;')\' ;\'';
+	
+	$arr['_type']='post';
+
+	$ret.='print we_tag(\'calculate\','.we_tagParser::printArray($arr).');}?>';
+return $ret;
+}	*/
+	
 function we_tag_calculate($attribs, $content){
+/*	$_type = we_getTagAttribute('_type', $attribs);
+	switch($_type){
+		case 'pre':
+			$GLOBALS['calculate'] = 1;
+			break;
+		case 'post':
+			unset($GLOBALS['calculate']);
+			
+		default:
+			return;
+	}
+	return '';
+	*/
+	
 	$sum = we_getTagAttribute("sum", $attribs);
 	$num_format = we_getTagAttribute("num_format", $attribs);
 	$print = we_getTagAttribute("print", $attribs, "", true, true);
@@ -40,7 +65,6 @@ function we_tag_calculate($attribs, $content){
 	$GLOBALS["calculate"] = 1;
 	$tp->parseTags($tags, $content);
 	$GLOBALS["calculate"] = 0;
-	//echo "content : ".htmlentities($content)."<br>";
 
 
 	for ($x = 0; $x < strlen($content); $x++) {
