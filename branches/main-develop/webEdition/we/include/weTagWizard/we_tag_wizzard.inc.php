@@ -29,12 +29,15 @@ $GLOBALS['TagRefURLName'] = strtolower($tagName);
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tag.inc.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 
 if (function_exists('protect')) {
 	protect();
 } else {
 	exit();
 }
+
+$GLOBALS['we_button'] = new we_button();
 
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
@@ -44,7 +47,6 @@ if ( !$weTag ) {
 	exit;
 }
 
-$we_button = new we_button();
 
 // needed javascript for the individual tags
 	// #1 - all attributes of this we:tag (ids of attributes)
@@ -295,9 +297,9 @@ $code = "
 
 
 $_buttons = we_button::position_yes_no_cancel(
-	$we_button->create_button('ok',"javascript:we_cmd('saveTag');"),
+	$GLOBALS['we_button']->create_button('ok',"javascript:we_cmd('saveTag');"),
 	null,
-	$we_button->create_button('cancel',"javascript:self.close();")
+	$GLOBALS['we_button']->create_button('cancel',"javascript:self.close();")
 );
 
 ?>
