@@ -29,7 +29,7 @@ function we_parse_tag_votingList($attribs, $content) {
 	}
 
 	$attribs['_type'] = 'start';
-	return '<?php we_tag(\'votingList\',' . we_tagParserPrintArray($attribs) . '); ' . $content . ' we_tag(\'votingList\',array(\'_type\'=>\'stop\'));?>';
+	return '<?php we_tag(\'votingList\',' . we_tagParser::printArray($attribs) . '); ' . $content . ' we_tag(\'votingList\',array(\'_type\'=>\'stop\'));?>';
 }
 
 function we_tag_votingList($attribs, $content) {
