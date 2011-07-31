@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_next($attribs, $content) {
-	return '<?php print '.we_tagParser::printTag('next',$attribs).';?>' . $content . '<?php print '.we_tagParser::printTag('next',array('_type'=>'stop')).';?>';
+	return '<?php printElement('.we_tagParser::printTag('next',$attribs).');?>' . $content . '<?php printElement('.we_tagParser::printTag('next',array('_type'=>'stop')).');?>';
 }
 
 function we_tag_next($attribs, $content) {

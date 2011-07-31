@@ -22,9 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
-
-//FIXME: remove Tagparser!!!
+function we_parse_tag_sessionLogout($attribs, $content){
+	$tp = new we_tagParser($content);
+	$tp->parseTags($content);
+	return '<?php printElement('.we_tagParser::printTag('sessionLogout',$attribs,$content,true).');?>';
+}
 
 function we_tag_sessionLogout($attribs, $content) {
 	if (($foo = attributFehltError($attribs, 'id', 'sessionLogout'))){
@@ -37,10 +39,6 @@ function we_tag_sessionLogout($attribs, $content) {
 	$url = (!empty($row) ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');
 
 	$attr = we_make_attribs($attribs, 'id');
-
-	//  then lets parse the content
-	$tp = new we_tagParser($content);
-	$tp->parseTags($content);
 
 	return '<a href="' . $url . '?we_webUser_logout=1" ' . ($attr ? $attr : '') . '>' . $content . '</a>';
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_parse_tag_checkForm($attribs,$content){
+function we_parse_tag_checkForm($attribs, $content) {
 	eval('$arr = ' . $attribs . ';');
-	if (($foo = attributFehltError($arr, 'match', 'checkForm')))	return $foo;
-	if (($foo = attributFehltError($arr, 'type', 'checkForm')))	return $foo;
-	//  then lets parse the content
-/*	$tp = new we_tagParser($content);
-	$tp->parseTags($content);*/
-	//inner content should be parsed by main parser
+	if (($foo = attributFehltError($arr, 'match', 'checkForm')))
+		return $foo;
+	if (($foo = attributFehltError($arr, 'type', 'checkForm')))
+		return $foo;
 	//TODO: check if checkform tag is parsed correctly!
-	return '<?php '.we_tagParser::printTag('checkForm',$attribs, $content).'; ?>';
+	return '<?php ' . we_tagParser::printTag('checkForm', $attribs, $content) . '; ?>';
 }
 
 /**
@@ -40,7 +38,7 @@ function we_parse_tag_checkForm($attribs,$content){
  * @param string $content
  * @desc Beschreibung eingeben...
  */
-function we_tag_checkForm($attribs, $content){
+function we_tag_checkForm($attribs, $content) {
 	//  dont make this in editMode
 	if (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) {
 		return "";
@@ -74,8 +72,7 @@ function we_tag_checkForm($attribs, $content){
                 ' . $onError . '(formular,missingReq,wrongEmail,pwError);
             } else {
             	' . we_message_reporting::getShowMessageCall(
-				$content,
-				WE_MESSAGE_FRONTEND) . '
+										$content, WE_MESSAGE_FRONTEND) . '
             }
         ';
 	} else {
@@ -105,7 +102,7 @@ function we_tag_checkForm($attribs, $content){
 		$_pwFields = explode(',', $password);
 		if (sizeof($_pwFields) != 3) {
 			$jsPasword = '';
-			return parseError(g_l('parser','[checkForm_password]'));
+			return parseError(g_l('parser', '[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
         var password = new Array("' . implode('", "', $_pwFields) . '");
@@ -119,12 +116,12 @@ function we_tag_checkForm($attribs, $content){
 	if ($jsIncludePath) {
 
 		if (is_numeric($jsIncludePath)) {
-			$jsTag = we_tag('js',array('id' => $jsIncludePath, 'xml' => $xml));
+			$jsTag = we_tag('js', array('id' => $jsIncludePath, 'xml' => $xml));
 			if ($jsTag) {
 				$jsEventHandler = $jsTag;
 			} else {
 				$jsEventHandler = '';
-				return parseError(g_l('parser','[checkForm_jsIncludePath_not_found]'));
+				return parseError(g_l('parser', '[checkForm_jsIncludePath_not_found]'));
 			}
 		} else {
 			$jsEventHandler = '<script type="text/javascript" src="' . $jsIncludePath . '"></script>';
@@ -203,5 +200,5 @@ function we_tag_checkForm($attribs, $content){
 			break;
 	}
 
-	return $jsEventHandler.$function;
+	return $jsEventHandler . $function;
 }

@@ -100,7 +100,7 @@ function we_tag_formfield($attribs, $content){
 		$tbl = '<table width="223" border="0" cellspacing="0" cellpadding="4" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">
 	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[name]") . ':&nbsp;</nobr></td>
-		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffname]' . '" value="' . $ffname . '" size="24" /></td>
+		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" size="24" /></td>
 	</tr>
 	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[type]") . ':&nbsp;</nobr></td>

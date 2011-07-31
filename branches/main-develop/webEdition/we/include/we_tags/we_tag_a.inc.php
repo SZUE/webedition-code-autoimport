@@ -17,6 +17,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_a($attribs, $content){
+	$tp = new we_tagParser($content);
+	$tp->parseTags($content);
+	return '<?php printElement('.we_tagParser::printTag('a',$attribs,$content,true).');?>';
+}
 
 function we_tag_a($attribs, $content){
 	// check for id attribute
@@ -62,10 +67,10 @@ function we_tag_a($attribs, $content){
 
 	$urladd = '';
 
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . 'we_tagParser.inc.php');
+	/*include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 	$tp = new we_tagParser($content);
 	$tp->parseTags($content);
-
+*/
 	if ((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')) {
 		if ($GLOBALS['we_editmode']) {
 			return parseError('in we:a attribute id not exists!');

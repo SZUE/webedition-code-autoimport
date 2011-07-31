@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
-function we_tag_navigationEntry($attribs, $content = ''){
-	if (($foo = attributFehltError($attribs, 'type', 'navigation'))){
+function we_parse_tag_navigationEntry($attribs, $content) {
+	$tp = new we_tagParser($content);
+	$tp->parseTags($content);
+	return '<?php printElement(' . we_tagParser::printTag('navigationEntry', $attribs, $content, true) . ');?>';
+}
+
+function we_tag_navigationEntry($attribs, $content) {
+	if (($foo = attributFehltError($attribs, 'type', 'navigation'))) {
 		return $foo;
 	}
 
@@ -35,10 +41,10 @@ function we_tag_navigationEntry($attribs, $content = ''){
 	$current = we_getTagAttribute('current', $attribs, 'defaultCurrent');
 	$position = we_getTagAttribute('position', $attribs, 'defaultPosition');
 
-	$tp = new we_tagParser($content);
+	/*$tp = new we_tagParser($content);
 
 	$tp->parseTags($content);
-
+*/
 	$_positions = makeArrayFromCSV($position);
 
 	foreach ($_positions as $position) {

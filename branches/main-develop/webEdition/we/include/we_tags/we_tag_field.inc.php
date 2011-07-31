@@ -384,7 +384,7 @@ function we_tag_field($attribs, $content){
 				}
 
 				if (isset($winpropsArray["left"]) && ($winpropsArray["left"] == -1) && isset($winpropsArray["width"]) && $winpropsArray["width"]) {
-					$js .= 'if (window.screen) {' . 'var screen_width = screen.availWidth;' . 'var w = Math.min(screen_width, ' . $winpropsArray["width"] . ');' . '}' . 'var x = Math.round((screen_width - w) / 2);';
+					$js .= 'if (window.screen) {var screen_width = screen.availWidth;var w = Math.min(screen_width, ' . $winpropsArray["width"] . ');} var x = Math.round((screen_width - w) / 2);';
 
 					$newWinProps .= "width='+w+',left='+x+',";
 					unset($winpropsArray["left"]);
@@ -400,7 +400,7 @@ function we_tag_field($attribs, $content){
 					}
 				}
 				if (isset($winpropsArray["top"]) && ($winpropsArray["top"] == -1) && isset($winpropsArray["height"]) && $winpropsArray["height"]) {
-					$js .= 'if (window.screen) {' . 'var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;screen_height = screen_height - 40;' . 'var h = Math.min(screen_height, ' . $winpropsArray["height"] . ');' . '}' . 'var y = Math.round((screen_height - h) / 2);';
+					$js .= 'if (window.screen) {var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;screen_height = screen_height - 40; var h = Math.min(screen_height, ' . $winpropsArray["height"] . ');} var y = Math.round((screen_height - h) / 2);';
 
 					$newWinProps .= "height='+h+',top='+y+',";
 					unset($winpropsArray["top"]);
@@ -512,7 +512,7 @@ function we_tag_field($attribs, $content){
 								
 								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 							} else {
-								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.  '?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
+								$_linkAttribs['href'] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/?we_objectID=' . $GLOBALS["lv"]->f("OID") . str_replace('?','&amp;',$pidstr);
 							 }
 						} else {
 							if($GLOBALS["lv"]->objectseourls && $objecturl!=''){

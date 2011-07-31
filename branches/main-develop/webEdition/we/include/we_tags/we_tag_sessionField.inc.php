@@ -311,7 +311,7 @@ function we_tag_sessionField($attribs, $content) {
 
 			$imgId = $_SESSION['webuser']['imgtmp'][$name]['id'];
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . 'we_classes/we_document.inc.php');
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
 
 			$thumbnail = we_getTagAttribute('thumbnail', $attribs, '');
 			if ($thumbnail != '') {

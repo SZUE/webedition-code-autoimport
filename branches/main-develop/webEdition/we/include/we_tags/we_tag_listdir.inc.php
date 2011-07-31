@@ -130,14 +130,10 @@ function we_tag_listdir($attribs, $content){
 				'<we:ifSelf[^>]*>',
 				'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->ID . '" == "' . $id . '"){ ?>',
 				$foo);
-		$foo = ereg_replace('</we:ifSelf[^>]*>', '<?php } ?>', $foo);
 		$foo = ereg_replace(
 				'<we:ifNotSelf[^>]*>',
 				'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->ID . '" != "' . $id . '"){ ?>',
 				$foo);
-		$foo = ereg_replace('</we:ifNotSelf[^>]*>', '<?php } ?>', $foo);
-		$foo = ereg_replace('</we:else[^>]*>', '<?php }else{ ?>', $foo);
-		$foo = ereg_replace('<we:else[^/]*/>', '<?php }else{ ?>', $foo);
 
 		//	parse we:ifPosition
 		if (strpos($foo, 'setVar') || strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(

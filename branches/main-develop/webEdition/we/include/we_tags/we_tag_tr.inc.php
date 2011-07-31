@@ -24,7 +24,7 @@
 
 function we_parse_tag_tr($attribs, $content) {
 	//NOTE: _type is an internal attribute.
-	return '<?php print '.we_tagParser::printTag('tr',array('_type'=>'start')).';?>' . $content . '<?php print '.we_tagParser::printTag('tr',array('_type'=>'end')).';?>';
+	return '<?php printElement('.we_tagParser::printTag('tr',array('_type'=>'start')).');?>' . $content . '<?php printElement('.we_tagParser::printTag('tr',array('_type'=>'end')).');?>';
 }
 
 
