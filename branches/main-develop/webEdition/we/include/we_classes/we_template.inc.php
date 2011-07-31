@@ -262,7 +262,7 @@ class we_template extends we_document{
 			}
 		}
 
-		$tp->parseTags($tags,$code);
+		$tp->parseTags($code);
 
 		// Code must be executed every time a template is included,
 		// so it must be executed during the caching process when a cacheable document

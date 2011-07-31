@@ -32,7 +32,7 @@ class we_tagParser {
 	public function __construct($content='') {
 		//init Tags
 		if($content!=''){
-			$this->setAllTags($code);
+			$this->setAllTags($content);
 		}
 	}
 	
@@ -172,7 +172,7 @@ class we_tagParser {
 	public function parseTags(&$code, $postName = '', $ignore = array()) {
 
 		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
-			if (!self::checkOpenCloseTags($tags, $code)) {
+			if (!self::checkOpenCloseTags($this->tags, $code)) {
 				return;
 			}
 		}
@@ -192,9 +192,7 @@ class we_tagParser {
 
 	private static function checkOpenCloseTags($TagsInTemplate, &$code) {
 
-		$CloseTags = array(
-				'listview', 'listdir', 'block'
-		);
+		$CloseTags = array('listview', 'listdir', 'block');
 
 		$Counter = array();
 
