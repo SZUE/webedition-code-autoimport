@@ -60,7 +60,7 @@ function we_tag_calculate($attribs, $content){
 	$content1 = "";
 
 	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
+	$tags = we_tagParser::getAllTags($content);
 
 	$GLOBALS["calculate"] = 1;
 	$tp->parseTags($tags, $content);

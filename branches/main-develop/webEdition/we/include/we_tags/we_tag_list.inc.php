@@ -35,8 +35,8 @@ function we_tag_list($attribs, $content){
 	$name = we_getTagAttribute("name", $attribs);
 	$content = eregi_replace('<we:ref ?/?>', '<we_:_ref>', $content);
 	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
-	$names = implode(",", $tp->getNames($tags));
+	$tags = we_tagParser::getAllTags($content);
+	$names = implode(",", we_tagParser::getNames($tags));
 	$isInListview = isset($GLOBALS["lv"]);
 	$list = ($isInListview ? $GLOBALS["lv"]->f($name): $GLOBALS["we_doc"]->getElement($name));
 	

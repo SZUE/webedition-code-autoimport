@@ -30,15 +30,14 @@ function we_parse_tag_object($attribs, $content) {
 	}
 
 	return '<?php global $lv;
-		'.we_tagParser::printTag('object', $attribs).';
-		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
+		if('.we_tagParser::printTag('object', $attribs).'){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }
 
 function we_tag_object($attribs, $content) {
 	if (!defined('WE_OBJECT_MODULE_DIR')) {
 		print modulFehltError('Object/DB', 'object');
-		return;
+		return false;
 	}
 
 	$condition = we_getTagAttribute('condition', $attribs, 0);
@@ -111,4 +110,5 @@ function we_tag_object($attribs, $content) {
 			print '<a href="'.$we_oid.'" seem="object"></a>';
 		}
 	}
+	return $GLOBALS['lv']->avail;
 }

@@ -144,7 +144,7 @@ function we_tag_listdir($attribs, $content){
 				$foo,
 				'ifNotPosition')) {
 			$tp = new we_tagParser();
-			$tags = $tp->getAllTags($foo);
+			$tags = we_tagParser::getAllTags($foo);
 
 			$tp->parseTags($tags, $foo);
 			$foo = '<?php $GLOBALS[\'we_position\'][\'listdir\'] = array(\'position\' => ' . ($i + 1) . ', \'size\' => ' . sizeof(

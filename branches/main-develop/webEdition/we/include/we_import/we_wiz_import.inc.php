@@ -1494,7 +1494,7 @@ HTS;
 
 			$templateCode = f($sql_select, "Dat", $db);
 			$tp = new we_tagParser();
-			$tags = $tp->getAllTags($templateCode);
+			$tags = we_tagParser::getAllTags($templateCode);
 
 			foreach ($tags as $tag) {
 				if (eregi('<we:([^> /]+)', $tag, $regs)) {
@@ -2294,7 +2294,7 @@ HTS;
 			$templateCode = f($sql_select, "Dat", $db);
 			$tp = new we_tagParser();
 
-			$tags = $tp->getAllTags($templateCode);
+			$tags = we_tagParser::getAllTags($templateCode);
 
 			if(!empty($tags)) {
 				foreach ($tags as $tag) {

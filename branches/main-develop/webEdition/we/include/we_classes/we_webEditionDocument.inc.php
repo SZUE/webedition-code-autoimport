@@ -351,7 +351,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
         $_code = $this->getTemplateCode();
 
-		$_tags = $_tp->getMetaTags($_code);
+		$_tags = we_tagParser::getMetaTags($_code);
 
 		for($j = 0; $j < sizeof($_tags); $j++){	//	now parse this tags for property-page.
 			if($_tags[$j][1]){
@@ -563,7 +563,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function getFieldTypes($templateCode) {
 		$tp = new we_tagParser();
-		$tags = $tp->getAllTags($templateCode);
+		$tags = we_tagParser::getAllTags($templateCode);
 		$blocks = array();
 		$fieldTypes = array();
 		//$xmlInputs = array();

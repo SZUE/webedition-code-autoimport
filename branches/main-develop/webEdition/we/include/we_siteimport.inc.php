@@ -259,7 +259,7 @@ class weSiteImport
 
 		$templateCode = f($sql_select, "Dat", $GLOBALS["DB_WE"]);
 		$tp = new we_tagParser();
-		$tags = $tp->getAllTags($templateCode);
+		$tags = we_tagParser::getAllTags($templateCode);
 		$records = array();
 		foreach ($tags as $tag) {
 			if (preg_match('|<we:([^> /]+)|i', $tag, $regs)) {

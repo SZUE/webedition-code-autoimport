@@ -585,8 +585,8 @@ class we_linklist
 			$ipos = strpos($content, '<we_:_linklist');
 		}
 
-		$tags = $tp->getAllTags($content);
-		$names = implode(",", $tp->getNames($tags));
+		$tags = we_tagParser::getAllTags($content);
+		$names = implode(",", we_tagParser::getNames($tags));
 		$tp->parseTags($tags, $content, '<we_:_linklistRef>', array(
 			'we:ifVar'
 		));

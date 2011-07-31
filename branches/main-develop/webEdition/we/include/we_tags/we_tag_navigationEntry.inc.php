@@ -25,10 +25,9 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
 function we_tag_navigationEntry($attribs, $content = ''){
-
-	$foo = attributFehltError($attribs, 'type', 'navigation');
-	if ($foo)
+	if (($foo = attributFehltError($attribs, 'type', 'navigation'))){
 		return $foo;
+	}
 
 	$navigationName = we_getTagAttribute('navigationname', $attribs, "default");
 	$type = we_getTagAttribute('type', $attribs);
@@ -37,14 +36,13 @@ function we_tag_navigationEntry($attribs, $content = ''){
 	$position = we_getTagAttribute('position', $attribs, 'defaultPosition');
 
 	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
+	$tags = we_tagParser::getAllTags($content);
 
 	$tp->parseTags($tags, $content);
 
 	$_positions = makeArrayFromCSV($position);
 
-	for ($i = 0; $i < sizeof($_positions); $i++) {
-		$position = $_positions[$i];
+	foreach ($_positions as $position) {
 		if ($position == 'first') {
 			$position = 1;
 		}

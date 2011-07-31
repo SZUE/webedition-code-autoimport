@@ -24,8 +24,7 @@
  */
 function we_parse_tag_orderitem($attribs, $content) {
 	return '<?php global $lv;
-		'.we_tagParser::printTag('orderitem', $attribs).';
-		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
+		if('.we_tagParser::printTag('orderitem', $attribs).'){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }
 
@@ -33,7 +32,7 @@ function we_tag_orderitem($attribs, $content) {
 
 	if (!defined('WE_SHOP_MODULE_DIR')) {
 		print modulFehltError('Shop', '"orderitem"');
-		return;
+		return false;
 	}
 
 	$condition = we_getTagAttribute("condition", $attribs, 0);
@@ -59,6 +58,8 @@ function we_tag_orderitem($attribs, $content) {
 
 	$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS["lv"]); // for backwards compatibility
-	if (is_array($GLOBALS["we_lv_array"]))
+	if (is_array($GLOBALS["we_lv_array"])){
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
+	}
+	return $GLOBALS["lv"]->avail;
 }

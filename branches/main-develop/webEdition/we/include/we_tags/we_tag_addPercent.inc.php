@@ -34,7 +34,7 @@ function we_tag_addPercent($attribs, $content) {
 	$num_format = we_getTagAttribute('num_format', $attribs);
 
 	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
+	$tags = we_tagParser::getAllTags($content);
 	$GLOBALS['calculate'] = 1;
 	$tp->parseTags($tags, $content);
 	$GLOBALS['calculate'] = 0;

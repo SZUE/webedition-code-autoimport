@@ -1305,7 +1305,7 @@ class weNavigationFrames extends weToolFrames
 
 		$tp = new we_tagParser();
 
-		$tags = $tp->getAllTags($templateCode);
+		$tags = we_tagParser::getAllTags($templateCode);
 		$tp->parseTags($tags, $templateCode);
 
 		eval('?>' . $templateCode);

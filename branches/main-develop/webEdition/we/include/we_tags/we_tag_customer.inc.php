@@ -30,15 +30,14 @@ function we_parse_tag_customer($attribs, $content) {
 	}
 
 	return '<?php global $lv;
-		'.we_tagParser::printTag('customer', $attribs).';
-		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
+		if('.we_tagParser::printTag('customer', $attribs).'){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }
 
 function we_tag_customer($attribs, $content) {
 	if (!defined("WE_CUSTOMER_MODULE_DIR")) {
 		print modulFehltError('Customer', 'customer');
-		return;
+		return false;
 	}
 
 	$condition = we_getTagAttribute("condition", $attribs, 0);
@@ -56,7 +55,8 @@ function we_tag_customer($attribs, $content) {
 
 	if ($name) {
 		if (strpos($name, " ") !== false) {
-			return parseError(sprintf(g_l('parser', '[name_with_space]'), "object"));
+			print parseError(sprintf(g_l('parser', '[name_with_space]'), "object"));
+			return false;
 		}
 
 		$we_doc = $GLOBALS["we_doc"];
@@ -99,4 +99,5 @@ function we_tag_customer($attribs, $content) {
 	if ($GLOBALS["lv"]->avail) {
 //implement seem
 	}
+	return $GLOBALS["lv"]->avail;
 }

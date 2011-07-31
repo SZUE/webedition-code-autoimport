@@ -571,7 +571,7 @@ class exportFunctions {
 
 			$_template_code = f($_sql_select, "Dat", $DB_WE);
 			$_tag_parser = new we_tagParser();
-			$_tags = $_tag_parser->getAllTags($_template_code);
+			$_tags = we_tagParser::getAllTags($_template_code);
 			$_records = array();
 
 			foreach ($_tags as $_tag) {

@@ -24,19 +24,17 @@
  */
 class we_tagParser {
 
-	var $lastpos = 0;
-	var $tags = array();
-	var $ipos = 0;
-	var $ListviewItemsTags = array('object', 'customer', 'onlinemonitor', 'order', 'orderitem', 'metadata', 'languagelink');
-	var $AppListviewItemsTags = array();
+	private $lastpos = 0;
+	private $tags = array();
+	private $ipos = 0;
+	private $AppListviewItemsTags = array();
 
-
-	function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = "") {
+	private function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = "") {
 
 		return $this->replaceTag($tag, $code, $php);
 	}
 
-	function getNames($tags) {
+	public static function getNames($tags) {
 		$names = array();
 		$ll = 0;
 		$l = 0;
@@ -70,15 +68,15 @@ class we_tagParser {
 		return $names;
 	}
 
-	function getAllTags($code) {
+	public static function getAllTags($code) {
 		$tags = array();
 		$foo = array();
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
-		for ($i = 0; $i < sizeof($foo); $i++) {
-			if (substr($foo[$i][1], -1) == '<') {
-				$foo[$i][1] = substr($foo[$i][1], 0, strlen($foo[$i][1]) - 1);
+		foreach ($foo as $f) {
+			if (substr($f[1], -1) == '<') {
+				$f[1] = substr($f[1], 0, strlen($f[1]) - 1);
 			}
-			array_push($tags, $foo[$i][1]);
+			array_push($tags, $f[1]);
 		}
 		return $tags;
 	}
@@ -95,7 +93,7 @@ class we_tagParser {
 	 * 			[1][x] = start tag
 	 * 			[2][x] = parameter as string
 	 */
-	function itemize_we_tag($tagname, $code) {
+	public static function itemize_we_tag($tagname, $code) {
 
 		preg_match_all('/(<' . $tagname . '([^>]*)>)/U', $code, $_matches);
 		return $_matches;
@@ -106,29 +104,26 @@ class we_tagParser {
 	 * @param $code Src Code
 	 * @desc Searches for all meta-tags in a given template (title, keyword, description, charset)
 	 */
-	function getMetaTags($code) {
-
+	public static function getMetaTags($code) {
 		$_tmpTags = array();
 		$_foo = array();
 		$_rettags = array();
 
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $_foo, PREG_SET_ORDER);
 
-		for ($_i = 0; $_i < sizeof($_foo); $_i++) {
-			if (substr($_foo[$_i][1], -1) == '<') {
-				$_foo[$_i][1] = substr($_foo[$_i][1], 0, strlen($_foo[$_i][1]) - 1);
+		foreach ($_foo as $f) {
+			if (substr($f[1], -1) == '<') {
+				$f[1] = substr($f[1], 0, strlen($f[1]) - 1);
 			}
-			array_push($_tmpTags, $_foo[$_i][1]);
+			array_push($_tmpTags, $f[1]);
 		}
 
 		//	only Meta-tags, description, keywords, title and charset
 		$_tags = array();
-		for ($_i = 0; $_i < sizeof($_tmpTags); $_i++) {
-
-			if (strpos($_tmpTags[$_i], "we:title") || strpos($_tmpTags[$_i], "we:description") || strpos(
-											$_tmpTags[$_i], "we:keywords") || strpos($_tmpTags[$_i], "we:charset")) {
-
-				$_tags[] = $_tmpTags[$_i];
+		foreach ($_tmpTags as $t) {
+			if (strpos($t, 'we:title') || strpos($t, 'we:description') || strpos(
+											$t, 'we:keywords') || strpos($t, 'we:charset')) {
+				$_tags[] = $t;
 			}
 		}
 		//	now we need all between these tags - beware of selfclosing tags
@@ -160,10 +155,10 @@ class we_tagParser {
 		return $_rettags;
 	}
 
-	function parseTags($tags, &$code, $postName = '', $ignore = array()) {
+	public function parseTags($tags, &$code, $postName = '', $ignore = array()) {
 
 		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
-			if (!$this->checkOpenCloseTags($tags, $code)) {
+			if (!self::checkOpenCloseTags($tags, $code)) {
 				return;
 			}
 		}
@@ -182,7 +177,7 @@ class we_tagParser {
 		}
 	}
 
-	function checkOpenCloseTags($TagsInTemplate, &$code) {
+	private static function checkOpenCloseTags($TagsInTemplate, &$code) {
 
 		$CloseTags = array(
 				'listview', 'listdir', 'block'
@@ -223,7 +218,7 @@ class we_tagParser {
 		return!$isError;
 	}
 
-	function searchEndtag($code, $tagPos) {
+	private function searchEndtag($code, $tagPos) {
 		preg_match('|we:([^ >]+)|i', $this->tags[$this->ipos], $regs);
 		$tagname = $regs[1];
 
@@ -258,25 +253,25 @@ class we_tagParser {
 		return -1;
 	}
 
-	function getNameAndAttribs($tag) {
-		if (preg_match('/<we:([^ ]+) ([^>]+)>/i', $tag, $_regs)) {
-			$_attribsString = $_regs[2];
-			$_tmpAttribs = '';
-			$_attribs = array();
-			if (preg_match_all('/([^=]+)= *("[^"]*")/', $_attribsString, $foo, PREG_SET_ORDER)) {
-				for ($i = 0; $i < sizeof($foo); $i++) {
-					$_tmpAttribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
-				}
-				eval("\$_attribs = array(" . preg_replace('/(.+),$/', "\$1", $_tmpAttribs) . ");");
-			}
-			return array(
-					$_regs[1], $_attribs
-			);
-		}
-		return null;
-	}
+	/* 	function getNameAndAttribs($tag) {
+	  if (preg_match('/<we:([^ ]+) ([^>]+)>/i', $tag, $_regs)) {
+	  $_attribsString = $_regs[2];
+	  $_tmpAttribs = '';
+	  $_attribs = array();
+	  if (preg_match_all('/([^=]+)= *("[^"]*")/', $_attribsString, $foo, PREG_SET_ORDER)) {
+	  for ($i = 0; $i < sizeof($foo); $i++) {
+	  $_tmpAttribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+	  }
+	  eval("\$_attribs = array(" . preg_replace('/(.+),$/', "\$1", $_tmpAttribs) . ");");
+	  }
+	  return array(
+	  $_regs[1], $_attribs
+	  );
+	  }
+	  return null;
+	  } */
 
-	function parseTag(&$code, $postName = '') {
+	private function parseTag(&$code, $postName = '') {
 		$tag = $this->tags[$this->ipos];
 		if (!$tag) {
 			return;
@@ -343,7 +338,7 @@ class we_tagParser {
 				 */
 				$content = $parseFn($attribs, $content);
 				$tp = new we_tagParser();
-				$tags = $tp->getAllTags($content);
+				$tags = self::getAllTags($content);
 				$tp->parseTags($tags, $content);
 				$code = substr($code, 0, $tagPos) .
 								$content .
@@ -374,7 +369,7 @@ class we_tagParser {
 						$attribs = "array(" . rtrim($attribs, ',') . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 						if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-							$code = str_replace($tag, '<?php if('.we_tagParser::printTag($tagname,$attribs).'){ ?>', $code);
+							$code = str_replace($tag, '<?php if(' . self::printTag($tagname, $attribs) . '){ ?>', $code);
 							$this->ipos++;
 							$this->lastpos = 0;
 						} else {
@@ -402,16 +397,16 @@ class we_tagParser {
 								}
 
 								// Tag besitzt Endtag
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . we_tagParser::printTag($tagname,$attribs,$content) . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs, $content) . '); ?>' . substr(
 																$code, $endeEndTagPos);
 								//neu
 							} else
 							if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
 								eval(
-												'$code = str_replace($tag,std_numberformat(' . we_tagParser::printTag($tagname, $attribs) . '),$code);');
+												'$code = str_replace($tag,std_numberformat(' . self::printTag($tagname, $attribs) . '),$code);');
 								//neu
 							} else {
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . we_tagParser::printTag($tagname,$attribs) . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs) . '); ?>' . substr(
 																$code, $endeStartTag);
 							}
 							$this->lastpos = 0;
@@ -474,10 +469,6 @@ class we_tagParser {
 				$code = str_replace(
 								$tag, '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?></form><?php } $GLOBALS["WE_FORM"] = ""; if (isset($GLOBALS["we_form_action"])) {unset($GLOBALS["we_form_action"]);} ?>', $code);
 			} else
-			if ($tagname == "listview"||in_array($tagname, $this->ListviewItemsTags)) {
-				$code = str_replace(
-								$tag, '<?php } we_post_tag_listview(); ?>', $code);
-			} else
 			if ($tagname == "listviewOrder") {
 				$code = str_replace($tag, '</a>', $code);
 			} else
@@ -498,13 +489,13 @@ class we_tagParser {
 		}
 	}
 
-	function replaceTag($tag, $code, $str) {
+	private function replaceTag($tag, $code, $str) {
 		$tagPos = strpos($code, $tag, $this->lastpos);
 		$endeEndTagPos = $tagPos + strlen($tag);
 		return substr($code, 0, $tagPos) . $str . substr($code, $endeEndTagPos);
 	}
 
-	function parseFormTag($tag, $code, $attribs = "") {
+	private function parseFormTag($tag, $code, $attribs = "") {
 		eval('$arr = array(' . $attribs . ');');
 
 		$method = we_getTagAttributeForParsingLater("method", $arr, "post");
@@ -878,15 +869,14 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 		return $this->replaceTag($tag, $code, $php);
 	}
 
-	
-	static function printTag($name,$attribs='',$content=''){
-		$attr=(is_array($attribs)?we_tagParser::printArray($attribs):$attribs);
-		return 'we_tag(\''.$name.'\''.
-		($attr!='' ? ','.$attr : ($content!='' ? ',array()':'')).
-		($content!=''?',"'.addcslashes($content,'"').'"':'').')';
+	public static function printTag($name, $attribs='', $content='') {
+		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
+		return 'we_tag(\'' . $name . '\'' .
+		($attr != '' ? ',' . $attr : ($content != '' ? ',array()' : '')) .
+		($content != '' ? ',"' . addcslashes($content, '"') . '"' : '') . ')';
 	}
-	
-	static function printArray($array) {
+
+	public static function printArray($array) {
 		$ret = '';
 		foreach ($array as $key => $val) {
 			$ret.='\'' . $key . '\'=>\'' . $val . '\',';

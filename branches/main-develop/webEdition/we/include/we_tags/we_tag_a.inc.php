@@ -60,7 +60,7 @@ function we_tag_a($attribs, $content){
 
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . 'we_tagParser.inc.php');
 	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
+	$tags = we_tagParser::getAllTags($content);
 	$tp->parseTags($tags, $content);
 
 	if ((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')) {

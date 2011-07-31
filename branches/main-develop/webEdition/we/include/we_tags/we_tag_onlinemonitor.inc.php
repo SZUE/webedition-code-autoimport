@@ -24,15 +24,14 @@
  */
 function we_parse_tag_onlinemonitor($attribs, $content) {
 	return '<?php global $lv;
-		'.we_tagParser::printTag('onlinemonitor', $attribs).';
-		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
+		if('.we_tagParser::printTag('onlinemonitor', $attribs).'){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }
 
 function we_tag_onlinemonitor($attribs, $content) {
 	if (!defined('WE_CUSTOMER_MODULE_DIR')) {
 		print modulFehltError('Customer', 'onlinemonitor');
-		return;
+		return false;
 	}
 	$condition = we_getTagAttribute("condition", $attribs, 0);
 	$we_omid = we_getTagAttribute("id", $attribs, 0);
@@ -49,6 +48,8 @@ function we_tag_onlinemonitor($attribs, $content) {
 
 
 	$GLOBALS["lv"] = new we_onlinemonitortag($we_omid, "' . $condition . '");
-	if (is_array($GLOBALS["we_lv_array"]))
+	if (is_array($GLOBALS["we_lv_array"])){
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));
+	}
+	return $GLOBALS["lv"]->avail;
 }
