@@ -28,10 +28,10 @@
 
 /*function we_parse_tag_calculate($attribs,$content){
 	eval('$arr = ' . $attribs . ';');
-	$arr['_type']='pre';
+	$arr['_type']='start';
 	$ret='<?php {we_tag(\'calculate\','.we_tagParser::printArray($arr).');@eval(\'$result = ('.$content;')\' ;\'';
 	
-	$arr['_type']='post';
+	$arr['_type']='stop';
 
 	$ret.='print we_tag(\'calculate\','.we_tagParser::printArray($arr).');}?>';
 return $ret;
@@ -40,10 +40,10 @@ return $ret;
 function we_tag_calculate($attribs, $content){
 /*	$_type = we_getTagAttribute('_type', $attribs);
 	switch($_type){
-		case 'pre':
+		case 'start':
 			$GLOBALS['calculate'] = 1;
 			break;
-		case 'post':
+		case 'stop':
 			unset($GLOBALS['calculate']);
 			
 		default:

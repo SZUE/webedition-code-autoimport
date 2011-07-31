@@ -37,7 +37,8 @@ function we_parse_tag_object($attribs, $content) {
 
 function we_tag_object($attribs, $content) {
 	if (!defined('WE_OBJECT_MODULE_DIR')) {
-		return modulFehltError('Object/DB', 'object');
+		print modulFehltError('Object/DB', 'object');
+		return;
 	}
 
 	$condition = we_getTagAttribute('condition', $attribs, 0);

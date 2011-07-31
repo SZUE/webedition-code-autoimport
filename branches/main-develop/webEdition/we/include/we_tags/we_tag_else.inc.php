@@ -1,10 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 2633 $
+ * $Author: mokraemer $
+ * $Date: 2011-03-08 01:16:50 +0100 (Di, 08. Mär 2011) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,14 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifNoJavaScript($attribs, $content){
-	if (($foo = attributFehltError($attribs, 'id', 'ifNoJavaScript'))) {
-		return $foo;
-	}
-	$id = we_getTagAttribute('id', $attribs);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.abs($id), new DB_WE());
-	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
-	$attr = we_make_attribs($attribs, 'id');
-	return '<noscript><meta http-equiv="refresh" content="0;URL=' . $url . '"></noscript>';
+function we_parse_tag_else($attribs, $content) {
+	return '<?php }else{ ?>';
 }
