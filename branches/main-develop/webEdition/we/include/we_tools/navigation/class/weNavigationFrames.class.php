@@ -1303,10 +1303,9 @@ class weNavigationFrames extends weToolFrames
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
 		$GLOBALS['weNoCache'] = true;
 
-		$tp = new we_tagParser();
+		$tp = new we_tagParser($templateCode);
 
-		$tags = we_tagParser::getAllTags($templateCode);
-		$tp->parseTags($tags, $templateCode);
+		$tp->parseTags($templateCode);
 
 		eval('?>' . $templateCode);
 	}

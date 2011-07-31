@@ -562,7 +562,6 @@ class we_linklist
 		if (!isset($GLOBALS["WE_IS_DYN"])) {
 			$we_button = new we_button();
 		}
-		$tp = new we_tagParser();
 
 		if (!(strpos($content, '<we:') === false)) {
 			$content = str_replace("<we:target", "<we_:_target", $content);
@@ -585,9 +584,9 @@ class we_linklist
 			$ipos = strpos($content, '<we_:_linklist');
 		}
 
-		$tags = we_tagParser::getAllTags($content);
+		$tp = new we_tagParser($content);
 		$names = implode(",", we_tagParser::getNames($tags));
-		$tp->parseTags($tags, $content, '<we_:_linklistRef>', array(
+		$tp->parseTags($content, '<we_:_linklistRef>', array(
 			'we:ifVar'
 		));
 

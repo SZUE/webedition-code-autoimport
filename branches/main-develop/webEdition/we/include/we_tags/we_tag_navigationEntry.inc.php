@@ -35,10 +35,9 @@ function we_tag_navigationEntry($attribs, $content = ''){
 	$current = we_getTagAttribute('current', $attribs, 'defaultCurrent');
 	$position = we_getTagAttribute('position', $attribs, 'defaultPosition');
 
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
+	$tp = new we_tagParser($content);
 
-	$tp->parseTags($tags, $content);
+	$tp->parseTags($content);
 
 	$_positions = makeArrayFromCSV($position);
 

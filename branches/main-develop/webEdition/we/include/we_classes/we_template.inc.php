@@ -224,10 +224,10 @@ class we_template extends we_document{
 	function parseTemplate(){
 	    $code = $this->getTemplateCode(true);
 
-	 	$tp = new we_tagParser();
 		$code = str_replace("<?xml",'<?php print "<?xml"; ?>',$code);
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
-		$tags = we_tagParser::getAllTags($code);
+	 	$tp = new we_tagParser($code);
+		$tags = $tp->getAllTags();
 		/*Bug #4432, #4186
 		$code = eregi_replace('(</?form[^>]*>)','<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>\1<?php } ?>',$code);
 		 */
@@ -439,8 +439,8 @@ class we_template extends we_document{
 
 		$variant_tags = array('input','link','textarea','img','select');
 		$templateCode = $this->getTemplateCode();
-		$tp = new we_tagParser();
-		$tags = we_tagParser::getAllTags($templateCode);
+		$tp = new we_tagParser($templateCode);
+		$tags = $tp->getAllTags();
 
 		$blocks = array();
 		$out = array();
@@ -712,8 +712,8 @@ class we_template extends we_document{
 		}
 		$this->IncludedTemplates = "";
 		// look for included templates (<we:include type="template" id="99">)
-		$tp = new we_tagParser();
-		$tags = we_tagParser::getAllTags($code);
+		$tp = new we_tagParser($code);
+		$tags = $tp->getAllTags();
 		// go through all tags
 		foreach($tags as $tag) {
 			$regs = array();

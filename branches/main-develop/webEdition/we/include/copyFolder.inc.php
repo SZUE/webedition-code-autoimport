@@ -494,8 +494,8 @@ class copyFolderFrag extends taskFragment
 										$templ->IncludedTemplates);
 								$newTemplId = $createdIncVars['newID'];
 							}
-							$tp = new we_tagParser();
-							$tags = we_tagParser::getAllTags($code);
+							$tp = new we_tagParser($code);
+							$tags = $tp->getAllTags();
 							foreach ($tags as $tag) {
 								$regs = array();
 								$xid = 0;
@@ -613,8 +613,8 @@ class copyFolderFrag extends taskFragment
 
 		$changed = false;
 
-		$tp = new we_tagParser();
-		$tags = we_tagParser::getAllTags($we_doc->elements["data"]["dat"]);
+		$tp = new we_tagParser($we_doc->elements["data"]["dat"]);
+		$tags = $tp->getAllTags();
 		foreach ($tags as $tag) {
 			$destTag = $tag;
 			if (eregi('<we:([^> /]+)', $tag, $regs)) { // starttag found

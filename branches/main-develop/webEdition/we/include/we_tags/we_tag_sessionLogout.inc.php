@@ -39,9 +39,8 @@ function we_tag_sessionLogout($attribs, $content) {
 	$attr = we_make_attribs($attribs, 'id');
 
 	//  then lets parse the content
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
-	$tp->parseTags($tags, $content);
+	$tp = new we_tagParser($content);
+	$tp->parseTags($content);
 
 	return '<a href="' . $url . '?we_webUser_logout=1" ' . ($attr ? $attr : '') . '>' . $content . '</a>';
 }

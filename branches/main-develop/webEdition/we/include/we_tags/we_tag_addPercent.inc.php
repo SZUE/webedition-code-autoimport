@@ -33,10 +33,9 @@ function we_tag_addPercent($attribs, $content) {
 	$percent = we_getTagAttribute('percent', $attribs);
 	$num_format = we_getTagAttribute('num_format', $attribs);
 
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
+	$tp = new we_tagParser($content);
 	$GLOBALS['calculate'] = 1;
-	$tp->parseTags($tags, $content);
+	$tp->parseTags($content);
 	$GLOBALS['calculate'] = 0;
 	$content = we_util::std_numberformat($content);
 	$result = ($content / 100) * (100 + $percent);

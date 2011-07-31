@@ -347,15 +347,15 @@ class we_webEditionDocument extends we_textContentDocument {
 	function formMetaInfos() {
 		//	Collect data from meta-tags
 		//debug2($this);
-		$_tp = new we_tagParser();
 
         $_code = $this->getTemplateCode();
+		$_tp = new we_tagParser();
 
 		$_tags = we_tagParser::getMetaTags($_code);
 
-		for($j = 0; $j < sizeof($_tags); $j++){	//	now parse this tags for property-page.
+		for($j = 0; $j < sizeof($_tags); $j++){	//	now parse these tags for property-page.
 			if($_tags[$j][1]){
-				$_tp->parseTags($_tags[$j][0], $_tags[$j][1]);
+				$_tp->parseSpecificTags($_tags[$j][0], $_tags[$j][1]);
 				eval("?>" . $_tags[$j][1]);
 			}
 		}
@@ -562,8 +562,8 @@ class we_webEditionDocument extends we_textContentDocument {
 	}
 
 	function getFieldTypes($templateCode) {
-		$tp = new we_tagParser();
-		$tags = we_tagParser::getAllTags($templateCode);
+		$tp = new we_tagParser($templateCode);
+		$tags = $tp->getAllTags();
 		$blocks = array();
 		$fieldTypes = array();
 		//$xmlInputs = array();

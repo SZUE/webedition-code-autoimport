@@ -1493,8 +1493,8 @@ HTS;
 				LINK_TABLE.".DocumentTable='".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."' AND ".LINK_TABLE.".DID='".abs($v["we_TemplateID"])."' AND ".LINK_TABLE.".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
-			$tp = new we_tagParser();
-			$tags = we_tagParser::getAllTags($templateCode);
+			$tp = new we_tagParser($templateCode);
+			$tags = $tp->getAllTags();
 
 			foreach ($tags as $tag) {
 				if (eregi('<we:([^> /]+)', $tag, $regs)) {
@@ -2292,9 +2292,9 @@ HTS;
 				LINK_TABLE . ".DocumentTable='" . substr(TEMPLATES_TABLE, strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='".abs($v["we_TemplateID"])."' AND " . LINK_TABLE . ".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
-			$tp = new we_tagParser();
+			$tp = new we_tagParser($templateCode);
 
-			$tags = we_tagParser::getAllTags($templateCode);
+			$tags = $tp->getAllTags();
 
 			if(!empty($tags)) {
 				foreach ($tags as $tag) {

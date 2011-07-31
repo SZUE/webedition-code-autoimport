@@ -59,9 +59,8 @@ function we_tag_a($attribs, $content){
 	$urladd = '';
 
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . 'we_tagParser.inc.php');
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
-	$tp->parseTags($tags, $content);
+	$tp = new we_tagParser($content);
+	$tp->parseTags($content);
 
 	if ((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')) {
 		if ($GLOBALS['we_editmode']) {

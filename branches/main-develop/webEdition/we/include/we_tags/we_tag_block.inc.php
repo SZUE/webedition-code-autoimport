@@ -190,18 +190,16 @@ function we_tag_block($attribs, $content){
 
 	$content = str_replace('<we:ref', '<we_:_ref', $content);
 
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
+	$tp = new we_tagParser($content);
 
 	$names = implode(',', we_tagParser::getNames($tags));
 
 	if (strpos($content, '<we:object') === false && strpos($content, '<we:metadata') === false && strpos($content, '<we:listview') === false) { //	no we:object is used
 		//	parse name of we:field
-		$tp->parseTags($tags, $content, '<we_:_ref>', array());
+		$tp->parseTags($content, '<we_:_ref>', array());
 	} else { //	we:object is used
 		//	dont parse name of we:field !!!
 		$tp->parseTags(
-				$tags,
 				$content,
 				'<we_:_ref>',
 				array(

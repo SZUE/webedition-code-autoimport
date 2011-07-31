@@ -34,8 +34,7 @@ function we_tag_list($attribs, $content){
 	}
 	$name = we_getTagAttribute("name", $attribs);
 	$content = eregi_replace('<we:ref ?/?>', '<we_:_ref>', $content);
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
+	$tp = new we_tagParser($content);
 	$names = implode(",", we_tagParser::getNames($tags));
 	$isInListview = isset($GLOBALS["lv"]);
 	$list = ($isInListview ? $GLOBALS["lv"]->f($name): $GLOBALS["we_doc"]->getElement($name));
@@ -49,9 +48,9 @@ function we_tag_list($attribs, $content){
 			$foo = $content;
 
 			$foo = str_replace('<we_:_ref>', $listRef, $foo);
-			$tp->parseTags($tags, $foo, $listRef);
+			$tp->parseTags($foo, $listRef);
 
-			$buts = "";
+			$buts = '';
 			if ($GLOBALS['we_editmode']) {
 				$upbut = $we_button->create_button(
 						"image:btn_direction_up",

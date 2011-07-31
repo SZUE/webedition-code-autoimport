@@ -258,8 +258,8 @@ class weSiteImport
 				strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='" . abs($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
 		$templateCode = f($sql_select, "Dat", $GLOBALS["DB_WE"]);
-		$tp = new we_tagParser();
-		$tags = we_tagParser::getAllTags($templateCode);
+		$tp = new we_tagParser($templateCode);
+		$tags = $tp->getAllTags();
 		$records = array();
 		foreach ($tags as $tag) {
 			if (preg_match('|<we:([^> /]+)|i', $tag, $regs)) {

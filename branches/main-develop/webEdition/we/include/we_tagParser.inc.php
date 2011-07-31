@@ -29,8 +29,14 @@ class we_tagParser {
 	private $ipos = 0;
 	private $AppListviewItemsTags = array();
 
+	public function __construct($content='') {
+		//init Tags
+		if($content!=''){
+			$this->setAllTags($code);
+		}
+	}
+	
 	private function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = "") {
-
 		return $this->replaceTag($tag, $code, $php);
 	}
 
@@ -68,17 +74,20 @@ class we_tagParser {
 		return $names;
 	}
 
-	public static function getAllTags($code) {
-		$tags = array();
+	public function getAllTags() {
+		return $this->tags;
+	}
+	
+	private function setAllTags($code) {
+		$this->tags = array();
 		$foo = array();
 		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
 		foreach ($foo as $f) {
 			if (substr($f[1], -1) == '<') {
 				$f[1] = substr($f[1], 0, strlen($f[1]) - 1);
 			}
-			array_push($tags, $f[1]);
+			array_push($this->tags, $f[1]);
 		}
-		return $tags;
 	}
 
 	/**
@@ -155,7 +164,12 @@ class we_tagParser {
 		return $_rettags;
 	}
 
-	public function parseTags($tags, &$code, $postName = '', $ignore = array()) {
+	public function parseSpecificTags($tags,&$code, $postName = '', $ignore = array()) {
+		$this->tags=$tags;
+		return parseTags(&$code, $postName, $ignore);
+	}
+	
+	public function parseTags(&$code, $postName = '', $ignore = array()) {
 
 		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
 			if (!self::checkOpenCloseTags($tags, $code)) {
@@ -164,7 +178,6 @@ class we_tagParser {
 		}
 
 		$this->lastpos = 0;
-		$this->tags = $tags;
 		$this->ipos = 0;
 		while ($this->ipos < sizeof($this->tags)) {
 			$this->lastpos = 0;
@@ -287,6 +300,7 @@ class we_tagParser {
 		$tagname = $regs[1];
 		$attr = trim(rtrim($regs[2], '/'));
 
+		//FIXME: remove?!
 		if (preg_match('|name="([^"]*)"|i', $attr, $regs)) {
 			if (!$regs[1]) {
 				print parseError(sprintf(g_l('parser', '[name_empty]'), $tagname));
@@ -307,7 +321,7 @@ class we_tagParser {
 		}
 
 		if (!$endTag) {
-			$arrstr = "array(" . rtrim($attribs, ',') . ")";
+			$arrstr = 'array(' . rtrim($attribs, ',') . ')';
 
 			@eval('$arr = ' . ereg_replace('"\$([^"]+)"', '"$GLOBALS[\1]"', $arrstr) . ';');
 			if (!isset($arr)) {
@@ -337,9 +351,10 @@ class we_tagParser {
 				 * return value is parsed again and inserted
 				 */
 				$content = $parseFn($attribs, $content);
-				$tp = new we_tagParser();
-				$tags = self::getAllTags($content);
-				$tp->parseTags($tags, $content);
+//FIXME: make this linear -> modify $tags
+				
+				$tp = new we_tagParser($content);
+				$tp->parseTags($content);
 				$code = substr($code, 0, $tagPos) .
 								$content .
 								substr($code, $endeEndTagPos);

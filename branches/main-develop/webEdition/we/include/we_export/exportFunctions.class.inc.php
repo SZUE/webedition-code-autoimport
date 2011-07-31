@@ -570,8 +570,8 @@ class exportFunctions {
 							LINK_TABLE . ".DocumentTable='" . substr(TEMPLATES_TABLE, strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='" . abs($we_doc->TemplateID) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
 			$_template_code = f($_sql_select, "Dat", $DB_WE);
-			$_tag_parser = new we_tagParser();
-			$_tags = we_tagParser::getAllTags($_template_code);
+			$_tag_parser = new we_tagParser($_template_code);
+			$_tags = $_tag_parser->getAllTags();
 			$_records = array();
 
 			foreach ($_tags as $_tag) {

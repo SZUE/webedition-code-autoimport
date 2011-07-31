@@ -143,10 +143,9 @@ function we_tag_listdir($attribs, $content){
 		if (strpos($foo, 'setVar') || strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(
 				$foo,
 				'ifNotPosition')) {
-			$tp = new we_tagParser();
-			$tags = we_tagParser::getAllTags($foo);
+			$tp = new we_tagParser($foo);
 
-			$tp->parseTags($tags, $foo);
+			$tp->parseTags($foo);
 			$foo = '<?php $GLOBALS[\'we_position\'][\'listdir\'] = array(\'position\' => ' . ($i + 1) . ', \'size\' => ' . sizeof(
 					$files) . ', \'field\' => \'' . $field . '\', \'id\' => \'' . $id . '\', \'path\' => \'' . $path . '\'); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'listdir\']); ?>';
 		}

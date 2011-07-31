@@ -59,11 +59,10 @@ function we_tag_calculate($attribs, $content){
 	$zahl = "";
 	$content1 = "";
 
-	$tp = new we_tagParser();
-	$tags = we_tagParser::getAllTags($content);
-
+	$tp = new we_tagParser($content);
+	
 	$GLOBALS["calculate"] = 1;
-	$tp->parseTags($tags, $content);
+	$tp->parseTags($content);
 	$GLOBALS["calculate"] = 0;
 
 

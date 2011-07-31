@@ -27,9 +27,8 @@ function we_parse_tag_checkForm($attribs,$content){
 	if (($foo = attributFehltError($arr, 'match', 'checkForm')))	return $foo;
 	if (($foo = attributFehltError($arr, 'type', 'checkForm')))	return $foo;
 	//  then lets parse the content
-/*	$tp = new we_tagParser();
-	$tags = $tp->getAllTags($content);
-	$tp->parseTags($tags, $content);*/
+/*	$tp = new we_tagParser($content);
+	$tp->parseTags($content);*/
 	//inner content should be parsed by main parser
 	//TODO: check if checkform tag is parsed correctly!
 	return '<?php '.we_tagParser::printTag('checkForm',$attribs, $content).'; ?>';
