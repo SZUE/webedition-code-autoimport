@@ -312,9 +312,8 @@ class we_template extends we_document{
 		}else{
 			return parseError(g_l('parser','[html_tags]'));
 		}
-		$code .= '<?php we_templatePost();';
 
-		return $pre_code.$code;
+		return $pre_code.$code.'<?php we_templatePost();';
 	}
 
 	function hasStartAndEndTag($tagname,$code){

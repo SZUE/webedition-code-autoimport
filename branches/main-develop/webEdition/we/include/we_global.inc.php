@@ -2096,7 +2096,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 		}
 	}
 
-	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id),$DB_WE);
+	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id),$DB_WE);
 	if (count($foo) == 0)
 		return '';
 	$showLink = false;
@@ -2327,103 +2327,8 @@ function runAtWin() {
 	return stripos(PHP_OS,'win')!==false && (stripos(PHP_OS,'darwin')===false);
 }
 
-function debug2($variable) {
-	ob_start('debug');
-	p_r($variable);
-	ob_end_clean();
-}
-
-function error_log2($variable) {
-	ob_start('error_log');
-	print_r($variable);
-	ob_end_clean();
-}
-
-function weMemDebug($label = '') {
-	error_log("$label: " . round(((memory_get_usage() / 1024) / 1024), 3) . ' MB');
-}
-
-//  This Function writes the full content of an array. So you can test the content
-//  $_POST or $_GET or $_REQUEST or whatever u want(p.ex)
-//  This information is written in the TMP_DIR/debug.txt
-//	if output == html, all information is printed in the actual document.
-//	if output == error_log, all information is printed in the error_log
-//	if output == error_log, all information is printed in the error_log
-
-/**
- * @return void
- * @param array $array
- * @param string $arrayname
- * @param string $output
- * @desc	This function writes the full content (recursion) of an arrray. This is
- * 			useful for debugging $_POST or $_GET or $_REQUEST or $_SESSION, etc.
- * 			when $output == error_log - the information is written in the php_error_log (default)
- * 			when $output == html - the information is written in the actual document
- * 			when $output == debug - the information is written in the TMP_DIR/debug.txt
- */
-function recGetParameters($array, $arrayname, $output = 'error_log') {
-
-	reset($array);
-	while (list($key, $val) = each($array)) {
-
-		if ($arrayname != '') {
-			$key = "[\"" . $key . "\"]";
-		}
-		if (is_array($val)) {
-
-			switch ($output) {
-
-				case 'html' :
-					print '<br><b>' . $arrayname . $key . ' = ' . $val . "</b><br>\n";
-					break;
-
-				case 'debug' :
-					debug("\n" . $arrayname . $key . ' = ' . $val . "\n");
-					break;
-
-				default :
-					error_log($arrayname . $key . ' = ' . $val);
-					break;
-			}
-			recGetParameters($val, $arrayname . $key, $output);
-		} else {
-
-			switch ($output) {
-				case 'html' :
-					print $arrayname . $key . ' = ' . $val . "<br>\n";
-					break;
-
-				case 'debug' :
-					debug($arrayname . $key . ' = ' . $val . "\n");
-					break;
-
-				default :
-					error_log($arrayname . $key . ' = ' . $val);
-					break;
-			}
-		}
-	}
-}
-
-function weSetCookieVariable($name, $value) {
-	$c = isset($_COOKIE['we' . session_id()]) ? $_COOKIE['we' . session_id()] : '';
-	$vals = array();
-	if ($c) {
-		$parts = explode('&', $c);
-		foreach ($parts as $p) {
-			$foo = explode('=', $p);
-			$vals[rawurldecode($foo[0])] = rawurldecode($foo[1]);
-		}
-	}
-	$vals[$name] = $value;
-	$c = '';
-	foreach ($vals as $k => $v) {
-		$c += rawurlencode($k) . '=' . rawurlencode($v) . '&';
-	}
-	if (strlen($c)) {
-		$c = substr($c, 0, strlen($c) - 1);
-	}
-	$_COOKIE['we' . session_id()] = $c;
+function weMemDebug() {
+	print("Mem usage " . round(((memory_get_usage() / 1024)  / 1024), 3) . ' MiB');
 }
 
 function weGetCookieVariable($name) {
@@ -3394,6 +3299,9 @@ function we_templatePostContent(){
 function we_templatePost(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] ){
 		print '<script  type="text/javascript">setTimeout("doScrollTo();",100);</script>';
+	}
+	if(defined('DEBUG_MEM')){
+		weMemDebug();
 	}
 }
 
