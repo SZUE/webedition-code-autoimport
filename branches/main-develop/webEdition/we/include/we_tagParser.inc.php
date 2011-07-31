@@ -355,7 +355,7 @@ class we_tagParser {
 				$tp->parseTags($content);
 				$code = substr($code, 0, $tagPos) .
 								$content .
-								substr($code, $endeEndTagPos);
+								substr($code, (isset($endeEndTagPos)?$endeEndTagPos:$endeStartTag));
 				return;
 			}
 
