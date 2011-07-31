@@ -289,7 +289,7 @@ class we_template extends we_document{
 			$pre_code = '<?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>'.$pre_code;
 
 			//#### parse base href
-			$code = eregi_replace('(</title>)','\1'.'<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>',$code);
+			$code = eregi_replace('(</title>)','\1<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>',$code);
 
 			$code = str_replace('</head>',"$head</head>",$code);
 

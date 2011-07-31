@@ -1578,7 +1578,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$addbut = $this->htmlHidden($idname,"0").$this->htmlHidden($textname,"").$we_button->create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['".$idname."'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$nr."\\', top.allIDs,\\'".$name."\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.
-		'<div style="width:388px;" class="multichooser">'.$content.'</div>'.'</td></tr><tr><td align="right">'.getPixel(2,4).$we_button->create_button_table(array($delallbut, $addbut)).'</td></tr></table>';
+		'<div style="width:388px;" class="multichooser">'.$content.'</div></td></tr><tr><td align="right">'.getPixel(2,4).$we_button->create_button_table(array($delallbut, $addbut)).'</td></tr></table>';
 	}
 
 	function formUsers($canChange=true){
@@ -1614,7 +1614,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		: "";
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
-<tr><td>'.'<div style="width:506px;" class="multichooser">'.$content.'</div>'.'</td></tr>
+<tr><td><div style="width:506px;" class="multichooser">'.$content.'</div></td></tr>
 '.($canChange ? '<tr><td align="right">'.getPixel(2,6).'<br>'.$we_button->create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
 
 		return $this->htmlFormElementTable($content,

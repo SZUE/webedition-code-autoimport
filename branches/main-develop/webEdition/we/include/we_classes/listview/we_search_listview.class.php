@@ -247,7 +247,7 @@ class we_search_listview extends listviewBase {
 					if($objecturl!=''){
 						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 					} else {
-						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.  '?we_objectID=' .$this->DB_WE->Record["OID"] . str_replace('?','&amp;',$pidstr);
+						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/?we_objectID=' .$this->DB_WE->Record["OID"] . str_replace('?','&amp;',$pidstr);
 					}
 				} else {
 					if($objecturl!=''){

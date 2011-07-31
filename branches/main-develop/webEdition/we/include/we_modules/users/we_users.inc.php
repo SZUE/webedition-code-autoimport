@@ -2457,7 +2457,7 @@ function mapPermissions() {
 		}
 
 		if(sizeof($_languages["translation"]) > 1) { // Build language select box
-			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
+			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 			if (isset($this->Preferences['Language']) && $this->Preferences['Language']!=''){
 				$myCompLang = $this->Preferences['Language'];
 			} else {
@@ -2483,7 +2483,7 @@ function mapPermissions() {
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 		}
-		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
+		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
 		$_charset->addOption('UTF-8', 'UTF-8');
 		$_charset->addOption('ISO-8859-1','ISO-8859-1'); 
 		$_charset->addOption('ISO-8859-2','ISO-8859-2'); 
@@ -2515,7 +2515,7 @@ function mapPermissions() {
 		 * AMOUNT Number of Columns
 		 *****************************************************************/
 
-		$_amount = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'cockpit_amount_columns', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
+		$_amount = new we_htmlSelect(array("name" => $this->Name.'_Preference_cockpit_amount_columns', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 		if($this->Preferences['cockpit_amount_columns']=="") {
 			$this->Preferences['cockpit_amount_columns'] = 3;
 		}

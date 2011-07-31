@@ -43,7 +43,7 @@ if(isset($_REQUEST['section'])) {
 
 }
 
-define('LIVEUPDATE_SERVER_SCRIPT', '/server/we/liveUpdate.p' . 'hp');
+define('LIVEUPDATE_SERVER_SCRIPT', '/server/we/liveUpdate.php');
 
 define('LIVEUPDATE_SOFTWARE_DIR', $_SERVER['DOCUMENT_ROOT']);
 define('LIVEUPDATE_CLIENT_DOCUMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/');

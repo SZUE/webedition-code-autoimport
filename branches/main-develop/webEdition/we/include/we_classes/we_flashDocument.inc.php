@@ -283,9 +283,9 @@ class we_flashDocument extends we_binaryDocument
 	<tr valign="top">
 		<td>'.$this->formSelectElement2(155,"wmode",array(""=>"","window"=>"window","opaque"=>"opaque","transparent"=>"transparent"),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 		<td>'.getPixel(18,2).'</td>
-		<td>'.'</td>
+		<td></td>
 		<td>'.getPixel(18,2).'</td>
-		<td>'.'</td>
+		<td></td>
 	</tr>
 
 </table>

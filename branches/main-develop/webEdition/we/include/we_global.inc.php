@@ -58,7 +58,7 @@ function rmPhp($in) {
 		return $in;
 	$lastStart = 0;
 	while (!($starttag === false)) {
-		$endtag = strpos($in, '?' . '>', $starttag);
+		$endtag = strpos($in, '?>', $starttag);
 		$out .= substr($in, $lastStart, ($starttag - $lastStart));
 		$lastStart = $endtag + 2;
 		$starttag = strpos($in, '<?', $lastStart);
@@ -99,7 +99,7 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
-		$value = '<?php echo isset($GLOBALS["' . $regs[1] . '"]) ? $GLOBALS["' . $regs[1] . '"] : "' . $default . '";' . '?' . '>';
+		$value = '<?php echo isset($GLOBALS["' . $regs[1] . '"]) ? $GLOBALS["' . $regs[1] . '"] : "' . $default . '";?>';
 	}
 	$out = '';
 	if ($isFlag) {

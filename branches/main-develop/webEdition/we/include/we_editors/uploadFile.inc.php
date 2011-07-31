@@ -108,7 +108,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">'.
 ($maxsize ? ('<tr><td>'.htmlAlertAttentionBox(
 								$we_maxfilesize_text,
 								1,390).'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>') : '').'
-				<tr><td><input name="we_File" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35" />'.'</td></tr>
+				<tr><td><input name="we_File" TYPE="file"'.($allowedContentTypes ? ' ACCEPT="'.$allowedContentTypes.'"' : '').' size="35" /></td></tr>
 				<tr><td>'.getPixel(2,10).'</td></tr>
 ';
 								if 	($we_doc->ContentType=="image/*") {

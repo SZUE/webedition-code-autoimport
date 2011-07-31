@@ -135,7 +135,7 @@ $jsFunction = '
             	break;
 
             	case "delete":
-            		if (confirm("' . 'M�chten sie den ausgew�hlten Portosatz wirklich l�schen?' . '")) {
+            		if (confirm("Möchten sie den ausgewählten Portosatz wirklich löschen?")) {
             			var we_cmd_field = document.getElementById("we_cmd_field");
             			we_cmd_field.value = "deleteShipping";
             			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");

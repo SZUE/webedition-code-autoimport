@@ -91,7 +91,7 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">'.
 ($maxsize ? ('<tr><td>'.htmlAlertAttentionBox(
 							sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),
 							1,390).'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>') : '').'
-			<tr><td><input name="we_uploadFile" TYPE="file" size="35" />'.'</td></tr><tr><td>'.getPixel(2,10).'</td></tr>
+			<tr><td><input name="we_uploadFile" TYPE="file" size="35" /></td></tr><tr><td>'.getPixel(2,10).'</td></tr>
 			<tr><td class="defaultfont">'.g_l('newFile',"[caseFileExists]").'</td></tr><tr><td>'.
 			we_forms::radiobutton("yes", true, "overwrite", g_l('newFile',"[overwriteFile]")).
 			we_forms::radiobutton("no", false, "overwrite", g_l('newFile',"[renameFile]")).'</td></tr></table>';

@@ -1044,7 +1044,7 @@ function formTriggerDocument($isclass=false){
 					}
 					if(count($keys)){
 						$vals = 'VALUES('.substr($vals,0,strlen($vals)-1).')';
-						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).')'.' '.$vals);
+						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).') '.$vals);
 						$cid=$this->DB_WE->getInsertId();
 						$this->elements[$k]['id']=$cid; // update Object itself
 						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".intval($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";

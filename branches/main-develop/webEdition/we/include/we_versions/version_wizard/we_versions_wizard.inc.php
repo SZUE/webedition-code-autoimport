@@ -76,7 +76,7 @@ class we_versions_wizard
 		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
-		$js .= '<script type="text/javascript">' . 'function showRefreshButton() {' . '  prevBut = document.getElementById(\'prev\');' . '  nextBut = document.getElementById(\'nextCell\');' . '  refrBut = document.getElementById(\'refresh\');' . '  prevBut.style.display = \'none\';' . '  nextBut.style.display = \'none\';' . '  refrBut.style.display = \'\';' . '}' . 'function showPrevNextButton() {' . '  prevBut = document.getElementById(\'prev\');' . '  nextBut = document.getElementById(\'next\');' . '  refrBut = document.getElementById(\'refresh\');' . '  refrBut.style.display = \'none\';' . '  prevBut.style.display = \'\';' . '  nextBut.style.display = \'\';' . '}' . '</script>';
+		$js .= '<script type="text/javascript">function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}</script>';
 
 		$WE_BTN = new we_button();
 		$cancelButton = $WE_BTN->create_button("cancel", "javascript:top.close();");

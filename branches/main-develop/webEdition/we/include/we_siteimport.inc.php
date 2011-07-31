@@ -539,7 +539,7 @@ class weSiteImport
 		);
 		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
 				g_l('siteimport',"[dateFormat]"),
-				ENT_QUOTES) . ':' . '</td><td>' . htmlSelect(
+				ENT_QUOTES) . ':</td><td>' . htmlSelect(
 				"dateFormat",
 				$dateformatvals,
 				1,
@@ -548,7 +548,7 @@ class weSiteImport
 				'onchange="dateFormatChanged(this);"') . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . htmlTextInput(
 				"dateformatField",
 				20,
-				$_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table>' . '</div>';
+				$_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML(
 				$_templateFields,
@@ -568,16 +568,16 @@ class weSiteImport
 
 		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
 				g_l('siteimport',"[importKind]"),
-				ENT_QUOTES) . ':' . '</td><td>' . htmlSelect(
+				ENT_QUOTES) . ':</td><td>' . htmlSelect(
 				"createType",
 				$vals,
 				1,
 				$_valueCreateType,
 				false,
-				'onchange="createTypeChanged(this);"') . '</td></tr></table>' . '<div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . htmlAlertAttentionBox(
+				'onchange="createTypeChanged(this);"') . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . htmlAlertAttentionBox(
 				g_l('siteimport',"[autoExpl]"),
 				2,
-				450) . weSiteImport::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '">' . '<div style="height:4px;"></div>' . $specifyHTML . '</div>';
+				450) . weSiteImport::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$_html = '<div style="height:480px">' . $_html . '</div>';
 

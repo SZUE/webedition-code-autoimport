@@ -137,10 +137,10 @@ class weDynList
 
 		$dirpath = clearPath($dirpath . '/');
 
-		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID) ' . ' AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
+		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ',' . LINK_TABLE . ', ' . CONTENT_TABLE . ' WHERE (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID)  AND (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
 				$_cats) ? (' AND ' . implode(" $catlogic ", $_cats)) : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
 				' AND ',
-				$condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . ' ' . ' LIMIT ' . $offset . ',' . $count . ';';
+				$condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . '  LIMIT ' . $offset . ',' . $count . ';';
 
 		$_db->query($_query);
 
@@ -218,7 +218,7 @@ class weDynList
 		$_query = 'SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . $classid . '
 						WHERE OF_ID<>0 ' . (!empty($_where) ? ('AND ' . implode(
 				' AND ',
-				$_where)) : '') . ($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' ' . ' LIMIT ' . $offset . ',' . $count . ';';
+				$_where)) : '') . ($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count . ';';
 
 		$_db->query($_query);
 
@@ -230,7 +230,7 @@ class weDynList
 	{
 
 		$_ids = array();
-		$_query = 'SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . abs($dirid) . ' AND IsFolder=0 ' . ' LIMIT 0,' . $count . ';';
+		$_query = 'SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . abs($dirid) . ' AND IsFolder=0  LIMIT 0,' . $count . ';';
 		$_fieldset = new DB_WE();
 		$_fieldset->query($_query);
 

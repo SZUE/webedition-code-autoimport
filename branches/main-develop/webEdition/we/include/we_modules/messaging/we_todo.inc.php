@@ -242,7 +242,7 @@ class we_todo extends we_msg_proto {
     }
 
     function history_update($id, $userid, $fromuserid, $comment, $action, $status = 'NULL') {
-	$this->DB->query('INSERT INTO '.MSG_TODOHISTORY_TABLE.' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . abs($id) . ', ' . abs($userid) . ', ' . $this->DB->escape($fromuserid) . ', ' . '"' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(NOW()), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
+	$this->DB->query('INSERT INTO '.MSG_TODOHISTORY_TABLE.' (ParentID, UserID, fromUserID, Comment, Created, action, status) VALUES (' . abs($id) . ', ' . abs($userid) . ', ' . $this->DB->escape($fromuserid) . ', "' . $this->DB->escape($comment) . '", UNIX_TIMESTAMP(NOW()), ' . $this->DB->escape($action) . ', ' . $this->DB->escape($status) . ')');
 
 	return 1;
     }

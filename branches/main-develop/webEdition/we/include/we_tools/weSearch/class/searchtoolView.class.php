@@ -432,7 +432,6 @@ class searchtoolView extends weToolView
      treeData.unselectnode();
     }
        break;
-       ' . '
 
          case "tool_weSearch_new_forTemplates":
     if (' . $this->editorBodyFrame . '.loaded) {
@@ -449,7 +448,7 @@ class searchtoolView extends weToolView
      treeData.unselectnode();
     }
        break;
-       ' . '
+       
          case "tool_weSearch_new_forObjects":
     if (' . $this->editorBodyFrame . '.loaded) {
      ' . $this->topFrame . '.hot = 0;
@@ -465,7 +464,7 @@ class searchtoolView extends weToolView
      treeData.unselectnode();
     }
        break;
-       ' . '
+       
 
          case "tool_weSearch_new_advSearch":
     if (' . $this->editorBodyFrame . '.loaded) {
@@ -1654,7 +1653,7 @@ class searchtoolView extends weToolView
 			}
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0">' . '<tr>' . '<td>';
+		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
 		if ($searchstart) {
 			$out .= $we_button->create_button("back", "javascript:back(" . $anzahl . ");");
 		} else {
@@ -1662,7 +1661,7 @@ class searchtoolView extends weToolView
 			$out .= $we_button->create_button("back", "", true, 100, 22, "", "", true);
 		}
 
-		$out .= '</td>' . '<td>' . getPixel(10, 2) . '</td>' . '<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
+		$out .= '</td><td>' . getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
 
 		if (($we_search_anzahl - $searchstart) < $anzahl) {
 			$out .= $we_search_anzahl;
@@ -1671,7 +1670,7 @@ class searchtoolView extends weToolView
 			$out .= $searchstart + $anzahl;
 		}
 
-		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td>' . '<td>' . getPixel(10, 2) . '</td>' . '<td>';
+		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . getPixel(10, 2) . '</td><td>';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
 			//bt_back
@@ -1680,7 +1679,7 @@ class searchtoolView extends weToolView
 
 			$out .= $we_button->create_button("next", "", true, 100, 22, "", "", true);
 		}
-		$out .= '</td>' . '<td>' . getPixel(10, 2) . '</td>' . '<td>';
+		$out .= '</td><td>' . getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for ($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++) {
@@ -1703,7 +1702,7 @@ class searchtoolView extends weToolView
 			}
 		}
 		$out .= $select;
-		$out .= '</td>' . '</tr>' . '</table>';
+		$out .= '</td></tr></table>';
 		return $out;
 	}
 

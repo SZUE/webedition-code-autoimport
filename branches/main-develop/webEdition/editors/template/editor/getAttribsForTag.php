@@ -34,7 +34,7 @@ $tagName = str_replace('.','',$tagName);
 $tagName = str_replace('/','',$tagName);
 $tagName = str_replace('\\','',$tagName);
 
-$xml = '<?xml version="1.0" encoding="utf-8"?'.'>' . "\n";
+$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $xml .= "<attributes>\n";
 
 if ($tagName) {

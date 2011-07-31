@@ -152,7 +152,7 @@ class we_app_HomePage extends we_ui_layout_HTMLPage
 	 */
 	protected function _getApplicationImage()
 	{
-		return '<img style="top:160px;left:286px;position: absolute;" src="' . Zend_Controller_Front::getInstance()->getParam('appDir') . '/resources/images/home.gif' . '"/>';
+		return '<img style="top:160px;left:286px;position: absolute;" src="' . Zend_Controller_Front::getInstance()->getParam('appDir') . '/resources/images/home.gif"/>';
 	}
 }
 

@@ -835,7 +835,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 			$tblClass = self::kButtonClassInnerTable;
 		}
 		if ($this->getImagePath() === "") {
-			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div>' . '<div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . ' unselectable="on">';
+			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div><div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . ' unselectable="on">';
 		}
 		$buttonHTML .= '<table border="0" id="table_' . $this->getId() . '" cellpadding="0" cellspacing="0" class="' . $tblClass . '"><tr>';
 		

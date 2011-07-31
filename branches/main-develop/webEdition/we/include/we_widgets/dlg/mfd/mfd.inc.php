@@ -172,7 +172,7 @@ while ($j < $iMaxItems) {
 							4,
 							1) . '</td>';
 					$lastModified .= '<td valign="middle" class="middlefont">';
-					$lastModified .= '<a href="' . 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');"' . ' title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
+					$lastModified .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\');" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
 					if ($bMfdBy)
 						$lastModified .= '<td>' . getpixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f(
 								"UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';

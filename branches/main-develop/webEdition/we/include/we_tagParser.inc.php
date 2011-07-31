@@ -882,11 +882,11 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 		return $this->replaceTag($tag, $code, $php);
 	}
 
-	public static function printTag($name, $attribs='', $content='') {
+	public static function printTag($name, $attribs='', $content='',$cslash=false) {
 		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
 		return 'we_tag(\'' . $name . '\'' .
 		($attr != '' ? ',' . $attr : ($content != '' ? ',array()' : '')) .
-		($content != '' ? ',"' . $content . '"' : '') . ')';
+		($content != '' ? ',"' . ($cslash?addcslashes($content, '"'):$content) . '"' : '') . ')';
 		//addcslashes($content, '"')
 	}
 

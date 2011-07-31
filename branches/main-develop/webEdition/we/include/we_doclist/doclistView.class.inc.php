@@ -1469,7 +1469,7 @@ class doclistView {
 			$out .= $searchstart + $anzahl;
 		}
 
-		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td>' . '<td>' . getPixel ( 10, 2 ) . '</td>' . '<td>';
+		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . getPixel ( 10, 2 ) . '</td><td>';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
 			$out .= $we_button->create_button ( "next", "javascript:next(" . $anzahl . ");" );
@@ -1477,7 +1477,7 @@ class doclistView {
 
 			$out .= $we_button->create_button ( "next", "", true, 100, 22, "", "", true );
 		}
-		$out .= '</td>' . '<td>' . getPixel ( 10, 2 ) . '</td>' . '<td>';
+		$out .= '</td><td>' . getPixel ( 10, 2 ) . '</td><td>';
 
 		$pages = array ( );
 		for($i = 0; $i < ceil ( $we_search_anzahl / $anzahl ); $i ++) {
@@ -1497,7 +1497,7 @@ class doclistView {
 
 		$out .= $select;
 
-		$out .= '</td>' . '</tr>' . '</table>';
+		$out .= '</td></tr></table>';
 
 		return $out;
 	}

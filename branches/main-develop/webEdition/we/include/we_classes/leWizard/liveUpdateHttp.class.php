@@ -208,7 +208,7 @@ class liveUpdateHttp {
 <head>
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="' . 'http://' . LE_ONLINE_INSTALLER_SERVER . LE_ONLINE_INSTALLER_SERVER_SCRIPT . '" method="post">
+<form id="liveUpdateForm" action="http://' . LE_ONLINE_INSTALLER_SERVER . LE_ONLINE_INSTALLER_SERVER_SCRIPT . '" method="post">
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
 	<input type="hidden" name="next_cmd" value="' . $_REQUEST['update_cmd'] . '" />
 	<input type="hidden" name="detail" value="' . $_REQUEST['detail'] . '" />

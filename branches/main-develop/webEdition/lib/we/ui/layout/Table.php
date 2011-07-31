@@ -281,7 +281,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 */
 	public function _renderHTML()
 	{
-		$html = '<table border="' . htmlspecialchars($this->_border) . '"' . ' cellpadding="' . htmlspecialchars($this->_cellPadding) . '"' . ' cellspacing="' . htmlspecialchars($this->_cellSpacing) . '"' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
+		$html = '<table border="' . htmlspecialchars($this->_border) . '" cellpadding="' . htmlspecialchars($this->_cellPadding) . '" cellspacing="' . htmlspecialchars($this->_cellSpacing) . '"' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
 		
 		$maxRowIndex = -1;
 		$maxColIndex = -1;

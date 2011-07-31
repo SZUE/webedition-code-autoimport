@@ -47,7 +47,7 @@ $htmlPage->addHTML(
 		<div style="margin:3px 0px 3px 0px;" id="headrow">
 			&nbsp;<strong><span id="titlePathGroup">'.
 			$titlePathGroup . '</span>:&nbsp;<span id="titlePathName">'. 
-			$titlePathName . '</span><div id="mark" style="display: none;">*</div></strong>'.'
+			$titlePathName . '</span><div id="mark" style="display: none;">*</div></strong>
 		</div>
 	');			
 		

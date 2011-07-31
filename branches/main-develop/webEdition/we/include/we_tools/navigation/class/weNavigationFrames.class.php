@@ -553,7 +553,7 @@ class weNavigationFrames extends weToolFrames
 		$_button_doc = $we_button->create_button('select', $_cmd_doc, true, 100, 22, '', '', false);
 		$_button_obj = $we_button->create_button('select', $_cmd_obj, true, 100, 22, '', '', false);
 
-		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == 'docLink') ? 'inline' : 'none') . '">' . $_button_doc . '</div>' . '<div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == 'objLink' ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
+		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == 'docLink') ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == 'objLink' ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
 		if ($this->Model->LinkID == 0) {
 			$_path = "";
 		} else {
@@ -963,7 +963,7 @@ class weNavigationFrames extends weToolFrames
 		$_button_obj = $we_button->create_button('select', $_cmd_obj, true, 100, 22, '', '', $disabled);
 		$_button_cat = $we_button->create_button('select', $_cmd_cat, true, 100, 22, '', '', $disabled);
 
-		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == 'docLink' ? 'inline' : 'none') . '">' . $_button_doc . '</div>' . '<div id="objLink" style="display: ' . ($this->Model->SelectionType == 'objLink' ? 'inline' : 'none') . '">' . $_button_obj . '</div>' . '<div id="catLink" style="display: ' . ($this->Model->SelectionType == 'catLink' ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
+		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == 'docLink' ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == 'objLink' ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == 'catLink' ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 		if ($this->Model->LinkID == 0) {
 			$_path = "";
 		} else {
@@ -1025,7 +1025,7 @@ class weNavigationFrames extends weToolFrames
 				'SortCount',
 				(isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) . '
 			<div style="display: block;">
-				<div style="display:block' . ';">
+				<div style="display:block;">
 				' . htmlSelect(
 				'Selection',
 				array(
@@ -1911,7 +1911,7 @@ function onFolderSelectionChangeJS(elem) {
 				'select',
 				"javascript:we_cmd('openCatselector',document.we_form.elements['FolderID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')");
 
-		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == 'doctype') ? 'inline' : 'none') . '">' . $_button_doc . '</div>' . '<div id="objFolder" style="display: ' . ($this->Model->SelectionType == 'classname' ? 'inline' : 'none') . '">' . $_button_obj . '</div>' . '<div id="catFolder" style="display: ' . ($this->Model->SelectionType == 'category' ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
+		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == 'doctype') ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == 'classname' ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == 'category' ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
 		$_path = id_to_path(
 				$this->Model->FolderID,

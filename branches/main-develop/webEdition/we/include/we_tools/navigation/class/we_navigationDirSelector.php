@@ -23,7 +23,7 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_dirSelector.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/'.'we_button.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
 
 class we_navigationDirSelector extends we_dirSelector{
 
@@ -325,7 +325,7 @@ top.clearEntries();
 		if($txt==''){
 			print we_message_reporting::getShowMessageCall(g_l('navigation','[wrongtext]'), WE_MESSAGE_ERROR);
 		}else{
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/'.'we_classes/we_folder.inc.php');
+			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 			$folder= new we_folder();
 			$folder->we_new();

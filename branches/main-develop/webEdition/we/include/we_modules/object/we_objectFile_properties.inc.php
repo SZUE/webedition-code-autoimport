@@ -45,7 +45,7 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 				);
 
 	} else if($_SESSION["we_mode"] == "normal"){	//	Link to class in normal mode
-		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">'.'<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\','.$GLOBALS['we_doc']->TableID.',\'object\');">' . g_l('modules_object','[class]').'</a>'.'</div>' .
+		$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\','.$GLOBALS['we_doc']->TableID.',\'object\');">' . g_l('modules_object','[class]').'</a></div>' .
 		'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClass() . '</div>';
 		$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">'.g_l('modules_object','[class_id]').'</div>' .
 		'<div style="margin-bottom:12px;">' . $GLOBALS['we_doc']->formClassId() . '</div>';
