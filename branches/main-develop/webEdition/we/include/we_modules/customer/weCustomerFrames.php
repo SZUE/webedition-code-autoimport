@@ -157,8 +157,8 @@ class weCustomerFrames extends weModuleFrames {
 
 				return we_htmlElement::htmlDiv(array('style'=>'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'),$out);//we_htmlElement::htmlB('not yet implemented');
 			case 'country':
-				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
+				
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 				$countryselect = new we_htmlSelect(array('name' => $field, 'size' => '1', 'style' => '{width:240;}', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
@@ -202,7 +202,7 @@ class weCustomerFrames extends weModuleFrames {
 				break;
 			case 'language':
 				if(isset($GLOBALS["weFrontendLanguages"]) && is_array($GLOBALS["weFrontendLanguages"]) ){
-					$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+					$frontendL = $GLOBALS["weFrontendLanguages"];
 					foreach ($frontendL as $lc => &$lcvalue) {
 						$lccode = explode('_', $lcvalue);
 						$lcvalue = $lccode[0];

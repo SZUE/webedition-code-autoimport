@@ -185,7 +185,7 @@ class we_document extends we_root {
 		// if default language is not equal with frontend language
 		if (substr($_defLang,0,strlen($_key)) !== $_key) {
 			// get first language that fits
-			foreach($GLOBALS['weFrontendLanguages'] as $_k=>$_v) {
+			foreach(getWeFrontendLanguagesForBackend() as $_k=>$_v) {
 				$_parts = explode('_', $_k);
 				if ($_parts[0] === $_key) {
 					$_defLang = $_k;
@@ -211,7 +211,7 @@ class we_document extends we_root {
 
 		$inputName = 'we_'.$this->Name.'_Language';
 
-		$_languages = $GLOBALS['weFrontendLanguages'];
+		$_languages = getWeFrontendLanguagesForBackend();
 
 		$_headline = '';
 

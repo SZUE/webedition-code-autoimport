@@ -3019,7 +3019,19 @@ function we_loadLanguageConfig() {
 	}
 	include_once ($file);
 }
-
+function getWeFrontendLanguagesForBackend(){
+	$la = array();p_r($GLOBALS["weFrontendLanguages"]);
+	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
+	foreach($GLOBALS["weFrontendLanguages"] as $Locale){
+		$temp = explode('_', $Locale);
+		if (sizeof($temp) == 1) {
+			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang) ) ;
+		} else {
+			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang).' ('.Zend_Locale::getTranslation($temp[1],'territory',$targetLang).')' ) ;
+		}
+	}
+	return $la; 		
+}
 function we_writeLanguageConfig($default, $available = array()) {
 
 	$locales = '';
@@ -3030,11 +3042,17 @@ function we_writeLanguageConfig($default, $available = array()) {
 			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]') " . $temp[0] . ",\n";
 		} else {
 			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]') . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
-		}*/
+		}
 		if (sizeof($temp) == 1) {
 			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] " . $temp[0] . ",\n";
 		} else {
 			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . \$GLOBALS['l_countries']['" . $temp[1] . "'] . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
+		}
+		*/
+		if (sizeof($temp) == 1) {
+			$locales .= "	'" . $Locale . "',\n";
+		} else {
+			$locales .= "	'" . $Locale . "',\n";
 		}
 
 	}
@@ -3210,21 +3228,7 @@ function convertCharsetString($fromC, $toC, $string) {
 	return str_replace($fromC, $toC, $string);
 }
 
-function CheckAndConvertISOfrontend($utf8data) {
-	if (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] != '' && $GLOBALS['CHARSET'] != 'UTF-8') {
-		return iconv('UTF-8', $GLOBALS['CHARSET'] . '//TRANSLATE', $utf8data);
-	} else {
-		return $utf8data;
-	}
-}
 
-function CheckAndConvertISObackend($utf8data) {
-	if (g_l('charset','[charset]') != 'UTF-8') {
-		return iconv('UTF-8', g_l('charset','[charset]') . '//TRANSLATE', $utf8data);
-	} else {
-		return $utf8data;
-	}
-}
 
 function getVarArray($arr, $string) {
 	if (!isset($arr)) {
@@ -3240,6 +3244,23 @@ function getVarArray($arr, $string) {
 		}
 	}
 	return $return;
+}
+
+
+function CheckAndConvertISOfrontend($utf8data) {
+	if (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] != '' && $GLOBALS['CHARSET'] != 'UTF-8') {
+		return iconv('UTF-8', $GLOBALS['CHARSET'] . '//TRANSLATE', $utf8data);
+	} else {
+		return $utf8data;
+	}
+}
+
+function CheckAndConvertISObackend($utf8data) {
+	if ($GLOBALS["WE_BACKENDCHARSET"]!='UTF-8') {
+		return mb_convert_encoding($utf8data, $GLOBALS["WE_BACKENDCHARSET"], 'UTF-8');
+	} else {
+		return $utf8data;
+	}
 }
 
 /**internal function - do not call */

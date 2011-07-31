@@ -63,7 +63,7 @@ class weShopStatusMails {
 						'DateFinished' => ''
 					);
 		$documentsarray['default']=$docarray;
-		$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+		$frontendL = $GLOBALS["weFrontendLanguages"];
 		foreach ($frontendL as $lc => &$lcvalue){
 			$lccode = explode('_', $lcvalue);
 			$lcvalue= $lccode[0];

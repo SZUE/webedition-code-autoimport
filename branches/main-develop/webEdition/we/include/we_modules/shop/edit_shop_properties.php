@@ -869,7 +869,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 
 					} elseif((isset($CLFields['languageField']) && isset($CLFields['languageFieldIsISO']) && $k == $CLFields['languageField'] && $CLFields['languageFieldIsISO'])){
-						$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+						$frontendL = $GLOBALS["weFrontendLanguages"];
 						foreach ($frontendL as $lc => &$lcvalue){
 							$lccode = explode('_', $lcvalue);
 							$lcvalue= $lccode[0];

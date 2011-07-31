@@ -75,7 +75,7 @@ class we_langlink_listview extends listviewBase {
 		$this->seeMode   = $seeMode;		
 		
 
-		$_languages = $GLOBALS['weFrontendLanguages'];
+		$_languages = getWeFrontendLanguagesForBackend();
 		
 		if(isset($_languages[$this->ownlanguage])){ unset($_languages[$this->ownlanguage]);	}
 		

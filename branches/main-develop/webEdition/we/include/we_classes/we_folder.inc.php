@@ -554,7 +554,7 @@ $content .='
 
 		$inputName = "we_".$this->Name."_Language";
 
-		$_languages = $GLOBALS['weFrontendLanguages'];
+		$_languages = getWeFrontendLanguagesForBackend();
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 			$htmlzw='';
 			if ($this->Table== OBJECT_FILES_TABLE){

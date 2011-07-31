@@ -313,7 +313,7 @@ function get_value($settingvalue) {
 
 		case "locale_locales":
 			we_loadLanguageConfig();
-			return $GLOBALS['weFrontendLanguages'];
+			return getWeFrontendLanguagesForBackend();
 			break;
 
 		case "locale_default":

@@ -82,10 +82,10 @@ function we_tag_sessionField($attribs, $content) {
 			$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			$langcode = substr($lang, 0, 2);
-			if ($lang == '') {
-				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+			if ($lang!=''){
+				$langcode= substr($lang,0,2);
+			} else {
+				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 			}
 
 			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
@@ -126,12 +126,12 @@ function we_tag_sessionField($attribs, $content) {
 			$docAttr = we_getTagAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			$langcode = substr($lang, 0, 2);
-			if ($lang == '') {
-				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+			if ($lang!=''){
+				$langcode= substr($lang,0,2);
+			} else {
+				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 			}
-			$frontendL = array_keys($GLOBALS['weFrontendLanguages']);
+			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach ($frontendL as $lc => &$lcvalue) {
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];

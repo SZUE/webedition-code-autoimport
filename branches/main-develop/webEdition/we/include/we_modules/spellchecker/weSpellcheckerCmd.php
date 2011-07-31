@@ -202,7 +202,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			$table->setCol(0,5,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[delete]'));
 
 			$_lanSelect = new we_htmlSelect(array('size'=>1,'style'=>'width: 100px;','class'=>'weSelect'));
-			foreach($GLOBALS['weFrontendLanguages'] as $klan=>$vlan) {
+			foreach(getWeFrontendLanguagesForBackend() as $klan=>$vlan) {
 				$_lanSelect->addOption($klan,$vlan);
 			}
 

@@ -223,7 +223,7 @@ foreach ($weShopStatusMails->StatusFields as $fieldkey => $fieldname){
 	$tabDokumente->setCol($i, $fieldkey+1, array("class"=>"defaultfont","nowrap"=>"nowrap"), we_class::htmlTextInput("FieldsDocuments[default][".$fieldname."]",15,$weShopStatusMails->FieldsDocuments['default'][$fieldname]) );
 }
 
-$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+$frontendL = $GLOBALS["weFrontendLanguages"];
 	foreach ($frontendL as $lc => &$lcvalue){
 		$lccode = explode('_', $lcvalue);
 		$lcvalue= $lccode[0];

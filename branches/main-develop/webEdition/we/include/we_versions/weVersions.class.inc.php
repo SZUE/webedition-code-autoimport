@@ -2076,7 +2076,8 @@ class weVersions {
 			$v = ($v==1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
 		}
 		if($k=="Language") {
-			$v = isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
+			$langs= getWeFrontendLanguagesForBackend();
+			$v = isset($langs[$v]) ? $langs[$v] : '';
 		}
 		if($k=="WebUserID") {
 			$v = id_to_path($v, CUSTOMER_TABLE);

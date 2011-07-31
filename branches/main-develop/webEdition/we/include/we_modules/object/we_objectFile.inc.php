@@ -166,7 +166,7 @@ class we_objectFile extends we_document{
 
 		$inputName = 'we_'.$this->Name.'_Language';
 
-		$_languages = $GLOBALS['weFrontendLanguages'];
+		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
 
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
@@ -1391,7 +1391,7 @@ class we_objectFile extends we_document{
 	function getLanguageFieldHTML($name,$attribs,$editable=true,$variant=false){
 
 		if($editable){
-			$frontendL = array_keys($GLOBALS["weFrontendLanguages"]);
+			$frontendL = $GLOBALS["weFrontendLanguages"];
 			foreach ($frontendL as $lc => &$lcvalue){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue= $lccode[0];

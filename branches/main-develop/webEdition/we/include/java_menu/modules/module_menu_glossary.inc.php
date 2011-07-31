@@ -39,7 +39,8 @@ $we_menu_glossary["002000"]["perm"] = "";
 $we_menu_glossary["002000"]["enabled"] = "1";
 
 $nr = 300;
-foreach ($GLOBALS['weFrontendLanguages'] as $key => $language) {
+$langs= getWeFrontendLanguagesForBackend();
+foreach ($langs as $key => $language) {
 
 	$we_menu_glossary["00".$nr."0"]["text"] = $language;
 	$we_menu_glossary["00".$nr."0"]["parent"] = "002000";
