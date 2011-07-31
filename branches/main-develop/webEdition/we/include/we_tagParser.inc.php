@@ -886,7 +886,8 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
 		return 'we_tag(\'' . $name . '\'' .
 		($attr != '' ? ',' . $attr : ($content != '' ? ',array()' : '')) .
-		($content != '' ? ',"' . addcslashes($content, '"') . '"' : '') . ')';
+		($content != '' ? ',"' . $content . '"' : '') . ')';
+		//addcslashes($content, '"')
 	}
 
 	public static function printArray($array) {
