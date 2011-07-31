@@ -20,14 +20,9 @@
 
 
 function we_tag_ifNewsletterSalutationEmpty($attribs,$content) {
-	$foo = attributFehltError($attribs, "type", "ifNewsletterSalutationEmpty", true);
-	if ($foo) {
+	if (($foo = attributFehltError($attribs, "type", "ifNewsletterSalutationEmpty", true))) {
 		print($foo);
 		return "";
 	}
-	if (we_tag('newsletterSalutation',$attribs, "")=='') {
-		return true; 
-	} else {
-		return false;
-	}
+	return (we_tag('newsletterSalutation',$attribs, "")=='');
 }

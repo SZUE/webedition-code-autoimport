@@ -32,9 +32,5 @@ function we_tag_ifNewsletterSalutation($attribs,$content) {
 	}
 	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
 	$atts = removeAttribs($attribs,array('match'));
-	if (we_tag('newsletterSalutation',$atts, "")==$match) {
-		return true; 
-	} else {
-		return false;
-	}
+	return (we_tag('newsletterSalutation',$atts, "")==$match);
 }

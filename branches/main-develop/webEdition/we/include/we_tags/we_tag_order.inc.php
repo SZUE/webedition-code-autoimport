@@ -24,7 +24,7 @@
  */
 function we_parse_tag_order($attribs, $content) {
 	return '<?php global $lv;
-		we_tag(\'order\', ' . $attribs . ');
+		'.we_tagParser::printTag('order', $attribs).';
 		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }

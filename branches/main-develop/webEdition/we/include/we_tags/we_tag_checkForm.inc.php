@@ -32,7 +32,7 @@ function we_parse_tag_checkForm($attribs,$content){
 	$tp->parseTags($tags, $content);*/
 	//inner content should be parsed by main parser
 	//TODO: check if checkform tag is parsed correctly!
-	return '<?php we_tag(\'checkForm\','.$attribs.',\''.addcslashes($content,'\'').'\'); ?>';
+	return '<?php '.we_tagParser::printTag('checkForm',$attribs, $content).'; ?>';
 }
 
 /**

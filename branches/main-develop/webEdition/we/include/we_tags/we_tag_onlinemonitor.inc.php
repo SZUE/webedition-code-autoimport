@@ -24,7 +24,7 @@
  */
 function we_parse_tag_onlinemonitor($attribs, $content) {
 	return '<?php global $lv;
-		we_tag(\'onlinemonitor\', ' . $attribs . ');
+		'.we_tagParser::printTag('onlinemonitor', $attribs).';
 		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }

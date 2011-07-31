@@ -374,7 +374,7 @@ class we_tagParser {
 						$attribs = "array(" . rtrim($attribs, ',') . ")";
 						$attribs = str_replace('=>"\$', '=>"$', $attribs); // workarround Bug Nr 6318
 						if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
-							$code = str_replace($tag, '<?php if(we_tag("' . $tagname . '", ' . $attribs . ')){ ?>', $code);
+							$code = str_replace($tag, '<?php if('.we_tagParser::printTag($tagname,$attribs).'){ ?>', $code);
 							$this->ipos++;
 							$this->lastpos = 0;
 						} else {
@@ -402,19 +402,16 @@ class we_tagParser {
 								}
 
 								// Tag besitzt Endtag
-								$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', "' . $content . '")';
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . we_tagParser::printTag($tagname,$attribs,$content) . '); ?>' . substr(
 																$code, $endeEndTagPos);
 								//neu
 							} else
 							if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-								$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ')';
 								eval(
-												'$code = str_replace($tag,std_numberformat(' . $we_tag . '),$code);');
+												'$code = str_replace($tag,std_numberformat(' . we_tagParser::printTag($tagname, $attribs) . '),$code);');
 								//neu
 							} else {
-								$we_tag = 'we_tag(\'' . $tagname . '\', ' . $attribs . ', \'\')';
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . $we_tag . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . we_tagParser::printTag($tagname,$attribs) . '); ?>' . substr(
 																$code, $endeStartTag);
 							}
 							$this->lastpos = 0;
@@ -466,7 +463,7 @@ class we_tagParser {
 		} else {
 
 			$this->ipos++;
-			if (substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript") {
+			if (substr($tagname, 0, 2) == 'if' && $tagname != 'ifNoJavaScript') {
 				$code = str_replace($tag, '<?php } ?>', $code);
 			} else
 			if ($tagname == "printVersion") {
@@ -881,6 +878,13 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 		return $this->replaceTag($tag, $code, $php);
 	}
 
+	
+	static function printTag($name,$attribs='',$content=''){
+		$attr=(is_array($attribs)?we_tagParser::printArray($attribs):$attribs);
+		return 'we_tag(\''.$name.'\''.
+		($attr!='' ? ','.$attr : ($content!='' ? ',array()':'')).
+		($content!=''?',"'.addcslashes($content,'"').'"':'').')';
+	}
 	
 	static function printArray($array) {
 		$ret = '';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,71 +22,67 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
-
-include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
-
+include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
-function we_include_tag_file($name){
-	$fn = 'we_tag_'.$name;
+function we_include_tag_file($name) {
+	$fn = 'we_tag_' . $name;
 
 	// as default: all tag_functions are in this file.
-	if (function_exists($fn)||$fn=='we_tag_noCache') {
+	if (function_exists($fn) || $fn == 'we_tag_noCache') {
 		// do noting
 		return true;
 	} else {
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$name.'.inc.php')) {
-			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$name.'.inc.php');
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_' . $name . '.inc.php')) {
+			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_' . $name . '.inc.php');
 			return true;
-		} else{
-				if (file_exists(
-					$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/we_tag_'.$name.'.inc.php')) {
-					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/we_tag_'.$name.'.inc.php');
+		} else {
+			if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/we_tag_' . $name . '.inc.php')) {
+				include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/we_tag_' . $name . '.inc.php');
+				return true;
+			} else {
+				include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+				$toolinc = '';
+				if (weToolLookup::getToolTag($name, $toolinc, true)) {
+					include_once ($toolinc);
 					return true;
 				} else {
-					include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
-					$toolinc = '';
-					if (weToolLookup::getToolTag($name, $toolinc,true)) {
-						include_once ($toolinc);
-						return true;
-					} else {
-						if (strpos(trim($name), 'if') === 0) { // this ifTag does not exist
-							print parseError(sprintf(g_l('parser','[tag_not_known]'), trim($name)));
-							return false;
-						}
-						return parseError(sprintf(g_l('parser','[tag_not_known]'), trim($name)));
+					if (strpos(trim($name), 'if') === 0) { // this ifTag does not exist
+						print parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
+						return false;
 					}
+					return parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 				}
+			}
 		}
 	}
 	return false;
 }
 
-function we_tag($name, $attribs=array(), $content = ''){
+function we_tag($name, $attribs=array(), $content = '') {
 	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
+	$to = we_getTagAttribute("to", $attribs, 'screen');
 	//make sure comment attribute is never shown
-	if ($name=='setVar'){//special handling inside this tag
-		$attribs = removeAttribs($attribs, array('cachelifetime','comment'));
+	if ($name == 'setVar') {//special handling inside this tag
+		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment'));
 		$nameTo = '';
 		$to = 'screen';
 	} else {
 		$nameTo = we_getTagAttribute("nameto", $attribs);
-		$to = we_getTagAttribute("to", $attribs,'screen');
-		$attribs = removeAttribs($attribs, array('cachelifetime','comment','to','nameto'));
+		$to = we_getTagAttribute("to", $attribs, 'screen');
+		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto'));
 	}
 
 	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
-	if(isset($attribs['name'])){
+	if (isset($attribs['name'])) {
 		$attribs['_name_orig'] = $attribs['name'];
-		if(isset($GLOBALS['postTagName'])){
-			$attribs['name'] = $attribs['name'].$GLOBALS['postTagName'];
+		if (isset($GLOBALS['postTagName'])) {
+			$attribs['name'] = $attribs['name'] . $GLOBALS['postTagName'];
 		}
 	}
 	//FIXME: after changing block etc. this is obsolete
@@ -93,7 +90,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 		$content = str_replace('we_:_', 'we:', $content);
 	}
 
-	
+
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
 	if ($edMerk) {
 		if (isset($attribs['user']) && $attribs['user']) {
@@ -111,34 +108,31 @@ function we_tag($name, $attribs=array(), $content = ''){
 		}
 	}
 
-	if(($foo = we_include_tag_file($name))!==true){
+	if (($foo = we_include_tag_file($name)) !== true) {
 		return $foo;
 	}
-	
-	$fn = 'we_tag_'.$name;
-	$foo='';
-	switch($fn){
-	case 'we_tag_setVar':
-		$fn($attribs, $content);
-		break;
-	default:
-		$foo = $fn($attribs, $content);
+
+	$fn = 'we_tag_' . $name;
+	$foo = '';
+	switch ($fn) {
+		case 'we_tag_setVar':
+			$fn($attribs, $content);
+			break;
+		default:
+			$foo = $fn($attribs, $content);
 	}
 
 	$GLOBALS['we_editmode'] = $edMerk;
-	if ($edMerk){
-		return $foo;
-	} else {
-		return we_redirect_tagoutput($foo,$nameTo,$to);
-	}
-
+	return ($edMerk ?
+					$foo :
+					we_redirect_tagoutput($foo, $nameTo, $to));
 }
 
 ### tag utility functions ###
 
-function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
-	if(isset ($GLOBALS['calculate'])){
-		$to='calculate';
+function we_redirect_tagoutput($returnvalue, $nameTo, $to='screen') {
+	if (isset($GLOBALS['calculate'])) {
+		$to = 'calculate';
 	}
 	switch ($to) {
 		case 'request' :
@@ -164,7 +158,7 @@ function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
 			$GLOBALS['we_doc']->setElement($nameTo, $returnvalue);
 			break;
 		case 'sessionfield' :
-			if (isset($_SESSION['webuser'][$nameTo])){
+			if (isset($_SESSION['webuser'][$nameTo])) {
 				$_SESSION['webuser'][$nameTo] = $returnvalue;
 			}
 			break;
@@ -178,70 +172,67 @@ function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
 	return null;
 }
 
-function mta($hash, $key){
+function mta($hash, $key) {
 	return (isset($hash[$key]) && ($hash[$key] != '' || $key == 'alt')) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
 }
 
-function printElement($code){
+function printElement($code) {
 	if (isset($code)) {
-		$code = str_replace('<?php', '<?php ', $code);
-		$code = str_replace('?>', ' ?>', $code);
-		eval('?>' . $code);
+		eval('?>' . str_replace('<?php', '<?php ', str_replace('?>', ' ?>', $code)));
 	}
 }
 
-function makeEmptyTable($in){
+function makeEmptyTable($in) {
 	preg_match_all('/<[^>]+>/i', $in, $result, PREG_SET_ORDER);
 
 	$out = '';
 	foreach ($result as $res) {
 		$tag = $res[0];
 
-		if(preg_match('-< ?/? ?(td|tr|table|tbody)-i', $tag)) {
+		if (preg_match('-< ?/? ?(td|tr|table|tbody)-i', $tag)) {
 			$out .= $tag;
 		}
-
 	}
 	return $out;
 }
 
-function we_cmpText($a, $b){
+function we_cmpText($a, $b) {
 	$x = strtolower(correctUml($a['properties']['Text']));
 	$y = strtolower(correctUml($b['properties']['Text']));
-	if ($x == $y){
+	if ($x == $y) {
 		return 0;
 	}
 	return ($x < $y) ? -1 : 1;
 }
 
-function we_cmpTextDesc($a, $b){
+function we_cmpTextDesc($a, $b) {
 	$x = strtolower(correctUml($a['properties']['Text']));
 	$y = strtolower(correctUml($b['properties']['Text']));
-	if ($x == $y){
+	if ($x == $y) {
 		return 0;
 	}
 	return ($x > $y) ? -1 : 1;
 }
 
-function we_cmpField($a, $b){
+function we_cmpField($a, $b) {
 	$x = strtolower(correctUml($a['sort']));
 	$y = strtolower(correctUml($b['sort']));
-	if ($x == $y){
+	if ($x == $y) {
 		return 0;
 	}
 	return ($x < $y) ? -1 : 1;
 }
 
-function we_cmpFieldDesc($a, $b){
+function we_cmpFieldDesc($a, $b) {
 	$x = strtolower(correctUml($a['sort']));
 	$y = strtolower(correctUml($b['sort']));
-	if ($x == $y){
+	if ($x == $y) {
 		return 0;
 	}
 	return ($x > $y) ? -1 : 1;
 }
 
-function we_tag_path_hasIndex($path, $indexArray){
+function we_tag_path_hasIndex($path, $indexArray) {
 	foreach ($indexArray as $index) {
 		if (file_exists($path . $index)) {
 			return true;
@@ -250,22 +241,21 @@ function we_tag_path_hasIndex($path, $indexArray){
 	return false;
 }
 
-function makeArrayFromAttribs($attr){
+function makeArrayFromAttribs($attr) {
 	$attribs = '';
 	preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 	for ($i = 0; $i < sizeof($foo); $i++) {
 		$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 	}
-	$arrstr = 'array(' . ereg_replace('(.+),$', '\\1', $attribs) . ')';
-	eval('$arr = ' . $arrstr . ';');
+	eval('$arr = array(' . ereg_replace('(.+),$', '\\1', $attribs) . ');');
 	return $arr;
 }
 
-function cutText($text, $max = 0){
-	if ((!$max)||(strlen($text) <= $max)){
+function cutText($text, $max = 0) {
+	if ((!$max) || (strlen($text) <= $max)) {
 		return $text;
 	}
-	if (!strlen($text)){
+	if (!strlen($text)) {
 		return '';
 	}
 
@@ -291,20 +281,20 @@ function cutText($text, $max = 0){
 		$foo = strip_tags($foo);
 	}
 	$text = substr($text, 0, $cutpos);
-	if (eregi('^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$', $text, $regs)) {
+	if (preg_match('-^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$-i', $text, $regs)) {
 		$text = $regs[1] . $regs[2] . $regs[3] . $regs[4] . '</' . $regs[3] . '>';
 	} else
-		if (eregi('^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$', $text, $regs)) {
-			$text = $regs[1];
-		}
+	if (preg_match('-^(.+)(<)(a|em|strong|b|i|u|br|div|span)([^>]*)$-i', $text, $regs)) {
+		$text = $regs[1];
+	}
 	return $text . '...';
 }
 
-function arrayKeyExists($key, $search){
+function arrayKeyExists($key, $search) {
 	return (in_array($key, array_keys($search)));
 }
 
-function we_getDocForTag($docAttr, $maindefault = false){
+function we_getDocForTag($docAttr, $maindefault = false) {
 	if ($maindefault) {
 		switch ($docAttr) {
 			case 'self' :
@@ -322,271 +312,268 @@ function we_getDocForTag($docAttr, $maindefault = false){
 	}
 }
 
-/*  **************************************************
-    *	we:tags										 *
-/*  **************************************************/
-function we_tag_ifSidebar($attribs, $content){
+/* * *************************************************
+ * 	we:tags										 *
+  /*  ************************************************* */
+
+function we_tag_ifSidebar($attribs, $content) {
 	return defined('WE_SIDEBAR');
 }
 
-function we_tag_ifNotSidebar($attribs, $content){
-	return !we_tag('ifSidebar',$attribs, $content);
+function we_tag_ifNotSidebar($attribs, $content) {
+	return!we_tag('ifSidebar', $attribs, $content);
 }
 
-function we_tag_ifDemo($attribs, $content){
-	return !defined('UID');
+function we_tag_ifDemo($attribs, $content) {
+	return!defined('UID');
 }
 
-function we_tag_ifSeeMode($attribs, $content){
-	if (we_tag('ifWebEdition',$attribs, $content)) {
+function we_tag_ifSeeMode($attribs, $content) {
+	if (we_tag('ifWebEdition', $attribs, $content)) {
 		return (isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem');
 	} else {
 		return false;
 	}
 }
 
-function we_tag_ifTdEmpty($attribs, $content){
+function we_tag_ifTdEmpty($attribs, $content) {
 	return $GLOBALS['lv']->tdEmpty();
 }
 
-function we_tag_ifTdNotEmpty($attribs, $content){
-	return !we_tag('ifTdEmpty',$attribs, $content);
+function we_tag_ifTdNotEmpty($attribs, $content) {
+	return!we_tag('ifTdEmpty', $attribs, $content);
 }
 
-
-function we_tag_ifTop($attribs, $content){
+function we_tag_ifTop($attribs, $content) {
 	return ($GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc']);
 }
 
-function we_tag_ifNotSeeMode($attribs, $content){
-	if (we_tag('ifWebEdition',$attribs, $content)) {
-		return !(we_tag('ifSeeMode',$attribs, $content));
+function we_tag_ifNotSeeMode($attribs, $content) {
+	if (we_tag('ifWebEdition', $attribs, $content)) {
+		return!(we_tag('ifSeeMode', $attribs, $content));
 	} else {
 		return true;
 	}
 }
 
-function we_tag_ifFieldNotEmpty($attribs, $content){
-	return !we_tag('ifFieldEmpty',$attribs,$content);
+function we_tag_ifFieldNotEmpty($attribs, $content) {
+	return!we_tag('ifFieldEmpty', $attribs, $content);
 }
 
-function we_tag_ifNotField($attribs, $content){
-	return !we_tag('ifField',$attribs, $content);
+function we_tag_ifNotField($attribs, $content) {
+	return!we_tag('ifField', $attribs, $content);
 }
 
-function we_tag_ifFound($attribs, $content){
+function we_tag_ifFound($attribs, $content) {
 	return $GLOBALS['lv']->anz ? true : false;
 }
 
-function we_tag_ifIsNotDomain($attribs, $content){
-	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifIsDomain',$attribs);
+function we_tag_ifIsNotDomain($attribs, $content) {
+	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifIsDomain', $attribs);
 }
 
-function we_tag_ifLastCol($attribs, $content){
+function we_tag_ifLastCol($attribs, $content) {
 	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->shouldPrintEndTR();
 }
 
-function we_tag_ifNew($attribs, $content){
+function we_tag_ifNew($attribs, $content) {
 	$type = we_getTagAttribute('type', $attribs);
-	return !(isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
+	return!(isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
 }
 
-function we_tag_ifNotCat($attribs, $content){
-	return !we_tag('ifCat',$attribs, $content);
+function we_tag_ifNotCat($attribs, $content) {
+	return!we_tag('ifCat', $attribs, $content);
 }
 
-function we_tag_ifNotCaptcha($attribs, $content){
-	return !we_tag('ifCaptcha',$attribs, $content);
+function we_tag_ifNotCaptcha($attribs, $content) {
+	return!we_tag('ifCaptcha', $attribs, $content);
 }
 
-function we_tag_ifNotDeleted($attribs, $content){
-	return !we_tag('ifDeleted',$attribs, $content);
+function we_tag_ifNotDeleted($attribs, $content) {
+	return!we_tag('ifDeleted', $attribs, $content);
 }
 
-function we_tag_ifNotDoctype($attribs,$content){
-	return !we_tag('ifDoctype',$attribs,$content);
+function we_tag_ifNotDoctype($attribs, $content) {
+	return!we_tag('ifDoctype', $attribs, $content);
 }
 
 function we_tag_ifNotEditmode($attribs, $content) {
-	return !we_tag('ifEditmode', $attribs, $content);
+	return!we_tag('ifEditmode', $attribs, $content);
 }
 
-function we_tag_ifNotEmpty($attribs, $content){
-	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])||!we_tag('ifEmpty',$attribs);
+function we_tag_ifNotEmpty($attribs, $content) {
+	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifEmpty', $attribs);
 }
 
-function we_tag_ifNotEqual($attribs, $content){
-	return !we_tag('ifEqual',$attribs, $content);
+function we_tag_ifNotEqual($attribs, $content) {
+	return!we_tag('ifEqual', $attribs, $content);
 }
 
-function we_tag_ifNotFound($attribs, $content){
-	return !we_tag('ifFound',$attribs,$content);
+function we_tag_ifNotFound($attribs, $content) {
+	return!we_tag('ifFound', $attribs, $content);
 }
 
-function we_tag_ifNotObject($attribs,$content) {
-	return !we_tag('ifObject',$attribs, $content);
+function we_tag_ifNotObject($attribs, $content) {
+	return!we_tag('ifObject', $attribs, $content);
 }
 
-function we_tag_ifNotObjectLanguage($attribs, $content){
-	return !we_tag('ifObjectLanguage',$attribs, $content);
+function we_tag_ifNotObjectLanguage($attribs, $content) {
+	return!we_tag('ifObjectLanguage', $attribs, $content);
 }
 
-function we_tag_ifNotPageLanguage($attribs, $content){
-	return !(we_tag('ifPageLanguage',$attribs, $content));
+function we_tag_ifNotPageLanguage($attribs, $content) {
+	return!(we_tag('ifPageLanguage', $attribs, $content));
 }
 
-function we_tag_ifNotHasShopVariants($attribs,$content) {
-	return !we_tag('ifHasShopVariants',$attribs,$content);
+function we_tag_ifNotHasShopVariants($attribs, $content) {
+	return!we_tag('ifHasShopVariants', $attribs, $content);
 }
 
-function we_tag_ifNotSendMail($attribs, $content){
-	return !(we_tag('ifSendMail',$attribs, $content));
+function we_tag_ifNotSendMail($attribs, $content) {
+	return!(we_tag('ifSendMail', $attribs, $content));
 }
 
-function we_tag_ifNotVoteActive($attribs,$content) {
-	return !we_tag('ifVoteActive',$attribs, $content);
+function we_tag_ifNotVoteActive($attribs, $content) {
+	return!we_tag('ifVoteActive', $attribs, $content);
 }
 
-function we_tag_ifNotVoteIsRequired($attribs,$content) {
-	return !we_tag('ifVoteIsRequired',$attribs, $content);
+function we_tag_ifNotVoteIsRequired($attribs, $content) {
+	return!we_tag('ifVoteIsRequired', $attribs, $content);
 }
 
-
-function we_tag_ifNotHasChildren($attribs = array(), $content = ''){
-	return !we_tag('ifHasChildren',$attribs,$content);
+function we_tag_ifNotHasChildren($attribs = array(), $content = '') {
+	return!we_tag('ifHasChildren', $attribs, $content);
 }
 
-function we_tag_ifNotHasEntries($attribs = array(), $content = ''){
-	return !we_tag('ifHasEntries',$attribs,$content);
+function we_tag_ifNotHasEntries($attribs = array(), $content = '') {
+	return!we_tag('ifHasEntries', $attribs, $content);
 }
 
-function we_tag_ifNotHasCurrentEntry($attribs = array(), $content = ''){
-	return !we_tag('ifHasCurrentEntry',$attribs,$content);
+function we_tag_ifNotHasCurrentEntry($attribs = array(), $content = '') {
+	return!we_tag('ifHasCurrentEntry', $attribs, $content);
 }
 
-function we_tag_ifNotRegisteredUser($attribs,$content) {
-	return !we_tag('ifRegisteredUser',$attribs,$content);
+function we_tag_ifNotRegisteredUser($attribs, $content) {
+	return!we_tag('ifRegisteredUser', $attribs, $content);
 }
 
-function we_tag_ifNotNewsletterSalutation($attribs,$content) {
-	return  !we_tag('ifNewsletterSalutation',$attribs, "");
+function we_tag_ifNotNewsletterSalutation($attribs, $content) {
+	return!we_tag('ifNewsletterSalutation', $attribs, "");
 }
 
-function we_tag_ifNotNew($attribs, $content){
-	$type = we_getTagAttribute('type', $attribs,$content);
+function we_tag_ifNotNew($attribs, $content) {
+	$type = we_getTagAttribute('type', $attribs, $content);
 	return (isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
 }
 
-function we_tag_ifNotReturnPage($attribs, $content){
-	return !we_tag('ifReturnPage',$attribs,$content);
+function we_tag_ifNotReturnPage($attribs, $content) {
+	return!we_tag('ifReturnPage', $attribs, $content);
 }
 
-function we_tag_ifNotSearch($attribs, $content){
-	return !we_tag('ifSearch',$attribs, $content);
+function we_tag_ifNotSearch($attribs, $content) {
+	return!we_tag('ifSearch', $attribs, $content);
 }
 
-function we_tag_ifNotSelf($attribs, $content){
-	return !we_tag('ifSelf',$attribs, $content);
+function we_tag_ifNotSelf($attribs, $content) {
+	return!we_tag('ifSelf', $attribs, $content);
 }
 
-function we_tag_ifNotTop($attribs, $content){
-	return !we_tag('ifTop',$attribs, $content);
+function we_tag_ifNotTop($attribs, $content) {
+	return!we_tag('ifTop', $attribs, $content);
 }
 
-function we_tag_ifNotTemplate($attribs, $content){
-	return !we_tag('ifTemplate',$attribs, $content);
+function we_tag_ifNotTemplate($attribs, $content) {
+	return!we_tag('ifTemplate', $attribs, $content);
 }
 
-function we_tag_ifNotVar($attribs, $content){
-	return !we_tag('ifVar',$attribs, $content);
+function we_tag_ifNotVar($attribs, $content) {
+	return!we_tag('ifVar', $attribs, $content);
 }
 
-function we_tag_ifNotVarSet($attribs, $content){
-	return !we_tag('ifVarSet',$attribs);
+function we_tag_ifNotVarSet($attribs, $content) {
+	return!we_tag('ifVarSet', $attribs);
 }
 
-function we_tag_ifNotVotingField($attribs,$content) {
-	return !we_tag('ifVotingField',$attribs, $content);
+function we_tag_ifNotVotingField($attribs, $content) {
+	return!we_tag('ifVotingField', $attribs, $content);
 }
 
-function we_tag_ifShopFieldNotEmpty($attribs,$content) {
-	return !we_tag('ifShopFieldEmpty',$attribs, $content);
+function we_tag_ifShopFieldNotEmpty($attribs, $content) {
+	return!we_tag('ifShopFieldEmpty', $attribs, $content);
 }
 
-function we_tag_ifVotingFieldNotEmpty($attribs,$content) {
-	return !we_tag('ifVotingFieldEmpty',$attribs, $content);
+function we_tag_ifVotingFieldNotEmpty($attribs, $content) {
+	return!we_tag('ifVotingFieldEmpty', $attribs, $content);
 }
 
-function we_tag_ifNotWebEdition($attribs, $content){
-	return !we_tag('ifWebEdition',$attribs, $content);
+function we_tag_ifNotWebEdition($attribs, $content) {
+	return!we_tag('ifWebEdition', $attribs, $content);
 }
 
-function we_tag_ifNotWorkspace($attribs, $content){
-	return !we_tag('ifWorkspace',$attribs, $content);
+function we_tag_ifNotWorkspace($attribs, $content) {
+	return!we_tag('ifWorkspace', $attribs, $content);
 }
 
-function we_tag_ifNotWritten($attribs, $content){
+function we_tag_ifNotWritten($attribs, $content) {
 	$type = we_getTagAttribute('type', $attribs, '');
 	$type = $type ? $type : we_getTagAttribute('var', $attribs, '');
 	$type = $type ? $type : we_getTagAttribute('doc', $attribs, 'document');
 	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == false);
 }
 
-
-function we_tag_ifNotPosition($attribs, $content){
-	return !we_tag('ifPosition',$attribs, $content);
+function we_tag_ifNotPosition($attribs, $content) {
+	return!we_tag('ifPosition', $attribs, $content);
 }
 
-function we_tag_pagelogger($attribs, $content){
-	return we_tag('tracker',$attribs, $content);
+function we_tag_pagelogger($attribs, $content) {
+	return we_tag('tracker', $attribs, $content);
 }
 
-function we_tag_ifReturnPage($attribs, $content){
+function we_tag_ifReturnPage($attribs, $content) {
 	return isset($_REQUEST['we_returnpage']) && ($_REQUEST['we_returnpage']);
 }
 
-function we_tag_ifUserInputNotEmpty($attribs, $content){
-	return !we_tag('ifUserInputEmpty',$attribs);
+function we_tag_ifUserInputNotEmpty($attribs, $content) {
+	return!we_tag('ifUserInputEmpty', $attribs);
 }
 
-function we_tag_ifVarNotEmpty($attribs, $content){
-	return !we_tag('ifVarEmpty',$attribs);
+function we_tag_ifVarNotEmpty($attribs, $content) {
+	return!we_tag('ifVarEmpty', $attribs);
 }
 
-function we_tag_ifWebEdition($attribs, $content){
+function we_tag_ifWebEdition($attribs, $content) {
 	return $GLOBALS['WE_MAIN_DOC']->InWebEdition;
 }
 
-function we_tag_ifWritten($attribs, $content){
+function we_tag_ifWritten($attribs, $content) {
 	$type = we_getTagAttribute('type', $attribs, '');
 	$type = $type ? $type : we_getTagAttribute('var', $attribs, 'document');
 	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == true);
 }
 
-
-function we_tag_linkToSEEM($attribs, $content){
-	return we_tag('linkToSeeMode',$attribs, $content);
+function we_tag_linkToSEEM($attribs, $content) {
+	return we_tag('linkToSeeMode', $attribs, $content);
 }
 
-function we_tag_listviewPageNr($attribs, $content){
+function we_tag_listviewPageNr($attribs, $content) {
 	return $GLOBALS['lv']->rows ? (((abs($GLOBALS['lv']->start) - abs($GLOBALS['lv']->offset)) / $GLOBALS['lv']->maxItemsPerPage) + 1) : 1;
 }
 
-function we_tag_listviewPages($attribs, $content){
-	$cols= $GLOBALS['lv']->cols ? $GLOBALS['lv']->cols:1;
+function we_tag_listviewPages($attribs, $content) {
+	$cols = $GLOBALS['lv']->cols ? $GLOBALS['lv']->cols : 1;
 	return $GLOBALS['lv']->rows ? ceil(
-			((float)$GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float)$GLOBALS['lv']->maxItemsPerPage )) : 1;
+									((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
 }
 
-function we_tag_listviewRows($attribs, $content){
+function we_tag_listviewRows($attribs, $content) {
 	return $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset);
 }
 
-function we_tag_listviewStart($attribs, $content){
+function we_tag_listviewStart($attribs, $content) {
 	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
 }
 
-function we_tag_makeMail($attribs, $content){
+function we_tag_makeMail($attribs, $content) {
 	return '';
 }
 
@@ -628,23 +615,23 @@ function we_post_tag_listview() {
 }
 
 //FIXME: remove in next Versions
-function include_all_we_tags(){
-	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
-		$taginclude= array('DID','a','author','back','block','calculate','category','categorySelect','checkForm','condition',
-				'conditionAdd','conditionAnd','conditionOr','css','date','dateSelect',
-			'delete','description','docType','field','flashmovie','formfield','hidden','href','icon','ifBack','ifCaptcha','ifCat','ifClient',
-			'ifCurrentDate','ifDoctype','ifEqual','ifField','ifHasChildren','ifHasCurrentEntry','ifHasEntries','ifNotShopField','ifPosition',
-			'ifSearch','ifSelf','ifRegisteredUserCanChange','ifShopField','ifShopFieldEmpty','ifTemplate',
-			'ifDeleted','ifEditmode','ifEmpty','ifFieldEmpty','ifIsDomain','ifNext','ifNoJavaScript','ifUserInputEmpty','ifVarEmpty',
-			'ifVar','ifVarSet','ifWorkspace','img','input','js','keywords','link','linkToSeeMode',
-			'linklist','list','listdir','listviewEnd','navigation','navigationEntries','navigationEntry',
-			'navigationField','navigationWrite','next','options','path','position','printVersion','processDateSelect',
-			'quicktime','registeredUser','returnPage','search','select','sendMail','sessionStart',
-			'setVar','sidebar','textarea','title','tracker','url','userInput','var','write','xmlfeed'
-				);
-		foreach($taginclude AS $fn){
-			$file=$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_'.$fn.'.inc.php';
-			if(!function_exists($fn) && is_file($file)){
+function include_all_we_tags() {
+	if (defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS) {
+		$taginclude = array('DID', 'a', 'author', 'back', 'block', 'calculate', 'category', 'categorySelect', 'checkForm', 'condition',
+				'conditionAdd', 'conditionAnd', 'conditionOr', 'css', 'date', 'dateSelect',
+				'delete', 'description', 'docType', 'field', 'flashmovie', 'formfield', 'hidden', 'href', 'icon', 'ifBack', 'ifCaptcha', 'ifCat', 'ifClient',
+				'ifCurrentDate', 'ifDoctype', 'ifEqual', 'ifField', 'ifHasChildren', 'ifHasCurrentEntry', 'ifHasEntries', 'ifNotShopField', 'ifPosition',
+				'ifSearch', 'ifSelf', 'ifRegisteredUserCanChange', 'ifShopField', 'ifShopFieldEmpty', 'ifTemplate',
+				'ifDeleted', 'ifEditmode', 'ifEmpty', 'ifFieldEmpty', 'ifIsDomain', 'ifNext', 'ifNoJavaScript', 'ifUserInputEmpty', 'ifVarEmpty',
+				'ifVar', 'ifVarSet', 'ifWorkspace', 'img', 'input', 'js', 'keywords', 'link', 'linkToSeeMode',
+				'linklist', 'list', 'listdir', 'listviewEnd', 'navigation', 'navigationEntries', 'navigationEntry',
+				'navigationField', 'navigationWrite', 'next', 'options', 'path', 'position', 'printVersion', 'processDateSelect',
+				'quicktime', 'registeredUser', 'returnPage', 'search', 'select', 'sendMail', 'sessionStart',
+				'setVar', 'sidebar', 'textarea', 'title', 'tracker', 'url', 'userInput', 'var', 'write', 'xmlfeed'
+		);
+		foreach ($taginclude AS $fn) {
+			$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_' . $fn . '.inc.php';
+			if (!function_exists($fn) && is_file($file)) {
 				include_once ($file);
 			}
 		}

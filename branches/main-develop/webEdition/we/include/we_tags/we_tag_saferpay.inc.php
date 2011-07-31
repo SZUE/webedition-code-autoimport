@@ -201,7 +201,7 @@ function we_tag_saferpay($attribs,$content) {
 
 			$weShippingControl = weShippingControl::getShippingControl();
 
-			if (we_tag('ifRegisteredUser',array(), '')) { // check if user is registered
+			if (we_tag('ifRegisteredUser')) { // check if user is registered
 			 $customer = $_SESSION['webuser'];
 		    } else {
 			 $customer = false;

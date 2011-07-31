@@ -45,7 +45,7 @@ function we_parse_tag_block($attribs,$content){
 	}
 	
 	$name = we_getTagAttributeTagParser('name', $arr, '');
-	$ctlPre='<?php if(we_tag(\'ifEditmode\')){echo we_tag_blockControls(';
+	$ctlPre='<?php if('.we_tagParser::printTag('ifEditmode').'){echo we_tag_blockControls(';
 	$ctlPost=');}?>';
 	
 	//if(strpos($content,'blockControls')===false){
@@ -59,7 +59,7 @@ function we_parse_tag_block($attribs,$content){
 			$content = '<p>'.$ctlPre.'$block_'.$name.$ctlPost.$content.'</p>';
 		}
 //	}
-	return '<?php if(($block_'.$name.'=we_tag(\'block\','.$attribs.'))!==false){'."\n\t".
+	return '<?php if(($block_'.$name.'='.we_tagParser::printTag('block',$attribs).')!==false){'."\n\t".
 		'while(we_condition_tag_block($block_'.$name.')){?>'.$content.'<?php }}else{?>'.
 		$ctlPre.'array(\'name\'=>\''.$name.'\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,'.
 		'\'ctlShowSelect\'=>'.(we_getTagAttributeTagParser('showselect', $arr, '',true, true)?'true':'false').','.

@@ -38,7 +38,7 @@ function we_tag_shipping($attribs, $content) {
 		$orderVal = $GLOBALS['summe'][$sumName];
 		$weShippingControl = weShippingControl::getShippingControl();
 
-		if (we_tag('ifRegisteredUser',array(), '')) { // check if user is registered
+		if (we_tag('ifRegisteredUser')) { // check if user is registered
 			$customer = $_SESSION['webuser'];
 		} else {
 			$customer = false;
@@ -49,7 +49,7 @@ function we_tag_shipping($attribs, $content) {
 		// get calculated value if needed
 		if ($type) {
 			// if user must NOT pay vat always return net prices
-			$mustPayVat = we_tag('ifShopPayVat',array(), ''); // alayways return net prices
+			$mustPayVat = we_tag('ifShopPayVat'); // alayways return net prices
 
 			if ($mustPayVat) {
 

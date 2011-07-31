@@ -25,7 +25,7 @@
 
 function we_parse_tag_xmlnode($attribs, $content) {
 $unq = '$_xmlnode'.uniqid(rand());
-	return $unq.'=we_tag(\'xmlnode\','.$attribs.');
+	return $unq.'='.we_tagParser::printTag('xmlnode',$attribs).';
 		while('.$unq.'->next()){
 			if('.$unq.'->hasChild()){
 			$GLOBALS[\'xsuperparent\']='.$unq.'->getNode();

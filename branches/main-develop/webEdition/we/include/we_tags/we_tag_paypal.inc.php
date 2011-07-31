@@ -279,7 +279,7 @@ function we_tag_paypal($attribs, $content) {
 				require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 				$weShippingControl = weShippingControl::getShippingControl();
 
-				if (we_tag('ifRegisteredUser', array(), '')) { // check if user is registered
+				if (we_tag('ifRegisteredUser')) { // check if user is registered
 					$customer = $_SESSION['webuser'];
 				} else {
 					$customer = false;

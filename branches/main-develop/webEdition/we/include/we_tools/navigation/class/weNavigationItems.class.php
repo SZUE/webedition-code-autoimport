@@ -1090,9 +1090,9 @@ class weNavigationItems
 		//			$rootTemplate = '<we:navigationEntries />';
 
 
-		$folderTemplate = '<li><a href="<?php printElement( we_tag("navigationField", array("name"=>"href"), "")); ?>"><?php printElement( we_tag("navigationField", array("name"=>"text"), "")); ?></a><?php if(we_tag("ifHasEntries", array())){ ?><ul><?php printElement( we_tag("navigationEntries", array(), "")); ?></ul><?php } ?></li>';
-		$itemTemplate = '<li><a href="<?php printElement( we_tag("navigationField", array("name"=>"href"), "")); ?>"><?php printElement( we_tag("navigationField", array("name"=>"text"), "")); ?></a></li>';
-		$rootTemplate = '<?php printElement( we_tag("navigationEntries", array(), "")); ?>';
+		$folderTemplate = '<li><a href="<?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"href")).'); ?>"><?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"text")).'); ?></a><?php if('.we_tagParser::printTag('ifHasEntries').'){ ?><ul><?php printElement( '.we_tagParser::printTag('navigationEntries').'); ?></ul><?php } ?></li>';
+		$itemTemplate = '<li><a href="<?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"href")).'); ?>"><?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"text")).'); ?></a></li>';
+		$rootTemplate = '<?php printElement( '.we_tagParser::printTag('navigationEntries').'); ?>';
 
 		$this->setTemplate($folderTemplate, 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
 		$this->setTemplate($itemTemplate, 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');

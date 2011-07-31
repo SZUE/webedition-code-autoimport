@@ -30,7 +30,7 @@ function we_parse_tag_object($attribs, $content) {
 	}
 
 	return '<?php global $lv;
-		we_tag(\'object\', ' . $attribs . ');
+		'.we_tagParser::printTag('object', $attribs).';
 		if($GLOBALS[\'lv\']->avail){?>' . $content . '<?php } 
 		we_post_tag_listview(); ?>';
 }

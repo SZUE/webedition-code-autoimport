@@ -25,9 +25,5 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/vot
 
 function we_tag_ifVotingFieldEmpty($attribs,$content) {
 	$realvalue = we_tag('votingField',$attribs, "");
-	if ($realvalue ==''){
-		return true;
-	} else {
-		return false;
-	}
+	return ($realvalue =='');
 }

@@ -52,7 +52,7 @@ function we_tag_shopField($attribs,$content) {
 		// does not exist here - we are only in article - custom fields are not stored on documents
 		$isFieldForCheckBox = false;
 
-		if (isset($GLOBALS['lv']) && ($tmpVal = we_tag('field',array('name'=>$name),'')) ) {
+		if (isset($GLOBALS['lv']) && ($tmpVal = we_tag('field',array('name'=>$name))) ) {
 			$savedVal = $tmpVal;
 			unset($tmpVal);
 		}

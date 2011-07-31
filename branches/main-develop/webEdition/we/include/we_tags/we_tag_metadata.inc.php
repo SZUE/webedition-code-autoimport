@@ -26,7 +26,7 @@ function we_parse_tag_metadata($attribs, $content) {
 	eval('$arr = ' . $attribs . ';');
 	if (($foo = attributFehltError($arr, 'name', 'metadata')))
 		return $foo;
-	return '<?php if(we_tag(\'metadata\',' . $attribs . ')){?>' . $content . '<?php } we_post_tag_listview();?>';
+	return '<?php if('.we_tagParser::printTag('metadata', $attribs).'){?>' . $content . '<?php } we_post_tag_listview();?>';
 }
 
 function we_tag_metadata($attribs, $content) {

@@ -26,7 +26,7 @@ function we_parse_tag_answers($attribs, $content) {
 	if (!defined("VOTING_TABLE")) {
 		return modulFehltError('Voting', '"Answer"');
 	}
-	return '<?php while(we_tag(\'answers\',' . $attribs . ')){?>' . $content . '<?php }?>';
+	return '<?php while('.we_tagParser::printTag('answers',$attribs).'){?>' . $content . '<?php }?>';
 }
 
 function we_tag_answers($attribs, $content) {

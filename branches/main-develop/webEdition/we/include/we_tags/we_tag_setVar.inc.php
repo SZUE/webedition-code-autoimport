@@ -123,7 +123,7 @@ function we_tag_setVar($attribs, $content){
 				}
 				$valueFrom = we_tag('field',array(
 					'name' => $nameFrom, 'type' => $typeFrom
-				), "");
+				));
 				break;
 			case "block" :
 				$nameFrom.=$GLOBALS['postTagName'];

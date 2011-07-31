@@ -29,11 +29,11 @@
 /*function we_parse_tag_calculate($attribs,$content){
 	eval('$arr = ' . $attribs . ';');
 	$arr['_type']='start';
-	$ret='<?php {we_tag(\'calculate\','.we_tagParser::printArray($arr).');@eval(\'$result = ('.$content;')\' ;\'';
+	$ret='<?php {'.we_tagParser::printTag('calculate',$arr).');@eval(\'$result = ('.$content;')\' ;\'';
 	
 	$arr['_type']='stop';
 
-	$ret.='print we_tag(\'calculate\','.we_tagParser::printArray($arr).');}?>';
+	$ret.='print '.we_tagParser::printTag('calculate',$arr).');}?>';
 return $ret;
 }	*/
 	

@@ -101,7 +101,7 @@ function we_parse_tag_captcha($attribs, $content) {
 				));
 
 		$attribs['src'] = $file;
-	return '<?php if(we_tag(\'captcha\',' . we_tagParser::printArray($attribs) . ')){?>' . $content . '<?php } ?>';
+	return '<?php if('.we_tagParser::printTag('captcha',$attribs) . '){?>' . $content . '<?php } ?>';
 }
 
 function we_tag_captcha($attribs, $content) {
