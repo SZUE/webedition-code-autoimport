@@ -365,7 +365,7 @@ function we_tag_ifNotField($attribs, $content) {
 }
 
 function we_tag_ifFound($attribs, $content) {
-	return $GLOBALS['lv']->anz ? true : false;
+	return isset($GLOBALS['lv'])&&$GLOBALS['lv']->anz;
 }
 
 function we_tag_ifIsNotDomain($attribs, $content) {

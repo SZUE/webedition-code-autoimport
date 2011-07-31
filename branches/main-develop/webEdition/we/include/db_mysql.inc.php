@@ -115,21 +115,21 @@ protected function ping(){
 	}
 
 	public function field_name($no) {
-		return mysql_field_name($this->Query_ID, $no);
+		return @mysql_field_name($this->Query_ID, $no);
 	}
 
 	
 	public function field_type($no){
-		return mysql_field_type($this->Query_ID, $no);
+		return @mysql_field_type($this->Query_ID, $no);
 	}
 	public function field_table($no){
-		return mysql_field_table($this->Query_ID, $no);
+		return @mysql_field_table($this->Query_ID, $no);
 	}
 	public function field_len($no){
-		return mysql_field_len($this->Query_ID, $no);
+		return @mysql_field_len($this->Query_ID, $no);
 	}
 	public function field_flags($no){
-		return mysql_field_flags($this->Query_ID, $no);
+		return @mysql_field_flags($this->Query_ID, $no);
 	}
 	
 	public function getInsertId() {

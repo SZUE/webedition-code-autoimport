@@ -44,7 +44,7 @@ function we_parse_tag_block($attribs,$content){
 		$content=str_replace('\$','$',$content);
 	}
 	
-	$name = we_getTagAttributeTagParser('name', $arr, '');
+	$name = md5(we_getTagAttributeTagParser('name', $arr, ''));
 	$ctlPre='<?php if('.we_tagParser::printTag('ifEditmode').'){echo we_tag_blockControls(';
 	$ctlPost=');}?>';
 	

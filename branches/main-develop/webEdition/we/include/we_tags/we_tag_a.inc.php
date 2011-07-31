@@ -23,7 +23,11 @@ function we_tag_a($attribs, $content){
 	if (($foo = attributFehltError($attribs, 'id', 'a')))	return $foo;
 
 	// get attributes
-	$id = ($id == 'self'? $GLOBALS['WE_MAIN_DOC']->ID: we_getTagAttribute('id', $attribs));
+	
+	$id =we_getTagAttribute('id', $attribs);
+	if($id == 'self'){
+		$GLOBALS['WE_MAIN_DOC']->ID;
+	}
 	$confirm = we_getTagAttribute('confirm', $attribs);
 	$button = we_getTagAttribute('button', $attribs, '', true);
 	$hrefonly = we_getTagAttribute('hrefonly', $attribs, '', true);

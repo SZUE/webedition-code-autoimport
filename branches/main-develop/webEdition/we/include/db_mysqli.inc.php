@@ -97,23 +97,23 @@ class DB_WE extends DB_WE_abstract {
 	}
 
 	public function field_flags($no) {
-		return $this->Query_ID->fetch_field_direct($no)->flags;
+		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->flags:'');
 	}
 
 	public function field_len($no) {
-		return $this->Query_ID->fetch_field_direct($no)->length;
+		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->length:0);
 	}
 
 	public function field_name($no) {
-		return $this->Query_ID->fetch_field_direct($no)->orgname;
+		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->orgname:'');
 	}
 
 	public function field_table($no) {
-		return $this->Query_ID->fetch_field_direct($no)->orgtable;
+		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->orgtable:'');
 	}
 
 	public function field_type($no) {
-		return $this->Query_ID->fetch_field_direct($no)->type;
+		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->type:'');
 	}
 
 	public function getInsertId() {
