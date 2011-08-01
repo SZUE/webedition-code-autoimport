@@ -2925,7 +2925,7 @@ function we_loadLanguageConfig() {
 	include_once ($file);
 }
 function getWeFrontendLanguagesForBackend(){
-	$la = array();p_r($GLOBALS["weFrontendLanguages"]);
+	$la = array();
 	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
 	foreach($GLOBALS["weFrontendLanguages"] as $Locale){
 		$temp = explode('_', $Locale);

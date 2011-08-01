@@ -221,7 +221,7 @@ function we_tag_listview($attribs, $content) {
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_listview_object.class.php');
 			$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $we_predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			}else{
-				t_e('warning','Class with id='.intval($class).' does not exist');
+				t_e('warning','Object with id='.intval($class).' does not exist');
 				return false;
 			}
 			break;
