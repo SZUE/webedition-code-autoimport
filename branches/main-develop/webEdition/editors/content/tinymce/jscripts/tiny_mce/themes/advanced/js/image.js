@@ -5,7 +5,7 @@ var ImageDialog = {
 		tinyMCEPopup.requireLangPack();
 
 		if (url = tinyMCEPopup.getParam("external_image_list_url"))
-			document.write('<script type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+			document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 	},
 
 	init : function() {
@@ -18,7 +18,7 @@ var ImageDialog = {
 
 		e = ed.selection.getNode();
 
-		this.fillFileList('image_list', 'tinyMCEImageList');
+		this.fillFileList('image_list', tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList'));
 
 		if (e.nodeName == 'IMG') {
 			f.src.value = ed.dom.getAttrib(e, 'src');
@@ -39,7 +39,7 @@ var ImageDialog = {
 	fillFileList : function(id, l) {
 		var dom = tinyMCEPopup.dom, lst = dom.get(id), v, cl;
 
-		l = window[l];
+		l = typeof(l) === 'function' ? l() : window[l];
 
 		if (l && l.length > 0) {
 			lst.options[lst.options.length] = new Option('', '');
@@ -220,7 +220,7 @@ var ImageDialog = {
 	resetImageData : function() {
 		var f = document.forms[0];
 
-		f.width.value = f.height.value = "";
+		f.width.value = f.height.value = "";	
 	},
 
 	updateImageData : function() {
