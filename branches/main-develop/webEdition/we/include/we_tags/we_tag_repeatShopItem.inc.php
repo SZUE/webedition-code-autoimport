@@ -29,7 +29,7 @@ function we_parse_tag_repeatShopItem($attribs, $content) {
 	}
 
 	$attribs['_type'] = 'start';
-	return '<?php '.we_tagParser::printTag('repeatShopItem', $attribs) . '; while($GLOBALS[\'lv\']->next_record()) {' . $content . '} '.we_tagParser::printTag('repeatShopItem',array('_type'=>'stop')).';?>';
+	return '<?php '.we_tagParser::printTag('repeatShopItem', $attribs) . '; while($GLOBALS[\'lv\']->next_record()) {?>' . $content . '<?php } '.we_tagParser::printTag('repeatShopItem',array('_type'=>'stop')).';?>';
 }
 
 function we_tag_repeatShopItem($attribs, $content) {

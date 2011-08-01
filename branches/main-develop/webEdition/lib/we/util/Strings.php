@@ -140,6 +140,7 @@ class we_util_Strings
 	static function formatnumber($value, $format)
 	{ 
 		switch ($format) {
+			default:
 			case 'german': return number_format($value, 2, ",", ".");
 			break;
 			case 'french': return number_format($value, 2, ",", " ");
