@@ -2930,9 +2930,9 @@ function getWeFrontendLanguagesForBackend(){
 	foreach($GLOBALS["weFrontendLanguages"] as $Locale){
 		$temp = explode('_', $Locale);
 		if (sizeof($temp) == 1) {
-			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang) ) ;
+			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang) . ' '.$Locale) ;
 		} else {
-			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang).' ('.Zend_Locale::getTranslation($temp[1],'territory',$targetLang).')' ) ;
+			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang).' ('.Zend_Locale::getTranslation($temp[1],'territory',$targetLang).') ' .$Locale) ;
 		}
 	}
 	return $la; 		
@@ -2943,23 +2943,11 @@ function we_writeLanguageConfig($default, $available = array()) {
 	sort($available);
 	foreach ($available as $Locale) {
 		$temp = explode('_', $Locale);
-		/*if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]') " . $temp[0] . ",\n";
-		} else {
-			$locales .= "	'" . $Locale . "' => g_l('languages','[" . $temp[0] . "]') . \" (\" . g_l('countries','[" . $temp[1] . "]') . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
-		}
-		if (sizeof($temp) == 1) {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] " . $temp[0] . ",\n";
-		} else {
-			$locales .= "	'" . $Locale . "' => \$GLOBALS['l_languages']['" . $temp[0] . "'] . \" (\" . \$GLOBALS['l_countries']['" . $temp[1] . "'] . \") " . $temp[0] . "_" . $temp[1] . "\",\n";
-		}
-		*/
 		if (sizeof($temp) == 1) {
 			$locales .= "	'" . $Locale . "',\n";
 		} else {
 			$locales .= "	'" . $Locale . "',\n";
 		}
-
 	}
 
 	$code = '<?php
@@ -2986,9 +2974,6 @@ function we_writeLanguageConfig($default, $available = array()) {
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/countries.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/languages.inc.php");
-
 
 $GLOBALS["weFrontendLanguages"] = array(
 ' . $locales . '

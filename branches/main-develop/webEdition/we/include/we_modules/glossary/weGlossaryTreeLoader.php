@@ -43,7 +43,7 @@ class weGlossaryTreeLoader{
 			$Language = implode("_", $Temp);
 			return weGlossaryTreeLoader::getItemsFromDB($Language, $Type, $Offset, $Segment);
 
-		} else if(in_array($ParentId, array_keys($GLOBALS['weFrontendLanguages']))) {
+		} else if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])) {
 			return weGlossaryTreeLoader::getTypes($ParentId);
 
 		} else {
@@ -57,7 +57,7 @@ class weGlossaryTreeLoader{
 
 		$Items = array();
 
-		foreach($GLOBALS['weFrontendLanguages'] as $Key => $Val) {
+		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val) {
 
 			$Item = array(
 				'id'		=> $Key,

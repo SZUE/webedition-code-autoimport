@@ -317,6 +317,7 @@
 						.	we_htmlElement::htmlHidden(array('name'=>'Published','id'=>'Published','value'=>$weGlossaryFrames->View->Glossary->ID==0?1:($weGlossaryFrames->View->Glossary->Published>0 ? 1 : 0)));
 
 			$_languages = $GLOBALS['weFrontendLanguages'];
+			$_languages = getWeFrontendLanguagesForBackend();
 
 			$language = ($weGlossaryFrames->View->Glossary->Language!=""?$weGlossaryFrames->View->Glossary->Language:$GLOBALS['weDefaultFrontendLanguage']);
 

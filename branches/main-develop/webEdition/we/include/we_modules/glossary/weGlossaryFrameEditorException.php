@@ -30,12 +30,12 @@
 			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 			$we_tabs = new we_tabs();
-
 			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[exception]'),'TAB_ACTIVE',"setTab('1');"));
+			
+			$frontendL=getWeFrontendLanguagesForBackend();
+			$title = g_l('modules_glossary','[exception]') . ":&nbsp;".(isset($frontendL[substr($_REQUEST['cmdid'], 0, 5)])?$frontendL[substr($_REQUEST['cmdid'], 0, 5)]:"-");
 
-			$title = g_l('modules_glossary','[exception]') . ":&nbsp;".(isset($GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)])?$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]:"-");
-
-			return weGlossaryFrameEditorException::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[exception]'),(isset($GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)])?$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]:"-"));
+			return weGlossaryFrameEditorException::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[exception]'),(isset($frontendL[substr($_REQUEST['cmdid'], 0, 5)])?$frontendL[substr($_REQUEST['cmdid'], 0, 5)]:"-"));
 
 		}
 

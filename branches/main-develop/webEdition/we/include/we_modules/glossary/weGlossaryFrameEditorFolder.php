@@ -31,14 +31,14 @@
 			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 			$we_tabs = new we_tabs();
-
 			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[overview]'),'TAB_ACTIVE',"setTab('1');"));
-
+			
+			$frontendL=getWeFrontendLanguagesForBackend();
 			$title = g_l('modules_glossary','[folder]') . ":&nbsp;";
 
-			$title .= $GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)];
+			$title .= $frontendL[substr($_REQUEST['cmdid'], 0, 5)];
 
-			return weGlossaryFrameEditorFolder::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[folder]'), $GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]);
+			return weGlossaryFrameEditorFolder::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[folder]'), $frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
 
 		}
 

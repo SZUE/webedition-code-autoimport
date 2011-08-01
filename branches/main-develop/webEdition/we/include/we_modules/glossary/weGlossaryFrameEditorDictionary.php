@@ -29,13 +29,13 @@
 
 			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
-			$we_tabs = new we_tabs();
-
+			$we_tabs = new we_tabs();t_e('notice','cmdid',$_REQUEST['cmdid']);
 			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[dictionary]'),'TAB_ACTIVE',"setTab('1');"));
+			
+			$frontendL=getWeFrontendLanguagesForBackend();
+			$title = g_l('modules_glossary','[dictionary]') . ":&nbsp;".$frontendL[substr($_REQUEST['cmdid'], 0, 5)];
 
-			$title = g_l('modules_glossary','[dictionary]') . ":&nbsp;".$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)];
-
-			return weGlossaryFrameEditorDictionary::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[dictionary]'),$GLOBALS['weFrontendLanguages'][substr($_REQUEST['cmdid'], 0, 5)]);
+			return weGlossaryFrameEditorDictionary::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary','[dictionary]'),$frontendL[substr($_REQUEST['cmdid'], 0, 5)]);
 
 		}
 
