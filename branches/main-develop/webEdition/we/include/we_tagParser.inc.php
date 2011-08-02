@@ -365,13 +365,6 @@ class we_tagParser {
 				$this->lastpos = 0;
 			} else {
 				switch ($tagname) {
-					case "content" :
-					case "master" :
-						// don't parse it
-						$code = str_replace($tag, '', $code);
-						$this->ipos++;
-						$this->lastpos = 0;
-						break;
 					case "form" :
 						$code = $this->parseFormTag($tag, $code, $attribs);
 						$this->ipos++;
@@ -396,32 +389,25 @@ class we_tagParser {
 									$content = substr(
 													$code, $endeStartTag, ($endTagPos - $endeStartTag));
 
-									if ($tagname != "noCache") {
-										$content = str_replace("\n", "", $content);
+/*										$content = str_replace("\n", "", $content);
 										$content = trim(str_replace("\r", "", $content));
 										$content = str_replace('"', '\"', $content);
-									}
 									$content = str_replace('we:', 'we_:_', $content);
 									$content = str_replace('$GLOBALS[\"lv\"]', '\$GLOBALS[\"lv\"]', $content); //	this must be slashed inside blocks (for objects)!!!!
 									$content = str_replace('$GLOBALS[\"we_lv_array\"]', '\$GLOBALS[\"we_lv_array\"]', $content); //	this must be slashed inside blocks (for objects)!!!!
 									$content = str_replace('$GLOBALS[\"_we_listview_object_flag\"]', '\$GLOBALS[\"_we_listview_object_flag\"]', $content); //	this must be slashed inside blocks (for objects)!!!!  # 3479
-								} else {
+	*/
+									} else {
 									$content = "";
 								}
 
 								// Tag besitzt Endtag
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs, $content) . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
 																$code, $endeEndTagPos);
 								//neu
 							} else
-							if (isset($GLOBALS["calculate"]) && $GLOBALS["calculate"] == 1) { //neu
-								eval(
-												'$code = str_replace($tag,std_numberformat(' . self::printTag($tagname, $attribs) . '),$code);');
-								//neu
-							} else {
 								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs) . '); ?>' . substr(
 																$code, $endeStartTag);
-							}
 							$this->lastpos = 0;
 						}
 					/* if ($postName) { //FIXME: will be obsolete
@@ -492,10 +478,6 @@ class we_tagParser {
 			if ($tagname == "voting") {
 				$code = str_replace(
 								$tag, '<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']); ?>', $code);
-			} else
-			if ($tagname == "content") {
-				$code = str_replace(
-								$tag, '', $code);
 			}
 
 			$this->lastpos = 0;

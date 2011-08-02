@@ -18,19 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-function we_tag_ifNewsletterSalutation($attribs,$content) {
-	$foo = attributFehltError($attribs, "type", "ifNewsletterSalutation", true);
-	if ($foo) {
-		print($foo);
-		return "";
-	}
-	$foo = attributFehltError($attribs, "match", "ifNewsletterSalutation");
-	if ($foo) {
-		print($foo);
-		return "";
-	}
-	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
-	$atts = removeAttribs($attribs,array('match'));
-	return (we_tag('newsletterSalutation',$atts, "")==$match);
+function we_parse_tag_content($attribs, $content) {
+	//this tag is ignored!
+	return $content;
 }

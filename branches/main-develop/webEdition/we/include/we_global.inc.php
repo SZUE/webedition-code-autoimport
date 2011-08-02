@@ -96,6 +96,7 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 }
 
 // Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden
+//FIXME: remove 
 function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
