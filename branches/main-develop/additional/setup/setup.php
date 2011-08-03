@@ -187,7 +187,7 @@ function step_requirements() {
 		$extens= strtolower($extens);
 	}
 	$phpextensionsMissing = array();
-	$phpextensionsMin = array('ctype','date','dom','filter','iconv','libxml','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
+	$phpextensionsMin = array('ctype','date','dom','filter','gd','iconv','libxml','mbstring','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
 
 	if (count($phpextensions)> 3) {
 		foreach ($phpextensionsMin as $exten){
@@ -604,7 +604,7 @@ function step_databasecheck() {
 
 function step_language() {
 	global $errors;
-	$output = "Please select a language to be used by webEdition. You can change this at any time using the webEdition preferences dialog window.";
+	$output = "Please select a language to be used by webEdition. You can change this at any time using the webEdition preferences dialog window. There you can alos change to an ISO backend charset";
 	if(!is_dir('./webEdition/we/include/we_language/')) {
 		$output .= tpl_errorbox('There is a problem with your webEdition installation, could not find the language directory. Please verify that the installation archive has been completely unpacked into this directory.');
 		$errors = true;
@@ -620,8 +620,8 @@ function step_language() {
 		}
 	}
 	asort($_language["translation"]);
-	$defaultLanguage = "English_UTF-8";
-	$defaultLanguageTranslation = "English (UTF-8)";
+	$defaultLanguage = "English";
+	$defaultLanguageTranslation = "English";
 	$isoLanguages = false;
 	if(!isset($_SESSION["we_language_translation"])) {
 		$currentLanguage = $defaultLanguageTranslation;
@@ -639,10 +639,10 @@ function step_language() {
 			$selected = "";
 		}
 		// check if this an iso encoded language (needed for displaying an additional information box):
-		if(!strpos($v,"UTF-8")) {
-			$isoLanguages = true;
-			$v .= " (ISO 8859-1)";
-		}
+		//if(!strpos($v,"UTF-8")) {
+			//$isoLanguages = true;
+			//$v .= " (ISO 8859-1)";
+		//}
 		$output .= '<option '.$selected.'name="'.$v.'" value="'.$k.'">'.$v.'</option>';
 	}
 	$output .= '</select></div>';
@@ -861,8 +861,8 @@ function step_installation() {
 		tpl_error("Could not open webEdition configuration files for writing.");
 		$errors = true;
 	} else {
-		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php');
-		$we_config_global = file_get_contents('./webEdition/we/include/conf/we_conf_global.inc.php');
+		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php.default');
+		$we_config_global = file_get_contents('./webEdition/we/include/conf/we_conf_global.inc.php.default');
 		//$we_config = str_replace('define("WE_LANGUAGE","English_UTF-8");','define("WE_LANGUAGE","'.$_SESSION["we_language"].'");',$we_config);
 		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\s*)+("\);)/i','$1'.$_SESSION["we_language"].'$3',$we_config);
 		//str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
@@ -888,6 +888,7 @@ function step_installation() {
 		$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_password"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_language"]).'${5}',$we_config);
+
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_language"]);
 		$output .= tpl_ok("Saved database configuration.");
 		if(! (file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config) && file_put_contents('./webEdition/we/include/conf/we_conf_global.inc.php',$we_config_global) )) {

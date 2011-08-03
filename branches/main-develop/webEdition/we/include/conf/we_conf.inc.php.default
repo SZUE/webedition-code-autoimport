@@ -120,11 +120,18 @@ define("LOG_DIR",$_SERVER["DOCUMENT_ROOT"] . "/webEdition/log");
 define("TMP_DIR",$_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/tmp");
 
 // Original language of this version of webEdition, used for login-screen
-define("WE_LANGUAGE","English_UTF-8");
+define("WE_LANGUAGE","English");
+
+// Original backend charset of this version of webEdition, used for login-screen
+define("WE_BACKENDCHARSET","UIF-8");
 
 if (!isset($GLOBALS["WE_LANGUAGE"])) {
 	$GLOBALS["WE_LANGUAGE"] = WE_LANGUAGE;
 }
+if (!isset($GLOBALS["WE_LANGUAGE"])) {
+	$GLOBALS["WE_BACKENDCHARSET"] = WE_BACKENDCHARSET;
+}
+
 
 // PHP 5.3 date init #4353
 if (!date_default_timezone_set(@date_default_timezone_get())){
