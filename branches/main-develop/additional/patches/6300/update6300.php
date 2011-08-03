@@ -5,10 +5,13 @@ Attempt to update
 // only execute on liveUpdate:
 //aber meiner Meinung nach nicht notwendig, patches werden nicht ausgeführt
 if(!is_readable("../../we/include/conf/we_conf.inc.php")) {
-	return true;
+	//return true;
 }
 //die Vorbilder includen mehr, aber wozu?
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_inc_min.inc.php");//nicht we.inc.php da genau das nicht funktioniert wegen der noch nicht verschobenen we_active_integrated_modules
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weConfParser.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 function updatePrefs(){
 	$db1 = new DB_WE();
@@ -29,6 +32,14 @@ function updatePrefs(){
 }
 function updateLang(){
 	we_loadLanguageConfig();
+	if (is_array($GLOBALS['weFrontendLanguages'])){
+		$FLkeys = array_keys($GLOBALS['weFrontendLanguages']);
+		if (!is_numeric($FLkeys[0]) ){
+			we_writeLanguageConfig($GLOBALS['weDefaultFrontendLanguage'],$FLkeys);
+		}
+	} else {
+		
+	}
 	/*if(!we_writeLanguageConfig($GLOBALS['weFrontendLanguages'],$GLOBALS['weDefaultFrontendLanguage'])){
 	$GLOBALS['errorDetail']='Error at updating global language.';
 	return false;
@@ -38,7 +49,7 @@ function updateLang(){
 }
 function updateActiveModules(){
 	$dir=$_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/';
-	$file='we_active_integrated_modulesA.inc.php';
+	$file='we_active_integrated_modules.inc.php';
 	if(file_exists($dir.$file) && !file_exists($dir.'conf/'.$file) ){
 		return rename($dir.$file,$dir.'conf/'.$file);
 	} else {
@@ -48,14 +59,29 @@ function updateActiveModules(){
 function updateConf(){
 	$filename= $_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/conf/we_conf.inc.php';
 	$conf=file_get_contents($filename);
-	$conf=str_replace('_UTF-8','',$conf);
+	if (strpos($conf,'_UTF-8')!==false){
+		$conf=str_replace('_UTF-8','',$conf);
+		$settingvalue='UTF-8';
+	} else {
+		$settingvalue='ISO-8859-1';
+	}
+	
+	$conf = weConfParser::changeSourceCode("define", $conf, "WE_BACKENDCHARSET", $settingvalue);
 	$conf=str_replace('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")','',$conf);
+	
 	return file_put_contents($filename,$conf);
 }
-	
+function removeFiles(){	
+	$toRemove = array('Deutsch_UTF-8','Dutch_UTF-8','English_UTF-8','Finnish_UTF-8','French_UTF-8','Polish_UTF-8','Russian_UTF-8','Spanish_UTF-8');
+	foreach ($toRemove as $datei){
+		if(file_exists($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$datei) ){
+			we_util_File::rmdirr($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$datei);
+		}
+	}
+}
 updatePrefs();
 updateLang();
 updateActiveModules();
 updateConf();
-
+removeFiles();
 return true;
