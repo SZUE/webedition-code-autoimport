@@ -27,6 +27,7 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 	$allowNoFilter = we_getTagAttribute('allowNoFilter', $attribs, '', true);
 	$userid = we_getTagAttribute('userid', $attribs, '');
 	$userid = makeArrayFromCSV($userid);
+	$matchType = we_getTagAttribute('matchType', $attribs, 'one');
 
 	if ($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition) {
 		return isset($_SESSION['we_set_registered']) && $_SESSION['we_set_registered'];
@@ -45,10 +46,31 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 			}
 
 			if ($ret && $permission) {
+				$ret &= isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]) && $_SESSION['webuser']['registered'];
+				if (!$ret) {
+					return false;
+				}
 				if (!empty($match)) {
-					$ret &= isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]) && $_SESSION['webuser']['registered'] && in_array($_SESSION['webuser'][$permission], $match);
+					$perm = explode(',', $_SESSION['webuser'][$permission]);
+					switch ($matchType) {
+						case 'one':
+							$tmp = array_intersect($perm, $match);
+							$ret &= count($tmp) > 0;
+							break;
+						case 'contains':
+							$tmp = array_intersect($perm, $match);
+							$ret &= count($tmp) == count($match);
+							break;
+						case 'exact':
+							$ret &= count($perm) == count($match);
+							if ($ret) {
+								$tmp = array_intersect($perm, $match);
+								$ret &= count($tmp) == count($perm);
+							}
+							break;
+					}
 				} else {
-					$ret &= isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]) && $_SESSION['webuser']['registered'] && $_SESSION['webuser'][$permission];
+					$ret &= $_SESSION['webuser'][$permission];
 				}
 			}
 
