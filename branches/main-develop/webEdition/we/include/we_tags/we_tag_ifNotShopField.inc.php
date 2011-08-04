@@ -34,11 +34,6 @@ function we_tag_ifNotShopField($attribs,$content) {
 	$reference = we_getTagAttribute("reference", $attribs);
 	$shopname  = we_getTagAttribute("shopname", $attribs);
 
-	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
-		$matchA = explode("blk_",$match);
-		$match = $matchA[0];
-	}
 	$attribs['type']='print';
 	unset($attribs['match']);
 

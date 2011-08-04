@@ -30,7 +30,7 @@ function we_tag_ifNewsletterSalutation($attribs,$content) {
 		print($foo);
 		return "";
 	}
-	$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+	$match = we_getTagAttributeTagParser("match",$attribs);
 	$atts = removeAttribs($attribs,array('match'));
 	return (we_tag('newsletterSalutation',$atts, "")==$match);
 }

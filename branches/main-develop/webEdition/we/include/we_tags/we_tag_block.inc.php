@@ -101,7 +101,6 @@ function we_tag_block($attribs, $content){
 
 	if (isset($GLOBALS['lv'])) {
 		$list = $GLOBALS['lv']->f($name);
-		$GLOBALS['lv']->BlockInside = true;
 	} else {
 		$list = $GLOBALS['we_doc']->getElement($name);
 	}

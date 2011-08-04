@@ -68,16 +68,15 @@ function rmPhp($in) {
 	return $out;
 }
 
-function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false) {
-	return we_getTagAttribute($name, $attribs, $default, $isFlag, $checkForFalse, $removeblk, false);
+function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
+	return we_getTagAttribute($name, $attribs, $default, $isFlag, $checkForFalse, false);
 }
 
-function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $removeblk=false, $useGlobal=true) {
+function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal=true) {
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	if ($useGlobal && preg_match('|^\\\\?\$(.+)$|', $value, $regs)) {
 		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
 	}
-	$out = '';
 	if ($isFlag) {
 		$val = strtolower(trim($value));
 		if ($checkForFalse) {
@@ -85,14 +84,11 @@ function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $ch
 		} else {
 			return ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
 		}
-	} else {
-		$out = strlen($value) ? $value : $default;
-	}
-	if ($removeblk) {
-		$outA = explode('blk_', $out);
-		$out = $outA[0];
-	}
-	return htmlspecialchars_decode($out);
+	} 
+	
+	$value = strlen($value) ? $value : $default;
+	
+	return htmlspecialchars_decode($value);
 }
 
 // Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden

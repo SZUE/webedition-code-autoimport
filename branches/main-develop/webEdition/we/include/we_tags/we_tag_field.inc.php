@@ -25,12 +25,6 @@
 function we_tag_field($attribs, $content){
 	$name = we_getTagAttribute('_name_orig', $attribs);
 
-	// quickfix 4192
-/*	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
-		$nameA = explode("blk_",$name);
-		$name = $nameA[0];
-	}*/
-	// quickfix 4192
 	$href = we_getTagAttribute("href", $attribs);
 	$type = we_getTagAttribute("type", $attribs);
 	$alt = we_getTagAttribute("alt", $attribs);

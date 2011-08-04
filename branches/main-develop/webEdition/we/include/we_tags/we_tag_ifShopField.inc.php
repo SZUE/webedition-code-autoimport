@@ -35,11 +35,6 @@ function we_tag_ifShopField($attribs,$content) {
 	$shopname  = we_getTagAttribute("shopname", $attribs);
 	$operator  = we_getTagAttribute("operator", $attribs);
 
-	// quickfix 4192
-	if (isset($GLOBALS["lv"]->BlockInside) && !$GLOBALS["lv"]->BlockInside  ){ // if due to bug 4635
-		$matchA = explode("blk_",$match);
-		$match = $matchA[0];
-	}
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
 		$match = (int) $match;
 	}

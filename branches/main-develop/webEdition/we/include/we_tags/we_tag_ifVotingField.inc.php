@@ -32,9 +32,9 @@ function we_tag_ifVotingField($attribs,$content) {
 
 	$operator  = we_getTagAttribute("operator", $attribs);
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-    	$match = (int) we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+    	$match = (int) we_getTagAttributeTagParser("match",$attribs);
 	} else {
-		$match = we_getTagAttributeTagParser("match",$attribs,'',false,false,true);
+		$match = we_getTagAttributeTagParser("match",$attribs);
 	}
 	$atts = removeAttribs($attribs,array('match','operator'));
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
