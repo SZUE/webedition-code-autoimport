@@ -10,3 +10,4 @@ $GLOBALS['weTagWizard']['attribute']['id262_match'] = new weTagData_textAttribut
 $GLOBALS['weTagWizard']['attribute']['id705_userid'] = new weTagData_textAttribute('705', 'userid', false, '');
 $GLOBALS['weTagWizard']['attribute']['id744_cfilter'] = new weTagData_selectAttribute('744', 'cfilter', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 $GLOBALS['weTagWizard']['attribute']['id745_allowNoFilter'] = new weTagData_selectAttribute('745', 'allowNoFilter', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$GLOBALS['weTagWizard']['attribute']['id745_matchType'] = new weTagData_selectAttribute('746', 'matchType', array(new weTagDataOption('one', false, ''), new weTagDataOption('contains', false, ''), new weTagDataOption('exact', false, '')), false, '');
