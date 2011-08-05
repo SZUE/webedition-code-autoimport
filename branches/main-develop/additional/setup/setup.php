@@ -863,6 +863,7 @@ function step_installation() {
 	} else {
 		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php.default');
 		$we_config_global = file_get_contents('./webEdition/we/include/conf/we_conf_global.inc.php.default');
+		$we_active_modules = file_get_contents('./webEdition/we/include/conf/we_active_integrated_modules.inc.php.default');
 		//$we_config = str_replace('define("WE_LANGUAGE","English_UTF-8");','define("WE_LANGUAGE","'.$_SESSION["we_language"].'");',$we_config);
 		//$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\s*)+("\);)/i','$1'.$_SESSION["we_language"].'$3',$we_config);
 		//str_replace('define("TBL_PREFIX","");','define("TBL_PREFIX","'.$_SESSION["db_tableprefix"].'"',$we_config);
@@ -891,7 +892,7 @@ function step_installation() {
 
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_language"]);
 		$output .= tpl_ok("Saved database configuration.");
-		if(! (file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config) && file_put_contents('./webEdition/we/include/conf/we_conf_global.inc.php',$we_config_global) )) {
+		if(! (file_put_contents('./webEdition/we/include/conf/we_conf.inc.php',$we_config) && file_put_contents('./webEdition/we/include/conf/we_conf_global.inc.php',$we_config_global) && file_put_contents('./webEdition/we/include/conf/we_active_integrated_modules.inc.php',$we_active_modules) )) {
 			$output .= tpl_error("Could not write webEdition configuration files.");
 			$errors = true;
 		} else {
