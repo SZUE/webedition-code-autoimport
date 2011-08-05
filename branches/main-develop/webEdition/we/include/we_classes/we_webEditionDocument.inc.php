@@ -679,7 +679,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		return $out;
 	}
 
-	function i_writeDocument() {
+	protected function i_writeDocument() {
 		$this->setTemplatePath();
 		return parent::i_writeDocument();
 	}
@@ -836,7 +836,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	}
 
-	function i_getDocumentToSave() {
+	protected function i_getDocumentToSave() {
 
 		if ($this->IsDynamic) {
 

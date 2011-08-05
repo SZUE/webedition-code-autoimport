@@ -88,7 +88,7 @@ class we_imageDocument extends we_binaryDocument {
 	* @return we_imageDocument
 	*/
 	function we_imageDocument() {
-		$this->we_binaryDocument();
+		parent::__construct();
 		array_push($this->persistent_slots, "Thumbs");
 		array_push($this->EditPageNrs, WE_EDITPAGE_IMAGEEDIT);
 		array_push($this->EditPageNrs, WE_EDITPAGE_THUMBNAILS);
@@ -105,7 +105,7 @@ class we_imageDocument extends we_binaryDocument {
 	* @param boolean $from
 	*/
 	function we_load($from=LOAD_MAID_DB){
-		we_binaryDocument::we_load($from);
+		parent::we_load($from);
 	}
 
 	/**

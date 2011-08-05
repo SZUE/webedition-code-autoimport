@@ -293,13 +293,9 @@ class we_backup {
 	 */
 
 	function isPathExist($path) {
-		$tmp_db = new DB_WE;
-		$this->backup_db->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$tmp_db->escape($path)."'");
-		$tmp_db->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE Path='".$tmp_db->escape($path)."'");
-		if(($this->backup_db->next_record())||($tmp_db->next_record()))
-			return true;
-		else
-			return false;
+		$ret=f('SELECT 1 AS a FROM '.FILE_TABLE." WHERE Path='".$tmp_db->escape($path)."'",'a',$this->backup_db)=='1';
+		$ret|=f('SELECT 1 AS a FROM '.TEMPLATES_TABLE." WHERE Path='".$tmp_db->escape($path)."'",'a',$this->backup_db)=='1';
+		return $ret;
 	}
 
 	/**
@@ -410,8 +406,7 @@ class we_backup {
 	 */
 
 	function tableDefinition($table, $nl,$noprefix) {
-		$foo = "";
-		$foo .= "DROP TABLE IF EXISTS ".$this->backup_db->escape($noprefix).";$nl";
+		$foo = "DROP TABLE IF EXISTS ".$this->backup_db->escape($noprefix).";$nl";
 		$foo .= "CREATE TABLE ".$this->backup_db->escape($noprefix)." ($nl";
 		$this->backup_db->query("SHOW FIELDS FROM ".$this->backup_db->escape($table)."");
 		while($this->backup_db->next_record()) {
@@ -968,10 +963,10 @@ class we_backup {
 		if($fh_temp) @fclose ($fh_temp);
 		@fclose ($fh);
 		if(defined("WORKFLOW_TABLE")) {
-			$this->backup_db->query("DELETE FROM ".WORKFLOW_DOC_TABLE);
-			$this->backup_db->query("DELETE FROM ".WORKFLOW_DOC_STEP_TABLE);
-			$this->backup_db->query("DELETE FROM ".WORKFLOW_DOC_TASK_TABLE);
-			$this->backup_db->query("DELETE FROM ".WORKFLOW_LOG_TABLE);
+			$this->backup_db->query("TRUNCATE TABLE".WORKFLOW_DOC_TABLE);
+			$this->backup_db->query("TRUNCATE TABLE".WORKFLOW_DOC_STEP_TABLE);
+			$this->backup_db->query("TRUNCATE TABLE".WORKFLOW_DOC_TASK_TABLE);
+			$this->backup_db->query("TRUNCATE TABLE".WORKFLOW_LOG_TABLE);
 		}
 		return $num+1;
 	}
@@ -1104,7 +1099,7 @@ class we_backup {
 			$updater->updateCustomers();
 		}
 		if(!$this->handle_options["temporary"]){
-			$this->backup_db->query("DELETE FROM ".TEMPORARY_DOC_TABLE);
+			$this->backup_db->query("TRUNCATE TABLE ".TEMPORARY_DOC_TABLE);
 		}
 		$updater->updateScheduler();
 		$updater->updateNewsletter();

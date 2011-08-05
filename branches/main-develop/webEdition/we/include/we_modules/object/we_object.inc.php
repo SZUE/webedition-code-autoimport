@@ -2380,7 +2380,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 	}
 
-	function i_set_PersistentSlot($name,$value){
+	protected function i_set_PersistentSlot($name,$value){
 		if(in_array($name,$this->persistent_slots)){
 			eval('$this->'.$name.'=$value;');
 		}else{
@@ -2487,7 +2487,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 	}
 
-	function i_writeDocument(){
+	protected function i_writeDocument(){
 		return true; // we don't have to write!
 	}
 

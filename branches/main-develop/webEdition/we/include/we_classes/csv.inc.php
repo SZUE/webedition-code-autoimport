@@ -36,7 +36,7 @@ class CSV {
 
 	var $Filter;
 
-	function CSV() {
+	function __construct() {
 		$this->CSVError = array();
 		$this->CSVData = "";
 		$this->Filter = array();

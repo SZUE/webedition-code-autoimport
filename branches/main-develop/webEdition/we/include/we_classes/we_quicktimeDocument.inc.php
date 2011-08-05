@@ -41,7 +41,7 @@ class we_quicktimeDocument extends we_binaryDocument {
 
 	/* Constructor */
 	function we_quicktimeDocument(){
-		$this->we_binaryDocument();
+		parent::__construct();
 		array_push($this->EditPageNrs,WE_EDITPAGE_PREVIEW);
 	}
 

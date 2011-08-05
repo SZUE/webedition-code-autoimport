@@ -98,13 +98,14 @@ class weBackup extends we_backup{
 	function splitFile2() {
 		global $_language;
 		if($this->filename=="") return -1;
-		if($this->mode=="sql") return we_backup::splitFile($this->filename);
+		if($this->mode=="sql") return parent::splitFile($this->filename);
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 
 		return weXMLExIm::splitFile($this->filename,$this->backup_dir_tmp,$this->backup_steps);
 
 		$path=$this->backup_dir_tmp;
+		//FIXME: use RegEx
 		$marker="<!-- webackup -->";
 		$marker2="<!--webackup -->";//Backup 5089
 		$pattern=basename($this->filename)."_%s";
@@ -412,7 +413,7 @@ class weBackup extends we_backup{
 		$tab=$this->backup_db->table_names();
 
 		$xmlExport=new weXMLExIm();
-		$xmlExport->setBackupProfle();
+		$xmlExport->setBackupProfile();
 
 		foreach($tab as $k=>$v) {
 			$noprefix = $this->getDefaultTableName($v["table_name"]);
@@ -589,8 +590,7 @@ class weBackup extends we_backup{
 	}
 
 	function getDownloadFile() {
-		if($this->export2server) return $this->backup_dir.$this->filename;
-		else return $this->dumpfilename;
+		return ($this->export2server ? $this->backup_dir.$this->filename : $this->dumpfilename);
 	}
 
 	#==============================================================================#
@@ -611,7 +611,7 @@ class weBackup extends we_backup{
 		else if(stripos($tab,"tblobject")!==false){
 			return true;
 		}
-		return we_backup::isFixed($tab) || !$this->isWeTable($tab);
+		return parent::isFixed($tab) || !$this->isWeTable($tab);
 	}
 
 #==============================================================================#

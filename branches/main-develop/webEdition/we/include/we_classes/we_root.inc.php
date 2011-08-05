@@ -29,7 +29,7 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 }
 
 /* the parent class for tree-objects */
-class we_root extends we_class{
+abstract class we_root extends we_class{
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName="we_root";
@@ -102,13 +102,11 @@ class we_root extends we_class{
 	######################################################################################################################################################
 
 	/* Constructor */
-	function we_root(){
+	function __construct() {
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		$this->we_class();
-
+		parent::__construct();
  		array_push($this->persistent_slots,"OwnersReadOnly","ParentID","ParentPath","Text","Filename","Path","OldPath","CreationDate","ModDate","IsFolder","ContentType","Icon","elements","EditPageNr","CopyID","Owners","CreatorID","ModifierID","DefaultInit","RestrictOwners","WebUserID");
-
 	}
 
 	function makeSameNew(){
@@ -847,7 +845,7 @@ function formTriggerDocument($isclass=false){
 		return deleteContentFromDB($this->ID,$this->Table);
 	}
 
-	function i_getDefaultFilename(){
+	protected function i_getDefaultFilename(){
 	 	return f("SELECT MAX(ID) as ID FROM ".$this->DB_WE->escape($this->Table),"ID",$this->DB_WE)+1;
 	}
 
@@ -866,7 +864,7 @@ function formTriggerDocument($isclass=false){
 		$this->i_setElementsFromHTTP();
 	}
 
-	function i_initSerializedDat($sessDat){
+	protected function i_initSerializedDat($sessDat){
 		if(is_array($sessDat)){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
@@ -907,7 +905,7 @@ function formTriggerDocument($isclass=false){
 		}
 	}
 
-	function i_set_PersistentSlot($name,$value){
+	protected function i_set_PersistentSlot($name,$value){
 		if(in_array($name,$this->persistent_slots)){
 			eval('$this->'.$name.'=$value;');
 		}
@@ -973,7 +971,7 @@ function formTriggerDocument($isclass=false){
 
 
 
-	function i_isElement($Name){
+	protected function i_isElement($Name){
 		return true; // overwrite
 	}
 

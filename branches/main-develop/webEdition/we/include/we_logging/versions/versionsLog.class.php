@@ -37,9 +37,7 @@ class versionsLog extends logging{
 
 
 	function __construct() {
-
-		$this->table = VERSIONS_TABLE_LOG;
-		parent::__construct();
+		parent::__construct(VERSIONS_TABLE_LOG);
 
 	}
 
@@ -49,12 +47,6 @@ class versionsLog extends logging{
 		$this->data = serialize($logArray);
 
 		$this->saveLog();
-
-	}
-
-	function __destruct() {
-
-		parent::__destruct();
 
 	}
 

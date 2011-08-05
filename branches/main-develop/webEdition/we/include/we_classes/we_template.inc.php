@@ -322,7 +322,7 @@ class we_template extends we_document{
 
 ### NEU###
 
-	function i_isElement($Name){
+	protected function i_isElement($Name){
 		return (substr($Name,0,8) == "variant_" || $Name == "data" || $Name == "Charset" || $Name == "completeData" || $Name == "allVariants");
 	}
 
@@ -349,11 +349,11 @@ class we_template extends we_document{
 		return preg_replace("/(;|{|})( |\t)*\?>(\n)*<\?php ?/si","\\1\n",$this->parseTemplate());
   	}
 
-	function i_writeSiteDir($doc){
+	protected function i_writeSiteDir($doc){
 		return true;
 	}
 
-	function i_writeMainDir($doc){
+	protected function i_writeMainDir($doc){
 		if($this->i_isMoved()){
 			deleteLocalFile($this->getRealPath(1));
 		}

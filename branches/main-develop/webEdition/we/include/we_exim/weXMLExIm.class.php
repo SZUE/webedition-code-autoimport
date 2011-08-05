@@ -95,7 +95,7 @@
 
 		var $xmlBrowser;
 
-		function weXMLExIm($file=""){
+		function __construct($file=""){
 
 			$this->RefTable=new RefTable();
 			if($file!=""){
@@ -116,7 +116,7 @@
 			}
 		}
 
-		function setBackupProfle(){
+		function setBackupProfile(){
 			$options=array();
 			$options["handle_content"]=1;
 			$options["handle_table"]=1;
@@ -127,40 +127,59 @@
 		}
 
 		function getTable($ClassName){
-			if($ClassName=="we_template") return TEMPLATES_TABLE;
-			if($ClassName=="we_docTypes") return DOC_TYPES_TABLE;
-			if($ClassName=="we_category") return CATEGORY_TABLE;
-			if($ClassName=="weNavigation") return NAVIGATION_TABLE;
-			if($ClassName=="weNavigationRule") return NAVIGATION_RULE_TABLE;
-			if($ClassName=="we_thumbnail") return THUMBNAILS_TABLE;
-			if($ClassName=="weBinary") return '';
+			switch($ClassName){
+			case 'we_template':
+				return TEMPLATES_TABLE;
+			case 'we_docTypes':
+				return DOC_TYPES_TABLE;
+			case 'we_category':
+				return CATEGORY_TABLE;
+			case 'weNavigation':
+				return NAVIGATION_TABLE;
+			case 'weNavigationRule':
+				return NAVIGATION_RULE_TABLE;
+			case 'we_thumbnail':
+				return THUMBNAILS_TABLE;
+			case 'weBinary':
+				return '';
+			case 'we_object':
+				return OBJECT_TABLE;
+			case 'we_objectFile':
+				return OBJECT_FILES_TABLE;
 
-			if(defined("OBJECT_TABLE")){
-				if($ClassName=="we_object") return OBJECT_TABLE;
-				if($ClassName=="we_objectFile") return OBJECT_FILES_TABLE;
+			default:
+				return FILE_TABLE;
 			}
-
-			return FILE_TABLE;
 		}
 
 
 		function getTableForCT($we_ContentType,$table=""){
 			switch($we_ContentType){
-				case "doctype": return DOC_TYPES_TABLE;
-				case "category": return CATEGORY_TABLE;
-				case "object": if(defined("OBJECT_TABLE")) return OBJECT_TABLE; else return null;
-				case "text/weTmpl": return TEMPLATES_TABLE;
-				case "objectFile": if(defined("OBJECT_FILES_TABLE")) return OBJECT_FILES_TABLE;  else return null;
-				case "weBinary": return null;
-				case "weNavigation": return NAVIGATION_TABLE;
-				case "weNavigationRule": return NAVIGATION_RULE_TABLE;
-				case "weThumbnail": return THUMBNAILS_TABLE;
+				case "doctype": 
+					return DOC_TYPES_TABLE;
+				case "category": 
+					return CATEGORY_TABLE;
+				case "object": 
+					if(defined("OBJECT_TABLE")) return OBJECT_TABLE; else return null;
+				case "text/weTmpl": 
+					return TEMPLATES_TABLE;
+				case "objectFile": 
+					if(defined("OBJECT_FILES_TABLE")) return OBJECT_FILES_TABLE;  else return null;
+				case "weBinary": 
+					return null;
+				case "weNavigation": 
+					return NAVIGATION_TABLE;
+				case "weNavigationRule": 
+					return NAVIGATION_RULE_TABLE;
+				case "weThumbnail": 
+					return THUMBNAILS_TABLE;
 				case "folder":
 					if(!empty($table)) {
 						return $table;
 					}
+					//intentionally no break
+				default:
 					return FILE_TABLE;
-				default: return FILE_TABLE;
 			 }
 		}
 
@@ -207,19 +226,32 @@
 
 		function handleTag($tag){
 				switch($tag){
-					case "we:document": return $this->options["handle_documents"];
-					case "we:template": return $this->options["handle_templates"];
-					case "we:class": return $this->options["handle_classes"];
-					case "we:object": return $this->options["handle_objects"];
-					case "we:doctype": return $this->options["handle_doctypes"];
-					case "we:category": return $this->options["handle_categorys"];
-					case "we:content": return $this->options["handle_content"];
-					case "we:table": return $this->options["handle_table"];
-					case "we:tableitem": return $this->options["handle_tableitems"];
-					case "we:binary": return $this->options["handle_binarys"];
-					case "we:navigation": return $this->options["handle_navigation"];
-					case "we:navigationrule": return $this->options["handle_navigation"];
-					case "we:thumbnail": return $this->options["handle_thumbnails"];
+					case "we:document":
+						return $this->options["handle_documents"];
+					case "we:template": 
+						return $this->options["handle_templates"];
+					case "we:class": 
+						return $this->options["handle_classes"];
+					case "we:object": 
+						return $this->options["handle_objects"];
+					case "we:doctype": 
+						return $this->options["handle_doctypes"];
+					case "we:category": 
+						return $this->options["handle_categorys"];
+					case "we:content": 
+						return $this->options["handle_content"];
+					case "we:table": 
+						return $this->options["handle_table"];
+					case "we:tableitem": 
+						return $this->options["handle_tableitems"];
+					case "we:binary": 
+						return $this->options["handle_binarys"];
+					case "we:navigation": 
+						return $this->options["handle_navigation"];
+					case "we:navigationrule": 
+						return $this->options["handle_navigation"];
+					case "we:thumbnail": 
+						return $this->options["handle_thumbnails"];
 					default: return 1;
 				}
 		}
@@ -283,7 +315,7 @@
 	 		$db = new DB_WE();
 	 		$parentpaths = array();
 	 		$wsQuery = '';
-			if($ws = get_ws($table)) {
+			if(($ws = get_ws($table))) {
 				$wsPathArray = id_to_path($ws,$table,$db,false,true);
 				foreach($wsPathArray as $path){
 					if($wsQuery!='') $wsQuery .=' OR ';
@@ -372,11 +404,9 @@
 		}
 
 		function importInfoMap($nodeset) {
-
 		}
 
 		function isBinary() {
-
 		}
 
 
@@ -402,11 +432,11 @@
 					if(in_array("savebinarydata",get_class_methods(get_class($object)))) {
 						$object->setElement("data", "");
 					}
-
-
-
 				}
 			}
 		}
 
-	}
+//FIXME: splitFile missing - called in Backup class
+		
+		
+		}

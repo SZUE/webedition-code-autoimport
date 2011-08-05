@@ -32,8 +32,7 @@ if (defined('WE_TAG_GLOBALS') && !we_isLocalRequest()) {
 }
 
 /* the parent class of storagable webEdition classes */
-
-class we_class {
+abstract class we_class{
 	######################################################################################################################################################
 	##################################################################### Variables ######################################################################
 	######################################################################################################################################################
@@ -67,9 +66,12 @@ class we_class {
 	##################################################################### FUNCTIONS ######################################################################
 	######################################################################################################################################################
 
-	/* Constructor */
+	abstract function we_new();
+	abstract function we_initSessDat($sessDat);
 
-	function we_class() {
+	
+	/* Constructor */
+	function __construct(){
 		$this->Name = md5(uniqid(rand()));
 		array_push($this->persistent_slots, "ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition");
 		$this->DB_WE = new DB_WE;
@@ -186,8 +188,7 @@ class we_class {
 	}
 
 	/* creates a color field. when user clicks, a colorchooser opens. Data that will be stored at the $elements Array */
-
-	function formColor($width=100, $name, $size=25, $type="txt", $height=18, $isTag=false) {
+	function formColor($width,$name,$size=25,$type="txt",$height=18,$isTag=false){
 		$value = $this->getElement($name);
 		if (!$isTag) {
 			$width -= 4;
@@ -215,11 +216,18 @@ class we_class {
 			eval('$ps=$this->' . $name . ";");
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
+<<<<<<< .mine
+	function formInputField($elementtype,$name,$text,$size,$width,$maxlength="",$attribs="",$textalign="left",$textclass="defaultfont"){
+		global $l_we_class;
+		if(!$elementtype) eval('$ps=$this->'.$name.";");
+		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_".$this->Name."_".$elementtype."[$name]") : ("we_".$this->Name."_".$name)),$size, ($elementtype && $this->getElement($name) != "" ? $this->getElement($name) : (isset($GLOBALS["meta"][$name]) ? $GLOBALS["meta"][$name]["default"] : (isset($ps) ? $ps : "") )),$maxlength,$attribs,"text",$width),$text,$textalign,$textclass);
+=======
 
 	function formInputField($elementtype, $name, $text, $size=24, $width, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
 		if (!$elementtype)
 			eval('$ps=$this->' . $name . ";");
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, ($elementtype && $this->getElement($name) != "" ? $this->getElement($name) : (isset($GLOBALS["meta"][$name]) ? $GLOBALS["meta"][$name]["default"] : (isset($ps) ? $ps : "") )), $maxlength, $attribs, "text", $width), $text, $textalign, $textclass);
+>>>>>>> .r3130
 	}
 
 	function formPasswordInput($elementtype, $name, $text, $size=24, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
@@ -344,9 +352,15 @@ class we_class {
 
 	############## new fns
 	/* creates a select field for entering Data that will be stored at the $elements Array */
+<<<<<<< .mine
+	function formSelectElement2($width,$name,$values,$type="txt",$size=1,$attribs=""){
+		global $l_we_class;
+		$out = '<select class="defaultfont" name="we_'.$this->Name."_".$type."[$name]".'" size="'.$size.'"'.($width ? ' style="width: '.$width.'px"' : '').($attribs ? " $attribs" : '').'>'."\n";
+=======
 
 	function formSelectElement2($width="", $name, $values, $type="txt", $size=1, $attribs="") {
 		$out = '<select class="defaultfont" name="we_' . $this->Name . "_" . $type . "[$name]" . '" size="' . $size . '"' . ($width ? ' style="width: ' . $width . 'px"' : '') . ($attribs ? " $attribs" : '') . '>' . "\n";
+>>>>>>> .r3130
 		$value = $this->getElement($name);
 		reset($values);
 		while (list($val, $txt) = each($values)) {
@@ -357,9 +371,25 @@ class we_class {
 	}
 
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
+<<<<<<< .mine
+	function formInput2($width,$name,$size=25,$type="txt",$attribs=""){
+		global $l_we_class;
+		return $this->formInputField($type,$name,(isset($l_we_class[$name]) ? $l_we_class[$name] : $name),$size,$width,"",$attribs);
+	}
+=======
+>>>>>>> .r3130
 
+<<<<<<< .mine
+	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element*/
+	function formInputInfo2($width,$name,$size,$type="txt",$attribs="",$infoname){
+		global $l_we_class;
+		$info=$this->getElement($infoname);
+		$infotext = " (".(isset($l_we_class[$infoname]) ? $l_we_class[$infoname] : $infoname) .": ".$info.")";
+		return $this->formInputField($type,$name,(isset($l_we_class[$name]) ? $l_we_class[$name] : $name).$infotext,$size,$width,"",$attribs);
+=======
 	function formInput2($width="", $name, $size=25, $type="txt", $attribs="") {
 		return $this->formInputField($type, $name, (g_l('weClass','['.$name.']')!=false ? g_l('weClass','['.$name.']') : $name), $size, $width, "", $attribs);
+>>>>>>> .r3130
 	}
 
 	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element */
@@ -451,10 +481,13 @@ class we_class {
 		$this->documentCustomerFilter = weDocumentCustomerFilter::getFilterOfDocument($this);
 	}
 
+<<<<<<< .mine
+=======
 	function we_new() {
 		// overwrite
 	}
 
+>>>>>>> .r3130
 	function we_load($from=LOAD_MAID_DB) {
 		$this->i_getPersistentSlotsFromDB();
 	}
@@ -464,10 +497,13 @@ class we_class {
 		return $this->i_savePersistentSlotsToDB();
 	}
 
+<<<<<<< .mine
+=======
 	function we_initSessDat($sessDat) {
 		// overwrite
 	}
 
+>>>>>>> .r3130
 	function we_publish($DoNotMark=false, $saveinMainDB=true) {
 		return true; // overwrite
 	}
@@ -628,7 +664,7 @@ class we_class {
 				}
 			}
 			foreach ($LangLinkArray as $locale => $LDID){
-				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+				if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE))){
 					if ($LDID>0){
 						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
 					} else {
@@ -661,7 +697,7 @@ class we_class {
 				}
 				if(( (defined('LANGLINK_SUPPORT_BACKLINKS') && LANGLINK_SUPPORT_BACKLINKS) || (defined('LANGLINK_SUPPORT_RECURSIVE') && LANGLINK_SUPPORT_RECURSIVE) ) && !$isfolder && $LDID<0&& $LDID!=$this->ID){
 					$q='';
-					if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+					if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE))){
 						if ($LDID>0){
 							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
 						} 
@@ -685,7 +721,7 @@ class we_class {
 						if(count($rows)>1){
 							for($i=0;$i<count($rows)-1;$i++){
 								if($rows[$i]['LDID']  && $rows[$i+1]['LDID']){
-									if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i]['LDID'])."' AND DLocale='".$rows[$i]['Locale']."' AND LDID='".abs($rows[$i+1]['LDID'])."' AND Locale='".$rows[$i+1]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
+									if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i]['LDID'])."' AND DLocale='".$rows[$i]['Locale']."' AND LDID='".abs($rows[$i+1]['LDID'])."' AND Locale='".$rows[$i+1]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE))){
 										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."',Locale='".$rows[$i+1]['Locale']."' WHERE ID='".abs($ID)."'";
 									} else {
 										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."', Locale='".$rows[$i+1]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					

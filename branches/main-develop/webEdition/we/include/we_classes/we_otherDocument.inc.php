@@ -57,7 +57,7 @@ class we_otherDocument extends we_binaryDocument
 				break;
 		}
 		/* End: Do we use this? */
-		$this->we_binaryDocument();
+		parent::__construct();
 		array_push($this->EditPageNrs,WE_EDITPAGE_PREVIEW);
 	}
 
@@ -90,7 +90,7 @@ class we_otherDocument extends we_binaryDocument
 
 	function we_save($resave=0){
 		$this->Icon = we_getIcon($this->ContentType, $this->Extension);
-		return we_binaryDocument::we_save($resave);
+		return parent::we_save($resave);
 	}
 	function insertAtIndex(){
 		$text = "";

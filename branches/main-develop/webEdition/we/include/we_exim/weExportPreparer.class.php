@@ -204,7 +204,6 @@
 					}
 				}
 			}
-
 		}
 
 		function isPathLocal($path){

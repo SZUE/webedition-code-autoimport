@@ -498,9 +498,4 @@ class versionsLogView {
 
 	}
 
-	function __destruct() {
-
-
-	}
-
 }

@@ -83,7 +83,7 @@ class we_document extends we_root {
 		if(defined('INCLUDE_ALL_WE_TAGS')){
 			if(function_exists('include_all_we_tags')) {include_all_we_tags();}
 		}
-		$this->we_root();
+		parent::__construct();
 		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
 		array_push($this->persistent_slots,'schedArr');
 	}
@@ -350,34 +350,15 @@ class we_document extends we_root {
 	}
 
 	function formMetaInfos() {
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td colspan="2">
-						'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-				</tr>
-				<tr>
-					<td>
-						'.getPixel(2,4).'</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-				</tr>
-				<tr>
-					<td>
-						'.getPixel(2,4).'</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-				</tr>';
-
-			$content .= '</table>';
+		$content = '<table border="0" cellpadding="0" cellspacing="0">'.
+				'<tr><td colspan="2">'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
+				'<tr><td>'.getPixel(2,4).'</td></tr>'.
+				'<tr><td colspan="2">'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
+				'<tr><td>'.getPixel(2,4).'</td></tr>'.
+				'<tr><td colspan="2">'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
+			'</table>';
 			if($this->ContentType == 'image/*' && (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != '1')) {
-				$content .= $this->formCharset(true);
-
-				$content .= $this->formLanguage(true);
+				$content .= $this->formCharset(true).$this->formLanguage(true);
 			}
 		return $content;
 	}
@@ -760,7 +741,7 @@ class we_document extends we_root {
 			$this->Extension = $this->Extensions[0];
 		}
 		if(!isset($GLOBALS['WE_IS_DYN']) && ($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE)) {
-			if($ws = get_ws($this->Table)) {
+			if(($ws = get_ws($this->Table))) {
 				$foo = makeArrayFromCSV($ws);
 				if(sizeof($foo)) {
 					$this->setParentID(abs($foo[0]));
@@ -850,7 +831,6 @@ class we_document extends we_root {
 	function saveInSession(&$save){
 		parent::saveInSession($save);
 		$save[2] = $this->NavigationItems;
-
 	}
 
 	// reverse function to saveInSession !!!
@@ -936,29 +916,29 @@ class we_document extends we_root {
 		return ($this->OldPath && ($this->Path != $this->OldPath));
 	}
 
-	function i_writeSiteDir($doc) {
+	protected function i_writeSiteDir($doc) {
 		if($this->i_isMoved()) {
 			deleteLocalFile($this->getSitePath(1));
 		}
 		return saveFile($this->getSitePath(),$doc);
 	}
 
-	function i_writeMainDir($doc) {
+	protected function i_writeMainDir($doc) {
 		if($this->i_isMoved()) {
 			deleteLocalFile($this->getRealPath(1));
 		}
 		return saveFile($this->getRealPath(),$doc);
 	}
 
-	function i_deleteSiteDir() {
+	private function i_deleteSiteDir() {
 		return deleteLocalFile($this->getSitePath());
 	}
 
-	function i_deleteMainDir() {
+	private function i_deleteMainDir() {
 		return deleteLocalFile($this->getRealPath());
 	}
 
-	function i_writeDocument() {
+	protected function i_writeDocument() {
 		$doc = $this->i_getDocumentToSave();
 		if($doc || $doc=='') {
 			if(!$this->i_writeSiteDir($doc))
@@ -973,7 +953,7 @@ class we_document extends we_root {
 		return true;
 	}
 
-	function i_getDocumentToSave() {
+	protected function i_getDocumentToSave() {
 		$this->DocStream = $this->DocStream ? $this->DocStream : $this->i_getDocument();
 		return $this->DocStream;
 	}
@@ -1459,8 +1439,7 @@ class we_document extends we_root {
 	}
 
 	function getLinkStartTag($link,$attribs,$parentID=0,$path='',$db='',$img='',$_useName='',$hidedirindex=false,$objectseourls=false) {
-
-		if ($l_href = we_document::getLinkHref($link, $parentID, $path, $db,$hidedirindex,$objectseourls)) {
+		if (($l_href = we_document::getLinkHref($link, $parentID, $path, $db,$hidedirindex,$objectseourls))) {
 
 		    include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 
@@ -1773,7 +1752,7 @@ class we_document extends we_root {
 
 		$inputName = 'we_'.$this->Name."_txt[$name]";
 
-		$_headline = '';
+		$_headline = ($withHeadline? '<tr><td class="defaultfont">' . $GLOBALS['l_we_class']['Charset'] . '</td></tr>' : '');
 
 		if($withHeadline){
 			$_headline = '
@@ -1783,18 +1762,9 @@ class we_document extends we_root {
 			';
 		}
 
-		$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
-				' . $_headline . '
-				<tr>
-					<td>
-						' . $this->htmlTextInput($inputName, 24, $value) . '</td>
-					<td></td>
-					<td>
-						' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, "  onblur=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName. "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\" onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName. "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\"", "value", 330) . '</td>
-				</tr>
-			</table>';
-		return $content;
+		return '<table border="0" cellpadding="0" cellspacing="0">' . $_headline .
+				'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, "  onblur=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName. "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\" onchange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName. "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');\"", "value", 330) . '</td></tr>'.
+			'</table>';
 	}
 
 
@@ -1834,7 +1804,7 @@ class we_document extends we_root {
 		}
 	}
 
-	function i_deleteNavigation() {
+	private function i_deleteNavigation() {
 		$this->DB_WE->query('DELETE FROM '.NAVIGATION_TABLE.' WHERE ' . weNavigation::getNavCondition($this->ID, $this->Table));
 		return true;
 	}

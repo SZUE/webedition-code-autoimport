@@ -25,7 +25,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 
-class logging{
+abstract class logging{
 
 
 	public $db;
@@ -36,12 +36,13 @@ class logging{
 
 
 
-	function __construct() {
+	function __construct($_table) {
 
 		$this->db = new DB_WE();
 		$this->userID = $_SESSION['user']['ID'];
 		$this->timestamp = time();
 		$this->loadPresistents();
+		$this->table=$_table;
 
 	}
 
@@ -98,12 +99,6 @@ class logging{
 			$query = 'INSERT INTO '.$this->db->escape($this->table).' ('.$keys.') VALUES ('.$values.')';
 			$this->db->query($query);
 		}
-
-	}
-
-	function __destruct() {
-
-		unset($this);
 
 	}
 

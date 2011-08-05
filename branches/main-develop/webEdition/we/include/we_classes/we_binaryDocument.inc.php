@@ -60,7 +60,7 @@ class we_binaryDocument extends we_document
 	* @return we_binaryDocument
 	* @desc Constructor for we_binaryDocument
 	*/
-	function we_binaryDocument(){
+	function __construct(){
 		$this->we_document();
 		array_push($this->persistent_slots,"html","DocChanged");
 	}
@@ -130,7 +130,7 @@ class we_binaryDocument extends we_document
 		return (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
 	}
 	
-	function i_writeDocument(){
+	protected function i_writeDocument(){
 		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			if ($this->elements["data"]["dat"]!=$this->getSitePath()){				
 				if(!we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath())){
@@ -146,7 +146,7 @@ class we_binaryDocument extends we_document
 		return true;
 	}
 	
-	function i_writeSiteDir($doc) {
+	protected function i_writeSiteDir($doc) {
 		$is_ok = false;
 		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath());
@@ -157,7 +157,7 @@ class we_binaryDocument extends we_document
 		return $is_ok;
 	}
 
-	function i_writeMainDir($doc) {
+	protected function i_writeMainDir($doc) {
 		$is_ok = false;
 		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"],$this->getRealPath());

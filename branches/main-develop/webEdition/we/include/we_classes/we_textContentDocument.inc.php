@@ -499,7 +499,7 @@ class we_textContentDocument extends we_textDocument{
 	}
 ### private ####
 
-	function i_saveTmp($write=true){
+	private function i_saveTmp($write=true){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
@@ -511,12 +511,14 @@ class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	function i_writeMainDir($doc){
+	protected function i_writeMainDir($doc){
 		return true; // do nothing!
 	}
 
-	function i_writeDocWhenPubl(){
-		if(!$this->ID) return false;
+	private function i_writeDocWhenPubl(){
+		if(!$this->ID){
+			return false;
+		}
 		$realPath = $this->getRealPath();
 		$parent = dirname($realPath);
         $parent = str_replace("\\","/",$parent);

@@ -67,12 +67,10 @@
 
 			}
 
-			$count=count($objects);
 			$save=false;
-			for($i=0;$i<$count;$i++){
+			foreach($objects as $object){
 
 				$extra=array();
-				$object=$objects[$i];
 				if(!empty($object)){
 
 					$save=true;

@@ -357,7 +357,7 @@ $contentDiff .= '</td></tr>';
 			if($isTempl && class_exists('Text_Diff',false) && $pre!=''){
 				$oldVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$oldVal)));
         $newVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$newVal)));
-        $diff = new Text_Diff('native', array(($oldVersion?$oldVal:''),$newVal));
+        $diff = new Text_Diff('native', array(($oldVersion&&$oldVal?$oldVal:''),($newVal?$newVal:'')));
 				$renderer = new Text_Diff_Renderer_inline(array('ins_prefix' => '###INS_START###','ins_suffix' => '###INS_END###',
                                             'del_prefix' => '###DEL_START###','del_suffix' => '###DEL_END###',));
 

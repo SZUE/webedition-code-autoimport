@@ -59,7 +59,7 @@ class we_flashDocument extends we_binaryDocument
 
 	/* Constructor */
 	function we_flashDocument(){
-		$this->we_binaryDocument();
+		parent::__construct();
 		array_push($this->EditPageNrs,WE_EDITPAGE_PREVIEW);
 	}
 

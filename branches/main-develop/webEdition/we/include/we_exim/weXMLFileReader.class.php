@@ -117,7 +117,7 @@ class weXMLFileReader {
 						if($i < $lines) {
 							$_condition = true && !$eof($_fp);;
 						} else {
-							$_condition = false && !$eof($_fp);;
+							$_condition = false;
 						}
 						$i++;
 					}

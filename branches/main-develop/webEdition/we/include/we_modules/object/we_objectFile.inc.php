@@ -2277,7 +2277,7 @@ class we_objectFile extends we_document{
 		$this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_Published=0 WHERE OF_ID=".$this->ID);
 	}
 
-	function i_convertElemFromRequest($type,&$v,$k){
+	protected function i_convertElemFromRequest($type,&$v,$k){
 		if(!$type){
 			foreach($this->DefArray as $n=>$foo){
 				if(ereg('^([^_]+)_'.$k,$n,$regs)){
@@ -2696,7 +2696,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_set_PersistentSlot($name,$value){
+	protected function i_set_PersistentSlot($name,$value){
 		if(in_array($name,$this->persistent_slots)){
 			eval('$this->'.$name.'=$value;');
 		}else{
@@ -2859,7 +2859,7 @@ class we_objectFile extends we_document{
 		return false;
 	}
 
-	function i_writeDocument(){
+	protected function i_writeDocument(){
 		return true;// do nothing;
 	}
 
@@ -2977,7 +2977,7 @@ class we_objectFile extends we_document{
 		return false;
 	}
 
-	function i_saveTmp(){
+	private function i_saveTmp(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;

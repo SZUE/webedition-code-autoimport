@@ -49,11 +49,6 @@
 		} // end: PHP5 Constructor
 
 
-		function __destruct() {
-
-		} // end: Destructor
-
-
 		function getJS($jsPath) {
 
 			$src =		'';

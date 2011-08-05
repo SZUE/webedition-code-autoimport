@@ -255,10 +255,7 @@ class liveUpdateFrames {
 
 				case "deleteEntries":
 
-					$delQuery = "
-						DELETE FROM " . UPDATE_LOG_TABLE . "
-						$condition
-					";
+					$delQuery = "DELETE FROM " . UPDATE_LOG_TABLE . " $condition";
 
 					$GLOBALS['DB_WE']->query($delQuery);
 

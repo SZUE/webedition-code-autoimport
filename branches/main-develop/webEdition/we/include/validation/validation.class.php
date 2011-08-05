@@ -82,9 +82,7 @@
 
         function deleteService($validationService){
             if($validationService->id != 0){
-                $query = '
-                    DELETE FROM ' . VALIDATION_SERVICES_TABLE . '
-                        WHERE PK_tblvalidationservices = ' . abs($validationService->id);
+                $query = 'DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . abs($validationService->id);
 
                 if($GLOBALS['DB_WE']->query($query)){
                     return true;
