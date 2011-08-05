@@ -52,9 +52,9 @@ class we_webEditionDocument extends we_textContentDocument {
 	var $ContentType="text/webedition";
 
 	// Only needed for output
-	var $CacheType = "none";
+/*	var $CacheType = "none";
 	var $CacheLifeTime = 0;
-
+*/
 	var $hasVariants=null;
 
 	/**
@@ -490,7 +490,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		$this->setTemplatePath();
 	}
 
-	function setCache() {
+/*	function setCache() {
 		if($this->TemplateID) {
 			$this->CacheLifeTime = f("SELECT CacheLifeTime FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"CacheLifeTime",$this->DB_WE);
 			if($this->CacheLifeTime > 0) {
@@ -502,7 +502,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$this->CacheType = "none";
 			$this->CacheLifeTime = 0;
 		}
-	}
+	}*/
 
 	function we_new() {
 		we_textContentDocument::we_new();

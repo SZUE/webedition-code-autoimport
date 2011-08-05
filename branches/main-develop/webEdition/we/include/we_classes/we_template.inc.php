@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_linklist.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tagParser.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
+//include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 /* a class for handling templates */
 class we_template extends we_document{
@@ -54,9 +54,9 @@ class we_template extends we_document{
    /* Constructor */
     function we_template(){
         $this->we_document();
-        $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
-        $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
-		array_push($this->persistent_slots,"MasterTemplateID","IncludedTemplates","CacheType","CacheLifeTime", "TagWizardCode", "TagWizardSelection");
+        /*$this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
+        $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;*/
+		array_push($this->persistent_slots,"MasterTemplateID","IncludedTemplates",/*"CacheType","CacheLifeTime",*/ "TagWizardCode", "TagWizardSelection");
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
@@ -600,7 +600,7 @@ class we_template extends we_document{
 			$button);
 	}
 
-	function formCacheTempl() {
+/*	function formCacheTempl() {
 		global $l_we_cache;
 
 
@@ -628,7 +628,7 @@ class we_template extends we_document{
 				</tr>
 			</table>';
 		return $content;
-	}
+	}*/
 
 	/**
 	 * @desc 	this function returns the code of the unparsed template

@@ -26,7 +26,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_document.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
+//FIMXE: remove include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
 
@@ -62,7 +62,7 @@ class we_object extends we_document {
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_WORKSPACE,WE_EDITPAGE_INFO,WE_EDITPAGE_CONTENT); // ,WE_EDITPAGE_PREVIEW
 
 	var $InWebEdition = false;
-	var $CSS = "";
+	var $CSS = '';
 	//######################################################################################################################################################
 	//##################################################################### FUNCTIONS ######################################################################
 	//######################################################################################################################################################
@@ -73,9 +73,9 @@ class we_object extends we_document {
 	/* Constructor */
 	function we_object(){
 		$this->we_document();
-        $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
-        $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
-		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID","DefaultDesc","CSS","CacheType","CacheLifeTime");
+        /*$this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
+        $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;*/
+		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID","DefaultDesc","CSS"/*,"CacheType","CacheLifeTime"*/);
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;
 		}
@@ -2116,7 +2116,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		return $css->get();
 	}
 
-	function formCache() {
+/*	function formCache() {
 		global $l_we_cache;
 
 		$content = '
@@ -2143,7 +2143,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				</tr>
 			</table>';
 		return $content;
-	}
+	}*/
 
 	function formCopyDocument(){
 		$we_button = new we_button();

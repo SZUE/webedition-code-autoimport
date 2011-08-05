@@ -45,9 +45,9 @@ class weXMLBrowser extends XML_Parser{
 		return $this->evaluate($xpath);
 	}
 
-	function setCache($location){
+	/*function setCache($location){
 		$this->cache=$location;
-	}
+	}*/
 
 	function saveCache($cache='',$expire=0){
 		if(empty($cache)){

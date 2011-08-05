@@ -249,11 +249,11 @@ if((!defined("WE_CONTENT_TYPE_SET")) && isset($GLOBALS["we_doc"]->Charset) && $G
 
 // Caching
 
-$h = getHash("Select CacheType, CacheLifeTime FROM ".OBJECT_TABLE." WHERE ID='".$we_doc->TableID."'",$DB_WE);
+/*$h = getHash("Select CacheType, CacheLifeTime FROM ".OBJECT_TABLE." WHERE ID='".$we_doc->TableID."'",$DB_WE);
 
 $we_doc->CacheType = isset($h["CacheType"]) ? $h["CacheType"] : "none";
 $we_doc->CacheLifeTime = isset($h["CacheLifeTime"]) ? $h["CacheLifeTime"] : 0;
-
+*/
 //	If in webEdition, parse the document !!!!
 if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]){		//	In webEdition, parse the file.
 	$contentOrig = join('', file(TEMPLATE_DIR . $tmplPath));

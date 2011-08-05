@@ -102,9 +102,9 @@ class we_core_Translate extends Zend_Translate
 		}
 		
 		@Zend_Loader::loadClass($adapter);
-		if (self::$_cache !== null) {
+		/*if (self::$_cache !== null) {
 			call_user_func(array($adapter, 'setCache'), self::$_cache);
-		}
+		}*/
 		$this->_adapter = new $adapter($data, $locale, $options);
 		if (!$this->_adapter instanceof Zend_Translate_Adapter) {
 			require_once 'Zend/Translate/Exception.php';

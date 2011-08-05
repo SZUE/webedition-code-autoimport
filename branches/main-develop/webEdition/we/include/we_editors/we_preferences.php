@@ -299,14 +299,14 @@ function get_value($settingvalue) {
 		 * CACHING
 		 *********************************************************************/
 
-		case "cache_type":
+/*		case "cache_type":
 			return defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
 			break;
 
 		case "cache_lifetime":
 			return defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;
 			break;
-
+*/
 		/*********************************************************************
 		 * LANGUAGE
 		 *********************************************************************/
@@ -2121,7 +2121,7 @@ $_we_active_integrated_modules = array();
 			 * CACHING
 			 *****************************************************************/
 
-			case '$_REQUEST["cache_type"]':
+			/*case '$_REQUEST["cache_type"]':
 				$_update_prefs = false;
 				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_CACHE_TYPE", $settingvalue, 'Cache Type')) {
 					$_update_prefs = true;
@@ -2139,7 +2139,7 @@ $_we_active_integrated_modules = array();
 					$_update_prefs = true;
 				}
 				break;
-
+*/
 
 			/*****************************************************************
 			 * JUPLOAD
@@ -2387,7 +2387,7 @@ $_we_active_integrated_modules = array();
 			 * CACHING
 			 *****************************************************************/
 
-			case '$_REQUEST["cache_type"]':
+			/*case '$_REQUEST["cache_type"]':
 				$_update_prefs = false;
 				if(weConfParser::setGlobalPrefInContent($GLOBALS['config_files']['conf_global']['content'], "WE_CACHE_TYPE", 'none', 'Cache Type')) {
 					$_update_prefs = true;
@@ -2400,7 +2400,7 @@ $_we_active_integrated_modules = array();
 					$_update_prefs = true;
 				}
 				break;
-
+*/
 			/*****************************************************************
 			 * COCKPIT
 			 *****************************************************************/
@@ -2784,9 +2784,9 @@ function save_all_values() {
 	 * CACHING
 	 *************************************************************************/
 
-	$_update_prefs = remember_value(isset($_REQUEST["cache_type"]) ? $_REQUEST["cache_type"] : 'none', '$_REQUEST["cache_type"]');
+/*	$_update_prefs = remember_value(isset($_REQUEST["cache_type"]) ? $_REQUEST["cache_type"] : 'none', '$_REQUEST["cache_type"]');
 	$_update_prefs = remember_value(isset($_REQUEST["cache_lifetime"]) ? $_REQUEST["cache_lifetime"] : 0, '$_REQUEST["cache_lifetime"]');
-
+*/
 	/*************************************************************************
 	 * Frontend Languages
 	 *************************************************************************/
@@ -3771,7 +3771,7 @@ function build_dialog($selected_setting = "ui") {
 				 * Information
 				 *****************************************************************/
 
-				$_information = htmlAlertAttentionBox(g_l('prefs','[cache_information]'), 2, 450, false);
+				//$_information = htmlAlertAttentionBox(g_l('prefs','[cache_information]'), 2, 450, false);
 
 				// Build dialog if user has permission
 				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
@@ -3782,7 +3782,7 @@ function build_dialog($selected_setting = "ui") {
 				 *****************************************************************/
 
 				// Cache Type
-				$cache_type = new we_htmlSelect(array("name" => 'cache_type', "style" => "width:200px;", "class" => "weSelect", "onChange" => 'if(this.value==\'none\') { document.forms[0].elements[\'cache_lifetime\'].value=0;document.forms[0].elements[\'tmp_cache_lifetime]\'].value=0; } ',));
+/*				$cache_type = new we_htmlSelect(array("name" => 'cache_type', "style" => "width:200px;", "class" => "weSelect", "onChange" => 'if(this.value==\'none\') { document.forms[0].elements[\'cache_lifetime\'].value=0;document.forms[0].elements[\'tmp_cache_lifetime]\'].value=0; } ',));
 				$cache_type->addOption('none', g_l('prefs','[cache_type_none]'));
 				$cache_type->addOption('tag', g_l('prefs','[cache_type_wetag]'));
 				$cache_type->addOption('document', g_l('prefs','[cache_type_document]'));
@@ -3793,16 +3793,16 @@ function build_dialog($selected_setting = "ui") {
 				$_lifeTime = htmlTextInput('cache_lifetime', 8, get_value("cache_lifetime"), 255, "", "text", 100);
 				$_lifeTimeChooser = htmlSelect("tmp_cache_lifetime]", g_l('prefs','[cache_lifetimes]'), 1, get_value("cache_lifetime"), false,"onChange=\"document.forms[0].elements['cache_lifetime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['cache_lifetime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont");
 				$cache_lifetime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lifeTime . '</td><td>' . $_lifeTimeChooser . '</td></tr></table>';
-
+*/
 				// Build final HTML code
-				$_add_html	=	g_l('prefs','[cache_type]') . "<br />"
+/*				$_add_html	=	g_l('prefs','[cache_type]') . "<br />"
 							.	$cache_type->getHtmlCode() . "<br /><br />"
 							.	g_l('prefs','[cache_lifetime]') . "<br />"
 							.	$cache_lifetime;
 
 				// Build dialog element if users has permission
 				array_push($_settings, array("headline" => g_l('prefs','[cache_presettings]'), "html" => $_add_html, "space" => 200));
-
+*/
 
 
 				/*****************************************************************

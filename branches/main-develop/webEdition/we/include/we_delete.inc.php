@@ -435,11 +435,11 @@ if (!$wfchk) {
 												$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);' . "\n";
 											} else {
 
-												if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache" || defined(
+												/*if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache" || defined(
 														"FILE_TABLE") && $table == FILE_TABLE . "_cache") {
 													$delete_ok = g_l('alert',"[delete_cache_ok]");
 
-												} else {
+												} else */{
 													$delete_ok = g_l('alert',"[delete_ok]");
 												}
 
