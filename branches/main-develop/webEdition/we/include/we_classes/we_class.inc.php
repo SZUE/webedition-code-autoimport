@@ -66,8 +66,13 @@ abstract class we_class{
 	##################################################################### FUNCTIONS ######################################################################
 	######################################################################################################################################################
 
-	abstract function we_new();
-	abstract function we_initSessDat($sessDat);
+	//Overwrite
+	function we_new(){
+	}
+
+	//Overwrite
+	function we_initSessDat($sessDat){
+	}
 
 	
 	/* Constructor */

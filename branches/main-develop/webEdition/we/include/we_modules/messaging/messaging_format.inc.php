@@ -88,7 +88,7 @@ class we_format extends we_class {
 	/*****************************************************************/
 
 	/* Constructor */
-	function we_format($mode, $sel_msg = NULL) {
+	function __construct($mode, $sel_msg = NULL) {
 		$this->Name = 'messageformat_' . md5(uniqid(rand()));
 		array_push($this->persistent_slots, 'ClassName','Name','ID','Table', 'mode', 'userid', 'username');
 		$this->DB = new DB_WE();
@@ -96,6 +96,14 @@ class we_format extends we_class {
 		$this->sel_msg = $sel_msg;
 		$this->msg_obj = isset($sel_msg['hdrs']['ClassName']) ? $sel_msg['hdrs']['ClassName'] : "";
 		$this->attribution_line = g_l('modules_messaging','[attrib_line]') . ':';
+	}
+
+		//overwrite abstract method
+	function we_new() {
+	}
+
+//overwrite abstract method
+	function we_initSessDat($sessDat) {
 	}
 
 	/* Getters And Setters */
