@@ -889,7 +889,7 @@ function formTriggerDocument($isclass=false){
 		$this->Text = $this->Filename;
 	}
 
-	function i_convertElemFromRequest($type,&$v,$k){
+	protected function i_convertElemFromRequest($type,&$v,$k){
 		if($type=="float") $v= str_replace(",",".",$v);
 		if($type=="float" || $type=="int") $v = abs($v);
 		if($type=="int") $v=floor($v);
