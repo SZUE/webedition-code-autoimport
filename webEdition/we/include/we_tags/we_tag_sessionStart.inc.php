@@ -58,7 +58,7 @@ function we_tag_sessionStart($attribs, $content){
 			}
 			if (isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID']))) {
 				if($_REQUEST['s']['Username'] != ''){
-					$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE LOWER(Username)="' . escape_sql_query(strtolower($_REQUEST['s']['Username'])) . '"',$GLOBALS['DB_WE']);
+					$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . escape_sql_query(strtolower($_REQUEST['s']['Username'])) . '"',$GLOBALS['DB_WE']);
 					if (isset($u['Password']) && $u['LoginDenied'] != 1) {
 						if (strtolower($_REQUEST['s']['Username']) == strtolower($u['Username']) && $_REQUEST['s']['Password'] == $u['Password']) {
 							$_SESSION['webuser'] = $u;
