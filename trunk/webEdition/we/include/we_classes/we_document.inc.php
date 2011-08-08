@@ -1546,7 +1546,9 @@ class we_document extends we_root {
 			//   override the href at last important !!
 
 			$linkAdds = (isset($link['params']) ? $link['params'] : '' ). (isset($link['anchor']) ? $link['anchor'] : '' );
-
+			if(strpos($linkAdds,'?')===false && strpos($linkAdds,'&')!==false && strpos($linkAdds,'&')==0){//Bug #5478
+				$linkAdds = substr_replace($linkAdds,'?',0,1);
+			}
 			$_linkAttribs['href'] = $l_href . str_replace('&', '&amp;', $linkAdds);
 
 			/**************************************************/
