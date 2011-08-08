@@ -163,7 +163,7 @@ function we_getIndexObjectIDs($db) {
 }
 
 function correctUml($in) {
-	return str_replace(array('ä','ö','ü','Ä','Ö','Ü','ss'), array('ae','oe','ue','Ae','Oe','Ue','ss'), $in);
+	return str_replace(array('ä','ö','ü','Ä','Ö','Ü','ß'), array('ae','oe','ue','Ae','Oe','Ue','ss'), $in);
 }
 
 function we_html2uml($text) {
