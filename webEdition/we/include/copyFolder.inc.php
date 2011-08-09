@@ -782,20 +782,18 @@ class copyFolderFrag extends taskFragment
 		$we_doc->i_setDocument($doc);
 	}
 
-	function parseInternalLinks(&$text, $DB_WE)
-	{
+	function parseInternalLinks(&$text, $DB_WE){
 		if (preg_match_all('/(href|src)="document:([^" ]+)/i', $text, $regs, PREG_SET_ORDER)) {
-			for ($i = 0; $i < sizeof($regs); $i++) {
-				$id = $regs[$i][2];
+			foreach ($regs as $reg) {
+				$id = $reg[2];
 
 				$path = id_to_path($id, FILE_TABLE, $DB_WE);
 				if ($this->mustChange($path)) {
 					$pathTo = $this->getNewPath($path);
 					$idTo = $this->getID($pathTo, $DB_WE);
 					$idTo = $idTo ? $idTo : "##WEPATH##" . $pathTo . " ###WEPATH###";
-					$text = eregi_replace(
-							'(href|src)="document:' . $id,
-							$regs[$i][1] . '="document:' . $idTo,
+					$text = preg_replace('#(href|src)="document:' . $id.'#i',
+							$reg[1] . '="document:' . $idTo,
 							$text);
 				}
 			}

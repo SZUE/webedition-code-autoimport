@@ -446,16 +446,16 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	$attribs['name'] = $name;
 	$content = '';
 	$isin = 0;
-	for ($i = 0; $i < sizeof($options); $i++) {
-		if ($options[$i] == $value) {
+	foreach($options as $option) {
+		if ($option == $value) {
 			$content .= getHtmlTag('option', array(
-									'value' => $options[$i], 'selected' => 'selected'
-											), $options[$i], true) . "\n";
+									'value' => $option, 'selected' => 'selected'
+											), $option, true) . "\n";
 			$isin = 1;
 		} else {
 			$content .= getHtmlTag('option', array(
-									'value' => $options[$i]
-											), $options[$i], true) . "\n";
+									'value' => $option
+											), $option, true) . "\n";
 		}
 	}
 	if ((!$isin) && $addMissing) {
@@ -2432,48 +2432,36 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 	$DB_WE = new DB_WE();
 
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
-		for ($i = 0; $i < sizeof($regs); $i++) {
-			if (isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition) {
-				$foo = getHash("
-					SELECT Path
-					FROM " . FILE_TABLE . "
-					WHERE ID=" . abs($regs[$i][2]), $DB_WE);
-			} else {
-				$foo = getHash("
-					SELECT Path
-					FROM " . FILE_TABLE . "
-					WHERE ID=" . abs($regs[$i][2]) . " AND Published > 0",$DB_WE);
-			}
+		foreach ($regs as $reg) {
+			
+			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]).(isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition ? '':' AND Published > 0'), 'Path',$DB_WE);
 
-			if (isset($foo["Path"])) {
-				$_path = $foo["Path"];
+			if ($_path) {
 				$path_parts = pathinfo($_path);
 				if(show_SeoLinks() && defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 					$_path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 				}
-				$text = str_replace(
-							$regs[$i][1] . '="document:' . $regs[$i][2] . $regs[$i][3],
-							$regs[$i][1] . '="' . $_path . $regs[$i][3],
+				$text = str_replace($reg[1] . '="document:' . $reg[2] . $reg[3],
+							$reg[1] . '="' . $_path . $reg[3],
 							$text);
 			} else {
-				$text = eregi_replace('<a [^>]*href="document:' . $regs[$i][2] . '"[^>]*>([^<]+)</a>', '\1', $text);
-				$text = eregi_replace('<a [^>]*href="document:' . $regs[$i][2] . '"[^>]*>', '', $text);
-				$text = eregi_replace('<img [^>]*src="document:' . $regs[$i][2] . '"[^>]*>', '', $text);
+				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>(.*)</a>|Ui', '\1', $text);
+				$text = preg_replace('|<a [^>]*href="document:' . $reg[2] . '"[^>]*>|Ui', '', $text);
+				$text = preg_replace('|<img [^>]*src="document:' . $reg[2] . '"[^>]*>|Ui', '', $text);
 			}
 		}
 	}
 	if (preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)) {
 		include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
-		for ($i = 0; $i < sizeof($regs); $i++) {
-			list($imgID, $thumbID) = explode(",", $regs[$i][1]);
+		foreach ($regs as $reg) {
+			list($imgID, $thumbID) = explode(",", $reg[1]);
 			$thumbObj = new we_thumbnail();
 			if ($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)) {
-				$text = eregi_replace(
-												'src="thumbnail:' . $regs[$i][1] . '"',
+				$text = str_replace('src="thumbnail:' . $reg[1] . '"',
 												'src="' . $thumbObj->getOutputPath() . '"',
 												$text);
 			} else {
-				$text = eregi_replace('<img[^>]+src="thumbnail:' . $regs[$i][1] . '[^>]+>', '', $text);
+				$text = preg_replace('|<img[^>]+src="thumbnail:' . $reg[1] . '[^>]+>|Ui', '', $text);
 			}
 		}
 	}
@@ -2481,35 +2469,30 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 		if (preg_match_all('/href="object:(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
 			$hidedirindex = defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE;
 			$objectseourls = defined('WYSIWYGLINKS_OBJECTSEOURLS') && WYSIWYGLINKS_OBJECTSEOURLS;
-			for ($i = 0; $i < sizeof($regs); $i++) {
-				$href = getHrefForObject($regs[$i][1], $pid, $path,"",$hidedirindex,$objectseourls);
+			foreach ($regs as $reg) {
+				$href = getHrefForObject($reg[1], $pid, $path,"",$hidedirindex,$objectseourls);
 				if (isset($GLOBALS["we_link_not_published"])) {
 					unset($GLOBALS["we_link_not_published"]);
 				}
 				if ($href) {
-					if ($regs[$i][2] == "?") {
-						$text = str_replace(
-														'href="object:' . $regs[$i][1] . "?",
+					if ($reg[2] == "?") {
+						$text = str_replace('href="object:' . $reg[1] . "?",
 														'href="' . $href . "&amp;",
 														$text);
 					} else {
-						$text = str_replace(
-														'href="object:' . $regs[$i][1] . $regs[$i][2] . $regs[$i][3],
-														'href="' . $href . $regs[$i][2] . $regs[$i][3],
+						$text = str_replace('href="object:' . $reg[1] . $reg[2] . $reg[3],
+														'href="' . $href . $reg[2] . $reg[3],
 														$text);
 					}
 				} else {
-					$text = eregi_replace(
-													'<a [^>]*href="object:' . $regs[$i][1] . '"[^>]*>([^<]+)</a>',
-													'\1',
-													$text);
-					$text = eregi_replace('<a [^>]*href="object:' . $regs[$i][1] . '"[^>]*>', '', $text);
+					$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>(.*)</a>|Ui','\1',$text);
+					$text = preg_replace('|<a [^>]*href="object:' . $reg[1] . '"[^>]*>|Ui', '', $text);
 				}
 			}
 		}
 	}
-	$suchmuster = "/\<a>(.*)\<\/a>/siU";
-	$ersetzung = "$1";
+	$suchmuster = '/\<a>(.*)\<\/a>/siU';
+	$ersetzung = '\1';
 
 	$text = preg_replace($suchmuster, $ersetzung, $text);
 
