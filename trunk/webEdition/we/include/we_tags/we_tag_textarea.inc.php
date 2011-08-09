@@ -20,11 +20,10 @@
 
 function we_tag_textarea($attribs, $content){
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-	global $we_transaction;
-	$foo = attributFehltError($attribs, "name", "textarea");
-	if ($foo)
+	if (($foo = attributFehltError($attribs, "name", "textarea"))){
 		return $foo;
-
+	}
+	
 	$name = we_getTagAttribute("name", $attribs);
 	$xml = we_getTagAttribute("xml", $attribs, "");
 	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
@@ -42,18 +41,18 @@ function we_tag_textarea($attribs, $content){
 	if (!$showAutobr && $GLOBALS['we_editmode']) {
 		$autobr = "off";
 		$GLOBALS["we_doc"]->elements[$name]["autobr"] = "off";
-		$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$we_transaction]);
+		$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
 	}
 
 	$autobrName = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . '#autobr]';
 	$fieldname = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
 	$value = $GLOBALS["we_doc"]->getElement($name) ? $GLOBALS["we_doc"]->getElement($name) : $content;
 
-	if ($GLOBALS['we_editmode'] && (!$GLOBALS["we_doc"]->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
-		$GLOBALS["we_doc"]->setElement($name, $value);
-		$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$we_transaction]);
-	}
 	if ($GLOBALS['we_editmode']) {
+		if((!$GLOBALS["we_doc"]->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
+			$GLOBALS["we_doc"]->setElement($name, $value);
+			$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
+		}
 		return we_forms::weTextarea(
 				$fieldname,
 				$value,
@@ -69,7 +68,6 @@ function we_tag_textarea($attribs, $content){
 				'',
 				($spellcheck == 'true'));
 	} else {
-		$ret = $GLOBALS["we_doc"]->getField($attribs);
-		return $ret;
+		return $GLOBALS["we_doc"]->getField($attribs);
 	}
 }

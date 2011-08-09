@@ -312,34 +312,30 @@ class we_forms {
 	function removeBrokenInternalLinksAndImages(&$text) {
 		$DB_WE = new DB_WE();
 		if(preg_match_all('/(href|src)="document:([^" \?#]+)/i',$text,$regs,PREG_SET_ORDER)){
-			for($i=0;$i<sizeof($regs);$i++) {
-				$foo = getHash("
-						SELECT Path
-						FROM " . FILE_TABLE . "
-						WHERE ID='".abs($regs[$i][2])."'",$DB_WE);
-				if(!$foo["Path"]){
-					$text = eregi_replace('<a [^>]*href="document:'.$regs[$i][2].'"[^>]*>([^<]+)</a>','\1',$text);
-					$text = eregi_replace('<a [^>]*href="document:'.$regs[$i][2].'"[^>]*>','',$text);
-					$text = eregi_replace('<img [^>]*src="document:'.$regs[$i][2].'"[^>]*>','',$text);
+			foreach($regs as $reg) {
+				if(!f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.intval($reg[2]),'Path',$DB_WE)){
+					$text = eregi_replace('<a [^>]*href="document:'.$reg[2].'"[^>]*>([^<]+)</a>','\1',$text);
+					$text = eregi_replace('<a [^>]*href="document:'.$reg[2].'"[^>]*>','',$text);
+					$text = eregi_replace('<img [^>]*src="document:'.$reg[2].'"[^>]*>','',$text);
 				}
 			}
 		}
 		if(preg_match_all('/src="thumbnail:([^" ]+)/i',$text,$regs,PREG_SET_ORDER)){
 			include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
-			for($i=0;$i<sizeof($regs);$i++) {
-				list($imgID,$thumbID) = explode(",",$regs[$i][1]);
+			foreach($regs as $reg) {
+				list($imgID,$thumbID) = explode(",",$reg[1]);
 				$thumbObj = new we_thumbnail();
 				if(!$thumbObj->initByImageIDAndThumbID($imgID,$thumbID)){
-					$text = eregi_replace('<img[^>]+src="thumbnail:'.$regs[$i][1].'[^>]+>','',$text);
+					$text = eregi_replace('<img[^>]+src="thumbnail:'.$reg[1].'[^>]+>','',$text);
 				}
 			}
 		}
 		if(defined("OBJECT_TABLE")){
 			if(preg_match_all('/href="object:([^" \?#]+)(\??)/i',$text,$regs,PREG_SET_ORDER)){
-				for($i=0;$i<sizeof($regs);$i++) {
-					if(!id_to_path($regs[$i][1],OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
-						$text = eregi_replace('<a [^>]*href="object:'.$regs[$i][1].'"[^>]*>([^<]+)</a>','\1',$text);
-						$text = eregi_replace('<a [^>]*href="object:'.$regs[$i][1].'"[^>]*>','',$text);
+				foreach($regs as $reg) {
+					if(!id_to_path($reg[1],OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
+						$text = eregi_replace('<a [^>]*href="object:'.$reg[1].'"[^>]*>([^<]+)</a>','\1',$text);
+						$text = eregi_replace('<a [^>]*href="object:'.$reg[1].'"[^>]*>','',$text);
 					}
 				}
 			}
