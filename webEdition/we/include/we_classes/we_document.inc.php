@@ -809,7 +809,10 @@ class we_document extends we_root {
 		if(!we_root::we_save($resave))	return false;
 		$ret = $this->i_writeDocument();
 		$this->OldPath = $this->Path;
-
+		if(!$ret || ($we_doc->getErrMsg()=='')){
+			return false;
+		}
+		
 		if($resave==0) { // NO rebuild!!!
 			$this->resaveWeDocumentCustomerFilter();
 

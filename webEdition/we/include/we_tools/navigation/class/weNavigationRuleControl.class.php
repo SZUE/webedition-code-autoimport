@@ -156,7 +156,7 @@ class weNavigationRuleControl
 						$catIds = makeArrayFromCSV($this->NavigationRule->Categories);
 
 						foreach ($catIds as $catId) {
-							if ($path = id_to_path($catId, CATEGORY_TABLE)) {
+							if (($path = id_to_path($catId, CATEGORY_TABLE))) {
 								$catJs .= 'doc.categories_edit.addItem();doc.categories_edit.setItem(0,(doc.categories_edit.itemCount-1),"' . $path . '");
 							';
 							}
