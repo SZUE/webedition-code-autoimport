@@ -2613,19 +2613,13 @@ class weNewsletterView {
 		@set_time_limit(0);
 		@ini_set("memory_limit", "128M");
 
-		$list = array();
-
-		if ($select==0 || $select==3) {
-			$extern=weNewsletterBase::getEmailsFromExtern($this->newsletter->groups[$group-1]->Extern,$emails_only,$group,$this->getGroupBlocks($group));
-		}
-
+		$extern=($select==0 || $select==3)?weNewsletterBase::getEmailsFromExtern($this->newsletter->groups[$group-1]->Extern,$emails_only,$group,$this->getGroupBlocks($group)):array();
+		
 		if ($select==3) {
 			return $extern;
 		}
 
-		if ($select==0 || $select==2) {
-			$list=weNewsletterBase::getEmailsFromList($this->newsletter->groups[$group-1]->Emails,$emails_only,$group,$this->getGroupBlocks($group));
-		}
+		$list=($select==0 || $select==2)?weNewsletterBase::getEmailsFromList($this->newsletter->groups[$group-1]->Emails,$emails_only,$group,$this->getGroupBlocks($group)):array();
 
 		if ($select == 2) {
 			return $list;
