@@ -49,8 +49,8 @@ class we_template extends we_document{
     var $TagWizardCode; // bugfix 1502
     var $TagWizardSelection; // bugfix 1502
     var $IncludedTemplates = "";
-	var $ContentType="text/weTmpl";
-
+		var $ContentType="text/weTmpl";
+		private $showShutdown=false;
    /* Constructor */
     function we_template(){
         $this->we_document();
@@ -221,6 +221,12 @@ class we_template extends we_document{
 		return '';
 	}
 
+function handleShutdown() {
+	if($this->showShutdown){
+        $error = error_get_last();
+				t_e('error','Error in template:'.$this->Path,$error);
+}}
+
 	function parseTemplate(){
 	    $code = $this->getTemplateCode(true);
 
@@ -263,6 +269,21 @@ class we_template extends we_document{
 		}
 
 		$tp->parseTags($code);
+		$this->showShutdown=true;
+		register_shutdown_function(array($this,'handleShutdown'));
+
+		$var=create_function('','?>'.$code.'<?php ');
+		if(empty($var) && ( $error = error_get_last() )){
+			$this->errMsg="Error: ".$error['message'].'\nLine:'.$error['line'];
+			//t_e('error',"Error in template: ".$error['message'],'Line:'.$error['line']);
+		}
+		$this->showShutdown=false;
+
+		/*$tags = $this->removeDoppel($tags);
+		for($i=0;$i<sizeof($tags);$i++){
+			$tp->parseTag($tags[$i],$code);
+		}*/
+
 
 		// Code must be executed every time a template is included,
 		// so it must be executed during the caching process when a cacheable document
@@ -787,6 +808,7 @@ class we_template extends we_document{
 		}
 		return $_ret;
 	}
+	
 	function we_publish(){
 		if(defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL){
 			$version = new weVersions();

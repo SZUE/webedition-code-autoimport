@@ -46,7 +46,7 @@ class we_history
 	}
 
 
-	function insertIntoHistory(&$object){
+	static function insertIntoHistory(&$object){
 		$_db = new DB_WE();
 		//print $object->Table;
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';

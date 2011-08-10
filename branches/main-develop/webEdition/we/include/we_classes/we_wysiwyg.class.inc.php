@@ -1133,18 +1133,18 @@ function tinyMCEchanged(inst){
 		$editValue = $this->value;
 
 		if(preg_match_all('/src="document:([^" ]+)/i',$editValue,$regs,PREG_SET_ORDER)){
-			for($i=0;$i<sizeof($regs);$i++){
-				$foo = getHash("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($regs[$i][1])."'",$GLOBALS["DB_WE"]);
-				$editValue = eregi_replace('src="document:'.$regs[$i][1],'src="'.$foo["Path"]."?id=".$regs[$i][1],$editValue);
+			foreach($regs as $reg){
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.intval($reg[1]),'Path',$GLOBALS["DB_WE"]);
+				$editValue = str_ireplace('src="document:'.$reg[1],'src="'.$path."?id=".$reg[1],$editValue);
 			}
 		}
 		if(preg_match_all('/src="thumbnail:([^" ]+)/i',$editValue,$regs,PREG_SET_ORDER)){
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
-			for($i=0;$i<sizeof($regs);$i++){
+			foreach($regs as $reg){
 				list($imgID,$thumbID) = explode(",",$regs[$i][1]);
 				$thumbObj = new we_thumbnail();
 				$thumbObj->initByImageIDAndThumbID($imgID,$thumbID);
-				$editValue = eregi_replace('src="thumbnail:'.$regs[$i][1],'src="'.$thumbObj->getOutputPath()."?thumb=".$regs[$i][1],$editValue);
+				$editValue = str_ireplace('src="thumbnail:'.$reg[1],'src="'.$thumbObj->getOutputPath()."?thumb=".$reg[1],$editValue);
 				unset($thumbObj);
 			}
 		}

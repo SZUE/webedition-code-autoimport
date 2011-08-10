@@ -62,12 +62,12 @@ function we_tag_sessionStart($attribs, $content){
 			}
 			if (isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID']))) {
 				if($_REQUEST['s']['Username'] != ''){
-					$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE LOWER(Username)="' . escape_sql_query(strtolower($_REQUEST['s']['Username'])) . '"',$GLOBALS['DB_WE']);
+					$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . escape_sql_query(strtolower($_REQUEST['s']['Username'])) . '"',$GLOBALS['DB_WE']);
 					if (isset($u['Password']) && $u['LoginDenied'] != 1) {
 						if (strtolower($_REQUEST['s']['Username']) == strtolower($u['Username']) && $_REQUEST['s']['Password'] == $u['Password']) {
 							$_SESSION['webuser'] = $u;
 							$_SESSION['webuser']['registered'] = true;
-							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin="' . $currenttime . '" WHERE ID="' . abs($_SESSION['webuser']['ID']) . '"');
+							$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID="' . abs($_SESSION['webuser']['ID']) . '"');
 
 							if ($persistentlogins && isset($_REQUEST['s']['AutoLogin']) && $_REQUEST['s']['AutoLogin'] && $_SESSION['webuser']['AutoLoginDenied'] !=1 ){
 								$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)),true);
@@ -120,7 +120,7 @@ function we_tag_sessionStart($attribs, $content){
 
 			}
 			if (isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username']!='') {
-				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess="' . $currenttime . '" WHERE ID="' . escape_sql_query($_SESSION['webuser']['ID']) . '"');
+				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP()  WHERE ID="' . escape_sql_query($_SESSION['webuser']['ID']) . '"');
 			}
 		}
 	}

@@ -20,19 +20,13 @@
 
 
 function we_tag_saveRegisteredUser($attribs,$content){
-
 	$userexists = we_getTagAttribute("userexists",$attribs);
 	$userempty = we_getTagAttribute("userempty",$attribs);
 	$passempty = we_getTagAttribute("passempty",$attribs);
-	if(isset($attribs['register'])) {
-		$registerallowed = we_getTagAttribute("register",$attribs,true,true);
-	} else {
-		$registerallowed = true;
-	}
+	$registerallowed = (isset($attribs['register'])?we_getTagAttribute("register",$attribs,true,true):true);
 	$protected = makeArrayFromCSV(we_getTagAttribute("protected",$attribs));
 
 	if(defined("CUSTOMER_TABLE") && isset ($_REQUEST["s"])){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/modules/customer.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weCustomer.php");
 
 		if(isset($_REQUEST["s"]["Password2"])) {
@@ -56,9 +50,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 			if($_REQUEST["s"]["ID"]<=0 && $registerallowed){ // neuer User
 
 				if($_REQUEST["s"]["Password"]!="" && $_REQUEST["s"]["Username"]!=""){ // wenn password und Username nicht leer
-					$exists = weCustomer::customerNameExist($_REQUEST["s"]["Username"]);
 
-					if(!$exists){ // username existiert noch nicht!
+					if(!weCustomer::customerNameExist($_REQUEST["s"]["Username"])){ // username existiert noch nicht!
 
 						$names = "";
 						$values = "";
@@ -102,18 +95,14 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							$GLOBALS["DB_WE"]->query("INSERT INTO ".CUSTOMER_TABLE."(".$names.") VALUES(".$values.")");
 
 							// User in session speichern
-							$GLOBALS["DB_WE"]->query("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($_REQUEST["s"]["Username"])."'");
-							if($GLOBALS["DB_WE"]->next_record()){
-								$uID=$GLOBALS["DB_WE"]->f("ID");
-								$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($uID)."'",$GLOBALS["DB_WE"]);
+							$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($_REQUEST["s"]["Username"])."'",$GLOBALS["DB_WE"]);
+							if(count($u)){
 								$_SESSION["webuser"]=$u;
 								$_SESSION["webuser"]["registered"] = true;
 
-								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
-								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastAccess='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
-								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET LastLogin='".time()."' WHERE ID='".abs($_SESSION["webuser"]["ID"])."'");
+								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP() WHERE ID=".($_SESSION["webuser"]["ID"]));
 								if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
-									echo '<a name="emos_name" title="register" rel="'.md5($uID).'" rev="0" ></a>';
+									echo '<a name="emos_name" title="register" rel="'.md5($_SESSION["webuser"]['ID']).'" rev="0" ></a>';
 								}
 
 							}
@@ -167,8 +156,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 					$Username = isset($_REQUEST["s"]["Username"]) ?  $_REQUEST["s"]["Username"] : "";
 
-					$GLOBALS["DB_WE"]->query("SELECT ID FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($Username)."' AND ID<> '".abs($_REQUEST["s"]["ID"])."'");
-					if(!$GLOBALS["DB_WE"]->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+					if(f("SELECT 1 AS a FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($Username)."' AND ID<> '".abs($_REQUEST["s"]["ID"])."'",'a',$GLOBALS["DB_WE"])!='1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 						$set_a=array();
 						if(isset($_REQUEST["s"])){
 

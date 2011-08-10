@@ -804,11 +804,7 @@
                 }
             }
 
-            if(sizeof($newArray) == 0){
-                return false;
-            } else {
-                return $newArray;
-            }
+						return (sizeof($newArray) == 0)? false : $newArray;
         }
 
         /**

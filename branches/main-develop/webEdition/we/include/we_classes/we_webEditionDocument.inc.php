@@ -654,7 +654,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	}
 
-	function we_save($resave = 0) {
+	function we_save($resave = 0,$skipHook=0){
 		// First off correct corupted fields
 		$this->correctFields();
 
@@ -665,7 +665,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		$this->temp_category = $this->Category;
 
 		// Last step is to save the webEdition document
-		$out = we_textContentDocument::we_save($resave);
+		$out = we_textContentDocument::we_save($resave,$skipHook);
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0){
 			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false);
 		}
@@ -684,15 +684,15 @@ class we_webEditionDocument extends we_textContentDocument {
 		return parent::i_writeDocument();
 	}
 
-	function we_publish($DoNotMark=false,$saveinMainDB=true) {
+	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
 		$this->we_clearCache($this->ID);
-		return we_textContentDocument::we_publish($DoNotMark, $saveinMainDB);
+		return we_textContentDocument::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 	}
 
-	function we_unpublish(){
+	function we_unpublish($skipHook=0){
 		if(!$this->ID) return false;
 		$this->we_clearCache($this->ID);
-		return we_textContentDocument::we_unpublish();
+		return we_textContentDocument::we_unpublish($skipHook);
 	}
 
 	function we_delete() {

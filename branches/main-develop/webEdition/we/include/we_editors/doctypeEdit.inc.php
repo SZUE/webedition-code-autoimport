@@ -249,7 +249,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			case "newDocType":
 				<?php
 					$dtNames = "";
-					$DB_WE->query("SELECT DocType FROM " . DOC_TYPES_TABLE);
+					$DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE);
 					while($DB_WE->next_record()) {
 						$dtNames .= "'".str_replace("'","\'",$DB_WE->f("DocType")) . "',";
 					}
