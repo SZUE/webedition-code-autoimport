@@ -591,7 +591,6 @@ class we_image_edit {
 			$imgSrc = "/" .$imgSrc;
 		}
 
-
 		$_imgPath = $_SERVER["DOCUMENT_ROOT"] . $imgSrc;
 		if(!($imagesize = getimagesize($_imgPath))){
 			$imagesize= array("","");
@@ -601,9 +600,8 @@ class we_image_edit {
 			if (!file_exists($_previewDir) || !is_dir($_previewDir)) {
 				createLocalFolder($_SERVER["DOCUMENT_ROOT"], '/webEdition/preview/');
 			}
-			$_extension = preg_replace('|^.*\.|','.', $_imgPath);
 			if ($imgID) {
-				$_thumbSrc = '/webEdition/preview/' . $imgID . "_" . $width . "_" . $height . strtolower($_extension);
+				$_thumbSrc = '/webEdition/preview/' . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);
 			} else {
 				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 				$_thumbSrc = '/webEdition/we/tmp/' . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat);
@@ -626,4 +624,3 @@ class we_image_edit {
 	}
 
 }
-
