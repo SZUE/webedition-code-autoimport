@@ -25,16 +25,10 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_live_tools.
 
 //protect();
 
-if(!isset($_REQUEST['id']) || $_REQUEST['id']=='') {
-	exit();
-}
-if(!isset($_REQUEST['path']) || $_REQUEST['path']=='') {
-	exit();
-}
-if(!isset($_REQUEST['size']) || $_REQUEST['size']=='') {
-	exit();
-}
-if(!isset($_REQUEST['extension']) || $_REQUEST['extension']=='') {
+if(!isset($_REQUEST['id']) || $_REQUEST['id']==''||
+				!isset($_REQUEST['path']) || $_REQUEST['path']==''||
+				!isset($_REQUEST['size']) || $_REQUEST['size']==''||
+				!isset($_REQUEST['extension']) || $_REQUEST['extension']=='') {
 	exit();
 }
 
@@ -64,4 +58,3 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/base
 $thumbpath = we_image_edit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($_REQUEST['extension'], 1));
 header("Content-type: image/" . $imageExt . "");
 readfile($_SERVER["DOCUMENT_ROOT"] . $thumbpath);
-
