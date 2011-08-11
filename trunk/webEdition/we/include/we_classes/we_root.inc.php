@@ -694,10 +694,7 @@ function formTriggerDocument($isclass=false){
 
 	/* get the data from an element */
 	function getElement($name,$key="dat"){
-	    if(isset($this->elements[$name][$key]))
-	        return $this->elements[$name][$key];
-	    else
-	        return "";
+	    return (isset($this->elements[$name][$key])?$this->elements[$name][$key] : '');
 	}
 
 	/* reset the array-pointer (for use with nextElement()) */
@@ -721,7 +718,6 @@ function formTriggerDocument($isclass=false){
 
 	/* returns the JavaScript-Code which modifies the tree-menue */
 	function getUpdateTreeScript($select=true){
-
 		return $this->getMoveTreeEntryScript($select);
 	}
 

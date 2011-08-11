@@ -184,13 +184,10 @@ class we_rebuild {
 		switch($btype){
 			case "rebuild_all":
 				return we_rebuild::getAllDocuments($maintable,$tmptable);
-				break;
 			case "rebuild_templates":
 				return we_rebuild::getTemplates();
-				break;
 			case "rebuild_filter":
 				return we_rebuild::getFilteredDocuments($categories,$catAnd,$doctypes,$folders,$templateID);
-				break;
 		}
 	}
 

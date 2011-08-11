@@ -889,7 +889,7 @@ class searchtoolsearch extends we_search
 	function getTableType()
 	{
 
-		$tableType = "HEAP";
+		$tableType = "MEMORY";
 		if (getMysqlVer() < 4100) {
 			$tableType = "MYISAM";
 		}
@@ -1238,5 +1238,3 @@ class searchtoolsearch extends we_search
 	}
 
 }
-
-?>
