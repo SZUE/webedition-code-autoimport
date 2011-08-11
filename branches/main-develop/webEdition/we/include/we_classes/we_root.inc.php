@@ -669,10 +669,7 @@ function formTriggerDocument($isclass=false){
 
 	/* get the data from an element */
 	function getElement($name,$key="dat"){
-	    if(isset($this->elements[$name][$key]))
-	        return $this->elements[$name][$key];
-	    else
-	        return "";
+	    return (isset($this->elements[$name][$key])?$this->elements[$name][$key] : '');
 	}
 
 	/* reset the array-pointer (for use with nextElement()) */
@@ -696,7 +693,6 @@ function formTriggerDocument($isclass=false){
 
 	/* returns the JavaScript-Code which modifies the tree-menue */
 	function getUpdateTreeScript($select=true){
-
 		return $this->getMoveTreeEntryScript($select);
 	}
 
@@ -1255,7 +1251,7 @@ function formTriggerDocument($isclass=false){
 			if($GLOBALS["we_doc"]->ID) {		//	userModule installed
 				$ws = get_ws($GLOBALS["we_doc"]->Table);
 				if($ws) {		//	doc has workspaces
-					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS["DB_WE"]))) {
+					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS['DB_WE']))) {
 						return -1;
 					}
 				}

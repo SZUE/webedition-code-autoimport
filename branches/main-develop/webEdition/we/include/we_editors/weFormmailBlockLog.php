@@ -30,9 +30,9 @@
 		if (we_hasPerm("administrator")) {
 
 			if (isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1) {
-				$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE);
+				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE);
 			} else if (isset($_REQUEST['clearEntry'])) {
-				$GLOBALS["DB_WE"]->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE id=" . abs($_REQUEST['clearEntry']));
+				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE id=" . abs($_REQUEST['clearEntry']));
 			}
 			$we_button = new we_button();
 
@@ -58,20 +58,20 @@
 
 			$num_all = f("SELECT count( id ) AS num_all FROM " . FORMMAIL_BLOCK_TABLE,"num_all", $GLOBALS['DB_WE']);
 
-			$GLOBALS["DB_WE"]->query("SELECT * FROM " . FORMMAIL_BLOCK_TABLE . " ORDER BY blockedUntil DESC LIMIT ".abs($start).",".abs($count));
-			$num_rows = $GLOBALS["DB_WE"]->num_rows();
+			$GLOBALS['DB_WE']->query("SELECT * FROM " . FORMMAIL_BLOCK_TABLE . " ORDER BY blockedUntil DESC LIMIT ".abs($start).",".abs($count));
+			$num_rows = $GLOBALS['DB_WE']->num_rows();
 			if ($num_rows > 0) {
 				$ind = 0;
-				while ($GLOBALS["DB_WE"]->next_record()) {
+				while ($GLOBALS['DB_WE']->next_record()) {
 
 					$content[$ind] = array();
-					$content[$ind][0]['dat'] = $GLOBALS["DB_WE"]->f("ip");
-					if ($GLOBALS["DB_WE"]->f("blockedUntil") == -1) {
+					$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
+					if ($GLOBALS['DB_WE']->f("blockedUntil") == -1) {
 						$content[$ind][1]['dat'] = htmlspecialchars(g_l('prefs','[forever]'));
 					} else {
-						$content[$ind][1]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$GLOBALS["DB_WE"]->f("blockedUntil"));
+						$content[$ind][1]['dat'] = date(g_l('weEditorInfo',"[date_format]"),$GLOBALS['DB_WE']->f("blockedUntil"));
 					}
-					$content[$ind][2]['dat'] = '<a href="javascript:clearEntry('.$GLOBALS["DB_WE"]->f("id").',\''.$GLOBALS["DB_WE"]->f("ip").'\')">' . g_l('prefs','[unblock]'). '</a>';
+					$content[$ind][2]['dat'] = '<a href="javascript:clearEntry('.$GLOBALS['DB_WE']->f("id").',\''.$GLOBALS['DB_WE']->f("ip").'\')">' . g_l('prefs','[unblock]'). '</a>';
 
 					$ind++;
 				}

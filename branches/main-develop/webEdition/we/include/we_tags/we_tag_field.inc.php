@@ -96,7 +96,7 @@ function we_tag_field($attribs, $content){
 					false,
 					$GLOBALS["we_doc"]->ParentID,
 					$GLOBALS["we_doc"]->Path,
-					$GLOBALS["DB_WE"],
+					$GLOBALS['DB_WE'],
 					$classid,
 					'$GLOBALS["lv"]->f');
 			if ($only ==''||$only =='name') {$out = $t[0];}
@@ -116,7 +116,7 @@ function we_tag_field($attribs, $content){
 						false,
 						$GLOBALS["we_doc"]->ParentID,
 						$GLOBALS["we_doc"]->Path,
-						$GLOBALS["DB_WE"],
+						$GLOBALS['DB_WE'],
 						$classid,
 						'$GLOBALS["lv"]->f');
 				$href = (empty($href) ? $out : $href);
@@ -161,7 +161,7 @@ function we_tag_field($attribs, $content){
 						false,
 						$GLOBALS["we_doc"]->ParentID,
 						$GLOBALS["we_doc"]->Path,
-						$GLOBALS["DB_WE"],
+						$GLOBALS['DB_WE'],
 						$classid,
 						'$GLOBALS["lv"]->f');
 				}
@@ -231,7 +231,7 @@ function we_tag_field($attribs, $content){
 						false,
 						$GLOBALS["we_doc"]->ParentID,
 						$GLOBALS["we_doc"]->Path,
-						$GLOBALS["DB_WE"],
+						$GLOBALS['DB_WE'],
 						$classid,
 						'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
@@ -269,7 +269,7 @@ function we_tag_field($attribs, $content){
 					false,
 					$GLOBALS["we_doc"]->ParentID,
 					$GLOBALS["we_doc"]->Path,
-					$GLOBALS["DB_WE"],
+					$GLOBALS['DB_WE'],
 					$classid,
 					'$GLOBALS["lv"]->f'); // war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht inLV, #4648
 				if ($name=='WE_PATH'){
@@ -299,7 +299,7 @@ function we_tag_field($attribs, $content){
 								false,
 								$GLOBALS["we_doc"]->ParentID,
 								$GLOBALS["we_doc"]->Path,
-								$GLOBALS["DB_WE"],
+								$GLOBALS['DB_WE'],
 								substr($_glob_key, 13),
 								'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
@@ -320,7 +320,7 @@ function we_tag_field($attribs, $content){
 							false,
 							$GLOBALS["we_doc"]->ParentID,
 							$GLOBALS["we_doc"]->Path,
-							$GLOBALS["DB_WE"],
+							$GLOBALS['DB_WE'],
 							$classid,
 							'$GLOBALS["lv"]->f');// war '$GLOBALS["lv"]->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					if ($altVal == "")

@@ -108,21 +108,21 @@ class we_version
 		$data = array();
 		if (we_hasPerm("ADMINISTRATOR")) {
 
-			$GLOBALS["DB_WE"]->query($_SESSION['versions']['query']);
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			$GLOBALS['DB_WE']->query($_SESSION['versions']['query']);
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"ID" => $GLOBALS["DB_WE"]->f("ID"),
-								"documentID" => $GLOBALS["DB_WE"]->f("documentID"),
+								"ID" => $GLOBALS['DB_WE']->f("ID"),
+								"documentID" => $GLOBALS['DB_WE']->f("documentID"),
 								"type" => "version_delete",
-								"version" => $GLOBALS["DB_WE"]->f("version"),
-								"timestamp" => $GLOBALS["DB_WE"]->f("timestamp"),
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
-								"table" => $GLOBALS["DB_WE"]->f("documentTable"),
-								"contenttype" => $GLOBALS["DB_WE"]->f("ContentType"),
-								"text" => $GLOBALS["DB_WE"]->f("Text")
+								"version" => $GLOBALS['DB_WE']->f("version"),
+								"timestamp" => $GLOBALS['DB_WE']->f("timestamp"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
+								"table" => $GLOBALS['DB_WE']->f("documentTable"),
+								"contenttype" => $GLOBALS['DB_WE']->f("ContentType"),
+								"text" => $GLOBALS['DB_WE']->f("Text")
 						));
 			}
 			unset($_SESSION['versions']['query']);
@@ -136,21 +136,21 @@ class we_version
 		$data = array();
 		if (we_hasPerm("ADMINISTRATOR")) {
 
-			$GLOBALS["DB_WE"]->query($_SESSION['versions']['query']);
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			$GLOBALS['DB_WE']->query($_SESSION['versions']['query']);
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"ID" => $GLOBALS["DB_WE"]->f("ID"),
-								"documentID" => $GLOBALS["DB_WE"]->f("documentID"),
+								"ID" => $GLOBALS['DB_WE']->f("ID"),
+								"documentID" => $GLOBALS['DB_WE']->f("documentID"),
 								"type" => "version_reset",
-								"version" => $GLOBALS["DB_WE"]->f("version"),
-								"timestamp" => $GLOBALS["DB_WE"]->f("timestamp"),
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
-								"table" => $GLOBALS["DB_WE"]->f("documentTable"),
-								"contenttype" => $GLOBALS["DB_WE"]->f("ContentType"),
-								"text" => $GLOBALS["DB_WE"]->f("Text")
+								"version" => $GLOBALS['DB_WE']->f("version"),
+								"timestamp" => $GLOBALS['DB_WE']->f("timestamp"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
+								"table" => $GLOBALS['DB_WE']->f("documentTable"),
+								"contenttype" => $GLOBALS['DB_WE']->f("ContentType"),
+								"text" => $GLOBALS['DB_WE']->f("Text")
 						));
 			}
 			unset($_SESSION['versions']['query']);
@@ -176,17 +176,17 @@ class we_version
 		$data = array();
 		if (we_hasPerm("REBUILD_META")) {
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(",", $metaFolders) . ') ' : '';
-			$GLOBALS["DB_WE"]->query(
+			$GLOBALS['DB_WE']->query(
 					"SELECT ID,path FROM " . FILE_TABLE . " WHERE ContentType='image/*' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "metadata",
 								"onlyEmpty" => $onlyEmpty,
-								"path" => $GLOBALS["DB_WE"]->f("path"),
+								"path" => $GLOBALS['DB_WE']->f("path"),
 								"metaFields" => $metaFields
 						));
 			}
@@ -203,18 +203,18 @@ class we_version
 	{
 		$data = array();
 		if (we_hasPerm("REBUILD_TEMPLATES")) {
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM " . TEMPLATES_TABLE . " ORDER BY ID");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM " . TEMPLATES_TABLE . " ORDER BY ID");
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "template",
-								"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+								"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 								"mt" => 0,
 								"tt" => 0,
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
 								"it" => 0
 						));
 			}
@@ -280,19 +280,19 @@ class we_version
 					$where = substr($where, 0, strlen($where) - 3);
 					$where = '(' . $where . ')';
 
-					$GLOBALS["DB_WE"]->query(
+					$GLOBALS['DB_WE']->query(
 							"SELECT ID,ClassName,Path FROM " . TEMPLATES_TABLE . " WHERE $where ORDER BY ID");
-					while ($GLOBALS["DB_WE"]->next_record()) {
+					while ($GLOBALS['DB_WE']->next_record()) {
 						array_push(
 								$data,
 								array(
 
-										"id" => $GLOBALS["DB_WE"]->f("ID"),
+										"id" => $GLOBALS['DB_WE']->f("ID"),
 										"type" => "template",
-										"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+										"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 										"mt" => 0,
 										"tt" => 0,
-										"path" => $GLOBALS["DB_WE"]->f("Path"),
+										"path" => $GLOBALS['DB_WE']->f("Path"),
 										"it" => 0
 								));
 					}
@@ -316,19 +316,19 @@ class we_version
 
 			$query = ($_cat_query ? " AND $_cat_query " : "") . ($_doctype_query ? " AND $_doctype_query " : "") . ($_folders_query ? " AND $_folders_query " : "") . ($_template_query ? " AND $_template_query " : "");
 
-			$GLOBALS["DB_WE"]->query(
+			$GLOBALS['DB_WE']->query(
 					"SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' $query ORDER BY ID");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "document",
-								"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+								"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 								"mt" => 0,
 								"tt" => 0,
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
 								"it" => 0
 						));
 			}
@@ -346,19 +346,19 @@ class we_version
 	{
 		$data = array();
 		if (we_hasPerm("REBUILD_OBJECTS")) {
-			$GLOBALS["DB_WE"]->query(
+			$GLOBALS['DB_WE']->query(
 					"SELECT ID,ClassName,Path FROM " . OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "object",
-								"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+								"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 								"mt" => 0,
 								"tt" => 0,
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
 								"it" => 0
 						));
 			}
@@ -375,18 +375,18 @@ class we_version
 	{
 		$data = array();
 		if (we_hasPerm("REBUILD_NAVIGATION")) {
-			$GLOBALS["DB_WE"]->query("SELECT ID,Path FROM " . NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			$GLOBALS['DB_WE']->query("SELECT ID,Path FROM " . NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "navigation",
 								"cn" => "weNavigation",
 								"mt" => 0,
 								"tt" => 0,
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
 								"it" => 0
 						));
 			}
@@ -399,7 +399,7 @@ class we_version
 							"cn" => "weNavigation",
 							"mt" => 0,
 							"tt" => 0,
-							"path" => $GLOBALS["DB_WE"]->f("Path"),
+							"path" => $GLOBALS['DB_WE']->f("Path"),
 							"it" => 0
 					));
 		}
@@ -421,41 +421,41 @@ class we_version
 	{
 		$data = array();
 		if (we_hasPerm("REBUILD_INDEX")) {
-			$GLOBALS["DB_WE"]->query(
+			$GLOBALS['DB_WE']->query(
 					"SELECT ID,ClassName,Path FROM " . FILE_TABLE . " WHERE Published > 0 AND IsSearchable='1' ORDER BY ID");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "document",
-								"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+								"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 								"mt" => 0,
 								"tt" => 0,
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
 								"it" => 1
 						));
 			}
 			if (defined("OBJECT_FILES_TABLE")) {
-				$GLOBALS["DB_WE"]->query(
+				$GLOBALS['DB_WE']->query(
 						"SELECT ID,ClassName,Path FROM " . OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
-				while ($GLOBALS["DB_WE"]->next_record()) {
+				while ($GLOBALS['DB_WE']->next_record()) {
 					array_push(
 							$data,
 							array(
 
-									"id" => $GLOBALS["DB_WE"]->f("ID"),
+									"id" => $GLOBALS['DB_WE']->f("ID"),
 									"type" => "object",
-									"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+									"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 									"mt" => 0,
 									"tt" => 0,
-									"path" => $GLOBALS["DB_WE"]->f("Path"),
+									"path" => $GLOBALS['DB_WE']->f("Path"),
 									"it" => 1
 							));
 				}
 			}
-			$GLOBALS["DB_WE"]->query("DELETE FROM " . INDEX_TABLE);
+			$GLOBALS['DB_WE']->query("DELETE FROM " . INDEX_TABLE);
 		}
 		return $data;
 	}
@@ -481,21 +481,21 @@ class we_version
 				$_foldersList = rtrim($_foldersList,',');
 				$_folders_query = "( ParentID IN($_foldersList) )";
 			}
-			$GLOBALS["DB_WE"]->query(
+			$GLOBALS['DB_WE']->query(
 					"SELECT ID,ClassName,Path,Extension FROM " . FILE_TABLE . " WHERE ContentType='image/*'" . ($_folders_query ? " AND $_folders_query " : "") . " ORDER BY ID");
-			while ($GLOBALS["DB_WE"]->next_record()) {
+			while ($GLOBALS['DB_WE']->next_record()) {
 				array_push(
 						$data,
 						array(
 
-								"id" => $GLOBALS["DB_WE"]->f("ID"),
+								"id" => $GLOBALS['DB_WE']->f("ID"),
 								"type" => "thumbnail",
-								"cn" => $GLOBALS["DB_WE"]->f("ClassName"),
+								"cn" => $GLOBALS['DB_WE']->f("ClassName"),
 								"thumbs" => $thumbs,
-								"extension" => $GLOBALS["DB_WE"]->f("Extension"),
+								"extension" => $GLOBALS['DB_WE']->f("Extension"),
 								"mt" => 0,
 								"tt" => 0,
-								"path" => $GLOBALS["DB_WE"]->f("Path"),
+								"path" => $GLOBALS['DB_WE']->f("Path"),
 								"it" => 0
 						));
 			}

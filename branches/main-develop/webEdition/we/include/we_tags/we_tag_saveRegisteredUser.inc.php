@@ -92,15 +92,15 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 						if($values && $names){
 							// User in DB speichern
-							$GLOBALS["DB_WE"]->query("INSERT INTO ".CUSTOMER_TABLE."(".$names.") VALUES(".$values.")");
+							$GLOBALS['DB_WE']->query("INSERT INTO ".CUSTOMER_TABLE."(".$names.") VALUES(".$values.")");
 
 							// User in session speichern
-							$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($_REQUEST["s"]["Username"])."'",$GLOBALS["DB_WE"]);
+							$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS['DB_WE']->escape($_REQUEST["s"]["Username"])."'",$GLOBALS['DB_WE']);
 							if(count($u)){
 								$_SESSION["webuser"]=$u;
 								$_SESSION["webuser"]["registered"] = true;
 
-								$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP() WHERE ID=".($_SESSION["webuser"]["ID"]));
+								$GLOBALS['DB_WE']->query("UPDATE ".CUSTOMER_TABLE." SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP() WHERE ID=".($_SESSION["webuser"]["ID"]));
 								if(defined("WE_ECONDA_STAT") && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 									echo '<a name="emos_name" title="register" rel="'.md5($_SESSION["webuser"]['ID']).'" rev="0" ></a>';
 								}
@@ -156,7 +156,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 					$Username = isset($_REQUEST["s"]["Username"]) ?  $_REQUEST["s"]["Username"] : "";
 
-					if(f("SELECT 1 AS a FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS["DB_WE"]->escape($Username)."' AND ID<> '".abs($_REQUEST["s"]["ID"])."'",'a',$GLOBALS["DB_WE"])!='1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+					if(f("SELECT 1 AS a FROM ".CUSTOMER_TABLE." WHERE Username='".$GLOBALS['DB_WE']->escape($Username)."' AND ID<> '".abs($_REQUEST["s"]["ID"])."'",'a',$GLOBALS['DB_WE'])!='1'){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 						$set_a=array();
 						if(isset($_REQUEST["s"])){
 
@@ -191,11 +191,11 @@ function we_tag_saveRegisteredUser($attribs,$content){
 
 						}
 						if(isset($_REQUEST["s"]["Password"]) && $_REQUEST["s"]["Password"] != $_SESSION["webuser"]["Password"]){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
-							$GLOBALS["DB_WE"]->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID='".abs($_REQUEST["s"]["ID"])."'");
+							$GLOBALS['DB_WE']->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID='".abs($_REQUEST["s"]["ID"])."'");
 						}
 						if(sizeof($set_a)){
 							$set=implode(",",$set_a);
-							$GLOBALS["DB_WE"]->query("UPDATE ".CUSTOMER_TABLE." SET ".$set." WHERE ID='".abs($_REQUEST["s"]["ID"])."'");
+							$GLOBALS['DB_WE']->query("UPDATE ".CUSTOMER_TABLE." SET ".$set." WHERE ID='".abs($_REQUEST["s"]["ID"])."'");
 						}
 
 					}else{
@@ -208,7 +208,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					}
 
 					//die neuen daten in die session schreiben
-					$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($_REQUEST["s"]["ID"])."'",$GLOBALS["DB_WE"]);
+					$u = getHash("SELECT * from ".CUSTOMER_TABLE." WHERE ID='".abs($_REQUEST["s"]["ID"])."'",$GLOBALS['DB_WE']);
 
 					$_SESSION["webuser"]=$u;
 					$_SESSION["webuser"]["registered"] = true;

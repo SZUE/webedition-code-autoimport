@@ -213,9 +213,9 @@ class copyFolderFrag extends taskFragment
 			$GLOBALS['we_doc']->Text = $this->data["Text"];
 			$GLOBALS['we_doc']->Path = $path;
 			$GLOBALS['we_doc']->OldPath = "";
-			$pid = $this->getObjectPid($path, $GLOBALS["DB_WE"]);
+			$pid = $this->getObjectPid($path, $GLOBALS['DB_WE']);
 			$GLOBALS['we_doc']->setParentID($pid);
-			$ObjectExists = $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS["DB_WE"]);
+			$ObjectExists = $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE']);
 
 
 			if ($ObjectExists && $this->data["OverwriteObjects"]=='nothing'){
@@ -224,7 +224,7 @@ class copyFolderFrag extends taskFragment
 			if ($ObjectExists && $this->data["OverwriteObjects"]=='rename'){
 				$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text."_copy";
 				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path."_copy";
-				while ( $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS["DB_WE"]) ){
+				while ( $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE']) ){
 					$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text."_copy";
 					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path."_copy";
 				}
@@ -286,10 +286,10 @@ class copyFolderFrag extends taskFragment
 			$GLOBALS['we_doc']->ID = f(
 					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . escape_sql_query($path) . "'",
 					"ID",
-					$GLOBALS["DB_WE"]);
+					$GLOBALS['DB_WE']);
 			$GLOBALS['we_doc']->Path = $path;
 			$GLOBALS['we_doc']->OldPath = "";
-			$pid = $this->getPid($path, $GLOBALS["DB_WE"]);
+			$pid = $this->getPid($path, $GLOBALS['DB_WE']);
 			$GLOBALS['we_doc']->setParentID($pid);
 			switch ($GLOBALS['we_doc']->ContentType) {
 				case "text/webedition" :
@@ -342,13 +342,13 @@ class copyFolderFrag extends taskFragment
 							if ($file_id = f(
 									"SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($dt->DocType) . "'",
 									"ID",
-									$GLOBALS["DB_WE"])) {
+									$GLOBALS['DB_WE'])) {
 								$z = 0;
 								$footext = $dt->DocType . "_" . $z;
 								while (f(
 										"SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='".escape_sql_query($footext)."'",
 										"ID",
-										$GLOBALS["DB_WE"])) {
+										$GLOBALS['DB_WE'])) {
 									$z++;
 									$footext = $dt->DocType . "_" . $z;
 								}
@@ -358,7 +358,7 @@ class copyFolderFrag extends taskFragment
 							$path = id_to_path($dt->ParentID);
 							if ($this->mustChange($path)) {
 								$dt->ParentPath = $this->getNewPath($path);
-								$dt->ParentID = $this->getID($dt->ParentPath, $GLOBALS["DB_WE"]);
+								$dt->ParentID = $this->getID($dt->ParentPath, $GLOBALS['DB_WE']);
 							}
 
 							if ($dt->Templates) {
@@ -434,13 +434,13 @@ class copyFolderFrag extends taskFragment
 			if ($file_id = f(
 					"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Path='" . escape_sql_query($templ->Path) . "'",
 					"ID",
-					$GLOBALS["DB_WE"])) {
+					$GLOBALS['DB_WE'])) {
 				$z = 0;
 				$footext = $templ->Filename . "_" . $z . $templ->Extension;
 				while (f(
 						"SELECT ID FROM " . TEMPLATES_TABLE . " WHERE Text='".escape_sql_query($footext)."' AND ParentID='" . abs($templ->ParentID) . "'",
 						"ID",
-						$GLOBALS["DB_WE"])) {
+						$GLOBALS['DB_WE'])) {
 					$z++;
 					$footext = $templ->Filename . "_" . $z . $templ->Extension;
 				}
@@ -623,11 +623,11 @@ class copyFolderFrag extends taskFragment
 					foreach ($ChangeTags[$tagname] as $attribname) {
 						if (ereg($attribname . '="([0-9]+)"', $tag, $regs)) {
 							$id = $regs[1];
-							$path = id_to_path($id, FILE_TABLE, $GLOBALS["DB_WE"]);
+							$path = id_to_path($id, FILE_TABLE, $GLOBALS['DB_WE']);
 							if ($this->mustChange($path)) {
 								$changed = true;
 								$pathTo = $this->getNewPath($path);
-								$idTo = $this->getID($pathTo, $GLOBALS["DB_WE"]);
+								$idTo = $this->getID($pathTo, $GLOBALS['DB_WE']);
 								$idTo = $idTo ? $idTo : "##WEPATH##" . $pathTo . " ###WEPATH###";
 								$destTag = ereg_replace(
 										$attribname . '="[0-9]+"',
@@ -1063,7 +1063,7 @@ class copyFolderFinishFrag extends copyFolderFrag
 		if (preg_match_all('/##WEPATH##([^ ]+) ###WEPATH###/i', $content, $regs, PREG_SET_ORDER)) {
 			for ($i = 0; $i < sizeof($regs); $i++) {
 				$path = $regs[$i][1];
-				$id = $this->getID($path, $GLOBALS["DB_WE"]);
+				$id = $this->getID($path, $GLOBALS['DB_WE']);
 				$content = str_replace('##WEPATH##' . $path . ' ###WEPATH###', $id, $content);
 			}
 		}

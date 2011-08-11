@@ -101,7 +101,7 @@ function we_tag_href($attribs, $content){
 		if (!$intID && $rootdirid) {
 			$intID = $rootdirid;
 		}
-		$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($intID)."'", "Path", $GLOBALS["DB_WE"]);
+		$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($intID)."'", "Path", $GLOBALS['DB_WE']);
 
 		if ($int) {
 			$href = $intPath;
@@ -200,7 +200,7 @@ function we_tag_href($attribs, $content){
 	} else
 		if ($type == "int") {
 			$intID = $GLOBALS["we_doc"]->getElement($nintID);
-			$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($intID)."'", "Path", $GLOBALS["DB_WE"]);
+			$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($intID)."'", "Path", $GLOBALS['DB_WE']);
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 

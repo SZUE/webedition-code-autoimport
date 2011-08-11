@@ -86,7 +86,7 @@ function we_tag_userInput($attribs, $content){
 			true,
 			$object_pid,
 			$object_path,
-			$GLOBALS["DB_WE"],
+			$GLOBALS['DB_WE'],
 			$object_tableID);
 
 	if ($type == "date") {

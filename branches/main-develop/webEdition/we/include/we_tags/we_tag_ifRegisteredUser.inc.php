@@ -77,7 +77,6 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 					$ret &= $_SESSION['webuser'][$permission];
 				}
 			}
-		}
 
 		if ($ret && $cfilter && defined('CUSTOMER_TABLE')) {
 			if (isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter) {

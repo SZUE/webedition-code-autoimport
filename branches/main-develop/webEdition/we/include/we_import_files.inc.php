@@ -361,14 +361,14 @@ class we_import_files
 					));
 
 			if (we_image_edit::gd_version() > 0) {
-				$GLOBALS["DB_WE"]->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
+				$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
 				$Thselect = g_l('importFiles',"[thumbnails]") . "<br>" . getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
-				while ($GLOBALS["DB_WE"]->next_record()) {
-					$Thselect .= '<option value="' . $GLOBALS["DB_WE"]->f("ID") . '"' . (in_array(
-							$GLOBALS["DB_WE"]->f("ID"),
-							$thumbsArray) ? " selected" : "") . '>' . $GLOBALS["DB_WE"]->f("Name") . "</option>\n";
+				while ($GLOBALS['DB_WE']->next_record()) {
+					$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array(
+							$GLOBALS['DB_WE']->f("ID"),
+							$thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 				}
 				$Thselect .= "</select>\n" . '<input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";
 
@@ -544,7 +544,7 @@ class we_import_files
 		$but = str_replace("\n"," ",str_replace("\r"," ",$but));
 
 		$parts = array();
-		$maxsize = getUploadMaxFilesize(false, $GLOBALS["DB_WE"]);
+		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
 		$maxsize = round($maxsize / (1024 * 1024), 3) . "MB";
 
 		$content = hidden('we_cmd[0]', 'import_files') . hidden('cmd', 'content') . hidden('step', '2') . we_htmlElement::htmlDiv(
@@ -605,7 +605,7 @@ class we_import_files
 			$_param = array(
 
 					'actionURL' => '/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
-					'maxTotalRequestSize' => getUploadMaxFilesize(false, $GLOBALS["DB_WE"]),
+					'maxTotalRequestSize' => getUploadMaxFilesize(false, $GLOBALS['DB_WE']),
 					'showTabViews' => 'list,details',
 					'leftSplitpaneLocation' => '200',
 					'hideStopButton' => 'true',
@@ -929,10 +929,8 @@ class we_import_files
 			$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
 
 			// if file exists we have to see if we should create a new one or overwrite it!
-			if ($file_id = f(
-					"SELECT ID FROM " . FILE_TABLE . " WHERE Path='" . escape_sql_query($we_doc->Path) . "'",
-					"ID",
-					$GLOBALS["DB_WE"])) {
+			if (($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . escape_sql_query($we_doc->Path) . '"','ID',
+					$GLOBALS['DB_WE']))) {
 				if ($this->sameName == "overwrite") {
 					eval('$we_doc=new ' . $we_doc->ClassName . '();');
 					$we_doc->initByID($file_id, FILE_TABLE);
@@ -943,7 +941,7 @@ class we_import_files
 						while (f(
 								"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".escape_sql_query($footext)."' AND ParentID='" . abs($this->importToID) . "'",
 								"ID",
-								$GLOBALS["DB_WE"])) {
+								$GLOBALS['DB_WE'])) {
 							$z++;
 							$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 						}

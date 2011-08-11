@@ -76,9 +76,9 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
 
 	$tmp_Filename = preg_replace("/[^A-Za-z0-9._-]/", "", $_FILES["we_uploadedFile"]["name"]);
 
-	$we_doc->Filename = eregi_replace('^(.+)\..+$',"\\1",$tmp_Filename);
+	$we_doc->Filename = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
 
-	$we_doc->Extension = (strpos($tmp_Filename,".") > 0) ? eregi_replace('^.+(\..+)$',"\\1",$tmp_Filename) : "";
+	$we_doc->Extension = (strpos($tmp_Filename,".") > 0) ? preg_replace('#^.+(\..+)$#','\\1',$tmp_Filename) : '';
 
 	$we_doc->Text = $we_doc->Filename.$we_doc->Extension;
     $we_doc->setParentID($pid);

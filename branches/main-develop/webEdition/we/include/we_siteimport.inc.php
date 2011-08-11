@@ -257,7 +257,7 @@ class weSiteImport
 				TEMPLATES_TABLE,
 				strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='" . abs($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
-		$templateCode = f($sql_select, "Dat", $GLOBALS["DB_WE"]);
+		$templateCode = f($sql_select, "Dat", $GLOBALS['DB_WE']);
 		$tp = new we_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 		$records = array();
@@ -975,9 +975,9 @@ class weSiteImport
 		$_maxSize = htmlFormElementTable($_select, g_l('siteimport',"[maxSize]"));
 
 		$thumbsarray = array();
-		$GLOBALS["DB_WE"]->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
-		while ($GLOBALS["DB_WE"]->next_record()) {
-			$thumbsarray[$GLOBALS["DB_WE"]->f("ID")] = $GLOBALS["DB_WE"]->f("Name");
+		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
+		while ($GLOBALS['DB_WE']->next_record()) {
+			$thumbsarray[$GLOBALS['DB_WE']->f("ID")] = $GLOBALS['DB_WE']->f("Name");
 		}
 		$_select = htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, "", "value", 150);
 		$_thumbs = htmlFormElementTable($_select, g_l('importFiles',"[thumbnails]"));
@@ -2096,7 +2096,7 @@ class weSiteImport
 					while (f(
 							"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".$GLOBALS['DB_WE']->escape($footext)."' AND ParentID='" . abs($parentID) . "'",
 							"ID",
-							$GLOBALS["DB_WE"])) {
+							$GLOBALS['DB_WE'])) {
 						$z++;
 						$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
 					}

@@ -908,7 +908,7 @@ class we_wizard_import extends we_wizard {
 		$v = $this->getPostGetVar("v", array());
 
 		if(isset($v["docType"]) && $v["docType"]!=-1 && isset($_REQUEST["doctypeChanged"]) && $_REQUEST["doctypeChanged"]){
-			$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".$v["docType"]."'",$GLOBALS["DB_WE"]);
+			$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".$v["docType"]."'",$GLOBALS['DB_WE']);
 			$v["store_to_id"] = $values["ParentID"];
 			$v["store_to_path"] = id_to_path($v["store_to_id"]);
 			$v["we_Extension"] = $values["Extension"];
@@ -1865,7 +1865,7 @@ HTS;
 		}
 
 		if(isset($v["docType"]) && $v["docType"]!=-1 && isset($_REQUEST["doctypeChanged"]) && $_REQUEST["doctypeChanged"]){
-			$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".abs($v["docType"])."'",$GLOBALS["DB_WE"]);
+			$values = getHash("SELECT * FROM ".DOC_TYPES_TABLE." WHERE ID='".abs($v["docType"])."'",$GLOBALS['DB_WE']);
 			$v["store_to_id"] = $values["ParentID"];;
 			$v["store_to_path"] = id_to_path($v["store_to_id"]);
 			$v["we_Extension"] = $values["Extension"];

@@ -723,9 +723,9 @@ function checkAndPrepareImage($formname, $key = 'we_document') {
 								$_SESSION[$_imgDataId]['id'] = $imgId;
 							}
 
-							$_SESSION[$_imgDataId]['fileName'] = eregi_replace('^(.+)\..+$','\\1',$tmp_Filename);
-							$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? eregi_replace(
-															'^.+(\..+)$',
+							$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
+							$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace(
+															'#^.+(\..+)$#',
 															'\\1',
 															$tmp_Filename) : '';
 							$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
@@ -822,10 +822,10 @@ function checkAndPrepareBinary($formname, $key = 'we_document') {
 								$_SESSION[$_binaryDataId]["id"] = $binaryId;
 							}
 
-							$_SESSION[$_binaryDataId]["fileName"] = eregi_replace('^(.+)\..+$',"\\1",$tmp_Filename);
-							$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
-															'^.+(\..+)$',
-															"\\1",
+							$_SESSION[$_binaryDataId]["fileName"] = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
+							$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
+															'#^.+(\..+)$#',
+															'\\1',
 															$tmp_Filename) : "";
 							$_SESSION[$_binaryDataId]["text"] = $_SESSION[$_binaryDataId]["fileName"] . $_SESSION[$_binaryDataId]["extension"];
 							$_SESSION[$_binaryDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$binaryName];
@@ -873,22 +873,22 @@ function checkAndPrepareFlashmovie($formname, $key = "we_document") {
 
 
 							$tmp_Filename = $flashName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-															"/[^A-Za-z0-9._-]/",
-															"",
+															'[^A-Za-z0-9._-]',
+															'',
 															$_FILES["we_ui_$formname"]["name"][$flashName]);
 
 							if ($flashId) {
 								$_SESSION[$_flashmovieDataId]["id"] = $flashId;
 							}
 
-							$_SESSION[$_flashmovieDataId]["fileName"] = eregi_replace(
-															'^(.+)\..+$',
-															"\\1",
+							$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace(
+															'#^(.+)\..+$#',
+															'\\1',
 															$tmp_Filename);
-							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
-															'^.+(\..+)$',
-															"\\1",
-															$tmp_Filename) : "";
+							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
+															'#^.+(\..+)$#',
+															'\\1',
+															$tmp_Filename) : '';
 							$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
 
 							$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);
@@ -945,12 +945,12 @@ function checkAndPrepareQuicktime($formname, $key = "we_document") {
 						$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
 					}
 
-					$_SESSION[$_quicktimeDataId]["fileName"] = eregi_replace(
-													'^(.+)\..+$',
+					$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace(
+													'#^(.+)\..+$#',
 													"\\1",
 													$tmp_Filename);
-					$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? eregi_replace(
-													'^.+(\..+)$',
+					$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
+													'#^.+(\..+)$#',
 													"\\1",
 													$tmp_Filename) : "";
 					$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
@@ -1004,9 +1004,9 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 		}
 
 		if ($catOr) {
-			$cat_tail = ereg_replace('^(.*)OR $', '\1', $cat_tail);
+			$cat_tail = preg_replace('#^(.*)OR $#', '\1', $cat_tail);
 		} else {
-			$cat_tail = ereg_replace('^(.*)AND $', '\1', $cat_tail);
+			$cat_tail = preg_replace('#^(.*)AND $#', '\1', $cat_tail);
 		}
 		$cat_tail = trim($cat_tail);
 
@@ -1031,9 +1031,9 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 		}
 
 		if ($catOr) {
-			$cat_tail = ereg_replace('^(.*)OR $', '\1', $cat_tail);
+			$cat_tail = preg_replace('#^(.*)OR $#', '\1', $cat_tail);
 		} else {
-			$cat_tail = ereg_replace('^(.*)AND $', '\1', $cat_tail);
+			$cat_tail = preg_replace('#^(.*)AND $#', '\1', $cat_tail);
 		}
 
 		$cat_tail = trim($cat_tail);
@@ -1067,7 +1067,7 @@ function getSQLForOneCat($cat, $table = FILE_TABLE, $db = "", $fieldName = "Cate
 	$z = 0;
 	while ($db->next_record())
 		$sql .= " " . $table . "." . $fieldName . " like '%," . intval($db->f("ID")) . ",%' OR ";
-	$sql = ereg_replace('^(.*)OR $', '\1', $sql);
+	$sql = preg_replace('#^(.*)OR $#', '\1', $sql);
 	return ($sql?"( $sql )":'');
 }
 
@@ -1209,14 +1209,14 @@ function parseError($text) {
 }
 
 function std_numberformat($content) {
-	if (ereg('.*,[0-9]*$', $content)) {
+	if (preg_match('#.*,[0-9]*$#', $content)) {
 		// Deutsche Schreibweise
-		$umschreib = ereg_replace('(.*),([0-9]*)$', '\1.\2', $content);
+		$umschreib = preg_replace('#(.*),([0-9]*)$#', '\1.\2', $content);
 		$pos = strrpos($content, ',');
 		$vor = str_replace('.', '', substr($umschreib, 0, $pos));
 		$content = $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
 	} else
-	if (ereg('.*\.[0-9]*$', $content)) {
+	if (preg_match('#.*\.[0-9]*$#', $content)) {
 		// Englische Schreibweise
 		$pos = strrpos($content, '.');
 		$vor = substr($content, 0, $pos);
@@ -1538,8 +1538,8 @@ function makeOwnersSql($useCreatorID = true) {
 			we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
 		foreach ($groups as $id)
 			$q .= "Owners like '%," . abs($id) . ",%' OR ";
-		$q = ereg_replace('^(.*) OR $', '\1', $q);
-		return " AND ( RestrictOwners=0 OR (" . $q . ")) ";
+		$q = preg_replace('#^(.*) OR $#', '\1', $q);
+		return ' AND ( RestrictOwners=0 OR (' . $q . ')) ';
 	} else
 		return '';
 }
@@ -1795,7 +1795,7 @@ function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $ws
 				$qfoo .= " Path like '" . $db->escape($wsPaths[$i]) . "%' OR ";
 		if ($qfoo == ' ( ')
 			$qfoo = '';
-		$qfoo = ereg_replace('^(.*)OR $', '\1', $qfoo);
+		$qfoo = preg_replace('#^(.*)OR $#', '\1', $qfoo);
 		if ($qfoo)
 			$qfoo .= ' ) ';
 		else
@@ -2339,7 +2339,7 @@ function getContentTypeFromFile($dat) {
 	if (is_dir($dat)) {
 		return 'folder';
 	} else {
-		$ext = strtolower(ereg_replace('^.*(\..+)$', '\1', $dat));
+		$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
 		if ($ext) {
 			$extensions = array();
 			foreach ($GLOBALS['WE_CONTENT_TYPES'] as $ct => $fields) {
@@ -2378,10 +2378,10 @@ function getMaxAllowedPacket($db = '') {
 }
 
 function we_convertIniSizes($in) {
-	if (eregi('^([0-9]+)M$', $in, $regs)) {
+	if (preg_match('#^([0-9]+)M$#i', $in, $regs)) {
 		return 1024 * 1024 * abs($regs[1]);
 	} else
-	if (eregi('^([0-9]+)K$', $in, $regs)) {
+	if (preg_match('#^([0-9]+)K$#i', $in, $regs)) {
 		return 1024 * abs($regs[1]);
 	} else {
 		return abs($in);
@@ -2472,7 +2472,7 @@ function getRequestVar($name, $default, $yescode = '', $nocode = '') {
  */
 function getThumbDirectory($realpath = false) {
 	$dir = (defined('WE_THUMBNAIL_DIRECTORY') && WE_THUMBNAIL_DIRECTORY) ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__';
-	$dir = ereg_replace('^\.?(.*)$', '\1', $dir);
+	$dir = preg_replace('#^\.?(.*)$#', '\1', $dir);
 	if (substr($dir, 0, 1) != '/') {
 		$dir = '/' . $dir;
 	}
@@ -2626,7 +2626,7 @@ function makePath($path, $table, &$pathids, $owner = 0) {
  * @return         string
  */
 function clearPath($path) {
-	return ereg_replace('/+', '/', str_replace('\\', '/', $path));
+	return preg_replace('#/+#', '/', str_replace('\\', '/', $path));
 }
 
 /**
@@ -3031,7 +3031,7 @@ function we_filenameNotValid($filename) {
 	if (substr($filename, 0, 2) === '..') {
 		return true;
 	}
-	return eregi('[^a-z0-9._-]', $filename);
+	return preg_match('#[^a-z0-9._-]#i', $filename);
 }
 
 function we_getIcon($contentType, $extension) {

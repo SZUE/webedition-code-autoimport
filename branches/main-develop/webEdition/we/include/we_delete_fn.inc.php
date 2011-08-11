@@ -70,7 +70,7 @@ function checkDeleteEntry($id, $table)
 {
 	if ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 		return true;
-	$row = getHash("SELECT IsFolder FROM " . escape_sql_query($table) . " WHERE  ID=" . abs($id), $GLOBALS["DB_WE"]);
+	$row = getHash("SELECT IsFolder FROM " . escape_sql_query($table) . " WHERE  ID=" . abs($id), $GLOBALS['DB_WE']);
 	if (isset($row["IsFolder"]) && $row["IsFolder"]) {
 		return checkDeleteFolder($id, $table);
 	} else {

@@ -461,7 +461,7 @@ top.clearEntries();
 				}
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(eregi('[\\\'"<>/]',$txt)){
+				if(preg_match('|[\\\'"<>/]|',$txt)){
 
 					$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"),$Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
@@ -545,7 +545,7 @@ top.clearEntries();
 				}
 				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 			}else{
-				if(eregi('[\'"<>/]',$txt)){
+				if(preg_match('|[\'"<>/]|',$txt)){
 					$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"),$Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
 		         }else{

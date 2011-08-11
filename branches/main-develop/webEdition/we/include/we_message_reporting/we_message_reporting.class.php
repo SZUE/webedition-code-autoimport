@@ -45,7 +45,7 @@ class we_message_reporting {
 	 * @param boolean $isJsMsg
 	 * @return string
 	 */
-	function getShowMessageCall($message, $priority, $isJsMsg=false, $isOpener=false) {
+	static function getShowMessageCall($message, $priority, $isJsMsg=false, $isOpener=false) {
 
 		if ($priority == WE_MESSAGE_INFO || $priority == WE_MESSAGE_FRONTEND) {
 

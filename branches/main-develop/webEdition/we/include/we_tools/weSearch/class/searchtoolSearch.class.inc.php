@@ -92,7 +92,7 @@ class searchtoolsearch extends we_search
 				$obj->searchclassFolder->setView = f(
 						"SELECT listview FROM " . FILE_TABLE . " WHERE ID='" . abs($obj->ID) . "'",
 						"listview",
-						$GLOBALS["DB_WE"]);
+						$GLOBALS['DB_WE']);
 			}
 			if (isset($_REQUEST["mode"])) {
 				$obj->searchclassFolder->mode = ($_REQUEST["mode"]);
@@ -887,7 +887,7 @@ class searchtoolsearch extends we_search
 	function getTableType()
 	{
 
-		$tableType = "HEAP";
+		$tableType = "MEMORY";
 		if (getMysqlVer() < 4100) {
 			$tableType = "MYISAM";
 		}
@@ -948,7 +948,7 @@ class searchtoolsearch extends we_search
 		$operator = " AND ";
 		$this->table = $tablename;
 		$sql = "";
-		$tableInfo = $GLOBALS["DB_WE"]->metadata($this->table);
+		$tableInfo = $GLOBALS['DB_WE']->metadata($this->table);
 
 		$whatParentID = "";
 
@@ -1236,5 +1236,3 @@ class searchtoolsearch extends we_search
 	}
 
 }
-
-?>

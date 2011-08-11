@@ -548,13 +548,13 @@ if ($_REQUEST["we_cmd"][0] != "delete_single_document") { // no select mode in d
 }
 ?>
 if(top.treeData.table != "<?php
-print ereg_replace("_cache$", "", $table);
+print preg_replace('#_cache$#', '', $table);
 ?>"){
 	top.treeData.table = "<?php
-	print ereg_replace("_cache$", "", $table);
+	print preg_replace('#_cache$#', '', $table);
 	?>";
 	we_cmd("load","<?php
-	print ereg_replace("_cache$", "", $table);
+	print preg_replace('#_cache$#', '', $table);
 	?>");
 }else{
 top.drawTree();

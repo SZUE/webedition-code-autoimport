@@ -568,7 +568,7 @@ class we_tagParser {
 
 		if ($id) {
 			if ($id != "self") {
-				$php = '<?php $__id__ = ' . $id . ';$GLOBALS["we_form_action"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS["DB_WE"]); ?>
+				$php = '<?php $__id__ = ' . $id . ';$GLOBALS["we_form_action"] = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($__id__),"Path",$GLOBALS['DB_WE']); ?>
 ';
 			} else {
 				$php = '<?php $GLOBALS["we_form_action"] = $_SERVER["SCRIPT_NAME"]; ?>
@@ -670,11 +670,11 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 				}
 				break;
 			case "formmail" :
-				$successpage = $onsuccess ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onsuccess . '","Path",$GLOBALS["DB_WE"]); ?>' : '';
-				$errorpage = $onerror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onerror . '","Path",$GLOBALS["DB_WE"]); ?>' : '';
-				$mailerrorpage = $onmailerror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onmailerror . '","Path",$GLOBALS["DB_WE"]); ?>' : '';
-				$recipienterrorpage = $onrecipienterror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onrecipienterror . '","Path",$GLOBALS["DB_WE"]); ?>' : '';
-				$captchaerrorpage = $oncaptchaerror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $oncaptchaerror . '","Path",$GLOBALS["DB_WE"]); ?>' : '';
+				$successpage = $onsuccess ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onsuccess . '","Path",$GLOBALS['DB_WE']); ?>' : '';
+				$errorpage = $onerror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onerror . '","Path",$GLOBALS['DB_WE']); ?>' : '';
+				$mailerrorpage = $onmailerror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onmailerror . '","Path",$GLOBALS['DB_WE']); ?>' : '';
+				$recipienterrorpage = $onrecipienterror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $onrecipienterror . '","Path",$GLOBALS['DB_WE']); ?>' : '';
+				$captchaerrorpage = $oncaptchaerror ? '<?php print f("SELECT Path FROM ".FILE_TABLE." WHERE ID=' . $oncaptchaerror . '","Path",$GLOBALS['DB_WE']); ?>' : '';
 
 				if ($confirmmail == "true") {
 					$confirmmail = true;
@@ -698,7 +698,7 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 				if ($id) {
 					if ($id != "self") {
 
-						$formAttribs['action'] = '<?php print(f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\'' . $id . '\'","Path",$GLOBALS["DB_WE"])); ?>';
+						$formAttribs['action'] = '<?php print(f("SELECT Path FROM ".FILE_TABLE." WHERE ID=\'' . $id . '\'","Path",$GLOBALS['DB_WE'])); ?>';
 					} else {
 						$formAttribs['action'] = '<?php print $_SERVER["SCRIPT_NAME"]; ?>';
 					}
@@ -717,9 +717,9 @@ if (!$GLOBALS["we_doc"]->InWebEdition) {
 				            	$_recipientString = implode(",", $_recipientArray);
 
 				            	$_ids = array();
-				            	$GLOBALS["DB_WE"]->query("SELECT * FROM " . RECIPIENTS_TABLE . " WHERE Email IN(" . $_recipientString . ")");
-				            	while ($GLOBALS["DB_WE"]->next_record()) {
-				            		$_ids[] = $GLOBALS["DB_WE"]->f("ID");
+				            	$GLOBALS['DB_WE']->query("SELECT * FROM " . RECIPIENTS_TABLE . " WHERE Email IN(" . $_recipientString . ")");
+				            	while ($GLOBALS['DB_WE']->next_record()) {
+				            		$_ids[] = $GLOBALS['DB_WE']->f("ID");
 				            	}
 
 				            	$_recipientIdString = "";

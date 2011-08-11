@@ -1134,7 +1134,7 @@ function tinyMCEchanged(inst){
 
 		if(preg_match_all('/src="document:([^" ]+)/i',$editValue,$regs,PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.intval($reg[1]),'Path',$GLOBALS["DB_WE"]);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.intval($reg[1]),'Path',$GLOBALS['DB_WE']);
 				$editValue = str_ireplace('src="document:'.$reg[1],'src="'.$path."?id=".$reg[1],$editValue);
 			}
 		}

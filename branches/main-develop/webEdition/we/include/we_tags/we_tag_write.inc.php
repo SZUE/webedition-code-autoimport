@@ -220,7 +220,7 @@ function we_tag_write($attribs, $content){
 						$classname = f(
 								"SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . abs($classid) . "'",
 								"Text",
-								$GLOBALS["DB_WE"]);
+								$GLOBALS['DB_WE']);
 						if ($triggerid) {
 							$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
 							$mailtext = sprintf(g_l('global',"[std_mailtext_newObj]"), $path, $classname) . "\n" . "http://" . $GLOBALS["SERVER_NAME"] . $port . id_to_path(

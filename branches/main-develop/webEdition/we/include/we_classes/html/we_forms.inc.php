@@ -258,7 +258,7 @@ class we_forms {
 			}else{
 				$e = new we_wysiwyg($name,$width,$height,"",$commands,$bgcolor,"",$class,$fontnames,(!$inwebedition),$xml,$removeFirstParagraph,$inlineedit,"",$charset,$cssClasses,$_lang,'',$showSpell,$isFrontendEdit);
 
-				$fieldName = ereg_replace('^.+_txt\[(.+)\]$','\1',$name);
+				$fieldName = preg_replace('#^.+_txt\[(.+)\]$#','\1',$name);
 
 				// Bugfix => Workarround Bug # 7445
 				if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->ClassName != "we_objectFile" && $GLOBALS["we_doc"]->ClassName != "we_object"){

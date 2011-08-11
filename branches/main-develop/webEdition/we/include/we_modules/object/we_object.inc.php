@@ -1370,9 +1370,9 @@ class we_object extends we_document {
 		}
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$img = new we_imageDocument();
-		$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
+		$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
 
-		$startTag = $this->getLinkStartTag($link,$attribs,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
+		$startTag = $this->getLinkStartTag($link,$attribs,$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
 		$editbut = $we_button->create_button("edit", "javascript:we_cmd('edit_link_at_class','".$n."','','".$i."');");
 		$delbut = $we_button->create_button("image:btn_function_trash", "javascript:setScrollTo();we_cmd('delete_link_at_class','".$GLOBALS['we_transaction']."','".$i."','".$n."')");
 		if(!$content) $content = g_l('global',"[new_link]");
@@ -2657,7 +2657,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			if($GLOBALS["we_doc"]->ID) {		//	userModule installed
 				$ws = get_ws($GLOBALS["we_doc"]->Table);
 				if($ws) {		//	doc has workspaces
-					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS["DB_WE"]))) {
+					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS['DB_WE']))) {
 						return -1;
 					}
 				}

@@ -34,7 +34,7 @@ protect();
 function checkIfValidStartdocument( $id , $type = "document"){
 
 	if($type == "object") {
-		$ctype = f("SELECT ContentType FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS["DB_WE"]);
+		$ctype = f("SELECT ContentType FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS['DB_WE']);
 
 		if($ctype == "objectFile"){
 			return true;
@@ -43,7 +43,7 @@ function checkIfValidStartdocument( $id , $type = "document"){
 		}
 
 	} else {
-		$ctype = f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS["DB_WE"]);
+		$ctype = f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS['DB_WE']);
 
 		if($ctype == "text/webedition"){
 			return true;

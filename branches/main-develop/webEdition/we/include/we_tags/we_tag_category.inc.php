@@ -43,7 +43,7 @@ function we_tag_category($attribs, $content){
 		$category = str_replace(
 				"\\,",
 				",",
-				we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir));
+				we_getCatsFromIDs($id, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
 		return str_replace("/", $separator, $category);
 	}
 
@@ -65,7 +65,7 @@ function we_tag_category($attribs, $content){
 		$category = $catIDs ? str_replace(
 				"\\,",
 				",",
-				we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir)) : "";
+				we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir)) : "";
 		return str_replace("/", $separator, $category);
 
 	} else {
@@ -73,7 +73,7 @@ function we_tag_category($attribs, $content){
 		$category = str_replace(
 				"\\,",
 				",",
-				we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS["DB_WE"], $rootdir, $field, $onlyindir));
+				we_getCatsFromDoc($doc, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir));
 		return str_replace("/", $separator, $category);
 	}
 }

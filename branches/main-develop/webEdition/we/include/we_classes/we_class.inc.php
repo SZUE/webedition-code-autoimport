@@ -279,7 +279,7 @@ abstract class we_class{
 	}
 
 	function htmlRadioButton($name, $value, $checked=false, $attribs="", $text="", $textalign="left", $textclass="defaultfont", $type="radio", $width="") {
-		$v = $value; //ereg_replace('"',"&quot;",$value);
+		$v = $value;
 		return ( $text ?
 						('<table cellpadding="0" cellspacing="0" border="0"' . ($width ? " width=$width" : "") . '><tr>' . (($textalign == "left") ?
 										('<td class="' . $textclass . '">' . $text . '&nbsp;</td><td>') :
@@ -298,7 +298,7 @@ abstract class we_class{
 	}
 
 	function htmlCheckBox($name, $value, $checked=false, $attribs="", $text="", $textalign="left", $textclass="defaultfont") {
-		$v = $value; //ereg_replace('"',"&quot;",$value);
+		$v = $value;
 		$type = "checkbox";
 		return ( $text ?
 						('<table cellpadding="0" cellspacing="0" border="0"><tr>' . (($textalign == "left") ?
@@ -500,7 +500,7 @@ abstract class we_class{
 		}
 		if (sizeof($_REQUEST)) {
 			foreach ($_REQUEST as $n => $v) {
-				if (ereg('^we_' . $this->Name . '_([^\[]+)$', $n, $regs)) {
+				if (preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs)) {
 					if (in_array($regs[1], $this->persistent_slots)) {
 						eval('$this->' . $regs[1] . '=$v;');
 					}
@@ -729,7 +729,7 @@ abstract class we_class{
 
 	/**returns error-messages recorded during an operation, currently only save is used*/
 	function getErrMsg(){
-		return ($this->errMsg?'\n'.$this->errMsg:'');
+		return ($this->errMsg !='' ?'\n'.$this->errMsg:'');
 	}
 	
 }

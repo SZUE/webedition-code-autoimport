@@ -459,12 +459,12 @@ class we_rebuild_wizard{
 	*/
 	function formDoctypes($doctypes){
 
-		$GLOBALS["DB_WE"]->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
+		$GLOBALS['DB_WE']->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = g_l('global',"[doctypes]")."<br>".getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
-		while($GLOBALS["DB_WE"]->next_record()){
-			$DTselect .= '<option value="'.$GLOBALS["DB_WE"]->f("ID").'"'.(in_array($GLOBALS["DB_WE"]->f("ID"),$doctypesArray) ? " selected" : "").'>'.$GLOBALS["DB_WE"]->f("DocType")."</option>\n";
+		while($GLOBALS['DB_WE']->next_record()){
+			$DTselect .= '<option value="'.$GLOBALS['DB_WE']->f("ID").'"'.(in_array($GLOBALS['DB_WE']->f("ID"),$doctypesArray) ? " selected" : "").'>'.$GLOBALS['DB_WE']->f("DocType")."</option>\n";
 		}
 		$DTselect .= "</select>\n";
 		return $DTselect;
@@ -499,13 +499,13 @@ class we_rebuild_wizard{
 	* @param string $thumbs csv value with thumb IDs
 	*/
 	function formThumbs($thumbs){
-		$GLOBALS["DB_WE"]->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
+		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
 		$Thselect = g_l('rebuild',"[thumbnails]")."<br>".getPixel(1,3)."<br>".
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">'."\n";
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
-		while($GLOBALS["DB_WE"]->next_record()){
-			$Thselect .= '<option value="'.$GLOBALS["DB_WE"]->f("ID").'"'.(in_array($GLOBALS["DB_WE"]->f("ID"),$thumbsArray) ? " selected" : "").'>'.$GLOBALS["DB_WE"]->f("Name")."</option>\n";
+		while($GLOBALS['DB_WE']->next_record()){
+			$Thselect .= '<option value="'.$GLOBALS['DB_WE']->f("ID").'"'.(in_array($GLOBALS['DB_WE']->f("ID"),$thumbsArray) ? " selected" : "").'>'.$GLOBALS['DB_WE']->f("Name")."</option>\n";
 		}
 		$Thselect .= "</select>\n";
 		return $Thselect;

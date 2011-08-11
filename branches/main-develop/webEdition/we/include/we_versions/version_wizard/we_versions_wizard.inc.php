@@ -1139,38 +1139,38 @@ class we_versions_wizard
 		$docIds = array();
 		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,binaryPath,timestamp,version FROM " . VERSIONS_TABLE . " WHERE " . $whereCt . " AND " . $timestampWhere . " ORDER BY ID";
 		$_SESSION['versions']['deleteWizardWhere'] = $whereCt . " AND " . $timestampWhere;
-		$GLOBALS["DB_WE"]->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
 		$_SESSION['versions']['logDeleteIds'] = array();
 
-		while ($GLOBALS["DB_WE"]->next_record()) {
-			if (!in_array($GLOBALS["DB_WE"]->f("documentID"), $docIds)) {
-				$docIds[$GLOBALS["DB_WE"]->f("documentID")]["Path"] = $GLOBALS["DB_WE"]->f("Path");
-				$docIds[$GLOBALS["DB_WE"]->f("documentID")]["ContentType"] = $GLOBALS["DB_WE"]->f("ContentType");
+		while ($GLOBALS['DB_WE']->next_record()) {
+			if (!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)) {
+				$docIds[$GLOBALS['DB_WE']->f("documentID")]["Path"] = $GLOBALS['DB_WE']->f("Path");
+				$docIds[$GLOBALS['DB_WE']->f("documentID")]["ContentType"] = $GLOBALS['DB_WE']->f("ContentType");
 			}
 			array_push(
 					$cont,
 					array(
 
-							"ID" => $GLOBALS["DB_WE"]->f("ID"),
-							"documentID" => $GLOBALS["DB_WE"]->f("documentID"),
-							"version" => $GLOBALS["DB_WE"]->f("version"),
-							"text" => $GLOBALS["DB_WE"]->f("Text"),
-							"path" => $GLOBALS["DB_WE"]->f("Path"),
-							"table" => $GLOBALS["DB_WE"]->f("documentTable"),
-							"contentType" => $GLOBALS["DB_WE"]->f("ContentType"),
-							"timestamp" => $GLOBALS["DB_WE"]->f("timestamp")
+							"ID" => $GLOBALS['DB_WE']->f("ID"),
+							"documentID" => $GLOBALS['DB_WE']->f("documentID"),
+							"version" => $GLOBALS['DB_WE']->f("version"),
+							"text" => $GLOBALS['DB_WE']->f("Text"),
+							"path" => $GLOBALS['DB_WE']->f("Path"),
+							"table" => $GLOBALS['DB_WE']->f("documentTable"),
+							"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
+							"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
 					));
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS["DB_WE"]->f('ID')]['Text'] = $GLOBALS["DB_WE"]->f('Text');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS["DB_WE"]->f('ID')]['ContentType'] = $GLOBALS["DB_WE"]->f(
+			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Text'] = $GLOBALS['DB_WE']->f('Text');
+			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['ContentType'] = $GLOBALS['DB_WE']->f(
 					'ContentType');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS["DB_WE"]->f('ID')]['Path'] = $GLOBALS["DB_WE"]->f('Path');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS["DB_WE"]->f('ID')]['Version'] = $GLOBALS["DB_WE"]->f(
+			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Path'] = $GLOBALS['DB_WE']->f('Path');
+			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['Version'] = $GLOBALS['DB_WE']->f(
 					'version');
-			$_SESSION['versions']['logDeleteIds'][$GLOBALS["DB_WE"]->f('ID')]['documentID'] = $GLOBALS["DB_WE"]->f(
+			$_SESSION['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')]['documentID'] = $GLOBALS['DB_WE']->f(
 					'documentID');
-			if ($GLOBALS["DB_WE"]->f("binaryPath") != "") {
-				$_SESSION['versions']['deleteWizardbinaryPath'][] = $GLOBALS["DB_WE"]->f("binaryPath");
+			if ($GLOBALS['DB_WE']->f("binaryPath") != "") {
+				$_SESSION['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f("binaryPath");
 			}
 		}
 
@@ -1329,24 +1329,24 @@ class we_versions_wizard
 		$query .= " ORDER BY version DESC ";
 
 		$_SESSION['versions']['query'] = $query;
-		$GLOBALS["DB_WE"]->query($query);
-		while ($GLOBALS["DB_WE"]->next_record()) {
-			if (!in_array($GLOBALS["DB_WE"]->f("documentID"), $docIds)) {
-				$docIds[$GLOBALS["DB_WE"]->f("documentID")]["Path"] = $GLOBALS["DB_WE"]->f("Path");
-				$docIds[$GLOBALS["DB_WE"]->f("documentID")]["ContentType"] = $GLOBALS["DB_WE"]->f("ContentType");
+		$GLOBALS['DB_WE']->query($query);
+		while ($GLOBALS['DB_WE']->next_record()) {
+			if (!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)) {
+				$docIds[$GLOBALS['DB_WE']->f("documentID")]["Path"] = $GLOBALS['DB_WE']->f("Path");
+				$docIds[$GLOBALS['DB_WE']->f("documentID")]["ContentType"] = $GLOBALS['DB_WE']->f("ContentType");
 			}
 			array_push(
 					$cont,
 					array(
 
-							"ID" => $GLOBALS["DB_WE"]->f("ID"),
-							"documentID" => $GLOBALS["DB_WE"]->f("documentID"),
-							"version" => $GLOBALS["DB_WE"]->f("version"),
-							"text" => $GLOBALS["DB_WE"]->f("Text"),
-							"path" => $GLOBALS["DB_WE"]->f("Path"),
-							"table" => $GLOBALS["DB_WE"]->f("documentTable"),
-							"contentType" => $GLOBALS["DB_WE"]->f("ContentType"),
-							"timestamp" => $GLOBALS["DB_WE"]->f("timestamp")
+							"ID" => $GLOBALS['DB_WE']->f("ID"),
+							"documentID" => $GLOBALS['DB_WE']->f("documentID"),
+							"version" => $GLOBALS['DB_WE']->f("version"),
+							"text" => $GLOBALS['DB_WE']->f("Text"),
+							"path" => $GLOBALS['DB_WE']->f("Path"),
+							"table" => $GLOBALS['DB_WE']->f("documentTable"),
+							"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
+							"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
 					));
 		}
 

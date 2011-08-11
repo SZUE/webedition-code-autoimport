@@ -58,9 +58,9 @@ class objectsearch extends we_search {
 
 	function getFields($name="obj_searchField",$size=1,$select="",$Path,$multi="") {
 
-		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".escape_sql_query($Path)."'","ID",$GLOBALS["DB_WE"]);
+		$objID = f("SELECT ID FROM ".OBJECT_TABLE." WHERE Path='".escape_sql_query($Path)."'","ID",$GLOBALS['DB_WE']);
 		$opts = '';
-		$tableInfo =  $GLOBALS["DB_WE"]->metadata(OBJECT_X_TABLE.$objID);
+		$tableInfo =  $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE.$objID);
 		$all = "";
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && stripos($tableInfo[$i]["name"],"multiobject")!==0 && stripos($tableInfo[$i]["name"],"object")!==0) {

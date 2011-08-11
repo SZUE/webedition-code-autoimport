@@ -97,7 +97,7 @@ function we_tag($name, $attribs=array(), $content = '') {
 			$uAr = makeArrayFromCSV($attribs['user']);
 			$userIds = array();
 			foreach ($uAr as $u) {
-				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . $GLOBALS['DB_WE']->escape($u) . "'", "ID", $GLOBALS["DB_WE"]);
+				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . $GLOBALS['DB_WE']->escape($u) . "'", "ID", $GLOBALS['DB_WE']);
 				if ($i) {
 					array_push($userIds, $i);
 				}

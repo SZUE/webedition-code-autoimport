@@ -1289,9 +1289,9 @@ class we_objectFile extends we_document{
 			}
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$img = new we_imageDocument();
-			$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
+			$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
 
-			$startTag = $this->getLinkStartTag($link, array(),$this->ParentID,$this->Path,$GLOBALS["DB_WE"],$img);
+			$startTag = $this->getLinkStartTag($link, array(),$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
 
 			$editbut = $we_button->create_button("edit", "javascript:we_cmd('edit_link_at_object','".$n."')");
 			$delbut  = $we_button->create_button("image:btn_function_trash", "javascript:we_cmd('delete_link_at_object','".$GLOBALS['we_transaction']."', 'link_".$n."')");

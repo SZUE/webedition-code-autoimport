@@ -183,7 +183,7 @@ class weVoting extends weModelBase{
 		$this->ParentID = !empty($this->ParentID) ? $this->ParentID : 0;
 		if(isset($_SESSION["user"]["ID"]) && ($this->RestrictOwners && empty($this->Owners) || !in_array($_SESSION["user"]["ID"],$this->Owners))) $this->Owners[] = $_SESSION["user"]["ID"];
 
-		$_old_QASet = f("SELECT QASet FROM " . VOTING_TABLE . " WHERE Text='" . $GLOBALS["DB_WE"]->escape($this->Text) . "'","QASet",$GLOBALS["DB_WE"]);
+		$_old_QASet = f("SELECT QASet FROM " . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'","QASet",$GLOBALS['DB_WE']);
 		$_new_QASet = $this->QASet;
 
 		$this->QASet = serialize($this->QASet);

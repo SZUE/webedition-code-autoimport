@@ -188,13 +188,10 @@ class we_rebuild {
 		switch($btype){
 			case "rebuild_all":
 				return we_rebuild::getAllDocuments($maintable,$tmptable);
-				break;
 			case "rebuild_templates":
 				return we_rebuild::getTemplates();
-				break;
 			case "rebuild_filter":
 				return we_rebuild::getFilteredDocuments($categories,$catAnd,$doctypes,$folders,$templateID);
-				break;
 		}
 	}
 
@@ -208,44 +205,44 @@ class we_rebuild {
 	function getAllDocuments($maintable,$tmptable){
 		$data = array();
 		if(we_hasPerm("REBUILD_ALL")){
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". TEMPLATES_TABLE . " ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". TEMPLATES_TABLE . " ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"template",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>$maintable,
 										"tt"=>$tmptable,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE IsFolder=1 OR Published > 0 ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE IsFolder=1 OR Published > 0 ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"document",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>$maintable,
 										"tt"=>$tmptable,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"document",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>$maintable,
 										"tt"=>$tmptable,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
-			$GLOBALS["DB_WE"]->query("SELECT ID,Path FROM ". NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,Path FROM ". NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"navigation",
 										"cn"=>"weNavigation",
 										"mt"=>$maintable,
 										"tt"=>$tmptable,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
 			array_push($data,array(	"id"=>0,
@@ -253,7 +250,7 @@ class we_rebuild {
 										"cn"=>"weNavigation",
 										"mt"=>$maintable,
 										"tt"=>$tmptable,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0)
 			);
 
@@ -278,15 +275,15 @@ class we_rebuild {
 		$data = array();
 		if(we_hasPerm("REBUILD_META")){
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN('.implode(",", $metaFolders) .') ' : '';
-			$GLOBALS["DB_WE"]->query("SELECT ID,path FROM ". FILE_TABLE . " WHERE ContentType='image/*' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
-			while($GLOBALS["DB_WE"]->next_record()){
+			$GLOBALS['DB_WE']->query("SELECT ID,path FROM ". FILE_TABLE . " WHERE ContentType='image/*' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
+			while($GLOBALS['DB_WE']->next_record()){
 				array_push(
 					$data,
 					array(
-						"id"=>$GLOBALS["DB_WE"]->f("ID"),
+						"id"=>$GLOBALS['DB_WE']->f("ID"),
 						"type"=>"metadata",
 						"onlyEmpty"=>$onlyEmpty,
-						"path"=>$GLOBALS["DB_WE"]->f("path"),
+						"path"=>$GLOBALS['DB_WE']->f("path"),
 						"metaFields"=>$metaFields
 					)
 				);
@@ -303,14 +300,14 @@ class we_rebuild {
 	function getTemplates(){
 		$data = array();
 		if(we_hasPerm("REBUILD_TEMPLATES")){
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". TEMPLATES_TABLE . " ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". TEMPLATES_TABLE . " ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"template",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
 		}
@@ -373,14 +370,14 @@ class we_rebuild {
 					$where = substr($where, 0, strlen($where) - 3);
 					$where = '(' . $where . ')';
 
-					$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". TEMPLATES_TABLE . " WHERE $where ORDER BY ID");
-					while($GLOBALS["DB_WE"]->next_record()){
-						array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+					$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". TEMPLATES_TABLE . " WHERE $where ORDER BY ID");
+					while($GLOBALS['DB_WE']->next_record()){
+						array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 												"type"=>"template",
-												"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+												"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 												"mt"=>0,
 												"tt"=>0,
-												"path"=>$GLOBALS["DB_WE"]->f("Path"),
+												"path"=>$GLOBALS['DB_WE']->f("Path"),
 												"it"=>0));
 					}
 
@@ -403,14 +400,14 @@ class we_rebuild {
 						($_folders_query ? " AND $_folders_query " : "") .
 						($_template_query ? " AND $_template_query " : "");
 
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' $query ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE IsDynamic=0 AND Published > 0 AND ContentType='text/webedition' $query ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"document",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
 		}
@@ -429,24 +426,24 @@ class we_rebuild {
 		$updater->updateObjectFilesX();
 		$data = array();
 		if(we_hasPerm("REBUILD_OBJECTS")){
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"object",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE ClassName = 'we_folder' ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE ClassName = 'we_folder' ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"object",
 										"cn"=>"we_class_folder",
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
 		}
@@ -461,14 +458,14 @@ class we_rebuild {
 	function getNavigation(){
 		$data = array();
 		if(we_hasPerm("REBUILD_NAVIGATION")){
-			$GLOBALS["DB_WE"]->query("SELECT ID,Path FROM ". NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,Path FROM ". NAVIGATION_TABLE . " WHERE IsFolder=0 ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"navigation",
 										"cn"=>"weNavigation",
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
 			array_push($data,array(	"id"=>0,
@@ -476,7 +473,7 @@ class we_rebuild {
 										"cn"=>"weNavigation",
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0)
 			);
 		}
@@ -497,29 +494,29 @@ class we_rebuild {
 	function getIndex(){
 		$data = array();
 		if(we_hasPerm("REBUILD_INDEX")){
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE Published > 0 AND IsSearchable='1' ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". FILE_TABLE . " WHERE Published > 0 AND IsSearchable='1' ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"document",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>1));
 			}
 			if(defined("OBJECT_FILES_TABLE")){
-				$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
-				while($GLOBALS["DB_WE"]->next_record()){
-					array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+				$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path FROM ". OBJECT_FILES_TABLE . " WHERE Published > 0 ORDER BY ID");
+				while($GLOBALS['DB_WE']->next_record()){
+					array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 											"type"=>"object",
-											"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+											"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 											"mt"=>0,
 											"tt"=>0,
-											"path"=>$GLOBALS["DB_WE"]->f("Path"),
+											"path"=>$GLOBALS['DB_WE']->f("Path"),
 											"it"=>1));
 				}
 			}
-			$GLOBALS["DB_WE"]->query("DELETE FROM ".INDEX_TABLE);
+			$GLOBALS['DB_WE']->query("DELETE FROM ".INDEX_TABLE);
 		}
 		return $data;
 	}
@@ -544,16 +541,16 @@ class we_rebuild {
 				$_foldersList = ereg_replace('^(.+),$','\1',$_foldersList);
 				$_folders_query = "( ParentID IN($_foldersList) )";
 			}
-			$GLOBALS["DB_WE"]->query("SELECT ID,ClassName,Path,Extension FROM ". FILE_TABLE . " WHERE ContentType='image/*'".($_folders_query ? " AND $_folders_query " : "")." ORDER BY ID");
-			while($GLOBALS["DB_WE"]->next_record()){
-				array_push($data,array(	"id"=>$GLOBALS["DB_WE"]->f("ID"),
+			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path,Extension FROM ". FILE_TABLE . " WHERE ContentType='image/*'".($_folders_query ? " AND $_folders_query " : "")." ORDER BY ID");
+			while($GLOBALS['DB_WE']->next_record()){
+				array_push($data,array(	"id"=>$GLOBALS['DB_WE']->f("ID"),
 										"type"=>"thumbnail",
-										"cn"=>$GLOBALS["DB_WE"]->f("ClassName"),
+										"cn"=>$GLOBALS['DB_WE']->f("ClassName"),
 										"thumbs"=>$thumbs,
-										"extension"=>$GLOBALS["DB_WE"]->f("Extension"),
+										"extension"=>$GLOBALS['DB_WE']->f("Extension"),
 										"mt"=>0,
 										"tt"=>0,
-										"path"=>$GLOBALS["DB_WE"]->f("Path"),
+										"path"=>$GLOBALS['DB_WE']->f("Path"),
 										"it"=>0));
 			}
 		}

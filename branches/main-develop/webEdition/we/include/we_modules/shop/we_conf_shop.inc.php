@@ -91,7 +91,7 @@ class shop{
 					if ($key == WE_SHOP_VAT_FIELD_NAME) {
 						$this->Record[$key] = $value;
 					} else {
-						$this->Record[ereg_replace("^we_","",$key)] = $value;
+						$this->Record[preg_replace('#^we_#','',$key)] = $value;
 					}
 
 				}

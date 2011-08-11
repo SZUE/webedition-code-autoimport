@@ -381,7 +381,7 @@ class weBanner extends weBannerBase{
 	}
 
 	function getBannerURL($bid){
-		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM ".BANNER_TABLE." WHERE ID=".abs($bid),$GLOBALS["DB_WE"]);
+		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM ".BANNER_TABLE." WHERE ID=".abs($bid),$GLOBALS['DB_WE']);
 		$prot = getServerProtocol(true);
 		$url = $h["IntHref"] ? $prot.SERVER_NAME.(defined("HTTP_PORT") ? (":".HTTP_PORT) : "").id_to_path($h["bannerIntID"],FILE_TABLE) : $h["bannerURL"];
 		return $url;

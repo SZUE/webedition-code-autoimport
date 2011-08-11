@@ -23,7 +23,6 @@
  */
 
 function we_tag_link($attribs, $content){
-
 	$name = we_getTagAttribute("name", $attribs);
 	$xml = getXmlAttributeValueAsBoolean(we_getTagAttribute("xml", $attribs, ""));
 	$text = we_getTagAttribute("text", $attribs, "");
@@ -31,29 +30,23 @@ function we_tag_link($attribs, $content){
 	$id = we_getTagAttribute("id", $attribs);
 
 	// check if target document exists (Bug #7167)
-	if ($id != 0) {
-		if(f("SELECT count(*) as tmp FROM " . FILE_TABLE . " WHERE ID=".abs($id), 'tmp',new DB_WE()) ==0){
-			$link = array();
+	if ($id != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID='.intval($id), 'tmp',new DB_WE()) !='1')){
 			$id = 0;
-		}
 	}
-	if ($imageid != 0) {
-		if(f('SELECT count(*) as tmp FROM ' . FILE_TABLE . " WHERE ID=".abs($imageid), 'tmp',new DB_WE())==0){
-			$link = array();
+	if ($imageid != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID='.intval($imageid), 'tmp',new DB_WE())!='1')){
 			$imageid = 0;
-			if (isset($id))
+			if (isset($id)){
 				$id = 0;
-		}
+			}
 	}
 
-	$attribs = removeAttribs($attribs, array(
-		'text', 'id', 'imageid','to','nameto'
-	));
+	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid','to','nameto'));
 
 	$link = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();
 	if (!$GLOBALS['we_editmode']) {
 		return $GLOBALS["we_doc"]->getField($attribs, "link");
-	} else {
+	} 
+	
 		if (is_array($link)) {
 			if (!sizeof($link)) {
 				$link = array(
@@ -89,7 +82,7 @@ function we_tag_link($attribs, $content){
 					$link,
 					$GLOBALS["we_doc"]->ParentID,
 					$GLOBALS["we_doc"]->Path,
-					$GLOBALS["DB_WE"],
+					$GLOBALS['DB_WE'],
 					$img,
 					$xml);
 
@@ -98,7 +91,7 @@ function we_tag_link($attribs, $content){
 					$attribs,
 					$GLOBALS["WE_MAIN_DOC"]->ParentID,
 					$GLOBALS["WE_MAIN_DOC"]->Path,
-					$GLOBALS["DB_WE"],
+					$GLOBALS['DB_WE'],
 					$img);
 
 			// Include we_button class
@@ -118,18 +111,11 @@ function we_tag_link($attribs, $content){
 			if (!$content) {
 				$content = $text;
 			}
-			if ($startTag) {
 				return $we_button->create_button_table(
 						array(
-							$startTag . $content . "</a>", $editbut, $delbut
+							($startTag?$startTag:'') . $content . ($startTag?'</a>':''), $editbut, $delbut
 						),
 						5);
-			} else {
-				return $we_button->create_button_table(array(
-					$content, $editbut, $delbut
-				), 5);
-			}
 		}
-	}
 	return '';
 }

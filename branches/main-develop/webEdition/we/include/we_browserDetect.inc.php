@@ -139,18 +139,6 @@ class we_browserDetect {
 							} else
 							if ($brArr[0] == 'compatible') {
 								self::$br = 'unknown';
-								/* if(eregi('eudoraweb',$bracket)){
-								  self::$br='unknown';
-								  #list($foo,self::$v) = explode(' ',trim($brArr[1]));
-								  #if($brArr[3]) self::$sys = $brArr[3];
-								  }else if(eregi('powermarks',$bracket)){
-								  self::$br='unknown';
-								  #list(self::$br,self::$v) = explode('/',$brArr[1]);
-								  }else{
-								  self::$br = 'mozilla_compatible';
-								  self::$v = $prever;
-								  } */
-								//no sys determined (?)
 								break;
 							} else
 							if (!stristr($bracket, 'msie')) {
