@@ -737,7 +737,7 @@ class we_class
 
 	/**returns error-messages recorded during an operation, currently only save is used*/
 	function getErrMsg(){
-		return ($this->errMsg?'\n'.$this->errMsg:'');
+		return ($this->errMsg !='' ?'\n'.$this->errMsg:'');
 	}
 	
 }

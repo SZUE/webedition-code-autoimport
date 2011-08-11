@@ -228,6 +228,7 @@ class we_template extends we_document
 function handleShutdown() {
 	if($this->showShutdown){
         $error = error_get_last();
+				//FIXME: this->Path ist bei rebuild nicht gesetzt
 				t_e('error','Error in template:'.$this->Path,$error);
 }}
 
@@ -275,7 +276,8 @@ function parseTemplate()
 		$var=create_function('','?>'.$code.'<?php ');
 		if(empty($var) && ( $error = error_get_last() )){
 			$this->errMsg="Error: ".$error['message'].'\nLine:'.$error['line'];
-			//t_e('error',"Error in template: ".$error['message'],'Line:'.$error['line']);
+			//type error will stop we
+			t_e('warning',"Error in template: ".$error['message'],'Line:'.$error['line']);
 		}
 		$this->showShutdown=false;
 
