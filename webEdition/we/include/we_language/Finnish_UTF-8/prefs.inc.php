@@ -382,6 +382,7 @@ $l_prefs = array(
 		 */
 		'templates' => "Sivupohjat",
 		'disable_template_tag_check' => "Poista puuttuvien,<br />we:lopetustagien tarkistus",
+		'disable_template_code_check' => "Deactivate check for invalid<br />code (php)",//TRANSLATE
 		/**
 		 * ERROR HANDLER
 		 */

@@ -387,6 +387,7 @@ $l_prefs = array(
 		 */
 		'templates' => "Sjablonen",
 		'disable_template_tag_check' => "Deactivateer controle voor ontbrekende,<br />sluit we:tags",
+		'disable_template_code_check' => "Deactivate check for invalid<br />code (php)",//TRANSLATE
 		/**
 		 * ERROR HANDLER
 		 */
