@@ -373,6 +373,7 @@ $l_prefs = array(
 		 */
 		'templates' => "Vorlagen",
 		'disable_template_tag_check' => "Prüfung auf fehlende,<br />schließende we:tags deaktivieren",
+		'disable_template_code_check' => "Prüfung auf fehlerhaften<br />Kode (php) deaktivieren",
 		/**
 		 * ERROR HANDLER
 		 */
