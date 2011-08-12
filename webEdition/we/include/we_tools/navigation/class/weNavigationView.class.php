@@ -1001,7 +1001,7 @@ function processCommands() {
 					}
 					$_js .= we_message_reporting::getShowMessageCall($l_navigation['depopulate_msg'], WE_MESSAGE_NOTICE);
 					print we_htmlElement::jsElement($_js);
-					$this->Model->Selection = 'nodynmic';
+					$this->Model->Selection = 'nodynamic';
 					$this->Model->saveField('Selection');
 				break;
 				case 'dyn_preview':
