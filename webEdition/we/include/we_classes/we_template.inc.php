@@ -229,7 +229,7 @@ function handleShutdown($code) {
 	if($this->showShutdown){
         $error = error_get_last();
 				$tmp=explode("\n",$code);
-				$errCode='';
+				$errCode="\n";
 				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
 					$errCode.=$ln.': '.$tmp[$ln]."\n";
 				}
@@ -238,8 +238,7 @@ function handleShutdown($code) {
 				t_e('error','Error in template:'.$this->Path,$error,'Code: '.$errCode);
 }}
 
-function parseTemplate()
-	{
+function parseTemplate(){
 	    $code = $this->getTemplateCode(true);
 
 	 	$tp = new we_tagParser();
@@ -283,7 +282,7 @@ function parseTemplate()
 			$var=create_function('','?>'.$code.'<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp=explode("\n",$code);
-				$errCode='';
+				$errCode='\n';
 				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
 					$errCode.=$ln.': '.$tmp[$ln].'\n';
 				}
