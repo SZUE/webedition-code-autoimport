@@ -153,6 +153,9 @@ define("WE_CACHE_LIFETIME", 0);
 // Disable the check for missing close tags in templates
 define("DISABLE_TEMPLATE_TAG_CHECK", 0);
 
+// Disable the check for php-errors in templates
+define("DISABLE_TEMPLATE_CODE_CHECK", 0);
+
 // Flag if formmail calls should be logged
 define("FORMMAIL_LOG", 1);
 

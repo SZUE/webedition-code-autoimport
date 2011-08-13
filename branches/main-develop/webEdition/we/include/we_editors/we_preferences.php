@@ -86,6 +86,7 @@ $global_config[] = array('define("WE_ERROR_MAIL",', '// Mail errors' . "\n" . 'd
 $global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@www.example");');
 $global_config[] = array('define("ERROR_DOCUMENT_NO_OBJECTFILE",', '// Document to open when trying to open non-existing object' . "\n" . 'define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);');
 $global_config[] = array('define("DISABLE_TEMPLATE_TAG_CHECK",', '// Disable the check for missing close tags in templates' . "\n" . 'define("DISABLE_TEMPLATE_TAG_CHECK", 0);');
+$global_config[] = array('define("DISABLE_TEMPLATE_CODE_CHECK",', '// Disable the check for missing close tags in templates' . "\n" . 'define("DISABLE_TEMPLATE_CODE_CHECK", 0);');
 
 // Backup variable
 $global_config[] = array('define("BACKUP_STEPS",', '// Number of entries per batch' . "\n" . 'define("BACKUP_STEPS", 10);');
@@ -508,6 +509,10 @@ function get_value($settingvalue) {
 
 		case "disable_template_tag_check":
 			return defined("DISABLE_TEMPLATE_TAG_CHECK") ? DISABLE_TEMPLATE_TAG_CHECK : 0;
+			break;
+
+		case "disable_template_code_check":
+			return defined("DISABLE_TEMPLATE_CODE_CHECK") ? DISABLE_TEMPLATE_CODE_CHECK : 0;
 			break;
 
 		case "error_debug_normal":
@@ -1652,7 +1657,24 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["debug_normal"]':
+			case '$_REQUEST["disable_template_code_check"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+
+				if ($settingvalue == 0) {
+					if (DISABLE_TEMPLATE_CODE_CHECK == 1) {
+						$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_CODE_CHECK", 0);
+					}
+				} else if ($settingvalue == 1) {
+					if (DISABLE_TEMPLATE_CODE_CHECK == 0) {
+						$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_CODE_CHECK", 1);
+					}
+				}
+
+				$_update_prefs = true;
+				break;
+
+				case '$_REQUEST["debug_normal"]':
 				$_SESSION["prefs"]["debug_normal"] = $settingvalue;
 				$_update_prefs = true;
 				break;
@@ -2690,6 +2712,14 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = true;
 				break;
 
+			case '$_REQUEST["disable_template_code_check"]':
+
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_CODE_CHECK", 0);
+
+				$_update_prefs = true;
+				break;
+
 			/*****************************************************************
 			 * CANCEL OTHER REQUESTS
 			 *****************************************************************/
@@ -2939,6 +2969,7 @@ function save_all_values() {
 	if (we_hasPerm("ADMINISTRATOR")) {
 		$_update_prefs = remember_value(isset($_REQUEST["error_document_no_objectfile"]) ? $_REQUEST["error_document_no_objectfile"] : null, '$_REQUEST["error_document_no_objectfile"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["disable_template_tag_check"]) ? $_REQUEST["disable_template_tag_check"] : null, '$_REQUEST["disable_template_tag_check"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["disable_template_code_check"]) ? $_REQUEST["disable_template_code_check"] : null, '$_REQUEST["disable_template_code_check"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_error_handler"]) ? $_REQUEST["we_error_handler"] : null, '$_REQUEST["we_error_handler"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["error_handling_warnings"]) ? $_REQUEST["error_handling_warnings"] : null, '$_REQUEST["error_handling_warnings"]') || $_update_prefs;
@@ -5783,12 +5814,14 @@ $_needed_JavaScript .= "
 
 
 
-			// Create checkboxes
-			$_disable_template_tag_check = we_forms::checkbox(1, get_value("disable_template_tag_check"), "disable_template_tag_check", g_l('prefs','[disable_template_tag_check]'));
 
 			// Build dialog if user has permission
 			if (we_hasPerm("ADMINISTRATOR")) {
-				array_push($_settings, array("headline" => g_l('prefs','[templates]'), "html" => $_disable_template_tag_check, "space" => 200));
+				// Create checkboxes
+				$_template_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 8, 1);
+				$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("disable_template_tag_check"), "disable_template_tag_check", g_l('prefs','[disable_template_tag_check]')));
+				$_template_error_handling_table->setCol(1, 0, null,we_forms::checkbox(1, get_value("disable_template_code_check"), "disable_template_code_check", g_l('prefs','[disable_template_code_check]')));
+				array_push($_settings, array("headline" => $l_prefs["templates"], "html" => $_template_error_handling_table->getHtmlCode(), "space" => 200));
 			}
 
 			// Create checkboxes

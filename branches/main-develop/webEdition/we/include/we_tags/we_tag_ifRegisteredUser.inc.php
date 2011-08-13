@@ -65,6 +65,7 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 							$tmp = array_intersect($perm, $match);
 							$ret &= count($tmp) == count($match);
 							break;
+						default:
 						case 'exact':
 							$ret &= count($perm) == count($match);
 							if ($ret) {
@@ -74,7 +75,7 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 							break;
 					}
 				} else {
-					$ret &= $_SESSION['webuser'][$permission];
+					$ret &= (bool)$_SESSION['webuser'][$permission];
 				}
 			}
 

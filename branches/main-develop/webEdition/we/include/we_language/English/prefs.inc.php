@@ -382,6 +382,7 @@ $l_prefs = array(
 		 */
 		'templates' => "Templates",
 		'disable_template_tag_check' => "Deactivate check for missing,<br />closing we:tags",
+		'disable_template_code_check' => "Deactivate check for invalid<br />code (php)",
 		/**
 		 * ERROR HANDLER
 		 */

@@ -221,11 +221,17 @@ class we_template extends we_document{
 		return '';
 	}
 
-function handleShutdown() {
+function handleShutdown($code) {
 	if($this->showShutdown){
         $error = error_get_last();
+				$tmp=explode("\n",$code);
+				$errCode="\n";
+				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
+					$errCode.=$ln.': '.$tmp[$ln]."\n";
+				}
+
 				//FIXME: this->Path ist bei rebuild nicht gesetzt
-				t_e('error','Error in template:'.$this->Path,$error);
+				t_e('error','Error in template:'.$this->Path,$error,'Code: '.$errCode);
 }}
 
 	function parseTemplate(){
@@ -270,17 +276,33 @@ function handleShutdown() {
 		}
 
 		$tp->parseTags($code);
-		$this->showShutdown=true;
-		register_shutdown_function(array($this,'handleShutdown'));
+		
+		if(!(defined('DISABLE_TEMPLATE_CODE_CHECK') && DISABLE_TEMPLATE_CODE_CHECK)){
+			$this->showShutdown=true;
+			register_shutdown_function(array($this,'handleShutdown'),$code);
 
+<<<<<<< .working
 		$var=create_function('','?>'.$code.'<?php ');
 		if(empty($var) && ( $error = error_get_last() )){
 			$this->errMsg="Error: ".$error['message'].'\nLine:'.$error['line'];
 			//type error will stop we
 			t_e('warning',"Error in template: ".$error['message'],'Line:'.$error['line']);
+=======
+			$var=create_function('','?>'.$code.'<?php ');
+			if(empty($var) && ( $error = error_get_last() )){
+				$tmp=explode("\n",$code);
+				$errCode='\n';
+				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
+					$errCode.=$ln.': '.$tmp[$ln].'\n';
+				}
+				
+				$this->errMsg="Error: ".$error['message'].'\nLine: '.$error['line'].'\nCode: '.$errCode;
+				//type error will stop we
+				t_e('warning',"Error in template: ".$error['message'],'Line: '.$error['line'],'Code: '.$errCode);
+			}
+			$this->showShutdown=false;
+>>>>>>> .merge-rechts.r3152
 		}
-		$this->showShutdown=false;
-
 		/*$tags = $this->removeDoppel($tags);
 		for($i=0;$i<sizeof($tags);$i++){
 			$tp->parseTag($tags[$i],$code);
