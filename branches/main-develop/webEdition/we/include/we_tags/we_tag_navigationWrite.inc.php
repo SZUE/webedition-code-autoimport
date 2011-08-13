@@ -26,8 +26,8 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navig
 
 function we_tag_navigationWrite($attribs, $content = ''){
 
-	$name = we_getTagAttribute("navigationname", $attribs, "default");
-	$depth = we_getTagAttribute("depth", $attribs);
+	$name = weTag_getAttribute("navigationname", $attribs, "default");
+	$depth = weTag_getAttribute("depth", $attribs);
 
 	if (!$depth) {
 		$depth = false;

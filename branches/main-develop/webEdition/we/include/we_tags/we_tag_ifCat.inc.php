@@ -24,8 +24,8 @@
 
 function we_tag_ifCat($attribs, $content){
 
-	$categories = we_getTagAttribute("categories", $attribs);
-	$category = we_getTagAttribute("category", $attribs);
+	$categories = weTag_getAttribute("categories", $attribs);
+	$category = weTag_getAttribute("category", $attribs);
 
 	if (strlen($categories) == 0 && strlen($category) == 0) {
 		$foo = attributFehltError($attribs, "categories", "ifCat");
@@ -35,9 +35,9 @@ function we_tag_ifCat($attribs, $content){
 		}
 	}
 
-	$parent = we_getTagAttribute("parent", $attribs, "", true);
+	$parent = weTag_getAttribute("parent", $attribs, false, true);
 
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
 	$match = $categories ? $categories : $category;
 	$db = new DB_WE();

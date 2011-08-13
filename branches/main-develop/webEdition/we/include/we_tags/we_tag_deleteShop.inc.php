@@ -28,7 +28,7 @@ function we_tag_deleteShop($attribs, $content) {
 	if (!defined("SHOP_TABLE")) {
 		return modulFehltError('Shop', '"deleteShop"');
 	}
-	$shopname = we_getTagAttribute("shopname", $attribs);
+	$shopname = weTag_getAttribute("shopname", $attribs);
 
 	unset($_SESSION[$shopname . '_save']);
 }

@@ -25,9 +25,9 @@
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
 function we_tag_navigation($attribs, $content = ''){
-	$parentid = we_getTagAttribute("parentid", $attribs, -1);
-	$id = we_getTagAttribute("id", $attribs, 0);
-	$name = we_getTagAttribute("navigationname", $attribs, "default");
+	$parentid = weTag_getAttribute("parentid", $attribs, -1);
+	$id = weTag_getAttribute("id", $attribs, 0);
+	$name = weTag_getAttribute("navigationname", $attribs, "default");
 
 	if (isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']) {
 

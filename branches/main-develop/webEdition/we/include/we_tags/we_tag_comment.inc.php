@@ -26,7 +26,7 @@
  */
 function we_parse_tag_comment($attribs,$content){
 	eval('$arr = ' . $attribs . ';');
-	$type = we_getTagAttributeTagParser('type', $arr, '');
+	$type = weTag_getParserAttribute('type', $arr);
 	//remove we: parts since this will confuse the tag parser and it will parse these tags
 	$content = str_replace('we:', 'we', $content);
 	switch($type){

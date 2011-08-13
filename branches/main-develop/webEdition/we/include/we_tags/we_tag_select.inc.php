@@ -26,9 +26,9 @@ function we_tag_select($attribs, $content){
 	$foo = attributFehltError($attribs, "name", "select");
 	if ($foo)
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
-	$onchange = we_getTagAttribute("onchange", $attribs);
-	$reload = we_getTagAttribute("reload", $attribs, "", true);	
+	$name = weTag_getAttribute("name", $attribs);
+	$onchange = weTag_getAttribute("onchange", $attribs);
+	$reload = weTag_getAttribute("reload", $attribs, false, true);	
 	if ($GLOBALS['we_editmode']) {
 		$val = $GLOBALS["we_doc"]->getElement($name);
 		$attr = we_make_attribs($attribs, "name,value,onchange");

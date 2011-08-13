@@ -28,9 +28,9 @@ function we_tag_votingSelect($attribs, $content){
  	global $DB_WE;
 
  	if($GLOBALS['we_editmode'] && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
-		$firstentry = we_getTagAttribute("firstentry",$attribs);
-		$submitonchange = we_getTagAttribute("submitonchange",$attribs,"",true);
-		$reload = we_getTagAttribute("reload", $attribs, "", true);
+		$firstentry = weTag_getAttribute("firstentry",$attribs);
+		$submitonchange = weTag_getAttribute("submitonchange",$attribs,false,true);
+		$reload = weTag_getAttribute("reload", $attribs, false, true);
 		if($submitonchange) {$reload=true;}
 
 		$where = ' WHERE  IsFolder=0 ' . weVoting::getOwnersSql(); //nicht auf Active pr�fen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen

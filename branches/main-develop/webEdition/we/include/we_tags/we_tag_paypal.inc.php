@@ -38,36 +38,36 @@ require_once(WE_SHOP_MODULE_DIR . 'paypal.class.php'); // include the class file
  */
 function we_tag_paypal($attribs, $content) {
 	global $DB_WE;
-	$name = we_getTagAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
 	if (($foo = attributFehltError($attribs, 'pricename', 'PayPal')))
 		return $foo;
 	if (!$name) {
 		if (($foo = attributFehltError($attribs, 'shopname', 'PayPal')))
 			return $foo;
 	}
-	$shopname = we_getTagAttribute('shopname', $attribs);
+	$shopname = weTag_getAttribute('shopname', $attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute('pricename', $attribs);
+	$pricename = weTag_getAttribute('pricename', $attribs);
 
-	$countrycode = we_getTagAttribute('countrycode', $attribs);
-	$languagecode = we_getTagAttribute('languagecode', $attribs);
-	$shipping = we_getTagAttribute('shipping', $attribs);
-	$shippingIsNet = we_getTagAttribute('shippingisnet', $attribs);
-	$shippingVatRate = we_getTagAttribute('shippingvatrate', $attribs);
-	$messageRedirectAuto = we_getTagAttribute('messageredirectAuto', $attribs);
+	$countrycode = weTag_getAttribute('countrycode', $attribs);
+	$languagecode = weTag_getAttribute('languagecode', $attribs);
+	$shipping = weTag_getAttribute('shipping', $attribs);
+	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
+	$messageRedirectAuto = weTag_getAttribute('messageredirectAuto', $attribs);
 	if ($messageRedirectAuto==''){
-		$messageRedirectAuto = we_getTagAttribute('messageredirectauto', $attribs);
+		$messageRedirectAuto = weTag_getAttribute('messageredirectauto', $attribs);
 	}
-	$messageRedirectMan = we_getTagAttribute('messageredirectMan', $attribs);
+	$messageRedirectMan = weTag_getAttribute('messageredirectMan', $attribs);
 	if ($messageRedirectMan==''){
-		$messageRedirectMan = we_getTagAttribute('messageredirectman', $attribs);
+		$messageRedirectMan = weTag_getAttribute('messageredirectman', $attribs);
 	}
-	$formTagOnly = we_getTagAttribute('formtagonly', $attribs, 'false', true);
-	$charset = we_getTagAttribute('charset', $attribs);
+	$formTagOnly = weTag_getAttribute('formtagonly', $attribs, false, true);
+	$charset = weTag_getAttribute('charset', $attribs);
 
-	$netprices = we_getTagAttribute('netprices', $attribs, 'true', true, true);
-	$useVat = we_getTagAttribute('usevat', $attribs, 'true', true, true);
-	$currency = we_getTagAttribute('currency', $attribs);
+	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
+	$useVat = weTag_getAttribute('usevat', $attribs, true, true);
+	$currency = weTag_getAttribute('currency', $attribs);
 
 	//FIXME: calcVat is never used -
 	if ($useVat) {

@@ -29,17 +29,17 @@ function we_tag_showShopItemNumber($attribs,$content) {
 
 	$foo = attributFehltError($attribs,"shopname","showShopItemNumber");if($foo) return $foo;
 
-	$shopname = we_getTagAttribute("shopname",$attribs);
+	$shopname = weTag_getAttribute("shopname",$attribs);
     if (!isset($GLOBALS[$shopname])||empty($GLOBALS[$shopname])) {
     	return parseError(sprintf(g_l('parser','[missing_createShop]'),'showShopItemNumber'));
     }
-	$option = we_getTagAttribute("option",$attribs,"",true);
-	$inputfield = we_getTagAttribute("inputfield",$attribs,"",true);
-	$type = we_getTagAttribute("type",$attribs);
+	$option = weTag_getAttribute("option",$attribs,false,true);
+	$inputfield = weTag_getAttribute("inputfield",$attribs,false,true);
+	$type = weTag_getAttribute("type",$attribs);
 
-	$xml = we_getTagAttribute("xml", $attribs, "", true);
-	$num_format = we_getTagAttribute("num_format",$attribs);
-	$floatquantities = we_getTagAttributeTagParser("floatquantities",$attribs,'',true);
+	$xml = weTag_getAttribute("xml", $attribs, false, true);
+	$num_format = weTag_getAttribute("num_format",$attribs);
+	$floatquantities = we_getTagAttribute("floatquantities",$attribs,false,true);
 	$floatquantities = empty($floatquantities) ? false : $floatquantities;
 
 	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname','nameto','to','floatquantities','$num_format'));
@@ -60,9 +60,9 @@ function we_tag_showShopItemNumber($attribs,$content) {
 
 	if($option || ($type=="select")) {
 
-		$start = we_getTagAttribute("start",$attribs,0);
-		$stop = we_getTagAttribute("stop",$attribs,10);
-		$step = we_getTagAttribute("step",$attribs,1);
+		$start = weTag_getAttribute("start",$attribs,0);
+		$stop = weTag_getAttribute("stop",$attribs,10);
+		$step = weTag_getAttribute("step",$attribs,1);
 		if ($floatquantities) {
 			$stop=( $stop > $itemQuantity ) ? $stop : $itemQuantity;
 		} else {

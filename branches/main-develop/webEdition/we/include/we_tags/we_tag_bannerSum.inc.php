@@ -27,7 +27,7 @@ function we_tag_bannerSum($attribs,$content){
 			return false;
 	}
 	$foo = attributFehltError($attribs,"type","bannerSum");if($foo) return $foo;
-	$type = we_getTagAttribute("type",$attribs);
+	$type = weTag_getAttribute("type",$attribs);
 	switch ($type){
 		case "clicks":
 			return $GLOBALS["lv"]->getAllclicks();

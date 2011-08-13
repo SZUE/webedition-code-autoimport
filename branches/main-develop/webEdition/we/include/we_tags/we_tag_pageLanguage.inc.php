@@ -24,9 +24,9 @@
 
 function we_tag_pageLanguage($attribs, $content){
 
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
-	$type = we_getTagAttribute("type", $attribs, "complete");
-	$case = we_getTagAttribute("case", $attribs, "unchanged");
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
+	$type = weTag_getAttribute("type", $attribs, "complete");
+	$case = weTag_getAttribute("case", $attribs, "unchanged");
 	$doc = we_getDocForTag($docAttr);
 
 	$lang=$doc->Language;

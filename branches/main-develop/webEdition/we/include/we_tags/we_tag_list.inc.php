@@ -32,7 +32,7 @@ function we_tag_list($attribs, $content){
 	if (($foo = attributFehltError($attribs, "name", "list"))){
 		return $foo;
 	}
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
 	$content = eregi_replace('<we:ref ?/?>', '<we_:_ref>', $content);
 	$tp = new we_tagParser($content);
 	$names = implode(",", we_tagParser::getNames($tags));

@@ -23,7 +23,7 @@
  */
 
 function we_tag_docType($attribs, $content){
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	$doctype = "";
 	switch ($docAttr) {
 		case "self" :

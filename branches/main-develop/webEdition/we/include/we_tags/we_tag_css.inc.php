@@ -27,8 +27,8 @@ function we_tag_css($attribs, $content){
 	$foo = attributFehltError($attribs, "id", "css");
 	if ($foo)
 		return $foo;
-	$id = we_getTagAttribute("id", $attribs);
-	$rel = we_getTagAttribute("rel", $attribs, "stylesheet");
+	$id = weTag_getAttribute("id", $attribs);
+	$rel = weTag_getAttribute("rel", $attribs, "stylesheet");
 
 	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
 	if (count($row)) {

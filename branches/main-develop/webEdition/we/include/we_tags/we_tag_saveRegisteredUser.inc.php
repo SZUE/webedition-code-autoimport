@@ -20,11 +20,11 @@
 
 
 function we_tag_saveRegisteredUser($attribs,$content){
-	$userexists = we_getTagAttribute("userexists",$attribs);
-	$userempty = we_getTagAttribute("userempty",$attribs);
-	$passempty = we_getTagAttribute("passempty",$attribs);
-	$registerallowed = (isset($attribs['register'])?we_getTagAttribute("register",$attribs,true,true):true);
-	$protected = makeArrayFromCSV(we_getTagAttribute("protected",$attribs));
+	$userexists = weTag_getAttribute("userexists",$attribs);
+	$userempty = weTag_getAttribute("userempty",$attribs);
+	$passempty = weTag_getAttribute("passempty",$attribs);
+	$registerallowed = (isset($attribs['register'])?weTag_getAttribute("register",$attribs,false,true):true);
+	$protected = makeArrayFromCSV(weTag_getAttribute("protected",$attribs));
 
 	if(defined("CUSTOMER_TABLE") && isset ($_REQUEST["s"])){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weCustomer.php");

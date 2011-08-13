@@ -27,17 +27,17 @@ function we_tag_input($attribs, $content) {
 	if ($foo)
 		return $foo;
 
-	$name = we_getTagAttribute('name', $attribs);
-	$value = we_getTagAttribute('value', $attribs);
-	$values = we_getTagAttribute('values', $attribs);
-	$mode = we_getTagAttribute('mode', $attribs);
-	$type = we_getTagAttribute('type', $attribs);
-	$format = we_getTagAttribute('format', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$value = weTag_getAttribute('value', $attribs);
+	$values = weTag_getAttribute('values', $attribs);
+	$mode = weTag_getAttribute('mode', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$format = weTag_getAttribute('format', $attribs);
 
-	$seperator = we_getTagAttribute('seperator', $attribs, '|');
-	$reload = we_getTagAttribute('reload', $attribs, '', true);
+	$seperator = weTag_getAttribute('seperator', $attribs, '|');
+	$reload = weTag_getAttribute('reload', $attribs, false, true);
 
-	$spellcheck = we_getTagAttribute('spellcheck', $attribs, 'false');
+	$spellcheck = weTag_getAttribute('spellcheck', $attribs, 'false');
 
 	$val = htmlspecialchars($GLOBALS['we_doc']->issetElement($name) ? $GLOBALS['we_doc']->getElement($name) : $value);
 
@@ -58,7 +58,7 @@ function we_tag_input($attribs, $content) {
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$newAtts['onclick'] = '_EditorFrame.setEditorIsHot(true);';
-				$docAttr = we_getTagAttribute('doc', $attribs, 'self');
+				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 				if ($lang!=''){
@@ -110,7 +110,7 @@ function we_tag_input($attribs, $content) {
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$newAtts['onclick'] = '_EditorFrame.setEditorIsHot(true);';
-				$docAttr = we_getTagAttribute('doc', $attribs, 'self');
+				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 				$langcode = substr($lang, 0, 2);
@@ -190,9 +190,9 @@ function we_tag_input($attribs, $content) {
 			case 'checkbox':
 				return $GLOBALS['we_doc']->getElement($name);
 			case 'country':
-				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
+				$lang = weTag_getAttribute('outputlanguage', $attribs);
 				if ($lang == '') {
-					$docAttr = we_getTagAttribute('doc', $attribs, 'self');
+					$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 					$doc = we_getDocForTag($docAttr);
 					$lang = $doc->Language;
 				}
@@ -207,9 +207,9 @@ function we_tag_input($attribs, $content) {
 					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
 				}
 			case 'language':
-				$lang = we_getTagAttribute('outputlanguage', $attribs, '');
+				$lang = weTag_getAttribute('outputlanguage', $attribs);
 				if ($lang == '') {
-					$docAttr = we_getTagAttribute('doc', $attribs, 'self');
+					$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 					$doc = we_getDocForTag($docAttr);
 					$lang = $doc->Language;
 				}

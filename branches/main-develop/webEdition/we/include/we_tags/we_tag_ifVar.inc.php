@@ -34,10 +34,10 @@ function we_tag_ifVar($attribs, $content){
 		return "";
 	}
 
-	$match = we_getTagAttribute("match", $attribs);
-	$name = we_getTagAttribute("name", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$operator  = we_getTagAttribute("operator", $attribs);
+	$match = weTag_getAttribute("match", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$operator  = weTag_getAttribute("operator", $attribs);
 
 	$matchArray = makeArrayFromCSV($match);
 	$_size = sizeof($matchArray);
@@ -139,7 +139,7 @@ function we_tag_ifVar($attribs, $content){
 				return "";
 			}
 		case "property" :
-			$docAttr = we_getTagAttribute("doc", $attribs);
+			$docAttr = weTag_getAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
 			eval('$var = $doc->' . $name . ';');
 			if ($_size==1 && $operator!='' && isset($var) ){
@@ -156,7 +156,7 @@ function we_tag_ifVar($attribs, $content){
 			}
 		case "document" :
 		default :
-			$docAttr = we_getTagAttribute("doc", $attribs);
+			$docAttr = weTag_getAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
 			if ($_size==1 && $operator!='' ){
 				switch ($operator) {

@@ -23,19 +23,19 @@
  */
 
 function we_tag_linkToSeeMode($attribs, $content){
-	$id = we_getTagAttribute('id', $attribs); //	if a document-id is selected go to that document
-	$oid = we_getTagAttribute('oid', $attribs); //	if an object-id is selected go to that object
-	$permission = we_getTagAttribute("permission", $attribs);
-	$docAttr = we_getTagAttribute("doc", $attribs, "top");
+	$id = weTag_getAttribute('id', $attribs); //	if a document-id is selected go to that document
+	$oid = weTag_getAttribute('oid', $attribs); //	if an object-id is selected go to that object
+	$permission = weTag_getAttribute("permission", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs, "top");
 
-	$xml = we_getTagAttribute("xml", $attribs, "");
+	$xml = weTag_getAttribute("xml", $attribs);
 
 	// check for value attribute
 	$foo = attributFehltError($attribs, "value", "linkToSeeMode");
 	if ($foo)
 		return $foo;
 
-	$value = we_getTagAttribute("value", $attribs);
+	$value = weTag_getAttribute("value", $attribs);
 
 	if (isset($id) && !empty($id)) {
 

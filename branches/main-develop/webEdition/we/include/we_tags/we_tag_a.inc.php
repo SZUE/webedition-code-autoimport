@@ -29,30 +29,30 @@ function we_tag_a($attribs, $content){
 
 	// get attributes
 	
-	$id =we_getTagAttribute('id', $attribs);
+	$id =weTag_getAttribute('id', $attribs);
 	if($id == 'self'){
 		$GLOBALS['WE_MAIN_DOC']->ID;
 	}
-	$confirm = we_getTagAttribute('confirm', $attribs);
-	$button = we_getTagAttribute('button', $attribs, '', true);
-	$hrefonly = we_getTagAttribute('hrefonly', $attribs, '', true);
-	$return = we_getTagAttribute('return', $attribs, '', true);
-	$target = we_getTagAttribute('target', $attribs, '');
+	$confirm = weTag_getAttribute('confirm', $attribs);
+	$button = weTag_getAttribute('button', $attribs, false, true);
+	$hrefonly = weTag_getAttribute('hrefonly', $attribs, false, true);
+	$return = weTag_getAttribute('return', $attribs, false, true);
+	$target = weTag_getAttribute('target', $attribs);
 
-	$shop = we_getTagAttribute('shop', $attribs, '', true);
-	$amount = we_getTagAttribute('amount', $attribs, 1);
-	$delarticle = we_getTagAttribute('delarticle', $attribs, '', true);
-	$delshop = we_getTagAttribute('delshop', $attribs, '', true);
+	$shop = weTag_getAttribute('shop', $attribs, false, true);
+	$amount = weTag_getAttribute('amount', $attribs, 1);
+	$delarticle = weTag_getAttribute('delarticle', $attribs, false, true);
+	$delshop = weTag_getAttribute('delshop', $attribs, false, true);
 
-	$edit = we_getTagAttribute('edit', $attribs);
+	$edit = weTag_getAttribute('edit', $attribs);
 
 	if (!$edit && ($shop || $delarticle || $delshop)) {
 		$edit = 'shop';
 	}
 
 	if ($edit) {
-		$delete = we_getTagAttribute('delete', $attribs, '', true);
-		$editself = we_getTagAttribute('editself', $attribs, '', true);
+		$delete = weTag_getAttribute('delete', $attribs, false, true);
+		$editself = weTag_getAttribute('editself', $attribs, false, true);
 		$listview = isset($GLOBALS['lv']);
 	}
 
@@ -82,7 +82,7 @@ function we_tag_a($attribs, $content){
 	switch($edit){
 	case 'shop':
 
-		$amount = we_getTagAttribute('amount', $attribs, 1);
+		$amount = weTag_getAttribute('amount', $attribs, 1);
 
 		if (isset($GLOBALS['lv']) && $GLOBALS['lv']->ClassName !='we_listview_multiobject' ) {
 			$foo = $GLOBALS['lv']->count - 1;
@@ -136,7 +136,7 @@ function we_tag_a($attribs, $content){
 			$type = 'o';
 		}
 
-		$shopname = we_getTagAttribute('shopname', $attribs, '');
+		$shopname = weTag_getAttribute('shopname', $attribs);
 		$ifShopname = $shopname == '' ? '' : '&shopname=' . $shopname;
 		if ($delarticle) { // delarticle
 

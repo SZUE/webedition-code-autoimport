@@ -24,10 +24,10 @@
 
 function we_tag_search($attribs, $content){
 
-	$name = we_getTagAttribute('name', $attribs, '0');
-	$type = we_getTagAttribute('type', $attribs);
-	$xml = we_getTagAttribute('xml', $attribs, '');
-	$value = we_getTagAttribute('value', $attribs, '');
+	$name = weTag_getAttribute('name', $attribs, '0');
+	$type = weTag_getAttribute('type', $attribs);
+	$xml = weTag_getAttribute('xml', $attribs);
+	$value = weTag_getAttribute('value', $attribs);
 
 	$searchValue = htmlspecialchars(
 			str_replace(

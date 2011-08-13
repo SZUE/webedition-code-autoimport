@@ -23,29 +23,29 @@
  */
 
 function we_tag_field($attribs, $content){
-	$name = we_getTagAttribute('_name_orig', $attribs);
+	$name = weTag_getAttribute('_name_orig', $attribs);
 
-	$href = we_getTagAttribute("href", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$alt = we_getTagAttribute("alt", $attribs);
-	$value = we_getTagAttribute("value", $attribs);
-	$max = we_getTagAttribute("max", $attribs);
-	$format = we_getTagAttribute("format", $attribs);
-	$target = we_getTagAttribute("target", $attribs);
-	$tid = we_getTagAttribute("tid", $attribs);
-	$class = we_getTagAttribute("class", $attribs);
-	$classid = we_getTagAttribute("classid", $attribs);
-	$style = we_getTagAttribute("style", $attribs);
-	$hyperlink = we_getTagAttribute("hyperlink", $attribs, "", true);
-	$src = we_getTagAttribute("src", $attribs);
-	$winprops = we_getTagAttribute("winprops", $attribs);
-	$id = we_getTagAttribute("id", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs, "");
-	$striphtml = we_getTagAttribute("striphtml", $attribs, false, true);
-	$only = we_getTagAttribute("only", $attribs);
-	$usekey = we_getTagAttribute("usekey", $attribs, false, true);
-	$triggerid = we_getTagAttribute("triggerid", $attribs);
-	$seeMode = we_getTagAttribute("seeMode", $attribs, true, true, true);
+	$href = weTag_getAttribute("href", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$alt = weTag_getAttribute("alt", $attribs);
+	$value = weTag_getAttribute("value", $attribs);
+	$max = weTag_getAttribute("max", $attribs);
+	$format = weTag_getAttribute("format", $attribs);
+	$target = weTag_getAttribute("target", $attribs);
+	$tid = weTag_getAttribute("tid", $attribs);
+	$class = weTag_getAttribute("class", $attribs);
+	$classid = weTag_getAttribute("classid", $attribs);
+	$style = weTag_getAttribute("style", $attribs);
+	$hyperlink = weTag_getAttribute("hyperlink", $attribs, false, true);
+	$src = weTag_getAttribute("src", $attribs);
+	$winprops = weTag_getAttribute("winprops", $attribs);
+	$id = weTag_getAttribute("id", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
+	$striphtml = weTag_getAttribute("striphtml", $attribs, false, true);
+	$only = weTag_getAttribute("only", $attribs);
+	$usekey = weTag_getAttribute("usekey", $attribs, false, true);
+	$triggerid = weTag_getAttribute("triggerid", $attribs);
+	$seeMode = weTag_getAttribute("seeMode", $attribs, true, true);
 
 	$out = "";
 
@@ -189,9 +189,9 @@ function we_tag_field($attribs, $content){
 			}
 			break;
 		case 'country' :
-			$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+			$lang = weTag_getAttribute("outputlanguage", $attribs);
 			if ($lang==''){
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 			}
@@ -207,9 +207,9 @@ function we_tag_field($attribs, $content){
 			}
 		break;
 		case 'language' :
-			$lang = we_getTagAttribute("outputlanguage", $attribs, "");
+			$lang = weTag_getAttribute("outputlanguage", $attribs);
 			if ($lang==''){
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 			}
@@ -447,7 +447,7 @@ function we_tag_field($attribs, $content){
 							$show = "month";
 						else
 							$show = "day";
-						$listviewname = we_getTagAttribute("listviewname", $attribs, $lvname);
+						$listviewname = weTag_getAttribute("listviewname", $attribs, $lvname);
 
 						$_linkAttribs['href'] = id_to_path($id) . '?' . (isset($GLOBALS["lv"]->contentTypes) && $GLOBALS["lv"]->contentTypes ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode(
 								$GLOBALS["lv"]->contentTypes) . '&amp;') : '') . ($GLOBALS["lv"]->order ? ('we_lv_order_' . $listviewname . '=' . rawurlencode(
@@ -526,7 +526,7 @@ function we_tag_field($attribs, $content){
 						if (isset($GLOBALS["lv"]->ClassName) && $GLOBALS["lv"]->ClassName == "we_catListview" && we_tag('ifHasChildren',
 								array(),
 								"")) {
-							$parentidname = we_getTagAttribute('parentidname', $attribs, 'we_parentid');
+							$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
 							$_linkAttribs['href'] = $_SERVER["SCRIPT_NAME"] . '?' . $parentidname . '=' . $GLOBALS["lv"]->f(
 									"ID");
 

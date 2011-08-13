@@ -24,7 +24,7 @@
 
 function we_tag_ifSelf($attribs, $content){
 
-	$id = we_getTagAttribute("id", $attribs);
+	$id = weTag_getAttribute("id", $attribs);
 
 	if (!$id) {
 		if (isset($GLOBALS["we_obj"])) {
@@ -33,8 +33,8 @@ function we_tag_ifSelf($attribs, $content){
 			$id = $GLOBALS["WE_MAIN_DOC"]->ID;
 		}
 	}
-	$type = we_getTagAttribute("doc", $attribs);
-	$type = $type ? $type : we_getTagAttribute("type", $attribs);
+	$type = weTag_getAttribute("doc", $attribs);
+	$type = $type ? $type : weTag_getAttribute("type", $attribs);
 
 	$ids = makeArrayFromCSV($id);
 

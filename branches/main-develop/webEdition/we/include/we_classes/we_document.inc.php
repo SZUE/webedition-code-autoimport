@@ -1085,19 +1085,10 @@ class we_document extends we_root {
 			case 'link':
 				$link = $val ? unserialize($val) : array();
 
-				$only = we_getTagAttribute('only',$attribs,'');
+				$only = weTag_getAttribute('only',$attribs);
 
-				if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-					$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, '', true, true);
-				} else {
-					$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, '', true, false);
-				}
-
-				if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-					$objectseourls = we_getTagAttribute('objectseourls', $attribs, '', true, true);
-				} else {
-					$objectseourls = we_getTagAttribute('objectseourls', $attribs, '', true, false);
-				}
+				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
+				$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
 
 				if($pathOnly || $only == 'href'){
 
@@ -1123,8 +1114,8 @@ class we_document extends we_root {
 						$img->setElement('name', $_useName, 'dat');
 					}
 
-					$xml = getXmlAttributeValueAsBoolean(we_getTagAttribute('xml',$attribs,''));
-					$htmlspecialchars = we_getTagAttribute('htmlspecialchars',$attribs,'',true);
+					$xml = getXmlAttributeValueAsBoolean(weTag_getAttribute('xml',$attribs));
+					$htmlspecialchars = weTag_getAttribute('htmlspecialchars',$attribs,true,true);
 					if ($only) {
 					    if($only == 'content'){
 					        return we_document::getLinkContent($link,$parentID,$path,$db,$img,$xml,$_useName,$htmlspecialchars,$hidedirindex,$objectseourls);
@@ -1228,7 +1219,7 @@ class we_document extends we_root {
 				    }
 
 				}
-				if(we_getTagAttribute('win2iso',$attribs,'',true)){
+				if(weTag_getAttribute('win2iso',$attribs,false,true)){
 					$chars = array(
 						128 => '&#8364;',
 						130 => '&#8218;',

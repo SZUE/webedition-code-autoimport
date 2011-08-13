@@ -28,17 +28,18 @@ function we_tag_banner($attribs, $content){
  	global $DB_WE;
 	$foo = attributFehltError($attribs,"name","banner");if($foo) return $foo;
 
-	$bannername = we_getTagAttribute("name",$attribs);
-	$paths = we_getTagAttribute("paths",$attribs);
-	$type = we_getTagAttribute("type",$attribs,"js");
-	$target = we_getTagAttribute("target",$attribs);
-	$width = we_getTagAttribute("width",$attribs,($type == "pixel") ? "1" : "");
-	$height = we_getTagAttribute("height",$attribs,($type == "pixel") ? "1" : "");
-	$link = we_getTagAttribute("link",$attribs,"",true,true);
-	$page = we_getTagAttribute("page",$attribs);	$pixel = we_getTagAttribute("page",$attribs,"",true);
-	$bannerclick = we_getTagAttribute("clickscript",$attribs,"/webEdition/bannerclick.php");
-	$getbanner = we_getTagAttribute("getscript",$attribs,"/webEdition/getBanner.php");
-    $xml = we_getTagAttribute('xml', $attribs,'',true);
+	$bannername = weTag_getAttribute("name",$attribs);
+	$paths = weTag_getAttribute("paths",$attribs);
+	$type = weTag_getAttribute("type",$attribs,"js");
+	$target = weTag_getAttribute("target",$attribs);
+	$width = weTag_getAttribute("width",$attribs,($type == "pixel") ? "1" : "");
+	$height = weTag_getAttribute("height",$attribs,($type == "pixel") ? "1" : "");
+	$link = weTag_getAttribute("link",$attribs,true,true);
+	$page = weTag_getAttribute("page",$attribs);	
+	$pixel = weTag_getAttribute("page",$attribs,false,true);
+	$bannerclick = weTag_getAttribute("clickscript",$attribs,"/webEdition/bannerclick.php");
+	$getbanner = weTag_getAttribute("getscript",$attribs,"/webEdition/getBanner.php");
+  $xml = weTag_getAttribute('xml', $attribs,false,true);
 
 	$nocount = $GLOBALS["WE_MAIN_DOC"]->InWebEdition;
 

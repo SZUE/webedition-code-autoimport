@@ -24,21 +24,14 @@
 
 function we_tag_linklist($attribs, $content){
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
 	$content = str_replace("we:link", "we_:_link", $content);
 	$foo = attributFehltError($attribs, "name", "linklist");
-	if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true,true);
-	} else {
-		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
-	}
-	if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true,true);
-	} else {
-		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
-	}
-	if ($foo)
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE),true);
+	$objectseourls = weTag_getAttribute("objectseourls", $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS),true);
+	if (($foo = attributFehltError($attribs, "name", "linklist"))){
 		return $foo;
+	}
 	$isInListview = isset($GLOBALS["lv"]);
 
 	if ($isInListview) {

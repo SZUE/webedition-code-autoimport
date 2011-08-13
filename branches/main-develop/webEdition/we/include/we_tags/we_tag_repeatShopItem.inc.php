@@ -37,10 +37,10 @@ function we_tag_repeatShopItem($attribs, $content) {
 		print modulFehltError('Shop', '"repeatShopitem"');
 		return;
 	}
-	$shopname = we_getTagAttribute("shopname", $attribs);
+	$shopname = weTag_getAttribute("shopname", $attribs);
 
 	//internal Attribute
-	$_type = we_getTagAttribute('_type', $attribs);
+	$_type = weTag_getAttribute('_type', $attribs);
 	switch ($_type) {
 		case 'start':
 			if (($foo = attributFehltError($attribs, "shopname", "repeatShopItem"))) {

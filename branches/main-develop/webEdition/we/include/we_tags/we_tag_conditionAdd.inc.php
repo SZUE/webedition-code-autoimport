@@ -28,14 +28,14 @@ function we_tag_conditionAdd($attribs, $content){
 		return $foo;
 
 	// initialize possible Attributes
-	$field = we_getTagAttribute("field", $attribs);
-	$value = we_getTagAttribute("value", $attribs);
-	$compare = we_getTagAttribute("compare", $attribs, "=");
-	$var = we_getTagAttribute("var", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$property = we_getTagAttribute("property", $attribs, "", true);
-	$exactmatch = we_getTagAttribute("exactmatch", $attribs, "", true);
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$field = weTag_getAttribute("field", $attribs);
+	$value = weTag_getAttribute("value", $attribs);
+	$compare = weTag_getAttribute("compare", $attribs, "=");
+	$var = weTag_getAttribute("var", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$property = weTag_getAttribute("property", $attribs, false, true);
+	$exactmatch = weTag_getAttribute("exactmatch", $attribs, false, true);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	// end initialize possible Attributes
 
 

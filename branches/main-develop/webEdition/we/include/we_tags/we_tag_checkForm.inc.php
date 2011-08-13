@@ -56,14 +56,14 @@ function we_tag_checkForm($attribs, $content) {
 	}
 
 	// get fields of $attribs
-	$match = we_getTagAttribute("match", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$mandatory = we_getTagAttribute("mandatory", $attribs);
-	$email = we_getTagAttribute("email", $attribs);
-	$password = we_getTagAttribute("password", $attribs);
-	$onError = we_getTagAttribute("onError", $attribs);
-	$jsIncludePath = we_getTagAttribute("jsIncludePath", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs, "");
+	$match = weTag_getAttribute("match", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$mandatory = weTag_getAttribute("mandatory", $attribs);
+	$email = weTag_getAttribute("email", $attribs);
+	$password = weTag_getAttribute("password", $attribs);
+	$onError = weTag_getAttribute("onError", $attribs);
+	$jsIncludePath = weTag_getAttribute("jsIncludePath", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
 
 	//  Generate errorHandler:
 	if ($onError) {

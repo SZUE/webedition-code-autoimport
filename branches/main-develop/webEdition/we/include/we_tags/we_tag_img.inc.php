@@ -29,17 +29,17 @@ function we_tag_img($attribs, $content){
 		return $foo;
 	}
 
-	$name = we_getTagAttribute("name", $attribs);
-	$startid = we_getTagAttribute("startid", $attribs, "");
-	$parentid = we_getTagAttribute("parentid", $attribs, "0");
-	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "", true, true);
-	$showThumb = we_getTagAttribute("showthumbcontrol", $attribs, "", true, false);
-	$showimage = we_getTagAttribute("showimage", $attribs, "true", true, true);
-	$showinputs = we_getTagAttribute("showinputs",$attribs,	0, true, (defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true) );
+	$name = weTag_getAttribute("name", $attribs);
+	$startid = weTag_getAttribute("startid", $attribs);
+	$parentid = weTag_getAttribute("parentid", $attribs, "0");
+	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
+	$showThumb = weTag_getAttribute("showthumbcontrol", $attribs, true, false);
+	$showimage = weTag_getAttribute("showimage", $attribs, true, true);
+	$showinputs = weTag_getAttribute("showinputs",$attribs,	(defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true),true );
 
 	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS["we_doc"]->getElement($name);
-	$id = $id ? $id : we_getTagAttribute("id", $attribs);
+	$id = $id ? $id : weTag_getAttribute("id", $attribs);
 
 	//look if image exists in tblfile
 	if (f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id), 'ID', new DB_WE()) !== '1') {

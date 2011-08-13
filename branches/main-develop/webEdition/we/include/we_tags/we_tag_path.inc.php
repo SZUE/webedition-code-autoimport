@@ -24,12 +24,12 @@
 
 function we_tag_path($attribs, $content){
 	$db = new DB_WE();
-	$field = we_getTagAttribute("field", $attribs);
-	$dirfield = we_getTagAttribute("dirfield", $attribs, $field);
-	$index = we_getTagAttribute("index", $attribs);
-	$htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true);
-	$fieldforfolder =we_getTagAttribute("fieldforfolder", $attribs,'',true);
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$field = weTag_getAttribute("field", $attribs);
+	$dirfield = weTag_getAttribute("dirfield", $attribs, $field);
+	$index = weTag_getAttribute("index", $attribs);
+	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
+	$fieldforfolder =weTag_getAttribute("fieldforfolder", $attribs,false,true);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	$doc = we_getDocForTag($docAttr, true);
 
 	$pID = $doc->ParentID;
@@ -38,12 +38,12 @@ function we_tag_path($attribs, $content){
 		"index.html", "index.htm", "index.php", "default.htm", "default.html", "default.php"
 	);
 
-	$sep = we_getTagAttribute("separator", $attribs, "/");
-	$home = we_getTagAttribute("home", $attribs, "home");
-	$hidehome = we_getTagAttribute("hidehome", $attribs, false, true);
+	$sep = weTag_getAttribute("separator", $attribs, "/");
+	$home = weTag_getAttribute("home", $attribs, "home");
+	$hidehome = weTag_getAttribute("hidehome", $attribs, false, true);
 
-	$class = we_getTagAttribute("class", $attribs);
-	$style = we_getTagAttribute("style", $attribs);
+	$class = weTag_getAttribute("class", $attribs);
+	$style = weTag_getAttribute("style", $attribs);
 
 	$class = $class ? ' class="' . $class . '"' : '';
 	$style = $style ? ' style="' . $style . '"' : '';

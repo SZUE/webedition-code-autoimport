@@ -30,9 +30,9 @@ function we_tag_createShop($attribs, $content) {
 		return modulFehltError('Shop','"createShop"');
 	}
 
-	$deleteshop = we_getTagAttribute("deleteshop", $attribs,false,true);
-	$deleteshoponlogout = we_getTagAttribute("deleteshoponlogout", $attribs,false,true);
-	$shopname = we_getTagAttributeTagParser("shopname", $attribs);
+	$deleteshop = weTag_getAttribute("deleteshop", $attribs,false,true);
+	$deleteshoponlogout = weTag_getAttribute("deleteshoponlogout", $attribs,false,true);
+	$shopname = we_getTagAttribute("shopname", $attribs);
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 

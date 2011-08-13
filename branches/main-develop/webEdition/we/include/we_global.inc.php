@@ -68,49 +68,6 @@ function rmPhp($in) {
 	return $out;
 }
 
-function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
-	return we_getTagAttribute($name, $attribs, $default, $isFlag, $checkForFalse, false);
-}
-
-function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal=true) {
-	$value = isset($attribs[$name]) ? $attribs[$name] : '';
-	if ($useGlobal && preg_match('|^\\\\?\$(.+)$|', $value, $regs)) {
-		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
-	}
-	if ($isFlag) {
-		$val = strtolower(trim($value));
-		if ($checkForFalse) {
-			return !($val == 'false' || $val == 'off' || $val == '0');
-		} else {
-			return ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
-		}
-	} 
-	
-	$value = strlen($value) ? $value : $default;
-	
-	return htmlspecialchars_decode($value);
-}
-
-// Entwickelt für #Bug 3386, wobei nicht die id, sondern die anderen Attribute dynamisiert wurden
-//FIXME: remove 
-function we_getTagAttributeForParsingLater($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
-	$value = isset($attribs[$name]) ? $attribs[$name] : '';
-	if (ereg('^\\\\?\$(.+)$', $value, $regs)) {
-		$value = '<?php echo isset($GLOBALS["' . $regs[1] . '"]) ? $GLOBALS["' . $regs[1] . '"] : "' . $default . '";?>';
-	}
-	$out = '';
-	if ($isFlag) {
-		if ($checkForFalse) {
-			$out = ($value == 'false' || $value == 'off' || $value == '0') ? false : true;
-		} else {
-			$out = ($value == 'true' || $value == 'on' || $value == $name || $value == '1') ? true : false;
-		}
-	} else {
-		$out = strlen($value) ? $value : $default;
-	}
-	return htmlspecialchars_decode($out);
-}
-
 function we_getIndexFileIDs($db) {
 	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )','IDs',$db);
 }

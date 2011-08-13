@@ -28,19 +28,11 @@ function we_tag_url($attribs, $content){
 		return $foo;
 	static $urls = array();
 	static $objurls = array();
-	$type=we_getTagAttribute("type", $attribs,'document');
-	$id = we_getTagAttribute("id", $attribs);
-	$triggerid = we_getTagAttribute("triggerid", $attribs,'0');
-	if (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE){
-		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "true", true,true);
-	} else {
-		$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, "false", true);
-	}
-	if (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS){
-		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "true", true,true);
-	} else {
-		$objectseourls = we_getTagAttribute("objectseourls", $attribs, "false", true);
-	}
+	$type=weTag_getAttribute("type", $attribs,'document');
+	$id = weTag_getAttribute("id", $attribs);
+	$triggerid = weTag_getAttribute("triggerid", $attribs,'0');
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE),true);
+		$objectseourls = weTag_getAttribute("objectseourls", $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
 	if ($type=='document'){
 		if (isset($urls[$id])) { // do only work you have never done before
 			return $urls[$id];

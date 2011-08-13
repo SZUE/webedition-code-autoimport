@@ -25,13 +25,13 @@
 function we_tag_printVersion($attribs, $content){
 	if (($foo = attributFehltError($attribs, "tid", "printVersion")))	return $foo;
 
-	$tid = we_getTagAttribute("tid", $attribs);
-	$triggerID = we_getTagAttribute("triggerID", $attribs); // :ATTENTION: difference between tag wizzard and program
-	$triggerID = $triggerID ? $triggerID : we_getTagAttribute("triggerid", $attribs);
+	$tid = weTag_getAttribute("tid", $attribs);
+	$triggerID = weTag_getAttribute("triggerID", $attribs); // :ATTENTION: difference between tag wizzard and program
+	$triggerID = $triggerID ? $triggerID : weTag_getAttribute("triggerid", $attribs);
 
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	if (!$docAttr) {
-		$docAttr = we_getTagAttribute("type", $attribs);
+		$docAttr = weTag_getAttribute("type", $attribs);
 	}
 
 	$link = isset($attribs["Link"]) ? $attribs["Link"] : "";

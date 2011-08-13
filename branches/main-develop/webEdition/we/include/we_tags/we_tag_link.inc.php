@@ -23,11 +23,11 @@
  */
 
 function we_tag_link($attribs, $content){
-	$name = we_getTagAttribute("name", $attribs);
-	$xml = getXmlAttributeValueAsBoolean(we_getTagAttribute("xml", $attribs, ""));
-	$text = we_getTagAttribute("text", $attribs, "");
-	$imageid = we_getTagAttribute("imageid", $attribs, 0);
-	$id = we_getTagAttribute("id", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$xml = getXmlAttributeValueAsBoolean(weTag_getAttribute("xml", $attribs));
+	$text = weTag_getAttribute("text", $attribs);
+	$imageid = weTag_getAttribute("imageid", $attribs, 0);
+	$id = weTag_getAttribute("id", $attribs);
 
 	// check if target document exists (Bug #7167)
 	if ($id != 0 && (f('SELECT 1 AS tmp FROM ' . FILE_TABLE . ' WHERE ID='.intval($id), 'tmp',new DB_WE()) !='1')){

@@ -23,7 +23,7 @@
  */
 
 function we_tag_write($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "document");
+	$type = weTag_getAttribute("type", $attribs, "document");
 
 	if ($type == "object") {
 		$foo = attributFehltError($attribs, "classid", "write");
@@ -35,32 +35,29 @@ function we_tag_write($attribs, $content){
 			return $foo;
 	}
 
-	$name = we_getTagAttribute(
-			"formname",
-			$attribs,
-			((isset($GLOBALS["WE_FORM"]) && $GLOBALS["WE_FORM"]) ? $GLOBALS["WE_FORM"] : "we_global_form"));
+	$name = weTag_getAttribute("formname",$attribs,((isset($GLOBALS["WE_FORM"]) && $GLOBALS["WE_FORM"]) ? $GLOBALS["WE_FORM"] : "we_global_form"));
 
-	$publish = we_getTagAttribute("publish", $attribs, "", true);
-	$triggerid = we_getTagAttribute("triggerid", $attribs, 0);
-	$charset = we_getTagAttribute("charset", $attribs, "iso-8859-1");
-	$doctype = we_getTagAttribute("doctype", $attribs);
-	$tid = we_getTagAttribute("tid", $attribs);
-	$categories = we_getTagAttribute("categories", $attribs);
-	$classid = we_getTagAttribute("classid", $attribs);
-	$parentid = we_getTagAttribute("parentid", $attribs);
-	$userid = we_getTagAttribute("userid", $attribs); // deprecated  use protected=true instead
-	$protected = we_getTagAttribute("protected", $attribs, "", true);
-	$admin = we_getTagAttribute("admin", $attribs);
-	$mail = we_getTagAttribute("mail", $attribs);
-	$mailfrom = we_getTagAttribute("mailfrom", $attribs);
-	$forceedit = we_getTagAttribute("forceedit", $attribs, "", true);
-	$workspaces = we_getTagAttribute("workspaces", $attribs);
-	$objname = preg_replace('/[^a-z0-9_-]/i','',we_getTagAttribute("name", $attribs));
-	$onduplicate = we_getTagAttribute("onduplicate", $attribs,"increment");
+	$publish = weTag_getAttribute("publish", $attribs, false, true);
+	$triggerid = weTag_getAttribute("triggerid", $attribs, 0);
+	$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
+	$doctype = weTag_getAttribute("doctype", $attribs);
+	$tid = weTag_getAttribute("tid", $attribs);
+	$categories = weTag_getAttribute("categories", $attribs);
+	$classid = weTag_getAttribute("classid", $attribs);
+	$parentid = weTag_getAttribute("parentid", $attribs);
+	$userid = weTag_getAttribute("userid", $attribs); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute("protected", $attribs, false, true);
+	$admin = weTag_getAttribute("admin", $attribs);
+	$mail = weTag_getAttribute("mail", $attribs);
+	$mailfrom = weTag_getAttribute("mailfrom", $attribs);
+	$forceedit = weTag_getAttribute("forceedit", $attribs, false, true);
+	$workspaces = weTag_getAttribute("workspaces", $attribs);
+	$objname = preg_replace('/[^a-z0-9_-]/i','',weTag_getAttribute("name", $attribs));
+	$onduplicate = weTag_getAttribute("onduplicate", $attribs,"increment");
 	if($objname==''){$onduplicate="overwrite";}
-	$onpredefinedname = we_getTagAttribute("onpredefinedname", $attribs,"appendto");
-	$workflowname = we_getTagAttribute("workflowname", $attribs,"");
-	$workflowuserid = we_getTagAttribute("workflowuserid", $attribs,0);
+	$onpredefinedname = weTag_getAttribute("onpredefinedname", $attribs,"appendto");
+	$workflowname = weTag_getAttribute("workflowname", $attribs);
+	$workflowuserid = weTag_getAttribute("workflowuserid", $attribs,0);
 	if ($workflowname!='' && $workflowuserid!=0){
 		$doworkflow = true;
 	} else {

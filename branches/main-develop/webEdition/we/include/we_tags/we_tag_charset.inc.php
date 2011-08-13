@@ -25,8 +25,8 @@
 
 function we_tag_charset($attribs,$content) {
 
-	$defined = we_getTagAttribute("defined",$attribs);
-	$xml     = we_getTagAttribute("xml",$attribs, true, true);
+	$defined = weTag_getAttribute("defined",$attribs);
+	$xml     = weTag_getAttribute("xml",$attribs, false, true, true);
 
 	if($GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS["we_doc"]->InWebEdition){	//	normally meta tags are edited on property page
 

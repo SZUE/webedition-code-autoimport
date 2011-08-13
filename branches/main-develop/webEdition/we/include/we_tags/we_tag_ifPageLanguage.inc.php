@@ -29,8 +29,8 @@ function we_tag_ifPageLanguage($attribs, $content){
 		return "";
 	}
 
-	$match = we_getTagAttribute("match", $attribs);
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$match = weTag_getAttribute("match", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 	$doc = we_getDocForTag($docAttr);
 	$matchArray = makeArrayFromCSV($match);
 	foreach ($matchArray as $match) {

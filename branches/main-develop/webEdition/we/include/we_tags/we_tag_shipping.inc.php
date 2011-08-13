@@ -25,9 +25,9 @@
 function we_tag_shipping($attribs, $content) {
 	$foo = attributFehltError($attribs,"sum","shipping");if($foo) return $foo;
 
-	$sumName = we_getTagAttribute('sum', $attribs);
-	$num_format = we_getTagAttribute('num_format', $attribs);
-	$type = we_getTagAttribute('type', $attribs, '');
+	$sumName = weTag_getAttribute('sum', $attribs);
+	$num_format = weTag_getAttribute('num_format', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
 	$shippingCost = 0;
 
 	// shipping depends on total value of basket

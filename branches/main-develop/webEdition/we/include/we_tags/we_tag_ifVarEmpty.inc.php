@@ -25,13 +25,13 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tags/we_tag_ifVarSet.inc.php");
 
 function we_isVarNotEmpty($attribs){
-	$docAttr = we_getTagAttribute('doc', $attribs);
-	$type = we_getTagAttribute('type', $attribs);
-	$match = we_getTagAttribute('match', $attribs);
-	$name = we_getTagAttribute('name', $attribs);
-	$type = we_getTagAttribute('type', $attribs, 'txt');
-	$formname = we_getTagAttribute('formname', $attribs, 'we_global_form');
-	$property = we_getTagAttribute('property', $attribs, '', true);
+	$docAttr = weTag_getAttribute('doc', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$match = weTag_getAttribute('match', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$type = weTag_getAttribute('type', $attribs, 'txt');
+	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
+	$property = weTag_getAttribute('property', $attribs, false, true);
 
 	if (!we_isVarSet($match, $type, $docAttr, $property, $formname))
 		return false;

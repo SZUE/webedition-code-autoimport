@@ -108,11 +108,11 @@ function we_tag_ifPosition($attribs, $content){
 	}
 
 
-	$type = we_getTagAttribute("type", $attribs);
-	$position = we_getTagAttribute("position", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$position = weTag_getAttribute("position", $attribs);
 	$positionArray = explode(',', $position);
 	$_size = sizeof($positionArray);
-	$operator  = we_getTagAttribute("operator", $attribs);
+	$operator  = weTag_getAttribute("operator", $attribs);
 
 	switch ($type) {
 		case "listview" : //	inside a listview, we take direct global listview object
@@ -131,7 +131,7 @@ function we_tag_ifPosition($attribs, $content){
 				print $missingAttrib;
 				return "";
 			}
-			$_reference = we_getTagAttribute("reference", $attribs);
+			$_reference = weTag_getAttribute("reference", $attribs);
 
 			foreach ($GLOBALS['we_position']['linklist'] as $name => $arr) {
 
@@ -159,7 +159,7 @@ function we_tag_ifPosition($attribs, $content){
 				return "";
 			}
 
-			$_reference = we_getTagAttribute("reference", $attribs);
+			$_reference = weTag_getAttribute("reference", $attribs);
 
 			foreach ($GLOBALS['we_position']['block'] as $name => $arr) {
 				if (strpos($name, $_reference) === 0) {

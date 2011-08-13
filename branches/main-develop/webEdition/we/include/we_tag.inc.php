@@ -65,16 +65,16 @@ function we_include_tag_file($name) {
 }
 
 function we_tag($name, $attribs=array(), $content = '') {
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs, 'screen');
+	$nameTo = weTag_getAttribute("nameto", $attribs);
+	$to = weTag_getAttribute("to", $attribs, 'screen');
 	//make sure comment attribute is never shown
 	if ($name == 'setVar') {//special handling inside this tag
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment'));
 		$nameTo = '';
 		$to = 'screen';
 	} else {
-		$nameTo = we_getTagAttribute("nameto", $attribs);
-		$to = we_getTagAttribute("to", $attribs, 'screen');
+		$nameTo = weTag_getAttribute("nameto", $attribs);
+		$to = weTag_getAttribute("to", $attribs, 'screen');
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto'));
 	}
 
@@ -180,6 +180,54 @@ function printElement($code) {
 	if (isset($code)) {
 		eval('?>' . str_replace('<?php', '<?php ', str_replace('?>', ' ?>', $code)));
 	}
+}
+
+/**
+ * get an attribute from $attribs, and return its value according to default
+ * @param string $name attributes name
+ * @param array $attribs array containg the attributes
+ * @param mixed $default default value
+ * @param bool $isFlag determines if this is a flag (true/false -value)
+ * @return mixed returns the attributes value or default if not set
+ */
+function weTag_getParserAttribute($name, $attribs, $default='', $isFlag=false) {
+	return weTag_getAttribute($name, $attribs, $default, $isFlag, false);
+}
+
+/**
+ * get an attribute from $attribs, and return its value according to default
+ * @param string $name attributes name
+ * @param array $attribs array containg the attributes
+ * @param mixed $default default value
+ * @param bool $isFlag determines if this is a flag (true/false -value)
+ * @param bool $useGlobal check if attribute value is a php-variable and is found in $GLOBALS
+ * @return mixed returns the attributes value or default if not set
+ */
+function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal=true) {
+	$value = isset($attribs[$name]) ? $attribs[$name] : '';
+	if ($useGlobal && preg_match('|^\\\\?\$(.+)$|', $value, $regs)) {
+		$value = isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : '';
+	}
+	if ($isFlag) {
+		$val = strtolower(trim($value));
+		$ret = (bool) $default;
+		$ret = $ret && !($val == 'false' || $val == 'off' || $val == '0');
+		$ret = $ret || ($val == 'true' || $val == 'on' || $val == '1' || $value == $name);
+		return $ret;
+	}
+	$value = strlen($value) ? $value : $default;
+	
+	return htmlspecialchars_decode($value);
+}
+
+function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
+	t_e('you use an old tag, which still uses function we_getTagAttributeTagParser');
+	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),false);
+}
+
+function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal=true) {
+	t_e('you use an old tag, which still uses function we_getTagAttribute');
+	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),$useGlobal);
 }
 
 function makeEmptyTable($in) {
@@ -377,7 +425,7 @@ function we_tag_ifLastCol($attribs, $content) {
 }
 
 function we_tag_ifNew($attribs, $content) {
-	$type = we_getTagAttribute('type', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
 	return!(isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
 }
 
@@ -462,7 +510,7 @@ function we_tag_ifNotNewsletterSalutation($attribs, $content) {
 }
 
 function we_tag_ifNotNew($attribs, $content) {
-	$type = we_getTagAttribute('type', $attribs, $content);
+	$type = weTag_getAttribute('type', $attribs, $content);
 	return (isset($_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']) && $_REQUEST['we_edit' . (($type == 'object') ? 'Object' : 'Document') . '_ID']);
 }
 
@@ -515,9 +563,9 @@ function we_tag_ifNotWorkspace($attribs, $content) {
 }
 
 function we_tag_ifNotWritten($attribs, $content) {
-	$type = we_getTagAttribute('type', $attribs, '');
-	$type = $type ? $type : we_getTagAttribute('var', $attribs, '');
-	$type = $type ? $type : we_getTagAttribute('doc', $attribs, 'document');
+	$type = weTag_getAttribute('type', $attribs);
+	$type = $type ? $type : weTag_getAttribute('var', $attribs);
+	$type = $type ? $type : weTag_getAttribute('doc', $attribs, 'document');
 	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == false);
 }
 
@@ -546,8 +594,8 @@ function we_tag_ifWebEdition($attribs, $content) {
 }
 
 function we_tag_ifWritten($attribs, $content) {
-	$type = we_getTagAttribute('type', $attribs, '');
-	$type = $type ? $type : we_getTagAttribute('var', $attribs, 'document');
+	$type = weTag_getAttribute('type', $attribs);
+	$type = $type ? $type : weTag_getAttribute('var', $attribs, 'document');
 	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == true);
 }
 

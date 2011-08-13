@@ -26,18 +26,18 @@ function we_tag_setVar($attribs, $content){
 	if (($foo = attributFehltError($attribs, "nameto", "setVar")))return $foo;
 	if (($foo = attributFehltError($attribs, "to", "setVar")))	return $foo;
 
-	$nameFrom = we_getTagAttribute("namefrom", $attribs);
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$typeFrom = we_getTagAttribute("typefrom", $attribs, "text");
-	$to = we_getTagAttribute("to", $attribs);
-	$from = we_getTagAttribute("from", $attribs);
-	$propertyTo = we_getTagAttribute("propertyto", $attribs, "", true);
-	$propertyFrom = we_getTagAttribute("propertyfrom", $attribs, "", true);
-	$striptags = we_getTagAttribute("striptags", $attribs, "", true);
-	$formnameTo = we_getTagAttribute("formnameto", $attribs, "we_global_form");
-	$formnameFrom = we_getTagAttribute("formnamefrom", $attribs, "we_global_form");
+	$nameFrom = weTag_getAttribute("namefrom", $attribs);
+	$nameTo = weTag_getAttribute("nameto", $attribs);
+	$typeFrom = weTag_getAttribute("typefrom", $attribs, "text");
+	$to = weTag_getAttribute("to", $attribs);
+	$from = weTag_getAttribute("from", $attribs);
+	$propertyTo = weTag_getAttribute("propertyto", $attribs, false, true);
+	$propertyFrom = weTag_getAttribute("propertyfrom", $attribs, false, true);
+	$striptags = weTag_getAttribute("striptags", $attribs, false, true);
+	$formnameTo = weTag_getAttribute("formnameto", $attribs, "we_global_form");
+	$formnameFrom = weTag_getAttribute("formnamefrom", $attribs, "we_global_form");
 	if (isset($attribs["value"])) {
-		$valueFrom = we_getTagAttribute("value", $attribs);
+		$valueFrom = weTag_getAttribute("value", $attribs);
 	} else {
 
 		$valueFrom = "";

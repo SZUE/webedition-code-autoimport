@@ -27,7 +27,7 @@ function we_parse_tag_next($attribs, $content) {
 }
 
 function we_tag_next($attribs, $content) {
-	$_type = we_getTagAttribute('_type', $attribs);
+	$_type = weTag_getAttribute('_type', $attribs);
 	switch ($_type) {
 		default:
 			if (isset($GLOBALS["_we_voting_list"])) {

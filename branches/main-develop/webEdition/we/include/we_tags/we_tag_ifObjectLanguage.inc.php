@@ -31,7 +31,7 @@ function we_tag_ifObjectLanguage($attribs, $content){
 		return "";
 	}
 
-	$match = we_getTagAttribute("match", $attribs);
+	$match = weTag_getAttribute("match", $attribs);
 	$matchArray = makeArrayFromCSV($match);
 	if (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object->DB_WE->Record['OF_Language'])){
 		$lang=$GLOBALS['lv']->object->DB_WE->Record['OF_Language'];

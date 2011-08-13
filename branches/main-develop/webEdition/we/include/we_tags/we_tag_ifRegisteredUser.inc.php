@@ -24,14 +24,14 @@
  */
 function we_tag_ifRegisteredUser($attribs, $content) {
 
-	$permission = we_getTagAttribute('permission', $attribs);
-	$match = we_getTagAttribute('match', $attribs);
+	$permission = weTag_getAttribute('permission', $attribs);
+	$match = weTag_getAttribute('match', $attribs);
 	$match = makeArrayFromCSV($match);
-	$cfilter = we_getTagAttribute('cfilter', $attribs, '', true);
-	$allowNoFilter = we_getTagAttribute('allowNoFilter', $attribs, '', true);
-	$userid = we_getTagAttribute('userid', $attribs, '');
+	$cfilter = weTag_getAttribute('cfilter', $attribs, false, true);
+	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, true);
+	$userid = weTag_getAttribute('userid', $attribs);
 	$userid = makeArrayFromCSV($userid);
-	$matchType = we_getTagAttribute('matchType', $attribs, 'one');
+	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
 
 	if ($GLOBALS['we_doc']->InWebEdition || $GLOBALS['WE_MAIN_DOC']->InWebEdition) {
 		return isset($_SESSION['we_set_registered']) && $_SESSION['we_set_registered'];

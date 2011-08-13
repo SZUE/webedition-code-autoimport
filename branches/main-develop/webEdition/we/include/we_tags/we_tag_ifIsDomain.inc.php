@@ -28,6 +28,6 @@ function we_tag_ifIsDomain($attribs, $content){
 		print($foo);
 		return '';
 	}
-	$domain = we_getTagAttribute('domain', $attribs);
+	$domain = weTag_getAttribute('domain', $attribs);
 	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || ($domain == $_SERVER['SERVER_NAME']);
 }

@@ -23,10 +23,10 @@
  */
 
 function we_tag_date($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs);
-	$format = we_getTagAttribute("format", $attribs, g_l('date','[format][default]'));
+	$type = weTag_getAttribute("type", $attribs);
+	$format = weTag_getAttribute("format", $attribs, g_l('date','[format][default]'));
 
-	$xml = we_getTagAttribute("xml", $attribs, "");
+	$xml = weTag_getAttribute("xml", $attribs);
 
 	if (strtolower($type) == "js") {
 		$js = "\nheute = new Date();\n";

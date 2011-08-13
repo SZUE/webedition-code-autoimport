@@ -36,8 +36,8 @@ function we_tag_xmlfeed($attribs, $content){
 	if (($foo = attributFehltError($attribs, 'name', 'xmlfeed')))return $foo;
 	if (($foo = attributFehltError($attribs, 'url', 'xmlfeed')))return $foo;
 
-	$name = we_getTagAttribute('name', $attribs);
-	$url = we_getTagAttribute('url', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$url = weTag_getAttribute('url', $attribs);
 
 	$refresh = (isset($attribs['refresh']) && is_numeric($attribs['refresh'])) ? $attribs['refresh'] * 60 : 0;
 

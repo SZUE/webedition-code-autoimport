@@ -19,9 +19,9 @@
  */
 
 function we_tag_DID($attribs, $content){
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 	if (!$docAttr) {
-		$docAttr = we_getTagAttribute("type", $attribs); // for Compatibility Reasons
+		$docAttr = weTag_getAttribute("type", $attribs); // for Compatibility Reasons
 	}
 
 	switch ($docAttr) {

@@ -30,15 +30,15 @@ function we_tag_quicktime($attribs, $content){
 	if ($foo)
 		return $foo;
 
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
 	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
-	$id = $id ? $id : we_getTagAttribute("id", $attribs);
+	$id = $id ? $id : weTag_getAttribute("id", $attribs);
 	$fname = 'we_' . $GLOBALS["we_doc"]->Name . '_img[' . $name . '#bdid]';
-	$startid = we_getTagAttribute("startid", $attribs, "");
-	$parentid = we_getTagAttribute("parentid", $attribs, "0");
+	$startid = weTag_getAttribute("startid", $attribs);
+	$parentid = weTag_getAttribute("parentid", $attribs, "0");
 
-	$showcontrol = we_getTagAttribute("showcontrol", $attribs, "true", true, true);
-	$showquicktime = we_getTagAttribute("showquicktime", $attribs, "true", true, true);
+	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
+	$showquicktime = weTag_getAttribute("showquicktime", $attribs, true, true);
 
 	$attribs = removeAttribs($attribs, array(
 		'showcontrol', 'showquicktime', 'startid', 'parentid'

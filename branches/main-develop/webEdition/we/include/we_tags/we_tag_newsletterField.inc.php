@@ -24,6 +24,6 @@
 
 
 function we_tag_newsletterField($attribs, $content){
-	$fieldName = we_getTagAttribute("fieldName",$attribs);
+	$fieldName = weTag_getAttribute("fieldName",$attribs);
 	return empty($fieldName) ? "" : "####PLACEHOLDER:DB::CUSTOMER_TABLE:".$fieldName."####";
 }

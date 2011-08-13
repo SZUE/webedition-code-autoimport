@@ -23,6 +23,6 @@
  */
 
 function we_tag_ifDeleted($attribs, $content){
-	$type = we_getTagAttribute('type', $attribs, 'document');
+	$type = weTag_getAttribute('type', $attribs, 'document');
 	return isset($GLOBALS['we_' . $type . '_delete_ok']) && ($GLOBALS['we_' . $type . '_delete_ok'] == true);
 }

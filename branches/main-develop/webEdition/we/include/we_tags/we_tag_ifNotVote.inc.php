@@ -26,7 +26,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voti
 
 function we_tag_ifNotVote($attribs, $content){
 	$foo = attributFehltError($attribs,"type","ifNotVote");if($foo) return $foo;
-	$type = we_getTagAttribute("type",$attribs,"error");
+	$type = weTag_getAttribute("type",$attribs,"error");
 
 	if(isset($GLOBALS["_we_voting_status"])){
 		switch ($type) {

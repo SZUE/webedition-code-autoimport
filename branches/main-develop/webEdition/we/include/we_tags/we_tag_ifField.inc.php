@@ -37,10 +37,10 @@ function we_tag_ifField($attribs, $content){
 		return "";
 	}
 
-	$match = we_getTagAttribute("match", $attribs);
+	$match = weTag_getAttribute("match", $attribs);
 	$matchArray = makeArrayFromCSV($match);
 
-	$operator  = we_getTagAttribute("operator", $attribs);
+	$operator  = weTag_getAttribute("operator", $attribs);
 
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
     	$match = (int) $match;

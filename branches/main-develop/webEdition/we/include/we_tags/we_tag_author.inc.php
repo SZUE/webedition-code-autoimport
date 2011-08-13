@@ -24,9 +24,9 @@
 
 function we_tag_author($attribs, $content){
 	// attributes
-	$type = we_getTagAttribute("type", $attribs);
-	$creator = we_getTagAttribute("creator", $attribs, '', true);
-	$docAttr = we_getTagAttribute("doc", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$creator = weTag_getAttribute("creator", $attribs, false, true);
+	$docAttr = weTag_getAttribute("doc", $attribs);
 
 	$doc = we_getDocForTag($docAttr, true);
 

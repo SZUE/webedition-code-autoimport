@@ -28,14 +28,14 @@ function we_tag_textarea($attribs, $content){
 		return $foo;
 	}
 	
-	$name = we_getTagAttribute("name", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs, "");
-	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
+	$name = weTag_getAttribute("name", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
+	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, tue);
 	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 
-	$html = we_getTagAttribute("html", $attribs, "", true, true);
-	$autobrAttr = we_getTagAttribute("autobr", $attribs, "", true);
-	$spellcheck = we_getTagAttribute('spellcheck', $attribs, 'true');
+	$html = weTag_getAttribute("html", $attribs, true, true);
+	$autobrAttr = weTag_getAttribute("autobr", $attribs, false, true);
+	$spellcheck = weTag_getAttribute('spellcheck', $attribs, 'true');
 
 	$autobr = $GLOBALS["we_doc"]->getElement($name, "autobr");
 	if (strlen($autobr) == 0) {

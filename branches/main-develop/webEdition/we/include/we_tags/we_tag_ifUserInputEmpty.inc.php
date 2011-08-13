@@ -23,8 +23,8 @@
  */
 
 function we_isUserInputNotEmpty($attribs){
-	$formname = we_getTagAttribute('formname', $attribs, 'we_global_form');
-	$match = we_getTagAttribute('match', $attribs);
+	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
+	$match = weTag_getAttribute('match', $attribs);
 	return (isset($_REQUEST['we_ui_' . $formname][$match]) && strlen($_REQUEST['we_ui_' . $formname][$match]));
 }
 

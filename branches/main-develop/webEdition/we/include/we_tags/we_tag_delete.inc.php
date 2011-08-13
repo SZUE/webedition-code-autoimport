@@ -23,17 +23,17 @@
  */
 
 function we_tag_delete($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "document");
-	$userid = we_getTagAttribute("userid", $attribs); // deprecated  use protected=true instead
-	$protected = we_getTagAttribute("protected", $attribs, "", true);
-	$admin = we_getTagAttribute("admin", $attribs);
-	$mail = we_getTagAttribute("mail", $attribs);
-	$mailfrom = we_getTagAttribute("mailfrom", $attribs);
-	$charset = we_getTagAttribute("charset", $attribs, "iso-8859-1");
-	$doctype = we_getTagAttribute("doctype", $attribs);
-	$classid = we_getTagAttribute("classid", $attribs);
-	$pid = we_getTagAttribute("pid", $attribs);
-	$forceedit = we_getTagAttribute("forceedit", $attribs, "", true);
+	$type = weTag_getAttribute("type", $attribs, "document");
+	$userid = weTag_getAttribute("userid", $attribs); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute("protected", $attribs, false, true);
+	$admin = weTag_getAttribute("admin", $attribs);
+	$mail = weTag_getAttribute("mail", $attribs);
+	$mailfrom = weTag_getAttribute("mailfrom", $attribs);
+	$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
+	$doctype = weTag_getAttribute("doctype", $attribs);
+	$classid = weTag_getAttribute("classid", $attribs);
+	$pid = weTag_getAttribute("pid", $attribs);
+	$forceedit = weTag_getAttribute("forceedit", $attribs, false, true);
 
 	if ($type == "document") {
 		if (!isset($_REQUEST["we_delDocument_ID"])) {

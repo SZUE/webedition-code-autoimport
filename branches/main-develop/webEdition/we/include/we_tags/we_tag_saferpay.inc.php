@@ -36,7 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_uti
  */
 function we_tag_saferpay($attribs,$content) {
 	global $DB_WE;
-	$name = we_getTagAttribute('name',$attribs);
+	$name = weTag_getAttribute('name',$attribs);
 	$foo = attributFehltError($attribs,'pricename','saferpay');
 	if($foo)
 	    return $foo;
@@ -45,21 +45,21 @@ function we_tag_saferpay($attribs,$content) {
 	if($foo)
 		return $foo;
 
-	$shopname = we_getTagAttribute('shopname',$attribs);
+	$shopname = weTag_getAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute('pricename',$attribs);
-	$shipping = we_getTagAttribute('shipping',$attribs);
-	$shippingIsNet = we_getTagAttribute('shippingisnet',$attribs);
-	$shippingVatRate = we_getTagAttribute('shippingvatrate',$attribs);
-	$languagecode = we_getTagAttribute('languagecode',$attribs);
+	$pricename = weTag_getAttribute('pricename',$attribs);
+	$shipping = weTag_getAttribute('shipping',$attribs);
+	$shippingIsNet = weTag_getAttribute('shippingisnet',$attribs);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate',$attribs);
+	$languagecode = weTag_getAttribute('languagecode',$attribs);
 
-	$onsuccess = we_getTagAttribute('onsuccess',$attribs);
-	$onfailure = we_getTagAttribute('onfailure',$attribs);
-	$onabortion = we_getTagAttribute('onabortion',$attribs);
+	$onsuccess = weTag_getAttribute('onsuccess',$attribs);
+	$onfailure = weTag_getAttribute('onfailure',$attribs);
+	$onabortion = weTag_getAttribute('onabortion',$attribs);
 
 
-	$netprices = we_getTagAttribute('netprices',$attribs,'true', true, true);
-	$useVat = we_getTagAttribute('usevat',$attribs,'true', true);
+	$netprices = weTag_getAttribute('netprices',$attribs,true, true);
+	$useVat = weTag_getAttribute('usevat',$attribs,false, true);
 
 	if ($useVat) {
 		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');

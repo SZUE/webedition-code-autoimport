@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/w
 
 function we_tag_ifShopEmpty($attribs,$content) {
 	$foo = attributFehltError($attribs,"shopname","ifShopEmpty");if($foo) return $foo;
-	$shopname = we_getTagAttribute("shopname",$attribs);
+	$shopname = weTag_getAttribute("shopname",$attribs);
 
 	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : "";
 	if ($basket) {

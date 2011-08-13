@@ -35,11 +35,11 @@ function we_tag_href($attribs, $content){
 	$foo = attributFehltError($attribs, "name", "href");
 	if ($foo)
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$include = we_getTagAttribute("include", $attribs, '', true);
-	$reload = we_getTagAttribute("reload", $attribs, '', true);
-	$rootdir = we_getTagAttribute("rootdir", $attribs, '/');
+	$name = weTag_getAttribute("name", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$include = weTag_getAttribute("include", $attribs, false, true);
+	$reload = weTag_getAttribute("reload", $attribs, false, true);
+	$rootdir = weTag_getAttribute("rootdir", $attribs, '/');
 	if (substr($rootdir, 0, 1) != "/") {
 		$rootdirid = $rootdir;
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
@@ -54,8 +54,8 @@ function we_tag_href($attribs, $content){
 		$rootdir = "";
 	}
 
-	$file = we_getTagAttribute("file", $attribs, '', true, true);
-	$directory = we_getTagAttribute("directory", $attribs, '', true);
+	$file = weTag_getAttribute("file", $attribs, true, true);
+	$directory = weTag_getAttribute("directory", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
 		"rootdir"
 	));

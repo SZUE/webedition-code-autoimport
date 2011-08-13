@@ -25,7 +25,7 @@
 
 function we_tag_newsletterConfirmLink($attribs, $content="") {
 
-	$plain = we_getTagAttribute("plain",$attribs,false,true);
+	$plain = weTag_getAttribute("plain",$attribs,false,true);
 
 	$content = trim($content);
 	$link = isset($GLOBALS["WE_CONFIRMLINK"]) ? $GLOBALS["WE_CONFIRMLINK"] : "";

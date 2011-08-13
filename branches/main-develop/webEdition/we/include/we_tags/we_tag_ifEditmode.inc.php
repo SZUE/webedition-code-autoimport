@@ -23,7 +23,7 @@
  */
 
 function we_tag_ifEditmode($attribs, $content){
-	$doc = we_getTagAttribute('doc', $attribs);
+	$doc = weTag_getAttribute('doc', $attribs);
 	switch ($doc) {
 		case 'self' :
 			return $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'] && $GLOBALS["we_editmode"];

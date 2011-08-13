@@ -24,11 +24,11 @@
 
 function we_tag_writeVoting($attribs, $content) {
 
-	$id = we_getTagAttributeTagParser('id',$attribs,0);
-	$additionalFields = we_getTagAttributeTagParser('additionalfields',$attribs,0);
-	$allowredirect = we_getTagAttributeTagParser("allowredirect", $attribs, "", true);
-	$deletesessiondata = we_getTagAttributeTagParser("deletesessiondata", $attribs, "true", true);
-	$writeto = we_getTagAttributeTagParser("writeto", $attribs, "voting");
+	$id = we_getTagAttribute('id',$attribs,0);
+	$additionalFields = we_getTagAttribute('additionalfields',$attribs,0);
+	$allowredirect = we_getTagAttribute("allowredirect", $attribs, false, true);
+	$deletesessiondata = we_getTagAttribute("deletesessiondata", $attribs, false, true);
+	$writeto = we_getTagAttribute("writeto", $attribs, "voting");
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
 

@@ -35,12 +35,12 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 	$isSubscribe = isset($_REQUEST["we_subscribe_email__"]) || isset($_REQUEST["confirmID"]);
 	$isUnsubscribe = isset($_REQUEST["we_unsubscribe_email__"]);
-	$doubleoptin = we_getTagAttribute("doubleoptin",$attribs,"",true);
-	$forcedoubleoptin = we_getTagAttribute("forcedoubleoptin",$attribs,"",true);
+	$doubleoptin = weTag_getAttribute("doubleoptin",$attribs,false,true);
+	$forcedoubleoptin = weTag_getAttribute("forcedoubleoptin",$attribs,false,true);
 	if ($forcedoubleoptin) $doubleoptin = 1;
-	$customer = we_getTagAttribute("type",$attribs) == "customer" ? true : false;
-	$emailonly = we_getTagAttribute("type",$attribs) == "emailonly" ? true : false;
-	$fieldGroup = we_getTagAttribute("fieldGroup",$attribs);
+	$customer = weTag_getAttribute("type",$attribs) == "customer" ? true : false;
+	$emailonly = weTag_getAttribute("type",$attribs) == "emailonly" ? true : false;
+	$fieldGroup = weTag_getAttribute("fieldGroup",$attribs);
 	$fieldGroup = empty($fieldGroup) ? "Newsletter" : $fieldGroup;
 	$abos = array();
 	$paths = array();
@@ -86,7 +86,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 	if (!$useListsArray) {
 		if ($customer) {
-			$abos = makeArrayFromCSV(we_getTagAttribute("mailingList",$attribs));
+			$abos = makeArrayFromCSV(weTag_getAttribute("mailingList",$attribs));
 			if (!sizeof($abos) || (strlen($abos[0]) == 0)) {
 				$abos[0] = "Newsletter_Ok";
 			}
@@ -94,7 +94,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			if ($emailonly) {
 
 			} else {
-				$paths = makeArrayFromCSV(we_getTagAttribute("path",$attribs));
+				$paths = makeArrayFromCSV(weTag_getAttribute("path",$attribs));
 				if (!sizeof($paths) || (strlen($paths[0]) == 0)) {
 					$paths[0] = "newsletter.txt";
 				}
@@ -103,12 +103,12 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 	} else {
 		if (isset($_REQUEST["we_subscribe_list__"]) && is_array($_REQUEST["we_subscribe_list__"])) {
 			if ($customer) {
-				$tmpAbos = makeArrayFromCSV(we_getTagAttribute("mailingList",$attribs));
+				$tmpAbos = makeArrayFromCSV(weTag_getAttribute("mailingList",$attribs));
 				foreach($_REQUEST["we_subscribe_list__"] as $nr){
 					array_push($abos,$fieldGroup."_".$tmpAbos[$nr]);
 				}
 			} else {
-				$tmpPaths = makeArrayFromCSV(we_getTagAttribute("path",$attribs));
+				$tmpPaths = makeArrayFromCSV(weTag_getAttribute("path",$attribs));
 				foreach($_REQUEST["we_subscribe_list__"] as $nr){
 					array_push($paths,$tmpPaths[$nr]);
 				}
@@ -224,8 +224,8 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			$db = new DB_WE();
 			$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) = LOWER('".$db->escape($f["subscribe_mail"])."')");
 
-			$mailid = we_getTagAttribute("mailid",$attribs);
-			$expiredoubleoptin = we_getTagAttribute("expiredoubleoptin",$attribs,1440) * 60;  // in secs
+			$mailid = weTag_getAttribute("mailid",$attribs);
+			$expiredoubleoptin = weTag_getAttribute("expiredoubleoptin",$attribs,1440) * 60;  // in secs
 
 			if($mailid){
 
@@ -234,9 +234,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 				$db->query($q);
 
-				$id = we_getTagAttribute("id",$attribs);
-				$subject = we_getTagAttribute("subject",$attribs,"newsletter");
-				$from = we_getTagAttribute("from",$attribs,"newsletter@".SERVER_NAME);
+				$id = weTag_getAttribute("id",$attribs);
+				$subject = weTag_getAttribute("subject",$attribs,"newsletter");
+				$from = weTag_getAttribute("from",$attribs,"newsletter@".SERVER_NAME);
 
 				$use_https_refer=false;
 				$db->query("SELECT pref_value FROM ".NEWSLETTER_PREFS_TABLE." WHERE pref_name='use_https_refer';");
@@ -311,10 +311,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:'.$phf.'####',$placeholderReplaceValue,$mailtextHTML);
 					}
 				}
-				$recipientCC = we_getTagAttribute("recipientCC",$attribs);
-				$recipientBCC = we_getTagAttribute("recipientBCC",$attribs);
-				$includeimages = we_getTagAttribute("includeimages",$attribs,false,true);
-				$useBaseHref = we_getTagAttribute("usebasehref",$attribs,true,true,true);
+				$recipientCC = weTag_getAttribute("recipientCC",$attribs);
+				$recipientBCC = weTag_getAttribute("recipientBCC",$attribs);
+				$includeimages = weTag_getAttribute("includeimages",$attribs,false,true);
+				$useBaseHref = weTag_getAttribute("usebasehref",$attribs,true,true,true);
 				$toCC = explode(",",$recipientCC);
 				$we_recipientCC = array();
 				for ($l=0;$l < sizeof($toCC);$l++) {
@@ -493,9 +493,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 				} else { //nicht in eine Liste eintragen sondern adminmail versenden
 
-					$adminmailid = we_getTagAttribute("adminmailid",$attribs);
-					$adminsubject = we_getTagAttribute("adminsubject",$attribs);
-					$adminemail = we_getTagAttribute("adminemail",$attribs);
+					$adminmailid = weTag_getAttribute("adminmailid",$attribs);
+					$adminsubject = weTag_getAttribute("adminsubject",$attribs);
+					$adminemail = weTag_getAttribute("adminemail",$attribs);
 					$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='".$db->escape($f["subscribe_mail"])."'");
 					$phpmail = new we_util_Mailer($adminemail,$adminsubject,$f["subscribe_mail"],$f["subscribe_mail"]);
 					$phpmail->setCharSet($charset);
@@ -507,7 +507,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$adminmailtextHTML = str_replace('###FIRSTNAME###',$f["subscribe_firstname"],$adminmailtextHTML);
 					$adminmailtextHTML = str_replace('###LASTNAME###',$f["subscribe_lastname"],$adminmailtextHTML);
 					$adminmailtextHTML = str_replace('###HTML###',$f["subscribe_html"],$adminmailtextHTML);
-					$includeimages = we_getTagAttribute("includeimages",$attribs,false,true);
+					$includeimages = weTag_getAttribute("includeimages",$attribs,false,true);
 					$phpmail->addHTMLPart($adminmailtextHTML);
 					if(isset($includeimages)) {$phpmail->setIsEmbedImages($includeimages);}
 					$phpmail->buildMessage();

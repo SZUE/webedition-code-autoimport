@@ -27,10 +27,10 @@ function we_tag_formfield($attribs, $content){
 	$foo = attributFehltError($attribs, "name", "formfield");
 	if ($foo)
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
 
-	$types = makeArrayFromCSV(we_getTagAttribute("type", $attribs, "textinput"));
-	$attrs = makeArrayFromCSV(we_getTagAttribute("attribs", $attribs));
+	$types = makeArrayFromCSV(weTag_getAttribute("type", $attribs, "textinput"));
+	$attrs = makeArrayFromCSV(weTag_getAttribute("attribs", $attribs));
 
 	$type_sel = $GLOBALS["we_doc"]->getElement($name, 'fftype');
 	$ffname = $GLOBALS["we_doc"]->getElement($name, 'ffname');
@@ -39,7 +39,7 @@ function we_tag_formfield($attribs, $content){
 
 	$nameprefix = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . '#';
 
-	$xml = we_getTagAttribute("xml", $attribs, "");
+	$xml = weTag_getAttribute("xml", $attribs);
 	$ff = array();
 
 	$ret = "";
@@ -272,7 +272,7 @@ function we_tag_formfield($attribs, $content){
 			} else
 			if ($type_sel == 'country') {
 				$orgVal = $GLOBALS["we_doc"]->getElement($name, 'ffdefault');
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 				if ($lang!=''){
@@ -322,7 +322,7 @@ function we_tag_formfield($attribs, $content){
 			} else
 			if ($type_sel == 'language') {
 				$orgVal = $GLOBALS["we_doc"]->getElement($name, 'ffdefault');
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 				if ($lang!=''){

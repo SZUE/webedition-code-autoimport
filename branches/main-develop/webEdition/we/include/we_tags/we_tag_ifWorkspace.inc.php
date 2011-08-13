@@ -23,10 +23,10 @@
  */
 
 function we_tag_ifWorkspace($attribs, $content){
-	$required_path = we_getTagAttribute('path', $attribs, "");
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$required_path = weTag_getAttribute('path', $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 	$doc = we_getDocForTag($docAttr);
-	$id = we_getTagAttribute('id', $attribs);
+	$id = weTag_getAttribute('id', $attribs);
 
 	if (!$required_path) {
 		$required_path = id_to_path($id);

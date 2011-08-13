@@ -29,18 +29,18 @@ function we_tag_shopField($attribs,$content) {
 	if(($foo = attributFehltError($attribs, "shopname", "shopField")));return $foo;
 
 
-	$name      = we_getTagAttribute("name", $attribs);
-	$reference = we_getTagAttribute("reference", $attribs);
-	$shopname  = we_getTagAttribute("shopname", $attribs);
+	$name      = weTag_getAttribute("name", $attribs);
+	$reference = weTag_getAttribute("reference", $attribs);
+	$shopname  = weTag_getAttribute("shopname", $attribs);
 
-	$type = we_getTagAttribute("type", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
 
-	$values = we_getTagAttribute("values", $attribs); // select, choice
-	$value = we_getTagAttribute("value", $attribs); // checkbox
-	$checked = we_getTagAttribute("checked", $attribs, "", true); // checkbox
-	$mode = we_getTagAttribute("mode",$attribs);
+	$values = weTag_getAttribute("values", $attribs); // select, choice
+	$value = weTag_getAttribute("value", $attribs); // checkbox
+	$checked = weTag_getAttribute("checked", $attribs, false, true); // checkbox
+	$mode = weTag_getAttribute("mode",$attribs);
 
-	$xml = we_getTagAttribute("xml",$attribs,"");
+	$xml = weTag_getAttribute("xml",$attribs);
 
 	if ( $reference == 'article' ) { // name depends on value
 
@@ -94,7 +94,7 @@ function we_tag_shopField($attribs,$content) {
 
 		case 'choice':
 
-			$reference = we_getTagAttribute("mode",$attribs);
+			$reference = weTag_getAttribute("mode",$attribs);
 
 			return we_getInputChoiceField($fieldname,$savedVal,$values,$atts,$mode);
 

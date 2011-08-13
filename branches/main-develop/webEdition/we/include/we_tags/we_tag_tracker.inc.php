@@ -26,10 +26,10 @@ function we_tag_tracker($attribs, $content){
 	if ($GLOBALS["we_doc"]->InWebEdition) {
 		return "";
 	}
-	$type = we_getTagAttribute("type", $attribs, "standard");
-	$ssl = we_getTagAttribute("ssl", $attribs, "", true);
-	$websitename = we_getTagAttribute("websitename", $attribs, $_SERVER['SERVER_NAME']);
-	$trackname = we_getTagAttribute("trackname", $attribs);
+	$type = weTag_getAttribute("type", $attribs, "standard");
+	$ssl = weTag_getAttribute("ssl", $attribs, false, true);
+	$websitename = weTag_getAttribute("websitename", $attribs, $_SERVER['SERVER_NAME']);
+	$trackname = weTag_getAttribute("trackname", $attribs);
 
 	if ($trackname == "WE_PATH") {
 		if (isset($_REQUEST['we_objectID'])) {
@@ -73,10 +73,10 @@ _my_stat_write(\'' . $websitename . '\',\'' . $trackerurl . '\'' . ($trackname ?
 			} else
 				if ($type == 'downloads') {
 					@include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showcat.inc.php");
-					$category = we_getTagAttribute("category", $attribs);
-					$order = we_getTagAttribute("order", $attribs, "FILETITLE");
-					$desc = we_getTagAttribute("desc", $attribs, "", true, true);
-					$rows = we_getTagAttribute("rows", $attribs, "10");
+					$category = weTag_getAttribute("category", $attribs);
+					$order = weTag_getAttribute("order", $attribs, "FILETITLE");
+					$desc = weTag_getAttribute("desc", $attribs, true, true);
+					$rows = weTag_getAttribute("rows", $attribs, "10");
 					showcat($category, $order, $desc ? "DESC" : "ASC", $rows, $websitename);
 				}
 }

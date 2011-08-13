@@ -24,11 +24,11 @@
 
 
 function we_tag_subscribe($attribs, $content){
-	$type = we_getTagAttribute("type",$attribs,"email");
-	$values = we_getTagAttribute("values",$attribs);
-	$value = we_getTagAttribute("value",$attribs);
-	$xml = we_getTagAttribute("xml",$attribs,"");
-	$checked = we_getTagAttribute("checked",$attribs,"",true);
+	$type = weTag_getAttribute("type",$attribs,"email");
+	$values = weTag_getAttribute("values",$attribs);
+	$value = weTag_getAttribute("value",$attribs);
+	$xml = weTag_getAttribute("xml",$attribs);
+	$checked = weTag_getAttribute("checked",$attribs,false,true);
 
 	switch($type){
 		case "listCheckbox":
@@ -80,7 +80,7 @@ function we_tag_subscribe($attribs, $content){
         case "htmlSelect":
             $newAttribs = removeAttribs($attribs,array('name','type','value','size','values','maxlength','checked'));
             $newAttribs['name'] = 'we_subscribe_html__';
-			$value = we_getTagAttribute("value",$attribs,"",true);
+			$value = weTag_getAttribute("value",$attribs,false,true);
 			if(isset($_REQUEST["we_subscribe_html__"])){
 				$ishtml = $_REQUEST["we_subscribe_html__"];
 			}else{

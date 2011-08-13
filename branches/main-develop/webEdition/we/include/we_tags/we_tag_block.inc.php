@@ -30,7 +30,7 @@ if(!defined('oldBlock')){
 function we_parse_tag_blockControls($attribs,$content){
 	eval('$arr = ' . $attribs . ';');
 	if (($foo = attributFehltError($arr, 'name', 'blockControls')))	return $foo;
-	$name = we_getTagAttributeTagParser("name", $arr, '');
+	$name = weTag_getParserAttribute("name", $arr);
 	return '<?php if(we_tag(\'ifEditmode\')){echo we_tag_blockControls('.$name.'));}?>';
 }
 */
@@ -44,7 +44,7 @@ function we_parse_tag_block($attribs,$content){
 		$content=str_replace('\$','$',$content);
 	}
 	
-	$name = md5(we_getTagAttributeTagParser('name', $arr, ''));
+	$name = md5(weTag_getParserAttribute('name', $arr));
 	$ctlPre='<?php if('.we_tagParser::printTag('ifEditmode').'){echo we_tag_blockControls(';
 	$ctlPost=');}?>';
 	
@@ -62,8 +62,8 @@ function we_parse_tag_block($attribs,$content){
 	return '<?php if(($block_'.$name.'='.we_tagParser::printTag('block',$attribs).')!==false){'."\n\t".
 		'while(we_condition_tag_block($block_'.$name.')){?>'.$content.'<?php }}else{?>'.
 		$ctlPre.'array(\'name\'=>\''.$name.'\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,'.
-		'\'ctlShowSelect\'=>'.(we_getTagAttributeTagParser('showselect', $arr, '',true, true)?'true':'false').','.
-		'\'ctlShow\'=>'.(int)we_getTagAttributeTagParser('limit', $arr, 10).')'.$ctlPost.
+		'\'ctlShowSelect\'=>'.(weTag_getParserAttribute('showselect', $arr,true, true)?'true':'false').','.
+		'\'ctlShow\'=>'.(int)weTag_getParserAttribute('limit', $arr, 10).')'.$ctlPost.
 		'<?php }?>';
 }
 
@@ -93,10 +93,10 @@ function we_condition_tag_block(&$block){
 
 function we_tag_block($attribs, $content){
 	if(!defined('oldBlock')){
-	$name = we_getTagAttribute('name', $attribs);
-	$showselect = we_getTagAttribute('showselect', $attribs, '', true, true);
-	$start = we_getTagAttribute('start', $attribs);
-	$limit = we_getTagAttribute('limit', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$showselect = weTag_getAttribute('showselect', $attribs, true, true);
+	$start = weTag_getAttribute('start', $attribs);
+	$limit = weTag_getAttribute('limit', $attribs);
 
 
 	if (isset($GLOBALS['lv'])) {
@@ -156,8 +156,8 @@ function we_tag_block($attribs, $content){
 	if (($foo = attributFehltError($attribs, 'name', 'block')))	return $foo;
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 
-	$name = we_getTagAttribute('name', $attribs);
-	$showselect = we_getTagAttribute('showselect', $attribs, '', true, true);
+	$name = weTag_getAttribute('name', $attribs);
+	$showselect = weTag_getAttribute('showselect', $attribs, true, true);
 
 	$isInListview = isset($GLOBALS['lv']);
 
@@ -169,8 +169,8 @@ function we_tag_block($attribs, $content){
 	}
 
 	// Bug Fix #1909 and #415
-	$start = we_getTagAttribute('start', $attribs);
-	$limit = we_getTagAttribute('limit', $attribs);
+	$start = weTag_getAttribute('start', $attribs);
+	$limit = weTag_getAttribute('limit', $attribs);
 	if($list){
 		$list=unserialize($list);
 	}else if ($start) {

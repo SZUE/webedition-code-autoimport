@@ -33,33 +33,33 @@ function we_tag_sendMail($attribs, $content){
 	if (!$GLOBALS["we_doc"]->InWebEdition) {
 
 		$GLOBALS['DB_WE'] = !isset($GLOBALS['DB_WE']) ? new DB_WE() : $GLOBALS['DB_WE'];
-		$id = we_getTagAttribute("id",$attribs, ( isset($_REQUEST["ID"])? $_REQUEST["ID"] : "" ) );
-		$from = we_getTagAttribute("from",$attribs);
-		$reply = we_getTagAttribute("reply",$attribs);
-		$recipient = we_getTagAttribute("recipient",$attribs);
-		$recipientCC = we_getTagAttribute("recipientcc",$attribs);
-		if ($recipientCC ==='') {$recipientCC = we_getTagAttribute("recipientCC",$attribs);}
-		$recipientBCC = we_getTagAttribute("recipientbcc",$attribs);
-		if ($recipientBCC ==='') {$recipientBCC = we_getTagAttribute("recipientBCC",$attribs);}
+		$id = weTag_getAttribute("id",$attribs, ( isset($_REQUEST["ID"])? $_REQUEST["ID"] : '' ) );
+		$from = weTag_getAttribute("from",$attribs);
+		$reply = weTag_getAttribute("reply",$attribs);
+		$recipient = weTag_getAttribute("recipient",$attribs);
+		$recipientCC = weTag_getAttribute("recipientcc",$attribs);
+		if ($recipientCC ==='') {$recipientCC = weTag_getAttribute("recipientCC",$attribs);}
+		$recipientBCC = weTag_getAttribute("recipientbcc",$attribs);
+		if ($recipientBCC ==='') {$recipientBCC = weTag_getAttribute("recipientBCC",$attribs);}
 
-		$mimetype = we_getTagAttribute("mimetype",$attribs);
-		$subject = we_getTagAttribute("subject",$attribs);
-		$charset = we_getTagAttribute("charset",$attribs,"UTF-8");
-		$includeimages = we_getTagAttribute("includeimages",$attribs,false,true);
+		$mimetype = weTag_getAttribute("mimetype",$attribs);
+		$subject = weTag_getAttribute("subject",$attribs);
+		$charset = weTag_getAttribute("charset",$attribs,"UTF-8");
+		$includeimages = weTag_getAttribute("includeimages",$attribs,false,true);
 		if (isset($attribs['useBaseHref'])) {
-			$useBaseHref = we_getTagAttribute("useBaseHref",$attribs,true,true,true);
+			$useBaseHref = weTag_getAttribute("useBaseHref",$attribs,true,true);
 		} else {
-			$useBaseHref = we_getTagAttribute("usebasehref",$attribs,true,true,true);
+			$useBaseHref = weTag_getAttribute("usebasehref",$attribs,true,true);
 		}
 		if (isset($attribs['useFormmailLog'])) {
-			$useFormmailLog = we_getTagAttribute("useFormmailLog",$attribs,false,true);
+			$useFormmailLog = weTag_getAttribute("useFormmailLog",$attribs,false,true);
 		} else {
-			$useFormmailLog = we_getTagAttribute("useformmaillog",$attribs,false,true);
+			$useFormmailLog = weTag_getAttribute("useformmaillog",$attribs,false,true);
 		}
 		if (isset($attribs['useFormmailBlock'])) {
-			$useFormmailBlock = we_getTagAttribute("useFormmailBlock",$attribs,false,true);
+			$useFormmailBlock = weTag_getAttribute("useFormmailBlock",$attribs,false,true);
 		} else {
-			$useFormmailBlock = we_getTagAttribute("useformmailblock",$attribs,false,true);
+			$useFormmailBlock = weTag_getAttribute("useformmailblock",$attribs,false,true);
 		}
 		if($useFormmailBlock) {$useFormmailLog=true;}
 		$_blocked = false;

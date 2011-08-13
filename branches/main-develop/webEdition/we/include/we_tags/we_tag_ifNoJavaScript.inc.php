@@ -26,7 +26,7 @@ function we_tag_ifNoJavaScript($attribs, $content){
 	if (($foo = attributFehltError($attribs, 'id', 'ifNoJavaScript'))) {
 		return $foo;
 	}
-	$id = we_getTagAttribute('id', $attribs);
+	$id = weTag_getAttribute('id', $attribs);
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.abs($id), new DB_WE());
 	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 	$attr = we_make_attribs($attribs, 'id');

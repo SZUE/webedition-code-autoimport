@@ -258,8 +258,8 @@ abstract class listviewBase{
 	 */
 	function getBackLink($attribs){
 
-	    $only = we_getTagAttribute('only', $attribs, '');
-			$urlID = we_getTagAttribute('id', $attribs, '');
+	    $only = weTag_getAttribute('only', $attribs);
+			$urlID = weTag_getAttribute('id', $attribs);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar']!=''){
 
 			$month=$this->calendar_struct['month_human'];
@@ -389,8 +389,8 @@ abstract class listviewBase{
 	 */
 	function getNextLink($attribs){
 
-	    $only = we_getTagAttribute("only", $attribs, "");
-			$urlID = we_getTagAttribute("id", $attribs, "");
+	    $only = weTag_getAttribute("only", $attribs);
+			$urlID = weTag_getAttribute("id", $attribs);
 		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"]!=""){
 
 			$month=$this->calendar_struct["month_human"];

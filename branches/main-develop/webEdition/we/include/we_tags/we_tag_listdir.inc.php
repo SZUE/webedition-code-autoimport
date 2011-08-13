@@ -23,12 +23,12 @@
  */
 
 function we_tag_listdir($attribs, $content){
-	$dirID = we_getTagAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID);
-	$index = explode(',', we_getTagAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php'));
-	$name = we_getTagAttribute('field', $attribs);
-	$dirfield = we_getTagAttribute('dirfield', $attribs, $name);
-	$sort = we_getTagAttribute('order', $attribs, $name);
-	$desc = we_getTagAttribute('desc', $attribs, '', true);
+	$dirID = weTag_getAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID);
+	$index = explode(',', weTag_getAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php'));
+	$name = weTag_getAttribute('field', $attribs);
+	$dirfield = weTag_getAttribute('dirfield', $attribs, $name);
+	$sort = weTag_getAttribute('order', $attribs, $name);
+	$desc = weTag_getAttribute('desc', $attribs, false, true);
 
 	$q = array();
 	foreach ($index as $i => $v) {

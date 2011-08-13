@@ -23,8 +23,8 @@
  */
 
 function we_isFieldNotEmpty($attribs){
-	$type = we_getTagAttribute('type', $attribs);
-	$match = we_getTagAttribute('match', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$match = weTag_getAttribute('match', $attribs);
 	switch ($type) {
 		case 'calendar' :
 			if (isset($GLOBALS['lv']->calendar_struct)) {

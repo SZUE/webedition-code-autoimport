@@ -25,7 +25,7 @@ require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 function we_tag_ifShopVat($attribs,$content) {
 	$foo = attributFehltError($attribs,"id","ifShopVat");if($foo) return $foo;
-	$id = we_getTagAttribute('id', $attribs, -1);
+	$id = weTag_getAttribute('id', $attribs, -1);
 
 	$vatId = 0;
 

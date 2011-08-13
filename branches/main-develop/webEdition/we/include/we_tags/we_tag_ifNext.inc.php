@@ -25,6 +25,6 @@
 function we_tag_ifNext($attribs, $content){
 	if (isset($GLOBALS['_we_voting_list']))
 		return $GLOBALS['_we_voting_list']->hasNextPage();
-	$useparent = we_getTagAttribute('useparent', $attribs, '', true);
+	$useparent = weTag_getAttribute('useparent', $attribs, false, true);
 	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->hasNextPage($useparent);
 }

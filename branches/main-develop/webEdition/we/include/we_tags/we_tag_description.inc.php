@@ -23,7 +23,7 @@
  */
 
 function we_tag_description($attribs, $content){
-	$htmlspecialchars = we_getTagAttribute("htmlspecialchars", $attribs, "", true);
+	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
 		'htmlspecialchars'
 	));

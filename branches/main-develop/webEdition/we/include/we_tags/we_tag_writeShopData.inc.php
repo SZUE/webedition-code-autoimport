@@ -36,7 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_uti
 function we_tag_writeShopData($attribs,$content) {
 	global $DB_WE;
 
-	$name = we_getTagAttribute('name',$attribs);
+	$name = weTag_getAttribute('name',$attribs);
 	if(($foo = attributFehltError($attribs,'pricename','writeShopData'))){
 		return $foo;
 	}
@@ -46,17 +46,17 @@ function we_tag_writeShopData($attribs,$content) {
 		}
 	}
 
-	$shopname = we_getTagAttribute('shopname',$attribs);
+	$shopname = weTag_getAttribute('shopname',$attribs);
 	$shopname = $shopname ? $shopname : $name;
-	$pricename = we_getTagAttribute('pricename',$attribs);
-	$shipping = we_getTagAttribute('shipping',$attribs);
-	$shippingIsNet = we_getTagAttribute('shippingisnet',$attribs);
-	$shippingVatRate = we_getTagAttribute('shippingvatrate',$attribs);
+	$pricename = weTag_getAttribute('pricename',$attribs);
+	$shipping = weTag_getAttribute('shipping',$attribs);
+	$shippingIsNet = weTag_getAttribute('shippingisnet',$attribs);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate',$attribs);
 
 
-	$netprices = we_getTagAttribute('netprices',$attribs,'true', true, true);
+	$netprices = weTag_getAttribute('netprices',$attribs,true, true);
 
-	$useVat = we_getTagAttribute('usevat',$attribs,'true', true);
+	$useVat = weTag_getAttribute('usevat',$attribs,false, true);
 
 	if (isset($_SESSION['webuser'])) {
 		$_customer = $_SESSION['webuser'];

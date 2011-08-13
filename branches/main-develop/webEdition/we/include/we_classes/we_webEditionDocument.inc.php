@@ -964,9 +964,9 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 					$_tagAttribs = makeArrayFromAttribs($_tags[2][$i]);
 
-					$_type     = we_getTagAttribute("type", $_tagAttribs);
-					$_name     = we_getTagAttribute("name", $_tagAttribs);
-					$_hide     = we_getTagAttribute("hide", $_tagAttribs, false, true, false);
+					$_type     = weTag_getAttribute("type", $_tagAttribs);
+					$_name     = weTag_getAttribute("name", $_tagAttribs);
+					$_hide     = weTag_getAttribute("hide", $_tagAttribs, false, true);
 
 					if($_type && $_name){
 
@@ -976,8 +976,8 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 						} else if($_type == "checkbox"){
 
-							$_checked  = we_getTagAttribute("checked", $_tagAttribs, false, true, false);
-							$_readonly = we_getTagAttribute("readonly", $_tagAttribs, true, true, true);
+							$_checked  = weTag_getAttribute("checked", $_tagAttribs, false, true);
+							$_readonly = weTag_getAttribute("readonly", $_tagAttribs, true, true);
 
 							$_ctrlArray['checkbox'][$_name] = array(
 																'hide'     => ( $_hide ? 1 : 0 ),
@@ -1015,7 +1015,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				// here we only take the FIRST tag
 				$_tagAttribs = makeArrayFromAttribs($_tags[2][0]);
 
-				$_pages = we_getTagAttribute("pages",  $_tagAttribs);
+				$_pages = weTag_getAttribute("pages",  $_tagAttribs);
 
 				if(!in_array("hidePages", $this->persistent_slots)){
 					$this->persistent_slots[] = "hidePages";

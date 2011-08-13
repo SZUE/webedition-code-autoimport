@@ -35,11 +35,11 @@ function we_tag_navigationEntry($attribs, $content) {
 		return $foo;
 	}
 
-	$navigationName = we_getTagAttribute('navigationname', $attribs, "default");
-	$type = we_getTagAttribute('type', $attribs);
-	$level = we_getTagAttribute('level', $attribs, 'defaultLevel');
-	$current = we_getTagAttribute('current', $attribs, 'defaultCurrent');
-	$position = we_getTagAttribute('position', $attribs, 'defaultPosition');
+	$navigationName = weTag_getAttribute('navigationname', $attribs, "default");
+	$type = weTag_getAttribute('type', $attribs);
+	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
+	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');
+	$position = weTag_getAttribute('position', $attribs, 'defaultPosition');
 
 	/*$tp = new we_tagParser($content);
 

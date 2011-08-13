@@ -28,8 +28,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_uti
 function we_tag_sum($attribs,$content){
 
 	$foo = attributFehltError($attribs,"name","sum");if($foo) return $foo;
-	$name = we_getTagAttribute("name",$attribs);
-	$num_format = we_getTagAttribute("num_format",$attribs);
+	$name = weTag_getAttribute("name",$attribs);
+	$num_format = weTag_getAttribute("num_format",$attribs);
 	if(isset($GLOBALS["summe"][$name])){
     	$result=we_util::std_numberformat($GLOBALS["summe"][$name]);
     } else {

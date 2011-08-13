@@ -27,8 +27,8 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/cap
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/captcha/captcha.class.php');
 
 function we_tag_ifCaptcha($attribs, $content) {
-	$name = we_getTagAttribute('name', $attribs);
-	$formname = we_getTagAttribute('formname', $attribs, '');
+	$name = weTag_getAttribute('name', $attribs);
+	$formname = weTag_getAttribute('formname', $attribs);
 
 	if (!empty($formname)) {
 		if (isset($_REQUEST['we_ui_' . $formname][$name]))

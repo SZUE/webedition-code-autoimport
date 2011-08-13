@@ -29,9 +29,9 @@ function we_tag_ifEqual($attribs, $content){
 		print($foo);
 		return "";
 	}
-	$name = we_getTagAttribute("name", $attribs);
-	$eqname = we_getTagAttribute("eqname", $attribs);
-	$value = we_getTagAttribute("value", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$eqname = weTag_getAttribute("eqname", $attribs);
+	$value = weTag_getAttribute("value", $attribs);
 
 	if (!$eqname) {
 		$foo = attributFehltError($attribs, "value", "ifEqual");

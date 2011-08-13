@@ -26,7 +26,7 @@ function we_tag_econda($attribs, $content){
 	// Define globals
 	global $we_editmode;
 
-	$type = we_getTagAttribute("type",$attribs);
+	$type = weTag_getAttribute("type",$attribs);
 	if ($type=="exclude" && !$GLOBALS["we_doc"]->InWebEdition) {
 			return "\n".'<script type="text/javascript">
 //<!--
@@ -35,19 +35,19 @@ function we_tag_econda($attribs, $content){
 </script>'."\n";
 	} else if($type == "content"){
 		$retEdit = "";
-		$contentType = we_getTagAttribute("labelFrom",$attribs,"path");
+		$contentType = weTag_getAttribute("labelFrom",$attribs,"path");
 		$retView = '<?php $GLOBALS["weEconda"]["content"]["from"] = "'.$contentType.'"; ?>';
 		switch ($contentType){
 			case "input":
 				$name = "econda_content";
-				$value = we_getTagAttribute("value", $attribs);
+				$value = weTag_getAttribute("value", $attribs);
 				$contentLabel = htmlspecialchars(isset($GLOBALS["we_doc"]->elements["econda_content"]["dat"]) ? $GLOBALS["we_doc"]->getElement("econda_content") : $value);
 				$retEdit = '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				$retView .= '<a name="emos_name" title="content" rel="'.$contentLabel.'" rev=""></a>';
 				break;
 			case "hidden":
 				$name = "econda_content";
-				$value = we_getTagAttribute("value", $attribs);
+				$value = weTag_getAttribute("value", $attribs);
 				$contentLabel = htmlspecialchars(isset($GLOBALS["we_doc"]->elements["econda_content"]["dat"]) ? $GLOBALS["we_doc"]->getElement("econda_content") : $value);
 				$retEdit = '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				$retView .= '<a name="emos_name" title="content" rel="'.$contentLabel.'" rev=""></a>';
@@ -62,8 +62,8 @@ function we_tag_econda($attribs, $content){
 		}
 	} else if($type == "orderProcess") {
 		if(!$GLOBALS["we_doc"]->InWebEdition){
-			$step = we_getTagAttribute("step",$attribs);
-			$pageName = we_getTagAttribute("pageName",$attribs);
+			$step = weTag_getAttribute("step",$attribs);
+			$pageName = weTag_getAttribute("pageName",$attribs);
 			return '<a name="emos_name" title="orderProcess" rel="'.$step.'_'.$pageName.'" rev=""></a>';
 		}
 

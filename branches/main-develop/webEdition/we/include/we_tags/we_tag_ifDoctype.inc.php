@@ -28,9 +28,9 @@ function we_tag_ifDoctype($attribs, $content){
 		print($foo);
 		return "";
 	}
-	$match = we_getTagAttribute("doctypes", $attribs);
+	$match = weTag_getAttribute("doctypes", $attribs);
 
-	$docAttr = we_getTagAttribute("doc", $attribs, "self");
+	$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
 	if ($docAttr == "listview" && isset($GLOBALS['lv'])) {
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');

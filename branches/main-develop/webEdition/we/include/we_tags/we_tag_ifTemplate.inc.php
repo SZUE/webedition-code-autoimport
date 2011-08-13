@@ -23,9 +23,9 @@
  */
 
 function we_tag_ifTemplate($attribs, $content){
-	$id = we_getTagAttribute("id", $attribs);
-	$workspaceID = we_getTagAttribute("workspaceID", $attribs);
-	$path = we_getTagAttribute("path", $attribs);
+	$id = weTag_getAttribute("id", $attribs);
+	$workspaceID = weTag_getAttribute("workspaceID", $attribs);
+	$path = weTag_getAttribute("path", $attribs);
 
 	if (isset($GLOBALS['we_doc']->TemplateID) && $id !== "") {
 		$idArray = makeArrayFromCSV($id);

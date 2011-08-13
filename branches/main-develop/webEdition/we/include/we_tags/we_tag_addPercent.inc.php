@@ -33,7 +33,7 @@ function we_parse_tag_addPercent($attribs, $content) {
 
 function we_tag_addPercent($attribs, $content) {
 	//internal Attribute
-	$_type = we_getTagAttribute('_type', $attribs);
+	$_type = weTag_getAttribute('_type', $attribs);
 	switch ($_type) {
 		case 'start':
 			$GLOBALS['calculate'] = 1;
@@ -46,8 +46,8 @@ function we_tag_addPercent($attribs, $content) {
 			if (($foo = attributFehltError($attribs, 'percent', 'addPercent'))) {
 				return $foo;
 			}
-			$percent = we_getTagAttribute('percent', $attribs);
-			$num_format = we_getTagAttribute('num_format', $attribs);
+			$percent = weTag_getAttribute('percent', $attribs);
+			$num_format = weTag_getAttribute('num_format', $attribs);
 			$result = ($content / 100) * (100 + $percent);
 			return we_util_Strings::formatnumber($result, $num_format);
 		default:

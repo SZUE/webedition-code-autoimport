@@ -24,8 +24,8 @@
 
 function we_tag_sessionStart($attribs, $content){
 	$GLOBALS['WE_SESSION_START'] = true;
-	$persistentlogins = we_getTagAttribute('persistentlogins',$attribs,false,true);
-	$onlinemonitor = we_getTagAttribute('onlinemonitor',$attribs,false,true);
+	$persistentlogins = weTag_getAttribute('persistentlogins',$attribs,false,true);
+	$onlinemonitor = weTag_getAttribute('onlinemonitor',$attribs,false,true);
 
 	if (!isset($_SESSION)){
 		@session_start();
@@ -126,8 +126,8 @@ function we_tag_sessionStart($attribs, $content){
 	}
 	if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
 		$GLOBALS['DB_WE']->query('DELETE FROM '.CUSTOMER_SESSION_TABLE.' WHERE LastAccess < DATE_SUB(NOW(), INTERVAL 1 HOUR)');
-		$monitorgroupfield = we_getTagAttribute('monitorgroupfield',$attribs);
-		$docAttr = we_getTagAttribute('monitordoc', $attribs);
+		$monitorgroupfield = weTag_getAttribute('monitorgroupfield',$attribs);
+		$docAttr = weTag_getAttribute('monitordoc', $attribs);
 		$doc = we_getDocForTag($docAttr, false);
 		$PageID = $doc->ID;
 		$ObjectID = 0;

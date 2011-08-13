@@ -161,27 +161,27 @@ class we_forms {
 		}
 
 		$out = "";
-		$dhtmledit = we_getTagAttribute("dhtmledit",$attribs,"",true); //4614
-		$wysiwyg = we_getTagAttribute("wysiwyg",$attribs,"",true);
+		$dhtmledit = weTag_getAttribute("dhtmledit",$attribs,false,true); //4614
+		$wysiwyg = weTag_getAttribute("wysiwyg",$attribs,false,true);
 
 		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['BROWSER']=="IE" || $GLOBALS['BROWSER'] == 'NN6' || $GLOBALS['BROWSER']=="OPERA" || ((defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
-		$cols = we_getTagAttribute("cols",$attribs);
-		$rows = we_getTagAttribute("rows",$attribs);
-		$width = we_getTagAttribute("width",$attribs);
-		$height = we_getTagAttribute("height",$attribs);
-		$commands = we_getTagAttribute("commands",$attribs);
-		$bgcolor = we_getTagAttribute("bgcolor",$attribs);
-		$wrap = we_getTagAttribute("wrap",$attribs);
-		$hideautobr = we_getTagAttribute("hideautobr",$attribs,0,true);
-		$class = we_getTagAttribute("class",$attribs);
-		$style = we_getTagAttribute("style",$attribs);
-		$id = we_getTagAttribute("id",$attribs);
-		$inlineedit = we_getTagAttribute("inlineedit",$attribs,0,true,defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true);
-		$tabindex = we_getTagAttribute("tabindex",$attribs);
+		$cols = weTag_getAttribute("cols",$attribs);
+		$rows = weTag_getAttribute("rows",$attribs);
+		$width = weTag_getAttribute("width",$attribs);
+		$height = weTag_getAttribute("height",$attribs);
+		$commands = weTag_getAttribute("commands",$attribs);
+		$bgcolor = weTag_getAttribute("bgcolor",$attribs);
+		$wrap = weTag_getAttribute("wrap",$attribs);
+		$hideautobr = weTag_getAttribute("hideautobr",$attribs,false,true);
+		$class = weTag_getAttribute("class",$attribs);
+		$style = weTag_getAttribute("style",$attribs);
+		$id = weTag_getAttribute("id",$attribs);
+		$inlineedit = weTag_getAttribute("inlineedit",$attribs,defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true, true);
+		$tabindex = weTag_getAttribute("tabindex",$attribs);
 
-		$buttonpos = we_getTagAttribute("buttonpos",$attribs);
+		$buttonpos = weTag_getAttribute("buttonpos",$attribs);
 
-		$cssClasses = we_getTagAttribute("classes",$attribs);
+		$cssClasses = weTag_getAttribute("classes",$attribs);
 
 		$buttonTop = false;
 		$buttonBottom = false;
@@ -208,8 +208,8 @@ class we_forms {
 			$style = eregi_replace('height:[^;"]+[;"]?','',$style);
 			$style = trim($style);
 		}
-		$fontnames = we_getTagAttribute("fontnames",$attribs);
-		$showmenues = we_getTagAttribute("showmenus",$attribs,"",true,true);
+		$fontnames = weTag_getAttribute("fontnames",$attribs);
+		$showmenues = weTag_getAttribute("showmenus",$attribs,true,true);
 		if(isset($attribs["showMenues"])){ // old style compatibility
 			if($attribs["showMenues"] == "off" || $attribs["showMenues"] == "false"){
 				$showmenues = false;
@@ -219,7 +219,7 @@ class we_forms {
 				$showmenues = false;
 			}
 		}
-		$importrtf = we_getTagAttribute("importrtf",$attribs,"",true);
+		$importrtf = weTag_getAttribute("importrtf",$attribs,false,true);
 		if (isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"] !="" && $GLOBALS["we_doc"]->ClassName == "we_objectFile") {
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition);
 		} else {

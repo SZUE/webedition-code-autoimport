@@ -23,8 +23,8 @@
  */
 
 function we_tag_objectLanguage($attribs, $content){
-	$type = we_getTagAttribute("type", $attribs, "complete");
-	$case = we_getTagAttribute("case", $attribs, "unchanged");
+	$type = weTag_getAttribute("type", $attribs, "complete");
+	$case = weTag_getAttribute("case", $attribs, "unchanged");
 
 	if (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->object->DB_WE->Record['OF_Language'])){
 		$lang=$GLOBALS['lv']->object->DB_WE->Record['OF_Language'];

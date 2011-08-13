@@ -30,8 +30,8 @@ function we_tag_shopVat($attribs,$content) {
 
 
 
-	$type = we_getTagAttribute('type', $attribs, 'select');
-	$id = we_getTagAttribute('id', $attribs);
+	$type = weTag_getAttribute('type', $attribs, 'select');
+	$id = weTag_getAttribute('id', $attribs);
 
 
 	if ($id) {

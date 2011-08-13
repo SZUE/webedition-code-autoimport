@@ -26,12 +26,12 @@ function we_tag_dateSelect($attribs, $content){
 	$foo = attributFehltError($attribs, "name", "dateSelect");
 	if ($foo)
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
-	$class = we_getTagAttribute("class", $attribs);
-	$style = we_getTagAttribute("style", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$class = weTag_getAttribute("class", $attribs);
+	$style = weTag_getAttribute("style", $attribs);
 
-	$tmp_from = we_getTagAttribute("start", $attribs, "");
-	$tmp_to = we_getTagAttribute("end", $attribs, "");
+	$tmp_from = weTag_getAttribute("start", $attribs);
+	$tmp_to = weTag_getAttribute("end", $attribs);
 
 	$from = array();
 	$to = array();
@@ -161,7 +161,7 @@ WE_checkDate_' . $name . '();
 		$checkDate = "WE_checkDate_" . $name . "();";
 	}
 
-	$submitonchange = we_getTagAttribute("submitonchange", $attribs, "", true);
+	$submitonchange = weTag_getAttribute("submitonchange", $attribs, false, true);
 	return getDateInput2(
 			"$name%s",
 			(((!isset($_REQUEST[$name])) || $_REQUEST[$name] == -1) ? time() : $_REQUEST[$name]),

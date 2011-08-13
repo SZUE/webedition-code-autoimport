@@ -28,12 +28,12 @@ function we_tag_ifShopField($attribs,$content) {
 	$foo = attributFehltError($attribs, "shopname", "ifShopField");if($foo) return $foo;
 	$foo = attributFehltError($attribs, "match", "ifShopField", true);if($foo) return $foo;
 
-	$match = we_getTagAttribute("match", $attribs);
+	$match = weTag_getAttribute("match", $attribs);
 
-	$name      = we_getTagAttribute("name", $attribs);
-	$reference = we_getTagAttribute("reference", $attribs);
-	$shopname  = we_getTagAttribute("shopname", $attribs);
-	$operator  = we_getTagAttribute("operator", $attribs);
+	$name      = weTag_getAttribute("name", $attribs);
+	$reference = weTag_getAttribute("reference", $attribs);
+	$shopname  = weTag_getAttribute("shopname", $attribs);
+	$operator  = weTag_getAttribute("operator", $attribs);
 
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
 		$match = (int) $match;

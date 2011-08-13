@@ -33,7 +33,7 @@ function we_parse_tag_calculate($attribs, $content) {
 
 function we_tag_calculate($attribs, $content) {
 	//internal Attribute
-	$_type = we_getTagAttribute('_type', $attribs);
+	$_type = weTag_getAttribute('_type', $attribs);
 	switch ($_type) {
 		case 'start':
 			$GLOBALS['calculate'] = 1;
@@ -43,9 +43,9 @@ function we_tag_calculate($attribs, $content) {
 			$content = ob_get_contents();
 			ob_end_clean();
 			unset($GLOBALS['calculate']);
-			$sum = we_getTagAttribute("sum", $attribs);
-			$num_format = we_getTagAttribute("num_format", $attribs);
-			$print = we_getTagAttribute("print", $attribs, "", true, true);
+			$sum = weTag_getAttribute("sum", $attribs);
+			$num_format = weTag_getAttribute("num_format", $attribs);
+			$print = weTag_getAttribute("print", $attribs,true, true);
 			/* 	$zahl = "";
 			  $content1 = "";
 

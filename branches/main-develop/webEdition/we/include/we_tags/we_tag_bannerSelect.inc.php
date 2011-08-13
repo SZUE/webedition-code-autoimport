@@ -28,12 +28,12 @@ function we_tag_bannerSelect($attribs, $content){
  	global $DB_WE;
 	$foo = attributFehltError($attribs,"name","banner");if($foo) return $foo;
 
-	$name = we_getTagAttribute("name",$attribs);
-	$customer = we_getTagAttribute("customer",$attribs,"",true);
-	$rootdir = we_getTagAttribute("rootdir",$attribs,"/");
-	$firstentry = we_getTagAttribute("firstentry",$attribs);
-	$showpath = we_getTagAttribute("showpath",$attribs,"",true);
-	$submitonchange = we_getTagAttribute("submitonchange",$attribs,"",true);
+	$name = weTag_getAttribute("name",$attribs);
+	$customer = weTag_getAttribute("customer",$attribs,false,true);
+	$rootdir = weTag_getAttribute("rootdir",$attribs,"/");
+	$firstentry = weTag_getAttribute("firstentry",$attribs);
+	$showpath = weTag_getAttribute("showpath",$attribs,false,true);
+	$submitonchange = weTag_getAttribute("submitonchange",$attribs,false,true);
 
 	$where = " WHERE IsFolder=0 ";
 

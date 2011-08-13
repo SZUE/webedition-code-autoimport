@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_condition($attribs, $content) {
-	$name = we_getTagAttribute("name", $attribs, "we_lv_condition");
+	$name = weTag_getAttribute("name", $attribs, "we_lv_condition");
 
 	$GLOBALS["we_lv_conditionCount"] = isset($GLOBALS["we_lv_conditionCount"]) ? abs($GLOBALS["we_lv_conditionCount"]) : 0;
 

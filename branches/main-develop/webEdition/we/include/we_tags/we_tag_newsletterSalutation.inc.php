@@ -24,7 +24,7 @@
 
 
 function we_tag_newsletterSalutation($attribs, $content){
-	$type = we_getTagAttribute("type",$attribs);
+	$type = weTag_getAttribute("type",$attribs);
 	switch($type){
 		case "customerid":
 			return (isset($GLOBALS["WE_CUSTOMERID"]) && $GLOBALS["WE_CUSTOMERID"] ) ? $GLOBALS["WE_CUSTOMERID"] : "";

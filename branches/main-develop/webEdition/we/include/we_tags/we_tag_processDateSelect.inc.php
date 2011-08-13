@@ -26,8 +26,8 @@ function we_tag_processDateSelect($attribs, $content){
 	$foo = attributFehltError($attribs, "name", "dateSelect");
 	if ($foo)
 		return $foo;
-	$name = we_getTagAttribute("name", $attribs);
-	$endofday = we_getTagAttribute("endofday", $attribs, "", true);
+	$name = weTag_getAttribute("name", $attribs);
+	$endofday = weTag_getAttribute("endofday", $attribs, false, true);
 	$GLOBALS[$name] = $_REQUEST[$name] = mktime(
 			$endofday ? 23 : 0,
 			$endofday ? 59 : 0,

@@ -26,9 +26,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDete
 
 function we_tag_ifClient($attribs, $content){
 
-	$version = we_getTagAttribute('version', $attribs);
-	$browser = we_getTagAttribute('browser', $attribs);
-	$system = we_getTagAttribute('system', $attribs);
+	$version = weTag_getAttribute('version', $attribs);
+	$browser = weTag_getAttribute('browser', $attribs);
+	$system = weTag_getAttribute('system', $attribs);
 
 	if ($version) {
 		if (!(ereg('up[0-9\.]+', $version) || ereg('down[0-9\.]+', $version) || ereg('eq[0-9\.]+', $version))) {

@@ -23,8 +23,8 @@
  */
 
 function we_tag_ifSearch($attribs, $content){
-	$name = we_getTagAttribute('name', $attribs, '0');
-	$set = we_getTagAttribute('set', $attribs, 1, true);
+	$name = weTag_getAttribute('name', $attribs, '0');
+	$set = weTag_getAttribute('set', $attribs, 1, true);
 
 	if ($set) {
 		return isset($_REQUEST['we_lv_search_' . $name]);

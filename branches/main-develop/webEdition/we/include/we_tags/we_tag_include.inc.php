@@ -32,12 +32,12 @@ function we_tag_include($attribs, $content) {
 	  return $foo;
 	 */
 
-	$id = we_getTagAttribute('id', $attribs);
-	$path = we_getTagAttribute('path', $attribs);
-	$name = we_getTagAttribute('name', $attribs, '');
-	$rootdir = we_getTagAttribute('rootdir', $attribs, '/');
-	$gethttp = we_getTagAttribute('gethttp', $attribs, '', true);
-	$seeMode = we_getTagAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, '', true, true);
+	$id = weTag_getAttribute('id', $attribs);
+	$path = weTag_getAttribute('path', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
+	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 
 
 	if ((!$id) && (!$path) && (!$name)) {
@@ -47,7 +47,7 @@ function we_tag_include($attribs, $content) {
 
 	if (we_tag('ifEditmode', array())) {
 		if ($name && !($id || $path)) {
-			$type = we_getTagAttribute('kind', $attribs);
+			$type = weTag_getAttribute('kind', $attribs);
 			$_tmpspan = '<span style="color: white;font-size:' .
 							(($GLOBALS['SYSTEM'] == 'MAC') ? '11px' : (($GLOBALS['SYSTEM'] == 'X11') ? '13px' : '12px')) . ';font-family:' .
 							g_l('css', '[font_family]') . ';">';

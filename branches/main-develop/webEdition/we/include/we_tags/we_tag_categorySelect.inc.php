@@ -23,15 +23,15 @@
  */
 
 function we_tag_categorySelect($attribs, $content){
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
 	$isuserinput = (strlen($name) == 0);
 	$name = $isuserinput ? "we_ui_" . $GLOBALS["WE_FORM"] . "_categories" : $name;
 
-	$type = we_getTagAttribute("type", $attribs);
-	$rootdir = we_getTagAttribute("rootdir", $attribs, "/");
-	$firstentry = we_getTagAttribute("firstentry", $attribs);
-	$showpath = we_getTagAttribute("showpath", $attribs, "", true);
-	$indent = we_getTagAttribute("indent", $attribs, "");
+	$type = weTag_getAttribute("type", $attribs);
+	$rootdir = weTag_getAttribute("rootdir", $attribs, "/");
+	$firstentry = weTag_getAttribute("firstentry", $attribs);
+	$showpath = weTag_getAttribute("showpath", $attribs, false, true);
+	$indent = weTag_getAttribute("indent", $attribs);
 
 	$values = "";
 	if ($isuserinput && $GLOBALS["WE_FORM"]) {

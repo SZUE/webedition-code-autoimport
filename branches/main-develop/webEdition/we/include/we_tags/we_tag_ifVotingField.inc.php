@@ -30,11 +30,11 @@ function we_tag_ifVotingField($attribs,$content) {
 		return "";
 	}
 
-	$operator  = we_getTagAttribute("operator", $attribs);
+	$operator  = weTag_getAttribute("operator", $attribs);
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {
-    	$match = (int) we_getTagAttributeTagParser("match",$attribs);
+    	$match = (int) we_getTagAttribute("match",$attribs);
 	} else {
-		$match = we_getTagAttributeTagParser("match",$attribs);
+		$match = we_getTagAttribute("match",$attribs);
 	}
 	$atts = removeAttribs($attribs,array('match','operator'));
 	if ($operator == "less" || $operator == "less|equal" || $operator == "greater" || $operator == "greater|equal") {

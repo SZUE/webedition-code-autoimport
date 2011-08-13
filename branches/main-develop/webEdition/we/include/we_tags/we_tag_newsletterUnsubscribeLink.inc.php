@@ -24,8 +24,8 @@
 
 function we_tag_newsletterUnsubscribeLink($attribs, $content){
 	$foo = attributFehltError($attribs,"id","newsletterUnsubscribeLink");if($foo) return $foo;
-	$id = we_getTagAttribute("id",$attribs);
-	$plain = we_getTagAttribute("plain",$attribs,true,true,true);
+	$id = weTag_getAttribute("id",$attribs);
+	$plain = weTag_getAttribute("plain",$attribs,true,true);
 
 	$db=DB_WE();
 	$settings=array();

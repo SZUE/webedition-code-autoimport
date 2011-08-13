@@ -28,9 +28,9 @@ function we_tag_hidden($attribs, $content){
 	if ($foo)
 		return $foo;
 
-	$name = we_getTagAttribute("name", $attribs);
-	$type = we_getTagAttribute("type", $attribs, '');
-	$xml = we_getTagAttribute("xml", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
 
 	$value = '';
 	switch ($type) {

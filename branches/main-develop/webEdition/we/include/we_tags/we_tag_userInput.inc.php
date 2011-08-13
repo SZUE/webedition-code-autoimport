@@ -27,19 +27,19 @@ function we_tag_userInput($attribs, $content){
 	if ($foo)
 		return $foo;
 
-	$name = we_getTagAttribute("name", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$property = we_getTagAttribute("property", $attribs, "", true);
-	$format = we_getTagAttribute("format", $attribs);
-	$checked = we_getTagAttribute("checked", $attribs, "", true);
-	$value = we_getTagAttribute("value", $attribs);
-	$editable = we_getTagAttribute("editable", $attribs, "", true, true);
-	$autobrAttr = we_getTagAttribute("autobr", $attribs, "", true, true);
-	$hidden = we_getTagAttribute("hidden", $attribs, "", true);
-	$size = we_getTagAttribute("size", $attribs);
-	$values = we_getTagAttribute("values", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs, "");
-	$removeFirstParagraph = we_getTagAttribute("removefirstparagraph", $attribs, 0, true, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
+	$name = weTag_getAttribute("name", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$property = weTag_getAttribute("property", $attribs, false, true);
+	$format = weTag_getAttribute("format", $attribs);
+	$checked = weTag_getAttribute("checked", $attribs, false, true);
+	$value = weTag_getAttribute("value", $attribs);
+	$editable = weTag_getAttribute("editable", $attribs, true, true);
+	$autobrAttr = weTag_getAttribute("autobr", $attribs, true, true);
+	$hidden = weTag_getAttribute("hidden", $attribs, false, true);
+	$size = weTag_getAttribute("size", $attribs);
+	$values = weTag_getAttribute("values", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
+	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 
 	if ($hidden && ($type != "date")) {
 		$type = "hidden";
@@ -120,24 +120,21 @@ function we_tag_userInput($attribs, $content){
 					if (!isset($_SESSION[$_imgDataId])) {
 						$_SESSION[$_imgDataId] = array();
 					}
-					$_SESSION[$_imgDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
-					//$_SESSION[$_imgDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
-					$_SESSION[$_imgDataId]["width"] = we_getTagAttribute(
-							"width",
-							$attribs,
-							0);
-					$_SESSION[$_imgDataId]["height"] = we_getTagAttribute("height", $attribs, 0);
-					$_SESSION[$_imgDataId]["quality"] = we_getTagAttribute("quality", $attribs, "8");
-					$_SESSION[$_imgDataId]["keepratio"] = we_getTagAttribute("keepratio", $attribs, "", true, true);
-					$_SESSION[$_imgDataId]["maximize"] = we_getTagAttribute("maximize", $attribs, "", true);
+					$_SESSION[$_imgDataId]["parentid"] = weTag_getAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_imgDataId]["maxfilesize"] = weTag_getAttribute("maxfilesize",$attribs);
+					$_SESSION[$_imgDataId]["width"] = weTag_getAttribute("width",$attribs,0);
+					$_SESSION[$_imgDataId]["height"] = weTag_getAttribute("height", $attribs, 0);
+					$_SESSION[$_imgDataId]["quality"] = weTag_getAttribute("quality", $attribs, "8");
+					$_SESSION[$_imgDataId]["keepratio"] = weTag_getAttribute("keepratio", $attribs, true, true);
+					$_SESSION[$_imgDataId]["maximize"] = weTag_getAttribute("maximize", $attribs, false, true);
 					$_SESSION[$_imgDataId]["id"] = $orgVal ? $orgVal : '';
 
-					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
-					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
-					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
-					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
-					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
+					$bordercolor = weTag_getAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = weTag_getAttribute("checkboxstyle", $attribs);
+					$inputstyle = weTag_getAttribute("inputstyle", $attribs);
+					$checkboxclass = weTag_getAttribute("checkboxclass", $attribs);
+					$inputclass = weTag_getAttributeweTag_getAttribute("inputclass", $attribs);
+					$checkboxtext = weTag_getAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_imgDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_imgDataId]["id"];
@@ -229,18 +226,18 @@ function we_tag_userInput($attribs, $content){
 					if (!isset($_SESSION[$_flashmovieDataId])) {
 						$_SESSION[$_flashmovieDataId] = array();
 					}
-					$_SESSION[$_flashmovieDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
-					//$_SESSION[$_imgDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
-					$_SESSION[$_flashmovieDataId]["width"] = we_getTagAttribute("width", $attribs, 	0);
-					$_SESSION[$_flashmovieDataId]["height"] = we_getTagAttribute("height", $attribs, 0);
+					$_SESSION[$_flashmovieDataId]["parentid"] = weTag_getAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_imgDataId]["maxfilesize"] = weTag_getAttribute("maxfilesize",$attribs);
+					$_SESSION[$_flashmovieDataId]["width"] = weTag_getAttribute("width", $attribs, 	0);
+					$_SESSION[$_flashmovieDataId]["height"] = weTag_getAttribute("height", $attribs, 0);
 					$_SESSION[$_flashmovieDataId]["id"] = $orgVal ? $orgVal : '';
 
-					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
-					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
-					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
-					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
-					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
+					$bordercolor = weTag_getAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = weTag_getAttribute("checkboxstyle", $attribs);
+					$inputstyle = weTag_getAttribute("inputstyle", $attribs);
+					$checkboxclass = weTag_getAttribute("checkboxclass", $attribs);
+					$inputclass = weTag_getAttribute("inputclass", $attribs);
+					$checkboxtext = weTag_getAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_flashmovieDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_flashmovieDataId]["id"];
@@ -339,18 +336,18 @@ function we_tag_userInput($attribs, $content){
 					if (!isset($_SESSION[$_quicktimeDataId])) {
 						$_SESSION[$_quicktimeDataId] = array();
 					}
-					$_SESSION[$_quicktimeDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
-					//$_SESSION[$_quicktimeDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
-					$_SESSION[$_quicktimeDataId]["width"] = we_getTagAttribute("width", $attribs, 0);
-					$_SESSION[$_quicktimeDataId]["height"] = we_getTagAttribute("height", $attribs, 0);
+					$_SESSION[$_quicktimeDataId]["parentid"] = weTag_getAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_quicktimeDataId]["maxfilesize"] = weTag_getAttribute("maxfilesize",$attribs);
+					$_SESSION[$_quicktimeDataId]["width"] = weTag_getAttribute("width", $attribs, 0);
+					$_SESSION[$_quicktimeDataId]["height"] = weTag_getAttribute("height", $attribs, 0);
 					$_SESSION[$_quicktimeDataId]["id"] = $orgVal ? $orgVal : '';
 
-					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
-					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
-					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
-					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
-					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
+					$bordercolor = weTag_getAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = weTag_getAttribute("checkboxstyle", $attribs);
+					$inputstyle = weTag_getAttribute("inputstyle", $attribs);
+					$checkboxclass = weTag_getAttribute("checkboxclass", $attribs);
+					$inputclass = weTag_getAttribute("inputclass", $attribs);
+					$checkboxtext = weTag_getAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_quicktimeDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_quicktimeDataId]["id"];
@@ -447,17 +444,17 @@ function we_tag_userInput($attribs, $content){
 					if (!isset($_SESSION[$_binaryDataId])) {
 						$_SESSION[$_binaryDataId] = array();
 					}
-					$_SESSION[$_binaryDataId]["parentid"] = we_getTagAttribute("parentid", $attribs, "0");
-					//$_SESSION[$_binaryDataId]["maxfilesize"] = we_getTagAttribute("maxfilesize",$attribs);
+					$_SESSION[$_binaryDataId]["parentid"] = weTag_getAttribute("parentid", $attribs, "0");
+					//$_SESSION[$_binaryDataId]["maxfilesize"] = weTag_getAttribute("maxfilesize",$attribs);
 
 					$_SESSION[$_binaryDataId]["id"] = $orgVal ? $orgVal : '';
 
-					$bordercolor = we_getTagAttribute("bordercolor", $attribs, "#006DB8");
-					$checkboxstyle = we_getTagAttribute("checkboxstyle", $attribs);
-					$inputstyle = we_getTagAttribute("inputstyle", $attribs);
-					$checkboxclass = we_getTagAttribute("checkboxclass", $attribs);
-					$inputclass = we_getTagAttribute("inputclass", $attribs);
-					$checkboxtext = we_getTagAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
+					$bordercolor = weTag_getAttribute("bordercolor", $attribs, "#006DB8");
+					$checkboxstyle = weTag_getAttribute("checkboxstyle", $attribs);
+					$inputstyle = weTag_getAttribute("inputstyle", $attribs);
+					$checkboxclass = weTag_getAttribute("checkboxclass", $attribs);
+					$inputclass = weTag_getAttribute("inputclass", $attribs);
+					$checkboxtext = weTag_getAttribute("checkboxtext", $attribs, g_l('parser','[delete]'));
 
 					if ($_SESSION[$_binaryDataId]["id"]) {
 						$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
@@ -557,7 +554,7 @@ function we_tag_userInput($attribs, $content){
 				}
 			case "textarea" :
 				$attribs['inlineedit'] = "true"; // bugfix: 7276
-				$pure = we_getTagAttribute("pure", $attribs, "", true);
+				$pure = weTag_getAttribute("pure", $attribs, false, true);
 				if ($pure) {
 					$atts = removeAttribs(
 							$attribs,
@@ -589,7 +586,7 @@ function we_tag_userInput($attribs, $content){
 					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/we_textarea_include.inc.php");
 					$autobr = $autobrAttr ? "on" : "off";
 					$showAutobr = isset($attribs["autobr"]);
-					$charset = we_getTagAttribute("charset", $attribs, "iso-8859-1");
+					$charset = weTag_getAttribute("charset", $attribs, "iso-8859-1");
 					return we_forms::weTextarea(
 							$fieldname,
 							$content,
@@ -636,9 +633,9 @@ function we_tag_userInput($attribs, $content){
 				}
 				return we_getInputCheckboxField($fieldname, $content, $atts);
 			case "date" :
-				$currentdate = we_getTagAttribute("currentdate", $attribs, "", true);
-				$minyear = we_getTagAttribute("minyear", $attribs, "");
-				$maxyear = we_getTagAttribute("maxyear", $attribs, "");
+				$currentdate = weTag_getAttribute("currentdate", $attribs, false, true);
+				$minyear = weTag_getAttribute("minyear", $attribs);
+				$maxyear = weTag_getAttribute("maxyear", $attribs);
 				if ($currentdate) {
 					$orgVal = time();
 				}
@@ -664,7 +661,7 @@ function we_tag_userInput($attribs, $content){
 				break;
 			case "country":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
@@ -717,7 +714,7 @@ function we_tag_userInput($attribs, $content){
 			case "language":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
 
-				$docAttr = we_getTagAttribute("doc", $attribs, "self");
+				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 				if ($lang!=''){
@@ -874,7 +871,7 @@ function we_tag_userInput($attribs, $content){
 								'fontnames',
 								'maxlength'
 						));
-				$mode = we_getTagAttribute("mode", $attribs);
+				$mode = weTag_getAttribute("mode", $attribs);
 				return we_getInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
 				break;
 			case "password" :

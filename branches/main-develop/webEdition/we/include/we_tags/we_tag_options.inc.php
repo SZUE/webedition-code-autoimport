@@ -23,9 +23,9 @@
  */
 
 function we_tag_options($attribs, $content){
-	$name = we_getTagAttribute("name", $attribs);
-	$classid = we_getTagAttribute("classid", $attribs);
-	$field = we_getTagAttribute("field", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
+	$classid = weTag_getAttribute("classid", $attribs);
+	$field = weTag_getAttribute("field", $attribs);
 
 	$o = "";
 	if ($classid && $field) {

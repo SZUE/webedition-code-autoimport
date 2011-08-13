@@ -31,8 +31,8 @@ function we_tag_addDelShopItem($attribs, $content) {
 		return $foo;
 	}
 
-	$shopname = we_getTagAttribute("shopname", $attribs);
-	$floatquantities = we_getTagAttribute("floatquantities", $attribs, '', true);
+	$shopname = weTag_getAttribute("shopname", $attribs);
+	$floatquantities = weTag_getAttribute("floatquantities", $attribs, false, true);
 	$floatquantities = empty($floatquantities) ? 'false' : $floatquantities;
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
