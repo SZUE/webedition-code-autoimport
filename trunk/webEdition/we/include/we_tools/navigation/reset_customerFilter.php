@@ -31,5 +31,3 @@ if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 </script>
 ';
 }
-
-?>
