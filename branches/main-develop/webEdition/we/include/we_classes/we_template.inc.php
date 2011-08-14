@@ -281,13 +281,6 @@ function handleShutdown($code) {
 			$this->showShutdown=true;
 			register_shutdown_function(array($this,'handleShutdown'),$code);
 
-<<<<<<< .working
-		$var=create_function('','?>'.$code.'<?php ');
-		if(empty($var) && ( $error = error_get_last() )){
-			$this->errMsg="Error: ".$error['message'].'\nLine:'.$error['line'];
-			//type error will stop we
-			t_e('warning',"Error in template: ".$error['message'],'Line:'.$error['line']);
-=======
 			$var=create_function('','?>'.$code.'<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp=explode("\n",$code);
@@ -301,7 +294,6 @@ function handleShutdown($code) {
 				t_e('warning',"Error in template: ".$error['message'],'Line: '.$error['line'],'Code: '.$errCode);
 			}
 			$this->showShutdown=false;
->>>>>>> .merge-rechts.r3152
 		}
 		/*$tags = $this->removeDoppel($tags);
 		for($i=0;$i<sizeof($tags);$i++){
@@ -538,6 +530,7 @@ function handleShutdown($code) {
 						if($tagname=='select') {
 							$spacer = "[\040|\n|\t|\r]*";
 							$selregs = array();
+							//FIXME: this regex is not correct [^name] will not match any of those chars
 							if (eregi('(<we:select [^name]*name'.$spacer.'[\=\"|\=\'|\=\\\\|\=]*'.$spacer . $att['name'] . '[\'\"]*[^>]*>)(.*)<'.$spacer.'/'.$spacer.'we:select'.$spacer.'>',$templateCode,$selregs)) {
 								$out[$name]['content'] = $selregs[2];
 							}
@@ -557,7 +550,7 @@ function handleShutdown($code) {
 							break;
 					}
 				}
-			} else if(eregi('</we:([^> ]+)',$tag,$regs)) { // endtag found
+			} else if(preg_match('|</we:([^> ]+)|i',$tag,$regs)) { // endtag found
 				$tagname = $regs[1];
 				switch($tagname) {
 						case "block":

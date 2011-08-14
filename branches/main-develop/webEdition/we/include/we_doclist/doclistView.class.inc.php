@@ -89,7 +89,7 @@ class doclistView {
 			$showHideSelects = '';
 			$showSelects = '';
 		}
-		$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 		$_js = we_htmlElement::jsElement ( '
 
@@ -1366,7 +1366,7 @@ class doclistView {
 			$id = $GLOBALS ['we_doc']->ID;
 		}
 		if (isset ( $_REQUEST ['we_cmd'] ['we_transaction'] )) {
-			$we_transaction = (eregi("^([a-f0-9]){32}$",$_REQUEST ['we_cmd'] ['we_transaction'])?$_REQUEST ['we_cmd'] ['we_transaction']:0);
+			$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST ['we_cmd'] ['we_transaction'])?$_REQUEST ['we_cmd'] ['we_transaction']:0);
 		} else {
 			$we_transaction = $GLOBALS ['we_transaction'];
 		}

@@ -124,7 +124,7 @@ class we_search_listview extends listviewBase {
 			}
 		}
 
-		if($this->order && $this->desc && (!eregi(".+ desc$",$this->order))){
+		if($this->order && $this->desc && (!preg_match('|.+ desc$|i',$this->order))){
 			$this->order .= " DESC";
 		}
 

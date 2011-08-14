@@ -29,7 +29,7 @@ protect();
 $ok = false;
 
 if ($_SESSION["perms"]["ADMINISTRATOR"]) {
-	$we_transaction =(eregi("^([a-f0-9]){32}$",$_REQUEST["we_cmd"][1])?$_REQUEST["we_cmd"][1]:0);
+	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_cmd'][1])?$_REQUEST['we_cmd'][1]:0);
 	// init document
 	$we_dt = $_SESSION["we_data"][$we_transaction];
 

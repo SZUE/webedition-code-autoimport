@@ -33,7 +33,7 @@ protect();
 
 htmlTop('Messaging System - ' . g_l('modules_messaging','[new_message]'));
 
-if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
 

@@ -187,7 +187,7 @@ class searchtool extends weToolModel
 	}
 
 	function filenameNotValid($text) {
-		return eregi('[^a-z0-9._-]', $text);
+		return preg_match('|[^a-z0-9._-]|i', $text);
 	}
 
 	function getLangText($path, $text)

@@ -30,7 +30,7 @@ include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 protect();
 htmlTop();
 
-if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
 

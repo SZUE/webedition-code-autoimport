@@ -391,7 +391,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @return bool
 	 */
 	function filenameNotValid(){
-			return eregi('[^a-z0-9\ \._\-]',$this->Text);
+			return preg_match('|[^a-z0-9\ \._\-]|i',$this->Text);
 	}
 
 }

@@ -392,7 +392,7 @@
         	} else{
         		$mode = "preview";
         	}
-						$_REQUEST['we_transaction'] = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+						$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
             for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
 
             	if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT){	//	in Super-Easy-Edit-Mode only in Editmode !!!

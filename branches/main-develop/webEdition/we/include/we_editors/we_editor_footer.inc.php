@@ -35,7 +35,7 @@ if(defined("WORKFLOW_TABLE")) {
 protect();
 
 $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : $we_transaction;
-$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:0);
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:0);
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];

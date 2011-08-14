@@ -92,7 +92,7 @@ protect();
 		    	$weAcQuery = new weSelectorQuery();
 
             	 // bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
-				if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !eregi("^[A-Za-z0-9._-]+$", $_REQUEST[$_REQUEST['obj_name'] . '_username'])) {
+				if(isset($_REQUEST[$_REQUEST['obj_name'] . '_username']) && !preg_match("|^[A-Za-z0-9._-]+$|", $_REQUEST[$_REQUEST['obj_name'] . '_username'])) {
             		print '<script type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('global',"[username_wrong_chars]"), WE_MESSAGE_ERROR) . '</script>';
                     break;
             	} else if(!isset($_SESSION["user_session_data"])){

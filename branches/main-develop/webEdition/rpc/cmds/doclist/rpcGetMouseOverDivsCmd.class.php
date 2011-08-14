@@ -41,7 +41,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd {
 		$searchstart = $_REQUEST['we_cmd']['searchstart'];
 
 		if (isset($_REQUEST["we_transaction"])) {
-			$_REQUEST['we_transaction']=(eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+			$_REQUEST['we_transaction']=(preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 			$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_transaction"]]) ? $_SESSION["we_data"][$_REQUEST["we_transaction"]] : "";
 		}

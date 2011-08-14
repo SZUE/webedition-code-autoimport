@@ -96,7 +96,7 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 		array_push($parts,array("headline"=>g_l('weClass',"[preview]"),"html"=>htmlAlertAttentionBox(g_l('weClass',"[no_preview_available]"), 1),"space"=>120));
 
 		if($we_doc->ID) {
-			$_we_transaction = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+			$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 			$link = "<a href='".$preurl.WEBEDITION_DIR."we_cmd.php?we_cmd[0]=".(isset($_REQUEST['we_cmd'][0])?$_REQUEST['we_cmd'][0]:"")."&we_cmd[1]=".(isset($_REQUEST['we_cmd'][1])?$_REQUEST['we_cmd'][1]:"")."&we_cmd[2]=".(isset($_REQUEST['we_cmd'][2])?$_REQUEST['we_cmd'][2]:"")."&we_cmd[3]=download&we_transaction=".$_we_transaction."'>".$http = $we_doc->getHttpPath()."</a>";
 		} else {
 			$link = g_l('weClass',"[file_not_saved]");

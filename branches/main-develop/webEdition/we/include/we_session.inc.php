@@ -257,7 +257,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 		}
 }
 $we_transaction = isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : md5(uniqID(rand()));
-$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:md5(uniqID(rand())));
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:md5(uniqID(rand())));
 
 if (!isset($_SESSION["we_data"])) {
 	$_SESSION["we_data"] = array(

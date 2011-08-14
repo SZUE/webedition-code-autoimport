@@ -33,7 +33,7 @@ htmlTop();
 print STYLESHEET;
 
 $browser = new we_browserDetect();
-if (!eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])) {
+if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
 

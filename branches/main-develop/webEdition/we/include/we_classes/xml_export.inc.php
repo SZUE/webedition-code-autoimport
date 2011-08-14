@@ -38,11 +38,11 @@ class XML_Export {
 		$endTag = false;
 		$out = -1;
 /*
-		eregi("<(/?)we:(.+)>?", $we_tag, $regs);
+		preg_match("<(/?)we:(.+)>?", $we_tag, $regs);
 		if ($regs[1]) $endTag = true;
 
 		$foo = (substr($foo,-1) == "/") ? $regs[2] : ($regs[2]."/");
-		eregi("([^ >/]+) ?(.*)", $foo, $regs);
+		preg_match("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
 		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
 

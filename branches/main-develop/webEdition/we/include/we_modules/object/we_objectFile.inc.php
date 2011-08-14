@@ -2989,7 +2989,7 @@ class we_objectFile extends we_document{
 
 		$glob = "";
 		foreach($GLOBALS as $k=>$v){
-			if((!ereg('^[0-9]',$k)) && (!eregi('[^a-z0-9_]',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
+			if((!ereg('^[0-9]',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
 		}
 		$glob = ereg_replace('(.*),$','\1',$glob);
 		eval('global '.$glob.';');  // globalen Namensraum herstellen.

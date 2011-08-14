@@ -74,7 +74,7 @@ class we_listview_customer extends listviewBase {
 			$this->LastDocPath = $_SESSION['last_webEdition_document']['Path'];
 		}
 
-		if($this->desc && $this->order!='' && (!eregi(".+ desc$",$this->order))){
+		if($this->desc && $this->order!='' && (!eregipreg_match("|.+ desc$|i",$this->order))){
 			$this->order .= " DESC";
 		}
 

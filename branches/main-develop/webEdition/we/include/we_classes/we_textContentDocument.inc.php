@@ -117,7 +117,7 @@ class we_textContentDocument extends we_textDocument{
 				$_dat = (isset($v["dat"]) && is_string($v["dat"]) && substr($v["dat"],0,2) == "a:") ? unserialize($v["dat"]) : (isset($v["dat"]) ? $v["dat"] : "");
 				if ((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)) {
 					foreach($fieldTypes as $name=>$val) {
-						if(eregi('^'.$name.'$',$k)) {
+						if(preg_match('|^'.$name.'$|i',$k)) {
 							if(!is_array($_dat) && $v["type"] == "txt" && ($k != "Charset")){
 								$text .= " ".$_dat;
 							} else if (is_array($_dat)) {

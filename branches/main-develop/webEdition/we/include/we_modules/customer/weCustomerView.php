@@ -1124,7 +1124,7 @@ function processCommands() {
 
 		$new_field_name=(($branch && $branch!=g_l('modules_customer','[other]')) ? $branch.'_' : '').$field_name;
 
-		if(eregi('[^a-z0-9\_]',$new_field_name)){
+		if(preg_match('|[^a-z0-9\_]|i',$new_field_name)){
 			return -7;
 		}
 

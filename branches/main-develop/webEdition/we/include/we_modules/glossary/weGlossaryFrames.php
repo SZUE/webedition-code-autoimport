@@ -166,7 +166,7 @@ class weGlossaryFrames extends weModuleFrames {
 
 			}
 
-			if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
+			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])) {
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 
 			}
@@ -213,7 +213,7 @@ class weGlossaryFrames extends weModuleFrames {
 
 			}
 
-			if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
+			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])) {
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 
 			}
@@ -259,7 +259,7 @@ class weGlossaryFrames extends weModuleFrames {
 
 			}
 
-			if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
+			if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])) {
 				$this->View->Glossary->Language = substr($_REQUEST['cmdid'], 0, 5);
 
 			}

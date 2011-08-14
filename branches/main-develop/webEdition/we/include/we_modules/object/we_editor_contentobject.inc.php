@@ -123,7 +123,7 @@ $count = $we_doc->getElement("Sortgesamt");
 $uniquename = md5(uniqid(rand(), true));
 $width = 800;
 
-$we_transaction = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
 echo we_multiIconBox::_getBoxStart("100%", $uniquename);
 

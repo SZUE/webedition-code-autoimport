@@ -153,7 +153,7 @@ class we_listview_multiobject extends listviewBase {
 
 
 
-		if($this->desc && (!eregi(".+ desc$",$this->order))){
+		if($this->desc && (!preg_match("|.+ desc$|i",$this->order))){
 			$this->order .= " DESC";
 		}
 

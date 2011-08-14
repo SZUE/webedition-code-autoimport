@@ -73,7 +73,7 @@ if (!_EditorFrame) {
 
 	<?php
 	if (isset($_REQUEST["we_transaction"])) {
-		$_we_transaction = (eregi('^([a-f0-9]){32}$',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
+		$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 		print "_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');";
 	} else {
 		print "_EditorFrame = _controller.getEditorFrame();";

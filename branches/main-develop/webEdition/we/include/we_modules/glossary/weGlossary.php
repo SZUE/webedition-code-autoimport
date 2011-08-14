@@ -204,7 +204,7 @@ class weGlossary extends weModelBase {
 						break;
 				}
 
-				if(isset($_REQUEST['cmdid']) && !eregi("^[0-9]", $_REQUEST['cmdid'])) {
+				if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])) {
 					$this->Language = substr($_REQUEST['cmdid'], 0, 5);
 				}
 

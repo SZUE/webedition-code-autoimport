@@ -59,7 +59,7 @@ if(  ($_userID != 0 && $_userID != $_SESSION["user"]["ID"]) || (isset($_REQUEST[
 	// init document
 	if (isset($_REQUEST["we_transaction"])){
 		$we_transaction = $_REQUEST["we_transaction"];
-		if (!eregi("^([a-f0-9]){32}$", $we_transaction)) {
+		if (!preg_match('|^([a-f0-9]){32}$|i', $we_transaction)) {
 			exit();
 		}
 	} else {exit();}

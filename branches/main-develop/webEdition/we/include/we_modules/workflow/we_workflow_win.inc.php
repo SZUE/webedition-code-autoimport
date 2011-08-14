@@ -34,7 +34,7 @@ protect();
 $_REQUEST["we_cmd"] = isset($_REQUEST["we_cmd"]) ? $_REQUEST["we_cmd"] : "";
 $cmd = isset($_REQUEST["cmd"]) ? $_REQUEST["cmd"] : "";
 $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : (isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : "");
-$we_transaction = (eregi("^([a-f0-9]){32}$",$we_transaction)?$we_transaction:0);
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:0);
 
 $wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
 $wf_text = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_text"] : "";

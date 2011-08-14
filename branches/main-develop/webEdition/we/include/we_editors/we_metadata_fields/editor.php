@@ -166,7 +166,7 @@ function build_dialog($selected_setting = "ui") {
 //			while (false !== ($entry = $dl->read())) {
 //				if(is_file($_metadata_implementation_dir.$entry)) {
 //					$entry = substr($entry,0,-10);
-//					if(substr($entry,0,1) != "." && eregi("^[A-Za-z0-9]+$", $entry))
+//					if(substr($entry,0,1) != "." && preg_match("|^[A-Za-z0-9]+$|", $entry))
 //					$_types[] = $entry;
 //				}
 //			}

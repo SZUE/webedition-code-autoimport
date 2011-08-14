@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tem
 protect();
 
 $we_transaction=$_REQUEST["we_cmd"][3];
-$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:'');
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:'');
 
 $nr = abs($_REQUEST["we_cmd"][2]);
 

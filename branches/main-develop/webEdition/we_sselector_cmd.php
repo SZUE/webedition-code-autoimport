@@ -189,7 +189,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 			print "drawDir(top.currentDir);\n";
 			if($_REQUEST["txt"]=="") {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[we_filename_empty]"), WE_MESSAGE_ERROR);
-			} else if(eregi('[\'"<>/]',$_REQUEST["txt"])) {
+			} else if(preg_match('|[\'"<>/]|',$_REQUEST["txt"])) {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR);
 			} else {
 				$path=str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"]."/".$_REQUEST["txt"]);
@@ -220,7 +220,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 			if ($_REQUEST["txt"]=="") {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[we_filename_empty]"), WE_MESSAGE_ERROR);
 				print "drawDir(top.currentDir);\n";
-			} else if(eregi('[\'"<>/]',$_REQUEST["txt"])) {
+			} else if(preg_match('|[\'"<>/]|',$_REQUEST["txt"])) {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR);
 				print "drawDir(top.currentDir);\n";
 			} else {
@@ -244,7 +244,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 			if ($_REQUEST["txt"]=="") {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[we_filename_empty]"), WE_MESSAGE_ERROR);
 				print "drawDir(top.currentDir);\n";
-			} else if(eregi('[\'"<>/]',$_REQUEST["txt"])) {
+			} else if(preg_match('|[\'"<>/]|',$_REQUEST["txt"])) {
 				print we_message_reporting::getShowMessageCall(g_l('alert',"[name_nok]"), WE_MESSAGE_ERROR);
 				print "drawDir(top.currentDir);\n";
 			} else {

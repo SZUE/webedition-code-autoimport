@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 protect();
 htmlTop();
 
-if (!eregi("^([a-f0-9]){32}",$_REQUEST['we_transaction'])) {
+if (!preg_match('|^([a-f0-9]){32}|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
 

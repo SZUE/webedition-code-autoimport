@@ -35,7 +35,7 @@ protect();
 $nr = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
 $name = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
 $we_transaction = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "";
-$we_transaction = (eregi('^([a-f0-9]){32}$',$we_transaction)?$we_transaction:'');
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:'');
 
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
 include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");

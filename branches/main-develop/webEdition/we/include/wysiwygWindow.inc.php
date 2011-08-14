@@ -68,7 +68,7 @@ include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_
 if (eregi('^.+_te?xt\[.+\]$', $_REQUEST["we_cmd"][1])) {
 	$fieldName = ereg_replace('^.+_te?xt\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
 } else
-	if (eregi('^.+_input\[.+\]$', $_REQUEST["we_cmd"][1])) {
+	if (preg_match('|^.+_input\[.+\]$|i', $_REQUEST["we_cmd"][1])) {
 		$fieldName = ereg_replace('^.+_input\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
 	}
 
@@ -80,7 +80,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	if (eregi('^(.+_te?xt)\[.+\]$', $_REQUEST["we_cmd"][1])) {
 		$reqName = ereg_replace('^(.+_te?xt)\[.+\]$', '\1', $_REQUEST["we_cmd"][1]);
 	} else
-		if (eregi('^(.+_input)\[.+\]$', $_REQUEST["we_cmd"][1])) {
+		if (preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST["we_cmd"][1])) {
 			$reqName = ereg_replace('^(.+_input)\[.+\]$', '\1', $_REQUEST["we_cmd"][1]);
 		}
 	$we_doc->setElement($fieldName, $_REQUEST[$reqName][$fieldName], "input");

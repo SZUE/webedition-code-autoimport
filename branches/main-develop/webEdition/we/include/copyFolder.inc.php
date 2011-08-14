@@ -617,11 +617,11 @@ class copyFolderFrag extends taskFragment
 		$tags = $tp->getAllTags();
 		foreach ($tags as $tag) {
 			$destTag = $tag;
-			if (eregi('<we:([^> /]+)', $tag, $regs)) { // starttag found
+			if (preg_match('|<we:([^> /]+)|i', $tag, $regs)) { // starttag found
 				$tagname = $regs[1];
 				if (isset($ChangeTags[$tagname])) {
 					foreach ($ChangeTags[$tagname] as $attribname) {
-						if (ereg($attribname . '="([0-9]+)"', $tag, $regs)) {
+						if (preg_match('|'.$attribname . '="([0-9]+)"|', $tag, $regs)) {
 							$id = $regs[1];
 							$path = id_to_path($id, FILE_TABLE, $GLOBALS['DB_WE']);
 							if ($this->mustChange($path)) {
@@ -656,7 +656,7 @@ class copyFolderFrag extends taskFragment
 			if (isset($v["type"])) {
 				switch ($v["type"]) {
 					case "txt" :
-						if (ereg("(.+)_we_jkhdsf_(.+)", $k, $regs)) { // is a we:href field
+						if (preg_match('|(.+)_we_jkhdsf_(.+)|', $k, $regs)) { // is a we:href field
 							if (!in_array($regs[1], $hrefs)) {
 								array_push($hrefs, $regs[1]);
 								$int = ((!isset($we_doc->elements[$regs[1] . "_we_jkhdsf_int"]["dat"])) || $we_doc->elements[$regs[1] . "_we_jkhdsf_int"]["dat"] == "") ? 0 : $we_doc->elements[$regs[1] . "_we_jkhdsf_int"]["dat"];

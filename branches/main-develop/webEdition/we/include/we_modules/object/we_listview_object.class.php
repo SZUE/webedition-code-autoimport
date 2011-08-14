@@ -85,7 +85,7 @@ class we_listview_object extends listviewBase {
 			$where_lang = '';
 		}
 
-		if($this->desc && (!eregi(".+ desc$",$this->order))){
+		if($this->desc && (!preg_match("|.+ desc$|i",$this->order))){
 			$this->order .= " DESC";
 		}
 
