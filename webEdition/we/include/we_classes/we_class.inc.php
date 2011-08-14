@@ -545,8 +545,8 @@ class we_class
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		if($this->wasUpdate){
 			$updt = "";
-			for($i=0;$i<sizeof($tableInfo);$i++){
-				$fieldName = $tableInfo[$i]["name"];
+			foreach($tableInfo as $info){
+				$fieldName = $info["name"];
 				if(in_array($fieldName,$feldArr)){
 					eval('if(isset($this->'.$fieldName.')) $val = $this->'.$fieldName.';');
 					if($fieldName == "Category"){ // Category-Fix!
@@ -557,7 +557,7 @@ class we_class
 			}
 			$updt = substr($updt,0,-1);
 			if($updt){
-				$q = "UPDATE ".$this->DB_WE->escape($this->Table)." SET ".$updt." WHERE ID='".abs($this->ID)."'";
+				$q = 'UPDATE '.$this->DB_WE->escape($this->Table).' SET '.$updt.' WHERE ID='.intval($this->ID);
 				return ($this->DB_WE->query($q)?true:false);
 			}else{
 				return false;
@@ -565,8 +565,8 @@ class we_class
 		}else{
 			$keys = "";
 			$vals = "";
-			for($i=0;$i<sizeof($tableInfo);$i++){
-				$fieldName = $tableInfo[$i]["name"];
+			foreach($tableInfo as $info){
+				$fieldName = $info["name"];
 				if(in_array($fieldName,$feldArr)){
 					eval('$val = $this->'.$fieldName.';');
 					if($fieldName == "Category"){ // Category-Fix!
@@ -727,10 +727,7 @@ class we_class
 						}
 					}
 				}
-						
-						
 				}
-			  
 			}
 		}
 	}
