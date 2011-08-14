@@ -134,7 +134,7 @@
 			}
 
 			// update class for embedded object
-			if(isset($object->ClassName) && ($object->ClassName=="we_object") && ereg("object_([0-9])+",implode(',',array_keys($object->SerializedArray)))) {
+			if(isset($object->ClassName) && ($object->ClassName=="we_object") && preg_match('|object_([0-9])+|',implode(',',array_keys($object->SerializedArray)))) {
 				$this->updateObjectModuleData($object);
 			}
 
@@ -219,7 +219,7 @@
 
 					if(isset($object->ClassName) && ($object->ClassName=="we_objectFile")) {
 
-						if(ereg("we_object_([0-9])+_path",$k,$regs)){
+						if(preg_match('|we_object_([0-9])+_path|',$k,$regs)){
 							$ref=$this->RefTable->getRef(
 									array(
 										'OldID'=>$regs[1],
@@ -276,7 +276,7 @@
 
 					}
 
-					if(isset($object->ClassName) && ($object->ClassName=="we_object") && ereg("object_([0-9])+([a-zA-Z]*[0-9]*)",$k,$regs)) {
+					if(isset($object->ClassName) && ($object->ClassName=="we_object") && preg_match('|object_([0-9])+([a-zA-Z]*[0-9]*)|',$k,$regs)) {
 							if(count($regs)>2 && isset($object->elements['object_'.$regs[1].$regs[2]])){
 								$ref=$this->RefTable->getRef(
 									array(
@@ -382,14 +382,14 @@
 
 		function updateObjectModuleData(&$object) {
 
-			if(isset($object->ClassName) && ($object->ClassName=="we_object") && ereg("object_([0-9])+",implode(',',array_keys($object->SerializedArray)))) {
+			if(isset($object->ClassName) && ($object->ClassName=="we_object") && preg_match('|object_([0-9])+|',implode(',',array_keys($object->SerializedArray)))) {
 				if($this->debug) {
 						debug("Updating object module data...\n");
 				}
 				$new=array();
 				$del=array();
 				foreach($object->SerializedArray as $elkey=>$elvalue) {
-					if(ereg("object_([0-9])+",$elkey,$regs)){
+					if(preg_match('|object_([0-9])+|',$elkey,$regs)){
 						if(count($regs)>1){
 							$ref=$this->RefTable->getRef(
 								array(

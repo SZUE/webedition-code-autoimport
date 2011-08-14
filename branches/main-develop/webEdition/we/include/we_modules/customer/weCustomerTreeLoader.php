@@ -150,7 +150,7 @@ class weCustomerTreeLoader{
 		$check=array();
 		$level=0;
 
-		$notroot = (ereg("\{.\}",$pid)) ? true : false;
+		$notroot = (preg_match('|\{.\}|',$pid)) ? true : false;
 
 		$pid=str_replace("{","",$pid);
 		$pid=str_replace("}","",$pid);

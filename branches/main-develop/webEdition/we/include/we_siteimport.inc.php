@@ -2073,7 +2073,7 @@ class weSiteImport
 		if ($contentType == "folder") {
 			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 		} else {
-			if (ereg('^(.+)(\.[^\.]+)$', $GLOBALS["we_doc"]->Text, $regs)) {
+			if (preg_match('|^(.+)(\.[^\.]+)$|', $GLOBALS["we_doc"]->Text, $regs)) {
 				$GLOBALS["we_doc"]->Extension = $regs[2];
 				$GLOBALS["we_doc"]->Filename = $regs[1];
 			} else {

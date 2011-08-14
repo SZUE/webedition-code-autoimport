@@ -140,8 +140,8 @@ class we_template extends we_document{
 		foreach($tags as $tag){
 			if(strpos($tag,'ifNoJavaScript')===false){
 				if($eq){
-					if(ereg('<we:'.$tagname.'[> ]',$tag)) $start ++;
-					if(ereg('</we:'.$tagname.'[> ]',$tag)) $end ++;
+					if(preg_match('|<we:'.$tagname.'[> ]|',$tag)) $start ++;
+					if(preg_match('|</we:'.$tagname.'[> ]|',$tag)) $end ++;
 				}else{
 					if(strpos($tag,'<we:'.$tagname)!==false) $start ++;
 					if(strpos($tag,'</we:'.$tagname)!==false) $end ++;
@@ -368,7 +368,7 @@ function handleShutdown($code) {
 		//get clean variants
 		$regs = array();
 		foreach($_REQUEST as $n=>$v){
-			if(ereg('^we_'.$this->Name.'_variant',$n,$regs)){
+			if(preg_match('|^we_'.$this->Name.'_variant|',$n,$regs)){
 				if(is_array($v)){
 					foreach($v as $n2=>$v2){
 						if(isset($this->elements[$n2]) && $this->elements[$n2]['type']=='variant' && $v2==0){

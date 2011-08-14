@@ -59,7 +59,7 @@ if (isset($_FILES['we_uploadFile'])) {
 		}else{
 			$z=0;
 
-			if(ereg('^(.+)(\.[^\.]+)$',$_FILES['we_uploadFile']["name"],$regs)){
+			if(preg_match('|^(.+)(\.[^\.]+)$|',$_FILES['we_uploadFile']["name"],$regs)){
 				$extension = $regs[2];
 				$filename = $regs[1];
 			}else{

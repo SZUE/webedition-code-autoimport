@@ -377,12 +377,12 @@
 
 			if(defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName=='we_objectFile' && $this->options['handle_object_embeds']){
 				foreach($object->elements as $key=>$value){
-					if(ereg("we_object_[0-9]+",$key)){
+					if(preg_match('|we_object_[0-9]+|',$key)){
 						if(isset($value['dat'])){
 							$this->addToDepArray($level,$value['dat'],'objectFile');
 						}
 					}
-					if(ereg("we_object_[0-9]+_path",$key)){
+					if(preg_match('|we_object_[0-9]+_path|',$key)){
 						if(isset($value['dat'])){
 							$this->addToDepArray($level,path_to_id($value['dat'],OBJECT_FILES_TABLE),'objectFile');
 						}

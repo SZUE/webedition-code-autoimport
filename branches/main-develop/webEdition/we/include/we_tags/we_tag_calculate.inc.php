@@ -46,22 +46,6 @@ function we_tag_calculate($attribs, $content) {
 			$sum = weTag_getAttribute("sum", $attribs);
 			$num_format = weTag_getAttribute("num_format", $attribs);
 			$print = weTag_getAttribute("print", $attribs,true, true);
-			/* 	$zahl = "";
-			  $content1 = "";
-
-
-			  for ($x = 0; $x < strlen($content); $x++) {
-			  if (ereg("[0-9|\.|,]", substr($content, $x, 1))) {
-			  $zahl .= substr($content, $x, 1);
-			  } else {
-
-			  $content1 .= we_util::std_numberformat($zahl) . substr($content, $x, 1);
-			  $zahl = "";
-			  }
-			  }
-			  $content1 .= we_util::std_numberformat($zahl) . substr($content, $x, 1);
-			  $content = $content1; */
-
 			@eval('$result = (' . $content . ') ;');
 			if (!isset($result)) {
 				$result = 0;

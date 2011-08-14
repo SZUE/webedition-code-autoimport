@@ -920,7 +920,7 @@ class XML_Parser {
 				// Select the parent axis.
 				$axis['axis']      = 'parent';
 				$axis['node-test'] = '*';
-			}	else if (ereg("^[a-zA-Z0-9\_-]+$", $step)) {
+			}	else if (preg_match('|^[a-zA-Z0-9\_-]+$|', $step)) {
 				// Select the child axis and the child.
 				$axis['axis']      = 'child';
 				$axis['node-test'] = $step;
@@ -1308,7 +1308,7 @@ class XML_Parser {
 
 		// Check if the predicate is a digit.
 		if (ereg("^[0-9]+(\.[0-9]+)?$", $predicate) ||
-			ereg("^\.[0-9]+$", $predicate)) {
+			preg_match('|^\.[0-9]+$|', $predicate)) {
 			// Return the value of the digit.
 			return doubleval($predicate);
 		}
@@ -1347,7 +1347,7 @@ class XML_Parser {
 			// Run through the list of predicates.
 			foreach ($predicates as $predicate) {
 				// Check if the predicate is a number.
-				if (ereg("^[0-9]+$", $predicate)) {
+				if (preg_match('|^[0-9]+$|', $predicate)) {
 					// Enhance the predicate.
 					$predicate .= '=position()';
 				}
@@ -1461,7 +1461,7 @@ class XML_Parser {
 			// Add this node to the list of nodes.
 			return TRUE;
 		}
-		else if (ereg("^[a-zA-Z0-9\_-]+", $nodeTest)) { // bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
+		else if (preg_match('|^[a-zA-Z0-9\_-]+|', $nodeTest)) { // bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
 			// Check if the node-test is succesfull.
 			if ($this->nodes[$context]['name'] == $nodeTest) {
 				// Add this node to the list of nodes.
@@ -2108,7 +2108,7 @@ class XML_Parser {
 	 */
 	function execMethod_string($node, $args) {
 		// Check what type of parameter is given.
-		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || ereg("^\.[0-9]+$", $args)) {
+		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || preg_match('|^\.[0-9]+$|', $args)) {
 			// Convert the variable to a float value. && Return the string value
 			return strval(doubleval($args));
 		}	else if (is_bool($args)) {
@@ -2304,7 +2304,7 @@ class XML_Parser {
 	function execMethod_number($node, $args) {
 		// Check the type of argument.
 		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) ||
-			ereg("^\.[0-9]+$", $args)) {
+			preg_match('|^\.[0-9]+$|', $args)) {
 			// Return the argument as a number.
 			return doubleval($args);
 		}	else if (is_bool($args)) {
@@ -2378,7 +2378,7 @@ class XML_Parser {
 		$args = trim($args);
 
 		// Check the type of parameter.
-		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || ereg("^\.[0-9]+$", $args)) {
+		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || preg_match('|^\.[0-9]+$|', $args)) {
 			// Convert the digits to a number &&  Check if the number is 0.
 			return !(doubleval($args) == 0);
 		}	else if (empty($args)){

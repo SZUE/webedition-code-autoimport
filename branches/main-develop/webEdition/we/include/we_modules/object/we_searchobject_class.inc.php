@@ -65,7 +65,7 @@ class objectsearch extends we_search {
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			if($tableInfo[$i]["name"] != "ID" && substr($tableInfo[$i]["name"],0,3) != "OF_" && stripos($tableInfo[$i]["name"],"multiobject")!==0 && stripos($tableInfo[$i]["name"],"object")!==0) {
 				$regs=explode('_',$tableInfo[$i]["name"],2);
-				if(count($regs)==2) {//if(ereg('^(.*)_(.*)$',$tableInfo[$i]["name"],$regs)) {
+				if(count($regs)==2) {
 					$opts .= '<option value="'.$tableInfo[$i]["name"].'" '
 					      .(($select==$tableInfo[$i]["name"])?"selected":"").'>'
 					      . $regs[1] .'</option>'."\n";

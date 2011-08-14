@@ -31,7 +31,7 @@ function we_tag_ifClient($attribs, $content){
 	$system = weTag_getAttribute('system', $attribs);
 
 	if ($version) {
-		if (!(ereg('up[0-9\.]+', $version) || ereg('down[0-9\.]+', $version) || ereg('eq[0-9\.]+', $version))) {
+		if (!(preg_match('|up[0-9\.]+|', $version) || preg_match('|down[0-9\.]+|', $version) || preg_match('|eq[0-9\.]+|', $version))) {
 			exit(parseError(g_l('parser','[client_version]')));
 		}
 	}

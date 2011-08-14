@@ -210,7 +210,7 @@ class weCustomerSettings {
 		$field_names = array_keys($field_names);
 
 		foreach ($field_names as $fieldname) {
-			if (ereg('#' . $fieldname, $this->treeTextFormat)) {
+			if (preg_match('|#' . $fieldname.'|', $this->treeTextFormat)) {
 				$this->formatFields[] = $fieldname;
 			}
 			$this->treeTextFormat = str_replace('#' . $fieldname, '".$ttrow["' . $fieldname . '"]."', $this->treeTextFormat);

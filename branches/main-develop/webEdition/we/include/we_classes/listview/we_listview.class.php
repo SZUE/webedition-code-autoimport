@@ -207,8 +207,8 @@ class we_listview extends listviewBase {
 			$spalten=array(INDEX_TABLE . ".".$searchfield);
 			reset($bedingungen);
 			while(list($k1,$v1) = each($bedingungen)) {
-				if (ereg("^[-\+]",$v1)) {
-					$not = (ereg("^-",$v1))?"NOT ":"";
+				if (preg_match('|^[-\+]|',$v1)) {
+					$not = (preg_match('^-',$v1))?"NOT ":"";
 					$bed = ereg_replace("^[-\+]","",$v1);
 					$klammer = array();
 					reset($spalten);

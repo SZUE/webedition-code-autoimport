@@ -65,12 +65,12 @@ class we_util{
 	    if(strpos($number,'E')){   //  when number is too big, it is shown with E+xx
 	        $number = number_format($number,2,'.','');
 	    }
-		if(ereg('.*,[0-9]*$',$number)){ // deutsche schreibweise
+		if(preg_match('|.*,[0-9]*$|',$number)){ // deutsche schreibweise
 			$umschreib = ereg_replace('(.*),([0-9]*)$','\1.\2',$number);
 			$pos = strrpos($number,",");
 			$vor = str_replace(".","",substr($umschreib,0,$pos));
 			$number = $vor . substr($umschreib,$pos,strlen($umschreib)-$pos);
-		}else if(ereg('.*\.[0-9]*$',$number)){ // engl schreibweise
+		}else if(preg_match('|.*\.[0-9]*$|',$number)){ // engl schreibweise
 			$pos = strrpos($number,".");
 			$vor = substr($number,0,$pos);
 			$vor = ereg_replace('[,\.]','',$vor);

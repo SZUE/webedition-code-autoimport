@@ -90,46 +90,46 @@ function we_tag_date($attribs, $content){
 
 		$f = $format;
 
-		if (ereg('[^\\]Y', $f) || ereg('^Y', $f))
+		if (preg_match('|[^\\]Y|', $f) || preg_match('|^Y|', $f))
 			$js .= "var Y = heute.getYear();Y = (Y < 1900) ? (Y + 1900) : Y;\n";
-		if (ereg('[^\\]y', $f) || ereg('^y', $f))
+		if (preg_match('|[^\\]y|', $f) || preg_match('|^y|', $f))
 			$js .= "var y = heute.getYear();y = (y < 1900) ? (y + 1900) : y;y=y.substring(2,4);\n";
 		;
 
-		if (ereg('[^\\]a', $f) || ereg('^a', $f))
+		if (preg_match('|[^\\]a|', $f) || preg_match('|^a|', $f))
 			$js .= "var a = (heute.getHours() > 11) ? 'pm' : 'am';\n";
-		if (ereg('[^\\]A', $f) || ereg('^A', $f))
+		if (preg_match('|[^\\]A|', $f) || preg_match('|^A|', $f))
 			$js .= "var A = (heute.getHours() > 11) ? 'PM' : 'AM';\n";
-		if (ereg('[^\\]s', $f) || ereg('^s', $f))
+		if (preg_match('|[^\\]s|', $f) || preg_match('|^s|', $f))
 			$js .= "var s = heute.getSeconds();\n";
-		if (ereg('[^\\]m', $f) || ereg('^m', $f))
+		if (preg_match('|[^\\]m|', $f) || preg_match('|^m|', $f))
 			$js .= "var m = heute.getMonth()+1;m = '00'+m;m=m.substring(m.length-2,m.length);\n";
-		if (ereg('[^\\]n', $f) || ereg('^n', $f))
+		if (preg_match('|[^\\]n|', $f) || preg_match('|^n|', $f))
 			$js .= "var n = heute.getMonth()+1;\n";
-		if (ereg('[^\\]d', $f) || ereg('^d', $f))
+		if (preg_match('|[^\\]d|', $f) || preg_match('|^d|', $f))
 			$js .= "var d = heute.getDate();d = '00'+d;d=d.substring(d.length-2,d.length);\n";
-		if (ereg('[^\\]j', $f) || ereg('^j', $f))
+		if (preg_match('|[^\\]j|', $f) || preg_match('|^j|', $f))
 			$js .= "var j = heute.getDate();\n";
-		if (ereg('[^\\]h', $f) || ereg('^h', $f))
+		if (preg_match('|[^\\]h|', $f) || preg_match('|^h|', $f))
 			$js .= "var h = heute.getHours();if(h > 12){h -= 12;};h = '00'+h;h=h.substring(h.length-2,h.length);\n";
-		if (ereg('[^\\]H', $f) || ereg('^H', $f))
+		if (preg_match('|[^\\]H|', $f) || preg_match('|^H|', $f))
 			$js .= "var H = heute.getHours();H = '00'+H;H=H.substring(H.length-2,H.length);\n";
-		if (ereg('[^\\]g', $f) || ereg('^g', $f))
+		if (preg_match('|[^\\]g|', $f) || preg_match('|^g|', $f))
 			$js .= "var g = heute.getHours();if(g > 12){ g -= 12;};\n";
-		if (ereg('[^\\]G', $f) || ereg('^G', $f))
+		if (preg_match('|[^\\]G|', $f) || preg_match('|^G|', $f))
 			$js .= "var G = heute.getHours();\n";
-		if (ereg('[^\\]i', $f) || ereg('^i', $f))
+		if (preg_match('|[^\\]i|', $f) || preg_match('|^i|', $f))
 			$js .= "var i = heute.getMinutes();i = '00'+i;i=i.substring(i.length-2,i.length);\n";
-		if (ereg('[^\\]S', $f) || ereg('^S', $f))
+		if (preg_match('|[^\\]S|', $f) || preg_match('|^S|', $f))
 			$js .= "var S = getDateS(heute.getDate());\n";
 
-		if (ereg('[^\\]D', $f) || ereg('^D', $f))
+		if (preg_match('|[^\\]D|', $f) || preg_match('|^D|', $f))
 			$js .= "var D = getDateWord('D',heute);\n";
-		if (ereg('[^\\]F', $f) || ereg('^F', $f))
+		if (preg_match('|[^\\]F|', $f) || preg_match('|^F|', $f))
 			$js .= "var F = getDateWord('F',heute);\n";
-		if (ereg('[^\\]l', $f) || ereg('^l', $f))
+		if (preg_match('|[^\\]l|', $f) || preg_match('|^l|', $f))
 			$js .= "var l = getDateWord('l',heute);\n";
-		if (ereg('[^\\]M', $f) || ereg('^M', $f))
+		if (preg_match('|[^\\]M|', $f) || preg_match('|^M|', $f))
 			$js .= "var M = getDateWord('M',heute);\n";
 
 		$f = ereg_replace('([^\\])(Y)', '\1"+\2+"', $f);

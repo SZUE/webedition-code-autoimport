@@ -2280,7 +2280,7 @@ class we_objectFile extends we_document{
 	protected function i_convertElemFromRequest($type,&$v,$k){
 		if(!$type){
 			foreach($this->DefArray as $n=>$foo){
-				if(ereg('^([^_]+)_'.$k,$n,$regs)){
+				if(preg_match('|^([^_]+)_'.$k.'|',$n,$regs)){
 					$type = $regs[1];
 				}
 			}
@@ -2989,7 +2989,7 @@ class we_objectFile extends we_document{
 
 		$glob = "";
 		foreach($GLOBALS as $k=>$v){
-			if((!ereg('^[0-9]',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
+			if((!preg_match('|^[0-9]|',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
 		}
 		$glob = ereg_replace('(.*),$','\1',$glob);
 		eval('global '.$glob.';');  // globalen Namensraum herstellen.

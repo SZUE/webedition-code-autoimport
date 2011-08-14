@@ -655,7 +655,7 @@ class weBannerView extends weBannerBase{
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[no_text]'), WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
-					}elseif(ereg('[%/\\\"\']',$this->banner->Text)){
+					}elseif(preg_match('|[%/\\\"\']|',$this->banner->Text)){
 						print '<script type="text/javascript">';
 						print we_message_reporting::getShowMessageCall(g_l('modules_banner','[wrongtext]'), WE_MESSAGE_ERROR);
 						print '</script>';

@@ -726,7 +726,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	function i_getDocument($includepath="") {
 		$glob = "";
 		foreach($GLOBALS as $k=>$v){
-			if((!ereg('^[0-9]',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
+			if((!preg_match('|^[0-9]|',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE") $glob .= '$'.$k.",";
 		}
 		$glob = rtrim($glob,',');
 		eval('global '.$glob.';');  // globalen Namensraum herstellen.

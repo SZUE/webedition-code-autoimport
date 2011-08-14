@@ -28,7 +28,7 @@ function we_tag_registeredUser($attribs, $content){
 	$show = weTag_getAttribute("show", $attribs);
 	$docAttr = weTag_getAttribute("doc", $attribs);
 
-	if (ereg("^field:(.+)$", $id, $regs)) {
+	if (preg_match('|^field:(.+)$|', $id, $regs)) {
 		$doc = we_getDocForTag($docAttr);
 		$field = $regs[1];
 		if (strlen($field))

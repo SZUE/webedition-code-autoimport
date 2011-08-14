@@ -304,7 +304,7 @@ function deleteThumbsByThumbID($id)
 	$filestodelete = array();
 	if ($dir_obj) {
 		while (false !== ($entry = $dir_obj->read())) {
-			if ($entry != '.' && $entry != '..' && ereg("^[0-9]+_" . $id . "_(.+)", $entry)) {
+			if ($entry != '.' && $entry != '..' && preg_match('|^[0-9]+_' . $id . '_(.+)|', $entry)) {
 				array_push($filestodelete, $thumbsdir . "/" . $entry);
 			}
 		}
