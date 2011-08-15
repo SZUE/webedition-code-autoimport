@@ -1865,7 +1865,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$zahl ++;
 		}
 
-		$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",$g_l('modules_object','[value]'),1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
+		$select .= $this->htmlSelect("we_".$this->Name."_input[DefaultText_".$zahl."]",g_l('modules_object','[value]'),1,"","",'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');"',"value",140)."&nbsp;";
 		$select .= '<input type = "hidden" name="we_'.$this->Name.'_input[Defaultanzahl]" value="'.$zahl.'" />';
 
 		$var_flip = array_flip(g_l('modules_object','[url]'));
