@@ -78,10 +78,8 @@ top.close();
 <form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 <?php
 
-$we_button = new we_button();
-
-$okbut     = $we_button->create_button("ok", "javascript:document.forms[0].submit()");
-$cancelbut = $we_button->create_button("cancel", "javascript:top.close()");
+$okbut     = we_button::create_button("ok", "javascript:document.forms[0].submit()");
+$cancelbut = we_button::create_button("cancel", "javascript:top.close()");
 
 
 $content = '<table border="0" cellpadding="0" cellspacing="0">
@@ -96,7 +94,7 @@ $content .= '<tr>
 </table>
 ';
 
-$_buttons = $we_button->position_yes_no_cancel(	$okbut,
+$_buttons = we_button::position_yes_no_cancel(	$okbut,
 												"",
 												$cancelbut);
 $frame = htmlDialogLayout($content,g_l('modules_workflow','[pass_workflow]'), $_buttons);

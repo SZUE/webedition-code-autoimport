@@ -248,7 +248,6 @@ function selectFile(id){
 	}
 
 	function printFooterTable() {
-		$we_button = new we_button();
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
@@ -257,9 +256,9 @@ function selectFile(id){
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
 				</tr>';
-		$cancel_button = $we_button->create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = $we_button->create_button("ok", "javascript:press_ok_button();");
-		$buttons = $we_button->position_yes_no_cancel(
+		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
+		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
+		$buttons = we_button::position_yes_no_cancel(
 												$yes_button,
 												null,
 												$cancel_button);

@@ -105,7 +105,6 @@ switch($cmd) {
 		$name = implode("_", $temp);
 
 		$db = new DB_WE();
-		$we_button = new we_button();
 		$table = OBJECT_FILES_TABLE;
 
 		if($cmd == "insert_meta_at_object") {

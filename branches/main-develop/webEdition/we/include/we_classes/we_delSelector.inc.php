@@ -66,10 +66,7 @@ class we_delSelector extends we_multiSelector{
 
 
 	function printFooterJS(){
-		$we_button = new we_button();
-		print '
-
-' . $we_button->create_state_changer(false) . '
+		print we_button::create_state_changer(false) . '
 function disableDelBut(){
 	delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
 }
@@ -296,9 +293,8 @@ function setDir(id){
 	}
 
 	function printFooterTable() {
-		$we_button = new we_button();
 		if($this->values["Text"] == "/" ) $this->values["Text"]="";
-		$okBut = $we_button->create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true,100,22,"","",true,false);
+		$okBut = we_button::create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true,100,22,"","",true,false);
 
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -308,9 +304,9 @@ function setDir(id){
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
 				</tr>';
-		$cancelbut = $we_button->create_button("cancel", "javascript:top.exit_close();");
+		$cancelbut = we_button::create_button("cancel", "javascript:top.exit_close();");
 		if($okBut){
-			$buttons =$we_button->position_yes_no_cancel(	$okBut,
+			$buttons =we_button::position_yes_no_cancel(	$okBut,
 												null,
 												$cancelbut);
 		}else{

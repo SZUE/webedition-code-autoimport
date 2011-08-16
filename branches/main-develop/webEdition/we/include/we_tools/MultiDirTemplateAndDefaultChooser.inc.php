@@ -38,8 +38,6 @@ class MultiDirTemplateAndDefaultChooser extends MultiDirAndTemplateChooser{
 
 	function getRootLine($lineNr){
 
-		$we_button = new we_button();
-
 		switch($lineNr){
 			case 0:
 				return MultiDirAndTemplateChooser::getRootLine($lineNr);
@@ -48,8 +46,6 @@ class MultiDirTemplateAndDefaultChooser extends MultiDirAndTemplateChooser{
 		}
 	}
 	function getLine($lineNr){
-
-		$we_button = new we_button();
 
 		$editable = $this->isEditable();
 		switch($lineNr){

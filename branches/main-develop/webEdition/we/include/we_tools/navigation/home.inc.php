@@ -26,9 +26,8 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-$we_button = new we_button();
 
-$createNavigation = $we_button->create_button(
+$createNavigation = we_button::create_button(
 		'new_item',
 		"javascript:we_cmd('tool_navigation_new');",
 		true,
@@ -37,7 +36,7 @@ $createNavigation = $we_button->create_button(
 		"",
 		"",
 		!we_hasPerm('EDIT_NAVIGATION'));
-$createNavigationGroup = $we_button->create_button(
+$createNavigationGroup = we_button::create_button(
 		'new_folder',
 		"javascript:we_cmd('tool_navigation_new_group');",
 		true,

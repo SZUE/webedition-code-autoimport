@@ -180,10 +180,9 @@ $feldnamen = explode('|',f('SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' WHERE 
 		)
 	);
 
-	$we_button = new we_button();
-
+	
 	 array_push($parts, array(
-		'headline' => $we_button->create_button('select', "javascript:we_submitDateform();"),
+		'headline' => we_button::create_button('select', "javascript:we_submitDateform();"),
 		'html' => '',
 		'space' => 150
 		)

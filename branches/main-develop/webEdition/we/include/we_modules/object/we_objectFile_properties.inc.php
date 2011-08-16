@@ -115,9 +115,8 @@ if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
 						"space"=>140,
 						"forceRightHeadline"=>1)
 				);
-				$we_button = new we_button();
 
-				$button = $we_button->create_button("ws_from_class","javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
+				$button = we_button::create_button("ws_from_class","javascript:we_cmd('ws_from_class');_EditorFrame.setEditorIsHot(true);");
 
 				array_push($parts,array(
 						"headline"=>"",

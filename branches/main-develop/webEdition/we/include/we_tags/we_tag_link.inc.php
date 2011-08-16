@@ -97,13 +97,11 @@ function we_tag_link($attribs, $content){
 			// Include we_button class
 			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-			$we_button = new we_button();
-
-			$editbut = $we_button->create_button(
+			$editbut = we_button::create_button(
 					"image:btn_edit_link",
 					"javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')",
 					true);
-			$delbut = $we_button->create_button(
+			$delbut = we_button::create_button(
 					"image:btn_function_trash",
 					"javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')",
 					true);
@@ -111,7 +109,7 @@ function we_tag_link($attribs, $content){
 			if (!$content) {
 				$content = $text;
 			}
-				return $we_button->create_button_table(
+				return we_button::create_button_table(
 						array(
 							($startTag?$startTag:'') . $content . ($startTag?'</a>':''), $editbut, $delbut
 						),

@@ -50,7 +50,6 @@ htmlTop();
 
 print STYLESHEET;
 
-$we_button = new we_button();
 
 if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays ..
 
@@ -236,9 +235,9 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
 
 array_push($Parts, array("html" => $_htmlTable->getHtmlCode()));
 
-$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:document.we_form.submit();"),
+$_buttons = we_button::position_yes_no_cancel(	we_button::create_button("save", "javascript:document.we_form.submit();"),
 "",
-$we_button->create_button("cancel", "javascript:self.close();")
+we_button::create_button("cancel", "javascript:self.close();")
 );
 
 $frame = we_multiIconBox::getHTML('','100%',$Parts,'30',$_buttons,-1,'','',false, g_l('modules_shop','[paymentP]'),'','','hidden');

@@ -397,10 +397,8 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	}
 
 	function printHeaderJS(){
-		$we_button = new we_button();
 		we_fileselector::printHeaderJS();
-		print '
-' . $we_button->create_state_changer(false) . '
+		print we_button::create_state_changer(false) . '
 function disableNewFolderBut(){
 
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
@@ -530,7 +528,6 @@ function enableNewFolderBut(){
 	}
 
 	function printHeaderTable(){
-		$we_button = new we_button();
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 ';
 		$this->printHeaderTableSpaceRow();
@@ -550,11 +547,11 @@ function enableNewFolderBut(){
 			print '					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="40">
-						'. $we_button->create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="40">
-						'. $we_button->create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
 
 ';
@@ -597,12 +594,11 @@ function enableNewFolderBut(){
 	}
 
 	function printHeaderTableExtraCols(){
-		$we_button = new we_button();
 		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
 ';
 		$makefolderState = $this->userCanMakeNewDir() ? 1 : 0;
 
-		print $we_button->create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, -1, 22, "", "", !$this->userCanMakeNewDir(),false);
+		print we_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, -1, 22, "", "", !$this->userCanMakeNewDir(),false);
 		print '               </td>
 ';
 	}

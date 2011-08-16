@@ -27,8 +27,7 @@
  * different ways.
  */
 
-$we_button = new we_button();
-$checkButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection&clientLng=' . $GLOBALS['WE_LANGUAGE']);
+$checkButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection&clientLng=' . $GLOBALS['WE_LANGUAGE']);
 
 $content = '
 <div class="defaultfont">

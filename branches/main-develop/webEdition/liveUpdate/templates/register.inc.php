@@ -27,8 +27,7 @@
  * different ways.
  */
 
-$we_button = new we_button();
-$nextButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?update_cmd=register&detail=registerForm');
+$nextButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?update_cmd=register&detail=registerForm');
 
 $content = '
 <div class="defaultfont">

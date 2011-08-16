@@ -85,14 +85,13 @@ class blaettern {
 	*	@param int $anz Anzahl Eintr�ge gesamt
 	*/
 	function getStandardPagerHTML($url,$actPage,$nrOfPage,$anz ) {
-		$we_button = new we_button();
 		$offset = $actPage * $nrOfPage;
 
 		$nextprev = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
 		if($actPage > 0) {
-			$nextprev .= $we_button->create_button("back", $url . '&actPage=' . ($actPage - 1));
+			$nextprev .= we_button::create_button("back", $url . '&actPage=' . ($actPage - 1));
 		} else {
-			$nextprev .= $we_button->create_button("back", "#", false, 100, 22, "", "", true);
+			$nextprev .= we_button::create_button("back", "#", false, 100, 22, "", "", true);
 		}
 
 		$nextprev .= '</td><td>'.getPixel(23,1)."</td><td class='defaultfont'><b>".(($anz)?$offset+1:0)."-";
@@ -103,9 +102,9 @@ class blaettern {
 		}
 		$nextprev .= "&nbsp;&nbsp;".g_l('global',"[from]")."&nbsp;&nbsp;".$anz."</b></td><td>".getPixel(23,1).'</td><td>';
 		if (($offset+$nrOfPage) < $anz) {
-			$nextprev .= $we_button->create_button("next", $url . '&actPage=' . ($actPage + 1));
+			$nextprev .= we_button::create_button("next", $url . '&actPage=' . ($actPage + 1));
 		} else {
-			$nextprev .= $we_button->create_button("next", "#", false, 100, 22, "", "", true);
+			$nextprev .= we_button::create_button("next", "#", false, 100, 22, "", "", true);
 		}
 		$nextprev .= "</td></tr></table>";
 		return $nextprev;

@@ -336,14 +336,12 @@ class weToolFrames extends weModuleFrames {
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor"=>"#F0EFF0"),""));
 		}
 
-		$we_button = new we_button();
-
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
 		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),getPixel(1600,10));
 
 
-		$_but_table = $we_button->create_button_table(array(
-				$we_button->create_button("save", "javascript:we_save();",true,100,22,'','',(!we_hasPerm('EDIT_NAVIGATION')))
+		$_but_table = we_button::create_button_table(array(
+				we_button::create_button("save", "javascript:we_save();",true,100,22,'','',(!we_hasPerm('EDIT_NAVIGATION')))
 			),10 , array('style'=>'margin-left: 15px')
 		);
 
@@ -380,7 +378,6 @@ class weToolFrames extends weModuleFrames {
 
 
 	function getHTMLPropertiesItem() {
-		$we_button = new we_button();
 		$parts = array();
 
 
@@ -389,8 +386,6 @@ class weToolFrames extends weModuleFrames {
 	}
 
 	function  getHTMLPropertiesGroup() {
-
-		$we_button = new we_button();
 		$parts = array();
 
 
@@ -400,7 +395,6 @@ class weToolFrames extends weModuleFrames {
 
 
 	function getHTMLGeneral(){
-		$we_button = new we_button();
 		$parts = array();
 
 		array_push($parts,array(
@@ -512,11 +506,10 @@ class weToolFrames extends weModuleFrames {
 	}
 
 	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '') {
-		$we_button = new we_button();
 		//javascript:we_cmd('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value);
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc4= '';
-	  	$button =  $we_button->create_button('select',"javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
+	  	$button =  we_button::create_button('select',"javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
 		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,'','readonly','text',($this->_width_size-120),0),
 			"",
@@ -574,19 +567,18 @@ class weToolFrames extends weModuleFrames {
 
 
 	function getHTMLChooser($title,$table=FILE_TABLE,$rootDirID=0,$IDName='ID',$IDValue='0',$PathName='Path',$cmd='',$filter='text/webedition',$disabled=false,$showtrash=false){
-		$we_button = new we_button();
 		$_path = id_to_path($this->Model->$IDName,$table);
 
 		$_cmd = "javascript:we_cmd('open" . $this->toolName . "Dirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','".$cmd."')";
 
 		if($showtrash) {
-			$_button = $we_button->create_button_table(array(
-					$we_button->create_button('select', $_cmd,true,100,22,'','',$disabled),
-					$we_button->create_button('image:btn_function_trash', 'javascript:document.we_form.elements["'.$IDName.'"].value=0;document.we_form.elements["'.$PathName.'"].value="/";',true, 27, 22)
+			$_button = we_button::create_button_table(array(
+					we_button::create_button('select', $_cmd,true,100,22,'','',$disabled),
+					we_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements["'.$IDName.'"].value=0;document.we_form.elements["'.$PathName.'"].value="/";',true, 27, 22)
 			),10);
 			$_width = 157;
 		} else {
-			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',$disabled);
+			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',$disabled);
 			$_width = 120;
 		}
 

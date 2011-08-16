@@ -62,8 +62,7 @@
 
 		function Footer(&$weGlossaryFrames) {
 
-			$we_button = new we_button();
-
+			
 			$_table = array(
 				'border'		=> '0',
 				'cellpadding'	=> '0',
@@ -81,7 +80,7 @@
 				'cellspacing'	=> '0',
 			);
 
-			$_we_button = $we_button->create_button("save", "javascript:top.opener.top.we_cmd('save_exception')",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
+			$_we_button = we_button::create_button("save", "javascript:top.opener.top.we_cmd('save_exception')",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 
 			$table2 = new we_htmlTable($_table, 1, 2);
 			$table2->setRow(0, array("valign"=>"middle"));

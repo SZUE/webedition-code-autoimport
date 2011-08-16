@@ -109,35 +109,31 @@ print STYLESHEET;
 </script>
 </head>
 
-<?php
-	$we_button = new we_button();
-?>
-
 <body background="<?php print IMAGE_DIR ?>backgrounds/iconbarBack.gif" marginwidth="0" topmargin="5" marginheight="5" leftmargin="0">
 	<table border="0" cellpadding="8" cellspacing="0" width="100%">
 		<tr>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_create", "javascript:new_todo()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_create", "javascript:new_todo()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_forward", "javascript:forward_todo()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_forward", "javascript:forward_todo()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_reject", "javascript:reject_todo()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_reject", "javascript:reject_todo()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_status", "javascript:update_todo()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_status", "javascript:update_todo()", true); ?></td>
 			<td width="36">
 				</td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_copy", "javascript:copy_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_copy", "javascript:copy_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_cut", "javascript:cut_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_cut", "javascript:cut_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_paste", "javascript:paste_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_paste", "javascript:paste_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_trash", "javascript:delete_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_trash", "javascript:delete_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_task_update", "javascript:refresh()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_update", "javascript:refresh()", true); ?></td>
 			<td align="right">
-				<?php echo $we_button->create_button("image:btn_task_messages", "javascript:launch_msg()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_task_messages", "javascript:launch_msg()", true); ?></td>
 		</tr>
 	</table>
 </body>

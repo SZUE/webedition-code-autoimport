@@ -35,7 +35,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 	htmlTop();
 	print STYLESHEET;
 
-$we_button = new we_button();
 
 require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 $weShopVatRule = weShopVatRule::getShopVatRule();
@@ -256,11 +255,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			$shopArticlesSelect = array();
 			$parts = array();
 
-			$we_button = new we_button();
-
+			
 			$saveBut   = '';
-			$cancelBut = $we_button->create_button('cancel', "javascript:window.close();");
-			$searchBut = $we_button->create_button('search', "javascript:searchArticles();");
+			$cancelBut = we_button::create_button('cancel', "javascript:window.close();");
+			$searchBut = we_button::create_button('search', "javascript:searchArticles();");
 
 			// first get all shop documents
 			$query = 'SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE . 
@@ -322,15 +320,15 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			$end_entry   = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
 			if ($start_entry - $MAX_PER_PAGE > 0) {
-				$backBut = $we_button->create_button('back', "javascript:switchEntriesPage(" . ($page-1) . ");");
+				$backBut = we_button::create_button('back', "javascript:switchEntriesPage(" . ($page-1) . ");");
 			} else {
-				$backBut = $we_button->create_button('back', "#", true, 100, 22, '', '', true);
+				$backBut = we_button::create_button('back', "#", true, 100, 22, '', '', true);
 			}
 
 			if ( ($end_entry) < $AMOUNT_ARTICLES) {
-				$nextBut = $we_button->create_button('next', "javascript:switchEntriesPage(" . ($page+1) . ");");
+				$nextBut = we_button::create_button('next', "javascript:switchEntriesPage(" . ($page+1) . ");");
 			} else {
-				$nextBut = $we_button->create_button('next', "#", true, 100, 22, '', '', true);
+				$nextBut = we_button::create_button('next', "#", true, 100, 22, '', '', true);
 			}
 
 			$shopArticlesSelect = $shopArticlesParts[$page];
@@ -408,7 +406,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			if (isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0') {
 
-				$saveBut = $we_button->create_button('save', "javascript:document.we_form.submit();window.close();");
+				$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();window.close();");
 
 				require_once(WE_SHOP_MODULE_DIR . 'weShopVariants.inc.php');
 
@@ -578,8 +576,8 @@ if (isset($_REQUEST['we_cmd'][0])) {
 <input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
 <input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />
 ';
-			$saveBut = $we_button->create_button('save', "javascript:we_submit();");
-			$cancelBut = $we_button->create_button('cancel', "javascript:self.close();");
+			$saveBut = we_button::create_button('save', "javascript:we_submit();");
+			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
 			$parts = array();
 
@@ -684,9 +682,8 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			unset($shopVat);
 			unset($shopVats);
-			$we_button = new we_button();
-			$saveBut = $we_button->create_button('save', "javascript:document.we_form.submit();self.close();");
-			$cancelBut = $we_button->create_button('cancel', "javascript:self.close();");
+			$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();self.close();");
+			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
 			$strSerialOrder = getFieldFromOrder($_REQUEST['bid'],'strSerialOrder');
 
@@ -775,9 +772,8 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 
-			$we_button = new we_button();
-			$saveBut = $we_button->create_button('save', "javascript:document.we_form.submit();self.close();");
-			$cancelBut = $we_button->create_button('cancel', "javascript:self.close();");
+			$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();self.close();");
+			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
 			// 1st get the customer for this order
 			$_customer = getOrderCustomerData($_REQUEST['bid']);
@@ -1375,7 +1371,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateOrder") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateOrder") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1396,7 +1392,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateConfirmation") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateConfirmation") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1417,7 +1413,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomA") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomA") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1438,7 +1434,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomB") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomB") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1459,7 +1455,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomC") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomC") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1480,7 +1476,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateShipping") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateShipping") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1501,7 +1497,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomD") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomD") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1522,7 +1518,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomE") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomE") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1542,7 +1538,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 													<input type="hidden" name="DatePayment" id="hidden_Calendar_DatePayment" value="' . (($_REQUEST["DatePayment"]==$dateform) ? "-" : $_REQUEST["DatePayment"]) . '" />
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DatePayment") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DatePayment") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1563,7 +1559,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomF") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomF") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1584,7 +1580,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomG") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomG") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1605,7 +1601,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCancellation") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCancellation") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1626,7 +1622,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomH") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomH") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1647,7 +1643,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomI") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomI") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1668,7 +1664,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomJ") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomJ") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1689,7 +1685,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												</td>
 												<td height="25">'.getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
-													' . $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateFinished") . '
+													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateFinished") . '
 												</td>
 												<td width="300" height="25"  class="defaultfont">'.$EMailhandler.'</td>
 											</tr>';
@@ -1823,7 +1819,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[keinezahl]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]',false) . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
 			: '') . '
 		<td>' . $pixelImg . '</td>
-		<td>' . $we_button->create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+		<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 	</tr>
 		';
 		// if this article has custom fields or is a variant - we show them in a extra rows
@@ -2068,9 +2064,9 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 				<td>' . $pixelImg . '</td>
 				<td class="defaultfont" valign="top">' . nl2br($value) . '</td>
 				<td>' . $pixelImg . '</td>
-				<td valign="top">' . $we_button->create_button('image:btn_edit_edit', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
+				<td valign="top">' . we_button::create_button('image:btn_edit_edit', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 				<td>' . $pixelImg . '</td>
-				<td valign="top">' . $we_button->create_button('image:btn_function_trash', "javascript:check=confirm('".sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field]'), $key)."'); if (check) { document.location.href='".$_SERVER['SCRIPT_NAME']."?we_cmd[0]=delete_shop_cart_custom_field&bid=".$_REQUEST["bid"]."&cartfieldname=" . $key . "'; }") . '</td>
+				<td valign="top">' . we_button::create_button('image:btn_function_trash', "javascript:check=confirm('".sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field]'), $key)."'); if (check) { document.location.href='".$_SERVER['SCRIPT_NAME']."?we_cmd[0]=delete_shop_cart_custom_field&bid=".$_REQUEST["bid"]."&cartfieldname=" . $key . "'; }") . '</td>
 			</tr>
 			<tr>
 				<td height="10"></td>
@@ -2079,7 +2075,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	}
 	$customCartFieldsTable .= '
 			<tr>
-				<td>' . $we_button->create_button('image:btn_function_plus', "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
+				<td>' . we_button::create_button('image:btn_function_plus', "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
 			</tr>
 			</table>';
 

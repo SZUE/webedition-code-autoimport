@@ -31,7 +31,6 @@ protect();
 
 // init document
 $we_alerttext = "";
-$we_button = new we_button();
 $allowedContentTypes = "";
 $error = false;
 
@@ -118,9 +117,9 @@ $content = '<table border="0" cellpadding="0" cellspacing="0">'.
 								$content .= '</table>';
 
 
-$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("upload", "javascript:document.forms[0].submit();"),
+$_buttons = we_button::position_yes_no_cancel(	we_button::create_button("upload", "javascript:document.forms[0].submit();"),
 												"",
-												$we_button->create_button("cancel", "javascript:self.close();")
+												we_button::create_button("cancel", "javascript:self.close();")
 												);
 
 ?>

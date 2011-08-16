@@ -45,9 +45,7 @@
 
     $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 
-    $we_button = new we_button();
-
-    $_backbutton = $we_button->create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
+    $_backbutton = we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
 
 
 

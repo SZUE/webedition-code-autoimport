@@ -343,10 +343,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 //-->
 </script>
 <?php
-	print STYLESHEET;
-
-	$we_button = new we_button();
-?>
+	print STYLESHEET;?>
 </head>
 
 <body class="weDialogBody" style="overflow:hidden;" onUnload="doUnload()" onLoad="self.focus();">
@@ -389,11 +386,11 @@ if($we_doc->ID){
 				);
 }
 
-$cancelbut = $we_button->create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
+$cancelbut = we_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 if($we_doc->ID){
-	$buttons = $we_button->position_yes_no_cancel(
-							$we_button->create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"),
+	$buttons = we_button::position_yes_no_cancel(
+							we_button::create_button("save", "javascript:we_cmd('save_docType', '$we_transaction')"),
 							"",
 							$cancelbut
 							);

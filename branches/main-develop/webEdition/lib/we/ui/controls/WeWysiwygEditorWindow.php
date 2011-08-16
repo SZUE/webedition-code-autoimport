@@ -31,8 +31,6 @@ $defaultCharset = "UTF-8";
 
 protect();
 
-$we_button = new we_button();
-
 
 $fieldName = $_REQUEST["we_cmd"][1];
 htmlTop(
@@ -74,8 +72,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 <?php
 
 } else {
-	$cancelBut = $we_button->create_button("cancel", "javascript:top.close()");
-	$okBut = $we_button->create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
+	$cancelBut = we_button::create_button("cancel", "javascript:top.close()");
+	$okBut = we_button::create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
 	print STYLESHEET;
 	?>
@@ -142,7 +140,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 			$_REQUEST["we_cmd"][17]); //$Language=""
 
 	print we_wysiwyg::getHeaderHTML() . $e->getHTML();
-	print '<div style="height:8px"></div>' . $we_button->position_yes_no_cancel($okBut, $cancelBut);
+	print '<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
 
 	?>
 </form>

@@ -260,7 +260,6 @@ class we_import_files
 		// create Start Screen ##############################################################################
 
 
-		$we_button = new we_button();
 
 		$parts = array();
 		$selectorSpace = $GLOBALS['BROWSER'] == "IE" ? 16 : 280;
@@ -273,7 +272,7 @@ class we_import_files
 		$wecmdenc1= we_cmd_enc("document.we_startform.importToID.value");
 		$wecmdenc2= we_cmd_enc("document.we_startform.egal.value");
 		$wecmdenc3= '';
-		$button = $we_button->create_button(
+		$button = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')");
 		$content = hidden('we_cmd[0]', 'import_files') . hidden('cmd', 'content') . hidden('step', '2'); // fix for categories require reload!
@@ -764,15 +763,13 @@ class we_import_files
 			}
 		}
 
-		$we_button = new we_button();
-
-		$cancelButton = $we_button->create_button("cancel", "javascript:top.close()");
-		$closeButton = $we_button->create_button("close", "javascript:top.close()");
+		$cancelButton = we_button::create_button("cancel", "javascript:top.close()");
+		$closeButton = we_button::create_button("close", "javascript:top.close()");
 
 		$progressbar = "";
 		$formnum = (isset($_REQUEST["weFormNum"]) ? $_REQUEST["weFormNum"] : 0);
 		$formcount = (isset($_REQUEST["weFormCount"]) ? $_REQUEST["weFormCount"] : 0);
-		$js = $we_button->create_state_changer(false) . "\n";
+		$js = we_button::create_state_changer(false) . "\n";
 
 		$js .= 'var weFormNum = ' . $formnum . ';
 	var weFormCount = ' . $formcount . ';
@@ -834,9 +831,9 @@ class we_import_files
 
 		$js = we_htmlElement::jsElement($js);
 
-		$prevButton = $we_button->create_button("back", "javascript:back();", true, -1, -1, "", "", false);
-		$prevButton2 = $we_button->create_button("back", "javascript:back();", true, -1, -1, "", "", false, false);
-		$nextButton = $we_button->create_button(
+		$prevButton = we_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false);
+		$prevButton2 = we_button::create_button("back", "javascript:back();", true, -1, -1, "", "", false, false);
+		$nextButton = we_button::create_button(
 				"next",
 				"javascript:next();",
 				true,
@@ -854,7 +851,7 @@ class we_import_files
 		$progressbar = '<span id="progressbar"' . (($this->step == 0) ? 'style="display:none' : '') . '">' . $pb->getHTML() . '</span>';
 		$js .= $pb->getJSCode();
 
-		$prevNextButtons = $prevButton ? $we_button->create_button_table(array(
+		$prevNextButtons = $prevButton ? we_button::create_button_table(array(
 			$prevButton, $nextButton
 		)) : null;
 
@@ -870,11 +867,11 @@ class we_import_files
 				),
 				we_htmlElement::htmlDiv(array(
 					'id' => 'normButton'
-				), $we_button->position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) . we_htmlElement::htmlDiv(
+				), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) . we_htmlElement::htmlDiv(
 						array(
 							'id' => 'juButton', 'style' => 'display:none;'
 						),
-						$we_button->position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+						we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 
 		if ($this->step == 3) {
 			$table->setCol(0, 0, null, '');
@@ -886,7 +883,7 @@ class we_import_files
 					),
 					we_htmlElement::htmlDiv(array(
 						'id' => 'normButton'
-					), $we_button->position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+					), we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 		}
 
 		$content = $table->getHtmlCode();
@@ -1167,11 +1164,9 @@ class we_import_files
 
 	function getHTMLCategory()
 	{
-		$we_button = new we_button();
-
 		$_width_size = 300;
 
-		$addbut = $we_button->create_button(
+		$addbut = we_button::create_button(
 				"add",
 				"javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
@@ -1242,9 +1237,9 @@ class we_import_files
 				array(
 					'colspan' => '2', 'align' => 'right'
 				),
-				$we_button->create_button_table(
+				we_button::create_button_table(
 						array(
-							$we_button->create_button("delete_all", "javascript:removeAllCats()"), $addbut
+							we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 						)));
 
 		return $table->getHtmlCode() . $js . we_htmlElement::jsElement(

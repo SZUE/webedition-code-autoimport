@@ -1107,8 +1107,7 @@ function getUser(){
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-	$we_button = new we_button();
-
+	
 	print
 			we_htmlElement::jsElement(
 					'
@@ -1166,7 +1165,7 @@ function getUser(){
 								"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 							),
 							(we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? htmlAlertAttentionBox(
-									"<strong>" . g_l('SEEM',"[question_change_startdocument]") . "</strong><br /><br />" . $we_button->create_button(
+									"<strong>" . g_l('SEEM',"[question_change_startdocument]") . "</strong><br /><br />" . we_button::create_button(
 											"preferences",
 											"javascript:top.we_cmd('openPreferences');"),
 									1,

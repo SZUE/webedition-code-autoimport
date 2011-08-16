@@ -36,9 +36,7 @@ htmlTop();
 </script>
 <?php
 	print STYLESHEET;
-
-	$we_button = new we_button();
-	?>
+?>
 	</head>
     <body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
      <form name="we_form" onSubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
@@ -50,7 +48,7 @@ htmlTop();
 			<tr>
 				<td><img width="5" src="<?php print IMAGE_DIR ?>pixel.gif" /></td>
 				<td><?php print
-				$we_button->create_button_table(array(htmlTextInput("keyword",14,"","","","text",120), $we_button->create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
+				we_button::create_button_table(array(htmlTextInput("keyword",14,"","","","text",120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
 				?></td>
 			</tr>
 		</table>

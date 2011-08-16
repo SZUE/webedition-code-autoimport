@@ -124,11 +124,9 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 								)
 				);
 
-	$we_button = new we_button();
-
-	$buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", "javascript:do_confirm();"),
+	$buttons = we_button::position_yes_no_cancel(	we_button::create_button("ok", "javascript:do_confirm();"),
     												"",
-    												$we_button->create_button("cancel", "javascript:top.window.close()")
+    												we_button::create_button("cancel", "javascript:top.window.close()")
     											);
     print we_multiIconBox::getHTML("todoStatusUpdate", "100%", $parts, 30, $buttons, -1, "", "", false, $heading);
 ?>

@@ -68,8 +68,6 @@ class weGlossarySettingFrames {
 		}
 		include($configFile);
 
-		$we_button = new we_button();
-
 		$parts = array();
 
 		// Automatic Replacement
@@ -82,8 +80,8 @@ class weGlossarySettingFrames {
 							'noline' => 1)
 		);
 
-		$saveButton = $we_button->create_button('save', 'javascript:document.we_form.submit();');
-		$closeButton = $we_button->create_button('close', 'javascript:top.window.close();');
+		$saveButton = we_button::create_button('save', 'javascript:document.we_form.submit();');
+		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 
 		return htmlTop() .
 		STYLESHEET . '
@@ -94,7 +92,7 @@ class weGlossarySettingFrames {
 <body class="weDialogBody">
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . hidden('cmd', 'save_glossary_setting') . '
-	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, $we_button->position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('modules_glossary','[menu_settings]') ) . '
+	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('modules_glossary','[menu_settings]') ) . '
 	</form>
 </body>
 </html>';

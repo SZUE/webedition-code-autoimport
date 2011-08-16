@@ -105,8 +105,6 @@ function exit_close(){
 }
 ";
 
-$we_button = new we_button();
-
 $oChbxDocs = we_forms::checkbox(
 		$value = 0,
 		$checked = true,
@@ -145,10 +143,10 @@ array_push($parts, array(
 	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
 ));
 
-$save_button = $we_button->create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = $we_button->create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = $we_button->create_button("close", "javascript:exit_close();");
-$buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
+$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$cancel_button = we_button::create_button("close", "javascript:exit_close();");
+$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getHTML(
 		"mfdProps",
@@ -170,7 +168,7 @@ print
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . $we_button->create_state_changer(false))) . we_htmlElement::htmlBody(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),

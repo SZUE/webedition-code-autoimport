@@ -111,8 +111,7 @@ if ($_REQUEST["mode"] == 'forward') {
 		    </tr>') . '
 	    </table>
 	';
-	$we_button = new we_button();
-	echo htmlDialogLayout($tbl, $heading, $we_button->create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
+	echo htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
     ?>
     </body>
 </html>

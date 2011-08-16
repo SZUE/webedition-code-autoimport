@@ -36,7 +36,6 @@ require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 protect();
 htmlTop();
 
-$we_button = new we_button();
 
 print STYLESHEET;
 
@@ -282,9 +281,9 @@ $parts = array();
 		<td>' .	we_class::htmlSelect('editShipping', $selectFields, 4, (isset($_REQUEST['weShippingId']) ? $_REQUEST['weShippingId'] : ''), false, 'onchange="document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;"', 'value', 200) . '</td>
 		<td width="10"></td>
 		<td valign="top">'
-			. $we_button->create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .
+			. we_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .
 			'<div style="margin:5px;"></div>' .
-			$we_button->create_button('delete', 'javascript:we_cmd(\'delete\')') .
+			we_button::create_button('delete', 'javascript:we_cmd(\'delete\')') .
 		'</td>
 	</tr>
 	</table>'
@@ -353,7 +352,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 	' . $tblPart . '
 		</tbody>
 	</table>
-	' . $we_button->create_button('image:btn_function_plus', 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
+	' . we_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
 			'noline' => 1
 
 		)
@@ -375,10 +374,10 @@ print we_multiIconBox::getHTML(
 	"100%",
 	$parts,
 	30,
-	$we_button->position_yes_no_cancel(
-		$we_button->create_button('save', 'javascript:we_cmd(\'save\');'),
+	we_button::position_yes_no_cancel(
+		we_button::create_button('save', 'javascript:we_cmd(\'save\');'),
 		'',
-		$we_button->create_button('close', 'javascript:we_cmd(\'close\');')
+		we_button::create_button('close', 'javascript:we_cmd(\'close\');')
 	),
 	-1,
 	'',

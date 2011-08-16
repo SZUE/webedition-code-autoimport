@@ -51,10 +51,6 @@ if (is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
 		<?php
 			print STYLESHEET;
 
-			$we_button = new we_button();
-		?>
-		<?php
-
 		    if (!empty($res['ok'])) {
                 if (substr($_REQUEST["mode"], 0, 2) != 'u_') {
                     echo '
@@ -141,7 +137,7 @@ if (is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
         }
 
 		$tbl .= '</table>';
-        echo htmlDialogLayout($tbl, g_l('messaging','[message_send]') . '...', $we_button->create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
+        echo htmlDialogLayout($tbl, g_l('messaging','[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
 		?>
 	</body>
 

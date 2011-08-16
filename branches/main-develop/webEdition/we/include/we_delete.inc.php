@@ -602,7 +602,6 @@ if ($_REQUEST["we_cmd"][0] == "do_delete") {
 }
 
 
-$we_button = new we_button();
 if ((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") || (defined("FILE_TABLE") && $table == FILE_TABLE . "_cache")) {
 	$delete_text = g_l('newFile',"[delete_text_cache]");
 	$delete_confirm = g_l('alert',"[delete_cache]");
@@ -614,12 +613,12 @@ if ((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE . "_cache") |
 }
 $content = '<span class="middlefont">' . $delete_text . '</span>';
 
-$_buttons = $we_button->position_yes_no_cancel(
-		$we_button->create_button(
+$_buttons = we_button::position_yes_no_cancel(
+		we_button::create_button(
 				"ok",
 				"javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','$table')"),
 		"",
-		$we_button->create_button("quit_delete", "javascript:we_cmd('exit_delete','','$table')"),
+		we_button::create_button("quit_delete", "javascript:we_cmd('exit_delete','','$table')"),
 		10,
 		"left");
 

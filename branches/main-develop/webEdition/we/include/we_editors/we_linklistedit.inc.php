@@ -30,7 +30,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 protect();
-$we_button = new we_button();
 
 function getLangField($name,$value,$title,$width){
 	$input = htmlTextInput($name, 15, $value, "", '', "text" , $width-50 );
@@ -525,7 +524,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			//javascript:we_cmd('browse_server', 'document.we_form.href.value', '', document.we_form.href.value, '');
 			$wecmdenc1= we_cmd_enc("document.we_form.href.value");
 			$wecmdenc4= '';
-			$but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.we_form.href.value, '')") : "";
+			$but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.we_form.href.value, '')") : "";
 			if ($GLOBALS['BROWSER'] == "SAFARI") {
 				$butspace = 8;
 			} else {
@@ -539,7 +538,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['href_int'].value");
 			$wecmdenc3= '';
 
-			$but     = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
+			$but     = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
 
 			$yuiSuggest->setAcId("Doc");
 			$yuiSuggest->setContentType("folder,text/webEdition,text/html");
@@ -557,7 +556,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['obj_id'].value");
 				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['href_obj'].value");
 				$wecmdenc3= '';
-				$but     = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");");
+				$but     = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");");
 
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder,objectFile");
@@ -672,14 +671,14 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 			//javascript:we_cmd('browse_server', 'document.we_form.img_src.value', '', document.we_form.img_src.value, '')
 			$wecmdenc1= we_cmd_enc("document.we_form.img_src.value");
 			$wecmdenc4= '';
-			$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.we_form.img_src.value, '')") : "";
+			$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.we_form.img_src.value, '')") : "";
 			$extImg = htmlFormElementTable(htmlTextInput("img_src",30,$img_src,"","","text",300),"","left","defaultfont",getPixel(10,2),$but,"","","",0);
 
 			//javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'img_id\\'].value','document.forms[\\'we_form\\'].elements[\\'src_int\\'].value','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
 			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['img_id'].value");
 			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['src_int'].value");
 			$wecmdenc3= '';
-			$but    = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
+			$but    = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder,image/*");
@@ -769,9 +768,9 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 							'. htmlTextInput("img_title",20,$img_title,"",'',"text",300).'</td>
 					</tr>
 				</table>';
-			$buttons = we_button::position_yes_no_cancel($we_button->create_button("save", "javascript:document.forms['we_form'].submit()"),
+			$buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:document.forms['we_form'].submit()"),
 															null,
-															$we_button->create_button("cancel", "javascript:self.close()"));
+															we_button::create_button("cancel", "javascript:self.close()"));
 
 			$_parts = array();
 

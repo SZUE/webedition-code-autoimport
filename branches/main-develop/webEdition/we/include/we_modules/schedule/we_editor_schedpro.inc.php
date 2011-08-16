@@ -43,7 +43,6 @@ print STYLESHEET; ?>
 <form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans(); 
 
 $parts = array();
-$we_button = new we_button();
 
 foreach($we_doc->schedArr as $i=>$sched){
 	$schedObj = new we_schedpro($sched,$i);
@@ -58,7 +57,7 @@ foreach($we_doc->schedArr as $i=>$sched){
 
 }
 array_push($parts, array(		"headline"=>"",
-								"html"=>htmlAlertAttentionBox(g_l('modules_schedpro',"[descriptiontext]"),2,"700").'<br><br>'. $we_button->create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
+								"html"=>htmlAlertAttentionBox(g_l('modules_schedpro',"[descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
 								"space"=>0
 						)
 				);

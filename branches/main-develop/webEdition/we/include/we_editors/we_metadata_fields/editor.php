@@ -122,7 +122,6 @@ function save_all_values() {
 
 function build_dialog($selected_setting = "ui") {
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-	$we_button = new we_button();
 
 	switch ($selected_setting) {
 		// save dialog:
@@ -144,7 +143,6 @@ function build_dialog($selected_setting = "ui") {
 		case "dialog":
 			$_headline = we_htmlElement::htmlDiv(array("class" => "weDialogHeadline", "style" => "padding:10 25 5 25;"),g_l('metadata',"[headline]"));
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-			$we_button = new we_button();
 
 			// read already defined metadata fields from db:
 			$_defined_fields = array();
@@ -217,7 +215,7 @@ function build_dialog($selected_setting = "ui") {
 					</td>
 					<td align="right" width="30">
 						'.
-						$we_button->create_button("image:btn_function_trash", "javascript:delRow(".$_i.")")
+						we_button::create_button("image:btn_function_trash", "javascript:delRow(".$_i.")")
 						.'
 					</td>
 				</tr>
@@ -276,7 +274,7 @@ function build_dialog($selected_setting = "ui") {
 	        			cell = document.createElement("TD");
 	        			cell.width="30";
 	        			cell.align="right"
-	        			cell.innerHTML=\''.$we_button->create_button("image:btn_function_trash", "javascript:delRow('+newID+')").'\';
+	        			cell.innerHTML=\''.we_button::create_button("image:btn_function_trash", "javascript:delRow('+newID+')").'\';
 	        			newRow.appendChild(cell);
 
 	        			elem.appendChild(newRow);
@@ -333,7 +331,7 @@ function build_dialog($selected_setting = "ui") {
 
 			$_metadata = new we_htmlTable(array('border'=>'1','cellpadding'=>'0','cellspacing'=>'2','width'=>'440','height'=>'50'),4,3);
 
-			$_content = $_hint . '<div style="height:20px"></div>' .$_metadataTable .  $we_button->create_button("image:btn_function_plus", "javascript:addRow()");
+			$_content = $_hint . '<div style="height:20px"></div>' .$_metadataTable .  we_button::create_button("image:btn_function_plus", "javascript:addRow()");
 			//echo $_content;
 			//$_dialog = create_dialog("settings_predefined", g_l('metadata',"[thumbnails]"), $_content, -1, "", "", false, $js);
 			$_contentFinal = array();

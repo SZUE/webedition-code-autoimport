@@ -87,7 +87,6 @@ if (isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == 'saveVatRule') {
 }
 
 // array with all rules
-$we_button = new we_button();
 
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
 foreach ($customerTableFields as $tblField) {
@@ -218,10 +217,10 @@ print we_multiIconBox::getHTML(
 	"100%",
 	$parts,
 	30,
-	$we_button->position_yes_no_cancel(
-		$we_button->create_button('save', 'javascript:we_cmd(\'save\');'),
+	we_button::position_yes_no_cancel(
+		we_button::create_button('save', 'javascript:we_cmd(\'save\');'),
 		'',
-		$we_button->create_button('cancel', 'javascript:we_cmd(\'close\');')
+		we_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 	),
 	-1,
 	'',

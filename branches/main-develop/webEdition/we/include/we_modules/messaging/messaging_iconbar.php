@@ -96,31 +96,27 @@ print STYLESHEET;
 </script>
 </head>
 
-<?php
-	$we_button = new we_button();
-?>
-
 <body background="<?php print IMAGE_DIR ?>backgrounds/iconbarBack.gif" marginwidth="0" topmargin="5" marginheight="5" leftmargin="0">
 	<table border="0" cellpadding="8" cellspacing="0" width="100%">
 		<tr>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_create", "javascript:new_message('new')", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_create", "javascript:new_message('new')", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_reply", "javascript:new_message('re')", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_reply", "javascript:new_message('re')", true); ?></td>
 			<td width="36">
 				</td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_copy", "javascript:copy_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_copy", "javascript:copy_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_cut", "javascript:cut_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_cut", "javascript:cut_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_paste", "javascript:paste_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_paste", "javascript:paste_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_trash", "javascript:delete_messages()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_trash", "javascript:delete_messages()", true); ?></td>
 			<td width="36">
-				<?php echo $we_button->create_button("image:btn_messages_update", "javascript:refresh()", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_update", "javascript:refresh()", true); ?></td>
 			<td align="right">
-				<?php echo $we_button->create_button("image:btn_messages_tasks", "javascript:launch_todo();", true); ?></td>
+				<?php echo we_button::create_button("image:btn_messages_tasks", "javascript:launch_todo();", true); ?></td>
 		</tr>
 	</table>
 </body>

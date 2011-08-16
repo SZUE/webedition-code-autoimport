@@ -280,7 +280,6 @@ class weCustomerFrames extends weModuleFrames {
 
 				$imgId = abs($value);
 
-				$we_button = new we_button();
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
 				$out = we_document::getFieldByVal($imgId, 'img');
 
@@ -296,7 +295,7 @@ class weCustomerFrames extends weModuleFrames {
 				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $field . "'].value");
 				$wecmdenc2= '';
 				$wecmdenc3= we_cmd_enc("opener.refreshForm()");
-				$out .= $we_button->create_button_table(array($we_button->create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), $we_button->create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
+				$out .= we_button::create_button_table(array(we_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "', '', 'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['$field'].value='';refreshForm();", true)), 5) .
 								'</td>
 						</tr>
 					</table>';
@@ -417,8 +416,7 @@ class weCustomerFrames extends weModuleFrames {
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}
 
-		$we_button = new we_button();
-
+		
 		$table1 = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), getPixel(1600, 10));
 
@@ -426,7 +424,7 @@ class weCustomerFrames extends weModuleFrames {
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), getPixel(5, 5));
 		$table2->setCol(0, 1, array("nowrap" => null),
-						$we_button->create_button("save", "javascript:we_save();")
+						we_button::create_button("save", "javascript:we_save();")
 		);
 
 
@@ -614,8 +612,7 @@ class weCustomerFrames extends weModuleFrames {
 
 	function getHTMLTreeFooter() {
 
-		$we_button = new we_button();
-
+		
 		$hiddens = we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "treefooter")) .
 						we_htmlElement::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
@@ -624,10 +621,10 @@ class weCustomerFrames extends weModuleFrames {
 		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"),
 						we_htmlElement::jsElement($this->View->getJSSubmitFunction("treefooter")) .
 						$hiddens .
-						$we_button->create_button_table(
+						we_button::create_button_table(
 										array(
 												htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
-												$we_button->create_button("image:btn_function_search", "javascript:submitForm()")
+												we_button::create_button("image:btn_function_search", "javascript:submitForm()")
 										)
 						)
 		);
@@ -649,8 +646,7 @@ class weCustomerFrames extends weModuleFrames {
 		else
 			$branch_select=g_l('modules_customer','[other]');
 
-		$we_button = new we_button();
-
+		
 		$select = $this->getHTMLBranchSelect(false);
 		$select->setAttributes(array("name" => "branch_select", "class" => "weSelect", "onChange" => "selectBranch()", "style" => "width:150"));
 		$select->selectOption($branch_select);
@@ -660,18 +656,18 @@ class weCustomerFrames extends weModuleFrames {
 		$hiddens = we_htmlElement::htmlHidden(array("name" => "field", "value" => ""));
 
 		$buttons_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 12, 1);
-		$buttons_table->setCol(0, 0, array(), $we_button->create_button("add", "javascript:we_cmd('open_add_field')"));
+		$buttons_table->setCol(0, 0, array(), we_button::create_button("add", "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1, 0, array(), getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), $we_button->create_button("edit", "javascript:we_cmd('open_edit_field')"));
+		$buttons_table->setCol(2, 0, array(), we_button::create_button("edit", "javascript:we_cmd('open_edit_field')"));
 		$buttons_table->setCol(3, 0, array(), getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), $we_button->create_button("delete", "javascript:we_cmd('delete_field')"));
+		$buttons_table->setCol(4, 0, array(), we_button::create_button("delete", "javascript:we_cmd('delete_field')"));
 		$buttons_table->setCol(5, 0, array(), getPixel(1, 15));
-		$buttons_table->setCol(6, 0, array(), $we_button->create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
+		$buttons_table->setCol(6, 0, array(), we_button::create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
 		$buttons_table->setCol(7, 0, array(), getPixel(1, 5));
-		$buttons_table->setCol(8, 0, array(), $we_button->create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
+		$buttons_table->setCol(8, 0, array(), we_button::create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
 		$buttons_table->setCol(9, 0, array("class" => "defaultgray"), g_l('modules_customer','[sort_edit_fields_explain]'));
 		$buttons_table->setCol(10, 0, array(), getPixel(1, 5));
-		$buttons_table->setCol(10, 0, array(), $we_button->create_button("reset", "javascript:we_cmd('reset_edit_order')"));
+		$buttons_table->setCol(10, 0, array(), we_button::create_button("reset", "javascript:we_cmd('reset_edit_order')"));
 		$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "500"), 5, 5);
 
 		$table->setCol(0, 0, array("class" => "defaultgray"), g_l('modules_customer','[branch]'));
@@ -681,7 +677,7 @@ class weCustomerFrames extends weModuleFrames {
 		$table->setCol(1, 1, array(), getPixel(10, 10));
 		$table->setCol(1, 2, array(), $select->getHtmlCode());
 		$table->setCol(1, 3, array(), getPixel(10, 10));
-		$table->setCol(1, 4, array(), $we_button->create_button("image:btn_edit_edit", "javascript:we_cmd('open_edit_branch')"));
+		$table->setCol(1, 4, array(), we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_edit_branch')"));
 
 		$table->setCol(2, 0, array(), getPixel(10, 10));
 
@@ -697,7 +693,7 @@ class weCustomerFrames extends weModuleFrames {
 										we_htmlElement::htmlForm(array("name" => "we_form"),
 														we_htmlElement::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
 														we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "customer_admin")) .
-														htmlDialogLayout($table->getHtmlCode(), g_l('modules_customer','[field_admin]'), $we_button->create_button("close", "javascript:self.close()"))
+														htmlDialogLayout($table->getHtmlCode(), g_l('modules_customer','[field_admin]'), we_button::create_button("close", "javascript:self.close()"))
 										)
 		);
 
@@ -722,8 +718,7 @@ class weCustomerFrames extends weModuleFrames {
 						we_htmlElement::htmlHidden(array("name" => "art", "value" => "$mode")) .
 						($type == "field" ? we_htmlElement::htmlHidden(array("name" => "field", "value" => "$field")) : "");
 
-		$we_button = new we_button();
-		$cancel = $we_button->create_button("cancel", "javascript:self.close();");
+		$cancel = we_button::create_button("cancel", "javascript:self.close();");
 
 		if ($type == "branch") {
 			$hiddens.=we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "branch_editor"));
@@ -731,7 +726,7 @@ class weCustomerFrames extends weModuleFrames {
 			$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer','[field_name]'));
 			$edit->setCol(0, 1, array("valign" => "middle", "class" => "defaultfont"), htmlTextInput("name", 26, $branch, '', ''));
 
-			$save = $we_button->create_button("save", "javascript:we_cmd('save_branch')");
+			$save = we_button::create_button("save", "javascript:we_cmd('save_branch')");
 		} else {
 			$field_props = $this->View->getFieldProperties($field);
 
@@ -757,7 +752,7 @@ class weCustomerFrames extends weModuleFrames {
 			$edit->setCol(3, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer','[field_default]'));
 			$edit->setCol(3, 1, array("valign" => "middle", "class" => "defaultfont"), htmlTextInput("field_default", 26, (isset($field_props["default"]) ? $field_props["default"] : ""), "", ''));
 
-			$save = $we_button->create_button("save", "javascript:we_cmd('save_field')");
+			$save = we_button::create_button("save", "javascript:we_cmd('save_field')");
 		}
 
 		$out = we_htmlElement::htmlBody(array("class" => "weDialogBody"),
@@ -770,7 +765,7 @@ class weCustomerFrames extends weModuleFrames {
 																						(g_l('modules_customer','[edit_branche]')) :
 																						($mode == "edit" ? g_l('modules_customer','[edit_field]') :g_l('modules_customer','[add_field]'))
 																		),
-																		$we_button->position_yes_no_cancel($save, null, $cancel)
+																		we_button::position_yes_no_cancel($save, null, $cancel)
 														)
 										)
 		);
@@ -839,7 +834,6 @@ class weCustomerFrames extends weModuleFrames {
 	}
 
 	function getHTMLSearch() {
-		$we_button = new we_button();
 		$colspan = 4;
 
 		$mode = isset($_REQUEST["mode"]) ? $_REQUEST["mode"] : 0;
@@ -849,7 +843,7 @@ class weCustomerFrames extends weModuleFrames {
 						we_htmlElement::htmlHidden(array("name" => "search", "value" => "1")) .
 						we_htmlElement::htmlHidden(array("name" => "mode", "value" => $mode));
 
-		$search_but = $we_button->create_button("image:btn_function_search", "javascript:we_cmd('search')");
+		$search_but = we_button::create_button("image:btn_function_search", "javascript:we_cmd('search')");
 
 		$search = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "550", "height" => "50"), 4, 3);
 		$search->setRow(0, array("valign" => "top"));
@@ -866,11 +860,11 @@ class weCustomerFrames extends weModuleFrames {
 			);
 
 			$sw = null;
-			$sw = $we_button->create_button("image:btn_direction_right", "javascript:we_cmd('switchToAdvance')");
+			$sw = we_button::create_button("image:btn_direction_right", "javascript:we_cmd('switchToAdvance')");
 
 			$search->setCol(2, 0, array(), getPixel(5, 5));
 			$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan),
-							$we_button->create_button_table(
+							we_button::create_button_table(
 											array(
 													we_htmlElement::htmlDiv(array("class" => "defaultfont"), g_l('modules_customer','[advanced_search]')),
 													$sw,
@@ -960,7 +954,7 @@ class weCustomerFrames extends weModuleFrames {
 														htmlDialogLayout(
 																		$table->getHtmlCode(),
 																		g_l('modules_customer','[search]'),
-																		$we_button->position_yes_no_cancel(null, $we_button->create_button("close", "javascript:self.close();")),
+																		we_button::position_yes_no_cancel(null, we_button::create_button("close", "javascript:self.close();")),
 																		"100%",
 																		"30",
 																		"558"
@@ -1019,9 +1013,8 @@ class weCustomerFrames extends weModuleFrames {
 		$table->setCol(3, 1, array(), getPixel(5, 30));
 		$table->setCol(3, 2, array('class' => 'defaultfont'), $default_order->getHtmlCode());
 
-		$we_button = new we_button();
-		$close = $we_button->create_button("close", "javascript:self.close();");
-		$save = $we_button->create_button("save", "javascript:we_cmd('save_settings')");
+		$close = we_button::create_button("close", "javascript:self.close();");
+		$save = we_button::create_button("save", "javascript:we_cmd('save_settings')");
 
 		$body = we_htmlElement::htmlBody(array("class" => "weDialogBody"),
 										we_htmlElement::htmlForm(array("name" => "we_form"),
@@ -1031,7 +1024,7 @@ class weCustomerFrames extends weModuleFrames {
 																		$table->getHtmlCode() .
 																		getPixel(5, 10),
 																		g_l('modules_customer','[settings]'),
-																		$we_button->position_yes_no_cancel($save, $close)
+																		we_button::position_yes_no_cancel($save, $close)
 														)
 										)
 										. ($closeflag ? we_htmlElement::jsElement('top.close();') : "")

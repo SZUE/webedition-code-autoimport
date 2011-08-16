@@ -429,8 +429,7 @@ print STYLESHEET;
 	}
 
 <?php
-	$we_button = new we_button();
-	print $we_button->create_state_changer(false);
+	print we_button::create_state_changer(false);
 
 ?>
 
@@ -461,10 +460,10 @@ print STYLESHEET;
 	';
 
 
-	$_buttonsleft[] = $we_button->create_button("ignore", "javascript:findNext();",true,100,22,'','',true,false);
-	$_buttonsleft[] = $we_button->create_button("change", "javascript:changeWord();",true,100,22,'','',true,false);
-	$_buttonsleft[] = $we_button->create_button("add", "javascript:add();",true,100,22,'','',true,false);
-	$_buttonsleft[] = $we_button->create_button("check", "javascript:weButton.disable(\"check\");setTimeout(\"spellcheck();\",100);",true,100,22,'','',true,false);
+	$_buttonsleft[] = we_button::create_button("ignore", "javascript:findNext();",true,100,22,'','',true,false);
+	$_buttonsleft[] = we_button::create_button("change", "javascript:changeWord();",true,100,22,'','',true,false);
+	$_buttonsleft[] = we_button::create_button("add", "javascript:add();",true,100,22,'','',true,false);
+	$_buttonsleft[] = we_button::create_button("check", "javascript:weButton.disable(\"check\");setTimeout(\"spellcheck();\",100);",true,100,22,'','',true,false);
 
 
 
@@ -478,9 +477,9 @@ print STYLESHEET;
 	;
 
 	$_buttons = array();
-	$_buttons[] = $we_button->create_button("apply", "javascript:apply();self.close();");
-	$_buttons[] = $we_button->create_button("cancel", "javascript:self.close();");
-	$_buttons_bottom = $we_button->position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
+	$_buttons[] = we_button::create_button("apply", "javascript:apply();self.close();");
+	$_buttons[] = we_button::create_button("cancel", "javascript:self.close();");
+	$_buttons_bottom = we_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
 
 	$_parts = array();
 

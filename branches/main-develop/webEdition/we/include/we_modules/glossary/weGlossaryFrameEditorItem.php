@@ -237,8 +237,7 @@
 
 		function Footer(&$weGlossaryFrames) {
 
-			$we_button = new we_button();
-
+			
 			$_table = array(
 				'border'		=> '0',
 				'cellpadding'	=> '0',
@@ -256,8 +255,8 @@
 				'cellspacing'	=> '0',
 			);
 
-			$SaveButton = $we_button->create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
-			$UnpublishButton = $we_button->create_button("deactivate", "javascript:" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
+			$SaveButton = we_button::create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
+			$UnpublishButton = we_button::create_button("deactivate", "javascript:" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')",true,100,22,'','',(!we_hasPerm('NEW_GLOSSARY') && !we_hasPerm('EDIT_GLOSSARY')));
 
 			$NewEntry = we_forms::checkbox("1", false, "makeNewEntry", g_l('modules_glossary','[new_item_after_saving]'), false, "defaultfont", "top.makeNewEntry = (this.checked) ? 1 : 0", false);
 			$PublishWhenSaved = we_forms::checkbox("1", false, "publishWhenSave", g_l('modules_glossary','[publish_when_saved]'), false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);
@@ -579,15 +578,14 @@
 
 			$parameter = g_l('modules_glossary','[parameter]');
 
-			$we_button = new we_button();
-
+			
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'".FILE_TABLE."','document.we_form.elements[\\'link[Attributes][InternLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][InternLinkPath]\\'].value','','".session_id()."','$_rootDirID')
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkID]'].value");
 			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
 			$wecmdenc3= '';
 			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','$_rootDirID')";
-			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
+			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
 			$_linkPath = "";
 			$_linkID = "";
@@ -700,15 +698,14 @@
 
 			}
 
-			$we_button = new we_button();
-
+			
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','document.we_form.elements[\\'link[Attributes][ObjectLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][ObjectLinkPath]\\'].value','opener.we_cmd(\\'populateWorkspaces\\');','".session_id()."','$_rootDirID','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1)."
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][ObjectLinkID]'].value");
 			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value");
 			$wecmdenc3= we_cmd_enc("opener.we_cmd('populateWorkspaces');");
 			$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$_rootDirID','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")" : '';
-			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
+			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
 			$selector = htmlFormElementTable(htmlTextInput('link[Attributes][ObjectLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',
@@ -804,8 +801,7 @@
 
 			}
 
-			$we_button = new we_button();
-
+			
 			$_rootDirID = 0;
 			//javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'".CATEGORY_TABLE."','document.we_form.elements[\\'link[Attributes][CategoryLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][CategoryLinkPath]\\'].value','opener.setHot();','".session_id()."','$_rootDirID')
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryLinkID]'].value");
@@ -813,7 +809,7 @@
 			$wecmdenc3= we_cmd_enc("opener.setHot();");
 
 			$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'".CATEGORY_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$_rootDirID')";
-			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
+			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
 			$selector1 = htmlFormElementTable(htmlTextInput('link[Attributes][CategoryLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',
@@ -830,7 +826,7 @@
 			$wecmdenc2= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value");
 			$wecmdenc3= '';
 			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','$_rootDirID')";
-			$_button = $we_button->create_button('select', $_cmd,true,100,22,'','',false);
+			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
 			$selector2 = htmlFormElementTable(htmlTextInput('link[Attributes][CategoryInternLinkPath]',58,$_internLinkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',

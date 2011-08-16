@@ -45,7 +45,6 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 print STYLESHEET;
 
-$we_button = new we_button();
 ?>
     <script type="text/javascript">
 	<!--
@@ -92,7 +91,7 @@ $we_button = new we_button();
     </td>
 </table>';
 
-	$_buttontable = $we_button->position_yes_no_cancel($we_button->create_button("ok", "javascript:save_settings();"),null,$we_button->create_button("cancel", "javascript:self.close()"));
+	$_buttontable = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:save_settings();"),null,we_button::create_button("cancel", "javascript:self.close()"));
 
 	print  htmlDialogLayout($table,"",$_buttontable,"90%");
 ?>

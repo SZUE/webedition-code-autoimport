@@ -343,12 +343,9 @@
 		}
 
 		function getLogButton($docID,$table){
-			$we_button = new we_button();
 			$type=weWorkflowUtility::getTypeForTable($table);
-			return $we_button->create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=".$docID."&type=".$type."','workflow_history',-1,-1,640,480,true,false,true);");
+			return we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=".$docID."&type=".$type."','workflow_history',-1,-1,640,480,true,false,true);");
 		}
 
 
 	}
-
-?>

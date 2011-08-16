@@ -327,7 +327,6 @@ if ($_REQUEST["we_cmd"][0] == "do_move") {
 	exit();
 }
 
-$we_button = new we_button();
 
 $ws_Id = get_def_ws($table);
 
@@ -356,7 +355,7 @@ $wecmdenc1= we_cmd_enc("top.rframe.bframe.treeheader.document.we_form.elements."
 $wecmdenc2= we_cmd_enc("top.rframe.bframe.treeheader.document.we_form.elements." . $textname . ".value");
 $wecmdenc3= '';
 $yuiSuggest->setSelectButton(
-		$we_button->create_button(
+		we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "',0)"),
 		10);
@@ -366,10 +365,10 @@ $weAcSelector = $yuiSuggest->getHTML();
 $content = '<span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile',"[move_text]") . '</span>
 			<p style="margin:0 0 10px 0;padding:0;">' . $weAcSelector . '</p>';
 
-$_buttons = $we_button->position_yes_no_cancel(
-		$we_button->create_button("ok", "javascript:press_ok_move();"),
+$_buttons = we_button::position_yes_no_cancel(
+		we_button::create_button("ok", "javascript:press_ok_move();"),
 		"",
-		$we_button->create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"),
+		we_button::create_button("quit_move", "javascript:we_cmd('exit_move','','$table')"),
 		10,
 		"left");
 

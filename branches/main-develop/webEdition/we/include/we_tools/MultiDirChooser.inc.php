@@ -71,14 +71,13 @@ class MultiDirChooser{
 	}
 
 	function getLine($lineNr){
-		$we_button = new we_button();
 		switch($lineNr){
 			case 0:
 				return '<tr>
 	<td><img src="'.ICON_DIR.$this->db->f($this->fieldsArr[0]).'" width="16" height="18" /></td>
 	<td class="'.$this->css.'">'.$this->db->f($this->fieldsArr[1]).'</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-			$we_button->create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','".$this->db->f("ID")."'".(strlen($this->thirdDelPar) ? ",'".$this->thirdDelPar."'" : "").");")  :
+			we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','".$this->db->f("ID")."'".(strlen($this->thirdDelPar) ? ",'".$this->thirdDelPar."'" : "").");")  :
 			"").'</td>
 </tr>
 ';
@@ -87,15 +86,13 @@ class MultiDirChooser{
 
 	function getRootLine($lineNr){
 
-		$we_button = new we_button();
-
 		switch($lineNr){
 			case 0:
 				return '<tr>
 	<td><img src="'.ICON_DIR.'folder.gif" width="16" height="18" /></td>
 	<td class="'.$this->css.'">/</td>
 	<td>'.((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-			$we_button->create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','0');") :
+			we_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}".($this->extraDelFn ? $this->extraDelFn : "").";we_cmd('".$this->cmd_del."','0');") :
 			"").'</td>
 </tr>
 ';

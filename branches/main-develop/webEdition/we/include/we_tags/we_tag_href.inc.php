@@ -79,15 +79,12 @@ function we_tag_href($attribs, $content){
 	$extPath = !empty($extPath) ? htmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
 	if ($we_editmode) {
-		// Init we_button class
-		$we_button = new we_button();
-
 		$int_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
 
-		$trashbut = $we_button->create_button(
+		$trashbut = we_button::create_button(
 				"image:btn_function_trash",
 				"javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ""),
 				true);
@@ -127,10 +124,10 @@ function we_tag_href($attribs, $content){
 				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
 				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") . "");
-				$but = $we_button->create_button(
+				$but = we_button::create_button(
 						"select",
 						"javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
-				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
+				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
 						"select",
 						"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : "";
 			} else {
@@ -138,14 +135,14 @@ function we_tag_href($attribs, $content){
 				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
 				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") . "");
-				$but = $we_button->create_button(
+				$but = we_button::create_button(
 						"select",
 						"javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "');");
-				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
+				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
 						"select",
 						"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : "";
 			}
-			$trashbut2 = $we_button->create_button(
+			$trashbut2 = we_button::create_button(
 					"image:btn_function_trash",
 					"javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);",
 					true);
@@ -210,7 +207,7 @@ function we_tag_href($attribs, $content){
 					$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 					$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
 					$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") . "");
-					$but = $we_button->create_button(
+					$but = we_button::create_button(
 							"select",
 							"javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
 				} else {
@@ -218,7 +215,7 @@ function we_tag_href($attribs, $content){
 					$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
 					$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
 					$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") . "");
-					$but = $we_button->create_button(
+					$but = we_button::create_button(
 							"select",
 							"javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "');");
 				}
@@ -263,17 +260,17 @@ function we_tag_href($attribs, $content){
 			if ($we_editmode) {
 				$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
 
-				$trashbut2 = $we_button->create_button(
+				$trashbut2 = we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)",
 						true);
 
 				if (($directory && $file) || $file) {
-					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
+					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
 							"select",
 							"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
 				} else {
-					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
+					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
 							"select",
 							"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
 				}

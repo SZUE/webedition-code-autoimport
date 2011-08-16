@@ -52,7 +52,6 @@ switch ($we_ContentType) {
 }
 
 $we_alerttext = "";
-$we_button = new we_button();
 
 if (isset($_FILES['we_uploadedFile'])){
 	$ct = getContentTypeFromFile($_FILES['we_uploadedFile']["name"]);
@@ -159,8 +158,8 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = $we_button->create_button("upload", "javascript:document.forms[0].submit();");
-$cancel_button = $we_button->create_button("cancel", "javascript:self.close();");
+$yes_button = we_button::create_button("upload", "javascript:document.forms[0].submit();");
+$cancel_button = we_button::create_button("cancel", "javascript:self.close();");
 $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 if($maxsize){

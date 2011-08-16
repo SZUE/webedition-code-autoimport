@@ -260,7 +260,6 @@ class weNavigationFrames extends weToolFrames
 
 	function getHTMLGeneral()
 	{
-		$we_button = new we_button();
 		$parts = array();
 
 		$_table = new we_htmlTable(
@@ -310,10 +309,10 @@ class weNavigationFrames extends weToolFrames
 		$_table->setColContent(
 				0,
 				2,
-				$we_button->create_button_table(
+				we_button::create_button_table(
 						array(
 
-								$we_button->create_button(
+								we_button::create_button(
 										'image:direction_up',
 										'javascript:' . $this->topFrame . '.we_cmd("move_up");',
 										true,
@@ -323,7 +322,7 @@ class weNavigationFrames extends weToolFrames
 										'',
 										(($this->Model->Ordn > 0) ? false : true),
 										false),
-								$we_button->create_button(
+								we_button::create_button(
 										'image:direction_down',
 										'javascript:' . $this->topFrame . '.we_cmd("move_down");',
 										true,
@@ -535,7 +534,6 @@ class weNavigationFrames extends weToolFrames
 	function getHTMLPropertiesGroup()
 	{
 		$yuiSuggest = & weSuggest::getInstance();
-		$we_button = new we_button();
 		$parts = array();
 
 		$rootDirID = 0;
@@ -550,8 +548,8 @@ class weNavigationFrames extends weToolFrames
 		$wecmdenc3= we_cmd_enc("opener." . $this->topFrame . ".we_cmd('populateFolderWs');");
 		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "','$rootDirID','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 
-		$_button_doc = $we_button->create_button('select', $_cmd_doc, true, 100, 22, '', '', false);
-		$_button_obj = $we_button->create_button('select', $_cmd_obj, true, 100, 22, '', '', false);
+		$_button_doc = we_button::create_button('select', $_cmd_doc, true, 100, 22, '', '', false);
+		$_button_obj = we_button::create_button('select', $_cmd_obj, true, 100, 22, '', '', false);
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == 'docLink') ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == 'objLink' ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
 		if ($this->Model->LinkID == 0) {
@@ -667,7 +665,7 @@ class weNavigationFrames extends weToolFrames
 
 		$cmd = 'opener.we_cmd("copyNaviFolder")';
 		$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements['CopyFolderID'].value,'document.we_form.CopyFolderID.value','document.we_form.CopyFolderPath.value','" . $cmd . "')";
-		$_button_copyFolder = $we_button->create_button('select', $_cmd, true, 100, 22, '', '', $_disabled);
+		$_button_copyFolder = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled);
 		array_push(
 				$parts,
 				array(
@@ -818,8 +816,6 @@ class weNavigationFrames extends weToolFrames
 			}
 		}
 
-		$we_button = new we_button();
-
 		$_wsid = array();
 		if ($this->Model->SelectionType == 'objLink' && $this->Model->LinkID) {
 			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
@@ -912,13 +908,13 @@ class weNavigationFrames extends weToolFrames
 				g_l('navigation','[parameter]')) . '
 			</div>
 			' . $this->getHTMLCount() . '
-			' . $we_button->create_button_table(
+			' . we_button::create_button_table(
 				array(
 
-						$we_button->create_button(
+						we_button::create_button(
 								'preview',
 								'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
-						($this->Model->hasDynChilds() ? $we_button->create_button(
+						($this->Model->hasDynChilds() ? we_button::create_button(
 								'delete_all',
 								'javascript:' . $this->topFrame . '.we_cmd("depopulate");') : '')
 				)
@@ -934,8 +930,6 @@ class weNavigationFrames extends weToolFrames
 
 	function getHTMLStatic($disabled = false)
 	{
-		$we_button = new we_button();
-
 		$seltype = array(
 			'docLink' => g_l('navigation','[docLink]')
 		);
@@ -959,9 +953,9 @@ class weNavigationFrames extends weToolFrames
 		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_cmd_cat = "javascript:we_cmd('openCatselector',document.we_form.elements['LinkID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','opener." . $this->topFrame . ".we_cmd(\"populateText\");opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')";
 
-		$_button_doc = $we_button->create_button('select', $_cmd_doc, true, 100, 22, '', '', $disabled);
-		$_button_obj = $we_button->create_button('select', $_cmd_obj, true, 100, 22, '', '', $disabled);
-		$_button_cat = $we_button->create_button('select', $_cmd_cat, true, 100, 22, '', '', $disabled);
+		$_button_doc = we_button::create_button('select', $_cmd_doc, true, 100, 22, '', '', $disabled);
+		$_button_obj = we_button::create_button('select', $_cmd_obj, true, 100, 22, '', '', $disabled);
+		$_button_cat = we_button::create_button('select', $_cmd_cat, true, 100, 22, '', '', $disabled);
 
 		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == 'docLink' ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == 'objLink' ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == 'catLink' ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 		if ($this->Model->LinkID == 0) {
@@ -1000,8 +994,6 @@ class weNavigationFrames extends weToolFrames
 		}*/
 
 		$parts = array();
-		$we_button = new we_button();
-
 		$_seltype = array(
 			'doctype' => g_l('navigation','[documents]')
 		);
@@ -1066,8 +1058,6 @@ class weNavigationFrames extends weToolFrames
 	function getHTMLContentInfo()
 	{
 		$parts = array();
-		$we_button = new we_button();
-
 		$_sort = array();
 		foreach ($this->Model->Sort as $_i) {
 			$_sort[] = $_i['field'] . '&nbsp;(' . ($_i['order'] == 'DESC' ? g_l('navigation','[descending]') : g_l('navigation','[ascending]')) . ')';
@@ -1210,13 +1200,13 @@ class weNavigationFrames extends weToolFrames
 				'html' => we_button::create_button_table(
 						array(
 
-								$we_button->create_button(
+								we_button::create_button(
 										'preview',
 										'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
-								$we_button->create_button(
+								we_button::create_button(
 										'refresh',
 										'javascript:' . $this->topFrame . '.we_cmd("populate");'),
-								$we_button->create_button(
+								we_button::create_button(
 										'delete_all',
 										'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
 						)),
@@ -1232,7 +1222,6 @@ class weNavigationFrames extends weToolFrames
 		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
-		$we_button = new we_button();
 		$defaultPreviewCode = str_replace("\r\n", '\n', addslashes($this->Model->defaultPreviewCode));
 		$defaultPreviewCode = str_replace("\n", '\n', $defaultPreviewCode);
 		// build the page
@@ -1260,11 +1249,11 @@ class weNavigationFrames extends weToolFrames
 			<td align="right">' . we_button::create_button_table(
 				array(
 
-						$we_button->create_button('refresh', 'javascript: showPreview();'),
-						$we_button->create_button(
+						we_button::create_button('refresh', 'javascript: showPreview();'),
+						we_button::create_button(
 								'reset',
 								'javascript: document.getElementById("previewCode").value = "' . $defaultPreviewCode . '"; showPreview();')
-				)//,$we_button->create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
+				)//,we_button::create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
 				) . '</td>
 		</tr>
 		</table>';
@@ -1463,10 +1452,9 @@ function onFolderSelectionChangeJS(elem) {
 	function getHTMLFieldChooser($title, $name, $value, $cmd, $type, $selection, $extraField = "", $extraFieldWidth = 0)
 	{
 
-		$we_button = new we_button();
 		$_disabled = !(($this->Model->SelectionType == 'classname' && $this->Model->ClassID != 0) || ($this->Model->SelectionType == 'doctype' && $this->Model->DocTypeID != 0));
 		$_cmd = "javascript:var st=document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value; var s=(st=='doctype' ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value); we_cmd('openFieldSelector','$cmd',st,s,0)";
-		$_button = $we_button->create_button('select', $_cmd, true, 100, 22, '', '', $_disabled, false, "_$name");
+		$_button = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled, false, "_$name");
 		if ($extraField == "") {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return htmlFormElementTable(
@@ -1511,7 +1499,6 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = '', $PathName = 'Path', $cmd = '', $filter = 'text/webedition', $disabled = false, $showtrash = false)
 	{
-		$we_button = new we_button();
 		if ($IDValue == '0') {
 			$_path = '/';
 		} elseif (isset($this->Model->$IDName) && !empty($this->Model->$IDName)) {
@@ -1557,11 +1544,11 @@ function onFolderSelectionChangeJS(elem) {
 		}
 
 		if ($showtrash) {
-			$_button = $we_button->create_button_table(
+			$_button = we_button::create_button_table(
 					array(
 
-							$we_button->create_button('select', $_cmd, true, 100, 22, '', '', $disabled),
-							$we_button->create_button(
+							we_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled),
+							we_button::create_button(
 									'image:btn_function_trash',
 									'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";',
 									true,
@@ -1572,7 +1559,7 @@ function onFolderSelectionChangeJS(elem) {
 			$_width = 157;
 		} else {
 			$_width = 120;
-			$_button = $we_button->create_button('select', $_cmd, true, 100, 22, '', '', $disabled);
+			$_button = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled);
 		}
 
 		//$_input  = htmlTextInput($PathName,58,$_path,'','id="yuiAcInput'.$PathName.'"','text',($this->_width_size-$_width),0);
@@ -1615,9 +1602,7 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLCategory()
 	{
-		$we_button = new we_button();
-
-		$addbut = $we_button->create_button(
+		$addbut = we_button::create_button(
 				"add",
 				"javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
 		$del_but = addslashes(
@@ -1688,9 +1673,9 @@ function onFolderSelectionChangeJS(elem) {
 				array(
 					'colspan' => '2', 'align' => 'right'
 				),
-				$we_button->create_button_table(
+				we_button::create_button_table(
 						array(
-							$we_button->create_button("delete_all", "javascript:removeAllCats()"), $addbut
+							we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 						)));
 
 		return $table->getHtmlCode() . $js . we_htmlElement::jsElement(
@@ -1733,13 +1718,11 @@ function onFolderSelectionChangeJS(elem) {
 	{
 		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
 
-		$we_button = new we_button();
-
 		$_type = $_REQUEST['type']; // doctype || class
 		$_selection = $_REQUEST['selection']; // templateid or classid
 		$_cmd = $_REQUEST['cmd']; // js command
 		$_multi = $_REQUEST['multi']; // js command
-		$_js = $we_button->create_state_changer(false) . '
+		$_js = we_button::create_state_changer(false) . '
 				function setFields() {
 					var list = document.we_form.fields.options;
 
@@ -1813,14 +1796,14 @@ function onFolderSelectionChangeJS(elem) {
 						'style="width: 300px; height: 200px; margin: ' . $this->_margin_bottom . 'px 0px ' . $this->_margin_bottom . 'px 0px;" onClick="setTimeout(\'selectItem();\',100);"'),
 				'space' => 0
 		);
-		$button = $we_button->position_yes_no_cancel(
-				$we_button->create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false),
+		$button = we_button::position_yes_no_cancel(
+				we_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false),
 				null,
-				$we_button->create_button('close', 'javascript:self.close();'));
+				we_button::create_button('close', 'javascript:self.close();'));
 
-		$we_button->create_button_table(
+		we_button::create_button_table(
 				array(
-					$we_button->create_button(
+					we_button::create_button(
 						'save',
 						'javascript:setFields();',
 						true,
@@ -1829,7 +1812,7 @@ function onFolderSelectionChangeJS(elem) {
 						'',
 						'',
 						true,
-						false), $we_button->create_button('close', 'javascript:self.close();')
+						false), we_button::create_button('close', 'javascript:self.close();')
 				));
 
 		$_body = we_htmlElement::htmlBody(
@@ -1876,15 +1859,13 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLDirSelector()
 	{
-		$we_button = new we_button();
-
 		$rootDirID = 0;
 
 		//javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3= we_cmd_enc("opener." . $this->topFrame . ".mark();");
-		$_button_doc = $we_button->create_button(
+		$_button_doc = we_button::create_button(
 				'select',
 				"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "','$rootDirID')");
 		$_countClasses = 1;
@@ -1895,7 +1876,7 @@ function onFolderSelectionChangeJS(elem) {
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['FolderID'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3= we_cmd_enc("opener." . $this->topFrame . ".mark();");
-		$_button_obj = defined('OBJECT_TABLE') ? $we_button->create_button(
+		$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button(
 				'select', 
 				"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "',objectDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", 
 				true, 
@@ -1907,7 +1888,7 @@ function onFolderSelectionChangeJS(elem) {
 				false, 
 				"_XFolder") : '';
 
-		$_button_cat = $we_button->create_button(
+		$_button_cat = we_button::create_button(
 				'select',
 				"javascript:we_cmd('openCatselector',document.we_form.elements['FolderID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','" . session_id() . "','$rootDirID')");
 
@@ -1948,8 +1929,6 @@ function onFolderSelectionChangeJS(elem) {
 	function getHTMLDynPreview()
 	{
 		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		$we_button = new we_button();
-
 		$_select = new we_htmlSelect(
 				array(
 
@@ -1999,7 +1978,7 @@ function onFolderSelectionChangeJS(elem) {
 								'100%',
 								$_parts,
 								30,
-								'<div style="float:right;">' . $we_button->create_button(
+								'<div style="float:right;">' . we_button::create_button(
 										'close',
 										'javascript:self.close();') . '</div>',
 								-1,
@@ -2077,8 +2056,6 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLLink($prefix = '')
 	{
-		$we_button = new we_button();
-	
 		//javascript:we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['" . $prefix . "UrlID'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['" . $prefix . "UrlIDPath'].value");
@@ -2099,7 +2076,7 @@ function onFolderSelectionChangeJS(elem) {
 		$yuiSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);
 		$yuiSuggest->setSelector("Docselector");
 		$yuiSuggest->setWidth($this->_width_size - 120);
-		$yuiSuggest->setSelectButton($we_button->create_button('select', $_cmd));
+		$yuiSuggest->setSelectButton(we_button::create_button('select', $_cmd));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -2736,8 +2713,6 @@ function onFolderSelectionChangeJS(elem) {
 			), ""));
 		}
 
-		$we_button = new we_button();
-
 		$table1 = new we_htmlTable(array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"
 		), 1, 1);
@@ -2751,10 +2726,10 @@ function onFolderSelectionChangeJS(elem) {
 		$table2->setColContent(
 				0,
 				0,
-				$we_button->create_button_table(
+				we_button::create_button_table(
 						array(
 
-								$we_button->create_button(
+								we_button::create_button(
 										"save",
 										"javascript:we_save();",
 										true,

@@ -32,12 +32,11 @@ protect();
 htmlTop(g_l('messageConsole',"[headline]"));
 print STYLESHEET;
 
-$we_button = new we_button();
 
-$deleteAllButton = $we_button->create_button("delete", "javascript:messageConsoleWindow.removeMessages();");
-$closeButton = $we_button->create_button("close", "javascript:window.close();");
+$deleteAllButton = we_button::create_button("delete", "javascript:messageConsoleWindow.removeMessages();");
+$closeButton = we_button::create_button("close", "javascript:window.close();");
 
-$_buttons = $we_button->position_yes_no_cancel(	$deleteAllButton,
+$_buttons = we_button::position_yes_no_cancel(	$deleteAllButton,
 												null,
 												$closeButton);
 

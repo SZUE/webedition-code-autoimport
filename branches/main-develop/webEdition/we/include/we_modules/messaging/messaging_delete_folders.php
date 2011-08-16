@@ -40,7 +40,6 @@ if (!preg_match('|^([a-f0-9]){32}$|',$_REQUEST['we_transaction'])) {
 	exit();
 }
 
-$we_button = new we_button();
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -114,9 +113,9 @@ $form = '<form name="we_form" method="post">' .
     .
     '</form>';
 
-$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", "javascript:do_delete()"),
+$_buttons = we_button::position_yes_no_cancel(	we_button::create_button("ok", "javascript:do_delete()"),
     											"",
-    											$we_button->create_button("cancel","javascript:top.content.we_cmd('messaging_start_view')")
+    											we_button::create_button("cancel","javascript:top.content.we_cmd('messaging_start_view')")
     								   			);
 ?>
 </head>

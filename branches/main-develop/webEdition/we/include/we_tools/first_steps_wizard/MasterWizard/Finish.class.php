@@ -72,8 +72,7 @@ class Finish extends leWizardStepBase
 		}
 
 		// oputput of the wizard step
-		$weButton = new we_button();
-
+		
 		$RebuildBtnWidth = ($GLOBALS["WE_LANGUAGE"] == "Finnish") ? "130" : "100";
 		$Rebuild = $weButton->create_button('rebuild', 'javascript:top.openRebuild();', true, $RebuildBtnWidth, 22);
 

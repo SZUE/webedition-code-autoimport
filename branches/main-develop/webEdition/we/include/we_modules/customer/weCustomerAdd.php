@@ -34,7 +34,6 @@ class weCustomerAdd{
 	}
 
 	function getHTMLSortEditor(&$pob){
-		$we_button=new we_button();
 		$branch=$pob->getHTMLBranchSelect();
 		$branch->setOptionVT(1,g_l('modules_customer','[other]'),g_l('modules_customer','[other]'));
 
@@ -109,7 +108,7 @@ class weCustomerAdd{
 				$sort_table->setCol($row_num,1,array("class"=>"defaultfont"),$field->getHtmlCode());
 				$sort_table->setCol($row_num,2,array("class"=>"defaultfont"),$function->getHtmlCode());
 				$sort_table->setCol($row_num,3,array("class"=>"defaultfont"),$order->getHtmlCode());
-				$sort_table->setCol($row_num,4,array("class"=>"defaultfont"),$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','$k',$fcounter)",true,30));
+				$sort_table->setCol($row_num,4,array("class"=>"defaultfont"),we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','$k',$fcounter)",true,30));
 
 				$fcounter++;
 
@@ -125,26 +124,26 @@ class weCustomerAdd{
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num,4,array(),getPixel(2,5).$we_button->create_button("image:btn_function_plus", "javascript:we_cmd('add_sort_field',document.we_form.sort_".$counter.".value)",true,30));
+			$sort_table->setCol($row_num,4,array(),getPixel(2,5).we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort_field',document.we_form.sort_".$counter.".value)",true,30));
 
 
 			$fhidden.=we_htmlElement::htmlHidden(array("name"=>"fcounter_".$counter,"value"=>"$fcounter"));
 
 			$_htmlCode = 	$pob->getHTMLBox(we_htmlElement::htmlInput(array("name"=>"sort_".$counter,"value"=>$k,"size"=>"40")),g_l('modules_customer','[name]'),100,50,25,0,0,50).
 							$sort_table->getHtmlCode() .
-							$we_button->create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
+							we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
 
 			$_parts[] = array('html'=>$_htmlCode,'headline'=>$k);
 
 			$counter++;
 		}
 
-		$cancel = $we_button->create_button("cancel","javascript:self.close();");
-		$save = $we_button->create_button("save", "javascript:we_cmd('save_sort')");
+		$cancel = we_button::create_button("cancel","javascript:self.close();");
+		$save = we_button::create_button("save", "javascript:we_cmd('save_sort')");
 
-		$_buttons = $we_button->position_yes_no_cancel($save,null,$cancel);
+		$_buttons = we_button::position_yes_no_cancel($save,null,$cancel);
 
-		$add_button= $we_button->create_button_table(array($we_button->create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"),we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[add_sort_group]'))));
+		$add_button= we_button::create_button_table(array(we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"),we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[add_sort_group]'))));
 		$_parts[] = array('html'=>$add_button);
 
 		$sort_code = we_multiIconBox::getHTML("","100%",$_parts,30,$_buttons,-1,"","",false,"","",459);
@@ -303,8 +302,7 @@ class weCustomerAdd{
 
 			$search_arr=array();
 
-		 	$we_button=new we_button();
-			$search_but=$we_button->create_button("image:btn_function_search", "javascript:we_cmd('search')");
+		 	$search_but=we_button::create_button("image:btn_function_search", "javascript:we_cmd('search')");
 		 	$colspan=4;
 
 			for($i=0;$i<$count;$i++){
@@ -346,7 +344,7 @@ class weCustomerAdd{
 					}
 					$value_i = htmlTextInput("value_".$i,20,(isset($search_arr["value_".$i]) ? $search_arr["value_".$i] : ""),"","id='value_$i'","text","185");
 					$value_date_i = htmlTextInput("value_date_$i",20,"","","id='value_date_$i' style='display:none; width:150' readonly","text",""); // empty field to display the timestemp in date formate - handeld on the client in js
-					$btnDatePicker = $we_button->create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"_$i");
+					$btnDatePicker = we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"_$i");
 					$advsearch->addRow();
 					$advsearch->setCol($c,0,array(),$branch->getHtmlCode());
 					$advsearch->setCol($c,1,array(),$field->getHtmlCode());
@@ -363,9 +361,9 @@ class weCustomerAdd{
 			$c++;
 			$advsearch->addRow();
 			$advsearch->setCol($c,0,array("colspan"=>$colspan),
-						$we_button->create_button_table(array(
-								$we_button->create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
-								$we_button->create_button("image:btn_function_trash","javascript:we_cmd('del_search')")
+						we_button::create_button_table(array(
+								we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
+								we_button::create_button("image:btn_function_trash","javascript:we_cmd('del_search')")
 							)
 						)
 			);
@@ -377,10 +375,10 @@ class weCustomerAdd{
 			);
 			$search->setCol(2,0,array(),getPixel(5,5));
 			$search->setCol(3,0,array("align"=>"right","colspan"=>$colspan),
-									"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".$we_button->create_button_table(
+									"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".we_button::create_button_table(
 										array(
 											we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[simple_search]')),
-											$we_button->create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
+											we_button::create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
 											$search_but
 										)
 									)."</td><td>&nbsp;</td></tr></table>"
@@ -428,8 +426,6 @@ class weCustomerAdd{
 	}
 
 	function getHTMLTreeHeader(&$pob){
-		$we_button=new we_button();
-
 		$select=$pob->getHTMLSortSelect();
 		$select->setAttributes(array("OnChange"=>"applySort();","style"=>"width:150px"));
 		$select->selectOption($pob->View->settings->Prefs["default_sort_view"]);
@@ -441,8 +437,8 @@ class weCustomerAdd{
 		$table->setRow(0,array("valign"=>"bottom"));
 
 		$table->setCol(0,0,array("nowrap"=>null,"class"=>"small"),$select->getHtmlCode());
-		$table->setCol(0,1,array("nowrap"=>null,"class"=>"small"),$we_button->create_button("image:btn_function_reload", "javascript:applySort();"));
-		$table->setCol(0,2,array("nowrap"=>null,"class"=>"small"),$we_button->create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
+		$table->setCol(0,1,array("nowrap"=>null,"class"=>"small"),we_button::create_button("image:btn_function_reload", "javascript:applySort();"));
+		$table->setCol(0,2,array("nowrap"=>null,"class"=>"small"),we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
 		$hiddens=we_htmlElement::htmlHidden(array("name"=>"pnt","value"=>"treeheader")).
 					we_htmlElement::htmlHidden(array("name"=>"pid","value"=>"0")).

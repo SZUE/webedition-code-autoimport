@@ -100,20 +100,19 @@ class weLangDialog extends weDialog{
 	}
 
 	function getDialogButtons(){
-		$we_button = new we_button();
-		$trashbut =  $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[lang]'].value='';weDoOk();");
+		$trashbut =  we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[lang]'].value='';weDoOk();");
 
 		$buttons = array();
 		array_push($buttons, $trashbut);
 
 		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")) {
-			$glossarybut =  $we_button->create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
+			$glossarybut =  we_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 			array_push($buttons, $glossarybut);
 		}
 
 		array_push($buttons, parent::getDialogButtons());
 
-		return $we_button->create_button_table($buttons);
+		return we_button::create_button_table($buttons);
 
 	}
 

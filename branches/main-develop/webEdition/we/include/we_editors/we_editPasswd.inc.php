@@ -33,8 +33,6 @@ htmlTop(g_l('global','[changePass]'));
 
 if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 	print STYLESHEET;
-
-	$we_button = new we_button();
 ?>
 	<script  type="text/javascript"><!--
 		function add() {
@@ -54,8 +52,8 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 					$newpass = htmlTextInput("newpasswd",20,"","32","","password",200);
 					$newpass2 = htmlTextInput("newpasswd2",20,"","32","","password",200);
 
-					$okbut     = $we_button->create_button("save", "javascript:document.forms[0].submit();");
-					$cancelbut = $we_button->create_button("cancel", "javascript:top.close();");
+					$okbut     = we_button::create_button("save", "javascript:document.forms[0].submit();");
+					$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 
 					$content = '
 						<table border="0" cellpadding="0" cellspacing="0">
@@ -94,7 +92,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 						</table>';
 
 
-					$_buttons = $we_button->position_yes_no_cancel(	$okbut,
+					$_buttons = we_button::position_yes_no_cancel(	$okbut,
 																	null,
 																	$cancelbut);
 

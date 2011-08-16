@@ -222,7 +222,6 @@ $jsFunction = '
 // at top of page show a table with all actual vats
 $allVats = weShopVats::getAllShopVATs();
 
-$we_button = new we_button();
 
 $parts = array();
 $vatJavaScript = '';
@@ -255,8 +254,8 @@ if (sizeof($allVats) > 0) {
 		<td>' . htmlspecialchars($_weShopVat->text) . '</td>
 		<td>' . $_weShopVat->vat . '%</td>
 		<td>' . ($_weShopVat->standard ? g_l('global',"[yes]") : g_l('global',"[no]")) . '</td>
-		<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
-		<td>' . $we_button->create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
+		<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
+		<td>' . we_button::create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
 	</tr>';
 		unset($_weShopVat);
 	}
@@ -266,7 +265,7 @@ if (sizeof($allVats) > 0) {
 	';
 }
 
-$plusBut = $we_button->create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
+$plusBut = we_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
 
 print "
 	<script type='text/javascript'>
@@ -306,7 +305,7 @@ $formVat = '
 <tr>
 	<td width="100">' . g_l('modules_shop','[vat][vat_form_name]') . ':</td>
 	<td><input class="wetextinput" type="text" id="weShopVatText" name="weShopVatText" value="' . $weShopVat->text . '" /></td>
-	<td>' . $we_button->create_button('save', 'javascript:we_cmd(\'save\');') . '</td>
+	<td>' . we_button::create_button('save', 'javascript:we_cmd(\'save\');') . '</td>
 </tr>
 <tr>
 	<td>' . g_l('modules_shop','[vat][vat_form_vat]') . ':</td>
@@ -335,10 +334,10 @@ print we_multiIconBox::getHTML(
 	"100%",
 	$parts,
 	30,
-	$we_button->position_yes_no_cancel(
+	we_button::position_yes_no_cancel(
 		'',
 		'',
-		$we_button->create_button('close', 'javascript:we_cmd(\'close\');')
+		we_button::create_button('close', 'javascript:we_cmd(\'close\');')
 	),
 	-1,
 	'',

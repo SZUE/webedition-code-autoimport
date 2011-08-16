@@ -78,7 +78,6 @@ class we_versions_wizard
 
 		$js .= '<script type="text/javascript">function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}</script>';
 
-		$WE_BTN = new we_button();
 		$cancelButton = $WE_BTN->create_button("cancel", "javascript:top.close();");
 		$refreshButton = $WE_BTN->create_button(
 				"refresh",
@@ -351,9 +350,7 @@ class we_versions_wizard
 
 	function getDelete1()
 	{
-
 		$version = new weVersions();
-		$button = new we_button();
 
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "delete_versions";
 
@@ -659,10 +656,7 @@ class we_versions_wizard
 
 	function getReset1()
 	{
-
 		$version = new weVersions();
-		$button = new we_button();
-
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
 
 		$versions_reset_all = isset($_REQUEST["version_reset_all"]) ? 1 : 0;
@@ -1550,8 +1544,6 @@ class we_versions_wizard
 	 */
 	function getPage2Js($cont, $action, $folders = "folders")
 	{
-
-		$button = new we_button();
 		$disabled = false;
 		if ($cont) {
 			$disabled = true;

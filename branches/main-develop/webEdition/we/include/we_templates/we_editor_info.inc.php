@@ -33,8 +33,6 @@ if(defined("WORKFLOW_TABLE")){
 }
 htmlTop();
 
-$we_button = new we_button();
-
 print STYLESHEET; ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script type="text/javascript">
@@ -121,7 +119,7 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 			'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo',"[date_format]"),$GLOBALS['we_doc']->Published) : "-") .'</div>';
 
 		if ($GLOBALS['we_doc']->Published && $GLOBALS["we_doc"]->ModDate > $GLOBALS['we_doc']->Published) {
-			$_html .= '<div style="margin-bottom:10px;">' . $we_button->create_button('revert_published','javascript:revertToPublished();',true,280) .'</div>';
+			$_html .= '<div style="margin-bottom:10px;">' . we_button::create_button('revert_published','javascript:revertToPublished();',true,280) .'</div>';
 		}
 
 	}

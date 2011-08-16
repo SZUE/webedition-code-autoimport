@@ -109,8 +109,7 @@ function we_tag_userInput($attribs, $content){
 				$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
 
-				$we_button = new we_button();
-
+				
 				if ($editable) {
 
 					$foo = attributFehltError($attribs, "parentid", "userInput");
@@ -215,8 +214,7 @@ function we_tag_userInput($attribs, $content){
 				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
 
-				$we_button = new we_button();
-
+				
 				if ($editable) {
 
 					$foo = attributFehltError($attribs, "parentid", "userInput");
@@ -326,8 +324,7 @@ function we_tag_userInput($attribs, $content){
 				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
 
-				$we_button = new we_button();
-
+				
 				if ($editable) {
 					$foo = attributFehltError($attribs, "parentid", "userInput");
 					if ($foo)
@@ -433,8 +430,7 @@ function we_tag_userInput($attribs, $content){
 
 				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
-				$we_button = new we_button();
-
+				
 				if ($editable) {
 
 					$foo = attributFehltError($attribs, "parentid", "userInput");

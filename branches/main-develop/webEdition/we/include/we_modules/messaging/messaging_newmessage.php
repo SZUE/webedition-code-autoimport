@@ -45,7 +45,6 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 print STYLESHEET;
 
-$we_button = new we_button();
 ?>
 
 <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
@@ -117,9 +116,9 @@ $tbl = '<table align="center" cellpadding="6" width="100%">
       <tr><td colspan="2"><textarea cols="68" rows="15" name="mn_body" style="width:605px">' . $compose->get_msg_text() . '</textarea></td></tr>
     </table>';
 
-	$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", "javascript:do_send()"),
+	$_buttons = we_button::position_yes_no_cancel(	we_button::create_button("ok", "javascript:do_send()"),
 	    											"",
-	    											$we_button->create_button("cancel", "javascript:window.close()")
+	    											we_button::create_button("cancel", "javascript:window.close()")
 	    										);
 
     echo htmlDialogLayout($tbl, "<div style='padding:6px'>".$heading."</div>", $_buttons,"100%","24","","hidden");

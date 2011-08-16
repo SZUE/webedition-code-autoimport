@@ -38,7 +38,6 @@ class doclistView {
 	 * @return javascript code
 	 */
 	function getSearchJS() {
-		$we_button = new we_button ( );
 
 		$h = 0;
 		$addinputRows = "";
@@ -414,7 +413,7 @@ class doclistView {
 
             cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rows+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rows+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rows+')" ) . '\';
             newRow.appendChild(cell);
 
           elem.appendChild(newRow);
@@ -452,7 +451,7 @@ class doclistView {
 
             cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
         }
         else if(value=="temp_category") {
@@ -481,7 +480,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
         }
         else if(value=="temp_template_id" || value=="MasterTemplateID") {
@@ -510,7 +509,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
         }
         else if(value=="temp_doc_type") {
@@ -531,7 +530,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
 
         }
@@ -553,7 +552,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
 
         }
@@ -575,7 +574,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
 
         }
@@ -614,7 +613,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
 
         }
@@ -640,7 +639,7 @@ class doclistView {
 
           cell = document.createElement("TD");
             cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . $we_button->create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
+            cell.innerHTML=\'' . we_button::create_button ( "image:btn_function_trash", "javascript:delRow('+rowNr+')" ) . '\';
             row.appendChild(cell);
         }
         if(from=="temp_template_id" || from=="ContentType" || from=="temp_doc_type" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
@@ -785,14 +784,13 @@ class doclistView {
 	 * @return html for search dialog box
 	 */
 	function getSearchDialog() {
-		$we_button = new we_button ( );
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
         <tr>
         <td class="weDocListSearchHeadline">' . g_l('searchtool',"[suchen]") . '
         </td>
         <td>' . getPixel ( 10, 2 ) . '
         </td>
-        <td>' . getPixel ( 40, 2 ) . '' . $we_button->create_button ( "image:btn_direction_right", "javascript:switchSearch(1)", false ) . '</td>
+        <td>' . getPixel ( 40, 2 ) . '' . we_button::create_button ( "image:btn_direction_right", "javascript:switchSearch(1)", false ) . '</td>
         <td width="100%">' . getPixel ( 10, 2 ) . '
         </td>
         </tr>
@@ -804,7 +802,7 @@ class doclistView {
         </td>
         <td>' . getPixel ( 10, 2 ) . '
         </td>
-        <td>' . getPixel ( 40, 2 ) . '' . $we_button->create_button ( "image:btn_direction_down", "javascript:switchSearch(0)", false ) . '</td>
+        <td>' . getPixel ( 40, 2 ) . '' . we_button::create_button ( "image:btn_direction_down", "javascript:switchSearch(0)", false ) . '</td>
         <td width="100%">' . getPixel ( 10, 2 ) . '
         </td>
         </tr>
@@ -846,7 +844,7 @@ class doclistView {
 		$GLOBALS ['we_doc']->searchclassFolder->location = $r3;
 
 		for($i = 0; $i < $GLOBALS ['we_doc']->searchclassFolder->height; $i ++) {
-			$button = $we_button->create_button ( "image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false );
+			$button = we_button::create_button ( "image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false );
 
 			$locationDisabled = "";
 			$handle = "";
@@ -882,7 +880,7 @@ class doclistView {
 					$wecmdenc2= we_cmd_enc("document.we_form.elements['search[" . $i . "]'].value");
 					$wecmdenc3= '';
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id () . "','$_rootDirID','','text/weTmpl')";
-					$_button = $we_button->create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
+					$_button = we_button::create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
 					$selector = htmlFormElementTable ( htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0 ), '', 'left', 'defaultfont', we_htmlElement::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), getPixel ( 5, 4 ), $_button );
 
 					$searchInput = $selector;
@@ -893,7 +891,7 @@ class doclistView {
 					$_rootDirID = 0;
 
 					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','')";
-					$_button = $we_button->create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
+					$_button = we_button::create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
 					$selector = htmlFormElementTable ( htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0 ), '', 'left', 'defaultfont', we_htmlElement::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), getPixel ( 5, 4 ), $_button );
 
 					$searchInput = $selector;
@@ -917,9 +915,9 @@ class doclistView {
           <td colspan="4">' . getPixel ( 20, 10 ) . '</td>
         </tr>
         <tr>
-          <td width="215">' . $we_button->create_button ( "add", "javascript:newinput();" ) . '</td>
+          <td width="215">' . we_button::create_button ( "add", "javascript:newinput();" ) . '</td>
           <td width="155"></td>
-          <td width="188" align="right">' . $we_button->create_button ( "search", "javascript:search(true);" ) . '</td>
+          <td width="188" align="right">' . we_button::create_button ( "search", "javascript:search(true);" ) . '</td>
           <td></td>
         </tr>
 
@@ -1330,8 +1328,6 @@ class doclistView {
 	function getSearchParameterTop($foundItems) {
 		$out = "";
 
-		$we_button = new we_button ( );
-
 		$anzahl = array (10 => 10, 25 => 25, 50 => 50, 100 => 100 );
 
 		if (isset ( $_REQUEST ["we_cmd"] ['obj'] )) {
@@ -1387,13 +1383,13 @@ class doclistView {
           <td>' . $thisObj->getNextPrev ( $foundItems ) . '</td>
           <td>' . getPixel ( 10, 12 ) . '</td>
           <td style="width:50px;">
-          ' . $we_button->create_button ( "image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false ) . '
+          ' . we_button::create_button ( "image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','folder','','" . $id . "')", true, 40, "", "", "", false ) . '
           </td>
           <td>
-          ' . $we_button->create_button ( "image:iconview", "javascript:setview(1);", true, 40, "", "", "", false ) . '
+          ' . we_button::create_button ( "image:iconview", "javascript:setview(1);", true, 40, "", "", "", false ) . '
           </td>
           <td>
-          ' . $we_button->create_button ( "image:listview", "javascript:setview(0);", true, 40, "", "", "", false ) . '
+          ' . we_button::create_button ( "image:listview", "javascript:setview(0);", true, 40, "", "", "", false ) . '
           </td>
         </tr>
         <tr>
@@ -1411,14 +1407,12 @@ class doclistView {
 			$thisObj = $this;
 		}
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-		$we_button = new we_button();
-
 		 $publishButton = "";
          $publishButtonCheckboxAll = "";
 
 		 if (we_hasPerm('PUBLISH')) {
 		 		$publishButtonCheckboxAll = we_forms::checkbox("1", 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
-			    $publishButton = $we_button->create_button("publish", "javascript:publishDocs();",true,100,22,"","");
+			    $publishButton = we_button::create_button("publish", "javascript:publishDocs();",true,100,22,"","");
 			}
 
 		$out = '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
@@ -1438,7 +1432,6 @@ class doclistView {
 	 * @return string, html for paging GUI
 	 */
 	function getNextPrev($we_search_anzahl) {
-		$we_button = new we_button ( );
 
 		if (isset ( $_REQUEST ["we_cmd"] ['obj'] )) {
 			$obj = $_REQUEST ["we_cmd"] ['obj'];
@@ -1453,10 +1446,10 @@ class doclistView {
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>';
 
 		if ($searchstart) {
-			$out .= $we_button->create_button ( "back", "javascript:back(" . $anzahl . ");" );
+			$out .= we_button::create_button ( "back", "javascript:back(" . $anzahl . ");" );
 		} else {
 
-			$out .= $we_button->create_button ( "back", "", true, 100, 22, "", "", true );
+			$out .= we_button::create_button ( "back", "", true, 100, 22, "", "", true );
 		}
 
 		$out .= '</td><td>' . getPixel ( 10, 2 ) . '</td>
@@ -1472,10 +1465,10 @@ class doclistView {
 		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . getPixel ( 10, 2 ) . '</td><td>';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
-			$out .= $we_button->create_button ( "next", "javascript:next(" . $anzahl . ");" );
+			$out .= we_button::create_button ( "next", "javascript:next(" . $anzahl . ");" );
 		} else {
 
-			$out .= $we_button->create_button ( "next", "", true, 100, 22, "", "", true );
+			$out .= we_button::create_button ( "next", "", true, 100, 22, "", "", true );
 		}
 		$out .= '</td><td>' . getPixel ( 10, 2 ) . '</td><td>';
 
@@ -1554,8 +1547,7 @@ class doclistView {
 	}
 
 	function getDateSelector($_label, $_name, $_btn, $value) {
-		$we_button = new we_button ( );
-		$btnDatePicker = $we_button->create_button ( "image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn );
+		$btnDatePicker = we_button::create_button ( "image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn );
 		$oSelector = new we_htmlTable ( array ("cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell" ), 1, 5 );
 		$oSelector->setCol ( 0, 2, null, htmlTextInput ( $name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100 ) );
 		$oSelector->setCol ( 0, 3, null, "&nbsp;" );

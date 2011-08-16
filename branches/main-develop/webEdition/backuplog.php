@@ -91,10 +91,8 @@ if (we_hasPerm("BACKUPLOG")){
 <div id="info" style="display: block;">
 <?php
 
-$we_button = new we_button();
-
-$buttons = $we_button->position_yes_no_cancel(
-			$we_button->create_button("close", "javascript:self.close()"),
+$buttons = we_button::position_yes_no_cancel(
+			we_button::create_button("close", "javascript:self.close()"),
 			'',
 			''
 		);

@@ -28,9 +28,8 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-$we_button = new we_button();
-$nextButton = $we_button->create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=languages&update_cmd=languages&detail=selectLanguages');
-$deleteButton = $we_button->create_button('delete', 'javascript:document.we_form.submit()');
+$nextButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=languages&update_cmd=languages&detail=selectLanguages');
+$deleteButton = we_button::create_button('delete', 'javascript:document.we_form.submit()');
 
 $languages = liveUpdateFunctions::getInstalledLanguages();
 

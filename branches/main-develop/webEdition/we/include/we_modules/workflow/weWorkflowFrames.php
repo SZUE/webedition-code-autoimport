@@ -166,7 +166,6 @@ class weWorkflowFrames extends weModuleFrames{
 			return '<body bgcolor="#EFF0EF"></body></html>';
 		}
 
-		$we_button = new we_button();
 ?>
 
 		<script  type="text/javascript">
@@ -197,7 +196,7 @@ class weWorkflowFrames extends weModuleFrames{
 	<?php if($mode==0){?>
 			<tr>
 				<td><?php print getPixel(15,5)?></td>
-				<td><?php print $we_button->create_button("save", "javascript:we_save();") ?></td>
+				<td><?php print we_button::create_button("save", "javascript:we_save();") ?></td>
 				<td class="defaultfont"><?php print $this->View->getStatusHTML();?></td>
 			</tr>
 	<?php }?>
@@ -246,5 +245,3 @@ class weWorkflowFrames extends weModuleFrames{
 	}
 
 }
-
-?>

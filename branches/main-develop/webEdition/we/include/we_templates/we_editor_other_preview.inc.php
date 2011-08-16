@@ -68,8 +68,6 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 	print STYLESHEET;
-
-	$we_button = new we_button();
 ?>
 </head>
 

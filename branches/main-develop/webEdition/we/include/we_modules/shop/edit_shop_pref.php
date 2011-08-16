@@ -49,7 +49,6 @@ htmlTop();
 print STYLESHEET;
 
 
-$we_button = new we_button();
 $ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path' ,'IsFolder', 'Icon', 'Text');
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
 $selectFields['-'] = '-';
@@ -268,9 +267,9 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 
 
 
-	$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:document.we_form.submit();"),
+	$_buttons = we_button::position_yes_no_cancel(	we_button::create_button("save", "javascript:document.we_form.submit();"),
 													"",
-													$we_button->create_button("cancel", "javascript:self.close();")
+													we_button::create_button("cancel", "javascript:self.close();")
 													);
 
 	$frame = htmlDialogLayout($_htmlTable->getHtmlCode(), g_l('modules_shop','[pref]'), $_buttons);

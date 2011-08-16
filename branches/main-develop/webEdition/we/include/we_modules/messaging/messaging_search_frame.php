@@ -33,7 +33,6 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
 
-$we_button = new we_button();
 ?>
     <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
     <script type="text/javascript">
@@ -62,10 +61,10 @@ $we_button = new we_button();
 	  <td width="10"></td>
 	<?php
 	    echo '<td class="defaultfont">' .
-	    $we_button->create_button_table(array(	htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15),
-	    										$we_button->create_button("search", "javascript:doSearch();"),
-	    										$we_button->create_button("advanced", "javascript:launchAdvanced()", true),
-	    										$we_button->create_button("reset_search", "javascript:clearSearch();")), 10)
+	    we_button::create_button_table(array(	htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15),
+	    										we_button::create_button("search", "javascript:doSearch();"),
+	    										we_button::create_button("advanced", "javascript:launchAdvanced()", true),
+	    										we_button::create_button("reset_search", "javascript:clearSearch();")), 10)
 		. '</td>';
 	?>
 	  </tr>

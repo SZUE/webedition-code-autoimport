@@ -77,8 +77,7 @@ function importFile(){
 ##################################################################################################
 
 	function getNextBut(){
-		$we_button = new we_button();
-		return $we_button->create_button("next", "javascript:importFile();");
+		return we_button::create_button("next", "javascript:importFile();");
 	}
 
 ##################################################################################################

@@ -32,11 +32,10 @@
 			if (isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1) {
 				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_LOG_TABLE);
 			}
-			$we_button = new we_button();
-
-			$close = $we_button->create_button("close","javascript:self.close();");
-			$refresh = $we_button->create_button("refresh","javascript:location.reload();");
-			$deleteLogBut = $we_button->create_button("clear_log","javascript:clearLog()");
+			
+			$close = we_button::create_button("close","javascript:self.close();");
+			$refresh = we_button::create_button("refresh","javascript:location.reload();");
+			$deleteLogBut = we_button::create_button("clear_log","javascript:clearLog()");
 
 
 			$headline = array();
@@ -70,9 +69,9 @@
 
 				$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 				if($start> 0){
-					$nextprev .= $we_button->create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=".($start-$count)); //bt_back
+					$nextprev .= we_button::create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=".($start-$count)); //bt_back
 				}else{
-					$nextprev .= $we_button->create_button("back", "", false, 100, 22, "", "", true);
+					$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 				}
 
 				$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($start+1)."&nbsp;-&nbsp;";
@@ -84,9 +83,9 @@
 				$next = $start + $count;
 
 				if($next < $num_all){
-					$nextprev .= $we_button->create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=".$next); //bt_next
+					$nextprev .= we_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=".$next); //bt_next
 				}else{
-					$nextprev .= $we_button->create_button("next", "", "", 100, 22, "", "", true);
+					$nextprev .= we_button::create_button("next", "", "", 100, 22, "", "", true);
 				}
 				$nextprev .= "</td></tr></table>";
 
@@ -113,7 +112,7 @@
 			}
 
 			$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
-					we_multiIconBox::getHTML("show_log_data","100%",$parts,30,$we_button->position_yes_no_cancel($refresh,$close,$deleteLogBut),-1,'','',false,g_l('prefs','[formmail_log]'),"",558) .
+					we_multiIconBox::getHTML("show_log_data","100%",$parts,30,we_button::position_yes_no_cancel($refresh,$close,$deleteLogBut),-1,'','',false,g_l('prefs','[formmail_log]'),"",558) .
 					we_htmlElement::jsElement("self.focus();")
 
 			);

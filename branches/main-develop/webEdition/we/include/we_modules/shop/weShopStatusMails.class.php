@@ -320,15 +320,14 @@ class weShopStatusMails {
 	function getEMailHandlerCode($was,$dateSet){
 		$datetimeform = "00.00.0000 00:00";
 		$dateform = "00.00.0000";
-		$we_button = new we_button();
 		if ($this->FieldsMails['Date'.$was]){
 			$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">'.g_l('modules_shop','[statusmails][EMail]').': </td>';
 			if ($_REQUEST["Mail".$was] != $datetimeform && $_REQUEST["Mail".$was]!='') {
 				$EMailhandler .= '<td class="defaultfont" width="150">'.$_REQUEST["Mail".$was].'</td>';
-				$but =  $we_button->create_button("image:/mail_resend","javascript:check=confirm('".g_l('modules_shop','[statusmails][resent]')."'); if (check){SendMail('".$was."');}");
+				$but =  we_button::create_button("image:/mail_resend","javascript:check=confirm('".g_l('modules_shop','[statusmails][resent]')."'); if (check){SendMail('".$was."');}");
 			} else {
 				$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
-				$but =  $we_button->create_button("image:/mail_send","javascript:SendMail('".$was."')");
+				$but =  we_button::create_button("image:/mail_send","javascript:SendMail('".$was."')");
 			}
 			if ($dateSet!= $dateform){
 				$EMailhandler .= '<td class="defaultfont">'.$but.'</td>';

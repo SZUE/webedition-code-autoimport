@@ -44,9 +44,7 @@ echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min
 
 print $versionsLogView->getJS();
 
-$we_button = new we_button();
-
-$closeButton = $we_button->create_button("close", "javascript:window.close();");
+$closeButton = we_button::create_button("close", "javascript:window.close();");
 
 
 ?>

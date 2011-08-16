@@ -43,10 +43,6 @@ define('WE_JS_BUTTON_IDENTIFY','javascript:');
 
 class we_button {
 
-	 function we_button() {}
-
-
-
 	/**
 	* Gets the HTML Code for the button.
 	* @return string
@@ -64,7 +60,7 @@ class we_button {
 	* @param boolean $important
 	* @static
 	*/
-	function getButton($value, $id, $cmd='', $width=100, $title='',
+	static function getButton($value, $id, $cmd='', $width=100, $title='',
 						$disabled=false, $margin='', $padding='', $key='',$float='', $display='', $important=true, $isFormButton=false, $cssInline=false){
 		return 	'<table cellpadding="0" cellspacing="0" border="0"'.($title ? ' title="'.htmlspecialchars($title).'"' : '').
 					' id="'.$id.'" class="weBtn'.($disabled ? 'Disabled' : '').
@@ -90,7 +86,7 @@ class we_button {
 	* @param string $extrastyle
 	* @param boolean $important
 	*/
-	function getInlineStyleByParam($width='', $height='', $float='',
+	static function getInlineStyleByParam($width='', $height='', $float='',
 											$margin='', $padding='', $display='',
 											$extrastyle='', $important=true, $clear=''){
 
@@ -119,7 +115,7 @@ class we_button {
 	 * @return     string
 	 */
 
-	function create_state_changer($standalone = true) {
+	static function create_state_changer($standalone = true) {
 		// Define start of JavaScript
 		$_JavaScript_start = '
 			<script  type="text/javascript">
@@ -185,7 +181,7 @@ class we_button {
 	 * @return     string
 	 */
 
-	function create_button($name, $href, $alt = true, $width = 100, $height = 22, $on_click = "", $target = "", $disabled = false, $uniqid = true, $suffix = "", $opensDialog=false) {
+	static function create_button($name, $href, $alt = true, $width = 100, $height = 22, $on_click = "", $target = "", $disabled = false, $uniqid = true, $suffix = "", $opensDialog=false) {
 
 		$cmd = "";
 		// Initialize variable for Form:Submit behaviour
@@ -322,7 +318,7 @@ class we_button {
 	 * @return     string
 	 */
 
-	function create_button_table($buttons, $gap = 10, $attribs = "") {
+	static function create_button_table($buttons, $gap = 10, $attribs = "") {
 		// Get number of buttons
 		$_count_button = count($buttons);
 
@@ -379,7 +375,7 @@ class we_button {
 	 * @return     string
 	 */
 
-	function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = "", $attribs = array(), $aligngap = 0) {
+	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = "", $attribs = array(), $aligngap = 0) {
 		//	Create default attributes for table
 		$attr = array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "align" => $align);
 

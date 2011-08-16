@@ -46,7 +46,6 @@ class we_multiIconBox{
 	* @return	string
  	*/
 	function getHTML($name,$width, $content, $marginLeft="0", $buttons="", $foldAtNr=-1, $foldRight="", $foldDown="", $displayAtStartup=false, $headline = "", $delegate = "", $height = "", $overflow = "auto"){
-		$we_button = new we_button();
 		$uniqname = $name ? $name : md5(uniqid(rand(), true));
 
 		if(isset($headline) && $headline != ""){
@@ -60,7 +59,7 @@ class we_multiIconBox{
 
 			if($i==$foldAtNr && $foldAtNr < sizeof($content)){ // only if the folded items contain stuff.
 				$but = we_multiIconBox::_getButton($uniqname,($delegate ? $delegate : "" ). ";weToggleBox('$uniqname','".addslashes($foldDown)."','".addslashes($foldRight)."')",($displayAtStartup ? "down" : "right"),g_l('global',"[openCloseBox]"));
-				$out .= $we_button->create_button_table(
+				$out .= we_button::create_button_table(
 												array(
 													$but,
 														'<span style="cursor: pointer;" class="defaultfont" id="text_'.$uniqname.'" onClick="'.($delegate ? $delegate : "" ).';weToggleBox(\''.$uniqname.'\',\''.addslashes($foldDown).'\',\''.addslashes($foldRight).'\');" unselectable="on">'.($displayAtStartup ? $foldDown : $foldRight).'</span>'

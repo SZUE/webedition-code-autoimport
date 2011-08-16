@@ -35,7 +35,6 @@ htmlTop();
 
 print STYLESHEET;
 
-$we_button = new we_button();
 $we_fileData = "";
 
 if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save"){
@@ -58,10 +57,10 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save"){
 
 }
 
-$buttons = $we_button->position_yes_no_cancel(
-										$we_button->create_button("save", "javascript:document.forms[0].submit();"),
+$buttons = we_button::position_yes_no_cancel(
+										we_button::create_button("save", "javascript:document.forms[0].submit();"),
 										null,
-										$we_button->create_button("cancel", "javascript:self.close();")
+										we_button::create_button("cancel", "javascript:self.close();")
 											);
 $content='<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">'.htmlspecialchars($we_fileData).'</textarea>';
 

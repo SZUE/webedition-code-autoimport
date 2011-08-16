@@ -47,8 +47,6 @@ $_thumbs = array();
 
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
-	$we_button = new we_button();
-
 	htmlTop();
 	print '<script type="text/javascript">
 
@@ -109,7 +107,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 </script>
 
-'.$we_button->create_state_changer();
+'.we_button::create_state_changer();
 
 	print '
 <script src="'.JS_DIR.'windows.js" type="text/javascript"></script>
@@ -144,7 +142,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 		}
 	}
 
-	$editbut = $we_button->create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
+	$editbut = we_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
 	array_push($_thumbs, array("headline" => "", "html" => $_thumbnails->getHtmlCode().'<p align="right">'.$editbut.'</p>', "space" => 0));
 
@@ -153,10 +151,10 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	array_push($_thumbs, array("headline" => "", "html" => $iframe, "space" => 0));
 
-	$addbut = $we_button->create_button("add", "javascript:add_thumbnails();", false, -1, -1, "", "", !$_enabled_buttons, false);
-	$cancelbut = $we_button->create_button("cancel", "javascript:top.close();");
+	$addbut = we_button::create_button("add", "javascript:add_thumbnails();", false, -1, -1, "", "", !$_enabled_buttons, false);
+	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 
-	$buttons = $we_button->position_yes_no_cancel($addbut,null,$cancelbut);
+	$buttons = we_button::position_yes_no_cancel($addbut,null,$cancelbut);
 
 	$dialog = we_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons,-1,"","",false,g_l('weClass',"[thumbnails]"));
 	print we_htmlElement::htmlBody(array("class"=>"weDialogBody", "style"=>"overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";

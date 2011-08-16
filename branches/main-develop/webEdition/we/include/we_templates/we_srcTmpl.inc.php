@@ -44,8 +44,6 @@ if ($we_editmode) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
 
-	$we_button = new we_button();
-
 	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java' && !$_SESSION['weShowAltMenu']);
 	?>
 	<script  type="text/javascript">
@@ -948,15 +946,15 @@ if ($we_editmode) {
 
 	$maineditor .= ($vers==2?'
 <td align="left" class="defaultfont">
-<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . $we_button->create_button("search", 'javascript:search(document.getElementById("query").value);').'</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . $we_button->create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value);').'</div>'.
+<input type="text" style="width: 10em;float:left;" id="query"/><div style="float:left;">' . we_button::create_button("search", 'javascript:search(document.getElementById("query").value);').'</div>
+<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace"/><div style="float:left;">' . we_button::create_button("replace", 'javascript:myReplace(document.getElementById("query").value,document.getElementById("replace").value);').'</div>'.
 '</td>':'').
 '<td align="right" class="defaultfont">' .
 					(substr($_SESSION['prefs']['editorMode'],0,10) == 'codemirror' ? '
 						
 
 
-<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . $we_button->create_button("reindent", 'javascript:reindent'.$vers.'();') . '</div>' : '') .
+<div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent'.$vers.'();') . '</div>' : '') .
 					($_useJavaEditor ? "" : we_forms::checkbox("1", ( isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"] == "1"), "we_wrapcheck_tmp", g_l('global','[wrapcheck]'), false, "defaultfont", "we_cmd('wrap_on_off',this.checked)")) . '</td>	</tr>
         </table></td></tr></table>
 ';
@@ -1018,11 +1016,11 @@ if ($we_editmode) {
 </select>';
 
 		// buttons
-		$editTagbut = $we_button->create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
-		$selectallbut = $we_button->create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
-		$prependbut = $we_button->create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
-		$appendbut = $we_button->create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
-		$addCursorPositionbut = $we_button->create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
+		$editTagbut = we_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
+		$selectallbut = we_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
+		$prependbut = we_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
+		$appendbut = we_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
+		$addCursorPositionbut = we_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
 		$tagWizardHtml = $CodeWizard->getJavascript();
 		$tagWizardHtml .= '

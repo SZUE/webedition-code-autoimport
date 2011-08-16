@@ -100,8 +100,8 @@ if($cmd == "ok"){
 						}
 						$wf_select .= '</select>';
 
-						$okbut     = $we_button->create_button("ok", "javascript:document.forms[0].submit()");
-						$cancelbut = $we_button->create_button("cancel","javascript:top.close()");
+						$okbut     = we_button::create_button("ok", "javascript:document.forms[0].submit()");
+						$cancelbut = we_button::create_button("cancel","javascript:top.close()");
 
 						$content = '<table border="0" cellpadding="0" cellspacing="0">';
 
@@ -136,7 +136,7 @@ if($cmd == "ok"){
 								</tr>
 							</table>';
 
-						$_buttons = $we_button->position_yes_no_cancel(	$okbut,
+						$_buttons = we_button::position_yes_no_cancel(	$okbut,
 																		"",
 																		$cancelbut);
 

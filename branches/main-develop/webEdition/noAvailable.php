@@ -29,8 +29,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 
 htmlTop();
 
-$we_button = new we_button();
-
 print STYLESHEET;
 
 $content='<table cellpadding="0" cellspacing="0" border="0">
@@ -41,6 +39,6 @@ $content='<table cellpadding="0" cellspacing="0" border="0">
 ?>
 </head>
 <body class="weDialogBody">
- <?php print htmlDialogLayout($content,$g_l('help','[help_not_available_title]'),$we_button->create_button("close", "javascript:self.close();")); ?>
+ <?php print htmlDialogLayout($content,$g_l('help','[help_not_available_title]'),we_button::create_button("close", "javascript:self.close();")); ?>
 </body>
 </html>

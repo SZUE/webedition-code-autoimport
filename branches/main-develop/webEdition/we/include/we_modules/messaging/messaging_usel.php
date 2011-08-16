@@ -35,7 +35,6 @@ $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']])
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
-$we_button = new we_button();
 
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
@@ -284,7 +283,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
         <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple>
             </select>
         </td>
-        <td valign="bottom">' . $we_button->create_button("image:btn_direction_left", "javascript:add_toaddr()") . '</td>
+        <td valign="bottom">' . we_button::create_button("image:btn_direction_left", "javascript:add_toaddr()") . '</td>
         <td rowspan="3"><select name="usel_currentsel" size="7" style="width:210px" multiple>
             </select>
         </td>
@@ -293,22 +292,22 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	<td>' . getPixel(22, 1) . '</td>
       </tr>
       <tr>
-	<td valign="top">' . $we_button->create_button("image:btn_direction_right", "javascript:add_addr2sel()") . '</td>
+	<td valign="top">' . we_button::create_button("image:btn_direction_right", "javascript:add_addr2sel()") . '</td>
       </tr>
       <tr>
-	<td>' . $we_button->create_button("delete", "javascript:rm_addrbook_entry();") . '</td>
+	<td>' . we_button::create_button("delete", "javascript:rm_addrbook_entry();") . '</td>
 	<td></td>
-	<td>' . $we_button->create_button("delete", "javascript:rm_sel_user();") . '</td>
+	<td>' . we_button::create_button("delete", "javascript:rm_sel_user();") . '</td>
       </tr>
       <tr>
 	<td colspan="3">' . getPixel(1, 15) . '<td>
       </tr>
       <tr>
-	<td>' . $we_button->create_button("save_address", "javascript:save_addrbook();") . '<td>
-	<td colspan="2">' . $we_button->create_button("select_user", "javascript:browse_users_window();") . '<td>
+	<td>' . we_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
+	<td colspan="2">' . we_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
-    echo htmlDialogLayout($tbl, g_l('modules_messaging','[sel_rcpts]'),$we_button->position_yes_no_cancel($we_button->create_button("ok", "javascript:ok()"),  "", $we_button->create_button("cancel", "javascript:window.close();")));
+    echo htmlDialogLayout($tbl, g_l('modules_messaging','[sel_rcpts]'),we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:ok()"),  "", we_button::create_button("cancel", "javascript:window.close();")));
 ?>
     </form>
     <form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php" method="post" name="addrbook_data">

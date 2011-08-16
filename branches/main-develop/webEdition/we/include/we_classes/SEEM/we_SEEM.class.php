@@ -384,9 +384,6 @@
          * @return   code           string the new code, where all seem_links are replaced with new functionality
          */
         function replaceSEEM_Links($code, $SEEM_LinkArray){
-
-        	$we_button = new we_button();
-
         	if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT){
         		$mode = "edit";
         	} else{
@@ -402,18 +399,18 @@
 	                    //  Edit an included document from webedition.
 	                    case "edit_image":
 	                    	$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('/webEdition/we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=image/*&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
-	                        $code = str_replace($SEEM_LinkArray[0][$i] . "</a>", $we_button->create_button("image:btn_edit_image", "javascript:$handler", true), $code);
+	                        $code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_button::create_button("image:btn_edit_image", "javascript:$handler", true), $code);
 	                    	break;
 	                    case "include" :
 	                        //  a new window is opened which stays as long, as the browser is closed, or the window is closed manually
 	                        $handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=window.open('/webEdition/we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=text/webedition&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $_REQUEST["we_transaction"] . "&we_cmd[7]='" . ",'_blank','width=800,height=600,status=yes');return true;";
-	                        $code = str_replace($SEEM_LinkArray[0][$i] . "</a>", $we_button->create_button("image:btn_edit_include", "javascript:$handler", true), $code);
+	                        $code = str_replace($SEEM_LinkArray[0][$i] . "</a>", we_button::create_button("image:btn_edit_include", "javascript:$handler", true), $code);
 	                        break;
 
 	                    case "object" :
 
 	                    	$handler = "top.doClickDirect('" . $SEEM_LinkArray[1][$i] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
-							$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', $we_button->create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
+							$code = str_replace($SEEM_LinkArray[0][$i] . '</a>', we_button::create_button("image:btn_edit_object", "javascript:$handler", true) . "</a>", $code);
 	                    	break;
 
 	                    default :

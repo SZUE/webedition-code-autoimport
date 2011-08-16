@@ -825,8 +825,7 @@ class copyFolderFrag extends taskFragment
 
 	function finish()
 	{
-		$we_button = new we_button();
-		$cancelButton = $we_button->create_button("cancel", "javascript:top.close()");
+		$cancelButton = we_button::create_button("cancel", "javascript:top.close()");
 
 		if (isset($_SESSION["WE_CREATE_DOCTYPE"])) {
 			unset($_SESSION["WE_CREATE_DOCTYPE"]);
@@ -880,7 +879,6 @@ HTS;
 
 	function formCreateTemplateDirChooser()
 	{
-		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;
 
 		$textname = 'foo';
@@ -904,7 +902,7 @@ HTS;
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener.document.we_form.CreateTemplate.checked=true;");
 		$yuiSuggest->setSelectButton(
-				$we_button->create_button(
+				we_button::create_button(
 						"select",
 						"javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."')",
 						true,
@@ -921,9 +919,8 @@ HTS;
 
 	function formCreateCategoryChooser()
 	{
-		$we_button = new we_button();
 
-		$addbut = $we_button->create_button(
+		$addbut = we_button::create_button(
 				"add",
 				"javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
@@ -1006,9 +1003,9 @@ HTS;
 				array(
 					'colspan' => '2', 'align' => 'right'
 				),
-				$we_button->create_button_table(
+				we_button::create_button_table(
 						array(
-							$we_button->create_button("delete_all", "javascript:removeAllCats()"), $addbut
+							we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 						)));
 
 		return $table->getHtmlCode() . $js;
@@ -1095,8 +1092,6 @@ class copyFolderFinishFrag extends copyFolderFrag
 $yuiSuggest = & weSuggest::getInstance();
 
 if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
-
-	$we_button = new we_button();
 
 	$js = 'self.focus();
 
@@ -1188,15 +1183,15 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 		"src" => JS_DIR . "windows.js"
 	)) . we_htmlElement::jsElement($js);
 
-	$yes_button = $we_button->create_button("ok", "form:we_form");
-	$cancel_button = $we_button->create_button("cancel", "javascript:self.close();");
+	$yes_button = we_button::create_button("ok", "form:we_form");
+	$cancel_button = we_button::create_button("cancel", "javascript:self.close();");
 
 	$pb = new we_progressBar(0);
 	$pb->setStudLen(270);
 	$pb->addText("&nbsp;", 0, "pbar1");
 	$pbHTML = $pb->getHTML() . $pb->getJSCode();
 
-	$buttons = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' . $we_button->position_yes_no_cancel(
+	$buttons = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' . we_button::position_yes_no_cancel(
 			$yes_button,
 			null,
 			$cancel_button) . '</td></tr></table>';

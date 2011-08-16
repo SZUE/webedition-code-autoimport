@@ -250,10 +250,9 @@ array_push($parts, array(
 					)
 			);
 
-$we_button = new we_button();
-$cancel_button = $we_button->create_button("cancel","javascript:top.close()");
-$okbut = $we_button->create_button("ok","javascript:okFn();");
-$buttons = $we_button->position_yes_no_cancel($okbut,null,$cancel_button);
+$cancel_button = we_button::create_button("cancel","javascript:top.close()");
+$okbut = we_button::create_button("ok","javascript:okFn();");
+$buttons = we_button::position_yes_no_cancel($okbut,null,$cancel_button);
 $out .= we_multiIconBox::getHTML("","100%",$parts,30,$buttons,-1,"","","",g_l('modules_object','[textarea_field]'). ' "' . $we_doc->elements[$name]['dat'] . '" - ' . g_l('modules_object','[attributes]'));
 $out .= '</form></body></html>';
 

@@ -201,7 +201,6 @@
     <?php
     print '</head>';
 
-    $button = new we_button();
     //  generate Body of page
     $parts = array();
     array_push($parts,array('html'=>g_l('validation','[description]'),'space'=>0));

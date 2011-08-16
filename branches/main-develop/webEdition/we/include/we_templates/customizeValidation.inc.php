@@ -158,7 +158,6 @@
 
 
 
-    $button = new we_button();
     //  generate Body of page
     $parts = array();
 

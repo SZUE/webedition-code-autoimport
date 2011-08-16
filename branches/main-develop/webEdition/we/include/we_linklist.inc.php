@@ -559,9 +559,6 @@ class we_linklist
 		}
 		$out = "";
 
-		if (!isset($GLOBALS["WE_IS_DYN"])) {
-			$we_button = new we_button();
-		}
 
 		if (!(strpos($content, '<we:') === false)) {
 			$content = str_replace("<we:target", "<we_:_target", $content);
@@ -615,14 +612,13 @@ class we_linklist
 
 					if ($editmode) {
 						// Create button object
-						$we_button = new we_button();
 
 						// Create buttons
 						$disabled = false;
 						if ($limit > 0 && $this->length() >= $limit) {
 							$disabled = true;
 						}
-						$plusbut = $we_button->create_button(
+						$plusbut = we_button::create_button(
 								"image:btn_add_link",
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $attribs["name"] . "','" . $i . "')",
 								true,
@@ -631,7 +627,7 @@ class we_linklist
 								"",
 								"",
 								$disabled);
-						$upbut = $we_button->create_button(
+						$upbut = we_button::create_button(
 								"image:btn_direction_up",
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $attribs["name"] . "','" . $i . "')",
 								true,
@@ -640,7 +636,7 @@ class we_linklist
 								"",
 								"",
 								!($i > 0));
-						$downbut = $we_button->create_button(
+						$downbut = we_button::create_button(
 								"image:btn_direction_down",
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $attribs["name"] . "','" . $i . "')",
 								true,
@@ -649,15 +645,15 @@ class we_linklist
 								"",
 								"",
 								!($i < (sizeof($this->listArray) - 1)));
-						$editbut = $we_button->create_button(
+						$editbut = we_button::create_button(
 								"image:btn_edit_link",
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $attribs["name"] . "','" . $i . "')",
 								true);
-						$trashbut = $we_button->create_button(
+						$trashbut = we_button::create_button(
 								"image:btn_function_trash",
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','" . $names . "')",
 								true);
-						$buts = $we_button->create_button_table(
+						$buts = we_button::create_button_table(
 								array(
 									$plusbut, $upbut, $downbut, $editbut, $trashbut
 								),
@@ -753,7 +749,7 @@ class we_linklist
 			$clearContent = eregi_replace('>[^<]+<', '><', $clearContent);
 			$clearContent = eregi_replace('^[^<]*(<we_:_link ?/?>)[^<]*$', '\1', $clearContent);
 			if ($limit == 0 || ($limit != 0 && $this->length() < $limit)) {
-				$plusbut = "<br>" . $we_button->create_button(
+				$plusbut = "<br>" . we_button::create_button(
 						"image:btn_add_link",
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $attribs["name"] . "')",
 						true,

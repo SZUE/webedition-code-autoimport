@@ -37,8 +37,6 @@ protect();
 
 htmlTop(g_l('modules_glossary','[glossary_check]'));
 
-$we_button = new we_button();
-
 print STYLESHEET;
 
 // Step
@@ -670,7 +668,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 <?php
 	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly") {
 ?>
-		document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", $we_button->create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
+		document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
 		weButton.enable('publish');
 <?php
 	}
@@ -832,19 +830,19 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 	// Only glossary check
 	if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == "checkOnly") {
-		$CancelButton = $we_button->create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
+		$CancelButton = we_button::create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
 		$PublishButton = "";
 
 	// glossary check and publishing
 	} else {
-		$CancelButton = $we_button->create_button("cancel", "javascript:top.close();", true, 120, 22, "", "", false, false);
-		$PublishButton = $we_button->create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
+		$CancelButton = we_button::create_button("cancel", "javascript:top.close();", true, 120, 22, "", "", false, false);
+		$PublishButton = we_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
 
 	}
-	$ExecuteButton = $we_button->create_button("execute", "javascript:checkForm();", true, 120, 22, "", "", true, false);
+	$ExecuteButton = we_button::create_button("execute", "javascript:checkForm();", true, 120, 22, "", "", true, false);
 
 
-	$Buttons = $we_button->position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
+	$Buttons = we_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
 	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly") {
 		$Buttons .= we_htmlElement::jsElement("weButton.hide('publish');");
 

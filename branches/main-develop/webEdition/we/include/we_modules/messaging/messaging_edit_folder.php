@@ -79,8 +79,6 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 protect();
 
 print STYLESHEET;
-
-$we_button = new we_button();
 ?>
 <body class="weDialogBody" style="border-top: 1px solid black;">
 <form name="edit_folder" action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_edit_folder.php" method="post">
@@ -137,9 +135,9 @@ $we_button = new we_button();
 	</tr>
       </table>';
 
-    $_btn_tbl = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:save()"),
+    $_btn_tbl = we_button::position_yes_no_cancel(	we_button::create_button("save", "javascript:save()"),
 													"",
-													$we_button->create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
+													we_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
 										 	 )
 	;
  print htmlDialogLayout($input_tbl, $heading, $_btn_tbl,"100%","30","","none"); ?></td>

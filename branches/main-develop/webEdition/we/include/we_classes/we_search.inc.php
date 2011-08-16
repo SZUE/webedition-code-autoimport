@@ -330,16 +330,13 @@ class we_search extends DB_WE{
 
 
 	function getNextPrev($we_search_anzahl){
-
-		$we_button = new we_button();
-
 		$out = 		'<table cellpadding="0" cellspacing="0" border="0">'
 				.	'<tr>'
 				.	'<td>';
 		if($this->searchstart){
-			$out .= $we_button->create_button("back", "javascript:back();"); //bt_back
+			$out .= we_button::create_button("back", "javascript:back();"); //bt_back
 		}else{
-			$out .= $we_button->create_button("back", "",true, 100, 22, "", "", true);
+			$out .= we_button::create_button("back", "",true, 100, 22, "", "", true);
 		}
 
 		$out .=		'</td>'
@@ -357,9 +354,9 @@ class we_search extends DB_WE{
 				.	'<td>';
 
 		if(($this->searchstart+$this->anzahl) < $we_search_anzahl){
-			$out .= $we_button->create_button("next", "javascript:next();"); //bt_back
+			$out .= we_button::create_button("next", "javascript:next();"); //bt_back
 		}else{
-			$out .= $we_button->create_button("next", "", true, 100, 22, "", "", true);
+			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
 		$out .= 	'</td>'
 				.	'<td>'.getPixel(10,2).'</td>'

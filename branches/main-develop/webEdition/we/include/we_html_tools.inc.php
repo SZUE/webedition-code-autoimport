@@ -852,11 +852,10 @@ function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true)
 function htmlYesNoCancelDialog($text = "", $img = "", $yes = "", $no = "", $cancel = "", $yesHandler = "", $noHandler = "", $cancelHandler = "", $script = "")
 {
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-	$we_button = new we_button();
-
-	$cancelButton = ($cancel != "" ? $we_button->create_button("cancel", "javascript:$cancelHandler") : "");
-	$noButton = ($no != "" ? $we_button->create_button("no", "javascript:$noHandler") : "");
-	$yesButton = ($yes != "" ? $we_button->create_button("yes", "javascript:$yesHandler") : "");
+	
+	$cancelButton = ($cancel != "" ? we_button::create_button("cancel", "javascript:$cancelHandler") : "");
+	$noButton = ($no != "" ? we_button::create_button("no", "javascript:$noHandler") : "");
+	$yesButton = ($yes != "" ? we_button::create_button("yes", "javascript:$yesHandler") : "");
 
 	$out = "";
 
@@ -887,7 +886,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/htm
 	$content->setCol(0, ($img != "" ? 1 : 0), array(
 		"class" => "defaultfont"
 	), $text);
-	//$content->setCol(1, 0, array("colspan" => ($img != "" ? 2 : 1),  "align" => "center"), $we_button->position_yes_no_cancel($yesButton, $noButton, $cancelButton));
+	//$content->setCol(1, 0, array("colspan" => ($img != "" ? 2 : 1),  "align" => "center"), we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton));
 
 
 	$out .= $content->getHtmlCode();
@@ -895,7 +894,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/htm
 	return htmlDialogLayout(
 			$out,
 			"",
-			$we_button->position_yes_no_cancel($yesButton, $noButton, $cancelButton),
+			we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton),
 			"99%",
 			"0");
 

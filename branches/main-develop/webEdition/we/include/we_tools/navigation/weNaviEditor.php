@@ -33,8 +33,6 @@ $_margin_top = 5;
 $_space_size = 100;
 $_input_size = 440;
 
-$we_button = new we_button();
-
 $_path = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
 $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
@@ -142,7 +140,7 @@ $_parts[] = array(
 		'noline' => 1
 );
 
-$_js = $we_button->create_state_changer(false) . '
+$_js = we_button::create_state_changer(false) . '
 				function save() {
 					var dir = document.we_form.ParentID;
 					' . $_cmd . '
@@ -208,10 +206,10 @@ $_js = $we_button->create_state_changer(false) . '
 
 
 		';
-$buttonsBottom = '<div style="float:right">' . $we_button->position_yes_no_cancel(
-		$we_button->create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false),
+$buttonsBottom = '<div style="float:right">' . we_button::position_yes_no_cancel(
+		we_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false),
 		null,
-		$we_button->create_button('close', 'javascript:self.close();')) . '</div>';
+		we_button::create_button('close', 'javascript:self.close();')) . '</div>';
 
 $_body = we_htmlElement::htmlBody(
 		array(

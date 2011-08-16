@@ -95,7 +95,6 @@ print "</html>";
 
 function formWebuser($canChange,$width=388){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-	$we_button = new we_button();
 
 	if(!$GLOBALS['we_doc']->WebUserID) $GLOBALS['we_doc']->WebUserID = 0;
 
@@ -118,9 +117,9 @@ function formWebuser($canChange,$width=388){
 		//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
 		//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
 
-		$button =  $we_button->create_button("select","javascript:we_cmd('openSelector',document.we_form.elements['$idname'].value,'".CUSTOMER_TABLE."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value')");
+		$button =  we_button::create_button("select","javascript:we_cmd('openSelector',document.we_form.elements['$idname'].value,'".CUSTOMER_TABLE."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value')");
 
-		$_trashBut = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
+		$_trashBut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value=0;document.we_form.elements['$textname'].value='';_EditorFrame.setEditorIsHot(true);");
 /*
 		$out = $GLOBALS['we_doc']->htmlFormElementTable($inputFeld,
 		g_l('modules_customer','[connected_with_customer]'),

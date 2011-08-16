@@ -302,8 +302,7 @@ function we_tag_sessionField($attribs, $content) {
 
 			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 			if ($showcontrol) {
-				$we_button = new we_button();
-
+				
 				$foo = attributFehltError($attribs, 'parentid', 'sessionField');
 				if ($foo)
 					return $foo;

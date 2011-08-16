@@ -117,7 +117,6 @@ function exit_close(){
 }
 ";
 
-$we_button = new we_button();
 $parts = array();
 
 $oRdoSort[0] = we_forms::radiobutton(
@@ -379,10 +378,10 @@ array_push($parts, array(
 	"headline" => g_l('cockpit','[bg_color]'), "html" => $oSctCls->getHTMLCode(), "space" => 100
 ));
 
-$save_button = $we_button->create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = $we_button->create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = $we_button->create_button("close", "javascript:exit_close();");
-$buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
+$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$cancel_button = we_button::create_button("close", "javascript:exit_close();");
+$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 print
 		we_htmlElement::htmlHtml(

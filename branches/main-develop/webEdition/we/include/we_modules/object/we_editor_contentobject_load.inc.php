@@ -44,7 +44,6 @@ $we_transaction	= isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
 $id				= isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : false;
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
-$we_button = new we_button();
 
 $we_doc = new we_object();
 
@@ -105,10 +104,10 @@ switch($cmd) {
 		$uniqid = "entry_".$identifier;
 		$we_doc->addEntryToClass($identifier, $after);
 
-		$upbut      = $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
-		$downbut    = $we_button->create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
-		$plusbut    = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$we_transaction."','".$uniqid."');");
-		$trashbut   = $we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','".$we_transaction."','".$uniqid."');");
+		$upbut      = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
+		$downbut    = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
+		$plusbut    = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$we_transaction."','".$uniqid."');");
+		$trashbut   = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','".$we_transaction."','".$uniqid."');");
 
 		$content =		'<div id="'.$uniqid.'">'
 					.	'<a name="f'.$uniqid.'"></a>'
@@ -121,7 +120,7 @@ switch($cmd) {
 					.	'</td>'
 					.	'<td width="150" class = "defaultfont" valign="top">';
 
-		$content	.= $we_button->create_button_table(
+		$content	.= we_button::create_button_table(
 									array(
 										$plusbut,
 										$upbut,
@@ -194,10 +193,10 @@ switch($cmd) {
 
 		}
 
-		$upbut      = $we_button->create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
-		$downbut    = $we_button->create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
-		$plusbut    = $we_button->create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$we_transaction."','".$uniqid."');");
-		$trashbut   = $we_button->create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','".$we_transaction."','".$uniqid."');");
+		$upbut      = we_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
+		$downbut    = we_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_class','".$we_transaction."','".$uniqid."');", true, 22, 22, "", "", false, false, "_".$identifier);
+		$plusbut    = we_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_class','".$we_transaction."','".$uniqid."');");
+		$trashbut   = we_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('delete_entry_at_class','".$we_transaction."','".$uniqid."');");
 
 		$content =		'<div id="'.$uniqid.'">'
 					.	'<a name="f'.$uniqid.'"></a>'
@@ -210,7 +209,7 @@ switch($cmd) {
 					.	'</td>'
 					.	'<td width="150" class = "defaultfont" valign="top">';
 
-		$content	.= $we_button->create_button_table(
+		$content	.= we_button::create_button_table(
 									array(
 										$plusbut,
 										$upbut,

@@ -31,7 +31,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html
 $variationFields = $we_doc->getVariantFields();
 
 // need many buttons here
-$we_button = new we_button();
 
 // if editing data the class weShopVariants must do some stuff
 // add, move, delete

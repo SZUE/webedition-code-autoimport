@@ -83,10 +83,8 @@ if(! ($isObj OR $isTempl) ) {
 	}
 }
 
-$we_button = new we_button();
-
 //close button
-$_button = $we_button->create_button("close", "javascript:self.close();");
+$_button = we_button::create_button("close", "javascript:self.close();");
 
 //tabs
 require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");

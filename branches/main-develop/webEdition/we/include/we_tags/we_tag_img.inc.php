@@ -109,8 +109,6 @@ function we_tag_img($attribs, $content){
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-		// Create object of we_button class
-		$we_button = new we_button();
 
 		$out = "
 			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
@@ -161,10 +159,10 @@ function we_tag_img($attribs, $content){
 					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">";
 
 		if ($id == "") { // disable edit_image_button
-			$_editButton = $we_button->create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true);
+			$_editButton = we_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true);
 		} else { //	show edit_image_button
 			//	we use hardcoded Content-Type - because it must be an image -> <we:img ... >
-			$_editButton = $we_button->create_button(
+			$_editButton = we_button::create_button(
 					"image:btn_edit_image",
 					"javascript:top.doClickDirect($id,'image/*', '" . FILE_TABLE . "'  )");
 		}
@@ -172,16 +170,16 @@ function we_tag_img($attribs, $content){
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3= we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
 		
-		$out .= $we_button->create_button_table(
+		$out .= we_button::create_button_table(
 				array(
 
 						$_editButton,
 					
-						$we_button->create_button(
+						we_button::create_button(
 								"image:btn_select_image",
 								"javascript:we_cmd('openDocselector', '" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "','".$wecmdenc1."','','".$wecmdenc3."','" . session_id() . "'," . $parentid . ",'image/*', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 								true),
-						$we_button->create_button(
+						we_button::create_button(
 								"image:btn_function_trash",
 								"javascript:we_cmd('remove_image', '" . $name . "')",
 								true)

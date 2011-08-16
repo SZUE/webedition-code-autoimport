@@ -387,7 +387,6 @@ function htmlClipElement($smalltext, $text, $content)
 	), getPixel(1, 15) . we_htmlElement::htmlBr() . $content);
 }
 
-$we_button = new we_button();
 $oIptUri = htmlFormElementTable(
 		htmlTextInput("ipt_uri", 55, "", 255, "title=\"\"", "text", 380, 0),
 		g_l('cockpit','[url]'),
@@ -428,7 +427,7 @@ $oIptNewUri = htmlFormElementTable(
 		g_l('cockpit','[url]'),
 		"left",
 		"defaultfont");
-$btnAddTopRssFeed = $we_button->create_button(
+$btnAddTopRssFeed = we_button::create_button(
 		"add",
 		"javascript:handleTopRssFeed('add');",
 		false,
@@ -438,7 +437,7 @@ $btnAddTopRssFeed = $we_button->create_button(
 		"",
 		false,
 		false);
-$btnOverwriteTopRssFeed = $we_button->create_button(
+$btnOverwriteTopRssFeed = we_button::create_button(
 		"overwrite",
 		"javascript:handleTopRssFeed('overwrite');",
 		false,
@@ -448,7 +447,7 @@ $btnOverwriteTopRssFeed = $we_button->create_button(
 		"",
 		false,
 		false);
-$btnDeleteTopRssFeed = $we_button->create_button(
+$btnDeleteTopRssFeed = we_button::create_button(
 		"delete",
 		"javascript:handleTopRssFeed('delete');",
 		false,
@@ -750,10 +749,10 @@ array_push($parts, array(
 	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
 ));
 
-$save_button = $we_button->create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = $we_button->create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = $we_button->create_button("close", "javascript:exit_close();");
-$buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
+$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$cancel_button = we_button::create_button("close", "javascript:exit_close();");
+$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getHTML(
 		"rssProps",
@@ -778,7 +777,7 @@ print
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . $we_button->create_state_changer(false))) . we_htmlElement::htmlBody(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),

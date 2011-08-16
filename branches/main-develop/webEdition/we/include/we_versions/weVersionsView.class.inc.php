@@ -54,8 +54,6 @@ class weVersionsView
 	function getJS()
 	{
 
-		$we_button = new we_button();
-
 		//add height of each input row to calculate the scrollContent-height
 		$h = 0;
 		$addinputRows = "";
@@ -521,7 +519,7 @@ class weVersionsView
 
 	    			cell = document.createElement("TD");
 	    			cell.setAttribute("id", "td_delButton["+rows+"]");
-	    			cell.innerHTML=\'' . $we_button->create_button(
+	    			cell.innerHTML=\'' . we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:delRow('+rows+')") . '\';
 	    			newRow.appendChild(cell);
@@ -598,7 +596,7 @@ class weVersionsView
 
 					cell = document.createElement("TD");
 					cell.setAttribute("id", "td_delButton["+rowNr+"]");
-					cell.innerHTML=\'' . $we_button->create_button(
+					cell.innerHTML=\'' . we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:delRow('+rowNr+')") . '\';
 					row.appendChild(cell);
@@ -647,7 +645,7 @@ class weVersionsView
 
 					cell = document.createElement("TD");
 					cell.setAttribute("id", "td_delButton["+rowNr+"]");
-					cell.innerHTML=\'' . $we_button->create_button(
+					cell.innerHTML=\'' . we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:delRow('+rowNr+')") . '\';
 					row.appendChild(cell);
@@ -680,7 +678,7 @@ class weVersionsView
 
 					cell = document.createElement("TD");
 					cell.setAttribute("id", "td_delButton["+rowNr+"]");
-					cell.innerHTML=\'' . $we_button->create_button(
+					cell.innerHTML=\'' . we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:delRow('+rowNr+')") . '\';
 					row.appendChild(cell);
@@ -713,7 +711,7 @@ class weVersionsView
 
 					cell = document.createElement("TD");
 					cell.setAttribute("id", "td_delButton["+rowNr+"]");
-					cell.innerHTML=\'' . $we_button->create_button(
+					cell.innerHTML=\'' . we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:delRow('+rowNr+')") . '\';
 					row.appendChild(cell);
@@ -759,8 +757,6 @@ class weVersionsView
 	function getBodyTop()
 	{
 
-		$we_button = new we_button();
-
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'none' : 'block') . ';">
 				<tr>
 				<td class="weDocListSearchHeadline">' . g_l('versions','[weSearch]') . '
@@ -769,7 +765,7 @@ class weVersionsView
 				</td>
 				<td>' . getPixel(
 				40,
-				2) . '' . $we_button->create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
+				2) . '' . we_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
 				<td width="100%">' . getPixel(10, 2) . '
 				</td>
 				</tr>
@@ -783,7 +779,7 @@ class weVersionsView
 				</td>
 				<td>' . getPixel(
 				40,
-				2) . '' . $we_button->create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
+				2) . '' . we_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
 				<td width="100%">' . getPixel(10, 2) . '
 				</td>
 				</tr>
@@ -826,7 +822,7 @@ class weVersionsView
 
 		for ($i = 0; $i < $this->searchclass->height; $i++) {
 
-			$button = $we_button->create_button(
+			$button = we_button::create_button(
 					"image:btn_function_trash",
 					"javascript:delRow(" . $i . ");",
 					true,
@@ -926,11 +922,11 @@ class weVersionsView
 					<td colspan="4">' . getPixel(20, 10) . '</td>
 				</tr>
 				<tr>
-					<td width="215">' . $we_button->create_button(
+					<td width="215">' . we_button::create_button(
 				"add",
 				"javascript:newinput();") . '</td>
 					<td width="155"></td>
-					<td width="188" align="right">' . $we_button->create_button(
+					<td width="188" align="right">' . we_button::create_button(
 				"search",
 				"javascript:search(true);") . '</td>
 					<td></td>
@@ -953,8 +949,6 @@ class weVersionsView
 	{
 
 		$out = "";
-
-		$we_button = new we_button();
 
 		$anzahl_all = array(
 			10 => 10, 25 => 25, 50 => 50, 100 => 100
@@ -1076,8 +1070,6 @@ class weVersionsView
 	function getNextPrev($we_search_anzahl)
 	{
 
-		$we_button = new we_button();
-
 		if (isset($_REQUEST["we_cmd"]['obj'])) {
 			$thisObj = new weVersionsView();
 			$anzahl = $_SESSION['Versions']['anzahl'];
@@ -1091,9 +1083,9 @@ class weVersionsView
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">';
 
 		if ($searchstart) {
-			$out .= $we_button->create_button("back", "javascript:back(" . $anzahl . ");");
+			$out .= we_button::create_button("back", "javascript:back(" . $anzahl . ");");
 		} else {
-			$out .= $we_button->create_button("back", "", true, 100, 22, "", "", true);
+			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
 		}
 
 		$out .= '</td><td>' . getPixel(10, 2) . '</td>
@@ -1108,9 +1100,9 @@ class weVersionsView
 		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . getPixel(10, 2) . '</td><td id="weiter">';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
-			$out .= $we_button->create_button("next", "javascript:next(" . $anzahl . ");"); //bt_back
+			$out .= we_button::create_button("next", "javascript:next(" . $anzahl . ");"); //bt_back
 		} else {
-			$out .= $we_button->create_button("next", "", true, 100, 22, "", "", true);
+			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
 		$out .= '</td><td>' . getPixel(10, 2) . '</td><td>';
 
@@ -1179,8 +1171,6 @@ class weVersionsView
 		$_versions = array();
 		$content = array();
 		$modificationText = "";
-
-		$we_button = new we_button();
 
 		$where = $thisObj->searchclass->getWhere();
 
@@ -1259,7 +1249,7 @@ class weVersionsView
 					false,
 					"defaultfont",
 					"") : "";
-			$content[$f][5]["dat"] = "<span class='printShow'>" . $we_button->create_button(
+			$content[$f][5]["dat"] = "<span class='printShow'>" . we_button::create_button(
 					"reset",
 					"javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');",
 					true,
@@ -1268,7 +1258,7 @@ class weVersionsView
 					"",
 					"",
 					$disabledReset) . "</span>";
-			$content[$f][6]["dat"] = "<span class='printShow'>" . $we_button->create_button(
+			$content[$f][6]["dat"] = "<span class='printShow'>" . we_button::create_button(
 					"preview",
 					"javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>".getPixel(1,1);
 			$content[$f][7]["dat"] = "<span class='printShow'>";
@@ -1296,7 +1286,6 @@ class weVersionsView
 
 		$headline = array();
 
-		$we_button = new we_button();
 		$markText = g_l('versions','[mark]');
 
 		$headline[0]["dat"] = '<a href="javascript:setOrder(\'version\');">' . g_l('versions','[version]') . '</a> <span id="version" >' . $this->getSortImage(
@@ -1306,7 +1295,7 @@ class weVersionsView
 		$headline[2]["dat"] = '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions','[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage(
 				'timestamp') . '</span>';
 		$headline[3]["dat"] = g_l('versions','[modifications]');
-		$headline[4]["dat"] = (we_hasPerm("ADMINISTRATOR")) ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . $we_button->create_button(
+		$headline[4]["dat"] = (we_hasPerm("ADMINISTRATOR")) ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_button::create_button(
 				"image:btn_function_trash",
 				"javascript:deleteVers();") . '</div>' : '';
 
@@ -1438,8 +1427,6 @@ class weVersionsView
 	function tabListContent($searchstart, $anzahl, $content)
 	{
 
-		$we_button = new we_button();
-
 		$out = '<table border="0" cellpadding="5" cellspacing="0" width="100%" id="contentTable">';
 
 		$anz = count($content);
@@ -1487,8 +1474,6 @@ class weVersionsView
 
 	function getHTMLforVersions($content)
 	{
-
-		$we_button = new we_button();
 
 		$uniqname = md5(uniqid(rand(), true));
 

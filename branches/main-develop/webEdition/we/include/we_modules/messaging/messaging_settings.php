@@ -67,8 +67,6 @@ if( isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_
     protect();
 
     print STYLESHEET;
-
-    $we_button = new we_button();
 ?>
 
 <body class="weDialogBody">
@@ -93,9 +91,9 @@ $input_tbl = '<table>
 </tr>
 </table>';
 
-$_buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("save", "javascript:save()"),
+$_buttons = we_button::position_yes_no_cancel(	we_button::create_button("save", "javascript:save()"),
 											"",
-											$we_button->create_button("cancel", "javascript:window.close();")
+											we_button::create_button("cancel", "javascript:window.close();")
 											)
 											;
 

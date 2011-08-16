@@ -175,10 +175,9 @@ print STYLESHEET;
 							<textarea cols="68" rows="10" name="mn_body" style="width:624px"></textarea></td>
 					</tr>
 				</table>';
-  			$we_button = new we_button();
-			$buttons = $we_button->position_yes_no_cancel(	$we_button->create_button("ok", "javascript:do_send()"),
+			$buttons = we_button::position_yes_no_cancel(	we_button::create_button("ok", "javascript:do_send()"),
     												"",
-    												$we_button->create_button("cancel", "javascript:top.window.close()")
+    												we_button::create_button("cancel", "javascript:top.window.close()")
     											 );
 			echo htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons,"100","24");
 		?>

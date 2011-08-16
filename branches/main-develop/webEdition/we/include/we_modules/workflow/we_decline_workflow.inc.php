@@ -77,9 +77,8 @@ if($cmd == "ok") {
 		<?php if($cmd!='ok'){ ?>
 			<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
-					$we_button = new we_button();
-					$okbut     = $we_button->create_button("ok", "javascript:document.forms[0].submit()");
-					$cancelbut = $we_button->create_button("cancel", "javascript:top.close()");
+					$okbut     = we_button::create_button("ok", "javascript:document.forms[0].submit()");
+					$cancelbut = we_button::create_button("cancel", "javascript:top.close()");
 					$content = '<table border="0" cellpadding="0" cellspacing="0">';
 					$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
 					$content .= '
@@ -93,7 +92,7 @@ if($cmd == "ok") {
 						</tr>
 					</table>';
 
-					$_button = $we_button->position_yes_no_cancel(	$okbut,
+					$_button = we_button::position_yes_no_cancel(	$okbut,
 																	"",
 																	$cancelbut);
 					$frame = htmlDialogLayout($content,$g_l('modules_workflow','[decline_workflow]'), $_button);

@@ -33,8 +33,6 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 		<table class="defaultfont" width="1200">
 	';
 
-	$we_button = new we_button();
-
 	// get orderdata of user here
 	$da = ( $GLOBALS['WE_LANGUAGE'] == "Deutsch")?"%d.%m.%Y":"%m/%d/%Y";
 
@@ -113,8 +111,8 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 		if (we_hasPerm("EDIT_SHOP_ORDER")){
 			$orderStr .=
 			($sameModul ?
-					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>') :
-					('<td>' . $we_button->create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULE_PATH . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>')
+					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.content.shop_properties.location = \'' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>') :
+					('<td>' . we_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULE_PATH . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';' ) . '</td>')
               	);
 		} else {
 			$orderStr .='<td></td>';

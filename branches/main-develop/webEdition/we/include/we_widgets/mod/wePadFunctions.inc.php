@@ -46,8 +46,7 @@ function convertDate($date)
  */
 function getDateSelector($_label, $_name, $_btn)
 {
-	$we_button = new we_button();
-	$btnDatePicker = $we_button->create_button(
+	$btnDatePicker = we_button::create_button(
 			"image:date_picker",
 			"javascript:",
 			null,

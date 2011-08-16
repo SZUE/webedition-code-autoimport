@@ -73,7 +73,6 @@ $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][m
 	$headline = "";
    }
 
-	$we_button = new we_button();
 
 	// grep the last element from the year-set, wich is the current year
 	$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM ".SHOP_TABLE . " ORDER BY DateOrd");
@@ -113,28 +112,28 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
 			<?php
 
 
-			echo "<td>".$we_button->create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+			echo "<td>".we_button::create_button("image:btn_shop_extArt", "javascript:top.opener.top.we_cmd('new_article')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 
 			<td>
-				<?php echo $we_button->create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+				<?php echo we_button::create_button("image:btn_shop_delOrd", "javascript:top.opener.top.we_cmd('delete_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 			<?php
 
 
 				if ( ($resultD > 0) && (!empty($resultO)) ){  //docs and objects
-					echo "<td>".$we_button->create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true)."</td>";
+					echo "<td>".we_button::create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true)."</td>";
 	               }elseif(($resultD < 1) && (!empty($resultO)) ){ // no docs but objects
-					echo "<td>".$we_button->create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid '", true)."</td>";
+					echo "<td>".we_button::create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid '", true)."</td>";
 	               }elseif(($resultD > 0) && (empty($resultO)) ){ // docs but no objects
-					echo "<td>".$we_button->create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true)."</td>";
+					echo "<td>".we_button::create_button("image:btn_shop_sum", "javascript:top.content.shop_properties.location=' edit_shop_editorFramesetTop.php?typ=document '", true)."</td>";
 				  }else{
 					echo " ";
 				}
 
 	            ?>
 			<td>
-				<?php echo $we_button->create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+				<?php echo we_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 			<td>
-				<?php echo $we_button->create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
+				<?php echo we_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, -1, -1, "", "", !we_hasPerm("NEW_USER")); ?></td>
 	<?php
 	if ($headline) {
 		?>

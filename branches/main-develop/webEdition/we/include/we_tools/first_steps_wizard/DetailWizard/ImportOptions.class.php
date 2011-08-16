@@ -37,8 +37,7 @@ class ImportOptions extends leWizardStepBase
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$WizardSuggest = & weSuggest::getInstance();
 
-		$we_button = new we_button();
-
+		
 		// Hidden Field
 		$Hidden = "<input type=\"hidden\" name=\"startImport\" value=\"1\" />";
 
@@ -65,10 +64,10 @@ class ImportOptions extends leWizardStepBase
 			$wecmdenc1= we_cmd_enc("document.getElementById('$idname').value");
 			$wecmdenc2= we_cmd_enc("document.getElementById('$textname').value");
 			$wecmdenc3= '';
-		$MastertemplateButton = $we_button->create_button(
+		$MastertemplateButton = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','','text/weTmpl',1)");
-		$MastertemplateTrash = $we_button->create_button(
+		$MastertemplateTrash = we_button::create_button(
 				"image:btn_function_trash",
 				"javascript:document.getElementById('$idname').value='$myid';document.getElementById('$textname').value='$path';",
 				true,
@@ -116,10 +115,10 @@ class ImportOptions extends leWizardStepBase
 		$wecmdenc1= we_cmd_enc("document.getElementById('$idname').value");
 		$wecmdenc2= we_cmd_enc("document.getElementById('$textname').value");
 		$wecmdenc3= '';
-		$DocumentButton = $we_button->create_button(
+		$DocumentButton = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.getElementById('$idname').value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','','text/weFolder',1)");
-		$DocumentTrash = $we_button->create_button(
+		$DocumentTrash = we_button::create_button(
 				"image:btn_function_trash",
 				"javascript:document.getElementById('$idname').value='$myid';document.getElementById('$textname').value='$path';",
 				true,

@@ -1055,13 +1055,12 @@ function tinyMCEchanged(inst){
 		list($tbwidth,$tbheight) = $this->getToolbarWidthAndHeight();
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-		$we_button = new we_button();
 		$fns = "";
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",",";",$fn).",";
 		}
 		$fns = rtrim($fns,',');
-		return $we_button->create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '".$this->name."', '".max(220,$this->width)."', '".$this->height."','".$GLOBALS["we_transaction"]."','".$this->propstring."','".$this->className."','".$fns."','".$this->outsideWE."','".$tbwidth."','".$tbheight."','".$this->xml."','".$this->removeFirstParagraph."','".$this->bgcol."','".$this->baseHref."','".$this->charset."','".$this->cssClasses."','".$this->Language."');",true,25);
+		return we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('open_wysiwyg_window', '".$this->name."', '".max(220,$this->width)."', '".$this->height."','".$GLOBALS["we_transaction"]."','".$this->propstring."','".$this->className."','".$fns."','".$this->outsideWE."','".$tbwidth."','".$tbheight."','".$this->xml."','".$this->removeFirstParagraph."','".$this->bgcol."','".$this->baseHref."','".$this->charset."','".$this->cssClasses."','".$this->Language."');",true,25);
 	}
 
 	function getHTML(){

@@ -33,8 +33,6 @@ protect();
 htmlTop();
 
 print STYLESHEET;
-
-$we_button = new we_button();
 ?>
 <script  type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
 <script  type="text/javascript"><!--
@@ -82,13 +80,13 @@ $we_button = new we_button();
 <?php
 
 if($_REQUEST["ret"]==1){
-		$cancel_button = $we_button->create_button("cancel", "javascript:top.close();");
-		$yes_button = $we_button->create_button("ok", "javascript:top.exit_close();");
+		$cancel_button = we_button::create_button("cancel", "javascript:top.close();");
+		$yes_button = we_button::create_button("ok", "javascript:top.exit_close();");
 }else{
-		$cancel_button = $we_button->create_button("close", "javascript:top.exit_close();");
-		$yes_button = $we_button->create_button("edit", "javascript:editFile();");
+		$cancel_button = we_button::create_button("close", "javascript:top.exit_close();");
+		$yes_button = we_button::create_button("edit", "javascript:editFile();");
 }
-		$buttons = $we_button->position_yes_no_cancel(
+		$buttons = we_button::position_yes_no_cancel(
 												$yes_button,
 												null,
 												$cancel_button);

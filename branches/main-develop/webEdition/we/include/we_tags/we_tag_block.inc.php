@@ -59,6 +59,7 @@ function we_parse_tag_block($attribs,$content){
 			$content = '<p>'.$ctlPre.'$block_'.$name.$ctlPost.$content.'</p>';
 		}
 //	}
+	//here postTagName is explicitly needed, because the control-element is not "inside" the block-tag (no block defined/first element) but controls its elements
 	return '<?php if(($block_'.$name.'='.we_tagParser::printTag('block',$attribs).')!==false){'."\n\t".
 		'while(we_condition_tag_block($block_'.$name.')){?>'.$content.'<?php }}else{?>'.
 		$ctlPre.'array(\'name\'=>\''.$name.'\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,'.
@@ -148,9 +149,6 @@ function we_tag_block($attribs, $content){
 	);
 	
 	
-	}
-	if ($GLOBALS['we_editmode']) {
-		$we_button = new we_button();
 	}
 
 	if (($foo = attributFehltError($attribs, 'name', 'block')))	return $foo;
@@ -260,12 +258,12 @@ function we_tag_block($attribs, $content){
 				if ($GLOBALS['we_editmode'] && !$isInListview) {
 
 
-					$upbut = $we_button->create_button('image:btn_direction_up',
+					$upbut = we_button::create_button('image:btn_direction_up',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','$name','$i')");
-					$upbutDis = $we_button->create_button('image:btn_direction_up', '', true, 21, 22, '', '', true);
-					$downbut = $we_button->create_button('image:btn_direction_down',
+					$upbutDis = we_button::create_button('image:btn_direction_up', '', true, 21, 22, '', '', true);
+					$downbut = we_button::create_button('image:btn_direction_down',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','$name','$i')");
-					$downbutDis = $we_button->create_button('image:btn_direction_down',
+					$downbutDis = we_button::create_button('image:btn_direction_down',
 							'',true,21,22,'','',true);
 					if ($showselect && $show > 0) {
 						$selectb = '<select name="' . $tmpname . '_' . $i . '">';
@@ -273,21 +271,21 @@ function we_tag_block($attribs, $content){
 							$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
 						}
 						$selectb .= '</select>';
-						$plusbut = $we_button->create_button('image:btn_add_listelement',
+						$plusbut = we_button::create_button('image:btn_add_listelement',
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','$name','$i',document.we_form.elements['" . $tmpname . "_" . $i . "'].options[document.we_form.elements['" . $tmpname . "_" . $i . "'].selectedIndex].text)",
 								true,100,22,'','',($show > 0 ? false : true));
 					} else {
-						$plusbut = $we_button->create_button('image:btn_add_listelement',
+						$plusbut = we_button::create_button('image:btn_add_listelement',
 								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','$name','$i',1)",
 								true,100,22,'','',($show > 0 ? false : true));
 					}
-					$trashbut = $we_button->create_button('image:btn_function_trash',
+					$trashbut = we_button::create_button('image:btn_function_trash',
 							"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','$name','$i','$names',1)");
 					$buts = '';
 
 					if ($showselect && $show > 0) {
 
-						$buts = $we_button->create_button_table(
+						$buts = we_button::create_button_table(
 								array(
 
 										$plusbut,
@@ -298,7 +296,7 @@ function we_tag_block($attribs, $content){
 								),
 								5);
 					} else {
-						$buts = $we_button->create_button_table(
+						$buts = we_button::create_button_table(
 								array(
 
 										$plusbut,
@@ -341,14 +339,14 @@ function we_tag_block($attribs, $content){
 					$selectb .= '<option value="' . $j . '">' . $j . '</option>';
 				}
 				$selectb .= '</select>';
-				$plusbut = $we_button->create_button('image:btn_add_listelement',
+				$plusbut = we_button::create_button('image:btn_add_listelement',
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name',document.we_form.elements['" . $tmpname . "_00'].options[document.we_form.elements['" . $tmpname . "_00'].selectedIndex].text)",
 						true,100,22,'','',($show > 0 ? false : true));
-				$plusbut = $we_button->create_button_table(array(
+				$plusbut = we_button::create_button_table(array(
 					$plusbut, $selectb
 				));
 			} else {
-				$plusbut = $we_button->create_button('image:btn_add_listelement',
+				$plusbut = we_button::create_button('image:btn_add_listelement',
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name',1)",
 						true,100,22,'','',($show > 0 ? false : true));
 			}
@@ -377,12 +375,11 @@ function we_tag_blockControls($attribs, $content='') {
 	if (!isset($attribs['ctlName'])) {
 		$attribs['ctlName'] = md5(uniqid(time()));
 	}
-	$we_button = new we_button();
 
 	if ($attribs['pos'] < $attribs['listSize']) {
 		$tabArray = array();
 		if ($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0) {
-			$tabArray[] = $we_button->create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].options[document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].selectedIndex].text)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$tabArray[] = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].options[document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].selectedIndex].text)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 			$selectb = '<select name="' . $attribs['ctlName'] . '_' . $attribs['pos'] . '">';
 			for ($j = 0; $j < $attribs['ctlShow']; $j++) {
 				$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
@@ -390,21 +387,21 @@ function we_tag_blockControls($attribs, $content='') {
 			$selectb .= '</select>';
 			$tabArray[] = $selectb;
 		} else {
-			$tabArray[] = $we_button->create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$tabArray[] = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 		}
 		$tabArray[] = (($attribs['pos'] > 0) ?
 										//enabled upBtn
-										$we_button->create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "')") :
+										we_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "')") :
 										//disabled upBtn
-										$we_button->create_button('image:btn_direction_up', '', true, 21, 22, '', '', true));
+										we_button::create_button('image:btn_direction_up', '', true, 21, 22, '', '', true));
 		$tabArray[] = (($attribs['pos'] == $attribs['listSize']) ?
 										//disabled downBtn
-										$we_button->create_button('image:btn_direction_down', '', true, 21, 22, '', '', true) :
+										we_button::create_button('image:btn_direction_down', '', true, 21, 22, '', '', true) :
 										//enabled downBtn
-										$we_button->create_button('image:btn_direction_down', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "')"));
-		$tabArray[] = $we_button->create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $attribs['name'] . "',1)");
+										we_button::create_button('image:btn_direction_down', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "')"));
+		$tabArray[] = we_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $attribs['name'] . "',1)");
 
-		return $we_button->create_button_table($tabArray, 5);
+		return we_button::create_button_table($tabArray, 5);
 	} else {
 
 		if ($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0) {
@@ -413,10 +410,10 @@ function we_tag_blockControls($attribs, $content='') {
 				$selectb .= '<option value="' . $j . '">' . $j . '</option>';
 			}
 			$selectb .= '</select>';
-			$plusbut = $we_button->create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list'," . $attribs['name'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_00'].options[document.we_form.elements['" . $attribs['ctlName'] . "_00'].selectedIndex].text)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
-			$plusbut = $we_button->create_button_table(array($plusbut, $selectb));
+			$plusbut = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list'," . $attribs['name'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_00'].options[document.we_form.elements['" . $attribs['ctlName'] . "_00'].selectedIndex].text)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$plusbut = we_button::create_button_table(array($plusbut, $selectb));
 		} else {
-			$plusbut = $we_button->create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
+			$plusbut = we_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', ($attribs['ctlShow'] > 0 ? false : true));
 		}
 
 		return '<input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_list[' . $attribs['name'] . ']" value="' . htmlentities(

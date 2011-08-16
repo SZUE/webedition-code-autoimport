@@ -33,8 +33,6 @@ protect();
 htmlTop();
 
 print STYLESHEET;
-
-$we_button = new we_button();
 ?>
 
 <script  type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
@@ -115,24 +113,24 @@ $we_button = new we_button();
 					</select><?php print getPixel(1,1); ?></td>
  				<td width="10"><?php print getPixel(10,29); ?></td>
 				<td width="40">
-					<?php print $we_button->create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
+					<?php print we_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
 				</td>
 				<td width="10"><?php print getPixel(10,29); ?></td>
 				<td width="40">
-					<?php print $we_button->create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
+					<?php print we_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
 				</td>
 <?php if(!$_REQUEST["ret"]){ ?>
 				<td width="10"><?php print getPixel(10,29); ?></td>
 				<td width="40">
-					<?php print $we_button->create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();",true,100,22,"","",false,false,"_ss"); ?>
+					<?php print we_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();",true,100,22,"","",false,false,"_ss"); ?>
 				</td>
  				<td width="10"><?php print getPixel(10,29); ?></td>
                 <td width="40">
-                   <?php print $we_button->create_button("image:btn_add_file", "javascript:javascript:openFile();",true,100,22,"","",false,false,"_ss"); ?>
+                   <?php print we_button::create_button("image:btn_add_file", "javascript:javascript:openFile();",true,100,22,"","",false,false,"_ss"); ?>
                 </td>
 				<td width="10"><?php print getPixel(10,29); ?></td>
                 <td width="25">
-                   <?php print $we_button->create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();",true,100,22,"","",false,false,"_ss"); ?>
+                   <?php print we_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();",true,100,22,"","",false,false,"_ss"); ?>
                 </td>
 <?php  }   ?>
  				<td width="10"><?php print getPixel(10,29); ?></td>

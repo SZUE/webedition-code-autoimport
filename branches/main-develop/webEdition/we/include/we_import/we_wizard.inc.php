@@ -274,7 +274,6 @@ HTS;
 			);
 		}
 
-		$WE_BTN = new we_button();
 		$cancelButton = $WE_BTN->create_button("cancel","javascript:parent.wizbody.handle_event('cancel');",false,-1,-1,'','',false,false);
 		$prevButton = $WE_BTN->create_button("back","javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "",true, false);
 		$nextButton = $WE_BTN->create_button("next","javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", false, false);

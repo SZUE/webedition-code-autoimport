@@ -169,7 +169,6 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	//	mode-table
-	$we_button = new we_button();
 	$_modetable = new we_htmlTable(	array(	"border"      => "0",
 											"cellpadding" => "0",
 											"cellspacing" => "0",
@@ -182,7 +181,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 		$_modetable->setCol(0,1, array(	"align"   => "right",
 									"valign"  => "bottom",
-									"rowspan" => "2"), we_htmlElement::htmlHidden(array("name" => "mode", "value" => "normal")) . $we_button->create_button("login", "javascript:document.loginForm.submit();"));
+									"rowspan" => "2"), we_htmlElement::htmlHidden(array("name" => "mode", "value" => "normal")) . we_button::create_button("login", "javascript:document.loginForm.submit();"));
 	} else {	//	normal login
 
 		//	15th Mode
@@ -202,7 +201,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		</table>');
 		$_modetable->setCol(0,1, array(	"align"   => "right",
 									"valign"  => "bottom",
-									"rowspan" => "2"),$we_button->create_button("login", "javascript:document.loginForm.submit();"));
+									"rowspan" => "2"),we_button::create_button("login", "javascript:document.loginForm.submit();"));
 	}
 
 	//	16th
@@ -218,7 +217,6 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 } else if (isset($GLOBALS["loginpage"]) && !$GLOBALS["loginpage"]) {
 
-	$we_button = new we_button();
 	srand ((double) microtime() * 1000000);
 	$r = rand();
 
@@ -259,7 +257,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,5));
 	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
 								"class" => "small",
-								"align" => "right"), $we_button->create_button("back_to_login", "/webEdition/index.php?r=$r"));
+								"align" => "right"), we_button::create_button("back_to_login", "/webEdition/index.php?r=$r"));
 	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
 
 	//	12th row

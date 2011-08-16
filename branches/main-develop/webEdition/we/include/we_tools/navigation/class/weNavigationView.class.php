@@ -275,7 +275,6 @@ class weNavigationView {
 				}
 			}
 		}
-		$_we_button = new we_button();
 		$js='
 			var loaded=0;
 			function we_cmd() {

@@ -44,7 +44,6 @@ if (defined("MESSAGING_SYSTEM")){
 
 	$newmsg_count = $messaging->used_msgobjs['we_message']->get_newmsg_count();
 	$newtodo_count = $messaging->used_msgobjs['we_todo']->get_newmsg_count();
-	$we_button = new we_button();
 
 	$msg_cmd = "javascript:top.we_cmd('messaging_start','message');";
 	$todo_cmd = "javascript:top.we_cmd('messaging_start','todo');";

@@ -69,18 +69,16 @@ class we_exportDirSelector extends we_dirSelector{
   	}
 
 	function printFooterTable() {
-		$we_button = new we_button();
-		print '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		print '<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
 				</tr>';
-		$cancel_button = $we_button->create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = $we_button->create_button("ok", "javascript:press_ok_button();");
-		$buttons = $we_button->position_yes_no_cancel(
+		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
+		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
+		$buttons = we_button::position_yes_no_cancel(
 												$yes_button,
 												null,
 												$cancel_button);
@@ -116,8 +114,7 @@ class we_exportDirSelector extends we_dirSelector{
 ';
         $makefolderState = we_hasPerm("NEW_EXPORT");
        	print '<script type="text/javascript">makefolderState='.$makefolderState.';</script>';
- 		$we_button = new we_button();
-		print $we_button->create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
+		print we_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}",true,-1,22,"","",$makefolderState ? false : true);
  		print '               </td>
 ';
 	}

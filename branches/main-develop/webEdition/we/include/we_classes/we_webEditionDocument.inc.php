@@ -219,7 +219,6 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function formTemplateWindow() {
 		$yuiSuggest =& weSuggest::getInstance();
-		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_'.$this->Name.'_TemplateName';
 		$idname = 'we_'.$this->Name.'_TemplateID';
@@ -244,7 +243,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
+		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 		$yuiSuggest->setAcId("Template");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
 		$yuiSuggest->setInput($textname,$path);

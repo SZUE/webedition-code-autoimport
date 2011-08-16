@@ -472,16 +472,15 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 	}
 
 	function printHeaderTableExtraCols() {
-		$we_button = new we_button();
 		we_dirSelector::printHeaderTableExtraCols();
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
 			print '<td width="10">'.getPixel(10,10).'</td><td width="40">';
 			$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 			print '<script  type="text/javascript">newFileState='.$newFileState.';</script>';
 			if($this->filter=="image/*" ||  $this->filter=="video/quicktime" ||  $this->filter=="application/x-shockwave-flash") {
-				print $we_button->create_button("image:".$this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
+				print we_button::create_button("image:".$this->ctb[$this->filter], "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
 			}else{
-				print $we_button->create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
+				print we_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, -1, 22, "", "", !$newFileState, false);
 			}
 			print '</td>';
 		}
@@ -584,7 +583,6 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 
 	function printFooterTable() {
-		$we_button = new we_button();
 		print '
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
@@ -616,10 +614,10 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					<td colspan="5">'.getPixel(5,5).'</td>
 				</tr>';
 		}
-		$buttons = $we_button->position_yes_no_cancel(
-												$we_button->create_button("ok", "javascript:press_ok_button();"),
+		$buttons = we_button::position_yes_no_cancel(
+												we_button::create_button("ok", "javascript:press_ok_button();"),
 												null,
-												$we_button->create_button("cancel", "javascript:top.exit_close();"));
+												we_button::create_button("cancel", "javascript:top.exit_close();"));
 
 		$seval = $this->values["Text"] == "/" ? "" : $this->values["Text"];
 		print '

@@ -60,8 +60,6 @@
 
         $_head = we_htmlElement::htmlHead(STYLESHEET);
 
-       	$we_button = new we_button();
-
 		$_table = new we_htmlTable(	array(	"cellpadding" => 0,
 											"cellspacing" => 0,
 											"border"      => 0),
@@ -72,7 +70,7 @@
 		$_table->setColContent(2, 0, getPixel(20,6));
 
 		//	there must be a navigation-history - so use it
-		$_table->setColContent(3, 1, $we_button->create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
+		$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
 		$_body = $_table->getHtmlCode();
 		$_body = we_htmlElement::htmlBody(	array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);

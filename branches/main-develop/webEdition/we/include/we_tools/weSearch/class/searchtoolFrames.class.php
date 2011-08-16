@@ -354,7 +354,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLEditorFooter()
 	{
-		$we_button = new we_button();
 
 		$table1 = new we_htmlTable(
 				array(
@@ -366,10 +365,10 @@ class searchtoolFrames extends weToolFrames
 			"nowrap" => null, "valign" => "top"
 		), getPixel(1600, 10));
 
-		$_but_table = $we_button->create_button_table(
+		$_but_table = we_button::create_button_table(
 				array(
 
-						$we_button->create_button(
+						we_button::create_button(
 								"save",
 								"javascript:we_save();",
 								true,

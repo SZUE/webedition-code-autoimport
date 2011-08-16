@@ -72,8 +72,7 @@ if(z != 0){
 </script>
 		</table>
 	';
-	$we_button = new we_button();
-	$trash = $we_button->create_button("image:btn_function_trash", "javascript:selectColor('')");
+	$trash = we_button::create_button("image:btn_function_trash", "javascript:selectColor('')");
 
 	$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;'.($this->args["color"] ? ('background-color:'.$this->args["color"].';') : '').'" value="'.$this->args["color"].'" /></td><td>'.getPixel(10,2).'</td><td>'.$trash.'</td></tr></table>';
 	$color = htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));

@@ -390,9 +390,8 @@
 
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-			$we_button = new we_button();
-			$button = $we_button->create_button("search", "javascript:SubmitForm();");
-			$newButton = $we_button->create_button("new_entry", "javascript:we_cmd('new_glossary_".$Type."','".$Language."');", true, 100, 22, "", "", !we_hasPerm("NEW_GLOSSARY"));
+			$button = we_button::create_button("search", "javascript:SubmitForm();");
+			$newButton = we_button::create_button("new_entry", "javascript:we_cmd('new_glossary_".$Type."','".$Language."');", true, 100, 22, "", "", !we_hasPerm("NEW_GLOSSARY"));
 
 			$_rows = array(10=>10, 25=>25, 50=>50, 100=>100);
 
@@ -442,25 +441,23 @@
 
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-			$we_button = new we_button();
-
 			$sum = $Search->countItems();
 			$min = ($Search->Offset) + 1;
 			$max = min($Search->Offset + $Search->Rows, $sum);
 
 			if($Search->Offset > 0) {
-				$prev = $we_button->create_button("back", "javascript:prev();"); //bt_back
+				$prev = we_button::create_button("back", "javascript:prev();"); //bt_back
 
 			} else {
-				$prev = $we_button->create_button("back", "",true, 100, 22, "", "", true);
+				$prev = we_button::create_button("back", "",true, 100, 22, "", "", true);
 
 			}
 
 			if($Search->Offset + $Search->Rows >= $sum) {
-				$next = $we_button->create_button("next", "", true, 100, 22, "", "", true);
+				$next = we_button::create_button("next", "", true, 100, 22, "", "", true);
 
 			} else {
-				$next = $we_button->create_button("next", "javascript:next();"); //bt_next
+				$next = we_button::create_button("next", "javascript:next();"); //bt_next
 
 			}
 
@@ -477,7 +474,7 @@
 		</tr>
 		<tr>
 			<td>' . getPixel(5,1) . '</td>
-			<td>' . ($extended && (we_hasPerm("DELETE_GLOSSARY") || we_hasPerm("NEW_GLOSSARY")) ? $we_button->create_button("selectAll", "javascript: AllItems();") : "") . '</td>
+			<td>' . ($extended && (we_hasPerm("DELETE_GLOSSARY") || we_hasPerm("NEW_GLOSSARY")) ? we_button::create_button("selectAll", "javascript: AllItems();") : "") . '</td>
 			<td align="right"><table cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td></td>
@@ -504,7 +501,7 @@
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("DELETE_GLOSSARY") ? $we_button->create_button("image:btn_function_trash", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_delete]")."')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") .'</td>
+					<td class="small">'.(we_hasPerm("DELETE_GLOSSARY") ? we_button::create_button("image:btn_function_trash", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_delete]")."')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") .'</td>
 					<td>'.getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_glossary','[delete_selected_items]') : "").'</td>
 				</tr>
@@ -521,7 +518,7 @@
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? $we_button->create_button("image:btn_function_publish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_publish]")."')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? we_button::create_button("image:btn_function_publish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_publish]")."')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") .'</td>
 					<td>'.getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_glossary','[publish_selected_items]') : "").'</td>
 				</tr>
@@ -538,7 +535,7 @@
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>'.getPixel(5,1).'</td>
-					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? $we_button->create_button("image:btn_function_unpublish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_unpublish]")."')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") .'</td>
+					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? we_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_unpublish]")."')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") .'</td>
 					<td>'.getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_glossary','[unpublish_selected_items]') : "").'</td>
 				</tr>

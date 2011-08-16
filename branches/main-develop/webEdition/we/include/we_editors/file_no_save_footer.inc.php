@@ -31,7 +31,6 @@
 												"cellspacing" => 0),
 									2,
 									4);
-	$we_button = new we_button();
 	//	spaceholder
 	$_messageTbl->setColContent(0,0, getPixel(20,7));
 	$_messageTbl->setColContent(1,1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));

@@ -97,8 +97,6 @@ if(is_callable("gethostbynamel")) {
 	$errorMessage .= "</ul>";
 }
 
-$we_button = new we_button();
-
 $content = '
 
 <div class="defaultfont">

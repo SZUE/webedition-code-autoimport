@@ -468,8 +468,7 @@ $oSctList21 = new we_htmlSelect(
 				"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
 		));
 
-$we_button = new we_button();
-$oBtnDelete = $we_button->create_button(
+$oBtnDelete = we_button::create_button(
 		"delete",
 		"javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);",
 		false,
@@ -536,7 +535,6 @@ $content = $oShortcutsRem . getPixel(1, 5) . we_htmlElement::htmlBr() . htmlForm
 		"left",
 		"defaultfont") . getPixel(1, 5) . we_htmlElement::htmlBr() . $oPool->getHTMLCode();
 
-$we_button = new we_button();
 array_push($parts, array(
 	"headline" => "", "html" => $content, "space" => 0
 ));
@@ -544,10 +542,10 @@ array_push($parts, array(
 	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
 ));
 
-$save_button = $we_button->create_button("save", "javascript:save();", false, -1, -1);
-$preview_button = $we_button->create_button("preview", "javascript:preview();", false, -1, -1);
-$cancel_button = $we_button->create_button("close", "javascript:exit_close();");
-$buttons = $we_button->position_yes_no_cancel($save_button, $preview_button, $cancel_button);
+$save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
+$preview_button = we_button::create_button("preview", "javascript:preview();", false, -1, -1);
+$cancel_button = we_button::create_button("close", "javascript:exit_close();");
+$buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
 		"sctProps",
@@ -570,7 +568,7 @@ print
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
 								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . $we_button->create_state_changer(false))) . we_htmlElement::htmlBody(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),

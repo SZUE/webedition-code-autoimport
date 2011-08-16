@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSe
  * echo $yuiSuggest->getYuiFiles																										// Die notwendigen YUI-JS-Dateien werden an einer passenden Stelle eingebunden
  * echo $yuiSuggest->createAutocompleter(																								// GUI-Element mit Input-Feld und Auswahl-Button
  *			"Doc", 																														// AC-Id
- *			$we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
+ *			we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
  *			htmlTextInput("seem_start_document_name", 11, $_document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
  *			'yuiAcInputDoc',																											// Input-Feld-Id. Die Id besteht aus 'yuiAcInput' und AC-Id
  *			we_htmlElement::htmlHidden(array("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) f�r die Document-, Folder-, Object-,...ID
@@ -996,9 +996,6 @@ function doDebugResizeH(){
 			);
 	}
 
-	function createSelectButton() {
-		$we_button = new we_button($href);
-	}
 	function getHTML() {
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
 		$inputId = empty($this->inputId) ? "yuiAcInput".$this->acId : $this->inputId;

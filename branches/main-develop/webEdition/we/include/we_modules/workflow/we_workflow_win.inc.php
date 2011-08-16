@@ -46,7 +46,6 @@ include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc
 
 htmlTop();
 
-$we_button = new we_button();
 switch($_REQUEST["we_cmd"][0]){
 
 	case "in_workflow":
@@ -59,4 +58,3 @@ switch($_REQUEST["we_cmd"][0]){
 		include(WE_WORKFLOW_MODULE_DIR."we_decline_workflow.inc.php");
 		break;
 }
-?>

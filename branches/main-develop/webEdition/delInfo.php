@@ -63,9 +63,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 				"space"=>10)
 	);
 
-	$we_button = new we_button();
 	$buttons = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont", "align"=>"right"), 1, 1);
-	$buttons->setCol(0,0,null,$we_button->create_button("close","javascript:self.close();"));
+	$buttons->setCol(0,0,null,we_button::create_button("close","javascript:self.close();"));
 	print we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
 				//we_htmlElement::htmlTitle("")

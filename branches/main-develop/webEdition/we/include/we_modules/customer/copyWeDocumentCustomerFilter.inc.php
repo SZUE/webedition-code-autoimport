@@ -206,7 +206,6 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 			}
 			';
 
-	$we_button = new we_button();
 	$js = "";
 
 	$pb = new we_progressBar(0, 0, true);
@@ -219,7 +218,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 	// image and progressbar
 	$content = $pb->getHTML();
 
-	$buttonBar = $we_button->create_button("cancel", "javascript:top.close();");
+	$buttonBar = we_button::create_button("cancel", "javascript:top.close();");
 
 	$_iframeLocation = "/webEdition/we_cmd.php?we_cmd[0]=" . $_REQUEST["we_cmd"][0] . "&we_cmd[1]=" . $_REQUEST["we_cmd"][1] . "&we_cmd[2]=" . $_REQUEST["we_cmd"][2] . (isset($_REQUEST["we_cmd"][3]) ? "&we_cmd[3]=" . $_REQUEST["we_cmd"][3] : "" ) ."&startCopy=1";
 

@@ -41,11 +41,10 @@ if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"
 		<div id="search" style="margin: 10px 0 0 10px;">
 			<?php
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-			$we_button=new we_button();
-			print $we_button->create_button_table(
+			print we_button::create_button_table(
 					array(
 						htmlTextInput('keyword',10,(isset($_REQUEST['keyword']) ? $_REQUEST['keyword'] : ''),'','','text','120px'),
-						$we_button->create_button('image:btn_function_search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);",true,40)
+						we_button::create_button('image:btn_function_search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);",true,40)
 					)
 			);?>
 		</div>

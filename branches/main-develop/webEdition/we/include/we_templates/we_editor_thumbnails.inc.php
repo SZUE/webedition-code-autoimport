@@ -41,7 +41,6 @@ print STYLESHEET; ?>
 
 
 $parts = array();
-$we_button = new we_button();
 
 
 if(we_image_edit::gd_version() > 0){
@@ -96,7 +95,7 @@ if(we_image_edit::gd_version() > 0){
 			}
 
 
-			$delbut = $we_button->create_button("image:btn_function_trash","javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','".$thumbid."');",true,30);
+			$delbut = we_button::create_button("image:btn_function_trash","javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','".$thumbid."');",true,30);
 
 
 			$thumbnail = '<table border="0" cellpadding="0" cellspacing="0" width="570"><tr><td width="538"><img src="'.$src.'" width="'.$thumbObj->getOutputWidth().
@@ -110,7 +109,7 @@ if(we_image_edit::gd_version() > 0){
 
 		}
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[add_descriptiontext]"),2,"700").'<br><br>'. $we_button->create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','".$we_transaction."');"),
+										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[add_descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','".$we_transaction."');"),
 										"space"=>0
 								)
 						);

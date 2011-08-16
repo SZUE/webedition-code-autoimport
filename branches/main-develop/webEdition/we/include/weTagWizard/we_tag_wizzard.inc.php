@@ -37,8 +37,6 @@ if (function_exists('protect')) {
 	exit();
 }
 
-$GLOBALS['we_button'] = new we_button();
-
 // include wetag depending on we_cmd[1]
 $weTag = weTagData::getTagData($tagName);
 

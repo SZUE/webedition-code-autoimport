@@ -228,8 +228,7 @@ class weCustomerEIWizard{
 		$_input_size = 42;
 
 		$parts = array();
-		$we_button = new we_button();
-
+		
 		//set defaults
 		$type= isset($_REQUEST["type"]) ? $_REQUEST["type"] : "gxml";
 		$filename= (isset($_REQUEST["filename"]) && $_REQUEST["filename"]!="") ? $_REQUEST["filename"] : "weExport_".time().($type=="csv" ? ".csv" : ".xml");
@@ -617,7 +616,6 @@ class weCustomerEIWizard{
 		$upload=isset($_REQUEST["upload"]) ? $_REQUEST["upload"] : "";
 		$type=isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
 
-		$we_button=new we_button();
 		$parts = array();
 
 		$js=we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).
@@ -1009,23 +1007,21 @@ class weCustomerEIWizard{
 	function getHTMLExportFooter($step=1){
 		$content = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "575", "align"=>"right"), 1, 2);
 
-		$we_button = new we_button();
-
 		if ($step == 1) {
-			$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "", false, 100, 22, "", "", true),
-															$we_button->create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=export_next&step=".$step."';"))
+			$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "", false, 100, 22, "", "", true),
+															we_button::create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=export_next&step=".$step."';"))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 			);
 		} else if ($step == 4) {
-			$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "", false, 100, 22, "", "", true),
-															$we_button->create_button("next", "", false, 100, 22, "", "", true))
+			$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "", false, 100, 22, "", "", true),
+															we_button::create_button("next", "", false, 100, 22, "", "", true))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 			);
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 			$text = g_l('modules_customer','[exporting]');
@@ -1037,20 +1033,20 @@ class weCustomerEIWizard{
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 
 		} else if ($step == 5) {
-			$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "", false, 100, 22, "", "", true),
-															$we_button->create_button("next", "", false, 100, 22, "", "", true))
+			$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "", false, 100, 22, "", "", true),
+															we_button::create_button("next", "", false, 100, 22, "", "", true))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 			);
 		} else {
-			$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=export_back&step=".$step."';"),
-															$we_button->create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=export_next&step=".$step."';"))
+			$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=export_back&step=".$step."';"),
+															we_button::create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=export_next&step=".$step."';"))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 			);
 		}
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
@@ -1075,25 +1071,24 @@ class weCustomerEIWizard{
 
 	function getHTMLImportFooter($step=1){
 		$content = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "575", "align"=>"right"), 1, 2);
-		$we_button = new we_button();
-
+		
 		switch($step){
 			case "1":
-				$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "", false, 100, 22, "", "", true),
-															$we_button->create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_next&step=".$step."';"))
+				$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "", false, 100, 22, "", "", true),
+															we_button::create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_next&step=".$step."';"))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 				);
 			break;
 			case "5":
-				$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "", false, 100, 22, "", "", true),
-															$we_button->create_button("next", "", false, 100, 22, "", "", true))
+				$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "", false, 100, 22, "", "", true),
+															we_button::create_button("next", "", false, 100, 22, "", "", true))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 				);
 				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 				$text = g_l('modules_customer','[importing]');
@@ -1105,26 +1100,26 @@ class weCustomerEIWizard{
 				$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 			break;
 			case "6":
-				$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button("close", "javascript:top.close();")
+				$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button("close", "javascript:top.close();")
 				);
 			break;
 			case "99":
-				$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_back&step=2';"),
-															$we_button->create_button("next", "", false, 100, 22, "", "", true))
+				$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_back&step=2';"),
+															we_button::create_button("next", "", false, 100, 22, "", "", true))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 				);
 			break;
 			default:
-				$buttons = $we_button->position_yes_no_cancel(
-											$we_button->create_button_table(array(
-															$we_button->create_button("back", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_back&step=".$step."';"),
-															$we_button->create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_next&step=".$step."';"))
+				$buttons = we_button::position_yes_no_cancel(
+											we_button::create_button_table(array(
+															we_button::create_button("back", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_back&step=".$step."';"),
+															we_button::create_button("next", "javascript:".$this->loadFrame.".location='".$this->frameset."?pnt=eiload&cmd=import_next&step=".$step."';"))
 											),
-											$we_button->create_button("cancel", "javascript:top.close();")
+											we_button::create_button("cancel", "javascript:top.close();")
 				);
 		}
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
@@ -1651,11 +1646,10 @@ class weCustomerEIWizard{
 				}
 		');
 
-		$we_button = new we_button();
 		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc4= we_cmd_enc(str_replace('\\','',$cmd));
-	  	$button =  $we_button->create_button("select","javascript:formFileChooser('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value,'".$wecmdenc4."');");
+	  	$button =  we_button::create_button("select","javascript:formFileChooser('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value,'".$wecmdenc4."');");
 
 		return $js.htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,"",' readonly',"text",$width,0),
 			"",
@@ -1683,12 +1677,11 @@ class weCustomerEIWizard{
 				}
 		');
 
-		$we_button = new we_button();
 		//javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));	
-		$button = $we_button->create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
+		$button = we_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		return $js.htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",' readonly',"text",$width,0),
 			"",
 			"left",
@@ -1763,11 +1756,10 @@ class weCustomerEIWizard{
 						//we_htmlElement::htmlHidden(array("name"=>"customers","value"=>(isset($_REQUEST["customers"]) ? $_REQUEST["customers"] :""))).
 						we_htmlElement::htmlHidden(array("name"=>"cus","value"=>(isset($_REQUEST["cus"]) ? $_REQUEST["cus"] :"")));
 
-		$we_button = new we_button();
-
-		$delallbut = $we_button->create_button("delete_all","javascript:selector_cmd('del_all_customers')",true,-1,-1,"","",(isset($_REQUEST["customers"]) ? false : true));
-		$addbut    = $we_button->create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.".$this->bodyFrame.".selector_cmd(\\'add_customer\\',top.allIDs);')");
-		$custs = new MultiDirChooser(400,(isset($_REQUEST["customers"]) ? $_REQUEST["customers"] :""),"del_customer", $we_button->create_button_table(array($delallbut, $addbut)),"","Icon,Path", CUSTOMER_TABLE);
+		
+		$delallbut = we_button::create_button("delete_all","javascript:selector_cmd('del_all_customers')",true,-1,-1,"","",(isset($_REQUEST["customers"]) ? false : true));
+		$addbut    = we_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.".$this->bodyFrame.".selector_cmd(\\'add_customer\\',top.allIDs);')");
+		$custs = new MultiDirChooser(400,(isset($_REQUEST["customers"]) ? $_REQUEST["customers"] :""),"del_customer", we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path", CUSTOMER_TABLE);
 
 		if(!we_hasPerm("EDIT_KATEGORIE")) {
 			$custs->isEditable=false;
@@ -1780,13 +1772,12 @@ class weCustomerEIWizard{
 			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue).";", "Path", $this->db);
 		}
 
-      $we_button = new we_button();
 
 	  //javascript:selector_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$Pathname'].value");
 		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
-	  $button =  $we_button->create_button("select","javascript:selector_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
+	  $button =  we_button::create_button("select","javascript:selector_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 
       return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'readonly',"text",$width,0),
 			"",
@@ -1896,13 +1887,12 @@ class weCustomerEIWizard{
 		$table->addRow();
 		$table->setCol($c,0,array("colspan"=>$colspan),getPixel(5,5));
 
-		$we_button = new we_button();
-		$plus = $we_button->create_button("image:btn_function_plus", "javascript:filter_cmd('add_filter')");
-		$trash = $we_button->create_button("image:btn_function_trash","javascript:filter_cmd('del_filter')");
+		$plus = we_button::create_button("image:btn_function_plus", "javascript:filter_cmd('add_filter')");
+		$trash = we_button::create_button("image:btn_function_trash","javascript:filter_cmd('del_filter')");
 
 		$c++;
 		$table->addRow();
-		$table->setCol($c,0,array("colspan"=>$colspan),$we_button->create_button_table(array($plus,$trash)));
+		$table->setCol($c,0,array("colspan"=>$colspan),we_button::create_button_table(array($plus,$trash)));
 
 		return $js.
 					//we_htmlElement::htmlHidden(array("name"=>"filter_count","value"=>$count)).

@@ -567,7 +567,6 @@ function handleShutdown($code) {
 
 	function formMasterTemplate() {
 		$yuiSuggest =& weSuggest::getInstance();
-		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_'.$this->Name.'_MasterTemplateID';
@@ -579,8 +578,8 @@ function handleShutdown($code) {
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, WE_MESSAGE_ERROR) . "opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';}");
 
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
-		$trashButton = $we_button->create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
+		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId("MasterTemplate");
 		$yuiSuggest->setContentType("folder,text/weTmpl");
@@ -617,7 +616,6 @@ function handleShutdown($code) {
 		if($this->ID == 0) {
 			return g_l('weClass',"[no_documents]");
 		}
-		$we_button = new we_button();
 		$textname = 'TemplateDocuments';
 
 		$path = $this->isUsedByDocuments();
@@ -627,7 +625,7 @@ function handleShutdown($code) {
 			return g_l('weClass',"[no_documents]");
 		}
 
-		$button = $we_button->create_button("open", "javascript:top.weEditorFrameController.openDocument('".FILE_TABLE."', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
+		$button = we_button::create_button("open", "javascript:top.weEditorFrameController.openDocument('".FILE_TABLE."', document.we_form.elements['TemplateDocuments'].value, 'text/webedition');");
 		$foo = $this->htmlSelect($textname, $path, 1, "", false, "", "value", 388);
 		return $this->htmlFormElementTable($foo,
 			"",

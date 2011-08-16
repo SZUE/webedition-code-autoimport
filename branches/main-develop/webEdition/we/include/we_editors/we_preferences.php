@@ -3182,8 +3182,6 @@ function build_dialog($selected_setting = "ui") {
 	global $DB_WE, $SYSTEM;
 	$yuiSuggest =& weSuggest::getInstance();
 
-	$we_button = new we_button();
-
 	switch ($selected_setting) {
 		case "save":
 			/*****************************************************************
@@ -3361,7 +3359,7 @@ function build_dialog($selected_setting = "ui") {
 			// Generate needed JS
 			$_needed_JavaScript = "
 						<script language=\"JavaScript\" type=\"text/javascript\"><!--
-							" . $we_button->create_state_changer(false) . "
+							" . we_button::create_state_changer(false) . "
 						//-->
 						</script>";
 
@@ -3537,10 +3535,10 @@ function build_dialog($selected_setting = "ui") {
 					$yuiSuggest->setResult("seem_start_document", $_document_id);
 					$yuiSuggest->setSelector("Docselector");
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
+					$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$_seem_document_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_document", "style"=>"display:none"));
+					$_seem_document_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_document", "style"=>"display:none"));
 					$permitedStartTypes[] =	"document";
 				}
 				$_seem_object_chooser = "";
@@ -3558,10 +3556,10 @@ function build_dialog($selected_setting = "ui") {
 					$yuiSuggest->setSelector("Docselector");
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton($we_button->create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
+					$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", get_value("ui_disable_seem"), false),10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$_seem_object_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_object", "style"=>"display:none"));
+					$_seem_object_chooser = we_button::create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_object", "style"=>"display:none"));
 					$permitedStartTypes[] = "object";
 				}
 
@@ -3615,7 +3613,7 @@ function build_dialog($selected_setting = "ui") {
 
 				// Sidebar document
 				//$_sidebar_hidden = we_htmlElement::htmlHidden(array("name" => "ui_sidebar_file", "value" => $_sidebar_id, "id"=>"yuiAcResultSidebarDoc"));
-				$_sidebar_document_button = $we_button->create_button("select", "javascript:selectSidebarDoc()");
+				$_sidebar_document_button = we_button::create_button("select", "javascript:selectSidebarDoc()");
 
 				$yuiSuggest->setAcId("SidebarDoc");
 				$yuiSuggest->setContentType("folder,text/webEdition");
@@ -3752,7 +3750,7 @@ function build_dialog($selected_setting = "ui") {
 			$_window_current_dimension_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);
 
 			$_window_current_dimension_table->setCol(0, 0, null, getPixel(50, 1));
-			$_window_current_dimension_table->setCol(0, 1, null, $we_button->create_button("apply_current_dimension", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
+			$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
@@ -3772,8 +3770,8 @@ function build_dialog($selected_setting = "ui") {
 			// Create predefined window dimension buttons
 			$_window_predefined_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
 
-			$_window_predefined_table->setCol(0, 0, null, $we_button->create_button_table(array($we_button->create_button("res_800", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '800';document.getElementsByName('weHeight')[0].value = '600';", true), $we_button->create_button("res_1024", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1024';document.getElementsByName('weHeight')[0].value = '768';", true))));
-			$_window_predefined_table->setCol(2, 0, null, $we_button->create_button_table(array($we_button->create_button("res_1280", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1280';document.getElementsByName('weHeight')[0].value = '960';", true), $we_button->create_button("res_1600", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1600';document.getElementsByName('weHeight')[0].value = '1200';", true))));
+			$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '800';document.getElementsByName('weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1024';document.getElementsByName('weHeight')[0].value = '768';", true))));
+			$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1280';document.getElementsByName('weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1600';document.getElementsByName('weHeight')[0].value = '1200';", true))));
 
 			$_window_predefined_table->setCol(1, 0, null, getPixel(1, 10));
 
@@ -4121,8 +4119,8 @@ EOF;
 				$_editlist_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 3);
 
 				// Buttons
-				$default = $we_button->create_button("default", "javascript:defaultLocale()", true, 100, 22, "", "", !$_enabled_buttons);
-				$delete = $we_button->create_button("delete", "javascript:deleteLocale()", true, 100);
+				$default = we_button::create_button("default", "javascript:defaultLocale()", true, 100, 22, "", "", !$_enabled_buttons);
+				$delete = we_button::create_button("delete", "javascript:deleteLocale()", true, 100);
 
 				$_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 3);
 				$_html->setCol(0, 0, array("class" => "defaultfont"), $default);
@@ -4185,7 +4183,7 @@ EOF;
 				$_countries->addOptions(sizeof($Countries), array_keys($Countries),  array_values($Countries));
 
 				// Button
-				$_add_button = $we_button->create_button("add", "javascript:addLocale()", true, 139);
+				$_add_button = we_button::create_button("add", "javascript:addLocale()", true, 139);
 
 				// Build final HTML code
 				$_add_html	=	g_l('prefs','[locale_languages]') . "<br />"
@@ -4705,7 +4703,7 @@ else {
 						<script language=\"JavaScript\" type=\"text/javascript\"><!--
 							var hot = false;
 
-							" . (!we_hasPerm("CHANGE_START_DOCUMENT") ? $we_button->create_state_changer(false) : "") . "
+							" . (!we_hasPerm("CHANGE_START_DOCUMENT") ? we_button::create_state_changer(false) : "") . "
 							function set_state_edit_delete_recipient() {
 								var p = document.forms[0].elements[\"we_recipient\"];
 								var i = p.length;
@@ -4906,7 +4904,7 @@ else {
 
 			$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtmlCode());
 			$_editlist_table->setCol(0, 1, null, getPixel(10, 1));
-			$_editlist_table->setCol(0, 2, array("valign" => "top"), $we_button->create_button("add", "javascript:add_recipient();") . getPixel(1, 10) . $we_button->create_button("edit", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . getPixel(1, 10) . $we_button->create_button("delete", "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
+			$_editlist_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_recipient();") . getPixel(1, 10) . we_button::create_button("edit", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 			// Build dialog if user has permission
 			if (we_hasPerm("FORMMAIL")) {
@@ -4940,7 +4938,7 @@ else {
 				$_html = '<table border="0" cellpading="0" cellspacing="0">
 							<tr>
 								<td>'.$_formmail_log->getHtmlCode() . '</td>
-								<td style="padding-left:10px;">' . $we_button->create_button("logbook",'javascript:we_cmd(\'show_formmail_log\')') . '</td>
+								<td style="padding-left:10px;">' . we_button::create_button("logbook",'javascript:we_cmd(\'show_formmail_log\')') . '</td>
 							</tr>
 						</table>';
 				array_push($_settings, array('html' => $_html, "space" => 250,"headline"=>g_l('prefs','[logFormmailRequests]'),"noline"=>1));
@@ -5000,7 +4998,7 @@ else {
 				$_html = '<table border="0" cellpading="0" cellspacing="0">
 							<tr>
 								<td>'.$_formmail_block->getHtmlCode() . '</td>
-								<td style="padding-left:10px;">' . $we_button->create_button("logbook",'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>
+								<td style="padding-left:10px;">' . we_button::create_button("logbook",'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>
 							</tr>
 						</table>';
 
@@ -5511,15 +5509,15 @@ else {
 					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
 					$wecmdenc1= we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
 					$wecmdenc4= '';
-			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
+			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
-                    $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but));
+                    $_thumbnail_dir = we_button::create_button_table(array($_inp,$_but));
 
 			    } else {                                 //  gd lib ist nicht installiert
 
-			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "#", true, 100, 22,'','', true) : "";
+			        $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22,'','', true) : "";
 				    $_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125,'0','',true);
-                    $_thumbnail_dir = $we_button->create_button_table(array($_inp,$_but)) . '<br/>' . g_l('thumbnails',"[add_description_nogdlib]");
+                    $_thumbnail_dir = we_button::create_button_table(array($_inp,$_but)) . '<br/>' . g_l('thumbnails',"[add_description_nogdlib]");
 			    }
 
 			    array_push($_settings, array("headline" => g_l('prefs','[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200));
@@ -5530,9 +5528,9 @@ else {
 				//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'we_tracker_dir\\'].value', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')
 				$wecmdenc1= we_cmd_enc("document.forms[0].elements['we_tracker_dir'].value");
 				$wecmdenc4= '';
-			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
+			    $_but     = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
 				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
-                $_we_tracker_dir = $we_button->create_button_table(array($_inp,$_but));
+                $_we_tracker_dir = we_button::create_button_table(array($_inp,$_but));
 			    array_push($_settings, array("headline" => g_l('prefs','[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200));
 
 				// Build select box
@@ -5704,8 +5702,8 @@ else {
 				$wecmdenc1= we_cmd_enc("document.forms[0].elements['error_document_no_objectfile'].value");
 				$wecmdenc2= we_cmd_enc("document.forms[0].elements['error_document_no_objectfile_text'].value");
 				$wecmdenc3= '';
-				  $_acButton1 = $we_button->create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','', 'text/webEdition', 1)");
-				  $_acButton2 = $we_button->create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
+				  $_acButton1 = we_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['error_document_no_objectfile'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','', 'text/webEdition', 1)");
+				  $_acButton2 = we_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'error_document_no_objectfile\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
 
 				  $yuiSuggest->setAcId("doc2");
 				  $yuiSuggest->setContentType("folder,text/webEdition,text/html");
@@ -6501,7 +6499,7 @@ $_needed_JavaScript .= "
 						)
 					);
 
-					$_versions_wizard = "<div style='float:left;'>".$we_button->create_button("openVersionWizard", "javascript:openVersionWizard()", true, 100,22,"","")."</div>";
+					$_versions_wizard = "<div style='float:left;'>".we_button::create_button("openVersionWizard", "javascript:openVersionWizard()", true, 100,22,"","")."</div>";
 
 					array_push($_settings, array(
 						'headline'=>g_l('prefs','[versioning_wizard]'),

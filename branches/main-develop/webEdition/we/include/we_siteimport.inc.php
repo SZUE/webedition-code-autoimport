@@ -508,8 +508,6 @@ class weSiteImport
 	function _getCreateWePageSettingsHTML()
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
-		$we_button = new we_button();
-
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"]) && $_SESSION["prefs"]["siteImportPrefs"]) ? unserialize(
 				$_SESSION["prefs"]["siteImportPrefs"]) : array();
 
@@ -533,7 +531,7 @@ class weSiteImport
 				break;
 			}
 		}
-		$date_help_button = $we_button->create_button("image:btn_help", "javascript:showDateHelp();", true . -1, 22);
+		$date_help_button = we_button::create_button("image:btn_help", "javascript:showDateHelp();", true . -1, 22);
 		$dateformatvals = array(
 			"unix" => g_l('import','[uts]'), "gmt" => g_l('import','[gts]'), "own" => g_l('import','[fts]')
 		);
@@ -592,9 +590,9 @@ class weSiteImport
 					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings" />
 					<input type="hidden" name="ok" value="1" />' . we_multiIconBox::getJS();
 
-		$okbutton = $we_button->create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
-		$cancelbutton = $we_button->create_button("cancel", "javascript:self.close()");
-		$buttons = $we_button->position_yes_no_cancel($okbutton, null, $cancelbutton);
+		$okbutton = we_button::create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
+		$cancelbutton = we_button::create_button("cancel", "javascript:self.close()");
+		$buttons = we_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
 		$bodyhtml .= we_multiIconBox::getHTML(
 				"",
 				"100%",
@@ -725,7 +723,6 @@ class weSiteImport
 	 */
 	function _getTemplateSelectHTML($tid)
 	{
-		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDummy';
 		$idname = 'templateID';
@@ -735,7 +732,7 @@ class weSiteImport
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener.displayTable();");
 
-		$button = $we_button->create_button(
+		$button = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "','','text/weTmpl',1)");
 
@@ -762,12 +759,10 @@ class weSiteImport
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-		$we_button = new we_button();
-
 		// Suorce Directory
 		//javascript:we_cmd('browse_server', 'document.we_form.elements[\\'from\\'].value', 'folder', document.we_form.elements['from'].value)
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['from'].value");
-		$_from_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $we_button->create_button(
+		$_from_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
 				"select",
 				"javascript:we_cmd('browse_server', '".$wecmdenc1."','folder',document.we_form.elements['from'].value)") : "";
 
@@ -790,7 +785,7 @@ class weSiteImport
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['to'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['toPath'].value");
 		$wecmdenc3= '';
-		$_to_button = $we_button->create_button(
+		$_to_button = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')");
 
@@ -903,7 +898,7 @@ class weSiteImport
 				"",
 				!we_hasPerm("NEW_SONSTIGE"));
 
-		$_wePagesOptionButton = $we_button->create_button(
+		$_wePagesOptionButton = we_button::create_button(
 				"preferences",
 				"javascript:we_cmd('siteImportCreateWePageSettings')",
 				true,
@@ -1249,8 +1244,7 @@ class weSiteImport
 			"class" => "weDialogButtonsBody"
 		);
 
-		$we_button = new we_button();
-		$cancelButton = $we_button->create_button(
+		$cancelButton = we_button::create_button(
 				"cancel",
 				"javascript:top.close()",
 				true,
@@ -1267,10 +1261,10 @@ class weSiteImport
 
 		$js = we_htmlElement::jsElement($js);
 
-		$prevButton = $we_button->create_button("back", "javascript:back();", true, 100, 22, "", "", false, false);
-		$nextButton = $we_button->create_button("next", "javascript:next();", true, 100, 22, "", "", false, false);
+		$prevButton = we_button::create_button("back", "javascript:back();", true, 100, 22, "", "", false, false);
+		$nextButton = we_button::create_button("next", "javascript:next();", true, 100, 22, "", "", false, false);
 
-		$prevNextButtons = $we_button->create_button_table(array(
+		$prevNextButtons = we_button::create_button_table(array(
 			$prevButton, $nextButton
 		));
 
@@ -1285,7 +1279,7 @@ class weSiteImport
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
 		$table->setCol(0, 1, array(
 			"align" => "right"
-		), $we_button->position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
+		), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
 		$content = $table->getHtmlCode();
 		$body = we_htmlElement::htmlBody($bodyAttribs, $content);
 		return $this->_getHtmlPage($body, $js);
@@ -1375,7 +1369,6 @@ class weSiteImport
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$we_button = new we_button();
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDirName';
 		$idname = 'templateParentID';
@@ -1383,7 +1376,7 @@ class weSiteImport
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3= '';
-		$button = $we_button->create_button(
+		$button = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "')");
 

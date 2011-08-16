@@ -169,7 +169,6 @@ $we_tabs->getHTML() .
 			return '<body bgcolor="#F0EFF0"></body></html>';
 		}
 		$this->View->getJSFooterCode();
-		$we_button = new we_button();
 ?>
 		<script type="text/javascript">
 			function sprintf(){
@@ -234,7 +233,7 @@ $we_tabs->getHTML() .
 	<table border="0" cellpadding="0" cellspacing="0">
 						<tr valign="middle">
 							<td nowrap><?php print getPixel(15,5); ?></td>
-							<td><?php print $we_button->create_button("save", "javascript:we_save();"); ?></td>
+							<td><?php print we_button::create_button("save", "javascript:we_save();"); ?></td>
 						</tr>
 	</table>
     </form>

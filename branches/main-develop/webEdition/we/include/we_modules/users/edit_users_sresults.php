@@ -30,7 +30,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 protect();
 print STYLESHEET;
 
-$we_button = new we_button();
 
 $_select ='<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="opener.top.content.we_cmd(\'check_user_display\',document.we_form.search_results.value)">';
   $_kwd = isset($_REQUEST["kwd"]) ? $_REQUEST["kwd"] : "";
@@ -90,10 +89,10 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
 	}
 
 
-  $_buttons = $we_button->position_yes_no_cancel(
-  	$we_button->create_button("edit", "javascript:opener.top.content.we_cmd('check_user_display',document.we_form.search_results.value)"),
+  $_buttons = we_button::position_yes_no_cancel(
+  	we_button::create_button("edit", "javascript:opener.top.content.we_cmd('check_user_display',document.we_form.search_results.value)"),
   	null,
-  	$we_button->create_button("cancel", "javascript:self.close();")
+  	we_button::create_button("cancel", "javascript:self.close();")
 
   );
 
@@ -106,7 +105,7 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
  	"left",
  	"defaultfont",
  	getPixel(10,1),
- 	$we_button->create_button("image:btn_function_search", "javascript:document.we_form.submit();")
+ 	we_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
  ) . '<div style="height:20px;"></div>' .
 
  htmlFormElementTable(

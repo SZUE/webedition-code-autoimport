@@ -28,10 +28,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/htm
 htmlTop($GLOBALS['lang']['Template']['title']);
 
 // generate needed buttons
-$we_button = new we_button();
-$ButtonBack = $we_button->create_button('back', 'javascript:leWizardForm.back();', true, 100, 22, "", "", true, false);
-$ButtonNext = $we_button->create_button('next', 'javascript:leWizardForm.next();', true, 100, 22, "", "", false, false);
-$ButtonReload = $we_button->create_button(
+$ButtonBack = we_button::create_button('back', 'javascript:leWizardForm.back();', true, 100, 22, "", "", true, false);
+$ButtonNext = we_button::create_button('next', 'javascript:leWizardForm.next();', true, 100, 22, "", "", false, false);
+$ButtonReload = we_button::create_button(
 		'image:function_reload', 
 		'javascript:leWizardForm.reload();', 
 		true, 
@@ -43,7 +42,7 @@ $ButtonReload = $we_button->create_button(
 		false);
 
 // Preview
-$ButtonClose = $we_button->create_button(
+$ButtonClose = we_button::create_button(
 		'close', 
 		'javascript:top.frames[\'leLoadFrame\'].hidePreview();', 
 		true, 
@@ -53,7 +52,7 @@ $ButtonClose = $we_button->create_button(
 		"", 
 		false, 
 		false);
-$ButtonBackPreview = $we_button->create_button(
+$ButtonBackPreview = we_button::create_button(
 		'image:direction_left', 
 		'javascript:top.frames[\'leLoadFrame\'].backPreview();', 
 		true, 
@@ -63,7 +62,7 @@ $ButtonBackPreview = $we_button->create_button(
 		"", 
 		false, 
 		false);
-$ButtonNextPreview = $we_button->create_button(
+$ButtonNextPreview = we_button::create_button(
 		'image:direction_right', 
 		'javascript:top.frames[\'leLoadFrame\'].nextPreview();', 
 		true, 

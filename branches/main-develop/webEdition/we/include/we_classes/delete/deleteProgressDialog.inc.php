@@ -39,7 +39,6 @@ class deleteProgressDialog{
 		$pb = $WE_PB->getHTML();
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-		$WE_BTN = new we_button();
 		$cancelButton = $WE_BTN->create_button("cancel","javascript:top.close();");
 		$pb = htmlDialogLayout($pb,g_l('delete',"[delete]"),$cancelButton);
 

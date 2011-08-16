@@ -287,8 +287,7 @@ class we_binaryDocument extends we_document
 	 * Returns HTML code for Upload Button and infotext
 	 */
 	function formUpload() {
-		$we_button = new we_button();
-		$uploadButton = $we_button->create_button("upload", "javascript:we_cmd('editor_uploadFile')", true,150,22,"","",false,true,"",true);
+		$uploadButton = we_button::create_button("upload", "javascript:we_cmd('editor_uploadFile')", true,150,22,"","",false,true,"",true);
 		$fs = $GLOBALS["we_doc"]->getFilesize();
 		$fs = g_l('metadata',"[filesize]").": ".round(($fs / 1024),2)."&nbsp;KB";
 		$_metaData = $this->getMetaData();

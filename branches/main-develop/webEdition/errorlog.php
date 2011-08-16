@@ -89,12 +89,11 @@
 			return $out;;
 		}
 
-		$we_button = new we_button();
 
-		$buttons = $we_button->position_yes_no_cancel(
-				$we_button->create_button("delete",'/webEdition/errorlog.php' . "?delete"),
-				$we_button->create_button("refresh",'/webEdition/errorlog.php'),
-				$we_button->create_button("close", "javascript:self.close()")
+		$buttons = we_button::position_yes_no_cancel(
+				we_button::create_button("delete",'/webEdition/errorlog.php' . "?delete"),
+				we_button::create_button("refresh",'/webEdition/errorlog.php'),
+				we_button::create_button("close", "javascript:self.close()")
 		);
 		
 		
@@ -127,9 +126,9 @@
 			$ind = 0;
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>';
 			if($start>0){
-				$nextprev .= $we_button->create_button("next", '/webEdition/errorlog.php' . "?start=".$back); //bt_back
+				$nextprev .= we_button::create_button("next", '/webEdition/errorlog.php' . "?start=".$back); //bt_back
 			}else{
-				$nextprev .= $we_button->create_button("next", "", false, 100, 22, "", "", true);
+				$nextprev .= we_button::create_button("next", "", false, 100, 22, "", "", true);
 			}
 
 			$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size-$start);
@@ -139,9 +138,9 @@
 			$nextprev .= "&nbsp;".g_l('global','[from]')." ".($size)."</b></td><td>".getPixel(23,1);
 
 			if($next < $size){
-				$nextprev .= $we_button->create_button("back",'/webEdition/errorlog.php' . "?start=".$next); //bt_next
+				$nextprev .= we_button::create_button("back",'/webEdition/errorlog.php' . "?start=".$next); //bt_next
 			}else{
-				$nextprev .= $we_button->create_button("back", "", "", 100, 22, "", "", true);
+				$nextprev .= we_button::create_button("back", "", "", 100, 22, "", "", true);
 			}
 			$nextprev .= "</td></tr></table>";
 			$_parts[] = array(

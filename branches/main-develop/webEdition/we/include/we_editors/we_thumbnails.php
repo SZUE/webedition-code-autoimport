@@ -265,8 +265,7 @@ function save_all_values() {
 function build_dialog($selected_setting = "ui") {
 	global $DB_WE, $SYSTEM;
 
-	$we_button = new we_button();
-
+	
 	switch ($selected_setting) {
 		case "save":
 			/*****************************************************************
@@ -439,7 +438,7 @@ function build_dialog($selected_setting = "ui") {
 
 			$_thumbnails_table->setCol(0, 0, null, we_htmlElement::htmlHidden(array("name" => "edited_id", "value" => $_GET["id"])) . $_thumbnails->getHtmlCode());
 			$_thumbnails_table->setCol(0, 1, null, getPixel(10, 1));
-			$_thumbnails_table->setCol(0, 2, array("valign" => "top"), $we_button->create_button("add", "javascript:add_thumbnail();") . getPixel(1, 10) . $we_button->create_button("delete", "javascript:delete_thumbnail();", true, 100, 22, "", "", !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_thumbnail();") . getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_thumbnail();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 			// Build dialog
 			array_push($_thumbs, array("headline" => "", "html" => $_thumbnails_table->getHtmlCode(), "space" => 0));

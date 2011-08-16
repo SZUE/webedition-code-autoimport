@@ -103,21 +103,20 @@ if ( $this->Data['allEntries'] ) { // entries exist
 		/*
 		 * Add buttons for next, back and delete
 		 */
-			$we_button = new we_button();
 		
 			if( $_REQUEST['start'] > 0 ){	//	backbutton
-				$backButton = $we_button->create_button("back", "javascript:lastEntries();");
+				$backButton = we_button::create_button("back", "javascript:lastEntries();");
 			} else {
-				$backButton = $we_button->create_button("back", "#", true, 100, 22, "", "", true);
+				$backButton = we_button::create_button("back", "#", true, 100, 22, "", "", true);
 			} 
 			
 			if( $this->Data['amountEntries'] <= $_REQUEST['start'] + $this->Data['amountPerPage'] ){	//	next_button
-				$nextButton = $we_button->create_button("next", "#", true, 100, 22, "", "", true);
+				$nextButton = we_button::create_button("next", "#", true, 100, 22, "", "", true);
 			} else {
-				$nextButton = $we_button->create_button("next", "javascript:nextEntries();");
+				$nextButton = we_button::create_button("next", "javascript:nextEntries();");
 			}
 			
-			$deleteButton = $we_button->create_button("delete", "javascript:confirmDelete();");
+			$deleteButton = we_button::create_button("delete", "javascript:confirmDelete();");
 			
 			$buttons = "<table><tr><td>$deleteButton</td><td>$backButton</td><td>$nextButton</td></tr></table>";
 		

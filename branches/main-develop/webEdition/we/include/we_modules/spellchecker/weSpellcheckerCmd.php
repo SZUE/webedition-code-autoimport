@@ -187,8 +187,6 @@ if(isset($_REQUEST['cmd'][0])) {
 		case 'refresh':
 
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-			$we_button = new we_button();
-
 			we_loadLanguageConfig();
 
 			$table=new we_htmlTable(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),1,6);
@@ -233,8 +231,8 @@ if(isset($_REQUEST['cmd'][0])) {
 					$table->setCol($_i,2,array('valign'=>'top','class'=>'defaultfont'), $_lanSelect->getHtmlCode());
 
 					$table->setCol($_i,3,array('valign'=>'top','align'=>'center'), we_forms::checkboxWithHidden(in_array($_name,$spellcheckerConf['active']),'enable_'.$_name,'',false,'defaultfont',''));
-					$table->setCol($_i,4,array('valign'=>'top','align'=>'center'), '<div style="display: none;" id="updateIcon_'.$_name.'"><img src="'.IMAGE_DIR.'spinner.gif"/></div><div style="display: block;" id="updateBut_'.$_name.'">' .$we_button->create_button('image:btn_function_reload','javascript: updateDict("'.$_name.'");').'</div>');
-					$table->setCol($_i,5,array('valign'=>'top','align'=>'center'), $we_button->create_button('image:btn_function_trash','javascript: deleteDict("'.$_name.'");'));
+					$table->setCol($_i,4,array('valign'=>'top','align'=>'center'), '<div style="display: none;" id="updateIcon_'.$_name.'"><img src="'.IMAGE_DIR.'spinner.gif"/></div><div style="display: block;" id="updateBut_'.$_name.'">' .we_button::create_button('image:btn_function_reload','javascript: updateDict("'.$_name.'");').'</div>');
+					$table->setCol($_i,5,array('valign'=>'top','align'=>'center'), we_button::create_button('image:btn_function_trash','javascript: deleteDict("'.$_name.'");'));
 
 				}
 			}

@@ -37,17 +37,15 @@ class we_wizard_import extends we_wizard {
 
 	function formCategory($obj, $categories) {
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-		$we_button = new we_button();
 		$js = (defined("OBJECT_TABLE"))?"opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;":"";
-		$addbut = $we_button->create_button("add","javascript:top.we_cmd('openCatselector','','".CATEGORY_TABLE."','','','".$js."fillIDs();opener.top.we_cmd(\\'add_".$obj."Cat\\',top.allIDs);')",false,100,22,"","",(!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button("add","javascript:top.we_cmd('openCatselector','','".CATEGORY_TABLE."','','','".$js."fillIDs();opener.top.we_cmd(\\'add_".$obj."Cat\\',top.allIDs);')",false,100,22,"","",(!we_hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser(410,$categories,"delete_".$obj."Cat",$addbut,"","Icon,Path",CATEGORY_TABLE);
 		return $cats->get();
 	}
 	function formCategory2($obj, $categories) {
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser2.inc.php");
-		$we_button = new we_button();
 		$js = (defined("OBJECT_TABLE"))?"opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;":"";
-		$addbut = $we_button->create_button("add","javascript:top.we_cmd('openCatselector','','".CATEGORY_TABLE."','','','".$js."fillIDs();opener.top.we_cmd(\\'add_".$obj."Cat\\',top.allIDs);')",false,100,22,"","",(!we_hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_button::create_button("add","javascript:top.we_cmd('openCatselector','','".CATEGORY_TABLE."','','','".$js."fillIDs();opener.top.we_cmd(\\'add_".$obj."Cat\\',top.allIDs);')",false,100,22,"","",(!we_hasPerm("EDIT_KATEGORIE")));
 		$cats = new MultiDirChooser2(410,$categories,"delete_".$obj."Cat",$addbut,"","Icon,Path",CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField("self.document.forms['we_form'].elements['v[".$obj."Categories]']");
@@ -292,7 +290,6 @@ class we_wizard_import extends we_wizard {
 	}
 
 	function getWXMLImportStep1() {
-		$we_button = new we_button();
 		$v = $this->getPostGetVar("v", array());
 		$doc_root = get_def_ws();
 		$tmpl_root = get_def_ws(TEMPLATES_TABLE);
@@ -332,7 +329,7 @@ class we_wizard_import extends we_wizard {
 
 			we_htmlElement::htmlHidden(array("name" => "v[mode]", "value" => (isset($v["mode"])? $v["mode"] : 0)));
 
-		$functions = $we_button->create_state_changer(false)."\n".
+		$functions = we_button::create_state_changer(false)."\n".
 			"function we_cmd() {\n" .
 			"	var args = '';\n" .
 			"	var url = '".WEBEDITION_DIR."we_cmd.php?';\n" .
@@ -396,7 +393,7 @@ class we_wizard_import extends we_wizard {
 		//javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)"
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[fserver]'].value");
 		$wecmdenc4= '';
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
+		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? we_button::create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -447,7 +444,6 @@ class we_wizard_import extends we_wizard {
 	}
 
 	function getWXMLImportStep2() {
-		$we_button = new we_button();
 		$v = $_REQUEST["v"];
 		$_upload_error = false;
 
@@ -501,7 +497,7 @@ class we_wizard_import extends we_wizard {
 			we_htmlElement::htmlHidden(array("name"=>"v[collision]","value"=>isset($v["collision"]) ? $v["collision"] : 0));
 
 
-		$functions = $we_button->create_state_changer(false) . "\n".
+		$functions = we_button::create_state_changer(false) . "\n".
 			"function we_cmd() {\n" .
 			"	var args = '';\n" .
 			"	var url = '".WEBEDITION_DIR."we_cmd.php?';\n" .
@@ -631,7 +627,7 @@ class we_wizard_import extends we_wizard {
 			$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[doc_dir]'].value");
 			$wecmdenc3= '';
 
-			$btnDocDir = $we_button->create_button(
+			$btnDocDir = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','','$rootDirID')"
 			);
@@ -670,7 +666,7 @@ class we_wizard_import extends we_wizard {
 			$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[tpl_dir_id]'].value");
 			$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[tpl_dir]'].value");
 			$wecmdenc3= '';
-			$btnDocDir = $we_button->create_button(
+			$btnDocDir = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'".TEMPLATES_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','','$rootDirID')"
 			);
@@ -729,7 +725,7 @@ class we_wizard_import extends we_wizard {
 
 			// --
 
-			$btnDocDir = $we_button->create_button(
+			$btnDocDir = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openNavigationDirselector','document.we_form.elements[\"v[navigation_dir]\"].value','document.forms[\"we_form\"].elements[\"v[navigation_dir_id]\"].value','document.forms[\"we_form\"].elements[\"v[navigation_dir]\"].value');"
 			);
@@ -856,9 +852,8 @@ class we_wizard_import extends we_wizard {
 
 	function getWXMLImportStep3(){
 		$this->getTMPaccess();
-		$we_button = new we_button();
 
-		$functions = $we_button->create_state_changer(false) . '
+		$functions = we_button::create_state_changer(false) . '
 
 			function addLog(text){
 				document.getElementById("log").innerHTML+= text;
@@ -902,7 +897,6 @@ class we_wizard_import extends we_wizard {
 	function getGXMLImportStep1() {
 		global $DB_WE;
 
-		$we_button = new we_button();
 		$v = $this->getPostGetVar("v", array());
 
 		if(isset($v["docType"]) && $v["docType"]!=-1 && isset($_REQUEST["doctypeChanged"]) && $_REQUEST["doctypeChanged"]){
@@ -931,7 +925,7 @@ class we_wizard_import extends we_wizard {
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 
-		$functions = $we_button->create_state_changer(false)."\n".
+		$functions = we_button::create_state_changer(false)."\n".
 			"function we_cmd() {\n" .
 			"	var args = '';\n" .
 			"	var url = '".WEBEDITION_DIR."we_cmd.php?';\n" .
@@ -1074,7 +1068,7 @@ HTS;
 		$v["import_type"] = isset($v["import_type"]) ? $v["import_type"] : "documents";
 		//javascript:formFileChooser('browse_server','document.we_form.elements[\\'$IDName\\'].value','$filter',document.we_form.elements['$IDName'].value,'$cmd');
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[fserver]'].value");
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value);"):"";
+		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? we_button::create_button("select","javascript: self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value);"):"";
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -1134,7 +1128,7 @@ HTS;
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_editpage');");
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
+		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 		/***********************************************************************/
 		$yuiSuggest =& weSuggest::getInstance();
 
@@ -1195,7 +1189,7 @@ HTS;
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_id]'].value");
 		$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_path]'].value");
 		$wecmdenc3= '';
-		$storeToButton = $we_button->create_button(
+		$storeToButton = we_button::create_button(
 			"select",
 			"javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')"
 		);
@@ -1681,9 +1675,8 @@ HTS;
 	function getCSVImportStep1() {
 		global $DB_WE;
 		$v = $_REQUEST["v"];
-		$we_button = new we_button();
 
-		$functions = $we_button->create_state_changer(false)."\n".
+		$functions = we_button::create_state_changer(false)."\n".
 			"function we_cmd() {\n" .
 			"	var args = '';\n" .
 			"	var url = '".WEBEDITION_DIR."we_cmd.php?';\n" .
@@ -1752,7 +1745,7 @@ HTS;
 		//javascript:we_cmd('browse_server', 'self.frames[\'wizbody\'].document.forms[\'we_form\'].elements[\'v[fserver]\'].value', '', document.forms['we_form'].elements['v[fserver]'].value)
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[fserver]'].value");
 		$wecmdenc4= '';
-		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? $we_button->create_button("select","javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
+		$importFromButton = (we_hasPerm("CAN_SELECT_EXTERNAL_FILES"))? we_button::create_button("select","javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.forms['we_form'].elements['v[fserver]'].value)"):"";
 		$inputLServer = htmlTextInput("v[fserver]", 30, (isset($v["fserver"])? $v["fserver"] : "/"), 255, "readonly onClick=\"self.document.forms['we_form'].elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = htmlFormElementTable($inputLServer, "", "left", "defaultfont", getPixel(10, 1), $importFromButton, "", "", "", 0);
 
@@ -1837,7 +1830,6 @@ HTS;
 	function getCSVImportStep2() {
 		global $DB_WE;
 		$v = $_REQUEST["v"];
-		$we_button = new we_button();
 		if (((isset($_FILES['uploaded_csv_file']) and $_FILES["uploaded_csv_file"]["size"])) || $v["file_format"]=="mac") {
 			$uniqueId = md5(uniqid(microtime()));
 
@@ -1892,7 +1884,7 @@ HTS;
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 
-		$functions = $we_button->create_state_changer(false)."\n".
+		$functions = we_button::create_state_changer(false)."\n".
 			"function we_cmd() {\n" .
 			"	var args = '';\n" .
 			"	var url = '".WEBEDITION_DIR."we_cmd.php?';\n" .
@@ -2012,7 +2004,7 @@ HTS;
 		$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['v[store_to_path]'].value");
 		$wecmdenc3= "";
 
-		$storeToButton = $we_button->create_button(
+		$storeToButton = we_button::create_button(
 			"select",
 			"javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','','0')"
 		);
@@ -2055,7 +2047,7 @@ HTS;
 		$wecmdenc1= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("self.frames['wizbody'].document.forms['we_form'].elements['$textname'].value");
 		$wecmdenc3= we_cmd_enc("opener.top.we_cmd('reload_editpage');");
-		$button = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
+		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/weTmpl',1)");
 
 		$yuiSuggest =& weSuggest::getInstance();
 
@@ -2504,8 +2496,7 @@ HTS;
 			$Pathvalue = f("SELECT Path FROM ".escape_sql_query($table)." WHERE ID='" . abs($IDValue)."';", "Path", new DB_WE());
 		}
 
-      $we_button = new we_button();
-	  $button =  $we_button->create_button("select","javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
+	  $button =  we_button::create_button("select","javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");
 
       return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'readonly',"text",$width,0),
 			"",

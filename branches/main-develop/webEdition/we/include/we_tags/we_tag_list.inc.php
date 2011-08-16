@@ -25,10 +25,6 @@
 function we_tag_list($attribs, $content){
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tagParser.inc.php");
 
-	if ($GLOBALS['we_editmode']){
-		$we_button = new we_button();
-	}
-	
 	if (($foo = attributFehltError($attribs, "name", "list"))){
 		return $foo;
 	}
@@ -52,24 +48,24 @@ function we_tag_list($attribs, $content){
 
 			$buts = '';
 			if ($GLOBALS['we_editmode']) {
-				$upbut = $we_button->create_button(
+				$upbut = we_button::create_button(
 						"image:btn_direction_up",
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','$name','$i');");
-				$upbutDis = $we_button->create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
-				$downbut = $we_button->create_button(
+				$upbutDis = we_button::create_button("image:btn_direction_up", "#", true, 21, 22, "", "", true);
+				$downbut = we_button::create_button(
 						"image:btn_direction_down",
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','$name','$i');");
-				$downbutDis = $we_button->create_button("image:btn_direction_down", "", true, 21, 22, "", "", true);
-				$plusbut = $we_button->create_button(
+				$downbutDis = we_button::create_button("image:btn_direction_down", "", true, 21, 22, "", "", true);
+				$plusbut = we_button::create_button(
 						"image:btn_add_listelement",
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','$name','$i');");
-				$trashbut = $we_button->create_button(
+				$trashbut = we_button::create_button(
 						"image:btn_function_trash",
 						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','$name','$i','$names');");
 
 				if (!$isInListview) {
 
-					$buts = $we_button->create_button_table(
+					$buts = we_button::create_button_table(
 							array(
 
 									$plusbut,
@@ -91,7 +87,7 @@ function we_tag_list($attribs, $content){
 		}
 	}
 	if ($GLOBALS['we_editmode']) {
-		$plusbut = $we_button->create_button(
+		$plusbut = we_button::create_button(
 				"image:btn_add_listelement",
 				"javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','$name')");
 

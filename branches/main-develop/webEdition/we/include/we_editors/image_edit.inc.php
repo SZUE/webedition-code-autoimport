@@ -265,12 +265,11 @@ function we_getImageResizeDialog(){
 	list($width,$height) = $GLOBALS["we_doc"]->getOrigSize();
 
 	$_content = array();
-	$we_button = new we_button();
+	
+	$okbut = we_button::create_button("ok", "javascript:doOK();");
+	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 
-	$okbut = $we_button->create_button("ok", "javascript:doOK();");
-	$cancelbut = $we_button->create_button("cancel", "javascript:top.close();");
-
-	$buttons = $we_button->position_yes_no_cancel($okbut,null,$cancelbut);
+	$buttons = we_button::position_yes_no_cancel($okbut,null,$cancelbut);
 
 	$widthInput = htmlTextInput("width","10",$width,"",'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"',"text",60);
 	$heightInput = htmlTextInput("height","10",$height,"",'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"',"text",60);
@@ -305,12 +304,11 @@ function we_getImageResizeDialog(){
 function we_getImageConvertDialog(){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$_content = array();
-	$we_button = new we_button();
-
-	$okbut = $we_button->create_button("ok", "javascript:doOK();");
-	$cancelbut = $we_button->create_button("cancel", "javascript:top.close();");
-	$buttons = $we_button->position_yes_no_cancel($okbut,null,$cancelbut);
-	$cancelbut = $we_button->create_button("cancel", "javascript:top.close();");
+	
+	$okbut = we_button::create_button("ok", "javascript:doOK();");
+	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
+	$buttons = we_button::position_yes_no_cancel($okbut,null,$cancelbut);
+	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 	$_dialog = '<div class="defaultfont">'.g_l('weClass',"[quality]").'</div>'.we_qualitySelect("quality");
 	array_push($_content, array("headline" => "", "html" => $_dialog, "space" => 0));
 
@@ -322,12 +320,11 @@ function we_getImageRotateDialog(){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 	$_content = array();
-	$we_button = new we_button();
+	
+	$okbut = we_button::create_button("ok", "javascript:doOK();");
+	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 
-	$okbut = $we_button->create_button("ok", "javascript:doOK();");
-	$cancelbut = $we_button->create_button("cancel", "javascript:top.close();");
-
-	$buttons = $we_button->position_yes_no_cancel($okbut,null,$cancelbut);
+	$buttons = we_button::position_yes_no_cancel($okbut,null,$cancelbut);
 
 	$_radio180 = we_forms::radiobutton("180",true,"degrees",g_l('weClass',"[rotate180]"));
 	$_radio90l = we_forms::radiobutton("90",false,"degrees",g_l('weClass',"[rotate90l]"));

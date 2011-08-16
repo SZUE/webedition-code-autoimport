@@ -60,8 +60,6 @@ if(isset($_REQUEST["we_cmd"][15])) {
 
 protect();
 
-$we_button = new we_button();
-
 $we_dt = isset($_SESSION["we_data"][$_REQUEST["we_cmd"][4]]) ? $_SESSION["we_data"][$_REQUEST["we_cmd"][4]] : "";
 include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
@@ -116,8 +114,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 <?php
 
 } else {
-	$cancelBut = $we_button->create_button("cancel", "javascript:top.close()");
-	$okBut = $we_button->create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
+	$cancelBut = we_button::create_button("cancel", "javascript:top.close()");
+	$okBut = we_button::create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
 	print STYLESHEET;
 	?>
@@ -179,7 +177,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 			$_REQUEST["we_cmd"][17]);
 
 	print we_wysiwyg::getHeaderHTML() . $e->getHTML();
-	print '<div style="height:8px"></div>' . $we_button->position_yes_no_cancel($okBut, $cancelBut);
+	print '<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);
 
 	?>
 </form>

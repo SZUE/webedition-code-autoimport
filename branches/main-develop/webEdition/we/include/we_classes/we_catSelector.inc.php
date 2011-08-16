@@ -120,8 +120,6 @@ class we_catSelector extends we_multiSelector{
 	}
 
 	function printHeaderTable(){
-
-		$we_button = new we_button();
 		$editCatState = $this->userCanEditCat() ? 1 : 0;
 		$changeCatState = $this->userCanChangeCat() ? 1 : 0;
        	print '<script  type="text/javascript">editCatState='.$editCatState.';</script>';
@@ -142,23 +140,23 @@ class we_catSelector extends we_multiSelector{
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="40">
-						'. $we_button->create_button("root_dir", "javascript:top.setRootDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("root_dir", "javascript:top.setRootDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="40">
-						'. $we_button->create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="40">
-						'. $we_button->create_button("image:btn_new_dir", "javascript:if(editCatState==1){top.drawNewFolder();}", true, -1, 22, "", "", !$editCatState, false) . '
+						'. we_button::create_button("image:btn_new_dir", "javascript:if(editCatState==1){top.drawNewFolder();}", true, -1, 22, "", "", !$editCatState, false) . '
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="38">
-						'. $we_button->create_button("image:btn_add_cat", "javascript:if(editCatState==1){top.drawNewCat();}", true, -1, 22, "", "", !$editCatState, false) . '
+						'. we_button::create_button("image:btn_add_cat", "javascript:if(editCatState==1){top.drawNewCat();}", true, -1, 22, "", "", !$editCatState, false) . '
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 					<td width="27">
-						'. $we_button->create_button("image:btn_function_trash", "javascript:if(changeCatState==1){top.deleteEntry();}", true, 27, 22, "", "", !$changeCatState, false) . '
+						'. we_button::create_button("image:btn_function_trash", "javascript:if(changeCatState==1){top.deleteEntry();}", true, 27, 22, "", "", !$changeCatState, false) . '
 					</td>
 					<td width="10">'.getPixel(10,29).'</td>
 				</tr>
@@ -195,10 +193,7 @@ class we_catSelector extends we_multiSelector{
 	}
 
 	function printHeaderJS(){
-		$we_button = new we_button();
-		print '
-
-' . $we_button->create_state_changer(false) . '
+		print we_button::create_state_changer(false) . '
 
 function disableRootDirButs(){
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
@@ -954,13 +949,12 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	}
 
 	function printFooterTable() {
-		$we_button = new we_button();
 		if($this->values["Text"] == "/" ) $this->values["Text"]="";
 		$csp = $this->noChoose ? 4 : 5;
 
 		if(!$this->noChoose){
 
-			$okBut = $we_button->create_button("ok", "javascript:press_ok_button();");
+			$okBut = we_button::create_button("ok", "javascript:press_ok_button();");
 		} else {
 			$okBut = "";
 		}
@@ -972,9 +966,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 				<tr>
 					<td colspan="5">'.getPixel(5,5).'</td>
 				</tr>';
-		$cancelbut = $we_button->create_button("close", "javascript:top.exit_close();");
+		$cancelbut = we_button::create_button("close", "javascript:top.exit_close();");
 		if($okBut){
-			$buttons =$we_button->position_yes_no_cancel(	$okBut,
+			$buttons =we_button::position_yes_no_cancel(	$okBut,
 												null,
 												$cancelbut);
 		}else{
@@ -1117,12 +1111,11 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			$title = $fields[$_SESSION["we_catVariant"]]["Title"];
 			$description = $fields[$_SESSION["we_catVariant"]]["Description"];
 			unset($result);
-			$we_button = new we_Button();
 
 			$dir_hidden = hidden('FolderID', $parentId);
 			$dir_input = htmlTextInput('FolderIDPath', 24, $path, '', "style='width: 240px;'");
 
-			$dir_chooser = $we_button->create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
+			$dir_chooser = we_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
 
 			$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"),4, 3);
 
@@ -1141,7 +1134,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 			$ta = htmlFormElementTable(we_forms::weTextarea("catDescription",$description,array("bgcolor"=>"white","inlineedit"=>"true","wysiwyg"=>"true","width"=>"450", "height"=>"130"), true, 'autobr',true,"",true,true,true,false,""),
 			"<b>".g_l('global',"[description]") ."</b>", "left", "defaultfont", "", "", "", "", "", 0);
-			$saveBut = $we_button->create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
+			$saveBut = we_button::create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
 
 
 		}

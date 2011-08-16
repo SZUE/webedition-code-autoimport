@@ -66,10 +66,9 @@ END_OF_SCRIPT;
 
 print STYLESHEET . we_htmlElement::jsElement($_javascript) . "</head>";
 
-$we_button = new we_button();
 
-$okbut = $we_button->create_button("save", "javascript:we_save();");
-$cancelbut = $we_button->create_button("close", "javascript:".((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ?  ($_REQUEST["closecmd"].";") : "")."top.close()");
+$okbut = we_button::create_button("save", "javascript:we_save();");
+$cancelbut = we_button::create_button("close", "javascript:".((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ?  ($_REQUEST["closecmd"].";") : "")."top.close()");
 
-print we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"), $we_button->position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
+print we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
 

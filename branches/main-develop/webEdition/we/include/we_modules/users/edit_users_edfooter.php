@@ -31,8 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/users/
 
 	print STYLESHEET;
 
-	$we_button = new we_button();
-
+	
      if(isset($_SESSION["user_session_data"])){
          $user_object=new we_user();
          $user_object->setState($_SESSION["user_session_data"]);
@@ -48,7 +47,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/users/
 			</tr>
 			<tr>
 				<td width="16"></td>
-				<td><?php print $we_button->create_button("save", "javascript:top.content.we_cmd('save_user');"); ?></td>
+				<td><?php print we_button::create_button("save", "javascript:top.content.we_cmd('save_user');"); ?></td>
 			</tr>
 		</table>
     

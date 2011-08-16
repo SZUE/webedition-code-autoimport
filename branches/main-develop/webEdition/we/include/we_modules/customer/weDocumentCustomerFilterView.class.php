@@ -51,9 +51,6 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 	 * @return string
 	 */
 	function getAccessControlHTML() {
-
-		$we_button = new we_button();
-
 		$_filter = $this->getFilter();
 
 		$yuiSuggest =& weSuggest::getInstance();
@@ -72,7 +69,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$selectorNoLoginId'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$selectorNoLoginText'].value");
 		$wecmdenc3= we_cmd_enc("opener." . $this->getHotScript() . ";");
-		$selectorNoLoginButton = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoLoginId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
+		$selectorNoLoginButton = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoLoginId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder,text/webedition");
@@ -101,7 +98,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$selectorNoAccessId'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$selectorNoAccessText'].value");
 		$wecmdenc3= we_cmd_enc("opener.". $this->getHotScript() ."");
-		$selectorNoAccessButton = $we_button->create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
+		$selectorNoAccessButton = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder,text/webedition");
@@ -155,8 +152,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 	 * @return string
 	 */
 	function getFolderApplyHTML() {
-		$we_button = new we_button();
-		$_ok_button = $we_button->create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter','[apply_filter_isHot]'), WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
+		$_ok_button = we_button::create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter','[apply_filter_isHot]'), WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
 
 		return "
 			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . g_l('modules_customerFilter','[apply_filter]') . "</div>
