@@ -62,7 +62,7 @@ class we_wizard_import extends we_wizard {
 	function getClassFields($classID) {
 		include_once(WE_OBJECT_MODULE_DIR."we_objectFile.inc.php");
 		$db = new DB_WE();
-		$foo = getHash("SELECT strOrder,DefaultValues FROM ".OBJECT_TABLE." WHERE ID='".$classID."'",$db);
+		$foo = getHash('SELECT strOrder,DefaultValues FROM '.OBJECT_TABLE.' WHERE ID='.(int)$classID,$db);
 		$order = makeArrayFromCSV($foo["strOrder"]);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 		if(!is_array($dv)) $dv = array();

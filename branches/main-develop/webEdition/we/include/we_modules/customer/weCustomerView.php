@@ -1087,7 +1087,7 @@ function processCommands() {
 	function getFieldProperties($field){
 		$ret=array();
 
-		//if(ereg(g_l('modules_customer','[other]'),$field)) $field=str_replace(g_l('modules_customer','[other]')."_","",$field);
+		//if(preg_match(g_l('modules_customer','[other]'),$field)) $field=str_replace(g_l('modules_customer','[other]')."_","",$field);
 
 		$props=$this->customer->getFieldDbProperties($field);
 

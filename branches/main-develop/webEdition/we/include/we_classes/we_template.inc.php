@@ -284,12 +284,12 @@ function handleShutdown($code) {
 			$var=create_function('','?>'.$code.'<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp=explode("\n",$code);
-				$errCode='\n';
+				$errCode="\n";
 				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
-					$errCode.=$ln.': '.$tmp[$ln].'\n';
+					$errCode.=$ln.': '.$tmp[$ln]."\n";
 				}
 				
-				$this->errMsg="Error: ".$error['message'].'\nLine: '.$error['line'].'\nCode: '.$errCode;
+				$this->errMsg="Error: ".$error['message']."\nLine: ".$error['line']."\nCode: ".$errCode;
 				//type error will stop we
 				t_e('warning',"Error in template: ".$error['message'],'Line: '.$error['line'],'Code: '.$errCode);
 			}

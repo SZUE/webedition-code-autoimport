@@ -66,7 +66,10 @@ htmlTop();
 if($we_doc->CSS){
 	$cssArr = makeArrayFromCSV($we_doc->CSS);
 	foreach($cssArr as $cs){
-		print '<link href="'.id_to_path($cs).'" rel="styleSheet" type="text/css" />'."\n";
+		$path=id_to_path($cs);
+		if($path){
+			print '<link href="'.$path.'" rel="styleSheet" type="text/css" />'."\n";
+		}
 
 	}
 }

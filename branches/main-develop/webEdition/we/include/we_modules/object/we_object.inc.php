@@ -121,7 +121,6 @@ class we_object extends we_document {
 	}
 
 	function saveToDB(){
-
 		$arrt = array();
 		$arrt["WorkspaceFlag"] = $this->WorkspaceFlag;
 
@@ -310,80 +309,80 @@ class we_object extends we_document {
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = "";
 
-			for($i=0;$i<sizeof($tableInfo);$i++){
+			foreach($tableInfo as $info){
 
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+				if(preg_match('/(.+?)_(.*)/',$info["name"],$regs)){
 
 					if($regs[1]!="OF" && $regs[1]!="variant"){
 						$fieldsToDelete = isset($this->elements["felderloeschen"]["dat"]) ? explode(",",$this->elements["felderloeschen"]["dat"]) : array();
-						if (!in_array($tableInfo[$i]["name"],$fieldsToDelete)) {
+						if (!in_array($info["name"],$fieldsToDelete)) {
 
-							$nam = $this->getElement($tableInfo[$i]["name"]."dtype","dat")."_".$this->getElement($tableInfo[$i]["name"],"dat");
-							$q .= " CHANGE ".$tableInfo[$i]["name"]." ". $nam. " ";
-							$q .= $this->switchtypes($tableInfo[$i]["name"]);
+							$nam = $this->getElement($info["name"]."dtype","dat")."_".$this->getElement($info["name"],"dat");
+							$q .= " CHANGE ".$info["name"]." ". $nam. " ";
+							$q .= $this->switchtypes($info["name"]);
 							//change from object is indexed to unindexed
-							if((strpos($tableInfo[$i]["name"],'object_')===0) && (strpos($nam, 'object_')!==0) && (strpos($tableInfo[$i]["flags"],'multiple_key')!==false)){
-								$q.=', DROP KEY '.$tableInfo[$i]["name"].' ';
-							}else if ((strpos($tableInfo[$i]["name"],'object_')!==0) && (strpos($nam, 'object_')===0) && (strpos($tableInfo[$i]["flags"],'multiple_key')===false)){
-								$q.=', ADD INDEX ('.$tableInfo[$i]["name"].') ';
+							if((strpos($info["name"],'object_')===0) && (strpos($nam, 'object_')!==0) && (strpos($info["flags"],'multiple_key')!==false)){
+								$q.=', DROP KEY '.$info["name"].' ';
+							}else if ((strpos($info["name"],'object_')!==0) && (strpos($nam, 'object_')===0) && (strpos($info["flags"],'multiple_key')===false)){
+								$q.=', ADD INDEX ('.$info["name"].') ';
 							}
-							$arrt[$nam]["default"] = $this->elements[$tableInfo[$i]["name"]."default"]["dat"];
-							$arrt[$nam]["defaultThumb"] = $this->elements[$tableInfo[$i]["name"]."defaultThumb"]["dat"];
-							$arrt[$nam]["autobr"] = $this->elements[$tableInfo[$i]["name"]."autobr"]["dat"];
-							$arrt[$nam]["defaultdir"] = $this->elements[$tableInfo[$i]["name"]."defaultdir"]["dat"];
-							$arrt[$nam]["rootdir"] = $this->elements[$tableInfo[$i]["name"]."rootdir"]["dat"];
-							$arrt[$nam]["dhtmledit"] = $this->elements[$tableInfo[$i]["name"]."dhtmledit"]["dat"];
-							$arrt[$nam]["showmenus"] = $this->elements[$tableInfo[$i]["name"]."showmenus"]["dat"];
-							$arrt[$nam]["commands"] = $this->elements[$tableInfo[$i]["name"]."commands"]["dat"];
-							$arrt[$nam]["height"] = $this->elements[$tableInfo[$i]["name"]."height"]["dat"];
-							$arrt[$nam]["width"] = $this->elements[$tableInfo[$i]["name"]."width"]["dat"];
-							$arrt[$nam]["class"] = $this->elements[$tableInfo[$i]["name"]."class"]["dat"];
-							$arrt[$nam]["max"] = $this->elements[$tableInfo[$i]["name"]."max"]["dat"];
-							$arrt[$nam]["cssClasses"] = $this->elements[$tableInfo[$i]["name"]."cssClasses"]["dat"];
-							$arrt[$nam]["xml"] = $this->elements[$tableInfo[$i]["name"]."xml"]["dat"];
-							$arrt[$nam]["removefirstparagraph"] = $this->elements[$tableInfo[$i]["name"]."removefirstparagraph"]["dat"];
-							$arrt[$nam]["forbidhtml"] = $this->elements[$tableInfo[$i]["name"]."forbidhtml"]["dat"];
-							$arrt[$nam]["forbidphp"] = $this->elements[$tableInfo[$i]["name"]."forbidphp"]["dat"];
-							$arrt[$nam]["inlineedit"] = $this->elements[$tableInfo[$i]["name"]."inlineedit"]["dat"];
-							$arrt[$nam]["users"] = $this->elements[$tableInfo[$i]["name"]."users"]["dat"];
-							$arrt[$nam]["required"] = $this->elements[$tableInfo[$i]["name"]."required"]["dat"];
-							$arrt[$nam]["editdescription"] = $this->elements[$tableInfo[$i]["name"]."editdescription"]["dat"];
-							$arrt[$nam]["int"] = $this->elements[$tableInfo[$i]["name"]."int"]["dat"];
-							$arrt[$nam]["intID"] = $this->elements[$tableInfo[$i]["name"]."intID"]["dat"];
-							$arrt[$nam]["intPath"] = $this->elements[$tableInfo[$i]["name"]."intPath"]["dat"];
-							$arrt[$nam]["hreftype"] = $this->elements[$tableInfo[$i]["name"]."hreftype"]["dat"];
-							$arrt[$nam]["hrefdirectory"] = $this->elements[$tableInfo[$i]["name"]."hrefdirectory"]["dat"];
-							$arrt[$nam]["hreffile"] = $this->elements[$tableInfo[$i]["name"]."hreffile"]["dat"];
-							$arrt[$nam]["uniqueID"] = $this->SerializedArray[$tableInfo[$i]["name"]]["uniqueID"] ? $this->SerializedArray[$tableInfo[$i]["name"]]["uniqueID"] : md5(uniqid(rand(),1));
+							$arrt[$nam]["default"] = $this->elements[$info["name"]."default"]["dat"];
+							$arrt[$nam]["defaultThumb"] = $this->elements[$info["name"]."defaultThumb"]["dat"];
+							$arrt[$nam]["autobr"] = $this->elements[$info["name"]."autobr"]["dat"];
+							$arrt[$nam]["defaultdir"] = $this->elements[$info["name"]."defaultdir"]["dat"];
+							$arrt[$nam]["rootdir"] = $this->elements[$info["name"]."rootdir"]["dat"];
+							$arrt[$nam]["dhtmledit"] = $this->elements[$info["name"]."dhtmledit"]["dat"];
+							$arrt[$nam]["showmenus"] = $this->elements[$info["name"]."showmenus"]["dat"];
+							$arrt[$nam]["commands"] = $this->elements[$info["name"]."commands"]["dat"];
+							$arrt[$nam]["height"] = $this->elements[$info["name"]."height"]["dat"];
+							$arrt[$nam]["width"] = $this->elements[$info["name"]."width"]["dat"];
+							$arrt[$nam]["class"] = $this->elements[$info["name"]."class"]["dat"];
+							$arrt[$nam]["max"] = $this->elements[$info["name"]."max"]["dat"];
+							$arrt[$nam]["cssClasses"] = $this->elements[$info["name"]."cssClasses"]["dat"];
+							$arrt[$nam]["xml"] = $this->elements[$info["name"]."xml"]["dat"];
+							$arrt[$nam]["removefirstparagraph"] = $this->elements[$info["name"]."removefirstparagraph"]["dat"];
+							$arrt[$nam]["forbidhtml"] = $this->elements[$info["name"]."forbidhtml"]["dat"];
+							$arrt[$nam]["forbidphp"] = $this->elements[$info["name"]."forbidphp"]["dat"];
+							$arrt[$nam]["inlineedit"] = $this->elements[$info["name"]."inlineedit"]["dat"];
+							$arrt[$nam]["users"] = $this->elements[$info["name"]."users"]["dat"];
+							$arrt[$nam]["required"] = $this->elements[$info["name"]."required"]["dat"];
+							$arrt[$nam]["editdescription"] = $this->elements[$info["name"]."editdescription"]["dat"];
+							$arrt[$nam]["int"] = $this->elements[$info["name"]."int"]["dat"];
+							$arrt[$nam]["intID"] = $this->elements[$info["name"]."intID"]["dat"];
+							$arrt[$nam]["intPath"] = $this->elements[$info["name"]."intPath"]["dat"];
+							$arrt[$nam]["hreftype"] = $this->elements[$info["name"]."hreftype"]["dat"];
+							$arrt[$nam]["hrefdirectory"] = $this->elements[$info["name"]."hrefdirectory"]["dat"];
+							$arrt[$nam]["hreffile"] = $this->elements[$info["name"]."hreffile"]["dat"];
+							$arrt[$nam]["uniqueID"] = $this->SerializedArray[$info["name"]]["uniqueID"] ? $this->SerializedArray[$info["name"]]["uniqueID"] : md5(uniqid(rand(),1));
 
-							if($this->isVariantField($tableInfo[$i]["name"]) && isset($this->elements[$tableInfo[$i]["name"]."variant"]["dat"]) && $this->elements[$tableInfo[$i]["name"]."variant"]["dat"]==1){
-								$arrt[$nam]["variant"] = $this->elements[$tableInfo[$i]["name"]."variant"]["dat"];
-							}else if(isset($this->elements[$tableInfo[$i]["name"]."variant"])){
-								unset($this->elements[$tableInfo[$i]["name"]."variant"]);
+							if($this->isVariantField($info["name"]) && isset($this->elements[$info["name"]."variant"]["dat"]) && $this->elements[$info["name"]."variant"]["dat"]==1){
+								$arrt[$nam]["variant"] = $this->elements[$info["name"]."variant"]["dat"];
+							}else if(isset($this->elements[$info["name"]."variant"])){
+								unset($this->elements[$info["name"]."variant"]);
 							}
 
 
-							for($f=0; $f <= $this->elements[$tableInfo[$i]["name"]."count"]["dat"]; ++$f){
+							for($f=0; $f <= $this->elements[$info["name"]."count"]["dat"]; ++$f){
 
-								if(isset($this->elements[$tableInfo[$i]["name"]."defaultkey".$f])){
+								if(isset($this->elements[$info["name"]."defaultkey".$f])){
 									if((!isset($arrt[$nam]["meta"])) || (!is_array($arrt[$nam]["meta"]))){
 										$arrt[$nam]["meta"] =  array();
 									}
-									$_val = (isset($this->elements[$tableInfo[$i]["name"]."defaultvalue".$f]) && $this->elements[$tableInfo[$i]["name"]."defaultvalue".$f] != $tableInfo[$i]["name"]."defaultvalue".$f ) ?  $this->elements[$tableInfo[$i]["name"]."defaultvalue".$f]["dat"] : "";
+									$_val = (isset($this->elements[$info["name"]."defaultvalue".$f]) && $this->elements[$info["name"]."defaultvalue".$f] != $info["name"]."defaultvalue".$f ) ?  $this->elements[$info["name"]."defaultvalue".$f]["dat"] : "";
 									if (substr($nam,0,12) == "multiobject_") {
 										array_push($arrt[$nam]["meta"],$_val);
 									} else {
-										if($this->elements[$tableInfo[$i]["name"]."defaultkey".$f]["dat"] == "") {
-											$arrt[$nam]["meta"][$this->elements[$tableInfo[$i]["name"]."defaultkey".$f]["dat"]] = $_val;
+										if($this->elements[$info["name"]."defaultkey".$f]["dat"] == "") {
+											$arrt[$nam]["meta"][$this->elements[$info["name"]."defaultkey".$f]["dat"]] = $_val;
 										} else {
-											$arrt[$nam]["meta"][$this->elements[$tableInfo[$i]["name"]."defaultkey".$f]["dat"]] = $_val;
+											$arrt[$nam]["meta"][$this->elements[$info["name"]."defaultkey".$f]["dat"]] = $_val;
 										}
 									}
 								}
 							}
 
 						}else{
-							$q .= " DROP ".$tableInfo[$i]["name"]." ";
+							$q .= " DROP ".$info["name"]." ";
 						}
 						$q .= ",";
 
@@ -577,10 +576,10 @@ class we_object extends we_document {
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array();
-			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+			foreach($tableInfo as $info){
+				if(preg_match('/(.+?)_(.*)/',$info["name"],$regs)){
 					if($regs[1]!="OF" && $regs[1]!="variant"){
-						$fields[] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]);
+						$fields[] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$info["len"]);
 					}
 				}
 			}
@@ -2279,24 +2278,20 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$this->DefaultValues = $this->DB_WE->f("DefaultValues");
 
 			$vals = unserialize($this->DefaultValues);
-			if(is_array($vals)) {
-				$names = array_keys($vals);
-			} else {
-				$names = array();
-			}
+			$names = (is_array($vals) ? array_keys($vals) : array());
 
-			for($l=0;$l<sizeof($names);$l++){
-				if($names[$l] == "WE_CSS_FOR_CLASS"){
-					$this->CSS = $vals[$names[$l]];
+			foreach($names as $name){
+				if($name == "WE_CSS_FOR_CLASS"){
+					$this->CSS = $vals[$name];
 				}
-				if(isset($vals[$names[$l]])  &&  is_array($vals[$names[$l]])){
-					$this->elements[$names[$l]."count"]["dat"]=(( isset($vals[$names[$l]]["meta"]) &&  sizeof($vals[$names[$l]]["meta"] )>0 )?(sizeof($vals[$names[$l]]["meta"])-1):"0");
-					if(isset($vals[$names[$l]]["meta"]) && is_array($vals[$names[$l]]["meta"])){
-						$keynames = array_keys($vals[$names[$l]]["meta"]);
+				if(isset($vals[$name])  &&  is_array($vals[$name])){
+					$this->elements[$name."count"]["dat"]=(( isset($vals[$name]["meta"]) &&  sizeof($vals[$name]["meta"] )>0 )?(sizeof($vals[$name]["meta"])-1):"0");
+					if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
+						$keynames = array_keys($vals[$name]["meta"]);
 
-						for($ll=0; $ll <= sizeof($vals[$names[$l]]["meta"]);$ll++){
-							$this->elements[$names[$l]."defaultkey".$ll]["dat"] = isset($keynames[$ll]) ? $keynames[$ll] : "";
-							$this->elements[$names[$l]."defaultvalue".$ll]["dat"] = isset($keynames[$ll]) ? $vals[$names[$l]]["meta"][$keynames[$ll]] : "";
+						for($ll=0; $ll <= sizeof($vals[$name]["meta"]);$ll++){
+							$this->elements[$name."defaultkey".$ll]["dat"] = isset($keynames[$ll]) ? $keynames[$ll] : "";
+							$this->elements[$name."defaultvalue".$ll]["dat"] = isset($keynames[$ll]) ? $vals[$name]["meta"][$keynames[$ll]] : "";
 						}
 					}
 				}
@@ -2327,45 +2322,45 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$ctable = OBJECT_X_TABLE . $this->ID;
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$fields = array();
-			for($i=0;$i<sizeof($tableInfo);$i++){
-				if(preg_match('/(.+?)_(.*)/',$tableInfo[$i]["name"],$regs)){
+			foreach($tableInfo as $info){
+				if(preg_match('/(.+?)_(.*)/',$info["name"],$regs)){
 					if($regs[1]!="OF" && $regs[1]!="variant"){
 						$type = $regs[1];
 						$name = $regs[2];
 
-						//$fields[$sort[$f]] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$tableInfo[$i]["len"]); war bis fix zu 4123 auskommentiert, k�nnte man wieder rein nehmen
-						$this->elements[$tableInfo[$i]["name"]]["dat"] = $name;
-						$this->elements["wholename".$this->getSortIndexByValue($f)]["dat"] = $tableInfo[$i]["name"];
-						$this->elements[$tableInfo[$i]["name"]."length"]["dat"] = $tableInfo[$i]["len"];
-						$this->elements[$tableInfo[$i]["name"]."dtype"]["dat"] = $type;
-						$this->elements[$tableInfo[$i]["name"]."max"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["max"]) ? $vals[$tableInfo[$i]["name"]]["max"] : "";
-						$this->elements[$tableInfo[$i]["name"]."default"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["default"]) ? $vals[$tableInfo[$i]["name"]]["default"] : "";
-						$this->elements[$tableInfo[$i]["name"]."defaultThumb"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["defaultThumb"]) ? $vals[$tableInfo[$i]["name"]]["defaultThumb"] : "";
-						$this->elements[$tableInfo[$i]["name"]."autobr"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["autobr"]) ? $vals[$tableInfo[$i]["name"]]["autobr"] : "";
-						$this->elements[$tableInfo[$i]["name"]."rootdir"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["rootdir"]) ? $vals[$tableInfo[$i]["name"]]["rootdir"] : "";
-						$this->elements[$tableInfo[$i]["name"]."defaultdir"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["defaultdir"]) ? $vals[$tableInfo[$i]["name"]]["defaultdir"] : "";
-						$this->elements[$tableInfo[$i]["name"]."dhtmledit"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["dhtmledit"]) ? $vals[$tableInfo[$i]["name"]]["dhtmledit"] : "off";
-						$this->elements[$tableInfo[$i]["name"]."showmenus"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["showmenus"]) ? $vals[$tableInfo[$i]["name"]]["showmenus"] : "off";
-						$this->elements[$tableInfo[$i]["name"]."commands"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["commands"]) ? $vals[$tableInfo[$i]["name"]]["commands"] : "";
-						$this->elements[$tableInfo[$i]["name"]."height"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["height"]) ? $vals[$tableInfo[$i]["name"]]["height"] : 200;
-						$this->elements[$tableInfo[$i]["name"]."width"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["width"]) ? $vals[$tableInfo[$i]["name"]]["width"] : 618;
-						$this->elements[$tableInfo[$i]["name"]."class"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["class"]) ? $vals[$tableInfo[$i]["name"]]["class"] : "";
-						$this->elements[$tableInfo[$i]["name"]."cssClasses"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["cssClasses"]) ? $vals[$tableInfo[$i]["name"]]["cssClasses"] : "";
-						$this->elements[$tableInfo[$i]["name"]."xml"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["xml"]) ? $vals[$tableInfo[$i]["name"]]["xml"] : "";
-						$this->elements[$tableInfo[$i]["name"]."removefirstparagraph"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["removefirstparagraph"]) ? $vals[$tableInfo[$i]["name"]]["removefirstparagraph"] : "";
-						$this->elements[$tableInfo[$i]["name"]."forbidhtml"]["dat"] =  isset($vals[$tableInfo[$i]["name"]]["forbidhtml"]) ? $vals[$tableInfo[$i]["name"]]["forbidhtml"] : "";
-						$this->elements[$tableInfo[$i]["name"]."forbidphp"]["dat"] =   isset($vals[$tableInfo[$i]["name"]]["forbidphp"]) ? $vals[$tableInfo[$i]["name"]]["forbidphp"] : "";
-						$this->elements[$tableInfo[$i]["name"]."inlineedit"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["inlineedit"]) ? $vals[$tableInfo[$i]["name"]]["inlineedit"] : "";
-						$this->elements[$tableInfo[$i]["name"]."users"]["dat"] =  isset($vals[$tableInfo[$i]["name"]]["users"]) ? $vals[$tableInfo[$i]["name"]]["users"] : "";
-						$this->elements[$tableInfo[$i]["name"]."required"]["dat"] =  isset($vals[$tableInfo[$i]["name"]]["required"]) ? $vals[$tableInfo[$i]["name"]]["required"] : "";
-						$this->elements[$tableInfo[$i]["name"]."editdescription"]["dat"] =  isset($vals[$tableInfo[$i]["name"]]["editdescription"]) ? $vals[$tableInfo[$i]["name"]]["editdescription"] : "";
-						$this->elements[$tableInfo[$i]["name"]."int"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["int"]) ? $vals[$tableInfo[$i]["name"]]["int"] : "";
-						$this->elements[$tableInfo[$i]["name"]."intID"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["intID"]) ? $vals[$tableInfo[$i]["name"]]["intID"] : "";
-						$this->elements[$tableInfo[$i]["name"]."hreftype"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["hreftype"]) ? $vals[$tableInfo[$i]["name"]]["hreftype"] : "";
-						$this->elements[$tableInfo[$i]["name"]."hreffile"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["hreffile"]) ? $vals[$tableInfo[$i]["name"]]["hreffile"] : "true";
-						$this->elements[$tableInfo[$i]["name"]."hrefdirectory"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["hrefdirectory"]) ? $vals[$tableInfo[$i]["name"]]["hrefdirectory"] : "false";
-						$this->elements[$tableInfo[$i]["name"]."intPath"]["dat"] = isset($vals[$tableInfo[$i]["name"]]["intPath"]) ? $vals[$tableInfo[$i]["name"]]["intPath"] : "";
-						if(isset($vals[$tableInfo[$i]["name"]]["variant"])) $this->elements[$tableInfo[$i]["name"]."variant"]["dat"] =  $vals[$tableInfo[$i]["name"]]["variant"];
+						//$fields[$sort[$f]] = array("name"=>$regs[2],"type"=>$regs[1],"length"=>$info["len"]); war bis fix zu 4123 auskommentiert, k�nnte man wieder rein nehmen
+						$this->elements[$info["name"]]["dat"] = $name;
+						$this->elements["wholename".$this->getSortIndexByValue($f)]["dat"] = $info["name"];
+						$this->elements[$info["name"]."length"]["dat"] = $info["len"];
+						$this->elements[$info["name"]."dtype"]["dat"] = $type;
+						$this->elements[$info["name"]."max"]["dat"] = isset($vals[$info["name"]]["max"]) ? $vals[$info["name"]]["max"] : "";
+						$this->elements[$info["name"]."default"]["dat"] = isset($vals[$info["name"]]["default"]) ? $vals[$info["name"]]["default"] : "";
+						$this->elements[$info["name"]."defaultThumb"]["dat"] = isset($vals[$info["name"]]["defaultThumb"]) ? $vals[$info["name"]]["defaultThumb"] : "";
+						$this->elements[$info["name"]."autobr"]["dat"] = isset($vals[$info["name"]]["autobr"]) ? $vals[$info["name"]]["autobr"] : "";
+						$this->elements[$info["name"]."rootdir"]["dat"] = isset($vals[$info["name"]]["rootdir"]) ? $vals[$info["name"]]["rootdir"] : "";
+						$this->elements[$info["name"]."defaultdir"]["dat"] = isset($vals[$info["name"]]["defaultdir"]) ? $vals[$info["name"]]["defaultdir"] : "";
+						$this->elements[$info["name"]."dhtmledit"]["dat"] = isset($vals[$info["name"]]["dhtmledit"]) ? $vals[$info["name"]]["dhtmledit"] : "off";
+						$this->elements[$info["name"]."showmenus"]["dat"] = isset($vals[$info["name"]]["showmenus"]) ? $vals[$info["name"]]["showmenus"] : "off";
+						$this->elements[$info["name"]."commands"]["dat"] = isset($vals[$info["name"]]["commands"]) ? $vals[$info["name"]]["commands"] : "";
+						$this->elements[$info["name"]."height"]["dat"] = isset($vals[$info["name"]]["height"]) ? $vals[$info["name"]]["height"] : 200;
+						$this->elements[$info["name"]."width"]["dat"] = isset($vals[$info["name"]]["width"]) ? $vals[$info["name"]]["width"] : 618;
+						$this->elements[$info["name"]."class"]["dat"] = isset($vals[$info["name"]]["class"]) ? $vals[$info["name"]]["class"] : "";
+						$this->elements[$info["name"]."cssClasses"]["dat"] = isset($vals[$info["name"]]["cssClasses"]) ? $vals[$info["name"]]["cssClasses"] : "";
+						$this->elements[$info["name"]."xml"]["dat"] = isset($vals[$info["name"]]["xml"]) ? $vals[$info["name"]]["xml"] : "";
+						$this->elements[$info["name"]."removefirstparagraph"]["dat"] = isset($vals[$info["name"]]["removefirstparagraph"]) ? $vals[$info["name"]]["removefirstparagraph"] : "";
+						$this->elements[$info["name"]."forbidhtml"]["dat"] =  isset($vals[$info["name"]]["forbidhtml"]) ? $vals[$info["name"]]["forbidhtml"] : "";
+						$this->elements[$info["name"]."forbidphp"]["dat"] =   isset($vals[$info["name"]]["forbidphp"]) ? $vals[$info["name"]]["forbidphp"] : "";
+						$this->elements[$info["name"]."inlineedit"]["dat"] = isset($vals[$info["name"]]["inlineedit"]) ? $vals[$info["name"]]["inlineedit"] : "";
+						$this->elements[$info["name"]."users"]["dat"] =  isset($vals[$info["name"]]["users"]) ? $vals[$info["name"]]["users"] : "";
+						$this->elements[$info["name"]."required"]["dat"] =  isset($vals[$info["name"]]["required"]) ? $vals[$info["name"]]["required"] : "";
+						$this->elements[$info["name"]."editdescription"]["dat"] =  isset($vals[$info["name"]]["editdescription"]) ? $vals[$info["name"]]["editdescription"] : "";
+						$this->elements[$info["name"]."int"]["dat"] = isset($vals[$info["name"]]["int"]) ? $vals[$info["name"]]["int"] : "";
+						$this->elements[$info["name"]."intID"]["dat"] = isset($vals[$info["name"]]["intID"]) ? $vals[$info["name"]]["intID"] : "";
+						$this->elements[$info["name"]."hreftype"]["dat"] = isset($vals[$info["name"]]["hreftype"]) ? $vals[$info["name"]]["hreftype"] : "";
+						$this->elements[$info["name"]."hreffile"]["dat"] = isset($vals[$info["name"]]["hreffile"]) ? $vals[$info["name"]]["hreffile"] : "true";
+						$this->elements[$info["name"]."hrefdirectory"]["dat"] = isset($vals[$info["name"]]["hrefdirectory"]) ? $vals[$info["name"]]["hrefdirectory"] : "false";
+						$this->elements[$info["name"]."intPath"]["dat"] = isset($vals[$info["name"]]["intPath"]) ? $vals[$info["name"]]["intPath"] : "";
+						if(isset($vals[$info["name"]]["variant"])) $this->elements[$info["name"]."variant"]["dat"] =  $vals[$info["name"]]["variant"];
 
 						//if($regs[1] != "meta" && 1==2){
 

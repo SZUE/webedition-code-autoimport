@@ -247,7 +247,7 @@ class we_user {
 			$this->workspaces_defaults[NEWSLETTER_TABLE]=array();
 		}
 
-		$this->Preferences['use_jupload'] = f("SELECT MAX(use_jupload) as mju FROM " . PREFS_TABLE . ";",'mju',$this->DB_WE); //WTF?!?
+		$this->Preferences['use_jupload'] = 0;
 
 		foreach($this->preference_slots as $key => $val) {
 			$value = null;

@@ -5694,7 +5694,7 @@ else {
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside__hideineditmode"));
 				array_push($_settings, array("headline" => g_l('prefs','[seoinside_hideineditmode]'), "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
-				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideinwebedition","class"=>"weSelect"));
+				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideineditmode","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));
