@@ -103,31 +103,31 @@ if ($tmplID && ($we_doc->ContentType == 'text/webedition')) { // if the document
 
 //$we_doc->setCache();
 
-if (($we_include != $we_doc->editor($baseHref))) {
-	exit('Nothing to include ...');
-}
+if (($we_include = $we_doc->editor($baseHref))) {
+	if (substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])) {
+		if ((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']) { //	send charset which might be determined in template
+			define('WE_CONTENT_TYPE_SET', 1);
+			//	@ -> to aware of unproper use of this element, f. ex in include-File
+			@header('Content-Type: text/html; charset=' . $we_doc->elements['Charset']['dat']);
+		}
 
-if (substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])) {
-	if ((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']) { //	send charset which might be determined in template
-		define('WE_CONTENT_TYPE_SET', 1);
-		//	@ -> to aware of unproper use of this element, f. ex in include-File
-		@header('Content-Type: text/html; charset=' . $we_doc->elements['Charset']['dat']);
-	}
+		// --> Glossary Replacement
 
-	// --> Glossary Replacement
+		if ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) &&
+						(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)) {
+			include_once (WE_GLOSSARY_MODULE_DIR . 'weGlossaryCache.php');
+			include_once (WE_GLOSSARY_MODULE_DIR . 'weGlossaryReplace.php');
 
-	if ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_DOC'] == $GLOBALS['we_doc'])) &&
-					(isset($we_doc->InGlossar) && $we_doc->InGlossar == 0)) {
-		include_once (WE_GLOSSARY_MODULE_DIR . 'weGlossaryCache.php');
-		include_once (WE_GLOSSARY_MODULE_DIR . 'weGlossaryReplace.php');
-
-		weGlossaryReplace::start();
-		include ($we_include);
-		weGlossaryReplace::end($GLOBALS['we_doc']->Language);
+			weGlossaryReplace::start();
+			include ($we_include);
+			weGlossaryReplace::end($GLOBALS['we_doc']->Language);
+		} else {
+			include ($we_include);
+		}
 	} else {
-		include ($we_include);
+		protect(); //	only inside webEdition !!!
+		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . $we_include);
 	}
-} else {
-	protect(); //	only inside webEdition !!!
-	include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . $we_include);
+}else{
+		exit('Nothing to include ...');
 }
