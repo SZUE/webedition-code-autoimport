@@ -293,7 +293,7 @@ function makeArrayFromAttribs($attr) {
 	$attribs = '';
 	preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
 	for ($i = 0; $i < sizeof($foo); $i++) {
-		$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
+		$attribs .= '\'' . trim($foo[$i][1]) . '\'=>' . trim($foo[$i][2]) . ',';
 	}
 	eval('$arr = array(' . ereg_replace('(.+),$', '\\1', $attribs) . ');');
 	return $arr;

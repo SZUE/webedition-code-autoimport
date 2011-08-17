@@ -402,11 +402,11 @@ class we_tagParser {
 								}
 
 								// Tag besitzt Endtag
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
 																$code, $endeEndTagPos);
 								//neu
 							} else
-								$code = substr($code, 0, $tagPos) . '<?php printElement( ' . self::printTag($tagname, $attribs) . '); ?>' . substr(
+								$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs) . '); ?>' . substr(
 																$code, $endeStartTag);
 							$this->lastpos = 0;
 						}

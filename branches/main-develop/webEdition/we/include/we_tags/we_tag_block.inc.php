@@ -28,7 +28,7 @@ if(!defined('oldBlock')){
 	/*
  * due to parser limits this does not work now
 function we_parse_tag_blockControls($attribs,$content){
-	eval('$arr = ' . $attribs . ';');
+	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
 	if (($foo = attributFehltError($arr, 'name', 'blockControls')))	return $foo;
 	$name = weTag_getParserAttribute("name", $arr);
 	return '<?php if(we_tag(\'ifEditmode\')){echo we_tag_blockControls('.$name.'));}?>';
@@ -36,7 +36,7 @@ function we_parse_tag_blockControls($attribs,$content){
 */
 
 function we_parse_tag_block($attribs,$content){
-	eval('$arr = ' . $attribs . ';');
+	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
 	if (($foo = attributFehltError($arr, 'name', 'block')))	return $foo;
 	
 	//cleanup content

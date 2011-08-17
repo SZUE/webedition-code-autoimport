@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_customer($attribs, $content) {
-	eval('$arr = ' . $attribs . ';');
+	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
 	$name = weTag_getParserAttribute("name", $arr);
 	if ($name && strpos($name, ' ') !== false) {
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'customer'));

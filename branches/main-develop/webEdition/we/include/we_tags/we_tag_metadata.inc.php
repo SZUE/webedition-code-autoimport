@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_metadata($attribs, $content) {
-	eval('$arr = ' . $attribs . ';');
+	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
 	if (($foo = attributFehltError($arr, 'name', 'metadata')))
 		return $foo;
 	return '<?php if('.we_tagParser::printTag('metadata', $attribs).'){?>' . $content . '<?php } we_post_tag_listview();?>';

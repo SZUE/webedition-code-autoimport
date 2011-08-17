@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_checkForm($attribs, $content) {
-	eval('$arr = ' . $attribs . ';');
+	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
 	if (($foo = attributFehltError($arr, 'match', 'checkForm')))
 		return $foo;
 	if (($foo = attributFehltError($arr, 'type', 'checkForm')))

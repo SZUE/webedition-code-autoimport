@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_listview($attribs, $content) {
-	eval('$arr = ' . $attribs . ';');
+	eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
 	switch (weTag_getParserAttribute('type', $arr)) {
 		case 'document':
 		case 'search':
