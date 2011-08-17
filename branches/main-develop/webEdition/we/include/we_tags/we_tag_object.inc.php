@@ -24,7 +24,7 @@
  */
 function we_parse_tag_object($attribs, $content) {
 	eval('$arr = ' . $attribs . ';');
-	$name = we_getTagAttributeTagParser('name', $arr);
+	$name = weTag_getParserAttributeame', $arr);
 	if ($name && strpos($name, ' ') !== false) {
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 	}

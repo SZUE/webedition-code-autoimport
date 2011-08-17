@@ -24,7 +24,7 @@
  */
 function we_parse_tag_listview($attribs, $content) {
 	eval('$arr = ' . $attribs . ';');
-	switch (we_getTagAttributeTagParser('type', $arr)) {
+	switch (weTag_getParserAttribute('type', $arr)) {
 		case 'document':
 		case 'search':
 		case 'languagelink':
@@ -37,7 +37,7 @@ function we_parse_tag_listview($attribs, $content) {
 			break;
 		case 'object':
 			if (defined('OBJECT_TABLE')) {
-				$predefinedSQL = we_getTagAttributeTagParser('predefinedSQL', $arr, '');
+				$predefinedSQL = weTag_getParserAttribute('predefinedSQL', $arr, '');
 
 				if (($foo = attributFehltError($arr, 'classid', 'listview')) && $predefinedSQL == '')
 					return $foo;

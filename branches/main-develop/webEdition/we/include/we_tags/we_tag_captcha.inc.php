@@ -28,34 +28,34 @@ function we_parse_tag_captcha($attribs, $content) {
 	if (($foo = attributFehltError($arr, 'name', 'block')))
 		return $foo;
 	
-		$width = we_getTagAttributeTagParser('width', $attribs, 100);
-		$height = we_getTagAttributeTagParser('height', $attribs, 25);
-		$path = we_getTagAttributeTagParser('path', $attribs, '/');
+		$width = weTag_getParserAttribute('width', $attribs, 100);
+		$height = weTag_getParserAttribute('height', $attribs, 25);
+		$path = weTag_getParserAttribute('path', $attribs, '/');
 
-		$maxlength = we_getTagAttributeTagParser('maxlength', $attribs, 5);
-		$type = we_getTagAttributeTagParser('type', $attribs, 'gif');
+		$maxlength = weTag_getParserAttribute('maxlength', $attribs, 5);
+		$type = weTag_getParserAttribute('type', $attribs, 'gif');
 
-		$font = we_getTagAttributeTagParser('font', $attribs, '');
-		$fontpath = we_getTagAttributeTagParser('fontpath', $attribs, '');
-		$fontsize = we_getTagAttributeTagParser('fontsize', $attribs, '14');
-		$fontcolor = we_getTagAttributeTagParser('fontcolor', $attribs, '#000000');
+		$font = weTag_getParserAttribute('font', $attribs);
+		$fontpath = weTag_getParserAttribute('fontpath', $attribs, '');
+		$fontsize = weTag_getParserAttribute('fontsize', $attribs, '14');
+		$fontcolor = weTag_getParserAttribute('fontcolor', $attribs, '#000000');
 
-		$angle = we_getTagAttributeTagParser('angle', $attribs, '0');
+		$angle = weTag_getParserAttribute('angle', $attribs, '0');
 
-		$subset = we_getTagAttributeTagParser('subset', $attribs, 'alphanum');
-		$case = we_getTagAttributeTagParser('case', $attribs, 'mix');
-		$skip = we_getTagAttributeTagParser('skip', $attribs, 'i,I,l,L,0,o,O,1,g,9');
+		$subset = weTag_getParserAttribute('subset', $attribs, 'alphanum');
+		$case = weTag_getParserAttribute('case', $attribs, 'mix');
+		$skip = weTag_getParserAttribute('skip', $attribs, 'i,I,l,L,0,o,O,1,g,9');
 
-		$valign = we_getTagAttributeTagParser('valign', $attribs, 'random');
-		$align = we_getTagAttributeTagParser('align', $attribs, 'random');
+		$valign = weTag_getParserAttribute('valign', $attribs, 'random');
+		$align = weTag_getParserAttribute('align', $attribs, 'random');
 
-		$bgcolor = we_getTagAttributeTagParser('bgcolor', $attribs, '#ffffff');
-		$transparent = we_getTagAttributeTagParser('transparent', $attribs, false, true);
+		$bgcolor = weTag_getParserAttribute('bgcolor', $attribs, '#ffffff');
+		$transparent = weTag_getParserAttribute('transparent', $attribs, false, true);
 
-		$style = we_getTagAttributeTagParser('style', $attribs, '');
-		$stylecolor = we_getTagAttributeTagParser('stylecolor', $attribs, '#cccccc');
-		$stylenumber = we_getTagAttributeTagParser('stylenumber', $attribs, '5,10');
-		$xml = we_getTagAttributeTagParser('xml', $attribs, '5,10');
+		$style = weTag_getParserAttribute('style', $attribs, '');
+		$stylecolor = weTag_getParserAttribute('stylecolor', $attribs, '#cccccc');
+		$stylenumber = weTag_getParserAttribute('stylenumber', $attribs, '5,10');
+		$xml = weTag_getParserAttribute('xml', $attribs, '5,10');
 
 		// writing the temporary document
 		$file = $path . "we_captcha_" . $GLOBALS['we_doc']->ID . ".php";
