@@ -56,7 +56,85 @@ function getValueLoginMode($val) {
 			return (!isset($_COOKIE['we_mode']) || $_COOKIE['we_mode'] != 'seem')  ? ' checked="checked"' :'';
 	}
 }
+function printHeader($login){
+/*****************************************************************************
+ * CREATE HEADER
+ *****************************************************************************/
+htmlTop($_SERVER['SERVER_NAME']. ' webEdition ' . WE_VERSION);
+print STYLESHEET;
 
+print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));
+print we_htmlElement::jsElement('', array('src' => JS_DIR . 'weJsStrings.php'));
+
+if ($login != 2) {
+	print we_htmlElement::linkElement(array('rel' => 'home', 'href' => '/webEdition/'));
+	print we_htmlElement::linkElement(array('rel' => 'author', 'href' => g_l('start','[we_homepage]')));
+}
+
+print we_htmlElement::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico'));
+
+$_head_javascript = "cookieBackup = document.cookie;
+	document.cookie = \"cookie=yep\";
+	cookieOk = document.cookie.indexOf(\"cookie=yep\") > -1;
+	document.cookie = cookieBackup;
+
+	if (!cookieOk) {
+		" . we_message_reporting::getShowMessageCall( g_l('alert',"[no_cookies]"), WE_MESSAGE_ERROR ) . "
+	}
+
+";
+
+$_head_javascript .= 'var messageSettings = ' . (WE_MESSAGE_ERROR + WE_MESSAGE_WARNING + WE_MESSAGE_NOTICE) . ';
+
+/**
+ * setting is built like the unix file system privileges with the 3 options
+ * see notices, see warnings, see errors
+ *
+ * 1 => see Errors
+ * 2 => see Warnings
+ * 4 => see Notices
+ *
+ * @param message string
+ * @param prio integer one of the values 1,2,4
+ * @param win object reference to the calling window
+ */
+function showMessage(message, prio, win){
+
+	if (!win) {
+		win = window;
+	}
+	if (!prio) { // default is error, to avoid missing messages
+		prio = 4;
+	}
+
+	if (prio & messageSettings) { // show it, if you should
+
+		// the used vars are in file JS_DIR . "weJsStrings.php";
+		switch (prio) {
+
+			// Notice
+			case 1:
+				win.alert(we_string_message_reporting_notice + ":\n" + message);
+				break;
+
+			// Warning
+			case 2:
+				win.alert(we_string_message_reporting_warning + ":\n" + message);
+				break;
+
+			// Error
+			case 4:
+				win.alert(we_string_message_reporting_error + ":\n" + message);
+				break;
+		}
+	}
+}
+';
+
+print we_htmlElement::jsElement($_head_javascript);
+
+print '</head>';
+}
 
 /*****************************************************************************
  * CREATE EMPTY FOLDERS
@@ -172,85 +250,6 @@ if ( isset($GLOBALS['userLoginDenied']) ) {
 	}
 }
 
-/*****************************************************************************
- * CREATE HEADER
- *****************************************************************************/
-htmlTop($_SERVER['SERVER_NAME']. ' webEdition ' . WE_VERSION);
-print STYLESHEET;
-
-print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));
-print we_htmlElement::jsElement('', array('src' => JS_DIR . 'weJsStrings.php'));
-
-if ($login != 2) {
-	print we_htmlElement::linkElement(array('rel' => 'home', 'href' => '/webEdition/'));
-	print we_htmlElement::linkElement(array('rel' => 'author', 'href' => g_l('start','[we_homepage]')));
-}
-
-print we_htmlElement::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico'));
-
-$_head_javascript = "
-	cookieBackup = document.cookie;
-	document.cookie = \"cookie=yep\";
-	cookieOk = document.cookie.indexOf(\"cookie=yep\") > -1;
-	document.cookie = cookieBackup;
-
-	if (!cookieOk) {
-		" . we_message_reporting::getShowMessageCall( g_l('alert',"[no_cookies]"), WE_MESSAGE_ERROR ) . "
-	}
-
-";
-
-$_head_javascript .= '
-var messageSettings = ' . (WE_MESSAGE_ERROR + WE_MESSAGE_WARNING + WE_MESSAGE_NOTICE) . ';
-
-/**
- * setting is built like the unix file system privileges with the 3 options
- * see notices, see warnings, see errors
- *
- * 1 => see Errors
- * 2 => see Warnings
- * 4 => see Notices
- *
- * @param message string
- * @param prio integer one of the values 1,2,4
- * @param win object reference to the calling window
- */
-function showMessage(message, prio, win){
-
-	if (!win) {
-		win = window;
-	}
-	if (!prio) { // default is error, to avoid missing messages
-		prio = 4;
-	}
-
-	if (prio & messageSettings) { // show it, if you should
-
-		// the used vars are in file JS_DIR . "weJsStrings.php";
-		switch (prio) {
-
-			// Notice
-			case 1:
-				win.alert(we_string_message_reporting_notice + ":\n" + message);
-				break;
-
-			// Warning
-			case 2:
-				win.alert(we_string_message_reporting_warning + ":\n" + message);
-				break;
-
-			// Error
-			case 4:
-				win.alert(we_string_message_reporting_error + ":\n" + message);
-				break;
-		}
-	}
-}
-';
-
-print we_htmlElement::jsElement($_head_javascript);
-
-print '</head>';
 
 /*****************************************************************************
  * CHECK FOR PROBLEMS
@@ -284,6 +283,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert','[phpError]'))));
 
+	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
 } else if(!$DB_WE->isConnected() || $DB_WE->Error=='No database selected') {
@@ -314,6 +314,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert','[phpError]'))));
 
+	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
 
@@ -345,6 +346,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert','[phpError]'))));
 
+	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
 } else if (!$ignore_browser && !checkSupportedBrowser()) {
@@ -403,6 +405,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 380, $_browser_table->getHtmlCode(), g_l('start','[cannot_start_we]'))));
 
+	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 
 } else {
@@ -556,5 +559,6 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 
 	$_layout->setCol(0, 0, array("align" => "center", "valign" => "middle"), we_htmlElement::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
+	printHeader($login);
 	print we_htmlElement::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtmlCode() . ((isset($_body_javascript)) ? we_htmlElement::jsElement($_body_javascript) : "")) . "</html>";
 }
