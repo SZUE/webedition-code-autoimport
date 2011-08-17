@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,36 +22,25 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 }
 
-class we_linklist
-{
+class we_linklist {
 
 	var $name = "";
-
 	var $sString = "";
-
 	var $listArray;
-
 	var $db;
-
 	var $rollScript = "";
-
 	var $rollAttribs = array();
-
 	var $cache = array();
+	var $hidedirindex = false;
+	var $objectseourls = false;
 
-	var $hidedirindex=false;
-
-	var $objectseourls=false;
-
-	function we_linklist($sString,$hidedirindex=false,$objectseourls=false)
-	{
+	function we_linklist($sString, $hidedirindex=false, $objectseourls=false) {
 		$this->sString = $sString;
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
@@ -61,66 +51,53 @@ class we_linklist
 		$this->db = new DB_WE();
 	}
 
-	function getID($nr)
-	{
+	function getID($nr) {
 		return isset($this->listArray[$nr]["id"]) ? $this->listArray[$nr]["id"] : null;
 	}
 
-	function getObjID($nr)
-	{
+	function getObjID($nr) {
 		return isset($this->listArray[$nr]["obj_id"]) ? $this->listArray[$nr]["obj_id"] : "";
 	}
 
-	function getLink($nr)
-	{
+	function getLink($nr) {
 		$id = $this->getID($nr);
 		$link = "";
 		if ($this->getType($nr) == "int") {
 			$link = $this->getUrl($nr);
 		} else
-			if ($this->getType($nr) == "ext") {
-				$link = $this->getHref($nr);
-			} else
-				if ($this->getType($nr) == "mail") {
-					$link = $this->getHref($nr);
-				} else
-					if ($this->getType($nr) == "obj") {
-						$link = getHrefForObject(
-								$this->getObjID($nr),
-								$GLOBALS["WE_MAIN_DOC"]->ParentID,
-								$GLOBALS["WE_MAIN_DOC"]->Path,
-								$this->db,
-								$this->hidedirindex,
-								$this->objectseourls);
-						if (isset($GLOBALS["we_link_not_published"])) {
-							unset($GLOBALS["we_link_not_published"]);
-						}
-					}
+		if ($this->getType($nr) == "ext") {
+			$link = $this->getHref($nr);
+		} else
+		if ($this->getType($nr) == "mail") {
+			$link = $this->getHref($nr);
+		} else
+		if ($this->getType($nr) == "obj") {
+			$link = getHrefForObject(
+							$this->getObjID($nr), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
+			if (isset($GLOBALS["we_link_not_published"])) {
+				unset($GLOBALS["we_link_not_published"]);
+			}
+		}
 		return $link;
 	}
 
-	function getHref($nr)
-	{
+	function getHref($nr) {
 		return $this->listArray[$nr]["href"];
 	}
 
-	function getAttribs($nr)
-	{
+	function getAttribs($nr) {
 		return isset($this->listArray[$nr]["attribs"]) ? $this->listArray[$nr]["attribs"] : "";
 	}
 
-	function getTarget($nr)
-	{
+	function getTarget($nr) {
 		return $this->listArray[$nr]["target"];
 	}
 
-	function getTitle($nr)
-	{
+	function getTitle($nr) {
 		return isset($this->listArray[$nr]["title"]) ? $this->listArray[$nr]["title"] : "";
 	}
 
-	function getLinktag($nr, $link = "", $tagAttr = "")
-	{
+	function getLinktag($nr, $link = "", $tagAttr = "") {
 		if (!$link)
 			$link = getLink($nr);
 		$target = $this->getTarget($nr);
@@ -134,7 +111,7 @@ class we_linklist
 		$rev = $this->getRev($nr);
 		$params = $this->getParams($nr);
 		$title = $this->getTitle($nr);
-		$text = $this->getText($nr);  // #3636
+		$text = $this->getText($nr);	// #3636
 		$jswinAttribs = $this->getJsWinAttribs($nr);
 		$js = "var we_winOpts = '';";
 
@@ -170,14 +147,14 @@ class we_linklist
 			if ($jswinAttribs["jscenter"] && $jswinAttribs["jswidth"] && $jswinAttribs["jsheight"]) {
 				$js .= 'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
 			} else
-				if ($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != "") {
-					if ($jswinAttribs["jsposx"] != "") {
-						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';';
-					}
-					if ($jswinAttribs["jsposy"] != "") {
-						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';';
-					}
+			if ($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != "") {
+				if ($jswinAttribs["jsposx"] != "") {
+					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';';
 				}
+				if ($jswinAttribs["jsposy"] != "") {
+					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';';
+				}
+			}
 			if ($jswinAttribs["jswidth"] != "") {
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $jswinAttribs["jswidth"] . '\';';
 			}
@@ -217,15 +194,15 @@ class we_linklist
 			$foo = $js . "var we_win = window.open('','" . "we_ll_" . $nr . "',we_winOpts);";
 
 			$lattribs = removeAttribs($lattribs, array(
-				'name', 'target', 'href', 'onClick', 'onclick'
-			));
+					'name', 'target', 'href', 'onClick', 'onclick'
+							));
 
 			$lattribs['target'] = 'we_ll_' . $nr;
 			$lattribs['onclick'] = $foo;
 		} else { //  no popUp
 			$lattribs = removeAttribs($lattribs, array(
-				'name', 'href'
-			));
+					'name', 'href'
+							));
 		}
 		$lattribs['href'] = $link . str_replace('&', '&amp;', $params . $anchor);
 
@@ -236,289 +213,244 @@ class we_linklist
 		return $this->rollScript . getHtmlTag('a', $lattribs, '', false, true);
 	}
 
-	function getUrl($nr, $params = "")
-	{
+	function getUrl($nr, $params = "") {
 		$id = $this->getID($nr);
 		if ($id == "")
 			return "http://";
 		if (isset($this->cache[$id])) {
 			$row = $this->cache[$id];
 		} else {
-			$row = getHash("SELECT IsDynamic,Path FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", $this->db);
+			$row = getHash("SELECT IsDynamic,Path FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", $this->db);
 			$this->cache[$id] = $row;
 		}
-		if (isset($row["Path"]) && $this->hidedirindex){
+		if (isset($row["Path"]) && $this->hidedirindex) {
 			$path_parts = pathinfo($row["Path"]);
-			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
-				$row["Path"] = ($path_parts['dirname']!=DIRECTORY_SEPARATOR ? $path_parts['dirname']:'').DIRECTORY_SEPARATOR;
+			if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) {
+				$row["Path"] = ($path_parts['dirname'] != DIRECTORY_SEPARATOR ? $path_parts['dirname'] : '') . DIRECTORY_SEPARATOR;
 			}
-
 		}
 
 		return (isset($row["Path"]) ? $row["Path"] : '') . ($params ? ("?" . $params) : "");
-
 	}
 
-	function getImageID($nr)
-	{
+	function getImageID($nr) {
 		return isset($this->listArray[$nr]["img_id"]) ? $this->listArray[$nr]["img_id"] : "";
 	}
 
-	function getImageAttribs($nr)
-	{
+	function getImageAttribs($nr) {
 		return isset($this->listArray[$nr]["img_attribs"]) ? $this->listArray[$nr]["img_attribs"] : array();
 	}
 
-	function getImageAttrib($nr, $key)
-	{
+	function getImageAttrib($nr, $key) {
 		$foo = $this->getImageAttribs($nr);
 		return isset($foo[$key]) ? $foo[$key] : "";
 	}
 
-	function getJsWinAttrib($nr, $key)
-	{
+	function getJsWinAttrib($nr, $key) {
 		$foo = $this->getJsWinAttribs($nr);
 		return isset($foo[$key]) ? $foo[$key] : "";
 	}
 
-	function getJsWinAttribs($nr)
-	{
+	function getJsWinAttribs($nr) {
 		return isset($this->listArray[$nr]["jswin_attribs"]) ? $this->listArray[$nr]["jswin_attribs"] : array();
 	}
 
-	function getImageSrc($nr)
-	{
+	function getImageSrc($nr) {
 		return isset($this->listArray[$nr]["img_src"]) ? $this->listArray[$nr]["img_src"] : "";
 	}
 
-	function getText($nr)
-	{
+	function getText($nr) {
 		return $this->listArray[$nr]["text"];
 	}
 
-	function getAnchor($nr)
-	{
+	function getAnchor($nr) {
 		return (isset($this->listArray[$nr]["anchor"]) ? $this->listArray[$nr]["anchor"] : "");
 	}
 
-	function getAccesskey($nr)
-	{
+	function getAccesskey($nr) {
 		return (isset($this->listArray[$nr]["accesskey"]) ? $this->listArray[$nr]["accesskey"] : "");
 	}
 
-	function getTabindex($nr)
-	{
+	function getTabindex($nr) {
 		return (isset($this->listArray[$nr]["tabindex"]) ? $this->listArray[$nr]["tabindex"] : "");
 	}
 
-	function getLang($nr)
-	{
+	function getLang($nr) {
 		return (isset($this->listArray[$nr]["lang"]) ? $this->listArray[$nr]["lang"] : "");
 	}
 
-	function getRel($nr)
-	{
+	function getRel($nr) {
 		return (isset($this->listArray[$nr]["rel"]) ? $this->listArray[$nr]["rel"] : "");
 	}
 
-	function getRev($nr)
-	{
+	function getRev($nr) {
 		return (isset($this->listArray[$nr]["rev"]) ? $this->listArray[$nr]["rev"] : "");
 	}
 
-	function getHreflang($nr)
-	{
+	function getHreflang($nr) {
 		return (isset($this->listArray[$nr]["hreflang"]) ? $this->listArray[$nr]["hreflang"] : "");
 	}
 
-	function getHidedirindex($nr)
-	{
+	function getHidedirindex($nr) {
 		return (isset($this->listArray[$nr]["hidedirindex"]) ? $this->listArray[$nr]["hidedirindex"] : "");
 	}
 
-	function getObjectseourls($nr)
-	{
+	function getObjectseourls($nr) {
 		return (isset($this->listArray[$nr]["objectseourls"]) ? $this->listArray[$nr]["objectseourls"] : "");
 	}
-	function getParams($nr)
-	{
+
+	function getParams($nr) {
 		return (isset($this->listArray[$nr]["params"]) ? $this->listArray[$nr]["params"] : "");
 	}
 
-	function getHrefInt($nr)
-	{
+	function getHrefInt($nr) {
 		$id = $this->getID($nr);
-		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", "Path", $this->db) : "";
+		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", "Path", $this->db) : "";
 	}
 
-	function getHrefObj($nr)
-	{
+	function getHrefObj($nr) {
 		$id = $this->getObjID($nr);
-		return $id ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=".abs($id)."", "Path", $this->db) : "";
+		return $id ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id) . "", "Path", $this->db) : "";
 	}
 
-	function getImageSrcInt($nr)
-	{
+	function getImageSrcInt($nr) {
 		$id = $this->getImageID($nr);
-		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", "Path", $this->db) : "";
+		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", "Path", $this->db) : "";
 	}
 
-	function getString()
-	{
+	function getString() {
 		if (sizeof($this->listArray) == 0)
 			return "";
 		return serialize($this->listArray);
 	}
 
-	function setID($nr, $val)
-	{
+	function setID($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["id"] = $val;
 		}
 	}
 
-	function setObjID($nr, $val)
-	{
+	function setObjID($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["obj_id"] = $val;
 		}
 	}
 
-	function setHref($nr, $val)
-	{
+	function setHref($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["href"] = $val;
 		}
 	}
 
-	function setAnchor($nr, $val)
-	{
+	function setAnchor($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["anchor"] = $val;
 		}
 	}
 
-	function setAccesskey($nr, $val)
-	{
+	function setAccesskey($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["accesskey"] = $val;
 		}
 	}
 
-	function setTabindex($nr, $val)
-	{
+	function setTabindex($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["tabindex"] = $val;
 		}
 	}
 
-	function setLang($nr, $val)
-	{
+	function setLang($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["lang"] = $val;
 		}
 	}
 
-	function setRel($nr, $val)
-	{
+	function setRel($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["rel"] = $val;
 		}
 	}
 
-	function setRev($nr, $val)
-	{
+	function setRev($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["rev"] = $val;
 		}
 	}
 
-	function setHreflang($nr, $val)
-	{
+	function setHreflang($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["hreflang"] = $val;
 		}
 	}
 
-	function setParams($nr, $val)
-	{
+	function setParams($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["params"] = $val;
 		}
 	}
 
-	function setAttribs($nr, $val)
-	{
+	function setAttribs($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["attribs"] = $val;
 		}
 	}
 
-	function setTarget($nr, $val)
-	{
+	function setTarget($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["target"] = $val;
 		}
 	}
 
-	function setImageID($nr, $val)
-	{
+	function setImageID($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["img_id"] = $val;
 		}
 	}
 
-	function setTitle($nr, $val)
-	{
+	function setTitle($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["title"] = $val;
 		}
 	}
 
-	function setImageSrc($nr, $val)
-	{
+	function setImageSrc($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["img_src"] = $val;
 		}
 	}
 
-	function setText($nr, $val)
-	{
+	function setText($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["text"] = $val;
 		}
 	}
 
-	function setImageAttribs($nr, $val)
-	{
+	function setImageAttribs($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["img_attribs"] = $val;
 		}
 	}
 
-	function setImageAttrib($nr, $key, $val)
-	{
+	function setImageAttrib($nr, $key, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["img_attribs"][$key] = $val;
 		}
 	}
 
-	function setJsWinAttribs($nr, $val)
-	{
+	function setJsWinAttribs($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["jswin_attribs"] = $val;
 		}
 	}
 
-	function setJsWinAttrib($nr, $key, $val)
-	{
+	function setJsWinAttrib($nr, $key, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["jswin_attribs"][$key] = $val;
 		}
 	}
 
-	function correctContent($content)
-	{
+	function correctContent($content) {
 		$ipos = strpos($content, '<we_:_linklist');
 		$start = $ipos;
 		$starttag = 1;
@@ -529,13 +461,13 @@ class we_linklist
 				$ipos = $starttagpos;
 				$starttag++;
 			} else
-				if (!($endtagpos === false)) {
-					$starttag--;
-					$ipos = $endtagpos;
-				} else
-					if (!($starttagpos === false)) {
-						$ipos = $starttagpos;
-					}
+			if (!($endtagpos === false)) {
+				$starttag--;
+				$ipos = $endtagpos;
+			} else
+			if (!($starttagpos === false)) {
+				$ipos = $starttagpos;
+			}
 		}
 		$end = $endtagpos ? $endtagpos + 15 : strlen($content);
 
@@ -547,11 +479,9 @@ class we_linklist
 		$repl = str_replace("we__:__linklist", "we:linklist", $repl);
 
 		return str_replace($search, $repl, $content);
-
 	}
 
-	function getHTML($editmode, $attribs, $content, $docName)
-	{
+	function getHTML($editmode, $attribs, $content, $docName) {
 		$linklistRef = $attribs["name"] . "_TAGS_";
 		$limit = 0;
 		if (isset($attribs['limit']) && $attribs['limit'] > 0) {
@@ -572,7 +502,6 @@ class we_linklist
 			$content = str_replace("</we:ifNotSelf", "</we_:_ifNotSelf", $content);
 			$content = str_replace("</we:prelink", "</we_:_prelink", $content);
 			$content = str_replace("</we:postlink", "</we_:_postlink", $content);
-
 		}
 
 		$ipos = strpos($content, '<we_:_linklist');
@@ -584,7 +513,7 @@ class we_linklist
 		$tp = new we_tagParser($content);
 		$names = implode(",", we_tagParser::getNames($tp->getAllTags()));
 		$tp->parseTags($content, '<we_:_linklistRef>', array(
-			'we:ifVar'
+				'we:ifVar'
 		));
 
 		if (!$editmode) {
@@ -612,52 +541,25 @@ class we_linklist
 
 					if ($editmode) {
 						// Create button object
-
 						// Create buttons
 						$disabled = false;
 						if ($limit > 0 && $this->length() >= $limit) {
 							$disabled = true;
 						}
 						$plusbut = we_button::create_button(
-								"image:btn_add_link",
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $attribs["name"] . "','" . $i . "')",
-								true,
-								100,
-								22,
-								"",
-								"",
-								$disabled);
+														"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $attribs["name"] . "','" . $i . "')", true, 100, 22, "", "", $disabled);
 						$upbut = we_button::create_button(
-								"image:btn_direction_up",
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $attribs["name"] . "','" . $i . "')",
-								true,
-								-1,
-								-1,
-								"",
-								"",
-								!($i > 0));
+														"image:btn_direction_up", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $attribs["name"] . "','" . $i . "')", true, -1, -1, "", "", !($i > 0));
 						$downbut = we_button::create_button(
-								"image:btn_direction_down",
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $attribs["name"] . "','" . $i . "')",
-								true,
-								-1,
-								-1,
-								"",
-								"",
-								!($i < (sizeof($this->listArray) - 1)));
+														"image:btn_direction_down", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $attribs["name"] . "','" . $i . "')", true, -1, -1, "", "", !($i < (sizeof($this->listArray) - 1)));
 						$editbut = we_button::create_button(
-								"image:btn_edit_link",
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $attribs["name"] . "','" . $i . "')",
-								true);
+														"image:btn_edit_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $attribs["name"] . "','" . $i . "')", true);
 						$trashbut = we_button::create_button(
-								"image:btn_function_trash",
-								"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','" . $names . "')",
-								true);
+														"image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','" . $names . "')", true);
 						$buts = we_button::create_button_table(
-								array(
-									$plusbut, $upbut, $downbut, $editbut, $trashbut
-								),
-								5);
+														array(
+												$plusbut, $upbut, $downbut, $editbut, $trashbut
+														), 5);
 					}
 
 					if ($i == (sizeof($this->listArray) - 1)) {
@@ -675,10 +577,9 @@ class we_linklist
 
 					//	handle we:ifPosition - if available
 					if (strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(
-							$foo,
-							'ifNotPosition')) {
+													$foo, 'ifNotPosition')) {
 						$foo = '<?php $GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\'] = array(\'size\'=> ' . sizeof(
-								$this->listArray) . ',\'position\'=>' . ($i + 1) . '); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\']); ?>';
+														$this->listArray) . ',\'position\'=>' . ($i + 1) . '); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\']); ?>';
 					}
 					//	handle we:ifPosition - if available
 
@@ -689,14 +590,10 @@ class we_linklist
 					$foo = eregi_replace('<we_:_field */? *>', $linkcontent, $foo);
 					$foo = eregi_replace('<we_:_path */? *>', $link . $this->getParams($i), $foo);
 					$foo = str_replace(
-							'<we_:_ifSelf>',
-							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"){ ?>',
-							$foo);
+									'<we_:_ifSelf>', '<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"){ ?>', $foo);
 					$foo = str_replace('</we_:_ifSelf>', '<?php } ?>', $foo);
 					$foo = str_replace(
-							'<we_:_ifNotSelf>',
-							'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"){ ?>',
-							$foo);
+									'<we_:_ifNotSelf>', '<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"){ ?>', $foo);
 					$foo = str_replace('</we_:_ifNotSelf>', '<?php } ?>', $foo);
 
 					if (!isset($this->listArray[$i]["nr"])) {
@@ -738,7 +635,7 @@ class we_linklist
 
 			if (isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $attribs["name"])) {
 				$out .= '<script  type="text/javascript">we_cmd(\'edit_linklist\',\'' . $attribs["name"] . '\',\'' . ((isset(
-						$GLOBALS["we_list_insertedNr"]) && ($GLOBALS["we_list_insertedNr"] != "")) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');</script>';
+												$GLOBALS["we_list_insertedNr"]) && ($GLOBALS["we_list_insertedNr"] != "")) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');</script>';
 			}
 			$clearContent = eregi_replace('^[^<]+', '', $content);
 			$clearContent = eregi_replace('>[^<]+$', '>', $clearContent);
@@ -750,19 +647,10 @@ class we_linklist
 			$clearContent = eregi_replace('^[^<]*(<we_:_link ?/?>)[^<]*$', '\1', $clearContent);
 			if ($limit == 0 || ($limit != 0 && $this->length() < $limit)) {
 				$plusbut = "<br>" . we_button::create_button(
-						"image:btn_add_link",
-						"javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $attribs["name"] . "')",
-						true,
-						100,
-						22,
-						"",
-						"",
-						$disabled);
+												"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $attribs["name"] . "')", true, 100, 22, "", "", $disabled);
 				$out .= '<input type="hidden" name="we_' . $docName . '_linklist[' . $attribs["name"] . ']" value="' . htmlspecialchars(
-						$this->getString()) . '" />' . eregi_replace(
-						'(.*)<we_:_link[^>/]*/?>(.*)',
-						'\1' . $plusbut . '\2' . "\n",
-						$clearContent);
+												$this->getString()) . '" />' . eregi_replace(
+												'(.*)<we_:_link[^>/]*/?>(.*)', '\1' . $plusbut . '\2' . "\n", $clearContent);
 			}
 		}
 
@@ -771,56 +659,47 @@ class we_linklist
 		return $out;
 	}
 
-	function getType($nr)
-	{
+	function getType($nr) {
 		return isset($this->listArray[$nr]["type"]) ? $this->listArray[$nr]["type"] : "";
 	}
 
-	function getCType($nr)
-	{
+	function getCType($nr) {
 		return isset($this->listArray[$nr]["ctype"]) ? $this->listArray[$nr]["ctype"] : "";
 	}
 
-	function setType($nr, $val)
-	{
+	function setType($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["type"] = $val;
 		}
 	}
 
-	function setCType($nr, $val)
-	{
+	function setCType($nr, $val) {
 		if ($nr == "0" || $nr) {
 			$this->listArray[$nr]["ctype"] = $val;
 		}
 	}
 
-	function addLink()
-	{
+	function addLink() {
 		array_push($this->listArray, $this->getRawLink());
 	}
 
-	function length()
-	{
+	function length() {
 		return sizeof($this->listArray);
 	}
 
-	function upLink($nr)
-	{
+	function upLink($nr) {
 		$temp = $this->listArray[$nr - 1];
 		$this->listArray[$nr - 1] = $this->listArray[$nr];
 		$this->listArray[$nr] = $temp;
 	}
 
-	function downLink($nr)
-	{
+	function downLink($nr) {
 		$temp = $this->listArray[$nr + 1];
 		$this->listArray[$nr + 1] = $this->listArray[$nr];
 		$this->listArray[$nr] = $temp;
 	}
 
-	function insertLink($nr)
-	{
+	function insertLink($nr) {
 		$l = $this->getRawLink();
 		for ($i = 0; $i < sizeof($this->listArray); $i++) {
 			$lnr = $this->listArray[$i]["nr"];
@@ -834,8 +713,7 @@ class we_linklist
 		$this->listArray[$nr] = $l;
 	}
 
-	function removeLink($nr, $names = "", $name = "")
-	{
+	function removeLink($nr, $names = "", $name = "") {
 		$realNr = $this->listArray[$nr]["nr"];
 		$namesArray = $names ? explode(",", $names) : array();
 		foreach ($namesArray as $n) {
@@ -845,8 +723,8 @@ class we_linklist
 	}
 
 	/* ##### private Functions##### */
-	function getMaxListNr()
-	{
+
+	function getMaxListNr() {
 		$n = 0;
 		for ($i = 0; $i < sizeof($this->listArray); $i++) {
 			$n = max($this->listArray[$i]["nr"], $n);
@@ -854,8 +732,7 @@ class we_linklist
 		return $n;
 	}
 
-	function getMaxListNrID()
-	{
+	function getMaxListNrID() {
 		$n = 0;
 		$out = 0;
 		for ($i = 0; $i < sizeof($this->listArray); $i++) {
@@ -867,11 +744,10 @@ class we_linklist
 		return $out;
 	}
 
-	function getRawLink()
-	{
+	function getRawLink() {
 		$foo = array();
 		$foo["href"] = "http://";
-		$foo["text"] = g_l('global',"[new_link]");
+		$foo["text"] = g_l('global', "[new_link]");
 		$foo["target"] = "";
 		$foo["type"] = "ext";
 		$foo["ctype"] = "text";
@@ -879,22 +755,20 @@ class we_linklist
 		return $foo;
 	}
 
-	function getLinkContent($nr)
-	{
+	function getLinkContent($nr) {
 		if ($this->getCType($nr) == "int") {
 			return $this->makeImgTag($nr);
 		} else
-			if ($this->getCType($nr) == "ext") {
-				return $this->makeImgTagFromSrc($this->getImageSrc($nr), $this->getImageAttribs($nr));
-			} else
-				if ($this->getCType($nr) == "text") {
-					return $this->getText($nr);
-				}
+		if ($this->getCType($nr) == "ext") {
+			return $this->makeImgTagFromSrc($this->getImageSrc($nr), $this->getImageAttribs($nr));
+		} else
+		if ($this->getCType($nr) == "text") {
+			return $this->getText($nr);
+		}
 		return "";
 	}
 
-	function makeImgTag($nr, $attribs = "")
-	{
+	function makeImgTag($nr, $attribs = "") {
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 		$id = $this->getImageID($nr);
 		if (!$attribs)
@@ -910,18 +784,16 @@ class we_linklist
 		return $img->getHtml(false, false);
 	}
 
-	function makeImgTagFromSrc($src, $attribs)
-	{
+	function makeImgTagFromSrc($src, $attribs) {
 
 		$attribs = removeEmptyAttribs($attribs, array(
-			'alt'
-		));
+				'alt'
+						));
 		$attribs['src'] = $src;
 		return getHtmlTag('img', $attribs);
 	}
 
-	function mta($hash, $key)
-	{
+	function mta($hash, $key) {
 		return (isset($hash[$key]) && $hash[$key] != "") ? (' ' . $key . '="' . $hash[$key] . '"') : '';
 	}
 

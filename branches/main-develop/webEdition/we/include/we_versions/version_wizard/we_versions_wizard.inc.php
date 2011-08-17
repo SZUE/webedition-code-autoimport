@@ -78,8 +78,8 @@ class we_versions_wizard
 
 		$js .= '<script type="text/javascript">function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}</script>';
 
-		$cancelButton = $WE_BTN->create_button("cancel", "javascript:top.close();");
-		$refreshButton = $WE_BTN->create_button(
+		$cancelButton = we_button::create_button("cancel", "javascript:top.close();");
+		$refreshButton = we_button::create_button(
 				"refresh",
 				"javascript:parent.wizcmd.location.reload();",
 				true,
@@ -95,12 +95,12 @@ class we_versions_wizard
 				"REBUILD_META"));
 
 		if ($dc) {
-			$buttons = $WE_BTN->create_button_table(array(
+			$buttons = we_button::create_button_table(array(
 				$refreshButton, $cancelButton
 			), 10);
 			$pb = htmlDialogLayout($pb, g_l('rebuild',"[rebuild]"), $buttons);
 		} else {
-			$prevButton = $WE_BTN->create_button(
+			$prevButton = we_button::create_button(
 					"back",
 					"javascript:parent.wizbody.handle_event('previous');",
 					true,
@@ -110,7 +110,7 @@ class we_versions_wizard
 					"",
 					true,
 					false);
-			$nextButton = $WE_BTN->create_button(
+			$nextButton = we_button::create_button(
 					"next",
 					"javascript:parent.wizbody.handle_event('next');",
 					true,
@@ -179,7 +179,7 @@ class we_versions_wizard
 
 		return we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
-						STYLESHEET . ($dc ? "" : we_htmlElement::jsElement($WE_BTN->create_state_changer(false))) . $js) . we_htmlElement::htmlBody(
+						STYLESHEET . ($dc ? "" : we_htmlElement::jsElement(we_button::create_state_changer(false))) . $js) . we_htmlElement::htmlBody(
 						array(
 							"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")
 						),

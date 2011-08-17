@@ -21,25 +21,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/inlcude/we.inc.php");
-
 ?>
-
 <html>
-<head>
-<title></title>
+	<head>
+		<title></title>
 		<?php
 		print STYLESHEET;
 		?>
 	</head>
-
-<body>
-<span class="defaultfont">
+	<body>
+		<span class="defaultfont">
 			<?php
-			print g_l('global','[load_menu_info]');
+			print g_l('global', '[load_menu_info]');
 			?>
 		</span>
-</body>
-
+	</body>
 </html>

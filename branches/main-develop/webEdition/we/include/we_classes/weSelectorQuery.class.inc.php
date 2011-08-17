@@ -134,14 +134,13 @@ class weSelectorQuery {
 	 */
 	function search($search, $table, $types=null, $limit=null, $rootDir="") {
 		$search = strtr($search, array("["=>"\\\[","]"=>"\\\]"));
-		$_nlTable = defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : "";
 		switch ($table) {
 			case USER_TABLE:
 				$this->addQueryField("IsFolder");
 				$typeField = "Type";
 				break;
 			case CATEGORY_TABLE:
-			case $_nlTable:
+			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
 				break;
 			default:
 				$typeField = "ContentType";

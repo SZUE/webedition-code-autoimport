@@ -25,7 +25,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_document.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_linklist.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tagParser.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");

@@ -1062,12 +1062,12 @@ class weVersions {
 
 		if($anzahl > $prefAnzahl && $prefAnzahl!="") {
 			$toDelete = $anzahl - $prefAnzahl;
-			$query = "SELECT ID, version FROM ".VERSIONS_TABLE." WHERE documentId = '".abs($docID)."' AND documentTable = '".$db->escape($docTable)."' ORDER BY version ASC";
+			$query = "SELECT ID, version FROM ".VERSIONS_TABLE." WHERE documentId = '".abs($docID)."' AND documentTable = '".$db->escape($docTable)."' ORDER BY version ASC LIMIT ".intval($toDelete);
 			$m = 0;
 			$db->query($query);
 			while ($db->next_record()) {
 				if($m<$toDelete) {
-					$this->deleteVersion($db->f('ID'), "");
+					$this->deleteVersion($db->f('ID'), '');
 					$m++;
 				}
 			}
@@ -1079,7 +1079,6 @@ class weVersions {
 	* @abstract make new version-entry in DB
 	*/
 	function saveVersion($document, $status = "saved") {
-
 		if(isset($_SESSION["user"]["ID"])) {
 			$documentObj = "";
 			$db = new DB_WE();
@@ -1099,20 +1098,17 @@ class weVersions {
 				$writeVersion = false;
 			}
 
-			if((isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0]=="save_document")) {
-				if(isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5]) {
-					$status = "published";
-				}
+			if((isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0]=="save_document") && 
+							isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5]) {
+				$status = "published";
 			}
 
 			if($document["ContentType"]!="objectFile" && $document["ContentType"]!="text/webedition" && $document["ContentType"]!="text/html" && !($document["ContentType"]=="text/weTmpl" && defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL) ) {
 				$status = "saved";
 			}
 
-			if($this->IsScheduler()) {
-				if($status != "unpublished" && $status != "deleted") {
-					$status = "published";
-				}
+			if($this->IsScheduler() && $status != "unpublished" && $status != "deleted") {
+				$status = "published";
 			}
 
 			if(isset($_SESSION['versions']['doPublish']) && $_SESSION['versions']['doPublish']) {
@@ -1148,48 +1144,32 @@ class weVersions {
 				$mods = true;
 				$tblversionsFields = $this->getFieldsFromTable(VERSIONS_TABLE);
 
-				$keys = array();
-				$vals = array();
+				$set = array();
 
-				for($i=0;$i<count($tblversionsFields);$i++){
+				foreach($tblversionsFields as $fieldName){
 
-					$fieldName = $tblversionsFields[$i];
 					if($fieldName!="ID") {
-						$keys[] = $fieldName;
-
 						if(isset($document[$fieldName])) {
-							$vals[] = "'".escape_sql_query($document[$fieldName])."'";
+							$set[] = '`'.$fieldName.'`='."'".escape_sql_query($document[$fieldName])."'";
 						}
 						else {
 							$entry = $this->makePersistentEntry($fieldName, $status, $document, $documentObj);
-							$vals[] = "'".$entry."'";
+							$set[] = '`'.$fieldName.'`='.'"'.escape_sql_query($entry).'"';
 						}
 					}
 				}
 
-				if(!empty($keys) && !empty($vals) && $mods){
-
-					$theKeys = "(". makeCSVFromArray($keys) .")";
-					$theValues = "VALUES(". makeCSVFromArray($vals) .")";
-
-					$q = "INSERT INTO ".VERSIONS_TABLE." ".$theKeys ." ". $theValues."";
-					$db->query($q);
-
-					$vers = $this->version;
-					if(isset($document["version"])) {
-						$vers = $document["version"];
-					}
-					$q2 = "UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = '".abs($document["ID"])."' AND documentTable = '".$db->escape($document["Table"])."' AND version != '".abs($vers)."'";
-					$db->query($q2);
-
+				if(!empty($set) && $mods){
+					$theSet = implode(',',$set);
+					$db->query('INSERT INTO '.VERSIONS_TABLE.' SET '.$theSet);
+					$vers = (isset($document["version"]) ? $document["version"] :$this->version);
+					$db->query('UPDATE '.VERSIONS_TABLE.' SET active = 0 WHERE documentID = '.intval($document['ID']).' AND documentTable = "'.$db->escape($document["Table"]).'" AND version != '.intval($vers));
 					$_SESSION['versions']['versionToCompare'][$document["ID"].'_'.$document["Table"]] = serialize($documentObj);
 				}
 			}
 
 			$this->CheckPreferencesTime($document["ID"], $document["Table"]);
-
 		}
-
 	}
 
 
@@ -1200,7 +1180,7 @@ class weVersions {
 	*/
 	function makePersistentEntry($fieldName, $status, $document, $documentObj) {
 
-		$entry = "";
+		$entry = '';
 		$db = new DB_WE();
 
 		switch($fieldName) {
@@ -1244,7 +1224,7 @@ class weVersions {
 				}
 			break;
 			case "version":
-				$lastEntryVersion = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($document["ID"])."' AND documentTable='".$db->escape($document["Table"])."' ORDER BY version DESC LIMIT 1","version",$db);
+				$lastEntryVersion = f('SELECT MAX(version) AS version FROM ' . VERSIONS_TABLE . ' WHERE documentID='.intval($document["ID"]).' AND documentTable="'.$db->escape($document["Table"]).'"','version',$db);
 				if($lastEntryVersion) {
 					$newVersion = $lastEntryVersion + 1;
 					$this->setVersion($newVersion);
@@ -1349,19 +1329,16 @@ class weVersions {
 
 							if(isset($document[$val])) {
 								if($document[$val]=="") {
-									if($val=="TemplateID") {
+									switch($val){
+									case 'IsSearchable':
+									case 'WebUserID':
+									case 'TemplateID':
 										$document[$val] = 0;
-									}
-									if($val=="WebUserID") {
-										$document[$val] = 0;
-									}
-									if($val=="IsSearchable") {
-										$document[$val] = 0;
+										break;
 									}
 								}
 								//if($lastEntryField!="" && $document[$val]!="") {
 									if($document[$val]!=$lastEntryField) {
-
 										$modifications[] = $val;
 									}
 								//}
@@ -1501,7 +1478,6 @@ class weVersions {
 	* @return boolean
 	*/
 	function IsScheduler() {
-
 		$fromScheduler = 0;
 		if(isset($_SESSION["Versions"]['fromScheduler'])) {
 			$fromScheduler = $_SESSION["Versions"]['fromScheduler'];

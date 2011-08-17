@@ -92,17 +92,17 @@ class we_rebuild_wizard{
 				.	'}'
 				.	'</script>';
 
-		$cancelButton = $WE_BTN->create_button("cancel","javascript:top.close();");
-		$refreshButton = $WE_BTN->create_button("refresh","javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
+		$cancelButton = we_button::create_button("cancel","javascript:top.close();");
+		$refreshButton = we_button::create_button("refresh","javascript:parent.wizcmd.location.reload();", true, -1, -1, "", "", false, false);
 
 		$nextbutdisabled = !(we_hasPerm("REBUILD_ALL") || we_hasPerm("REBUILD_FILTERD") || we_hasPerm("REBUILD_OBJECTS") || we_hasPerm("REBUILD_INDEX") || we_hasPerm("REBUILD_THUMBS") || we_hasPerm("REBUILD_META"));
 
 		if($dc){
-			$buttons = $WE_BTN->create_button_table(array($refreshButton, $cancelButton), 10);
+			$buttons = we_button::create_button_table(array($refreshButton, $cancelButton), 10);
 			$pb = htmlDialogLayout($pb,g_l('rebuild',"[rebuild]"),$buttons);
 		}else{
-			$prevButton = $WE_BTN->create_button("back","javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
-			$nextButton = $WE_BTN->create_button("next","javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
+			$prevButton = we_button::create_button("back","javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
+			$nextButton = we_button::create_button("next","javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 			$content2->setCol(0, 0, array("id" => "prev", "style"=>"display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
@@ -120,7 +120,7 @@ class we_rebuild_wizard{
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
 				STYLESHEET.
-				($dc ? "" : we_htmlElement::jsElement($WE_BTN->create_state_changer(false))).$js).
+				($dc ? "" : we_htmlElement::jsElement(we_button::create_state_changer(false))).$js).
 			we_htmlElement::htmlBody(array("class"=>($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtmlCode())
 			)
 		);

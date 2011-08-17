@@ -36,10 +36,7 @@ if (!isset($_SESSION["user"])) {
 }
 
 if (isset($_POST["username"]) && isset($_POST["password"])) {
-
-
-	$DB_WE->query("SELECT UseSalt FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape(
-					$_POST["username"])."'");
+	$DB_WE->query("SELECT UseSalt, passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape($_POST["username"])."'");
 
 	// only if username exists !!
 	if ($DB_WE->next_record()) {
@@ -48,22 +45,14 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 		$passwd = $useSalt ? $salted : md5($_POST["password"]);
 
-
-		$DB_WE->query("SELECT passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape(
-						$_POST["username"]) . "' AND passwd='".$DB_WE->escape($passwd)."'");
-
-
-		if ($DB_WE->next_record()) {
+		if ($DB_WE->f('passwd')==$passwd) {
 
 			$_userdata = $DB_WE->Record;
 
 
 			if ($_userdata["LoginDenied"]) { // userlogin is denied
 				$GLOBALS["userLoginDenied"] = true;
-
 			} else {
-
-
 				if (!$useSalt) {
 					// UPDATE Password with SALT
 					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='".$salted."',UseSalt=1 WHERE username='" . $DB_WE->escape(
@@ -97,7 +86,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 					foreach ($a as $k => $v)
 						if (!in_array($v, $f))
 							array_push($f, $v);
-{
+
 						$a = makeArrayFromCSV($DB_WE->f("workSpaceTmp"));
 						foreach ($a as $k => $v) {
 							if (!in_array($v, $t)) {
@@ -182,7 +171,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 								$pid = 0;
 							}
 						}
-					}
+					
 				}
 				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
@@ -191,16 +180,16 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
-				$_SESSION["prefs"] = getHash("SELECT * from " . PREFS_TABLE, $DB_WE);
+				//FIXME: this makes absolutely no sense!!!
+				$_SESSION["prefs"] = getHash("SELECT * FROM " . PREFS_TABLE.' LIMIT 1', $DB_WE);
 
 				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . abs($_userdata["ID"]), $DB_WE);
 				if (is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0) {
 					$_SESSION["prefs"] = $exprefs;
 
 				} else {
-					$table = PREFS_TABLE;
 					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
-					doInsertQuery($DB_WE, $table, $_SESSION["prefs"]);
+					doInsertQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"]);
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
@@ -220,18 +209,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
-
-				$_SESSION["prefs"] = getHash("SELECT * from " . PREFS_TABLE, $DB_WE);
-
-				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . abs($_userdata["ID"]), $DB_WE);
-				if (is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0) {
-					$_SESSION["prefs"] = $exprefs;
-
-				} else {
-					$table = PREFS_TABLE;
-					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
-					doInsertQuery($DB_WE, $table, $_SESSION["prefs"]);
-				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
 					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
@@ -260,9 +237,7 @@ $we_transaction = isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:md5(uniqID(rand())));
 
 if (!isset($_SESSION["we_data"])) {
-	$_SESSION["we_data"] = array(
-		"$we_transaction" => ""
-	);
+	$_SESSION["we_data"] = array($we_transaction => '');
 }
 
 $_SESSION["EditPageNr"] = (isset($_SESSION["EditPageNr"]) && (($_SESSION["EditPageNr"] != "") || ($_SESSION["EditPageNr"] == "0"))) ? $_SESSION["EditPageNr"] : 1;

@@ -34,12 +34,8 @@ function we_tag_linklist($attribs, $content){
 	}
 	$isInListview = isset($GLOBALS["lv"]);
 
-	if ($isInListview) {
-		$linklist = $GLOBALS["lv"]->f($name);
-	} else
-		if (isset($GLOBALS["we_doc"])) {
-			$linklist = $GLOBALS["we_doc"]->getElement($name);
-		}
+	$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->getElement($name) :''));
+
 	$ll = new we_linklist($linklist,$hidedirindex,$objectseourls);
 	$ll->name = $name;
 

@@ -475,15 +475,23 @@ abstract class we_class{
 
 	function we_delete() {
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
-			$deltype='';
-			if ($this->ClassName=='we_objectFile') $deltype='tblObjectFile';
-			if ($this->ClassName=='we_webEditionDocument') $deltype='tblFile';
-			if ($this->ClassName=='we_docTypes') $deltype='tblDocTypes';
-			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID='".abs($this->ID)."'");
-			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID='".abs($this->ID)."'");
+			switch($this->ClassName){
+			case 'we_objectFile':
+				$deltype='tblObjectFile';
+				break;
+			case 'we_webEditionDocument':
+				$deltype='tblFile';
+				break;
+			case 'we_docTypes':
+				$deltype='tblDocTypes';
+				break;
+			default:
+				$deltype='';
+			}
+			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID=".abs($this->ID));
+			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID=".abs($this->ID));
 		}
-		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");	
-		
+		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table).' WHERE ID='.abs($this->ID));	
 	}
 
 # private ###################

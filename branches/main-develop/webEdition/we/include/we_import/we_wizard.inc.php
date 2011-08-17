@@ -274,18 +274,18 @@ HTS;
 			);
 		}
 
-		$cancelButton = $WE_BTN->create_button("cancel","javascript:parent.wizbody.handle_event('cancel');",false,-1,-1,'','',false,false);
-		$prevButton = $WE_BTN->create_button("back","javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "",true, false);
-		$nextButton = $WE_BTN->create_button("next","javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", false, false);
-		$closeButton = $WE_BTN->create_button("close","javascript:parent.wizbody.handle_event('cancel');", true, -1, -1, "", "", false, false);
+		$cancelButton = we_button::create_button("cancel","javascript:parent.wizbody.handle_event('cancel');",false,-1,-1,'','',false,false);
+		$prevButton = we_button::create_button("back","javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "",true, false);
+		$nextButton = we_button::create_button("next","javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", false, false);
+		$closeButton = we_button::create_button("close","javascript:parent.wizbody.handle_event('cancel');", true, -1, -1, "", "", false, false);
 
-		$prevNextButtons= $prevButton ? $WE_BTN->create_button_table(array($prevButton,$nextButton)) : null;
+		$prevNextButtons= $prevButton ? we_button::create_button_table(array($prevButton,$nextButton)) : null;
 
 		$content = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
 		$content->setCol(0, 1, array("align" => "right"),
 				'
-				<div id="standardDiv">' . $WE_BTN->position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) .'</div>
+				<div id="standardDiv">' . we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) .'</div>
 				<div id="closeDiv" style="display:none;">' . $closeButton .'</div>
 				'
 		);
@@ -293,7 +293,7 @@ HTS;
 		print we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
 				STYLESHEET.
-				we_htmlElement::jsElement($WE_BTN->create_state_changer(false))).
+				we_htmlElement::jsElement(we_button::create_state_changer(false))).
 			we_htmlElement::htmlBody(array(
 				"class" => "weDialogButtonsBody",
 				"onload" => "top.frames['wizbody'].set_button_state();"
