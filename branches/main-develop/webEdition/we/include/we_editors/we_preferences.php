@@ -5423,10 +5423,14 @@ else {
 
 				// Build db select box
 				$_db_connect = new we_htmlSelect(array("name" => "db_connect", "class" => "weSelect"));
+				if(function_exists('mysql_connect')){
 					$_db_connect->addOption('connect', "connect");
 					$_db_connect->addOption('pconnect', "pconnect");
+				}
+				if(class_exists('mysqli',false)){
 					$_db_connect->addOption('mysqli_connect', "mysqli_connect");
 					$_db_connect->addOption('mysqli_pconnect', "mysqli_pconnect");
+				}
 					/*$_db_connect->addOption(4, "pdo_connect");
 					$_db_connect->addOption(5, "pdo_pconnect");*/
 					$_db_connect->selectOption(DB_CONNECT);
