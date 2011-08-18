@@ -2578,8 +2578,8 @@ function error_log2($variable) {
 	ob_end_clean();
 }
 
-function weMemDebug($label = "") {
-	error_log("$label: " . round(((memory_get_usage() / 1024) / 1024), 3) . " MB");
+function weMemDebug() {
+	print("Mem usage " . round(((memory_get_usage() / 1024)  / 1024), 3) . ' MiB');
 }
 
 //  This Function writes the full content of an array. So you can test the content
