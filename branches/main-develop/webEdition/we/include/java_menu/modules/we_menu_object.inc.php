@@ -129,13 +129,13 @@
 		$we_menu["1080400"]["enabled"] = "1";
 
 		// File > Delete > Objectscache
-		if(we_hasPerm("ADMINISTRATOR")){
+		/*if(we_hasPerm("ADMINISTRATOR")){
 			$we_menu["1080600"]["text"] = g_l('javaMenu_global','[cache]') . " (".g_l('javaMenu_object','[objects]') . ")";
 			$we_menu["1080600"]["parent"] = "1080000";
 			$we_menu["1080600"]["cmd"] = "delete_objectfile_cache";
 	        $we_menu["1080600"]["perm"] = "ADMINISTRATOR";
 			$we_menu["1080600"]["enabled"] = "1";
-		}
+		}*/
 		// File > move
 		if ($_SESSION["we_mode"] == "normal") {
 			$we_menu["1090300"]["text"] = g_l('javaMenu_object','[objects]');
