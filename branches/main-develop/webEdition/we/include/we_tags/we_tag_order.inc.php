@@ -34,10 +34,10 @@ function we_tag_order($attribs, $content) {
 		return false;
 	}
 
-	$condition = we_getTagAttribute("condition", $attribs, 0);
-	$we_orderid = we_getTagAttribute("id", $attribs, 0);
+	$condition = weTag_getAttribute("condition", $attribs, 0);
+	$we_orderid = weTag_getAttribute("id", $attribs, 0);
 
-	$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ? "true" : "false"), false);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 
 	if (!isset($GLOBALS["we_lv_array"])) {
 		$GLOBALS["we_lv_array"] = array();

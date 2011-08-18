@@ -33,8 +33,8 @@ function we_tag_onlinemonitor($attribs, $content) {
 		print modulFehltError('Customer', 'onlinemonitor');
 		return false;
 	}
-	$condition = we_getTagAttribute("condition", $attribs, 0);
-	$we_omid = we_getTagAttribute("id", $attribs, 0);
+	$condition = weTag_getAttribute("condition", $attribs, 0);
+	$we_omid = weTag_getAttribute("id", $attribs, 0);
 
 
 	if (!isset($GLOBALS["we_lv_array"])) {

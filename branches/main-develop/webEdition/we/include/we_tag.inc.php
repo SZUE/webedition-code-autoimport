@@ -222,12 +222,12 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 
 function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
 	//t_e('you use an old tag, which still uses function we_getTagAttributeTagParser, use weTag_getParserAttribute instead!');
-	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),false);
+	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),$isFlag,false);
 }
 
 function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal=true) {
 	//t_e('you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead!');
-	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),$useGlobal);
+	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),$isFlag,$useGlobal);
 }
 
 function makeEmptyTable($in) {

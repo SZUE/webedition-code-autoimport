@@ -28,10 +28,10 @@ function we_tag_votingField($attribs, $content) {
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/weVoting.php");
 
 	if(isset($GLOBALS['_we_voting'])){
-		$name = we_getTagAttribute("name",$attribs);
-		$type = we_getTagAttribute("type",$attribs);
-		$precision = we_getTagAttribute("precision",$attribs,0);
-		$num_format = we_getTagAttribute("num_format",$attribs);
+		$name = weTag_getAttribute("name",$attribs);
+		$type = weTag_getAttribute("type",$attribs);
+		$precision = weTag_getAttribute("precision",$attribs,0);
+		$num_format = weTag_getAttribute("num_format",$attribs);
 
 		switch ($name){
 			case 'id':
@@ -249,7 +249,7 @@ function we_tag_votingField($attribs, $content) {
 				$returnvalue =  $GLOBALS['_we_voting']->getResult($type,$num_format,$precision);
 			break;
 			case 'date':
-				$format = we_getTagAttribute("format",$attribs);
+				$format = weTag_getAttribute("format",$attribs);
 				$returnvalue =  date(($format!="" ? $format : g_l('weEditorInfo',"[date_format]")), $GLOBALS['_we_voting']->PublishDate);
 			break;
 		}

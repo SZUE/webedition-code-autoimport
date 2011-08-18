@@ -40,12 +40,12 @@ function we_tag_customer($attribs, $content) {
 		return false;
 	}
 
-	$condition = we_getTagAttribute("condition", $attribs, 0);
-	$we_cid = we_getTagAttribute("id", $attribs, 0);
-	$name = we_getTagAttribute("name", $attribs);
-	$_showName = we_getTagAttribute("_name_orig", $attribs);
-	$size = we_getTagAttribute("size", $attribs, 30);
-	$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE?'true':'false'), false);
+	$condition = weTag_getAttribute("condition", $attribs, 0);
+	$we_cid = weTag_getAttribute("id", $attribs, 0);
+	$name = weTag_getAttribute("name", $attribs);
+	$_showName = weTag_getAttribute("_name_orig", $attribs);
+	$size = weTag_getAttribute("size", $attribs, 30);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 
 	if (!isset($GLOBALS["we_lv_array"])) {
 		$GLOBALS["we_lv_array"] = array();

@@ -442,13 +442,16 @@ abstract class DB_WE_abstract {
 		// if no $table specified, assume that we are working with a query
 		// result
 		if ($table) {
-			if ($this->query('SELECT * FROM `'.$table.'` WHERE FALSE;'))
+			if ($this->query('SELECT * FROM `'.$table.'` LIMIT 1;'))
 				$this->halt("Metadata query failed.");
 		} else {
 			if (!($this->Query_ID))
 				$this->halt("No query specified.");
 		}
 		$count = $this->num_fields();
+		if(!$count){
+			trigger_error('MYSQL-ERROR'."\n".'Fehler: Metadata-Query on table '.$table.' failed'. "\n", E_USER_WARNING);
+		}
 
 			for ($i = 0; $i < $count; $i++) {
 				$res[$i]["table"] = $this->field_table($i);

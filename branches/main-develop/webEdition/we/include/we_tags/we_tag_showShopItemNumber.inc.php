@@ -39,7 +39,7 @@ function we_tag_showShopItemNumber($attribs,$content) {
 
 	$xml = weTag_getAttribute("xml", $attribs, false, true);
 	$num_format = weTag_getAttribute("num_format",$attribs);
-	$floatquantities = we_getTagAttribute("floatquantities",$attribs,false,true);
+	$floatquantities = weTag_getAttribute("floatquantities",$attribs,false,true);
 	$floatquantities = empty($floatquantities) ? false : $floatquantities;
 
 	$attr = removeAttribs($attribs, array('option', 'inputfield', 'type', 'start', 'stop', 'shopname','nameto','to','floatquantities','$num_format'));

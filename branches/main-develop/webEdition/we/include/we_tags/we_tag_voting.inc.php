@@ -26,9 +26,9 @@ function we_tag_voting($attribs, $content) {
 	if (!defined("VOTING_TABLE")) {
 		return modulFehltError('Voting', '"voting"');
 	}
-	$id = we_getTagAttribute("id", $attribs, 0);
-	$name = we_getTagAttribute("name", $attribs, '');
-	$version = we_getTagAttribute("version", $attribs, 0);
+	$id = weTag_getAttribute("id", $attribs, 0);
+	$name = weTag_getAttribute("name", $attribs);
+	$version = weTag_getAttribute("version", $attribs, 0);
 
 	if (($foo = attributFehltError($attribs, 'name', 'voting'))) {
 		return $foo;

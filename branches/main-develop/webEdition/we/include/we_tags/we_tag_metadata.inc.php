@@ -30,7 +30,7 @@ function we_parse_tag_metadata($attribs, $content) {
 }
 
 function we_tag_metadata($attribs, $content) {
-	$name = we_getTagAttribute("name", $attribs);
+	$name = weTag_getAttribute("name", $attribs);
 
 	if (!isset($GLOBALS["we_lv_array"])) {
 		$GLOBALS["we_lv_array"] = array();

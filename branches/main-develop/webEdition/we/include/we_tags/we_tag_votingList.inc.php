@@ -37,16 +37,16 @@ function we_tag_votingList($attribs, $content) {
 		print modulFehltError('Voting', '"VotingList"');
 		return;
 	}
-	$name = we_getTagAttribute('name', $attribs, '');
-	$groupid = we_getTagAttribute('groupid', $attribs, 0);
-	$rows = we_getTagAttribute('rows', $attribs, 0);
-	$desc = we_getTagAttribute('desc', $attribs, "false");
-	$order = we_getTagAttribute('order', $attribs, 'PublishDate');
-	$subgroup = we_getTagAttribute("subgroup", $attribs, "false");
-	$version = we_getTagAttribute("version", $attribs, 1);
-	$offset = we_getTagAttribute("offset", $attribs, 0);
+	$name = weTag_getAttribute('name', $attribs);
+	$groupid = weTag_getAttribute('groupid', $attribs, 0);
+	$rows = weTag_getAttribute('rows', $attribs, 0);
+	$desc = weTag_getAttribute('desc', $attribs, false, true);
+	$order = weTag_getAttribute('order', $attribs, 'PublishDate');
+	$subgroup = weTag_getAttribute("subgroup", $attribs, false, true);
+	$version = weTag_getAttribute("version", $attribs, 1);
+	$offset = weTag_getAttribute("offset", $attribs, 0);
 
-	$_type = we_getTagAttribute('_type', $attribs);
+	$_type = weTag_getAttribute('_type', $attribs);
 	switch ($_type) {
 		case 'start':
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVotingList.php');

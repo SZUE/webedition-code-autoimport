@@ -32,7 +32,7 @@ function we_tag_createShop($attribs, $content) {
 
 	$deleteshop = weTag_getAttribute("deleteshop", $attribs,false,true);
 	$deleteshoponlogout = weTag_getAttribute("deleteshoponlogout", $attribs,false,true);
-	$shopname = we_getTagAttribute("shopname", $attribs);
+	$shopname = weTag_getAttribute("shopname", $attribs);
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php");
 

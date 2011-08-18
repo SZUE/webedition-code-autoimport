@@ -28,45 +28,44 @@ function we_parse_tag_form($attribs, $content) {
 
 function we_tag_form($attribs, $content) {
 	$ret = '';
-
-	$method = we_getTagAttribute("method", $attribs, "post");
-	$id = we_getTagAttribute("id", $attribs);
-	$action = we_getTagAttribute("action", $attribs);
-	$classid = we_getTagAttribute("classid", $attribs);
-	$parentid = we_getTagAttribute("parentid", $attribs);
-	$doctype = we_getTagAttribute("doctype", $attribs);
-	$type = we_getTagAttribute("type", $attribs);
-	$tid = we_getTagAttribute("tid", $attribs);
-	$categories = we_getTagAttribute("categories", $attribs);
-	$onsubmit = we_getTagAttribute("onsubmit", $attribs);
-	$onsubmit = we_getTagAttribute("onSubmit", $attribs, $onsubmit);
-	$onsuccess = we_getTagAttribute("onsuccess", $attribs);
-	$onerror = we_getTagAttribute("onerror", $attribs);
-	$onmailerror = we_getTagAttribute("onmailerror", $attribs);
-	$confirmmail = we_getTagAttribute("confirmmail", $attribs);
-	$preconfirm = we_getTagAttribute("preconfirm", $attribs);
-	$postconfirm = we_getTagAttribute("postconfirm", $attribs);
-	$order = we_getTagAttribute("order", $attribs);
-	$required = we_getTagAttribute("required", $attribs);
-	$remove = we_getTagAttribute("remove", $attribs);
-	$subject = we_getTagAttribute("subject", $attribs);
-	$recipient = we_getTagAttribute("recipient", $attribs);
-	$mimetype = we_getTagAttribute("mimetype", $attribs);
-	$from = we_getTagAttribute("from", $attribs);
-	$charset = we_getTagAttribute("charset", $attribs);
-	$xml = we_getTagAttribute("xml", $attribs);
-	$formname = we_getTagAttribute("name", $attribs, "we_global_form");
+	$method = weTag_getAttribute("method", $attribs, "post");
+	$id = weTag_getAttribute("id", $attribs);
+	$action = weTag_getAttribute("action", $attribs);
+	$classid = weTag_getAttribute("classid", $attribs);
+	$parentid = weTag_getAttribute("parentid", $attribs);
+	$doctype = weTag_getAttribute("doctype", $attribs);
+	$type = weTag_getAttribute("type", $attribs);
+	$tid = weTag_getAttribute("tid", $attribs);
+	$categories = weTag_getAttribute("categories", $attribs);
+	$onsubmit = weTag_getAttribute("onsubmit", $attribs);
+	$onsubmit = weTag_getAttribute("onSubmit", $attribs, $onsubmit);
+	$onsuccess = weTag_getAttribute("onsuccess", $attribs);
+	$onerror = weTag_getAttribute("onerror", $attribs);
+	$onmailerror = weTag_getAttribute("onmailerror", $attribs);
+	$confirmmail = weTag_getAttribute("confirmmail", $attribs);
+	$preconfirm = weTag_getAttribute("preconfirm", $attribs);
+	$postconfirm = weTag_getAttribute("postconfirm", $attribs);
+	$order = weTag_getAttribute("order", $attribs);
+	$required = weTag_getAttribute("required", $attribs);
+	$remove = weTag_getAttribute("remove", $attribs);
+	$subject = weTag_getAttribute("subject", $attribs);
+	$recipient = weTag_getAttribute("recipient", $attribs);
+	$mimetype = weTag_getAttribute("mimetype", $attribs);
+	$from = weTag_getAttribute("from", $attribs);
+	$charset = weTag_getAttribute("charset", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs);
+	$formname = weTag_getAttribute("name", $attribs, "we_global_form");
 	if (array_key_exists('nameid', $attribs)) { // Bug #3153
-		$formname = we_getTagAttribute("nameid", $attribs, "we_global_form");
-		$attribs['pass_id'] = we_getTagAttribute("nameid", $attribs);
+		$formname = weTag_getAttribute("nameid", $attribs, "we_global_form");
+		$attribs['pass_id'] = weTag_getAttribute("nameid", $attribs);
 		unset($attribs['nameid']);
 	}
-	$onrecipienterror = we_getTagAttribute("onrecipienterror", $attribs);
-	$forcefrom = we_getTagAttribute("forcefrom", $attribs, "", false);
-	$captchaname = we_getTagAttribute("captchaname", $attribs);
-	$oncaptchaerror = we_getTagAttribute("oncaptchaerror", $attribs);
-	$enctype = we_getTagAttribute("enctype", $attribs);
-	$target = we_getTagAttribute("target", $attribs);
+	$onrecipienterror = weTag_getAttribute("onrecipienterror", $attribs);
+	$forcefrom = weTag_getAttribute("forcefrom", $attribs);
+	$captchaname = weTag_getAttribute("captchaname", $attribs);
+	$oncaptchaerror = weTag_getAttribute("oncaptchaerror", $attribs);
+	$enctype = weTag_getAttribute("enctype", $attribs);
+	$target = weTag_getAttribute("target", $attribs);
 	$formAttribs = removeAttribs($attribs, array(
 			'onsubmit', 'onSubmit', 'name', 'method', 'xml', 'charset', 'id', 'action',
 			'order', 'required', 'onsuccess', 'onerror', 'type', 'recipient', 'mimetype',

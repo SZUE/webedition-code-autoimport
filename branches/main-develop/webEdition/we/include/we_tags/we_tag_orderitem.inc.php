@@ -35,11 +35,11 @@ function we_tag_orderitem($attribs, $content) {
 		return false;
 	}
 
-	$condition = we_getTagAttribute("condition", $attribs, 0);
-	$we_orderitemid = we_getTagAttribute("id", $attribs, 0);
-	$we_orderid = we_getTagAttribute("orderid", $attribs, 0);
+	$condition = weTag_getAttribute("condition", $attribs, 0);
+	$we_orderitemid = weTag_getAttribute("id", $attribs, 0);
+	$we_orderid = weTag_getAttribute("orderid", $attribs, 0);
 
-	$hidedirindex = we_getTagAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ? "true" : "false"), false);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
 
 	if ($condition) {
 		$condition = $condition . ' AND ' . "IntID = " . $we_orderitemid;

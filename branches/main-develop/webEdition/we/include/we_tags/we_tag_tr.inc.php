@@ -29,7 +29,7 @@ function we_parse_tag_tr($attribs, $content) {
 
 
 function we_tag_tr($attribs, $content) {
-		$_type = we_getTagAttribute('_type', $attribs);
+		$_type = weTag_getAttribute('_type', $attribs);
 
 switch($_type){
 	case 'start':

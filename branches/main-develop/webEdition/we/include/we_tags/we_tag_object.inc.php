@@ -40,17 +40,17 @@ function we_tag_object($attribs, $content) {
 		return false;
 	}
 
-	$condition = we_getTagAttribute('condition', $attribs, 0);
-	$classid = we_getTagAttribute('classid', $attribs);
-	$we_oid = we_getTagAttribute('id', $attribs, 0);
-	$name = we_getTagAttribute('name', $attribs);
+	$condition = weTag_getAttribute('condition', $attribs, 0);
+	$classid = weTag_getAttribute('classid', $attribs);
+	$we_oid = weTag_getAttribute('id', $attribs, 0);
+	$name = weTag_getAttribute('name', $attribs);
 	//never show name generated inside blocks
-	$_showName = we_getTagAttribute('_name_orig', $attribs);
-	$size = we_getTagAttribute('size', $attribs, 30);
-	$triggerid = we_getTagAttribute('triggerid', $attribs, '0');
-	$searchable = we_getTagAttribute('searchable', $attribs, '', true);
-	$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ? 'true' : 'false'), false);
-	$objectseourls = we_getTagAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS ? 'true' : 'false'), false);
+	$_showName = weTag_getAttribute('_name_orig', $attribs);
+	$size = weTag_getAttribute('size', $attribs, 30);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
+	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
 
 	if (!isset($GLOBALS['we_lv_array'])) {
 		$GLOBALS['we_lv_array'] = array();

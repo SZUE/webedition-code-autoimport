@@ -69,73 +69,73 @@ function we_parse_tag_listview($attribs, $content) {
 }
 
 function we_tag_listview($attribs, $content) {
-	$name = we_getTagAttribute('name', $attribs, '0');
-	$doctype = we_getTagAttribute('doctype', $attribs);
-	$class = we_getTagAttribute('classid', $attribs, '0');
-	$we_lv_cats = isset($_REQUEST['we_lv_cats_' . $name]) ? $_REQUEST['we_lv_cats_' . $name] : we_getTagAttribute('categories', $attribs);
-	$categoryids = we_getTagAttribute('categoryids', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '0');
+	$doctype = weTag_getAttribute('doctype', $attribs);
+	$class = weTag_getAttribute('classid', $attribs, '0');
+	$we_lv_cats = isset($_REQUEST['we_lv_cats_' . $name]) ? $_REQUEST['we_lv_cats_' . $name] : weTag_getAttribute('categories', $attribs);
+	$categoryids = weTag_getAttribute('categoryids', $attribs);
 	$we_lv_categoryids = isset($_REQUEST['we_lv_categoryids_' . $name]) ? $_REQUEST['we_lv_categoryids_' . $name] : $categoryids;
-	$we_lv_catOr = (isset($_REQUEST['we_lv_catOr_' . $name]) ? $_REQUEST['we_lv_catOr_' . $name] : we_getTagAttribute('catOr', $attribs, '', true) ) ? true : false;
+	$we_lv_catOr = (isset($_REQUEST['we_lv_catOr_' . $name]) ? $_REQUEST['we_lv_catOr_' . $name] : weTag_getAttribute('catOr', $attribs, false, true) ) ? true : false;
 
-	$rows = we_getTagAttribute('rows', $attribs, '100000000');
-	$order = we_getTagAttribute('order', $attribs);
+	$rows = weTag_getAttribute('rows', $attribs, '100000000');
+	$order = weTag_getAttribute('order', $attribs);
 	$we_lv_order = isset($_REQUEST['we_lv_order_' . $name]) ? $_REQUEST['we_lv_order_' . $name] : $order;
 
-	$we_lv_numorder = (isset($_REQUEST['we_lv_numorder_' . $name]) ? $_REQUEST['we_lv_numorder_' . $name] : we_getTagAttribute('numorder', $attribs, '', true) ) ? true : false;
+	$we_lv_numorder = (isset($_REQUEST['we_lv_numorder_' . $name]) ? $_REQUEST['we_lv_numorder_' . $name] : weTag_getAttribute('numorder', $attribs, false, true) ) ? true : false;
 
-	$id = we_getTagAttribute('id', $attribs);
-	$cond = we_getTagAttribute('condition', $attribs);
-	$type = we_getTagAttribute('type', $attribs, 'document');
-	$desc = we_getTagAttribute('desc', $attribs, '', true);
+	$id = weTag_getAttribute('id', $attribs);
+	$cond = weTag_getAttribute('condition', $attribs);
+	$type = weTag_getAttribute('type', $attribs, 'document');
+	$desc = weTag_getAttribute('desc', $attribs, false, true);
 	$we_lv_desc = (isset($_REQUEST['we_lv_desc_' . $name]) ? $_REQUEST['we_lv_desc_' . $name] : $desc ) ? true : false;
 
-	$predefinedSQL = we_getTagAttribute('predefinedSQL', $attribs, '');
-	$offset = we_getTagAttribute('offset', $attribs);
-	$workspaceID = we_getTagAttribute('workspaceID', $attribs);
-	$workspaceID = $workspaceID ? $workspaceID : we_getTagAttribute('workspaceid', $attribs, '');
+	$predefinedSQL = weTag_getAttribute('predefinedSQL', $attribs);
+	$offset = weTag_getAttribute('offset', $attribs);
+	$workspaceID = weTag_getAttribute('workspaceID', $attribs);
+	$workspaceID = $workspaceID ? $workspaceID : weTag_getAttribute('workspaceid', $attribs);
 	$we_lv_ws = isset($_REQUEST['we_lv_ws_' . $name]) ? $_REQUEST['we_lv_ws_' . $name] : $workspaceID;
 
-	$orderid = we_getTagAttribute('orderid', $attribs, '0');
+	$orderid = weTag_getAttribute('orderid', $attribs, '0');
 
-	$we_lv_languages = isset($_REQUEST['we_lv_languages_' . $name]) ? $_REQUEST['we_lv_languages_' . $name] : we_getTagAttribute('languages', $attribs, '');
-	$we_lv_pagelanguage = isset($_REQUEST['we_lv_pagelanguage_' . $name]) ? $_REQUEST['we_lv_pagelanguage_' . $name] : we_getTagAttribute('pagelanguage', $attribs, '');
+	$we_lv_languages = isset($_REQUEST['we_lv_languages_' . $name]) ? $_REQUEST['we_lv_languages_' . $name] : weTag_getAttribute('languages', $attribs);
+	$we_lv_pagelanguage = isset($_REQUEST['we_lv_pagelanguage_' . $name]) ? $_REQUEST['we_lv_pagelanguage_' . $name] : weTag_getAttribute('pagelanguage', $attribs);
 
-	$triggerid = we_getTagAttribute('triggerid', $attribs, '0');
-	$docid = we_getTagAttribute('docid', $attribs, '0');
-	$customers = we_getTagAttribute('customers', $attribs); // csv value of Ids
-	$casesensitive = we_getTagAttribute('casesensitive', $attribs, '', true);
-	$customer = we_getTagAttribute('customer', $attribs, '', true);
-	$we_lv_ct = isset($_REQUEST['we_lv_ct_' . $name]) ? $_REQUEST['we_lv_ct_' . $name] : we_getTagAttribute('contenttypes', $attribs);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
+	$docid = weTag_getAttribute('docid', $attribs, '0');
+	$customers = weTag_getAttribute('customers', $attribs); // csv value of Ids
+	$casesensitive = weTag_getAttribute('casesensitive', $attribs, false, true);
+	$customer = weTag_getAttribute('customer', $attribs, false, true);
+	$we_lv_ct = isset($_REQUEST['we_lv_ct_' . $name]) ? $_REQUEST['we_lv_ct_' . $name] : weTag_getAttribute('contenttypes', $attribs);
 
-	$cols = we_getTagAttribute('cols', $attribs);
-	$we_lv_se = (isset($_REQUEST['we_lv_se_' . $name]) ? $_REQUEST['we_lv_se_' . $name] : we_getTagAttribute('searchable', $attribs, '', true, true)) ? true : false;
+	$cols = weTag_getAttribute('cols', $attribs);
+	$we_lv_se = (isset($_REQUEST['we_lv_se_' . $name]) ? $_REQUEST['we_lv_se_' . $name] : weTag_getAttribute('searchable', $attribs, true, true)) ? true : false;
 
 	if (isset($attribs['seem'])) {
-		$seeMode = we_getTagAttribute('seem', $attribs, '', true, true); //	backwards compatibility
+		$seeMode = weTag_getAttribute('seem', $attribs, true, true); //	backwards compatibility
 	} else {
-		$seeMode = we_getTagAttribute('seeMode', $attribs, '', true, true);
+		$seeMode = weTag_getAttribute('seeMode', $attribs, true, true);
 	}
-	$calendar = we_getTagAttribute('calendar', $attribs, '');
-	$datefield = we_getTagAttribute('datefield', $attribs, '');
-	$date = we_getTagAttribute('date', $attribs, '');
-	$weekstart = we_getTagAttribute('weekstart', $attribs, 'monday');
-	$lastaccesslimit = we_getTagAttribute('lastaccesslimit', $attribs, '300');
-	$lastloginlimit = we_getTagAttribute('lastloginlimit', $attribs, '');
+	$calendar = weTag_getAttribute('calendar', $attribs);
+	$datefield = weTag_getAttribute('datefield', $attribs);
+	$date = weTag_getAttribute('date', $attribs);
+	$weekstart = weTag_getAttribute('weekstart', $attribs, 'monday');
+	$lastaccesslimit = weTag_getAttribute('lastaccesslimit', $attribs, '300');
+	$lastloginlimit = weTag_getAttribute('lastloginlimit', $attribs);
 	if (isset($attribs['recursive'])) {
-		$subfolders = we_getTagAttribute('recursive', $attribs, 'true');
+		$subfolders = weTag_getAttribute('recursive', $attribs, true, true);
 	} else {
 		// deprecated, because subfolders acts the other way arround as it should
-		$subfolders = !we_getTagAttribute('subfolders', $attribs, '', true, false);
+		$subfolders = !weTag_getAttribute('subfolders', $attribs, false, true);
 	}
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 	if ($we_lv_subfolders == 'false') {
 		$we_lv_subfolders = false;
 	}
 
-	$cfilter = we_getTagAttribute('cfilter', $attribs, 'off');
-	$hidedirindex = we_getTagAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), false);
-	$objectseourls = we_getTagAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), false);
-	$docAttr = we_getTagAttribute('doc', $attribs, 'self');
+	$cfilter = weTag_getAttribute('cfilter', $attribs, 'off');
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
 	if (!isset($GLOBALS['we_lv_array'])) {
 		$GLOBALS['we_lv_array'] = array();
@@ -275,10 +275,10 @@ function we_tag_listview($attribs, $content) {
 				return;
 			}
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php');
-			$usefilter = we_getTagAttribute('usefilter', $attribs);
-			$path = we_getTagAttribute('path', $attribs);
-			$filterdatestart = we_getTagAttribute('filterdatestart', $attribs, '-1');
-			$filterdateend = we_getTagAttribute('filterdateend', $attribs, '-1');
+			$usefilter = weTag_getAttribute('usefilter', $attribs);
+			$path = weTag_getAttribute('path', $attribs);
+			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, '-1');
+			$filterdateend = weTag_getAttribute('filterdateend', $attribs, '-1');
 			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"', 'ID', new DB_WE());
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/banner/weBanner.php');
 			if ($customer && defined('CUSTOMER_TABLE') && (!weBanner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid))) {
@@ -291,9 +291,9 @@ function we_tag_listview($attribs, $content) {
 				print modulFehltError('Shop', 'listview type="shopVariant"');
 				return;
 			}
-			$defaultname = we_getTagAttribute('defaultname', $attribs, '');
-			$docId = we_getTagAttribute('documentid', $attribs, '');
-			$objectId = we_getTagAttribute('objectid', $attribs, '');
+			$defaultname = weTag_getAttribute('defaultname', $attribs);
+			$docId = weTag_getAttribute('documentid', $attribs);
+			$objectId = weTag_getAttribute('objectid', $attribs);
 			if ($objectId == '') {
 				if (isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_objecttag') {
 					$objectId = $GLOBALS['lv']->object->DB_WE->f('OF_ID');
@@ -306,8 +306,8 @@ function we_tag_listview($attribs, $content) {
 			$GLOBALS['lv'] = new we_listview_shopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls);
 			break;
 		case 'category':
-			$parentid = we_getTagAttribute('parentid', $attribs, 0);
-			$parentidname = we_getTagAttribute('parentidname', $attribs);
+			$parentid = weTag_getAttribute('parentid', $attribs, 0);
+			$parentidname = weTag_getAttribute('parentidname', $attribs);
 //$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/listview/we_catListview.class.php');

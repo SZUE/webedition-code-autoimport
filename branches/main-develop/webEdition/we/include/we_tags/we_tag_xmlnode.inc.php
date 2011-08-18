@@ -47,8 +47,8 @@ $unq = '$_xmlnode'.uniqid(rand());
 function we_tag_xmlnode($attribs, $content) {
 	if (($foo = attributFehltError($attribs, "xpath", "xmlnode")))
 		return $foo;
-	$feed = we_getTagAttribute('feed', $attribs);
-	$url = we_getTagAttribute('url', $attribs);
+	$feed = weTag_getAttribute('feed', $attribs);
+	$url = weTag_getAttribute('url', $attribs);
 
 	$out_name = '';
 	if (!isset($GLOBALS["xpaths"]))
