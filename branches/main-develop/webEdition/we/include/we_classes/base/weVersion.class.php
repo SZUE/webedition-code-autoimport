@@ -35,7 +35,7 @@
 	class weVersion{
 
 		var $db;
-		var $ClassName="weVersion";
+		var $ClassName=__CLASS__;
 		var $Pseudo="weVersion";
 
 		var $attribute_slots=array();

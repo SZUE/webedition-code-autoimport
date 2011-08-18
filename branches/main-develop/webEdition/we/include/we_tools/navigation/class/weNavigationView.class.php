@@ -1263,5 +1263,3 @@ function processCommands() {
 
 
 }
-
-?>

@@ -35,7 +35,7 @@ class we_flashDocument extends we_binaryDocument
 	######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_flashDocument";
+	var $ClassName=__CLASS__;
 
 	/* ContentType of the Object  */
 	var $ContentType="application/x-shockwave-flash";

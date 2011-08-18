@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 if (defined('CUSTOMER_TABLE')) {
@@ -31,72 +31,41 @@ if (defined('CUSTOMER_TABLE')) {
 /**
  * simplified representation of the navigation item
  */
-class weNavigationItem
-{
+class weNavigationItem {
 
 	var $id;
-
 	var $icon;
-
 	var $docid;
-
 	var $table;
-
 	var $parentid;
-
 	var $text;
-
 	var $display;
-
 	var $name;
-
 	var $href;
-
 	var $type;
-
 	var $level;
-
 	var $position;
-
 	var $current = 'false';
-
 	var $containsCurrent = 'false';
-
 	var $visible = 'true';
-
-	var $CurrentOnUrlPar='0';
-
-	var $CurrentOnAnker ='0';
-
+	var $CurrentOnUrlPar = '0';
+	var $CurrentOnAnker = '0';
 	//attributes
 	var $title;
-
 	var $anchor;
-
 	var $target;
-
 	var $lang;
-
 	var $hreflang;
-
 	var $accesskey;
-
 	var $tabindex;
-
 	var $rel;
-
 	var $rev;
-
 	var $limitaccess = 0;
-
 	var $customers;
-
 	var $items = array();
-
 	var $Storage = array();
 
-	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "",$CurrentOnUrlPar='0', $CurrentOnAnker ='0')
-	{
+	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "", $CurrentOnUrlPar='0', $CurrentOnAnker ='0') {
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
@@ -131,7 +100,7 @@ class weNavigationItem
 		$this->customers = $customers;
 
 		if ($this->table == FILE_TABLE) {
-			if (strpos($this->href,'#') !== false && strpos($this->href,'?') === false){
+			if (strpos($this->href, '#') !== false && strpos($this->href, '?') === false) {
 				$__parts = explode("#", $this->href);
 			} else {
 				$__parts = explode("?", $this->href);
@@ -141,36 +110,30 @@ class weNavigationItem
 			$__id = path_to_id($__path, FILE_TABLE);
 			if ($__id) {
 				$_v = f(
-						'SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($__id) . ' AND Published>0',
-						'ID',
-						new DB_WE());
+								'SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($__id) . ' AND Published>0', 'ID', new DB_WE());
 				$this->visible = !empty($_v) ? 'true' : 'false';
 			}
-			if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !=''){
-				$mypath= id_to_path($this->docid, FILE_TABLE);
+			if (defined("NAVIGATION_DIRECTORYINDEX_HIDE") && NAVIGATION_DIRECTORYINDEX_HIDE && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES != '') {
+				$mypath = id_to_path($this->docid, FILE_TABLE);
 				$mypath_parts = pathinfo($mypath);
-				if(in_array($mypath_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
+				if (in_array($mypath_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) {
 					$path_parts = pathinfo($__path);
 					$_v = f(
-						'SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($this->docid) . ' AND Published>0',
-						'ID',
-						new DB_WE());
+									'SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . abs($this->docid) . ' AND Published>0', 'ID', new DB_WE());
 					$this->visible = !empty($_v) ? 'true' : 'false';
 				}
 			}
 		}
 	}
 
-	function addItem(&$item)
-	{
+	function addItem(&$item) {
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
 		$item->position = sizeof($this->items);
 	}
 
-	function setCurrent(&$weNavigationItems, $self = true)
-	{
+	function setCurrent(&$weNavigationItems, $self = true) {
 
 		if ($self) {
 			$this->current = 'true';
@@ -182,8 +145,7 @@ class weNavigationItem
 		}
 	}
 
-	function unsetCurrent(&$weNavigationItems, $self = true)
-	{
+	function unsetCurrent(&$weNavigationItems, $self = true) {
 
 		if ($self) {
 			$this->current = 'false';
@@ -198,26 +160,23 @@ class weNavigationItem
 		}
 	}
 
-	function setContainsCurrent($weNavigationItems, $self = true)
-	{
+	function setContainsCurrent($weNavigationItems, $self = true) {
 		if ($self) {
 			$this->containsCurrent = 'true';
 		}
 	}
 
-	function unsetContainsCurrent($weNavigationItems, $self = true)
-	{
+	function unsetContainsCurrent($weNavigationItems, $self = true) {
 		if ($self) {
 			$this->containsCurrent = 'false';
 		}
 	}
 
-	function isCurrent($weNavigationItems)
-	{
+	function isCurrent($weNavigationItems) {
 		$thishref = $this->href;
-		if ($this->CurrentOnAnker || $this->CurrentOnUrlPar){ // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
-			 $thishref= str_replace(strstr($thishref,'#'),'',$thishref);
-			 $thishref= str_replace('&amp;','&',$thishref);
+		if ($this->CurrentOnAnker || $this->CurrentOnUrlPar) { // jetzt kann man nicht mehr mit der id - weiter unten - arbeiten
+			$thishref = str_replace(strstr($thishref, '#'), '', $thishref);
+			$thishref = str_replace('&amp;', '&', $thishref);
 		}
 		if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $thishref) {
 			// fastest way
@@ -227,14 +186,16 @@ class weNavigationItem
 		if (isset($_SERVER['REQUEST_URI'])) { //#3698
 			$uri = parse_url($_SERVER['REQUEST_URI']);
 			$ref = parse_url($thishref);
-			if ( (isset($uri['path']) && isset($ref['path']) && $uri['path'] == $ref['path']) && isset($uri['query']) && isset($ref['query'])  ){
-				$uriarrq = explode('&',$uri['query']);
-				$refarrq = explode('&',$ref['query']);
-				$allfound=true;
+			if ((isset($uri['path']) && isset($ref['path']) && $uri['path'] == $ref['path']) && isset($uri['query']) && isset($ref['query'])) {
+				$uriarrq = explode('&', $uri['query']);
+				$refarrq = explode('&', $ref['query']);
+				$allfound = true;
 				foreach ($refarrq as $refa) {
-					if (!in_array($refa,$uriarrq)){$allfound=false;}
+					if (!in_array($refa, $uriarrq)) {
+						$allfound = false;
+					}
 				}
-				if($allfound){
+				if ($allfound) {
 					$this->setCurrent($weNavigationItems);
 					return true;
 				}
@@ -244,14 +205,13 @@ class weNavigationItem
 		if (isset($GLOBALS["we_obj"]) && $this->table == OBJECT_FILES_TABLE) {
 			$id = $GLOBALS["we_obj"]->ID;
 		} else
-			if (isset($GLOBALS["WE_MAIN_DOC"]) && (!isset($GLOBALS["WE_MAIN_DOC"]->TableID)) && $this->table == FILE_TABLE) {
-				$id = $GLOBALS["WE_MAIN_DOC"]->ID;
-			}
+		if (isset($GLOBALS["WE_MAIN_DOC"]) && (!isset($GLOBALS["WE_MAIN_DOC"]->TableID)) && $this->table == FILE_TABLE) {
+			$id = $GLOBALS["WE_MAIN_DOC"]->ID;
+		}
 
-		if (isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker) ) {
+		if (isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker)) {
 			$this->setCurrent($weNavigationItems);
 			return true;
-
 		} else {
 
 			if ($this->current == 'true') {
@@ -259,30 +219,24 @@ class weNavigationItem
 				$this->unsetCurrent($weNavigationItems);
 			}
 			return false;
-
 		}
 	}
 
-	function isVisible()
-	{
+	function isVisible() {
 		if ($this->visible == 'false') {
 			return false;
 		}
 
 		if (defined('CUSTOMER_TABLE') && $this->limitaccess) { // only init filter if access is limited
-
-
 			$_filter = new weNavigationCustomerFilter();
 			$_filter->initByNavItem($this);
 
 			return $_filter->customerHasAccess();
 		}
 		return true;
-
 	}
 
-	function writeItem(&$weNavigationItems, $depth = false)
-	{
+	function writeItem(&$weNavigationItems, $depth = false) {
 		if (!($depth === false || $this->level <= $depth)) {
 			return '';
 		}
@@ -304,11 +258,8 @@ class weNavigationItem
 		return $executeContent;
 	}
 
-	function getNavigationField($attribs)
-	{
+	function getNavigationField($attribs) {
 		// name
-
-
 		if (isset($attribs['name'])) {
 			$fieldname = $attribs['name'];
 			if (isset($this->$fieldname) && $this->$fieldname != '') {
@@ -318,15 +269,15 @@ class weNavigationItem
 					return $this->$fieldname;
 				}
 			} else
-				if (isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != '') {
-					if ($fieldname == 'title') {
-						return htmlspecialchars($this->attributes[$fieldname]);
-					} else {
-						return $this->attributes[$fieldname];
-					}
+			if (isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] != '') {
+				if ($fieldname == 'title') {
+					return htmlspecialchars($this->attributes[$fieldname]);
 				} else {
-					return '';
+					return $this->attributes[$fieldname];
 				}
+			} else {
+				return '';
+			}
 		}
 
 		// complete
@@ -344,7 +295,6 @@ class weNavigationItem
 				}
 			}
 			return '';
-
 		}
 
 		// attributes
@@ -357,23 +307,20 @@ class weNavigationItem
 			}
 		}
 		return $code;
-
 	}
 
-	function getNavigationFieldAttributes($attribs)
-	{
+	function getNavigationFieldAttributes($attribs) {
 		if (isset($attribs['attributes'])) {
 			$code = '';
 			$_fields = makeArrayFromCSV($attribs['attributes']);
 			unset($attribs['attributes']);
-			if(isset($_fields['link_attribute'])){
+			if (isset($_fields['link_attribute'])) {
 				$_link_attribute = $_fields['link_attribute'];
 			}
 			foreach ($_fields as $_field) {
 				switch ($_field) {
 					case 'link' :
 						$useFields = array(
-
 								'href',
 								'title',
 								'target',
@@ -382,7 +329,7 @@ class weNavigationItem
 								'accesskey',
 								'tabindex',
 								'rel',
-								'rev','link_attribute'
+								'rev', 'link_attribute'
 						);
 						foreach ($useFields as $field) {
 							if (isset($this->$field) && $this->$field != '') {
@@ -392,16 +339,15 @@ class weNavigationItem
 									$attribs[$field] = $this->$field;
 								}
 								//$attribs[$field] = $this->$field;
-
 							} else
-								if (isset($this->attributes[$field]) && $this->attributes[$field] != '') {
-									//$attribs[$field] = $this->attributes[$field];
-									if ($field=='link_attribute') { // Bug #3741
-										$attribs[$field] = $this->attributes[$field];
-									} else {
-										$attribs[$field] = htmlspecialchars($this->attributes[$field]);
-									}
+							if (isset($this->attributes[$field]) && $this->attributes[$field] != '') {
+								//$attribs[$field] = $this->attributes[$field];
+								if ($field == 'link_attribute') { // Bug #3741
+									$attribs[$field] = $this->attributes[$field];
+								} else {
+									$attribs[$field] = htmlspecialchars($this->attributes[$field]);
 								}
+							}
 						}
 
 						if (isset($this->attributes['popup_open']) && $this->attributes['popup_open']) {
@@ -414,7 +360,7 @@ class weNavigationItem
 						if ($_iconid) {
 							$attribs['src'] = $this->icon;
 							$useFields = array(
-								'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title'
+									'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title'
 							);
 							foreach ($useFields as $field) {
 								if (isset($this->attributes['icon_' . $field]) && $this->attributes['icon_' . $field] != '') {
@@ -427,8 +373,7 @@ class weNavigationItem
 							$_js = $_imgObj->getRollOverScript();
 							$_js = ereg_replace("<[^>]+><!--", "", $_js);
 							$_js = ereg_replace("//--><[^>]+>", "", $_js);
-							$_js = str_replace("\r\n", '', $_js);
-							$_js = str_replace("\n", '', $_js);
+							$_js = str_replace(array("\r\n","\n"), '', $_js);
 
 							$_arr = $_imgObj->getRollOverAttribsArr();
 							if (count($_arr)) {
@@ -443,34 +388,30 @@ class weNavigationItem
 						if (isset($this->$_field) && $this->$_field != '') {
 							$attribs[$_field] = htmlspecialchars($this->$_field);
 						} else
-							if (isset($this->attributes[$_field]) && $this->attributes[$_field] != '') {
-								$attribs[$_field] = htmlspecialchars($this->attributes[$_field]);
-							}
+						if (isset($this->attributes[$_field]) && $this->attributes[$_field] != '') {
+							$attribs[$_field] = htmlspecialchars($this->attributes[$_field]);
+						}
 				}
-
 			}
 		}
 
 		return $attribs;
-
 	}
 
-	function getPopupJs(&$attributes)
-	{
-
+	function getPopupJs(&$attributes) {
 		$js = 'var we_winOpts;';
 
 		if ($this->attributes['popup_center'] && $this->attributes['popup_width'] && $this->attributes['popup_height']) {
 			$js .= 'if (window.screen) {var w = ' . $this->attributes['popup_width'] . ';var h = ' . $this->attributes['popup_height'] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
 		} else
-			if ($this->attributes['popup_xposition'] != '' || $this->attributes['popup_yposition'] != '') {
-				if ($this->attributes['popup_xposition'] != '') {
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $this->attributes['popup_xposition'] . '\';';
-				}
-				if ($this->attributes['popup_yposition'] != '') {
-					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $this->attributes['popup_yposition'] . '\';';
-				}
+		if ($this->attributes['popup_xposition'] != '' || $this->attributes['popup_yposition'] != '') {
+			if ($this->attributes['popup_xposition'] != '') {
+				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $this->attributes['popup_xposition'] . '\';';
 			}
+			if ($this->attributes['popup_yposition'] != '') {
+				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $this->attributes['popup_yposition'] . '\';';
+			}
+		}
 		if (isset($this->attributes['popup_width']) && $this->attributes['popup_width'] != '') {
 			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $this->attributes['popup_width'] . '\';';
 		}
@@ -479,51 +420,20 @@ class weNavigationItem
 			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $this->attributes['popup_height'] . '\';';
 		}
 
-		if (isset($this->attributes['popup_status']) && $this->attributes['popup_status'] != '') {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=yes\';';
-		} else {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=no\';';
-		}
-
-		if (isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars'] != '') {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=yes\';';
-		} else {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=no\';';
-		}
-
-		if (isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar'] != '') {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=yes\';';
-		} else {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=no\';';
-		}
-
-		if (isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable'] != '') {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=yes\';';
-		} else {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=no\';';
-		}
-
-		if (isset($this->attributes['popup_location']) && $this->attributes['popup_location'] != '') {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=yes\';';
-		} else {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=no\';';
-		}
-
-		if (isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar'] != '') {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=yes\';';
-		} else {
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=no\';';
-		}
-
-		$js .= "var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status'] != '') ? 'yes' : 'no') . '\';' .
+						'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars'] != '') ? 'yes' : 'no') . '\';' .
+						'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar'] != '') ? 'yes' : 'no') . '\';' .
+						'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable'] != '') ? 'yes' : 'no') . '\';' .
+						'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location'] != '') ? 'yes' : 'no') . '\';' .
+						'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar'] != '') ? 'yes' : 'no') . '\';' .
+						"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
-			'name', 'target', 'href', 'onClick', 'onclick'
-		));
+				'name', 'target', 'href', 'onClick', 'onclick'
+						));
 
 		$attributes['target'] = 'we_ll_' . $this->id;
 		$attributes['onclick'] = $js;
-
 	}
 
 }
@@ -531,27 +441,17 @@ class weNavigationItem
 /**
  * collection of the navigation items
  */
-class weNavigationItems
-{
+class weNavigationItems {
 
 	var $items;
-
 	var $templates;
-
 	var $rootItem = 0;
-
 	var $hasCurrent = false;
-
 	var $currentRules = array();
 
-	function weNavigationItems()
-	{
-	}
-
-	function getCustomerData($navi)
-	{
+	function getCustomerData($navi) {
 		$_customer = array(
-			'id' => '', 'filter' => '', 'blacklist' => '', 'whitelist' => '', 'usedocumentfilter' => 1
+				'id' => '', 'filter' => '', 'blacklist' => '', 'whitelist' => '', 'usedocumentfilter' => 1
 		);
 
 		if (!is_array($navi->Customers)) {
@@ -580,11 +480,9 @@ class weNavigationItems
 		}
 
 		return $_customer;
-
 	}
 
-	function initByNavigationObject($showRoot = true)
-	{
+	function initByNavigationObject($showRoot = true) {
 
 		$this->items = array();
 		$_navigation = unserialize($_SESSION['navigation_session']);
@@ -597,24 +495,20 @@ class weNavigationItems
 		$this->readItemsFromDb($this->rootItem);
 
 		$this->items['id' . $_navigation->ID] = new weNavigationItem(
-				$_navigation->ID,
-				$_navigation->LinkID,
-				($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
-				$_navigation->Text,
-				$_navigation->Display,
-				$_navigation->getHref(
-						$_navigation->SelectionType,
-						$_navigation->LinkID,
-						$_navigation->Url,
-						$_navigation->Parameter,
-						$_navigation->WorkspaceID),
-				$showRoot ? 'folder' : 'root',
-				$this->id2path($_navigation->IconID),
-				$_navigation->Attributes,
-				$_navigation->LimitAccess,
-				$this->getCustomerData($_navigation),
-				$_navigation->CurrentOnUrlPar,
-				$_navigation->CurrentOnAnker);
+										$_navigation->ID,
+										$_navigation->LinkID,
+										($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
+										$_navigation->Text,
+										$_navigation->Display,
+										$_navigation->getHref(
+														$_navigation->SelectionType, $_navigation->LinkID, $_navigation->Url, $_navigation->Parameter, $_navigation->WorkspaceID),
+										$showRoot ? 'folder' : 'root',
+										$this->id2path($_navigation->IconID),
+										$_navigation->Attributes,
+										$_navigation->LimitAccess,
+										$this->getCustomerData($_navigation),
+										$_navigation->CurrentOnUrlPar,
+										$_navigation->CurrentOnAnker);
 
 		$_items = $_navigation->getDynamicPreview($this->Storage);
 
@@ -642,28 +536,26 @@ class weNavigationItems
 		$_items = array_splice($_items, 0, $_all);
 		foreach ($_items as $_item) {
 			$this->items['id' . $_item['id']] = new weNavigationItem(
-					$_item['id'],
-					$_item['docid'],
-					$_item['table'],
-					$_item['text'],
-					$_item['display'],
-					$_item['href'],
-					$_item['type'],
-					$_item['icon'],
-					$_item['attributes'],
-					$_item['limitaccess'],
-					$_item['customers'],
-					$_item['currentonurlpar'],
-					$_item['currentonanker']);
+											$_item['id'],
+											$_item['docid'],
+											$_item['table'],
+											$_item['text'],
+											$_item['display'],
+											$_item['href'],
+											$_item['type'],
+											$_item['icon'],
+											$_item['attributes'],
+											$_item['limitaccess'],
+											$_item['customers'],
+											$_item['currentonurlpar'],
+											$_item['currentonanker']);
 			if (isset($this->items['id' . $_item['parentid']])) {
 				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 			}
 		}
-
 	}
 
-	function getStaticSavedDynamicItems($_nav, $rules = false)
-	{
+	function getStaticSavedDynamicItems($_nav, $rules = false) {
 		$_items = array();
 		$_dyn_items = $_nav->getDynamicEntries();
 		if (is_array($_dyn_items)) {
@@ -671,12 +563,11 @@ class weNavigationItems
 
 				$_href = id_to_path($_dyn['id']);
 				$_items[] = array(
-
 						'id' => $_dyn['id'],
 						'text' => isset($_dyn['field']) && !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
 						'display' => isset($_dyn['display']) && !empty($_dyn['display']) ? $_dyn['display'] : '',
 						'name' => !empty($_dyn['field']) ? $_dyn['field'] : (isset($_dyn['name']) && !empty(
-								$_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
+														$_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
 						'docid' => $_dyn['id'],
 						'table' => (($_nav->SelectionType == 'classname' || $_nav->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE),
 						'href' => $_href,
@@ -684,7 +575,7 @@ class weNavigationItems
 						'parentid' => $_nav->ID,
 						'workspaceid' => $_nav->WorkspaceID,
 						'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path(
-								$_nav->IconID),
+														$_nav->IconID),
 						'attributes' => $_nav->Attributes,
 						'limitaccess' => $_nav->LimitAccess,
 						'customers' => weNavigationItems::getCustomerData($_nav),
@@ -693,25 +584,14 @@ class weNavigationItems
 
 				if ($rules) {
 					$_items[(sizeof($_items) - 1)]['currentRule'] = weNavigationRule::getWeNavigationRule(
-							'defined_' . (!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']),
-							$_nav->ID,
-							$_nav->SelectionType,
-							$_nav->FolderID,
-							$_nav->DocTypeID,
-							$_nav->ClassID,
-							$_nav->CategoryIDs,
-							$_nav->WorkspaceID,
-							$_href,
-							false);
+													'defined_' . (!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 				}
 			}
 		}
 		return $_items;
-
 	}
 
-	function loopAllRules($id)
-	{
+	function loopAllRules($id) {
 
 		if (!$this->hasCurrent) {
 
@@ -724,11 +604,9 @@ class weNavigationItems
 
 			$this->checkCurrent($this->items['id' . $id]->items);
 		}
-
 	}
 
-	function initFromCache($parentid = 0, $showRoot = true)
-	{
+	function initFromCache($parentid = 0, $showRoot = true) {
 
 		$this->items = array();
 		$this->rootItem = $parentid;
@@ -738,7 +616,7 @@ class weNavigationItems
 
 		if (file_exists($_cache)) {
 			$_part = weFile::loadPart($_cache, 0, 10);
-			if (stripos($_part,"<?php") !==false) { //was #3849
+			if (stripos($_part, "<?php") !== false) { //was #3849
 				include ($_cache);
 			} else {
 				$navigationItemsStorage = weFile::load($_cache);
@@ -752,13 +630,13 @@ class weNavigationItems
 			$_cache = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/rules.php';
 			if (file_exists($_cache)) {
 				$_part = weFile::loadPart($_cache, 0, 10);
-				if (stripos($_part,"<?php") !==false) { //was #3849
+				if (stripos($_part, "<?php") !== false) { //was #3849
 					include ($_cache);
 				} else {
 					$navigationRulesStorage = weFile::load($_cache);
 				}
 				$this->currentRules = unserialize($navigationRulesStorage);
-				foreach ($this->currentRules as &$rule){ //#Bug 4142
+				foreach ($this->currentRules as &$rule) { //#Bug 4142
 					$rule->renewDB();
 				}
 				unset($navigationRulesStorage);
@@ -773,23 +651,18 @@ class weNavigationItems
 					} else {
 						$this->hasCurrent = false;
 					}
-
 				}
-
 			}
 
 			$this->loopAllRules($parentid);
 
 			return true;
-
 		}
 
 		return false;
-
 	}
 
-	function initById($parentid = 0, $depth = false, $showRoot = true)
-	{
+	function initById($parentid = 0, $depth = false, $showRoot = true) {
 		$this->items = array();
 		$this->rootItem = abs($parentid);
 
@@ -800,26 +673,26 @@ class weNavigationItems
 		$_item = $this->getItemFromPool($parentid);
 
 		$_navigation->initByRawData($_item ? $_item : array(
-			'ID' => 0, 'Path' => '/'
-		));
+								'ID' => 0, 'Path' => '/'
+										));
 
 		// set defaultTemplates
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new weNavigationItem(
-				$_navigation->ID,
-				$_navigation->LinkID,
-				($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
-				$_navigation->Text,
-				$_navigation->Display,
-				$_navigation->getHref($this->Storage['ids']),
-				$showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root',
-				$this->id2path($_navigation->IconID),
-				$_navigation->Attributes,
-				$_navigation->LimitAccess,
-				$this->getCustomerData($_navigation),
-				$_navigation->CurrentOnUrlPar,
-				$_navigation->CurrentOnAnker);
+										$_navigation->ID,
+										$_navigation->LinkID,
+										($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
+										$_navigation->Text,
+										$_navigation->Display,
+										$_navigation->getHref($this->Storage['ids']),
+										$showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root',
+										$this->id2path($_navigation->IconID),
+										$_navigation->Attributes,
+										$_navigation->LimitAccess,
+										$this->getCustomerData($_navigation),
+										$_navigation->CurrentOnUrlPar,
+										$_navigation->CurrentOnAnker);
 
 		$_items = $_navigation->getDynamicPreview($this->Storage, true);
 
@@ -830,19 +703,19 @@ class weNavigationItems
 					$_item['text'] = $_item['name'];
 				}
 				$this->items['id' . $_item['id']] = new weNavigationItem(
-						$_item['id'],
-						$_item['docid'],
-						$_item['table'],
-						$_item['text'],
-						$_item['display'],
-						$_item['href'],
-						$_item['type'],
-						$_item['icon'],
-						$_item['attributes'],
-						$_item['limitaccess'],
-						$_item['customers'],
-						isset($_item['currentonurlpar']) ? $_item['currentonurlpar']:'',
-						isset($_item['currentonanker']) ? $_item['currentonanker']:'');
+												$_item['id'],
+												$_item['docid'],
+												$_item['table'],
+												$_item['text'],
+												$_item['display'],
+												$_item['href'],
+												$_item['type'],
+												$_item['icon'],
+												$_item['attributes'],
+												$_item['limitaccess'],
+												$_item['customers'],
+												isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '',
+												isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 
 				if (isset($this->items['id' . $_item['parentid']])) {
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
@@ -860,11 +733,9 @@ class weNavigationItems
 		}
 
 		$this->loopAllRules($_navigation->ID);
-
 	}
 
-	function checkCategories($idRule, $idDoc)
-	{
+	function checkCategories($idRule, $idDoc) {
 
 		$idsRule = makeArrayFromCSV($idRule);
 
@@ -880,16 +751,14 @@ class weNavigationItems
 		return false;
 	}
 
-	function setCurrent($navigationID, $current)
-	{
+	function setCurrent($navigationID, $current) {
 		if (isset($this->items["id$navigationID"])) {
 
 			$this->items["id$navigationID"]->setCurrent($this, true);
 		}
 	}
 
-	function checkCurrent(&$items)
-	{
+	function checkCurrent(&$items) {
 
 		$_candidate = 0;
 		$_score = 3;
@@ -932,7 +801,6 @@ class weNavigationItems
 					if (!empty($wPath) && $parentPath != '/') {
 						$parentPath .= '/';
 					}
-
 				}
 
 				if ($_rule->SelectionType == 'doctype' && !$_isObject) {
@@ -943,7 +811,6 @@ class weNavigationItems
 					if (!empty($parentPath) && $parentPath != '/') {
 						$parentPath .= '/';
 					}
-
 				}
 
 				if (!empty($parentPath)) {
@@ -957,7 +824,6 @@ class weNavigationItems
 							$_ponder--;
 						}
 					}
-
 				}
 
 				$_cats = makeArrayFromCSV($_rule->Categories);
@@ -967,7 +833,6 @@ class weNavigationItems
 					} else {
 						$_ponder = 999; // remove from selection
 					}
-
 				}
 
 				if ($_ponder == 0) {
@@ -975,7 +840,7 @@ class weNavigationItems
 					return true;
 				} else {
 					if ($_ponder <= $_score) {
-						if( defined('NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH') && NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
+						if (defined('NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH') && NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH) {
 							$this->setCurrent($_rule->NavigationID, null);
 						} else {
 							$_score = $_ponder;
@@ -992,8 +857,7 @@ class weNavigationItems
 		return false;
 	}
 
-	function getItemIds($id)
-	{
+	function getItemIds($id) {
 
 		$_items[] = $id;
 
@@ -1007,11 +871,9 @@ class weNavigationItems
 		}
 
 		return $_items;
-
 	}
 
-	function getItems($id = false)
-	{
+	function getItems($id = false) {
 
 		if ($id) {
 			return $this->getItemIds($id);
@@ -1020,13 +882,11 @@ class weNavigationItems
 		}
 	}
 
-	function getItem($id)
-	{
+	function getItem($id) {
 		return isset($this->items[$id]) ? $this->items[$id] : false;
 	}
 
-	function getTemplate($item)
-	{
+	function getTemplate($item) {
 
 		if (!isset($this->templates[$item->type])) {
 			return $this->getDefaultTemplate($item);
@@ -1042,9 +902,9 @@ class weNavigationItems
 		if (isset($useTemplate[$item->current])) {
 			$useTemplate = $useTemplate[$item->current];
 		} else
-			if (isset($useTemplate['defaultCurrent'])) {
-				$useTemplate = $useTemplate['defaultCurrent'];
-			}
+		if (isset($useTemplate['defaultCurrent'])) {
+			$useTemplate = $useTemplate['defaultCurrent'];
+		}
 
 		// is last entry??
 		if (isset($useTemplate['last'])) {
@@ -1058,7 +918,6 @@ class weNavigationItems
 		if (isset($useTemplate[$item->position])) {
 
 			return $useTemplate[$item->position];
-
 		} else {
 
 			if ($item->position % 2 === 1) {
@@ -1066,7 +925,6 @@ class weNavigationItems
 				if (isset($useTemplate['odd'])) {
 					return $useTemplate['odd'];
 				}
-
 			} else {
 
 				if (isset($useTemplate['even'])) {
@@ -1082,8 +940,7 @@ class weNavigationItems
 		return $this->getDefaultTemplate($item);
 	}
 
-	function setDefaultTemplates()
-	{
+	function setDefaultTemplates() {
 		// the default templates should look like this
 		//			$folderTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a><ul><we:navigationEntries /></ul></li>';
 		//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
@@ -1091,22 +948,20 @@ class weNavigationItems
 
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 
-		$folderTemplate = '<li><a href="<?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"href")).'); ?>"><?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"text")).'); ?></a><?php if('.we_tagParser::printTag('ifHasEntries').'){ ?><ul><?php printElement( '.we_tagParser::printTag('navigationEntries').'); ?></ul><?php } ?></li>';
-		$itemTemplate = '<li><a href="<?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"href")).'); ?>"><?php printElement( '.we_tagParser::printTag('navigationField', array("name"=>"text")).'); ?></a></li>';
-		$rootTemplate = '<?php printElement( '.we_tagParser::printTag('navigationEntries').'); ?>';
+		$folderTemplate = '<li><a href="<?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>';
+		$itemTemplate = '<li><a href="<?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>';
+		$rootTemplate = '<?php printElement( ' . we_tagParser::printTag('navigationEntries') . '); ?>';
 
 		$this->setTemplate($folderTemplate, 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
 		$this->setTemplate($itemTemplate, 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
 		$this->setTemplate($rootTemplate, 'root', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
 	}
 
-	function getDefaultTemplate($item)
-	{
+	function getDefaultTemplate($item) {
 		return $this->templates[$item->type]['defaultLevel']['defaultCurrent']['defaultPosition'];
 	}
 
-	function writeNavigation($depth = false)
-	{
+	function writeNavigation($depth = false) {
 		$GLOBALS['weNavigationObject'] = & $this;
 
 		$content = '';
@@ -1123,14 +978,12 @@ class weNavigationItems
 		return $content;
 	}
 
-	function setTemplate($content, $type, $level, $current, $position)
-	{
+	function setTemplate($content, $type, $level, $current, $position) {
 
 		$this->templates[$type][$level][$current][$position] = $content;
 	}
 
-	function readItemsFromDb($id)
-	{
+	function readItemsFromDb($id) {
 
 		$this->Storage['items'] = array();
 
@@ -1158,17 +1011,16 @@ class weNavigationItems
 			if ($_db->Record['IsFolder'] == '1' && ($_db->Record['FolderSelection'] == '' || $_db->Record['FolderSelection'] == 'docLink')) {
 				$_ids[] = $_db->Record['LinkID'];
 			} else
-				if ($_db->Record['Selection'] == 'static' && $_db->Record['SelectionType'] == 'docLink') {
-					$_ids[] = $_db->Record['LinkID'];
-				} else
-					if (($_db->Record['SelectionType'] == 'category' || $_db->Record['SelectionType'] == 'catLink') && $_db->Record['LinkSelection'] != 'extern') {
-						$_ids[] = $_db->Record['UrlID'];
-					}
+			if ($_db->Record['Selection'] == 'static' && $_db->Record['SelectionType'] == 'docLink') {
+				$_ids[] = $_db->Record['LinkID'];
+			} else
+			if (($_db->Record['SelectionType'] == 'category' || $_db->Record['SelectionType'] == 'catLink') && $_db->Record['LinkSelection'] != 'extern') {
+				$_ids[] = $_db->Record['UrlID'];
+			}
 
 			if (!empty($_db->Record['IconID'])) {
 				$_ids[] = $_db->Record['IconID'];
 			}
-
 		}
 
 		if (count($_ids)) {
@@ -1179,11 +1031,9 @@ class weNavigationItems
 				$this->Storage['ids'][$_db->f('ID')] = $_db->f('Path');
 			}
 		}
-
 	}
 
-	function getItemFromPool($id)
-	{
+	function getItemFromPool($id) {
 
 		foreach ($this->Storage['items'] as $item) {
 			if ($item['ID'] == $id) {
@@ -1192,12 +1042,9 @@ class weNavigationItems
 		}
 
 		return null;
-
 	}
 
-	function id2path($id)
-	{
-
+	function id2path($id) {
 		if (isset($this->Storage['ids'][$id])) {
 			return $this->Storage['ids'][$id];
 		} else {
@@ -1205,7 +1052,6 @@ class weNavigationItems
 			$this->Storage['ids'][$id] = $_path;
 			return $_path;
 		}
-
 	}
 
 }

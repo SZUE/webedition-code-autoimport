@@ -34,7 +34,7 @@ class we_binaryDocument extends we_document
 	######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_binaryDocument";
+	var $ClassName=__CLASS__;
 
 	/* The HTML-Code which can be included in a HTML Document */
 	var $html="";

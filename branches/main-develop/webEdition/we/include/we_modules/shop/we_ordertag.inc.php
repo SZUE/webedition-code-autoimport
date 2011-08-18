@@ -34,7 +34,7 @@ class we_ordertag{
 	var $DB_WE;
 	var $class = "";
 	var $id = 0;
-	var $ClassName = "we_ordertag";
+	var $ClassName = __CLASS__;
 	var $object = "";
 	var $avail = false;
 	var $hidedirindex=false;

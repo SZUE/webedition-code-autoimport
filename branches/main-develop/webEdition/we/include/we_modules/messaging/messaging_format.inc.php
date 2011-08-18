@@ -35,7 +35,7 @@ class we_format extends we_class {
 	/*****************************************************************/
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName = 'we_format';
+	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */
 	var $persistent_slots = array();
 	/* Name of the Object that was createt from this class */

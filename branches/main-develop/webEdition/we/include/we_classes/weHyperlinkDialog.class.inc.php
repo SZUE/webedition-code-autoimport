@@ -31,7 +31,7 @@ class weHyperlinkDialog extends weDialog{
 
 	##################################################################################################
 
-	var $ClassName = "weHyperlinkDialog";
+	var $ClassName = __CLASS__;
 	var $changeableArgs = array(	"type",
 	"extHref",
 	"fileID",

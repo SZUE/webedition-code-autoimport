@@ -27,12 +27,13 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navig
 function we_parse_tag_navigationEntry($attribs, $content) {
 	$tp = new we_tagParser($content);
 	$tp->parseTags($content);
-	return '<?php printElement(' . we_tagParser::printTag('navigationEntry', $attribs, $content, true) . ');?>';
+	return '<?php ' . we_tagParser::printTag('navigationEntry', $attribs, $content, true) . ';?>';
 }
 
 function we_tag_navigationEntry($attribs, $content) {
 	if (($foo = attributFehltError($attribs, 'type', 'navigation'))) {
-		return $foo;
+		echo $foo;
+		return;
 	}
 
 	$navigationName = weTag_getAttribute('navigationname', $attribs, "default");
@@ -41,10 +42,6 @@ function we_tag_navigationEntry($attribs, $content) {
 	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');
 	$position = weTag_getAttribute('position', $attribs, 'defaultPosition');
 
-	/*$tp = new we_tagParser($content);
-
-	$tp->parseTags($content);
-*/
 	$_positions = makeArrayFromCSV($position);
 
 	foreach ($_positions as $position) {

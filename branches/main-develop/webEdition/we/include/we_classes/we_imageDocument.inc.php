@@ -47,7 +47,7 @@ class we_imageDocument extends we_binaryDocument {
 	 * Name of the class => important for reconstructing the class from outside the class
 	 * @var string
 	 */
-	var $ClassName = "we_imageDocument";
+	var $ClassName = __CLASS__;
 
 	/**
 	 * Content type for the icon which will be used for the class

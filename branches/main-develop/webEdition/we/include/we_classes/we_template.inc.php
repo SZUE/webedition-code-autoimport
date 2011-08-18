@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVer
 /* a class for handling templates */
 class we_template extends we_document{
     /* Name of the class => important for reconstructing the class from outside the class */
-    var $ClassName="we_template";
+    var $ClassName=__CLASS__;
 
     /* Icon which is shown at the tree-menue  */
     var $Icon="template.gif";

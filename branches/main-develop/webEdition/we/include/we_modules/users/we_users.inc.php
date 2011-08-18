@@ -42,7 +42,7 @@ class we_user {
 	 */
 
 	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName='we_user';
+	var $ClassName=__CLASS__;
 
 	// In this array are all storagable class variables
 	var $persistent_slots=array();

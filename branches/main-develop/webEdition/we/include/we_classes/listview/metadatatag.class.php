@@ -31,7 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/listvi
 class metadatatag{
 
 	var $DB_WE;
-	var $ClassName = "metadatatag";
+	var $ClassName = __CLASS__;
 	var $object = "";
 	var $avail = false;
 	var $id = 0;

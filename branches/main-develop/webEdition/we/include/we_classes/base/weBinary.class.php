@@ -35,7 +35,7 @@
 	class weBinary{
 
 		var $db;
-		var $ClassName="weBinary";
+		var $ClassName=__CLASS__;
 		var $Pseudo="weBinary";
 
 		var $attribute_slots=array();

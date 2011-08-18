@@ -39,7 +39,7 @@ class weDialog{
 	var $cmdFN = "";
 	var $okJsFN = "";
 	var $dialogTitle = "";
-	var $ClassName = "weDialog";
+	var $ClassName = __CLASS__;
 	var $changeableArgs = array();
 	var $pageNr = 1;
 	var $numPages = 1;

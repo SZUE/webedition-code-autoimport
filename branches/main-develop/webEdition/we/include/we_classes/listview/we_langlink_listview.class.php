@@ -32,7 +32,7 @@ class we_langlink_listview extends listviewBase {
 	var $docType = ""; /* doctype string */
 	var $IDs = array();/* array of ids with pages which are found */
 	var $foundlinks = array();
-	var $ClassName = "we_langlink_listview";
+	var $ClassName = __CLASS__;
 	var $linkType = "";
 	var $searchable = true;
  	var $condition = ""; /* condition string (like SQL) */

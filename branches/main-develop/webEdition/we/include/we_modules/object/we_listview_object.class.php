@@ -37,7 +37,7 @@ class we_listview_object extends listviewBase {
 	var $classID = "";  /* ID of a class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ""; /* condition string (like SQL) */
-	var $ClassName = "we_listview_object";
+	var $ClassName = __CLASS__;
 	var $Path=""; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs=array();
 	var $searchable = true;

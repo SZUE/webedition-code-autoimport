@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_w
 class we_listview_shopVariants extends listviewBase {
 	
 	var $Record = array();
-	var $ClassName = "we_listview_shopVariants";
+	var $ClassName = __CLASS__;
 	var $VariantData = array();
 	var $Position = 0;
 	var $Id = 0;

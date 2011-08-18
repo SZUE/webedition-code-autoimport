@@ -41,7 +41,7 @@ class we_folder extends we_root
 	######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_folder";
+	var $ClassName=__CLASS__;
 
 	/* database table in which the object is stored */
 	var $Table=FILE_TABLE;

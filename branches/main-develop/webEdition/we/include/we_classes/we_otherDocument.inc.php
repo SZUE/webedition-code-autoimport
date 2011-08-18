@@ -33,7 +33,7 @@ class we_otherDocument extends we_binaryDocument
 	######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_otherDocument";
+	var $ClassName=__CLASS__;
 
 	/* ContentType of the Object  */
 	var $ContentType="application/*";

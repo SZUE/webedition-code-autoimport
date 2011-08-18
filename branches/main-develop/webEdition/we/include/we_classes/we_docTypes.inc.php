@@ -42,7 +42,7 @@ class we_docTypes extends we_class {
 	*/
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_docTypes";
+	var $ClassName=__CLASS__;
 
 	/* The Text that will be shown in the tree-menue */
 	var $DocType="New DocType";

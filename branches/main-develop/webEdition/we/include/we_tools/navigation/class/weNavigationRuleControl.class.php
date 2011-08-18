@@ -329,5 +329,3 @@ class weNavigationRuleControl
 		return $navigationRules;
 	}
 }
-
-?>

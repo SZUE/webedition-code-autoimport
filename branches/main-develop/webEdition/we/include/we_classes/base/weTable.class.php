@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 
 	class weTable {
 
-		var $ClassName="weTable";
+		var $ClassName=__CLASS__;
 		var $db;
 		var $table="";
 		var $elements;
@@ -159,7 +159,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 
 	class weTableAdv extends weTable
 	{
-		var $ClassName="weTableAdv";
+		var $ClassName=__CLASS__;
 
 		function weTableAdv($table,$force_columns=false){
 			parent::weTable($table,$force_columns);

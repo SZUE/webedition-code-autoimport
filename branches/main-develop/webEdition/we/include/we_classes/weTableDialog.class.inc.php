@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDial
 class weTableDialog extends weDialog{
 
 ##################################################################################################
-	var $ClassName = "weTableDialog";
+	var $ClassName = __CLASS__;
 
 	var $JsOnly = true;
 

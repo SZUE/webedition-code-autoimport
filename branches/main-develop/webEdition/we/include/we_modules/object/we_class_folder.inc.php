@@ -39,7 +39,7 @@ class we_class_folder extends we_folder{
 	//######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName='we_class_folder';
+	var $ClassName=__CLASS__;
 
 	//var $EditPageNrs = array(WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS);//,WE_EDITPAGE_CFSEARCH); #4076 orig
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_CFWORKSPACE,WE_EDITPAGE_FIELDS,WE_EDITPAGE_INFO);

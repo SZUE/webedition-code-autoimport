@@ -29,7 +29,7 @@
 
 	class we_element{
 
-		var $ClassName="we_element";
+		var $ClassName=__CLASS__;
 
 		var $DID=0;
 		var $Name="";

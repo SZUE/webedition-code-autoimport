@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetec
 class we_webEditionDocument extends we_textContentDocument {
 
 	// Name of the class => important for reconstructing the class from outside the class
-	var $ClassName="we_webEditionDocument";
+	var $ClassName=__CLASS__;
 
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_CONTENT,WE_EDITPAGE_INFO,WE_EDITPAGE_PREVIEW,WE_EDITPAGE_VALIDATION);
 

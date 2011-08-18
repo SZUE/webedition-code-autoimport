@@ -36,7 +36,7 @@ class we_catListview extends listviewBase {
 	var $parentID=0;
 	var $catID=0;
 	var $variant='default';
-	var $ClassName = "we_catListview";
+	var $ClassName = __CLASS__;
 	var $hidedirindex = false;
 	/**
 	 * we_listview()

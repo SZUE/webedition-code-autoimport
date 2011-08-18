@@ -63,7 +63,7 @@ abstract class listviewBase{
 	var $workspaceID = ''; /* commaseperated string of id's of workspace */
 	var $count = 0;        /* internal counter */
 	var $Record = array(); /* array to store results */
-	var $ClassName = 'listviewBase'; /* Name of class */
+	var $ClassName = __CLASS__; /* Name of class */
 	var $close_a = true;   /* close </a> when endtag used */
 	var $customerFilterType = 'off'; // shall we control customer-filter?
 	var $calendar_struct=array();

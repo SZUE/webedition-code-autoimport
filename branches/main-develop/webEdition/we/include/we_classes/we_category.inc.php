@@ -34,7 +34,7 @@
 
 	class we_category extends weModelBase{
 
-		var $ClassName="we_category";
+		var $ClassName=__CLASS__;
 		var $ContentType="category";
 
 		function we_category(){

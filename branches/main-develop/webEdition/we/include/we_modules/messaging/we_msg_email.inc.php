@@ -34,7 +34,7 @@ class we_msg_email extends we_msg_proto {
     /*****************************************************************/
 
     /* Name of the class => important for reconstructing the class from outside the class */
-    var $ClassName = 'we_msg_email';
+    var $ClassName = __CLASS__;
 
     /* 0: send/receive */
     /* 1: send only    */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weAbstractCustomerFilter.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weAbstractCustomerFilter.class.php");
 
 /**
  * Filter model class for navigation tool
  *
  */
 class weNavigationCustomerFilter extends weAbstractCustomerFilter {
-
 
 	var $_useDocumentFilter = true;
 
@@ -62,8 +61,8 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 
 		// end convert data
 
-		$_whitelist = isset($navModel->WhiteList) && is_array($navModel->WhiteList)  ? $navModel->WhiteList : array();
-		$_blacklist = isset($navModel->BlackList) && is_array($navModel->BlackList)  ? $navModel->BlackList : array();
+		$_whitelist = isset($navModel->WhiteList) && is_array($navModel->WhiteList) ? $navModel->WhiteList : array();
+		$_blacklist = isset($navModel->BlackList) && is_array($navModel->BlackList) ? $navModel->BlackList : array();
 
 		$this->setBlackList($_blacklist);
 		$this->setWhiteList($_whitelist);
@@ -98,7 +97,6 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 					if (isset($navItem->customers['whitelist']) && is_array($navItem->customers['whitelist']) && count($navItem->customers['whitelist'])) {
 						$this->setWhiteList($navItem->customers['whitelist']);
 					}
-
 				} else if (isset($navItem->customers['id']) && is_array($navItem->customers['id']) && count($navItem->customers['id'])) {
 					$this->setMode(WECF_SPECIFIC);
 					$this->setSpecificCustomers($navItem->customers['id']);
@@ -115,27 +113,26 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 	 * @param array $_custFilter
 	 */
 	function updateCustomerFilter(&$_custFilter) {
-		if (isset($_custFilter['AND']) && isset($_custFilter['OR'])) {  // old style filter => convert into new style
+		if (isset($_custFilter['AND']) && isset($_custFilter['OR'])) {	// old style filter => convert into new style
 			$_newFilter = array();
-			foreach($_custFilter['AND'] as $_f) {
+			foreach ($_custFilter['AND'] as $_f) {
 				$_newFilter[] = array(
-					'logic'		=>'AND',
-					'field'		=> $_f['operand1'],
-					'operation' => $_f['operator'],
-					'value'		=> $_f['operand2']
+						'logic' => 'AND',
+						'field' => $_f['operand1'],
+						'operation' => $_f['operator'],
+						'value' => $_f['operand2']
 				);
 			}
-			foreach($_custFilter['OR'] as $_f) {
+			foreach ($_custFilter['OR'] as $_f) {
 				$_newFilter[] = array(
-					'logic'		=>'OR',
-					'field'		=> $_f['operand1'],
-					'operation' => $_f['operator'],
-					'value'		=> $_f['operand2']
+						'logic' => 'OR',
+						'field' => $_f['operand1'],
+						'operation' => $_f['operator'],
+						'value' => $_f['operand2']
 				);
 			}
 			$_custFilter = $_newFilter;
 		}
-
 	}
 
 	function getUseDocumentFilter() {
@@ -146,37 +143,36 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 		$this->_useDocumentFilter = $useDocumentFilter;
 	}
 
-
 	function getUseDocumentFilterFromRequest() {
 		return (isset($_REQUEST['wecf_useDocumentFilter']) && $_REQUEST['wecf_useDocumentFilter']);
 	}
 
 	function translateModeToNavModel($mode, &$model) {
-		switch($mode) {
+		switch ($mode) {
 
 			case WECF_FILTER:
 				$model->LimitAccess = 1;
 				$model->ApplyFilter = 1;
 				$model->AllCustomers = 1;
-			break;
+				break;
 
 			case WECF_SPECIFIC:
 				$model->LimitAccess = 1;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 0;
-			break;
+				break;
 
 			case WECF_ALL:
 				$model->LimitAccess = 1;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 1;
-			break;
+				break;
 
 			case WECF_NONE:
 				$model->LimitAccess = 2;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 0;
-			break;
+				break;
 
 			default:
 				$model->LimitAccess = 0;
@@ -187,53 +183,50 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 		$_limitAccess = 0;
 		$_applyFilter = 0;
 		$_allCustomers = 0;
-		switch($filterObj->getMode()) {
+		switch ($filterObj->getMode()) {
 
 			case WECF_FILTER:
 				$_limitAccess = 1;
 				$_applyFilter = 1;
 				$_allCustomers = 1;
-			break;
+				break;
 
 			case WECF_SPECIFIC:
 				$_limitAccess = 1;
 				$_applyFilter = 0;
 				$_allCustomers = 0;
-			break;
+				break;
 
 			case WECF_ALL:
 				$_limitAccess = 1;
 				$_applyFilter = 0;
 				$_allCustomers = 1;
-			break;
+				break;
 
 			case WECF_NONE:
 				$_limitAccess = 2;
 				$_applyFilter = 0;
 				$_allCustomers = 0;
-			break;
-
+				break;
 		}
 
 
-		$_customers = makeCSVFromArray($filterObj->getSpecificCustomers(),true);
-		$_whiteList = makeCSVFromArray($filterObj->getWhiteList(),true);
-		$_blackList = makeCSVFromArray($filterObj->getBlackList(),true);
+		$_customers = makeCSVFromArray($filterObj->getSpecificCustomers(), true);
+		$_whiteList = makeCSVFromArray($filterObj->getWhiteList(), true);
+		$_blackList = makeCSVFromArray($filterObj->getBlackList(), true);
 		$_filter = serialize($filterObj->getFilter());
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 		$this->DB_WE->query('UPDATE ' . NAVIGATION_TABLE .
-					' SET LimitAccess='.$_limitAccess.
-					', ApplyFilter='.$_applyFilter.
-					', AllCustomers='.$_allCustomers.
-					', Customers="'.$_customers.
-					'", CustomerFilter="'.$this->DB_WE->escape($_filter).
-					'", BlackList="'.$_blackList.
-					'", WhiteList="'.$_whiteList.
-					'"  WHERE UseDocumentFilter=1 AND ' . weNavigation::getNavCondition($id, $table));
-
+						' SET LimitAccess=' . $_limitAccess .
+						', ApplyFilter=' . $_applyFilter .
+						', AllCustomers=' . $_allCustomers .
+						', Customers="' . $_customers .
+						'", CustomerFilter="' . $this->DB_WE->escape($_filter) .
+						'", BlackList="' . $_blackList .
+						'", WhiteList="' . $_whiteList .
+						'"  WHERE UseDocumentFilter=1 AND ' . weNavigation::getNavCondition($id, $table));
 	}
-
 
 }

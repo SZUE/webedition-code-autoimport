@@ -48,7 +48,7 @@ class we_document extends we_root {
 	*/
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName='we_document';
+	var $ClassName=__CLASS__;
 
 	/* Extension of the document */
 	var $Extension='';

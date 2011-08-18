@@ -152,14 +152,8 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 * @param string $classname
 	 * @return string
 	 */
-	public static function computeJSURL($classname)
-	{
-		if (substr($classname, 0, 3) == 'we_') {
-			return $GLOBALS['__WE_LIB_URL__'] . '/' . join('/', explode('_', $classname)) . '.js';
-		} else {
-			return $GLOBALS['__WE_APP_URL__'] . '/' . join('/', explode('_', $classname)) . '.js';
-		}
-		return '';
+	public static function computeJSURL($classname)	{
+		return (substr($classname, 0, 3) == 'we_'?$GLOBALS['__WE_LIB_URL__']:$GLOBALS['__WE_APP_URL__']) . '/' . join('/', explode('_', $classname)) . '.js';
 	}
 
 	/**

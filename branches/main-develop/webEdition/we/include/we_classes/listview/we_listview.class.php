@@ -35,7 +35,7 @@ class we_listview extends listviewBase {
 	var $docType = ""; /* doctype string */
 	var $IDs = array();/* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
-	var $ClassName = "we_listview";
+	var $ClassName = __CLASS__;
 	var $contentTypes = "";
 	var $searchable = true;
  	var $condition = ""; /* condition string (like SQL) */

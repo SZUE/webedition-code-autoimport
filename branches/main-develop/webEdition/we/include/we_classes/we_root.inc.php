@@ -32,7 +32,7 @@ if(!isset($GLOBALS["WE_IS_DYN"])){
 abstract class we_root extends we_class{
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_root";
+	var $ClassName=__CLASS__;
 
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
 	var $ParentID=0;

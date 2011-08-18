@@ -32,7 +32,7 @@ class weImageDialog extends weDialog{
 
 ##################################################################################################
 
-	var $ClassName = "weImageDialog";
+	var $ClassName = __CLASS__;
 	var $changeableArgs = array(	"type",
 									"extSrc",
 									"fileID",

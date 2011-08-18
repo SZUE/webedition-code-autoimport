@@ -37,7 +37,7 @@ class we_object extends we_document {
 	//######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_object";
+	var $ClassName=__CLASS__;
 
 	/* Icon which is shown at the tree-menue  */
 	var $Icon="object.gif";

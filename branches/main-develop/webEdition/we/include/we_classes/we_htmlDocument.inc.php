@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tex
 class we_htmlDocument extends we_textContentDocument{
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_htmlDocument";
+	var $ClassName=__CLASS__;
 	var $ContentType="text/html";
 
 	function we_htmlDocument(){

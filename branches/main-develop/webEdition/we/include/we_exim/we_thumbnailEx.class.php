@@ -24,7 +24,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modu
 	class we_thumbnailEx extends weModelBase  {
 
 		var $table = THUMBNAILS_TABLE;
-		var $ClassName = 'we_thumbnailEx';
+		var $ClassName = __CLASS__;
 		var $Table = THUMBNAILS_TABLE;
 		var $ContentType = 'weThumbnail';
 

@@ -32,7 +32,7 @@ class weFullscreenEditDialog extends weDialog{
 ##################################################################################################
 
 	var $JsOnly = true;
-	var $ClassName = "weFullscreenEditDialog";
+	var $ClassName = __CLASS__;
 	var $changeableArgs = array("src");
 
 ##################################################################################################

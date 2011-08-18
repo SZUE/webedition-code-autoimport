@@ -30,7 +30,7 @@ class weImportRtfDialog extends weDialog{
 
 ##################################################################################################
 
-	var $ClassName = "weImportRtfDialog";
+	var $ClassName = __CLASS__;
 
 	var $pageNr = 1;
 	var $numPages = 2;

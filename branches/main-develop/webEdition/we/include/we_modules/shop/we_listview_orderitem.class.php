@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.p
 
 class we_listview_orderitem extends listviewBase {
 
-	var $ClassName = "we_listview_orderitem";
+	var $ClassName = __CLASS__;
 	var $condition="";
 	var $Path="";
 	var	$docID=0;

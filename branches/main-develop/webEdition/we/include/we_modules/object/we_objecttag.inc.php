@@ -35,7 +35,7 @@ class we_objecttag{
 	var $class = "";
 	var $id = 0;
 	var $triggerID = 0;
-	var $ClassName = "we_objecttag";
+	var $ClassName = __CLASS__;
 	var $object = "";
 	var $avail = false;
 	var $hidedirindex = false;

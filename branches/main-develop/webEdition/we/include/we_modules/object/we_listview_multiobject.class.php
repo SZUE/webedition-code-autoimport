@@ -39,7 +39,7 @@ class we_listview_multiobject extends listviewBase {
 	var $objects = "";  /* Comma sepearated list of all objetcs to show in this listview */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ""; /* condition string (like SQL) */
-	var $ClassName = "we_listview_multiobject";
+	var $ClassName = __CLASS__;
 	var $Path=""; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs=array();
 	var $searchable = true;

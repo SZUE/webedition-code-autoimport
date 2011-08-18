@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_bin
 class we_quicktimeDocument extends we_binaryDocument {
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName="we_quicktimeDocument";
+	var $ClassName=__CLASS__;
 
 	/* ContentType of the Object  */
 	var $ContentType="video/quicktime";
