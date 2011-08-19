@@ -23,6 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//this is only needed because of a fault in we_conf, which includes this class directly
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
+
+
 class DB_WE extends DB_WE_abstract {
 	private $conType='';
 	/* public: constructor */
