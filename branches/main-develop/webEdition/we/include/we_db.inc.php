@@ -29,9 +29,9 @@ abstract class DB_WE_abstract {
 	private $retry=false;
 	/**"yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)*/
 	private $Halt_On_Error = 'no';
-	
+
 	/**Set to 1 for automatic mysql_free_result() */
-	private $Auto_Free = 0; 
+	private $Auto_Free = 0;
 	/* link handles */
 	protected $Link_ID = 0;
 	/* query handles */
@@ -52,7 +52,7 @@ abstract class DB_WE_abstract {
 	public static $Debug = 0;
 
 	/** Connects to the database, which this is done by the constructor
-	 * 
+	 *
 	 */
 	abstract protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD);
 	/** internal query
@@ -83,11 +83,11 @@ abstract class DB_WE_abstract {
 	 * @return array depending on resulttype
 	 */
 	abstract protected function fetch_array($resultType);
-	/** internal check if Database is still responding 
+	/** internal check if Database is still responding
 	 * @return true if DB is still present
 	 */
 	abstract protected function ping();
-	
+
 	/** get the last inserted ID
 	 * @return int last generated id of the insert-statement
 	 */
@@ -126,21 +126,21 @@ abstract class DB_WE_abstract {
 	 */
 	abstract public function field_flags($no);
 	/** close the DB connection
-	 * 
+	 *
 	 */
 	abstract public function close();
 	/** get the no of rows that were affected by update/delete/replace ...
 	 * @return int count of rows
 	 */
 	abstract public function affected_rows();
-	
+
 	/** get Information about the used driver etc.
 	 * @return string containing all information
 	 */
 	abstract public function getInfo();
 
 	/** Constructor, establishes the connection to the DB
-	 * 
+	 *
 	 */
 	public function __construct(){
 		if($this->connect()){
@@ -161,7 +161,7 @@ abstract class DB_WE_abstract {
 	function escape($inp){
 		return escape_sql_query($inp);
 	}
-	
+
 	/** check the connection
 	 *
 	 * @return bool true, if the DB is connected
@@ -174,7 +174,7 @@ abstract class DB_WE_abstract {
 	 * make an sql-Query to the DB
 	 * @param string $Query_String the sql-query
 	 * @param bool $allowUnion this parameter is deprecated; it determines if the query is allowed to have unions
-	 * @return bool true, if the query was successfull 
+	 * @return bool true, if the query was successfull
 	 */
 	function query($Query_String, $allowUnion=false, $unbuffered=false) {
 		/* No empty queries, please, since PHP4 chokes on them. */
@@ -299,7 +299,7 @@ abstract class DB_WE_abstract {
 	/**
 	 * directly print the value from a field, queried by a prequel query+next_record
 	 * @param type $Name name/number of the field, depending on query-type
-	 * 
+	 *
 	 */
 	public function p($Name) {
 		print $this->Record[$Name];
@@ -336,8 +336,8 @@ abstract class DB_WE_abstract {
 		}
 		return $return;
 	}
-	
-	/** walk result set 
+
+	/** walk result set
 	 * @param $resultType int
 	 * @return bool true, if rows was successfully fetched
 	 */
@@ -359,7 +359,7 @@ abstract class DB_WE_abstract {
 		return $stat;
 	}
 
-	/** get result at positionset 
+	/** get result at positionset
 	 * @param $pos int position in the result set
 	 * @param $resultType int
 	 * @return bool true, if rows was successfully fetched
@@ -371,8 +371,8 @@ abstract class DB_WE_abstract {
 
 		return $this->next_record($resultType);
 		}
-	
-	/** set the position in result set 
+
+	/** set the position in result set
 	 * @param $pos int seek to pos in result set
 	 * @return bool true, if seek was successfull
 	 */
@@ -399,7 +399,7 @@ abstract class DB_WE_abstract {
 
 		/**
 	 * Get complete result as array
-		 * @return array 
+		 * @return array
 	 */
 	public function getAll($resultType = MYSQL_ASSOC) {
 		$ret = array();
@@ -475,7 +475,7 @@ abstract class DB_WE_abstract {
 	 * @param $table string,array specify the tables to lock; use numeric array to lock all tables with mode; use named array with [table]=mode to lock specific modes
 	 * @param $mode string name the locking mode
 	 * @return bool true, on success
-	 */ 
+	 */
 	function lock($table, $mode = 'write'){
 		if (!$this->connect()){
 			return false;
@@ -495,7 +495,7 @@ abstract class DB_WE_abstract {
 		}
 		return $this->_query('lock tables '.$query);
 	}
-	
+
 	/** Unlock all locked tables
 	 * @return bool true, on success
 	 */
@@ -542,11 +542,11 @@ if (!defined('DB_CONNECT')){
 switch(DB_CONNECT){
 	case 'connect':
 	case 'pconnect':
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/db_mysql.inc.php');
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_db_mysql.class.inc.php');
 		break;
 	case 'mysqli_connect':
 	case 'mysqli_pconnect':
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/db_mysqli.inc.php');
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_db_mysqli.class.inc.php');
 		if(!defined('MYSQL_BOTH')) define('MYSQL_BOTH',MYSQLI_BOTH);
 		if(!defined('MYSQL_ASSOC')) define('MYSQL_ASSOC',MYSQLI_ASSOC);
 		if(!defined('MYSQL_NUM')) define('MYSQL_NUM',MYSQLI_NUM);
