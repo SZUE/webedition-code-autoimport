@@ -151,7 +151,7 @@ class we_objectFile extends we_document{
 		$we_button = new we_button();
 		$idname = 'we_'.$this->Name.'_CopyID';
 		$rootDirId = getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
-		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDirId."','".$this->ContentType."');"		
+		//javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','','opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd(\\'copyDocument\\',currentID);','".session_id()."','".$rootDirId."','".$this->ContentType."');"
 		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 		$but = $we_button->create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['$idname'].value,'".$this->Table."','".$wecmdenc2."','','".$wecmdenc3."','".session_id()."','".$rootDirId."','".$this->ContentType."');");
@@ -178,10 +178,10 @@ class we_objectFile extends we_document{
 			  	if(!$LDID){$LDID=0;}
 				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
 				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID,$this->Table, $this->rootDirID).'</div>';
-				$langkeys[]=$langkey;  
+				$langkeys[]=$langkey;
 			}
-			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
-			
+			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");
+
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -202,7 +202,7 @@ class we_objectFile extends we_document{
 				</tr>
 			</table>';
 			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-			
+
 		} else {
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
@@ -215,11 +215,11 @@ class we_objectFile extends we_document{
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
 				</tr>
 			</table>';
-			
+
 		}
 		return $content;
 	}
-	
+
 	function copyDoc($id){
 		if(!$id)return;
 
@@ -1355,7 +1355,7 @@ class we_objectFile extends we_document{
 			$countryselect=new we_htmlSelect(array("name"=>"we_".$this->Name."_language[$name]","size"=>"1","style"=>"{width:620;}","class"=>"wetextinput","onChange"=>"_EditorFrame.setEditorIsHot(true);" ));
 
 			$topCountries = defined('WE_COUNTRIES_TOP')?explode(',',WE_COUNTRIES_TOP):explode(',','DE,AT,CH');
-			
+
 			$topCountries = array_flip($topCountries);
 			foreach ($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey,'territory',$langcode);
@@ -2400,7 +2400,7 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		
+
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
 			if(!we_document::we_save($resave,1)) return false;
@@ -2569,6 +2569,7 @@ class we_objectFile extends we_document{
 			$ret=$hook->executeHook();
 			//check if doc should be saved
 			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
 				return false;
 			}
 		}

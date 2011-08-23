@@ -336,7 +336,7 @@ class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		
+
 		if(!$this->ID){  // when no ID, then allways save before in main table
 			if(!we_root::we_save(0)) return false;
 		}
@@ -380,6 +380,7 @@ class we_textContentDocument extends we_textDocument{
 			$ret=$hook->executeHook();
 			//check if doc should be saved
 			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
 				return false;
 			}
 		}
