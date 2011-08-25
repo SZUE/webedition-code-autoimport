@@ -1,8 +1,8 @@
 CREATE TABLE ###TBLPREFIX###tblOrders (
-  IntID int(11) NOT NULL auto_increment,
-  IntOrderID int(11) default NULL,
-  IntCustomerID int(11) default NULL,
-  IntArticleID int(11) default NULL,
+  IntID int(11) unsigned NOT NULL auto_increment,
+  IntOrderID int(11) unsigned default NULL,
+  IntCustomerID int(11) unsigned default NULL,
+  IntArticleID int(11) unsigned default NULL,
   IntQuantity float default NULL,
   DateOrder datetime default NULL,
   DateConfirmation datetime default NULL,
@@ -37,7 +37,7 @@ CREATE TABLE ###TBLPREFIX###tblOrders (
   MailCustomJ DATETIME NULL,
   MailFinished DATETIME NULL,
   Price varchar(20) default NULL,
-  IntPayment_Type tinyint(4) default NULL,
+  IntPayment_Type tinyint(4) unsigned default NULL,
   strSerial longtext NOT NULL,
   strSerialOrder longtext NOT NULL,
   PRIMARY KEY  (IntID)
