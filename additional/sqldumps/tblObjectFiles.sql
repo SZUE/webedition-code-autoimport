@@ -6,7 +6,7 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   IsFolder tinyint(4) unsigned NOT NULL default '0',
   ContentType varchar(32) NOT NULL default '',
   CreationDate int(11) unsigned NOT NULL default '0',
-  ModDate int(11) NOT unsigned NULL default '0',
+  ModDate int(11) unsigned NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
   Url varchar(255) NOT NULL default '',
   TriggerID bigint(20) unsigned NOT NULL default '0',
