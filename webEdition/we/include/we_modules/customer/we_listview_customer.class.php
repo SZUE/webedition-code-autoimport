@@ -74,19 +74,19 @@ class we_listview_customer extends listviewBase {
 			$this->order .= " DESC";
 		}
 
- 		if ($this->order != '') {
-			$orderstring = " ORDER BY ".$this->order." ";
-		} else {
-			$orderstring = '';
+		$orderstring = $extra = '';
+		if($this->order == 'random()'){
+			$extra=', RAND() as RANDOM';
+			$orderstring=' ORDER BY RANDOM'
+		}else if ($this->order != '') {
+			$orderstring = ' ORDER BY '.$this->order;
 		}
 
-		$where = $this->condition ? (' where ' . $this->condition) : '';
+		$where = $this->condition ? (' WHERE ' . $this->condition) : '';
 
-		$q = 'SELECT * FROM ' . CUSTOMER_TABLE . $where;
-		$this->DB_WE->query($q);
-		$this->anz_all = $this->DB_WE->num_rows();
+		$this->anz_all=f('SELECT COUNT(1) AS cnt FROM ' . CUSTOMER_TABLE . $where,'cnt',$this->DB_WE);
 
-		$q = 'SELECT * FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' limit '.$this->start.','.$this->maxItemsPerPage) : '');;
+		$q = 'SELECT * '.$extra.' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT '.$this->start.','.$this->maxItemsPerPage) : '');;
 
 		$this->DB_WE->query($q);
 		$this->anz = $this->DB_WE->num_rows();
