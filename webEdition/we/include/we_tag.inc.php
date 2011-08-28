@@ -41,6 +41,7 @@ include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 function we_tag($name, $attribs=array(), $content = ''){
 	$nameTo = we_getTagAttribute("nameto", $attribs);
 	$to = we_getTagAttribute("to", $attribs,'screen');
+	$InputTags = array('date','flashmovie','href','img','input','link','object','quicktime','select','textarea');
 	//make sure comment attribute is never shown
 	if ($name=='setVar'){//special handling inside this tag
 		$attribs = removeAttribs($attribs, array('comment'));
@@ -254,7 +255,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 
 		}
 	$GLOBALS['we_editmode'] = $edMerk;
-	if ($edMerk){
+	if ($edMerk && in_array($name,$InputTags) && !in_array('only',$attribs) ){
 		return $foo;
 	} else {
 		return we_redirect_tagoutput($foo,$nameTo,$to);
