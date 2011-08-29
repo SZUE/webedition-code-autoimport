@@ -401,9 +401,10 @@ class we_textContentDocument extends we_textDocument{
 			if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='".abs($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
 		}
 
-		if($saveinMainDB) {
+		//Bug #5505
+//		if($saveinMainDB) {
 			$this->rewriteNavigation();
-		}
+//		}
 		if(isset($_SESSION["Versions"]['fromScheduler']) && $_SESSION["Versions"]['fromScheduler'] && ($this->ContentType=="text/webedition" || $this->ContentType=="text/html")) {
 			$version = new weVersions();
 			$version->save($this, "published");
