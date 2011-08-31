@@ -2412,7 +2412,7 @@ class searchtoolView extends weToolView
 								} else {
 									$w = $thisObj->searchclass->searchContent($searchString, $_table);
 									if ($where == "" && $w == "") {
-										$where .= " AND 0";
+										$where .= " AND 0 ";
 									} elseif ($where == "" && $w != "") {
 										$where .= " AND " . $w;
 									} elseif ($w != "") {
@@ -2440,7 +2440,7 @@ class searchtoolView extends weToolView
 								$w = $thisObj->searchclass->searchInTitle($searchString, $_table);
 
 								if ($where == "" && $w == "") {
-									$where .= " AND 0";
+									$where .= " AND 0 ";
 								} elseif ($where == "" && $w != "") {
 									$where .= " AND " . $w;
 								} elseif ($w != "") {
@@ -2526,7 +2526,7 @@ class searchtoolView extends weToolView
 								break;
 
 							case (defined("OBJECT_TABLE")?OBJECT_TABLE:-2):
-								$whereQuery .= "AND ((" . escape_sql_query($_table) . ".RestrictUsers='0' OR " . escape_sql_query($_table) . ".RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
+								$whereQuery .= " AND ((" . escape_sql_query($_table) . ".RestrictUsers='0' OR " . escape_sql_query($_table) . ".RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
 								break;
 						case VERSIONS_TABLE:
 							if (isset($_REQUEST["we_cmd"]['obj'])) {
