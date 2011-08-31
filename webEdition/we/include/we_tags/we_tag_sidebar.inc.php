@@ -24,8 +24,9 @@ function we_tag_sidebar($attribs, $content){
 	if (we_tag('ifNotSidebar',$attribs, $content) && we_tag('ifEditmode',$attribs, $content)) {
 
 		$id = we_getTagAttribute("id", $attribs, 0);
-		$file = we_getTagAttribute("file", $attribs, "");
-		$url = we_getTagAttribute("url", $attribs, "");
+		$file = we_getTagAttribute("file", $attribs);
+		$url = we_getTagAttribute("url", $attribs);
+		$anchor = we_getTagAttribute("anchor", $attribs);
 		$width = we_getTagAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
 
 		removeAttribs($attribs, array(
@@ -39,18 +40,17 @@ function we_tag_sidebar($attribs, $content){
 		}
 
 		$href = "#";
-		if ($id == 0 && $file != "") {
-
+		if ($id == 0){
+			if($file != "") {
 			$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ");";
-
-		} else
-			if ($id == 0 && $url != "") {
+			} else if($url != "") {
 				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ");";
-
-			} else {
-				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ");";
-
+			}else{
+				return;
 			}
+		}else{
+				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ");";
+		}
 		$attribs['href'] = $href;
 
 		$_out .= getHtmlTag("a", $attribs, $content);
