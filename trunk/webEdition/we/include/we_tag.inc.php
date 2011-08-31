@@ -39,9 +39,9 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_tag($name, $attribs=array(), $content = ''){
-	$nameTo = we_getTagAttribute("nameto", $attribs);
-	$to = we_getTagAttribute("to", $attribs,'screen');
-	$InputTags = array('date','flashmovie','href','img','input','link','object','quicktime','select','textarea');
+	//keep track of editmode
+	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
+
 	//make sure comment attribute is never shown
 	if ($name=='setVar'){//special handling inside this tag
 		$attribs = removeAttribs($attribs, array('comment'));
@@ -51,12 +51,16 @@ function we_tag($name, $attribs=array(), $content = ''){
 		$nameTo = we_getTagAttribute("nameto", $attribs);
 		$to = we_getTagAttribute("to", $attribs,'screen');
 		$attribs = removeAttribs($attribs, array('comment','to','nameto'));
+		/* if to attribute is set, output of the tag is redirected to a variable
+		 * this makes only sense if tag output is equal to non-editmode*/
+		if($to != 'screen'){
+			$GLOBALS['we_editmode'] = false;
+		}
 	}
 
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
 	}
-	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
 		if (isset($attribs['user']) && $attribs['user']) {
 			$uAr = makeArrayFromCSV($attribs['user']);
@@ -144,6 +148,8 @@ function we_tag($name, $attribs=array(), $content = ''){
 
 	if ($fn == 'we_tag_setVar') {
 		$fn($attribs, $content);
+		//nothing more to do don't waste time
+		return;
 	}
 
 	// Use Document Cache
@@ -248,19 +254,12 @@ function we_tag($name, $attribs=array(), $content = ''){
 
 				} else {
 					$foo = $fn($attribs, $content);
-
 				}
-
 			}
-
 		}
-	$GLOBALS['we_editmode'] = $edMerk;
-	if ($edMerk && in_array($name,$InputTags) && !in_array('only',$attribs) ){
-		return $foo;
-	} else {
-		return we_redirect_tagoutput($foo,$nameTo,$to);
-	}
 
+	$GLOBALS['we_editmode'] = $edMerk;
+	return we_redirect_tagoutput($foo,$nameTo,$to);
 }
 
 ### tag utility functions ###
@@ -269,36 +268,35 @@ function we_redirect_tagoutput($returnvalue,$nameTo,$to='screen'){
 	switch ($to) {
 		case 'request' :
 			$_REQUEST[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'post' :
 			$_POST[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'get' :
 			$_GET[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'global' :
 			$GLOBALS[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'session' :
 			$_SESSION[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'top' :
 			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
-			break;
+			return null;
 		case 'block' :
 		case 'self' :
 			$GLOBALS['we_doc']->setElement($nameTo, $returnvalue);
-			break;
+			return null;
 		case 'sessionfield' :
 			if (isset($_SESSION['webuser'][$nameTo])){
 				$_SESSION['webuser'][$nameTo] = $returnvalue;
 			}
-			break;
+			return null;
 		case 'screen':
 			return $returnvalue;
 	}
 	return null;
-
 }
 
 function mta($hash, $key){
