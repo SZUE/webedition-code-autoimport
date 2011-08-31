@@ -173,8 +173,8 @@ class we_webEditionDocument extends we_textContentDocument {
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td colspan="3">
-						'.$this->formDocType2(388).'</td>
+					<td colspan="3" class="defaultfont" align="left">
+						'.$this->formDocType2(388,$disable).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -185,8 +185,8 @@ class we_webEditionDocument extends we_textContentDocument {
 						'.getPixel(100,2).'</td>
 				</tr>
 				<tr>
-					<td colspan="3">
-						'.$this->formTemplatePopup(388).'</td>
+					<td colspan="3" class="defaultfont" align="left">
+						'.$this->formTemplatePopup(388,$disable).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -265,8 +265,21 @@ class we_webEditionDocument extends we_textContentDocument {
 	}
 
 	// creates the Template PopupMenue
-	function formTemplatePopup($leftsize=120) {
+	function formTemplatePopup($leftsize, $disable) {
 		global $l_we_class;
+
+		if($disable){
+			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
+			$path = ($myid ? f('SELECT Path FROM '.TEMPLATES_TABLE.' WHERE ID='.$myid,'Path',$this->DB_WE):'');
+
+			if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION ["we_mode"] == "normal") {
+				$ueberschrift='<a href="javascript:goTemplate('.$myid.')">'.$l_we_class["template"].'</a>';
+			}else {
+				$ueberschrift=$l_we_class["template"];
+			}
+
+			return $ueberschrift.'<br/>'.$path;
+		}
 
 		if($this->DocType) {
 			$sql = "SELECT Templates FROM ".DOC_TYPES_TABLE." WHERE ID = ".abs($this->DocType)."";
@@ -676,7 +689,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_".$this->Name."_LanguageDocID"]) && $_REQUEST["we_".$this->Name."_LanguageDocID"]!=0){
 			$this->setLanguageLink($_REQUEST["we_".$this->Name."_LanguageDocID"],'tblFile',false,false);
 		}
-		
+
 		if($resave == 0){
 			$hy = unserialize(getPref("History"));
 			$hy['doc'][$this->ID] = array("Table"=>$this->Table,"ModDate"=>$this->ModDate);
