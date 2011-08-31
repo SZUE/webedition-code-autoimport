@@ -158,6 +158,8 @@ function we_tag_input($attribs, $content) {
 			case 'select':
 				//NOTE: this tag is for objects only
 				return $GLOBALS['we_doc']->getField($attribs, 'select');
+			case 'print':
+				return $val;
 			case 'text':
 			default:
 				$we_button = new we_button();
