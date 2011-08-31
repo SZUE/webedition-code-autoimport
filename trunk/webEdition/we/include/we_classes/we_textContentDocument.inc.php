@@ -218,13 +218,16 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 
-	function formDocType2($width = 300) {
+	function formDocType2($width = 300, $disable=false) {
 		global $l_we_class;
 
 		$q = getDoctypeQuery($this->DB_WE);
 
 		$we_button = new we_button();
-
+		if($disable){
+			$name=($this->DocType?f('SELECT DocType FROM '.DOC_TYPES_TABLE.' WHERE ID='.intval($this->DocType),'DocType',$this->DB_WE):$l_we_class["nodoctype"]);
+			return $l_we_class["doctype"].'<br>'.$name;
+		}
 		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", $l_we_class["doctype"], $q, 1, $this->DocType, false,
 								  (($this->DocType !== "") ?
 								  	"if(confirm('".$GLOBALS['l_we_class']['doctype_changed_question']."')){we_cmd('doctype_changed');};" :
@@ -237,7 +240,7 @@ class we_textContentDocument extends we_textDocument{
 		global $l_we_class;
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.$this->formDocType2(388).'</td>
+		<td class="defaultfont" align="left">'.$this->formDocType2(388,$this->Published).'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(2,6).'</td>
