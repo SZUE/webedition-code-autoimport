@@ -41,6 +41,10 @@ function we_tag_a($attribs, $content){
 	$amount = we_getTagAttribute("amount", $attribs, 1);
 	$delarticle = we_getTagAttribute("delarticle", $attribs, "", true);
 	$delshop = we_getTagAttribute("delshop", $attribs, "", true);
+	$urladd = we_getTagAttribute('params', $attribs);
+	if($urladd && strpos($urladd, '?')!==0){
+		$urladd='?'.$urladd;
+	}
 
 	$edit = we_getTagAttribute("edit", $attribs);
 
@@ -56,14 +60,14 @@ function we_tag_a($attribs, $content){
 
 	// init variables
 	$db = new DB_WE();
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", $db);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.intval($id), $db);
 	$url = (isset($row["Path"]) ? $row["Path"] : "") . ((isset($row["IsFolder"]) && $row["IsFolder"]) ? "/" : "");
 	$path_parts = pathinfo($url);
 	if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE  && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 		$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
-	} 
+	}
 
-	$urladd = "";
+
 
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_tagParser.inc.php");
 	$tp = new we_tagParser();
@@ -87,7 +91,7 @@ function we_tag_a($attribs, $content){
 		} else {
 			$foo = -1;
 		}
-		 
+
 
 		// get ID of element
 		$customReq = '';
@@ -100,7 +104,7 @@ function we_tag_a($attribs, $content){
 		} else {
 			//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
 			if ( (isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_listview_shopVariants' && isset($GLOBALS["lv"]->Model) && $GLOBALS["lv"]->Model->ClassName == 'we_objectFile') || isset($GLOBALS["lv"]) && get_class($GLOBALS["lv"]) == 'we_objecttag' ) {
-				$type="o"; 
+				$type="o";
 				if (get_class($GLOBALS["lv"]) == 'we_listview_shopVariants') {
 					$idd = $GLOBALS["lv"]->Id;
 				} else {
