@@ -299,20 +299,20 @@ class searchtoolsearch extends we_search
 		$titles = array();
 		$_db2 = new DB_WE();
 		//first check published documents
-		$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(
-				trim($keyword)) . "%' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'";
+		$query = "SELECT a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.Name='Title' AND b.Dat LIKE '%" . $_db2->escape(
+				trim($keyword)) . "%' AND NOT a.DocumentTable!='" . TEMPLATES_TABLE . "'";
 		$_db2->query($query);
 		while ($_db2->next_record()) {
 			$titles[] = $_db2->f('DID');
 		}
 		//check unpublished documents
-		$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE 1 AND DocTable = '" . FILE_TABLE . "' AND Active = '1'";
+		$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = '" . FILE_TABLE . "' AND Active = '1' AND DocumentObject LIKE '%".$_db2->escape(
+				trim($keyword))."%'";
 		$_db2->query($query2);
 		while ($_db2->next_record()) {
 			$tempDoc = unserialize($_db2->f('DocumentObject'));
 			if (isset($tempDoc[0]['elements']['Title']) && $tempDoc[0]['elements']['Title']['dat'] != "") {
-				$keyword = str_replace("\_", "_", $keyword);
-				$keyword = str_replace("\%", "%", $keyword);
+				$keyword = str_replace(array("\_","\%"), array("_","%"), $keyword);
 				if (stristr($tempDoc[0]['elements']['Title']['dat'], $keyword)) {
 					$titles[] = $_db2->f('DocumentID');
 				}
@@ -742,7 +742,7 @@ class searchtoolsearch extends we_search
 					}
 					$where .= $v . " LIKE '%" . escape_sql_query(trim($keyword)) . "%' ";
 				}
-				
+
 				$_db->query('SELECT ' . escape_sql_query($_obj_table) . '.OF_ID FROM ' . escape_sql_query($_obj_table) . ' WHERE ' . $where);
 				while ($_db->next_record()) {
 					$Ids[] = $_db->f('OF_ID');
@@ -866,7 +866,7 @@ class searchtoolsearch extends we_search
 					$titles[$_db2->f('DID')] = $_db2->f('Dat');
 				}
 				//check unpublished documents
-				$query2 = "SELECT DocumentID, DocumentObject  FROM `" . TEMPORARY_DOC_TABLE . "` WHERE 1 AND DocTable = '" . FILE_TABLE . "' AND Active = '1'";
+				$query2 = "SELECT DocumentID, DocumentObject  FROM `" . TEMPORARY_DOC_TABLE . "` WHERE DocTable = '" . FILE_TABLE . "' AND Active = '1'";
 				$_db2->query($query2);
 				while ($_db2->next_record()) {
 					$tempDoc = unserialize($_db2->f('DocumentObject'));
