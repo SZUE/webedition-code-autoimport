@@ -59,6 +59,7 @@ $GLOBALS['l_versions'] = array(
 	'modifierID' 					=> 'Verändert von',
 	'ParentID' 						=> 'Pfad',
 	'TemplateID' 					=> 'Vorlage',
+	'MasterTemplateID' 		=> 'Hauptvorlage',
 	'Filename' 						=> 'Dateiname',
 	'Extension'						=> 'Erweiterung',
 	'IsDynamic'						=> 'Seite dynamisch generieren',
@@ -180,7 +181,7 @@ $GLOBALS['l_versions'] = array(
 	'objClassNotExists'				=> "Klasse existiert nicht mehr!",
 	'publishIfReset'				=> "Beim Zurücksetzen veröffentlichen",
 	'doPublish_text'				=> "Wählen Sie, ob die Versionen nach dem Zurücksetzen veröffentlicht werden sollen oder nicht."
-	
+
 );
 
 

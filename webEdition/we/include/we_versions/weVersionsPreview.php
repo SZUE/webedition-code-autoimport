@@ -32,15 +32,14 @@ $_db = new DB_WE();
 
 $ID = $_REQUEST["we_cmd"][1];
 
-$newDoc = weVersions::loadVersion(" WHERE ID='".abs($ID)."' ");
+$newDoc = weVersions::loadVersion(' WHERE ID='.intval($ID));
 
 $compareID = "";
 if(isset($_REQUEST["we_cmd"][2])) {
 	$compareID = $_REQUEST["we_cmd"][2];
-	$oldDoc = weVersions::loadVersion(" WHERE ID='".abs($compareID)."' ");
-}
-else {
-	$oldDoc = weVersions::loadVersion(" WHERE version < '".abs($newDoc['version'])."' AND documentTable='".escape_sql_query($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."' ORDER BY version DESC limit 1 ");
+	$oldDoc = weVersions::loadVersion(' WHERE ID='.intval($compareID));
+} else {
+	$oldDoc = weVersions::loadVersion(' WHERE version < '.intval($newDoc['version']).' AND documentTable="'.escape_sql_query($newDoc['documentTable']).'" AND documentID='.intval($newDoc['documentID']).' ORDER BY version DESC limit 1');
 }
 
 $isObj = false;
@@ -175,7 +174,7 @@ if ($isTempl) {
 	if($newDoc['documentElements']){
 	 $nDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4)==0 ?
 		 html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES):
-		 $newDoc['documentElements'])
+		 gzuncompress($newDoc['documentElements']))
 		 );
 	}else{
 		$nDocElements = array();
@@ -189,7 +188,7 @@ if(!empty($oldDoc) && $isTempl) {
 	if($oldDoc['documentElements']){
 	$oDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4)==0 ?
 		html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES):
-		$oldDoc['documentElements'])
+		gzuncompress($oldDoc['documentElements']))
 		);
 	}else{
 		$oDocElements = array();
@@ -302,7 +301,7 @@ $contentDiff .= '</td></tr>';
 if($newDoc['documentElements']){
 	$newDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4)==0 ?
 		html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES):
-		$newDoc['documentElements'])
+		gzuncompress($newDoc['documentElements']))
 		);
 }else{
 	$newDocElements = array();
@@ -312,7 +311,7 @@ if($newDoc['documentElements']){
 		if($oldDoc['documentElements']){
 		$oldDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4)==0 ?
 			html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES):
-			$oldDoc['documentElements'])
+			gzuncompress($oldDoc['documentElements']))
 			);
 		}else{
 			$oldDocElements = array();
@@ -426,7 +425,7 @@ $contentDiff .= '</table>';
 	if($newDoc['documentScheduler']){
 		$newDocScheduler = unserialize((substr_compare($newDoc['documentScheduler'], 'a%3A', 0, 4)==0 ?
 			html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES):
-			$newDoc['documentScheduler'])
+			gzuncompress($newDoc['documentScheduler']))
 			);
 	}else{
 		$newDocScheduler =array();
@@ -435,7 +434,7 @@ $contentDiff .= '</table>';
 			if($oldDoc['documentScheduler']){
 				$oldDocScheduler = unserialize((substr_compare($oldDoc['documentScheduler'], 'a%3A', 0, 4)==0 ?
 					html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES):
-					$oldDoc['documentScheduler'])
+					gzuncompress($oldDoc['documentScheduler']))
 					);
 				}else{
 					$oldDocScheduler = array();
@@ -567,7 +566,7 @@ $contentDiff .= '</table>';
 	if($newDoc['documentCustomFilter']){
 	$newCustomFilter = unserialize((substr_compare($newDoc['documentCustomFilter'], 'a%3A', 0, 4)==0 ?
 			html_entity_decode(urldecode($newDoc['documentCustomFilter']), ENT_QUOTES):
-			$newDoc['documentCustomFilter'])
+			gzuncompress($newDoc['documentCustomFilter']))
 			);
 	}else{
 		$newCustomFilter = array();
@@ -576,7 +575,7 @@ $contentDiff .= '</table>';
 			if($oldDoc['documentCustomFilter']){
 			$oldCustomFilter = unserialize((substr_compare($oldDoc['documentCustomFilter'], 'a%3A', 0, 4)==0 ?
 				html_entity_decode(urldecode($oldDoc['documentCustomFilter']), ENT_QUOTES):
-				$oldDoc['documentCustomFilter'])
+				gzuncompress($oldDoc['documentCustomFilter']))
 				);
 		}else{
 			$oldCustomFilter = array();

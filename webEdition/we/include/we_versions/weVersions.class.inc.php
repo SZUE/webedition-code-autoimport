@@ -1207,19 +1207,19 @@ class weVersions {
 			case "documentElements":
 				if(!empty($document["elements"]) && is_array($document["elements"])) {
 					//$entry = urlencode(htmlentities(serialize($document["elements"]), ENT_QUOTES));
-					$entry = serialize($document["elements"]);
+					$entry = gzcompress(serialize($document["elements"]),9);
 				}
 			break;
 			case "documentScheduler":
 				if(!empty($document["schedArr"]) && is_array($document["schedArr"])) {
 					//$entry = urlencode(htmlentities(serialize($document["schedArr"]), ENT_QUOTES));
-					$entry = serialize($document["schedArr"]);
+					$entry = gzcompress(serialize($document["schedArr"]),9);
 				}
 			break;
 			case "documentCustomFilter":
 				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])) {
 					//$entry = urlencode(htmlentities(serialize($document["documentCustomerFilter"]), ENT_QUOTES));
-					$entry = serialize($document["documentCustomerFilter"]);
+					$entry = gzcompress(serialize($document["documentCustomerFilter"]),9);
 				}
 			break;
 			case "timestamp":
@@ -1368,7 +1368,7 @@ class weVersions {
 									}else{
 									$lastEntryField = unserialize( (substr_compare($lastEntryField, 'a%3A', 0, 4)==0 ?
 										html_entity_decode(urldecode($lastEntryField), ENT_QUOTES)
-										:$lastEntryField)
+										:gzuncompress($lastEntryField))
 										);
 									}
 									switch ($val) {
@@ -1853,8 +1853,8 @@ class weVersions {
 					elseif($k=="documentElements") {
 						if($v!="") {
 							$docElements = unserialize( (substr_compare($v, 'a%3A', 0, 4)==0 ?
-								html_entity_decode(urldecode($v), ENT_QUOTES)
-								:$v)
+								html_entity_decode(urldecode($v), ENT_QUOTES):
+								gzuncompress($v))
 								);
 							$resetDoc->elements = $docElements;
 						}
@@ -1862,8 +1862,8 @@ class weVersions {
 					elseif($k=="documentScheduler") {
 						if($v!="") {
 							$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4)==0 ?
-								html_entity_decode(urldecode($v), ENT_QUOTES)
-								:v)
+								html_entity_decode(urldecode($v), ENT_QUOTES):
+								gzuncompress($v))
 								);
 							$resetDoc->schedArr = $docElements;
 						}
@@ -1872,7 +1872,7 @@ class weVersions {
 						if($v!="") {
 							$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4)==0 ?
 								html_entity_decode(urldecode($v), ENT_QUOTES):
-								$v)
+								gzuncompress($v))
 								);
 							$resetDoc->documentCustomerFilter = new weDocumentCustomerFilter();
 							foreach($docElements as $k => $v) {
@@ -2028,404 +2028,320 @@ class weVersions {
 		}
 	}
 
-
+public static function showValue($k, $v, $table=''){
+	$val=self::_showValue($k, $v, $table);
+	return ($val?$val:'&nbsp;');
+}
    /**
 	* @abstract return the fieldvalue that has been changed
 	*/
-	function showValue($k, $v, $table='') {
+ private static function _showValue($k, $v, $table){
 
 		$pathLength = 41;
 
 		$db = new DB_WE();
 
-		if($k=="timestamp") {
-			$v = date("d.m.y - H:i:s", $v);
-		}
-		if($k=="status") {
-			$v = $GLOBALS['l_versions'][$v];
-		}
-		if($k=="modifierID") {
-			$v = id_to_path($v, USER_TABLE);
-		}
-		if($k=="ParentID") {
-			$v = id_to_path($v, $table);
-		}
-		if($k=="CreatorID") {
-			$v = id_to_path($v, USER_TABLE);
-		}
-		if($k=="TemplateID") {
-			$v = id_to_path($v, TEMPLATES_TABLE);
-		}
-		if($k=="IsSearchable") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
-		}
-		if($k=="InGlossar") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
-		}
-		if($k=="IsDynamic") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
-		}
-		if($k=="DocType") {
-			$docType = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '".$v."'","DocType",$db);
-			$v = $docType;
-		}
-		if($k=="RestrictOwners") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
-		}
-		if($k=="Language") {
-			$v = isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
-		}
-		if($k=="WebUserID") {
-			$v = id_to_path($v, CUSTOMER_TABLE);
-		}
-		if($k=="Workspaces") {
-			$fieldValueText = '';
-			if($v!='') {
-				$vals = makeArrayFromCSV($v);
-				if(!empty($vals)) {
-					foreach($vals as $k) {
-						if($fieldValueText!="") {
-							$fieldValueText .= "<br/>";
-						}
-						$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE),$pathLength);
-					}
-				}
-			}
-			$v = $fieldValueText;
-		}
-		if($k=="ExtraWorkspaces") {
-			$fieldValueText = '';
-			if($v!='') {
-				$vals = makeArrayFromCSV($v);
-				if(!empty($vals)) {
-					foreach($vals as $k) {
-						if($fieldValueText!="") {
-							$fieldValueText .= "<br/>";
-						}
-						$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE),$pathLength);
-					}
-				}
-			}
-			$v = $fieldValueText;
-		}
-		if($k=="ExtraWorkspacesSelected") {
-			$fieldValueText = '';
-			if($v!='') {
-				$vals = makeArrayFromCSV($v);
-				if(!empty($vals)) {
-					foreach($vals as $k) {
-						if($fieldValueText!="") {
-							$fieldValueText .= "<br/>";
-						}
-						$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE),$pathLength);
-					}
-				}
-			}
-			$v = $fieldValueText;
-		}
-		if($k=="Templates") {
-			$fieldValueText = '';
-			if($v!='') {
-				$vals = makeArrayFromCSV($v);
-				if(!empty($vals)) {
-					foreach($vals as $k) {
-						if($fieldValueText!="") {
-							$fieldValueText .= "<br/>";
-						}
-						$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE),$pathLength);
-					}
-				}
-			}
-			$v = $fieldValueText;
-		}
-		if($k=="ExtraTemplates") {
-			$fieldValueText = '';
-			if($v!='') {
-				$vals = makeArrayFromCSV($v);
-				if(!empty($vals)) {
-					foreach($vals as $k) {
-						if($fieldValueText!="") {
-							$fieldValueText .= "<br/>";
-						}
-						$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE),$pathLength);
-					}
-				}
-			}
-			$v = $fieldValueText;
-		}
-		if($k=="fromScheduler") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
-		}
-		if($k=="fromImport") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
-		}
-		if($k=="resetFromVersion") {
-			$v = ($v==0) ? "-" : $v;
-		}
-
-		if($k=="Category") {
-			$fieldValueText = "";
-			$v = makeArrayFromCSV($v);
-				if(!empty($v)) {
-					foreach($v as $key) {
-						if($fieldValueText!="") {
-							$fieldValueText .= "<br/>";
-						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CATEGORY_TABLE),$pathLength);
-					}
-				}
-			$v = $fieldValueText;
-		}
-
-		if($k=="Owners") {
-			$fieldValueText = "";
-			$v = makeArrayFromCSV($v);
-			if(!empty($v)) {
-				foreach($v as $key) {
-					if($fieldValueText!="") {
-						$fieldValueText .= "<br/>";
-					}
-					$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE),$pathLength);
-				}
-			}
-			$v = $fieldValueText;
-		}
-		if($k=="OwnersReadOnly") {
-			$fieldValueText = "";
-			if($v!='' && !is_array($v)) {
-				$v = unserialize($v);
-			}
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $key => $val) {
-					if($fieldValueText!="") {
-						$fieldValueText .= "<br/>";
-					}
-					$stat = ($val==1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
-					$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength).": ".$stat;
-
-				}
-			}
-			$v = $fieldValueText;
-
-		}
-
-		if($k=="weInternVariantElement") {
-			$fieldValueText = "";
-			if($v!='' && !is_array($v)) {
-				$v = unserialize($v);
-			}
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $key => $val) {
-					if(is_array($val)) {
-						foreach($val as $k => $vl) {
-							if($k!="") {
-								$fieldValueText .= "<strong>".$k."</strong><br/>";
+		switch($k){
+			case 'timestamp':
+				return date("d.m.y - H:i:s", $v);
+			case 'status':
+				return $GLOBALS['l_versions'][$v];
+			case 'ParentID':
+				return id_to_path($v, $table);
+			case 'modifierID':
+			case 'CreatorID':
+				return id_to_path($v, USER_TABLE);
+			case 'MasterTemplateID':
+			case 'TemplateID':
+				return ($v==0?'':id_to_path($v, TEMPLATES_TABLE));
+			case 'InGlossar':
+			case 'IsDynamic':
+			case 'IsSearchable':
+				return ($v == 1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+			case 'DocType':
+				return f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '" . $v . "'", "DocType", $db);
+			case 'RestrictOwners':
+				return ($v == 1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+			case 'Language':
+				return isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
+			case 'WebUserID':
+				return id_to_path($v, CUSTOMER_TABLE);
+			case 'Workspaces':
+				$fieldValueText = '';
+				if($v != ''){
+					$vals = makeArrayFromCSV($v);
+					if(!empty($vals)){
+						foreach($vals as $k){
+							if($fieldValueText != ''){
+								$fieldValueText .= "<br/>";
 							}
-							if(is_array($val)) {
-								foreach($vl as $key3 => $val3) {
-									if($key3!="") {
-										$fieldValueText .= $key3.": ";
+							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+						}
+					}
+				}
+				return $fieldValueText;
+			case 'ExtraWorkspaces':
+				$fieldValueText = '';
+				if($v != ''){
+					$vals = makeArrayFromCSV($v);
+					if(!empty($vals)){
+						foreach($vals as $k){
+							if($fieldValueText != ""){
+								$fieldValueText .= "<br/>";
+							}
+							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+						}
+					}
+				}
+				return $fieldValueText;
+			case 'ExtraWorkspacesSelected':
+				$fieldValueText = '';
+				if($v != ''){
+					$vals = makeArrayFromCSV($v);
+					if(!empty($vals)){
+						foreach($vals as $k){
+							if($fieldValueText != ""){
+								$fieldValueText .= "<br/>";
+							}
+							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+						}
+					}
+				}
+				return $fieldValueText;
+			case 'Templates':
+				$fieldValueText = '';
+				if($v != ''){
+					$vals = makeArrayFromCSV($v);
+					if(!empty($vals)){
+						foreach($vals as $k){
+							if($fieldValueText != ""){
+								$fieldValueText .= "<br/>";
+							}
+							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+						}
+					}
+				}
+				return $fieldValueText;
+			case 'ExtraTemplates':
+				$fieldValueText = '';
+				if($v != ''){
+					$vals = makeArrayFromCSV($v);
+					if(!empty($vals)){
+						foreach($vals as $k){
+							if($fieldValueText != ""){
+								$fieldValueText .= "<br/>";
+							}
+							$fieldValueText .= shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+						}
+					}
+				}
+				return $fieldValueText;
+			case 'fromScheduler':
+				return ($v == 1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			case 'fromImport':
+				return ($v == 1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			case 'resetFromVersion':
+				return ($v == 0) ? "-" : $v;
+			case 'Category':
+				$fieldValueText = "";
+				$v = makeArrayFromCSV($v);
+				if(!empty($v)){
+					foreach($v as $key){
+						if($fieldValueText != ""){
+							$fieldValueText .= "<br/>";
+						}
+						$fieldValueText .= shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+					}
+				}
+				return $fieldValueText;
+			case 'Owners':
+				$fieldValueText = "";
+				$v = makeArrayFromCSV($v);
+				if(!empty($v)){
+					foreach($v as $key){
+						if($fieldValueText != ""){
+							$fieldValueText .= "<br/>";
+						}
+						$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
+					}
+				}
+				return $fieldValueText;
+			case 'OwnersReadOnly':
+				$fieldValueText = "";
+				if($v != '' && !is_array($v)){
+					$v = unserialize($v);
+				}
+				if(is_array($v) && !empty($v)){
+					foreach($v as $key => $val){
+						if($fieldValueText != ""){
+							$fieldValueText .= "<br/>";
+						}
+						$stat = ($val == 1) ? $GLOBALS['l_versions']['activ'] : $GLOBALS['l_versions']['notactiv'];
+						$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
+					}
+				}
+				return $fieldValueText;
+			case 'weInternVariantElement':
+				$fieldValueText = "";
+				if($v != '' && !is_array($v)){
+					$v = unserialize($v);
+				}
+				if(is_array($v) && !empty($v)){
+					foreach($v as $key => $val){
+						if(is_array($val)){
+							foreach($val as $k => $vl){
+								if($k != ""){
+									$fieldValueText .= "<strong>" . $k . "</strong><br/>";
+								}
+								if(is_array($val)){
+									foreach($vl as $key3 => $val3){
+										if($key3 != ""){
+											$fieldValueText .= $key3 . ": ";
+										}
+										if(isset($val3['dat']) && $val3['dat'] != ""){
+											$fieldValueText .= $val3['dat'] . "<br/>";
+										}
 									}
-									if(isset($val3['dat']) && $val3['dat']!="") {
-										$fieldValueText .= $val3['dat']."<br/>";
-									}
-
 								}
 							}
-
 						}
 					}
-
 				}
-			}
-			$fieldValueText .= "<br/>";
-
-			$v = $fieldValueText;
-
-
-		}
-		//Scheduler
-		if($k=="task") {
-			if($v!=""){
-				$v = $GLOBALS['l_versions'][$k."_".$v];
-			}
-		}
-		if($k=="type") {
-			$v = $GLOBALS['l_versions']["type_".$v];
-		}
-
-		if($k=="active") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
-		}
-
-		if($k=="months") {
-			$months = array();
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $k=>$v) {
-					if($v==1) {
-						$months[] = $GLOBALS["l_monthShort"][$k];
-					}
-				}
-			}
-			$v = makeCSVFromArray($months , false, ", ");
-		}
-
-		if($k=="days") {
-			$days = array();
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $k=>$v) {
-					if($v==1) {
-						$day = $k+1;
-						if(strlen($day)==1) {
-							$day = "0".$day;
+				return $fieldValueText . "<br/>";
+			//Scheduler
+			case 'task':
+				return ($v != '' ? $GLOBALS['l_versions'][$k . "_" . $v] : '');
+			case 'type':
+				return $GLOBALS['l_versions']["type_" . $v];
+			case 'active':
+				return ($v == 1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			case 'months':
+				$months = array();
+				if(is_array($v) && !empty($v)){
+					foreach($v as $k => $v){
+						if($v == 1){
+							$months[] = $GLOBALS["l_monthShort"][$k];
 						}
-						$days[] = $day;
 					}
 				}
-			}
-
-			$v = makeCSVFromArray($days, false, ", ");
-		}
-
-		if($k=="weekdays") {
-			$weekdays = array();
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $k=>$v) {
-					if($v==1) {
-						$weekdays[] = $GLOBALS["l_dayShort"][$k];
+				return makeCSVFromArray($months, false, ", ");
+			case 'days':
+				$days = array();
+				if(is_array($v) && !empty($v)){
+					foreach($v as $k => $v){
+						if($v == 1){
+							$day = $k + 1;
+							if(strlen($day) == 1){
+								$day = "0" . $day;
+							}
+							$days[] = $day;
+						}
 					}
 				}
-			}
+				return makeCSVFromArray($days, false, ", ");
+			case 'weekdays':
+				$weekdays = array();
+				if(is_array($v) && !empty($v)){
+					foreach($v as $k => $v){
+						if($v == 1){
+							$weekdays[] = $GLOBALS["l_dayShort"][$k];
+						}
+					}
+				}
 
-			$v = makeCSVFromArray($weekdays, false, ", ");
-		}
-
-		if($k=="time") {
-			$v = date("d.m.y - H:i:s", $v);
-		}
-
-		if($k=="doctypeAll") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : '';
-		}
-
-		if($k=="DoctypeID") {
-			$docType = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '".abs($v)."'","DocType",$db);
-			$v = $docType;
-		}
-
-		if($k=="CategoryIDs") {
-			$fieldValueText = "";
-			$v = makeArrayFromCSV($v);
-				if(!empty($v)) {
-					foreach($v as $key) {
-						if($fieldValueText!="") {
+				return makeCSVFromArray($weekdays, false, ", ");
+			case 'time':
+				return date("d.m.y - H:i:s", $v);
+			case 'doctypeAll':
+				return ($v == 1) ? $GLOBALS['l_versions']['yes'] : '';
+			case 'DoctypeID':
+				return f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '" . abs($v) . "'", "DocType", $db);
+			case 'CategoryIDs':
+				$fieldValueText = "";
+				$v = makeArrayFromCSV($v);
+				if(!empty($v)){
+					foreach($v as $key){
+						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= shortenPathSpace(id_to_path($key, CATEGORY_TABLE),$pathLength);
+						$fieldValueText .= shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
-			$v = $fieldValueText;
-		}
-
-		//Customer Filter
-
-		if($k=="_id") {
-			$v = ($v=="") ? 0 : $v;
-			return $v;
-		}
-
-		if($k=="_accessControlOnTemplate") {
-			$v = ($v==1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
-		}
-
-		if($k=="_errorDocNoLogin") {
-			$v = shortenPathSpace(id_to_path($v, FILE_TABLE),$pathLength);
-		}
-
-		if($k=="_errorDocNoAccess") {
-			$v = shortenPathSpace(id_to_path($v, FILE_TABLE),$pathLength);
-		}
-
-		if($k=="_mode") {
-			if($v==0) {
-				$v = $GLOBALS["l_customerFilter"]['mode_off'];
-			}
-			if($v==1) {
-				$v = $GLOBALS["l_customerFilter"]['mode_all'];
-			}
-			if($v==2) {
-				$v = $GLOBALS["l_customerFilter"]['mode_specific'];
-			}
-			if($v==3) {
-				$v = $GLOBALS["l_customerFilter"]['mode_filter'];
-			}
-		}
-
-		if($k=="_specificCustomers") {
-			$fieldValueText = "";
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $key) {
-					if($fieldValueText!="") {
-						$fieldValueText .= "<br/>";
-					}
-					$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE),$pathLength);
+				return $fieldValueText;
+			//Customer Filter
+			case '_id':
+				return ($v == "") ? 0 : $v;
+			case '_accessControlOnTemplate':
+				return ($v == 1) ? $GLOBALS['l_versions']['yes'] : $GLOBALS['l_versions']['no'];
+			case '_errorDocNoLogin':
+				return shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+			case '_errorDocNoAccess':
+				return shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+			case '_mode':
+				switch($v){
+					case 0:
+						return $GLOBALS["l_customerFilter"]['mode_off'];
+					case 1:
+						return $GLOBALS["l_customerFilter"]['mode_all'];
+					case 2:
+						return $GLOBALS["l_customerFilter"]['mode_specific'];
+					case 3:
+						return $GLOBALS["l_customerFilter"]['mode_filter'];
+					default:
+						return '';
 				}
-			}
-			$v = $fieldValueText;
-		}
-
-		if($k=="_blackList") {
-			$fieldValueText = "";
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $key) {
-					if($fieldValueText!="") {
-						$fieldValueText .= "<br/>";
+			case '_specificCustomers':
+				$fieldValueText = "";
+				if(is_array($v) && !empty($v)){
+					foreach($v as $key){
+						if($fieldValueText != ""){
+							$fieldValueText .= "<br/>";
+						}
+						$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
-					$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE),$pathLength);
 				}
-			}
-			$v = $fieldValueText;
-		}
-
-		if($k=="_whiteList") {
-			$fieldValueText = "";
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $key) {
-					if($fieldValueText!="") {
-						$fieldValueText .= "<br/>";
+				return $fieldValueText;
+			case '_blackList':
+				$fieldValueText = "";
+				if(is_array($v) && !empty($v)){
+					foreach($v as $key){
+						if($fieldValueText != ""){
+							$fieldValueText .= "<br/>";
+						}
+						$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
-					$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE),$pathLength);
 				}
-			}
-			$v = $fieldValueText;
-		}
-
-		if($k=="_filter") {
-			$fieldValueText = "";
-			if(is_array($v) && !empty($v)) {
-				foreach($v as $key=>$val) {
-					$fieldValueText .= $key.":<br/>";
-					if(is_array($val) && !empty($val)) {
-						foreach($val as $key2=>$val2) {
-							$fieldValueText .= $key2.":".$val2."<br/>";
+				return $fieldValueText;
+			case '_whiteList':
+				$fieldValueText = "";
+				if(is_array($v) && !empty($v)){
+					foreach($v as $key){
+						if($fieldValueText != ""){
+							$fieldValueText .= "<br/>";
+						}
+						$fieldValueText .= shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+					}
+				}
+				return $fieldValueText;
+			case '_filter':
+				$fieldValueText = "";
+				if(is_array($v) && !empty($v)){
+					foreach($v as $key => $val){
+						$fieldValueText .= $key . ":<br/>";
+						if(is_array($val) && !empty($val)){
+							foreach($val as $key2 => $val2){
+								$fieldValueText .= $key2 . ":" . $val2 . "<br/>";
+							}
 						}
 					}
 				}
-			}
-			$v = $fieldValueText;
+				return $fieldValueText;
+			default:
+				return '';
 		}
-
-		if($v=="") {
-			$v = getPixel(1,1);
-		}
-
-
-		return $v;
-
 	}
 
-
-   /**
+	/**
 	* @abstract get array of fieldnames from $table
 	* @return array of fieldnames
 	*/
