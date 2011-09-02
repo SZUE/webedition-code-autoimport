@@ -1150,18 +1150,15 @@ class weVersions {
 				$keys = array();
 				$vals = array();
 
-				for($i=0;$i<count($tblversionsFields);$i++){
+				foreach($tblversionsFields as $fieldName){
 
-					$fieldName = $tblversionsFields[$i];
-					if($fieldName!="ID") {
+					if($fieldName!='ID') {
 						$keys[] = $fieldName;
 
 						if(isset($document[$fieldName])) {
-							$vals[] = "'".escape_sql_query($document[$fieldName])."'";
-						}
-						else {
-							$entry = $this->makePersistentEntry($fieldName, $status, $document, $documentObj);
-							$vals[] = "'".$entry."'";
+							$vals[] = '"'.$db->escape($document[$fieldName]).'"';
+						} else {
+							$vals[] = '"'.$db->escape($this->makePersistentEntry($fieldName, $status, $document, $documentObj)).'"';
 						}
 					}
 				}
@@ -1191,15 +1188,13 @@ class weVersions {
 
 	}
 
-
    /**
 	* @abstract give the persistent fieldnames the values if you save, publish or unpublish
 	* persistent fieldnames are fields which are not in tblfile or tblobjectsfile and are always saved
 	* @return value of field
 	*/
 	function makePersistentEntry($fieldName, $status, $document, $documentObj) {
-
-		$entry = "";
+		$entry = '';
 		$db = new DB_WE();
 
 		switch($fieldName) {
@@ -1211,27 +1206,25 @@ class weVersions {
 			break;
 			case "documentElements":
 				if(!empty($document["elements"]) && is_array($document["elements"])) {
-					$entry = urlencode(htmlentities(serialize($document["elements"]), ENT_QUOTES));
+					//$entry = urlencode(htmlentities(serialize($document["elements"]), ENT_QUOTES));
+					$entry = serialize($document["elements"]);
 				}
 			break;
 			case "documentScheduler":
 				if(!empty($document["schedArr"]) && is_array($document["schedArr"])) {
-					$entry = urlencode(htmlentities(serialize($document["schedArr"]), ENT_QUOTES));
+					//$entry = urlencode(htmlentities(serialize($document["schedArr"]), ENT_QUOTES));
+					$entry = serialize($document["schedArr"]);
 				}
 			break;
 			case "documentCustomFilter":
 				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])) {
-					$entry = urlencode(htmlentities(serialize($document["documentCustomerFilter"]), ENT_QUOTES));
+					//$entry = urlencode(htmlentities(serialize($document["documentCustomerFilter"]), ENT_QUOTES));
+					$entry = serialize($document["documentCustomerFilter"]);
 				}
 			break;
 			case "timestamp":
-				$lastEntryVersion = f("SELECT ID FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($document["ID"])."' AND documentTable='".$db->escape($document["Table"])."' LIMIT 1","ID", $db);
-				if($lastEntryVersion) {
-					$entry = time();
-				}
-				else {
-					$entry = $document['CreationDate'];
-				}
+				$lastEntryVersion = f("SELECT ID FROM " . VERSIONS_TABLE . " WHERE documentID=".intval($document["ID"])." AND documentTable='".$db->escape($document["Table"])."' LIMIT 1",'ID', $db);
+				$entry = ($lastEntryVersion?time():$document['CreationDate']);
 			break;
 			case "status":
 				$this->setStatus($status);
@@ -1243,7 +1236,7 @@ class weVersions {
 				}
 			break;
 			case "version":
-				$lastEntryVersion = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($document["ID"])."' AND documentTable='".$db->escape($document["Table"])."' ORDER BY version DESC LIMIT 1","version",$db);
+				$lastEntryVersion = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE documentID=".intval($document["ID"])." AND documentTable='".$db->escape($document["Table"])."' ORDER BY version DESC LIMIT 1",'version',$db);
 				if($lastEntryVersion) {
 					$newVersion = $lastEntryVersion + 1;
 					$this->setVersion($newVersion);
@@ -1258,8 +1251,7 @@ class weVersions {
 					//if($document["ContentType"]=="objectFile") { vor #4120
 					if($document["ContentType"]=="objectFile" || $document["ContentType"]=="text/weTmpl") {
 						$binaryPath = "";
-					}
-					else {
+					}else {
 						$documentPath = substr($document["Path"], 1);
 						$siteFile = $_SERVER["DOCUMENT_ROOT"].SITE_DIR.$documentPath;
 
@@ -1270,14 +1262,12 @@ class weVersions {
 
 						if($document["IsDynamic"]) {
 							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER["DOCUMENT_ROOT"].$binaryPath, $documentObj);
-						}
-						elseif(file_exists($siteFile) && $document["Extension"]==".php" && ($document["ContentType"]=='text/webedition' || $document["ContentType"]=='text/html')) {
+						}elseif(file_exists($siteFile) && $document["Extension"]==".php" && ($document["ContentType"]=='text/webedition' || $document["ContentType"]=='text/html')) {
 
 							$contents = "";
 							if (function_exists('file_get_contents')) {
 								$contents = file_get_contents($siteFile);
-							}
-							else {
+							}else {
 								ob_start();
 								//if there is a header(location... don't execute it
 								ob_flush();
@@ -1301,8 +1291,7 @@ class weVersions {
 							header("Location: " . $location);
 							*/
 
-						}
-						else {
+						}else {
 							if(isset($document['TemplatePath']) && $document['TemplatePath']!="" && substr($document['TemplatePath'], -18)!="/we_noTmpl.inc.php" && $document['ContentType']=="text/webedition") {
 								$includeTemplate = preg_replace('/.tmpl$/i','.php', $document['TemplatePath']);
 								$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER["DOCUMENT_ROOT"].$binaryPath, $documentObj);
@@ -1313,8 +1302,7 @@ class weVersions {
 								ob_end_clean();
 								saveFile($_SERVER["DOCUMENT_ROOT"].$binaryPath,$contents);
 								*/
-							}
-							else {
+							}else {
 								copy($siteFile,$_SERVER["DOCUMENT_ROOT"].$binaryPath);
 							}
 						}
@@ -1371,16 +1359,18 @@ class weVersions {
 									$modifications[] = $val;
 								}
 
-							}
-							else {
+							} else {
 								if($val=="documentElements" || $val=="documentScheduler" || $val=="documentCustomFilter") {
 									$newData = array();
 									$diff = array();
-									$lastEntryField = unserialize(html_entity_decode(urldecode($lastEntryField), ENT_QUOTES));
 									if($lastEntryField=="") {
 										$lastEntryField = array();
+									}else{
+									$lastEntryField = unserialize( (substr_compare($lastEntryField, 'a%3A', 0, 4)==0 ?
+										html_entity_decode(urldecode($lastEntryField), ENT_QUOTES)
+										:$lastEntryField)
+										);
 									}
-
 									switch ($val) {
 										case "documentElements":
 											if(!empty($document["elements"])) {
@@ -1398,8 +1388,7 @@ class weVersions {
 										case "documentScheduler":
 										if(empty($document["schedArr"]) && !empty($lastEntryField)) {
 											$diff['schedArr'] = true;
-										}
-										elseif(!empty($document["schedArr"]) && empty($lastEntryField)) {
+										}elseif(!empty($document["schedArr"]) && empty($lastEntryField)) {
 											$diff['schedArr'] = true;
 										}
 										if(!empty($document["schedArr"])) {
@@ -1438,12 +1427,12 @@ class weVersions {
 									}
 
 								}
-								if($document["ContentType"]=="application/x-shockwave-flash" || $document["ContentType"]=="application/*"
+								/*if($document["ContentType"]=="application/x-shockwave-flash" || $document["ContentType"]=="application/*"
 								 	|| $document["ContentType"]=="video/quicktime" || $document["ContentType"]=="image/*") {
 									if($val=="binaryPath" && $this->binaryPath!="" && $lastEntryField!=$this->binaryPath) {
 										//$modifications[] = $val;
 									}
-								}
+								}*/
 
 								if($val=="status" && $lastEntryField!=$this->status) {
 									$modifications[] = $val;
@@ -1863,19 +1852,28 @@ class weVersions {
 					}
 					elseif($k=="documentElements") {
 						if($v!="") {
-							$docElements = unserialize(html_entity_decode(urldecode($v), ENT_QUOTES));
+							$docElements = unserialize( (substr_compare($v, 'a%3A', 0, 4)==0 ?
+								html_entity_decode(urldecode($v), ENT_QUOTES)
+								:$v)
+								);
 							$resetDoc->elements = $docElements;
 						}
 					}
 					elseif($k=="documentScheduler") {
 						if($v!="") {
-							$docElements = unserialize(html_entity_decode(urldecode($v), ENT_QUOTES));
+							$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4)==0 ?
+								html_entity_decode(urldecode($v), ENT_QUOTES)
+								:v)
+								);
 							$resetDoc->schedArr = $docElements;
 						}
 					}
 					elseif($k=="documentCustomFilter") {
 						if($v!="") {
-							$docElements = unserialize(html_entity_decode(urldecode($v), ENT_QUOTES));
+							$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4)==0 ?
+								html_entity_decode(urldecode($v), ENT_QUOTES):
+								$v)
+								);
 							$resetDoc->documentCustomerFilter = new weDocumentCustomerFilter();
 							foreach($docElements as $k => $v) {
 								if(isset($resetDoc->documentCustomerFilter->$k)) {
