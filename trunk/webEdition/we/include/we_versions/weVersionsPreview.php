@@ -383,7 +383,7 @@ if($newDoc['documentElements']){
 			if($isTempl && class_exists('Text_Diff',false) && $pre!=''){
 				$oldVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$oldVal)));
         $newVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$newVal)));
-        $diff = new Text_Diff('native', array(($oldVersion?$oldVal:''),is_array($newVal)?$newVal:array() ));
+        $diff = new Text_Diff('native', array(($oldVersion?$oldVal:array()),is_array($newVal)?$newVal:array() ));
 				$renderer = new Text_Diff_Renderer_inline(array('ins_prefix' => '###INS_START###','ins_suffix' => '###INS_END###',
                                             'del_prefix' => '###DEL_START###','del_suffix' => '###DEL_END###',));
 
