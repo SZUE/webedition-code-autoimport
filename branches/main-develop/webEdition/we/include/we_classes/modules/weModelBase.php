@@ -47,8 +47,8 @@ class weModelBase {
 	function loadPresistents() {
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
-		for ($i = 0; $i < sizeof($tableInfo); $i++) {
-			$fname = $tableInfo[$i]["name"];
+		foreach($tableInfo as $info) {
+			$fname = $info["name"];
 			$this->persistent_slots[] = $fname;
 			if (!isset($this->$fname))
 				$this->$fname = "";
@@ -68,8 +68,8 @@ class weModelBase {
 			$tableInfo = $this->db->metadata($this->table);
 			$this->db->query("SELECT * FROM " . $this->table . " WHERE " . $this->getKeyWhere() . ";");
 			if ($this->db->next_record()) {
-				for ($i = 0; $i < sizeof($tableInfo); $i++) {
-					$fieldName = $tableInfo[$i]["name"];
+				foreach($tableInfo as $info) {
+					$fieldName = $info["name"];
 					if (in_array($fieldName, $this->persistent_slots)) {
 						$foo = $this->db->f($fieldName);
 						eval('$this->' . $fieldName . '=$foo;');

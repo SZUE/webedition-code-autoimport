@@ -24,12 +24,9 @@
 
 
 function we_tag_votingSession($attribs, $content){
- 	global $DB_WE,$we_editmode;
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/weVoting.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/weVoting.php");
-
-
- 	if(!$we_editmode){
+	if(!$GLOBALS['we_editmode']){
 		$_SESSION['_we_voting_sessionID'] = uniqid();
  	}
 

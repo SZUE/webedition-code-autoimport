@@ -1,9 +1,9 @@
 CREATE TABLE ###TBLPREFIX###tblMsgAccounts (
-  ID int(11) NOT NULL auto_increment,
-  UserID int(11) default NULL,
+  ID int(11) unsigned NOT NULL auto_increment,
+  UserID int(11) unsigned default NULL,
   name varchar(255) NOT NULL default '',
-  msg_type int(11) default NULL,
-  deletable tinyint(4) NOT NULL default '0',
+  msg_type int(11) unsigned default NULL,
+  deletable tinyint(4) unsigned NOT NULL default '0',
   uri varchar(255) default NULL,
   `user` varchar(255) default NULL,
   pass varchar(255) default NULL,

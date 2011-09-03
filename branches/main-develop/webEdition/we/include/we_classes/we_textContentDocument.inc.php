@@ -222,10 +222,13 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 
-	function formDocType2($width = 300) {
+	function formDocType2($width = 300, $disable=false) {
 		$q = getDoctypeQuery($this->DB_WE);
 
-		
+		if($disable){
+			$name=($this->DocType?f('SELECT DocType FROM '.DOC_TYPES_TABLE.' WHERE ID='.intval($this->DocType),'DocType',$this->DB_WE):$l_we_class["nodoctype"]);
+			return $l_we_class["doctype"].'<br>'.$name;
+		}
 		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", g_l('weClass',"[doctype]"), $q, 1, $this->DocType, false,
 								  (($this->DocType !== "") ?
 								  	"if(confirm('".g_l('weClass','[doctype_changed_question]')."')){we_cmd('doctype_changed');};" :
@@ -237,7 +240,7 @@ class we_textContentDocument extends we_textDocument{
 	function formDocTypeTempl(){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.$this->formDocType2(388).'</td>
+		<td class="defaultfont" align="left">'.$this->formDocType2(388,$this->Published).'</td>
 	</tr>
 	<tr>
 		<td>'.getPixel(2,6).'</td>
@@ -336,7 +339,7 @@ class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		
+
 		if(!$this->ID){  // when no ID, then allways save before in main table
 			if(!we_root::we_save(0)) return false;
 		}
@@ -380,6 +383,7 @@ class we_textContentDocument extends we_textDocument{
 			$ret=$hook->executeHook();
 			//check if doc should be saved
 			if($ret===false){
+				$this->errMsg=$hook->getErrorString();
 				return false;
 			}
 		}
@@ -402,9 +406,10 @@ class we_textContentDocument extends we_textDocument{
 			if(!$this->DB_WE->query('UPDATE '.$this->DB_WE->escape($this->Table)." SET Published='".intval($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
 		}
 
-		if($saveinMainDB) {
+		//Bug #5505
+//		if($saveinMainDB) {
 			$this->rewriteNavigation();
-		}
+//		}
 		if(isset($_SESSION['Versions']['fromScheduler']) && $_SESSION['Versions']['fromScheduler'] && ($this->ContentType=='text/webedition' || $this->ContentType=="text/html")) {
 			$version = new weVersions();
 			$version->save($this, 'published');

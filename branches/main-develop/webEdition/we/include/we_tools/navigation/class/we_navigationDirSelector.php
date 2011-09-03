@@ -472,6 +472,4 @@ function selectFile(id){
 
 <?php
 	}
-
-
 }

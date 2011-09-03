@@ -40,11 +40,9 @@ function we_tag_navigationEntry($attribs, $content) {
 	$type = weTag_getAttribute('type', $attribs);
 	$level = weTag_getAttribute('level', $attribs, 'defaultLevel');
 	$current = weTag_getAttribute('current', $attribs, 'defaultCurrent');
-	$position = weTag_getAttribute('position', $attribs, 'defaultPosition');
+	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, 'defaultPosition'));
 
-	$_positions = makeArrayFromCSV($position);
-
-	foreach ($_positions as $position) {
+	foreach ($positions as $position) {
 		if ($position == 'first') {
 			$position = 1;
 		}

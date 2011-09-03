@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,30 +22,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
 function we_tag_navigation($attribs, $content = ''){
 	$parentid = weTag_getAttribute("parentid", $attribs, -1);
 	$id = weTag_getAttribute("id", $attribs, 0);
 	$name = weTag_getAttribute("navigationname", $attribs, "default");
 
-	if (isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']) {
-
-		$GLOBALS['we_navigation'][$name] = new weNavigationItems();
-		$GLOBALS['we_navigation'][$name]->initByNavigationObject($parentid == -1 ? true : false);
-
-	} else {
-
-		$GLOBALS['we_navigation'][$name] = new weNavigationItems();
-
-		if (!$GLOBALS['we_navigation'][$name]->initFromCache(($id ? $id : ($parentid != -1 ? $parentid : 0)), false)) {
-
-			$GLOBALS['we_navigation'][$name]->initById(
-					$id ? $id : ($parentid != -1 ? $parentid : 0),
-					false,
-					$id ? true : ($parentid != -1 ? false : true));
+	$GLOBALS['we_navigation'][$name] = new weNavigationItems();
+	if(isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']){
+		$showRoot=($parentid == -1);
+		$GLOBALS['we_navigation'][$name]->initByNavigationObject($showRoot);
+	} else{
+		$realId=($id ? $id : ($parentid != -1 ? $parentid : 0));
+		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, false)){
+			$showRoot=($id ? true : ($parentid == -1));
+			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
 		}
-
 	}
 }

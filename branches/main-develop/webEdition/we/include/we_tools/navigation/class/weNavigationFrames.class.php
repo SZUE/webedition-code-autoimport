@@ -2783,5 +2783,3 @@ function onFolderSelectionChangeJS(elem) {
 	}
 
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifHasEntries($attribs = array(), $content = ''){
+function we_tag_ifHasEntries($attribs = array(), $content = '') {
 	if (isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])) {
 		$element = $GLOBALS['weNavigationItemArray'][(sizeof($GLOBALS['weNavigationItemArray']) - 1)];
 		if (sizeof($element->items)) {
-			$hasEntries=false;
-			foreach ($element->items as $item){
-				if ($item->visible) {$hasEntries=true;};	
+			$hasEntries = false;
+			foreach ($element->items as $item) {
+				if ($item->visible) {
+					return true;
+				}
 			}
-			return $hasEntries;
 		}
-		return false;
 	}
+	return false;
 }

@@ -112,7 +112,7 @@ function getAllowedClasses($db = '') {
 
 		while ($db->next_record()) {
 			$path = $db->f('Path');
-			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) || 
+			if (!$ws || $_SESSION['perms']['ADMINISTRATOR'] || (!$db->f('Workspaces')) ||
 							in_workspace($db->f('Workspaces'),$ws,FILE_TABLE,'',true)) {
 
 				$path2 = $path . '/';
@@ -245,6 +245,7 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 	$textField = getHtmlTag('input',array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => htmlspecialchars($value))));
 
 	$opts = getHtmlTag('option', array('value' => ''), '', true) . "\n";
+	$attsOpts=array();
 
 	if ($valuesIsHash) {
 		foreach ($values as $_val => $_text) {
@@ -268,7 +269,7 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 	$onchange = ($mode == 'add'
 		?'this.form.elements[\'' . $name . '\'].value += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);'
 		:'this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;');
-	
+
 	if (isset($atts['id'])) { //  use another ID!!!!
 		$atts['id'] = 'tmp_' . $atts['id'];
 	}
@@ -292,6 +293,7 @@ function we_getInputCheckboxField($name, $value, $attr) {
 	$attr['value'] = 1;
 	$attr['name'] = $tmpname;
 	$attr['onclick'] = 'this.form.elements[\'' . $name . '\'].value=(this.checked) ? 1 : 0';
+	$_attsHidden=array();
 
 	// hiddenField
 	if (isset($attr['xml'])) {
@@ -1010,7 +1012,7 @@ function getSQLForOneCatId($cat, $table = FILE_TABLE, $db = "", $fieldName = "Ca
 	// 1st get path of id
 	$catPath=f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID = ' . intval($cat),'Path',$db);
 
-	return ($catPath ? 
+	return ($catPath ?
 					getSQLForOneCat($catPath, $table, $db, $fieldName, $getParentCats):
 					'');
 }
@@ -1202,7 +1204,7 @@ function encode($in) {
  *
  * @param type $id
  * @param type $table
- * @return bool true on success, or if not in DB 
+ * @return bool true on success, or if not in DB
  */
 function deleteContentFromDB($id, $table) {
 	$DB_WE = new DB_WE();
@@ -1210,7 +1212,7 @@ function deleteContentFromDB($id, $table) {
 	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
 		return true;
 	}
-	
+
 	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
 		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '")');
 	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
@@ -1285,39 +1287,10 @@ function cleanTempFiles($cleanSessFiles = false) {
 	$d->close();
 }
 
-function getUsedTemplatesOfTemplate($id, &$arr) {
-	$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . abs($id),$GLOBALS['DB_WE']);
-	$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : '';
-	$_masterTemplateID = isset($_hash['MasterTemplateID']) ? $_hash['MasterTemplateID'] : 0;
-
-	$_tmpArr = makeArrayFromCSV($_tmplCSV);
-	foreach ($_tmpArr as $_tid) {
-		if (!in_array($_tid, $arr) && $_tid != $id) {
-			$arr[] = $_tid;
-		}
-	}
-	foreach ($_tmpArr as $_tid) {
-		getUsedTemplatesOfTemplate($_tid, $arr);
-	}
-
-	$_tmpArr = makeArrayFromCSV($_tmplCSV);
-	foreach ($_tmpArr as $_tid) {
-		if (!in_array($_tid, $arr) && $_tid != $id) {
-			$arr[] = $_tid;
-		}
-	}
-	if ($_masterTemplateID && !in_array($_masterTemplateID, $arr)) {
-		getUsedTemplatesOfTemplate($_masterTemplateID, $arr);
-	}
-
-	foreach ($_tmpArr as $_tid) {
-		getUsedTemplatesOfTemplate($_tid, $arr);
-	}
-}
 
 function getTemplatesOfTemplate($id, &$arr) {
 	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . abs($id) . " OR IncludedTemplates LIKE '%," . abs($id) . ",%'",'IDS',$GLOBALS['DB_WE']);
-	
+
 	if(!$foo){
 		return;
 	}
@@ -1430,19 +1403,9 @@ function debug($text) {
 	fclose($fp);
 }
 
-function debug2html($text) {
-	if (!($fp = fopen(LOG_DIR . '/debug.html', 'ab'))) {
-		mkdir(LOG_DIR, 0755);
-		$fp = fopen(LOG_DIR . '/debug.html', 'ab');
-	}
-
-	fwrite($fp, '<pre>' . $text . '</pre>');
-	fclose($fp);
-}
-
 function we_hasPerm($perm) {
 	return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
-					((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) || 
+					((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]) ||
 					(!isset($_SESSION['perms'][$perm])));
 }
 
@@ -1504,20 +1467,12 @@ function makeOwnersSql($useCreatorID = true) {
 function we_getParentIDs($table, $id, &$ids, $db = '') {
 	if (!$db)
 		$db = new DB_WE();
-	$pid = f("
-		SELECT ParentID
-		FROM $table
-		WHERE ID=" . abs($id), "ParentID", $db);
-	while ($pid > 0) {
-		array_push($ids, $pid);
-		$pid = f("
-			SELECT ParentID
-			FROM $table
-			WHERE ID=" . abs($pid), "ParentID", $db);
+	while (($pid = f('SELECT ParentID FROM '.$table.'WHERE ID=' . intval($id), 'ParentID', $db)) > 0) {
+		$ids[]=$pid;
 	}
 }
 
-function we_getAliases($id, &$ids, $db = "") {
+function we_getAliases($id, &$ids, $db = '') {
 	if (!$db)
 		$db = new DB_WE();
 	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . abs($id), 'IDS', $db);
@@ -1654,7 +1609,7 @@ function userIsOwnerCreatorOfParentDir($folderID, $tab) {
 				return false;
 			}
 		} else {
-			$pid = f('SELECT ParentID FROM '.$tab.' WHERE ID='.abs($folderID), 'ParentID', $db);
+			$pid = f('SELECT ParentID FROM '.$tab.' WHERE ID='.intval($folderID), 'ParentID', $db);
 			return userIsOwnerCreatorOfParentDir($pid, $tab);
 		}
 	return true;
@@ -2085,7 +2040,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 		$pidstr='';
 		if ($pid){$pidstr='?pid='.abs($pid);}
 		if ($objectseourls && $objecturl!=''){
-			
+
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
 				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 			} else {
@@ -2145,7 +2100,7 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
 
 		foreach ($regs as $reg) {
-			
+
 			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]).(isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition ? '':' AND Published > 0'), 'Path',$DB_WE);
 
 			if ($_path) {
@@ -2211,16 +2166,16 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 
 function removeHTML($val) {
 	$val = eregi_replace('<br ?/?>', '###BR###',
-					eregi_replace('<\?', '###?###', 
-									eregi_replace('\?>', '###/?###', 
+					eregi_replace('<\?', '###?###',
+									eregi_replace('\?>', '###/?###',
 													eregi_replace('<[^><]+>', '', $val))));
-	return str_replace('###BR###', '<br>', 
-					str_replace('###?###', '<?', 
+	return str_replace('###BR###', '<br>',
+					str_replace('###?###', '<?',
 									str_replace('###/?###', '?>', $val)));
 }
 
 function removePHP($val) {
-	$val = str_replace("<?", "", 
+	$val = str_replace("<?", "",
 					str_replace("?>", "", $val));
 	return preg_replace('|<script +language[^p]+php[^>]*>|si', '', $val);
 }
@@ -2670,7 +2625,7 @@ function getXmlAttributeValueAsBoolean($xml) {
 		case 'off':
 			return false;
 		default:
-			return (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false;		
+			return (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false;
 	}
 }
 
@@ -2880,7 +2835,7 @@ function getWeFrontendLanguagesForBackend(){
 			$la[$Locale] =  CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0],'language',$targetLang).' ('.Zend_Locale::getTranslation($temp[1],'territory',$targetLang).') ' .$Locale) ;
 		}
 	}
-	return $la; 		
+	return $la;
 }
 function we_writeLanguageConfig($default, $available = array()) {
 

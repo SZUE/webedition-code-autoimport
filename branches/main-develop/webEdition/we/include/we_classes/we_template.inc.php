@@ -152,7 +152,7 @@ class we_template extends we_document{
 		}
 		return '';
 	}
-	
+
 	function removeDoppel($tags){
 		$out = array();
 		foreach($tags as $tag){
@@ -164,7 +164,7 @@ class we_template extends we_document{
 	function findIfStart($tags,$nr){
 		if ($nr == 0) {
 			return -1;
-		} 
+		}
 		$foo = array();
 		$regs = array();
 		for ($i = $nr; $i >= 0; $i--) {
@@ -275,7 +275,7 @@ function handleShutdown($code) {
 		}
 
 		$tp->parseTags($code);
-		
+
 		if(!(defined('DISABLE_TEMPLATE_CODE_CHECK') && DISABLE_TEMPLATE_CODE_CHECK)){
 			$this->showShutdown=true;
 			register_shutdown_function(array($this,'handleShutdown'),$code);
@@ -287,7 +287,7 @@ function handleShutdown($code) {
 				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
 					$errCode.=$ln.': '.$tmp[$ln]."\n";
 				}
-				
+
 				$this->errMsg="Error: ".$error['message']."\nLine: ".$error['line']."\nCode: ".$errCode;
 				//type error will stop we
 				t_e('warning',"Error in template: ".$error['message'],'Line: '.$error['line'],'Code: '.$errCode);
@@ -687,6 +687,36 @@ function handleShutdown($code) {
 		return $att;
 	}
 
+static function getUsedTemplatesOfTemplate($id, &$arr) {
+	$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . abs($id),$GLOBALS['DB_WE']);
+	$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : '';
+	$_masterTemplateID = isset($_hash['MasterTemplateID']) ? $_hash['MasterTemplateID'] : 0;
+
+	$_tmpArr = makeArrayFromCSV($_tmplCSV);
+	foreach ($_tmpArr as $_tid) {
+		if (!in_array($_tid, $arr) && $_tid != $id) {
+			$arr[] = $_tid;
+		}
+	}
+	foreach ($_tmpArr as $_tid) {
+		self::getUsedTemplatesOfTemplate($_tid, $arr);
+	}
+
+	$_tmpArr = makeArrayFromCSV($_tmplCSV);
+	foreach ($_tmpArr as $_tid) {
+		if (!in_array($_tid, $arr) && $_tid != $id) {
+			$arr[] = $_tid;
+		}
+	}
+	if ($_masterTemplateID && !in_array($_masterTemplateID, $arr)) {
+		self::getUsedTemplatesOfTemplate($_masterTemplateID, $arr);
+	}
+
+	foreach ($_tmpArr as $_tid) {
+		self::getUsedTemplatesOfTemplate($_tid, $arr);
+	}
+}
+
 	function _updateCompleteCode() {
 		$code = $this->getTemplateCode(false);
 
@@ -715,7 +745,7 @@ function handleShutdown($code) {
 		if ($this->MasterTemplateID != 0) {
 
 			$_templates = array();
-			getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
+			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
 			if (in_array($this->ID, $_templates)) {
 				$code = g_l('parser','[template_recursion_error]');
 			} else {
@@ -777,7 +807,7 @@ function handleShutdown($code) {
 					// if id attribute is set and greater 0
 					if (isset($att["id"]) && abs($att["id"]) > 0) {
 						$_templates = array();
-						getUsedTemplatesOfTemplate($att["id"], $_templates);
+						self::getUsedTemplatesOfTemplate($att["id"], $_templates);
 						if (in_array($this->ID, $_templates)) {
 							$code = str_replace($tag,g_l('parser','[template_recursion_error]'),$code);
 						} else {
@@ -822,7 +852,7 @@ function handleShutdown($code) {
 		}
 		return $_ret;
 	}
-	
+
 	function we_publish(){
 		if(defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL){
 			$version = new weVersions();

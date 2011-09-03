@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblLock (
-  ID bigint(20) NOT NULL default '0',
-  UserID bigint(20) NOT NULL default '0',
+  ID bigint(20) unsigned NOT NULL default '0',
+  UserID bigint(20) unsigned NOT NULL default '0',
   sessionID varchar(64) NOT NULL default '',
   lockTime datetime NOT NULL,
   tbl varchar(32) NOT NULL default '',

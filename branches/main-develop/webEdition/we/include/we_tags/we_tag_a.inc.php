@@ -28,7 +28,7 @@ function we_tag_a($attribs, $content){
 	if (($foo = attributFehltError($attribs, 'id', 'a')))	return $foo;
 
 	// get attributes
-	
+
 	$id =weTag_getAttribute('id', $attribs);
 	if($id == 'self'){
 		$GLOBALS['WE_MAIN_DOC']->ID;
@@ -43,6 +43,10 @@ function we_tag_a($attribs, $content){
 	$amount = weTag_getAttribute('amount', $attribs, 1);
 	$delarticle = weTag_getAttribute('delarticle', $attribs, false, true);
 	$delshop = weTag_getAttribute('delshop', $attribs, false, true);
+	$urladd = weTag_getAttribute('params', $attribs);
+	if($urladd && strpos($urladd, '?')!==0){
+		$urladd='?'.$urladd;
+	}
 
 	$edit = weTag_getAttribute('edit', $attribs);
 
@@ -58,19 +62,13 @@ function we_tag_a($attribs, $content){
 
 	// init variables
 	$db = new DB_WE();
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.abs($id), $db);
+	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID='.intval($id), $db);
 	$url = (isset($row['Path']) ? $row['Path'] : '') . ((isset($row['IsFolder']) && $row['IsFolder']) ? '/' : '');
 	$path_parts = pathinfo($url);
 	if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE  && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 		$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
-	} 
+	}
 
-	$urladd = '';
-
-	/*include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
-	$tp = new we_tagParser($content);
-	$tp->parseTags($content);
-*/
 	if ((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')) {
 		if ($GLOBALS['we_editmode']) {
 			return parseError('in we:a attribute id not exists!');

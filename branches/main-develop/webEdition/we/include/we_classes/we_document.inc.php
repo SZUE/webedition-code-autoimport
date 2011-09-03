@@ -84,8 +84,7 @@ class we_document extends we_root {
 			if(function_exists('include_all_we_tags')) {include_all_we_tags();}
 		}
 		parent::__construct();
-		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
-		array_push($this->persistent_slots,'schedArr');
+		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language','schedArr');
 	}
 
 	function copyDoc($id) {
@@ -777,7 +776,7 @@ class we_document extends we_root {
 		if(!$ret || ($this->errMsg!='')){
 			return false;
 		}
-		
+
 		if($resave==0) { // NO rebuild!!!
 			$this->resaveWeDocumentCustomerFilter();
 
@@ -1339,7 +1338,7 @@ class we_document extends we_root {
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
 					if ($published) {
 						$path_parts = pathinfo($path);
-						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){	
+						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							$path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 						}
 						return $path;

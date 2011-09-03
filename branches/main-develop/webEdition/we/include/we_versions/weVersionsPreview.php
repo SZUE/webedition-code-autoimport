@@ -33,15 +33,14 @@ $_db = new DB_WE();
 
 $ID = $_REQUEST["we_cmd"][1];
 
-$newDoc = weVersions::loadVersion(" WHERE ID='".abs($ID)."' ");
+$newDoc = weVersions::loadVersion(' WHERE ID='.intval($ID));
 
 $compareID = "";
 if(isset($_REQUEST["we_cmd"][2])) {
 	$compareID = $_REQUEST["we_cmd"][2];
-	$oldDoc = weVersions::loadVersion(" WHERE ID='".abs($compareID)."' ");
-}
-else {
-	$oldDoc = weVersions::loadVersion(" WHERE version < '".abs($newDoc['version'])."' AND documentTable='".escape_sql_query($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."' ORDER BY version DESC limit 1 ");
+	$oldDoc = weVersions::loadVersion(' WHERE ID='.intval($compareID));
+} else {
+	$oldDoc = weVersions::loadVersion(' WHERE version < '.intval($newDoc['version']).' AND documentTable="'.escape_sql_query($newDoc['documentTable']).'" AND documentID='.intval($newDoc['documentID']).' ORDER BY version DESC limit 1');
 }
 
 $isObj = false;
@@ -171,14 +170,28 @@ if(!($isObj || $isTempl)) {
 	$contentNew = '<iframe  name="previewNew" src="'.$fileNew.'" width="980" height="680" frameborder="no" border="0"></iframe>';
 }
 if ($isTempl) {
-	 $nDocElements = unserialize(html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES));
+	if($newDoc['documentElements']){
+	 $nDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4)==0 ?
+		 html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES):
+		 gzuncompress($newDoc['documentElements']))
+		 );
+	}else{
+		$nDocElements = array();
+	}
 	 $contentNew = '<textarea style="width:99%;height:99%">'.$nDocElements['data']['dat'].'</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)) {
 	$contentOld = '<iframe name="previewOld" src="'.$fileOld.'" width="980" height="680" frameborder="no" border="0"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl) {
-	$oDocElements = unserialize(html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES));
+	if($oldDoc['documentElements']){
+	$oDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4)==0 ?
+		html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES):
+		gzuncompress($oldDoc['documentElements']))
+		);
+	}else{
+		$oDocElements = array();
+	}
 	$contentOld = '<textarea style="width:99%;height:99%">'.$oDocElements['data']['dat'].'</textarea>';
 }
 $_versions_time_days = new we_htmlSelect(array(
@@ -284,10 +297,24 @@ $contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" s
 $contentDiff .= ($isTempl && class_exists('Text_Diff')?'':'<br/><b>PHP-Pear-Text_Diff not installed - Quirks mode.</b>');
 //g_l('versions','[textDiffNotInstalled]')
 $contentDiff .= '</td></tr>';
-	$newDocElements = unserialize(html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES));
+if($newDoc['documentElements']){
+	$newDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4)==0 ?
+		html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES):
+		gzuncompress($newDoc['documentElements']))
+		);
+}else{
+	$newDocElements = array();
+}
 
 	if(isset($oldDoc['documentElements'])) {
-		$oldDocElements = unserialize(html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES));
+		if($oldDoc['documentElements']){
+		$oldDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4)==0 ?
+			html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES):
+			gzuncompress($oldDoc['documentElements']))
+			);
+		}else{
+			$oldDocElements = array();
+		}
 	}
 	if(!empty($newDocElements)) {
 		foreach($newDocElements as $k => $v) {
@@ -322,9 +349,9 @@ $contentDiff .= '</td></tr>';
 					$mark .= "background-color:#BFD5FF;";
 				}
 
-			}
-			else {
+			}else {
 				$oldVersion = false;
+				$oldVal = '';
 			}
 
 			/*
@@ -334,8 +361,8 @@ $contentDiff .= '</td></tr>';
 			}
 			*/
 			//make sure none of them is an array
-			if(is_array($newVal) ) {$newVal = implode('',$newVal);}
-			if(is_array($oldVal) ) {$oldVal = implode('',$oldVal);}
+			if(is_array($newVal) ) {$newVal = print_r($newVal,true);}
+			if(is_array($oldVal) ) {$oldVal = print_r($oldVal,true);}
 
 			//if one of them contains newlines, format it as pre-block
 			if($isTempl){
@@ -355,7 +382,7 @@ $contentDiff .= '</td></tr>';
 			if($isTempl && class_exists('Text_Diff',false) && $pre!=''){
 				$oldVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$oldVal)));
         $newVal=explode("\n",str_replace("\r","\n",str_replace("\r\n","\n",$newVal)));
-        $diff = new Text_Diff('native', array(($oldVersion&&$oldVal?$oldVal:''),($newVal?$newVal:'')));
+        $diff = new Text_Diff('native', array(($oldVersion?$oldVal:array()),is_array($newVal)?$newVal:array() ));
 				$renderer = new Text_Diff_Renderer_inline(array('ins_prefix' => '###INS_START###','ins_suffix' => '###INS_END###',
                                             'del_prefix' => '###DEL_START###','del_suffix' => '###DEL_END###',));
 
@@ -365,7 +392,7 @@ $contentDiff .= '</td></tr>';
 					str_replace('###DEL_START###','<span style="color:red;">-<span style="font-weight:bold;text-decoration: line-through;">-',$renderer->render($diff)))));
 
 				$contentDiff .= '<td colspan="2" style="'.$mark.'">'.$pre.$text.'</pre></td>';
-				
+
 			}else{
 				if($newVal!=getPixel(1,1)  && $k!='weInternVariantElement') {
 					$newVal = htmlspecialchars($newVal);
@@ -394,9 +421,23 @@ $contentDiff .= '</table>';
 
 	$contentDiff .= '</tr>';
 
-		$newDocScheduler = unserialize(html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES));
+	if($newDoc['documentScheduler']){
+		$newDocScheduler = unserialize((substr_compare($newDoc['documentScheduler'], 'a%3A', 0, 4)==0 ?
+			html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES):
+			gzuncompress($newDoc['documentScheduler']))
+			);
+	}else{
+		$newDocScheduler =array();
+	}
 		if(isset($oldDoc['documentScheduler'])) {
-			$oldDocScheduler = unserialize(html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES));
+			if($oldDoc['documentScheduler']){
+				$oldDocScheduler = unserialize((substr_compare($oldDoc['documentScheduler'], 'a%3A', 0, 4)==0 ?
+					html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES):
+					gzuncompress($oldDoc['documentScheduler']))
+					);
+				}else{
+					$oldDocScheduler = array();
+				}
 		}
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";
@@ -521,9 +562,23 @@ $contentDiff .= '</table>';
 
 	$contentDiff .= '</tr>';
 
-		$newCustomFilter = unserialize(html_entity_decode(urldecode($newDoc['documentCustomFilter']), ENT_QUOTES));
+	if($newDoc['documentCustomFilter']){
+	$newCustomFilter = unserialize((substr_compare($newDoc['documentCustomFilter'], 'a%3A', 0, 4)==0 ?
+			html_entity_decode(urldecode($newDoc['documentCustomFilter']), ENT_QUOTES):
+			gzuncompress($newDoc['documentCustomFilter']))
+			);
+	}else{
+		$newCustomFilter = array();
+	}
 		if(isset($oldDoc['documentCustomFilter'])) {
-			$oldCustomFilter = unserialize(html_entity_decode(urldecode($oldDoc['documentCustomFilter']), ENT_QUOTES));
+			if($oldDoc['documentCustomFilter']){
+			$oldCustomFilter = unserialize((substr_compare($oldDoc['documentCustomFilter'], 'a%3A', 0, 4)==0 ?
+				html_entity_decode(urldecode($oldDoc['documentCustomFilter']), ENT_QUOTES):
+				gzuncompress($oldDoc['documentCustomFilter']))
+				);
+		}else{
+			$oldCustomFilter = array();
+		}
 		}
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";

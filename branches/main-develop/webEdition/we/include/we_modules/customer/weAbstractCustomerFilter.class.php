@@ -340,9 +340,8 @@ class weAbstractCustomerFilter {
 	function in($value, $comp) {
 		$comp = str_replace("\\,", "__WE_COMMA__", $comp);
 		$arr = explode(",", $comp);
-		$l = count($arr);
-		for ($i=0; $i<$l; $i++) {
-			$arr[$i] = str_replace("__WE_COMMA__", ",", $arr[$i]);
+		foreach($arr as &$cur) {
+			$cur = str_replace("__WE_COMMA__", ",", $cur);
 		}
 		return in_array($value, $arr);
 	}
@@ -464,6 +463,4 @@ class weAbstractCustomerFilter {
 	function getFilter() {
 		return $this->_filter;
 	}
-
-
 }

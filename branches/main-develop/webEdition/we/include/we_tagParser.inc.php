@@ -35,7 +35,7 @@ class we_tagParser {
 			$this->setAllTags($content);
 		}
 	}
-	
+
 	private function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = "") {
 		return $this->replaceTag($tag, $code, $php);
 	}
@@ -77,7 +77,7 @@ class we_tagParser {
 	public function getAllTags() {
 		return $this->tags;
 	}
-	
+
 	private function setAllTags($code) {
 		$this->tags = array();
 		$foo = array();
@@ -168,7 +168,7 @@ class we_tagParser {
 		$this->tags=$tags;
 		return parseTags($code, $postName, $ignore);
 	}
-	
+
 	public function parseTags(&$code, $postName = '', $ignore = array()) {
 
 		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
@@ -350,7 +350,7 @@ class we_tagParser {
 				 */
 				$content = $parseFn($attribs, $content);
 //FIXME: make this linear -> modify $tags
-				
+
 				$tp = new we_tagParser($content);
 				$tp->parseTags($content);
 				$code = substr($code, 0, $tagPos) .
@@ -463,10 +463,6 @@ class we_tagParser {
 			if ($tagname == "printVersion") {
 				$code = str_replace(
 								$tag, '<?php if(isset($GLOBALS["we_tag_start_printVersion"]) && $GLOBALS["we_tag_start_printVersion"]){ $GLOBALS["we_tag_start_printVersion"]=0; ?></a><?php } ?>', $code);
-			} else
-			if ($tagname == "form") {
-				$code = str_replace(
-								$tag, '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?></form><?php } $GLOBALS["WE_FORM"] = ""; if (isset($GLOBALS["we_form_action"])) {unset($GLOBALS["we_form_action"]);} ?>', $code);
 			} else
 			if ($tagname == "listviewOrder") {
 				$code = str_replace($tag, '</a>', $code);

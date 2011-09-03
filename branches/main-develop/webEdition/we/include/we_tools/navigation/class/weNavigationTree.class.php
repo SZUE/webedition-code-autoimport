@@ -57,5 +57,3 @@ class weNavigationTree extends weToolTree
 	}
 
 }
-
-?>

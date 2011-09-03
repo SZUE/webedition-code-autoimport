@@ -64,9 +64,12 @@ function we_include_tag_file($name) {
 	return false;
 }
 
-function we_tag($name, $attribs=array(), $content = '') {
-	$nameTo = weTag_getAttribute("nameto", $attribs);
-	$to = weTag_getAttribute("to", $attribs, 'screen');
+include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
+
+function we_tag($name, $attribs=array(), $content = ''){
+	//keep track of editmode
+	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
+
 	//make sure comment attribute is never shown
 	if ($name == 'setVar') {//special handling inside this tag
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment'));
@@ -76,6 +79,11 @@ function we_tag($name, $attribs=array(), $content = '') {
 		$nameTo = weTag_getAttribute("nameto", $attribs);
 		$to = weTag_getAttribute("to", $attribs, 'screen');
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto'));
+		/* if to attribute is set, output of the tag is redirected to a variable
+		 * this makes only sense if tag output is equal to non-editmode*/
+		if($to != 'screen'){
+			$GLOBALS['we_editmode'] = false;
+		}
 	}
 
 	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
@@ -89,9 +97,6 @@ function we_tag($name, $attribs=array(), $content = '') {
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
 	}
-
-
-	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
 	if ($edMerk) {
 		if (isset($attribs['user']) && $attribs['user']) {
 			$uAr = makeArrayFromCSV($attribs['user']);
@@ -117,15 +122,14 @@ function we_tag($name, $attribs=array(), $content = '') {
 	switch ($fn) {
 		case 'we_tag_setVar':
 			$fn($attribs, $content);
-			break;
+			//nothing more to do don't waste time
+			return;
 		default:
 			$foo = $fn($attribs, $content);
 	}
 
 	$GLOBALS['we_editmode'] = $edMerk;
-	return ($edMerk ?
-					$foo :
-					we_redirect_tagoutput($foo, $nameTo, $to));
+	return we_redirect_tagoutput($foo,$nameTo,$to);
 }
 
 ### tag utility functions ###
@@ -137,31 +141,31 @@ function we_redirect_tagoutput($returnvalue, $nameTo, $to='screen') {
 	switch ($to) {
 		case 'request' :
 			$_REQUEST[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'post' :
 			$_POST[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'get' :
 			$_GET[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'global' :
 			$GLOBALS[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'session' :
 			$_SESSION[$nameTo] = $returnvalue;
-			break;
+			return null;
 		case 'top' :
 			$GLOBALS['WE_MAIN_DOC_REF']->setElement($nameTo, $returnvalue);
-			break;
+			return null;
 		case 'block' :
 		case 'self' :
 			$GLOBALS['we_doc']->setElement($nameTo, $returnvalue);
-			break;
+			return null;
 		case 'sessionfield' :
 			if (isset($_SESSION['webuser'][$nameTo])) {
 				$_SESSION['webuser'][$nameTo] = $returnvalue;
 			}
-			break;
+			return null;
 		case 'calculate':
 			return we_util::std_numberformat($returnvalue);
 			break;
@@ -216,17 +220,23 @@ function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $us
 		return $ret;
 	}
 	$value = strlen($value) ? $value : $default;
-	
+
 	return htmlspecialchars_decode($value);
 }
 
+/*
+ * @deprecated
+ */
 function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false) {
-	//t_e('you use an old tag, which still uses function we_getTagAttributeTagParser, use weTag_getParserAttribute instead!');
+	t_e('deprecated','you use an old tag, which still uses function we_getTagAttributeTagParser, use weTag_getParserAttribute instead!');
 	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),$isFlag,false);
 }
 
+/*
+ * @deprecated
+ */
 function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal=true) {
-	//t_e('you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead!');
+	t_e('deprecated','you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead!');
 	return weTag_getAttribute($name, $attribs,($isFlag?$checkForFalse:$default),$isFlag,$useGlobal);
 }
 
@@ -289,6 +299,7 @@ function we_tag_path_hasIndex($path, $indexArray) {
 	return false;
 }
 
+//FIXME: remove
 function makeArrayFromAttribs($attr) {
 	$attribs = '';
 	preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);

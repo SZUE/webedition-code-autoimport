@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblAnzeigePrefs (
-  ID int(15) NOT NULL auto_increment,
+  ID smallint(5) unsigned NOT NULL auto_increment,
   strDateiname varchar(255) NOT NULL default '',
   strFelder text NOT NULL,
   PRIMARY KEY  (ID),

@@ -30,7 +30,9 @@ function we_tag_sidebar($attribs, $content){
 		$id = weTag_getAttribute("id", $attribs, 0);
 		$file = weTag_getAttribute("file", $attribs);
 		$url = weTag_getAttribute("url", $attribs);
+		$anchor = weTag_getAttribute("anchor", $attribs);
 		$width = weTag_getAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
+
 
 		removeAttribs($attribs, array(
 			'id', 'file', 'url', 'width', 'href'
@@ -42,18 +44,17 @@ function we_tag_sidebar($attribs, $content){
 		}
 
 		$href = "#";
-		if ($id == 0 && $file != "") {
-
+		if ($id == 0){
+			if($file != "") {
 			$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ");";
-
-		} else
-			if ($id == 0 && $url != "") {
+			} else if($url != "") {
 				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ");";
-
-			} else {
-				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ");";
-
+			}else{
+				return;
 			}
+		}else{
+				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ");";
+		}
 		$attribs['href'] = $href;
 
 		$_out .= getHtmlTag("a", $attribs, $content);

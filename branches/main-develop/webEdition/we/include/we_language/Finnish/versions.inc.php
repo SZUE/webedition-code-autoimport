@@ -63,6 +63,7 @@ $l_versions = array(
 	'modifierID' 					=> 'Muutettu tästä',
 	'ParentID' 						=> 'Polku',
 	'TemplateID' 					=> 'Sivupohja',
+	'MasterTemplateID'		=> 'Master-Template', //TRANSLATE
 	'Filename' 						=> 'Tiedostonimi',
 	'Extension'						=> 'Jatke',
 	'IsDynamic'						=> 'Luo dynaaminen sivu',

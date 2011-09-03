@@ -91,7 +91,7 @@ class weNavigation extends weModelBase {
 	 * Default Constructor
 	 * Can load or create new navigation depends of parameter
 	 */
-	function weNavigation($navigationID = 0) {
+	function __construct($navigationID = 0) {
 
 		weModelBase::weModelBase(NAVIGATION_TABLE);
 

@@ -29,16 +29,15 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 }
 
 class we_linklist {
-
-	var $name = "";
-	var $sString = "";
-	var $listArray;
-	var $db;
-	var $rollScript = "";
-	var $rollAttribs = array();
-	var $cache = array();
-	var $hidedirindex = false;
-	var $objectseourls = false;
+	private $name = "";
+	private $sString = "";
+	private $listArray;
+	private $db;
+	private $rollScript = "";
+	private $rollAttribs = array();
+	private $cache = array();
+	private $hidedirindex = false;
+	private $objectseourls = false;
 
 	function we_linklist($sString, $hidedirindex=false, $objectseourls=false) {
 		$this->sString = $sString;
@@ -60,25 +59,23 @@ class we_linklist {
 	}
 
 	function getLink($nr) {
-		$id = $this->getID($nr);
-		$link = "";
-		if ($this->getType($nr) == "int") {
-			$link = $this->getUrl($nr);
-		} else
-		if ($this->getType($nr) == "ext") {
-			$link = $this->getHref($nr);
-		} else
-		if ($this->getType($nr) == "mail") {
-			$link = $this->getHref($nr);
-		} else
-		if ($this->getType($nr) == "obj") {
-			$link = getHrefForObject(
-							$this->getObjID($nr), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
-			if (isset($GLOBALS["we_link_not_published"])) {
-				unset($GLOBALS["we_link_not_published"]);
-			}
+		//$id = $this->getID($nr);
+		switch($this->getType($nr)){
+			case 'int':
+				return $this->getUrl($nr);
+			case 'ext':
+				return $this->getHref($nr);
+			case 'mail':
+				return $this->getHref($nr);
+			case 'obj':
+				$link = getHrefForObject(
+								$this->getObjID($nr), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
+				if (isset($GLOBALS["we_link_not_published"])) {
+					unset($GLOBALS["we_link_not_published"]);
+				}
+				return $link;
 		}
-		return $link;
+		return '';
 	}
 
 	function getHref($nr) {
@@ -215,12 +212,12 @@ class we_linklist {
 
 	function getUrl($nr, $params = "") {
 		$id = $this->getID($nr);
-		if ($id == "")
+		if ($id == '')
 			return "http://";
 		if (isset($this->cache[$id])) {
 			$row = $this->cache[$id];
 		} else {
-			$row = getHash("SELECT IsDynamic,Path FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", $this->db);
+			$row = getHash('SELECT IsDynamic,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->db);
 			$this->cache[$id] = $row;
 		}
 		if (isset($row["Path"]) && $this->hidedirindex) {
@@ -491,17 +488,12 @@ class we_linklist {
 
 
 		if (!(strpos($content, '<we:') === false)) {
-			$content = str_replace("<we:target", "<we_:_target", $content);
-			$content = str_replace("<we:field", "<we_:_field", $content);
-			$content = str_replace("<we:path", "<we_:_path", $content);
-			$content = eregi_replace("<we:ifSelf[^>]*>", "<we_:_ifSelf>", $content);
-			$content = eregi_replace("<we:ifNotSelf[^>]*>", "<we_:_ifNotSelf>", $content);
-			$content = str_replace("<we:prelink", "<we_:_prelink", $content);
-			$content = str_replace("<we:postlink", "<we_:_postlink", $content);
-			$content = str_replace("</we:ifSelf", "</we_:_ifSelf", $content);
-			$content = str_replace("</we:ifNotSelf", "</we_:_ifNotSelf", $content);
-			$content = str_replace("</we:prelink", "</we_:_prelink", $content);
-			$content = str_replace("</we:postlink", "</we_:_postlink", $content);
+			$content = str_replace(
+				array("we:target","we:field","we:path","we:prelink","we:postlink"),
+				array("we_:_target","we_:_field","we_:_path","we_:_prelink","we_:_postlink")
+					,$content);
+			$content = eregi_replace("we:ifSelf[^>]*>", "we_:_ifSelf>", $content);
+			$content = eregi_replace("we:ifNotSelf[^>]*>", "we_:_ifNotSelf>", $content);
 		}
 
 		$ipos = strpos($content, '<we_:_linklist');
@@ -565,14 +557,12 @@ class we_linklist {
 					if ($i == (sizeof($this->listArray) - 1)) {
 						$foo = eregi_replace('<we_:_postlink>.*</we_:_postlink>', '', $foo);
 					} else {
-						$foo = str_replace('<we_:_postlink>', '', $foo);
-						$foo = str_replace('</we_:_postlink>', '', $foo);
+						$foo = str_replace(array('<we_:_postlink>','</we_:_postlink>'), '', $foo);
 					}
 					if ($i == 0) {
 						$foo = eregi_replace('<we_:_prelink>.*</we_:_prelink>', '', $foo);
 					} else {
-						$foo = str_replace('<we_:_prelink>', '', $foo);
-						$foo = str_replace('</we_:_prelink>', '', $foo);
+						$foo = str_replace(array('<we_:_prelink>','</we_:_prelink>'), '', $foo);
 					}
 
 					//	handle we:ifPosition - if available
@@ -726,8 +716,8 @@ class we_linklist {
 
 	function getMaxListNr() {
 		$n = 0;
-		for ($i = 0; $i < sizeof($this->listArray); $i++) {
-			$n = max($this->listArray[$i]["nr"], $n);
+		foreach($this->listArray as $item) {
+			$n = max($item["nr"], $n);
 		}
 		return $n;
 	}

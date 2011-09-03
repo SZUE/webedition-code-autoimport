@@ -63,6 +63,7 @@ $l_versions = array(
 	'modifierID' 					=> 'Changed from',
 	'ParentID' 						=> 'Path',
 	'TemplateID' 					=> 'Template',
+	'MasterTemplateID'		=> 'Master-Template',
 	'Filename' 						=> 'Filename',
 	'Extension'						=> 'Extension',
 	'IsDynamic'						=> 'Generate dynamic page',
