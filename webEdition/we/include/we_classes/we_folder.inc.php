@@ -328,7 +328,7 @@ class we_folder extends we_root
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
+			/*$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -342,8 +342,8 @@ class we_folder extends we_root
 					return false;
 
 				}
-			}
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 1";
+			}*/
+			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '".stripTblPrefix($this->Table)."' AND Active = 1";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -399,7 +399,7 @@ class we_folder extends we_root
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
+/*			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -413,8 +413,8 @@ class we_folder extends we_root
 					return false;
 
 				}
-			}
-			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 1";
+			}*/
+			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '".stripTblPrefix($this->Table)."' AND Active = 1";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -422,7 +422,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID=".intval($DB_WE->f("ID"))." AND Active = 1";
 				if(!$DB_WE2->query($query)) {
 					return false;
 				}
@@ -568,10 +568,10 @@ $content .='
 			  	if(!$LDID){$LDID=0;}
 				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
 				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
-				$langkeys[]=$langkey;  
+				$langkeys[]=$langkey;
 			}
-			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
-			
+			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");
+
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -592,7 +592,7 @@ $content .='
 				</tr>
 			</table>';
 			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-			
+
 		} else {
 
 		$content = '

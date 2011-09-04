@@ -1398,6 +1398,16 @@ function deleteContentFromDB($id, $table) {
 		WHERE DID=" . abs($id) . " AND DocumentTable='" . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . "'");
 }
 
+/**
+ * Strips off the table prefix - this function is save of calling multiple times
+ * @param string $table
+ * @return string stripped tablename
+ */
+function stripTblPrefix($table){
+
+	return (strpos($table,TBL_PREFIX)===FALSE)?$table:substr($table, strlen(TBL_PREFIX));
+}
+
 function cleanTempFiles($cleanSessFiles = 0) {
 	global $DB_WE;
 	$db2 = new DB_WE();
@@ -1782,7 +1792,7 @@ function makeArrayFromCSV($csv) {
 		foreach ($foo as &$f) {
 			$f = str_replace('###komma###', ',', $f);
 		}
-	
+
 	return $foo;
 }
 
@@ -2365,7 +2375,7 @@ function getHrefForObject($id, $pid, $path = "", $DB_WE = "",$hidedirindex=false
 		$pidstr='';
 		if ($pid){$pidstr='?pid='.abs($pid);}
 		if ($objectseourls && $objecturl!=''){
-			
+
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
 				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;
 			} else {
@@ -2433,7 +2443,7 @@ function parseInternalLinks(&$text, $pid, $path = "") {
 
 	if (preg_match_all('/(href|src)="document:(\d+)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)) {
 		foreach ($regs as $reg) {
-			
+
 			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]).(isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition ? '':' AND Published > 0'), 'Path',$DB_WE);
 
 			if ($_path) {
