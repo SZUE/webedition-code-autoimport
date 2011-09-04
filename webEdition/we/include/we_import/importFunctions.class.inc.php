@@ -22,16 +22,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 
-class importFunctions{
-
-
-	/**
-	* @return importFunctions
-	* @desc Don't call this function directly. This is a static class!
-	*/
-	function importFunctions(){
-		print "Don't call this function directly. This is a static class!";
-	}
+abstract class importFunctions{
 
 
 	/**
@@ -48,7 +39,7 @@ class importFunctions{
 	* @param boolean $IsSearchable
 	* @desc imports a document into webedition
 	*/
-	function importDocument($parentID, $templateID, $fields, $doctypeID=0, $categories="", $filename="", $isDynamic=true, $extension=".php", $publish=true, $IsSearchable=true,$conflict='rename'){
+	static function importDocument($parentID, $templateID, $fields, $doctypeID=0, $categories="", $filename="", $isDynamic=true, $extension=".php", $publish=true, $IsSearchable=true,$conflict='rename'){
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 
@@ -120,7 +111,7 @@ class importFunctions{
 	* @param boolean $publish
 	* @desc imports an object into webEdition
 	*/
-	function importObject($classID, $fields, $categories="", $filename="", $publish=true, $conflict='rename'){
+	static function importObject($classID, $fields, $categories="", $filename="", $publish=true, $conflict='rename'){
 
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
@@ -183,7 +174,7 @@ class importFunctions{
 	* @param string $filename
 	* @desc corrects the filename if it contains invalid chars
 	*/
-	function correctFilename($filename){
+	static function correctFilename($filename){
 		$filename = str_replace(" ","-",$filename);
 		$filename = str_replace("�","ae",$filename);
 		$filename = str_replace("�","oe",$filename);
@@ -206,7 +197,7 @@ class importFunctions{
 	* @param string $format
 	* @desc converts a $datestring which represent a date to an unix timestamp with the given $format. If $format is empty, $datestring has to be a valid English date format
 	*/
-	function date2Timestamp($datestring,$format=""){
+	static function date2Timestamp($datestring,$format=""){
 		if(!$format){
 			return strtotime($datestring);
 		}
