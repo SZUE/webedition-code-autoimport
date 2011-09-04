@@ -23,21 +23,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_global.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
-class exportFunctions {
-
-	/*************************************************************************
-	 * CONSTRUCTOR
-	 *************************************************************************/
-
-	/**
-	 * Don't call this function directly. This is a static class!
-	 *
-	 * @return     exportFunctions
-	 */
-
-	function exportFunctions() {
-		die("Don't call this function directly. This is a static class!");
-	}
+abstract class exportFunctions {
 
 	/*************************************************************************
 	 * HELPER FUNCTIONS
@@ -56,7 +42,7 @@ class exportFunctions {
 	 * @return     bool
 	 */
 
-	function fileCreate($format = "gxml", $filename, $path) {
+	static function fileCreate($format = "gxml", $filename, $path) {
 		switch ($format) {
 			case "gxml":
 				$_file_name = $_SERVER["DOCUMENT_ROOT"] . ($path == "###temp###" ? "/webEdition/we/tmp/" : $path) . $filename;
@@ -122,7 +108,7 @@ class exportFunctions {
 	 * @return     void
 	 */
 
-	function fileComplete($format = "gxml", $filename) {
+	static function fileComplete($format = "gxml", $filename) {
 		switch ($format) {
 			case "gxml":
 				$text = "</webEdition>";
@@ -150,7 +136,7 @@ class exportFunctions {
 	 * @return     array
 	 */
 
-	function fileInit($format = "gxml", $filename, $path, $doctype = null, $tableid = null) {
+	static function fileInit($format = "gxml", $filename, $path, $doctype = null, $tableid = null) {
 		switch ($format) {
 			case "gxml":
 				$_file = "";
@@ -208,7 +194,7 @@ class exportFunctions {
 	 * @return     void
 	 */
 
-	function fileFinish($format = "gxml", $text, $doctype, $filename, $csv_lineend = "\\n") {
+	static function fileFinish($format = "gxml", $text, $doctype, $filename, $csv_lineend = "\\n") {
 		switch ($format) {
 			case "gxml":
 				// Close document tag
@@ -256,7 +242,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function correctTagname($tagname, $alternative_name, $alternative_number = -1) {
+	static function correctTagname($tagname, $alternative_name, $alternative_number = -1) {
 		if ($tagname != "") {
 			// Remove spaces
 			$tagname = preg_replace("/\40+/", "_", $tagname);
@@ -285,7 +271,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function checkCompatibility($content, $csv_delimiter = ",", $csv_enclose = "'", $type = "escape") {
+	static function checkCompatibility($content, $csv_delimiter = ",", $csv_enclose = "'", $type = "escape") {
 		switch ($type) {
 			case "escape":
 				$_check = array("\\");
@@ -328,7 +314,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function correctEscape($content) {
+	static function correctEscape($content) {
 		return str_replace("\\", "\\\\", $content);
 	}
 
@@ -344,7 +330,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function correctEnclose($content, $csv_enclose = "'") {
+	static function correctEnclose($content, $csv_enclose = "'") {
 		return str_replace($csv_enclose, ("\\" . $csv_enclose), $content);
 	}
 
@@ -360,7 +346,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function correctLineend($content, $csv_lineend = "windows") {
+	static function correctLineend($content, $csv_lineend = "windows") {
 		switch ($csv_lineend) {
 			case "windows":
 			default:
@@ -397,7 +383,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function correctCSV($content, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows") {
+	static function correctCSV($content, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows") {
 		$_encloser_corrected = false;
 		$_delimiter_corrected = false;
 		$_lineend_corrected = false;
@@ -456,7 +442,7 @@ class exportFunctions {
 	 * @return     string
 	 */
 
-	function formatOutput($tagname, $content, $format = "gxml", $tabs = 2, $cdata = false, $fix_content = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows") {
+	static function formatOutput($tagname, $content, $format = "gxml", $tabs = 2, $cdata = false, $fix_content = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows") {
 		switch ($format) {
 			case "gxml":
 				// Generate intending tabs
@@ -510,7 +496,7 @@ class exportFunctions {
  	 * @return     array
 	 */
 
-	function remove_from_check_array($check_array, $tagname) {
+	static function remove_from_check_array($check_array, $tagname) {
 		for ($i = 0; $i < count($check_array); $i++) {
 			if (isset($check_array[$i])) {
 				if ($check_array[$i] == $tagname) {
@@ -545,7 +531,7 @@ class exportFunctions {
 	 * @return     bool
 	 */
 
-	function exportDocument($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false) {
+	static function exportDocument($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false) {
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 
 		$_export_success = false;
@@ -707,7 +693,7 @@ class exportFunctions {
 	 * @return     bool
 	 */
 
-	function exportObject($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "\\n", $csv_fieldnames = false) {
+	static function exportObject($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "\\n", $csv_fieldnames = false) {
 		$_export_success = false;
 
 		//if ($csv_fieldnames) {
@@ -812,7 +798,7 @@ class exportFunctions {
 	 * @return     bool
 	 */
 
-	function exportObjectFieldNames($ID, $filename, $path, $file_create = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows") {
+	static function exportObjectFieldNames($ID, $filename, $path, $file_create = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "windows") {
 		$_export_success = false;
 
 		if ($csv_delimiter == "\\t") {
