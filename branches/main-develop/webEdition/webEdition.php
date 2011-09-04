@@ -102,8 +102,6 @@ var hot = 0;
 var last=0;
 var lastUsedLoadFrame = null;
 
-var we_demo = false;
-
 var nlHTMLMail = 0;
 var browserwind = null;
 var makefocus = null;
@@ -1165,19 +1163,12 @@ function we_cmd() {
             new jsWindow(url,"export_backup",-1,-1,680,600,true,true,true);
 			break;
 		case "recover_backup":
-			if (we_demo){
-				<?php print we_message_reporting::getShowMessageCall(g_l('global',"[we_alert]"), WE_MESSAGE_ERROR); ?>
-			} else {
             	new jsWindow(url,"recover_backup",-1,-1,680,600,true,true,true);
-            }
 			break;
 		case "import_docs":
 			new jsWindow(url,"import_docs",-1,-1,480,390,true,false,true);
 			break;
 		case "import":
-			if (we_demo) {
-				url += "&we_demo=1"
-			}
 			new jsWindow(url,"import",-1,-1,600,620,true,false,true);
 			break;
 		case "export":

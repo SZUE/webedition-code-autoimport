@@ -305,7 +305,7 @@ class searchtoolsearch extends we_search
 			$titles[] = $_db2->f('DID');
 		}
 		//check unpublished documents
-		$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = '" . FILE_TABLE . "' AND Active = '1' AND DocumentObject LIKE '%".$_db2->escape(
+		$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%".$_db2->escape(
 				trim($keyword))."%'";
 		$_db2->query($query2);
 		while ($_db2->next_record()) {
@@ -375,7 +375,7 @@ class searchtoolsearch extends we_search
 					$res[$_db->f('ID')] = $_db->f($field);
 				}
 				//search in unpublic objects and write them in the array
-				$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = '" . OBJECT_FILES_TABLE . "' AND Active = '1'";
+				$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblObjectFiles' AND Active = 1";
 				$_db2->query($query2);
 				while ($_db2->next_record()) {
 					$tempObj = unserialize($_db2->f('DocumentObject'));
@@ -651,7 +651,7 @@ class searchtoolsearch extends we_search
 		if ($table == FILE_TABLE || $table == TEMPLATES_TABLE) {
 
 			$query = "SELECT a.Name, b.Dat, a.DID FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE b.Dat LIKE '%" . escape_sql_query(
-					trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . escape_sql_query($this->getTblName($table)) . "'";
+					trim($keyword)) . "%' AND a.Name!='completeData' AND a.DocumentTable='" . escape_sql_query(stripTblPrefix($table)) . "'";
 			$_db2->query($query);
 			while ($_db2->next_record()) {
 				$contents[] = $_db2->f('DID');
@@ -659,7 +659,7 @@ class searchtoolsearch extends we_search
 
 			if ($table == FILE_TABLE) {
 				$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
-						trim($keyword)) . "%' AND DocTable = '" . escape_sql_query($this->getTblName($table)) . "' AND Active = '1'";
+						trim($keyword)) . "%' AND DocTable = '" . escape_sql_query(stripTblPrefix($table)) . "' AND Active = 1";
 				$_db2->query($query2);
 				while ($_db2->next_record()) {
 					$contents[] = $_db2->f('DocumentID');
@@ -747,9 +747,9 @@ class searchtoolsearch extends we_search
 				}
 
 			}
-			//unpublished objects
+			//only saved objects
 			$query2 = "SELECT DocumentID, DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . escape_sql_query(
-					trim($keyword)) . "%' AND DocTable = '" . OBJECT_FILES_TABLE . "' AND Active = '1'";
+					trim($keyword)) . "%' AND DocTable = 'tblObjectFiles' AND Active = 1";
 			$_db2->query($query2);
 			while ($_db2->next_record()) {
 				$Ids[] = $_db2->f('DocumentID');
@@ -864,7 +864,7 @@ class searchtoolsearch extends we_search
 					$titles[$_db2->f('DID')] = $_db2->f('Dat');
 				}
 				//check unpublished documents
-				$query2 = "SELECT DocumentID, DocumentObject  FROM `" . TEMPORARY_DOC_TABLE . "` WHERE DocTable = '" . FILE_TABLE . "' AND Active = '1'";
+				$query2 = "SELECT DocumentID, DocumentObject  FROM `" . TEMPORARY_DOC_TABLE . "` WHERE DocTable = 'tblFile' AND Active = 1";
 				$_db2->query($query2);
 				while ($_db2->next_record()) {
 					$tempDoc = unserialize($_db2->f('DocumentObject'));

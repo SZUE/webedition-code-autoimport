@@ -373,7 +373,7 @@
 
 		function clearTemporaryData($docTable){
 			global $DB_WE;
-			$DB_WE->query('DELETE FROM '.TEMPORARY_DOC_TABLE." WHERE DocTable='$docTable';");
+			$DB_WE->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE DocTable="'.stripTblPrefix($docTable).'";');
 			$DB_WE->query('TRUNCATE TABLE '.NAVIGATION_TABLE.';');
 			$DB_WE->query('TRUNCATE TABLE '.NAVIGATION_RULE_TABLE.';');
 			$DB_WE->query('TRUNCATE TABLE '.HISTORY_TABLE.';');

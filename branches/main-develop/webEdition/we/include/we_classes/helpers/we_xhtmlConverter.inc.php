@@ -33,12 +33,8 @@
  *              wysiwyg control of webEdition to XHTML 1.0.
  */
 
-class we_xhtmlConverter {
+abstract class we_xhtmlConverter {
 
-
-	function we_xhtmlConverter(){
-		exit( "Do not call this function directly! This is a static class!!!" );
-	}
 
 	/**
 	 * @return string
@@ -46,7 +42,7 @@ class we_xhtmlConverter {
 	 * @param boolean $xml
 	 * @desc parse and convert HTML source to html4 or xhtml
 	*/
-	function correct_HTML_source($code,$xml=false) {
+	static function correct_HTML_source($code,$xml=false) {
 
 		// convert <?tags to  be sure that the following regex will work correct
 		$code = str_replace("/<?","WE##[?",$code);
@@ -56,9 +52,9 @@ class we_xhtmlConverter {
 		$code = preg_replace ("/<([^> ]+)([^>]*)>/e","we_xhtmlConverter::_corrTag('\\1','\\2',$xml)", $code);
 
 		// correct wrong <ul> Tags
-		$code = we_xhtmlConverter::_correctListTags($code,"ul");
+		$code = self::_correctListTags($code,"ul");
 		// correct wrong <ol> Tags
-		$code = we_xhtmlConverter::_correctListTags($code,"ol");
+		$code = self::_correctListTags($code,"ol");
 
 		// convert back
 		$code = str_replace("WE##[?","/<?",$code);
@@ -70,7 +66,7 @@ class we_xhtmlConverter {
 	}
 
 
-	function _correctListTags($code,$name="ul"){
+	static function _correctListTags($code,$name="ul"){
 		while(eregi("</li>[ \n\r\t]*<$name",$code,$regs)){
 			$repl = $regs[0];
 
@@ -104,7 +100,7 @@ class we_xhtmlConverter {
 	* @param boolean $xml
 	* @desc correct a tag
 	*/
-	function  _corrTag($tagname, $attr,$xml){
+	static function  _corrTag($tagname, $attr,$xml){
 		// only if attribs exists
 		if(strlen($attr)){
 			$attr = stripslashes(trim($attr));
@@ -164,7 +160,7 @@ class we_xhtmlConverter {
 	 * @param string $val
 	 * @desc correct an attrib
 	*/
-	function _corrAttr($key, $val){
+	static function _corrAttr($key, $val){
 		// correct an attrib
 		return  strtolower($key) . "=" . '"' . str_replace("\"","&quot;",$val) . '"';
 	}

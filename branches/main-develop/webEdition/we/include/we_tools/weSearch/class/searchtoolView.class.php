@@ -2639,7 +2639,7 @@ class searchtoolView extends weToolView
 						$_result[$k]["Description"] = $DB_WE->f('Dat');
 					}
 				} elseif ($_result[$k]["docTable"] == FILE_TABLE) {
-					$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = '" . abs($_result[$k]["docID"]) . "' AND DocTable = '" . FILE_TABLE . "' AND Active = '1'";
+					$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = '" . abs($_result[$k]["docID"]) . "' AND DocTable = 'tblFile' AND Active = 1";
 					$_db2->query($query2);
 					while ($_db2->next_record()) {
 						$tempDoc = unserialize($_db2->f('DocumentObject'));

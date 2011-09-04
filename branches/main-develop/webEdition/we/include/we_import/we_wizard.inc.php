@@ -38,9 +38,6 @@ class we_wizard {
 
 	function getWizFrameset() {
 		$args = "pnt=wizbody";
-		if (isset($_REQUEST['we_demo']) && $_REQUEST['we_demo']) {
-			$args .= '&we_demo=1';
-		}
 		if (isset($_REQUEST["we_cmd"][1])) $args .= "&we_cmd[1]=".$_REQUEST["we_cmd"][1];
 
 		$fst = new we_htmlFrameset(array(
@@ -219,7 +216,6 @@ HTS;
 		if ($step==1) $a["enctype"] = "multipart/form-data";
 		eval('list($js, $content)=$this->get'.$type.'Step'.$step.'();');
 		$doOnLoad = isset($_REQUEST['noload']) ? false : true;
-		$we_demo = (isset($_REQUEST['we_demo']) && $_REQUEST['we_demo']) ? 1 : 0;
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
 				STYLESHEET .
@@ -227,13 +223,12 @@ HTS;
 				we_htmlElement::jsElement("<!--\n".$js."\n//-->")).
 			we_htmlElement::htmlBody(array(
 				"class"=>"weDialogBody",
-				"onLoad" => $doOnLoad ? "parent.wiz_next('wizbusy', '".$this->path."?we_demo=".$we_demo."&pnt=wizbusy&mode=".$mode."&type=".(isset($_REQUEST['type']) ? $_REQUEST['type'] : '')."'); self.focus();" : "if(set_button_state) set_button_state();"
+				"onLoad" => $doOnLoad ? "parent.wiz_next('wizbusy', '".$this->path."?pnt=wizbusy&mode=".$mode."&type=".(isset($_REQUEST['type']) ? $_REQUEST['type'] : '')."'); self.focus();" : "if(set_button_state) set_button_state();"
 			), we_htmlElement::htmlForm($a,
 					we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
 					we_htmlElement::htmlHidden(array("name" => "type", "value" => $type)) .
 					we_htmlElement::htmlHidden(array("name" => "v[type]", "value" => $type)) .
 					we_htmlElement::htmlHidden(array("name" => "step", "value" => $step)) .
-					we_htmlElement::htmlHidden(array("name" => "we_demo", "value" => $we_demo)) .
 					we_htmlElement::htmlHidden(array("name" => "mode", "value" => $mode)) .
 					we_htmlElement::htmlHidden(array("name" => "button_state", "value" => 0)) .
 					$content

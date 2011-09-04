@@ -1218,6 +1218,16 @@ function deleteContentFromDB($id, $table) {
 	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
 }
 
+/**
+ * Strips off the table prefix - this function is save of calling multiple times
+ * @param string $table
+ * @return string stripped tablename
+ */
+function stripTblPrefix($table){
+
+	return TBL_PREFIX!=''&&(strpos($table,TBL_PREFIX)!==FALSE)?substr($table, strlen(TBL_PREFIX)):$table;
+}
+
 function cleanTempFiles($cleanSessFiles = false) {
 	$db2 = new DB_WE();
 	$sess = $GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));

@@ -36,23 +36,14 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/rebuil
 * rebuild dialog and the rebuild function
 * @static
 */
-class we_rebuild_wizard{
-
-	/**
-	* Dummy function for stupid people who want to call the constructor for this static class
-	*
-	* @return we_rebuild_wizard
-	*/
-	function we_rebuild_wizard(){
-		exit("This is a static class! Don't call the constructor directly!");
-	}
+abstract class we_rebuild_wizard{
 
 	/**
 	* returns HTML for the Body Frame
 	*
 	* @return string
 	*/
-	function getBody(){
+	static function getBody(){
 		$step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0";
 		eval('$contents = we_rebuild_wizard::getStep'.$step.'();');
 		return we_rebuild_wizard::getPage($contents);
@@ -63,7 +54,7 @@ class we_rebuild_wizard{
 	*
 	* @return string
 	*/
-	function getBusy(){
+	static function getBusy(){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
 
@@ -132,7 +123,7 @@ class we_rebuild_wizard{
 	*
 	* @return string for now it is an empty page
 	*/
-	function getCmd(){
+	static function getCmd(){
 		return we_rebuild_wizard::getPage(array("",""));
 	}
 
@@ -141,7 +132,7 @@ class we_rebuild_wizard{
 	*
 	* @return string
 	*/
-	function getStep0() {
+	static function getStep0() {
 		$btype = isset($_REQUEST["btype"]) ? $_REQUEST["btype"] : "rebuild_all";
 		$categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "";
 		$doctypes = (isset($_REQUEST["doctypes"]) && is_array($_REQUEST["doctypes"])) ? makeCSVFromArray($_REQUEST["doctypes"],true) : "";
@@ -340,7 +331,7 @@ class we_rebuild_wizard{
 	*
 	* @return string
 	*/
-	function getStep1() {
+	static function getStep1() {
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "rebuild_documents";
 
 		switch($type){
@@ -359,7 +350,7 @@ class we_rebuild_wizard{
 	*
 	* @return string
 	*/
-	function getStep2() {
+	static function getStep2() {
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "rebuild_documents";
 		$btype = isset($_REQUEST["btype"]) ? $_REQUEST["btype"] : "rebuild_all";
 		$categories = isset($_REQUEST["categories"]) ? $_REQUEST["categories"] : "";
@@ -435,7 +426,7 @@ class we_rebuild_wizard{
 	* @param string $categories csv value with category IDs
 	* @param boolean $catAnd if the categories should be connected with AND
 	*/
-	function formCategory($categories,$catAnd){
+	static function formCategory($categories,$catAnd){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$catAndCheck = we_forms::checkbox("1",$catAnd,"catAnd",g_l('rebuild',"[catAnd]"),false,"defaultfont","document.we_form.btype[2].checked=true;");
@@ -454,7 +445,7 @@ class we_rebuild_wizard{
 	* @return string
 	* @param string $doctypes csv value with doctype IDs
 	*/
-	function formDoctypes($doctypes){
+	static function formDoctypes($doctypes){
 
 		$GLOBALS['DB_WE']->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
 		$DTselect = g_l('global',"[doctypes]")."<br>".getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
@@ -474,7 +465,7 @@ class we_rebuild_wizard{
 	* @param string $folders csv value with directory IDs
 	* @param boolean $thumnailpage if it should displayed in the thumbnails page or on an other page
 	*/
-	function formFolders($folders,$thumnailpage=false, $width="495"){
+	static function formFolders($folders,$thumnailpage=false, $width="495"){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
 		$delallbut = we_button::create_button("delete_all","javascript:".($thumnailpage ? "" : "document.we_form.btype[2].checked=true;")."we_cmd('del_all_folders')");
@@ -493,7 +484,7 @@ class we_rebuild_wizard{
 	* @return string
 	* @param string $thumbs csv value with thumb IDs
 	*/
-	function formThumbs($thumbs){
+	static function formThumbs($thumbs){
 		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
 		$Thselect = g_l('rebuild',"[thumbnails]")."<br>".getPixel(1,3)."<br>".
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">'."\n";
@@ -506,7 +497,7 @@ class we_rebuild_wizard{
 		return $Thselect;
 	}
 
-	function formMetadata($metaFields, $onlyEmpty) {
+	static function formMetadata($metaFields, $onlyEmpty) {
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
@@ -544,7 +535,7 @@ class we_rebuild_wizard{
 	*
 	* @return array
 	*/
-	function getRebuildDocuments(){
+	static function getRebuildDocuments(){
 
 		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
 		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
@@ -628,7 +619,7 @@ class we_rebuild_wizard{
 	*
 	* @return array
 	*/
-	function getRebuildThumbnails(){
+	static function getRebuildThumbnails(){
 
 		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
 		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
@@ -700,7 +691,7 @@ class we_rebuild_wizard{
 							we_htmlElement::htmlHidden(array("name" => "step", "value" => "2")));
 	}
 
-	function getRebuildMetadata(){
+	static function getRebuildMetadata(){
 
 		$thumbsFolders = isset($_REQUEST["thumbsFolders"]) ? $_REQUEST["thumbsFolders"] : "";
 		$metaFolders = isset($_REQUEST["metaFolders"]) ? $_REQUEST["metaFolders"] : "";
@@ -778,7 +769,7 @@ class we_rebuild_wizard{
 	*
 	* @return string
 	*/
-	function getFrameset(){
+	static function getFrameset(){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$tail = "";
@@ -856,7 +847,7 @@ class we_rebuild_wizard{
 	* @return string
 	* @param string $folders csv value with directory IDs
 	*/
-	function getPage2Js($folders="folders"){
+	static function getPage2Js($folders="folders"){
 			$js = 	"\n".
 				'function handle_event(what){'."\n".
 				'	f = document.we_form;'."\n".
@@ -1038,7 +1029,7 @@ class we_rebuild_wizard{
 	* @return string
 	* @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	*/
-	function getPage($contents){
+	static function getPage($contents){
 		if(!sizeof($contents)){
 			return "";
 		}

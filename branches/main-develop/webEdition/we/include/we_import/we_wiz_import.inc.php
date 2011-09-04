@@ -172,14 +172,12 @@ class we_wizard_import extends we_wizard {
 	function getStep0() {
 		$defaultVal = "import_files";
 
-		$we_demo = isset($_REQUEST['we_demo']) ? $_REQUEST['we_demo'] : (isset($_SESSION['we_demo']) ? $_SESSION['we_demo'] : 0);
-		$_SESSION['we_demo'] = $we_demo;
 
 		if (!we_hasPerm("FILE_IMPORT")) {
 			$defaultVal = "siteImport";
 			if (!we_hasPerm("SITE_IMPORT")) {
 				$defaultVal = "WXMLImport";
-				if ($we_demo || !we_hasPerm("WXML_IMPORT")) {
+				if (!we_hasPerm("WXML_IMPORT")) {
 					$defaultVal = "GXMLImport";
 					if (!we_hasPerm("GENERICXML_IMPORT")) {
 						$defaultVal = "CSVImport";
@@ -199,7 +197,7 @@ class we_wizard_import extends we_wizard {
 		$tblFiles->setCol(1, 0, array(), getPixel(0, 4));
 		$tblFiles->setCol(2, 0, array(), we_forms::radiobutton("site_import", ($cmd[1]=="siteImport"), "type", g_l('import',"[site_import]"), true, "defaultfont", "", !we_hasPerm("SITE_IMPORT"), g_l('import',"[txt_site_import]"), 0, 384));
 		$tblData = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 5, 1);
-		$tblData->setCol(0, 0, array(), we_forms::radiobutton("WXMLImport", ($cmd[1]=="WXMLImport"), "type", g_l('import',"[wxml_import]"), true, "defaultfont", "", (!we_hasPerm("WXML_IMPORT") || !$expat || $we_demo), $we_demo ? g_l('global',"[we_alert]") : ($expat ? g_l('import',"[txt_wxml_import]") : g_l('import',"[add_expat_support]")), 0, 384));
+		$tblData->setCol(0, 0, array(), we_forms::radiobutton("WXMLImport", ($cmd[1]=="WXMLImport"), "type", g_l('import',"[wxml_import]"), true, "defaultfont", "", (!we_hasPerm("WXML_IMPORT") || !$expat), ($expat ? g_l('import',"[txt_wxml_import]") : g_l('import',"[add_expat_support]")), 0, 384));
 		$tblData->setCol(1, 0, array(), getPixel(0, 4));
 		$tblData->setCol(2, 0, array(), we_forms::radiobutton("GXMLImport", ($cmd[1]=="GXMLImport"), "type", g_l('import',"[gxml_import]"), true, "defaultfont", "", (!we_hasPerm("GENERICXML_IMPORT") || !$expat), ($expat)? g_l('import',"[txt_gxml_import]") : g_l('import',"[add_expat_support]"), 0, 384));
 		$tblData->setCol(3, 0, array(), getPixel(0, 4));
@@ -1147,7 +1145,7 @@ HTS;
 			$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID ='".abs($v["docType"])."'", $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo["Templates"]);
 			$paths_arr = id_to_path($foo["Templates"],TEMPLATES_TABLE,"",false,true);
-		
+
 			$optid = 0;
 			while (list(, $templateID) = each($ids_arr)) {
 				$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);

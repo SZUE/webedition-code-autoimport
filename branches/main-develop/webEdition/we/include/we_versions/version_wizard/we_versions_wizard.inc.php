@@ -35,29 +35,19 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/we
  * rebuild dialog and the rebuild function
  * @static
  */
-class we_versions_wizard
+abstract class we_versions_wizard
 {
-
-	/**
-	 * Dummy function for stupid people who want to call the constructor for this static class
-	 *
-	 * @return we_versions_wizard
-	 */
-	function we_versions_wizard()
-	{
-		exit("This is a static class! Don't call the constructor directly!");
-	}
 
 	/**
 	 * returns HTML for the Body Frame
 	 *
 	 * @return string
 	 */
-	function getBody()
+	static function getBody()
 	{
 		$step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0";
 		eval('$contents = we_versions_wizard::getStep' . $step . '();');
-		return we_versions_wizard::getPage($contents);
+		return self::getPage($contents);
 	}
 
 	/**
@@ -65,7 +55,7 @@ class we_versions_wizard
 	 *
 	 * @return string
 	 */
-	function getBusy()
+	static function getBusy()
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
@@ -192,9 +182,9 @@ class we_versions_wizard
 	 *
 	 * @return string for now it is an empty page
 	 */
-	function getCmd()
+	static function getCmd()
 	{
-		return we_versions_wizard::getPage(array(
+		return self::getPage(array(
 			"", ""
 		));
 	}
@@ -204,7 +194,7 @@ class we_versions_wizard
 	 *
 	 * @return string
 	 */
-	function getStep0()
+	static function getStep0()
 	{
 
 		$version = new weVersions();
@@ -334,24 +324,22 @@ class we_versions_wizard
 	 *
 	 * @return string
 	 */
-	function getStep1()
+	static function getStep1()
 	{
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "delete_versions";
 
 		switch ($type) {
 			case "delete_versions" :
-				return we_versions_wizard::getDelete1();
+				return self::getDelete1();
 			case "reset_versions" :
-				return we_versions_wizard::getReset1();
-
+				return self::getReset1();
 		}
 
 	}
 
-	function getDelete1()
+	static function getDelete1()
 	{
 		$version = new weVersions();
-
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "delete_versions";
 
 		$versions_delete_all = isset($_REQUEST["version_delete_all"]) ? 1 : 0;
@@ -654,7 +642,7 @@ class we_versions_wizard
 		);
 	}
 
-	function getReset1()
+	static function getReset1()
 	{
 		$version = new weVersions();
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "reset_versions";
@@ -722,7 +710,6 @@ class we_versions_wizard
 		array_push(
 				$parts,
 				array(
-
 						'html' => htmlAlertAttentionBox(g_l('versions','[doPublish_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
@@ -804,7 +791,6 @@ class we_versions_wizard
 		array_push(
 				$parts,
 				array(
-
 						'html' => htmlAlertAttentionBox(g_l('versions','[date_reset_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
@@ -824,7 +810,6 @@ class we_versions_wizard
 		array_push(
 				$parts,
 				array(
-
 						'headline' => g_l('versions','[time]'),
 						'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtmlCode() . " h : " . $reset_minutes->getHtmlCode() . " m: " . $reset_seconds->getHtmlCode() . " s ",
 						'noline' => 1,
@@ -990,21 +975,20 @@ class we_versions_wizard
 	 *
 	 * @return string
 	 */
-
-	function getStep2()
+	static function getStep2()
 	{
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "delete_versions";
 
 		switch ($type) {
 			case "delete_versions" :
-				return we_versions_wizard::getDelete2();
+				return self::getDelete2();
 			case "reset_versions" :
-				return we_versions_wizard::getReset2();
+				return self::getReset2();
 		}
 
 	}
 
-	function getStep3()
+	static function getStep3()
 	{
 
 		$version = new weVersions();
@@ -1038,7 +1022,7 @@ class we_versions_wizard
 
 		$taskname = md5(session_id() . "_version_wizard");
 		$currentTask = isset($_GET["fr_" . $taskname . "_ct"]) ? $_GET["fr_" . $taskname . "_ct"] : 0;
-		$taskFilename = WE_FRAGMENT_DIR.'/' . $taskname;
+		$taskFilename = FRAGMENT_LOCATION . $taskname;
 
 		$js = "";
 		if (!(file_exists($taskFilename) && $currentTask)) {
@@ -1077,7 +1061,7 @@ class we_versions_wizard
 	 *
 	 * @return array
 	 */
-	function getDelete2()
+	static function getDelete2()
 	{
 
 		$version = new weVersions();
@@ -1134,9 +1118,7 @@ class we_versions_wizard
 		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,binaryPath,timestamp,version FROM " . VERSIONS_TABLE . " WHERE " . $whereCt . " AND " . $timestampWhere . " ORDER BY ID";
 		$_SESSION['versions']['deleteWizardWhere'] = $whereCt . " AND " . $timestampWhere;
 		$GLOBALS['DB_WE']->query($query);
-
 		$_SESSION['versions']['logDeleteIds'] = array();
-
 		while ($GLOBALS['DB_WE']->next_record()) {
 			if (!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)) {
 				$docIds[$GLOBALS['DB_WE']->f("documentID")]["Path"] = $GLOBALS['DB_WE']->f("Path");
@@ -1251,7 +1233,7 @@ class we_versions_wizard
 		);
 	}
 
-	function getReset2()
+	static function getReset2()
 	{
 
 		$version = new weVersions();
@@ -1426,7 +1408,7 @@ class we_versions_wizard
 	 *
 	 * @return string
 	 */
-	function getFrameset()
+	static function getFrameset()
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
@@ -1542,7 +1524,7 @@ class we_versions_wizard
 	 * @return string
 	 * @param string $folders csv value with directory IDs
 	 */
-	function getPage2Js($cont, $action, $folders = "folders")
+	static function getPage2Js($cont, $action, $folders = "folders")
 	{
 		$disabled = false;
 		if ($cont) {
@@ -1697,7 +1679,7 @@ class we_versions_wizard
 	 * @return string
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
-	function getPage($contents)
+	static function getPage($contents)
 	{
 		if (!sizeof($contents)) {
 			return "";

@@ -863,7 +863,7 @@ class weBackup extends we_backup{
 	}
 
 	function clearTemporaryData($docTable){
-		$this->backup_db->query("DELETE FROM ".TEMPORARY_DOC_TABLE." WHERE DocTable='".escape_sql_query($docTable)."';");
+		$this->backup_db->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE DocTable="'.escape_sql_query(stripTblPrefix($docTable)).'";');
 	}
 
 
