@@ -1066,7 +1066,7 @@ function we_cmd() {
 				}
 
 			} else {
-				alert("<?php print g_l('multiEditor',"[no_editor_left]",false); ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
@@ -1089,7 +1089,7 @@ function we_cmd() {
 				we_repl(_nextContent,url+"&frameId="+nextWindow.getFrameId());
 
 			} else {
-				alert("<?php print g_l('multiEditor',"[no_editor_left]",false); ?>");
+				alert("<?php print g_l('multiEditor',"[no_editor_left]"); ?>");
 
 			}
 			break;
@@ -1355,7 +1355,7 @@ function we_cmd() {
 				top.weEditorFrameController.toggleFrames();
 
 			} else {
-				<?php we_message_reporting::getShowMessageCall(g_l('multiEditor',"[no_editor_left]",false), WE_MESSAGE_INFO); ?>
+				<?php we_message_reporting::getShowMessageCall(g_l('multiEditor',"[no_editor_left]"), WE_MESSAGE_INFO); ?>
 			}
 	}
 

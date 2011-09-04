@@ -289,12 +289,12 @@ class we_button {
 		$title = "";
 		// Check if the button will a text button or an image button
 		if (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) { // Button will NOT be an image
-			$tmp=g_l('button','['.$name.'][alt]',false);
+			$tmp=g_l('button','['.$name.'][alt]');
 			if (($tmp != "") && $alt) {
 				$title = $tmp;
 			}
 		} else {
-			$tmp=g_l('button','['.$_button_pure_name.'][alt]',false);
+			$tmp=g_l('button','['.$_button_pure_name.'][alt]');
 			if (($tmp != "") && $alt) {
 				$title = $tmp;
 			}

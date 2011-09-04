@@ -150,14 +150,14 @@ class weTagData {
 			if (isset($GLOBALS['weTagWizard']['weTagData']['description'])) {
 				$description = $GLOBALS['weTagWizard']['weTagData']['description'];
 			}else{
-				$description = g_l('weTag','['.$tagName.'][description]');
+				$description = g_l('weTag','['.$tagName.'][description]',true);
 		}
 		return new weTagData(
 						$tagName,
 						isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(),
 						$description,
 						$GLOBALS['weTagWizard']['weTagData']['needsEndtag'],
-						g_l('weTag','['.$tagName.'][defaultvalue]'),
+						g_l('weTag','['.$tagName.'][defaultvalue]',true),
 						isset($GLOBALS['weTagWizard']['weTagData']['noDocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['noDocuLink'] : '',
 						isset($GLOBALS['weTagWizard']['weTagData']['DocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['DocuLink'] : ''
 		);

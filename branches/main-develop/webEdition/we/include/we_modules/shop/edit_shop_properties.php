@@ -255,13 +255,13 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			$shopArticlesSelect = array();
 			$parts = array();
 
-			
+
 			$saveBut   = '';
 			$cancelBut = we_button::create_button('cancel', "javascript:window.close();");
 			$searchBut = we_button::create_button('search', "javascript:searchArticles();");
 
 			// first get all shop documents
-			$query = 'SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE . 
+			$query = 'SELECT ' . CONTENT_TABLE . '.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ', ' . LINK_TABLE . ', ' . FILE_TABLE .
 				' WHERE ' . FILE_TABLE . '.ID = ' . LINK_TABLE . '.DID
 					AND ' . LINK_TABLE . '.CID = ' . CONTENT_TABLE . '.ID
 					AND ' . LINK_TABLE . '.Name = "shoptitle"
@@ -1805,18 +1805,18 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".g_l('modules_shop','[jsanz]',false)."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]',false) . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".g_l('modules_shop','[jsanz]')."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
 		<td></td>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".g_l('modules_shop','[jsbetrag]')."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]',false) . "'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".g_l('modules_shop','[jsbetrag]')."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
 		<td></td>
 		<td class="shopContentfontR">' . numfom($articlePrice) . $waehr . '</td>
 		' . ($calcVat ? '
 			<td></td>
-			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[keinezahl]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]',false) . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
+			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[keinezahl]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
 			: '') . '
 		<td>' . $pixelImg . '</td>
 		<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>

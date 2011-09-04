@@ -3079,7 +3079,7 @@ function g_l_encodeArray($tmp){
  * @param $specific the array element to access
  * @param $useEntities if set, return the string as html-entities
  */
-function g_l($name, $specific, $useEntities=true) {
+function g_l($name, $specific, $omitErrors=false) {
 	//cache last accessed lang var
 	static $cache;
 	//echo $name.$specific;
@@ -3113,7 +3113,9 @@ function g_l($name, $specific, $useEntities=true) {
 									):
 								$tmp);
 		}else{
-				trigger_error('Requested lang entry l_'.$name.$specific.' not found in '.$file.'!',E_USER_WARNING);
+				if(!$omitErrors){
+					trigger_error('Requested lang entry l_'.$name.$specific.' not found in '.$file.'!',E_USER_WARNING);
+				}
 			return false;
 		}
 	}

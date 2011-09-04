@@ -140,15 +140,15 @@ if ($we_editmode) {
 
 		}
 		var editor=null;
-		
+
 		function initEditor() {
 			<?php if ($_SESSION['prefs']['editorMode'] == 'codemirror2'){
 				echo '
-				
+
 			document.getElementById("bodydiv").style.display="block";
 			editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 			sizeEditor();
-					
+
 					return;';
 			}?>
 
@@ -302,7 +302,7 @@ if ($we_editmode) {
 			else
 				editor.reindent();
 		}
-		
+
 		function reindent2() { // reindents code of CodeMirror2
 			if(editor.somethingSelected()){
 				start=editor.getCursor(true).line;
@@ -315,13 +315,13 @@ if ($we_editmode) {
 				editor.indentLine(i);
 			}
 		}
-var lastPos = null, lastQuery = null, marked = [];		
+var lastPos = null, lastQuery = null, marked = [];
 		function unmark() {
 			for (var i = 0; i < marked.length; ++i) marked[i]();
 			marked.length = 0;
 		}
 function search(text) {
-  unmark();                     
+  unmark();
   if (!text) return;
   for (var cursor = editor.getSearchCursor(text); cursor.findNext();)
     marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
@@ -334,7 +334,7 @@ function search(text) {
   }
   editor.setSelection(cursor.from(), cursor.to());
   lastQuery = text; lastPos = cursor.to();
-}		
+}
 
 function myReplace(text, replaceby) {
 	if(!text|| !replaceby) return;
@@ -418,7 +418,7 @@ function we_get_CM_css(){
 	</style>';
 }
 
-function we_getCodeMirrorCode($code,$version) {
+function we_getCodeMirrorCode($code) {
 	global $we_doc;
 	$maineditor = '';
 	$parser_js = array();
@@ -712,7 +712,7 @@ function we_getCodeMirror2Tags(){
 	return $ret;
 }
 
-function we_getCodeMirror2Code($code,$version) {
+function we_getCodeMirror2Code($code) {
 	global $we_doc;
 	$maineditor = '';
 	$parser_js = array();
@@ -765,12 +765,12 @@ function we_getCodeMirror2Code($code,$version) {
 		foreach($parser_js as $js){
 			$maineditor.='<script src="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js.'" type="text/javascript"></script>';
 		}
-		
+
 		$maineditor.='
 		<style type="text/css">'.we_getCodeMirror2Tags().'
 			.searched {background: yellow;}
 			.activeline {background: #f0fcff !important;}
-			.CodeMirror{ 
+			.CodeMirror{
 			color: black;
 			background: white;
 			padding: 5px 8px;
@@ -785,7 +785,7 @@ function we_getCodeMirror2Code($code,$version) {
 			-moz-border-radius: 3px;
 			-webkit-border-radius: 3px;
 }
-span.c-like-keyword { 
+span.c-like-keyword {
 color: #000;
 font-weight: bold;
  }
@@ -951,7 +951,7 @@ if ($we_editmode) {
 '</td>':'').
 '<td align="right" class="defaultfont">' .
 					(substr($_SESSION['prefs']['editorMode'],0,10) == 'codemirror' ? '
-						
+
 
 
 <div id="reindentButton" style="float:right;margin-left:10px;margin-top:-3px;">' . we_button::create_button("reindent", 'javascript:reindent'.$vers.'();') . '</div>' : '') .

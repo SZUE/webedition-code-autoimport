@@ -27,7 +27,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/da
 
 class weTagWizard {
 
-	function getExistingWeTags() {
+	static function getExistingWeTags() {
 
 		$retTags = array();
 
@@ -39,15 +39,15 @@ class weTagWizard {
 		}
 
 		// add custom tags
-		$retTags = array_merge($retTags, weTagWizard::getCustomTags());
+		$retTags = array_merge($retTags, self::getCustomTags());
 
 		// add application tags
-		$retTags = array_merge($retTags, weTagWizard::getApplicationTags());
+		$retTags = array_merge($retTags, self::getApplicationTags());
 		natcasesort($retTags);
 		return array_values($retTags);
 	}
 
-	function getWeTagGroups($allTags = array()) {
+	static function getWeTagGroups($allTags = array()) {
 
 		$taggroups = array();
 
@@ -95,7 +95,7 @@ class weTagWizard {
 		return $taggroups;
 	}
 
-	function getCustomTags() {
+	static function getCustomTags() {
 
 		if (!isset($GLOBALS['weTagWizard_customTags'])) {
 
@@ -118,7 +118,7 @@ class weTagWizard {
 		return $GLOBALS['weTagWizard_customTags'];
 	}
 
-	function getApplicationTags() {
+	static function getApplicationTags() {
 
 		if (!isset($GLOBALS['weTagWizard_applicationTags'])) {
 

@@ -295,9 +295,9 @@ $code = "
 
 
 $_buttons = we_button::position_yes_no_cancel(
-	$GLOBALS['we_button']->create_button('ok',"javascript:we_cmd('saveTag');"),
+	we_button::create_button('ok',"javascript:we_cmd('saveTag');"),
 	null,
-	$GLOBALS['we_button']->create_button('cancel',"javascript:self.close();")
+	we_button::create_button('cancel',"javascript:self.close();")
 );
 
 ?>
