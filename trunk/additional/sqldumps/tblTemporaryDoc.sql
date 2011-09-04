@@ -2,7 +2,6 @@
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemporaryDoc SET DocTable="tblObjectFiles" WHERE DocTable="###TBLPREFIX###tblObjectFiles";
 /* query separator */
 CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
-  ID bigint(20) unsigned NOT NULL auto_increment,
   DocumentID bigint(20) unsigned NOT NULL default '0',
   DocumentObject longtext NOT NULL,
   DocTable enum('tblFile','tblObjectFiles') NOT NULL default '',
