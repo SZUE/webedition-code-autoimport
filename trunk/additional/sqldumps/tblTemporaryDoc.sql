@@ -1,4 +1,7 @@
+###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblTemporaryDoc WHERE Active=0;
+/* query separator */
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemporaryDoc SET DocTable="tblFile" WHERE DocTable="###TBLPREFIX###tblFile";
+/* query separator */
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemporaryDoc SET DocTable="tblObjectFiles" WHERE DocTable="###TBLPREFIX###tblObjectFiles";
 /* query separator */
 CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
