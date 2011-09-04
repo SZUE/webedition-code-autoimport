@@ -7,7 +7,7 @@
 CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
   DocumentID bigint(20) unsigned NOT NULL default '0',
   DocumentObject longtext NOT NULL,
-  DocTable enum('tblFile','tblObjectFiles') NOT NULL default '',
+  DocTable enum('tblFile','tblObjectFiles') NOT NULL,
   UnixTimestamp int(10) unsigned NOT NULL default '0',
   Active tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY (`DocTable`,`DocumentID`,`Active`)
