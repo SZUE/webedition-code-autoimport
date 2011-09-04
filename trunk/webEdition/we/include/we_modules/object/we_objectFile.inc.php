@@ -2897,7 +2897,7 @@ class we_objectFile extends we_document{
 
 		$db = $this->DB_WE;
 
-		$query = "SELECT * FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID='$ObjectID' AND Active=1 AND  DocTable='".OBJECT_FILES_TABLE."'";
+		$query = "SELECT * FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID=".intval($ObjectID)." AND Active=1 AND  DocTable='tblObjectFiles'";
 
 		$db->query($query);
 
