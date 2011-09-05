@@ -14,5 +14,6 @@ CREATE TABLE ###TBLPREFIX###tblMessages (
   MessageText text,
   tag tinyint(4) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
+  KEY UserID (UserID),
   KEY `query` (`obj_type`,`msg_type`,`ParentID`,`UserID`)
 ) ENGINE=MyISAM;
