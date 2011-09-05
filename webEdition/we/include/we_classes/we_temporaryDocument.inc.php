@@ -73,7 +73,7 @@ abstract class we_temporaryDocument{
 		$docSer = addslashes(serialize($document));
 		$documentID = intval($documentID);
 		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
-		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET DocumentID=' . $documentID . ',DocumentObject="' . $docSer . '",Active=1,UnixTimestamp=UNTIX_TIMESTAMP(),DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
+		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET DocumentID=' . $documentID . ',DocumentObject="' . $docSer . '",Active=1,UnixTimestamp=UNIX_TIMESTAMP(),DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		} else{
