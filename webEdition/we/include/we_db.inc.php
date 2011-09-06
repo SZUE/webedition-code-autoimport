@@ -83,6 +83,10 @@ class DB_WE extends DB_Sql {
 		return $this->Link_ID;
 	}
 
+	function errno(){
+		return $this->Errno;
+	}
+
 	function close() {
 		if ($this->Link_ID) {
 			@mysql_close($this->Link_ID);
