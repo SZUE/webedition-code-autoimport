@@ -239,6 +239,11 @@ class DB_Sql
 		} else {
 			$query = $table . ' ' . $mode;
 		}
+		//always lock Errlog-Table
+		if(strpos($query,ERROR_LOG_TABLE)===FALSE){
+			$query.=','.ERROR_LOG_TABLE.' write';
+		}
+
 		return @mysql_query('lock tables ' . $query, $this->Link_ID);
 	}
 
