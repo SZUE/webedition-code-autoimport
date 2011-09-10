@@ -1,19 +1,20 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id56_delimiter'] = new weTagData_textAttribute('56', 'delimiter', false, '');
-$GLOBALS['weTagWizard']['attribute']['id57_doc'] = new weTagData_selectAttribute('57', 'doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id58_showpath'] = new weTagData_selectAttribute('58', 'showpath', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id59_rootdir'] = new weTagData_textAttribute('59', 'rootdir', false, '');
-$GLOBALS['weTagWizard']['attribute']['id60_field'] = new weTagData_selectAttribute('60', 'field', array(new weTagDataOption('ID', false, ''), new weTagDataOption('Path', false, ''), new weTagDataOption('Title', false, ''), new weTagDataOption('Description', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id815_onlyindir'] = new weTagData_textAttribute('815', 'onlyindir', false, '');
-if(defined("CATEGORY_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id61_id'] = new weTagData_selectorAttribute('61', 'id',CATEGORY_TABLE, '', false, ''); }
-$GLOBALS['weTagWizard']['attribute']['id688_separator'] = new weTagData_textAttribute('688', 'separator', false, '');
-$GLOBALS['weTagWizard']['attribute']['id478_to'] = new weTagData_selectAttribute('478', 'to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id479_nameto'] = new weTagData_textAttribute('479', 'nameto', false, '');
+$this->Attributes[] = new weTagData_textAttribute('delimiter', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('showpath', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('field', array(new weTagDataOption('ID', false, ''), new weTagDataOption('Path', false, ''), new weTagDataOption('Title', false, ''), new weTagDataOption('Description', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('onlyindir', false, '');
+if(defined("CATEGORY_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',CATEGORY_TABLE, '', false, ''); }
+$this->Attributes[] = new weTagData_textAttribute('separator', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
 
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

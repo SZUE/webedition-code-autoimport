@@ -86,7 +86,7 @@ class weTagDataOption {
 	/**
 	 * @return array
 	 */
-	function getAllowedAttributes($tagAttributes = array()) {
+	function getAllowedAttributes() {
 		$arr = array();
 		foreach ($this->AllowedAttributes as $attribute) {
 			if(!is_object($attribute)){
@@ -94,9 +94,7 @@ class weTagDataOption {
 				continue;
 			}
 			$attr=$attribute->getIdName();
-			if (in_array($attr, $tagAttributes)) {
-				$arr[] = $attr;
-			}
+			$arr[] = $attr;
 		}
 		return $arr;
 	}
@@ -104,14 +102,12 @@ class weTagDataOption {
 	/**
 	 * @return array
 	 */
-	function getRequiredAttributes($tagAttributes = array()) {
+	function getRequiredAttributes() {
 
 		$arr = array();
 		foreach ($this->RequiredAttributes as $attribute) {
 			$attr=$attribute->getIdName();
-			if (in_array($attr, $tagAttributes)) {
-				$arr[] = $attr;
-			}
+			$arr[] = $attr;
 		}
 		return $arr;
 	}

@@ -1,6 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id183_pages'] = new weTagData_choiceAttribute('183', 'pages', array(new weTagDataOption('all', false, ''), new weTagDataOption('properties', false, ''), new weTagDataOption('edit', false, ''), new weTagDataOption('information', false, ''), new weTagDataOption('preview', false, ''), new weTagDataOption('validation', false, ''), new weTagDataOption('customer', false, ''), new weTagDataOption('versions', false, ''), new weTagDataOption('schedpro', false, ''), new weTagDataOption('variants', false, '')), false,true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('pages', array(new weTagDataOption('all', false, ''), new weTagDataOption('properties', false, ''), new weTagDataOption('edit', false, ''), new weTagDataOption('information', false, ''), new weTagDataOption('preview', false, ''), new weTagDataOption('validation', false, ''), new weTagDataOption('customer', false, ''), new weTagDataOption('versions', false, ''), new weTagDataOption('schedpro', false, ''), new weTagDataOption('variants', false, '')), false,true, '');

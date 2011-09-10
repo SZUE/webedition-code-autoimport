@@ -1,9 +1,12 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id76_name'] = new weTagData_textAttribute('76', 'name', true, '');
-$GLOBALS['weTagWizard']['attribute']['id77_width'] = new weTagData_textAttribute('77', 'width', false, '');
-$GLOBALS['weTagWizard']['attribute']['id78_height'] = new weTagData_textAttribute('78', 'height', false, '');
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$this->Attributes[] = new weTagData_textAttribute('name', true, '');
+$this->Attributes[] = new weTagData_textAttribute('width', false, '');
+$this->Attributes[] = new weTagData_textAttribute('height', false, '');
+//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

@@ -76,7 +76,7 @@ if($typeAttribute = $weTag->getTypeAttribute()){
 
 		foreach($_typeOptions as $option){
 
-			$_allowedAttribs = $option->getAllowedAttributes($_attributes);
+			$_allowedAttribs = $option->getAllowedAttributes();
 
 			if(sizeof($_allowedAttribs)){
 

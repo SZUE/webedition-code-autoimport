@@ -1,10 +1,12 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id178_name'] = new weTagData_textAttribute('178', 'name', true, '');
-$GLOBALS['weTagWizard']['attribute']['id179_type'] = new weTagData_choiceAttribute('179', 'type', array(new weTagDataOption('textinput', false, ''), new weTagDataOption('textarea', false, ''), new weTagDataOption('select', false, ''), new weTagDataOption('radio', false, ''), new weTagDataOption('checkbox', false, ''), new weTagDataOption('country', false, ''), new weTagDataOption('language', false, ''), new weTagDataOption('file', false, '')), false,true, '');
-$GLOBALS['weTagWizard']['attribute']['id180_attribs'] = new weTagData_textAttribute('180', 'attribs', false, '');
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$this->Attributes[] = new weTagData_textAttribute('name', true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('type', array(new weTagDataOption('textinput', false, ''), new weTagDataOption('textarea', false, ''), new weTagDataOption('select', false, ''), new weTagDataOption('radio', false, ''), new weTagDataOption('checkbox', false, ''), new weTagDataOption('country', false, ''), new weTagDataOption('language', false, ''), new weTagDataOption('file', false, '')), false,true, '');
+$this->Attributes[] = new weTagData_textAttribute('attribs', false, '');
+//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

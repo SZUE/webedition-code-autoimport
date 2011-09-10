@@ -33,18 +33,5 @@ $this->TypeAttribute = new weTagData_typeAttribute('edit', array(
 		new weTagDataOption('shop', false, 'shop', array($id, $target, $confirm, $button, $hrefonly, $class, $style, $params, $amount, $delarticle, $delshop, $shopname, ), array($id)))
 	, false, '');
 
-$this->Attributes[] = $id;
-$this->Attributes[] = $target;
-$this->Attributes[] = $confirm;
-$this->Attributes[] = $button;
-$this->Attributes[] = $hrefonly;
-$this->Attributes[] = $class;
-$this->Attributes[] = $style;
-$this->Attributes[] = $params;
-$this->Attributes[] = $amount;
-$this->Attributes[] = $delarticle;
-$this->Attributes[] = $delshop;
-$this->Attributes[] = $shopname;
-$this->Attributes[] = $editself;
-$this->Attributes[] = $delete;
-$this->Attributes[] = $xml;
+
+$this->Attributes = array($id,$target,$confirm,$button,$hrefonly,$class,$style,$params,$amount,$delarticle,$delshop,$shopname,$editself,$delete,$xml);
