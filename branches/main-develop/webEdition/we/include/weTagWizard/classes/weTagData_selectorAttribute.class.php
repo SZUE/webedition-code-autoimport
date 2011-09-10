@@ -42,12 +42,12 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 	 * @param string $selectable
 	 * @param boolean $required
 	 */
-	function __construct($name, $table, $selectable, $required = false, $module = '', $deprecated=false){
+	function __construct($name, $table, $selectable, $required = false, $module = '',$description='',$deprecated=false){
 
 		$this->Table = $table;
 		$this->Selectable = $selectable;
 
-		parent::__construct($name, $required, $module, $deprecated);
+		parent::__construct($name, $required, $module, $description,$deprecated);
 	}
 
 	/**

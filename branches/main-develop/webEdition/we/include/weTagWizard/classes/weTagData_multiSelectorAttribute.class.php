@@ -46,13 +46,13 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute {
 	 * @param string $textName
 	 * @param boolean $required
 	 */
-	function __construct($name, $table, $selectable, $textName = 'path', $required = false, $module = '') {
+	function __construct($name, $table, $selectable, $textName = 'path', $required = false, $module = '',$description='',$deprecated=false) {
 
 		$this->Table = $table;
 		$this->Selectable = $selectable;
 		$this->TextName = $textName;
 
-		parent::__construct($name, $required, $module);
+		parent::__construct($name, $required, $module,$description,$deprecated);
 	}
 
 	/**

@@ -37,9 +37,9 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function weTagData_typeAttribute($name, $options = array(), $required = true, $module = ''){
+	function weTagData_typeAttribute($name, $options = array(), $required = true, $module = '',$description='',$deprecated=false){
 
-		parent::__construct($name, $required, $module);
+		parent::__construct($name, $required, $module,$description,$deprecated);
 		$this->Options = parent::getUseOptions($options);
 		foreach($this->Options as &$option){
 			$option->addTypeAttribute($this);

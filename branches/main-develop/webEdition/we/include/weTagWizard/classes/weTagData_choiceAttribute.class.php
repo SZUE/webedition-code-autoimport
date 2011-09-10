@@ -41,9 +41,9 @@ class weTagData_choiceAttribute extends weTagDataAttribute {
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function weTagData_choiceAttribute($name, $options = array(), $required = false, $multiple = true, $module = '') {
+	function weTagData_choiceAttribute($name, $options = array(), $required = false, $multiple = true, $module = '',$description='',$deprecated=false) {
 
-		parent::__construct($name, $required, $module);
+		parent::__construct($name, $required, $module,$description,$deprecated);
 		$this->Options = parent::getUseOptions($options);
 		$this->Multiple = $multiple;
 	}

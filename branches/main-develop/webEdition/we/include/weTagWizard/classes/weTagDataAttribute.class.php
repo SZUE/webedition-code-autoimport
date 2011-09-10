@@ -46,6 +46,7 @@ class weTagDataAttribute {
 	 * @var string
 	 */
 	private $Value;
+	private $Description;
 	private $Deprecated;
 
 	/**
@@ -53,7 +54,7 @@ class weTagDataAttribute {
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function __construct($name, $required, $module = '',$deprecated=false) {
+	function __construct($name, $required, $module = '',$description='',$deprecated=false) {
 		static $count = 0;
 		$this->Id = ++$count;
 		$this->Name = $name;
@@ -61,6 +62,7 @@ class weTagDataAttribute {
 		$this->Module = $module;
 		// set value occasionally
 		$this->Value = (isset($_REQUEST['attributes']) && isset($_REQUEST['attributes'][$name])) ? $_REQUEST['attributes'][$name] : false;
+		$this->Description = $description;
 		$this->Deprecated = $deprecated;
 	}
 
@@ -98,6 +100,14 @@ class weTagDataAttribute {
 		return $this->Required;
 	}
 
+	function IsDeprecated(){
+		return $this->Deprecated;
+	}
+
+	function getDescription(){
+		return $this->Description;
+	}
+	
 	/**
 	 * checks if this attribute should be used, checks if needed modules are installed
 	 * @return boolean

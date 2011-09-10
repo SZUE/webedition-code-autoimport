@@ -51,7 +51,7 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
 	 * @param string $textName
 	 * @param string $order
 	 */
-	function __construct($name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '') {
+	function __construct($name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '',$description='',$deprecated=false) {
 
 		global $DB_WE;
 		if (!isset($DB_WE)) {
@@ -75,7 +75,7 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
 
 			$options[] = new weTagDataOption($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));
 		}
-		parent::__construct($name, $options, $required, $module);
+		parent::__construct($name, $options, $required, $module,$description,$deprecated);
 	}
 
 }

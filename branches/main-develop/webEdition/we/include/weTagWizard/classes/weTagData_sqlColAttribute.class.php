@@ -40,18 +40,16 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 	 * @param boolean $required
 	 * @param array $filter
 	 */
-	function __construct($name, $table, $required = false, $filter = array(), $module = '')
+	function __construct($name, $table, $required = false, $filter = array(), $module = '',$description='',$deprecated=false)
 	{
 
 		$this->Table = $table;
-
-		global $DB_WE;
 
 		$options = array();
 
 		// get options from choosen table
 		$items = array();
-		$tableInfo = $DB_WE->metadata($this->Table);
+		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table);
 		sort($tableInfo); // #3490
 
 		for ($i = 0; $i < sizeof($tableInfo); $i++) {
@@ -60,6 +58,6 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 				$options[] = new weTagDataOption($tableInfo[$i]['name']);
 			}
 		}
-		parent::__construct($name, $options, $required, $module);
+		parent::__construct($name, $options, $required, $module,$description,$deprecated);
 	}
 }

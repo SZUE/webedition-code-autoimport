@@ -30,9 +30,9 @@ class weTagData_textAttribute extends weTagDataAttribute{
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function weTagData_textAttribute($name, $required = false, $module = ''){
+	function weTagData_textAttribute($name, $required = false, $module = '',$description='',$deprecated=false){
 
-		parent::__construct($name, $required, $module);
+		parent::__construct($name, $required, $module,$description,$deprecated);
 	}
 
 	/**
