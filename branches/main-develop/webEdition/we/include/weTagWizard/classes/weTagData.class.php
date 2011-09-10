@@ -107,8 +107,8 @@ class weTagData{
 
 		if($this->TypeAttribute){
 			foreach($this->TypeAttribute->Options as &$value){
-				$tmp=new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
-					$value->AllowedAttributes[] = $tmp;
+				$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
+				$value->AllowedAttributes[] = $tmp;
 				if($value->Value != '-'){
 					$this->Attributes[] = $tmp;
 				}
@@ -116,14 +116,6 @@ class weTagData{
 		} else{
 			$value->AllowedAttributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]'));
 		}
-		/* return new weTagData(
-		  $tagName,
-		  isset($GLOBALS['weTagWizard']['attribute']) ? $GLOBALS['weTagWizard']['attribute'] : array(),
-		  $description,
-		  $GLOBALS['weTagWizard']['weTagData']['needsEndtag'],
-		  g_l('weTag', '[' . $tagName . '][defaultvalue]', true),
-		  isset($GLOBALS['weTagWizard']['weTagData']['DocuLink']) ? $GLOBALS['weTagWizard']['weTagData']['DocuLink'] : ''
-		  ); */
 	}
 
 	private function updateUsedAttributes(){
@@ -137,48 +129,6 @@ class weTagData{
 			}
 		}
 	}
-
-	/* 	function weTagData($name, $attributes = array(), $description = '', $needsendtag = false, $defaultvalue = '', $DocuLink=''){
-
-	  // only use attributes allowed regarding the installed modules
-	  // set attributes for this tag
-
-
-	  $attribs = array();
-	  foreach($attributes as $attribute){
-
-	  if($attribute->useAttribute()){
-
-	  if(strtolower(get_class($attribute)) == strtolower("weTagData_typeAttribute")){
-
-	  $this->TypeAttribute = $attribute;
-	  }
-	  $attribs[] = $attribute;
-	  }
-	  }
-
-	  // Feature #4535
-	  if($DocuLink != ''){
-	  $GLOBALS['TagRefURL'] = $DocuLink; //??? Where does this come from? When does it occur? If this is beeing used it wont work with we_cmd
-	  }
-	  if($this->TypeAttribute){
-	  foreach($this->TypeAttribute->Options as &$value){
-	  $value->AllowedAttributes[] = 'idTagRef_' . $this->TypeAttribute->Name . '_' . $value->Value . '_TagReferenz';
-	  if($value->Value != '-'){
-	  $attribs[] = new weTagData_cmdAttribute('TagRef_' . $this->TypeAttribute->Name . '_' . $value->Value, 'TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->Name . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
-	  }
-	  }
-	  } else{
-	  $attribs[] = new weTagData_cmdAttribute('TagRef_', 'TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]'));
-	  }
-
-	  $this->Name = $name;
-	  $this->Attributes = $attribs;
-	  $this->Description = $description;
-	  $this->NeedsEndTag = $needsendtag;
-	  $this->DefaultValue = $defaultvalue;
-	  }
-	 */
 
 	/**
 	 * @return string
@@ -221,7 +171,7 @@ class weTagData{
 			if($tag){
 				$tags[$tagName] = $tag;
 			}
-		$tag->updateUsedAttributes();
+			$tag->updateUsedAttributes();
 		}
 		return $tag;
 	}
