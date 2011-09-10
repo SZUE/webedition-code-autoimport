@@ -1,6 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['attribute']['id221_useparent'] = new weTagData_selectAttribute('221', 'useparent', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+
+$this->Attributes[] = new weTagData_selectAttribute('useparent', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');

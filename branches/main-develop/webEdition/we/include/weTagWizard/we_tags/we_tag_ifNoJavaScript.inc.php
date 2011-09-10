@@ -1,6 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+//NOTE you are inside the constructor of weTagData.class.php
 
-if(defined("FILE_TABLE")) { $GLOBALS['weTagWizard']['attribute']['id222_id'] = new weTagData_selectorAttribute('222', 'id',FILE_TABLE, 'text/webedition', true, ''); }
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+//$this->Module = '';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+
+if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, 'text/webedition', true, ''); }
