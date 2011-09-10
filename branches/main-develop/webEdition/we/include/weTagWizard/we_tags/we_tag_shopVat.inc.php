@@ -1,8 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlRowAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module = 'shop';
 
-$GLOBALS['weTagWizard']['attribute']['id500_id'] = new weTagData_sqlRowAttribute('500', 'id',WE_SHOP_VAT_TABLE, false, 'id', 'text', 'text', '');
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$this->Attributes[] = new weTagData_sqlRowAttribute('id',WE_SHOP_VAT_TABLE, false, 'id', 'text', 'text', '');
+//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

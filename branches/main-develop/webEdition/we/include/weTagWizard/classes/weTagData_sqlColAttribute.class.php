@@ -40,7 +40,7 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 	 * @param boolean $required
 	 * @param array $filter
 	 */
-	function weTagData_sqlColAttribute($id, $name, $table, $required = false, $filter = array(), $module = '')
+	function __construct($name, $table, $required = false, $filter = array(), $module = '')
 	{
 
 		$this->Table = $table;
@@ -60,6 +60,6 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 				$options[] = new weTagDataOption($tableInfo[$i]['name']);
 			}
 		}
-		parent::weTagData_selectAttribute($id, $name, $options, $required, $module);
+		parent::__construct($name, $options, $required, $module);
 	}
 }

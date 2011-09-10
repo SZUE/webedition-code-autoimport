@@ -1,6 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+//$this->Groups[] = 'if_tags';
+$this->Module = 'newsletter';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id736_plain'] = new weTagData_selectAttribute('736', 'plain', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'newsletter');
+$this->Attributes[] = new weTagData_selectAttribute('plain', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'newsletter');

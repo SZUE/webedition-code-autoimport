@@ -1,13 +1,14 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlColAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+$this->Module = 'customer';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id261_permission'] = new weTagData_sqlColAttribute('261', 'permission', CUSTOMER_TABLE, false, array(), '');
-$GLOBALS['weTagWizard']['attribute']['id262_match'] = new weTagData_textAttribute('262', 'match', false, '');
-$GLOBALS['weTagWizard']['attribute']['id705_userid'] = new weTagData_textAttribute('705', 'userid', false, '');
-$GLOBALS['weTagWizard']['attribute']['id744_cfilter'] = new weTagData_selectAttribute('744', 'cfilter', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id745_allowNoFilter'] = new weTagData_selectAttribute('745', 'allowNoFilter', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id745_matchType'] = new weTagData_selectAttribute('746', 'matchType', array(new weTagDataOption('one', false, ''), new weTagDataOption('contains', false, ''), new weTagDataOption('exact', false, '')), false, '');
+$this->Attributes[] = new weTagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, array(), '');
+$this->Attributes[] = new weTagData_textAttribute('match', false, '');
+$this->Attributes[] = new weTagData_textAttribute('userid', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('cfilter', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('allowNoFilter', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('matchType', array(new weTagDataOption('one', false, ''), new weTagDataOption('contains', false, ''), new weTagDataOption('exact', false, '')), false, '');

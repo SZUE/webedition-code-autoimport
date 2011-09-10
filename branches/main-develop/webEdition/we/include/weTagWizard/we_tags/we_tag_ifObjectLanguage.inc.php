@@ -1,12 +1,12 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_multiSelectorAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+$this->Module = 'object';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $locales = array();
 foreach($GLOBALS["weFrontendLanguages"] as $lv){
 	$locales[] = new weTagDataOption($lv, false, '');
 }
-$GLOBALS['weTagWizard']['attribute']['id116_match'] = new weTagData_choiceAttribute('116', 'match',$locales, false,true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('match',$locales, false,true, '');

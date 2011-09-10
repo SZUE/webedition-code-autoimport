@@ -25,15 +25,32 @@
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/data/module_tags.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/data/we_tag_groups.inc.php');
 
-class weTagWizard {
+/*
+ * $frontendOptions = array(
+  'lifetime' => 7200, // Lebensdauer des Caches 2 Stunden
+  'automatic_serialization' => true
+  );
 
-	static function getExistingWeTags() {
+  $backendOptions = array(
+  'cache_dir' => './tmp/' // Verzeichnis, in welches die Cache Dateien kommen
+  );
+
+  // Ein Zend_Cache_Core Objekt erzeugen
+  $cache = Zend_Cache::factory('Core',
+  'File',
+  $frontendOptions,
+  $backendOptions);
+ */
+
+class weTagWizard{
+
+	static function getExistingWeTags(){
 
 		$retTags = array();
 
-		foreach ($GLOBALS['module_tags'] as $modulename => $tags) {
+		foreach($GLOBALS['module_tags'] as $modulename => $tags){
 
-			if ($modulename == 'basis' || in_array($modulename, $GLOBALS['_we_active_modules'])) {
+			if($modulename == 'basis' || in_array($modulename, $GLOBALS['_we_active_modules'])){
 				$retTags = array_merge($retTags, $tags);
 			}
 		}
@@ -47,38 +64,38 @@ class weTagWizard {
 		return array_values($retTags);
 	}
 
-	static function getWeTagGroups($allTags = array()) {
+	static function getWeTagGroups($allTags = array()){
 
 		$taggroups = array();
 
 		// 1st make grps based on modules
-		foreach ($GLOBALS['module_tags'] as $modulename => $tags) {
+		foreach($GLOBALS['module_tags'] as $modulename => $tags){
 
-			if ($modulename == 'basis') {
+			if($modulename == 'basis'){
 				$taggroups['alltags'] = $tags;
 			}
 
-			if (in_array($modulename, $GLOBALS['_we_active_modules'])) {
+			if(in_array($modulename, $GLOBALS['_we_active_modules'])){
 				$taggroups[$modulename] = $tags;
 				$taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
 			}
 		}
 		//add applicationTags
 		$apptags = weTagWizard::getApplicationTags();
-		if (sizeof($apptags)) {
+		if(sizeof($apptags)){
 			$taggroups['apptags'] = $apptags;
 			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['apptags']);
 		}
 
 
 		// 2nd add some taggroups to this array
-		if (!sizeof($allTags)) {
+		if(!sizeof($allTags)){
 			$allTags = weTagWizard::getExistingWeTags();
 		}
-		foreach ($GLOBALS['tag_groups'] as $key => $tags) {
+		foreach($GLOBALS['tag_groups'] as $key => $tags){
 
-			for ($i = 0; $i < sizeof($tags); $i++) {
-				if (in_array($tags[$i], $allTags)) {
+			for($i = 0; $i < sizeof($tags); $i++){
+				if(in_array($tags[$i], $allTags)){
 					$taggroups[$key][] = $tags[$i];
 				}
 			}
@@ -86,7 +103,7 @@ class weTagWizard {
 
 		// at last add custom tags.
 		$customTags = weTagWizard::getCustomTags();
-		if (sizeof($customTags)) {
+		if(sizeof($customTags)){
 			$taggroups['custom'] = $customTags;
 			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['custom']);
 		}
@@ -95,21 +112,20 @@ class weTagWizard {
 		return $taggroups;
 	}
 
-	static function getCustomTags() {
+	static function getCustomTags(){
 
-		if (!isset($GLOBALS['weTagWizard_customTags'])) {
+		if(!isset($GLOBALS['weTagWizard_customTags'])){
 
 			$GLOBALS['weTagWizard_customTags'] = array();
 
-			if (is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags')) {
+			if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags')){
 
 				// get the custom tag-descriptions
-				$handle = dir(
-								$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags');
+				$handle = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags');
 
-				while (false !== ($entry = $handle->read())) {
+				while(false !== ($entry = $handle->read())) {
 
-					if (preg_match("/we_tag_(.*).inc.php/", $entry, $match)) {
+					if(preg_match("/we_tag_(.*).inc.php/", $entry, $match)){
 						$GLOBALS['weTagWizard_customTags'][] = $match[1];
 					}
 				}
@@ -118,15 +134,15 @@ class weTagWizard {
 		return $GLOBALS['weTagWizard_customTags'];
 	}
 
-	static function getApplicationTags() {
+	static function getApplicationTags(){
 
-		if (!isset($GLOBALS['weTagWizard_applicationTags'])) {
+		if(!isset($GLOBALS['weTagWizard_applicationTags'])){
 
 			$GLOBALS['weTagWizard_applicationTags'] = array();
 			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
 			$apptags = array();
 			$alltools = weToolLookup::getAllTools(true);
-			foreach ($alltools as $tool) {
+			foreach($alltools as $tool){
 				$apptags = weToolLookup::getAllToolTagWizards($tool['name']);
 				$apptagnames = array_keys($apptags);
 				$GLOBALS['weTagWizard_applicationTags'] = array_merge($GLOBALS['weTagWizard_applicationTags'], $apptagnames);

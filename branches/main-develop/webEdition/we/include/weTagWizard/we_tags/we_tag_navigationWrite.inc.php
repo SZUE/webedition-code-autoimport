@@ -1,7 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'input_tags';
+$this->Module = 'navigation';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id702_navigationname'] = new weTagData_textAttribute('702', 'navigationname', false, '');
-$GLOBALS['weTagWizard']['attribute']['id722_depth'] = new weTagData_textAttribute('722', 'depth', false, '');
+$this->Attributes[] = new weTagData_textAttribute('navigationname', false, '');
+$this->Attributes[] = new weTagData_textAttribute('depth', false, '');

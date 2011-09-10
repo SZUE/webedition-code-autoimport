@@ -1,11 +1,13 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectorAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'if_tags';
+$this->Module = 'newsletter';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined("FILE_TABLE")) {
-$GLOBALS['weTagWizard']['attribute']['id382_id'] = new weTagData_selectorAttribute('382', 'id',FILE_TABLE, 'text/webedition', true, '');
-$GLOBALS['weTagWizard']['attribute']['id4_plain'] = new weTagData_selectAttribute('4', 'plain', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, 'text/webedition', true, '');
+$this->Attributes[] = new weTagData_selectAttribute('plain', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 
 }

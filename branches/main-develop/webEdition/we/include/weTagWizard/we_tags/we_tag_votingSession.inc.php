@@ -1,4 +1,4 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module='voting';

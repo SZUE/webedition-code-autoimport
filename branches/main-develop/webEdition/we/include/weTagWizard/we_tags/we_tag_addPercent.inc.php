@@ -1,8 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module = 'shop';
 
-$GLOBALS['weTagWizard']['attribute']['id25_percent'] = new weTagData_textAttribute('25', 'percent', true, '');
-$GLOBALS['weTagWizard']['attribute']['id26_num_format'] = new weTagData_choiceAttribute('26', 'num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('swiss', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_textAttribute('percent', true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('swiss', false, '')), false,false, '');

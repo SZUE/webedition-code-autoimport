@@ -1,9 +1,8 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+$this->NeedsEndTag = false;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module='voting';
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
-
-$GLOBALS['weTagWizard']['attribute']['id602_firstentry'] = new weTagData_textAttribute('602', 'firstentry', false, '');
-$GLOBALS['weTagWizard']['attribute']['id603_submitonchange'] = new weTagData_selectAttribute('603', 'submitonchange', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id846_reload'] = new weTagData_selectAttribute('846', 'reload', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('firstentry', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('submitonchange', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('reload', array(new weTagDataOption('false', false, ''), new weTagDataOption('true', false, '')), false, '');

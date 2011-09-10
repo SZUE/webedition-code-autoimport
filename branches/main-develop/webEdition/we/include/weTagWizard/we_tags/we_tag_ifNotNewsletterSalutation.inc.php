@@ -1,9 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+$this->Module = 'newsletter';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id381_type'] = new weTagData_selectAttribute('381', 'type', array(new weTagDataOption('email', false, ''), new weTagDataOption('salutation', false, 'newsletter'), new weTagDataOption('title', false, 'newsletter'), new weTagDataOption('firstname', false, 'newsletter'), new weTagDataOption('lastname', false, 'newsletter')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id691_match'] = new weTagData_textAttribute('691', 'match', false, '');
-?>
+$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('email', false, ''), new weTagDataOption('salutation', false, 'newsletter'), new weTagDataOption('title', false, 'newsletter'), new weTagDataOption('firstname', false, 'newsletter'), new weTagDataOption('lastname', false, 'newsletter')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('match', false, '');

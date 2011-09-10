@@ -54,15 +54,12 @@ class weTagDataOption {
 	 * @param array $allowedAttributes
 	 * @param array $requiredAttributes
 	 */
-	function weTagDataOption($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()) {
+	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()) {
 
 		$this->Name = $name;
 
-		if ($value === false) {
-			$this->Value = $name;
-		} else {
-			$this->Value = $value;
-		}
+		$this->Value = ($value === false) ? $name : $value;
+
 
 		// clean allowed and required attributes in case not all modules are installed
 		$this->AllowedAttributes = $allowedAttributes;
@@ -90,11 +87,15 @@ class weTagDataOption {
 	 * @return array
 	 */
 	function getAllowedAttributes($tagAttributes = array()) {
-
 		$arr = array();
 		foreach ($this->AllowedAttributes as $attribute) {
-			if (in_array($attribute, $tagAttributes)) {
-				$arr[] = $attribute;
+			if(!is_object($attribute)){
+				t_e($attribute);
+				continue;
+			}
+			$attr=$attribute->getIdName();
+			if (in_array($attr, $tagAttributes)) {
+				$arr[] = $attr;
 			}
 		}
 		return $arr;
@@ -107,11 +108,16 @@ class weTagDataOption {
 
 		$arr = array();
 		foreach ($this->RequiredAttributes as $attribute) {
-			if (in_array($attribute, $tagAttributes)) {
-				$arr[] = $attribute;
+			$attr=$attribute->getIdName();
+			if (in_array($attr, $tagAttributes)) {
+				$arr[] = $attr;
 			}
 		}
 		return $arr;
+	}
+
+	function addTypeAttribute($attr){
+		array_unshift($this->AllowedAttributes,$attr);
 	}
 
 	/**
@@ -119,11 +125,6 @@ class weTagDataOption {
 	 * @return boolean
 	 */
 	function useOption() {
-
-		if ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules'])) {
-			return true;
-		}
-		return false;
-	}
-
+		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules']));
+}
 }

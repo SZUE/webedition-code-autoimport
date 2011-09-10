@@ -1,6 +1,9 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_sqlRowAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module = 'shop';
 
-$GLOBALS['weTagWizard']['attribute']['id271_id'] = new weTagData_sqlRowAttribute('271', 'id',WE_SHOP_VAT_TABLE, true, 'id', 'text', 'text', '');
+$this->Attributes[] = new weTagData_sqlRowAttribute('id',WE_SHOP_VAT_TABLE, true, 'id', 'text', 'text', '');

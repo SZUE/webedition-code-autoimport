@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
 
-class weTagData_typeAttribute extends weTagDataAttribute
-{
+class weTagData_typeAttribute extends weTagDataAttribute{
 
 	/**
 	 * @var array
@@ -38,14 +37,15 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function weTagData_typeAttribute($id, $name, $options = array(), $required = true, $module = '')
-	{
+	function weTagData_typeAttribute($name, $options = array(), $required = true, $module = ''){
 
-		parent::weTagDataAttribute($id, $name, $required, $module);
-		$this->Options = $this->getUseOptions($options);
-
+		parent::__construct($name, $required, $module);
+		$this->Options = parent::getUseOptions($options);
+		foreach($this->Options as &$option){
+			$option->addTypeAttribute($this);
+		}
 		// overwrite value if needed
-		if ($this->Value === false) {
+		if($this->Value === false){
 			$this->Value = '-';
 		}
 	}
@@ -53,22 +53,21 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	/**
 	 * @return string
 	 */
-	function getCodeForTagWizard()
-	{
+	function getCodeForTagWizard(){
 
 		$keys = array();
 		$values = array();
 
 		$keys[] = '';
-		$values[] = g_l('taged','[select_type]');
+		$values[] = g_l('taged', '[select_type]');
 
-		foreach ($this->Options as $option) {
+		foreach($this->Options as $option){
 
 			$keys[] = $option->Value;
 
-			if ($option->getName() == '-') {
+			if($option->getName() == '-'){
 				$values[] = '';
-			} else {
+			} else{
 				$values[] = $option->getName();
 			}
 		}
@@ -77,12 +76,11 @@ class weTagData_typeAttribute extends weTagDataAttribute
 
 		$select = new we_htmlSelect(
 				array(
-
-						'name' => $this->Name,
-						'id' => $this->getIdName(),
-						'onchange' => $js,
-						'class' => 'defaultfont selectinput'
-				));
+					'name' => $this->Name,
+					'id' => $this->getIdName(),
+					'onchange' => $js,
+					'class' => 'defaultfont selectinput'
+			));
 		$select->addOptions(sizeof($values), $keys, $values);
 
 		return '
@@ -97,9 +95,8 @@ class weTagData_typeAttribute extends weTagDataAttribute
 	/**
 	 * @return array
 	 */
-	function getOptions()
-	{
+	function getOptions(){
 		return $this->Options;
 	}
-}
 
+}

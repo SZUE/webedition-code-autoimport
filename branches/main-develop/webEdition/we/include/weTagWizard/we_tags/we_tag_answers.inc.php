@@ -1,3 +1,4 @@
 <?php
-
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module='voting';

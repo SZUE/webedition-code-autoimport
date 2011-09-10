@@ -29,37 +29,39 @@ class weTagDataAttribute {
 	/**
 	 * @var string
 	 */
-	var $Id;
+	private $Id;
 	/**
 	 * @var string
 	 */
-	var $Name;
+	private $Name;
 	/**
 	 * @var boolean
 	 */
-	var $Required;
+	private $Required;
 	/**
 	 * @var string
 	 */
-	var $Module;
+	private $Module;
 	/**
 	 * @var string
 	 */
-	var $Value;
+	private $Value;
+	private $Deprecated;
 
 	/**
 	 * @param string $name
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function weTagDataAttribute($id, $name, $required, $module = '') {
-
-		$this->Id = $id;
+	function __construct($name, $required, $module = '',$deprecated=false) {
+		static $count = 0;
+		$this->Id = ++$count;
 		$this->Name = $name;
 		$this->Required = $required;
 		$this->Module = $module;
 		// set value occasionally
 		$this->Value = (isset($_REQUEST['attributes']) && isset($_REQUEST['attributes'][$name])) ? $_REQUEST['attributes'][$name] : false;
+		$this->Deprecated = $deprecated;
 	}
 
 	/**
@@ -101,17 +103,14 @@ class weTagDataAttribute {
 	 * @return boolean
 	 */
 	function useAttribute() {
-		if ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules'])) {
-			return true;
-		}
-		return false;
+		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules']));
 	}
 
 	/**
 	 * checks if this option should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function getUseOptions($options) {
+	static function getUseOptions($options) {
 
 		$useOptions = array();
 		foreach ($options as $option) {

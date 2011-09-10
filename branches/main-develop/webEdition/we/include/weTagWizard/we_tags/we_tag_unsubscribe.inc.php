@@ -1,13 +1,15 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+//$this->Groups[] = 'if_tags';
+$this->Module = 'newsletter';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id546_size'] = new weTagData_textAttribute('546', 'size', false, '');
-$GLOBALS['weTagWizard']['attribute']['id547_maxlength'] = new weTagData_textAttribute('547', 'maxlength', false, '');
-$GLOBALS['weTagWizard']['attribute']['id548_value'] = new weTagData_textAttribute('548', 'value', false, '');
-$GLOBALS['weTagWizard']['attribute']['id549_class'] = new weTagData_textAttribute('549', 'class', false, '');
-$GLOBALS['weTagWizard']['attribute']['id550_style'] = new weTagData_textAttribute('550', 'style', false, '');
-$GLOBALS['weTagWizard']['attribute']['id551_onchange'] = new weTagData_textAttribute('551', 'onchange', false, '');
-$GLOBALS['weTagWizard']['attribute']['id628_xml'] = new weTagData_selectAttribute('628', 'xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('size', false, '');
+$this->Attributes[] = new weTagData_textAttribute('maxlength', false, '');
+$this->Attributes[] = new weTagData_textAttribute('value', false, '');
+$this->Attributes[] = new weTagData_textAttribute('class', false, '');
+$this->Attributes[] = new weTagData_textAttribute('style', false, '');
+$this->Attributes[] = new weTagData_textAttribute('onchange', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('xml', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');

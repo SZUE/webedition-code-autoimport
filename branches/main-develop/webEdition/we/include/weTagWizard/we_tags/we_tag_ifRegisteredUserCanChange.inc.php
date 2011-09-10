@@ -1,9 +1,11 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Groups[] = 'if_tags';
+$this->Module = 'customer';
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$GLOBALS['weTagWizard']['attribute']['id804_protected'] = new weTagData_selectAttribute('804', 'protected', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id264_admin'] = new weTagData_textAttribute('264', 'admin', false, '');
-$GLOBALS['weTagWizard']['attribute']['id263_userid'] = new weTagData_textAttribute('263', 'userid', true, '');
+$this->Attributes[] = new weTagData_selectAttribute('protected', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('admin', false, '');
+$this->Attributes[] = new weTagData_textAttribute('userid', true, '');

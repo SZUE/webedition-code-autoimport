@@ -1,10 +1,10 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_choiceAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = true;
+$this->NeedsEndTag = true;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module = 'shop';
 
-$GLOBALS['weTagWizard']['attribute']['id53_sum'] = new weTagData_textAttribute('53', 'sum', false, '');
-$GLOBALS['weTagWizard']['attribute']['id54_num_format'] = new weTagData_choiceAttribute('54', 'num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('swiss', false, '')), false,false, '');
-$GLOBALS['weTagWizard']['attribute']['id55_print'] = new weTagData_choiceAttribute('55', 'print', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false,false, '');
-$GLOBALS['weTagWizard']['attribute']['id734_cachelifetime'] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$this->Attributes[] = new weTagData_textAttribute('sum', false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('swiss', false, '')), false,false, '');
+$this->Attributes[] = new weTagData_choiceAttribute('print', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false,false, '');

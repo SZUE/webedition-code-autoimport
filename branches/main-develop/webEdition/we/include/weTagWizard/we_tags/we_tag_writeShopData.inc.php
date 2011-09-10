@@ -1,12 +1,13 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_textAttribute.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
+//NOTE you are inside the constructor of weTagData.class.php
 
-$GLOBALS['weTagWizard']['weTagData']['needsEndtag'] = false;
+$this->NeedsEndTag = false;
+$this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->Module = 'shop';
 
-$GLOBALS['weTagWizard']['attribute']['id618_shopname'] = new weTagData_textAttribute('618', 'shopname', true, '');
-$GLOBALS['weTagWizard']['attribute']['id619_pricename'] = new weTagData_textAttribute('619', 'pricename', true, '');
-$GLOBALS['weTagWizard']['attribute']['id620_netprices'] = new weTagData_selectAttribute('620', 'netprices', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$GLOBALS['weTagWizard']['attribute']['id837_shipping'] = new weTagData_textAttribute('837', 'shipping', false, '');
-$GLOBALS['weTagWizard']['attribute']['id838_shippingisnet'] = new weTagData_textAttribute('838', 'shippingisnet', false, '');
-$GLOBALS['weTagWizard']['attribute']['id839_shippingvatrate'] = new weTagData_textAttribute('839', 'shippingvatrate', false, '');
+$this->Attributes[] = new weTagData_textAttribute('shopname', true, '');
+$this->Attributes[] = new weTagData_textAttribute('pricename', true, '');
+$this->Attributes[] = new weTagData_selectAttribute('netprices', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('shipping', false, '');
+$this->Attributes[] = new weTagData_textAttribute('shippingisnet', false, '');
+$this->Attributes[] = new weTagData_textAttribute('shippingvatrate', false, '');
