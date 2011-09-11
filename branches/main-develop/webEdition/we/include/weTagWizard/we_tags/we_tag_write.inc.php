@@ -28,8 +28,8 @@ $workflowname = new weTagData_textAttribute('workflowname', false, '');
 $workflowuserid = new weTagData_textAttribute('workflowuserid', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($formname,$publish,$doctype,$categories,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$protected,$workflowname,$workflowuserid), array()),
-	new weTagDataOption('object', false, '', array($formname,$publish,$categories,$classid,$name,$onduplicate,$onpredefinedname,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$triggerid,$parentid,$protected,$workflowname,$workflowuserid), array())), false, '');
+	new weTagDataOption('document', false, '', array($formname,$publish,$doctype,$categories,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$protected,$workflowname,$workflowuserid), array($doctype)),
+	new weTagDataOption('object', false, '', array($formname,$publish,$categories,$classid,$name,$onduplicate,$onpredefinedname,$userid,$admin,$forceedit,$mail,$mailfrom,$charset,$triggerid,$parentid,$protected,$workflowname,$workflowuserid), array($classid))), false, '');
 
 $this->Attributes=array($formname,$publish,$doctype,$categories,$classid,$protected,$admin,$forceedit,$mail,$mailfrom,$charset,$triggerid,
 	$workspaces,$parentid,$userid,$name,$onduplicate,$onpredefinedname,$workflowname,$workflowuserid);
