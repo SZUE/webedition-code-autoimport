@@ -67,18 +67,18 @@ $showself = new weTagData_selectAttribute('showself', array(new weTagDataOption(
 
 $this->TypeAttribute =new weTagData_typeAttribute('10000', 'type', array(
 	new weTagDataOption('-', false, '', array(), array()),
-	new weTagDataOption('document', false, '', array($name,$doctype,$categories,$catOr,$rows,'id10008_order_document',$desc,$offset,$languages,$searchable,$workspaceID_document,$cfilter,$recursive,$customers,$contenttypes,$id,$calendar, $numorder,$categoryids,$condition), array()),
-	new weTagDataOption('search', false, '', array($name,$doctype,$categories,$catOr,$languages,$rows,'id10051_order_search',$desc,$casesensitive,$classid,$workspaceID_document,$cfilter,$numorder,$objectseourls,$hidedirindex), array()),
-	new weTagDataOption('category', false, '', array($name,$categories,$rows,'id10052_order_category',$desc,$offset,$parentid,$parentidname,$categoryids), array()),
-	new weTagDataOption('object', false, '', array($name,$categories,$catOr,$rows,'id10050_order_object',$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$workspaceID_object,$cfilter,$docid,$customers,$id,$calendar,$predefinedSQL,$categoryids,$objectseourls,$hidedirindex), array()),
-	new weTagDataOption('multiobject', false, '', array($name,$categories,$catOr,$rows,'id10050_order_object',$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$cfilter,$calendar,$objectseourls,$hidedirindex), array()),
-	new weTagDataOption('banner', false, 'banner', array($name,$rows,'id10053_order_banner',$customer), array()),
+	new weTagDataOption('document', false, '', array($name,$doctype,$categories,$catOr,$rows,$order_document,$desc,$offset,$languages,$searchable,$workspaceID_document,$cfilter,$recursive,$customers,$contenttypes,$id,$calendar, $numorder,$categoryids,$condition), array()),
+	new weTagDataOption('search', false, '', array($name,$doctype,$categories,$catOr,$languages,$rows,$order_search,$desc,$casesensitive,$classid,$workspaceID_document,$cfilter,$numorder,$objectseourls,$hidedirindex), array()),
+	new weTagDataOption('category', false, '', array($name,$categories,$rows,$order_category,$desc,$offset,$parentid,$parentidname,$categoryids), array()),
+	new weTagDataOption('object', false, '', array($name,$categories,$catOr,$rows,$order_object,$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$workspaceID_object,$cfilter,$docid,$customers,$id,$calendar,$predefinedSQL,$categoryids,$objectseourls,$hidedirindex), array()),
+	new weTagDataOption('multiobject', false, '', array($name,$categories,$catOr,$rows,$order_object,$desc,$offset,$classid,$condition,$triggerid,$languages,$searchable,$cfilter,$calendar,$objectseourls,$hidedirindex), array()),
+	new weTagDataOption('banner', false, 'banner', array($name,$rows,$order_banner,$customer), array()),
 	new weTagDataOption('shopVariant', false, '', array($name,$defaultname,$documentid,$objectid,$objectseourls,$hidedirindex), array()),
-	new weTagDataOption('customer', false, 'customer', array($name,$rows,$cols,'id10054_order_customer',$desc,$offset,$condition,$docid), array()),
-	new weTagDataOption('onlinemonitor', false, 'customer', array($name,$rows,$cols,'id10057_order_onlinemonitor',$desc,$offset,$condition,$docid,$lastaccesslimit,$lastloginlimit), array()),
-	new weTagDataOption('languagelink', false, '', array($name,$rows,$cols,'id10058_order_languagelink',$desc,$offset,$pagelanguage,$showself,$objectseourls,$hidedirindex), array()),
-	new weTagDataOption('order', false, '', array($name,$rows,$cols,'id10008_order_document',$desc,$offset,$condition,$docid), array()),
-	new weTagDataOption('orderitem', false, 'shop', array($name,$rows,$cols,'id10008_order_document',$desc,$offset,$condition,$docid), array())), false, '');
+	new weTagDataOption('customer', false, 'customer', array($name,$rows,$cols,$order_customer,$desc,$offset,$condition,$docid), array()),
+	new weTagDataOption('onlinemonitor', false, 'customer', array($name,$rows,$cols,$order_onlinemonitor,$desc,$offset,$condition,$docid,$lastaccesslimit,$lastloginlimit), array()),
+	new weTagDataOption('languagelink', false, '', array($name,$rows,$cols,$order_languagelink,$desc,$offset,$pagelanguage,$showself,$objectseourls,$hidedirindex), array()),
+	new weTagDataOption('order', false, '', array($name,$rows,$cols,$order_document,$desc,$offset,$condition,$docid), array()),
+	new weTagDataOption('orderitem', false, 'shop', array($name,$rows,$cols,$order_document,$desc,$offset,$condition,$docid), array())), false, '');
 
 $this->Attributes=array($MultiSelector,$name,$doctype,$categories,$catOr,$rows,$cols,$order_document,$order_object,$order_search,$order_category,
 	$order_banner,$order_customer,$order_onlinemonitor,$order_languagelink,$desc,$offset,$casesensitive,$classid,$condition,$triggerid,$seeMode,

@@ -6,26 +6,36 @@ $this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_typeAttribute('type', array(new weTagDataOption('text', false, '', array('id319_type','id318_name','id320_size','id321_maxlength','id324_value','id326_html','id328_php','id329_num_format','id330_precision','id637_user','id720_htmlspecialchars','id731_spellcheck','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name')), new weTagDataOption('checkbox', false, '', array('id319_type','id318_name','id324_value','id635_reload','id637_user','id720_htmlspecialchars','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name')), new weTagDataOption('date', false, '', array('id319_type','id318_name','id322_format','id637_user','id720_htmlspecialchars','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name')), new weTagDataOption('choice', false, '', array('id319_type','id318_name','id320_size','id321_maxlength','id323_mode','id325_values','id635_reload','id636_seperator','id637_user','id720_htmlspecialchars','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name')), new weTagDataOption('select', false, '', array('id319_type','id318_name','id325_values','id720_htmlspecialchars','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name')), new weTagDataOption('country', false, '', array('id319_type','id318_name','id872_outputlanguage','id855_doc','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name')), new weTagDataOption('language', false, '', array('id319_type','id318_name','id872_outputlanguage','id855_doc','id478_to','id479_nameto','id734_cachelifetime'), array('id318_name'))), true, '');
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_textAttribute('size', false, '');
-$this->Attributes[] = new weTagData_textAttribute('maxlength', false, '');
-$this->Attributes[] = new weTagData_textAttribute('format', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('mode', array(new weTagDataOption('add', false, ''), new weTagDataOption('replace', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('value', false, '');
-$this->Attributes[] = new weTagData_textAttribute('values', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('html', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('php', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('swiss', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('precision', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('reload', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('seperator', false, '');
-$this->Attributes[] = new weTagData_multiSelectorAttribute('user',USER_TABLE, 'user,folder', 'Text', false, 'users');
-$this->Attributes[] = new weTagData_selectAttribute('spellcheck', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'spellchecker');
-$this->Attributes[] = new weTagData_textAttribute('outputlanguage', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');
+$name = new weTagData_textAttribute('name', true, '');
+$size = new weTagData_textAttribute('size', false, '');
+$maxlength = new weTagData_textAttribute('maxlength', false, '');
+$format = new weTagData_textAttribute('format', false, '');
+$mode = new weTagData_selectAttribute('mode', array(new weTagDataOption('add', false, ''), new weTagDataOption('replace', false, '')), false, '');
+$value = new weTagData_textAttribute('value', false, '');
+$values = new weTagData_textAttribute('values', false, '');
+$html = new weTagData_selectAttribute('html', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$php = new weTagData_selectAttribute('php', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$num_format = new weTagData_selectAttribute('num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('swiss', false, '')), false, '');
+$precision = new weTagData_textAttribute('precision', false, '');
+$win2iso = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$reload = new weTagData_selectAttribute('reload', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$seperator = new weTagData_textAttribute('seperator', false, '');
+$user = new weTagData_multiSelectorAttribute('user',USER_TABLE, 'user,folder', 'Text', false, 'users');
+$spellcheck = new weTagData_selectAttribute('spellcheck', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, 'spellchecker');
+$outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
+$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
+$to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$nameto = new weTagData_textAttribute('nameto', false, '');
+
+$this->TypeAttribute = new weTagData_typeAttribute('type', array(
+	new weTagDataOption('text', false, '', array($name,$size,$maxlength,$value,$html,$php,'id329_num_format',$precision,$user,$htmlspecialchars,$spellcheck,$to,$nameto,), array($name)),
+	new weTagDataOption('checkbox', false, '', array($name,$value,$reload,$user,$htmlspecialchars,$to,$nameto,), array($name)),
+	new weTagDataOption('date', false, '', array($name,$format,$user,$htmlspecialchars,$to,$nameto,), array($name)),
+	new weTagDataOption('choice', false, '', array($name,$size,$maxlength,$mode,$values,$reload,$seperator,$user,$htmlspecialchars,$to,$nameto,), array($name)),
+	new weTagDataOption('select', false, '', array($name,$values,$htmlspecialchars,$to,$nameto,), array($name)),
+	new weTagDataOption('country', false, '', array($name,$outputlanguage,$doc,$to,$nameto,), array($name)),
+	new weTagDataOption('language', false, '', array($name,$outputlanguage,$doc,$to,$nameto), array($name))), true, '');
+
+$this->Attributes=array($name,$size,$maxlength,$format,$mode,$value,$values,$html,$htmlspecialchars,$php,$num_format,$precision,$win2iso,$reload,
+	$seperator,$user,$spellcheck,$outputlanguage,$doc,$to,$nameto);

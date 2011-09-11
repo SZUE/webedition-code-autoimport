@@ -24,24 +24,28 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' .
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagDataAttribute {
+class weTagDataAttribute{
 
 	/**
 	 * @var string
 	 */
 	private $Id;
+
 	/**
 	 * @var string
 	 */
 	private $Name;
+
 	/**
 	 * @var boolean
 	 */
 	private $Required;
+
 	/**
 	 * @var string
 	 */
 	private $Module;
+
 	/**
 	 * @var string
 	 */
@@ -54,7 +58,7 @@ class weTagDataAttribute {
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function __construct($name, $required, $module = '',$description='',$deprecated=false) {
+	function __construct($name, $required, $module = '', $description='', $deprecated=false){
 		static $count = 0;
 		$this->Id = ++$count;
 		$this->Name = $name;
@@ -69,34 +73,40 @@ class weTagDataAttribute {
 	/**
 	 * @return string
 	 */
-	function getLabelCodeForTagWizard() {
-
-		return we_htmlElement::htmlLabel(
-						array(
-				'id' => 'label_' . $this->getIdName(),
-				'class' => 'defaultfont',
-				'for' => $this->getIdName()
-						), $this->Name . ($this->Required ? '*' : ''));
+	function getLabelCodeForTagWizard(){
+		$tmp = array(
+			'id' => 'label_' . $this->getIdName(),
+			'class' => 'defaultfont',
+			'for' => $this->getIdName()
+		);
+		if($this->Description != ''){
+			$tmp['style'] = 'border-bottom-style: dotted;border-bottom-width: 1px;border-spacing: 2px;cursor:help;';
+			$tmp['title'] = $this->Description;
+		}
+		if($this->Deprecated){
+			$tmp['style'] .= 'text-decoration:line-through;';
+		}
+		return we_htmlElement::htmlLabel($tmp, $this->Name . ($this->Required ? '*' : ''));
 	}
 
 	/**
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
 
 	/**
 	 * @return string
 	 */
-	function getIdName() {
+	function getIdName(){
 		return 'id' . $this->Id . '_' . $this->Name;
 	}
 
 	/**
 	 * @return boolean
 	 */
-	function IsRequired() {
+	function IsRequired(){
 		return $this->Required;
 	}
 
@@ -107,12 +117,12 @@ class weTagDataAttribute {
 	function getDescription(){
 		return $this->Description;
 	}
-	
+
 	/**
 	 * checks if this attribute should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function useAttribute() {
+	function useAttribute(){
 		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules']));
 	}
 
@@ -120,11 +130,11 @@ class weTagDataAttribute {
 	 * checks if this option should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	static function getUseOptions($options) {
+	static function getUseOptions($options){
 
 		$useOptions = array();
-		foreach ($options as $option) {
-			if ($option->useOption()) {
+		foreach($options as $option){
+			if($option->useOption()){
 				$useOptions[] = $option;
 			}
 		}

@@ -6,12 +6,27 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('name', true, '');
-$this->Attributes[] = new weTagData_typeAttribute('type', array(new weTagDataOption('document', false, '', array('id582_type','id581_name','id583_doc','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('property', false, '', array('id582_type','id581_name','id583_doc','id734_cachelifetime'), array('id581_name')), new weTagDataOption('global', false, '', array('id582_type','id581_name','id720_htmlspecialchars'), array('id581_name')), new weTagDataOption('img', false, '', array('id582_type','id581_name','id583_doc','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('href', false, '', array('id582_type','id581_name','id583_doc','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('date', false, '', array('id582_type','id581_name','id583_doc','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('link', false, '', array('id582_type','id581_name','id583_doc','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('multiobject', false, '', array('id582_type'), array()), new weTagDataOption('request', false, '', array('id582_type','id581_name','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('post', false, '', array('id582_type','id581_name','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('get', false, '', array('id582_type','id581_name','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('select', false, '', array('id582_type','id581_name','id583_doc','id720_htmlspecialchars','id734_cachelifetime'), array('id581_name')), new weTagDataOption('session', false, '', array('id582_type','id581_name','id720_htmlspecialchars'), array('id581_name')), new weTagDataOption('shopVat', false, '', array('id582_type'), array())), true, '');
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('nameto', false, '');
+$name = new weTagData_textAttribute('name', true, '');
+$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
+$win2iso = new weTagData_selectAttribute('win2iso', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
+$nameto = new weTagData_textAttribute('nameto', false, '');
 
-//$this->Attributes[] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$this->TypeAttribute[] = new weTagData_typeAttribute('type', array(
+	new weTagDataOption('document', false, '', array($name,$doc,$htmlspecialchars), array($name)),
+	new weTagDataOption('property', false, '', array($name,$doc,), array($name)),
+	new weTagDataOption('global', false, '', array($name,$htmlspecialchars), array($name)),
+	new weTagDataOption('img', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
+	new weTagDataOption('href', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
+	new weTagDataOption('date', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
+	new weTagDataOption('link', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
+	new weTagDataOption('multiobject', false, '', array(), array()),
+	new weTagDataOption('request', false, '', array($name,$htmlspecialchars,), array($name)),
+	new weTagDataOption('post', false, '', array($name,$htmlspecialchars,), array($name)),
+	new weTagDataOption('get', false, '', array($name,$htmlspecialchars,), array($name)),
+	new weTagDataOption('select', false, '', array($name,$doc,$htmlspecialchars,), array($name)),
+	new weTagDataOption('session', false, '', array($name,$htmlspecialchars), array($name)),
+	new weTagDataOption('shopVat', false, '', array(), array())), true, '');
+
+$this->Attributes=array($name,$doc,$win2iso,$htmlspecialchars,$to,$nameto);

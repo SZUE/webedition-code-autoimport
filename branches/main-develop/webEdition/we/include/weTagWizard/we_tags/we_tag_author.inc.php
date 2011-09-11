@@ -6,7 +6,7 @@ $this->NeedsEndTag = false;
 $this->Module = 'users';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_selectAttribute('27', 'type', array(new weTagDataOption('name', false, ''), new weTagDataOption('initials', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('28', 'doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('29', 'creator', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('734', 'cachelifetime', false, '');
+$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('name', false, ''), new weTagDataOption('initials', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('creator', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '','',true);
