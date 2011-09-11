@@ -170,11 +170,8 @@ class we_tagParser {
 	}
 
 	public function parseTags(&$code, $postName = '', $ignore = array()) {
-
-		if (!defined('DISABLE_TEMPLATE_TAG_CHECK') || !DISABLE_TEMPLATE_TAG_CHECK) {
-			if (!self::checkOpenCloseTags($this->tags, $code)) {
-				return;
-			}
+		if (($tmp=self::checkOpenCloseTags($this->tags, $code))!==true) {
+			return $tmp;
 		}
 
 		$this->lastpos = 0;
@@ -188,11 +185,13 @@ class we_tagParser {
 				$this->parseTag($code, $postName);
 			}
 		}
+		return true;
 	}
 
 	private static function checkOpenCloseTags($TagsInTemplate, &$code) {
-
-		$CloseTags = array('listview', 'listdir', 'block');
+		include_once(WEBEDITION_INCLUDES_DIR . 'weTagWizard/classes/weTagWizard.class.php');
+		$CloseTags = weTagWizard::getTagsWithEndTag();
+		//$CloseTags = array('listview', 'listdir', 'block');
 
 		$Counter = array();
 
@@ -212,13 +211,17 @@ class we_tagParser {
 		}
 
 		$ErrorMsg = '';
+		$err='';
 		$isError = false;
 		foreach ($Counter as $_tag => $_counter) {
 			if ($_counter < 0) {
+				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag);
 				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag));
+
 				$isError = true;
 			} else
 			if ($_counter > 0) {
+				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
 				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag));
 				$isError = true;
 			}
@@ -226,7 +229,7 @@ class we_tagParser {
 		if ($isError) {
 			$code = $ErrorMsg;
 		}
-		return!$isError;
+		return (!$isError?true:$err);
 	}
 
 	private function searchEndtag($code, $tagPos) {

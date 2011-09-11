@@ -86,6 +86,7 @@ class weTagData{
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
 			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 			$this->Exists = true;
+			$this->Groups[]='custom';
 		} else{
 			//Application Tags
 			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
@@ -102,6 +103,7 @@ class weTagData{
 			if(in_array($tagName, $allapptagnames)){
 				require_once ($allapptags[$tagName]);
 				$this->Exists = true;
+				$this->Groups[]='apptags';
 			}
 		}
 
@@ -164,15 +166,14 @@ class weTagData{
 		static $tags = array();
 		if(isset($tags[$tagName])){
 			$tag = $tags[$tagName];
-			$tag->updateUsedAttributes();
 		} else{
 			$tag = new weTagData($tagName);
-			$tag = $tag->Exists ? $tag : null;
-			if($tag){
-				$tags[$tagName] = $tag;
+			if(!$tag->Exists){
+				return null;
 			}
-			$tag->updateUsedAttributes();
+			$tags[$tagName] = $tag;
 		}
+			$tag->updateUsedAttributes();
 		return $tag;
 	}
 

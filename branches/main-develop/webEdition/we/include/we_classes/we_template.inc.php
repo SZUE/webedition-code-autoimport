@@ -240,16 +240,15 @@ function handleShutdown($code) {
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
 	 	$tp = new we_tagParser($code);
 		$tags = $tp->getAllTags();
-		/*Bug #4432, #4186
-		$code = eregi_replace('(</?form[^>]*>)','<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){ ?>\1<?php } ?>',$code);
-		 */
 		if(($foo = $this->checkElsetags($tags))){
+			$this->errMsg=$foo;
 			return $foo;
 		}
-		if(($foo = $this->checkEndtags('if',0,$tags))){
+		/*if(($foo = $this->checkEndtags('if',0,$tags))){
 			return $foo;
-		}
+		}*/
 
+		/*
 		$d = dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tags");
 		$needEndtags=array();
 		while (false !== ($entry=$d->read())) {
@@ -272,9 +271,13 @@ function handleShutdown($code) {
 			if(($foo = $this->checkEndtags($tagname,1,$tags))){
 				return $foo;
 			}
-		}
+		}*/
 
-		$tp->parseTags($code);
+
+		if(($foo=$tp->parseTags($code))!==true){
+			$this->errMsg=$foo;
+			return $foo;
+		}
 
 		if(!(defined('DISABLE_TEMPLATE_CODE_CHECK') && DISABLE_TEMPLATE_CODE_CHECK)){
 			$this->showShutdown=true;

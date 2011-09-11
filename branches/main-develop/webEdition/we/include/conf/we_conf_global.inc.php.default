@@ -144,15 +144,6 @@ define("SAFARI_WYSIWYG", 1);
 // Document to open when trying to open non-existing object
 define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);
 
-//Cache Type
-define("WE_CACHE_TYPE", "none");
-
-//Cache Life Time
-define("WE_CACHE_LIFETIME", 0);
-
-// Disable the check for missing close tags in templates
-define("DISABLE_TEMPLATE_TAG_CHECK", 0);
-
 // Disable the check for php-errors in templates
 define("DISABLE_TEMPLATE_CODE_CHECK", 0);
 
@@ -268,13 +259,13 @@ define("VERSIONING_TEXT_HTML", 0);
 //Versioning status for ContentType text/webedition
 define("VERSIONING_TEXT_WEBEDITION", 1);
 
-//Versioning status for ContentType text/htaccess 
+//Versioning status for ContentType text/htaccess
 define("VERSIONING_TEXT_HTACCESS", 0);
 
-//Versioning status for ContentType text/weTmpl 
+//Versioning status for ContentType text/weTmpl
 define("VERSIONING_TEXT_WETMPL", 0);
 
-//Versioning status for ContentType text/js 
+//Versioning status for ContentType text/js
 define("VERSIONING_TEXT_JS", 0);
 
 //Versioning status for ContentType text/css
@@ -328,10 +319,10 @@ define("VERSIONS_TIME_YEARS_TMPL", -1);
 //Versioning Number of Versions
 define("VERSIONS_ANZAHL_TMPL", "5");
 
-// Flag if automatic LanguageLinks should be supported 
+// Flag if automatic LanguageLinks should be supported
 define("LANGLINK_SUPPORT", 1);
 
-// Flag if automatic backlinks should be generated 
+// Flag if automatic backlinks should be generated
 define("LANGLINK_SUPPORT_BACKLINKS", 1);
 
 
@@ -371,10 +362,10 @@ define("URLENCODE_OBJECTSEOURLS", 0);
 // Flag if 404 not found should be suppressd
 define("SUPPRESS404CODE", 1);
 
-// Flag if should be displayed in webEdition 
+// Flag if should be displayed in webEdition
 define("SEOINSIDE_HIDEINWEBEDITION", 0);
 
-// Flag if should be displayed in Editmode 
+// Flag if should be displayed in Editmode
 define("SEOINSIDE_HIDEINEDITMODE", 1);
 
 ?>

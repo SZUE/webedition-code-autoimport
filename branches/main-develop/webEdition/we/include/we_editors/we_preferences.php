@@ -85,8 +85,6 @@ $global_config[] = array('define("WE_ERROR_LOG",', '// Log errors' . "\n" . 'def
 $global_config[] = array('define("WE_ERROR_MAIL",', '// Mail errors' . "\n" . 'define("WE_ERROR_MAIL", 0);');
 $global_config[] = array('define("WE_ERROR_MAIL_ADDRESS",', '// E-Mail address to which to mail errors' . "\n" . 'define("WE_ERROR_MAIL_ADDRESS", "mail@www.example");');
 $global_config[] = array('define("ERROR_DOCUMENT_NO_OBJECTFILE",', '// Document to open when trying to open non-existing object' . "\n" . 'define("ERROR_DOCUMENT_NO_OBJECTFILE", 0);');
-$global_config[] = array('define("DISABLE_TEMPLATE_TAG_CHECK",', '// Disable the check for missing close tags in templates' . "\n" . 'define("DISABLE_TEMPLATE_TAG_CHECK", 0);');
-$global_config[] = array('define("DISABLE_TEMPLATE_CODE_CHECK",', '// Disable the check for missing close tags in templates' . "\n" . 'define("DISABLE_TEMPLATE_CODE_CHECK", 0);');
 
 // Backup variable
 $global_config[] = array('define("BACKUP_STEPS",', '// Number of entries per batch' . "\n" . 'define("BACKUP_STEPS", 10);');
@@ -329,7 +327,7 @@ function get_value($settingvalue) {
 		case "countries_default":
 			return defined("WE_COUNTRIES_DEFAULT") ? WE_COUNTRIES_DEFAULT : "";
 			break;
-			
+
 		case "countries_top":
 			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
 			break;
@@ -507,10 +505,6 @@ function get_value($settingvalue) {
 			return defined("ERROR_DOCUMENT_NO_OBJECTFILE") ? ERROR_DOCUMENT_NO_OBJECTFILE : 0;
 			break;
 
-		case "disable_template_tag_check":
-			return defined("DISABLE_TEMPLATE_TAG_CHECK") ? DISABLE_TEMPLATE_TAG_CHECK : 0;
-			break;
-
 		case "disable_template_code_check":
 			return defined("DISABLE_TEMPLATE_CODE_CHECK") ? DISABLE_TEMPLATE_CODE_CHECK : 0;
 			break;
@@ -605,7 +599,7 @@ function get_value($settingvalue) {
 		case "seoinside_hideineditmode":
 			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
 			break;
-		
+
 		case "langlink_support":
 			return defined("LANGLINK_SUPPORT") ? LANGLINK_SUPPORT : true;
 			break;
@@ -1640,23 +1634,6 @@ $_we_active_integrated_modules = array();
 				}
 				break;
 
-			case '$_REQUEST["disable_template_tag_check"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-
-				if ($settingvalue == 0) {
-					if (DISABLE_TEMPLATE_TAG_CHECK == 1) {
-						$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_TAG_CHECK", 0);
-					}
-				} else if ($settingvalue == 1) {
-					if (DISABLE_TEMPLATE_TAG_CHECK == 0) {
-						$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_TAG_CHECK", 1);
-					}
-				}
-
-				$_update_prefs = true;
-				break;
-
 			case '$_REQUEST["disable_template_code_check"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1836,7 +1813,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
-			
+
 			case '$_REQUEST["langlink_support"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1844,7 +1821,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
-				
+
 			case '$_REQUEST["langlink_support_backlinks"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1854,7 +1831,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 
-				
+
 				break;
 			case '$_REQUEST["langlink_support_recursive"]':
 
@@ -1865,7 +1842,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 
-				
+
 				break;
 
 			/*****************************************************************
@@ -2029,7 +2006,7 @@ $_we_active_integrated_modules = array();
 
 			case '$_REQUEST["include_all_we_tags"]':
 
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];		
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "INCLUDE_ALL_WE_TAGS", $settingvalue);
 
 				$_update_prefs = false;
@@ -2704,14 +2681,6 @@ $_we_active_integrated_modules = array();
 				break;
 
 
-			case '$_REQUEST["disable_template_tag_check"]':
-
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];
-				$_file = weConfParser::changeSourceCode("define", $_file, "DISABLE_TEMPLATE_TAG_CHECK", 0);
-
-				$_update_prefs = true;
-				break;
-
 			case '$_REQUEST["disable_template_code_check"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -2777,7 +2746,7 @@ function save_all_values() {
 	 *************************************************************************/
 
 	$_update_prefs = remember_value(isset($_REQUEST["Language"]) ? $_REQUEST["Language"] : null, '$_REQUEST["Language"]');
-	
+
 	$_update_prefs = remember_value(isset($_REQUEST["default_tree_count"]) ? $_REQUEST["default_tree_count"] : null, '$_REQUEST["default_tree_count"]') || $_update_prefs;
 	if($_REQUEST["seem_start_type"]=="cockpit") {
 		$_update_prefs = remember_value("cockpit", '$_REQUEST["seem_start_type"]') || $_update_prefs;
@@ -2941,7 +2910,7 @@ function save_all_values() {
 
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
-		
+
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, '$_REQUEST["langlink_support_backlinks"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_recursive"]) ? $_REQUEST["langlink_support_recursive"] : null, '$_REQUEST["langlink_support_recursive"]') || $_update_prefs;
@@ -2968,7 +2937,6 @@ function save_all_values() {
 
 	if (we_hasPerm("ADMINISTRATOR")) {
 		$_update_prefs = remember_value(isset($_REQUEST["error_document_no_objectfile"]) ? $_REQUEST["error_document_no_objectfile"] : null, '$_REQUEST["error_document_no_objectfile"]') || $_update_prefs;
-		$_update_prefs = remember_value(isset($_REQUEST["disable_template_tag_check"]) ? $_REQUEST["disable_template_tag_check"] : null, '$_REQUEST["disable_template_tag_check"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["disable_template_code_check"]) ? $_REQUEST["disable_template_code_check"] : null, '$_REQUEST["disable_template_code_check"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_error_handler"]) ? $_REQUEST["we_error_handler"] : null, '$_REQUEST["we_error_handler"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["error_handling_errors"]) ? $_REQUEST["error_handling_errors"] : null, '$_REQUEST["error_handling_errors"]') || $_update_prefs;
@@ -3293,30 +3261,30 @@ function build_dialog($selected_setting = "ui") {
 			  	// Build dialog
 			  	array_push($_settings, array("headline" =>g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 			}
-			
+
 			$_charset = new we_htmlSelect(array("name" => "BackendCharset", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
 			$_charset->addOption('UTF-8', 'UTF-8');
-			$_charset->addOption('ISO-8859-1','ISO-8859-1'); 
-			$_charset->addOption('ISO-8859-2','ISO-8859-2'); 
-			$_charset->addOption('ISO-8859-3','ISO-8859-3'); 
-			$_charset->addOption('ISO-8859-4','ISO-8859-4'); 
-			$_charset->addOption('ISO-8859-5','ISO-8859-5'); 
-			$_charset->addOption('ISO-8859-6','ISO-8859-6'); 
-			$_charset->addOption('ISO-8859-7','ISO-8859-7'); 
-			$_charset->addOption('ISO-8859-8','ISO-8859-8'); 
-			$_charset->addOption('ISO-8859-9','ISO-8859-9'); 
-			$_charset->addOption('ISO-8859-10','ISO-8859-10'); 
-			$_charset->addOption('ISO-8859-11','ISO-8859-11'); 
-			$_charset->addOption('ISO-8859-12','ISO-8859-12'); 
-			$_charset->addOption('ISO-8859-13','ISO-8859-13'); 
-			$_charset->addOption('ISO-8859-14','ISO-8859-14'); 
-			$_charset->addOption('ISO-8859-15','ISO-8859-15'); 
+			$_charset->addOption('ISO-8859-1','ISO-8859-1');
+			$_charset->addOption('ISO-8859-2','ISO-8859-2');
+			$_charset->addOption('ISO-8859-3','ISO-8859-3');
+			$_charset->addOption('ISO-8859-4','ISO-8859-4');
+			$_charset->addOption('ISO-8859-5','ISO-8859-5');
+			$_charset->addOption('ISO-8859-6','ISO-8859-6');
+			$_charset->addOption('ISO-8859-7','ISO-8859-7');
+			$_charset->addOption('ISO-8859-8','ISO-8859-8');
+			$_charset->addOption('ISO-8859-9','ISO-8859-9');
+			$_charset->addOption('ISO-8859-10','ISO-8859-10');
+			$_charset->addOption('ISO-8859-11','ISO-8859-11');
+			$_charset->addOption('ISO-8859-12','ISO-8859-12');
+			$_charset->addOption('ISO-8859-13','ISO-8859-13');
+			$_charset->addOption('ISO-8859-14','ISO-8859-14');
+			$_charset->addOption('ISO-8859-15','ISO-8859-15');
 			$_charset->addOption('Windows-1251','Windows-1251');
 			$_charset->addOption('Windows-1252','Windows-1252');
 			$_charset->selectOption(get_value("ui_charset"));
 			array_push($_settings, array("headline" => g_l('prefs','[choose_backendcharset]'), "html" => $_charset->getHtmlCode()."<br><br>".$langNote, "space" => 200));
 
-			
+
 			/*****************************************************************
 			 * DEFAULT CHARSET
 			 *****************************************************************/
@@ -3892,7 +3860,7 @@ function build_dialog($selected_setting = "ui") {
 			array_push($_settings, array("headline" => g_l('prefs','[countries_headline]'), "html" => $_information, "space" => 0,'noline'=>1));
 			$_countries_default = htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
     		array_push($_settings, array("headline" => $l_prefs["countries_default"], "html" => $_countries_default, "space" => 200,"noline" => 1));
-			
+
             $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
             $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
@@ -5821,8 +5789,7 @@ $_needed_JavaScript .= "
 			if (we_hasPerm("ADMINISTRATOR")) {
 				// Create checkboxes
 				$_template_error_handling_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 8, 1);
-				$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("disable_template_tag_check"), "disable_template_tag_check", g_l('prefs','[disable_template_tag_check]')));
-				$_template_error_handling_table->setCol(1, 0, null,we_forms::checkbox(1, get_value("disable_template_code_check"), "disable_template_code_check", g_l('prefs','[disable_template_code_check]')));
+				$_template_error_handling_table->setCol(0, 0, null,we_forms::checkbox(1, get_value("disable_template_code_check"), "disable_template_code_check", g_l('prefs','[disable_template_code_check]')));
 				array_push($_settings, array("headline" => $l_prefs["templates"], "html" => $_template_error_handling_table->getHtmlCode(), "space" => 200));
 			}
 
