@@ -135,9 +135,9 @@ class weAbstractCustomerFilter {
 	 */
 	function customerHasFilterAccess() {
 
-		if (in_array($_SESSION["webuser"]["ID"], $this->_blackList)) {
+		if (is_array($this->_blackList) && in_array($_SESSION["webuser"]["ID"], $this->_blackList)) {
 			return false;
-		} else if (in_array($_SESSION["webuser"]["ID"], $this->_whiteList)) {
+		} else if (is_array($this->_whiteList) && in_array($_SESSION["webuser"]["ID"], $this->_whiteList)) {
 			return true;
 		}
 
