@@ -1110,7 +1110,7 @@ class doclistView {
 
 					$obj->searchclassFolder->setwhere ( $whereQuery );
 
-					$obj->searchclassFolder->insertInTempTable ( $whereQuery, $_table );
+					$obj->searchclassFolder->insertInTempTable ( $whereQuery, $_table, $obj->Path.'/');
 
 					$foundItems = $obj->searchclassFolder->countitems ( $whereQuery, $_table );
 

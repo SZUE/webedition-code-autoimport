@@ -801,22 +801,54 @@ class searchtoolsearch extends we_search
 		$this->query($query);
 	}
 
-	function insertInTempTable($where = "", $table = "")
-	{
-
-		$DB_WE = new DB_WE();
-		$DB_WE2 = new DB_WE();
+//FIXME path is only implemented for filetable
+	function insertInTempTable($where = "", $table = "",$path=""){
 		$this->table = (empty($table)) ? ((empty($this->table)) ? "" : $this->table) : $table;
 
-		if (!empty($this->table)) {
-			$this->where = (empty($where)) ? ((empty($this->where)) ? "" : " WHERE " . $this->where) : " WHERE " . $where;
+		if (empty($this->table)) {
+			return;
+		}
 
-			if ($this->table == FILE_TABLE) {
+			$this->where = (empty($where)) ? ((empty($this->where)) ? " WHERE 1 " : " WHERE " . $this->where) : " WHERE " . $where;
+
+			switch ($this->table){
+
+			case FILE_TABLE:
+				$tmpTableWhere='';
+				if($path){
+					$this->where .= ' AND Path LIKE "'.$this->escape($path).'%" ';
+					$tmpTableWhere=' AND ID IN (SELECT ID FROM '.FILE_TABLE.' WHERE Path LIKE "'.$this->escape($path).'%" )';
+				}
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where . " ";
 				$this->query($query);
-			}
 
-			if ($this->table == VERSIONS_TABLE) {
+				$titles = array();
+				//first check published documents
+				$query = "SELECT a.Name, b.Dat, a.DID FROM `" . LINK_TABLE . "` a LEFT JOIN `" . CONTENT_TABLE . "` b on (a.CID = b.ID) WHERE a.Name='Title' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'";
+				$this->query($query);
+				while ($this->next_record()) {
+					$titles[$this->f('DID')] = $this->f('Dat');
+				}
+				//check unpublished documents
+				$query2 = 'SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable = "tblFile" AND Active = 1 '.$tmpTableWhere;
+				$this->query($query2);
+				while ($this->next_record()) {
+					$tempDoc = unserialize($this->f('DocumentObject'));
+					if (isset($tempDoc[0]['elements']['Title'])) {
+						$titles[$this->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
+					}
+				}
+				if (is_array($titles) && !empty($titles)) {
+					foreach ($titles as $k => $v) {
+						if ($v != "") {
+							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . $this->escape($v) . "' WHERE docID = '" . abs($k) . "' AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
+							$this->query($query3);
+						}
+					}
+				}
+			break;
+
+			case VERSIONS_TABLE:
 				if ($_SESSION['weSearch']['onlyDocs'] || $_SESSION['weSearch']['ObjectsAndDocs']) {
 					$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . FILE_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . FILE_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyDocsRestrUsersWhere'] . " ";
 					if (stristr($query, VERSIONS_TABLE . ".status='deleted'")) {
@@ -838,52 +870,25 @@ class searchtoolsearch extends we_search
 				unset($_SESSION['weSearch']['ObjectsAndDocs']);
 				unset($_SESSION['weSearch']['onlyObjectsRestrUsersWhere']);
 				unset($_SESSION['weSearch']['onlyDocsRestrUsersWhere']);
-			}
+				break;
 
-			if ($this->table == TEMPLATES_TABLE) {
+			case TEMPLATES_TABLE:
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` " . $this->where . "  ";
 				$this->query($query);
-			}
+				break;
 
-			if (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE) {
+			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -4):
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` " . $this->where . " ";
 				$this->query($query);
-			}
+				break;
 
-			if (defined("OBJECT_TABLE") && $this->table == OBJECT_TABLE) {
+			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -5):
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` " . $this->where . "  ";
 				$this->query($query);
+				break;
+
 			}
 
-			if ($this->table == FILE_TABLE) {
-
-				$_db2 = new DB_WE();
-				$titles = array();
-				//first check published documents
-				$query = "SELECT a.Name, b.Dat, a.DID FROM `" . LINK_TABLE . "` a LEFT JOIN `" . CONTENT_TABLE . "` b on (a.CID = b.ID) WHERE a.Name='Title' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'";
-				$_db2->query($query);
-				while ($_db2->next_record()) {
-					$titles[$_db2->f('DID')] = $_db2->f('Dat');
-				}
-				//check unpublished documents
-				$query2 = "SELECT DocumentID, DocumentObject  FROM `" . TEMPORARY_DOC_TABLE . "` WHERE DocTable = 'tblFile' AND Active = 1";
-				$_db2->query($query2);
-				while ($_db2->next_record()) {
-					$tempDoc = unserialize($_db2->f('DocumentObject'));
-					if (isset($tempDoc[0]['elements']['Title'])) {
-						$titles[$_db2->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
-					}
-				}
-				if (is_array($titles) && !empty($titles)) {
-					foreach ($titles as $k => $v) {
-						if ($v != "") {
-							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . escape_sql_query($v) . "' WHERE docID = '" . abs($k) . "' AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
-							$DB_WE->query($query3);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	function getTableType()
