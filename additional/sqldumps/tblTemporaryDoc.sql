@@ -4,9 +4,8 @@
 /* query separator */
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemporaryDoc SET DocTable="tblObjectFiles" WHERE DocTable="###TBLPREFIX###tblObjectFiles";
 /* query separator */
-###UPDATEONLY###IF EXISTS (SELECT * FROM information_schema.columns WHERE table_name = '###TBLPREFIX###tblTemporaryDoc' and column_name = 'ID' AND TABLE_SCHEMA=DATABASE()) THEN
-alter table ###TBLPREFIX###tblTemporaryDoc drop column `ID`;
-ENDIF;
+###UPDATEONLY###ALTER IGNORE TABLE ###TBLPREFIX###tblTemporaryDoc DROP COLUMN `ID`;
+
 /* query separator */
 CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
   DocumentID bigint(20) unsigned NOT NULL default '0',
