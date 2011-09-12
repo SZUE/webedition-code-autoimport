@@ -817,7 +817,7 @@ class searchtoolsearch extends we_search
 				$tmpTableWhere='';
 				if($path){
 					$this->where .= ' AND Path LIKE "'.$this->escape($path).'%" ';
-					$tmpTableWhere=' AND ID IN (SELECT ID FROM '.FILE_TABLE.' WHERE Path LIKE "'.$this->escape($path).'%" )';
+					$tmpTableWhere=' AND DocumentID IN (SELECT ID FROM '.FILE_TABLE.' WHERE Path LIKE "'.$this->escape($path).'%" )';
 				}
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where . " ";
 				$this->query($query);
