@@ -240,7 +240,7 @@ function we_tag_a($attribs, $content){
 			'hrefonly',
 			'confirm',
 			'editself',
-			'delete'
+			'delete',
 			'params'
 			));
 
