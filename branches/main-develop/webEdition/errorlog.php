@@ -30,13 +30,17 @@
 
 
 		function getInfoTable($_infoArr) {
-			//recode SESSION data - this data might be different than the rest...
-			try{
-				@$_infoArr['Session']=htmlentities($_infoArr['Session'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']);
-			}catch(Exception $e) {
-				//try another encoding since last conversion failed.
-				@$_infoArr['Session']=htmlentities($_infoArr['Session'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']=='UTF-8'?'ISO-8859-15':'UTF-8');
+			//recode data - this data might be different than the rest...
+			foreach($_infoArr as &$tmp){
+				try{
+					@$tmp=htmlentities($tmp, ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']);
+				}catch(Exception $e) {
+					//try another encoding since last conversion failed.
+					@$tmp=htmlentities($tmp, ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']=='UTF-8'?'ISO-8859-15':'UTF-8');
+				}
 			}
+$trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File','Line number'=>'Line','Backtrace'=>'Backtrace',
+		'Request'=>'Request','Server'=>'Server','Session'=>'Session','Global'=>'Global');
 			$out='
 			<table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="610">
   <colgroup>
@@ -45,38 +49,36 @@
   </colgroup>
   <tr bgcolor="#f7f7f7" valign="top">
   	<td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>#'.$_infoArr['ID'].'</b></font></td>
-    <td  style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Date'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'</font></td>
-  </tr>
+    <td  style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Date'].'</font></td>
+  </tr>'.'
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error type:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.htmlentities($_infoArr['Type'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'</i></font></td>
+    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.$_infoArr['Type'].'</i></font></td>
   </tr>
   <tr valign="top">
     <td  style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.htmlentities($_infoArr['Text'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'</i></font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.$_infoArr['Text'].'</i></font></pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.htmlentities($_infoArr['File'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'</i></font></td>
+    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.$_infoArr['File'].'</i></font></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Line number:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.htmlentities($_infoArr['Line'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'</i></font></td>
+    <td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.$_infoArr['Line'].'</i></font></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Backtrace'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'
+    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Backtrace'].'
       </font></pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Request</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Request'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'
-      </font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Request'].'</font></pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Server</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Server'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'
-      </font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Server'].'</font></pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Session</b></font></td>
@@ -85,8 +87,7 @@
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Global</b></font></td>
-    <td ><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Global'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'
-      </font></pre></td>
+    <td ><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Global'].'</font></pre></td>
   </tr>
 
 </table>

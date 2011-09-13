@@ -89,7 +89,7 @@ class we_objectFile extends we_document{
 	//##################################################################### INIT FUNCTIONS ######################################################################
 
 	/* Constructor */
-	function we_objectFile(){
+	function __construct(){
 		$this->we_document();
 		array_push($this->persistent_slots,'CSS','DefArray','Text','AllowedClasses','Templates','ExtraTemplates','Workspaces','ExtraWorkspaces','ExtraWorkspacesSelected','RootDirPath','rootDirID','TableID','ObjectID','Category','IsSearchable','Charset','Language','Url','TriggerID');
 		if(defined('SCHEDULE_TABLE')){
