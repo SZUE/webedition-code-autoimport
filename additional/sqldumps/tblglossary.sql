@@ -2,7 +2,7 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   `ID` int(10) unsigned NOT NULL auto_increment,
   `Path` varchar(255) default NULL,
   `IsFolder` tinyint(1) unsigned default NULL,
-  `Icon` varchar(255) default NULL,
+  `Icon` enum('folder.gif','prog.gif') NOT NULL,
   `Text` varchar(255) NOT NULL default '',
   `Type` enum('abbreviation','acronym','foreignword','link') NOT NULL default 'abbreviation',
   `Language` varchar(5) NOT NULL default '',
