@@ -21,7 +21,7 @@
 		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 		protect();
-		
+
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
@@ -30,6 +30,13 @@
 
 
 		function getInfoTable($_infoArr) {
+			//recode SESSION data - this data might be different than the rest...
+			try{
+				@$_infoArr['Session']=htmlentities($_infoArr['Session'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']);
+			}catch(Exception $e) {
+				//try another encoding since last conversion failed.
+				@$_infoArr['Session']=htmlentities($_infoArr['Session'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']=='UTF-8'?'ISO-8859-15':'UTF-8');
+			}
 			$out='
 			<table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="610">
   <colgroup>
@@ -73,7 +80,7 @@
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Session</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Session'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'
+    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Session'].'
       </font></pre></td>
   </tr>
   <tr valign="top">
@@ -81,11 +88,11 @@
     <td ><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.htmlentities($_infoArr['Global'], ENT_COMPAT,$GLOBALS['WE_BACKENDCHARSET']).'
       </font></pre></td>
   </tr>
-  
+
 </table>
-			
+
 			';
-			
+
 			return $out;;
 		}
 
@@ -95,24 +102,24 @@
 				we_button::create_button("refresh",'/webEdition/errorlog.php'),
 				we_button::create_button("close", "javascript:self.close()")
 		);
-		
-		
-		
+
+
+
 
 		$_space_size = 10;
 		$_parts = array();
-		
-		
+
+
 		$db=  new DB_WE();
 		if (isset($_REQUEST['delete'])){
 			$db->query('TRUNCATE TABLE `'.ERROR_LOG_TABLE.'`');
 		}
 		$size = f('SELECT COUNT(1) as cnt FROM `'.ERROR_LOG_TABLE.'`','cnt',$db);
 		$count = 1;
-	
+
 		$nextprev = "";
 		if ($size>0){
-			
+
 			$start = (isset($_REQUEST['start']) ? abs($_REQUEST['start']) : 0);
 			$start = $start < 0 ? 0 : $start;
 			$start = $start>$size ? $size : $start;
@@ -144,16 +151,16 @@
 			}
 			$nextprev .= "</td></tr></table>";
 			$_parts[] = array(
-					  
+
 					  'html'=> $nextprev,
 					  'space'=>$_space_size
 				  );
 			$db->query('SELECT * FROM `'.ERROR_LOG_TABLE.'` ORDER By Date DESC LIMIT '.$start.','.$count);
-		  
+
 			while ($db->next_record()){
-				$_parts[] = array(	  
+				$_parts[] = array(
 					  'html'=> getInfoTable($db->Record),
-					  'space'=>$_space_size  
+					  'space'=>$_space_size
 				);
 			}
 		} else {
@@ -161,12 +168,12 @@
 				'html'=> 'No entries found',
 				'space'=>$_space_size
 				);
-		}	
+		}
 
 ?>
 <html>
 <head>
- 
+
 <title><?php print 'Errorlog';?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET'];?>">
 
@@ -186,10 +193,10 @@
 
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 <div id="info" style="display: block;">
-<?php		
+<?php
 		print we_multiIconBox::getJS();
 		print we_multiIconBox::getHTML('',700, $_parts,30,$buttons,-1,'','',false, "", "", 620, "auto");
-		
+
 ?>
 </div>
 </body>
