@@ -198,10 +198,10 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "El objeto debe ser salvado antes de poder ser colocado en el flujo de trabajo!\\Desea UD salvar el objeto ahora?",
 			'in_wf_warning' => "La clase debe ser salvada antes de poder ser colocada en el flujo de trabajo!\\Desea UD salvar la clase ahora?",
 			'exit_doc_question_' . OBJECT_TABLE => "La clase ha sido cambiada.<BR> Desearía Ud salvar sus cambios?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "El objeto ha sido cambiado.<BR> Desearía UD salvar sus cambios?",
-					));
+					);
 }

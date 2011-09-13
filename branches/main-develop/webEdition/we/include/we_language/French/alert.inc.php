@@ -198,10 +198,10 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "Avant que l\\'object puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer l\\'object maintenant?",
 			'in_wf_warning' => "Avant que la classe puisse être passée dans le Gestion de Flux, elle doit être enregistrée!\\nEnregistrer la classe maintenant",
 			'exit_doc_question_' . OBJECT_TABLE => "La classe a été modifiée.<br>Souhaitez-vous enregistrer les modifications apportées?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "L'object a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?",
-					));
+					);
 }

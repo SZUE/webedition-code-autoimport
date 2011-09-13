@@ -188,7 +188,7 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "Przed dołączeniem obiektu do Workflow, należy go zapisać!\\nCzy zapisać teraz dokument?",
 			'in_wf_warning' => "Przed dołączeniem klasy do Workflow, należy ją zapisać!\\nCzy zapisać teraz klasę?",
 			'exit_doc_question_' . OBJECT_TABLE => "Klasa została zmieniona.<br>Zapisać zmiany?",

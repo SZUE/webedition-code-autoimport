@@ -294,7 +294,8 @@ class we_button {
 				$title = $tmp;
 			}
 		} else {
-			$tmp=g_l('button','['.$_button_pure_name.'][alt]');
+			$tmp=g_l('button','['.$_button_pure_name.'][alt]',true);
+			//ignore missing alt attribute
 			if (($tmp != "") && $alt) {
 				$title = $tmp;
 			}

@@ -193,10 +193,10 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "Dokumentti täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa dokumentin?",
 			'in_wf_warning' => "Luokka täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa luokan?",
 			'exit_doc_question_' . OBJECT_TABLE => "Luokkaa on muutettu.<BR>Haluatko tallentaa muutokset?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "Objektia on muutettu.<br>Haluatko tallentaa muutokset?",
-					));
+					);
 }

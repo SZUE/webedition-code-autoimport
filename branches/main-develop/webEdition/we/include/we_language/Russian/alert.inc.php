@@ -197,10 +197,10 @@ $l_alert = array(
 );
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "Перед передачей данного объекта в поток, его нужно сохранить!\\nСохранить объект?",
 			'in_wf_warning' => "Перед передачей данного класса в поток его нужно сохранить!\\nСохранить класс?",
 			'exit_doc_question_' . OBJECT_TABLE => "Данный класс, по-видимому, был изменен. Сохранить Ваши изменения?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "Данный объект, по-видимому, был изменен. Сохранить Ваши изменения?",
-					));
+					);
 }

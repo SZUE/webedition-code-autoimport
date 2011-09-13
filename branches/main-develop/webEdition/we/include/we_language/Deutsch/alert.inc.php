@@ -193,10 +193,10 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
-			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Dokument jetzt gespeichert werden?",
+	$l_alert[OBJECT_FILES_TABLE]=array(
+			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Objekt jetzt gespeichert werden?",
 			'in_wf_warning' => "Bevor die Klasse in den Workflow gegeben werden kann, muß sie gespeichert werden!\\nSoll die Klasse jetzt gespeichert werden?",
 			'exit_doc_question_' . OBJECT_TABLE => "Es scheint, als ob Sie die Klasse verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "Es scheint, als ob Sie das Objekt verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
-					));
+					);
 }

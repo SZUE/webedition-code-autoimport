@@ -191,10 +191,10 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "Het object moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\\nWilt u het object nu bewaren?",
 			'in_wf_warning' => "De class moet eerst bewaard worden voordat deze in de workflow geplaatst kan worden!\\nWilt u de class nu bewaren?",
 			'exit_doc_question_' . OBJECT_TABLE => "De classe is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "Het object is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
-					));
+					);
 }

@@ -190,10 +190,10 @@ $l_alert = array(
 
 
 if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert = array_merge($l_alert, array(
+	$l_alert[OBJECT_FILES_TABLE]=array(
 			'in_wf_warning' => "The object has to be saved before it can be put in the workflow!\\nDo you want to save the document right now?",
 			'in_wf_warning' => "The class has to be saved before it can be put in the workflow!\\nDo you want to save the class right now?",
 			'exit_doc_question_' . OBJECT_TABLE => "The class has been changed.<BR> Would you like to save your changes?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "The object has been changed.<BR> Would you like to save your changes?",
-					));
+					);
 }
