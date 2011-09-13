@@ -157,7 +157,7 @@ $DB_WE->query('DELETE FROM '.FAILED_LOGINS_TABLE.' WHERE LoginDate < DATE_SUB(NO
 $count=f('SELECT COUNT(ID) AS count FROM '.FAILED_LOGINS_TABLE.' WHERE IP="'.addslashes($_SERVER['REMOTE_ADDR']).'" AND LoginDate > DATE_SUB(NOW(), INTERVAL '.abs(LOGIN_FAILED_TIME).' MINUTE)','count',$DB_WE);
 
 if ($count >= LOGIN_FAILED_NR) {
-	htmlTop('webEdition ' . WE_VERSION);
+	htmlTop('webEdition ');
 	print we_htmlElement::jsElement(
 		we_message_reporting::getShowMessageCall( sprintf($l_alert['3timesLoginError'], LOGIN_FAILED_NR,LOGIN_FAILED_TIME), WE_MESSAGE_ERROR )
 	);
@@ -185,7 +185,7 @@ if ( isset($GLOBALS['userLoginDenied']) ) {
 /*****************************************************************************
  * CREATE HEADER
  *****************************************************************************/
-htmlTop($_SERVER['SERVER_NAME']. ' webEdition ' . WE_VERSION);
+htmlTop($_SERVER['SERVER_NAME']. ' webEdition ');
 print STYLESHEET;
 
 print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));
