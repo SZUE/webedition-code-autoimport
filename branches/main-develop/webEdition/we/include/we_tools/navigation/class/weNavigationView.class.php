@@ -129,7 +129,7 @@ class weNavigationView {
 						} else {
 							setTimeout(\'we_cmd("\' + arguments[0] + \'");\', 10);
 						}
-						if(treeData){
+						if((typeof treeData!="undefined") && treeData){
 							treeData.unselectnode();
 						}
 					break;

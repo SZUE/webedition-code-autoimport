@@ -211,7 +211,7 @@ class we_message extends we_msg_proto {
 		$target_fid = addslashes($target_fid);
 		foreach ($items as $item) {
 		    $tmp = array();
-		    $query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . " WHERE ID=".abs($item)." AND UserID=" . abs($this->userid);
+		    $query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->table . " WHERE ID=".intval($item)." AND UserID=" . intval($this->userid);
 		    $this->DB->query($query);
 		    while($this->DB->next_record()) {
 				$tmp['ParentID'] = isset($this->DB->Record['ParentID']) ? $this->DB->Record['ParentID'] : 'NULL';
@@ -417,7 +417,7 @@ class we_message extends we_msg_proto {
 	}
 
 	if (!empty($read_ids)) {
-	    $query = 'UPDATE ' . abs($this->table) . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_READ . ') WHERE (ID=' . join(' OR ID=', $read_ids) . ') AND UserID=' . abs($this->userid);
+	    $query = 'UPDATE ' . $this->table . ' SET seenStatus=(seenStatus | ' . MSG_STATUS_READ . ') WHERE ID IN (' . implode(',', $read_ids) . ') AND UserID=' . intval($this->userid);
 	    $this->DB->query($query);
 	}
 

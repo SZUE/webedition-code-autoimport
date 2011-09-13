@@ -125,7 +125,7 @@ class weToolView {
 						} else {
 							setTimeout(\'we_cmd("tool_' . $this->toolName . '_new");\', 10);
 						}
-						if(treeData){
+						if((typeof treeData!="undefined") && treeData){
 							treeData.unselectnode();
 						}
 					break;

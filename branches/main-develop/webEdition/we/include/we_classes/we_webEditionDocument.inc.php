@@ -174,7 +174,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="3" class="defaultfont" align="left">
-						'.$this->formDocType2(388,$disable).'</td>
+						'.$this->formDocType2(388,($this->Published>0)).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -186,7 +186,7 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td colspan="3" class="defaultfont" align="left">
-						'.$this->formTemplatePopup(388,$disable).'</td>
+						'.$this->formTemplatePopup(388,($this->Published>0)).'</td>
 				</tr>
 				<tr>
 					<td>

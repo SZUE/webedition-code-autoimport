@@ -1026,7 +1026,7 @@ function we_cmd() {
 		case "edit_document":
 			toggleBusy(1);
 			try{
-				if(treeData){
+				if((typeof treeData!="undefined") && treeData){
 					treeData.unselectnode();
 					if(arguments[1]) treeData.selection_table=arguments[1];
 					if(arguments[2]) treeData.selection=arguments[2];
@@ -1224,7 +1224,7 @@ function we_cmd() {
 			if ( _currEditor && _currEditor.getEditorType() == "cockpit" ) {
 				if( confirm('<?php print g_l('alert','[cockpit_reset_settings]'); ?>') ){
 					top.weEditorFrameController.getActiveDocumentReference().location='<?php print WEBEDITION_DIR; ?>we/include/home.inc.php?we_cmd[0]='+arguments[0];
-					if(treeData){
+					if((typeof treeData!="undefined") && treeData){
 						treeData.unselectnode();
 					}
 				}
@@ -1318,7 +1318,7 @@ function we_cmd() {
 			}
 			break;
 		case "eplugin_exit_doc" :
-			if(typeof(top.plugin.document.WePlugin)!="undefined") {
+			if(typeof(top.plugin) != "undefined" && typeof(top.plugin.document.WePlugin)!="undefined") {
 				if(top.plugin.isInEditor(arguments[1])) {
 					return confirm("<?php echo g_l('alert','[eplugin_exit_doc]'); ?>");
 				}

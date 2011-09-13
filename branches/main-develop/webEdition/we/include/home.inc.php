@@ -56,7 +56,9 @@ print
 	color: black;
 	text-decoration:none;
 }
-</style>";
+</style>
+<script language=\"JavaScript\" type=\"text/javascript\" src=\"".JS_DIR."/utils/prototypes.js\"></script>
+";
 
 if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 

@@ -152,6 +152,10 @@ abstract class DB_WE_abstract {
 		}
 	}
 
+	function errno(){
+		return $this->Errno;
+	}
+
 	/**
 	 *This function is a replacement for mysql_real_escape_string, which sends the string to mysql to escape it
 	 * @deprecated NOTE: this function will be removed; in future there will be a function for prepared statements
@@ -493,6 +497,11 @@ abstract class DB_WE_abstract {
 		}else{
 			$query = $table.' '.$mode;
 		}
+		//always lock Errlog-Table
+		if(strpos($query,ERROR_LOG_TABLE)===FALSE){
+			$query.=','.ERROR_LOG_TABLE.' write';
+		}
+
 		return $this->_query('lock tables '.$query);
 	}
 

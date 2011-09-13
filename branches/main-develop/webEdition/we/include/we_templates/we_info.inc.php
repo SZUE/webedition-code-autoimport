@@ -39,13 +39,14 @@ $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = '<br /><span style="line-height:160%">'
 			.g_l('global','[developed_further_by]').': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>'
-			.g_l('global','[with]').' <b><a href="http://credits.webedition.org/?version='.str_replace(".","",WE_VERSION).'&language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.g_l('global','[credits_team]').'</a></b></span><br/>';
+			.g_l('global','[with]').' <b><a href="http://credits.webedition.org/?language='.$GLOBALS["WE_LANGUAGE"].'" target="_blank" >'.g_l('global','[credits_team]').'</a></b></span><br/>';
 
-
-$we_version = WE_VERSION;
-if(defined('WE_SVNREV') && WE_SVNREV!='0000' && !isset($GLOBALS['loginpage'])) $we_version .= ' (SVN-Revision: '.WE_SVNREV.')';
-if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' && !isset($GLOBALS["loginpage"]) ) $we_version .= ' '.g_l('global','['.WE_VERSION_SUPP.']');
-if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' && !isset($GLOBALS["loginpage"]) ) $we_version .= WE_VERSION_SUPP_VERSION;
+$we_version = '';
+if(!isset($GLOBALS['loginpage'])){
+if(defined('WE_SVNREV') && WE_SVNREV!='0000') $we_version .= WE_VERSION.' (SVN-Revision: '.WE_SVNREV.')';
+if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' ) $we_version .= ' '.$l_global[WE_VERSION_SUPP];
+if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' ) $we_version .= WE_VERSION_SUPP_VERSION;
+}
 
 $_logo = "info.jpg";
 if(defined("WE_VERSION_SUPP")) {
@@ -81,7 +82,7 @@ if(defined("WE_VERSION_SUPP")) {
 $_table = new we_htmlTable( array(	"border"      => 0,
 									"cellpadding" => 0,
 									"cellspacing" => 0,
-									"style"  => "background-image:url(" . IMAGE_DIR . "info/".$_logo."?we=".str_replace(".","",WE_VERSION).");background-repeat: no-repeat;background-color:#EBEBEB" ),
+									"style"  => "background-image:url(" . IMAGE_DIR . "info/".$_logo.";background-repeat: no-repeat;background-color:#EBEBEB" ),
 									8,
 									3);
 $_actRow = 0;
@@ -96,11 +97,14 @@ $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,
 							"colspan" => 3), getPixel($_widthTotal,25));
 
 //	3rd Version
-$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,1));
+if($we_version){
+	$_table->setCol($_actRow,0,array(	"width" => $_space), getPixel($_space,1));
 
-$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
+	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
 							"class" => "small"), "Version: " . $we_version);
-$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
+
+	$_table->setCol($_actRow++,2,array(	"width" => $_space), getPixel($_space,1));
+}
 
 //	4th row with spaceholder
 $_table->setCol($_actRow++,0,array(	"width"   => $_widthTotal,

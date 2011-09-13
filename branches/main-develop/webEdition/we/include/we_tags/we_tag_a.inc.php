@@ -241,6 +241,7 @@ function we_tag_a($attribs, $content){
 			'confirm',
 			'editself',
 			'delete'
+			'params'
 			));
 
 	if ($button) { //	show button
