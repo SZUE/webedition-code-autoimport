@@ -69,7 +69,7 @@
 				weGlossarySettingControl::saveSettings(true);
 			}
 			include($configFile);
-			
+
 			if(isset($GLOBALS['weGlossaryAutomaticReplacement']) && $GLOBALS['weGlossaryAutomaticReplacement']) {
 				return weGlossaryReplace::doReplace($content, $language);
 			}
@@ -102,7 +102,7 @@
 			preg_match('|<body[^>]*>(.*)</body>|si', $src, $matches);
 
 			$srcBody = $replBody = (isset($matches[1]) ? $matches[1] : $src);
-			
+
 			/*
 			This is the fastest variant
 			*/
@@ -113,7 +113,7 @@
 			$before = '';
 			foreach($pieces as $piece) {
 				if (strpos($piece,'<')===FALSE && stripos($before,'<script')===FALSE) {
-					$piece = str_replace('&quot;', '"', $piece);
+					//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 					if(stripos($before,'<a ')===FALSE) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $link);
 					}
@@ -183,10 +183,10 @@
 				// add spaces before and after and replace the words
 				$src = preg_replace(array_keys($replacements), $replacements, " $src ");
 				// remove added spaces
-				$return = trim(preg_replace('/^ (.+) $/U', '$1', $src),' ');
-
+				//$return = (preg_replace('/^ (.+) $/', '$1', $src));
+				$return=substr($src,1,-1);
 				// remove added slashes
-				return stripslashes($return.$spaceStr);
+				return stripslashes($return);
 			}
 
 			return $src;
