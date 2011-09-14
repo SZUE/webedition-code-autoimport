@@ -90,8 +90,8 @@ class we_objectFile extends we_document{
 	//##################################################################### INIT FUNCTIONS ######################################################################
 
 	/* Constructor */
-	function we_objectFile(){
-		$this->we_document();
+	function __construct(){
+		parent::__construct();
 		array_push($this->persistent_slots,'CSS','DefArray','Text','AllowedClasses','Templates','ExtraTemplates','Workspaces','ExtraWorkspaces','ExtraWorkspacesSelected','RootDirPath','rootDirID','TableID','ObjectID','Category','IsSearchable','Charset','Language','Url','TriggerID');
 		if(defined('SCHEDULE_TABLE')){
 			array_push($this->persistent_slots,'FromOk','ToOk','From','To');
@@ -2487,8 +2487,8 @@ class we_objectFile extends we_document{
 				$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 
 				if($sessDat){
+					$this->i_getPersistentSlotsFromDB(/*"Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID");
 					$this->i_getUniqueIDsAndFixNames();
 					break;
 				}else{
@@ -2498,10 +2498,12 @@ class we_objectFile extends we_document{
 				we_document::we_load($from);
 				break;
 			case LOAD_TEMP_DB:
-				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
+				$sessDat = unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
 				if($sessDat){
+					//fixed: at least TableID must be fetched
+					$this->i_getPersistentSlotsFromDB(/*"TableID,Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
+					//overwrite with new data
 					$this->i_initSerializedDat($sessDat,false);
-					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_MAID_DB);
@@ -2511,8 +2513,10 @@ class we_objectFile extends we_document{
 			case LOAD_REVERT_DB:
 				$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
+					//fixed: at least TableID must be fetched
+					$this->i_getPersistentSlotsFromDB(/*"TableID,Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
+					//overwrite with new data
 					$this->i_initSerializedDat($sessDat,false);
-					$this->i_getPersistentSlotsFromDB("Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_TEMP_DB);
@@ -2656,7 +2660,6 @@ class we_objectFile extends we_document{
 	}
 
 	function i_objectFileInit($makeSameNewFlag=false){
-
 		if($this->ID){
 
 			$this->setRootDirID();
@@ -3172,7 +3175,6 @@ class we_objectFile extends we_document{
 	}
 
 	function initByID($we_ID, $we_Table=OBJECT_FILES_TABLE, $from=LOAD_MAID_DB) {
-
 		parent::initByID($we_ID, $we_Table, $from);
 
 		if (isset($this->elements['Charset'])) {

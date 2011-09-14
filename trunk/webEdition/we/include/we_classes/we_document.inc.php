@@ -77,13 +77,14 @@ class we_document extends we_root {
 
 	// Constructor
 	function we_document() {
+		parent::__construct();
+		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
+		array_push($this->persistent_slots,'schedArr');
+
 		//FIXME: remove in next Versions
 		if(defined('INCLUDE_ALL_WE_TAGS')){
 			if(function_exists('include_all_we_tags')) {include_all_we_tags();}
 		}
-		$this->we_root();
-		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
-		array_push($this->persistent_slots,'schedArr');
 	}
 
 	function copyDoc($id) {
@@ -227,10 +228,10 @@ class we_document extends we_root {
 			  	if(!$LDID){$LDID=0;}
 				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
 				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
-				$langkeys[]=$langkey;  
+				$langkeys[]=$langkey;
 			}
-			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
-			
+			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");
+
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -252,7 +253,7 @@ class we_document extends we_root {
 				</tr>
 			</table>';
 			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-			
+
 		} else {
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
@@ -266,9 +267,9 @@ class we_document extends we_root {
 						' . $this->htmlSelect($inputName, $_languages, 1, $value, false, " onblur=\"_EditorFrame.setEditorIsHot(true);\" onchange=\"_EditorFrame.setEditorIsHot(true);\"", "value", 508) . '</td>
 				</tr>
 			</table>';
-			
+
 		}
-		
+
 		return $content;
 
 	}
@@ -812,7 +813,7 @@ class we_document extends we_root {
 		if(!$ret || ($this->errMsg!='')){
 			return false;
 		}
-		
+
 		if($resave==0) { // NO rebuild!!!
 			$this->resaveWeDocumentCustomerFilter();
 
@@ -826,8 +827,8 @@ class we_document extends we_root {
 				$version->save($this);
 		}
 
-		
-		
+
+
 		/* hook */
 		if ($skipHook==0){
 			$hook = new weHook('save', '', array($this,'resave'=>$resave));
@@ -1384,7 +1385,7 @@ class we_document extends we_root {
 					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
 					if ($published) {
 						$path_parts = pathinfo($path);
-						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){	
+						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							$path = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
 						}
 						return $path;
