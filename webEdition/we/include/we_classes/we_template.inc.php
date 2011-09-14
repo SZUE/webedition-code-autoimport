@@ -274,7 +274,7 @@ function parseTemplate(){
 		}
 
 		$tp->parseTags($tags,$code);
-		
+
 		if(!(defined('DISABLE_TEMPLATE_CODE_CHECK') && DISABLE_TEMPLATE_CODE_CHECK)){
 			$this->showShutdown=true;
 			register_shutdown_function(array($this,'handleShutdown'),$code);
@@ -286,7 +286,7 @@ function parseTemplate(){
 				for($ln=$error['line']-2;$ln<=$error['line']+2;$ln++){
 					$errCode.=$ln.': '.$tmp[$ln]."\n";
 				}
-				
+
 				$this->errMsg="Error: ".$error['message']."\nLine: ".$error['line']."\nCode: ".$errCode;
 				//type error will stop we
 				t_e('warning',"Error in template: ".$error['message'],'Line: '.$error['line'],'Code: '.$errCode);
@@ -473,9 +473,10 @@ print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY; ?>
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE')) return false;
+		return false;
+		/*if(!defined('SHOP_TABLE')) return false;
 		$fieldnames = $this->getVariantFieldNames();
-		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);
+		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);*/
 	}
 
 	/**
@@ -899,7 +900,7 @@ print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY; ?>
 		}
 		return $_ret;
 	}
-	
+
 	function we_publish(){
 		if(defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL){
 			$version = new weVersions();
