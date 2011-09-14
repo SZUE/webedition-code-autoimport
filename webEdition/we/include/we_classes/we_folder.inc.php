@@ -78,7 +78,7 @@ class we_folder extends we_root
 
 	/* Constructor */
 	function we_folder(){
-		$this->we_root();
+		parent::__construct();
 		array_push($this->persistent_slots,"SearchStart","SearchField","Search","Order","GreenOnly","IsClassFolder","IsNotEditable","WorkspacePath","WorkspaceID","Language","TriggerID");
 		array_push($this->persistent_slots,"searchclassFolder","searchclassFolder_class");
 	}

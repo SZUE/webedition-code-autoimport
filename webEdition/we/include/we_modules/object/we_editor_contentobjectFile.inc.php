@@ -34,7 +34,6 @@ if(isset($GLOBALS['we_doc']->Charset)){	//	send charset which might be determine
 }
 
 $_editMode = (isset($_previewMode) && $_previewMode == 1 ? 0 : 1);
-
 $parts = $GLOBALS["we_doc"]->getFieldsHTML($_editMode);
 
 if (is_array($GLOBALS["we_doc"]->DefArray)){
@@ -51,7 +50,7 @@ if (is_array($GLOBALS["we_doc"]->DefArray)){
 						);
 				break;
 			}
-	
+
 		}
 	}
 }

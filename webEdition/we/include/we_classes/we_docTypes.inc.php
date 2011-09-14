@@ -67,8 +67,8 @@ class we_docTypes extends we_class {
 	*/
 
 	/* Constructor */
-	function we_docTypes() {
-		$this->we_class();
+	function __construct() {
+		parent::__construct();
 		array_push($this->persistent_slots,"Category","DocType","Extension","ParentID","ParentPath","TemplateID","ContentTable","IsDynamic","IsSearchable","Notify","NotifyTemplateID","NotifySubject","NotifyOnChange","SubDir","Templates","Language");
 		$this->Extension= (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 	}
@@ -85,13 +85,13 @@ class we_docTypes extends we_class {
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
-		
+
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
 			if(isset($_REQUEST["we_".$this->Name."_LangDocType"])){
 				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
 			}
 		}
-		
+
 		return we_class::we_save($resave);
 	}
 
@@ -163,27 +163,27 @@ class we_docTypes extends we_class {
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = $GLOBALS['weFrontendLanguages'];
-		
+
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
-			
+
 			$htmlzw='';
 			foreach ($_languages as $langkey => $lang){
 			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID='".$this->ID."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
 			  	if(!$LDID){$LDID=0;}
 				$htmlzw.= $this->formDocTypes3($lang,$langkey,$LDID);
-				$langkeys[]=$langkey;  
+				$langkeys[]=$langkey;
 			}
 			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),
-				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");	
+				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");
 			$html .= "<br/>".$this->htmlFormElementTable($htmlzw,
 			$GLOBALS['l_we_class']['languageLinksDefaults'],
 			"left",
-			"defaultfont");	
+			"defaultfont");
 		} else {
 			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521),
 				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");
 		}
-		
+
 		return $html;
 
 	}
@@ -351,7 +351,7 @@ class we_docTypes extends we_class {
 		}
 		return $this->htmlSelect("DocTypes",$vals,"8",$this->ID,false,'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
 	}
-	
+
 	function formDocTypes3($headline, $langkey,$derDT=0) {
 		global $l_we_class;
 		$vals = array();
@@ -366,9 +366,9 @@ class we_docTypes extends we_class {
 		return htmlFormElementTable($this->htmlSelect("we_".$this->Name."_LangDocType[".$langkey."]",$vals,"1",$derDT,false,($langkey==$this->Language?' disabled="disabled" ':'').'style="width:328px" onChange=""'),
 			$headline,
 			"left",
-			"defaultfont");	
-		
-		
+			"defaultfont");
+
+
 	}
 
 	function formDirChooser($width=100) {
