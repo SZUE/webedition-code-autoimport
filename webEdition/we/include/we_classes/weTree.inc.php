@@ -315,7 +315,7 @@ class weTree{
 					if(document.images) {
 						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
 					}
-					
+
 					break;
 				}
 				else {
@@ -324,7 +324,7 @@ class weTree{
 					if(document.images) {
 						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
 					}
-					
+
 					break;
 				}
 			}
@@ -758,7 +758,7 @@ class weTree{
 					}
 				}
 
-				row+="<img src="+treeData.tree_icon_dir+"/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
+				row+="<img src="+treeData.tree_icon_dir+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
 
 				if(nf[ai].disabled!=1) row+="</a>";
 
