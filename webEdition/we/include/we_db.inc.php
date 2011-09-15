@@ -175,12 +175,10 @@ class DB_WE extends DB_Sql {
 			// delete getHash DB Cache
 			getHash('',$this);
 		}
-		$this->Errno=0;
-		$this->Error='';
+		$this->Errno = mysql_errno();
+		$this->Error = mysql_error();
 		$this->Row = 0;
 		if (!$this->Query_ID) {
-			$this->Errno = mysql_errno();
-			$this->Error = mysql_error();
 
 			switch($this->Errno){
 				case 2006://SERVER_GONE_ERROR
