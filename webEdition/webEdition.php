@@ -581,26 +581,45 @@ function we_cmd() {
 			if(wePerms.ADMINISTRATOR) {
 				hasPerm = 1;
 			} else if(isFolder) {
-				if(eTable == "<?php echo FILE_TABLE; ?>"  && wePerms.DELETE_DOC_FOLDER) {
-					hasPerm = 1;
-				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMP_FOLDER) {
-					hasPerm = 1;
-				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
-					hasPerm = 1; <?php } ?>
-				} else {
-					hasPerm = 0;
-				}
+				switch(eTable){
+					case "<?php echo FILE_TABLE; ?>":
+						if(wePerms.DELETE_DOC_FOLDER) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo TEMPLATES_TABLE; ?>":
+						if(wePerms.DELETE_TEMP_FOLDER) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo defined("OBJECT_FILES")?OBJECT_FILES_TABLE:-1;?>":
+						if(wePerms.DELETE_OBJECTFILE) {
+							hasPerm = 1;
+						}
+						break;
+					}
 			} else {
-				if(eTable == "<?php echo FILE_TABLE; ?>"  && wePerms.DELETE_DOCUMENT) {
-					hasPerm = 1;
-				} else if(eTable == "<?php echo TEMPLATES_TABLE; ?>"  && wePerms.DELETE_TEMPLATE) {
-					hasPerm = 1;
-				<?php if(defined("OBJECT_FILES")) { ?>} else if(eTable == "<?php echo OBJECT_FILES_TABLE; ?>"  && wePerms.DELETE_OBJECTFILE) {
-					hasPerm = 1;
-				} else if(eTable == "<?php echo OBJECT_TABLE; ?>"  && wePerms.DELETE_OBJECT) {
-					hasPerm = 1; <?php } ?>
-				} else {
-					hasPerm = 0;
+				switch(eTable){
+					case "<?php echo FILE_TABLE; ?>":
+						if(wePerms.DELETE_DOCUMENT) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo TEMPLATES_TABLE; ?>":
+						if(wePerms.DELETE_TEMPLATE) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo defined('OBJECT_FILES_TABLE')?OBJECT_FILES_TABLE:-1;?>":
+						if(wePerms.DELETE_OBJECTFILE) {
+							hasPerm = 1;
+						}
+						break;
+					case "<?php echo OBJECT_TABLE; ?>":
+						if(wePerms.DELETE_OBJECT) {
+							hasPerm = 1;
+						}
+						break;
 				}
 			}
 
