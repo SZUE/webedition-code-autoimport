@@ -66,6 +66,10 @@ $l_glossary['link'] = "Linkki";
 $l_glossary['link_description'] = "Hyperlinkit ovat helppo tapa auttaa lukijaa siirtymään joko WWW-sivulle, johon linkki vittaa tai asiakirjan kohtaan, johon linkki viittaa.";
 $l_glossary['exception'] = "Poikkeus";
 
+$l_glossary['textreplacement'] = "Text Replacement";// TRANSLATE
+$l_glossary['textreplacement_Text'] = "Replacement text";// TRANSLATE
+$l_glossary['textreplacement_description'] = "The simple text replacement can be used to exchange any text by another replacement text";// TRANSLATE
+
 $l_glossary['new_item_after_saving'] = "Uusi sanastosana tallennuksen jälkeen";
 $l_glossary['publish_when_saved'] = "Aktivoi tallennuksen jälkeen";
 

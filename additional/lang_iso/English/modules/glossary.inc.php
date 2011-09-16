@@ -66,6 +66,11 @@ $l_glossary['link'] = "Hyperlink";
 $l_glossary['link_description'] = "A hyperlink (often referred to as simply a link), is a reference or navigation element in a document to another section of the same document, another document, or a specified section of another document, that automatically brings the referred information to the user when the navigation element is selected by the user. Combined with a data network and suitable access protocol, a computer can be instructed to fetch the resource referenced.";
 $l_glossary['exception'] = "Exception";
 
+$l_glossary['textreplacement'] = "Text Replacement";// TRANSLATE
+$l_glossary['textreplacement_Text'] = "Replacement text";// TRANSLATE
+$l_glossary['textreplacement_description'] = "The simple text replacement can be used to exchange any text by another replacement text";// TRANSLATE
+
+
 $l_glossary['new_item_after_saving'] = "New Entry after saving";
 $l_glossary['publish_when_saved'] = "Activate after saving";
 

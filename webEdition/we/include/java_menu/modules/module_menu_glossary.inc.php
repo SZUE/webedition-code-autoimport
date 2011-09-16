@@ -69,6 +69,12 @@ foreach ($GLOBALS['weFrontendLanguages'] as $key => $language) {
 	$we_menu_glossary["00" . $nr . "4"]["cmd"] = "GlossaryXYZnew_glossary_linkXYZ$key";
 	$we_menu_glossary["00" . $nr . "4"]["perm"] = "NEW_GLOSSARY || ADMINISTRATOR";
 	$we_menu_glossary["00" . $nr . "4"]["enabled"] = "1";
+	
+	$we_menu_glossary["00" . $nr . "5"]["text"] = $GLOBALS["l_glossary"]["textreplacement"];
+	$we_menu_glossary["00" . $nr . "5"]["parent"] = $parent;
+	$we_menu_glossary["00" . $nr . "5"]["cmd"] = "GlossaryXYZnew_glossary_textreplacementXYZ$key";
+	$we_menu_glossary["00" . $nr . "5"]["perm"] = "NEW_GLOSSARY || ADMINISTRATOR";
+	$we_menu_glossary["00" . $nr . "5"]["enabled"] = "1";
 
 	$nr++;
 }

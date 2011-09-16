@@ -253,6 +253,7 @@
 					break;
 
 				case 'foreignword':
+				case 'textreplacement':
 					break;
 
 				case 'link':
@@ -317,6 +318,7 @@
 						break;
 
 					case 'foreignword':
+					case 'textreplacement':
 						break;
 
 					case 'link':

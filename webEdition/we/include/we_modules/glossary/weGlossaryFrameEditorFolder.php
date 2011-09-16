@@ -72,6 +72,7 @@
 				'acronym' => $GLOBALS['l_glossary']['acronym'],
 				'foreignword' => $GLOBALS['l_glossary']['foreignword'],
 				'link' => $GLOBALS['l_glossary']['link'],
+				'textreplacement' => $GLOBALS['l_glossary']['textreplacement'],
 			);
 
 			$language = substr($_REQUEST['cmdid'], 0, 5);

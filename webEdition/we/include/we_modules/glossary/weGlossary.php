@@ -67,7 +67,7 @@ class weGlossary extends weModelBase {
 	var $Text = "";
 
 	/**
-	 * Type of the item, could be abbreviation, acronym, foreignword or link
+	 * Type of the item, could be abbreviation, acronym, foreignword or link or textreplacement
 	 *
 	 * @var string
 	 */
@@ -197,6 +197,9 @@ class weGlossary extends weModelBase {
 						break;
 					case 'new_glossary_link':
 						$this->Type = "link";
+						break;
+					case 'new_glossary_textreplacement':
+						$this->Type = "textreplacement";
 						break;
 				}
 

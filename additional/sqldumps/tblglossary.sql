@@ -4,7 +4,7 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   `IsFolder` tinyint(1) unsigned default NULL,
   `Icon` enum('folder.gif','prog.gif') NOT NULL,
   `Text` varchar(255) NOT NULL default '',
-  `Type` enum('abbreviation','acronym','foreignword','link') NOT NULL default 'abbreviation',
+  `Type` enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL default 'abbreviation',
   `Language` varchar(5) NOT NULL default '',
   `Title` tinytext NOT NULL,
   `Attributes` text NOT NULL,

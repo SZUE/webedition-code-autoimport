@@ -44,6 +44,10 @@ $l_button['new_glossary_link']['value'] = 'Neuer Hyperlink';
 $l_button['new_glossary_link']['alt']   = 'Neuen Hyperlink erstellen ...';
 $l_button['new_glossary_link']['width'] = 150;
 
+$l_button['new_glossary_textreplacement']['value'] = 'Neue Text-Ersetzung';
+$l_button['new_glossary_textreplacement']['alt']   = 'Neue Text-Ersetzung erstellen ...';
+$l_button['new_glossary_textreplacement']['width'] = 150;
+
 $l_button['execute']['value'] = 'Ausführen';
 $l_button['execute']['alt']   = 'Änderungen ausführen ...';
 $l_button['execute']['width'] = 100;
