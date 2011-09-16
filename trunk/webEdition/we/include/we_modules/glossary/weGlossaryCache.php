@@ -415,6 +415,8 @@ class weGlossaryCache {
 		$Abbreviation =		'$abbreviation = array(';
 
 		$ForeignWord =  	'$foreignword = array(';
+		
+		$TextReplacement  =  	'$textreplacement = array(';
 
 		foreach($Items as $Text => $Value) {
 
@@ -442,24 +444,41 @@ class weGlossaryCache {
 						$Tag = 'span';
 						$PushTo = 'ForeignWord';
 						break;
+					case 'textreplacement':
+						$Tag = '';
+						$PushTo = 'TextReplacement';
+						break;
 
 				}
 
-				$prefix .= "<" . $Tag;
-				foreach($AttributeList as $Attribute => $Val) {
-					$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '=\"' . $Val . '\"');
+				if ($Tag!=''){
+					 $prefix .= "<" . $Tag;
 				}
-				$prefix .= '>';
-				$postfix = '</' . $Tag . '>' . $postfix;
+				if($Type!='textreplacement'){
+					foreach($AttributeList as $Attribute => $Val) {
+						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '=\"' . $Val . '\"');
+					}
+				} else {
+					$prefix .=$AttributeList['title'];
+				}
+				if ($Tag!=''){
+					$prefix .= '>';
+					$postfix = '</' . $Tag . '>' . $postfix;
+				}
 			}
-			$$PushTo	.=	'"/((<[^>]*)|([^[:alnum:]])('.$Text.')([^[:alnum:]]))/e" => \'"\2"=="\1"?"\1":"\3' . $prefix . '\4' . $postfix . '\5"\'' . ",\n";
+			if($Type!='textreplacement'){
+				$$PushTo	.=	'"/((<[^>]*)|([^[:alnum:]])('.$Text.')([^[:alnum:]]))/e" => \'"\2"=="\1"?"\1":"\3' . $prefix . '\4' . $postfix . '\5"\'' . ",\n";
+			} else {
+				$$PushTo	.=	'"/((<[^>]*)|([^[:alnum:]])('.$Text.')([^[:alnum:]]))/e" => \'"\2"=="\1"?"\1":"\3' . $prefix . '' . $postfix . '\5"\'' . ",\n";
 
+			}
 		}
 
 		$Link	.=		');';
 		$Acronym	.=		');';
 		$Abbreviation	.=		');';
 		$ForeignWord	.=		');';
+		$TextReplacement	.=		');';
 
 		$cacheFilename = weGlossaryCache::cacheIdToFilename($this->_cacheId);
 
@@ -472,7 +491,7 @@ class weGlossaryCache {
 
 		}
 
-		return (file_put_contents($cacheFilename,"<?php\n" . $Link . "\n" . $Acronym . "\n" . $Abbreviation . "\n" . $ForeignWord) !==FALSE);
+		return (file_put_contents($cacheFilename,"<?php\n" . $Link . "\n" . $Acronym . "\n" . $Abbreviation . "\n" . $ForeignWord . "\n" . $TextReplacement) !==FALSE);
 	}
 
 

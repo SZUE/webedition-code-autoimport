@@ -66,6 +66,10 @@ $l_glossary['link'] = "Koppeling";
 $l_glossary['link_description'] = "Een koppeling (ook wel link genoemd), is een referentie of navigatie element in een document naar een andere sectie van hetzelfde document, een ander document, of een gespecificeerde sectie van een ander document, die automatisch de gekoppelde informatie aan de gebruiker toont indien een navigatie element geselecteerd is door de gebruiker.";
 $l_glossary['exception'] = "Uitzondering";
 
+$l_glossary['textreplacement'] = "Text Replacement";// TRANSLATE
+$l_glossary['textreplacement_Text'] = "Replacement text";// TRANSLATE
+$l_glossary['textreplacement_description'] = "The simple text replacement can be used to exchange any text by another replacement text";// TRANSLATE
+
 $l_glossary['new_item_after_saving'] = "Nieuwe invoer na bewaren";
 $l_glossary['publish_when_saved'] = "Activeren na bewaren";
 

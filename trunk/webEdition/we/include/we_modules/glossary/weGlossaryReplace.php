@@ -97,6 +97,7 @@
 			$abbreviation = $cache->get('abbreviation');
 			$acronym = $cache->get('acronym');
 			$link = $cache->get('link');
+			$textreplacement = $cache->get('textreplacement');
 			unset($cache);
 			// first check if there is a body tag inside the sourcecode
 			preg_match('|<body[^>]*>(.*)</body>|si', $src, $matches);
@@ -126,6 +127,7 @@
 					if(stripos($before,'<span ')===FALSE) {
 						$piece = weGlossaryReplace::doReplaceWords($piece, $foreignword);
 					}
+					$piece = weGlossaryReplace::doReplaceWords($piece, $textreplacement);
 				}
 				$replBody .= $piece;
 				$before = $piece;

@@ -30,6 +30,7 @@ class weGlossaryTreeLoader{
 			'acronym',
 			'foreignword',
 			'link',
+			'textreplacement',
 		);
 
 		$Temp = explode("_", $ParentId);
@@ -86,6 +87,7 @@ class weGlossaryTreeLoader{
 			'acronym'		=> $GLOBALS['l_glossary']['acronym'],
 			'foreignword'	=> $GLOBALS['l_glossary']['foreignword'],
 			'link'			=> $GLOBALS['l_glossary']['link'],
+			'textreplacement'	=> $GLOBALS['l_glossary']['textreplacement'],
 		);
 
 		foreach($Types as $Key => $Val) {
@@ -208,6 +210,9 @@ class weGlossaryTreeLoader{
 					break;
 				case 'link':
 					$Item['cmd'] = "edit_glossary_link";
+					break;
+				case 'textreplacement':
+					$Item['cmd'] = "edit_glossary_textreplacement";
 					break;
 			}
 

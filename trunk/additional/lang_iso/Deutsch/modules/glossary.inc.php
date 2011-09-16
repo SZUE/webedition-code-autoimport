@@ -66,6 +66,11 @@ $l_glossary['link'] = "Hyperlink";
 $l_glossary['link_description'] = "Als Hyperlink, auch kurz Link (aus dem Englischen für Verknüpfung, Verbindung, Verweis), bezeichnet man einen Verweis auf ein anderes Dokument in einem Hypertext, der durch das Hypertextsystem automatisch verfolgt werden kann.";
 $l_glossary['exception'] = "Ausnahmen";
 
+$l_glossary['textreplacement'] = "Text-Ersetzung";
+$l_glossary['textreplacement_Text'] = "Ersatztext";
+$l_glossary['textreplacement_description'] = "Die einfache Text-Ersetzung erlaubt es, beliebige Zeichenketten durch andere zu ersetzen";
+
+
 $l_glossary['new_item_after_saving'] = "Nach Speichern neuen Eintrag";
 $l_glossary['publish_when_saved'] = "Beim Speichern aktivieren";
 
