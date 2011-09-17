@@ -27,7 +27,6 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=='/
 	exit();
 }
 
-
 if( (!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
 	$we_ContentType = f("SELECT ContentType FROM $we_Table WHERE ID=$we_ID",'ContentType',$DB_WE);
 }

@@ -139,6 +139,10 @@ class weGlossaryView {
 				case 'new_glossary_link':
 					$this->Glossary->Type = 'link';
 					break;
+					
+				case 'new_glossary_textreplacement':
+					$this->Glossary->Type = 'textreplacement';
+					break;
 
 			}
 
@@ -275,6 +279,7 @@ class weGlossaryView {
 					case "new_glossary_abbreviation":
 					case "new_glossary_foreignword":
 					case "new_glossary_link":
+					case "new_glossary_textreplacement":
 						if('.$this->TopFrame.'.resize.right.editor.edbody.loaded) {
 							'.$this->TopFrame.'.resize.right.editor.edbody.document.we_form.cmd.value = arguments[0];
 							if(arguments[1] != undefined) {
@@ -354,6 +359,7 @@ class weGlossaryView {
 					case "edit_glossary_abbreviation":
 					case "edit_glossary_foreignword":
 					case "edit_glossary_link":
+					case "edit_glossary_textreplacement":
 						'.(!we_hasPerm("EDIT_GLOSSARY")
 							? we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'
 							: '').'
@@ -497,6 +503,7 @@ class weGlossaryView {
 				case "new_glossary_abbreviation":
 				case "new_glossary_foreignword":
 				case "new_glossary_link":
+				case "new_glossary_textreplacement":
 					if(!we_hasPerm("NEW_GLOSSARY")) {
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[no_perms]"), WE_MESSAGE_ERROR)
@@ -516,6 +523,7 @@ class weGlossaryView {
 				case "edit_glossary_abbreviation":
 				case "edit_glossary_foreignword":
 				case "edit_glossary_link":
+				case "edit_glossary_textreplacement":
 					if(!we_hasPerm("EDIT_GLOSSARY")) {
 						print we_htmlElement::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[no_perms]"), WE_MESSAGE_ERROR)
@@ -600,7 +608,11 @@ class weGlossaryView {
 					if($this->Glossary->Type != "foreignword") {
 						$this->Glossary->Title = $_REQUEST[$_REQUEST['Type']]['Title'];
 					}
-					$this->Glossary->Attributes = $_REQUEST[$_REQUEST['Type']]['Attributes'];
+					if (isset($_REQUEST[$_REQUEST['Type']]['Attributes'])){
+						$this->Glossary->Attributes = $_REQUEST[$_REQUEST['Type']]['Attributes'];
+					} else {
+						$this->Glossary->Attributes ='';
+					}
 
 					if(!we_hasPerm("NEW_GLOSSARY") && !we_hasPerm("EDIT_GLOSSARY")) {
 						print we_htmlElement::jsElement(

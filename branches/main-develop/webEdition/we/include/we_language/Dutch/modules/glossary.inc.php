@@ -168,4 +168,7 @@ $l_modules_glossary = array(
 		'item_saved' => "De invoer '%s' is succesvol bewaard!",
 		'replace_deactivated' => "De vervanging voor '%s' is succesvol gedeactiveerd!",
 		'replace_activated' => "De vervanging voor '%s' is succesvol geactiveerd!",
+		'textreplacement' => "Text Replacement",// TRANSLATE
+		'textreplacement_Text' => "Replacement text",// TRANSLATE
+		'textreplacement_description' => "The simple text replacement can be used to exchange any text by another replacement text",// TRANSLATE
 );

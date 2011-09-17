@@ -184,4 +184,7 @@ $l_modules_glossary = array(
 		'item_saved' => "The entry '%s' has been successfully saved!", // TRANSLATE
 		'replace_deactivated' => "The substitution of '%s' has been successfully deactivated!", // TRANSLATE
 		'replace_activated' => "The substitution of '%s' has been successfully activated!", // TRANSLATE
+		'textreplacement' => "Text Replacement",// TRANSLATE
+		'textreplacement_Text' => "Replacement text",// TRANSLATE
+		'textreplacement_description' => "The simple text replacement can be used to exchange any text by another replacement text",// TRANSLATE
 );

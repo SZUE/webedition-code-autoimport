@@ -82,7 +82,7 @@ if(defined("WE_VERSION_SUPP")) {
 $_table = new we_htmlTable( array(	"border"      => 0,
 									"cellpadding" => 0,
 									"cellspacing" => 0,
-									"style"  => "background-image:url(" . IMAGE_DIR . "info/".$_logo.";background-repeat: no-repeat;background-color:#EBEBEB" ),
+									"style"  => "background-image:url(" . IMAGE_DIR . "info/".$_logo.");background-repeat: no-repeat;background-color:#EBEBEB" ),
 									8,
 									3);
 $_actRow = 0;

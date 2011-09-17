@@ -58,6 +58,11 @@
 
 					$title .= g_l('modules_glossary','[link]');
 					break;
+				case 'textreplacement':
+					$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['property'],'TAB_ACTIVE',"setTab('1');"));
+
+					$title .= $GLOBALS['l_glossary']['textreplacement'];
+					break;
 			}
 
 			//$title .= ":&nbsp;" . ($weGlossaryFrames->View->Glossary->ID != 0 ? $weGlossaryFrames->View->Glossary->Text : g_l('modules_glossary','[menu_new]')).'<div id="mark" style="display: none;">*</div>';
@@ -94,6 +99,7 @@
 					document.getElementById("type_acronym").style.display = "none";
 					document.getElementById("type_foreignword").style.display = "none";
 					document.getElementById("type_link").style.display = "none";
+					document.getElementById("type_textreplacement").style.display = "none";
 					document.getElementById("type_" + type).style.display = "block";
 					document.we_form.cmd.value = "edit_" + type;
 					if(type == "link") {
@@ -310,6 +316,7 @@
 				'abbreviation' => g_l('modules_glossary','[abbreviation]'),
 				'foreignword' => g_l('modules_glossary','[foreignword]'),
 				'link' => g_l('modules_glossary','[link]'),
+				'textreplacement' => $GLOBALS['l_glossary']['textreplacement'],
 			);
 
 			$hidden =	 	we_htmlElement::htmlHidden(array('name'=>'newone','value'=>($weGlossaryFrames->View->Glossary->ID==0 ? 1 : 0)))
@@ -352,7 +359,8 @@
 			$html = weGlossaryFrameEditorItem::getHTMLAbbreviation($weGlossaryFrames) .
 					weGlossaryFrameEditorItem::getHTMLAcronym($weGlossaryFrames) .
 					weGlossaryFrameEditorItem::getHTMLForeignWord($weGlossaryFrames) .
-					weGlossaryFrameEditorItem::getHTMLLink($weGlossaryFrames);
+					weGlossaryFrameEditorItem::getHTMLLink($weGlossaryFrames).
+					weGlossaryFrameEditorItem::getHTMLTextReplacement($weGlossaryFrames);
 
 			$item = array(
 				"headline" => g_l('modules_glossary','[selection]'),
@@ -511,6 +519,49 @@
 					<tr>
 						<td>
 							' . weGlossaryFrameEditorItem::getLangField("foreignword[Attributes][lang]", $_language, $language, 520) . '</td>
+					</tr>
+				</table>';
+
+			return $pre . $content . $post;
+
+		}
+		
+		function getHTMLTextReplacement(&$weGlossaryFrames) {
+
+			$text = $GLOBALS['l_glossary']['textreplacement'];
+			$language = $GLOBALS['l_glossary']['language'];
+			$_title = unhtmlentities($weGlossaryFrames->View->Glossary->Title);
+
+			$_text = "";
+			$_language = "";
+
+			if($weGlossaryFrames->View->Glossary->Type == "textreplacement") {
+				$_text = unhtmlentities($weGlossaryFrames->View->Glossary->Text);
+				$_title = unhtmlentities($weGlossaryFrames->View->Glossary->Title);
+
+			}
+
+			$pre = '<div id="type_textreplacement" style="display: none;">';
+			$post = '</div>';
+
+			$content = '<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="defaultfont">' . $text . '</td>
+					</tr>
+					<tr>
+						<td>
+							'.htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
+					</tr>
+					<tr>
+						<td>
+							'.getPixel(2,4).'</td>
+					</tr>
+					<tr>
+						<td class="defaultfont">' . $GLOBALS['l_glossary']['textreplacement_Text'] . '</td>
+					</tr>
+					<tr>
+						<td>
+							'.htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).  '</td>
 					</tr>
 				</table>';
 

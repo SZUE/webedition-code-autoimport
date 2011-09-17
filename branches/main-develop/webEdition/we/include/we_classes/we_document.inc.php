@@ -79,12 +79,14 @@ class we_document extends we_root {
 
 	// Constructor
 	function we_document() {
+		parent::__construct();
+		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
+		array_push($this->persistent_slots,'schedArr');
+
 		//FIXME: remove in next Versions
 		if(defined('INCLUDE_ALL_WE_TAGS')){
 			if(function_exists('include_all_we_tags')) {include_all_we_tags();}
 		}
-		parent::__construct();
-		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language','schedArr');
 	}
 
 	function copyDoc($id) {
@@ -230,7 +232,6 @@ class we_document extends we_root {
 				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
 				$langkeys[]=$langkey;
 			}
-
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>

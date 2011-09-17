@@ -30,13 +30,16 @@ $createAbbreviation = we_button::create_button("new_glossary_abbreviation", "jav
 $createAcronym = we_button::create_button("new_glossary_acronym", "javascript:top.opener.top.we_cmd('new_glossary_acronym');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
 $createForeignWord = we_button::create_button("new_glossary_foreignword", "javascript:top.opener.top.we_cmd('new_glossary_foreignword');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
 $createLink = we_button::create_button("new_glossary_link", "javascript:top.opener.top.we_cmd('new_glossary_link');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
+$createTextReplacement = we_button::create_button("new_glossary_textreplacement", "javascript:top.opener.top.we_cmd('new_glossary_textreplacement');", true, -1, -1, "", "", !we_hasPerm("NEW_GLOSSARY"));
 
 $content	=		$createAbbreviation
-				.	getPixel(2,14)
+				.	getPixel(2,10)
 				.	$createAcronym
-				.	getPixel(2,14)
+				.	getPixel(2,10)
 				.	$createForeignWord
-				.	getPixel(2,14)
-				.	$createLink;
+				.	getPixel(2,10)
+				.	$createLink
+				.	getPixel(2,10)
+				.	$createTextReplacement;
 
 $modimage = "glossary.gif";

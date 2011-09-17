@@ -152,10 +152,6 @@ abstract class DB_WE_abstract {
 		}
 	}
 
-	function errno(){
-		return $this->Errno;
-	}
-
 	/**
 	 *This function is a replacement for mysql_real_escape_string, which sends the string to mysql to escape it
 	 * @deprecated NOTE: this function will be removed; in future there will be a function for prepared statements
@@ -244,12 +240,10 @@ abstract class DB_WE_abstract {
 			// delete getHash DB Cache
 			getHash('',$this);
 		}
-		$this->Errno=0;
-		$this->Error='';
+		$this->Errno = $this->errno();
+		$this->Error = $this->error();
 		$this->Row = 0;
 		if (!$this->Query_ID) {
-			$this->Errno = $this->errno();
-			$this->Error = $this->error();
 
 			switch($this->Errno){
 				case 2006://SERVER_GONE_ERROR

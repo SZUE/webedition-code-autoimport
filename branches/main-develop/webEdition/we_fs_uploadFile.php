@@ -128,7 +128,7 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
 
 	$we_doc->setElement("filesize",$_FILES['we_uploadedFile']["size"],"attrib");
 	if(isset($_REQUEST["img_title"])){
-		$we_doc->setElement("title",$_REQUEST["img_title"]);
+		$we_doc->setElement("title",$_REQUEST["img_title"],"attrib");
 	}
 	if(isset($_REQUEST["img_alt"])){
 		$we_doc->setElement("alt",$_REQUEST["img_alt"],"attrib");

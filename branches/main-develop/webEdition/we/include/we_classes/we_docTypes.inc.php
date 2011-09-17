@@ -69,7 +69,7 @@ class we_docTypes extends we_class {
 	*/
 
 	/* Constructor */
-	function we_docTypes() {
+	function __construct() {
 		parent::__construct();
 		array_push($this->persistent_slots,"Category","DocType","Extension","ParentID","ParentPath","TemplateID","ContentTable","IsDynamic","IsSearchable","Notify","NotifyTemplateID","NotifySubject","NotifyOnChange","SubDir","Templates","Language");
 		$this->Extension= (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
@@ -87,13 +87,13 @@ class we_docTypes extends we_class {
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
-		
+
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
 			if(isset($_REQUEST["we_".$this->Name."_LangDocType"])){
 				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
 			}
 		}
-		
+
 		return we_class::we_save($resave);
 	}
 
@@ -165,7 +165,7 @@ class we_docTypes extends we_class {
 		$inputName = "we_".$this->Name."_Language";
 
 		$_languages = getWeFrontendLanguagesForBackend();
-		
+
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 
 			$htmlzw='';
@@ -186,6 +186,7 @@ class we_docTypes extends we_class {
 			"left",
 			"defaultfont");
 		}
+
 	}
 
 	function formCategory() {

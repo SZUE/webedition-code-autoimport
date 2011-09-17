@@ -1098,7 +1098,7 @@ class weVersions {
 				$writeVersion = false;
 			}
 
-			if((isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0]=="save_document") && 
+			if((isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0]=="save_document") &&
 							isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5]) {
 				$status = "published";
 			}
@@ -1150,9 +1150,9 @@ class weVersions {
 
 					if($fieldName!='ID') {
 						if(isset($document[$fieldName])) {
-							$set[] = '"'.$db->escape($document[$fieldName]).'"';
+							$set[] = $fieldName.'="'.$db->escape($document[$fieldName]).'"';
 						} else {
-							$set[] = '"'.$db->escape($this->makePersistentEntry($fieldName, $status, $document, $documentObj)).'"';
+							$set[] = $fieldName.'="'.$db->escape($this->makePersistentEntry($fieldName, $status, $document, $documentObj)).'"';
 						}
 					}
 				}

@@ -74,7 +74,7 @@
 						break;
 
 					case 'publish':
-						$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = '" . time() . "' WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) .")";
+						$query = "UPDATE " . GLOSSARY_TABLE . " SET Published = UNIX_TIMESTAMP() WHERE ID IN (" . $GLOBALS['DB_WE']->escape(implode(",", $_REQUEST['ID'])) .")";
 						if($GLOBALS['DB_WE']->query($query)) {
 							$_js .= '';
 						} else {
@@ -256,6 +256,7 @@
 					break;
 
 				case 'foreignword':
+				case 'textreplacement':
 					break;
 
 				case 'link':
@@ -320,6 +321,7 @@
 						break;
 
 					case 'foreignword':
+					case 'textreplacement':
 						break;
 
 					case 'link':

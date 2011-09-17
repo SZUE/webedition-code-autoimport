@@ -156,7 +156,7 @@ abstract class we_class{
 		}else{
 			$trashbut = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['".$Path_elem_Name."'].value='';_EditorFrame.setEditorIsHot(true);");
 			if(($directory && $file) || $file){
-				
+
 				//javascript:we_cmd('browse_server','document.forms[0].elements[\\'$Path_elem_Name\\'].value','".(($directory && $file) ? "filefolder" : "")."',document.forms[0].elements['$Path_elem_Name'].value,'if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements[\'$int_elem_Name\'][1].checked=true;" : "")."')
 				$wecmdenc1= we_cmd_enc("document.forms[0].elements['$Path_elem_Name'].value");
 				$wecmdenc4= we_cmd_enc("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}".($showRadio ? "opener.document.we_form.elements['$int_elem_Name'][1].checked=true;" : "")."");
@@ -488,10 +488,10 @@ abstract class we_class{
 			default:
 				$deltype='';
 			}
-			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID=".abs($this->ID));
-			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID=".abs($this->ID));
+			$this->DB_WE->query('DELETE FROM '.LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID=".intval($this->ID));
+			$this->DB_WE->query('DELETE FROM '.LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID=".intval($this->ID));
 		}
-		return $this->DB_WE->query("DELETE FROM ".$this->DB_WE->escape($this->Table).' WHERE ID='.abs($this->ID));	
+		return $this->DB_WE->query('DELETE FROM '.$this->DB_WE->escape($this->Table).' WHERE ID='.intval($this->ID));	
 	}
 
 # private ###################
@@ -514,8 +514,8 @@ abstract class we_class{
 		}
 	}
 
-	function i_getPersistentSlotsFromDB($felder="*"){
-		$this->DB_WE->query("SELECT ".$felder." FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($this->ID)."'");
+	function i_getPersistentSlotsFromDB($felder='*'){
+		$this->DB_WE->query('SELECT '.$felder.' FROM '.$this->DB_WE->escape($this->Table).' WHERE ID='.intval($this->ID));
 		if($this->DB_WE->next_record()){
 			foreach($this->DB_WE->Record as $k=>$v){
 				if($k && in_array($k,$this->persistent_slots)){
@@ -610,7 +610,7 @@ abstract class we_class{
 		}
 		return false;
 	}
-	
+
 	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
 		$db = new DB_WE;
 		if(is_array($LangLinkArray) ){
@@ -620,7 +620,7 @@ abstract class we_class{
 			while($this->DB_WE->next_record()){
 				$orig[]=$this->DB_WE->Record;
 			}
-			$max= count($orig);			
+			$max= count($orig);
 			for($j=0;$j<$max;$j++){
 				$q="SELECT * FROM ".LANGLINK_TABLE." WHERE  DID='".abs($orig[$j]['LDID'])."'";
 				$this->DB_WE->query($q);
@@ -652,7 +652,7 @@ abstract class we_class{
 						}
 						if ($LDID<0){
 							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='0',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
-						}  
+						}
 					} else {
 						if ($LDID>0){
 							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
@@ -665,7 +665,7 @@ abstract class we_class{
 					if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($LDID)."' AND Locale='".$this->Language."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE))){
 						if ($LDID>0){
 							$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."',Locale='".$this->Language."' WHERE ID='".abs($ID)."'";
-						} 
+						}
 					} else {
 						if ($LDID>0){
 							$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($LDID)."', DLocale='".$locale."', LDID='".abs($this->ID)."', Locale='".$this->Language."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
@@ -673,8 +673,8 @@ abstract class we_class{
 					}
 					if($q){$this->DB_WE->query($q);}
 				}
-		  }	
-			if(defined('LANGLINK_SUPPORT_RECURSIVE') && LANGLINK_SUPPORT_RECURSIVE && !$isfolder){		
+		  }
+			if(defined('LANGLINK_SUPPORT_RECURSIVE') && LANGLINK_SUPPORT_RECURSIVE && !$isfolder){
 				foreach ($LangLinkArray as $locale => $LDID){
 					if($LDID>0){
 						$rows=array();
@@ -689,17 +689,17 @@ abstract class we_class{
 									if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i]['LDID'])."' AND DLocale='".$rows[$i]['Locale']."' AND LDID='".abs($rows[$i+1]['LDID'])."' AND Locale='".$rows[$i+1]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE))){
 										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."',Locale='".$rows[$i+1]['Locale']."' WHERE ID='".abs($ID)."'";
 									} else {
-										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."', Locale='".$rows[$i+1]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
+										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i]['LDID'])."', DLocale='".$rows[$i]['Locale']."', LDID='".abs($rows[$i+1]['LDID'])."', Locale='".$rows[$i+1]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
 									}
 									$this->DB_WE->query($q);
 									if($rows[$i+1]['LDID'] && $ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DID='".abs($rows[$i+1]['LDID'])."' AND DLocale='".$rows[$i+1]['Locale']."' AND LDID='".abs($rows[$i]['LDID'])."' AND Locale='".$rows[$i]['Locale']."' AND DocumentTable='".$type."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
 										$q = "UPDATE ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."',Locale='".$rows[$i]['Locale']."' WHERE ID='".abs($ID)."'";
 									} else {
-										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."', Locale='".$rows[$i]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";					
+										$q = "INSERT INTO ".LANGLINK_TABLE." SET DID='".abs($rows[$i+1]['LDID'])."', DLocale='".$rows[$i+1]['Locale']."', LDID='".abs($rows[$i]['LDID'])."', Locale='".$rows[$i]['Locale']."', IsObject='".abs($isobject)."', DocumentTable='".$type."';";
 									}
 									$this->DB_WE->query($q);
 								}
-							}			
+							}
 						}
 					}
 				if ($LDID<0){
@@ -733,5 +733,5 @@ abstract class we_class{
 	function getErrMsg(){
 		return ($this->errMsg !='' ?'\n'.str_replace("\n",'\n',$this->errMsg):'');
 	}
-	
+
 }

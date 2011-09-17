@@ -51,6 +51,7 @@
         case "edit_glossary_abbreviation":
         case "edit_glossary_foreignword":
         case "edit_glossary_link":
+		case "edit_glossary_textreplacement":
         case "edit_glossary_ifthere":
         	new jsWindow(url,"edit_module",-1,-1,970,760,true,true,true,true);
         	break;
@@ -93,6 +94,7 @@
         case "new_glossary_abbreviation":
         case "new_glossary_foreignword":
         case "new_glossary_link":
+		case "new_glossary_textreplacement":
         case "exit_glossary":
 
         case "save_exception":

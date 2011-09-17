@@ -32,6 +32,8 @@
 	 * IMPORTANT!
 	 * Copy this file to the custom_hooks folder when doing any changes
 	 * Files in the sample_hooks folder are not executed and are not update-safe and will be overwritten by the next webEdition update
+	 * 
+	 * When using the WE-APP WE:Hookmanagement, this is done automatically by the WE-APP
 	 *
 	 * @param array $param
 	 */

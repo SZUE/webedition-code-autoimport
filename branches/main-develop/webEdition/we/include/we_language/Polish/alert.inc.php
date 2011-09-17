@@ -193,5 +193,5 @@ if (defined("OBJECT_FILES_TABLE")) {
 			'in_wf_warning' => "Przed dołączeniem klasy do Workflow, należy ją zapisać!\\nCzy zapisać teraz klasę?",
 			'exit_doc_question_' . OBJECT_TABLE => "Klasa została zmieniona.<br>Zapisać zmiany?",
 			'exit_doc_question_' . OBJECT_FILES_TABLE => "Obiekt został zmieniony.<br>Zapisać zmiany?",
-					));
+					);
 }

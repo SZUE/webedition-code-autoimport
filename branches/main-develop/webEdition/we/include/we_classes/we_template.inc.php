@@ -414,9 +414,10 @@ function handleShutdown($code) {
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE')) return false;
+		return false;
+		/*if(!defined('SHOP_TABLE')) return false;
 		$fieldnames = $this->getVariantFieldNames();
-		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);
+		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);*/
 	}
 
 	/**

@@ -166,4 +166,8 @@ $l_modules_glossary = array(
 		'item_saved' => "Der Eintrag '%s' wurde erfolgreich gespeichert!",
 		'replace_deactivated' => "Die Ersetzung des Eintrages '%s' wurde erfolgreich deaktiviert!",
 		'replace_activated' => "Die Ersetzung des Eintrages '%s' wurde erfolgreich aktiviert!",
+		'textreplacement' => "Text-Ersetzung",
+		'textreplacement_Text' => "Ersatztext",
+		'textreplacement_description' => "Die einfache Text-Ersetzung erlaubt es, beliebige Zeichenketten durch andere zu ersetzen",
+
 );

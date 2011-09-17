@@ -71,7 +71,7 @@ class weGlossary extends weModelBase {
 	var $Text = "";
 
 	/**
-	 * Type of the item, could be abbreviation, acronym, foreignword or link
+	 * Type of the item, could be abbreviation, acronym, foreignword or link or textreplacement
 	 *
 	 * @var string
 	 */
@@ -202,6 +202,9 @@ class weGlossary extends weModelBase {
 					case 'new_glossary_link':
 						$this->Type = "link";
 						break;
+					case 'new_glossary_textreplacement':
+						$this->Type = "textreplacement";
+						break;
 				}
 
 				if(isset($_REQUEST['cmdid']) && !preg_match('|^[0-9]|', $_REQUEST['cmdid'])) {
@@ -216,8 +219,7 @@ class weGlossary extends weModelBase {
 
 
 	function getEntries($Language, $Mode = 'all', $Type = 'all') {
-		$Query = 	"SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE
-				.	" WHERE Language = '" . escape_sql_query($Language) . "' ";
+		$Query = 	"SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE .	" WHERE Language = '" . escape_sql_query($Language) . "' ";
 		if($Type != 'all') {
 			$Query .= "AND Type = '" . escape_sql_query($Type) . "' ";
 		}
@@ -285,7 +287,7 @@ class weGlossary extends weModelBase {
 	 *
 	 */
 	function save() {
-		$this->Icon == ($this->IsFolder == 1 ? 'folder.gif': 'prog.gif');
+		$this->Icon = ($this->IsFolder == 1 ? 'folder.gif': 'prog.gif');
 
 		$this->setPath();
 

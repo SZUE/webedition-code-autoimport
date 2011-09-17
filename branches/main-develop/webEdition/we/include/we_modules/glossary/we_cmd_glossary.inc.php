@@ -28,6 +28,7 @@ switch($_REQUEST["we_cmd"][0]) {
 	case "edit_glossary_abbreviation":
 	case "edit_glossary_foreignword":
 	case "edit_glossary_link":
+	case "edit_glossary_textreplacement":
 	case "edit_glossary_ifthere":
 	case "view_folder":
 	case "view_type":

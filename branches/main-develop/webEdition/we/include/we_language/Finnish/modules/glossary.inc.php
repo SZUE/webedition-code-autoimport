@@ -166,4 +166,7 @@ $l_modules_glossary = array(
 		'item_saved' => "Merkintä '%s' tallennettu!",
 		'replace_deactivated' => "Sanan '%s' korvaus on onnistuneesti poistettu käytöstä!",
 		'replace_activated' => "Sanan '%s' korvaus on onnistuneesti aktivoitu!",
+		'textreplacement' => "Text Replacement",// TRANSLATE
+		'textreplacement_Text' => "Replacement text",// TRANSLATE
+		'textreplacement_description' => "The simple text replacement can be used to exchange any text by another replacement text",// TRANSLATE
 );

@@ -103,9 +103,9 @@ abstract class we_root extends we_class{
 
 	/* Constructor */
 	function __construct() {
+		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		parent::__construct();
  		array_push($this->persistent_slots,"OwnersReadOnly","ParentID","ParentPath","Text","Filename","Path","OldPath","CreationDate","ModDate","IsFolder","ContentType","Icon","elements","EditPageNr","CopyID","Owners","CreatorID","ModifierID","DefaultInit","RestrictOwners","WebUserID");
 	}
 
@@ -398,7 +398,7 @@ abstract class we_root extends we_class{
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms[0].elements['$idname'].value,'opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd(\\'add_owner\\',top.allIDs)','','',1);
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-		$wecmdenc5= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");		
+		$wecmdenc5= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('add_owner',top.allIDs);");
 		$addbut = $canChange ?
 				$this->htmlHidden($idname,"").$this->htmlHidden($textname,"").we_button::create_button("add", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',document.forms[0].elements['$idname'].value,'".$wecmdenc5."','','',1);")
 				: "";
@@ -566,8 +566,8 @@ function formTriggerDocument($isclass=false){
 		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);");
 		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
-		
-		$yuiSuggest->setAcId("TriggerID");	
+
+		$yuiSuggest->setAcId("TriggerID");
 		$yuiSuggest->setContentType("folder,text/webedition");
 		$yuiSuggest->setInput($textname,$path);
 		$yuiSuggest->setLabel(g_l('modules_object','[seourltrigger]'));
@@ -616,7 +616,7 @@ function formTriggerDocument($isclass=false){
 		$button = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','" . $rootDirID . "','".$ctype."',1)");
 		$trashButton = we_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['$idname'].value='-1';document.we_form.elements['$textname'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput".$ackeyshort."');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['$idname'].value){top.doClickDirect(document.we_form.elements['$idname'].value,'".$ctype."','".$etype."'); }");
-		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){			
+		if(isset($this->DocType) && $this->DocType && we_hasPerm("NEW_WEBEDITIONSITE")){
 			$LDcoType = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID='".$this->DocType."' AND Locale='".$langkey."'",'LDID',new DB_WE());
 			if($LDcoType){
 				$createbutton = we_button::create_button("image:add_doc", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','".$LDcoType."');");
@@ -801,7 +801,7 @@ function formTriggerDocument($isclass=false){
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		}
 		if(!we_class::we_save($resave)){
-			return false;	
+			return false;
 		}
 		$a = $this->i_saveContentDataInDB();
 		if($resave==0 && $this->ClassName!='we_class_folder'){
@@ -1038,7 +1038,7 @@ function formTriggerDocument($isclass=false){
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
