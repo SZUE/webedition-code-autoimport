@@ -115,8 +115,11 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 		if (isset($_REQUEST['delete'])){
 			$db->query('TRUNCATE TABLE `'.ERROR_LOG_TABLE.'`');
 		}
+		$q="SELECT * FROM ".ERROR_LOG_TABLE." ORDER BY ID DESC ";
+		$db->query($q);
+		$size = $db->num_rows();p_r($size);
 		$size = f('SELECT COUNT(1) as cnt FROM `'.ERROR_LOG_TABLE.'`','cnt',$db);
-		$count = 1;
+		$count = 1;p_r($size);
 
 		$nextprev = "";
 		if ($size>0){
@@ -157,7 +160,7 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 					  'space'=>$_space_size
 				  );
 			$db->query('SELECT * FROM `'.ERROR_LOG_TABLE.'` ORDER By Date DESC LIMIT '.$start.','.$count);
-
+p_r('SELECT * FROM `'.ERROR_LOG_TABLE.'` ORDER By ID DESC LIMIT '.$start.','.$count);
 			while ($db->next_record()){
 				$_parts[] = array(
 					  'html'=> getInfoTable($db->Record),
