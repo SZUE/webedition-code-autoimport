@@ -17,6 +17,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 function we_tag_saveRegisteredUser($attribs,$content){
 	$userexists = we_getTagAttribute('userexists',$attribs);
@@ -60,11 +61,14 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						$values = '';
 
 						// Start Schnittstelle fuer save-Funktion
+						//FIXME: @deprecated!
 						if(file_exists($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php')){
 							include_once($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php');
 							we_customer_saveFN($_REQUEST['s']);
 						}
 						// Ende Schnittstelle fuer save-Funktion
+						$hook = new weHook('customer_preSave', '', array('customer'=>$_REQUEST['s'],'from'=>'tag','type'=>'new'));
+						$ret=$hook->executeHook();
 
 						// skip protected Fields
 						if(sizeof($protected) > 0) {
@@ -153,11 +157,14 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					if(isset($_REQUEST['s'])){
 
 						// Start Schnittstelle fuer change-Funktion
+						//FIXME: @deprecated!
 						if(file_exists($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php')){
 							include_once($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php');
 							we_customer_saveFN($_REQUEST['s']);
 						}
 						// Ende Schnittstelle fuer change-Funktion
+						$hook = new weHook('customer_preSave', '', array('customer'=>$_REQUEST['s'],'from'=>'tag','type'=>'modify'));
+						$ret=$hook->executeHook();
 
 						// skip protected Fields
 						if(sizeof($protected) > 0) {

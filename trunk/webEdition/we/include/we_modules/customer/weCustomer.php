@@ -19,6 +19,7 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 /**
  * General Definition of WebEdition Customer
@@ -90,12 +91,15 @@ class weCustomer extends weModelBase {
 			$s[$key] = $val;
 		}
 
+		//FIXME: @deprecated!
 		// Start Schnittstelle fuer change-Funktion
 		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/WE_CUSTOMER_EXTERNAL_FN.php')) {
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/WE_CUSTOMER_EXTERNAL_FN.php');
 			we_customer_saveFN($s);
 		}
 		// Ende Schnittstelle fuer change-Funktion
+		$hook = new weHook('customer_preSave', '', array('customer'=>$s,'from'=>'management','type'=>($s['ID']?'existing':'new')));
+		$ret=$hook->executeHook();
 
 		weModelBase::save();
 	}
