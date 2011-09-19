@@ -994,6 +994,9 @@ function processCommands() {
 					foreach($this->settings->Prefs as $k=>$v){
 						if(isset($_REQUEST[$k])) $this->settings->Prefs[$k]=$_REQUEST[$k];
 					}
+					foreach($this->settings->properties as $k=>$v){
+						if(isset($_REQUEST[$k])) $this->settings->properties[$k]=$_REQUEST[$k];
+					}
 
 					if($this->settings->save())
 

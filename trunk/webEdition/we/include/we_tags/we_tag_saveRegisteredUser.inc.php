@@ -18,56 +18,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_saveRegisteredUser_keepInput(){
-	if(isset($_REQUEST['s'])){
-		$registered=$_SESSION['webuser']['registered'];
-		$_SESSION['webuser']=$_REQUEST['s'];
-		//never set ID + Password
-		if(isset($_SESSION['webuser']['ID'])){
-			unset($_SESSION['webuser']['ID']);
-		}
-		if(isset($_SESSION['webuser']['Password'])){
-			unset($_SESSION['webuser']['Password']);
-		}
-		//make sure we stay unregistered!
-		$_SESSION['webuser']['registered']=$registered;
-	}
-}
-
-function we_tag_saveRegisteredUser_processRequest(){
-	$set=array();
-	foreach($_REQUEST['s'] as $name=>$val){
-		switch($name){
-			case 'Username': ### QUICKFIX !!!
-			$names.='Path,';
-			$values.='"/'.$GLOBALS['DB_WE']->escape($val).'",';
-			$names.='Text,';
-			$values.='"'.$GLOBALS['DB_WE']->escape($val).'",';
-			$names.='Icon,';
-			$values.='"customer.gif",';
-			break;
-		case 'Text':
-		case 'Path':
-		case 'Icon':
-		case 'ID':
-			break;
-		default:
-			$set[]='`'.$name.'`="'.$GLOBALS["DB_WE"]->escape($val).'"';
-			break;
-		}
-	}
-	return $set;
-}
-
 function we_tag_saveRegisteredUser($attribs,$content){
-
 	$userexists = we_getTagAttribute('userexists',$attribs);
 	$userempty = we_getTagAttribute('userempty',$attribs);
 	$passempty = we_getTagAttribute('passempty',$attribs);
+	$default_register = f('SELECT Value FROM '.CUSTOMER_ADMIN_TABLE.' WHERE Name="default_saveRegisteredUser_register"','Value',$GLOBALS['DB_WE'])=='true';
 	if(isset($attribs['register'])) {
-		$registerallowed = we_getTagAttribute('register',$attribs,true,true);
+		$registerallowed = we_getTagAttribute('register',$attribs,true,true,$default_register);
 	} else {
-		$registerallowed = true;
+		$registerallowed = $default_register;
 	}
 	$protected = makeArrayFromCSV(we_getTagAttribute('protected',$attribs));
 
@@ -355,4 +314,45 @@ function we_saveCustomerImages() {
 		}
 
 	}
+}
+
+function we_tag_saveRegisteredUser_keepInput(){
+	if(isset($_REQUEST['s'])){
+		$registered=$_SESSION['webuser']['registered'];
+		$_SESSION['webuser']=$_REQUEST['s'];
+		//never set ID + Password
+		if(isset($_SESSION['webuser']['ID'])){
+			unset($_SESSION['webuser']['ID']);
+		}
+		if(isset($_SESSION['webuser']['Password'])){
+			unset($_SESSION['webuser']['Password']);
+		}
+		//make sure we stay unregistered!
+		$_SESSION['webuser']['registered']=$registered;
+	}
+}
+
+function we_tag_saveRegisteredUser_processRequest(){
+	$set=array();
+	foreach($_REQUEST['s'] as $name=>$val){
+		switch($name){
+			case 'Username': ### QUICKFIX !!!
+			$names.='Path,';
+			$values.='"/'.$GLOBALS['DB_WE']->escape($val).'",';
+			$names.='Text,';
+			$values.='"'.$GLOBALS['DB_WE']->escape($val).'",';
+			$names.='Icon,';
+			$values.='"customer.gif",';
+			break;
+		case 'Text':
+		case 'Path':
+		case 'Icon':
+		case 'ID':
+			break;
+		default:
+			$set[]='`'.$name.'`="'.$GLOBALS["DB_WE"]->escape($val).'"';
+			break;
+		}
+	}
+	return $set;
 }
