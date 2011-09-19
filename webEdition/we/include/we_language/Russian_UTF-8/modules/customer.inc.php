@@ -301,6 +301,15 @@ $l_customer["default_soting_no_del"]="Выбранная сортировка п
 $l_customer["we_fieldname_notValid"] = "Введенное имя поля недействительно!\\nВ имени поля пробел ( ) не допускается.";
 
 $l_customer["orderTab"] = 'Заказ клиента';
+$l_customer['objectTab'] = 'Objects of this customer';// TRANSLATE
+$l_customer['documentTab'] = 'Documents of this customer';// TRANSLATE
+$l_customer['NoDocuments'] = 'The customer has no documents';// TRANSLATE
+$l_customer['NoObjects'] = 'The customer has no objects';// TRANSLATE
+$l_customer['ID'] = 'ID';// TRANSLATE
+$l_customer['Filename'] = 'Filename';// TRANSLATE
+$l_customer['Aenderungsdatum'] = 'Modification date';// TRANSLATE
+$l_customer['Titel'] = 'Title';// TRANSLATE
+
 $l_customer['default_order'] = 'Заданный порядок';
 $l_customer['ASC'] = 'ascending';// TRANSLATE
 $l_customer['DESC'] = 'descending';// TRANSLATE

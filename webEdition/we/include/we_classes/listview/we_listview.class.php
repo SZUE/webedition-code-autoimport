@@ -268,7 +268,7 @@ class we_listview extends listviewBase {
 			}
 		}
 
-		$this->DB_WE->query($q);
+		$this->DB_WE->query($q);p_r($q);
 		$this->anz = $this->DB_WE->num_rows();
 
 		if ($this->customers === "*") {

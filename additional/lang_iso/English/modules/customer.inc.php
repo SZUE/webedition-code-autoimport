@@ -299,6 +299,15 @@ $l_customer["default_soting_no_del"]="The sort is used in settings and must not 
 $l_customer["we_fieldname_notValid"] = "Invalid field name!\\nValid characters are alpha-numeric, upper and lower case, as well as underscore (a-z, A-Z, 0-9, _)";
 
 $l_customer["orderTab"] = 'Orders of this customer';
+$l_customer['objectTab'] = 'Objects of this customer';
+$l_customer['documentTab'] = 'Documents of this customer';
+$l_customer['NoDocuments'] = 'The customer has no documents';
+$l_customer['NoObjects'] = 'The customer has no objects';
+$l_customer['ID'] = 'ID';
+$l_customer['Filename'] = 'Filename';
+$l_customer['Aenderungsdatum'] = 'Modification date';
+$l_customer['Titel'] = 'Title';
+
 $l_customer['default_order'] = 'pre-set order';
 $l_customer['ASC'] = 'ascending';
 $l_customer['DESC'] = 'descending';

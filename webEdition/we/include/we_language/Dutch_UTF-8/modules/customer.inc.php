@@ -299,6 +299,15 @@ $l_customer["default_soting_no_del"]="De sortering wordt gebruikt in de instelli
 $l_customer["we_fieldname_notValid"] = "Ongeldige veld naam!\\nGeldige karakters zijn alfa-numeriek, onder en bovenkast, eveneens als de underscore (a-z, A-Z, 0-9, _)";
 
 $l_customer["orderTab"] = 'Bestellingen van deze klant';
+$l_customer['objectTab'] = 'Objects of this customer';// TRANSLATE
+$l_customer['documentTab'] = 'Documents of this customer';// TRANSLATE
+$l_customer['NoDocuments'] = 'The customer has no documents';// TRANSLATE
+$l_customer['NoObjects'] = 'The customer has no objects';// TRANSLATE
+$l_customer['ID'] = 'ID';// TRANSLATE
+$l_customer['Filename'] = 'Filename';// TRANSLATE
+$l_customer['Aenderungsdatum'] = 'Modification date';// TRANSLATE
+$l_customer['Titel'] = 'Title';// TRANSLATE
+
 $l_customer['default_order'] = 'standaard bestelling';
 $l_customer['ASC'] = 'ascending';// TRANSLATE
 $l_customer['DESC'] = 'descending';// TRANSLATE

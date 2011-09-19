@@ -296,6 +296,15 @@ $l_customer["default_soting_no_del"]="Die ausgewählte Sortierung wird in den Ein
 $l_customer["we_fieldname_notValid"] = "Der eingegebene Feldname ist nicht gültig!\\nErlaubte Zeichen sind Buchstaben von a bis z (Groß- oder Kleinschreibung), Zahlen und Unterstrich (_)";
 
 $l_customer['orderTab'] = 'Bestellungen des Kunden';
+$l_customer['objectTab'] = 'Objekte des Kunden';
+$l_customer['documentTab'] = 'Dokumente des Kunden';
+$l_customer['NoDocuments'] = 'Der Kunde hat keine verbundenen Dokumente';
+$l_customer['NoObjects'] = 'Der Kunde hat keine verbundenen Objekte';
+$l_customer['ID'] = 'ID';
+$l_customer['Filename'] = 'Dateiname';
+$l_customer['Aenderungsdatum'] = 'Änderungsdatum';
+$l_customer['Titel'] = 'Titel';
+
 $l_customer['default_order'] = 'Vorgegebene Ordnung';
 $l_customer['ASC'] = 'aufsteigend';
 $l_customer['DESC'] = 'absteigend';

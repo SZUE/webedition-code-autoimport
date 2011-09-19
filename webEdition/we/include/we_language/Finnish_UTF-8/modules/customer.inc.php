@@ -299,6 +299,15 @@ $l_customer["default_soting_no_del"]="Lajittelua käytetään asetuksissa joten 
 $l_customer["we_fieldname_notValid"] = "Virheellinen kentän nimi!\\nSallitut merkit ovat alfa-numeerisia, isot -ja pienet kirjaimet, ala -ja tavuviiva, piste ja välilyönti (a-z, A-Z, 0-9, _, -, .)";
 
 $l_customer["orderTab"] = 'Tämän asiakkaan tilaukset';
+$l_customer['objectTab'] = 'Objects of this customer';// TRANSLATE
+$l_customer['documentTab'] = 'Documents of this customer';// TRANSLATE
+$l_customer['NoDocuments'] = 'The customer has no documents';// TRANSLATE
+$l_customer['NoObjects'] = 'The customer has no objects';// TRANSLATE
+$l_customer['ID'] = 'ID';// TRANSLATE
+$l_customer['Filename'] = 'Filename';// TRANSLATE
+$l_customer['Aenderungsdatum'] = 'Modification date';// TRANSLATE
+$l_customer['Titel'] = 'Title';// TRANSLATE
+
 $l_customer['default_order'] = 'esiasetettu tilaus';
 $l_customer['ASC'] = 'ascending';// TRANSLATE
 $l_customer['DESC'] = 'descending';// TRANSLATE
