@@ -251,4 +251,12 @@ $l_modules_customer = array(
 		'connected_with_customer' => "Yhdistettu asiakkaaseen",
 		'one_customer' => "Asiakas",
 		'sort_edit_fields_explain' => "If a field is apparently not moving, it moves along fields in other branches, not visible here", // TRANSLATE
+		'objectTab' => 'Objects of this customer',
+		'documentTab' => 'Documents of this customer',
+		'NoDocuments' => 'The customer has no documents',
+		'NoObjects' => 'The customer has no objects',
+		'ID' => 'ID',
+		'Filename' => 'Filename',
+		'Aenderungsdatum' => 'Modification date',
+		'Titel' => 'Title',
 );

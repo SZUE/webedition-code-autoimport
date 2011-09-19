@@ -158,7 +158,7 @@ class weCustomerFrames extends weModuleFrames {
 				return we_htmlElement::htmlDiv(array('style'=>'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'),$out);//we_htmlElement::htmlB('not yet implemented');
 			case 'country':
 				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-				
+
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
 				$countryselect = new we_htmlSelect(array('name' => $field, 'size' => '1', 'style' => '{width:240;}', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
@@ -182,7 +182,7 @@ class weCustomerFrames extends weModuleFrames {
 				asort($topCountries, SORT_LOCALE_STRING);
 				asort($shownCountries, SORT_LOCALE_STRING);
 				setlocale(LC_ALL, $oldLocale);
-				
+
 				$content = '';
 				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
 					$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
@@ -348,6 +348,13 @@ class weCustomerFrames extends weModuleFrames {
 			$tabs->addTab(new we_tab("#", g_l('modules_customer','[orderTab]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer','[orderTab]') . "');", array("id" => "orderTab")));
 			$extraJS .= "aTabs['" . g_l('modules_customer','[orderTab]') . "']='orderTab';\n";
 		}
+		if (defined('OBJECT_FILES_TABLE')) {
+			$tabs->addTab(new we_tab("#", $l_customer["objectTab"], 'TAB_NORMAL', "setTab('" . $l_customer["objectTab"] . "');", array("id" => "objectTab")));
+			$extraJS .= "aTabs['" . $l_customer["objectTab"] . "']='objectTab';\n";
+		}
+		$tabs->addTab(new we_tab("#", $l_customer["documentTab"], 'TAB_NORMAL', "setTab('" . $l_customer["documentTab"] . "');", array("id" => "documentTab")));
+		$extraJS .= "aTabs['" . $l_customer["documentTab"] . "']='documentTab';\n";
+
 
 		$tabs->onResize();
 		$tabsHead = $tabs->getHeader();
@@ -416,7 +423,7 @@ class weCustomerFrames extends weModuleFrames {
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor" => "#EFf0EF"), ""));
 		}
 
-		
+
 		$table1 = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "300"), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), getPixel(1600, 10));
 
@@ -524,6 +531,110 @@ class weCustomerFrames extends weModuleFrames {
 							)
 			);
 		}
+		if ($preselect == g_l('modules_customer','[objectTab]')) {
+			$query ='SELECT * FROM '.OBJECT_FILES_TABLE.' WHERE '.OBJECT_FILES_TABLE.'.WebUserID = '.$this->View->customer->ID. ' ORDER BY '.OBJECT_FILES_TABLE.'.Path';
+			$DB_WE = new DB_WE();
+			$DB_WE->query($query);
+			$objectStr='';
+			if ($DB_WE->num_rows()) {
+				$objectStr.='<table class="defaultfont" width="600">';
+				$objectStr.='<tr><td>&nbsp;</td> <td><b>' . $g_l('modules_customer','[ID]') . '</b></td><td><b>' . g_l('modules_customer','[Filename]') . '</b></td><td><b>' . g_l('modules_customer','[Aenderungsdatum]') . '</b></td>';
+				while ($DB_WE->next_record()) {
+					$objectStr.='<tr>';
+					$objectStr.='<td>'.we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(".$DB_WE->f('ID').",'".$DB_WE->f('ContentType'). "','tblObjectFiles'); }" ).'</td>';
+					$objectStr.='<td>'.$DB_WE->f('ID').'</td>';
+					$objectStr.='<td title="'.$DB_WE->f('Path').'">'.$DB_WE->f('Text').'</td>';
+					if ($DB_WE->f('Published')) {
+						if ($DB_WE->f('ModDate')> $DB_WE->f('Published') ) {
+							$class='changeddefaultfont';
+						} else {
+							$class='defaultfont';
+						}
+					} else {
+
+						$class='npdefaultfont';
+					}
+					$objectStr.='<td class="'.$class.'">'.date('d.m.Y H:i',$DB_WE->f('ModDate')).'</td>';
+					$objectStr.='</tr>';
+				}
+				$objectStr.='</table>';
+			} else {
+				$objectStr=g_l('modules_customer','[NoObjects]');
+
+			}
+			//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
+
+			array_push($parts, array(
+					"html" => $objectStr,
+					"space" => 0
+							)
+			);
+		}
+		if ($preselect == g_l('modules_customer','[documentTab]')) {
+
+			$query ='SELECT * FROM '.FILE_TABLE.' WHERE '.FILE_TABLE.'.WebUserID = '.$this->View->customer->ID.' ORDER BY '.FILE_TABLE.'.Path';
+			$DB_WE = new DB_WE();
+			$DB_WE->query($query);
+			$documentStr='';
+			if ($DB_WE->num_rows()) {
+				$documentStr.='<table class="defaultfont" width="600">';
+				$documentStr.='<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer','[ID]') . '</b></td><td><b>' . g_l('modules_customer','[Filename]') . '</b></td><td><b>' . g_l('modules_customer','[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer','[Titel]') . '</b></td>';
+				$documentStr.='</tr>';
+				$db_we2 = new DB_WE();
+				while ($DB_WE->next_record()) {
+					$documentStr.='<tr>';
+					//$documentStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript:top.opener.top.doClickDirect(".$DB_WE->f('ID').",'text/webedition','tblFile','top.opener');return true;'" ).'</td>';
+					$documentStr.='<td>'.we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(".$DB_WE->f('ID').",'".$DB_WE->f('ContentType'). "','tblFile'); }" ).'</td>';
+
+					$documentStr.='<td>'.$DB_WE->f('ID').'</td>';
+
+					$documentStr.='<td title="'.$DB_WE->f('Path').'">'.$DB_WE->f('Text').'</td>';
+					if ($DB_WE->f('Published')) {
+						if ($DB_WE->f('ModDate')> $DB_WE->f('Published') ) {
+							$class='changeddefaultfont';
+						} else {
+							$class='defaultfont';
+						}
+					} else {
+
+						$class='npdefaultfont';
+					}
+					$documentStr.='<td class="'.$class.'">'.date('d.m.Y H:i',$DB_WE->f('ModDate')).'</td>';
+					$titel='';$beschreibung='';
+					$query2 ='SELECT '.CONTENT_TABLE.'.Dat AS Inhalt, '.LINK_TABLE.'.Name AS Name FROM '.FILE_TABLE.', '.LINK_TABLE.','.CONTENT_TABLE.'
+WHERE '.FILE_TABLE.'.ID='.LINK_TABLE.'.DID AND '.LINK_TABLE.'.CID='.CONTENT_TABLE.'.ID AND '.LINK_TABLE.".Name='Title' AND ".
+LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('ID');
+					//$documentStr.='<td>'.$query2.'</td>';
+
+
+					$db_we2->query($query2);
+					if($db_we2->next_record()){
+						$titel= $db_we2->f('Inhalt');
+					}
+					$query2 ='SELECT '.CONTENT_TABLE.'.Dat AS Inhalt, '.LINK_TABLE.'.Name AS Name FROM '.FILE_TABLE.', '.LINK_TABLE.','.CONTENT_TABLE.'
+WHERE '.FILE_TABLE.'.ID='.LINK_TABLE.'.DID AND '.LINK_TABLE.'.CID='.CONTENT_TABLE.'.ID AND '.LINK_TABLE.".Name='Description' AND ".
+LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('ID');
+					//$documentStr.='<td>'.$query2.'</td>';
+					$db_we2->query($query2);
+					if($db_we2->next_record()){
+						$beschreibung= $db_we2->f('Inhalt');
+					}
+
+					$documentStr.='<td title="'.$beschreibung.'">'.$titel.'</td>';
+					$documentStr.='</tr>';
+				}
+				$documentStr.='</table>';
+			} else {
+				$documentStr=g_l('modules_customer','[NoDocuments]');
+			}
+			//$documentStr = getCustomersDocumentList($this->View->customer->ID, false);
+
+			array_push($parts, array(
+					"html" => $documentStr,
+					"space" => 0
+							)
+			);
+		}
 		if ($preselect == g_l('modules_customer','[other]') || $preselect == g_l('modules_customer','[all]')) {
 
 			$table = new we_htmlTable(array("width" => "500", "height" => "50", "cellpadding" => "10", "cellspacing" => "0", "border" => "0"), 1, 2);
@@ -612,7 +723,7 @@ class weCustomerFrames extends weModuleFrames {
 
 	function getHTMLTreeFooter() {
 
-		
+
 		$hiddens = we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "treefooter")) .
 						we_htmlElement::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
@@ -646,7 +757,7 @@ class weCustomerFrames extends weModuleFrames {
 		else
 			$branch_select=g_l('modules_customer','[other]');
 
-		
+
 		$select = $this->getHTMLBranchSelect(false);
 		$select->setAttributes(array("name" => "branch_select", "class" => "weSelect", "onChange" => "selectBranch()", "style" => "width:150"));
 		$select->selectOption($branch_select);
@@ -777,20 +888,15 @@ class weCustomerFrames extends weModuleFrames {
 		$out = "";
 
 		if (isset($_REQUEST["pid"])) {
-			if ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') {
-				$pid = utf8_encode($_REQUEST["pid"]);
-			} else {
-				$pid = $_REQUEST["pid"];
-			}
+				$pid = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') ?
+					utf8_encode($_REQUEST["pid"]):
+					$_REQUEST["pid"];
 		}
 		else
 			exit;
 
 		if (isset($_REQUEST["sort"]))
-			if ($_REQUEST["sort"] == g_l('modules_customer','[no_sort]'))
-				$sort = 0;
-			else
-				$sort=1;
+			$sort=($_REQUEST["sort"] == g_l('modules_customer','[no_sort]'))?0:1;
 		else {
 			if ($this->View->settings->Prefs["default_sort_view"] != g_l('modules_customer','[no_sort]')) {
 				$sort = 1;
@@ -800,11 +906,7 @@ class weCustomerFrames extends weModuleFrames {
 				$sort=0;
 		}
 
-		if (isset($_REQUEST["offset"])) {
-			$offset = $_REQUEST["offset"];
-		}
-		else
-			$offset=0;
+		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
 
 		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTreeLoader.php");
 
@@ -981,7 +1083,7 @@ class weCustomerFrames extends weModuleFrames {
 		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px"));
 		$default_sort_view_select->selectOption($this->View->settings->Prefs["default_sort_view"]);
 
-		$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 3);
+		$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 3);
 
 		$table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer','[default_sort_view]') . ":&nbsp;");
 		$table->setCol(0, 1, array(), getPixel(5, 30));
@@ -999,12 +1101,7 @@ class weCustomerFrames extends weModuleFrames {
 		$default_order = new we_htmlSelect(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
 		$default_order->addOption('', g_l('modules_customer','[none]'));
 		foreach ($this->View->settings->OrderTable as $ord) {
-			if ($ord == 'ASC') {
-				$ordval = g_l('modules_customer','[ASC]');
-			}
-			if ($ord == 'DESC') {
-				$ordval = g_l('modules_customer','[DESC]');
-			}
+			$ordval = ($ord == 'ASC') ? g_l('modules_customer','[ASC]') : g_l('modules_customer','[DESC]');
 			$default_order->addOption($ord, $ordval);
 		}
 		$default_order->selectOption($this->View->settings->Prefs['default_order']);
@@ -1012,6 +1109,15 @@ class weCustomerFrames extends weModuleFrames {
 		$table->setCol(3, 0, array('class' => 'defaultfont'), g_l('modules_customer','[default_order]') . ':&nbsp;');
 		$table->setCol(3, 1, array(), getPixel(5, 30));
 		$table->setCol(3, 2, array('class' => 'defaultfont'), $default_order->getHtmlCode());
+
+		$default_saveRegisteredUser_register = new we_htmlSelect(array('name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect'));
+		$default_saveRegisteredUser_register->addOption('false', 'false');
+		$default_saveRegisteredUser_register->addOption('true', 'true');
+		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
+
+		$table->setCol(4, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(4, 1, array(), getPixel(5, 30));
+		$table->setCol(4, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtmlCode().'&quot;/>');
 
 		$close = we_button::create_button("close", "javascript:self.close();");
 		$save = we_button::create_button("save", "javascript:we_cmd('save_settings')");

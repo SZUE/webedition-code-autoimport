@@ -36,7 +36,7 @@ class weCustomerSettings {
 	private $db;
 	private $table = CUSTOMER_ADMIN_TABLE;
 	public $customer;
-	private $properties = array();
+	public $properties = array();
 	private $changedFieldTypes = array(
 			'dateTime' => 'varchar(24)',
 			'country' => 'varchar(4)',
@@ -117,11 +117,13 @@ class weCustomerSettings {
 	public $treeTextFormat = '#Text';
 	public $formatFields = array();
 
-	function weCustomerSettings() {
+	function __construct() {
 		$this->db = new DB_WE();
 		//$this->table = CUSTOMER_ADMIN_TABLE;
 		$this->customer = new weCustomer();
-		$this->properties = array();
+		$this->properties = array(
+			'default_saveRegisteredUser_register'=>'false',
+		);
 
 		$this->PropertyTitle = array(
 				'Username' => g_l('modules_customer','[Username]'),
@@ -152,14 +154,14 @@ class weCustomerSettings {
 				'treetext_format' => '#Username (#Forename #Surname)',
 				'start_year' => 1900,
 				'default_sort_view' => '',
-				'default_order' => ''
+				'default_order' => '',
 		);
 	}
 
 	function load($tryFromSession=true) {
 		$modified=false;
 
-		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ';');
+		$this->db->query('SELECT * FROM '. $this->table);
 		while ($this->db->next_record()) {
 			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
 		}
@@ -228,13 +230,8 @@ class weCustomerSettings {
 		$this->properties['Prefs'] = addslashes(serialize($this->Prefs));
 
 		foreach ($this->properties as $key => $value) {
-			if (f('SELECT Name FROM ' . $this->table . " WHERE Name='" . $key . "';", "Name", $this->db) == $key) {
-				$this->db->query('UPDATE ' . $this->table . " SET Value='$value' WHERE Name='$key';");
-			} else {
-				$this->db->query('INSERT INTO ' . $this->table . " (Name,Value) VALUES ('$key','$value');");
-			}
+			$this->db->query('REPLACE INTO ' . $this->table . ' SET Value="'.$this->db->escape($value).'",Name="'.$key.'"');
 		}
-
 		return true;
 	}
 

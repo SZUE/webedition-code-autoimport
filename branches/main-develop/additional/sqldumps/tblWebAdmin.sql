@@ -25,3 +25,5 @@ INSERT IGNORE INTO ###TBLPREFIX###tblWebAdmin VALUES ('FieldAdds','a:13:{s:8:"Us
 INSERT IGNORE INTO ###TBLPREFIX###tblWebAdmin VALUES ('Prefs','a:4:{s:10:"start_year";s:4:"1900";s:17:"default_sort_view";s:20:"--Keine Sortierung--";s:15:"treetext_format";s:30:"#Username (#Forename #Surname)";s:13:"default_order";s:0:"";}');
 /* query separator */
 INSERT IGNORE INTO ###TBLPREFIX###tblWebAdmin VALUES ('SortView','');
+/* query separator */
+INSERT IGNORE INTO ###TBLPREFIX###tblWebAdmin VALUES ('default_saveRegisteredUser_register','false');

@@ -180,7 +180,7 @@ class we_htmlSelect extends we_baseCollection {
 		if(!in_array("multiple",array_keys($this->attribs))) $this->unselectAllOptions();
 		foreach($this->childs as $k=>$v){
 			if($v->attribs["value"]==$value){
-				$this->setOption($k,array("selected" => null));
+				$this->setOption($k,array("selected" => 'selected'));
 				break;
 			}
 		}

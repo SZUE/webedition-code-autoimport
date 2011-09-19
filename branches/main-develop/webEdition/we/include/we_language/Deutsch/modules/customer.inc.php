@@ -245,4 +245,12 @@ $l_modules_customer = array(
 		'one_customer' => "Kunde",
 		'sort_edit_fields_explain' => "Wenn ein Feld sich anscheinend nicht bewegt, so bewegt es sich an Feldern anderer (hier nicht sichtbarer) Bereiche vorbei",
 		'reset_edit_order_question' => "Sind Sie sicher? Jegliche Sortierung wird zurückgesetzt auf die Erstellungsreihenfolge der Felder",
+		'objectTab' => 'Objekte des Kunden',
+		'documentTab' => 'Dokumente des Kunden',
+		'NoDocuments' => 'Der Kunde hat keine verbundenen Dokumente',
+		'NoObjects' => 'Der Kunde hat keine verbundenen Objekte',
+		'ID' => 'ID',
+		'Filename' => 'Dateiname',
+		'Aenderungsdatum' => 'Änderungsdatum',
+		'Titel' => 'Titel',
 );

@@ -141,6 +141,12 @@ body {
 	font-family: <?php print g_l('css','[font_family]'); ?>;
 }
 
+.changeddefaultfont {
+	color: blue;
+	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
+	font-family: <?php print $l_css["font_family"]; ?>;
+}
+
 .npdefaultfont a {
 	color: red;
 }

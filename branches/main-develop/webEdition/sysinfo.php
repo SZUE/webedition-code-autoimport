@@ -25,7 +25,6 @@
 		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 		protect();
-
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
@@ -114,10 +113,11 @@
 		    }
 		    return 'off';
 		}
-		
+
 		function parseValue($name,$value) {
 			if(in_array($name,array_keys($GLOBALS['_types']))) {
 				if($GLOBALS['_types'][$name]=='bytes' && $value) {
+
 					$value = we_convertIniSizes($value);
 					return convertToMb($value) . ' (' . $value . ' Bytes)';
 				}
@@ -160,9 +160,9 @@
 		}
 
 		function getOK($message, $value) {
-			return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url('.IMAGE_DIR . 'valid.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url('.IMAGE_DIR . 'valid.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>';
 		}
-		
+
 		$_install_dir = $_SERVER['DOCUMENT_ROOT']. WEBEDITION_DIR;
 
 		if(strlen($_install_dir)>35){
@@ -203,9 +203,9 @@
 			foreach ($phpextensionsMin as $exten){
 				if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 			}
-			
+
 			if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//sp�ter ODER mysqli
-				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
+				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
 			} else { $phpextensionsSDK_DB= getWarning(g_l('sysinfo',"[sdk_db warning]"),'-');	}
 		} else {
 			$phpExtensionsDetectable = false;
@@ -266,7 +266,10 @@
 				g_l('sysinfo','[sdk_db]') => $phpextensionsSDK_DB,
 				g_l('sysinfo','[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo',"[phpext warning2]"),g_l('sysinfo',"[phpext warning]"). implode(', ', $phpextensionsMissing))  : ($phpExtensionsDetectable ? g_l('sysinfo','[available]') : g_l('sysinfo','[detectable warning]')) ),
 			),
-
+			'Deprecated'=>array(
+				g_l('prefs','[backwardcompatibility_tagloading]')=>(defined('INCLUDE_ALL_WE_TAGS')&&INCLUDE_ALL_WE_TAGS)?getWarning('Deprecated', '1'):getOk('','0'),
+				'we:saveRegisteredUser register='=>(f('SELECT Value FROM '.CUSTOMER_ADMIN_TABLE.' WHERE Name="default_saveRegisteredUser_register"','Value',$GLOBALS['DB_WE'])=='true'?getWarning('Deprecated','true'):getOk('','false')),
+			),
 		);
 
 
@@ -304,7 +307,6 @@
 ?>
 <html>
 <head>
-
 <title><?php print g_l('sysinfo','[sysinfo]')?></title>
 <script type="text/javascript" src="<?php print JS_DIR; ?>attachKeyListener.js"></script>
 <script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
