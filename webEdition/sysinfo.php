@@ -21,7 +21,7 @@
 		require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 
 		protect();
-		
+
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_button.inc.php");
@@ -29,27 +29,27 @@
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/sysinfo.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/global.inc.php");
 		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/lib/we/core/autoload.php");
-		
+
 
 		function getInfoTable($_infoArr,$name) {
-			
-			$_table = new we_htmlTable(array("width" => "500", "style" => "width: 500px;", "spellspacing"=>"2"), 1, 2);	
+
+			$_table = new we_htmlTable(array("width" => "500", "style" => "width: 500px;", "spellspacing"=>"2"), 1, 2);
 			$_i = 0;
-			
+
 			foreach ($_infoArr as $_k=>$_v) {
-				
-				if ($_i % 2) { 
+
+				if ($_i % 2) {
 					$_style =  "";
 				} else {
 					$_style =  "background: #D4DBFA;";
 				}
-				
+
 				$_table->addRow(1);
 				$_table->setRow($_i,array("class"=>"defaultfont","style" => $_style."height:20px;"));
-				$_table->setCol($_i,0,array("style" => "width: 200px; height: 20px;font-weight: bold; padding-left: 10px;"),$_k);		
-				$_table->setCol($_i,1,array("style" => "width: 250px; height: 20px; padding-left: 10px;"),parseValue($_k,$_v));		
+				$_table->setCol($_i,0,array("style" => "width: 200px; height: 20px;font-weight: bold; padding-left: 10px;"),$_k);
+				$_table->setCol($_i,1,array("style" => "width: 250px; height: 20px; padding-left: 10px;"),parseValue($_k,$_v));
 				$_i++;
-				
+
 				// highlight some values:
 				if($name == "PHP") {
 					if($_i == 3 && ini_get_bool('register_globals')) {
@@ -61,11 +61,11 @@
 					if($_i == 9 && ini_get_bool('safe_mode'))
 						$_table->setColAttributes(8,1,array("style" => "border:1px solid grey;"));
 				}
-				
+
 			}
 			return $_table->getHtmlCode();
 		}
-		
+
 		function ini_get_bool($val) {
 		    $bool = ini_get($val);
 			if($val == "1") {
@@ -112,26 +112,26 @@
 		    }
 		    return 'off';
 		}
-		
+
 		function parseValue($name,$value) {
 			global $_types;
-			
+
 			if(in_array($name,array_keys($_types))) {
 				if($_types[$name]=='bytes' && $value) {
 					$value = we_convertIniSizes($value);
 					return convertToMb($value) . ' (' . $value . ' Bytes)';
 				}
-				
+
 			}
-			
+
 			return $value;
-			
+
 		}
-		
+
 		function convertToMb($value) {
 			return round($value / (1024*1024),3) . ' MB';
 		}
-		
+
 		function getConnectionTypes() {
 			$_connectionTypes = array();
 			if(ini_get("allow_url_fopen") == "1") {
@@ -151,31 +151,31 @@
 			}
 			return $_connectionTypes;
 		}
-		
+
 		function getWarning($message, $value) {
-			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>';
 		}
 		function getInfo($message, $value) {
-			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:8px; background:url('.IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>';
 		}
 		function getOK($message, $value) {
-			return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url('.IMAGE_DIR . 'valid.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>'; 
+			return '<div style="cursor:pointer; padding-right:20px; padding-left:0px; background:url('.IMAGE_DIR . 'valid.gif) center right no-repeat;" title="'.$message.'">'.$value.'</div>';
 		}
-		
+
 		$_install_dir = $_SERVER['DOCUMENT_ROOT']. WEBEDITION_DIR;
-		
+
 		if(strlen($_install_dir)>35){
 			$_install_dir = substr($_install_dir,0,25) . '<acronym title="' . $_install_dir . '">...</acronym>' . substr($_install_dir,-10);
 		}
-		
+
 		$weVersion  = WE_VERSION;
 		if (defined("WE_SVNREV") &&  WE_SVNREV!='0000'){
-			
+
 			$weVersion  .= ' (SVN-Revision: '.WE_SVNREV.((defined("WE_VERSION_BRANCH") && WE_VERSION_BRANCH!= 'trunk') ? '|'.WE_VERSION_BRANCH : '').')';
 		}
 		if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='') $weVersion .= ' '.$l_global[WE_VERSION_SUPP];
 		if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' ) $weVersion .= WE_VERSION_SUPP_VERSION;
-		
+
 		// GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 		if(is_callable("gd_info")) {
 			if(defined("GD_VERSION")) {
@@ -190,7 +190,7 @@
 		}
 
 		$phpExtensionsDetectable = true;
-		
+
 		$phpextensions = get_loaded_extensions();
 		foreach ($phpextensions as &$extens){
 			$extens= strtolower($extens);
@@ -202,14 +202,14 @@
 			foreach ($phpextensionsMin as $exten){
 				if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 			}
-			
+
 			if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//sp�ter ODER mysqli
-				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';	
+				$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
 			} else { $phpextensionsSDK_DB= getWarning($_sysinfo["sdk_db warning"],'-');	}
 		} else {
 			$phpExtensionsDetectable = false;
 			$phpextensionsSDK_DB = 'unkown';
-		} 
+		}
 		if (in_array('suhosin',get_loaded_extensions())){
 			if (ini_get_bool('suhosin.simulation')){
 				$SuhosinText=getOK('',$_sysinfo["suhosin simulation"]);
@@ -254,7 +254,7 @@
 				$_sysinfo['mysql_version'] => (version_compare("5.0.0", getMysqlVer(false)) > 1) ?  getWarning(sprintf($_sysinfo["dbversion warning"],getMysqlVer(false)),getMysqlVer(false) ) :  getOK('',getMysqlVer(false)),
 				'max_allowed_packet' => getMaxAllowedPacket()
 			),
-			
+
 			'System' => array (
 				$_sysinfo['connection_types'] => implode(", ", getConnectionTypes()),
 				$_sysinfo['mbstring'] => (is_callable("mb_get_info") ? $_sysinfo['available'] : "-"),
@@ -264,10 +264,13 @@
 				$_sysinfo['sdk_db'] => $phpextensionsSDK_DB,
 				$_sysinfo['phpext'] => (!empty($phpextensionsMissing) ? getWarning($_sysinfo["phpext warning2"],$_sysinfo["phpext warning"]. implode(', ', $phpextensionsMissing))  : ($phpExtensionsDetectable ? $_sysinfo['available'] : $_sysinfo['detectable warning']) ),
 			),
-				
+			'Deprecated'=>array(
+				g_l('prefs','[backwardcompatibility_tagloading]')=>(defined('INCLUDE_ALL_WE_TAGS')&&INCLUDE_ALL_WE_TAGS)?getWarning('Deprecated', '1'):getOk('','0'),
+				'we:saveRegisteredUser register='=>(f('SELECT Value FROM '.CUSTOMER_ADMIN_TABLE.' WHERE Name="default_saveRegisteredUser_register"','Value',$GLOBALS['DB_WE'])=='true'?getWarning('Deprecated','true'):getOk('','false')),
+			),
 		);
-		
-		
+
+
 		$_types = array(
 			'upload_max_filesize'=>'bytes',
 			'memory_limit'=>'bytes',
@@ -299,12 +302,12 @@
 					'html'=> '<a href="javascript:showPhpInfo();">'.$_sysinfo['more_info'].'...</a>',
 					'space'=>10
 		);
-		
-		
+
+
 ?>
 <html>
 <head>
- 
+
 <title><?php print $_sysinfo['sysinfo']?></title>
 <script type="text/javascript" src="<?php print JS_DIR; ?>attachKeyListener.js"></script>
 <script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
@@ -312,13 +315,13 @@
 	function closeOnEscape() {
 		return true;
 	}
-	
+
 	function showPhpInfo() {
 		document.getElementById("info").style.display="none";
 		document.getElementById("more").style.display="block";
 		document.getElementById("phpinfo").src = "phpinfo.php";
 	}
-	
+
 	function showInfoTable() {
 		document.getElementById("info").style.display="block";
 		document.getElementById("more").style.display="none";
@@ -334,31 +337,31 @@
 
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">
 <div id="info" style="display: block;">
-<?php		
+<?php
 		print we_multiIconBox::getJS();
 		print we_multiIconBox::getHTML('',700, $_parts,30,$buttons,-1,'','',false, "", "", 620, "auto");
-		
+
 ?>
 </div>
 <div id="more" style="display:none;">
 <?php
 
 		$_parts = array();
-		
+
 		$_parts[] = array(
 					'headline'=> '',
 					'html'=> '<iframe id="phpinfo" style="width:660px;height:530px;">'.$_sysinfo['more_info'].'...</iframe>',
 					'space'=>$_space_size
 		);
-		
+
 		$_parts[] = array(
 					'headline'=> '',
 					'html'=> '<a href="javascript:showInfoTable();">'.$_sysinfo['back'].'</a>',
 					'space'=>10
 		);
-		
+
 		print we_multiIconBox::getHTML('','100%', $_parts,30,$buttons,-1,'','',false);
-		
+
 ?>
 </div>
 </body>
