@@ -252,7 +252,7 @@ class weCustomer extends weModelBase {
 
 	function customerNameExist($name) {
 		$db = new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'ID', $db)==1);
+		return (f('SELECT 1 AS a FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '"', 'a', $db)==1);
 	}
 
 	function fieldExist($field) {
