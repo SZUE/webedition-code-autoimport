@@ -350,6 +350,13 @@ class weCustomerFrames extends weModuleFrames {
 			$tabs->addTab(new we_tab("#", $l_customer["orderTab"], 'TAB_NORMAL', "setTab('" . $l_customer["orderTab"] . "');", array("id" => "orderTab")));
 			$extraJS .= "aTabs['" . $l_customer["orderTab"] . "']='orderTab';\n";
 		}
+		if (defined('OBJECT_FILES_TABLE')) {
+			$tabs->addTab(new we_tab("#", $l_customer["objectTab"], 'TAB_NORMAL', "setTab('" . $l_customer["objectTab"] . "');", array("id" => "objectTab")));
+			$extraJS .= "aTabs['" . $l_customer["objectTab"] . "']='objectTab';\n";
+		}
+		$tabs->addTab(new we_tab("#", $l_customer["documentTab"], 'TAB_NORMAL', "setTab('" . $l_customer["documentTab"] . "');", array("id" => "documentTab")));
+		$extraJS .= "aTabs['" . $l_customer["documentTab"] . "']='documentTab';\n";
+
 
 		$tabs->onResize();
 		$tabsHead = $tabs->getHeader();
@@ -530,6 +537,112 @@ class weCustomerFrames extends weModuleFrames {
 
 			array_push($parts, array(
 					"html" => $orderStr,
+					"space" => 0
+							)
+			);
+		}
+		if ($preselect == $l_customer["objectTab"]) {
+			$query ='SELECT * FROM '.OBJECT_FILES_TABLE.' WHERE '.OBJECT_FILES_TABLE.'.WebUserID = '.$this->View->customer->ID. ' ORDER BY '.OBJECT_FILES_TABLE.'.Path';
+			$DB_WE = new DB_WE();
+			$DB_WE->query($query);
+			$we_button = new we_button();
+			$objectStr='';
+			if ($DB_WE->num_rows()) {
+				$objectStr.='<table class="defaultfont" width="600">';
+				$objectStr.='<tr><td>&nbsp;</td> <td><b>' . $l_customer['ID'] . '</b></td><td><b>' . $l_customer['Filename'] . '</b></td><td><b>' . $l_customer['Aenderungsdatum'] . '</b></td>';
+				while ($DB_WE->next_record()) {
+					$objectStr.='<tr>';
+					$objectStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(".$DB_WE->f('ID').",'".$DB_WE->f('ContentType'). "','tblObjectFiles'); }" ).'</td>';
+					$objectStr.='<td>'.$DB_WE->f('ID').'</td>';
+					$objectStr.='<td title="'.$DB_WE->f('Path').'">'.$DB_WE->f('Text').'</td>';
+					if ($DB_WE->f('Published')) {
+						if ($DB_WE->f('ModDate')> $DB_WE->f('Published') ) {
+							$class='changeddefaultfont';
+						} else {
+							$class='defaultfont';
+						}
+					} else {
+						
+						$class='npdefaultfont';
+					}
+					$objectStr.='<td class="'.$class.'">'.date('d.m.Y H:i',$DB_WE->f('ModDate')).'</td>';
+					$objectStr.='</tr>';	
+				}
+				$objectStr.='</table>';
+			} else {
+				$objectStr=$l_customer['NoObjects'];
+				
+			}
+			//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
+
+			array_push($parts, array(
+					"html" => $objectStr,
+					"space" => 0
+							)
+			);
+		}
+		if ($preselect == $l_customer["documentTab"]) {
+
+			$query ='SELECT * FROM '.FILE_TABLE.' WHERE '.FILE_TABLE.'.WebUserID = '.$this->View->customer->ID.' ORDER BY '.FILE_TABLE.'.Path';
+			$DB_WE = new DB_WE();
+			$DB_WE->query($query);
+			$we_button = new we_button();
+			$documentStr='';
+			if ($DB_WE->num_rows()) {
+				$documentStr.='<table class="defaultfont" width="600">';
+				$documentStr.='<tr><td>&nbsp;</td> <td><b>' . $l_customer['ID'] . '</b></td><td><b>' . $l_customer['Filename'] . '</b></td><td><b>' . $l_customer['Aenderungsdatum'] . '</b></td><td><b>' . $l_customer['Titel'] . '</b></td>';
+				$documentStr.='</tr>';
+				$db_we2 = new DB_WE();
+				while ($DB_WE->next_record()) {
+					$documentStr.='<tr>';
+					//$documentStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript:top.opener.top.doClickDirect(".$DB_WE->f('ID').",'text/webedition','tblFile','top.opener');return true;'" ).'</td>';
+					$documentStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(".$DB_WE->f('ID').",'".$DB_WE->f('ContentType'). "','tblFile'); }" ).'</td>';
+					
+					$documentStr.='<td>'.$DB_WE->f('ID').'</td>';
+					
+					$documentStr.='<td title="'.$DB_WE->f('Path').'">'.$DB_WE->f('Text').'</td>';
+					if ($DB_WE->f('Published')) {
+						if ($DB_WE->f('ModDate')> $DB_WE->f('Published') ) {
+							$class='changeddefaultfont';
+						} else {
+							$class='defaultfont';
+						}
+					} else {
+						
+						$class='npdefaultfont';
+					}
+					$documentStr.='<td class="'.$class.'">'.date('d.m.Y H:i',$DB_WE->f('ModDate')).'</td>';
+					$titel='';$beschreibung='';
+					$query2 ='SELECT '.CONTENT_TABLE.'.Dat AS Inhalt, '.LINK_TABLE.'.Name AS Name FROM '.FILE_TABLE.', '.LINK_TABLE.','.CONTENT_TABLE.'
+WHERE '.FILE_TABLE.'.ID='.LINK_TABLE.'.DID AND '.LINK_TABLE.'.CID='.CONTENT_TABLE.'.ID AND '.LINK_TABLE.".Name='Title' AND ".
+LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('ID');
+					//$documentStr.='<td>'.$query2.'</td>';
+					
+					
+					$db_we2->query($query2);
+					if($db_we2->next_record()){ 
+						$titel= $db_we2->f('Inhalt');
+					}
+					$query2 ='SELECT '.CONTENT_TABLE.'.Dat AS Inhalt, '.LINK_TABLE.'.Name AS Name FROM '.FILE_TABLE.', '.LINK_TABLE.','.CONTENT_TABLE.'
+WHERE '.FILE_TABLE.'.ID='.LINK_TABLE.'.DID AND '.LINK_TABLE.'.CID='.CONTENT_TABLE.'.ID AND '.LINK_TABLE.".Name='Description' AND ".
+LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('ID');
+					//$documentStr.='<td>'.$query2.'</td>';
+					$db_we2->query($query2);
+					if($db_we2->next_record()){ 
+						$beschreibung= $db_we2->f('Inhalt');
+					}
+					
+					$documentStr.='<td title="'.$beschreibung.'">'.$titel.'</td>';
+					$documentStr.='</tr>';		
+				}
+				$documentStr.='</table>';
+			} else {
+				$documentStr=$l_customer['NoDocuments'];
+			}
+			//$documentStr = getCustomersDocumentList($this->View->customer->ID, false);
+
+			array_push($parts, array(
+					"html" => $documentStr,
 					"space" => 0
 							)
 			);

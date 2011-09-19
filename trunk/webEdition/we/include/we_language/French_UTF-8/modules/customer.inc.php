@@ -305,6 +305,15 @@ $l_customer["default_soting_no_del"]="Le triage choisi est utilisé par les pré
 $l_customer["we_fieldname_notValid"] = "Le nom de champ saisi n'est pas valid!\\nSignes permis sont les lettres de a à z (majuscule- ou minuscule) , nombres, soulignage (_), signe moins (-), point (.) et espaces ( ).";
 
 $l_customer["orderTab"] = 'Commandes de ce client';
+$l_customer['objectTab'] = 'Objects of this customer';// TRANSLATE
+$l_customer['documentTab'] = 'Documents of this customer';// TRANSLATE
+$l_customer['NoDocuments'] = 'The customer has no documents';// TRANSLATE
+$l_customer['NoObjects'] = 'The customer has no objects';// TRANSLATE
+$l_customer['ID'] = 'ID';// TRANSLATE
+$l_customer['Filename'] = 'Filename';// TRANSLATE
+$l_customer['Aenderungsdatum'] = 'Modification date';// TRANSLATE
+$l_customer['Titel'] = 'Title';// TRANSLATE
+
 $l_customer['default_order'] = 'Triage préréglé';
 $l_customer['ASC'] = 'ascending';// TRANSLATE
 $l_customer['DESC'] = 'descending';// TRANSLATE

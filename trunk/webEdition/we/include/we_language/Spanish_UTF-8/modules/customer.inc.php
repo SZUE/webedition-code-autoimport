@@ -305,6 +305,15 @@ $l_customer["default_soting_no_del"]="The sort is used in settings and must not 
 $l_customer["we_fieldname_notValid"] = "Nombre de archivo inválido!\\nLos espacios en blanco no son carácteres válidos.";
 
 $l_customer["orderTab"] = 'Órdenes de este cliente';
+$l_customer['objectTab'] = 'Objects of this customer';// TRANSLATE
+$l_customer['documentTab'] = 'Documents of this customer';// TRANSLATE
+$l_customer['NoDocuments'] = 'The customer has no documents';// TRANSLATE
+$l_customer['NoObjects'] = 'The customer has no objects';// TRANSLATE
+$l_customer['ID'] = 'ID';// TRANSLATE
+$l_customer['Filename'] = 'Filename';// TRANSLATE
+$l_customer['Aenderungsdatum'] = 'Modification date';// TRANSLATE
+$l_customer['Titel'] = 'Title';// TRANSLATE
+
 $l_customer['default_order'] = 'Orden previa';
 $l_customer['ASC'] = 'ascending';// TRANSLATE
 $l_customer['DESC'] = 'descending';// TRANSLATE
