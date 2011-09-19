@@ -184,7 +184,7 @@ class weCustomerFrames extends weModuleFrames {
 				asort($topCountries, SORT_LOCALE_STRING);
 				asort($shownCountries, SORT_LOCALE_STRING);
 				setlocale(LC_ALL, $oldLocale);
-				
+
 				$content = '';
 				if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
 					$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
@@ -795,20 +795,15 @@ class weCustomerFrames extends weModuleFrames {
 		$out = "";
 
 		if (isset($_REQUEST["pid"])) {
-			if (!stristr($GLOBALS['WE_LANGUAGE'], '_UTF-8') === FALSE) {
-				$pid = utf8_encode($_REQUEST["pid"]);
-			} else {
-				$pid = $_REQUEST["pid"];
-			}
+				$pid = (!stristr($GLOBALS['WE_LANGUAGE'], '_UTF-8') === FALSE) ?
+					utf8_encode($_REQUEST["pid"]):
+					$_REQUEST["pid"];
 		}
 		else
 			exit;
 
 		if (isset($_REQUEST["sort"]))
-			if ($_REQUEST["sort"] == $l_customer["no_sort"])
-				$sort = 0;
-			else
-				$sort=1;
+				$sort = ($_REQUEST["sort"] == $l_customer["no_sort"]) ? 0 : 1;
 		else {
 			if ($this->View->settings->Prefs["default_sort_view"] != $l_customer["no_sort"]) {
 				$sort = 1;
@@ -818,11 +813,7 @@ class weCustomerFrames extends weModuleFrames {
 				$sort=0;
 		}
 
-		if (isset($_REQUEST["offset"])) {
-			$offset = $_REQUEST["offset"];
-		}
-		else
-			$offset=0;
+		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
 
 		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTreeLoader.php");
 
@@ -1004,7 +995,7 @@ class weCustomerFrames extends weModuleFrames {
 		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px"));
 		$default_sort_view_select->selectOption($this->View->settings->Prefs["default_sort_view"]);
 
-		$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 3);
+		$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 3);
 
 		$table->setCol(0, 0, array("class" => "defaultfont"), $l_customer["default_sort_view"] . ":&nbsp;");
 		$table->setCol(0, 1, array(), getPixel(5, 30));
@@ -1022,12 +1013,7 @@ class weCustomerFrames extends weModuleFrames {
 		$default_order = new we_htmlSelect(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
 		$default_order->addOption('', $l_customer['none']);
 		foreach ($this->View->settings->OrderTable as $ord) {
-			if ($ord == 'ASC') {
-				$ordval = $l_customer['ASC'];
-			}
-			if ($ord == 'DESC') {
-				$ordval = $l_customer['DESC'];
-			}
+			$ordval = ($ord == 'ASC') ? $l_customer['ASC'] : $l_customer['DESC'];
 			$default_order->addOption($ord, $ordval);
 		}
 		$default_order->selectOption($this->View->settings->Prefs['default_order']);
@@ -1036,9 +1022,17 @@ class weCustomerFrames extends weModuleFrames {
 		$table->setCol(3, 1, array(), getPixel(5, 30));
 		$table->setCol(3, 2, array('class' => 'defaultfont'), $default_order->getHtmlCode());
 
-		$we_button = new we_button();
-		$close = $we_button->create_button("close", "javascript:self.close();");
-		$save = $we_button->create_button("save", "javascript:we_cmd('save_settings')");
+		$default_saveRegisteredUser_register = new we_htmlSelect(array('name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect'));
+		$default_saveRegisteredUser_register->addOption('false', 'false');
+		$default_saveRegisteredUser_register->addOption('true', 'true');
+		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
+
+		$table->setCol(4, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(4, 1, array(), getPixel(5, 30));
+		$table->setCol(4, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtmlCode().'&quot;/>');
+
+		$close = we_button::create_button("close", "javascript:self.close();");
+		$save = we_button::create_button("save", "javascript:we_cmd('save_settings')");
 
 		$body = we_htmlElement::htmlBody(array("class" => "weDialogBody"),
 										we_htmlElement::htmlForm(array("name" => "we_form"),
@@ -1048,7 +1042,7 @@ class weCustomerFrames extends weModuleFrames {
 																		$table->getHtmlCode() .
 																		getPixel(5, 10),
 																		$l_customer["settings"],
-																		$we_button->position_yes_no_cancel($save, $close)
+																		we_button::position_yes_no_cancel($save, $close)
 														)
 										)
 										. ($closeflag ? we_htmlElement::jsElement('top.close();') : "")
