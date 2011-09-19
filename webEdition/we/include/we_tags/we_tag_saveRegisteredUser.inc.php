@@ -152,7 +152,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 				// existierender User (Daten werden von User geaendert)!!
 				$Username = isset($_REQUEST['s']['Username']) ?  $_REQUEST['s']['Username'] : '';
 
-				$GLOBALS['DB_WE']->query('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username="'.$GLOBALS["DB_WE"]->escape($Username)."' AND ID<> '".intval($_REQUEST["s"]["ID"])."'");
+				$GLOBALS['DB_WE']->query('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username="'.$GLOBALS["DB_WE"]->escape($Username).'" AND ID!='.intval($_REQUEST["s"]["ID"]));
 				if(!$GLOBALS['DB_WE']->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 					if(isset($_REQUEST['s'])){
 
