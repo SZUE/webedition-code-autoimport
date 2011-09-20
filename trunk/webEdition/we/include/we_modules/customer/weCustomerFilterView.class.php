@@ -319,6 +319,7 @@ EO_SCRIPT;
 		while ($GLOBALS['DB_WE']->next_record()) {
 			$_filter_args[$GLOBALS['DB_WE']->f("Field")] = $GLOBALS['DB_WE']->f("Field");
 		}
+		asort($_filter_args,SORT_STRING);
 
 		$_filter_op = array(
 			'0'=>$GLOBALS['l_customerFilter']['equal'],
