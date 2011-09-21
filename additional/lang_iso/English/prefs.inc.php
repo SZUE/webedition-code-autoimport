@@ -141,13 +141,13 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 * FILE EXTENSIONS
 	 */
 	$l_prefs["extensions_information"] = "Set the default file extensions for static and dynamic pages here.";
-	
+
 	$l_prefs["we_extensions"] = "webEdition extensions";
 	$l_prefs["static"] = "Static pages";
 	$l_prefs["dynamic"] = "Dynamic pages";
 	$l_prefs["html_extensions"] = "HTML extensions";
 	$l_prefs["html"] = "HTML pages";
-	
+
 /*****************************************************************************
  * Glossary
  *****************************************************************************/
@@ -176,7 +176,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 */
 	$l_prefs["cache_information"] = "Set the preset values of the fields \"Caching Type\" and \"Cache lifetime in seconds\" for new templates here.<br /><br />Please note that these setting are only the presets of the fields.";
 	$l_prefs["cache_navigation_information"] = "Enter the defaults for the &lt;we:navigation&gt; tag here. This value can be overwritten by the attribute \"cachelifetime\" of the &lt;we:navigation&gt; tag.";
-	
+
 	$l_prefs["cache_presettings"] = "Presetting";
 	$l_prefs["cache_type"] = "Caching Type";
 	$l_prefs["cache_type_none"] = "Caching deactivated";
@@ -256,9 +256,9 @@ $l_prefs["tab_versions"] = 'Versioning';
 	/**
 	 * TEMPLATE EDITOR
 	 */
-	
+
 	$l_prefs["editor_information"] = "Specify font and size which should be used for the editing of templates, CSS- and JavaScript files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types.";
-	
+
 	$l_prefs["editor_mode"] = 'Editor';
 	$l_prefs["editor_font"] = 'Font in editor';
 	$l_prefs["editor_fontname"] = 'Fontname';
@@ -322,7 +322,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	 */
 
 	$l_prefs["proxy_information"] = "Specify your Proxy settings for your server here, if your server uses a proxy for the connection with the Internet.";
-	
+
 	$l_prefs["useproxy"] = "Use proxy server for<br>live update";
 	$l_prefs["proxyaddr"] = "Address";
 	$l_prefs["proxyport"] = "Port";
@@ -398,7 +398,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.";
 	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.";
 
-	
+
 	/**
 	 * HTTP AUTHENTICATION
 	 */
@@ -414,13 +414,13 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["thumbnail_dir"] = "Thumbnail directory";
 
 	$l_prefs["pagelogger_dir"] = "pageLogger directory";
-	
+
 	/**
 	 * HOOKS
 	 */
 	$l_prefs["hooks"] = "Hooks"; //TRANSLATE
 	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
-	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; 
+	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?";
 
 	/**
 	 * Backward compatibility
@@ -554,7 +554,7 @@ $l_prefs["tab_versions"] = 'Versioning';
  * message_reporting
  *****************************************************************************/
 	$l_prefs["message_reporting"]["information"] = "You can decide on the respective check boxes whether you like to receive a notice for webEdition operations as for example saving, publishing or deleting.";
-	
+
 	$l_prefs["message_reporting"]["headline"] = "Notifications";
 	$l_prefs["message_reporting"]["show_notices"] = "Show Notices";
 	$l_prefs["message_reporting"]["show_warnings"] = "Show Warnings";
@@ -565,15 +565,15 @@ $l_prefs["tab_versions"] = 'Versioning';
  * Module Activation
  *****************************************************************************/
 	$l_prefs["module_activation"]["information"] = "Here you can activate or deactivate your modules if you do not need them.<br />Deactivated modules improve the overall performance of webEdition.<br />For some modules, you have to restart webEdition to activate.<br />The Shop module requires the Customer module, the Workflow module requires the ToDo-Messaging module.";
-	
+
 	$l_prefs["module_activation"]["headline"] = "Module activation";
 
 /*****************************************************************************
  * Email settings
  *****************************************************************************/
-	
+
 	$l_prefs["mailer_information"] = "Adjust whether webEditionin should dispatch emails via the integrated PHP function or a seperate SMTP server should be used.<br /><br />When using a SMTP mail server, the risk that messages are classified by the receiver as a \"Spam\" is lowered.";
-	
+
 	$l_prefs["mailer_type"] = "Mailer type";
 	$l_prefs["mailer_php"] = "Use php mail() function";
 	$l_prefs["mailer_smtp"] = "Use SMTP server";
@@ -591,7 +591,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["smtp_encryption_ssl"] = "SSL";
 	$l_prefs["smtp_encryption_tls"] = "TLS";
 
-	
+
 /*****************************************************************************
  * Versions settings
  *****************************************************************************/
@@ -614,7 +614,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";
 	$l_prefs["versions_create_tmpl_always"] = "always";
 
-	
+
 	$l_prefs['use_jeditor'] = "Use";
 	$l_prefs["editor_font_colors"] = 'Specify font colors';
 	$l_prefs["editor_normal_font_color"] = 'Default';
@@ -634,8 +634,9 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs['editor_java'] = 'Java editor';
 	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';
 	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';
-	
-	
+
+
 	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!';
-	
+	$l_prefs['disable_template_code_check'] = "Deactivate check for invalid<br />code (php)";
+
 ?>

@@ -140,13 +140,13 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 * FILE EXTENSIONS
 	 */
 	$l_prefs["extensions_information"] = "Stel hier de standaard extensie voor statische en dynamische pagina's in.";
-	
+
 	$l_prefs["we_extensions"] = "webEdition extensies";
 	$l_prefs["static"] = "Statische pagina's";
 	$l_prefs["dynamic"] = "Dynamische pagina's";
 	$l_prefs["html_extensions"] = "HTML extensies";
 	$l_prefs["html"] = "HTML pagina's";
-	
+
 /*****************************************************************************
  * Glossary
  *****************************************************************************/
@@ -175,7 +175,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 	$l_prefs["cache_information"] = "Stel vooraf de waarden van de velden \"Caching Type\" en \"Cache levensduur in seconden\" voor nieuwe sjablonen hier in.<br /><br />Let er wel op dat deze instellingen alleen de voorkeur zijn voor de velden.";
 	$l_prefs["cache_navigation_information"] = "Voer hier de standaard waarden in voor de &lt;we:navigation&gt;. De waarde kan overcshreven worden door het attribuut \"cachelifetime\" van de &lt;we:navigation&gt; tag.";
-	
+
 	$l_prefs["cache_presettings"] = "Vooraf instellen";
 	$l_prefs["cache_type"] = "Caching Type"; // TRANSLATE
 	$l_prefs["cache_type_none"] = "Caching uitgeschakeld";
@@ -254,9 +254,9 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	/**
 	 * TEMPLATE EDITOR
 	 */
-	
+
 	$l_prefs["editor_information"] = "Specificeer lettertype en grootte die gebruikt moet worden bij het wijzigen van sjablonen, CSS- en JavaScript bestanden binnen webEdition.<br /><br />Deze instellingen worden gebruikt voor de tekst editor van de bovengenoemde bestands types.";
-	
+
 	$l_prefs["editor_mode"] = 'Editor';
 	$l_prefs["editor_font"] = 'Lettertype in editor';
 	$l_prefs["editor_fontname"] = 'Fontnaam';
@@ -320,7 +320,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	$l_prefs["proxy_information"] = "Specificeer hier uw Proxy instellingen voor uw server, indien uw server een proxy gebruikt voor verbinding met het internet.";
-	
+
 	$l_prefs["useproxy"] = "Gebruik proxy-server voor<br>Live-Update";
 	$l_prefs["proxyaddr"] = "Adres";
 	$l_prefs["proxyport"] = "Poort";
@@ -342,7 +342,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 */
 
 	 $l_prefs["inlineedit_default"] = "Standaard waarde voor het<br><em>inlineedit</em> attribuut in<br>&lt;we:textarea&gt;";
-	 
+
 	 $l_prefs["removefirstparagraph_default"] = "Default value for the<br><em>removefirstparagraph</em> attribute in<br>&lt;we:textarea&gt;";// TRANSLATE
 	 $l_prefs["hidenameattribinweimg_default"] = "No output of name=xyz in we:img (HTML 5)";// TRANSLATE
 	 $l_prefs["hidenameattribinweform_default"] = "No output of name=xyz in we:form (XHTML strict)";// TRANSLATE
@@ -365,7 +365,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_item"] = "item"; // TRANSLATE
 	 $l_prefs["navigation_entries_from_document_folder"] = "folder"; // TRANSLATE
 	 $l_prefs["navigation_rules_continue"] = "Continue to evaluate navigation rules after a first match";// TRANSLATE
-	 
+
 	 $l_prefs["general_directoryindex_hide"] = "Hide DirectoryIndex- file names";// TRANSLATE
 	 $l_prefs["general_directoryindex_hide_description"] = "For the tags <we:link>, <we:linklist>, <we:listview> you can use the attribute 'hidedirindex'";// TRANSLATE
 	 $l_prefs["navigation_directoryindex_hide"] = "in the navigation output";// TRANSLATE
@@ -397,7 +397,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["db_set_charset_information"] = "The connection charset is used for the communication between webEdition and datase server.<br/>If no value is specified, the standard connection charset set in PHP is used.<br/>In the ideal case, the webEdition language (i.e. English_UTF-8), the database collation (i.e. utf8_general_ci), the connection charset (i.e. utf8) and the settings of external tools such as phpMyAdmin (i.e. utf-8) are identical. In this case, one can edit database entries with these external tools without problems.";// TRANSLATE
 	$l_prefs["db_set_charset_warning"] = "The connection charset should be changed only in a fresh installation of webEdition (without data in the database). Otherwise, all non ASCII characters will be interpreted wrong and may be destroyed.";// TRANSLATE
 
-	
+
 	/**
 	 * HTTP AUTHENTICATION
 	 */
@@ -413,11 +413,11 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["thumbnail_dir"] = "Thumbnail directorie";
 
 	$l_prefs["pagelogger_dir"] = "pageLogger directorie";
-	
+
 	/**
 	 * HOOKS
 	 */
-	$l_prefs["hooks"] = "Hooks"; // TRANSLATE 
+	$l_prefs["hooks"] = "Hooks"; // TRANSLATE
 	$l_prefs["hooks_information"] = "The use of hooks allows for the execution of arbitrary any PHP code during storing, publishing, unpublishing and deleting of any content type in webEdition.<br/>
 	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?"; //TRANSLATE
 
@@ -553,7 +553,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
  * message_reporting
  *****************************************************************************/
 	$l_prefs["message_reporting"]["information"] = "U kunt hier instellen of u een melding wilt ontvangen voor webEdition handelingen als bewaren, publiceren of verwijderen.";
-	
+
 	$l_prefs["message_reporting"]["headline"] = "Notificaties";
 	$l_prefs["message_reporting"]["show_notices"] = "Toon meldingen";
 	$l_prefs["message_reporting"]["show_warnings"] = "Toon waarschuwingen";
@@ -564,15 +564,15 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
  * Module Activation
  *****************************************************************************/
 	$l_prefs["module_activation"]["information"] = "Hier kunt u uw modules activeren of deactiveren als u ze niet nodig heeft.<br />Het deactiveren van modules verbetert de prestaties van webEdition.";
-	
+
 	$l_prefs["module_activation"]["headline"] = "Module activatie";
 
 /*****************************************************************************
  * Email settings
  *****************************************************************************/
-	
+
 	$l_prefs["mailer_information"] = "Stel in of webEdition emails moet verwerken via de geïntegreerde PHP functie of dat er gebruikt gemaakt moet worden van een aparte SMTP server.<br /><br />Indien u gebruik maakt van een SMTP mail server, is de kans kleiner dat berichten als \"Spam\" worden gezien.";
-	
+
 	$l_prefs["mailer_type"] = "Mailer type"; // TRANSLATE
 	$l_prefs["mailer_php"] = "Gebruik php mail() functie";
 	$l_prefs["mailer_smtp"] = "Gebruik SMTP server";
@@ -590,7 +590,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["smtp_encryption_ssl"] = "SSL";// TRANSLATE
 	$l_prefs["smtp_encryption_tls"] = "TLS";// TRANSLATE
 
-	
+
 /*****************************************************************************
  * Versions settings
  *****************************************************************************/
@@ -613,7 +613,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";// TRANSLATE
 	$l_prefs["versions_create_tmpl_always"] = "always";// TRANSLATE
 
-	
+
 	$l_prefs['use_jeditor'] = "Use"; // TRANSLATE
 	$l_prefs["editor_font_colors"] = 'Specify font colors'; // TRANSLATE
 	$l_prefs["editor_normal_font_color"] = 'Default'; // TRANSLATE
@@ -633,9 +633,9 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs['editor_java'] = 'Java editor';// TRANSLATE
 	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';// TRANSLATE
 	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';// TRANSLATE
-	
-	
-	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
-	
 
+
+	$l_prefs["juplod_not_installed"] = 'JUpload is not installed!'; // TRANSLATE
+
+$l_prefs['disable_template_code_check'] = "Deactivate check for invalid<br />code (php)";
 ?>

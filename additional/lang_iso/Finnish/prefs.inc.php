@@ -140,13 +140,13 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 * FILE EXTENSIONS
 	 */
 	$l_prefs["extensions_information"] = "M‰‰rit‰ staattisten ja dynaamisten dokumenttien oletusp‰‰tteet t‰‰lt‰.";
-	
+
 	$l_prefs["we_extensions"] = "webEdition -sivujen p‰‰te";
 	$l_prefs["static"] = "Staattiset sivut";
 	$l_prefs["dynamic"] = "Dynaamiset sivut";
 	$l_prefs["html_extensions"] = "HTML -sivujen p‰‰te";
 	$l_prefs["html"] = "HTML -sivut";
-	
+
 /*****************************************************************************
  * Glossary
  *****************************************************************************/
@@ -175,7 +175,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 */
 	$l_prefs["cache_information"] = "Aseta uusien sivupohjien oletusarvot kentille \"V‰limuistin tyyppi\" ja \"V‰limuistin elinik‰\".<br /><br />Huomioi ett‰ n‰m‰ ovat vain esivalinnat.";
 	$l_prefs["cache_navigation_information"] = "Aseta oletusarvot &lt;we:navigation&gt; tageille. T‰m‰ arvo voidaan ylikirjoittaa \"cachelifetime\" attribuutilla &lt;we:navigation&gt; tagissa.";
-	
+
 	$l_prefs["cache_presettings"] = "Oletusarvot";
 	$l_prefs["cache_type"] = "V‰limuistin tyyppi";
 	$l_prefs["cache_type_none"] = "V‰limuisti pois k‰ytˆst‰";
@@ -254,9 +254,9 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	/**
 	 * TEMPLATE EDITOR
 	 */
-	
+
 	$l_prefs["editor_information"] = "M‰‰rit‰ fonttikoko jota haluat k‰ytt‰‰ sivupohjien, CSS-tiedostojen ja JavaScript-tiedostojen muokkaamiseen webEditionissa.<br /><br />Asetusta k‰ytet‰‰n kaikille yll‰mainituille tiedostotyypeille.";
-	
+
 	$l_prefs["editor_mode"] = 'Editori';
 	$l_prefs["editor_font"] = 'Editorin kirjasin';
 	$l_prefs["editor_fontname"] = 'Kirjasimen nimi';
@@ -320,7 +320,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 */
 
 	$l_prefs["proxy_information"] = "Jos palvelimesi k‰ytt‰‰ Proxy-palvelinta, m‰‰rittele sen asetukset t‰‰ll‰.";
-	
+
 	$l_prefs["useproxy"] = "K‰yt‰ proxy-palvelinta<br>Live-p‰ivityksess‰";
 	$l_prefs["proxyaddr"] = "Osoite";
 	$l_prefs["proxyport"] = "Portti";
@@ -416,7 +416,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	 */
 	$l_prefs["hooks"] = "\"Koukut\"";
 	$l_prefs["hooks_information"] = "\"Koukkujen\" k‰yttˆ mahdollistaa mielivaltaisen PHP-koodin suorittamisen webEditionissa tallennuksen, julkaisun, julkaisun poiston sek‰ mink‰ tahansa sis‰ltˆtyypin poiston yhteydess‰.<br />
-	Lis‰‰ tietoa lˆytyy Online-dokumentaatiosta.<br /><br />Salli koukkujen k‰yttˆ?"; 
+	Lis‰‰ tietoa lˆytyy Online-dokumentaatiosta.<br /><br />Salli koukkujen k‰yttˆ?";
 
 	/**
 	 * Backward compatibility
@@ -550,7 +550,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
  * message_reporting
  *****************************************************************************/
 	$l_prefs["message_reporting"]["information"] = "Voit m‰‰ritt‰‰ alla olevilla laatikoilla haluatko saada ilmoituksen webEditionin tapahtumista.";
-	
+
 	$l_prefs["message_reporting"]["headline"] = "Ilmoitukset";
 	$l_prefs["message_reporting"]["show_notices"] = "N‰yt‰ huomautukset";
 	$l_prefs["message_reporting"]["show_warnings"] = "N‰yt‰ varoitukset";
@@ -561,15 +561,15 @@ $l_prefs["tab_versions"] = 'Versiointi';
  * Module Activation
  *****************************************************************************/
 	$l_prefs["module_activation"]["information"] = "T‰‰ll‰ voit aktivoida ja deaktivoida moduuleja tarpeesi mukaan.<br />Deaktivoidut moduulit voivat parantaa webEditionin yleist‰ suorituskyky‰.";
-	
+
 	$l_prefs["module_activation"]["headline"] = "Moduulien aktivointi";
 
 /*****************************************************************************
  * Email settings
  *****************************************************************************/
-	
+
 	$l_prefs["mailer_information"] = "S‰‰d‰ l‰hett‰‰kˆ webEdition s‰hkˆpostit PHP:n mail()-funktiolla vai erillisell‰ SMTP-palvelimella.<br /><br />SMTP-palvelinta k‰ytett‰ess‰, viestien sp‰mmiksi tulkitsemisen riski laskee.";
-	
+
 	$l_prefs["mailer_type"] = "Mailerin tyyppi";
 	$l_prefs["mailer_php"] = "K‰yt‰ php mail() funktiota";
 	$l_prefs["mailer_smtp"] = "K‰yt‰ SMTP palvelinta";
@@ -610,7 +610,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["versions_create_tmpl_publishing"] = "only using special button";// TRANSLATE
 	$l_prefs["versions_create_tmpl_always"] = "always";// TRANSLATE
 
-	
+
 	$l_prefs['use_jeditor'] = "K‰yt‰";
 	$l_prefs["editor_font_colors"] = 'M‰‰rittele fontin v‰rit';
 	$l_prefs["editor_normal_font_color"] = 'Oletus';
@@ -630,9 +630,10 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs['editor_java'] = 'Java editor';// TRANSLATE
 	$l_prefs['editor_javascript'] = 'JavaScript editor (beta)';// TRANSLATE
 	$l_prefs['editor_javascript_information'] = 'The JavaScript editor is still in beta stadium. Depending on which of the following options you\'ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.';// TRANSLATE
-	
-	
+
+
 	$l_prefs["juplod_not_installed"] = 'JUpload ei ole asennettu!';
-	
+
+$l_prefs['disable_template_code_check'] = "Deactivate check for invalid<br />code (php)";
 
 ?>
