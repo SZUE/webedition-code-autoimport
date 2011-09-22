@@ -73,7 +73,7 @@ class weCustomerTreeLoader{
 		}
 
 		$_order = '';
-		if(!empty($settings->getSettings('default_order'))){
+		if($settings->getSettings('default_order')!=''){
 
 			if($_formatFields!=''){
 				$_order = implode(' ' . $settings->getSettings('default_order') . ',' , $settings->formatFields) . ' ' . $settings->getSettings('default_order');
@@ -217,7 +217,7 @@ class weCustomerTreeLoader{
 		$items=array();
 
 		$_order = '';
-		if(!empty($settings->getSettings('default_order'))){
+		if($settings->getSettings('default_order')!=''){
 
 			if($_formatFields!=''){
 				$_order = implode(' ' . $settings->getSettings('default_order') . ',' , $settings->formatFields) . ' ' . $settings->getSettings('default_order');
