@@ -51,14 +51,9 @@ function we_tag_saveRegisteredUser($attribs,$content){
 		}
 
 		//register new User
-		if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && $_REQUEST['s']['ID']<=0 && $registerallowed && (!isset($_SESSION['webuser']['registered'])||!$_SESSION['webuser']['registered'])){ // neuer User
-
+		if(isset($_REQUEST['s']['ID']) && (!isset($_SESSION['webuser']['ID'])) && intval($_REQUEST['s']['ID'])<=0 && $registerallowed && (!isset($_SESSION['webuser']['registered'])||!$_SESSION['webuser']['registered'])){ // neuer User
 				if($_REQUEST['s']['Password']!='' && $_REQUEST['s']['Username']!=''){ // wenn password und Username nicht leer
-
 					if(!weCustomer::customerNameExist($_REQUEST['s']['Username'])){ // username existiert noch nicht!
-
-						$names = '';
-						$values = '';
 
 						// Start Schnittstelle fuer save-Funktion
 						//FIXME: @deprecated!
@@ -80,9 +75,6 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						}
 						we_saveCustomerImages();
 						$set=we_tag_saveRegisteredUser_processRequest();
-
-						$names = ereg_replace('^(.*),$','\1',$names);
-						$values = ereg_replace('^(.*),$','\1',$values);
 
 						if(count($set)){
 							// User in DB speichern
@@ -344,12 +336,10 @@ function we_tag_saveRegisteredUser_processRequest(){
 	foreach($_REQUEST['s'] as $name=>$val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!
-			$names.='Path,';
-			$values.='"/'.$GLOBALS['DB_WE']->escape($val).'",';
-			$names.='Text,';
-			$values.='"'.$GLOBALS['DB_WE']->escape($val).'",';
-			$names.='Icon,';
-			$values.='"customer.gif",';
+			$set[]='Username="'.$GLOBALS['DB_WE']->escape($val).'"';
+			$set[]='Path="/'.$GLOBALS['DB_WE']->escape($val).'"';
+			$set[]='Text="'.$GLOBALS['DB_WE']->escape($val).'"';
+			$set[]='Icon="customer.gif"';
 			break;
 		case 'Text':
 		case 'Path':
