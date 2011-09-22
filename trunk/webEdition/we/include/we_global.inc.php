@@ -3267,7 +3267,7 @@ function getDoctypeQuery($db = "") {
 	}
 	if (is_array($paths) && count($paths) > 0) {
 		$q = "WHERE ((" . implode(" OR ", $paths) . ") OR ParentPath='') ORDER BY DocType";
-	} else $q='';
+	} else $q=' ORDER BY DocType';
 
 	return $q;
 }
