@@ -241,7 +241,7 @@ class weCustomerFrames extends weModuleFrames {
 				$out = we_htmlElement::htmlHidden(array('name' => $field, 'value' => $value));
 
 				if (empty($value)) {
-					$value = $this->View->settings->Prefs["start_year"] . '-01-01';
+					$value = $this->View->settings->getSettings('start_year') . '-01-01';
 				}
 				$date_format = ($props['type'] == 'dateTime' ? DATE_FORMAT : DATE_ONLY_FORMAT);
 				$value = $this->View->settings->getDate($value, $date_format);
@@ -270,7 +270,7 @@ class weCustomerFrames extends weModuleFrames {
 						document.we_form.' . $field . '.value=formatDate(datevar,\'' . addslashes($date_format) . '\');
 					}
 				');
-				$out.=getPixel(5, 5) . $this->getDateInput2($field . "_select%s", $value, false, $format, "populateDate_$field()", "defaultfont", $this->View->settings->Prefs["start_year"]) . getPixel(5, 5);
+				$out.=getPixel(5, 5) . $this->getDateInput2($field . "_select%s", $value, false, $format, "populateDate_$field()", "defaultfont", $this->View->settings->getSettings('start_year')) . getPixel(5, 5);
 				return $out;
 				break;
 			case 'password':
@@ -562,16 +562,16 @@ class weCustomerFrames extends weModuleFrames {
 							$class='defaultfont';
 						}
 					} else {
-						
+
 						$class='npdefaultfont';
 					}
 					$objectStr.='<td class="'.$class.'">'.date('d.m.Y H:i',$DB_WE->f('ModDate')).'</td>';
-					$objectStr.='</tr>';	
+					$objectStr.='</tr>';
 				}
 				$objectStr.='</table>';
 			} else {
 				$objectStr=$l_customer['NoObjects'];
-				
+
 			}
 			//$objectStr = getCustomersObjectList($this->View->customer->ID, false);
 
@@ -597,9 +597,9 @@ class weCustomerFrames extends weModuleFrames {
 					$documentStr.='<tr>';
 					//$documentStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript:top.opener.top.doClickDirect(".$DB_WE->f('ID').",'text/webedition','tblFile','top.opener');return true;'" ).'</td>';
 					$documentStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(".$DB_WE->f('ID').",'".$DB_WE->f('ContentType'). "','tblFile'); }" ).'</td>';
-					
+
 					$documentStr.='<td>'.$DB_WE->f('ID').'</td>';
-					
+
 					$documentStr.='<td title="'.$DB_WE->f('Path').'">'.$DB_WE->f('Text').'</td>';
 					if ($DB_WE->f('Published')) {
 						if ($DB_WE->f('ModDate')> $DB_WE->f('Published') ) {
@@ -608,7 +608,7 @@ class weCustomerFrames extends weModuleFrames {
 							$class='defaultfont';
 						}
 					} else {
-						
+
 						$class='npdefaultfont';
 					}
 					$documentStr.='<td class="'.$class.'">'.date('d.m.Y H:i',$DB_WE->f('ModDate')).'</td>';
@@ -617,10 +617,10 @@ class weCustomerFrames extends weModuleFrames {
 WHERE '.FILE_TABLE.'.ID='.LINK_TABLE.'.DID AND '.LINK_TABLE.'.CID='.CONTENT_TABLE.'.ID AND '.LINK_TABLE.".Name='Title' AND ".
 LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('ID');
 					//$documentStr.='<td>'.$query2.'</td>';
-					
-					
+
+
 					$db_we2->query($query2);
-					if($db_we2->next_record()){ 
+					if($db_we2->next_record()){
 						$titel= $db_we2->f('Inhalt');
 					}
 					$query2 ='SELECT '.CONTENT_TABLE.'.Dat AS Inhalt, '.LINK_TABLE.'.Name AS Name FROM '.FILE_TABLE.', '.LINK_TABLE.','.CONTENT_TABLE.'
@@ -628,12 +628,12 @@ WHERE '.FILE_TABLE.'.ID='.LINK_TABLE.'.DID AND '.LINK_TABLE.'.CID='.CONTENT_TABL
 LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('ID');
 					//$documentStr.='<td>'.$query2.'</td>';
 					$db_we2->query($query2);
-					if($db_we2->next_record()){ 
+					if($db_we2->next_record()){
 						$beschreibung= $db_we2->f('Inhalt');
 					}
-					
+
 					$documentStr.='<td title="'.$beschreibung.'">'.$titel.'</td>';
-					$documentStr.='</tr>';		
+					$documentStr.='</tr>';
 				}
 				$documentStr.='</table>';
 			} else {
@@ -918,9 +918,9 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 		if (isset($_REQUEST["sort"]))
 				$sort = ($_REQUEST["sort"] == $l_customer["no_sort"]) ? 0 : 1;
 		else {
-			if ($this->View->settings->Prefs["default_sort_view"] != $l_customer["no_sort"]) {
+			if ($this->View->settings->getSettings('default_sort_view') != $l_customer["no_sort"]) {
 				$sort = 1;
-				$_REQUEST["sort"] = $this->View->settings->Prefs["default_sort_view"];
+				$_REQUEST["sort"] = $this->View->settings->getSettings('default_sort_view');
 			}
 			else
 				$sort=0;
@@ -1106,7 +1106,7 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 
 		$default_sort_view_select = $this->getHTMLSortSelect();
 		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px"));
-		$default_sort_view_select->selectOption($this->View->settings->Prefs["default_sort_view"]);
+		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
 		$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 3);
 
@@ -1116,11 +1116,11 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 
 		$table->setCol(1, 0, array("class" => "defaultfont"), $l_customer["start_year"] . ":&nbsp;");
 		$table->setCol(1, 1, array(), getPixel(5, 30));
-		$table->setCol(1, 2, array("class" => "defaultfont"), htmlTextInput("start_year", 32, $this->View->settings->Prefs["start_year"], ""));
+		$table->setCol(1, 2, array("class" => "defaultfont"), htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ""));
 
 		$table->setCol(2, 0, array("class" => "defaultfont"), $l_customer["treetext_format"] . ":&nbsp;");
 		$table->setCol(2, 1, array(), getPixel(5, 30));
-		$table->setCol(2, 2, array("class" => "defaultfont"), htmlTextInput("treetext_format", 32, $this->View->settings->Prefs["treetext_format"], ""));
+		$table->setCol(2, 2, array("class" => "defaultfont"), htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ""));
 
 
 		$default_order = new we_htmlSelect(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
@@ -1129,7 +1129,7 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 			$ordval = ($ord == 'ASC') ? $l_customer['ASC'] : $l_customer['DESC'];
 			$default_order->addOption($ord, $ordval);
 		}
-		$default_order->selectOption($this->View->settings->Prefs['default_order']);
+		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
 		$table->setCol(3, 0, array('class' => 'defaultfont'), $l_customer['default_order'] . ':&nbsp;');
 		$table->setCol(3, 1, array(), getPixel(5, 30));
