@@ -991,8 +991,8 @@ function processCommands() {
 				break;
 				case 'save_settings':
 
-					foreach($this->settings->Prefs as $k=>$v){
-						if(isset($_REQUEST[$k])) $this->settings->Prefs[$k]=$_REQUEST[$k];
+					foreach($this->settings->getAllSettings() as $k=>$v){
+						if(isset($_REQUEST[$k])) $this->settings->setSettings($k,$_REQUEST[$k]);
 					}
 					foreach($this->settings->properties as $k=>$v){
 						if(isset($_REQUEST[$k])) $this->settings->properties[$k]=$_REQUEST[$k];
