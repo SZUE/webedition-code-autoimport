@@ -591,7 +591,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			if (eregi('<we:([^> /]+)',$tag,$regs)) { // starttag found
 				$tagname = $regs[1];
 				if (eregi('name="([^"]+)"',$tag,$regs) && ($tagname != "var") && ($tagname != "field")) { // name found
-					$name = $regs[1];
+					$name=str_replace(array('[',']'), array('\[','\]'), $regs[1]);
 					$size = sizeof($blocks);
 					if($size) {
 						$foo = $blocks[$size-1];
@@ -646,7 +646,6 @@ class we_webEditionDocument extends we_textContentDocument {
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$types = we_webEditionDocument::getFieldTypes($this->getTemplateCode());
-
 
 		foreach($this->elements as $k=>$v) {
 			if(
