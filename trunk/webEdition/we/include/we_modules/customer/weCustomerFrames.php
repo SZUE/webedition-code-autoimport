@@ -906,24 +906,23 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 	function getHTMLCmd() {
 		global $l_customer;
 		$out = "";
-
 		if (isset($_REQUEST["pid"])) {
 				$pid = (!stristr($GLOBALS['WE_LANGUAGE'], '_UTF-8') === FALSE) ?
 					utf8_encode($_REQUEST["pid"]):
 					$_REQUEST["pid"];
-		}
-		else
+		}else{
 			exit;
+		}
 
-		if (isset($_REQUEST["sort"]))
+		if (isset($_REQUEST["sort"])){
 				$sort = ($_REQUEST["sort"] == $l_customer["no_sort"]) ? 0 : 1;
-		else {
+		}else {
 			if ($this->View->settings->getSettings('default_sort_view') != $l_customer["no_sort"]) {
 				$sort = 1;
 				$_REQUEST["sort"] = $this->View->settings->getSettings('default_sort_view');
-			}
-			else
+			}else{
 				$sort=0;
+			}
 		}
 
 		$offset = (isset($_REQUEST["offset"])) ? $_REQUEST["offset"] : 0;
@@ -931,11 +930,12 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTreeLoader.php");
 
 		$rootjs = "";
-		if (!$pid)
+		if (!$pid){
 			$rootjs.='
 		' . $this->Tree->topFrame . '.treeData.clear();
 		' . $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));
 		';
+		}
 
 		$hiddens = we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 						we_htmlElement::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
@@ -946,7 +946,6 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 														we_htmlElement::jsElement($rootjs . $this->Tree->getJSLoadTree(weCustomerTreeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $_REQUEST["sort"] : ""))))
 										)
 		);
-
 		return $this->getHTMLDocument($out);
 	}
 
