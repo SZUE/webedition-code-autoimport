@@ -528,7 +528,7 @@ function we_cmd() {
 							hasPerm = 1;
 						}
 						break;
-					case "<?php echo defined("OBJECT_FILES")?OBJECT_FILES_TABLE:-1;?>":
+					case "<?php echo defined("OBJECT_FILES_TABLE")?OBJECT_FILES_TABLE:-1;?>":
 						if(wePerms.DELETE_OBJECTFILE) {
 							hasPerm = 1;
 						}
@@ -592,7 +592,7 @@ function we_cmd() {
 							hasPerm = 1;
 						}
 						break;
-					case "<?php echo defined("OBJECT_FILES")?OBJECT_FILES_TABLE:-1;?>":
+					case "<?php echo defined("OBJECT_FILES_TABLE")?OBJECT_FILES_TABLE:-1;?>":
 						if(wePerms.DELETE_OBJECTFILE) {
 							hasPerm = 1;
 						}
