@@ -894,9 +894,9 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 			exit;
 		}
 
-		if (isset($_REQUEST["sort"])){
-			$sort=($_REQUEST["sort"] == g_l('modules_customer','[no_sort]'))?0:1;
-		else {
+		if (isset($_REQUEST['sort'])){
+			$sort=($_REQUEST['sort'] == g_l('modules_customer','[no_sort]')?0:1);
+		}else {
 			if ($this->View->settings->Prefs["default_sort_view"] != g_l('modules_customer','[no_sort]')) {
 				$sort = 1;
 				$_REQUEST["sort"] = $this->View->settings->getSettings('default_sort_view');
