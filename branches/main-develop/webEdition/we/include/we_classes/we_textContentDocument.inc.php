@@ -272,7 +272,8 @@ class we_textContentDocument extends we_textDocument{
 				break;
 			case LOAD_TEMP_DB:
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
-				if(is_array($sessDat)){
+				if($sessDat){
+					$sessDat=unserialize($sessDat);
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
 					$this->OldPath = $this->Path;

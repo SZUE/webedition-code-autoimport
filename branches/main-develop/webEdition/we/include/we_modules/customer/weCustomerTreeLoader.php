@@ -77,12 +77,12 @@ class weCustomerTreeLoader{
 		}
 
 		$_order = '';
-		if(!empty($settings->Prefs['default_order'])){
+		if($settings->getSettings('default_order')!=''){
 
 			if($_formatFields!=''){
-				$_order = implode(' ' . $settings->Prefs['default_order'] . ',' , $settings->formatFields) . ' ' . $settings->Prefs['default_order'];
+				$_order = implode(' ' . $settings->getSettings('default_order') . ',' , $settings->formatFields) . ' ' . $settings->getSettings('default_order');
 			} else {
-				$_order = 'Text ' . $settings->Prefs['default_order'];
+				$_order = 'Text ' . $settings->getSettings('default_order');
 			}
 		}
 
@@ -219,12 +219,12 @@ class weCustomerTreeLoader{
 		$items=array();
 
 		$_order = '';
-		if(!empty($settings->Prefs['default_order'])){
+		if($settings->getSettings('default_order')!=''){
 
 			if($_formatFields!=''){
-				$_order = implode(' ' . $settings->Prefs['default_order'] . ',' , $settings->formatFields) . ' ' . $settings->Prefs['default_order'];
+				$_order = implode(' ' . $settings->getSettings('default_order') . ',' , $settings->formatFields) . ' ' . $settings->getSettings('default_order');
 			} else {
-				$_order = 'Text ' . $settings->Prefs['default_order'];
+				$_order = 'Text ' . $settings->getSettings('default_order');
 			}
 		}
 

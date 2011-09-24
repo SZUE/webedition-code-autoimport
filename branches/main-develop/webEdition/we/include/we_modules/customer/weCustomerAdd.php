@@ -202,7 +202,7 @@ class weCustomerAdd{
 					case "del_sort_field":
 						document.we_form.fieldindex.value=arguments[2];
 					case "del_sort":
-						if(arguments[1]=="'.$pob->settings->Prefs["default_sort_view"].'"){
+						if(arguments[1]=="'.$pob->settings->getSettings('default_sort_view').'"){
 							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[default_soting_no_del]'), WE_MESSAGE_ERROR) . '
 						}
 						else{
@@ -428,7 +428,7 @@ class weCustomerAdd{
 	function getHTMLTreeHeader(&$pob){
 		$select=$pob->getHTMLSortSelect();
 		$select->setAttributes(array("OnChange"=>"applySort();","style"=>"width:150px"));
-		$select->selectOption($pob->View->settings->Prefs["default_sort_view"]);
+		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
 		$table1->setCol(0,0,array("nowrap"=>null,"class"=>"small"),getPixel(300,1));

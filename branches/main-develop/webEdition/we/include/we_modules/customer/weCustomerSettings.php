@@ -64,7 +64,12 @@ class weCustomerSettings {
 			);
 	public $FieldAdds = array();
 	public $SortView = array();
-	public $Prefs = array();
+	private $Prefs = array(
+				'treetext_format' => '#Username (#Forename #Surname)',
+				'start_year' => 1900,
+				'default_sort_view' => '',
+				'default_order' => '',
+		);
 	private $EditSort = '';
 	public $OrderTable = array(
 			'ASC' => 'ASC',
@@ -149,18 +154,10 @@ class weCustomerSettings {
 		$this->TypeFunction['FORMAT_TIME'] = 'date';
 		$this->TypeFunction['HOUR'] = 'date';
 
-
-		$this->Prefs = array(
-				'treetext_format' => '#Username (#Forename #Surname)',
-				'start_year' => 1900,
-				'default_sort_view' => '',
-				'default_order' => '',
-		);
 	}
 
 	function load($tryFromSession=true) {
 		$modified=false;
-
 		$this->db->query('SELECT * FROM '. $this->table);
 		while ($this->db->next_record()) {
 			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
@@ -205,7 +202,6 @@ class weCustomerSettings {
 				$this->Prefs[$k] = $v;
 			}
 		}
-
 		$this->formatFields = array();
 		$this->treeTextFormat = $this->Prefs['treetext_format'];
 		$field_names = $this->customer->getFieldsDbProperties();
@@ -227,7 +223,7 @@ class weCustomerSettings {
 		$this->properties['FieldAdds'] = serialize($this->FieldAdds);
 		$this->properties['SortView'] = serialize($this->SortView);
 		$this->properties['EditSort'] = $this->EditSort;
-		$this->properties['Prefs'] = addslashes(serialize($this->Prefs));
+		$this->properties['Prefs'] = serialize($this->Prefs);
 
 		foreach ($this->properties as $key => $value) {
 			$this->db->query('REPLACE INTO ' . $this->table . ' SET Value="'.$this->db->escape($value).'",Name="'.$key.'"');
@@ -435,4 +431,11 @@ class weCustomerSettings {
 		return (isset($this->Prefs[$settings]) ? $this->Prefs[$settings] : '');
 	}
 
+	function setSettings($settings,$value){
+		$this->Prefs[$settings]=$value;
+	}
+
+	function getAllSettings(){
+		return $this->Prefs;
+	}
 }
