@@ -32,10 +32,14 @@ function we_tag_sidebar($attribs, $content){
 		$url = weTag_getAttribute("url", $attribs);
 		$anchor = weTag_getAttribute("anchor", $attribs);
 		$width = weTag_getAttribute("width", $attribs, (defined("WE_SIDEBAR_WIDTH") ? WE_SIDEBAR_WIDTH : 300));
+		$params = weTag_getAttribute('params', $attribs);
+		if($urladd && strpos($urladd, '?')===0){
+			$urladd=substr($urladd,1);
+		}
 
 
 		removeAttribs($attribs, array(
-			'id', 'file', 'url', 'width', 'href'
+			'id', 'file', 'url', 'width', 'href','params'
 		));
 
 		if (trim($content) == "") {
@@ -46,14 +50,14 @@ function we_tag_sidebar($attribs, $content){
 		$href = "#";
 		if ($id == 0){
 			if($file != "") {
-			$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ");";
+			$href = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'".$params."');";
 			} else if($url != "") {
-				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ");";
+				$href = "javascript:top.weSidebar.load('" . $url . "');top.weSidebar.resize(" . $width . ",'".$params."');";
 			}else{
 				return;
 			}
 		}else{
-				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ");";
+				$href = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'".$params."');";
 		}
 		$attribs['href'] = $href;
 

@@ -135,7 +135,8 @@ body {
 
 	function getHTMLContent() {
 
-		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+		$file = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
+		$params = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 		define("WE_SIDEBAR", true);
 
 		if(stripos($file,"http://")===0 || stripos($file,"https://")===0) {
@@ -154,21 +155,24 @@ body {
 			if(defined("SIDEBAR_DEFAULT_DOCUMENT")) {
 				$file = id_to_path(SIDEBAR_DEFAULT_DOCUMENT, FILE_TABLE);
 			}
-			if($file == "" || substr($file,-1)=='/' || $file == "default") {
-				$file = WEBEDITION_DIR . "sidebar/default.php";
+			if($file == '' || substr($file,-1)=='/' || $file == 'default') {
+				$file = WEBEDITION_DIR . 'sidebar/default.php';
 
 			}
 
 		}
 
+		//manipulate GET/REQUEST for document
+		$_GET=array();
+		parse_str($params,$_GET);
+		$_REQUEST=$_GET;
 		ob_start();
 		include($_SERVER['DOCUMENT_ROOT'] . $file);
 
 		$SrcCode = ob_get_contents();
 		ob_end_clean();
 
-        $SrcCode = we_SEEM::parseDocument($SrcCode);
-		echo $SrcCode;
+    echo we_SEEM::parseDocument($SrcCode);
 
 		exit();
 
