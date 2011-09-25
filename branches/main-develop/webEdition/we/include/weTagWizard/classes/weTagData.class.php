@@ -86,7 +86,7 @@ class weTagData{
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php')){
 			require ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/we_tag_' . $tagName . '.inc.php');
 			$this->Exists = true;
-			$this->Groups[]='custom';
+			$this->Groups[] = 'custom';
 		} else{
 			//Application Tags
 			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/tools/weToolLookup.class.php");
@@ -103,16 +103,23 @@ class weTagData{
 			if(in_array($tagName, $allapptagnames)){
 				require_once ($allapptags[$tagName]);
 				$this->Exists = true;
-				$this->Groups[]='apptags';
+				$this->Groups[] = 'apptags';
+			} else{
+				t_e('requested help entry of tag ' . $tagName . ' not found');
+				return;
 			}
 		}
 
 		if($this->TypeAttribute){
-			foreach($this->TypeAttribute->Options as &$value){
-				$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
-				$value->AllowedAttributes[] = $tmp;
-				if($value->Value != '-'){
-					$this->Attributes[] = $tmp;
+			if(!is_array($this->TypeAttribute->Options)){
+				t_e('Error in TypeAttribute of we:' . $this->Name);
+			} else{
+				foreach($this->TypeAttribute->Options as &$value){
+					$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . '-' . $this->TypeAttribute->getName() . '-' . $value->Name), g_l('taged', '[tagreference_linktext]'));
+					$value->AllowedAttributes[] = $tmp;
+					if($value->Value != '-'){
+						$this->Attributes[] = $tmp;
+					}
 				}
 			}
 		} else{
@@ -126,7 +133,12 @@ class weTagData{
 			$this->UsedAttributes[] = $this->TypeAttribute;
 		}
 		foreach($this->Attributes as $attr){
-			if($attr->useAttribute()){
+			if($attr === null){
+				continue;
+			}
+			if(!is_object($attr)){
+				t_e('Error in Attributes of we:' . $this->Name, $attr);
+			} else if($attr->useAttribute()){
 				$this->UsedAttributes[] = $attr;
 			}
 		}
@@ -173,7 +185,7 @@ class weTagData{
 			}
 			$tags[$tagName] = $tag;
 		}
-			$tag->updateUsedAttributes();
+		$tag->updateUsedAttributes();
 		return $tag;
 	}
 

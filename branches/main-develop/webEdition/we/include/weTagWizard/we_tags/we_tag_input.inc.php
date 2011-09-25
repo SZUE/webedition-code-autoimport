@@ -29,7 +29,7 @@ $to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', fa
 $nameto = new weTagData_textAttribute('nameto', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('text', false, '', array($name,$size,$maxlength,$value,$html,$php,'id329_num_format',$precision,$user,$htmlspecialchars,$spellcheck,$to,$nameto,), array($name)),
+	new weTagDataOption('text', false, '', array($name,$size,$maxlength,$value,$html,$php,$num_format,$precision,$user,$htmlspecialchars,$spellcheck,$to,$nameto,), array($name)),
 	new weTagDataOption('checkbox', false, '', array($name,$value,$reload,$user,$htmlspecialchars,$to,$nameto,), array($name)),
 	new weTagDataOption('date', false, '', array($name,$format,$user,$htmlspecialchars,$to,$nameto,), array($name)),
 	new weTagDataOption('choice', false, '', array($name,$size,$maxlength,$mode,$values,$reload,$seperator,$user,$htmlspecialchars,$to,$nameto,), array($name)),

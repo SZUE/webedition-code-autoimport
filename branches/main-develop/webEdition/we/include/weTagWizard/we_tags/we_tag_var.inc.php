@@ -13,7 +13,7 @@ $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', array(new 
 $to = new weTagData_selectAttribute('to', array(new weTagDataOption('screen', false, ''),new weTagDataOption('request', false, ''), new weTagDataOption('post', false, ''), new weTagDataOption('get', false, ''), new weTagDataOption('global', false, ''), new weTagDataOption('session', false, ''), new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('sessionfield', false, '')), false, '');
 $nameto = new weTagData_textAttribute('nameto', false, '');
 
-$this->TypeAttribute[] = new weTagData_typeAttribute('type', array(
+$this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('document', false, '', array($name,$doc,$htmlspecialchars), array($name)),
 	new weTagDataOption('property', false, '', array($name,$doc,), array($name)),
 	new weTagDataOption('global', false, '', array($name,$htmlspecialchars), array($name)),

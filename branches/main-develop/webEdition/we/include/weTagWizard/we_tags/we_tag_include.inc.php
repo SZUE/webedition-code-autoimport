@@ -6,13 +6,18 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_typeAttribute('type', array(new weTagDataOption('document', false, '', array('id703_type','id314_id','id315_path','id316_gethttp','id317_seeMode','id1861_kind','id632_name','id668_rootdir'), array()), new weTagDataOption('template', false, '', array('id703_type','id315_path','id704_id'), array())), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('included', array(), false, '');
-if(defined("FILE_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',FILE_TABLE, 'text/webedition', false, ''); }
-$this->Attributes[] = new weTagData_textAttribute('path', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('gethttp', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('seeMode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('kind', array(new weTagDataOption('all', false, ''), new weTagDataOption('int', false, ''), new weTagDataOption('ext', false, '')), false, '');
-$this->Attributes[] = new weTagData_textAttribute('name', false, '');
-if(defined("TEMPLATES_TABLE")) { $this->Attributes[] = new weTagData_selectorAttribute('id',TEMPLATES_TABLE, 'text/weTmpl', false, ''); }
-$this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
+$included = new weTagData_selectAttribute('included', array(), false, '');
+$id = (defined("FILE_TABLE") ? new weTagData_selectorAttribute('id',FILE_TABLE, 'text/webedition', false, ''): null);
+$path = new weTagData_textAttribute('path', false, '');
+$gethttp = new weTagData_selectAttribute('gethttp', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$seeMode = new weTagData_selectAttribute('seeMode', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
+$kind = new weTagData_selectAttribute('kind', array(new weTagDataOption('all', false, ''), new weTagDataOption('int', false, ''), new weTagDataOption('ext', false, '')), false, '');
+$name = new weTagData_textAttribute('name', false, '');
+$id_temp = (defined("TEMPLATES_TABLE") ? new weTagData_selectorAttribute('id',TEMPLATES_TABLE, 'text/weTmpl', false, ''):null);
+$rootdir = new weTagData_textAttribute('rootdir', false, '');
+
+$this->TypeAttribute = new weTagData_typeAttribute('type', array(
+new weTagDataOption('document', false, '', array($id,$path,$gethttp,$seeMode,$kind,$name,$rootdir), array()),
+new weTagDataOption('template', false, '', array($path,$id_temp), array())), false, '');
+
+$this->Attributes=array($included,$id,$path,$gethttp,$seeMode,$kind,$name,$id_temp,$rootdir);
