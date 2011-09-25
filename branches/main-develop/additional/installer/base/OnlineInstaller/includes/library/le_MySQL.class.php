@@ -117,6 +117,10 @@ class le_MySQL {
       printf("Debug: query = %s<br>\n", $Query_String);
 
     $this->Query_ID = mysql_query($Query_String,$this->Link_ID);
+		if(preg_match('/alter table (.*) (add|change|modify|drop)/i', $Query_String,$matches)) {
+			mysql_query('ANALYSE TABLE '.$matches[1],$this->Link_ID);
+		}
+
     $this->Row   = 0;
     $this->Errno = mysql_errno();
     $this->Error = mysql_error();
@@ -442,7 +446,7 @@ class le_MySQL_DB extends le_MySQL {
 			}
 			// deactivate MySQL strict mode #185
 			$this->query(" SET SESSION sql_mode='' ");
-			
+
 			//
 			if($Charset !=''){$this->query(" SET NAMES '" . $Charset . "' ");}
 		}

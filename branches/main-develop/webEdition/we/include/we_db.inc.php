@@ -240,6 +240,9 @@ abstract class DB_WE_abstract {
 			// delete getHash DB Cache
 			getHash('',$this);
 		}
+		if(preg_match('/alter table (.*) (add|change|modify|drop)/i', $Query_String,$matches)) {
+			$this->_query('ANALYSE TABLE '.$matches[1]);
+		}
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();
 		$this->Row = 0;

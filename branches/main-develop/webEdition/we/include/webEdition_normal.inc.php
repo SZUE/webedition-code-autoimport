@@ -42,7 +42,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GL
 	*/
 	function pWebEdition_JSFunctions(){?>
 function toggleBusy(w) {
-	if(w == busy || firstLoad==false)	
+	if(w == busy || firstLoad==false)
 		return;
 	if(self.header) {
 		if(self.header.toggleBusy) {
@@ -127,7 +127,7 @@ var widthBeforeDeleteModeSidebar = 0;
 				if(self.Tree.setScrollY)
 					self.Tree.setScrollY();
 			we_cmd("setTab",arguments[1]);
-			toggleBusy(1);
+			//toggleBusy(1);
 			we_repl(self.load,url,arguments[0]);
 			break;
 		/*FIXME: remove case "clear_cache":

@@ -127,7 +127,7 @@ function pWebEdition_JSwe_cmds()
 	top.weEditorFrameController.openDocument(arguments[1],arguments[2],arguments[3],"",arguments[4],"",arguments[5]);
 			break;
 		case "load":
-	toggleBusy(1);
+//	toggleBusy(1);
 			break;
 		case "exit_delete": case "exit_move":
 	deleteMode=false; case "delete": case "move":
@@ -151,6 +151,36 @@ function pWebEdition_Frameset(){
 			$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST["we_cmd"][$i] . "&";
 		}
 		?>
+				<div style="position:fixed;top:0;left:0;right:0;bottom:0;border:0;">
+		<div style="position:absolute;top:0;left:0;right:0;height:32px;border-bottom: 1px solid black;">
+			<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/header.php?SEEM_edit_include=true");?>
+		</div>
+		<div style="position:absolute;top:32px;left:0;right:0;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
+			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php?<?php	print $we_cmds?>SEEM_edit_include=true" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+		</div>
+		<div style="position:absolute;left:0;right:0;bottom:0;height:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 1px solid;">
+			<div style="position:absolute;top:0;bottom:0;width:25%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:25%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
+			</div>
+			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+			</div>
+			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+			</div>
+		</div>
+	</div>
+<!--
 	<frameset rows="32,*,<?php
 		print (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0) ? "100,100" : "0,0";
 		?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload('include')">
@@ -158,9 +188,9 @@ function pWebEdition_Frameset(){
 	<frame src="resizeframe.php?<?php	print $we_cmds?>SEEM_edit_include=true" name="rframe" scrolling="no" noresize>
 	<frame src="<?php	print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
 	<frame src="<?php	print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
-	<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+	<!-- Bugfix Opera >=10.5  target name is always "ad"
 	<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
-</frameset>
+</frameset> -->
 			<?php
 
 	} else
@@ -171,7 +201,7 @@ function pWebEdition_Frameset(){
 			<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/header.php");?>
 		</div>
 	</div>
-			
+
 			<!--
 <frameset rows="32,*,<?php
 			print (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0) ? 100 : 0;
@@ -181,7 +211,7 @@ function pWebEdition_Frameset(){
 	<frameset cols="25%,25%,30%,10%,10%" framespacing="0" border="0" frameborder="no">
 		<frame src="<?php	print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
 		<frame src="<?php	print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
-			<!-- Bugfix Opera >=10.5  target name is always "ad" 
+			<!-- Bugfix Opera >=10.5  target name is always "ad"
 		<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
 		<frame src="<?php	print WE_USERS_MODULE_PATH?>we_users_ping.php" name="ping" scrolling="no" noresize>
     <frame src="<?php	print HTML_DIR?>white.html" name="postframe" scrolling="no" noresize>
