@@ -319,7 +319,7 @@ class weNavigationView {
 						eval("' . $this->topFrame . '.we_cmd("+args+")");
 				}
 			}
-			' . $_we_button->create_state_changer(false) . '
+			' . we_button::create_state_changer(false) . '
 			var copyNaviFolderUrl = "'.WEBEDITION_DIR.'rpc/rpc.php";
 			function copyNaviFolder(folderPath,folderID) {
 				var parentPos = selfNaviPath.indexOf(folderPath);

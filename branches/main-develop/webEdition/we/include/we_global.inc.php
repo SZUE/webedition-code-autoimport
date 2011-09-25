@@ -1477,7 +1477,7 @@ function makeOwnersSql($useCreatorID = true) {
 function we_getParentIDs($table, $id, &$ids, $db = '') {
 	if (!$db)
 		$db = new DB_WE();
-	while (($pid = f('SELECT ParentID FROM '.$table.'WHERE ID=' . intval($id), 'ParentID', $db)) > 0) {
+	while (($pid = f('SELECT ParentID FROM '.$table.' WHERE ID=' . intval($id), 'ParentID', $db)) > 0) {
 		$ids[]=$pid;
 	}
 }

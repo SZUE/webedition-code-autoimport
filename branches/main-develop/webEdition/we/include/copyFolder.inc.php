@@ -1082,9 +1082,9 @@ class copyFolderFinishFrag extends copyFolderFrag
 
 	}
 
-	function printHeader()
-	{
-		print "<html>\n" . we_htmlElement::htmlHead(WE_DEFAULT_HEAD . STYLESHEET);
+	function printHeader(){
+		htmlTop(g_l('copyFolder',"[headline]"));
+		print STYLESHEET;
 	}
 
 }

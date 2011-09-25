@@ -37,17 +37,18 @@ Zend_Loader::loadClass('we_core_Local');
 
 $title = 'webEdition ';
 if(isset($_REQUEST['tool'])) {
-	$tool = $_REQUEST['tool'];
-	if($tool=='weSearch') {
+	switch($_REQUEST['tool']){
+	case 'weSearch':
 		$title .= g_l('tools','[tools]'). ' - '.g_l('searchtool','[weSearch]');
-	}
-	elseif($tool=='navigation') {
+		break;
+	case 'navigation':
 		$title .= g_l('tools','[tools]'). ' - '.g_l('navigation','[navigation]');
-	}
-	else {
+		break;
+	default:
 		$translate = we_core_Local::addTranslation('apps.xml');
 		we_core_Local::addTranslation('default.xml', $tool);
 		$title .= $translate->_('Applications'). ' - '.$translate->_($tool);
+		break;
 	}
 }
 

@@ -583,7 +583,6 @@ class weCustomerFrames extends weModuleFrames {
 				$db_we2 = new DB_WE();
 				while ($DB_WE->next_record()) {
 					$documentStr.='<tr>';
-					//$documentStr.='<td>'.$we_button->create_button('image:btn_edit_edit', "javascript:top.opener.top.doClickDirect(".$DB_WE->f('ID').",'text/webedition','tblFile','top.opener');return true;'" ).'</td>';
 					$documentStr.='<td>'.we_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(".$DB_WE->f('ID').",'".$DB_WE->f('ContentType'). "','tblFile'); }" ).'</td>';
 
 					$documentStr.='<td>'.$DB_WE->f('ID').'</td>';
