@@ -65,7 +65,7 @@ $pagelanguage = new weTagData_choiceAttribute('pagelanguage',$locales, false,tru
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
 $showself = new weTagData_selectAttribute('showself', array(new weTagDataOption('true', false, ''), new weTagDataOption('false', false, '')), false, '');
 
-$this->TypeAttribute =new weTagData_typeAttribute('10000', 'type', array(
+$this->TypeAttribute =new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
 	new weTagDataOption('document', false, '', array($name,$doctype,$categories,$catOr,$rows,$order_document,$desc,$offset,$languages,$searchable,$workspaceID_document,$cfilter,$recursive,$customers,$contenttypes,$id,$calendar, $numorder,$categoryids,$condition), array()),
 	new weTagDataOption('search', false, '', array($name,$doctype,$categories,$catOr,$languages,$rows,$order_search,$desc,$casesensitive,$classid,$workspaceID_document,$cfilter,$numorder,$objectseourls,$hidedirindex), array()),
