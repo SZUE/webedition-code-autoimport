@@ -70,7 +70,7 @@ function startNormalMode() {
 				<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
        </div>
 			<?php if($_sidebarwidth>0){ ?>
-       <div style="position:absolute;top:0;bottom:0;right:0;left:<?php echo $_sidebarwidth; ?>;" id="sidebarDiv">
+       <div style="position:absolute;top:0;bottom:0;right:0;width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
 				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>
 			<?php } ?>
