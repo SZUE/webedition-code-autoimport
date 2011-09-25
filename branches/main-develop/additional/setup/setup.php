@@ -806,9 +806,11 @@ function step_installation() {
 			$dbquery=str_replace('###TBLPREFIX###', '', $dbquery);
 		}
 		$dbquery=str_replace('###INSTALLONLY###', '', $dbquery);
-		
+
 		$dbquery = str_replace("ENGINE=MyISAM",$charset_collation,$dbquery);
 		if(strpos($dbquery,'###UPDATEONLY###')!==false){
+			$dbquery='';
+		}else if(strpos($dbquery,'###UPDATEDROPCOL')!==false){
 			$dbquery='';
 		}
 		if(!empty($dbquery)) {
@@ -844,7 +846,7 @@ function step_installation() {
 		$output .= tpl_ok("Changed the default user's language to ".$_SESSION["we_language"]);
 	}
 	@mysql_close($conn);
-	
+
 	//move .default files to their "new" location.
 	if(is_writable('./webEdition/we/include/conf/')){
 		$dir='./webEdition/we/include/conf/';

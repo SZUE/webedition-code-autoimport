@@ -545,6 +545,10 @@ class liveUpdateFunctions {
 
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 		$query=str_replace('###UPDATEONLY###', '', $query);
+		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
+			$leDB->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
+			$query=($leDB->num_rows()?'ALTER TABLE `'.$matches[2].'` DROP COLUMN `'.$matches[1].'`':'');
+		}
 
 			if (!$leDB->query($query)) {
 
@@ -603,12 +607,17 @@ class liveUpdateFunctions {
 		// change fields when needed.
 
 		$query = trim($query);
-		
-		if (strpos($query,'###INSTALLONLY###')!==false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+
+		if (strpos($query,'###INSTALLONLY###')!==false){// nur im LiveUpdate nicht ausf�hren
 			return true;
 		}
 
 		$query=str_replace('###UPDATEONLY###', '', $query);
+		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
+			$matches[2]=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $matches[2]);
+			$db->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
+			$query=($db->num_rows()?'ALTER TABLE `'.$matches[2].'` DROP COLUMN `'.$matches[1].'`':'');
+		}
 		if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
 			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
@@ -619,7 +628,7 @@ class liveUpdateFunctions {
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
+
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);

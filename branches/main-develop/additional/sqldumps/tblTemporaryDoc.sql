@@ -4,8 +4,7 @@
 /* query separator */
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemporaryDoc SET DocTable="tblObjectFiles" WHERE DocTable="###TBLPREFIX###tblObjectFiles";
 /* query separator */
-###UPDATEONLY###ALTER IGNORE TABLE ###TBLPREFIX###tblTemporaryDoc DROP COLUMN `ID`;
-
+###UPDATEDROPCOL(ID,###TBLPREFIX###tblTemporaryDoc)###
 /* query separator */
 CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
   DocumentID bigint(20) unsigned NOT NULL default '0',
