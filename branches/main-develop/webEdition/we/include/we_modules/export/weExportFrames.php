@@ -232,12 +232,10 @@ class weExportFrames extends weModuleFrames {
 		$table2->setCol(0,4,array("id"=>"progress","style"=>"display: none","nowrap"=>null),$progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-					we_htmlElement::htmlHead(
-						WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "") . $js
-					).
 					we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"15","marginheight"=>"0","leftmargin"=>"15","topmargin"=>"0"),
 							we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode())
-					)
+					),
+			(isset($progressbar) ? $progressbar->getJSCode() . "\n" : "") . $js
 		);
 
 	}
@@ -947,7 +945,7 @@ class weExportFrames extends weModuleFrames {
 		$hiddens =	we_htmlElement::htmlHidden(array("name"=>"Categorys","value"=>$this->View->export->Categorys)).
 					we_htmlElement::htmlHidden(array("name"=>"cat","value"=>(isset($_REQUEST["cat"]) ? $_REQUEST["cat"] :"")));
 
-		
+
 		$delallbut = we_button::create_button("delete_all","javascript:top.content.setHot(); we_cmd('del_all_cats')",true,-1,-1,"","",(isset($this->View->export->Categorys) ? false : true));
 		$addbut    = we_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.".$this->editorBodyFrame.".we_cmd(\\'add_cat\\',top.allIDs);')");
 		//$addbut    = we_button::create_button("add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.".$this->editorBodyFrame.".addCat(top.allIDs,top.allPaths);')");

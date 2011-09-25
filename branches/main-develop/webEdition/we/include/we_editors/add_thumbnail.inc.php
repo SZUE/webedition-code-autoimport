@@ -47,7 +47,7 @@ $_thumbs = array();
 
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
-	htmlTop();
+	htmlTop(g_l('weClass',"[thumbnails]"));
 	print '<script type="text/javascript">
 
 	function select_thumbnails(sel){

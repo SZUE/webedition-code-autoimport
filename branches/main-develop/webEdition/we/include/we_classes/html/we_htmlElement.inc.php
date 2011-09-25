@@ -46,7 +46,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlForm($attribs=array(),$content=''){
+	static function htmlForm($attribs=array(),$content=''){
 
 		if(!isset($attribs['name'])) $attribs['name']='we_form';
 		return we_baseElement::getHtmlCode(new we_baseElement('form',true,$attribs,$content));
@@ -60,7 +60,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlInput($attribs=array()){
+	static function htmlInput($attribs=array()){
 
 		if(!isset($attribs['class'])) $attribs['class']='defaultfont';
 		return we_baseElement::getHtmlCode(new we_baseElement('input',false,$attribs));
@@ -74,7 +74,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlRadioCheckbox($attribs=array()){
+	static function htmlRadioCheckbox($attribs=array()){
 			$attribs['type']='checkbox';
 
 			$table=new we_htmlTable(array('cellpadding'=>'0','cellspacing'=>'0','border'=>'0'),1,3);
@@ -93,7 +93,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function cssElement($content='',$attribs=array()){
+	static function cssElement($content='',$attribs=array()){
 		$attribs['type']='text/css';
 		return we_baseElement::getHtmlCode(new we_baseElement('style',true,$attribs,$content));
 	}
@@ -106,7 +106,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function jsElement($content='',$attribs=array()){
+	static function jsElement($content='',$attribs=array()){
 		$attribs['language']='JavaScript';
 		$attribs['type']='text/javascript';
 		return we_baseElement::getHtmlCode(new we_baseElement('script',true,$attribs,$content));
@@ -119,7 +119,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function linkElement($attribs=array()){
+	static function linkElement($attribs=array()){
 		return we_baseElement::getHtmlCode(new we_baseElement('link',false,$attribs));
 	}
 
@@ -131,7 +131,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlFont($attribs=array(),$content=''){
+	static function htmlFont($attribs=array(),$content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('font',true,$attribs,$content));
 	}
 
@@ -143,7 +143,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlSpan($attribs=array(),$content=''){
+	static function htmlSpan($attribs=array(),$content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('span',true,$attribs,$content));
 	}
 
@@ -155,7 +155,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlDiv($attribs=array(),$content=''){
+	static function htmlDiv($attribs=array(),$content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('div',true,$attribs,$content));
 	}
 
@@ -166,7 +166,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlB($content){
+	static function htmlB($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('b',true,array(),$content));
 	}
 
@@ -177,7 +177,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlI($content){
+	static function htmlI($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('i',true,array(),$content));
 	}
 
@@ -188,7 +188,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlU($content){
+	static function htmlU($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('u',true,array(),$content));
 	}
 
@@ -199,7 +199,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlImg($attribs=array()){
+	static function htmlImg($attribs=array()){
 		return we_baseElement::getHtmlCode(new we_baseElement('img',false,$attribs));
 	}
 
@@ -211,7 +211,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlBody($attribs=array(),$content=''){
+	static function htmlBody($attribs=array(),$content=''){
 		if(!isset($attribs['marginwidth'])) $attribs['marginwidth']='0';
 		if(!isset($attribs['marginheight'])) $attribs['marginheight']='0';
 		if(!isset($attribs['leftmargin'])) $attribs['leftmargin']='0';
@@ -228,7 +228,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlLabel($attribs=array(),$content=''){
+	static function htmlLabel($attribs=array(),$content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('label',true,$attribs,$content));
 	}
 
@@ -239,7 +239,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlHidden($attribs=array()){
+	static function htmlHidden($attribs=array()){
 		$attribs['type']='hidden';
 		return we_baseElement::getHtmlCode(new we_baseElement('input',false,$attribs));
 	}
@@ -252,7 +252,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlA($attribs=array(),$content=''){
+	static function htmlA($attribs=array(),$content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('a',true,$attribs,$content));
 	}
 
@@ -270,7 +270,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlNobr($content=''){
+	static function htmlNobr($content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('nobr',true,array(),$content));
 	}
 
@@ -281,8 +281,19 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlComment($content){
+	static function htmlComment($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('!-- '. $content.' --',false));
+	}
+
+	/**
+	 *
+	 */
+	static function htmlDocType($version='4Trans'){
+		switch($version){
+			case '4Trans':
+			default:
+			return '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">';
+		}
 	}
 
 	/**
@@ -290,8 +301,8 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlHtml($content){
-		return we_baseElement::getHtmlCode(new we_baseElement('html',true,array(),$content));
+	static function htmlHtml($content){
+		return self::htmlDocType().we_baseElement::getHtmlCode(new we_baseElement('html',true,array(),$content));
 	}
 
 	/**
@@ -299,16 +310,16 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlHead($content){
+	static function htmlHead($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('head', true, array(),$content));
 	}
 
-	function htmlMeta($attribs = array()){
+	static function htmlMeta($attribs = array()){
 
 		return we_baseElement::getHtmlCode(new we_baseElement('meta', false, $attribs));
 	}
 
-	function htmlTitle($content){
+	static function htmlTitle($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('title', true, array(), $content));
 	}
 
@@ -317,7 +328,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlTextArea($attribs=array(),$content=''){
+	static function htmlTextArea($attribs=array(),$content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('textarea',true,$attribs,$content));
 	}
 
@@ -326,7 +337,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlP($attribs = array(),$content){
+	static function htmlP($attribs = array(),$content){
 		return we_baseElement::getHtmlCode(new we_baseElement('p',true,$attribs,$content));
 	}
 
@@ -335,7 +346,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlCenter($content){
+	static function htmlCenter($content){
 		return we_baseElement::getHtmlCode(new we_baseElement('center',true,array(),$content));
 	}
 
@@ -344,7 +355,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlApplet($attribs = array(),$content){
+	static function htmlApplet($attribs = array(),$content){
 		return we_baseElement::getHtmlCode(new we_baseElement('applet',true,$attribs,$content));
 	}
 
@@ -353,7 +364,7 @@ class we_htmlElement {
 	*
 	* @return		string
 	*/
-	function htmlParam($attribs = array()){
+	static function htmlParam($attribs = array()){
 		return we_baseElement::getHtmlCode(new we_baseElement('param',false,$attribs));
 	}
 }

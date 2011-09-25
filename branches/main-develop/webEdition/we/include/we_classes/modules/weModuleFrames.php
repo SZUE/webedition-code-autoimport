@@ -70,8 +70,8 @@ class weModuleFrames{
 	//----------HTML functions -----------------
 
 
-	function getHTMLDocument($body,$head=""){
-		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET . "\n".$head;
+	function getHTMLDocument($body,$extraHead=""){
+		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET . "\n".$extraHead;
 		return we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead($head).
 					$body

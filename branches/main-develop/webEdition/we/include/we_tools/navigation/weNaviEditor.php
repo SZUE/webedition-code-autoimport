@@ -246,5 +246,3 @@ $_head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . we_htmlElement::jsElement(
 )) . "\n" . we_htmlElement::jsElement($_js);
 
 print we_htmlElement::htmlHtml(we_htmlElement::htmlHead($_head) . $_body);
-
-?>

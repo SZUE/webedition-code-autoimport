@@ -978,7 +978,7 @@ class we_import_files
 			}
 			if ($fh) {
 				if  (isset($we_doc->IsBinary) && $we_doc->IsBinary){
-					
+
 				} else {
 					$we_fileData = fread($fh, $_FILES['we_File']["size"]);
 				}
@@ -1156,7 +1156,7 @@ class we_import_files
 	function _getHtmlPage($body, $js = "")
 	{
 		$yuiSuggest = & weSuggest::getInstance();
-		$head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . $js . "\n";
+		$head = str_replace(WE_DEFAULT_TITLE, g_l('import','[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js . "\n";
 		$head .= $yuiSuggest->getYuiCssFiles();
 		$head .= $yuiSuggest->getYuiJsFiles();
 		return we_htmlElement::htmlHtml(we_htmlElement::htmlHead($head) . $body);

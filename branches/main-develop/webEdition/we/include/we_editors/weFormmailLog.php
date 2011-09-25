@@ -32,7 +32,7 @@
 			if (isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1) {
 				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_LOG_TABLE);
 			}
-			
+
 			$close = we_button::create_button("close","javascript:self.close();");
 			$refresh = we_button::create_button("refresh","javascript:location.reload();");
 			$deleteLogBut = we_button::create_button("clear_log","javascript:clearLog()");
@@ -133,7 +133,7 @@ function clearLog() {
 
 
 	function getHTMLDocument($body,$head=""){
-		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET . "\n".$head;
+		$head=str_replace(WE_DEFAULT_TITLE, g_l('prefs','[formmail_log]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . "\n".$head;
 		return we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead($head).
 					$body
