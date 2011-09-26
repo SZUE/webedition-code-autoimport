@@ -249,7 +249,7 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td class="defaultfont" align="left">
-						'.g_l('weClass','languageLinks').'</td>
+						'.g_l('weClass','[languageLinks]').'</td>
 				</tr>
 			</table>';
 			$content .= "<br/>".$htmlzw; //.$this->htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"

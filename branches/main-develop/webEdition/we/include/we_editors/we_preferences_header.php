@@ -53,7 +53,7 @@ $we_tabs = new we_tabs();
 $we_tabs->addTab(new we_tab("#", g_l('prefs','[tab_ui]'), ($tabname=="setting_ui" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('ui');"));
 
 
-if (we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE")) {
+if (false && (we_hasPerm("ADMINISTRATOR") || we_hasPerm("NEW_TEMPLATE"))) {
 	$we_tabs->addTab(new we_tab("#", g_l('prefs','[tab_cache]'), ($tabname=="setting_cache" ? 'TAB_ACTIVE' : 'TAB_NORMAL'), "top.we_cmd('cache');"));
 }
 

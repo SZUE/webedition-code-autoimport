@@ -3762,7 +3762,7 @@ function build_dialog($selected_setting = "ui") {
 
 			$_settings = array();
 
-			if (we_hasPerm("ADMINISTRATOR")) {
+			if (false && we_hasPerm("ADMINISTRATOR")) {
 
 				/*****************************************************************
 				 * Information
@@ -3850,7 +3850,7 @@ function build_dialog($selected_setting = "ui") {
 			}
 
 			// Build dialog element if user has permission
-			$_dialog = create_dialog("", g_l('prefs','[tab_cache]'), $_settings);
+			//$_dialog = create_dialog("", g_l('prefs','[tab_cache]'), $_settings);
 
 			break;
 		case "countries":
@@ -6539,8 +6539,9 @@ function render_dialog() {
 	if($tabname=="setting_validation") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_validation"), build_dialog("validation"));
 	else$_output .= we_htmlElement::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
-	if($tabname=="setting_cache") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+	if(false && $tabname=="setting_cache") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
 	else$_output .= we_htmlElement::htmlDiv(array("id" => "setting_cache", "style" => "display: none;"), build_dialog("cache"));
+
 
 	if($tabname=="setting_language") $_output .= we_htmlElement::htmlDiv(array("id" => "setting_language"), build_dialog("language"));
 	else $_output .= we_htmlElement::htmlDiv(array("id" => "setting_language", "style" => "display: none;"), build_dialog("language"));
