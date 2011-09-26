@@ -690,7 +690,6 @@ function we_getCodeMirrorCode($code) {
 			$maineditor.=
 			'<script type="text/JavaScript">
 				var editor = CodeMirror.fromTextArea("editarea", CMoptions);
-				editor.value("hallO");
 			</script>';
 		}
 	}

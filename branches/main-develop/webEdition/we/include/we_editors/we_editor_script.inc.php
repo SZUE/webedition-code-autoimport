@@ -58,7 +58,7 @@ if (isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview") {
 }
 
 ?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>we_textarea.js?<?php print WE_VERSION ?>"></script>
+<script  type="text/javascript" src="<?php print JS_DIR ?>we_textarea.js"></script>
 <?php if (isset($GLOBALS["we_doc"])) { ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>seeMode.php?EditPage=<?php print $GLOBALS["we_doc"]->EditPageNr; ?>&ContentType=<?php print $GLOBALS["we_doc"]->ContentType; ?>"></script>
 
@@ -181,8 +181,8 @@ function showhideLangLink(allnames,allvalues,deselect){
 		w=allnames+'['+deselect+']';
 		e = document.getElementById(w);
 		e.style.display='none';
-		
-		
+
+
 	}
 
 function weDelCookie(name,path,domain){

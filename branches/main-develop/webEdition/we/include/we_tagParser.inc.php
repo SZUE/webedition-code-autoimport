@@ -354,8 +354,8 @@ class we_tagParser {
 				$content = $parseFn($attribs, $content);
 //FIXME: make this linear -> modify $tags
 
-				/*$tp = new we_tagParser($content);
-				$tp->parseTags($content);*/
+				$tp = new we_tagParser($content);
+				$tp->parseTags($content);
 				$code = substr($code, 0, $tagPos) .
 								$content .
 								substr($code, (isset($endeEndTagPos)?$endeEndTagPos:$endeStartTag));
