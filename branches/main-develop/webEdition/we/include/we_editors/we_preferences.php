@@ -5304,31 +5304,27 @@ else {
 				array_push($_settings, array("headline" => g_l('prefs','[showinputs_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_php_setting = new we_htmlSelect(array("name" => "hidenameattribinweimg_default","class"=>"weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+				$_php_setting->addOption(0,g_l('prefs','[no]'));
+				$_php_setting->addOption(1,g_l('prefs','[yes]'));
 
-					// Set selected setting
-					if ($i == 0 && !get_value("hidenameattribinweimg_default")) {
-						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("hidenameattribinweimg_default")) {
-						$_php_setting->selectOption($i);
-					}
+				// Set selected setting
+				if (get_value("hidenameattribinweimg_default")) {
+					$_php_setting->selectOption(1);
+				} else {
+					$_php_setting->selectOption(0);
 				}
-
 				array_push($_settings, array("headline" => g_l('prefs','[hidenameattribinweimg_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_php_setting = new we_htmlSelect(array("name" => "hidenameattribinweform_default","class"=>"weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+				$_php_setting->addOption(0,g_l('prefs','[no]'));
+				$_php_setting->addOption(1,g_l('prefs','[yes]'));
 
-					// Set selected setting
-					if ($i == 0 && !get_value("hidenameattribinweform_default")) {
-						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("hidenameattribinweform_default")) {
-						$_php_setting->selectOption($i);
-					}
+				// Set selected setting
+				if (get_value("hidenameattribinweform_default")) {
+					$_php_setting->selectOption(1);
+				} else {
+					$_php_setting->selectOption(0);
 				}
-
 				array_push($_settings, array("headline" => g_l('prefs','[hidenameattribinweform_default]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_we_doctype_workspace_behavior = abs(get_value("we_doctype_workspace_behavior"));
@@ -5521,15 +5517,14 @@ else {
 				array_push($_settings, array("headline" => g_l('prefs','[navigation_entries_from_document]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
 				$_php_setting = new we_htmlSelect(array("name" => "navigation_rules_continue_after_first_match","class"=>"weSelect"));
-				for ($i = 0; $i < 2; $i++) {
-					$_php_setting->addOption($i, $i == 0 ? "false" : "true");
+				$_php_setting->addOption(0,g_l('prefs','[no]'));
+				$_php_setting->addOption(1,g_l('prefs','[yes]'));
 
-					// Set selected setting
-					if ($i == 0 && !get_value("navigation_rules_continue_after_first_match")) {
-						$_php_setting->selectOption($i);
-					} else if ($i == 1 && get_value("navigation_rules_continue_after_first_match")) {
-						$_php_setting->selectOption($i);
-					}
+				// Set selected setting
+				if (get_value("navigation_rules_continue_after_first_match")) {
+					$_php_setting->selectOption(1);
+				} else {
+					$_php_setting->selectOption(0);
 				}
 				array_push($_settings, array("headline" => g_l('prefs','[navigation_rules_continue]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 
