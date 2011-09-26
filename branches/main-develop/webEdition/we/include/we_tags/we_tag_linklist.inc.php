@@ -37,7 +37,7 @@ function we_tag_linklist($attribs, $content){
 	$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->getElement($name) :''));
 
 	$ll = new we_linklist($linklist,$hidedirindex,$objectseourls);
-	$ll->name = $name;
+	$ll->setName($name);
 
 	$out = $ll->getHTML(
 			(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!$isInListview)),

@@ -39,7 +39,7 @@ class we_linklist {
 	private $hidedirindex = false;
 	private $objectseourls = false;
 
-	function we_linklist($sString, $hidedirindex=false, $objectseourls=false) {
+	function __construct($sString, $hidedirindex=false, $objectseourls=false) {
 		$this->sString = $sString;
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
@@ -48,6 +48,10 @@ class we_linklist {
 			$this->listArray = array();
 		}
 		$this->db = new DB_WE();
+	}
+
+	function setName($name){
+		$this->name=$name;
 	}
 
 	function getID($nr) {
