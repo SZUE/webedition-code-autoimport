@@ -627,26 +627,33 @@ class we_document extends we_root {
 		$this->setElement($name,$list);
 	}
 
-	function upEntryAtList($name,$nr) {
+	function upEntryAtList($name,$nr,$number=1) {
 		$list = $this->getElement($name);
 		if($list) {
 			$listarray = unserialize($list);
 		}
-		$temp = $listarray[$nr-1];
-		$listarray[$nr-1] = $listarray[$nr];
+		if($nr-$number<0){
+			$number=$nr;
+		}
+		$temp = $listarray[$nr-$number];
+		$listarray[$nr-$number] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 
 		$list = serialize($listarray);
 		$this->setElement($name,$list);
 	}
 
-	function downEntryAtList($name,$nr) {
+	function downEntryAtList($name,$nr,$number=1) {
 		$list = $this->getElement($name);
 		if($list) {
 			$listarray = unserialize($list);
 		}
-		$temp = $listarray[$nr+1];
-		$listarray[$nr+1] = $listarray[$nr];
+		$max=max(array_keys($listarray));
+		if($nr+$number>$max){
+			$number=$max-$nr;
+		}
+		$temp = $listarray[$nr+$number];
+		$listarray[$nr+$number] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 		$list = serialize($listarray);
 		$this->setElement($name,$list);
