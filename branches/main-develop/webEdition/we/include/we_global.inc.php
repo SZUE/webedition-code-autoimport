@@ -1758,7 +1758,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = '') {
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '') {
 	$db = new DB_WE();
 	array_push($arr, $id);
-	$db->query('SELECT ID FROM '.$table.'WHERE ParentID=' . abs($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
+	$db->query('SELECT ID FROM '.$table.' WHERE ParentID=' . abs($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
 	while ($db->next_record())
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 }
