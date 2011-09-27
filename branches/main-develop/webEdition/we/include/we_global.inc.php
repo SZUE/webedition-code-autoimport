@@ -1224,7 +1224,6 @@ function deleteContentFromDB($id, $table) {
  * @return string stripped tablename
  */
 function stripTblPrefix($table){
-
 	return TBL_PREFIX!=''&&(strpos($table,TBL_PREFIX)!==FALSE)?substr($table, strlen(TBL_PREFIX)):$table;
 }
 
@@ -2600,7 +2599,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		}
 	}
 
-	$_tag = "<$element";
+	$_tag = '<'.$element;
 
 	foreach ($attribs as $k => $v) {
 		if ($k == 'link_attribute') {// Bug #3741
@@ -2610,7 +2609,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		}
 	}
 	if ($content != '' || $forceEndTag) { //	use endtag
-		$_tag .= ">$content</$element>";
+		$_tag .= '>'.$content.'</'.$element.'>';
 	} else { //	xml style or not
 		$_tag .= ( ($_xmlClose && !$onlyStartTag) ? ' />' : '>');
 	}

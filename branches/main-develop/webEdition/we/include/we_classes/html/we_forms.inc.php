@@ -31,7 +31,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 
-class we_forms {
+abstract class we_forms {
 
 	/**
 	 * @param      $value                                  string
@@ -46,7 +46,7 @@ class we_forms {
 	 * @return     string
 	 */
 
-	function checkbox($value,$checked,$name,$text,$uniqid=false,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$html="") {
+	static function checkbox($value,$checked,$name,$text,$uniqid=false,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$html="") {
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid?uniqid($name . "_"):$name);
 
@@ -86,7 +86,7 @@ class we_forms {
 	 * @return     string
 	 */
 
-	 function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="",$type=0,$width=0){
+	 static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="",$type=0,$width=0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;".$onClick;
 		return '<input type="hidden" name="'.$name.'" value="'.($checked ? 1 : 0).'" />'.we_forms::checkbox(1, $checked, "_".$name, $text, $uniqid, $class, $onClick, $disabled, $description,$type, $width);
 	}
@@ -104,7 +104,7 @@ class we_forms {
 	 * @return     string
 	 */
 
-	function radiobutton($value,$checked,$name,$text,$uniqid=true,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$onMouseUp="",$extra_content="") {
+	static function radiobutton($value,$checked,$name,$text,$uniqid=true,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$onMouseUp="",$extra_content="") {
 		// Check if we have to create a uniqe id
 		if ($uniqid) {
 			$_id = $name . "_" . uniqid(rand());
@@ -153,7 +153,7 @@ class we_forms {
 	* @param string $charset
 	*
 	*/
-	function weTextarea($name,$value,$attribs,$autobr,$autobrName,$showAutobr=true,$path="",$hidestylemenu=false,$forceinwebedition=false,$xml=false,$removeFirstParagraph=true,$charset="",$showSpell=true, $isFrontendEdit=false){
+	static function weTextarea($name,$value,$attribs,$autobr,$autobrName,$showAutobr=true,$path="",$hidestylemenu=false,$forceinwebedition=false,$xml=false,$removeFirstParagraph=true,$charset="",$showSpell=true, $isFrontendEdit=false){
 		if($charset == ""){
 			if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->getElement("Charset")){
 				$charset = $GLOBALS["we_doc"]->getElement("Charset");
@@ -302,7 +302,7 @@ class we_forms {
 	}
 
 
-	function removeBrokenInternalLinksAndImages(&$text) {
+	static function removeBrokenInternalLinksAndImages(&$text) {
 		$DB_WE = new DB_WE();
 		if(preg_match_all('/(href|src)="document:([^" \?#]+)/i',$text,$regs,PREG_SET_ORDER)){
 			foreach($regs as $reg) {

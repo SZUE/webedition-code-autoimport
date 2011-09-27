@@ -77,7 +77,7 @@ function we_tag_sessionField($attribs, $content) {
 					$maxyear);
 			break;
 		case 'country':
-			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
+			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
@@ -108,14 +108,14 @@ function we_tag_sessionField($attribs, $content) {
 
 			$content = '';
 			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT !=''){
-				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') .WE_COUNTRIES_DEFAULT . '</option>' . "\n";
+				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') .WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach ($topCountries as $countrykey => &$countryvalue) {
-				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>' . "\n";
+				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
-			$content.='<option value="-" disabled="disabled">----</option>' . "\n";
+			$content.='<option value="-" disabled="disabled">----</option>';
 			foreach ($shownCountries as $countrykey2 => &$countryvalue2) {
-				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>' . "\n";
+				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
 
 			return getHtmlTag('select', $newAtts, $content, true);
@@ -193,7 +193,6 @@ function we_tag_sessionField($attribs, $content) {
 			} else {
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/we_textarea_include.inc.php');
-				$pure = weTag_getAttribute('pure', $attribs, false, true);
 				$autobr = $autobrAttr ? 'on' : 'off';
 				$showAutobr = isset($attribs['autobr']);
 				return we_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
@@ -302,7 +301,7 @@ function we_tag_sessionField($attribs, $content) {
 
 			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
 			if ($showcontrol) {
-				
+
 				$foo = attributFehltError($attribs, 'parentid', 'sessionField');
 				if ($foo)
 					return $foo;
