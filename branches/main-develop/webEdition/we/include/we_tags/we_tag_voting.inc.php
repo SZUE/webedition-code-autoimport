@@ -1,5 +1,9 @@
 <?php
 
+function we_parse_tag_voting($attribs, $content) {
+		return '<?php printElement('.we_tagParser::printTag('voting',$attribs).');?>'.$content.'<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']);?>';
+}
+
 /**
  * webEdition CMS
  *
@@ -49,7 +53,7 @@ function we_tag_voting($attribs, $content) {
 			$GLOBALS['_we_voting'] = new weVoting($__voting_matches[1][0]);
 		}
 	}
-	
+
 	if (isset($GLOBALS['_we_voting'])) {
 		$GLOBALS['_we_voting']->setDefVersion($version);
 	}

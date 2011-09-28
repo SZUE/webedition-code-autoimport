@@ -23,8 +23,8 @@
  */
 
 function we_tag_conditionOr($attribs, $content){
-	if (isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
-		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= " OR ";
+	if (isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])) {
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= ' OR ';
 	}
-	return "";
+	return '';
 }

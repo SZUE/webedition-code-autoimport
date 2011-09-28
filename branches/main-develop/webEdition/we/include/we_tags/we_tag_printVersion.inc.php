@@ -21,6 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_printVersion($attribs, $content){
+	$tp = new we_tagParser($content);
+	$tp->parseTags($content);
+	return '<?php printElement('.we_tagParser::printTag('printVersion',$attribs,$content,true).');?>';
+}
 
 function we_tag_printVersion($attribs, $content){
 	if (($foo = attributFehltError($attribs, "tid", "printVersion")))	return $foo;
@@ -51,15 +56,8 @@ function we_tag_printVersion($attribs, $content){
 	if (isset($_SESSION)) {
 		array_push($hideQuery, session_name());
 	}
-	if (isset($_POST)) {
-		foreach ($_POST as $k => $v) {
-			if ((!is_array($v)) && (!in_array($k, $hideQuery))) {
-				$_query_string .= "&" . rawurlencode($k) . "=" . rawurlencode($v);
-			}
-		}
-	}
-	if (isset($_GET)) {
-		foreach ($_GET as $k => $v) {
+	if (isset($_REQUEST)) {
+		foreach ($_REQUEST as $k => $v) {
 			if ((!is_array($v)) && (!in_array($k, $hideQuery))) {
 				$_query_string .= "&" . rawurlencode($k) . "=" . rawurlencode($v);
 			}
@@ -84,12 +82,12 @@ function we_tag_printVersion($attribs, $content){
 			$url = $loc . 'we_cmd[1]=' . $id . '&amp;we_cmd[4]=' . $tid . $_query_string;
 		}
 	}
-	$attr = we_make_attribs($attribs, "tid,doc,link,Link,triggerid");
 
 	if ($link == "off" || $link == "false") {
 		return $url;
 	} else {
-		$GLOBALS["we_tag_start_printVersion"] = 1;
-		return '<a href="' . $url . '"' . ($attr ? " $attr" : '') . '>';
+		$attribs = removeAttribs($attribs, array('tid','triggerID','triggerid','doc','type','link','Link')); //	not html - valid
+		$attribs['href']=$url;
+		return getHtmlTag('a', $attribs, $content, true);
 	}
 }

@@ -140,11 +140,11 @@ class we_listview extends listviewBase {
 			default:
 				if($this->search){
 					$orderstring = $this->order ?
-									(" AND " . LINK_TABLE . ".Name='".escape_sql_query($this->order)."' ORDER BY ranking," . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
+									(" AND " . LINK_TABLE . ".Name='".$this->DB_WE->escape($this->order)."' ORDER BY ranking," . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
 									' ORDER BY ranking';
 				}else{
 					$orderstring = $this->order ?
-									(" AND " . LINK_TABLE . ".Name='".escape_sql_query($this->order)."' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
+									(" AND " . LINK_TABLE . ".Name='".$this->DB_WE->escape($this->order)."' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat".($this->desc ? " DESC" : "")) :
 									"";
 				}
 				break;
@@ -153,7 +153,7 @@ class we_listview extends listviewBase {
 
 		$sql_tail = getCatSQLTail($this->cats, FILE_TABLE, $this->catOr,$this->DB_WE, 'Category', true, $this->categoryids);
 
-		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".escape_sql_query($this->docType)."'","ID",$this->DB_WE) : "#NODOCTYPE#";
+		$dt = ($this->docType) ? f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType like '".$this->DB_WE->escape($this->docType)."'","ID",$this->DB_WE) : "#NODOCTYPE#";
 
 		$ws_where = "";
 
@@ -163,7 +163,7 @@ class we_listview extends listviewBase {
 			$this->contentTypes = str_replace("binary","application/*",$this->contentTypes);
 			$CtArr = makeArrayFromCSV($this->contentTypes);
 			foreach($CtArr as $ct){
-				$sql_tail .= ' AND '.FILE_TABLE.'.ContentType = \''.escape_sql_query($ct).'\'';
+				$sql_tail .= ' AND '.FILE_TABLE.'.ContentType = \''.$this->DB_WE->escape($ct).'\'';
 			}
 		}
 
@@ -195,7 +195,7 @@ class we_listview extends listviewBase {
 				$cond = array();
 				foreach($workspaces as $id) {
 					$workspace=id_to_path($id, FILE_TABLE, $this->DB_WE);
-					array_push($cond, "(" . INDEX_TABLE . ".Workspace like '$workspace/%' OR " . INDEX_TABLE . ".Workspace='".escape_sql_query($workspace)."')");
+					array_push($cond, "(" . INDEX_TABLE . ".Workspace like '$workspace/%' OR " . INDEX_TABLE . ".Workspace='".$this->DB_WE->escape($workspace)."')");
 				}
 				$ws_where = " AND (".implode(" OR ", $cond).")";
 			}
@@ -262,7 +262,7 @@ class we_listview extends listviewBase {
 				} else { // beneath the workspaceids
 					foreach($workspaces as $id) {
 						$workspace=id_to_path($id, FILE_TABLE, $this->DB_WE);
-						array_push($cond, "(" . FILE_TABLE . ".Path like '".escape_sql_query($workspace)."/%' OR " . FILE_TABLE . ".Path='".escape_sql_query($workspace)."')");
+						array_push($cond, "(" . FILE_TABLE . ".Path like '".$this->DB_WE->escape($workspace)."/%' OR " . FILE_TABLE . ".Path='".$this->DB_WE->escape($workspace)."')");
 
 					}
 					$ws_where = " AND (".implode(" OR ", $cond).")";
@@ -388,10 +388,10 @@ class we_listview extends listviewBase {
 				$this->DB_WE->Record["WE_PATH"] = "";
 				$this->DB_WE->Record["WE_TEXT"] = "";
 				$this->DB_WE->Record["WE_ID"] = "";
-				$this->count++;			
+				$this->count++;
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
 
@@ -406,12 +406,6 @@ class we_listview extends listviewBase {
 			$exparr=array();
 
 			$arr = explode(" ",$cond);
-			$arrr=array();
-			$rep= array(' (','(',' )',')');
-			foreach ($arr as $key => $value){
-				if($value !=')' && $value!='('){$arrr[]=trim(str_replace($rep,'',$value));}
-			}
-			$arr=$arrr;
 			$logic=array();
 			$logic["and"]=array();
 			$logic["or"]=array();
@@ -435,29 +429,21 @@ class we_listview extends listviewBase {
 			foreach ($logic as $oper=>$arr){
 				foreach($arr as $key=>$exp){
 					$match=array();
-					$patterns=array("<>","<=",">=","=","<",">","LIKE","IN");
+					$patterns=array('<>','<=','>=','=','<','>','LIKE','IN');
 					foreach($patterns as $pattern){
 						$match=preg_split("/$pattern/", $exp, -1, PREG_SPLIT_NO_EMPTY);
 						if(count($match)>1){
-							$sqlarr = (($sqlarr!="") ? $sqlarr." ".strtoupper($oper). " " : "").$this->makeFieldCondition($match[0],$pattern,$match[1]);//"(".LINK_TABLE.".Name='".$match[0]."' AND ".CONTENT_TABLE.".Dat ".$pattern." ".$match[1].")";
+							$sqlarr = (($sqlarr!="") ? $sqlarr.' '.strtoupper($oper). ' ' : '').$this->makeFieldCondition($match[0],$pattern,$match[1]);//"(".LINK_TABLE.".Name='".$match[0]."' AND ".CONTENT_TABLE.".Dat ".$pattern." ".$match[1].")";
 							break;
 						}
 					}
 				}
 			}
 			return $sqlarr;
-
-			$sqlarr=array();
-			foreach ($exparr as $exp){
-				$sqlarr[]="(".LINK_TABLE.".Name='".escape_sql_query($exp["variable"])."' AND ".CONTENT_TABLE.".Dat".$exp["operator"].$exp["argument"].")";
-			}
-
-			return implode(" AND ",$sqlarr);
-
 	}
 
 	function makeFieldCondition($name,$operation,$value){
-		return "(".LINK_TABLE.".Name='".escape_sql_query($name)."' AND ".CONTENT_TABLE.".Dat ".$operation." ".$value.")";
+		return '('.LINK_TABLE.'.Name="'.$this->DB_WE->escape($name).'" AND '.CONTENT_TABLE.'.Dat '.$operation.' '.$value.')';
 	}
 
 

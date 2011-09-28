@@ -236,33 +236,33 @@ class we_tagParser {
 		preg_match('|we:([^ >]+)|i', $this->tags[$this->ipos], $regs);
 		$tagname = $regs[1];
 
-		if ($tagname != 'back' && $tagname != 'next' && $tagname != 'printVersion' && $tagname != 'listviewOrder') {
-			$tagcount = 0;
-			$endtags = array();
 
-			$endtagpos = $tagPos;
+		$tagcount = 0;
+		$endtags = array();
 
-			for ($i = $this->ipos + 1; $i < sizeof($this->tags); $i++) {
-				if (preg_match('|(< ?/ ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i], $regs)) {
-					array_push($endtags, $regs[1]);
-					if ($tagcount) {
-						$tagcount--;
-					} else {
-						// found endtag
-						$this->ipos = $i + 1;
-						for ($n = 0; $n < sizeof($endtags); $n++) {
-							$endtagpos = strpos($code, $endtags[$n], $endtagpos + 1);
-						}
-						$this->ipos = $i + 1;
-						return $endtagpos;
-					}
+		$endtagpos = $tagPos;
+
+		for ($i = $this->ipos + 1; $i < sizeof($this->tags); $i++) {
+			if (preg_match('|(< ?/ ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i], $regs)) {
+				array_push($endtags, $regs[1]);
+				if ($tagcount) {
+					$tagcount--;
 				} else {
-					if (preg_match('|(< ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i])) {
-						$tagcount++;
+					// found endtag
+					$this->ipos = $i + 1;
+					for ($n = 0; $n < sizeof($endtags); $n++) {
+						$endtagpos = strpos($code, $endtags[$n], $endtagpos + 1);
 					}
+					$this->ipos = $i + 1;
+					return $endtagpos;
+				}
+			} else {
+				if (preg_match('|(< ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i])) {
+					$tagcount++;
 				}
 			}
 		}
+
 		$this->ipos++;
 		return -1;
 	}
@@ -462,21 +462,6 @@ class we_tagParser {
 			$this->ipos++;
 			if (substr($tagname, 0, 2) == 'if' && $tagname != 'ifNoJavaScript') {
 				$code = str_replace($tag, '<?php } ?>', $code);
-			} else
-			if ($tagname == "printVersion") {
-				$code = str_replace(
-								$tag, '<?php if(isset($GLOBALS["we_tag_start_printVersion"]) && $GLOBALS["we_tag_start_printVersion"]){ $GLOBALS["we_tag_start_printVersion"]=0; ?></a><?php } ?>', $code);
-			} else
-			if ($tagname == "listviewOrder") {
-				$code = str_replace($tag, '</a>', $code);
-			} else
-			if ($tagname == "condition") {
-				$code = str_replace(
-								$tag, '<?php $GLOBALS["we_lv_conditionCount"]--;$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= ")"; ?>', $code);
-			} else
-			if ($tagname == "voting") {
-				$code = str_replace(
-								$tag, '<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']); ?>', $code);
 			}
 
 			$this->lastpos = 0;

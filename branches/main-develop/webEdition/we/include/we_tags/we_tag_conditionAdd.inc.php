@@ -23,19 +23,19 @@
  */
 
 function we_tag_conditionAdd($attribs, $content){
-	$foo = attributFehltError($attribs, "field", "conditionAdd");
-	if ($foo)
+	if (($foo = attributFehltError($attribs, 'field', 'conditionAdd'))){
 		return $foo;
+	}
 
 	// initialize possible Attributes
-	$field = weTag_getAttribute("field", $attribs);
-	$value = weTag_getAttribute("value", $attribs);
-	$compare = weTag_getAttribute("compare", $attribs, "=");
-	$var = weTag_getAttribute("var", $attribs);
-	$type = weTag_getAttribute("type", $attribs);
-	$property = weTag_getAttribute("property", $attribs, false, true);
-	$exactmatch = weTag_getAttribute("exactmatch", $attribs, false, true);
-	$docAttr = weTag_getAttribute("doc", $attribs);
+	$field = weTag_getAttribute('field', $attribs);
+	$value = weTag_getAttribute('value', $attribs);
+	$compare = weTag_getAttribute('compare', $attribs, '=');
+	$var = weTag_getAttribute('var', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$property = weTag_getAttribute('property', $attribs, false, true);
+	$exactmatch = weTag_getAttribute('exactmatch', $attribs, false, true);
+	$docAttr = weTag_getAttribute('doc', $attribs);
 	// end initialize possible Attributes
 
 
@@ -43,20 +43,20 @@ function we_tag_conditionAdd($attribs, $content){
 	$value = str_replace('&lt;', '<', $value);
 
 	$regs = array();
-	if ($var && $compare == "like") {
+	if ($var && $compare == 'like') {
 		if (ereg('^(%)?([^%]+)(%)?$', $var, $regs)) {
 			$var = $regs[2];
 		}
 	}
 	switch (strtolower($type)) {
-		case "now" :
+		case 'now' :
 			$value = time();
-		case "sessionfield" :
-			if ($var && isset($_SESSION["webuser"][$var])) {
-				$value = $_SESSION["webuser"][$var];
+		case 'sessionfield' :
+			if ($var && isset($_SESSION['webuser'][$var])) {
+				$value = $_SESSION['webuser'][$var];
 			}
 			break;
-		case "document" :
+		case 'document' :
 			if ($var) {
 				$doc = we_getDocForTag($docAttr, false);
 				if ($property) {
@@ -66,7 +66,7 @@ function we_tag_conditionAdd($attribs, $content){
 				}
 			}
 			break;
-		case "request" :
+		case 'request' :
 			if ($var && isset($_REQUEST[$var])) {
 				$value = $_REQUEST[$var];
 			}
@@ -78,21 +78,21 @@ function we_tag_conditionAdd($attribs, $content){
 	}
 	if($exactmatch && defined('DB_COLLATION') && DB_COLLATION!=''){
 		if(strpos(DB_COLLATION,'latin1') !== false ) {
-			$compare = "COLLATE latin1_bin ".$compare;
+			$compare = 'COLLATE latin1_bin '.$compare;
 		} elseif(strpos(DB_COLLATION,'utf') !== false) {
-			$compare = "COLLATE utf8_bin ".$compare;
+			$compare = 'COLLATE utf8_bin '.$compare;
 		}
 
 	}
-	$value = (isset($regs[1]) ? $regs[1] : "") . $value . (isset($regs[3]) ? $regs[3] : "");
+	$value = (isset($regs[1]) ? $regs[1] : '') . $value . (isset($regs[3]) ? $regs[3] : '');
 
-	if (strlen($field) && isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
-		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= " ($field $compare '" . addslashes($value) . "') ";
+	if (strlen($field) && isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])) {
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '('.$field.' '.$compare.' "' . $GLOBALS['DB_WE']->escape($value) . '") ';
 	} else {
-		if (eregi('^(.*)AND ?$', $GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
-			$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= "1 ";
+		if (eregi('^(.*)AND ?$', $GLOBALS[$GLOBALS['we_lv_conditionName']])) {
+			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '1 ';
 		} else {
-			$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= "0 ";
+			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '0 ';
 		}
 	}
 	return '';

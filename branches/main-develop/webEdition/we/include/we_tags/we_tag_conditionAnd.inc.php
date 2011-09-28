@@ -23,8 +23,8 @@
  */
 
 function we_tag_conditionAnd($attribs, $content){
-	if (isset($GLOBALS["we_lv_conditionName"]) && isset($GLOBALS[$GLOBALS["we_lv_conditionName"]])) {
-		$GLOBALS[$GLOBALS["we_lv_conditionName"]] .= " AND ";
+	if (isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])) {
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= ' AND ';
 	}
-	return "";
+	return '';
 }
