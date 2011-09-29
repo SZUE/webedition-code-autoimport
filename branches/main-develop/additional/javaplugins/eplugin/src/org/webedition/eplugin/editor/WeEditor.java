@@ -42,9 +42,9 @@ public class WeEditor extends BaseElement implements Serializable{
 	public String Path;
 	public String Args="";
 	public String ContentType;
-	public String DefaultFor;	
+	public String DefaultFor;
 	public String Encoding;
-	
+
 	public WeEditor(){
 		persistents = new Vector();
 		persistents.add("Name");
@@ -54,7 +54,7 @@ public class WeEditor extends BaseElement implements Serializable{
 		persistents.add("DefaultFor");
 		persistents.add("Encoding");
 	}
-	
+
 	public void init(String name, String path, String args, String ct, String defaultfor,String enc){
 		Name=name;
 		Path=path;
@@ -63,8 +63,8 @@ public class WeEditor extends BaseElement implements Serializable{
 		DefaultFor=defaultfor;
 		Encoding=enc;
 	}
-	
-	
+
+
 	public int start(EPDocument doc) {
 		if(doc.isText()) {
 			doc.setEncoding(Encoding);
@@ -78,22 +78,23 @@ public class WeEditor extends BaseElement implements Serializable{
 			return -1;
 		}
 	}
-	
+
 	 public int start(String cache){
 	 	try{
 	 		if(!Path.equals("")){
-	 			if(System.getProperty("os.name").matches("Mac OS X")) {				
-	 					String cmd;
-	 					String opt;
-	 					cmd="/usr/bin/open";
-	 					opt="-a";
-	 					String[] exe = {cmd,opt,Path,Args,cache};
-	 					Runtime.getRuntime().exec(exe);
+				int size=2+(System.getProperty("os.name").matches("Mac OS X")?2:0)+(Args.isEmpty()?0:1);
+				String[] exe = new String[size];
+				int pos=0;
+	 			if(System.getProperty("os.name").matches("Mac OS X")) {
+	 					exe[pos++]="/usr/bin/open";
+	 					exe[pos++]="-a";
 	 			}
-	 			else{
-					String[] exe = {Path,Args,cache};
+					exe[pos++]=Path;
+					if(!Args.isEmpty()){
+						exe[pos++] = Args;
+					}
+					exe[pos++]=cache;
 					Runtime.getRuntime().exec(exe);
-				}
 
 	 			return 0;
 	 		}
@@ -102,6 +103,6 @@ public class WeEditor extends BaseElement implements Serializable{
 		}
 		return -1;
 	 }
-	 
-	 
+
+
 }
