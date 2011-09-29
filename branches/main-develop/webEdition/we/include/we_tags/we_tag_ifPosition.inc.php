@@ -29,7 +29,7 @@
  * @param string $operator operator (equal,less,greater,less|equal,greater|equal)
  * @param int $position position of comparable
  * @param int $size size of comparable
- * @return mixed (true,false,-1) -1 if no decission is made yet - pass next element of position array 
+ * @return mixed (true,false,-1) -1 if no decission is made yet - pass next element of position array
  */
 function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size) {
 	switch ($_position) {
@@ -98,13 +98,10 @@ function we_tag_ifPosition($attribs, $content){
 	global $lv;
 	//	content is not needed in this tag
 
-
-	$missingAttrib = attributFehltError($attribs, "type", "ifPosition") 
-					|| attributFehltError($attribs, "position", "ifPosition");
-
-	if ($missingAttrib) {
+	if (($missingAttrib = attributFehltError($attribs, "type", "ifPosition")
+					|| attributFehltError($attribs, "position", "ifPosition"))) {
 		print $missingAttrib;
-		return "";
+		return '';
 	}
 
 

@@ -21,11 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_printVersion($attribs, $content){
-	$tp = new we_tagParser($content);
-	$tp->parseTags($content);
-	return '<?php printElement('.we_tagParser::printTag('printVersion',$attribs,$content,true).');?>';
-}
 
 function we_tag_printVersion($attribs, $content){
 	if (($foo = attributFehltError($attribs, "tid", "printVersion")))	return $foo;

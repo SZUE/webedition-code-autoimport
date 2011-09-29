@@ -182,7 +182,7 @@ function mta($hash, $key) {
 
 function printElement($code) {
 	if (isset($code)) {
-		eval('?>' . str_replace('<?php', '<?php ', str_replace('?>', ' ?>', $code)));
+		eval('?>' . str_replace(array('<?php','?>'), array('<?php ',' ?>'), $code));
 	}
 }
 

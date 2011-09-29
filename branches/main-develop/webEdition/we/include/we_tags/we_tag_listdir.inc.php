@@ -40,36 +40,28 @@ function we_tag_listdir($attribs, $content){
 
 	$db = new DB_WE();
 	$db2 = new DB_WE();
-	$db3 = new DB_WE();
 
-	$db->query(
-			"SELECT ID,Text,IsFolder,Path FROM " . FILE_TABLE . " WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID=".abs($dirID));
+	$db->query("SELECT ID,Text,IsFolder,Path FROM " . FILE_TABLE . " WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID=".abs($dirID));
 
 	while ($db->next_record()) {
-		$sortfield = "";
-		$namefield = "";
+		$sortfield = $namefield = '';
 
 		if ($db->f("IsFolder")) {
-			$db2->query(
-					"SELECT ID FROM " . FILE_TABLE . " WHERE ParentID='" . abs($db->f("ID")) . "' AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)");
-			if ($db2->next_record()) {
+			$id=f("SELECT ID FROM " . FILE_TABLE . " WHERE ParentID='" . abs($db->f("ID")) . "' AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)",'ID',$db2);
+			if ($id) {
 				if ($sort) {
-					$db3->query(
-							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db2->f(
-									"ID")) . "' AND " . LINK_TABLE . ".Name='".$db3->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-						$sortfield = ($db3->next_record()) ? $db3->f("Dat") : $db->f("Text");
+					$dat=f(
+							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . $id
+						. "' AND " . LINK_TABLE . ".Name='".$db->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
+						$sortfield = $dat ? $dat : $db->f("Text");
 				} else {
 					$sortfield = $db->f("Text");
 				}
 				if ($dirfield) {
-					$db3->query(
-							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db2->f(
-									"ID")) . "' AND " . LINK_TABLE . ".Name='".$db3->escape($dirfield)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-					if ($db3->next_record()) {
-						$namefield = $db3->f("Dat");
-					} else {
-						$namefield = $db->f("Text");
-					}
+					$dat=f(
+							"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . $id
+						. "' AND " . LINK_TABLE . ".Name='".$db->escape($dirfield)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
+					$namefield = $dat? $dat:$db->f("Text");
 				} else {
 					$namefield = $db->f("Text");
 				}
@@ -82,18 +74,18 @@ function we_tag_listdir($attribs, $content){
 
 		} else {
 			if ($sort) {
-				$db2->query(
+				$dat=f(
 						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
-								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-					$sortfield = ($db2->next_record()) ? $db2->f("Dat"):$db->f("Text");
+								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
+					$sortfield = $dat ? $dat:$db->f("Text");
 			} else {
 				$sortfield = $db->f("Text");
 			}
 			if ($name) {
-				$db2->query(
+				$dat=f(
 						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
-								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID");
-					$namefield = ($db2->next_record()) ? $db2->f("Dat") : $db->f("Text");
+								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
+					$namefield = $dat ? $dat : $db->f("Text");
 			} else {
 				$namefield = $db->f("Text");
 			}
@@ -102,17 +94,9 @@ function we_tag_listdir($attribs, $content){
 	}
 
 	if ($sort) {
-		if ($desc) {
-			usort($files, "we_cmpFieldDesc");
-		} else {
-			usort($files, "we_cmpField");
-		}
+			usort($files, ($desc?'we_cmpFieldDesc':'we_cmpField'));
 	} else {
-		if ($desc) {
-			usort($files, "we_cmpTextDesc");
-		} else {
-			usort($files, "we_cmpText");
-		}
+			usort($files, ($desc?'we_cmpTextDesc':'we_cmpText'));
 	}
 	$out = '';
 
@@ -121,32 +105,23 @@ function we_tag_listdir($attribs, $content){
 		$field = $v["name"];
 		$id = $v["properties"]["ID"];
 		$path = $v["properties"]["Path"];
-		$foo = ereg_replace('<we:field([^>]*)>', $field, $content);
-		$foo = ereg_replace('<we:id([^>]*)>', $id, $foo);
-		$foo = ereg_replace('<we:path([^>]*)>', $path, $foo);
-		$foo = ereg_replace('<we:a([^>]*)>', '<a href="' . $path . '"\1>', $foo);
-		$foo = ereg_replace('</we:a[^>]*>', '</a>', $foo);
-		$foo = ereg_replace(
-				'<we:ifSelf[^>]*>',
-				'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->ID . '" == "' . $id . '"){ ?>',
-				$foo);
-		$foo = ereg_replace(
-				'<we:ifNotSelf[^>]*>',
-				'<?php if("' . $GLOBALS["WE_MAIN_DOC"]->ID . '" != "' . $id . '"){ ?>',
-				$foo);
+		$foo=$content;
+		$foo = preg_replace('|we_tag\(\'field\',array\(\.*\)\)|s', '\''.$field.'\'', $foo);
+		$foo = preg_replace('|we_tag\(\'id\',array\(\.*\)\)|s', '\''.$id.'\'', $foo);
+		$foo = preg_replace('|we_tag\(\'path\',array\(\.*\)\)|s', '\''.$path.'\'', $foo);
+		$foo = preg_replace('|(we_tag\(\'a\',array\()(\.*\).*\))|s', '\1id=>'.$id.',\2', $foo);
+		$foo = preg_replace('|(we_tag\(\'ifSelf\',array\()(\.*\).*\))|s', '\1id=>'.$id.',\2', $foo);
+		$foo = preg_replace('|(we_tag\(\'ifNotSelf\',array\()(\.*\).*\))|s', '\1id=>'.$id.',\2', $foo);
 
 		//	parse we:ifPosition
 		if (strpos($foo, 'setVar') || strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(
 				$foo,
 				'ifNotPosition')) {
-			$tp = new we_tagParser($foo);
-
-			$tp->parseTags($foo);
 			$foo = '<?php $GLOBALS[\'we_position\'][\'listdir\'] = array(\'position\' => ' . ($i + 1) . ', \'size\' => ' . sizeof(
 					$files) . ', \'field\' => \'' . $field . '\', \'id\' => \'' . $id . '\', \'path\' => \'' . $path . '\'); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'listdir\']); ?>';
 		}
 
-		$out .= $foo . "\n";
+		$out .= $foo;
 	}
-	return $out . "\n";
+	return $out;
 }

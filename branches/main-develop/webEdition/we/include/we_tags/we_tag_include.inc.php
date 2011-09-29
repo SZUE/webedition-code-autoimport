@@ -41,6 +41,7 @@ function we_tag_include($attribs, $content) {
 
 
 	if ((!$id) && (!$path) && (!$name)) {
+		t_e('we:include - missing id, path or name');
 		return '?><!-- we:include - missing id, path or name !!-->';
 	}
 
