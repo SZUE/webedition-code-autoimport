@@ -336,7 +336,10 @@ class we_tagParser{
 			if($endTagPos !== FALSE){
 				$endeEndTagPos = strpos($code, '>', $endTagPos) + 1;
 				$content = substr($code, $endeStartTag, ($endTagPos - $endeStartTag));
-				$this->parseTags($content,($ipos+1),$endTagNo);
+				//only 1 exception: comment tag should be able to contain partly invalid code (e.g. missing attributes etc)
+				if($tagname!='comment'){
+					$this->parseTags($content,($ipos+1),$endTagNo);
+				}
 			} else{
 				t_e('endtag for ' . $tag . ' not found', $code);
 			}
