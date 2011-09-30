@@ -565,7 +565,7 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 			$minyear = 1970;
 		}
 		if($maxyear == ""){
-			$maxyear = abs(date("Y") + 8);
+			$maxyear = abs(date("Y") + 100);
 		}
 		for($i = $minyear; $i <= $maxyear; $i++){
 			if($time && $year == $i){
