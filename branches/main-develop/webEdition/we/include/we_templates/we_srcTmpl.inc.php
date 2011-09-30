@@ -356,7 +356,7 @@ function myReplace(text, replaceby) {
 
 function we_getJavaEditorCode($code) {
 	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
-            <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="http://' . $SERVER_NAME . ((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ":" . $SERVER_PORT : "") . '/webEdition/editors/template/editor">
+            <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl() . '/webEdition/editors/template/editor">
             	<param name="phpext" value=".php">';
 
 	if ($_SESSION["prefs"]["editorFont"] == 1) {

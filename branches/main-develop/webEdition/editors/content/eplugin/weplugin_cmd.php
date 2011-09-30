@@ -100,7 +100,7 @@
 					$out = we_htmlElement::jsElement('
 						session = "'.session_id().'";
 						transaction = "'.$_we_transaction.'";
-						siteurl="http://'.$SERVER_NAME.(isset($SERVER_PORT) ? ":".$SERVER_PORT : ""). $_tmp_file . '";
+						siteurl="'.getServerUrl(). $_tmp_file . '";
 						top.plugin.document.WePlugin.editFile(session,transaction,"'.addslashes($_filename).'",siteurl,"'.$we_ContentType.'");
 					');
 

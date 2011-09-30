@@ -94,7 +94,7 @@
             saveFile($tmpFile, $content);
             insertIntoCleanUp($tmpFile,time());
 
-            $url = getServerProtocol(true) . SERVER_NAME . $filename;
+            $url = getServerUrl() . $filename;
             $http_request->addVar($varname, $url);
         }
 

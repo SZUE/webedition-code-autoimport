@@ -1040,7 +1040,7 @@ class weVotingFrames extends weModuleFrames {
 
 		if (isset($link)) {
 			$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
-			$down = getServerProtocol(true).SERVER_NAME.":".$port.$link;
+			$down = getServerUrl().$link;
 
 			$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),7,1);
 
@@ -1089,8 +1089,7 @@ class weVotingFrames extends weModuleFrames {
 		}
 
 		if (isset($link)) {
-			$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
-			$down = getServerProtocol(true).SERVER_NAME.":".$port.$link;
+			$down = getServerUrl().$link;
 
 			$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),7,1);
 

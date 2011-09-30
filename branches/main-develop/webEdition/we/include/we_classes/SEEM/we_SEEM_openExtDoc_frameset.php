@@ -30,7 +30,7 @@
 
     if(!isset($_url) || (substr($_url,0,7) != "http://" && substr($_url,0,8) != "https://")){
 
-        $serveradress = getServerProtocol(true) . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : "");
+        $serveradress = getServerUrl();
 
         if(!isset($_url) || substr($_url,0,1) != "/"){
 

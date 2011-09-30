@@ -60,7 +60,7 @@ function printHeader($login){
 /*****************************************************************************
  * CREATE HEADER
  *****************************************************************************/
-htmlTop($_SERVER['SERVER_NAME']. ' webEdition ' . WE_VERSION);
+htmlTop($_SERVER['SERVER_NAME']. ' webEdition ');
 print STYLESHEET;
 
 print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));
@@ -528,7 +528,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 			}
 
 			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert',"[popupLoginError]") . "', '/webEdition/index.php'); }";
-			header ('HTTP/1.1 303 See Other'); 
+			header ('HTTP/1.1 303 See Other');
 			header ('Location: '.WEBEDITION_DIR . 'webEdition.php');
 			break;
 		case 1:
@@ -551,7 +551,7 @@ if (isset($_POST['checkLogin']) && !count($_COOKIE)) {
 		case 4:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert',"[login_denied_for_user]"), WE_MESSAGE_ERROR);
 			break;
-		default: 
+		default:
 	}
 
 

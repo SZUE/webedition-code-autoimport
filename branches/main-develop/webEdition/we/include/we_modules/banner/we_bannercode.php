@@ -39,10 +39,8 @@ $target = isset($_REQUEST["target"]) ? $_REQUEST["target"] : "";
 $width = isset($_REQUEST["width"]) ? $_REQUEST["width"] : 468;
 $height = isset($_REQUEST["height"]) ? $_REQUEST["height"] : 60;
 $paths = isset($_REQUEST["paths"]) ? $_REQUEST["paths"] : "";
-$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-$prot = getServerProtocol();
-$getscript = isset($_REQUEST["getscript"]) ? $_REQUEST["getscript"] : $prot."://".SERVER_NAME.$port."/webEdition/getBanner.php";
-$clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : $prot."://".SERVER_NAME.$port."/webEdition/bannerclick.php";
+$getscript = isset($_REQUEST["getscript"]) ? $_REQUEST["getscript"] : getServerUrl()."/webEdition/getBanner.php";
+$clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : getServerUrl()."/webEdition/bannerclick.php";
 
 if($ok){
 

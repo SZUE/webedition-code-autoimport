@@ -2340,8 +2340,7 @@ class weNewsletterView {
 				// else {$port = "";}
 				$port = "";
 			}
-			if(isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"]) $protocol="https://";
-			else $protocol="http://";
+			$protocol=(isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"] ? "https://":"http://");
 
 			if ($hm) {
 				if($block->Type!=WENBLOCK_URL){
@@ -2500,9 +2499,7 @@ class weNewsletterView {
 		$atts=array();
 
 		$atts=$this->getAttachments($group);
-		$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
-		$protocol=getServerProtocol(true);
-		$basehref=$protocol.SERVER_NAME.":".$port;
+		$basehref=getServerUrl();
 		$_clean = $this->getCleanMail($this->newsletter->Reply);
 		$phpmail = new we_util_Mailer($this->newsletter->Test,$this->newsletter->Subject,$this->newsletter->Sender,$this->newsletter->Reply,$this->newsletter->isEmbedImages);
 		if(!$this->settings["use_base_href"]) {$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);}
@@ -2599,7 +2596,7 @@ class weNewsletterView {
 		@ini_set("memory_limit", "128M");
 
 		$extern=($select==0 || $select==3)?weNewsletterBase::getEmailsFromExtern($this->newsletter->groups[$group-1]->Extern,$emails_only,$group,$this->getGroupBlocks($group)):array();
-		
+
 		if ($select==3) {
 			return $extern;
 		}

@@ -31,8 +31,7 @@
     protect();
     //	Header for a none webEdition document opened with webEdition
 
-    $_prot = getServerProtocol(true);
-	$_webEditionSiteUrl = $_prot . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : "" ) . "/webEdition/site";
+	$_webEditionSiteUrl = getServerUrl() . "/webEdition/site";
 
 	if( strpos($_REQUEST["url"], $_webEditionSiteUrl) === 0 ){
 		$_errormsg = g_l('SEEM',"[ext_doc_tmp]");

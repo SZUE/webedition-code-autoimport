@@ -73,7 +73,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 	$Language = $we_doc->Language;
 
-	$DictBase = 'http://'.$_SERVER['SERVER_NAME'].(isset($_SERVER['SERVER_PORT']) ? ':'.$_SERVER['SERVER_PORT'] : ''). WE_SPELLCHECKER_MODULE_PATH . 'dict/';
+	$DictBase = getServerUrl(). WE_SPELLCHECKER_MODULE_PATH . 'dict/';
 
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/spellchecker/spellchecker.conf.inc.php');
 
@@ -88,7 +88,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 	$UserDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_SESSION['user']['Username'] . '@'.$_SERVER['SERVER_NAME']. '.dict';
 
-	$AppletCode = 	'<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="http://'.$_SERVER['SERVER_NAME'].(isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']!=80 ? ':'.$_SERVER['SERVER_PORT'] : ''). WE_SPELLCHECKER_MODULE_PATH . '" width="2" height="2" id="applet" scriptable mayscript style="visibility: hidden">' . "\n"
+	$AppletCode = 	'<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="'.getServerUrl(). WE_SPELLCHECKER_MODULE_PATH . '" width="2" height="2" id="applet" scriptable mayscript style="visibility: hidden">' . "\n"
 					.	'<param name="CODE" value="LeSpellchecker.class">' . "\n"
 					.	'<param name="ARCHIVE" value="lespellchecker.jar">' . "\n"
 					.	'<param name="type" value="application/x-java-applet;version=1.1">' . "\n"

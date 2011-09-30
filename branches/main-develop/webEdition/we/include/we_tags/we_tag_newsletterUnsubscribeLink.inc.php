@@ -38,7 +38,7 @@ function we_tag_newsletterUnsubscribeLink($attribs, $content){
 	$port = (isset($settings["use_port"]) && $settings["use_port"]) ? ":".$settings["use_port"] : '';
 	$protocol=(isset($settings["use_https_refer"]) && $settings["use_https_refer"]) ? 'https://' : 'http://';
 
-	$ret=$protocol.SERVER_NAME.$port.id_to_path($id,FILE_TABLE).'?we_unsubscribe_email__=###EMAIL###';
+	$ret=getServerUrl().id_to_path($id,FILE_TABLE).'?we_unsubscribe_email__=###EMAIL###';
 	return ($plain?$ret:'<a href="'.$ret.'">'.$ret.'</a>');
 
 }

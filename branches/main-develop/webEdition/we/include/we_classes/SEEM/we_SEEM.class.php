@@ -651,7 +651,7 @@
 
             $relativePaths = array();
             for($i=0; $i<sizeof($foundPaths); $i++){
-                $relativePaths[$i] = str_replace(getServerProtocol(true) . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : ""), "", $foundPaths[$i]);
+                $relativePaths[$i] = str_replace(getServerUrl(), "", $foundPaths[$i]);
                 $relativePaths[$i] = we_SEEM::translateRelativePath($relativePaths[$i]);
             }
             return $relativePaths;
@@ -669,7 +669,7 @@
         	//	Take the path of the doc to find out, if the same doc is target
         	//	or from the url of the document (only when extern)
         	//	or none, when the full path is known (getJavaScriptCommandForOneLink)
-            $tmpPath = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : (isset($_REQUEST["url"]) ? str_replace( getServerProtocol(true) . SERVER_NAME . (defined("HTTP_PORT") ? ":" . HTTP_PORT : ""), "", $_REQUEST["url"]) : "");
+            $tmpPath = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : (isset($_REQUEST["url"]) ? str_replace( getServerUrl(), "", $_REQUEST["url"]) : "");
 
             //  extern or as absolut recognized paths shall not be changed.
             if(substr($path,0,1) != "/" && substr($path,0,7) != "http://" && substr($path,0,8) != "https://" ){

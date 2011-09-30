@@ -324,7 +324,7 @@ class weCustomerEIWizard{
 				);
 				return we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer','[export_title]'), WE_DEFAULT_HEAD)."\n".STYLESHEET."\n".$js.
-						we_htmlElement::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=http://".SERVER_NAME.$this->frameset."?pnt=eibody&step=5&exportfile=".$filename))
+						we_htmlElement::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=".getServerUrl().$this->frameset."?pnt=eibody&step=5&exportfile=".$filename))
 					).
 					we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
 						we_htmlElement::htmlCenter(

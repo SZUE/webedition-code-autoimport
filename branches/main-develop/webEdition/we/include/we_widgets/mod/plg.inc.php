@@ -28,7 +28,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc
 
 protect();
 
-$_url = getServerProtocol(true) . $_SERVER['SERVER_NAME'] . (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != 80 ? ':' . $_SERVER['SERVER_PORT'] : '') . "/webEdition/we/include/we_widgets/inc/plg/";
+$_url = getServerUrl() . "/webEdition/we/include/we_widgets/inc/plg/";
 
 $_isPrev = !isset($aProps);
 

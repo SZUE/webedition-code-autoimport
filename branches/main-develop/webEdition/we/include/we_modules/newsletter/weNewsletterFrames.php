@@ -258,7 +258,7 @@ class weNewsletterFrames extends weModuleFrames {
 
 		$select=new we_htmlSelect(array("name"=>"gview"));
 
-		
+
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
 		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),getPixel(1600,10));
 
@@ -2001,8 +2001,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 		}
 
 		if (isset($link)) {
-			$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
-			$down = getServerProtocol(true).SERVER_NAME.":".$port.$link;
+			$down = getServerUrl().$link;
 
 			$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),7,1);
 
@@ -2709,7 +2708,7 @@ function getDateSelector($_label, $_name, $_btn, $value)
 			} else {
 				$iscustomer='';
 			}
-			
+
 			$contentDefault="";
 			$content_plainDefault="";
 			$contentF="";

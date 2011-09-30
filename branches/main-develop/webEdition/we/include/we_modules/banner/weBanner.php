@@ -325,7 +325,7 @@ class weBanner extends weBannerBase{
 		if($bannerData["ID"]){
 			$id = $bannerData["ID"];
 			if($bannerData["bannerID"]){
-				$bannersrc = $prot."://".SERVER_NAME.(defined("HTTP_PORT") ? (":".HTTP_PORT) : "").id_to_path($bannerData["bannerID"]);
+				$bannersrc = getServerUrl().id_to_path($bannerData["bannerID"]);
 				$attsImage = array_merge($attsImage,weBanner::getImageInfos($bannerData["bannerID"]));
 				if (isset($attsImage['longdescid'])) unset($attsImage['longdescid']);
 			}else{
@@ -337,7 +337,7 @@ class weBanner extends weBannerBase{
 
 			$bannerID=f("SELECT bannerID FROM ".BANNER_TABLE." WHERE ID=".abs($id),"bannerID",$db);
 			if($bannerID){
-				$bannersrc = $prot."://".SERVER_NAME.(defined("HTTP_PORT") ? (":".HTTP_PORT) : "").id_to_path($bannerID);
+				$bannersrc = getServerUrl().id_to_path($bannerID);
 				$attsImage = array_merge($attsImage,weBanner::getImageInfos($bannerID));
 				if (isset($attsImage['longdescid'])) unset($attsImage['longdescid']);
 			}else{
@@ -383,7 +383,7 @@ class weBanner extends weBannerBase{
 	function getBannerURL($bid){
 		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM ".BANNER_TABLE." WHERE ID=".abs($bid),$GLOBALS['DB_WE']);
 		$prot = getServerProtocol(true);
-		$url = $h["IntHref"] ? $prot.SERVER_NAME.(defined("HTTP_PORT") ? (":".HTTP_PORT) : "").id_to_path($h["bannerIntID"],FILE_TABLE) : $h["bannerURL"];
+		$url = $h["IntHref"] ? getServerUrl().id_to_path($h["bannerIntID"],FILE_TABLE) : $h["bannerURL"];
 		return $url;
 	}
 

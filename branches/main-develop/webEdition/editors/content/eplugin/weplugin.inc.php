@@ -160,15 +160,15 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc
 			"name"=>"WePlugin",
 			"code"=>"EPlugin",
 			"archive"=>"weplugin.jar",
-			"codebase"=>"http://".$SERVER_NAME.(isset($SERVER_PORT) ? ":".$SERVER_PORT : "")."/webEdition/editors/content/eplugin/",
+			"codebase"=>getServerUrl()."/webEdition/editors/content/eplugin/",
 			"width"=>"10",
 			"height"=>"10",
 			"scriptable"=>null,
 			"mayscript"=>null
 		),
 		we_htmlElement::htmlParam(array("name"=>"param_list","value"=>"lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button"))."\n".
-		we_htmlElement::htmlParam(array("name"=>"host","value"=>"http://".$SERVER_NAME.(isset($SERVER_PORT) ? ":".$SERVER_PORT : "")))."\n".
-		we_htmlElement::htmlParam(array("name"=>"cmdentry","value"=>"http://".$SERVER_NAME.(isset($SERVER_PORT) ? ":".$SERVER_PORT : "") . "/webEdition/editors/content/eplugin/weplugin_cmd.php"))."\n".
+		we_htmlElement::htmlParam(array("name"=>"host","value"=>getServerUrl()))."\n".
+		we_htmlElement::htmlParam(array("name"=>"cmdentry","value"=>getServerUrl()."/webEdition/editors/content/eplugin/weplugin_cmd.php"))."\n".
 		we_htmlElement::htmlParam(array("name"=>"lan_main_dialog_title","value"=>g_l('eplugin',"[lan_main_dialog_title]")))."\n".
 		we_htmlElement::htmlParam(array("name"=>"lan_settings_dialog_title","value"=>g_l('eplugin',"[lan_settings_dialog_title]")))."\n".
 		we_htmlElement::htmlParam(array("name"=>"lan_alert_noeditor_title","value"=>g_l('eplugin',"[lan_alert_noeditor_title]")))."\n".

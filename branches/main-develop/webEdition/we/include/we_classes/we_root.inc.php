@@ -736,16 +736,12 @@ function formTriggerDocument($isclass=false){
 
 	/* get the HTTP-Path of the Object */
 	function getHttpPath(){
-		$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-		$prot = getServerProtocol(true);
-		return $prot.SERVER_NAME.$port.$this->getPath();
+		return getServerUrl().$this->getPath();
 	}
 
 	/* get the HTTP-Path of the Object */
 	function getHttpSitePath(){
-		$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-		$prot = getServerProtocol(true);
-		return $prot.SERVER_NAME.$port.SITE_DIR.substr($this->getPath(),1);
+		return getServerUrl().SITE_DIR.substr($this->getPath(),1);
 	}
 
 ######################

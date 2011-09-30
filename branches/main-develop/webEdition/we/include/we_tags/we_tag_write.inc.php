@@ -220,7 +220,7 @@ function we_tag_write($attribs, $content){
 								$GLOBALS['DB_WE']);
 						if ($triggerid) {
 							$port = (defined("HTTP_PORT")) ? (":" . HTTP_PORT) : "";
-							$mailtext = sprintf(g_l('global',"[std_mailtext_newObj]"), $path, $classname) . "\n" . "http://" . $GLOBALS["SERVER_NAME"] . $port . id_to_path(
+							$mailtext = sprintf(g_l('global',"[std_mailtext_newObj]"), $path, $classname) . "\n" . getServerUrl() . id_to_path(
 									$triggerid) . "?we_objectID=" . $GLOBALS["we_object"][$name]->ID;
 						} else {
 							$mailtext = sprintf(g_l('global',"[std_mailtext_newObj]"), $path, $classname) . "\n" . "ObjectID: " . $GLOBALS["we_object"][$name]->ID;

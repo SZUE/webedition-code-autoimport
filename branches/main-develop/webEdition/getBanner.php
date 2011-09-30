@@ -47,9 +47,7 @@ $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 if($type && $type != "pixel"){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/weBanner.php");
-	$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-	$prot = getServerProtocol();
-	$code = weBanner::getBannerCode($did,$paths,$target,$width,$height,$dt,$cats,$bannername,$link,$referer,$bannerclick,$prot."://".SERVER_NAME.$port.$_SERVER['SCRIPT_NAME'],$type, $page, $nocount, $xml);
+	$code = weBanner::getBannerCode($did,$paths,$target,$width,$height,$dt,$cats,$bannername,$link,$referer,$bannerclick,getServerUrl().$_SERVER['SCRIPT_NAME'],$type, $page, $nocount, $xml);
 }
 if($type=="js"){
 

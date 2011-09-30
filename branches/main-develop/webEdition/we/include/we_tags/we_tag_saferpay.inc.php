@@ -150,15 +150,15 @@ function we_tag_saferpay($attribs,$content) {
 
 /* ***** get the further links ***** */
 				$successprelink= id_to_path($onsuccess);
-                $successlink = "http://".$_SERVER['SERVER_NAME'].$successprelink;
+                $successlink = getServerUrl().$successprelink;
                 //print $successlink;
 
                 $failureprelink= id_to_path($onfailure);
-                $failurelink = "http://".$_SERVER['SERVER_NAME'].$failureprelink;
+                $failurelink = getServerUrl().$failureprelink;
                 //print $failurelink;
 
                 $abortionprelink= id_to_path($onabortion);
-                $abortionlink = "http://".$_SERVER['SERVER_NAME'].$abortionprelink;
+                $abortionlink = getServerUrl().$abortionprelink;
                 //print $failurelink;
 /* ***** get the further links ***** */
 

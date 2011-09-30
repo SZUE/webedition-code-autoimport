@@ -68,9 +68,7 @@ class we_textContentDocument extends we_textDocument{
 	}
 
 	function editor($baseHref=true){
-		$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-		$prot = getServerProtocol();
-		$GLOBALS["we_baseHref"] = $baseHref ? $prot."://".SERVER_NAME.$port.$this->Path : "";
+		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl().$this->Path : "";
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_SCHEDULER:
 				return "we_modules/schedule/we_editor_schedpro.inc.php";

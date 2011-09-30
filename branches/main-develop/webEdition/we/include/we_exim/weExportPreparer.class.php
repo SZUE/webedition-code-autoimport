@@ -208,7 +208,9 @@
 
 		function isPathLocal($path){
 			if(stripos($path,SERVER_NAME)!==false){
-				$path=eregi_replace("[http]?s?[://]?".SERVER_NAME.(defined("SERVER_PORT") ? "[:".SERVER_PORT."]?":""),"",$path);
+				$path=str_replace(getServerUrl(),'',$path);
+				//try again with password
+				$path=str_replace(getServerUrl(true),'',$path);
 			}
 			if(is_readable($_SERVER['DOCUMENT_ROOT'].$path)) return $path;
 			else return false;
