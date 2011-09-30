@@ -235,6 +235,10 @@ function get_value($settingvalue) {
 		case "ui_seem_start_file":
 			return $_SESSION["prefs"]["seem_start_file"];
 			break;
+			
+		case "ui_seem_start_weapp":
+			return $_SESSION["prefs"]["seem_start_weapp"];
+			break;
 
 		case "ui_seem_start_type":
 			if (($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0) {
@@ -1001,6 +1005,12 @@ function remember_value($settingvalue, $settingname) {
 
 			case '$_REQUEST["seem_start_file"]':
 				$_SESSION["prefs"]["seem_start_file"] = $settingvalue;
+
+				$_update_prefs = true;
+				break;
+			
+			case '$_REQUEST["seem_start_weapp"]':
+				$_SESSION["prefs"]["seem_start_weapp"] = $settingvalue;
 
 				$_update_prefs = true;
 				break;
@@ -2773,12 +2783,18 @@ function save_all_values() {
 	if($_REQUEST["seem_start_type"]=="cockpit") {
 		$_update_prefs = remember_value("cockpit", '$_REQUEST["seem_start_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
+		$_update_prefs = remember_value('', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
 	} elseif($_REQUEST["seem_start_type"]=="object") {
 		$_update_prefs = remember_value("object", '$_REQUEST["seem_start_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seem_start_object"]) ? $_REQUEST["seem_start_object"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
+		$_update_prefs = remember_value('', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
+	} elseif($_REQUEST["seem_start_type"]=="weapp") {
+		$_update_prefs = remember_value("weapp", '$_REQUEST["seem_start_type"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["seem_start_weapp"]) ? $_REQUEST["seem_start_weapp"] : '', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
 	} elseif($_REQUEST["seem_start_type"]=="document") {
 		$_update_prefs = remember_value("document", '$_REQUEST["seem_start_type"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seem_start_document"]) ? $_REQUEST["seem_start_document"] : 0, '$_REQUEST["seem_start_file"]') || $_update_prefs;
+		$_update_prefs = remember_value('', '$_REQUEST["seem_start_weapp"]') || $_update_prefs;
 	} else {
 		$_update_prefs = remember_value("", '$_REQUEST["seem_start_type"]') || $_update_prefs;
 	}
@@ -3401,15 +3417,22 @@ function build_dialog($selected_setting = "ui") {
 									if(!!document.getElementById('seem_start_object')) {
 										document.getElementById('seem_start_object').style.display = 'none';
 									}
+									if(!!document.getElementById('seem_start_weapp')) {
+										document.getElementById('seem_start_weapp').style.display = 'none';
+									}
 									if(!!document.getElementById('seem_start_document')) {
 										document.getElementById('seem_start_document').style.display = 'block';
 									}
+									
 							";
 				if(defined("OBJECT_FILES_TABLE")) {
 					$_needed_JavaScript .= "
 								} else if(val == 'object') {
 									if(!!document.getElementById('selectordummy')) {
 										document.getElementById('selectordummy').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_weapp')) {
+										document.getElementById('seem_start_weapp').style.display = 'none';
 									}
 									if(!!document.getElementById('seem_start_document')) {
 										document.getElementById('seem_start_document').style.display = 'none';
@@ -3420,12 +3443,28 @@ function build_dialog($selected_setting = "ui") {
 							";
 				}
 				$_needed_JavaScript .= "
+								} else if(val == 'weapp'){
+									if(!!document.getElementById('selectordummy')) {
+										document.getElementById('selectordummy').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_document')) {
+										document.getElementById('seem_start_document').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_weapp')) {
+										document.getElementById('seem_start_weapp').style.display = 'block';
+									}
+									if(!!document.getElementById('seem_start_object')) {
+										document.getElementById('seem_start_object').style.display = 'none';
+									}
 								} else {
 									if(!!document.getElementById('selectordummy')) {
 										document.getElementById('selectordummy').style.display = 'block';
 									}
 									if(!!document.getElementById('seem_start_document')) {
 										document.getElementById('seem_start_document').style.display = 'none';
+									}
+									if(!!document.getElementById('seem_start_weapp')) {
+										document.getElementById('seem_start_weapp').style.display = 'none';
 									}
 									if(!!document.getElementById('seem_start_object')) {
 										document.getElementById('seem_start_object').style.display = 'none';
@@ -3444,6 +3483,7 @@ function build_dialog($selected_setting = "ui") {
 				$_seem_start_type = "";
 				if(get_value("ui_seem_start_type") == "cockpit") {
 					$_SESSION["prefs"]["seem_start_file"] = 0;
+					$_SESSION["prefs"]["seem_start_weapp"] = '';
 					$_seem_start_type = "cockpit";
 
 
@@ -3460,6 +3500,13 @@ function build_dialog($selected_setting = "ui") {
 						}
 
 					}
+				} else if(get_value("ui_seem_start_type") == "weapp") {
+					$_seem_start_type = "weapp";
+					if (get_value("ui_seem_start_weapp") != '') {
+						$_seem_start_weapp = get_value("ui_seem_start_weapp");
+
+					}
+
 
 				// Document
 				} else if(get_value("ui_seem_start_type") == "document") {
@@ -3532,7 +3579,25 @@ function build_dialog($selected_setting = "ui") {
 					$_seem_object_chooser = $we_button->create_button_table(array($yuiSuggest->getHTML()), 0, array("id"=>"seem_start_object", "style"=>"display:none"));
 					$permitedStartTypes[] = "object";
 				}
-
+				$_start_weapp = new we_htmlSelect(array("name" => "seem_start_weapp","class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
+				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+				$_tools = weToolLookup::getAllTools(true, false);
+				foreach ($_tools as $_k => $_tool) {
+					if(!$_tool['appdisabled']  && we_hasPerm($_tool['startpermission']) ){
+						$_start_weapp->addOption($_tool['name'], $_tool['text']);
+					}
+				}
+				$_seem_weapp_chooser ='';
+				if($_start_weapp->getOptionNum()){
+					$_start_type->addOption("weapp", $GLOBALS['l_prefs']["seem_start_type_weapp"]);
+					$_start_weapp->selectOption($_seem_start_weapp);
+					$weAPPSelector = $_start_weapp->getHtmlCode();
+					$_seem_weapp_chooser = $we_button->create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
+					$permitedStartTypes[]="weapp";
+				}
+				
+				
+				
 				// Build final HTML code
 				if ($showStartType) {
 					if (in_array($_seem_start_type,$permitedStartTypes)) {
@@ -3542,7 +3607,7 @@ function build_dialog($selected_setting = "ui") {
 					}
 					$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 					$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode());
-					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser);
+					$_seem_html->setCol(1, 0, array("style" => "padding-top:5px;"), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser. $_seem_weapp_chooser);
 					array_push($_settings, array("headline" => $l_prefs["seem_startdocument"], "html" => $_seem_html->getHtmlCode().'<script language="JavaScript" type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>', "space" => 200));
 				}
 
@@ -6602,6 +6667,12 @@ if (isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true") {
 				$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],$l_prefs["seem_startdocument"],$l_prefs["tab_ui"])."\\n";
 			}
 		}
+	} elseif ($_REQUEST['seem_start_type']=="weapp") {
+		if (empty($_REQUEST['seem_start_weapp'])) {
+			$acError = true;
+			$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],$l_prefs["seem_startdocument"],$l_prefs["tab_ui"])."\\n";
+		} 
+	
 	} elseif ($_REQUEST['seem_start_type']=="object") {
 		if (empty($_REQUEST['seem_start_object'])) {
 			$acError = true;

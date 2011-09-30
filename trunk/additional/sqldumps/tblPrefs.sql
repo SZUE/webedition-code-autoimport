@@ -19,6 +19,7 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   phpOnOff tinyint(1) unsigned NOT NULL default '0',
   seem_start_file int(11) unsigned NOT NULL default '0',
   seem_start_type varchar(10) NOT NULL default '',
+  seem_start_weapp varchar(255) NOT NULL default '',
   editorSizeOpt tinyint(1) unsigned NOT NULL default '0',
   editorWidth int(11) unsigned NOT NULL default '0',
   editorHeight int(11) unsigned NOT NULL default '0',

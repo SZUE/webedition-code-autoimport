@@ -100,6 +100,7 @@ $l_prefs["tab_versions"] = 'Versiointi';
 	$l_prefs["seem_start_type_document"] = "Dokumentti";
 	$l_prefs["seem_start_type_object"] = "Objekti";
 	$l_prefs["seem_start_type_cockpit"] = "Pika-aloitus";
+	$l_prefs["seem_start_type_weapp"] = "WE-App"; // TRANSLATE
 	$l_prefs["question_change_to_seem_start"] = "Haluatko siirtyä valittuun dokumenttiin?";
 
 
