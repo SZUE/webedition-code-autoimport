@@ -241,10 +241,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$use_https_refer=false;
 				$db->query("SELECT pref_value FROM ".NEWSLETTER_PREFS_TABLE." WHERE pref_name='use_https_refer';");
 				if(!$db->next_record()) $use_https_refer=$db->f("use_https_refer");
-				if($use_https_refer) $protocol="https://";
-				else $protocol="http://";
+				$protocol=($use_https_refer ? "https://" : "http://");
 
-				$port = defined("HTTP_PORT") ? HTTP_PORT : 80;
+				$port = defined("HTTP_PORT") ? HTTP_PORT : ($use_https_refer? 443 : 80);
 				$basehref=$protocol.SERVER_NAME.":".$port;
 
 				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER["SCRIPT_NAME"];
@@ -555,25 +554,30 @@ function we_unsubscribeNL($db,$customer,$_customerFieldPrefs,$abos,$paths){
 		if ($customer) {
 			$__db = new DB_WE();
 
-			$__db->query("SELECT Value FROM " . CUSTOMER_ADMIN_TABLE . " WHERE Name='FieldAdds'");
-			$__customerFields = $__db->next_record() ? unserialize($__db->f('Value')) : "";
+			$__customerFields=f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="FieldAdds"','Value',$__db);
+			$__customerFields = $__customerFields ? unserialize($__customerFields) : '';
 
-			$__where = " WHERE " .$_customerFieldPrefs['customer_email_field'] . "='" . $__db->escape($unsubscribe_mail) . "'";
-			$__db->query("SELECT * FROM " . CUSTOMER_TABLE . $__where);
-			$__update = "";
+			$__where = ' WHERE ' .$_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($unsubscribe_mail) . '"';
+			$tmp=array();
+			foreach($abos as $abo){
+				$tmp[]='"'.$__db->escape($abo).'"';
+			}
+			$__db->query('SELECT '.implode(',',$tmp).' FROM ' . CUSTOMER_TABLE . $__where);
+			unset($tmp);
+			$__update = array();
 			if ($__db->next_record()) {
 				foreach($abos as $abo) {
 					$fieldDefault = (isset($__customerFields[$abo]["default"]) ? $__customerFields[$abo]["default"] : "");
-					$fieldDefaults = explode(",", $fieldDefault);
+					$fieldDefaults = explode(',', $fieldDefault);
 					$aboNeg = is_array($fieldDefaults) && count($fieldDefaults)>1 ? $fieldDefaults[0] : "";
 
 					$dbAbo = $__db->f($abo);
 					if (!empty($dbAbo) || $dbAbo != $aboNeg) {
-						$__update .= (empty($__update)?"":", ") . "$abo='$aboNeg'";
+						$__update[]= $abo.'="'.$__db->escape($aboNeg).'"';
 						$emailExists = true;
 					}
 				}
-				if($emailExists) $__db->query("UPDATE " . CUSTOMER_TABLE . " SET $__update $__where");
+				if($emailExists) $__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET '.implode(',',$__update).' '.$__where);
 			}
 		} else {
 
