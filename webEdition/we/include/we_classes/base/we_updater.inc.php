@@ -86,6 +86,7 @@
 
 		if(!$this->isColExist(PREFS_TABLE,"seem_start_file")) $this->addCol(PREFS_TABLE,"seem_start_file","INT");
 		if(!$this->isColExist(PREFS_TABLE,"seem_start_type")) $this->addCol(PREFS_TABLE,"seem_start_type","VARCHAR(10) DEFAULT ''");
+		if(!$this->isColExist(PREFS_TABLE,"seem_start_weapp")) $this->addCol(PREFS_TABLE,"seem_start_weapp","VARCHAR(255) DEFAULT ''",' AFTER seem_start_type ');
 		if(!$this->isColExist(PREFS_TABLE,"phpOnOff")) $this->addCol(PREFS_TABLE,"phpOnOff","TINYINT(1) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(PREFS_TABLE,"editorSizeOpt")) $this->addCol(PREFS_TABLE,"editorSizeOpt","TINYINT( 1 ) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(PREFS_TABLE,"editorWidth")) $this->addCol(PREFS_TABLE,"editorWidth","INT( 11 ) DEFAULT '0' NOT NULL");

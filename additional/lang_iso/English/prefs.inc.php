@@ -101,6 +101,7 @@ $l_prefs["tab_versions"] = 'Versioning';
 	$l_prefs["seem_start_type_document"] = "Document";
 	$l_prefs["seem_start_type_object"] = "Object";
 	$l_prefs["seem_start_type_cockpit"] = "Cockpit";
+	$l_prefs["seem_start_type_weapp"] = "WE-App"; 
 	$l_prefs["question_change_to_seem_start"] = "Do you want to change to the selected document?";
 
 

@@ -156,7 +156,9 @@ class Basket {
 	function initCartFields() {
 		
 		if (isset($_REQUEST[WE_SHOP_CART_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_CART_CUSTOM_FIELD])) {
-			$this->CartFields = $_REQUEST[WE_SHOP_CART_CUSTOM_FIELD];
+			foreach ($_REQUEST[WE_SHOP_CART_CUSTOM_FIELD] as $key => $value){
+				$this->CartFields[$key]=$value;
+			}
 		}
 	}
 	

@@ -100,6 +100,7 @@ $l_prefs["tab_versions"] = 'Versioning'; // TRANSLATE
 	$l_prefs["seem_start_type_document"] = "Document"; // TRANSLATE
 	$l_prefs["seem_start_type_object"] = "Object"; // TRANSLATE
 	$l_prefs["seem_start_type_cockpit"] = "Cockpit"; // TRANSLATE
+	$l_prefs["seem_start_type_weapp"] = "WE-App"; // TRANSLATE
 	$l_prefs["question_change_to_seem_start"] = "Wilt u het geselecteerde document wijzigen?";
 
 
