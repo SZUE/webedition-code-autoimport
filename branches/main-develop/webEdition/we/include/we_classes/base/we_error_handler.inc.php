@@ -316,7 +316,7 @@ function log_error_message($type, $message, $file, $_line){
 			} else{
 				$id = $GLOBALS['DB_WE']->getInsertId();
 				foreach($logVars as $var){
-					$GLOBALS['DB_WE']->query('UPDATE '.tbl.' SET '.getVariableMax($var).' WHERE ID='.$id);
+					$GLOBALS['DB_WE']->query('UPDATE '.$tbl.' SET '.getVariableMax($var).' WHERE ID='.$id);
 				}
 			}
 		} else{
@@ -328,7 +328,7 @@ function log_error_message($type, $message, $file, $_line){
 			} else{
 				$id = mysql_insert_id();
 				foreach($logVars as $var){
-					mysql_query('UPDATE '.tbl.' SET '.getVariableMax($var).' WHERE ID='.$id);
+					mysql_query('UPDATE '.$tbl.' SET '.getVariableMax($var).' WHERE ID='.$id);
 				}
 			}
 			mysql_close();
