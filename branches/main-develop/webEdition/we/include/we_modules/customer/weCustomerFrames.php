@@ -1173,7 +1173,7 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 
 		if (($format == '') || we_getYearPos($format) != -1) {
 			$yearSelect = '<select class="weSelect" name="' . sprintf($name, "_year") . '" size="1" onChange="' . $onchange . '">';
-			for ($i = $from_year; $i <= abs(date("Y") + 8); $i++) {
+			for ($i = $from_year; $i <= abs(date("Y") + 100); $i++) { //Temp-Fix 5471
 				$yearSelect .= '<option' . ($time ? (($year == $i) ? ' selected="selected"' : '') : '') . '>' . sprintf("%04d", $i) . '</option>';
 			}
 			$yearSelect .= '</select>';
