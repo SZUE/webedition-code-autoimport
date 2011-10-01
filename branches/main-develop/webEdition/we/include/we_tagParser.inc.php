@@ -171,6 +171,11 @@ class we_tagParser{
 	}
 
 	public function parseTags(&$code,$start=0,$ende=FALSE){
+		if(is_string($start)){//old call
+			$start=0;
+			$ende=FALSE;
+			t_e('Tagparser called with old API - please Update your tag!');
+		}
 		if($start==0 && ($tmp = self::checkOpenCloseTags($this->tags, $code)) !== true){
 			return $tmp;
 		}
@@ -181,6 +186,8 @@ class we_tagParser{
 					$tmp=$this->parseTag($code,$ipos); //	dont add postname tagname in ignorearray
 					$this->tags[$ipos]='';
 					$ipos+=$tmp;
+				}else{
+					$ipos++;
 				}
 		}
 			$this->lastpos = 0;
@@ -337,15 +344,15 @@ class we_tagParser{
 				$endeEndTagPos = strpos($code, '>', $endTagPos) + 1;
 				$content = substr($code, $endeStartTag, ($endTagPos - $endeStartTag));
 				//only 1 exception: comment tag should be able to contain partly invalid code (e.g. missing attributes etc)
-				if($tagname!='comment'){
+				if(($tagname!='comment') && (($ipos+1)<$endTagNo)){
 					$this->parseTags($content,($ipos+1),$endTagNo);
 				}
 			} else{
-				t_e('endtag for ' . $tag . ' not found', $code);
+				t_e('Internal Parser Error: endtag for ' . $tag . ' not found', $code);
 			}
 		}
 		$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs, ',') . ')'); // workarround Bug Nr 6318
-//		t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
+		//t_e($tag, $tagPos, $endeStartTag, $endTagPos, $ipos, $content,$this->tags);
 
 		$parseFn = 'we_parse_tag_' . $tagname;
 		if(function_exists($parseFn)){
