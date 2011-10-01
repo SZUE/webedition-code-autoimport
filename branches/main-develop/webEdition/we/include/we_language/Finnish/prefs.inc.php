@@ -97,6 +97,7 @@ $l_prefs = array(
 		'seem_start_type_document' => "Dokumentti",
 		'seem_start_type_object' => "Objekti",
 		'seem_start_type_cockpit' => "Pika-aloitus",
+		'seem_start_type_weapp' => "WE-App",
 		'question_change_to_seem_start' => "Haluatko siirtyä valittuun dokumenttiin?",
 		/**
 		 * Sidebar

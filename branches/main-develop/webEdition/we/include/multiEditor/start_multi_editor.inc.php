@@ -116,6 +116,15 @@ if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we
 				'text/webedition',
 			);
 			$jsCommand = _buildJsCommand($directCmd);
+		} else if( $_SESSION["prefs"]["seem_start_type"] == "weapp" && $_SESSION["prefs"]["seem_start_weapp"] != ''){	//	if a we-app is choosen
+
+			$directCmd = array(
+				'','','','tool_' . $_SESSION["prefs"]["seem_start_weapp"] . '_edit'
+				
+			);
+			$jsCommand = _buildJsCommand();
+			$jsCommand .= _buildJsCommand($directCmd);
+				
 		} else if (($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
 			$_SESSION["prefs"]["seem_start_type"] = "cockpit";
 			$jsCommand = _buildJsCommand();

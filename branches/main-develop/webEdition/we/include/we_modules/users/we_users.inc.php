@@ -223,7 +223,7 @@ class we_user {
 		$this->Name = "user_".md5(uniqid(rand()));
 		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","CreatorID","CreateDate","ModifierID","ModifyDate","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");
 
-		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","BackendCharset","seem_start_file","seem_start_type","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
+		array_push($this->preference_slots,"sizeOpt","weWidth","weHeight","usePlugin","autostartPlugin","promptPlugin","Language","BackendCharset","seem_start_file","seem_start_type","seem_start_weapp","editorSizeOpt","editorWidth","editorHeight","editorFontname","editorFontsize","editorFont","default_tree_count","force_glossary_action","force_glossary_check","cockpit_amount_columns","cockpit_amount_last_documents", "cockpit_rss_feed_url", "use_jupload", "editorMode");
 
 		$this->DB_WE = new DB_WE;
 
@@ -473,12 +473,19 @@ class we_user {
 			if($this->Preferences['seem_start_type'] == "cockpit") {
 				$save_javascript .= $this->rememberPreference(0, 'seem_start_file');
 				$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
+				$save_javascript .= $this->rememberPreference('', 'seem_start_weapp');
 			} elseif($this->Preferences['seem_start_type'] == "object") {
 				$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file');
 				$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
+				$save_javascript .= $this->rememberPreference('', 'seem_start_weapp');
+			} elseif($this->Preferences['seem_start_type'] == "weapp") {
+				$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : '', 'seem_start_weapp');
+				$save_javascript .= $this->rememberPreference("weapp", 'seem_start_type');
+				$save_javascript .= $this->rememberPreference(0, 'seem_start_file');
 			} else {
 				$save_javascript .= $this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file');
 				$save_javascript .= $this->rememberPreference("cockpit", 'seem_start_type');
+				$save_javascript .= $this->rememberPreference('', 'seem_start_weapp');
 			}
 		}
 		$save_javascript .= $this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt');
@@ -761,6 +768,7 @@ function mapPermissions() {
 					.	"BackendCharset,"
 					.	"seem_start_file,"
 					.	"seem_start_type,"
+					.	"seem_start_weapp,"
 					.	"editorSizeOpt,"
 					.	"editorWidth,"
 					.	"editorHeight,"
@@ -791,6 +799,7 @@ function mapPermissions() {
 					.	"'".$this->Preferences['BackendCharset']."', "
 					.	"'".($this->Preferences['seem_start_file'] ? $this->Preferences['seem_start_file'] : 0)."', "
 					.	"'".$this->Preferences['seem_start_type']."', "
+					.	"'".$this->Preferences['seem_start_weapp']."', "
 					.	"'".($this->Preferences['editorSizeOpt'] == '1' ? 1 : 0)."', "
 					.	"'".($this->Preferences['editorWidth'] ? $this->Preferences['editorWidth'] : 0)."', "
 					.	"'".($this->Preferences['editorHeight'] ? $this->Preferences['editorHeight'] : 0)."', "
@@ -939,6 +948,10 @@ function mapPermissions() {
 					} elseif($settingvalue == "object") {
 						$_SESSION["prefs"]["seem_start_file"] = $_REQUEST["seem_start_object"];
 						$_SESSION["prefs"]["seem_start_type"] = "object";
+
+					} elseif($settingvalue == "weapp") {
+						$_SESSION["prefs"]["seem_start_weapp"] = $_REQUEST["seem_start_weapp"];
+						$_SESSION["prefs"]["seem_start_type"] = "weapp";
 
 					} else {
 						$_SESSION["prefs"]["seem_start_file"] = $_REQUEST["seem_start_document"];
@@ -1262,7 +1275,7 @@ function mapPermissions() {
 		}
 		if($tab==3) {
 			foreach($this->preference_slots as $key => $val) {
-				if($val == "seem_start_file" || $val == "seem_start_type") {
+				if($val == "seem_start_file" || $val == "seem_start_type" || $val == "seem_start_weapp") {
 				} else {
 					$obj=$this->Name.'_Preference_'.$val;
 				}
@@ -1279,6 +1292,10 @@ function mapPermissions() {
 			} elseif($_REQUEST['seem_start_type'] == "object") {
 				$this->setPreference("seem_start_file", $_REQUEST["seem_start_object"]);
 				$this->setPreference("seem_start_type", "object");
+
+			} elseif($_REQUEST['seem_start_type'] == "weapp") {
+				$this->setPreference("seem_start_weapp", $_REQUEST["seem_start_weapp"]);
+				$this->setPreference("seem_start_type", "weapp");
 
 			} else {
 				$this->setPreference("seem_start_file", $_REQUEST["seem_start_document"]);
@@ -2560,17 +2577,25 @@ function mapPermissions() {
 									document.getElementById('seem_start_object').style.display = 'none';
 								}
 								document.getElementById('seem_start_document').style.display = 'block';
+								document.getElementById('seem_start_weapp').style.display = 'none';
 				";
 			if(defined("OBJECT_FILES_TABLE")) {
 				$js .= "
 							} else if(val == 'object') {
 								document.getElementById('seem_start_document').style.display = 'none';
+								document.getElementById('seem_start_weapp').style.display = 'none';
 								document.getElementById('seem_start_object').style.display = 'block';
 						";
 			}
 			$js .= "
+							} else if(val == 'weapp'){
+								document.getElementById('seem_start_document').style.display = 'none';
+								document.getElementById('seem_start_object').style.display = 'none';
+								document.getElementById('seem_start_weapp').style.display = 'block';
+								
 							} else {
 								document.getElementById('seem_start_document').style.display = 'none';
+								document.getElementById('seem_start_weapp').style.display = 'none';
 								if(document.getElementById('seem_start_object')) {
 									document.getElementById('seem_start_object').style.display = 'none';
 								}
@@ -2605,6 +2630,21 @@ function mapPermissions() {
 
 			}
 
+		
+		// WEAPP
+		} else if($this->Preferences['seem_start_type'] == "weapp") {
+			$_seem_start_type = "weapp";
+			if ($this->Preferences['seem_start_file'] != 0) {
+				$_object_id = $this->Preferences['seem_start_file'];
+				$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, "", FILE_ONLY, $_object_id);
+
+				if(isset($_get_object_paths[$_object_id])){	//	seeMode start file exists
+					$_object_path = $_get_object_paths[$_object_id];
+
+				}
+
+			}
+		
 		// Document
 		} else {
 			$_seem_start_type = "document";
@@ -2629,8 +2669,26 @@ function mapPermissions() {
 			$_start_type->addOption("object", g_l('prefs','[seem_start_type_object]'));
 
 		}
+		//weapp
+		$_start_weapp = new we_htmlSelect(array("name" => "seem_start_weapp","class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+		$_tools = weToolLookup::getAllTools(true, false);
+		foreach ($_tools as $_k => $_tool) {
+			if(!$_tool['appdisabled'] && isset($this->permissions_slots[$_tool['name']][$_tool['startpermission']]) && $this->permissions_slots[$_tool['name']][$_tool['startpermission']]){
+				$_start_weapp->addOption($_tool['name'], $_tool['text']);
+			}
+		}
+		
+		
+		if($_start_weapp->getOptionNum()){
+			$_start_type->addOption("weapp", $GLOBALS['l_prefs']["seem_start_type_weapp"]);
+		}
 		$_start_type->selectOption($_seem_start_type);
-
+		
+		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
+		$weAPPSelector = $_start_weapp->getHtmlCode();
+		$_seem_weapp_chooser = $we_button->create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
+		
 		// Build SEEM select start document chooser
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("Doc");
@@ -2666,11 +2724,16 @@ function mapPermissions() {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_seem_object_chooser = we_button::create_button_table(array($weAcSelector), 10, array("id"=>"seem_start_object", "style"=>"display:none"));
+		
+		
+	
+
+		
 
 		// Build final HTML code
 		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode() . getPixel(200,1));
-		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser);
+		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser.$_seem_weapp_chooser);
 
 		if (we_hasPerm("CHANGE_START_DOCUMENT")) {
 			array_push($_settings,

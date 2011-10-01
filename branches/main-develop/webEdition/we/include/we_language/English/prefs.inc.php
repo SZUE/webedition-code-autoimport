@@ -95,6 +95,7 @@ $l_prefs = array(
 		'seem_start_type_document' => "Document",
 		'seem_start_type_object' => "Object",
 		'seem_start_type_cockpit' => "Cockpit",
+		'seem_start_type_weapp' => "WE-App",
 		'question_change_to_seem_start' => "Do you want to change to the selected document?",
 		/**
 		 * Sidebar
