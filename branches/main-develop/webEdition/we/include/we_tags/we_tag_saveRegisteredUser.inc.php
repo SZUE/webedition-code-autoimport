@@ -79,9 +79,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							// User in session speichern
 							$uID=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username="'.$GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']).'"','ID',$GLOBALS['DB_WE']);
 							if($uID){
-								$registered = $_SESSION['webuser']['registered'];
 								$_SESSION['webuser']=getHash('SELECT * FROM '.CUSTOMER_TABLE.' WHERE ID='.$uID,$GLOBALS['DB_WE']);
-								$_SESSION['webuser']['registered'] = $registered;
+								$_SESSION['webuser']['registered'] = true;
 
 								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET MemberSince=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
 								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET LastAccess=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
