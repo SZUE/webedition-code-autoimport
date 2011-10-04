@@ -22,10 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if($GLOBALS['WE_MAIN_DOC']->InWebEdition){
-	$GLOBALS['parserTagInfo']['linklist'] = array(
-		'noPreParseContent'=>true,
-	);
+
+function we_parse_tag_linklist($attribs,$content){
+			return '<?php printElement('.we_tagParser::printTag('linklist',$attribs).');?>'.$content.'<?php if(isset($GLOBALS[\'abc\'])) unset($GLOBALS[\'abc\']);?>';
 }
 
 function we_tag_linklist($attribs, $content){

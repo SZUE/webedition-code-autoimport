@@ -30,8 +30,7 @@ function we_tag_ifMale($attribs, $content){
 		if ($maleSalutation == "") {
 			$maleSalutation = g_l('modules_newsletter','[default][male]');
 		}
-		if($GLOBALS["WE_SALUTATION"] == $maleSalutation) return true;
-		else return false;
+		return ($GLOBALS["WE_SALUTATION"] == $maleSalutation);
 	}else{
 		return false;
 	}

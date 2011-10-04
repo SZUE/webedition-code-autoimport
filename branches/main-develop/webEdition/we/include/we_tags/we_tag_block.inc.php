@@ -43,7 +43,7 @@ function we_parse_tag_block($attribs, $content){
 	}
 	$blockName = weTag_getParserAttribute('name', $arr);
 	$name = str_replace(array('.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array('_', '_'), crypt($blockName, 'bl'));
-	$ctlPre = '<?php if(' . we_tagParser::printTag('ifEditmode') . '){echo we_tag_blockControls(';
+	$ctlPre = '<?php if($GLOBALS[\'we_editmode\']){echo we_tag_blockControls(';
 	$ctlPost = ');}?>';
 
 	//if(strpos($content,'blockControls')===false){
@@ -52,7 +52,7 @@ function we_parse_tag_block($attribs, $content){
 		$content = preg_replace('|(< ?td[^>]*>)(.*< ?/ ?td[^>]*>)|si', '$1' . $ctlPre . '$block_' . $name . $ctlPost . '$2', $content, 1);
 		$content = str_replace(array('#####PHPCALSSARROW####', '#####PHPENDBRACKET####'), array('=>', '?>'), $content);
 	} else{
-		$content = '<p>' . $ctlPre . '$block_' . $name . $ctlPost . $content . '</p>';
+		$content = $ctlPre . '$block_' . $name . $ctlPost . $content;
 	}
 //	}
 	//here postTagName is explicitly needed, because the control-element is not "inside" the block-tag (no block defined/first element) but controls its elements

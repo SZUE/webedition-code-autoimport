@@ -2,10 +2,6 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
- *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +19,6 @@
  */
 
 //used in we:linkedlist
-function we_tag_target($attribs,$content){
-	return "";
+function we_tag_prelink($attribs, $content){
+	return (we_tag('ifPosition',array('type'=>'linklist','position'=>'first','reference'=>''))?'':$content);
 }
