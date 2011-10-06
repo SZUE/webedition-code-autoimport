@@ -20,12 +20,23 @@
 
 function we_tag_ifShopPayVat($attribs,$content) {
 	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-
+	include_once(WE_CUSTOMER_MODULE_DIR . "we_customertag.inc.php");
+	$customerid = we_getTagAttribute("customerid",$attribs);
 	$weShopVatRule = weShopVatRule::getShopVatRule();
 	if (we_tag('ifRegisteredUser',array(), '')) {
 		$customer = $_SESSION['webuser'];
 	} else {
-		$customer = false;
+		if ($customerid){
+			$cus= new we_customertag($customerid);
+			$customerarray = $cus->object->DB_WE->Record;
+			if ($customerarray){
+				$customer = $customerarray;
+			} else {
+				$customer = false;
+			}
+		} else {
+			$customer = false;
+		}
 	}
 
 
