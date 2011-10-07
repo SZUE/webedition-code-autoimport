@@ -29,6 +29,7 @@ function we_tag_ifShopPayVat($attribs,$content) {
 		if ($customerid){
 			$cus= new we_customertag($customerid);
 			$customerarray = $cus->object->DB_WE->Record;
+			unset($cus);
 			if ($customerarray){
 				$customer = $customerarray;
 			} else {
