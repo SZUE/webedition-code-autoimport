@@ -37,11 +37,11 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 
 		if(!empty($appconfig->info->version)){
 			if(!empty($appconfig->info->version)){
-				$html .= '<strong>'.$translate->_('Version').': '.we_util_Strings:: number2version($appconfig->info->version,true).'</strong>';
+				$html .= '<strong>'.$translate->_('Version').': '.$appconfig->info->version.'</strong>';
 				if(!empty($appconfig->info->copyright) || !empty($appconfig->info->copyrighturl)){
 					$html .= ' &copy; ';
 					if(!empty($appconfig->info->copyrighturl)){
-						$html .= ' <a href="http://'.$appconfig->info->copyrighturl.'" target="_blank">';
+						$html .= ' <a style="color:#000000" href="http://'.$appconfig->info->copyrighturl.'" target="_blank">';
 					}
 					$html .=  $appconfig->info->copyright;
 					if(!empty($appconfig->info->copyrighturl)){
@@ -95,7 +95,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 		$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
 		$rowExTool->setLeftWidth(100);
 		if(!empty($appconfig->thirdparty->www)){
-				$html .= ' <a href="'.$appconfig->thirdparty->www.'" target="_blank">';
+				$html .= ' <a style="color:#000000" href="'.$appconfig->thirdparty->www.'" target="_blank">';
 				if(!empty($appconfig->thirdparty->name)){$html .= $appconfig->thirdparty->name;} else {$html .= $appconfig->thirdparty->www;}
 				$html .= '</a>';
 		}
@@ -105,7 +105,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 		if(!empty($appconfig->thirdparty->license)){
 			$html .= '<br/> '.$translate->_('LicenseType').' ';
 			if(!empty($appconfig->thirdparty->licenseurl)){
-				$html .= ' <a href="'.$appconfig->thirdparty->licenseurl.'" target="_blank">';
+				$html .= ' <a style="color:#000000" href="'.$appconfig->thirdparty->licenseurl.'" target="_blank">';
 			}
 			if(!empty($appconfig->thirdparty->license)){$html .= $appconfig->thirdparty->license;} else {$html .= $appconfig->thirdparty->licenseurl;}
 			if(!empty($appconfig->thirdparty->licenseurl)){
@@ -142,7 +142,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 						for ($i=0; $i < count($authornames);$i++){
 							$htmla = '';
 							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
-								$htmla .= '<a href="'.$authorlinks[$i].'" target="_blank" >';
+								$htmla .= '<a style="color:#000000" href="'.$authorlinks[$i].'" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
 							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
@@ -154,7 +154,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 					} else {
 						$html .= '';
 						if(isset($authorlinks) && !empty($authorlinks)){
-								$html .= '<a href="'.$authorlinks.'" target="_blank" >';
+								$html .= '<a style="color:#000000" href="'.$authorlinks.'" target="_blank" >';
 							}
 							$html .= $authornames;
 							if(isset($authorlinks) && !empty($authorlinks)){
@@ -166,7 +166,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 					$html .= '<br/>'.$cm->address;
 				}
 				if(!empty($cm->email)){
-					$html .= '<br/><a href="mailto'.$cm->email.'">'.$cm->email.'</a>';
+					$html .= '<br/><a style="color:#000000" href="mailto'.$cm->email.'">'.$cm->email.'</a>';
 				}
 				$rowAuthor->addHTML($html);
 				$rowsAuthor[] = $rowAuthor;
@@ -192,7 +192,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 						for ($i=0; $i < count($authornames);$i++){
 							$htmla = '';
 							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
-								$htmla .= '<a href="'.$authorlinks[$i].'" target="_blank" >';
+								$htmla .= '<a style="color:#000000" href="'.$authorlinks[$i].'" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
 							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
@@ -204,7 +204,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 					} else {
 						$html .= '';
 						if(isset($authorlinks) && !empty($authorlinks)){
-							$html .= '<a href="'.$authorlinks.'" target="_blank" >';
+							$html .= '<a style="color:#000000" href="'.$authorlinks.'" target="_blank" >';
 						}
 						$html .= $authornames;
 						if(isset($authorlinks) && !empty($authorlinks)){
@@ -217,7 +217,7 @@ if(!empty($appconfig->info->version) || !empty($appconfig->dependencies->version
 					$html .= '<br/>'.$cm->address;
 				}
 				if(!empty($cm->email)){
-					$html .= '<br/><a href="mailto'.$cm->email.'">'.$cm->email.'</a>';
+					$html .= '<br/><a style="color:#000000" href="mailto'.$cm->email.'">'.$cm->email.'</a>';
 				}
 				
 				$rowMaintainer->addHTML($html);			
