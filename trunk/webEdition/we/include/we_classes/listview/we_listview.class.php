@@ -156,7 +156,6 @@ class we_listview extends listviewBase {
 				$sql_tail .= ' AND '.FILE_TABLE.'.ContentType = \''.escape_sql_query($ct).'\'';
 			}
 		}
-		if()
 		if ($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE")) {
 			$sql_tail .= weDocumentCustomerFilter::getConditionForListviewQuery($this);
 
@@ -378,10 +377,10 @@ class we_listview extends listviewBase {
 				$this->DB_WE->Record["WE_PATH"] = "";
 				$this->DB_WE->Record["WE_TEXT"] = "";
 				$this->DB_WE->Record["WE_ID"] = "";
-				$this->count++;			
+				$this->count++;
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
 
@@ -396,12 +395,6 @@ class we_listview extends listviewBase {
 			$exparr=array();
 
 			$arr = explode(" ",$cond);
-			$arrr=array();
-			$rep= array(' (','(',' )',')');
-			foreach ($arr as $key => $value){
-				if($value !=')' && $value!='('){$arrr[]=trim(str_replace($rep,'',$value));}
-			}
-			$arr=$arrr;
 			$logic=array();
 			$logic["and"]=array();
 			$logic["or"]=array();
