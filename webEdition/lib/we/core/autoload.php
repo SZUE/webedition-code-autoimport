@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -21,8 +21,8 @@
 
 
 /*
- * Sets some global variables which are needed 
- * for other classes and scripts and defines 
+ * Sets some global variables which are needed
+ * for other classes and scripts and defines
  * the __autoload() function
  */
 
@@ -58,6 +58,7 @@ require_once('Zend/Loader/Autoloader.php');
 
 $loader = Zend_Loader_Autoloader::getInstance(); #3815
 $loader->setFallbackAutoloader(true); #3815
+$loader->suppressNotFoundWarnings(true);
 
 // include configuration file of webEdition
 include_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
@@ -66,7 +67,7 @@ if (!defined("DATETIME_INITIALIZED")){// to prevent additional initialization if
 	if (!date_default_timezone_set(@date_default_timezone_get())){
 		date_default_timezone_set('Europe/Berlin');
 	}
-	define("DATETIME_INITIALIZED","1"); 
+	define("DATETIME_INITIALIZED","1");
 }
 if (!isset($_SERVER['TMP'])){
 	$_SERVER['TMP'] = $GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR .'zendcache';

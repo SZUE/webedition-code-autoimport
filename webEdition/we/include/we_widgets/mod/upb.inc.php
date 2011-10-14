@@ -100,7 +100,7 @@ foreach ($tbls as $table) {
 
 	$DB_WE->query($q);
 	$anz = $DB_WE->num_rows();
-	$DB_WE->query($q . " LIMIT ".abs($offset).",".abs($numRows)."");
+	$DB_WE->query($q . " LIMIT ".intval($offset).",".intval($numRows)."");
 	$db2 = new DB_WE();
 	$content = array();
 
@@ -171,5 +171,3 @@ foreach ($_cont as $k => $v) {
 	$ct .= $v . "\n";
 }
 $ct .= "</table>\n";
-
-?>
