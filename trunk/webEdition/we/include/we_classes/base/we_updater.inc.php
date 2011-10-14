@@ -124,6 +124,12 @@
 		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
+		
+		if (defined('GLOSSARY_TABLE')){
+			$this->changeColTyp(GLOSSARY_TABLE,"`Type`"," enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL default 'abbreviation'");
+	  		$this->changeColTyp(GLOSSARY_TABLE,"`Icon`"," enum('folder.gif','prog.gif') NOT NULL ");
+
+		}
 	}
 
 
