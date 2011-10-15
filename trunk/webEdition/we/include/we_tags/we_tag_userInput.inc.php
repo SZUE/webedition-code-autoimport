@@ -590,6 +590,7 @@ function we_tag_userInput($attribs, $content){
 							));
 					return we_getTextareaField($fieldname, $content, $atts);
 				} else {
+					echo '<script language="JavaScript" type="text/javascript">weFrontpageEdit=true;</script>';
 					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 					include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/js/we_textarea_include.inc.php");
 					$autobr = $autobrAttr ? "on" : "off";
