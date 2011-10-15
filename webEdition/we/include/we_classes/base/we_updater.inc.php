@@ -124,7 +124,7 @@
 		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
-		
+
 		if (defined('GLOSSARY_TABLE')){
 			$this->changeColTyp(GLOSSARY_TABLE,"`Type`"," enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL default 'abbreviation'");
 	  		$this->changeColTyp(GLOSSARY_TABLE,"`Icon`"," enum('folder.gif','prog.gif') NOT NULL ");
@@ -258,7 +258,7 @@
 	  $DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
 	  if($DB_WE->next_record()) return true; else return false;
 	}
-	 
+
 	function addTable($tab,$cols,$keys=array()){
 	   global $DB_WE;
 
@@ -748,7 +748,7 @@
 				"KEY UserID"=>"(UserID,sessionID)",
 				"KEY lockTime"=>"(lockTime)"
 				);
-			$this->addTable(LOCK_TABLE,$cols,$keys);	
+			$this->addTable(LOCK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
 		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
@@ -786,9 +786,19 @@
 				"PRIMARY KEY"=>"(ID)",
 				"KEY DID"=>"(DID,Locale(5))"
 				);
-			$this->addTable(LOCK_TABLE,$cols,$keys);				
+			$this->addTable(LOCK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LANGLINK_TABLE,'DLocale'))  $this->addCol(LANGLINK_TABLE,'DLocale',"varchar(5) NOT NULL default ''",' AFTER DID ');
+	}
+
+	function convertTemporaryDoc(){
+		if($this->isColExist(TEMPORARY_DOC_TABLE,'ID')){
+			$GLOBALS['DB_WE']->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE Active=0');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable="'.FILE_TABLE.'"');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable="'.OBJECT_FILES_TABLE.'"');
+			$this->delCol(TEMPORARY_DOC_TABLE,'ID');
+			$GLOBALS['DB_WE']->query('ALTER TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
+		}
 	}
 
 	function doUpdate(){
@@ -805,6 +815,7 @@
 		$this->updateLock();
 		$this->updateLangLink();
 		$this->updateTableKeys();
-	}
+		$this->convertTemporaryDoc();
+		}
 
 }
