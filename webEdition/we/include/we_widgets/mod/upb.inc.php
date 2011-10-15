@@ -35,7 +35,12 @@ if ($bTypeDoc && $bTypeObj) {
 	if (defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"))
 		$tbls[] = OBJECT_FILES_TABLE;
 } else {
-	$tbls[] = ($bTypeDoc && defined("FILE_TABLE")) ? FILE_TABLE : (($bTypeObj && defined("OBJECT_FILES_TABLE")) ? OBJECT_FILES_TABLE : "");
+	if ($bTypeDoc && defined("FILE_TABLE")){
+		$tbls[] = FILE_TABLE;
+	}
+	if ($bTypeObj && defined("OBJECT_FILES_TABLE")){
+		$tbls[] = OBJECT_FILES_TABLE;
+	}
 }
 
 $_cont = array();
