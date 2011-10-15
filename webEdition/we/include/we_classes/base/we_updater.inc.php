@@ -721,6 +721,9 @@
 		if(defined("VERSIONS_TABLE")){
 			if($this->isColExist(VERSIONS_TABLE,'DocType')) $this->changeColTyp(VERSIONS_TABLE,'DocType','varchar(64) NOT NULL');
 			if(!$this->isColExist(VERSIONS_TABLE,'MasterTemplateID')) $this->addCol(VERSIONS_TABLE,'MasterTemplateID',"bigint(20) NOT NULL default '0'",' AFTER ExtraTemplates ');
+			if($this->getColTyp(VERSIONS_TABLE,"documentElements")!="blob") $this->changeColTyp(VERSIONS_TABLE,"documentElements","blob");
+			if($this->getColTyp(VERSIONS_TABLE,"documentScheduler")!="blob") $this->changeColTyp(VERSIONS_TABLE,"documentScheduler","blob");
+			if($this->getColTyp(VERSIONS_TABLE,"documentCustomFilter")!="blob") $this->changeColTyp(VERSIONS_TABLE,"documentCustomFilter","blob");
 		}
 	}
 	function updateWorkflow(){
