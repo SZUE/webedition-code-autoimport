@@ -31,7 +31,13 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 	var temp=navigator.appVersion.split("MSIE");
 	weIE55= parseFloat(temp[1]) < 6;
 }
-
+var isIE9=false;
+if (typeof weFrontpageEdit!='undefined'){
+	if (navigator.appVersion.indexOf("MSIE")!=-1){
+		var temp=navigator.appVersion.split("MSIE");
+		isIE9= parseFloat(temp[1]) == 9;
+	}
+}
 
 var we_styleSheets;
 var we_classNames;
@@ -73,7 +79,7 @@ if(we_styleString && we_styleString.length){
 
 	we_styleSheets = document.styleSheets;
 	we_classNames = new Array();
-	if(isGecko||isOpera){
+	if(isGecko||isOpera ||isIE9){
 		for(var i=0;i<we_styleSheets.length;i++){
 			var r = we_styleSheets[i].cssRules;
 			if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
@@ -3857,7 +3863,7 @@ function weGetElementStyle(elementName,styleSheets){
 		// loop through all rules
 		for(var n=0;n<r.length;n++){
 			// get selector Text (.class or elemName)
-			var selectorText = (isGecko||isOpera) ? r[n].selectorText : r(n).selectorText;
+			var selectorText = (isGecko||isOpera||isIE9) ? r[n].selectorText : r(n).selectorText;
 			if(String(selectorText).length > 1 && String(selectorText).toLowerCase().indexOf(elementName.toLowerCase()) > -1){
 				// loop through all selector text entries
 				var v = String(selectorText).split(',');
