@@ -1933,12 +1933,18 @@ HTS;
 			"}\n" .
 			"function handle_event(evt) {\n" .
 			"	var f = self.document.forms['we_form'];\n" .
+			"	if(f.elements['v[docType]'].value == -1) {\n".
+			"		f.elements['v[we_TemplateID]'].value = f.elements['noDocTypeTemplateId'].value;\n".
+			"	} else {\n".
+			"		f.elements['v[we_TemplateID]'].value = f.elements['docTypeTemplateId'].value;\n".
+			"	}\n".
 			"	switch(evt) {\n" .
 			"		case 'previous':\n" .
 			"			f.step.value = 1;\n" .
 			"			we_submit_form(f, 'wizbody', '".$this->path."');\n" .
 			"			break;\n" .
-			"		case 'next':\n";
+			"		case 'next':\n".
+			"			if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['DocTypeTemplateId'].value;\n";
 		$functions .= (defined("OBJECT_TABLE"))?
 			"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true))) {\n" :
 			"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0) {\n";
