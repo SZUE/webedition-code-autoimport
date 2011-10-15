@@ -187,6 +187,7 @@ function we_tag_sessionField($attribs, $content) {
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $newAtts);
 			} else {
+				echo '<script language="JavaScript" type="text/javascript">weFrontpageEdit=true;</script>';
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/we_textarea_include.inc.php');
 				$pure = we_getTagAttribute('pure', $attribs, '', true);
