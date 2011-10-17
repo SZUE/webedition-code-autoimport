@@ -266,7 +266,7 @@
 			),
 			'Deprecated'=>array(
 				g_l('prefs','[backwardcompatibility_tagloading]')=>(defined('INCLUDE_ALL_WE_TAGS')&&INCLUDE_ALL_WE_TAGS)?getWarning('Deprecated', '1'):getOk('','0'),
-				'we:saveRegisteredUser register='=>(f('SELECT Value FROM '.CUSTOMER_ADMIN_TABLE.' WHERE Name="default_saveRegisteredUser_register"','Value',$GLOBALS['DB_WE'])=='true'?getWarning('Deprecated','true'):getOk('','false')),
+				'we:saveRegisteredUser register='=>(defined('CUSTOMER_TABLE')&&f('SELECT Value FROM '.CUSTOMER_ADMIN_TABLE.' WHERE Name="default_saveRegisteredUser_register"','Value',$GLOBALS['DB_WE'])=='true'?getWarning('Deprecated','true'):getOk('',defined('CUSTOMER_TABLE')?'false':'?')),
 			),
 		);
 
