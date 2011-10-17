@@ -312,19 +312,25 @@ class weTree{
 				if(treeData[i].checked==1) {
 					treeData[i].checked=0;
 					treeData[i].applylayout();
-					if(document.images) {
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
+					if(document.images) {			
+						try{
+							eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
+						} catch(e) {
+							self.Tree.setCheckNode(imgName);
+						}
 					}
-
 					break;
 				}
 				else {
 					treeData[i].checked=1;
 					treeData[i].applylayout();
 					if(document.images) {
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
+						try{
+							eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
+						} catch(e) {
+							self.Tree.setUnCheckNode(imgName);
+						}
 					}
-
 					break;
 				}
 			}
@@ -639,12 +645,21 @@ class weTree{
 
 		//$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"100%"),1,1);
 		//$table->setCol(0,0,array("id"=>"treetable","class"=>"top"),"<nobr>");
-
+$js='
+<script language="JavaScript" type="text/javascript">
+function setCheckNode(imgName){
+	if(document.images[imgName]){document.images[imgName].src="/webEdition/images/tree/check0.gif";}
+}
+function setUnCheckNode(imgName){
+	if(document.images[imgName]){document.images[imgName].src="/webEdition/images/tree/check1.gif";}
+}
+</script>
+';
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
 				WE_DEFAULT_HEAD.
 				STYLESHEET.
-				we_htmlElement::cssElement($style_code)
+				we_htmlElement::cssElement($style_code).$js
 			).
 			we_htmlElement::htmlBody(array(
 														"bgcolor"=>"#F3F7FF",
