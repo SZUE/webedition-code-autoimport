@@ -40,7 +40,7 @@ protect();
  * Table with the notes
  * @var string
  */
-$_table = TBL_PREFIX . 'tblwidgetnotepad';
+$_table = NOTEPAD_TABLE;
 $_sInitProps = substr($_REQUEST["we_cmd"][0], -5);
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};

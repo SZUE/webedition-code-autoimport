@@ -164,7 +164,7 @@ $_get_prio = 'high';
 ////////////////////////////////////////////////////////
 
 
-$_table = TBL_PREFIX . 'tblwidgetnotepad';
+$_table = NOTEPAD_TABLE;
 
 $_sql = "INSERT INTO
 	" . escape_sql_query($_table) . "
