@@ -30,7 +30,7 @@ include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" 
 function protect()
 {
 	global $l_alert;
-	if ($_SESSION["user"]["Username"] == "") {
+	if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) ||  $_SESSION["user"]["Username"] == '') {
 
 		print htmlTop();
 		print
