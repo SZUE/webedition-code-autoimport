@@ -144,6 +144,7 @@ class weSuggest {
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/animation-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/json-min.js'></script>\n";
 		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/autocomplete-min.js'></script>\n";
+		$out .= "<script type='text/javascript' src='/webEdition/js/utils/we_cmd_encode.js'></script>\n";
 		return $out;
 	}
 
