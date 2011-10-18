@@ -186,6 +186,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/json-min.js');
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/libs/yui/autocomplete-min.js');		
 		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/lib/we/core/JsonRpc.js');
+		$this->addJSFile($GLOBALS['__WE_BASE_URL__'] . '/js/utils/we_cmd_encode.js');
 	}
 
 	/**
@@ -448,7 +449,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 	{
 		
 		$idFieldNameInteger = 'document.getElementById("yuiAcResult_' . $this->getId() . '").value';
-		$idFieldNameString = '"document.getElementById(\\\'yuiAcResult_' . $this->getId() . '\\\').value"';
+		$idFieldNameString = 'weCmdEnc(document.getElementById(\'yuiAcResult_' . $this->getId() . '\').value)';
 		$pathFieldName = '"document.getElementById(\\\'yuiAcInput_' . $this->getId() . '\\\').value"';
 		//TODO
 		$onChange = '"opener.weEventController.fire(\'docChanged\')"';
