@@ -123,7 +123,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			$workflowTask = new weWorkflowTask($this->tasks[$i]->workflowTaskID);
 			if($workflowTask->userID){
 				//send todo to next user
-				$path = "<b>".g_l('modules_workflow','['.($workflowDoc->document->ContentType=='objectFile') ? OBJECT_FILES_TABLE : FILE_TABLE.'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$workflowDoc->document->Table.'\',\''.$workflowDoc->document->ID.'\',\''.$workflowDoc->document->ContentType.'\');");" >'.$workflowDoc->document->Path.'</a>';
+				$path = "<b>".g_l('modules_workflow','['.stripTblPrefix($workflowDoc->document->ContentType=='objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE).'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$workflowDoc->document->Table.'\',\''.$workflowDoc->document->ID.'\',\''.$workflowDoc->document->ContentType.'\');");" >'.$workflowDoc->document->Path.'</a>';
 				$mess="<p><b>".g_l('modules_workflow','[todo_next]')."</b></p><p>".$desc."</p><p>".$path."</p>";
 
 				$this->tasks[$i]->todoID=$this->sendTodo($workflowTask->userID,g_l('modules_workflow','[todo_subject]'),$mess."<p>".$path."</p>",$deadline);

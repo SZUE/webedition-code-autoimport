@@ -125,7 +125,7 @@ $l_modules_workflow = array(
 		'more_information' => "More information",
 		'less_information' => "Less information",
 		'no_wf_defined_object' => "No workflow has been defined for this object!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'messagePath' => "Document",
 				'in_workflow_ok' => "The document was successfully placed in the workflow!",
 				'in_workflow_notok' => "The document cannot be placed in the workflow!",
@@ -133,14 +133,13 @@ $l_modules_workflow = array(
 				'pass_workflow_notok' => "The document cannot be passed on!",
 				'decline_workflow_ok' => "The document was returned to the author!",
 				'decline_workflow_notok' => "The document cannot be returned to the author!",
-				));
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+				)
+'tblObjectFiles' => array(
 			'in_workflow_ok' => "The object was successfully placed in the workflow!",
 			'in_workflow_notok' => "The object cannot be placed in the workflow!",
 			'pass_workflow_ok' => "The object was successfully passed on!",
 			'pass_workflow_notok' => "The object cannot be passed on!",
 			'decline_workflow_ok' => "The object was returned to the author!",
 			'decline_workflow_notok' => "The object cannot be returned to the author!",
-	);
-}
+	),
+);

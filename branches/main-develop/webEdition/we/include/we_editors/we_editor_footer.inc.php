@@ -203,7 +203,7 @@ if(defined("WORKFLOW_TABLE")){
 	function put_in_workflow() {
 
 		if( _EditorFrame.getEditorIsHot() ) {
-			if(confirm('" . g_l('alert','['.$we_doc->Table.'][in_wf_warning]') . "')) {
+			if(confirm('" . g_l('alert','['.stripTblPrefix($we_doc->Table).'][in_wf_warning]') . "')) {
 				we_cmd('save_document','','','','',0,0,1);
 			}
 		}

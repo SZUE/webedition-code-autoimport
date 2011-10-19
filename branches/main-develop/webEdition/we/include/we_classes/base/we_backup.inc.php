@@ -857,7 +857,7 @@ class we_backup {
 			mysql_select_db($this->backup_db->Database);*/
 			$mydb=new DB_WE();
 			$mydb->query("SELECT * FROM ".BACKUP_TABLE." ORDER BY IsFolder DESC, Path ASC",false,true);
-			
+
 			while ($mydb->next_record(MYSQL_ASSOC)) {
 				$line=$mydb->Record;
 				@set_time_limit(80);
@@ -1242,7 +1242,7 @@ class we_backup {
 		if(in_array(strtolower($tabname),array_keys($this->table_map))) return true;
 		if(defined("OBJECT_X_TABLE")){
 
-		$object_x_table=(defined("TBL_PREFIX") && TBL_PREFIX!="") ? str_ireplace(TBL_PREFIX,"",OBJECT_X_TABLE):OBJECT_X_TABLE;
+		$object_x_table=stripTblPrefix(OBJECT_X_TABLE);
 
 	 	return stripos($tabname,$object_x_table)!==false;
 		}
@@ -1256,8 +1256,7 @@ class we_backup {
 	 */
 
 	function rmTablePrefix($tabname) {
-		$len=strlen(TBL_PREFIX);
-		if(substr($tabname,0,$len)==TBL_PREFIX) return substr_replace($tabname,"",0,$len);
+		return stripTblPrefix($tabname);
 	}
 
 #==============================================================================#

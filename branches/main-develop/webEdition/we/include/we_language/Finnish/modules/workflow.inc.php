@@ -125,7 +125,7 @@ $l_modules_workflow = array(
 		'more_information' => "Lisätietdot",
 		'less_information' => "Piilota lisätiedot",
 		'no_wf_defined_object' => "Tälle objektille ei ole määritelty työnkulkua!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'messagePath' => "Dokumentti",
 				'in_workflow_ok' => "Dokumentti on siirretty työnkulkuun!",
 				'in_workflow_notok' => "Dokumenttia ei voitu siirtää työnkulkuun!",
@@ -133,9 +133,8 @@ $l_modules_workflow = array(
 				'pass_workflow_notok' => "Dokumenttia ei voitu edelleenlähettää!",
 				'decline_workflow_ok' => "Dokumentti on palautettu laatijalle!",
 				'decline_workflow_notok' => "Dokumenttia ei voitu palauttaa laatijalle!",
-				));
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+				),
+	'tblObjectFiles' => array(
 			'messagePath' => "Objekti",
 			'in_workflow_ok' => "Objekti on siirretty työnkulkuun!",
 			'in_workflow_notok' => "Objektia ei voitu siirtää työnkulkuun!",
@@ -143,5 +142,5 @@ if (defined("OBJECT_FILES_TABLE")) {
 			'pass_workflow_notok' => "Objektia ei voitu edelleenlähettää!",
 			'decline_workflow_ok' => "Objekti on palautettu laatijalle!",
 			'decline_workflow_notok' => "Objektia ei voitu palauttaa laatijalle!",
-	);
-}
+	),
+);

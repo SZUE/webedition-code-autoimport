@@ -849,8 +849,8 @@ class weBackup extends we_backup{
 		$this->backup_db->query("SHOW TABLE STATUS");
 		while ($this->backup_db->next_record()) {
 			$table=$this->backup_db->f("Name");
-			$name=substr($this->backup_db->f("Name"), strlen(TBL_PREFIX));
-			if(substr(strtolower($name),0,10)==strtolower(substr(OBJECT_X_TABLE, strlen(TBL_PREFIX))) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE),"",strtolower($table)))){
+			$name=stripTblPrefix($this->backup_db->f("Name"));
+			if(substr(strtolower($name),0,10)==strtolower(stripTblPrefix(OBJECT_X_TABLE)) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE),"",strtolower($table)))){
 				weDBUtil::delTable($table);
 			}
 

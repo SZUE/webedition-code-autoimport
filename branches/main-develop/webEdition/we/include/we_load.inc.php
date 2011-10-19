@@ -42,11 +42,11 @@ $offset = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : 0;
 if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	$table = $_REQUEST["we_cmd"][1];
 	$parentFolder = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
-	$openDirs = makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))]);
+	$openDirs = makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]);
 	$openDirs = array_flip($openDirs);
 	new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);
-	$_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))] = makeCSVFromArray($openDirs);
+	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
 } else {
 	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined("OBJECT_FILES_TREE_COUNT") ? OBJECT_FILES_TREE_COUNT : 20;
 
@@ -77,7 +77,7 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	{
 		global $prefs, $table, $openFolders, $parentpaths, $wsQuery, $treeItems, $Tree;
 		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-		
+
 		if ($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
 			return 0;
 		if ($table == FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS"))
@@ -227,11 +227,11 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 
 	if (isset($_REQUEST["we_cmd"][3])) {
 		$openFolders = explode(",", $_REQUEST["we_cmd"][3]);
-		$_SESSION["prefs"]["openFolders_" . substr($_REQUEST["we_cmd"][4], strlen(TBL_PREFIX))] = $_REQUEST["we_cmd"][3];
+		$_SESSION["prefs"]["openFolders_" . stripTblPrefix($_REQUEST["we_cmd"][4])] = $_REQUEST["we_cmd"][3];
 	}
 
-	if (isset($_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))])) {
-		$openFolders = explode(",", $_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))]);
+	if (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)])) {
+		$openFolders = explode(",", $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]);
 	} else {
 		$openFolders = array();
 	}
@@ -239,7 +239,7 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	if ($parentFolder) {
 		if (!in_array($parentFolder, $openFolders)) {
 			array_push($openFolders, $parentFolder);
-			$_SESSION["prefs"]["openFolders_" . substr($table, strlen(TBL_PREFIX))] = implode(",", $openFolders);
+			$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(",", $openFolders);
 		}
 	}
 

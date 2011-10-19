@@ -77,8 +77,9 @@ var ajaxCallback = {
 		}
 	},
 	failure: function(o) {
-		alert("<?php echo g_l('global',"[unable_to_call_ping]");?>");
 		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
+		//silently ignore this - an alert message might stop the js interpreter, if the user doesn't react'
+		//alert("<?php echo g_l('global',"[unable_to_call_ping]");?>");
 	}
 }
 

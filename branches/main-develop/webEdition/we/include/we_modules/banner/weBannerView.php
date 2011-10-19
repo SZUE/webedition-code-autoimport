@@ -845,7 +845,7 @@ class weBannerView extends weBannerBase{
 	function formTagName(){
 
 		$tagnames = array();
-		$query = "SELECT ".CONTENT_TABLE.".Dat AS templateCode, ".LINK_TABLE.".DID AS DID FROM ".CONTENT_TABLE.",".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."' AND ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".CONTENT_TABLE.".Dat like '%<we:banner %'  ";
+		$query = "SELECT ".CONTENT_TABLE.".Dat AS templateCode, ".LINK_TABLE.".DID AS DID FROM ".CONTENT_TABLE.",".LINK_TABLE." WHERE ".LINK_TABLE.".DocumentTable='".stripTblPrefix(TEMPLATES_TABLE)."' AND ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".CONTENT_TABLE.".Dat like '%<we:banner %'  ";
 		$this->db->query($query);
 		while($this->db->next_record()){
 			preg_match_all ("|(<we:banner [^>]+>)|U",$this->db->f("templateCode"),$foo, PREG_SET_ORDER);
@@ -910,7 +910,7 @@ class weBannerView extends weBannerBase{
 	function formCategories(){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 
-		
+
 		$delallbut = we_button::create_button("delete_all","javascript:top.content.setHot();we_cmd('del_all_cats')");
 		$addbut    = we_button::create_button("add", "javascript:top.content.setHot();we_cmd('openCatselector','','".CATEGORY_TABLE."','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
 

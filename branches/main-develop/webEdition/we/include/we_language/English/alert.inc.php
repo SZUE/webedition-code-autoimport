@@ -28,14 +28,25 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "The document has to be saved before it can be put in the workflow!\\nDo you want to save the document right now?",
 				'not_im_ws' => "The file is not located inside your workspace!",
+		'exit_doc_question' => "The document has been changed.<BR> Would you like to save your changes?",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "The template has to be saved before it can be put in the workflow!\\nDo you want to save the template right now?",
 				'not_im_ws' => "The template is not located inside your workspace!",
+		'exit_doc_question' => "The template has been changed.<BR> Would you like to save your changes?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "The object has to be saved before it can be put in the workflow!\\nDo you want to save the document right now?",
+			'exit_doc_question' => "The object has been changed.<BR> Would you like to save your changes?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "The class has to be saved before it can be put in the workflow!\\nDo you want to save the class right now?",
+			'exit_doc_question' => "The class has been changed.<BR> Would you like to save your changes?",
+),
+
 		'folder' => array(
 				'not_im_ws' => "The folder is not located inside your workspace!",
 		),
@@ -145,8 +156,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "The terms 'we' and 'webEdition' are reserved words and may not be used!",
 		'we_filename_empty' => "No name has been entered for this document or directory!",
 		'exit_multi_doc_question' => "Several open documents contain unsaved changes. If you continue all unsaved changes are discarded. Do you want to continue and discard all modifications?",
-		'exit_doc_question_' . FILE_TABLE => "The document has been changed.<BR> Would you like to save your changes?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "The template has been changed.<BR> Would you like to save your changes?",
 		'deleteTempl_notok_used' => "One or more of the templates are in use and could not be deleted!",
 		'deleteClass_notok_used' => "One or more of the classes are in use and could not be deleted!",
 		'delete_notok' => "Error while deleting!",
@@ -187,13 +196,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.',
 		'discard_changed_data' => 'There are unsaved changes that will be discarded. Are you sure?',
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "The object has to be saved before it can be put in the workflow!\\nDo you want to save the document right now?",
-			'in_wf_warning' => "The class has to be saved before it can be put in the workflow!\\nDo you want to save the class right now?",
-			'exit_doc_question_' . OBJECT_TABLE => "The class has been changed.<BR> Would you like to save your changes?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "The object has been changed.<BR> Would you like to save your changes?",
-					);
-}

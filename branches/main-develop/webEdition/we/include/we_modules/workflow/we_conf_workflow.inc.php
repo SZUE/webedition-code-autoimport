@@ -33,5 +33,3 @@ define("WORKFLOW_DOC_TASK_TABLE",TBL_PREFIX .  "tblWorkflowDocTask");
 define("WORKFLOW_LOG_TABLE",TBL_PREFIX .  "tblWorkflowLog");
 define("WORKFLOW_STEP_TABLE",TBL_PREFIX .  "tblWorkflowStep");
 define("WORKFLOW_TASK_TABLE",TBL_PREFIX .  "tblWorkflowTask");
-
-?>

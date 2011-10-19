@@ -129,7 +129,7 @@ $l_modules_workflow = array(
 		'more_information' => "Meer informatie",
 		'less_information' => "Minder informatie",
 		'no_wf_defined_object' => "Er is geen workflow gedefinieerd voor dit object!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_workflow_ok' => "Het document is succesvol in de workflow geplaatst!",
 				'in_workflow_notok' => "Het document kan niet in de workflow geplaatst worden!",
 				'pass_workflow_ok' => "Het document is succesvol door gestuurd!",
@@ -137,9 +137,8 @@ $l_modules_workflow = array(
 				'decline_workflow_ok' => "Het document is door gestuurd naar de auteur!",
 				'decline_workflow_notok' => "Het document kan niet door gestuurd worden naar de auteur!",
 				'messagePath' => "Document", // TRANSLATE
-				));
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+				),
+	'tblObjectFiles' => array(
 			'messagePath' => "Object", // TRANSLATE
 			'in_workflow_ok' => "Het object is succesvol in de workflow geplaatst!",
 			'in_workflow_notok' => "Het object kan niet in de workflow geplaatst worden!",
@@ -147,5 +146,5 @@ if (defined("OBJECT_FILES_TABLE")) {
 			'pass_workflow_notok' => "Het object kan niet door gegeven worden!",
 			'decline_workflow_ok' => "Het object is terug gestuurd naar de auteur!",
 			'decline_workflow_notok' => "Het object kan niet terug gestuur worden naar de auteur!",
+),
 	);
-}

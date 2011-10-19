@@ -553,7 +553,7 @@ abstract class exportFunctions {
 			$DB_WE = new DB_WE();
 
 			$_sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND ".
-							LINK_TABLE . ".DocumentTable='" . substr(TEMPLATES_TABLE, strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='" . abs($we_doc->TemplateID) . "' AND " . LINK_TABLE . ".Name='completeData'";
+							LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . abs($we_doc->TemplateID) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
 			$_template_code = f($_sql_select, "Dat", $DB_WE);
 			$_tag_parser = new we_tagParser($_template_code);

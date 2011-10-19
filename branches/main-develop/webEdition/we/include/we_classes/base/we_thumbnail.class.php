@@ -186,7 +186,7 @@ class we_thumbnail {
 	*
 	* @return we_thumbnail
 	*/
-	function we_thumbnail(){
+	function __construct(){
 		$this->db = new DB_WE();
 	}
 

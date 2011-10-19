@@ -66,8 +66,7 @@
 		}
 
 		function rmTablePrefix($tabname) {
-			$len=strlen(TBL_PREFIX);
-			if(substr($tabname,0,$len)==TBL_PREFIX) return strtolower(substr_replace($tabname,"",0,$len));
+			return stripTblPrefix($tabname);
 		}
 
         function save($force_new=false){

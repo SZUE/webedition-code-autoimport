@@ -149,7 +149,7 @@ print STYLESHEET;
 </head>
 
 <body onUnload="window_closed();" class="weEditorBody" onLoad="self.focus();" onBlur="self.focus();">
-	<?php print htmlYesNoCancelDialog(g_l('alert',"[exit_doc_question_$_documentTable]"),IMAGE_DIR."alert.gif",true,true,true,$yesCmd,$noCmd,$cancelCmd); ?>
+	<?php print htmlYesNoCancelDialog(g_l('alert','['.stripTblPrefix($_documentTable).'][exit_doc_question]'),IMAGE_DIR."alert.gif",true,true,true,$yesCmd,$noCmd,$cancelCmd); ?>
 </body>
 
 </html>

@@ -570,7 +570,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	* @desc this function returns the code of the template this document bases on
 	*/
 	function getTemplateCode($completeCode=true){
-		return f("SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . substr(TEMPLATES_TABLE, strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='".abs($this->TemplateID)."' AND " . LINK_TABLE . ".Name='".($completeCode ? "completeData" : "data")."'","Dat",$this->DB_WE);
+		return f('SELECT ' . CONTENT_TABLE . '.Dat as Dat FROM ' . CONTENT_TABLE . ',' . LINK_TABLE . ' WHERE ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ' . LINK_TABLE . '.DID='.intval($this->TemplateID).' AND ' . LINK_TABLE . '.Name="'.($completeCode ? "completeData" : "data").'"','Dat',$this->DB_WE);
 	}
 
 	function getFieldTypes($templateCode) {

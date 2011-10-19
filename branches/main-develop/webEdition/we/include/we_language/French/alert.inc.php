@@ -28,14 +28,24 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "Avant que le document puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer le document maintenant?",
 				'not_im_ws' => "Le fichier n'est pas dans votre éspace de travail!",
-		),
-		TEMPLATES_TABLE => array(
+		'exit_doc_question' => "Le document a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?",
+		'tblTemplates' => array(
 				'in_wf_warning' => "Avant que le modèle puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer le modèle maintenant?",
 				'not_im_ws' => "Le modèle n'est pas dans votre éspace de travail!",
+		'exit_doc_question' => "Le modèle a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "Avant que l\\'object puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer l\\'object maintenant?",
+			'exit_doc_question' => "L'object a été modifié.<br>Souhaitez-vous enregistrer les modifications 		),
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "Avant que la classe puisse être passée dans le Gestion de Flux, elle doit être enregistrée!\\nEnregistrer la classe maintenant",
+			'exit_doc_question' => "La classe a été modifiée.<br>Souhaitez-vous enregistrer les modifications apportées?",
+),
+
 		'folder' => array(
 				'not_im_ws' => "Le répertoire n'est pas dans votre éspace de travail!",
 		),
@@ -146,8 +156,7 @@ $l_alert = array(
 		'we_name_not_allowed' => "Les noms 'we' et 'webEdition' sont utilisés par webEdition même et ne doivent pas être utilisés alors!",
 		'we_filename_empty' => "Vous n'avez pas encore saisi un nom pour ce fichier ou bien répertoire!",
 		'exit_multi_doc_question' => "Several open documents contain unsaved changes. If you continue all unsaved changes are discarded. Do you want to continue and discard all modifications?", // TRANSLATE
-		'exit_doc_question_' . FILE_TABLE => "Le document a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Le modèle a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?",
+apportées?",
 		'deleteTempl_notok_used' => "L'action ne pouvat pas être éfféctuée, comme un ou plusieur modèle à supprimer sont déjà en utilisation!",
 		'deleteClass_notok_used' => "One or more of the classes are in use and could not be deleted!", // TRANSLATE
 		'delete_notok' => "Erreur en supprimant!",
@@ -195,13 +204,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE
 		'discard_changed_data' => 'There are unsaved changes that will be discarded. Are you sure?', // TRANSLATE
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "Avant que l\\'object puisse être passé dans le Gestion de Flux, il doit être enregistré!\\nEnregistrer l\\'object maintenant?",
-			'in_wf_warning' => "Avant que la classe puisse être passée dans le Gestion de Flux, elle doit être enregistrée!\\nEnregistrer la classe maintenant",
-			'exit_doc_question_' . OBJECT_TABLE => "La classe a été modifiée.<br>Souhaitez-vous enregistrer les modifications apportées?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "L'object a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?",
-					);
-}

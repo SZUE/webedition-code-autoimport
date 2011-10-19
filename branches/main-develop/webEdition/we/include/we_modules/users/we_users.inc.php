@@ -2635,13 +2635,6 @@ function mapPermissions() {
 		} else if($this->Preferences['seem_start_type'] == "weapp") {
 			$_seem_start_type = "weapp";
 			if ($this->Preferences['seem_start_file'] != 0) {
-				$_object_id = $this->Preferences['seem_start_file'];
-				$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, "", FILE_ONLY, $_object_id);
-
-				if(isset($_get_object_paths[$_object_id])){	//	seeMode start file exists
-					$_object_path = $_get_object_paths[$_object_id];
-
-				}
 
 			}
 		

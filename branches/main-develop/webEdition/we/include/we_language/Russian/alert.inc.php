@@ -28,14 +28,25 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "Перед передачей данного документа в поток, его нужно сохранить!\\nСохранить документ?",
 				'not_im_ws' => "Данный файл не из Вашего рабочего пространства!",
+		'exit_doc_question' => "Данный документ, по-видимому, был изменен. Сохранить Ваши изменения? <BR>",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "Перед передачей данного шаблона в поток его нужно сохранить!\\nСохранить шаблон?",
 				'not_im_ws' => "Данный шаблон не из Вашего рабочего пространства!",
+		'exit_doc_question' => "Данный шаблон, по-видимому, был изменен. Сохранить Ваши изменения?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "Перед передачей данного объекта в поток, его нужно сохранить!\\nСохранить объект?",
+			'exit_doc_question' => "Данный объект, по-видимому, был изменен. Сохранить Ваши изменения?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "Перед передачей данного класса в поток его нужно сохранить!\\nСохранить класс?",
+			'exit_doc_question' => "Данный класс, по-видимому, был изменен. Сохранить Ваши изменения?",
+),
+
 		'folder' => array(
 				'not_im_ws' => "Данная директория не из Вашего рабочего пространства!",
 		),
@@ -146,8 +157,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "Имена 'we' и 'webEdition' зарезервированы для использования самой системой и не могут употребляться для других целей!",
 		'we_filename_empty' => "Не введено имя для этого документа или директории!",
 		'exit_multi_doc_question' => "Several open documents contain unsaved changes. If you continue all unsaved changes are discarded. Do you want to continue and discard all modifications?", // TRANSLATE
-		'exit_doc_question_' . FILE_TABLE => "Данный документ, по-видимому, был изменен. Сохранить Ваши изменения? <BR>",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Данный шаблон, по-видимому, был изменен. Сохранить Ваши изменения?",
 		'deleteTempl_notok_used' => "Один или несколько шаблонов находятся в обработке и не могут быть удалены!",
 		'deleteClass_notok_used' => "One or more of the classes are in use and could not be deleted!", // TRANSLATE
 		'delete_notok' => "Ошибка при удалении!",
@@ -195,12 +204,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE
 		'discard_changed_data' => 'There are unsaved changes that will be discarded. Are you sure?', // TRANSLATE
 );
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "Перед передачей данного объекта в поток, его нужно сохранить!\\nСохранить объект?",
-			'in_wf_warning' => "Перед передачей данного класса в поток его нужно сохранить!\\nСохранить класс?",
-			'exit_doc_question_' . OBJECT_TABLE => "Данный класс, по-видимому, был изменен. Сохранить Ваши изменения?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "Данный объект, по-видимому, был изменен. Сохранить Ваши изменения?",
-					);
-}

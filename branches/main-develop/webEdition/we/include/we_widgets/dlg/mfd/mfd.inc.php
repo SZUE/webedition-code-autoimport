@@ -111,18 +111,18 @@ foreach ($aUsers as $uid) {
 }
 
 if ($bTypeDoc && we_hasPerm('CAN_SEE_DOCUMENTS')) {
-	$_where[] = '"' . str_replace(TBL_PREFIX, '', FILE_TABLE) . '"';
+	$_where[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$_ws[FILE_TABLE] = get_ws(FILE_TABLE);
 }
 if ($bTypeObj && we_hasPerm('CAN_SEE_OBJECTS')) {
-	$_where[] = '"' . str_replace(TBL_PREFIX, '', OBJECT_FILES_TABLE) . '"';
+	$_where[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$_ws[OBJECT_FILES_TABLE] = get_ws(OBJECT_FILES_TABLE);
 }
 if ($bTypeTpl && we_hasPerm('CAN_SEE_TEMPLATES') && $_SESSION["we_mode"] != "seem") {
-	$_where[] = '"' . str_replace(TBL_PREFIX, '', TEMPLATES_TABLE) . '"';
+	$_where[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
 if ($bTypeCls && we_hasPerm('CAN_SEE_CLASSES') && $_SESSION["we_mode"] != "seem") {
-	$_where[] = '"' . str_replace(TBL_PREFIX, '', OBJECT_TABLE) . '"';
+	$_where[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
 $lastModified = '';

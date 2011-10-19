@@ -35,7 +35,7 @@ if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];
 	$wf_select = $_REQUEST["wf_select"];
 	if(weWorkflowUtility::insertDocInWorkflow($we_doc->ID,$we_doc->Table,$wf_select,$_SESSION["user"]["ID"],$wf_text)){
-		$msg = g_l('modules_workflow','['.$we_doc->Table.'][in_workflow_ok]');
+		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_ok]');
 		$msgType = WE_MESSAGE_NOTICE;
 		if($_SESSION["we_mode"] == "seem"){
 
@@ -57,7 +57,7 @@ if($cmd == "ok"){
 			}
 		}
 		else {
-			$msg = g_l('modules_workflow','['.$we_doc->Table.'][in_workflow_notok]');
+			$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_notok]');
 			$msgType = WE_MESSAGE_ERROR;
 			if($_SESSION["we_mode"] == "seem"){
 

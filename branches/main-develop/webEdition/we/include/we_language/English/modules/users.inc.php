@@ -66,10 +66,6 @@ $l_modules_users = array(
 		'work_permissions' => "Working permissions",
 		'control_permissions' => "Control permissions",
 		'log_permissions' => "Login permissions",
-		'file_locked' => array(
-				FILE_TABLE => "The file '%s' is currently being used by '%s'!",
-				TEMPLATES_TABLE => "The template '%s' is currently being used by '%s'!",
-		),
 		'acces_temp_denied' => "Access temporarily denied!",
 		'description' => "Description",
 		'group_data' => "Group data",
@@ -139,7 +135,3 @@ $l_modules_users = array(
 		'lostID' => "ID: ", // TRANSLATE
 		'lostID2' => " (deleted)", // TRANSLATE
 );
-if (defined("OBJECT_TABLE")) {
-	$l_modules_users["file_locked"][OBJECT_TABLE] = "The class '%s' is currently being used by '%s'!";
-	$l_modules_users["file_locked"][OBJECT_FILES_TABLE] = "The object '%s' is currently being used by '%s'!";
-}

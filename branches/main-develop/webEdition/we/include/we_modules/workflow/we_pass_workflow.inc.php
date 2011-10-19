@@ -35,7 +35,7 @@ if($cmd == "ok"){
 	$ok = weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],$wf_text,$force);
 
 	if($ok){
-		$msg = g_l('modules_workflow','['.$we_doc->Table.'][pass_workflow_ok]');
+		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][pass_workflow_ok]');
 		$msgType = WE_MESSAGE_NOTICE;
 
 		//	in SEEM-Mode back to Preview page
@@ -51,7 +51,7 @@ if($cmd == "ok"){
 			$script .= 'opener.top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef�gt
 		}
 	}else{
-		$msg = g_l('modules_workflow','['.$we_doc->Table.'][pass_workflow_notok]');
+		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][pass_workflow_notok]');
 		$msgType = WE_MESSAGE_ERROR;
 				//	in SEEM-Mode back to Preview page
 		if($_SESSION["we_mode"] == "seem"){
@@ -73,7 +73,7 @@ top.close();
  print STYLESHEET; ?>
 </head>
 <body class="weDialogBody"><center>
-<?php if($cmd=="ok"){ 
+<?php if($cmd=="ok"){
 	}else{ ?>
 <form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 <?php

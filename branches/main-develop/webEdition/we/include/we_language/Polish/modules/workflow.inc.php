@@ -143,7 +143,7 @@ $l_modules_workflow = array(
 		'more_information' => "Pozostałe informacje",
 		'less_information' => "Mniej informacji",
 		'no_wf_defined_object' => "Dla tego obiektu nie został zdefiniowany żaden workflow!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'messagePath' => "Dokument",
 				'in_workflow_ok' => "Dokument został pomyślnie przekazany do opracowania!",
 				'in_workflow_notok' => "Nie można było przekazać dokumentu do opracowania!",
@@ -151,9 +151,8 @@ $l_modules_workflow = array(
 				'pass_workflow_notok' => "Nie można było przekazać dalej dokumentu!",
 				'decline_workflow_ok' => "Dokument został pomyślnie przekazany autorowi!",
 				'decline_workflow_notok' => "Nie można było zwrócić dokumentu autorowi!",
-				));
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+				),
+	'tblObjectFiles' => array(
 			'messagePath' => "Obiekt",
 			'in_workflow_ok' => "Obiekt został pomyślnie przekazany do opracowania!",
 			'in_workflow_notok' => "Nie można było przekazać obiektu do opracowania!",
@@ -161,5 +160,5 @@ if (defined("OBJECT_FILES_TABLE")) {
 			'pass_workflow_notok' => "Nie można było przekazać dalej obiektu!",
 			'decline_workflow_ok' => "Obiekt został zwrócony autorowi!",
 			'decline_workflow_notok' => "Nie można było zwrócić obiektu autorowi!",
-	);
-}
+	),
+);

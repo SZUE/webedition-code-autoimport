@@ -66,10 +66,6 @@ $l_modules_users = array(
 		'work_permissions' => "Uprawnienia robocze",
 		'control_permissions' => "Uprawnienia kontrolne",
 		'log_permissions' => "Prawo do logowania",
-		'file_locked' => array(
-				FILE_TABLE => "Plik '%s' jest właśnie edytowany przez użytkownika '%s'!",
-				TEMPLATES_TABLE => "Szablon '%s' jest właśnie edytowany przez użytkownika '%s'!",
-		),
 		'acces_temp_denied' => "Dostęp jest obecnie niemożliwy",
 		'description' => "Opis",
 		'group_data' => "Dane grupy",
@@ -141,8 +137,3 @@ $l_modules_users = array(
 		'lostID' => "ID: ", // TRANSLATE
 		'lostID2' => " (deleted)", // TRANSLATE
 );
-
-if (defined("OBJECT_TABLE")) {
-	$l_modules_users["file_locked"][OBJECT_TABLE] = "Klasa '%s' jest właśnie edytowana przez użytkownika '%s'!";
-	$l_modules_users["file_locked"][OBJECT_FILES_TABLE] = "Obiekt '%s' jest właśnie edytowany przez użytkownika '%s'!";
-}

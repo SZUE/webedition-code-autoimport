@@ -28,14 +28,25 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "Het document moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\\nWilt u het document nu bewaren?",
 				'not_im_ws' => "Het bestand bevindt zich niet in uw werkgebied!",
+		'exit_doc_question' => "Het document is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "Het sjabloon moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\\nWilt u het sjabloon nu bewaren?",
 				'not_im_ws' => "Het sjabloon bevindt zich niet in uw werkgebied!",
+		'exit_doc_question' => "Het sjabloon is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "Het object moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\\nWilt u het object nu bewaren?",
+			'exit_doc_question' => "Het object is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "De class moet eerst bewaard worden voordat deze in de workflow geplaatst kan worden!\\nWilt u de class nu bewaren?",
+			'exit_doc_question' => "De classe is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
+),
+
 		'folder' => array(
 				'not_im_ws' => "De map bevindt zich niet in uw werkgebied!",
 		),
@@ -145,8 +156,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "De termen 'we' en 'webEdition' zijn gereserveerde woorden en mogen niet gebruikt worden!",
 		'we_filename_empty' => "Er is geen naam ingevoerd voor dit document of directory!",
 		'exit_multi_doc_question' => "Meerdere geopende documenten bevatten niet bewaarde wijzigingen. Als u doorgaat gaan alle wijzigingen verloren. Wilt u doorgaan en de wijzigingen negeren?",
-		'exit_doc_question_' . FILE_TABLE => "Het document is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Het sjabloon is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
 		'deleteTempl_notok_used' => "Eén of meerdere sjablonen zijn in gebruik en konden niet verwijderd worden!",
 		'deleteClass_notok_used' => "One or more of the classes are in use and could not be deleted!", // TRANSLATE
 		'delete_notok' => "Fout tijdens het verwijderen!",
@@ -188,13 +197,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE
 		'discard_changed_data' => 'There are unsaved changes that will be discarded. Are you sure?', // TRANSLATE
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "Het object moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\\nWilt u het object nu bewaren?",
-			'in_wf_warning' => "De class moet eerst bewaard worden voordat deze in de workflow geplaatst kan worden!\\nWilt u de class nu bewaren?",
-			'exit_doc_question_' . OBJECT_TABLE => "De classe is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "Het object is gewijzigd.<BR> Wilt u de wijzigingen bewaren?",
-					);
-}

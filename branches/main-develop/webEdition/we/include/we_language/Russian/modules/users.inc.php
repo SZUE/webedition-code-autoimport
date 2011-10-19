@@ -66,10 +66,6 @@ $l_modules_users = array(
 		'work_permissions' => "Working permissions", // TRANSLATE
 		'control_permissions' => "Control permissions", // TRANSLATE
 		'log_permissions' => "Login permissions", // TRANSLATE
-		'file_locked' => array(
-				FILE_TABLE => "В данный момент файл '%s' обрабатывается пользователем '%s'!",
-				TEMPLATES_TABLE => "В данный момент шаблон '%s' обрабатывается пользователем '%s'!",
-		),
 		'acces_temp_denied' => "Доступ временно отклонен",
 		'description' => "Description", // TRANSLATE
 		'group_data' => "Group data", // TRANSLATE
@@ -140,8 +136,3 @@ $l_modules_users = array(
 		'lostID' => "ID: ", // TRANSLATE
 		'lostID2' => " (deleted)", // TRANSLATE
 );
-
-if (defined("OBJECT_TABLE")) {
-	$l_modules_users["file_locked"][OBJECT_TABLE] = "В данный момент класс '%s' обрабатывается пользователем '%s'!";
-	$l_modules_users["file_locked"][OBJECT_FILES_TABLE] = "В данный момент объект '%s' обрабатывается пользователем '%s'!";
-}

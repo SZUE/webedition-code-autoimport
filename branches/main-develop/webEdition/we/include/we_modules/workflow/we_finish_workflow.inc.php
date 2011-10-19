@@ -60,7 +60,7 @@ if(weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]
 	}
 }
 else {
-	$we_responseText = g_l('modules_workflow','['.$we_doc->Table.'][pass_workflow_notok]');
+	$we_responseText = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][pass_workflow_notok]');
 	$we_responseTextType = WE_MESSAGE_ERROR;
 	$we_responseText = '';
 }

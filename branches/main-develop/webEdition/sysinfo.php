@@ -236,7 +236,7 @@
 
 			'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 				g_l('sysinfo','[php_version]') => phpversion(),
-				g_l('sysinfo','[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ?getWarning(g_l('sysinfo',"[zend_framework warning]"),Zend_Version::VERSION) : Zend_Version::VERSION,
+				g_l('sysinfo','[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ?getWarning(sprintf(g_l('sysinfo',"[zend_framework warning]"),WE_ZFVERSION),Zend_Version::VERSION) : Zend_Version::VERSION,
 				'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo',"[register_globals warning]"),ini_get('register_globals')) : getOK('',ini_get_message('register_globals')),
 				'max_execution_time' => ini_get('max_execution_time'),
 				'memory_limit'  => we_convertIniSizes(ini_get('memory_limit')),

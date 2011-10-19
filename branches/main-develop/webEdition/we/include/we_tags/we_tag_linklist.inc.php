@@ -22,29 +22,32 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_parse_tag_linklist($attribs,$content){
-			return '<?php printElement('.we_tagParser::printTag('linklist',$attribs).');?>'.$content.'<?php if(isset($GLOBALS[\'abc\'])) unset($GLOBALS[\'abc\']);?>';
+function we_parse_tag_linklist($attribs, $content){
+	return '<?php $GLOBALS[\'we_ll\']=' . we_tagParser::printTag('linklist', $attribs) . '; while($ll->next()){?>' . $content . '<?php } unset($GLOBALS[\'we_ll\']);' . we_tagParser::printTag('linklist', array('_type' => 'stop')) . ';?>';
 }
 
 function we_tag_linklist($attribs, $content){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
-	$name = weTag_getAttribute("name", $attribs);
-	$content = str_replace("we:link", "we_:_link", $content);
-	$foo = attributFehltError($attribs, "name", "linklist");
-	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
-	$objectseourls = weTag_getAttribute("objectseourls", $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
-	if(($foo = attributFehltError($attribs, "name", "linklist"))){
-		return $foo;
+	switch(weTag_getAttribute('_type', $attribs)){
+		default:
+			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
+			$name = weTag_getAttribute("name", $attribs);
+			$foo = attributFehltError($attribs, "name", "linklist");
+			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);
+			$objectseourls = weTag_getAttribute("objectseourls", $attribs, (defined('TAGLINKS_OBJECTSEOURLS') && TAGLINKS_OBJECTSEOURLS), true);
+			if(($foo = attributFehltError($attribs, "name", "linklist"))){
+				return $foo;
+			}
+			$isInListview = isset($GLOBALS["lv"]);
+
+			$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->getElement($name) : ''));
+
+			$ll = new we_linklist($linklist, $hidedirindex, $objectseourls,$GLOBALS["we_doc"]->Name,$attribs);
+			$ll->setName($name);
+			return $ll;
+		case 'stop':
+			/* $out = $ll->getHTML(
+			  (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!$isInListview)), $attribs, $content, $GLOBALS["we_doc"]->Name);
+			 */
+			return '';
 	}
-	$isInListview = isset($GLOBALS["lv"]);
-
-	$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->getElement($name) : ''));
-
-	$ll = new we_linklist($linklist, $hidedirindex, $objectseourls);
-	$ll->setName($name);
-
-	$out = $ll->getHTML(
-		(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!$isInListview)), $attribs, $content, $GLOBALS["we_doc"]->Name);
-	return $out;
 }

@@ -66,10 +66,6 @@ $l_modules_users = array(
 		'work_permissions' => "Arbeitsrechte",
 		'control_permissions' => "Kontrollrechte",
 		'log_permissions' => "Logrechte",
-		'file_locked' => array(
-				FILE_TABLE => "Die Datei '%s' wird gerade von Benutzer '%s' bearbeitet!",
-				TEMPLATES_TABLE => "Die Vorlage '%s' wird gerade von Benutzer '%s' bearbeitet!",
-		),
 		'acces_temp_denied' => "Zugriff zur Zeit nicht möglich",
 		'description' => "Beschreibung",
 		'group_data' => "Gruppendaten",
@@ -139,8 +135,3 @@ $l_modules_users = array(
 		'lostID' => "ID: ",
 		'lostID2' => " (gelöscht)",
 );
-
-if (defined("OBJECT_TABLE")) {
-	$l_modules_users["file_locked"][OBJECT_TABLE] = "Die Klasse '%s' wird gerade von Benutzer '%s' bearbeitet!";
-	$l_modules_users["file_locked"][OBJECT_FILES_TABLE] = "Das Objekt '%s' wird gerade von Benutzer '%s' bearbeitet!";
-}

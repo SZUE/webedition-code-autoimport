@@ -372,7 +372,7 @@
 				}
 
 				if(isset($object->Table)){
-					$object->Table = strtolower(str_replace(TBL_PREFIX,'',$object->Table));
+					$object->Table = strtolower(stripTblPrefix($object->Table));
 				}
 
 

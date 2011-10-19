@@ -28,14 +28,25 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "Przed dołączeniem dokumentu do Workflow, należy go zapisać!\\nCzy zapisać dokument?",
 				'not_im_ws' => "Plik nie znajduje się w twoim obszarze roboczym!",
+		'exit_doc_question' => "Dokument został zmieniony.<br>Czy zapisać zmiany?",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "Przed dołączeniem szablonu do Workflow, należy go zapisać!\\nCzy zapisać teraz szablon?",
 				'not_im_ws' => "Szablon nie znajduje się w twoim obszarze roboczym!",
+		'exit_doc_question' => "Szablon został zmieniony.<br>Zapisać zmiany?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "Przed dołączeniem obiektu do Workflow, należy go zapisać!\\nCzy zapisać teraz dokument?",
+			'exit_doc_question' => "Obiekt został zmieniony.<br>Zapisać zmiany?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "Przed dołączeniem klasy do Workflow, należy ją zapisać!\\nCzy zapisać teraz klasę?",
+			'exit_doc_question' => "Klasa została zmieniona.<br>Zapisać zmiany?",
+),
+
 		'folder' => array(
 				'not_im_ws' => "Ten katalog nie znajduje się w twoim obszarze roboczym!",
 		),
@@ -120,8 +131,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "Nazwy 'we' oraz 'webEdition' są używane przez sam program webEdition i dlatego nie wolno ich stosować!",
 		'we_filename_empty' => "Nie wprowadzono nazwy pliku dla tego dokumentu bądź katalogu!",
 		'exit_multi_doc_question' => "Several open documents contain unsaved changes. If you continue all unsaved changes are discarded. Do you want to continue and discard all modifications?", // TRANSLATE
-		'exit_doc_question_' . FILE_TABLE => "Dokument został zmieniony.<br>Czy zapisać zmiany?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Szablon został zmieniony.<br>Zapisać zmiany?",
 		'deleteTempl_notok_used' => "Nie można wykonać operacji, ponieważ przynajmniej jeden z szablonów, które mają być usunięte, jest używany!",
 		'deleteClass_notok_used' => "One or more of the classes are in use and could not be deleted!", // TRANSLATE
 		'delete_notok' => "Wystąpił błąd przy usuwaniu!",
@@ -185,13 +194,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE
 		'discard_changed_data' => 'There are unsaved changes that will be discarded. Are you sure?', // TRANSLATE
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "Przed dołączeniem obiektu do Workflow, należy go zapisać!\\nCzy zapisać teraz dokument?",
-			'in_wf_warning' => "Przed dołączeniem klasy do Workflow, należy ją zapisać!\\nCzy zapisać teraz klasę?",
-			'exit_doc_question_' . OBJECT_TABLE => "Klasa została zmieniona.<br>Zapisać zmiany?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "Obiekt został zmieniony.<br>Zapisać zmiany?",
-					);
-}

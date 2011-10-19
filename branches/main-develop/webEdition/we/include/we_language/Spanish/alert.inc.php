@@ -28,14 +28,24 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "El documento debe ser salvado antes de poder ser colocado en el flujo de trabajo!\\Desea UD salvar el documento ahora?",
 				'not_im_ws' => "El archivo no está situado dentro de su área de trabajo!",
+		'exit_doc_question' => "El documento ha sido cambiado.<BR> Desearía Ud salvar sus cambios?",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "La plantilla debe ser salvada antes de poder ser colocada en el flujo de trabajo!\\Desea UD salvar la plantilla ahora?",
 				'not_im_ws' => "La plantilla no está situado dentro de su área de trabajo!",
+		'exit_doc_question' => "La plantilla ha sido cambiada.<BR> Desearía Ud salvar sus cambios?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "El objeto debe ser salvado antes de poder ser colocado en el flujo de trabajo!\\Desea UD salvar el objeto ahora?",
+			'exit_doc_question' => "El objeto ha sido cambiado.<BR> Desearía UD salvar sus cambios?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "La clase debe ser salvada antes de poder ser colocada en el flujo de trabajo!\\Desea UD salvar la clase ahora?",
+			'exit_doc_question' => "La clase ha sido cambiada.<BR> Desearía Ud salvar sus cambios?",
+),
 		'folder' => array(
 				'not_im_ws' => "La carpeta no está situado dentro de su área de trabajo!",
 		),
@@ -146,8 +156,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "Los terminos 'we' and 'webEdition' son palabras reservadas y no deben ser usadas!",
 		'we_filename_empty' => "Ningún nombre ha sido entrado para este documento o directorio!",
 		'exit_multi_doc_question' => "Several open documents contain unsaved changes. If you continue all unsaved changes are discarded. Do you want to continue and discard all modifications?", // TRANSLATE
-		'exit_doc_question_' . FILE_TABLE => "El documento ha sido cambiado.<BR> Desearía Ud salvar sus cambios?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "La plantilla ha sido cambiada.<BR> Desearía Ud salvar sus cambios?",
 		'deleteTempl_notok_used' => "Una o más de las plantillas están en uso y no podrían ser borradas",
 		'deleteClass_notok_used' => "One or more of the classes are in use and could not be deleted!", // TRANSLATE
 		'delete_notok' => "Error mientras se borraba!",
@@ -195,13 +203,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Correct the fields before saving the settings.', // TRANSLATE
 		'discard_changed_data' => 'There are unsaved changes that will be discarded. Are you sure?', // TRANSLATE
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "El objeto debe ser salvado antes de poder ser colocado en el flujo de trabajo!\\Desea UD salvar el objeto ahora?",
-			'in_wf_warning' => "La clase debe ser salvada antes de poder ser colocada en el flujo de trabajo!\\Desea UD salvar la clase ahora?",
-			'exit_doc_question_' . OBJECT_TABLE => "La clase ha sido cambiada.<BR> Desearía Ud salvar sus cambios?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "El objeto ha sido cambiado.<BR> Desearía UD salvar sus cambios?",
-					);
-}

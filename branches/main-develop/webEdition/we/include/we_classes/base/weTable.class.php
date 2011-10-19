@@ -53,7 +53,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 			$update_table=true;
 
 			if(defined("OBJECT_X_TABLE") && !$force_columns){
-				 if(strtolower(substr($table,0,10))==strtolower(substr(OBJECT_X_TABLE, strlen(TBL_PREFIX)))) $update_table=false;
+				 if(strtolower(substr($table,0,10))==strtolower(stripTblPrefix(OBJECT_X_TABLE))) $update_table=false;
 			}
 
 			if(defined("CUSTOMER_TABLE") && !$force_columns){
@@ -118,9 +118,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 		}
 
 		function rmTablePrefix($tabname) {
-			$len=strlen(TBL_PREFIX);
-			if(substr($tabname,0,$len)==TBL_PREFIX) return strtolower(substr_replace($tabname,"",0,$len));
-
+			return stripTblPrefix($tabname);
 		}
 
 		// add new fields to the table before import
@@ -208,7 +206,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 			if ($DB_WE->query($query)) {
 				return true;
 			} else {
-				//p_r($query);		
+				//p_r($query);
 				return false;
 			}
 		}

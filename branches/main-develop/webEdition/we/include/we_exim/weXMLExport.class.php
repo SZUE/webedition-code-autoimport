@@ -71,7 +71,7 @@
 			}
 
 			if($classname=="weTable"){
-				if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table,0,10))==strtolower(substr(OBJECT_X_TABLE, strlen(TBL_PREFIX)))) $doc->getColumns();
+				if(defined("OBJECT_X_TABLE") && strtolower(substr($doc->table,0,10))==strtolower(stripTblPrefix(OBJECT_X_TABLE))) $doc->getColumns();
 			    if(defined("CUSTOMER_TABLE")) $doc->getColumns();
 			}
 

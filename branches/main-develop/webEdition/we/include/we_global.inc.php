@@ -1210,13 +1210,13 @@ function encode($in) {
 function deleteContentFromDB($id, $table) {
 	$DB_WE = new DB_WE();
 
-	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
+	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
 		return true;
 	}
 
 	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
-		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '")');
-	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(substr($table, strlen(TBL_PREFIX))) . '"');
+		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
+	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
 }
 
 /**

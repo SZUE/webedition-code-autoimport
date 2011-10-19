@@ -1480,7 +1480,7 @@ HTS;
 
 		if ($v["import_type"] == "documents") {
 			$sql_select = "SELECT ".CONTENT_TABLE.".Dat as Dat FROM ".CONTENT_TABLE.",".LINK_TABLE." WHERE ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".
-				LINK_TABLE.".DocumentTable='".substr(TEMPLATES_TABLE, strlen(TBL_PREFIX))."' AND ".LINK_TABLE.".DID='".abs($v["we_TemplateID"])."' AND ".LINK_TABLE.".Name='completeData'";
+				LINK_TABLE.".DocumentTable='".stripTblPrefix(TEMPLATES_TABLE)."' AND ".LINK_TABLE.".DID='".abs($v["we_TemplateID"])."' AND ".LINK_TABLE.".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
 			$tp = new we_tagParser($templateCode);
@@ -2277,7 +2277,7 @@ HTS;
 
 		if ($v["import_type"] == "documents") {
 			$sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND ".
-				LINK_TABLE . ".DocumentTable='" . substr(TEMPLATES_TABLE, strlen(TBL_PREFIX)) . "' AND " . LINK_TABLE . ".DID='".abs($v["we_TemplateID"])."' AND " . LINK_TABLE . ".Name='completeData'";
+				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='".abs($v["we_TemplateID"])."' AND " . LINK_TABLE . ".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
 			$tp = new we_tagParser($templateCode);

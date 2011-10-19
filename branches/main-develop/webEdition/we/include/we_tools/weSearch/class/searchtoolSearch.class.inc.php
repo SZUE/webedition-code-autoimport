@@ -637,7 +637,7 @@ class searchtoolsearch extends we_search
 
 	function getTblName($table) {
 
-    	return substr($table, strlen(TBL_PREFIX), strlen($table));
+    	return stripTblPrefix($table);
   	}
 
 	function searchContent($keyword, $table)

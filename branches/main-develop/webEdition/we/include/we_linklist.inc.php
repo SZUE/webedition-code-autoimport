@@ -39,42 +39,60 @@ class we_linklist{
 	private $cache = array();
 	private $hidedirindex = false;
 	private $objectseourls = false;
+	private $docName;
+	private $attribs;
+	private $show = -1;
+	private $cnt = 0;
 
-	function __construct($sString, $hidedirindex=false, $objectseourls=false){
+	function __construct($sString, $hidedirindex=false, $objectseourls=false, $docName, $attribs){
 		$this->sString = $sString;
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
+		$this->docName = $docName;
+		$this->attribs = $attribs;
 		$this->listArray = $sString ? unserialize($sString) : array();
 		if(!is_array($this->listArray)){
 			$this->listArray = array();
 		}
+		$limit = (isset($attribs['limit']) && $attribs['limit'] > 0) ? $attribs['limit'] : 0;
+		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
+		if(!$editmode){
+			$this->show = count($this->listArray);
+			if($limit > 0 && $this->show > $limit){
+				$this->show = $limit;
+			}
+		}
+
 		$this->db = new DB_WE();
+		reset($this->listArray);
 	}
 
 	function setName($name){
 		$this->name = $name;
 	}
 
-	function getID($nr){
-		return isset($this->listArray[$nr]["id"]) ? $this->listArray[$nr]["id"] : null;
+	function getID(){
+		$cur = current($this->listArray);
+		return isset($cur["id"]) ? $cur["id"] : null;
 	}
 
-	function getObjID($nr){
-		return isset($this->listArray[$nr]["obj_id"]) ? $this->listArray[$nr]["obj_id"] : "";
+	function getObjID(){
+		$cur = current($this->listArray);
+		return isset($cur["obj_id"]) ? $cur["obj_id"] : "";
 	}
 
-	function getLink($nr){
+	function getLink(){
 		//$id = $this->getID($nr);
-		switch($this->getType($nr)){
+		switch($this->getType()){
 			case 'int':
-				return $this->getUrl($nr);
+				return $this->getUrl();
 			case 'ext':
-				return $this->getHref($nr);
+				return $this->getHref();
 			case 'mail':
-				return $this->getHref($nr);
+				return $this->getHref();
 			case 'obj':
 				$link = getHrefForObject(
-					$this->getObjID($nr), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
+					$this->getObjID(), $GLOBALS["WE_MAIN_DOC"]->ParentID, $GLOBALS["WE_MAIN_DOC"]->Path, $this->db, $this->hidedirindex, $this->objectseourls);
 				if(isset($GLOBALS["we_link_not_published"])){
 					unset($GLOBALS["we_link_not_published"]);
 				}
@@ -83,20 +101,23 @@ class we_linklist{
 		return '';
 	}
 
-	function getHref($nr){
-		return $this->listArray[$nr]["href"];
+	function getHref(){
+		$cur = current($this->listArray);
+		return $cur["href"];
 	}
 
-	function getAttribs($nr){
-		return isset($this->listArray[$nr]["attribs"]) ? $this->listArray[$nr]["attribs"] : "";
+	function getAttribs(){
+		$cur = current($this->listArray);
+		return isset($cur["attribs"]) ? $cur["attribs"] : "";
 	}
 
-	function getTarget($nr){
-		return $this->listArray[$nr]["target"];
+	function getTarget(){
+		$cur = current($this->listArray);
+		return $cur['target'];
 	}
 
-	function getTitle($nr){
-		return isset($this->listArray[$nr]["title"]) ? $this->listArray[$nr]["title"] : "";
+	function getTitle(){
+		return isset($cur["title"]) ? $cur["title"] : "";
 	}
 
 	function getLinktag($nr, $link = "", $tagAttr = ""){
@@ -215,8 +236,8 @@ class we_linklist{
 		return $this->rollScript . getHtmlTag('a', $lattribs, '', false, true);
 	}
 
-	function getUrl($nr, $params = ""){
-		$id = $this->getID($nr);
+	function getUrl($params = ""){
+		$id = $this->getID();
 		if($id == '')
 			return "http://";
 		if(isset($this->cache[$id])){
@@ -235,12 +256,14 @@ class we_linklist{
 		return (isset($row["Path"]) ? $row["Path"] : '') . ($params ? ("?" . $params) : "");
 	}
 
-	function getImageID($nr){
-		return isset($this->listArray[$nr]["img_id"]) ? $this->listArray[$nr]["img_id"] : "";
+	function getImageID(){
+		$cur = current($this->listArray);
+		return isset($cur["img_id"]) ? $cur["img_id"] : "";
 	}
 
-	function getImageAttribs($nr){
-		return isset($this->listArray[$nr]["img_attribs"]) ? $this->listArray[$nr]["img_attribs"] : array();
+	function getImageAttribs(){
+		$cur = current($this->listArray);
+		return isset($cur["img_attribs"]) ? $cur["img_attribs"] : array();
 	}
 
 	function getImageAttrib($nr, $key){
@@ -248,21 +271,24 @@ class we_linklist{
 		return isset($foo[$key]) ? $foo[$key] : "";
 	}
 
-	function getJsWinAttrib($nr, $key){
-		$foo = $this->getJsWinAttribs($nr);
+	function getJsWinAttrib($key){
+		$foo = $this->getJsWinAttribs();
 		return isset($foo[$key]) ? $foo[$key] : "";
 	}
 
-	function getJsWinAttribs($nr){
-		return isset($this->listArray[$nr]["jswin_attribs"]) ? $this->listArray[$nr]["jswin_attribs"] : array();
+	function getJsWinAttribs(){
+		$cur = current($this->listArray);
+		return isset($cur["jswin_attribs"]) ? $cur["jswin_attribs"] : array();
 	}
 
-	function getImageSrc($nr){
-		return isset($this->listArray[$nr]["img_src"]) ? $this->listArray[$nr]["img_src"] : "";
+	function getImageSrc(){
+		$cur = current($this->listArray);
+		return isset($cur["img_src"]) ? $cur["img_src"] : "";
 	}
 
-	function getText($nr){
-		return $this->listArray[$nr]["text"];
+	function getText(){
+		$cur = current($this->listArray);
+		return $cur["text"];
 	}
 
 	function getAnchor($nr){
@@ -452,74 +478,64 @@ class we_linklist{
 		}
 	}
 
-	function correctContent($content){
-		$ipos = strpos($content, '<we_:_linklist');
-		$start = $ipos;
-		$starttag = 1;
-		while($starttag && (!($ipos === false))) {
-			$starttagpos = strpos($content, '<we_:_linklist', $ipos + 1);
-			$endtagpos = strpos($content, '</we_:_linklist', $ipos + 1);
-			if((!($starttagpos === false)) && ($starttagpos < $endtagpos)){
-				$ipos = $starttagpos;
-				$starttag++;
-			} else
-			if(!($endtagpos === false)){
-				$starttag--;
-				$ipos = $endtagpos;
-			} else
-			if(!($starttagpos === false)){
-				$ipos = $starttagpos;
+	function next(){
+		$ret = ($this->show == -1 || $this->show > (++$this->cnt)) && next($this->listArray);
+		$GLOBALS['we_position']['linklist'][$this->name] = array('size' => sizeof($this->listArray), 'position' => $this->cnt);
+
+		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
+
+		if($editmode){
+			$disabled = false;
+			if($limit > 0 && $this->length() >= $limit){
+				$disabled = true;
+			}
+			$plusbut = we_button::create_button(
+					"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . $i . "')", true, 100, 22, "", "", $disabled);
+			if($ret === false){
+				if(isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs["name"])){
+					echo '<script  type="text/javascript">we_cmd(\'edit_linklist\',\'' . $this->attribs["name"] . '\',\'' . ((isset(
+						$GLOBALS["we_list_insertedNr"]) && ($GLOBALS["we_list_insertedNr"] != "")) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');</script>';
+				}
+				if($this->show == -1 || ($this->show > $this->length())){
+					echo "<br/>" . we_button::create_button(
+						"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled);
+					echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . htmlspecialchars(
+						$this->getString()) . '" />' . ($this->length() ? '' : $plusbut);
+				}
+			} else{
+				// Create button object
+				// Create buttons
+				$upbut = we_button::create_button(
+						"image:btn_direction_up", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . $i . "')", true, -1, -1, "", "", !($i > 0));
+				$downbut = we_button::create_button(
+						"image:btn_direction_down", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . $i . "')", true, -1, -1, "", "", !($i < (sizeof($this->listArray) - 1)));
+				$editbut = we_button::create_button(
+						"image:btn_edit_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . $i . "')", true);
+				$trashbut = we_button::create_button(
+						"image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . $i . "','')", true);
+				echo  we_button::create_button_table(
+						array(
+						$plusbut, $upbut, $downbut, $editbut, $trashbut
+						), 5);
 			}
 		}
-		$end = $endtagpos ? $endtagpos + 15 : strlen($content);
-
-		$search = substr($content, $start, $end - $start);
-
-		$repl = str_replace("we_:_linklist", "we__:__linklist", $search);
-		$repl = str_replace("<we_:_", "<we_#:#_", $repl);
-		$repl = str_replace("</we_:_", "</we_#:#_", $repl);
-		$repl = str_replace("we__:__linklist", "we:linklist", $repl);
-
-		return str_replace($search, $repl, $content);
+		if($ret === false){
+			//remove var
+			unset($GLOBALS['we_position']['linklist'][$this->name]);
+		}
+		return $ret;
 	}
 
-	function getHTML($editmode, $attribs, $content, $docName){
+	function getHTML($content){
+		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
 		$linklistRef = $attribs["name"] . "_TAGS_";
-		$limit = 0;
-		if(isset($attribs['limit']) && $attribs['limit'] > 0){
-			$limit = $attribs['limit'];
-		}
+		$limit = (isset($attribs['limit']) && $attribs['limit'] > 0) ? $attribs['limit'] : 0;
 		$out = "";
 
-
-		if(!(strpos($content, '<we:') === false)){
-			$content = str_replace(
-				array("we:target", "we:field", "we:path", "we:prelink", "we:postlink"), array("we_:_target", "we_:_field", "we_:_path", "we_:_prelink", "we_:_postlink")
-				, $content);
-			$content = eregi_replace("we:ifSelf[^>]*>", "we_:_ifSelf>", $content);
-			$content = eregi_replace("we:ifNotSelf[^>]*>", "we_:_ifNotSelf>", $content);
-		}
-
-		$ipos = strpos($content, '<we_:_linklist');
-		while(!($ipos === false)) {
-			$content = $this->correctContent($content);
-			$ipos = strpos($content, '<we_:_linklist');
-		}
-
-		$tp = new we_tagParser($content);
-		$names = implode(",", we_tagParser::getNames($tp->getAllTags()));
-		$tp->parseTags($content, '<we_:_linklistRef>', array(
-			'we:ifVar'
-		));
-
-		if(!$editmode){
-			$show = $this->listArray;
-			if($limit > 0 && $this->listArray > $limit){
-				$show = $limit;
-			}
-		}
 		$j = 0;
 		$disabled = false;
+		$i = key($this->listArray);
+		$val = current($this->listArray);
 		foreach($this->listArray as $i => $val){
 			$j++;
 			if(!$editmode && $j > $show){
@@ -529,8 +545,8 @@ class we_linklist{
 			if(abs($i) || $i == "0"){
 				$foo = $content;
 
-				$link = $this->getLink($i);
-				$linkcontent = $this->getLinkContent($i);
+				$link = $this->getLink();
+				$linkcontent = $this->getLinkContent();
 				if($linkcontent){
 
 					$buts = "";
@@ -551,7 +567,7 @@ class we_linklist{
 						$editbut = we_button::create_button(
 								"image:btn_edit_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $attribs["name"] . "','" . $i . "')", true);
 						$trashbut = we_button::create_button(
-								"image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','" . $names . "')", true);
+								"image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $attribs["name"] . "','" . $i . "','')", true);
 						$buts = we_button::create_button_table(
 								array(
 								$plusbut, $upbut, $downbut, $editbut, $trashbut
@@ -570,25 +586,19 @@ class we_linklist{
 					}
 
 					//	handle we:ifPosition - if available
-					if(strpos($foo, 'position') || strpos($foo, 'ifPosition') || strpos(
-							$foo, 'ifNotPosition')){
-						$foo = '<?php $GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\'] = array(\'size\'=> ' . sizeof(
-								$this->listArray) . ',\'position\'=>' . ($i + 1) . '); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\']); ?>';
-					}
+					$foo = '<?php $GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\'] = array(\'size\'=> ' . sizeof(
+							$this->listArray) . ',\'position\'=>' . ($i + 1) . '); ?>' . $foo . '<?php unset($GLOBALS[\'we_position\'][\'linklist\'][\'' . $this->name . '\']); ?>';
 					//	handle we:ifPosition - if available
 
 
 					$lnr = $this->listArray[$i]["nr"];
 
-					$foo = eregi_replace('<we_:_target */? *>', $this->getTarget($i), $foo);
 					$foo = eregi_replace('<we_:_field */? *>', $linkcontent, $foo);
 					$foo = eregi_replace('<we_:_path */? *>', $link . $this->getParams($i), $foo);
 					$foo = str_replace(
-						'<we_:_ifSelf>', '<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink($i) . '"){ ?>', $foo);
-					$foo = str_replace('</we_:_ifSelf>', '<?php } ?>', $foo);
+						'<we_:_ifSelf>', '<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" == "' . $this->getLink() . '"){ ?>', $foo);
 					$foo = str_replace(
-						'<we_:_ifNotSelf>', '<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink($i) . '"){ ?>', $foo);
-					$foo = str_replace('</we_:_ifNotSelf>', '<?php } ?>', $foo);
+						'<we_:_ifNotSelf>', '<?php if("' . $GLOBALS["WE_MAIN_DOC"]->Path . '" != "' . $this->getLink() . '"){ ?>', $foo);
 
 					if(!isset($this->listArray[$i]["nr"])){
 						$nr = $i;
@@ -596,7 +606,6 @@ class we_linklist{
 					} else{
 						$nr = $this->listArray[$i]["nr"];
 					}
-					$foo = str_replace('<we_:_linklistRef>', $linklistRef . $nr, $foo);
 
 					if(preg_match_all('/<we_:_link([^>\/]*)\/?>/', $foo, $regs, PREG_SET_ORDER)){
 
@@ -625,40 +634,18 @@ class we_linklist{
 			$this->rollScript = "";
 			$this->rollAttribs = array();
 		}
-		if($editmode){
 
-			if(isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $attribs["name"])){
-				$out .= '<script  type="text/javascript">we_cmd(\'edit_linklist\',\'' . $attribs["name"] . '\',\'' . ((isset(
-						$GLOBALS["we_list_insertedNr"]) && ($GLOBALS["we_list_insertedNr"] != "")) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');</script>';
-			}
-			$clearContent = eregi_replace('^[^<]+', '', $content);
-			$clearContent = eregi_replace('>[^<]+$', '>', $clearContent);
-			$clearContent = eregi_replace('>[^<]+$', '>', $clearContent);
-			$clearContent = eregi_replace('>[^<]+$', '>', $clearContent);
-			$clearContent = strip_tags($clearContent, "<we_:_link>,<we_:_link/>,<table><tbody><tr><td><p><br>");
-			$clearContent = eregi_replace('^[^<]+', '', $clearContent); //	Added this line t remove unnecessary stuff written before the we:link
-			$clearContent = eregi_replace('>[^<]+<', '><', $clearContent);
-			$clearContent = eregi_replace('^[^<]*(<we_:_link ?/?>)[^<]*$', '\1', $clearContent);
-			if($limit == 0 || ($limit != 0 && $this->length() < $limit)){
-				$plusbut = "<br>" . we_button::create_button(
-						"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $attribs["name"] . "')", true, 100, 22, "", "", $disabled);
-				$out .= '<input type="hidden" name="we_' . $docName . '_linklist[' . $attribs["name"] . ']" value="' . htmlspecialchars(
-						$this->getString()) . '" />' . eregi_replace(
-						'(.*)<we_:_link[^>/]*/?>(.*)', '\1' . $plusbut . '\2' . "\n", $clearContent);
-			}
-		}
-
-		$out = str_replace("<we_#:#_", "<we:", $out);
-		$out = str_replace("</we_#:#_", "</we:", $out);
 		return $out;
 	}
 
-	function getType($nr){
-		return isset($this->listArray[$nr]["type"]) ? $this->listArray[$nr]["type"] : "";
+	function getType(){
+		$cur = current($this->listArray);
+		return isset($cur["type"]) ? $cur["type"] : "";
 	}
 
-	function getCType($nr){
-		return isset($this->listArray[$nr]["ctype"]) ? $this->listArray[$nr]["ctype"] : "";
+	function getCType(){
+		$cur = current($this->listArray);
+		return isset($cur["ctype"]) ? $cur["ctype"] : "";
 	}
 
 	function setType($nr, $val){
@@ -678,7 +665,7 @@ class we_linklist{
 	}
 
 	function length(){
-		return sizeof($this->listArray);
+		return count($this->listArray);
 	}
 
 	function upLink($nr){
@@ -749,24 +736,24 @@ class we_linklist{
 		return $foo;
 	}
 
-	function getLinkContent($nr){
-		switch($this->getCType($nr)){
+	function getLinkContent(){
+		switch($this->getCType()){
 			case 'int':
-				return $this->makeImgTag($nr);
+				return $this->makeImgTag();
 			case 'ext':
-				return $this->makeImgTagFromSrc($this->getImageSrc($nr), $this->getImageAttribs($nr));
+				return $this->makeImgTagFromSrc($this->getImageSrc(), $this->getImageAttribs());
 			case 'text':
-				return $this->getText($nr);
+				return $this->getText();
 			default:
 				return '';
 		}
 	}
 
-	function makeImgTag($nr, $attribs = ""){
+	function makeImgTag($attribs = ""){
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
-		$id = $this->getImageID($nr);
+		$id = $this->getImageID();
 		if(!$attribs)
-			$attribs = $this->getImageAttribs($nr);
+			$attribs = $this->getImageAttribs();
 		$img = new we_imageDocument();
 		$img->initByID($id);
 		$img->initByAttribs($attribs);

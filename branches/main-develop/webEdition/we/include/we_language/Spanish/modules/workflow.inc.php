@@ -161,7 +161,7 @@ $l_modules_workflow = array(
 
 'no_wf_defined_object' => "¡Ningún flujo de trabajo ha sido definido para este objeto!",
 
-FILE_TABLE=> array(
+'tblFile'=> array(
 
 'messagePath' => "Documento",
 'in_workflow_ok' => "¡El documento fue colocado con éxito en el flujo de trabajo!",
@@ -170,10 +170,9 @@ FILE_TABLE=> array(
 'pass_workflow_notok' => "¡El documento no puede ser continuado!",
 'decline_workflow_ok' => "¡El documento fue devuelto al autor!",
 'decline_workflow_notok' => "¡El documento no puede ser devuelto al autor!",
-));
+),
 
-if(defined("OBJECT_FILES_TABLE")){
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+	'tblObjectFiles' => array(
 	'messagePath' => "Objeto",
 	'in_workflow_ok' => "¡El objeto fue colocado con éxito en el flujo de trabajo!",
 	'in_workflow_notok' => "¡El objeto no pudo ser colocado en el flujo de trabajo!",
@@ -181,5 +180,5 @@ if(defined("OBJECT_FILES_TABLE")){
 	'pass_workflow_notok' => "¡El objeto no puede ser continuado!",
 	'decline_workflow_ok' => "¡El objeto fue devuelto al autor!",
 	'decline_workflow_notok' => "¡El objeto no puede ser devuelto al autor!",
-	);
-}
+	),
+);

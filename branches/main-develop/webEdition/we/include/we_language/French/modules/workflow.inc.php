@@ -144,7 +144,7 @@ $l_modules_workflow = array(
 		'more_information' => "Informations supplémentaire",
 		'less_information' => "Moins Informations",
 		'no_wf_defined_object' => "Aucun Gestion de Flux a été défini pour cet object!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'messagePath' => "Document", // TRANSLATE
 				'in_workflow_ok' => "Le document a été placé dans le Gestion de Flux avec succès!",
 				'in_workflow_notok' => "Le document n'a pas pu être placé dans le Gestion de Flux!",
@@ -152,9 +152,8 @@ $l_modules_workflow = array(
 				'pass_workflow_notok' => "Le document n'a pas pu être transmis!",
 				'decline_workflow_ok' => "Le document a été repoussé à l'auteur!",
 				'decline_workflow_notok' => "Le docuemtn n'a pas pu être repoussé à l'auteur!",
-				));
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+				),
+'tblObjectFiles' => array(
 			'messagePath' => "Object", // TRANSLATE
 			'in_workflow_ok' => "L'object a été placé dans le Gestion de Flux avec succès!",
 			'in_workflow_notok' => "L'object n'a pas pu être placé dans le Gestion de Flux!",
@@ -162,5 +161,5 @@ if (defined("OBJECT_FILES_TABLE")) {
 			'pass_workflow_notok' => "L'object n'a pas pu être transmis!",
 			'decline_workflow_ok' => "L'object a été repoussé à l'auteur!",
 			'decline_workflow_notok' => "L'object n'a pas pu être repoussé à l'auteur!",
-	);
-}
+	),
+);

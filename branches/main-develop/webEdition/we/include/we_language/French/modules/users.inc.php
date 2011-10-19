@@ -66,10 +66,6 @@ $l_modules_users = array(
 		'work_permissions' => "Droits de travail",
 		'control_permissions' => "Droits de contrôle",
 		'log_permissions' => "Droits pour le journal",
-		'file_locked' => array(
-				FILE_TABLE => "Le fichier '%s' est édité par '%s' en ce moment!",
-				TEMPLATES_TABLE => "Le modèle '%s' est édité par '%s' en ce moment!",
-		),
 		'acces_temp_denied' => "L'accès n'est pas possible en ce moment",
 		'description' => "Déscription",
 		'group_data' => "Données de Groupe",
@@ -141,8 +137,3 @@ $l_modules_users = array(
 		'lostID' => "ID: ", // TRANSLATE
 		'lostID2' => " (deleted)", // TRANSLATE
 );
-
-if (defined("OBJECT_TABLE")) {
-	$l_modules_users["file_locked"][OBJECT_TABLE] = "La classe '%s' est édité par '%s' en ce moment!";
-	$l_modules_users["file_locked"][OBJECT_FILES_TABLE] = "L'object '%s' st édité par '%s' en ce moment!";
-}

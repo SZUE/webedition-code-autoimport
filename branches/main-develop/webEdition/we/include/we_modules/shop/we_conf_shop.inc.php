@@ -147,7 +147,7 @@ class Basket {
 	var $CartFields = array();
 
 	private $orderID=0;
-	
+
 	/**
 	 * constructor
 	 *
@@ -293,7 +293,7 @@ class Basket {
 
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-			$DB_WE->query("SELECT ".CONTENT_TABLE.".BDID as BDID, ".CONTENT_TABLE.".Dat as Dat, ".LINK_TABLE.".Name as Name FROM ".LINK_TABLE.",".CONTENT_TABLE." WHERE ".LINK_TABLE.".DID=$id AND ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".LINK_TABLE.".DocumentTable='".substr(FILE_TABLE, strlen(TBL_PREFIX))."'");
+			$DB_WE->query("SELECT ".CONTENT_TABLE.".BDID as BDID, ".CONTENT_TABLE.".Dat as Dat, ".LINK_TABLE.".Name as Name FROM ".LINK_TABLE.",".CONTENT_TABLE." WHERE ".LINK_TABLE.".DID=$id AND ".LINK_TABLE.".CID=".CONTENT_TABLE.".ID AND ".LINK_TABLE.".DocumentTable='".stripTblPrefix(FILE_TABLE)."'");
 			while($DB_WE->next_record()){
 				if($DB_WE->f("BDID")){
 						$Record[$DB_WE->f("Name")] = $DB_WE->f("BDID");
@@ -475,13 +475,13 @@ class Basket {
 		}
 		return false;
 	}
-	
+
 	function getOrderID(){
 		return $this->orderID;
 	}
-	
+
 	function setOrderID($id){
 		$this->orderID=$id;
 	}
-	
+
 }

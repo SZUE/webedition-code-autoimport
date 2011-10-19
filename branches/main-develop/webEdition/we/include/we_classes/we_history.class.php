@@ -73,7 +73,7 @@ class we_history
 
 		$_db = new DB_WE();
 
-		$query = "DELETE FROM " . HISTORY_TABLE . " WHERE DID in (" . implode(", ", $modelIds) . ") AND DocumentTable = \"" . substr($table, strlen(TBL_PREFIX)) . "\"";
+		$query = "DELETE FROM " . HISTORY_TABLE . " WHERE DID in (" . implode(", ", $modelIds) . ") AND DocumentTable = \"" . stripTblPrefix($table) . "\"";
 		$_db->query( $query );
 
 	}

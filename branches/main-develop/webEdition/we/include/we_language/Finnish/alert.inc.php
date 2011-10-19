@@ -28,14 +28,25 @@
  * Language: English
  */
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "Dokumentti täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa dokumentin?",
 				'not_im_ws' => "Tiedosto ei sijaitse työtilassasi!",
+		'exit_doc_question' => "Dokumenttia on muutettu.<br>Haluatko tallentaa muutokset?",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "Sivupohja täytyy tallentaa ennekuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa sivupohjan?",
 				'not_im_ws' => "Sivupohja ei sijaitse työtilassasi!",
+		'exit_doc_question' => "Sivupohjaa on muutettu.<br>Haluatko tallentaa muutokset?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "Dokumentti täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa dokumentin?",
+			'exit_doc_question' => "Objektia on muutettu.<br>Haluatko tallentaa muutokset?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "Luokka täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa luokan?",
+			'exit_doc_question' => "Luokkaa on muutettu.<BR>Haluatko tallentaa muutokset?",
+),
+
 		'folder' => array(
 				'not_im_ws' => "Hakemisto ei sijaitse työtilassasi!",
 		),
@@ -145,8 +156,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "Termit 'we' and 'webEdition' ovat varattuja sanoja joten niitä ei voida käyttää!",
 		'we_filename_empty' => "Hakemistolle tai tiedostolle ei ole annettu nimeä!",
 		'exit_multi_doc_question' => "Useat avoinna olevat dokumentit sisältävät tallentamattomia muutoksia. Jos jatkat kaikki tallentamattomat muutokset menetetään. Haluatko jatkaa ja hylätä kaikki tekemäsi muutokset?",
-		'exit_doc_question_' . FILE_TABLE => "Dokumenttia on muutettu.<br>Haluatko tallentaa muutokset?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Sivupohjaa on muutettu.<br>Haluatko tallentaa muutokset?",
 		'deleteTempl_notok_used' => "Yksi tai useampi sivupohja on käytössä ja niitä ei voida poistaa!",
 		'deleteClass_notok_used' => "Yksi tai useampi luokka on käytössä ja niitä ei voida poistaa!",
 		'delete_notok' => "Virhe poistettaessa!",
@@ -190,13 +199,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Korjaa kentät ennen asetusten tallennusta.',
 		'discard_changed_data' => 'Tallentamattomat tiedot menetetään, haluatko jatkaa ?',
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "Dokumentti täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa dokumentin?",
-			'in_wf_warning' => "Luokka täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\\nHaluatko tallentaa luokan?",
-			'exit_doc_question_' . OBJECT_TABLE => "Luokkaa on muutettu.<BR>Haluatko tallentaa muutokset?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "Objektia on muutettu.<br>Haluatko tallentaa muutokset?",
-					);
-}

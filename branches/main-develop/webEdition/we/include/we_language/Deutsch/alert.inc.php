@@ -27,17 +27,26 @@
  * Provides language strings.
  * Language: Deutsch
  */
-// Workarround for bug 1292
 
 $l_alert = array(
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'in_wf_warning' => "Bevor das Dokument in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Dokument jetzt gespeichert werden?",
 				'not_im_ws' => "Die Datei befindet sich nicht in Ihrem Arbeitsbereich!",
+		'exit_doc_question' => "Es scheint, als ob Sie das Dokument verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 		),
-		TEMPLATES_TABLE => array(
+		'tblTemplates' => array(
 				'in_wf_warning' => "Bevor das Template in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Template jetzt gespeichert werden?",
 				'not_im_ws' => "Die Vorlage befindet sich nicht in Ihrem Arbeitsbereich!",
+		'exit_doc_question' => "Es scheint, als ob Sie die Vorlage verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 		),
+	'tblObjectFiles'=>array(
+			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Objekt jetzt gespeichert werden?"
+			'exit_doc_question' => "Es scheint, als ob Sie das Objekt verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
+),
+	'tblObject'=>array(
+			'in_wf_warning' => "Bevor die Klasse in den Workflow gegeben werden kann, muß sie gespeichert werden!\\nSoll die Klasse jetzt gespeichert werden?"
+			'exit_doc_question' => "Es scheint, als ob Sie die Klasse verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
+),
 		'folder' => array(
 				'not_im_ws' => "Dieses Verzeichnis befindet sich nicht in Ihrem Arbeitsbereich!",
 		),
@@ -147,8 +156,6 @@ $l_alert = array(
 		'we_name_not_allowed' => "Die Namen 'we' und 'webEdition' werden von webEdition selbst benutzt und dürfen deshalb nicht verwendet werden!",
 		'we_filename_empty' => "Sie haben noch keinen Dateinamen für dieses Dokument bzw. Verzeichnis eingegeben!",
 		'exit_multi_doc_question' => "Einige geöffnete Dokumente enthalten noch ungespeicherte Änderungen. Wenn Sie fortfahren, werden diese Änderungen verworfen. Wollen Sie fortfahren und alle ungespeicherten Änderungen verwerfen?",
-		'exit_doc_question_' . FILE_TABLE => "Es scheint, als ob Sie das Dokument verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
-		'exit_doc_question_' . TEMPLATES_TABLE => "Es scheint, als ob Sie die Vorlage verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 		'deleteTempl_notok_used' => "Die Aktion konnte nicht ausgeführt werden, da eine oder mehrere zu löschende Vorlagen schon benutzt werden!",
 		'deleteClass_notok_used' => "Die Aktion konnte nicht ausgeführt werden, da eine oder mehrere zu löschende Klassen schon benutzt werden!",
 		'delete_notok' => "Es gab einen Fehler beim Löschen!",
@@ -190,13 +197,3 @@ $l_alert = array(
 		'field_in_tab_notvalid_post' => 'Bitte korrigieren Sie die Felder und speichern Sie die Einstellungen erneut.',
 		'discard_changed_data' => 'Es gibt nicht gespeicherte Änderungen, die verloren gehen. Sind sie sicher?',
 );
-
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_alert[OBJECT_FILES_TABLE]=array(
-			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Objekt jetzt gespeichert werden?",
-			'in_wf_warning' => "Bevor die Klasse in den Workflow gegeben werden kann, muß sie gespeichert werden!\\nSoll die Klasse jetzt gespeichert werden?",
-			'exit_doc_question_' . OBJECT_TABLE => "Es scheint, als ob Sie die Klasse verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
-			'exit_doc_question_' . OBJECT_FILES_TABLE => "Es scheint, als ob Sie das Objekt verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
-					);
-}

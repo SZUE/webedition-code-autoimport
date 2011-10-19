@@ -119,7 +119,7 @@ $l_modules_workflow = array(
 		'more_information' => "Weitere Informationen",
 		'less_information' => "Weniger Informationen",
 		'no_wf_defined_object' => "Für dieses Objekt ist kein Workflow definiert!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'messagePath' => "Dokument",
 				'in_workflow_ok' => "Das Dokument wurde erfolgreich in den Workflow übergeben!",
 				'in_workflow_notok' => "Das Dokument konnte nicht in den Workflow übergeben werden!",
@@ -128,16 +128,13 @@ $l_modules_workflow = array(
 				'decline_workflow_ok' => "Das Dokument wurde an den Autor zurückgegeben!",
 				'decline_workflow_notok' => "Das Dokument konnte nicht an den Autor zurückgegeben werden!",
 		),
+		'tblObjectFiles' => array(
+				'messagePath' => "Objekt",
+				'in_workflow_ok' => "Das Objekt wurde erfolgreich in den Workflow übergeben!",
+				'in_workflow_notok' => "Das Objekt konnte nicht in den Workflow übergeben werden!",
+				'pass_workflow_ok' => "Das Objekt wurde erfolgreich weitergegeben!",
+				'pass_workflow_notok' => "Das Objekt konnte nicht weitergegeben werden!",
+				'decline_workflow_ok' => "Das Objekt wurde an den Autor zurückgegeben!",
+				'decline_workflow_notok' => "Das Objekt konnte nicht an den Autor zurückgegeben werden!",
+		),
 );
-
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
-			'messagePath' => "Objekt",
-			'in_workflow_ok' => "Das Objekt wurde erfolgreich in den Workflow übergeben!",
-			'in_workflow_notok' => "Das Objekt konnte nicht in den Workflow übergeben werden!",
-			'pass_workflow_ok' => "Das Objekt wurde erfolgreich weitergegeben!",
-			'pass_workflow_notok' => "Das Objekt konnte nicht weitergegeben werden!",
-			'decline_workflow_ok' => "Das Objekt wurde an den Autor zurückgegeben!",
-			'decline_workflow_notok' => "Das Objekt konnte nicht an den Autor zurückgegeben werden!",
-	);
-}

@@ -959,7 +959,7 @@ function formTriggerDocument($isclass=false){
 	function i_getContentData($loadBinary=0){
 
 		$this->DB_WE->query("SELECT * FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($this->ID).
-				"' AND " . LINK_TABLE . ".DocumentTable='".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX))).
+				"' AND " . LINK_TABLE . ".DocumentTable='".$this->DB_WE->escape(stripTblPrefix($this->Table)).
 				"' AND " . CONTENT_TABLE . ".ID=" . LINK_TABLE . ".CID ".
 				($loadBinary ? "" : " AND " . CONTENT_TABLE . ".IsBinary=0"));
 		$filter = array("Name","DID","Ord");
@@ -1026,7 +1026,7 @@ function formTriggerDocument($isclass=false){
 						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '('.implode(',', $keys).') '.$vals);
 						$cid=$this->DB_WE->getInsertId();
 						$this->elements[$k]['id']=$cid; // update Object itself
-						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".intval($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(substr($this->Table, strlen(TBL_PREFIX)))."')";
+						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('".intval($this->ID)."',".$cid.",'".$this->DB_WE->escape($k)."','".$this->DB_WE->escape($v["type"])."','".$this->DB_WE->escape(stripTblPrefix($this->Table))."')";
 						if(!$this->DB_WE->query($q)){
 							return false;
 						}

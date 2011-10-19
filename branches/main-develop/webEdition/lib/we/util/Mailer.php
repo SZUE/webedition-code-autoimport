@@ -135,13 +135,14 @@ class we_util_Mailer extends Zend_Mail {
 				default :
 
 					//this should set return-path
-					if($reply != ''){
+					$safeMode = ini_get('safe_mode');
+					if($reply != '' && !$safeMode){
 						$_reply = $this->parseEmailUser($reply);
 						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_reply['email']);
 					}
 					else {
 						$_sender = $this->parseEmailUser($sender);
-						if (isset($_sender['email']) && $_sender['email']!=''){
+						if (isset($_sender['email']) && $_sender['email']!='' && !$safeMode){
 							$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
 						} else {
 							$tr = new Zend_Mail_Transport_Sendmail();

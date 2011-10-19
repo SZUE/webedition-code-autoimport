@@ -61,7 +61,7 @@ function we_parse_tag_block($attribs, $content){
 		$ctlPre . 'array(\'name\'=>\'' . $blockName . '\'.(isset($GLOBALS[\'postTagName\'])?$GLOBALS[\'postTagName\']:\'\'),\'pos\'=>0,\'listSize\'=>0,' .
 		'\'ctlShowSelect\'=>' . (weTag_getParserAttribute('showselect', $arr, true, true) ? 'true' : 'false') . ',' .
 		'\'ctlShow\'=>' . (int) weTag_getParserAttribute('limit', $arr, 10) . ')' . $ctlPost .
-		'<?php }?>';
+		'<?php }unset($block_' . $name . ');?>';
 }
 
 function we_condition_tag_block(&$block){

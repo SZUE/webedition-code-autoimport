@@ -66,10 +66,6 @@ $l_modules_users = array(
 		'work_permissions' => "Työoikeudet",
 		'control_permissions' => "Hallintaoikeudet",
 		'log_permissions' => "Kirjautumisoikeudet",
-		'file_locked' => array(
-				FILE_TABLE => "Tiedosto '%s' on käytössä käyttäjällä '%s'!",
-				TEMPLATES_TABLE => "Sivupohja '%s' on käytössä käyttäjällä '%s'!",
-		),
 		'acces_temp_denied' => "Pääsy väliaikaisesti evätty!",
 		'description' => "Kuvaus",
 		'group_data' => "Ryhmän tiedot",
@@ -139,7 +135,3 @@ $l_modules_users = array(
 		'lostID' => "ID: ", // TRANSLATE
 		'lostID2' => " (deleted)", // TRANSLATE
 );
-if (defined("OBJECT_TABLE")) {
-	$l_modules_users["file_locked"][OBJECT_TABLE] = "Luokka '%s' on käytössä käyttäjällä '%s'!";
-	$l_modules_users["file_locked"][OBJECT_FILES_TABLE] = "Objekti '%s' on käytössä käyttäjällä '%s'!";
-}

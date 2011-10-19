@@ -143,7 +143,7 @@ $l_modules_workflow = array(
 		'more_information' => "Больше информации",
 		'less_information' => "Меньше информации",
 		'no_wf_defined_object' => "Для данного объекта не задан рабочий поток!",
-		FILE_TABLE => array(
+		'tblFile' => array(
 				'messagePath' => "Документ",
 				'in_workflow_ok' => "Документ успешно передан в поток!",
 				'in_workflow_notok' => "Невозможно передать документ в поток!",
@@ -151,10 +151,9 @@ $l_modules_workflow = array(
 				'pass_workflow_notok' => "Невозможно перенаправить документ!",
 				'decline_workflow_ok' => "Документ возвращен автору!",
 				'decline_workflow_notok' => "Невозможно возвратить документ его автору!",
-				));
+				),
 
-if (defined("OBJECT_FILES_TABLE")) {
-	$l_modules_workflow[OBJECT_FILES_TABLE] = array(
+	'tblObjectFiles' => array(
 			'messagePath' => "Объект",
 			'in_workflow_ok' => "Объект успешно передан в поток!",
 			'in_workflow_notok' => "Невозможно передать объект в поток!",
@@ -162,5 +161,5 @@ if (defined("OBJECT_FILES_TABLE")) {
 			'pass_workflow_notok' => "Невозможно перенаправить объект!",
 			'decline_workflow_ok' => "Объект возвращен автору!",
 			'decline_workflow_notok' => "Невозможно возвратить объект его автору!",
-	);
-}
+	),
+);
