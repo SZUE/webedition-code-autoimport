@@ -435,6 +435,9 @@
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLoginDenied")) $this->addCol(CUSTOMER_TABLE,"AutoLoginDenied","tinyint(1) NOT NULL default '0'", " AFTER LastAccess ");
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLogin")) $this->addCol(CUSTOMER_TABLE,"AutoLogin","tinyint(1) NOT NULL default '0'", " AFTER AutoLoginDenied ");
 
+			if(!$this->isColExist(CUSTOMER_TABLE,"ModifyDate")) $this->addCol(CUSTOMER_TABLE,"ModifyDate","bigint(20) unsigned NOT NULL default '0'", " AFTER AutoLogin ");
+			if(!$this->isColExist(CUSTOMER_TABLE,"ModifiedBy")) $this->addCol(CUSTOMER_TABLE,"ModifiedBy","enum('','backend','frontend','external') NOT NULL default''", " AFTER ModifyDate ");
+
 			if($this->isColExist(CUSTOMER_TABLE,"Anrede_Anrede")) $this->changeColTyp(CUSTOMER_TABLE,"Anrede_Anrede","enum('','Herr','Frau') NOT NULL");
 
 			if($this->isColExist(CUSTOMER_TABLE,"Newsletter_Ok")) $this->changeColTyp(CUSTOMER_TABLE,"Newsletter_Ok","enum('','ja','0','1','2') NOT NULL");
