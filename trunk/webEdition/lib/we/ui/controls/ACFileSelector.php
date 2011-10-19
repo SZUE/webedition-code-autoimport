@@ -474,7 +474,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 			return 'we_ui_controls_ACFileSelector.openToolSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ', "' . $appname . '")';
 		}
 		
-		$table = '"' . $this->getTable() . '"';
+		$table = '"' . (defined('TBL_PREFIX')?TBL_PREFIX:'').$this->getTable() . '"';
 		$onClick = 'we_ui_controls_ACFileSelector.openSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $table . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ',"","","' . $contentTypesString . '");';
 		
 		return $onClick;
