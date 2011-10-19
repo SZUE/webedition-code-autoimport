@@ -712,7 +712,9 @@ function we_tag_userInput($attribs, $content){
 				foreach ($topCountries as $countrykey => &$countryvalue){
 					$options.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
 				}
-				$options.='<option value="-" disabled="disabled">----</option>'."\n";
+				if( !empty($topCountries) && !empty($shownCountries) ) {
+					$options.='<option value="-" disabled="disabled">----</option>'."\n";
+				}
 				foreach ($shownCountries as $countrykey2 => &$countryvalue2){
 					$options.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue2).'</option>'."\n";
 				}

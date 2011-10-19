@@ -109,7 +109,10 @@ function we_tag_sessionField($attribs, $content) {
 			foreach ($topCountries as $countrykey => &$countryvalue) {
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>' . "\n";
 			}
-			$content.='<option value="-" disabled="disabled">----</option>' . "\n";
+			
+			if( !empty($topCountries) && !empty($shownCountries) ) {
+				$content.='<option value="-" disabled="disabled">----</option>' . "\n";
+			}
 			foreach ($shownCountries as $countrykey2 => &$countryvalue2) {
 				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>' . "\n";
 			}

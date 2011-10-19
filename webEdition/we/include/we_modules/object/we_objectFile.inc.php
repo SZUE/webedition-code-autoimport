@@ -1378,7 +1378,10 @@ class we_objectFile extends we_document{
 			foreach ($topCountries as $countrykey => &$countryvalue){
 				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
 			}
-			$countryselect->addOption('-','----',array("disabled"=>"disabled"));
+			if( !empty($topCountries) && !empty($shownCountries) ) {
+				$countryselect->addOption('-','----',array("disabled"=>"disabled"));
+			}
+			
 			//$content.='<option value="-" disabled="disabled">----</option>'."\n";
 			foreach ($shownCountries as $countrykey => &$countryvalue){
 				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
