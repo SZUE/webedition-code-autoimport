@@ -420,7 +420,7 @@ class weWorkflowView extends weWorkflowBase{
 				$wecmdenc1= we_cmd_enc("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value");
 				$wecmdenc2= we_cmd_enc("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value");
 				$wecmdenc5= we_cmd_enc("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value");
-				$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','',".$wecmdenc5.");");
+				$button = $we_button->create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','','".$wecmdenc5."');");
 
 				$yuiSuggest->setAcId("User_".$counter."_".$counter1);
 				$yuiSuggest->setContentType("0,1");
