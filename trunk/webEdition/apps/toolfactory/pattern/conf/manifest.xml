@@ -35,6 +35,7 @@
 		<licenseurl>http://www.gnu.org/licenses/gpl.html</licenseurl>
 		<encoding>none</encoding>
 		<supportshooks>true</supportshooks>
+		<usewetableprefix>true</usewetableprefix>
 		<deactivatable>true</deactivatable>
 		<deinstallable>true</deinstallable>
 		<updatable>true</updatable>

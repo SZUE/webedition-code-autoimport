@@ -75,7 +75,11 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	function __construct($table)
 	{
 		if ($table !== '') {
-			$this->_table = $table;
+			if(defined('USE_WE_TBLPREFIX') && defined('TBL_PREFIX') && USE_WE_TBLPREFIX){
+				$this->_table = TBL_PREFIX.$table;
+			} else {
+				$this->_table = $table;
+			}		
 			$this->loadPersistents();
 		}
 	}
@@ -207,7 +211,11 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 */
 	public function getTable()
 	{
-		return $this->_table;
+		if(defined('USE_WE_TBLPREFIX') && defined('TBL_PREFIX') && USE_WE_TBLPREFIX){
+			return substr_replace($this->_table,'',0,strlen(TBL_PREFIX));
+		} else {
+			return $this->_table;
+		}
 	}
 	
 	/**
@@ -217,7 +225,11 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 */
 	public function setTable($table)
 	{
-		$this->_table = $table;
+		if(defined('USE_WE_TBLPREFIX') && defined('TBL_PREFIX') && USE_WE_TBLPREFIX){
+			$this->_table = TBL_PREFIX.$table;
+		} else {
+			$this->_table = $table;
+		}	
 	}
 
 	/**

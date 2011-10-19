@@ -3,6 +3,9 @@ include_once('../../lib/we/core/autoload.php');
 
 // include configuration
 include_once('<?php print $TOOLNAME;?>/conf/meta.conf.php');
+if(isset($metaInfo['use_we_tblprefix']) && $metaInfo['use_we_tblprefix']){
+	define('USE_WE_TBLPREFIX','1');
+}
 
 // get controller instabce
 $controller = Zend_Controller_Front::getInstance();
