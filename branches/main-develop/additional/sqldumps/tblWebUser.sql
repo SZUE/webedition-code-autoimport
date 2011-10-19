@@ -12,6 +12,8 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   LastAccess int(10) unsigned NOT NULL default '0',
   AutoLoginDenied tinyint(1) unsigned NOT NULL default '0',
   AutoLogin tinyint(1) unsigned NOT NULL default '0',
+  ModifyDate bigint(20) unsigned NOT NULL default '0',
+  `ModifiedBy` enum('','backend','frontend','external') NOT NULL default'',
   ParentID bigint(20) unsigned NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) unsigned default NULL,

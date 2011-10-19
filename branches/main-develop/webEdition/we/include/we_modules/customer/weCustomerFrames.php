@@ -190,7 +190,9 @@ class weCustomerFrames extends weModuleFrames {
 				foreach ($topCountries as $countrykey => &$countryvalue) {
 					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 				}
-				$countryselect->addOption('-', '----', array("disabled" => "disabled"));
+				if( !empty($topCountries) && !empty($shownCountries) ) {
+					$countryselect->addOption('-', '----', array("disabled" => "disabled"));
+				}
 
 				foreach ($shownCountries as $countrykey => &$countryvalue) {
 					$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));

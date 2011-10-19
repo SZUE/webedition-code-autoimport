@@ -83,3 +83,5 @@
 	if(defined('CUSTOMER_AUTOLOGIN_TABLE')){
 		$tableKeys[strtolower(CUSTOMER_AUTOLOGIN_TABLE)] = array('AutoLoginID','WebUserID');
 	}
+
+	$tableKeys[strtolower(TEMPORARY_DOC_TABLE)] = array('DocTable','DocumentID','Active');

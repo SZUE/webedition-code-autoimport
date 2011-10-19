@@ -113,7 +113,10 @@ function we_tag_sessionField($attribs, $content) {
 			foreach ($topCountries as $countrykey => &$countryvalue) {
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
-			$content.='<option value="-" disabled="disabled">----</option>';
+			
+			if( !empty($topCountries) && !empty($shownCountries) ) {
+				$content.='<option value="-" disabled="disabled">----</option>';
+			}
 			foreach ($shownCountries as $countrykey2 => &$countryvalue2) {
 				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
 			}
@@ -191,6 +194,7 @@ function we_tag_sessionField($attribs, $content) {
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $newAtts);
 			} else {
+				echo '<script language="JavaScript" type="text/javascript">weFrontpageEdit=true;</script>';
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/we_textarea_include.inc.php');
 				$autobr = $autobrAttr ? 'on' : 'off';

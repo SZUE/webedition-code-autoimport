@@ -3109,7 +3109,7 @@ function g_l($name, $specific, $omitErrors=false) {
 		}
 	}else{
 		//FIXME: decide if in we - then turn off, else turn on
-		if(isset($GLOBALS['WE_MAIN_DOC'])&&(!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
+		if(isset($GLOBALS['WE_MAIN_DOC']) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
 			unset($cache);
 		}
 	}

@@ -5,7 +5,6 @@ error_reporting(E_ALL & ~E_NOTICE);
 //define('TESTMODE',1);
 
 define('MASTERLANG','English');
-define('ENC','UTF-8');
 
 if(!defined('TESTMODE')){
 	define('LANGS','English,Deutsch,French,Russian,Dutch,Finnish,Polish,Spanish');
@@ -44,7 +43,7 @@ function getVar($file){
 
 function getVars($dir,&$langs,$file){
 	foreach($langs as $mylang=>&$val){
-		$var=getVar($dir.$mylang.'_'.ENC.$file);
+		$var=getVar($dir.$mylang.$file);
 		if($var!==false){
 			$val[$file]=$var;
 		}
@@ -92,7 +91,7 @@ function showDiff($langs){
 }
 
 function searchFiles($searchDir,&$langs,&$fileCnt){
-	$mydir=DIR.MASTERLANG.'_'.ENC.$searchDir;
+	$mydir=DIR.MASTERLANG.$searchDir;
 	$files=scandir($mydir);
 	if(defined('TESTMODE')){
 		print_r($files);

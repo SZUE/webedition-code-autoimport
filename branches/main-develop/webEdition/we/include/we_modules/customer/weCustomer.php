@@ -46,9 +46,11 @@ class weCustomer extends weModelBase {
 	var $MemberSince;
 	var $LastLogin;
 	var $LastAccess;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
+	var $ModifyDate;
+	var $ModifiedBy;
+	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text','ModifiedBy','ModifyDate');
 	var $properties = array('Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin');
-	var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
+		var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
 
 	/**
 	 * Default Constructor
@@ -87,9 +89,11 @@ class weCustomer extends weModelBase {
 		$this->Text = $this->Username;
 		$this->Path = "/" . $this->Username;
 
-		if ($this->MemberSince == 0)
+		if ($this->MemberSince == 0){
 			$this->MemberSince = time();
-
+		}
+		$this->ModifyDate=time();
+		$this->ModifiedBy='backend';
 		$s = array();
 		foreach ($this->persistent_slots as $key => $val) {
 			$s[$key] = $val;

@@ -51,18 +51,23 @@ $InfoFieldId->setStyle('margin:5px 10px;font-size:11px;');
 $js = '
 	//var weTree = new we_ui_controls_Tree("' . $tree->getId() . '"); YUI 2.5
 	var weTree; // YUI 2.8
-	YAHOO.util.Event.addListener(window, "load", function() {
-		tree_' . $tree->getId() . '.subscribe("labelClick", function(node) { 
-			weTree.unmarkAllNodes();
-			weTree.markNode(node.data.id, true);
-			tree_' . $tree->getId() . '_activEl = node.data.id;
-
-			weCmdController.fire({cmdName:"app_'.$appName.'_open", id:node.data.id}); 
-			
-			return false;
-		});
-		weTree = new we_ui_controls_Tree("' . $tree->getId() . '");// YUI 2.8
+	
+	var weTree;
+	
+function subscribeLabelClick(){
+	tree_' . $tree->getId() . '.subscribe("labelClick", function(node) { 
+		weTree.unmarkAllNodes();
+		weTree.markNode(node.data.id, true);
+		tree_' . $tree->getId() . '_activEl = node.data.id;
+		weCmdController.fire({cmdName:"app_'.$appName.'_open", id:node.data.id}); 
+		return false;
 	});
+	weTree = new we_ui_controls_Tree("' . $tree->getId() . '");
+}
+function delaySubcriptionForIE9(){
+	window.setTimeout("subscribeLabelClick()", 1000);
+}	
+	YAHOO.util.Event.addListener(window, "load", delaySubcriptionForIE9());
 	
 	YAHOO.util.Event.addListener("'.$TreeDiv->getId().'", "mouseover", function(e) {
 		var elTarget = YAHOO.util.Event.getTarget(e);    

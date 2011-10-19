@@ -933,14 +933,14 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	}
 
 	function delDir($id){
-		$entries=f('SELECT GROUP_CONCAT(ID) AS entries FROM '.$db->escape($this->table).' WHERE IsFolder=1 AND ParentID='.intval($id),'entries',$this->db);
+		$entries=f('SELECT GROUP_CONCAT(ID) AS entries FROM '.$this->db->escape($this->table).' WHERE IsFolder=1 AND ParentID='.intval($id),'entries',$this->db);
 		if($entries){
 			$entries=explode(',',$entries);
 			foreach($entries as $entry){
 				$this->delDir($entry);
 			}
 		}
-		$entries=f('SELECT GROUP_CONCAT(ID) AS entries FROM '.$db->escape($this->table).' WHERE IsFolder=0 AND ParentID='.intval($id),'entries',$this->db);
+		$entries=f('SELECT GROUP_CONCAT(ID) AS entries FROM '.$this->db->escape($this->table).' WHERE IsFolder=0 AND ParentID='.intval($id),'entries',$this->db);
 		$entries=($entries?explode(',',$entries):array());
 		$entries[]=$id;
 		foreach($entries as $entry){

@@ -133,7 +133,7 @@ $l_modules_workflow = array(
 				'pass_workflow_notok' => "The document cannot be passed on!",
 				'decline_workflow_ok' => "The document was returned to the author!",
 				'decline_workflow_notok' => "The document cannot be returned to the author!",
-				)
+			),	
 'tblObjectFiles' => array(
 			'in_workflow_ok' => "The object was successfully placed in the workflow!",
 			'in_workflow_notok' => "The object cannot be placed in the workflow!",

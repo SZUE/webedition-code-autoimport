@@ -40,11 +40,11 @@ $l_alert = array(
 		'exit_doc_question' => "Es scheint, als ob Sie die Vorlage verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 		),
 	'tblObjectFiles'=>array(
-			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Objekt jetzt gespeichert werden?"
+			'in_wf_warning' => "Bevor das Objekt in den Workflow gegeben werden kann, muß es gespeichert werden!\\nSoll das Objekt jetzt gespeichert werden?",
 			'exit_doc_question' => "Es scheint, als ob Sie das Objekt verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 ),
 	'tblObject'=>array(
-			'in_wf_warning' => "Bevor die Klasse in den Workflow gegeben werden kann, muß sie gespeichert werden!\\nSoll die Klasse jetzt gespeichert werden?"
+			'in_wf_warning' => "Bevor die Klasse in den Workflow gegeben werden kann, muß sie gespeichert werden!\\nSoll die Klasse jetzt gespeichert werden?",
 			'exit_doc_question' => "Es scheint, als ob Sie die Klasse verändert haben.<br>Möchten Sie Ihre Änderungen speichern?",
 ),
 		'folder' => array(

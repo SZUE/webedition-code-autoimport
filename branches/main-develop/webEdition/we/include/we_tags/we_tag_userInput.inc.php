@@ -578,6 +578,7 @@ function we_tag_userInput($attribs, $content){
 							));
 					return we_getTextareaField($fieldname, $content, $atts);
 				} else {
+					echo '<script language="JavaScript" type="text/javascript">weFrontpageEdit=true;</script>';
 					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/js/we_textarea_include.inc.php");
 					$autobr = $autobrAttr ? "on" : "off";
@@ -699,7 +700,9 @@ function we_tag_userInput($attribs, $content){
 				foreach ($topCountries as $countrykey => &$countryvalue){
 					$options.='<option value="'.$countrykey.'" '. ($orgVal == $countrykey ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue).'</option>'."\n";
 				}
-				$options.='<option value="-" disabled="disabled">----</option>'."\n";
+				if( !empty($topCountries) && !empty($shownCountries) ) {
+					$options.='<option value="-" disabled="disabled">----</option>'."\n";
+				}
 				foreach ($shownCountries as $countrykey2 => &$countryvalue2){
 					$options.='<option value="'.$countrykey2.'" '. ($orgVal == $countrykey2 ? ' selected="selected">': '>').CheckAndConvertISOfrontend($countryvalue2).'</option>'."\n";
 				}

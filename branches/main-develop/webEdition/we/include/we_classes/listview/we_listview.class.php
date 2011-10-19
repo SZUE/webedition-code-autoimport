@@ -102,8 +102,8 @@ class we_listview extends listviewBase {
 		if ($this->languages !=''){
 			$where_lang = ' AND (';
 			$langArray = makeArrayFromCSV($this->languages);
-			$where_lang .= FILE_TABLE.".Language = '".$langArray[0]."' ";
-			for ($i = 1; $i < count($langArray); $i++) {
+			$where_lang .= FILE_TABLE.".Language = '' ";
+			for ($i = 0; $i < count($langArray); $i++) {
     			$where_lang .= "OR ".FILE_TABLE.".Language = '".$langArray[$i]."' ";
 			}
 
@@ -166,7 +166,6 @@ class we_listview extends listviewBase {
 				$sql_tail .= ' AND '.FILE_TABLE.'.ContentType = \''.$this->DB_WE->escape($ct).'\'';
 			}
 		}
-
 		if ($this->customerFilterType != 'off' && defined("CUSTOMER_FILTER_TABLE")) {
 			$sql_tail .= weDocumentCustomerFilter::getConditionForListviewQuery($this);
 

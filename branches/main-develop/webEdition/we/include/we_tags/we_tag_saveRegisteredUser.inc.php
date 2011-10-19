@@ -85,6 +85,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET MemberSince=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
 								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET LastAccess=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
 								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET LastLogin=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
+								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifyDate=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
+								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifiedBy=\'frontend\' WHERE ID='.$_SESSION['webuser']['ID']);
 								if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 									echo '<a name="emos_name" title="register" rel="'.md5($_SESSION["webuser"]['ID']).'" rev="0" ></a>';
 								}
@@ -330,6 +332,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 
 function we_tag_saveRegisteredUser_processRequest(){
 	$set=array();
+	
 	foreach($_REQUEST['s'] as $name=>$val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!

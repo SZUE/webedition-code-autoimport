@@ -124,6 +124,12 @@
 		if($this->isColExist(FAILED_LOGINS_TABLE,"LoginDate")) $this->changeColTyp(FAILED_LOGINS_TABLE,"LoginDate"," timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
 		if($this->isColExist(LINK_TABLE,"DocumentTable")) $this->changeColTyp(LINK_TABLE,"DocumentTable"," enum('tblFile','tblTemplates') NOT NULL ");
+
+		if (defined('GLOSSARY_TABLE')){
+			$this->changeColTyp(GLOSSARY_TABLE,"`Type`"," enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL default 'abbreviation'");
+	  		$this->changeColTyp(GLOSSARY_TABLE,"`Icon`"," enum('folder.gif','prog.gif') NOT NULL ");
+
+		}
 	}
 
 
@@ -242,7 +248,7 @@
 	  $DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
 	  if($DB_WE->next_record()) return true; else return false;
 	}
-	 
+
 	function addTable($tab,$cols,$keys=array()){
 	   global $DB_WE;
 
@@ -418,6 +424,9 @@
 
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLoginDenied")) $this->addCol(CUSTOMER_TABLE,"AutoLoginDenied","tinyint(1) NOT NULL default '0'", " AFTER LastAccess ");
 			if(!$this->isColExist(CUSTOMER_TABLE,"AutoLogin")) $this->addCol(CUSTOMER_TABLE,"AutoLogin","tinyint(1) NOT NULL default '0'", " AFTER AutoLoginDenied ");
+
+			if(!$this->isColExist(CUSTOMER_TABLE,"ModifyDate")) $this->addCol(CUSTOMER_TABLE,"ModifyDate","bigint(20) unsigned NOT NULL default '0'", " AFTER AutoLogin ");
+			if(!$this->isColExist(CUSTOMER_TABLE,"ModifiedBy")) $this->addCol(CUSTOMER_TABLE,"ModifiedBy","enum('','backend','frontend','external') NOT NULL default''", " AFTER ModifyDate ");
 
 			if($this->isColExist(CUSTOMER_TABLE,"Anrede_Anrede")) $this->changeColTyp(CUSTOMER_TABLE,"Anrede_Anrede","enum('','Herr','Frau') NOT NULL");
 
@@ -705,6 +714,9 @@
 		if(defined("VERSIONS_TABLE")){
 			if($this->isColExist(VERSIONS_TABLE,'DocType')) $this->changeColTyp(VERSIONS_TABLE,'DocType','varchar(64) NOT NULL');
 			if(!$this->isColExist(VERSIONS_TABLE,'MasterTemplateID')) $this->addCol(VERSIONS_TABLE,'MasterTemplateID',"bigint(20) NOT NULL default '0'",' AFTER ExtraTemplates ');
+			if($this->getColTyp(VERSIONS_TABLE,"documentElements")!="blob") $this->changeColTyp(VERSIONS_TABLE,"documentElements","blob");
+			if($this->getColTyp(VERSIONS_TABLE,"documentScheduler")!="blob") $this->changeColTyp(VERSIONS_TABLE,"documentScheduler","blob");
+			if($this->getColTyp(VERSIONS_TABLE,"documentCustomFilter")!="blob") $this->changeColTyp(VERSIONS_TABLE,"documentCustomFilter","blob");
 		}
 	}
 	function updateWorkflow(){
@@ -732,7 +744,7 @@
 				"KEY UserID"=>"(UserID,sessionID)",
 				"KEY lockTime"=>"(lockTime)"
 				);
-			$this->addTable(LOCK_TABLE,$cols,$keys);	
+			$this->addTable(LOCK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
 		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
@@ -770,9 +782,19 @@
 				"PRIMARY KEY"=>"(ID)",
 				"KEY DID"=>"(DID,Locale(5))"
 				);
-			$this->addTable(LOCK_TABLE,$cols,$keys);				
+			$this->addTable(LOCK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LANGLINK_TABLE,'DLocale'))  $this->addCol(LANGLINK_TABLE,'DLocale',"varchar(5) NOT NULL default ''",' AFTER DID ');
+	}
+
+	function convertTemporaryDoc(){
+		if($this->isColExist(TEMPORARY_DOC_TABLE,'ID')){
+			$GLOBALS['DB_WE']->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE Active=0');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable="'.FILE_TABLE.'"');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable="'.OBJECT_FILES_TABLE.'"');
+			$this->delCol(TEMPORARY_DOC_TABLE,'ID');
+			$GLOBALS['DB_WE']->query('ALTER TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
+		}
 	}
 
 	function doUpdate(){
@@ -789,6 +811,7 @@
 		$this->updateLock();
 		$this->updateLangLink();
 		$this->updateTableKeys();
-	}
+		$this->convertTemporaryDoc();
+		}
 
 }

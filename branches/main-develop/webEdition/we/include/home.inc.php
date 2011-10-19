@@ -995,6 +995,13 @@ function getUser(){
 					$_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))))) {
 				$iWidth = ((!$aProps[2]) ? $small : $large);
 				if (!in_array($aProps[0], $aDiscard)) {
+					if($aProps[0]=='upb' && $aProps[3]==''){
+						if(defined('OBJECT_TABLE'))	{
+							$aProps[3]='11';
+						} else {
+							$aProps[3]='10';
+						}
+					}
 					include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.inc.php');
 					if ($aProps[0] == 'usr' || $aProps[0] == 'msg') {
 						array_push($aDiscard, $aProps[0]);
