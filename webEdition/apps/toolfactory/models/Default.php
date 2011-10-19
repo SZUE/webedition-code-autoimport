@@ -376,6 +376,7 @@ class toolfactory_models_Default extends we_app_Model
 			$_db = we_io_DB::sharedAdapter();
 			foreach ($_sqlDump as $_sql) {
 				//print "Execute query " . $_sql . "...<br>";
+				$_sql=str_replace('###TBLPREFIX###', TBL_PREFIX, $_sql);
 				$_db->query($_sql);
 			}		
 		}
