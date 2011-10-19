@@ -52,7 +52,7 @@ function we_tag_paypal($attribs, $content) {
 	$countrycode = weTag_getAttribute('countrycode', $attribs);
 	$languagecode = weTag_getAttribute('languagecode', $attribs);
 	$shipping = weTag_getAttribute('shipping', $attribs);
-	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs);
+	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs,false,true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
 	$messageRedirectAuto = weTag_getAttribute('messageredirectAuto', $attribs);
 	if ($messageRedirectAuto==''){
@@ -115,7 +115,7 @@ function we_tag_paypal($attribs, $content) {
 			if (!isset($feldnamen[0])) { // determine the currency
 				$feldnamen[0] = -1;
 			}
-		
+
 			switch ($feldnamen[0]) {
 				case '$':
 				case 'USD':
@@ -136,7 +136,7 @@ function we_tag_paypal($attribs, $content) {
 					break;
 			}
 		}
-		
+
 		$formField = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "payment_details"', 'strFelder', $DB_WE));
 		if (isset($formField[0])) { // determine the Forename
 			$sendForename = $_SESSION['webuser'][$formField[0]];

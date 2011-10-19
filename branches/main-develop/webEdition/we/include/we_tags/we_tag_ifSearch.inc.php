@@ -24,7 +24,7 @@
 
 function we_tag_ifSearch($attribs, $content){
 	$name = weTag_getAttribute('name', $attribs, '0');
-	$set = weTag_getAttribute('set', $attribs, 1, true);
+	$set = weTag_getAttribute('set', $attribs, true, true);
 
 	if ($set) {
 		return isset($_REQUEST['we_lv_search_' . $name]);

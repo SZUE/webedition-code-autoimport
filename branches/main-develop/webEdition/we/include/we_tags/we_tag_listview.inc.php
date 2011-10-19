@@ -121,6 +121,7 @@ function we_tag_listview($attribs, $content) {
 	$weekstart = weTag_getAttribute('weekstart', $attribs, 'monday');
 	$lastaccesslimit = weTag_getAttribute('lastaccesslimit', $attribs, '300');
 	$lastloginlimit = weTag_getAttribute('lastloginlimit', $attribs);
+
 	if (isset($attribs['recursive'])) {
 		$subfolders = weTag_getAttribute('recursive', $attribs, true, true);
 	} else {

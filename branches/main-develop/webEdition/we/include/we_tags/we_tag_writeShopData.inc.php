@@ -50,7 +50,7 @@ function we_tag_writeShopData($attribs,$content) {
 	$shopname = $shopname ? $shopname : $name;
 	$pricename = weTag_getAttribute('pricename',$attribs);
 	$shipping = weTag_getAttribute('shipping',$attribs);
-	$shippingIsNet = weTag_getAttribute('shippingisnet',$attribs);
+	$shippingIsNet = weTag_getAttribute('shippingisnet',$attribs,false,true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate',$attribs);
 
 
@@ -153,7 +153,7 @@ emosBasketPageArray[$articleCount][7]='NULL';
 		//all critical data is set, unlock tables again
 		$DB_WE->unlock();
 		$basket->setOrderID($orderID);
-		
+
 		// second part: add cart fields to table order.
 		//{
 			// add shopcartfields to table

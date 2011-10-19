@@ -1190,15 +1190,8 @@ class we_document extends we_root {
 					$retval = htmlspecialchars($retval, ENT_QUOTES);
 					$retval = preg_replace('/#we##br([^#]*)#we##/' ,'<br\1>', $retval);
 				}
-
-				if(!(defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT)){
-					if((!isset($attribs['php'])) || ($attribs['php'] != 'on' && $attribs['php'] != 'true' && $attribs['php'] != '1')){
-						$retval = removePHP($retval);
-					}
-				}else{
-					if(isset($attribs['php']) && ($attribs['php'] == 'off' || $attribs['php'] == 'false' || $attribs['php'] == '0')){
-						$retval = removePHP($retval);
-					}
+				if(weTag_getAttribute('php',$attribs,(defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT),true)){
+					$retval = removePHP($retval);
 				}
 				if(preg_match('/^[\d.,]+$/', trim($retval))) {
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;

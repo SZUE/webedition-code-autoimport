@@ -64,11 +64,10 @@ function we_tag_var($attribs, $content){
 
 		case "property" :
 			if (isset($GLOBALS["we_obj"])) {
-				eval('$var = $GLOBALS["we_obj"]->' . $name . ';');
+				return $GLOBALS["we_obj"]->$name;
 			} else {
-				eval('$var = $doc->' . $name . ';');
+				return $doc->$name;
 			}
-			return $var;
 		case 'shopVat' :
 			if (defined('SHOP_TABLE')) {
 
