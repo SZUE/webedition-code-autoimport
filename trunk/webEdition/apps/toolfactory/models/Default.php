@@ -261,7 +261,7 @@ class toolfactory_models_Default extends we_app_Model
 		$TOOLNAMELANG = $text;
 		$TOOLNAME = $this->classname;
 		$CLASSNAME = $this->classname;
-		$TABLENAME = $this->maintable;
+		$TABLENAME = TBL_PREFIX.$this->maintable;
 		$TABLECONSTANT = !empty($this->maintable) ? strtoupper($this->classname) . '_TABLE' : '';
 		$DATASOURCE = !empty($this->maintable) ? 'table:' . $this->maintable : 'custom:';
 		if($DATASOURCE=='table:' . $this->maintable) {
