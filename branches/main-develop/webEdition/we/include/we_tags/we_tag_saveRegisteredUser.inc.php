@@ -175,6 +175,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						if(sizeof($set_a)){
 							$set=implode(',',$set_a);
 							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET '.$set.' WHERE ID='.intval($_REQUEST['s']['ID']));
+							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifyDate=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
+							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifiedBy=\'frontend\' WHERE ID='.$_SESSION['webuser']['ID']);
 						}
 					}
 				}else{
