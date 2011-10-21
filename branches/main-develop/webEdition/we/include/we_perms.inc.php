@@ -29,10 +29,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.
 ### protect()
 ### protects a page. Guests can not see this page
 
-function protect() {
-	if ($_SESSION['user']['Username'] == '') {
-
-
 function protect(){
 	if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) ||  $_SESSION["user"]["Username"] == '') {
 		print htmlTop();
