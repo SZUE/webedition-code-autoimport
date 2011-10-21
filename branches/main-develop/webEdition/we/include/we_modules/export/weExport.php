@@ -105,8 +105,11 @@ class weExport extends weModelBase{
 	function clearExpiered($ids,$table,$idfield='ID'){
 		$idsarr = makeArrayFromCSV($ids);
 		$new = array();
+		$db=new DB_WE();
 		foreach($idsarr as $id){
-			if(f('SELECT '.escape_sql_query($idfield).' FROM '.escape_sql_query($table).' WHERE '.escape_sql_query($idfield).'=\''.(is_numeric($id)?$id:escape_sql_query($id)).'\';',$idfield,new DB_WE())) $new[] = $id;
+			if(f('SELECT '.$db->escape($idfield).' FROM '.$db->escape($table).' WHERE '.$db->escape($idfield).'=\''.(is_numeric($id)?$id:$db->escape($id)).'\';',$idfield,$db)){
+				$new[] = $id;
+			}
 		}
 		return makeCSVFromArray($new);
 	}

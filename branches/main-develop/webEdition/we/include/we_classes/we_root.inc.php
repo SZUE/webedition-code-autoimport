@@ -169,7 +169,7 @@ abstract class we_root extends we_class{
 		if($Path != $this->Path){
 
 			### check if Path exists in db
-			if(f("SELECT Path FROM ".escape_sql_query($this->Table)." WHERE Path='".escape_sql_query($Path)."'","Path",$this->DB_WE)){
+			if(f("SELECT Path FROM ".$this->DB_WE->escape($this->Table)." WHERE Path='".$this->DB_WE->escape($Path)."'","Path",$this->DB_WE)){
 				$GLOBALS["we_responseText"] = sprintf(g_l('weClass',"[response_path_exists]"),$Path);
 				return false;
 			}

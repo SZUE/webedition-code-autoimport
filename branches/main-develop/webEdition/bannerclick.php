@@ -48,7 +48,7 @@ if(!$id){
 if($id && is_numeric($id) && $did>0){
 	$url = weBanner::getBannerURL($id);
 	if(!$nocount){
-		$db->query("INSERT INTO ".BANNER_CLICKS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$db->escape($_SERVER["REMOTE_ADDR"])."','".($referer ? $db->escape($referer) : (isset($_SERVER["HTTP_REFERER"]) ? $db->escape($_SERVER["HTTP_REFERER"]) :  ""))."','".abs($did)."','".$db->escape($page)."')");
+		$db->query("INSERT INTO ".BANNER_CLICKS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$db->escape($_SERVER["REMOTE_ADDR"])."','".($referer ? $db->escape($referer) : (isset($_SERVER["HTTP_REFERER"]) ? $db->escape($_SERVER["HTTP_REFERER"]) :  ""))."',".intval($did).",'".$db->escape($page)."')");
 		$db->query("UPDATE ".BANNER_TABLE." SET clicks=clicks+1 WHERE ID='".abs($id)."'");
 	}
 	header("Location: $url");

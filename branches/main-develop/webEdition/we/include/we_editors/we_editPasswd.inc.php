@@ -113,7 +113,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 	<script  type="text/javascript"><!--
 	<?php
 		if (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"] == "ok")) {
-   			$passwd = f("SELECT passwd FROM " . USER_TABLE . " WHERE username='" . escape_sql_query($_SESSION["user"]["Username"] ). "'", "passwd", $DB_WE);
+   			$passwd = f("SELECT passwd FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape($_SESSION["user"]["Username"] ). "'", "passwd", $DB_WE);
 
 			if (md5($oldpasswd.md5($_SESSION["user"]["Username"])) != $passwd) {
 				print
@@ -132,7 +132,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 					top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
 			} else {
 
-		 		$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . md5($newpasswd . md5($_SESSION["user"]["Username"])) . "', UseSalt=1 WHERE username='" . escape_sql_query($_SESSION["user"]["Username"]) . "'");
+		 		$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . md5($newpasswd . md5($_SESSION["user"]["Username"])) . "', UseSalt=1 WHERE username='" . $DB_WE->escape($_SESSION["user"]["Username"]) . "'");
 				print
 					we_message_reporting::getShowMessageCall(g_l('global','[pass_changed]'), WE_MESSAGE_NOTICE) .
 					'top.close();';

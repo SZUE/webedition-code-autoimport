@@ -1364,7 +1364,7 @@ class we_objectFile extends we_document{
 			if( !empty($topCountries) && !empty($shownCountries) ) {
 				$countryselect->addOption('-','----',array("disabled"=>"disabled"));
 			}
-			
+
 			//$content.='<option value="-" disabled="disabled">----</option>'."\n";
 			foreach ($shownCountries as $countrykey => &$countryvalue){
 				$countryselect->addOption($countrykey,CheckAndConvertISObackend($countryvalue));
@@ -1742,7 +1742,7 @@ class we_objectFile extends we_document{
 				$where = "";
 				foreach($paths as $path){
 					if($path!="/"){
-						$where .= "Path like '".escape_sql_query($path)."/%' OR Path = '".escape_sql_query($path)."' OR ";
+						$where .= "Path like '".$this->DB_WE->escape($path)."/%' OR Path = '".$this->DB_WE->escape($path)."' OR ";
 					}
 				}
 				$where = ereg_replace("(.*) OR $",'\1',$where);
@@ -2225,7 +2225,7 @@ class we_objectFile extends we_document{
 		while(list($k,$v) = $this->nextElement("")){
 			if(isset($v["dat"])){ $text .= " ".$v["dat"]; }
 		}
-		$text = escape_sql_query(trim(strip_tags($text)));
+		$text = $this->DB_WE->escape(trim(strip_tags($text)));
 		if(!$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".$this->ID)) return false;
 		if(!$this->IsSearchable) {
 			return true;
@@ -2238,7 +2238,7 @@ class we_objectFile extends we_document{
 		$ws = array_unique($ws);
 		$wsPath = '';
 		$w = '';
-		$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".escape_sql_query($this->Category)."',".$this->TableID.",'".escape_sql_query($this->getElement("Title"))."','".escape_sql_query($this->getElement("Description"))."','".escape_sql_query($this->Text)."','".escape_sql_query($this->Language)."')";
+		$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".$this->DB_WE->escape($this->Category)."',".$this->TableID.",'".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Text)."','".$this->DB_WE->escape($this->Language)."')";
 
 		if (empty($ws)) {
 			if($this->DB_WE->query($q)) return true;
@@ -2250,7 +2250,7 @@ class we_objectFile extends we_document{
 				if($w == "0"){
 					$wsPath = "/";
 				}
-				$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".escape_sql_query($this->Category)."',".$this->TableID.",'".escape_sql_query($this->getElement("Title"))."','".escape_sql_query($this->getElement("Description"))."','".escape_sql_query($this->Text)."','".escape_sql_query($this->Language)."')";
+				$q = "INSERT INTO " . INDEX_TABLE . " (OID,Text,BText,Workspace,WorkspaceID,Category,ClassID,Title,Description,Path,Language) VALUES(".$this->ID.",'$text','$text','$wsPath','".addslashes($w)."','".$this->DB_WE->escape($this->Category)."',".$this->TableID.",'".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Text)."','".$this->DB_WE->escape($this->Language)."')";
 				if(!$this->DB_WE->query($q)) return false;
 			}
 		}
@@ -2817,12 +2817,12 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".$this->Table." WHERE ParentID=".$this->ParentID." AND Text='".escape_sql_query($this->Text)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".$this->Table." WHERE ParentID=".$this->ParentID." AND Text='".escape_sql_query($this->Text)."' AND ID!=".intval($this->ID),"ID",new DB_WE());
 	}
 	function i_urlDouble(){
 		$this->setUrl();
 		if ($this->Url !=''){
-			return f("SELECT ID FROM ".$this->Table." WHERE Url='".escape_sql_query($this->Url)."' AND ID!='".$this->ID."'","ID",new DB_WE());
+			return f("SELECT ID FROM ".$this->Table." WHERE Url='".escape_sql_query($this->Url)."' AND ID!=".intval($this->ID),"ID",new DB_WE());
 		} else return false;
 	}
 

@@ -620,18 +620,25 @@ HTS;
 
 									$_status = g_l('import','[import]');
 
-									if($ref->ContentType == 'weBinary' || $ref->ContentType == 'category' || $ref->ContentType == 'objectFile') {
+									switch($ref->ContentType){
+									case 'weBinary':
+									case 'category':
+									case 'objectFile':
 										$_path_info = $ref->Path;
-									} else if($ref->ContentType == 'doctype') {
+										break;
+									case 'doctype':
 										$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'DocType',new DB_WE());
-									} else if($ref->ContentType == 'weNavigationRule') {
+										break;
+									case 'weNavigationRule':
 										$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'NavigationName',new DB_WE());
-									} else if($ref->ContentType == 'weThumbnail') {
+										break;
+									case 'weThumbnail':
 										$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'Name',new DB_WE());
-									} else {
+										break;
+									default:
 										$_path_info = id_to_path($ref->ID,$ref->Table);
+										break;
 									}
-
 									$_progress_text = we_htmlElement::htmlB(
 															g_l('contentTypes','['.$ref->ContentType.']')!==false ?
 															g_l('contentTypes','['.$ref->ContentType.']') :

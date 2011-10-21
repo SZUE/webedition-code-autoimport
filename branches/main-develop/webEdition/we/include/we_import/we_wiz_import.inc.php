@@ -2497,7 +2497,7 @@ HTS;
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".escape_sql_query($table)." WHERE ID='" . abs($IDValue)."';", "Path", new DB_WE());
+			$Pathvalue = f("SELECT Path FROM ".escape_sql_query($table)." WHERE ID=" . intval($IDValue), "Path", new DB_WE());
 		}
 
 	  $button =  we_button::create_button("select","javascript:we_cmd('openSelector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')");

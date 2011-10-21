@@ -142,13 +142,13 @@ class we_search_listview extends listviewBase {
 		$cl = $this->class;
 
 		if($dt && $cl){
-			$dtcl_query = " AND (" . INDEX_TABLE . ".Doctype='".escape_sql_query($dt)."' OR " . INDEX_TABLE . ".ClassID='".abs($cl)."') ";
+			$dtcl_query = " AND (" . INDEX_TABLE . ".Doctype='".$this->DB_WE->escape($dt)."' OR " . INDEX_TABLE . ".ClassID=".intval($cl).") ";
 		}else if($dt){
-			$dtcl_query = " AND " . INDEX_TABLE . ".Doctype='".escape_sql_query($dt)."' ";
+			$dtcl_query = " AND " . INDEX_TABLE . ".Doctype='".$this->DB_WE->escape($dt)."' ";
 		}else if($cl){
-			$dtcl_query = " AND " . INDEX_TABLE . ".ClassID='".abs($cl)."' ";
+			$dtcl_query = " AND " . INDEX_TABLE . ".ClassID=".intval($cl).' ';
 		}else{
-			$dtcl_query = "";
+			$dtcl_query = '';
 		}
 
 
@@ -256,7 +256,7 @@ class we_search_listview extends listviewBase {
 						$this->DB_WE->Record["WE_PATH"] = $_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?','&amp;',$pidstr);
 					}
 				}
-				$this->DB_WE->Record["wedoc_Path"] =$this->DB_WE->Record["WE_PATH"];		
+				$this->DB_WE->Record["wedoc_Path"] =$this->DB_WE->Record["WE_PATH"];
 			} else {
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];

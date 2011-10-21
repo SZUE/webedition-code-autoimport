@@ -61,7 +61,7 @@ class weModelBase {
 	function load($id="0") {
 		$ids = explode(",", $id);
 		foreach ($ids as $k => $v) {
-			eval('$this->' . $this->keys[$k] . '="' . escape_sql_query($v) . '";');
+			eval('$this->' . $this->keys[$k] . '="' . $this->db->escape($v) . '";');
 		}
 
 		if ($this->isKeyDefined()) {

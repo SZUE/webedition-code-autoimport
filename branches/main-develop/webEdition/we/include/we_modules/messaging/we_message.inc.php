@@ -227,7 +227,7 @@ class we_message extends we_msg_proto {
 				$tmp['tag'] = $this->DB->f('tag');
 		    }
 
-		    $query = 'INSERT INTO ' . escape_sql_query($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag) VALUES (' .
+		    $query = 'INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag) VALUES (' .
 			$target_fid . ',' .
 			$this->userid . ',' .
 			$tmp['msg_type'] . ',' .
@@ -343,7 +343,7 @@ class we_message extends we_msg_proto {
 
 	$this->selected_set = array();
 	$query = 'SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
-		FROM ' . escape_sql_query($this->table) . ' as m, '.USER_TABLE.' as u
+		FROM ' . $this->DB->escape($this->table) . ' as m, '.USER_TABLE.' as u
 		WHERE ((m.msg_type=' . $this->sql_class_nr . ' AND m.obj_type=' . MSG_MESSAGE_NR . ') ' . ($sfield_cond == '' ?  '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") .  ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
 

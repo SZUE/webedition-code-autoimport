@@ -84,14 +84,14 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
     $we_doc->Path=$we_doc->getParentPath().(($we_doc->getParentPath() != "/") ? "/" : "").$we_doc->Text;
 
     // if file exists we have to see if we should create a new one or overwrite it!
-    if($file_id = f("SELECT ID FROM ".FILE_TABLE." WHERE Path='".escape_sql_query($we_doc->Path)."'","ID",$DB_WE)){
+    if($file_id = f("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($we_doc->Path)."'","ID",$DB_WE)){
 		if($overwrite=="yes"){
 			eval('$we_doc=new '.$we_doc->ClassName.'();');
 			$we_doc->initByID($file_id,FILE_TABLE);
 		}else{
 			$z=0;
 			$footext = $we_doc->Filename."_".$z.$we_doc->Extension;
-			while(f("SELECT ID FROM ".FILE_TABLE." WHERE Text='".escape_sql_query($footext)."' AND ParentID='$pid'","ID",$DB_WE)){
+			while(f("SELECT ID FROM ".FILE_TABLE." WHERE Text='".$DB_WE->escape($footext)."' AND ParentID='$pid'","ID",$DB_WE)){
 				$z++;
 				$footext = $we_doc->Filename."_".$z.$we_doc->Extension;
 			}
@@ -202,7 +202,7 @@ if($we_ContentType == "image/*"){
 <script  type="text/javascript"><!--
 <?php if($we_alerttext){
 	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
-} 
+}
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
  if($we_doc->ID){?>
 	var ref;

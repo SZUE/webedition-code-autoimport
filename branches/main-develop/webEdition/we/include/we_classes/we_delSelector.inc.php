@@ -345,7 +345,7 @@ function setDir(id){
 		$wsQuery = getWsQueryForSelector($this->table, false);
 
 		$_query = "	SELECT ".$this->fields."
-					FROM ".escape_sql_query($this->table)."
+					FROM ".$this->db->escape($this->table)."
 					WHERE ParentID='".abs($this->dir)."'".makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 

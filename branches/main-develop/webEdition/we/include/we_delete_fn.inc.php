@@ -70,7 +70,7 @@ function checkDeleteEntry($id, $table)
 {
 	if ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 		return true;
-	$row = getHash("SELECT IsFolder FROM " . escape_sql_query($table) . " WHERE  ID=" . abs($id), $GLOBALS['DB_WE']);
+	$row = getHash("SELECT IsFolder FROM " . $GLOBALS['DB_WE']->escape($table) . " WHERE  ID=" . abs($id), $GLOBALS['DB_WE']);
 	if (isset($row["IsFolder"]) && $row["IsFolder"]) {
 		return checkDeleteFolder($id, $table);
 	} else {
@@ -140,7 +140,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 	// do not delete class folder if class still exists!!!
 	if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) {
 		if (f("SELECT IsClassFolder FROM $table WHERE ID=$id", "IsClassFolder", $DB_WE)) { // it is a class folder
-			if (f("SELECT Path FROM " . OBJECT_TABLE . " WHERE Path='".escape_sql_query($path)."'", "Path", $DB_WE)) { // class still exists
+			if (f("SELECT Path FROM " . OBJECT_TABLE . " WHERE Path='".$DB_WE->escape($path)."'", "Path", $DB_WE)) { // class still exists
 				return;
 			}
 		}
@@ -164,7 +164,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 		deleteLocalFolder($file, 1);
 	}
 	if (defined("OBJECT_TABLE") && defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE) {
-		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".escape_sql_query($path)."'", "ID", $DB_WE);
+		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".$DB_WE->escape($path)."'", "ID", $DB_WE);
 		if ($ofID) {
 			deleteEntry($ofID, OBJECT_FILES_TABLE);
 

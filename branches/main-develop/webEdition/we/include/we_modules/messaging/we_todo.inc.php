@@ -414,7 +414,7 @@ class we_todo extends we_msg_proto {
 	if (empty($items))
 	    return;
 
-	$target_fid = escape_sql_query($target_fid);
+	$target_fid = $this->DB_WE->escape($target_fid);
 	foreach ($items as $item) {
 	    $tmp = array();
 	    $query = 'SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, Content_Type, MessageText, seenStatus, tag FROM ' . $this->DB->escape($this->table) . " WHERE ID=".abs($item)." AND UserID=" . abs($this->userid);
@@ -436,20 +436,20 @@ class we_todo extends we_msg_proto {
 		$tmp['tag'] = $this->DB->f('tag');
 	    }
 
-	    $query = 'INSERT INTO ' . escape_sql_query($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, MessageText, Content_Type, seenStatus, tag) VALUES (' .
+	    $query = 'INSERT INTO ' . $this->DB->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerCreator, headerAssigner, headerStatus, headerDeadline, Priority, MessageText, Content_Type, seenStatus, tag) VALUES (' .
 		$target_fid . ',' .
 		$this->userid . ',' .
 		$tmp['msg_type'] . ',' .
 		$tmp['obj_type'] . ',' .
 		($tmp['headerDate']==""?'NULL':$tmp['headerDate']) . ',' .
-		'"' . escape_sql_query($tmp['headerSubject']) . '",' .
+		'"' . $this->DB_WE->escape($tmp['headerSubject']) . '",' .
 		($tmp['headerCreator']==""?'NULL':$tmp['headerCreator']) . ',' .
 		($tmp['headerAssigner']==""?'NULL':$tmp['headerAssigner']) . ',' .
 		($tmp['headerStatus']==""?'NULL':$tmp['headerStatus']) . ',' .
 		($tmp['headerDeadline']==""?'NULL':$tmp['headerDeadline']) . ',' .
 		($tmp['Priority']==""?'NULL':$tmp['Priority']) . ',' .
-		'"' . escape_sql_query($tmp['MessageText']) . '",' .
-		'"' . escape_sql_query($tmp['Content_Type']) . '",' .
+		'"' . $this->DB_WE->escape($tmp['MessageText']) . '",' .
+		'"' . $this->DB_WE->escape($tmp['Content_Type']) . '",' .
 		($tmp['seenStatus']==""?'NULL':$tmp['seenStatus']) . ',' .
 		($tmp['tag']==""?'NULL':$tmp['tag']) . ')';
 	    $this->DB->query($query);
@@ -514,15 +514,15 @@ class we_todo extends we_msg_proto {
 	    $sf_uoff = arr_offset_arraysearch($arr, $criteria['search_fields']);
 
 	    if ($sf_uoff > -1) {
-		$sfield_cond .= 'u.username LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
-				u.First LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
-				u.Second LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
+		$sfield_cond .= 'u.username LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR
+				u.First LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR
+				u.Second LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
 
 		array_splice($criteria['search_fields'], $sf_uoff, 1);
 	    }
 
 	    foreach ($criteria['search_fields'] as $sf) {
-		$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
+		$sfield_cond .= array_key_by_val($sf, $this->sf2sqlfields) . ' LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
 	    }
 
 	    $sfield_cond = substr($sfield_cond, 0, -4);

@@ -617,7 +617,7 @@ function processCommands() {
 							$newone=false;
 						}
 
-						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.escape_sql_query($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
+						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.$this->db->escape($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
 						if($exists){
 							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[username_exists]'),$this->customer->Username), WE_MESSAGE_ERROR);
 							print we_htmlElement::jsElement($js);

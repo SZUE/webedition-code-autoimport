@@ -257,14 +257,14 @@ class weBanner extends weBannerBase{
 		$foo = "";
 		$filter = new Zend_Filter_Digits();
 		foreach($catArr as $c){
-			$foo .= " CategoryIDs LIKE '%,".escape_sql_query($filter->filter($c)).",%' OR ";
+			$foo .= " CategoryIDs LIKE '%,".$db->escape($filter->filter($c)).",%' OR ";
 		}
 		$where = " $where AND (  $foo  CategoryIDs='' ) ";
 
 		if($paths){
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
-				$foo .= " Path LIKE '".escape_sql_query($p)."/%' OR Path = '".escape_sql_query($p)."' OR ";
+				$foo .= " Path LIKE '".$db->escape($p)."/%' OR Path = '".$db->escape($p)."' OR ";
 			}
 			$foo  =  rtrim($foo,'OR ');
 			$where = " $where AND ( $foo ) ";

@@ -839,7 +839,7 @@ class weBackup extends we_backup{
 
 	function getBackupQuery($table,$keys){
 		//$keys=weTableItem::getTableKey($table);
-		return "SELECT ".implode(",",$keys)." FROM ".escape_sql_query($table)." LIMIT ".abs($this->backup_step).",".abs($this->backup_steps);
+		return "SELECT ".implode(",",$keys)." FROM ".escape_sql_query($table)." LIMIT ".intval($this->backup_step).",".intval($this->backup_steps);
 	}
 
 	function delOldTables(){
@@ -863,7 +863,7 @@ class weBackup extends we_backup{
 	}
 
 	function clearTemporaryData($docTable){
-		$this->backup_db->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE DocTable="'.escape_sql_query(stripTblPrefix($docTable)).'";');
+		$this->backup_db->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE DocTable="'.$this->backup_db->escape(stripTblPrefix($docTable)).'";');
 	}
 
 

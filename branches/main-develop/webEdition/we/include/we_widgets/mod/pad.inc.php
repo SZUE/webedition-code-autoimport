@@ -54,7 +54,7 @@ $_sObjId = $_REQUEST["we_cmd"][5];
 
 switch ($_REQUEST["we_cmd"][2]) {
 	case 'delete' :
-		$_sql = "DELETE FROM " . escape_sql_query($_table) . " WHERE ID = " . abs($q_Csv);
+		$_sql = "DELETE FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE ID = " . abs($q_Csv);
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -67,14 +67,14 @@ switch ($_REQUEST["we_cmd"][2]) {
 		$entText = base64_decode($q_Text);
 		$entText = str_replace("'", '&#039;', $entText);
 		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "UPDATE " . escape_sql_query($_table) . " SET
-			Title = '" . escape_sql_query($entTitle) . "',
-			Text = '" . escape_sql_query($entText) . "',
-			Priority = '" . escape_sql_query($q_Priority) . "',
-			Valid = '" . escape_sql_query($q_Valid) . "',
-			ValidFrom = '" . escape_sql_query($q_ValidFrom) . "',
-			ValidUntil = '" . escape_sql_query($q_ValidUntil) . "'
-			WHERE ID = " . abs($q_ID);
+		$_sql = "UPDATE " . $GLOBALS['DB_WE']->escape($_table) . " SET
+			Title = '" . $GLOBALS['DB_WE']->escape($entTitle) . "',
+			Text = '" . $GLOBALS['DB_WE']->escape($entText) . "',
+			Priority = '" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
+			Valid = '" . $GLOBALS['DB_WE']->escape($q_Valid) . "',
+			ValidFrom = '" . $GLOBALS['DB_WE']->escape($q_ValidFrom) . "',
+			ValidUntil = '" . $GLOBALS['DB_WE']->escape($q_ValidUntil) . "'
+			WHERE ID = " . intval($q_ID);
 		break;
 	case 'insert' :
 		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -91,7 +91,7 @@ switch ($_REQUEST["we_cmd"][2]) {
 		$entText = base64_decode($q_Text);
 		$entText = str_replace("'", '&#039;', $entText);
 		$entText = str_replace('"', '&quot;', $entText);
-		$_sql = "INSERT INTO " . escape_sql_query($_table) . " (
+		$_sql = "INSERT INTO " . $GLOBALS['DB_WE']->escape($_table) . " (
 			WidgetName,
 			UserID,
 			CreationDate,
@@ -105,12 +105,12 @@ switch ($_REQUEST["we_cmd"][2]) {
 			'" . ($_title) . "',
 			" . abs($_SESSION['user']['ID']) . ",
 			DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-			'" . escape_sql_query($entTitle) . "',
-			'" . escape_sql_query($entText) . "',
-			'" . escape_sql_query($q_Priority) . "',
-			'" . escape_sql_query($q_Valid) . "',
-			'" . escape_sql_query($q_ValidFrom) . "',
-			'" . escape_sql_query($q_ValidUntil) . "'
+			'" . $GLOBALS['DB_WE']->escape($entTitle) . "',
+			'" . $GLOBALS['DB_WE']->escape($entText) . "',
+			'" . $GLOBALS['DB_WE']->escape($q_Priority) . "',
+			'" . $GLOBALS['DB_WE']->escape($q_Valid) . "',
+			'" . $GLOBALS['DB_WE']->escape($q_ValidFrom) . "',
+			'" . $GLOBALS['DB_WE']->escape($q_ValidUntil) . "'
 		)";
 		break;
 }
@@ -137,13 +137,13 @@ switch ($bSort) {
 }
 
 if (!$bDisplay) {
-	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
-		WidgetName = '" . escape_sql_query($_title) . "' AND
+	$_sql = "SELECT * FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE
+		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
 		UserID = " . abs($_SESSION['user']['ID']) . "
 		ORDER BY " . $q_sort;
 } else {
-	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
-		WidgetName = '" . escape_sql_query($_title) . "' AND
+	$_sql = "SELECT * FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE
+		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
 		UserID = " . abs($_SESSION['user']['ID']) . " AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")

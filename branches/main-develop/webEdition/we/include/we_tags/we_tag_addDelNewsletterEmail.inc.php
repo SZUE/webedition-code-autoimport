@@ -378,9 +378,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"] = substr(md5(time()),4,8);
 					$GLOBALS["WE_NEWSUBSCRIBER_USERNAME"] = $f["subscribe_mail"];
 					$fields = array(
-							'`Username`' => '"'.escape_sql_query($f["subscribe_mail"]).'"',
-							'`Text`' => '"'.escape_sql_query($f["subscribe_mail"]).'"',
-							'`Password`'=> '"'.escape_sql_query($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]).'"',
+							'`Username`' => '"'.$__db->escape($f["subscribe_mail"]).'"',
+							'`Text`' => '"'.$__db->escape($f["subscribe_mail"]).'"',
+							'`Password`'=> '"'.$__db->escape($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]).'"',
 							'`MemberSince`'=>time(),
 							'`IsFolder`'=>0,
 							'`Icon`'=> '\'customer.gif\'',

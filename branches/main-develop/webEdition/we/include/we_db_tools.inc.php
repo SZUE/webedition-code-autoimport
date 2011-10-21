@@ -77,7 +77,7 @@ function doInsertQuery($DB_WE, $table, $hash) {
 	for ($i = 0; $i < sizeof($tableInfo); $i++) {
 		$fieldName = $tableInfo[$i]["name"];
 		array_push($fn, $fieldName);
-		$values .= '"' . escape_sql_query(isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName]) . '",';
+		$values .= '"' . $DB_WE->escape(isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName]) . '",';
 	}
 	$ti_s = implode(',', $fn);
 	$values = rtrim($values, ',');

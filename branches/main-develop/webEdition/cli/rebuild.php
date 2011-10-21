@@ -340,8 +340,9 @@ switch ($_REQUEST['type']) {
 	case 'thumbnails':
 		$_thumbNames = makeArrayFromCSV($_REQUEST['thumbnails']);
 		$_thumbIds = array();
+		$db=new DB_WE();
 		foreach ($_thumbNames as $_thumbName) {
-			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='".escape_sql_query($_thumbName)."'", "ID", new DB_WE());
+			$_thumbIds[] = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE NAME='".$db->escape($_thumbName)."'", "ID", $db);
 		}
 		$_thumbIds = makeCSVFromArray($_thumbIds);
 		$data = we_rebuild::getThumbnails($_thumbIds);

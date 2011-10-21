@@ -69,8 +69,8 @@ class we_class_folder extends we_folder{
 		$DB_WE = new DB_WE();
 		$sp = explode('/',$this->Path);
 		$this->ClassPath='/'.$sp[1];
-		$this->ClassID = f('SELECT ID FROM ' . OBJECT_TABLE ." WHERE Path='".escape_sql_query($this->ClassPath)."'","ID",$DB_WE);
-		$this->RootfolderID = f("SELECT ID FROM " . OBJECT_FILES_TABLE ." WHERE Path='".escape_sql_query($this->ClassPath)."'","ID",$DB_WE);
+		$this->ClassID = f('SELECT ID FROM ' . OBJECT_TABLE ." WHERE Path='".$DB_WE->escape($this->ClassPath)."'","ID",$DB_WE);
+		$this->RootfolderID = f("SELECT ID FROM " . OBJECT_FILES_TABLE ." WHERE Path='".$DB_WE->escape($this->ClassPath)."'","ID",$DB_WE);
 	}
 	function we_rewrite(){
 		$this->ClassName='we_class_folder';
@@ -126,9 +126,9 @@ class we_class_folder extends we_folder{
 			$last_pid = 0;
 			for($i=0;$i<$anz;$i++){
 				array_push($p,array_shift($spl));
-				$pa = escape_sql_query(implode('/',$p));
+				$pa = $this->DB_WE->escape(implode('/',$p));
 				if($pa){
-					$pid = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='$pa'","ID",new DB_WE());
+					$pid = f("SELECT ID FROM ".$this->db->escape($tblName)." WHERE Path='$pa'","ID",new DB_WE());
 					if(!$pid){
 						// $folder = new we_folder(); 4076 orig
 						$folder = new we_class_folder();

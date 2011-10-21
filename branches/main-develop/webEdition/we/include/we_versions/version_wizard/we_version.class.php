@@ -253,7 +253,7 @@ class we_version
 			if ($doctypes) {
 				$_foo = makeArrayFromCSV($doctypes);
 				foreach ($_foo as $doctypeID) {
-					$_doctype_query .= " Doctype = '".escape_sql_query($doctypeID)."' OR ";
+					$_doctype_query .= " Doctype = '".$GLOBALS['DB_WE']->escape($doctypeID)."' OR ";
 				}
 				$_doctype_query = ereg_replace('^(.+)OR $', '\1', $_doctype_query);
 				$_doctype_query = "(" . $_doctype_query . ")";

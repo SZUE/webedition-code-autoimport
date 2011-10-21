@@ -144,7 +144,7 @@ class we_fileselector{
 	function isIDInFolder($ID,$folderID,$db=""){
 		if($folderID==$ID) return true;
 		if(!$db) $db = new DB_WE();
-		$pid = f("SELECT ParentID FROM ".escape_sql_query($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
+		$pid = f("SELECT ParentID FROM ".$db->escape($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
 		if($pid == $folderID){
 			return true;
 		}else if($pid != 0){

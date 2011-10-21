@@ -155,23 +155,23 @@
 
 		function getTableForCT($we_ContentType,$table=""){
 			switch($we_ContentType){
-				case "doctype": 
+				case "doctype":
 					return DOC_TYPES_TABLE;
-				case "category": 
+				case "category":
 					return CATEGORY_TABLE;
-				case "object": 
+				case "object":
 					if(defined("OBJECT_TABLE")) return OBJECT_TABLE; else return null;
-				case "text/weTmpl": 
+				case "text/weTmpl":
 					return TEMPLATES_TABLE;
-				case "objectFile": 
+				case "objectFile":
 					if(defined("OBJECT_FILES_TABLE")) return OBJECT_FILES_TABLE;  else return null;
-				case "weBinary": 
+				case "weBinary":
 					return null;
-				case "weNavigation": 
+				case "weNavigation":
 					return NAVIGATION_TABLE;
-				case "weNavigationRule": 
+				case "weNavigationRule":
 					return NAVIGATION_RULE_TABLE;
-				case "weThumbnail": 
+				case "weThumbnail":
 					return THUMBNAILS_TABLE;
 				case "folder":
 					if(!empty($table)) {
@@ -228,29 +228,29 @@
 				switch($tag){
 					case "we:document":
 						return $this->options["handle_documents"];
-					case "we:template": 
+					case "we:template":
 						return $this->options["handle_templates"];
-					case "we:class": 
+					case "we:class":
 						return $this->options["handle_classes"];
-					case "we:object": 
+					case "we:object":
 						return $this->options["handle_objects"];
-					case "we:doctype": 
+					case "we:doctype":
 						return $this->options["handle_doctypes"];
-					case "we:category": 
+					case "we:category":
 						return $this->options["handle_categorys"];
-					case "we:content": 
+					case "we:content":
 						return $this->options["handle_content"];
-					case "we:table": 
+					case "we:table":
 						return $this->options["handle_table"];
-					case "we:tableitem": 
+					case "we:tableitem":
 						return $this->options["handle_tableitems"];
-					case "we:binary": 
+					case "we:binary":
 						return $this->options["handle_binarys"];
-					case "we:navigation": 
+					case "we:navigation":
 						return $this->options["handle_navigation"];
-					case "we:navigationrule": 
+					case "we:navigationrule":
 						return $this->options["handle_navigation"];
-					case "we:thumbnail": 
+					case "we:thumbnail":
 						return $this->options["handle_thumbnails"];
 					default: return 1;
 				}
@@ -291,7 +291,7 @@
 			}
 			if($with_dirs) return $tmp;
 			foreach($tmp as $v){
-				$isfolder=f("SELECT IsFolder FROM ".escape_sql_query($table)." WHERE ID='".abs($v)."'","IsFolder",new DB_WE());
+				$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID=".intval($v),"IsFolder",new DB_WE());
 				if (!$isfolder) $ret[]=$v;
 			}
 			return $ret;
@@ -437,6 +437,6 @@
 		}
 
 //FIXME: splitFile missing - called in Backup class
-		
-		
+
+
 		}

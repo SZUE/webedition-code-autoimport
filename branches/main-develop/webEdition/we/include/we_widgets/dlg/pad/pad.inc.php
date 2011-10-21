@@ -166,11 +166,12 @@ $_get_valid_until = '2006-12-28';
 $_get_prio = 'high';
 ////////////////////////////////////////////////////////
 
+$DB_WE = new DB_WE();
 
 $_table = NOTEPAD_TABLE;
 
 $_sql = "INSERT INTO
-	" . escape_sql_query($_table) . "
+	" . $DB_WE->escape($_table) . "
 (
 	WidgetName,
 	UserID,
@@ -182,29 +183,27 @@ $_sql = "INSERT INTO
 	ValidFrom,
 	ValidUntil
 ) VALUES (
-	'" . escape_sql_query($_title) . "',
+	'" . $DB_WE->escape($_title) . "',
 	" . abs($_SESSION['user']['ID']) . ",
 	DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
-	'" . escape_sql_query($_get_title) . "',
-	'" . escape_sql_query($_get_text) . "',
-	'" . escape_sql_query($_get_prio) . "',
-	'" . escape_sql_query($_get_valid) . "',
-	'" . escape_sql_query($_get_valid_from) . "',
-	'" . escape_sql_query($_get_valid_until) . "'
+	'" . $DB_WE->escape($_get_title) . "',
+	'" . $DB_WE->escape($_get_text) . "',
+	'" . $DB_WE->escape($_get_prio) . "',
+	'" . $DB_WE->escape($_get_valid) . "',
+	'" . $DB_WE->escape($_get_valid_from) . "',
+	'" . $DB_WE->escape($_get_valid_until) . "'
 )
 ";
-$DB_WE = new DB_WE();
-//$DB_WE->query($_sql);
 
 
 if ($bDisplay) {
-	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
-	WidgetName = '" . escape_sql_query($_title) . "' AND
+	$_sql = "SELECT * FROM " . $DB_WE->escape($_table) . " WHERE
+	WidgetName = '" . $DB_WE->escape($_title) . "' AND
 	UserID = " . abs($_SESSION['user']['ID']) . "
 	ORDER BY " . $q_sort;
 } else {
-	$_sql = "SELECT * FROM " . escape_sql_query($_table) . " WHERE
-	WidgetName = '" . escape_sql_query($_title) . "' AND
+	$_sql = "SELECT * FROM " . $DB_WE->escape($_table) . " WHERE
+	WidgetName = '" . $DB_WE->escape($_title) . "' AND
 	UserID = " . abs($_SESSION['user']['ID']) . " AND
 	(
 		Valid = 'always' OR

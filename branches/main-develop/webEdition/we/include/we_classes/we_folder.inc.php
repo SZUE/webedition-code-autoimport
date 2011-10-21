@@ -177,7 +177,7 @@ class we_folder extends we_root
 
 	function initByPath($path,$tblName=FILE_TABLE,$IsClassFolder=0,$IsNotEditable=0){
 		if (substr($path,-1)=='/'){$path=substr($path,0,strlen($path)-1); }
-		$id = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='".escape_sql_query($path)."' AND IsFolder=1","ID",$this->DB_WE);
+		$id = f("SELECT ID FROM ".$this->DB_WE->escape($tblName)." WHERE Path='".$this->DB_WE->escape($path)."' AND IsFolder=1","ID",$this->DB_WE);
 		if($id != ""){
 			$this->initByID($id, $tblName);
 			if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
@@ -195,7 +195,7 @@ class we_folder extends we_root
 				array_push($p,array_shift($spl));
 				$pa = implode("/",$p);
 				if($pa){
-					$pid = f("SELECT ID FROM ".escape_sql_query($tblName)." WHERE Path='".escape_sql_query($pa)."'","ID",new DB_WE());
+					$pid = f("SELECT ID FROM ".$this->DB_WE->escape($tblName)." WHERE Path='".$this->DB_WE->escape($pa)."'","ID",$this->DB_WE);
 					if(!$pid){
 						if(defined("OBJECT_FILES_TABLE") && $this->Table==OBJECT_FILES_TABLE) {
 							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_class_folder.inc.php");

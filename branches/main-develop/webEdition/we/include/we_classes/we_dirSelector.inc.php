@@ -118,7 +118,7 @@ top.parentID = "'.$this->values["ParentID"].'";
 		$wsQuery = getWsQueryForSelector($this->table);
 
 		$_query = "	SELECT ".$this->fields."
-					FROM ".escape_sql_query($this->table)."
+					FROM ".$this->db->escape($this->table)."
 					WHERE IsFolder=1 AND ParentID='".abs($this->dir)."'".makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 
@@ -1145,7 +1145,7 @@ top.selectFile(top.currentID);
 					case "text/weTmpl":
 						$out .= $previewDefauts;
 						if (isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])) {
-							$mastertemppath = f("SELECT Text, Path FROM " . escape_sql_query($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
+							$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
 							$out .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[master_template]")."</td></tr>";
 							$nextrowclass = "odd";
 							$out .= "<tr class='$nextrowclass'><td>ID:</td><td>".$result['MasterTemplateID']."</td></tr>";

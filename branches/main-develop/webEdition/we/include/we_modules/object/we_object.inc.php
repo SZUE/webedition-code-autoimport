@@ -278,7 +278,7 @@ class we_object extends we_document {
 			$this->DefaultCategory = $this->Category;
 			$this->i_savePersistentSlotsToDB();
 
-			$this->ID = (f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".escape_sql_query($this->Table),"LastID",$this->DB_WE));
+			$this->ID = (f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->DB_WE->escape($this->Table),"LastID",$this->DB_WE));
 			$ctable = OBJECT_X_TABLE.($this->ID);
 
 			// Charset and Collation
@@ -1109,13 +1109,13 @@ class we_object extends we_document {
 			$content .= '</td></tr>';
 			break;
 		case 'date':
-			
+
 			$d = abs($this->getElement($name."default","dat"));
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>';
 			$content .= '<td width="170" class="defaultfont">';
 			$content .= getDateInput2("we_".$this->Name."_date[".$name."default]",($d ? $d : time()),true);
 			$content .= '</td></tr>';
-			
+
 			break;
 		case 'text':
 			$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  valign="top">'.g_l('modules_object','[default]').'</td>';
@@ -1683,7 +1683,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$fname = 'we_'.$this->Name.'_input['.$name.']';
 		$content .= '<input type=hidden name="'.$fname.'" value="'.$defaultname.'" />';
-		
+
 		//javascript:we_cmd('openDocselector','" . $id . "','" .FILE_TABLE. "','document.forms[\\'we_form\\'].elements[\\'" . $fname . "\\'].value','','opener.top.we_cmd(\\'reload_entry_at_class\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$i."\\');opener._EditorFrame.setEditorIsHot(true);','".session_id()."',0,'image/*')
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc2= '';
@@ -2412,7 +2412,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	}
 
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".escape_sql_query($this->Text)."' AND ID != '".$this->ID."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".$this->Table." WHERE ParentID='".$this->ParentID."' AND Text='".escape_sql_query($this->Text)."' AND ID != ".intval($this->ID),"ID",new DB_WE());
 	}
 
 	function i_checkPathDiffAndCreate(){

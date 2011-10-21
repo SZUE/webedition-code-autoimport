@@ -926,7 +926,7 @@ class we_import_files
 			$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != "/") ? "/" : "") . $we_doc->Text;
 
 			// if file exists we have to see if we should create a new one or overwrite it!
-			if (($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . escape_sql_query($we_doc->Path) . '"','ID',
+			if (($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"','ID',
 					$GLOBALS['DB_WE']))) {
 				if ($this->sameName == "overwrite") {
 					eval('$we_doc=new ' . $we_doc->ClassName . '();');
@@ -936,7 +936,7 @@ class we_import_files
 						$z = 0;
 						$footext = $we_doc->Filename . "_" . $z . $we_doc->Extension;
 						while (f(
-								"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".escape_sql_query($footext)."' AND ParentID='" . abs($this->importToID) . "'",
+								"SELECT ID FROM " . FILE_TABLE . " WHERE Text='".$GLOBALS['DB_WE']->escape($footext)."' AND ParentID='" . abs($this->importToID) . "'",
 								"ID",
 								$GLOBALS['DB_WE'])) {
 							$z++;

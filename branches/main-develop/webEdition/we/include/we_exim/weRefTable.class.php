@@ -237,9 +237,10 @@
 		}
 
 		function getNewOwnerID($id){
+			$db=new DB_WE();
 			foreach ($this->Users as $user){
 				if($user['id']==$id){
-					$newid = f('SELECT ID FROM '.USER_TABLE.' WHERE Username=\''.escape_sql_query($user['user']).'\'','ID',new DB_WE());
+					$newid = f('SELECT ID FROM '.USER_TABLE.' WHERE Username=\''.$db->escape($user['user']).'\'','ID',$db);
 
 					if($newid){
 						return $newid;

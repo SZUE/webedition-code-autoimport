@@ -545,7 +545,7 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 			$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
 		} else {
 			$dt = f(
-											'SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . escape_sql_query($doctype) . "'",
+											'SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'",
 											'ID',
 											$GLOBALS['we_document'][$formname]->DB_WE);
 			$GLOBALS['we_document'][$formname]->changeDoctype($dt);
@@ -938,7 +938,7 @@ function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true) {
 		$id = f("
 			SELECT ID
 			FROM $table
-			WHERE Path='" . escape_sql_query($path) . "'", "ID", $db);
+			WHERE Path='" . $db->escape($path) . "'", "ID", $db);
 		if ($id)
 			array_push($outArray, $id);
 	}
@@ -1856,19 +1856,19 @@ function getWsQueryForSelector($tab, $includingFolders = true) {
 
 				$path .= $part;
 				if ($includingFolders) {
-					$wsQuery .= ' (Path = "' . escape_sql_query($path) . '") OR ';
+					$wsQuery .= ' (Path = "' . $GLOBALS['DB_WE']->escape($path) . '") OR ';
 				} else {
-					$wsQuery .= ' (Path LIKE "' . escape_sql_query($path) . '/%") OR ';
+					$wsQuery .= ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
 				}
 				$path .= '/';
 			}
 			$path .= $last;
 			if ($includingFolders) {
-				$wsQuery .= ' (Path = "' . escape_sql_query($path) . '" OR Path LIKE "' . escape_sql_query($path) . '/%") OR ';
+				$wsQuery .= ' (Path = "' . $GLOBALS['DB_WE']->escape($path) . '" OR Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
 			} else {
-				$wsQuery .= ' (Path LIKE "' . escape_sql_query($path) . '/%") OR ';
+				$wsQuery .= ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
 			}
-			$wsQuery .= ' (Path LIKE "' . escape_sql_query($path) . '/%") OR ';
+			$wsQuery .= ' (Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%") OR ';
 		}
 		$wsQuery .= ' 0 )'; // end with "OR 0"
 	}
@@ -2063,7 +2063,7 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 		if ($foo['Workspaces']) {
 			$fooArr = makeArrayFromCSV($foo['Workspaces']);
 			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
-			$path = f('SELECT Path FROM ' . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . escape_sql_query($path) . "%'","Path",$DB_WE);
+			$path = f('SELECT Path FROM ' . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($path) . "%'","Path",$DB_WE);
 			if (!$path)
 				return '';
 			return $path . '?we_objectID=' . abs($id) . '&pid=' . abs($pid);
@@ -3079,9 +3079,10 @@ function CheckAndConvertISObackend($utf8data) {
 
 /**internal function - do not call */
 function g_l_encodeArray($tmp){
+	$charset = (isset($GLOBALS['WE_MAIN_DOC']) && ($GLOBALS['WE_MAIN_DOC']->InWebEdition) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
 	return (is_array($tmp)?
 					array_map('g_l_encodeArray',$tmp):
-					mb_convert_encoding($tmp, $GLOBALS["WE_BACKENDCHARSET"], 'UTF-8'));
+					mb_convert_encoding($tmp, $charset, 'UTF-8'));
 }
 
 /**
@@ -3094,16 +3095,17 @@ function g_l_encodeArray($tmp){
  * @param $useEntities if set, return the string as html-entities
  */
 function g_l($name, $specific, $omitErrors=false) {
+	$charset = (isset($GLOBALS['WE_MAIN_DOC']) && ($GLOBALS['WE_MAIN_DOC']->InWebEdition) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
 	//cache last accessed lang var
-	static $cache;
+	static $cache = array();
 	//echo $name.$specific;
 	if(isset($cache["l_$name"])){
 		$tmp = getVarArray($cache["l_$name"], $specific);
 		if (!($tmp === false)) {
-			return ($GLOBALS["WE_BACKENDCHARSET"]!='UTF-8'?
+			return ($charset != 'UTF-8'?
 								(is_array($tmp)?
 									array_map('g_l_encodeArray',$tmp):
-									mb_convert_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'], 'UTF-8')
+									mb_convert_encoding($tmp, $charset, 'UTF-8')
 								):
 							$tmp);
 		}
@@ -3128,7 +3130,7 @@ function g_l($name, $specific, $omitErrors=false) {
 								$tmp);
 		}else{
 				if(!$omitErrors){
-					trigger_error('Requested lang entry l_'.$name.$specific.' not found in '.$file.'!',E_USER_WARNING);
+					trigger_error('Requested lang entry l_'.$name.$specific.' not found in '.$file.' !',E_USER_WARNING);
 				}
 			return false;
 		}

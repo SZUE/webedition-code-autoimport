@@ -1254,7 +1254,7 @@ class weCustomerEIWizard{
 
 						foreach ($filter_fieldname as $k=>$v) {
 								$op=$this->getOperator($filter_operator[$k]);
-								$filterarr[]=($k!=0 ? (" ".$filter_logic[$k]." ") : "").$filter_fieldname[$k]." ".$op." '".(is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : escape_sql_query($filter_fieldvalue[$k]))."'";
+								$filterarr[]=($k!=0 ? (" ".$filter_logic[$k]." ") : "").$filter_fieldname[$k]." ".$op." '".(is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k]))."'";
 						}
 
 						$filtersql=implode(" ",$filterarr);

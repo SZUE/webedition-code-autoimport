@@ -63,11 +63,11 @@ class we_docSelector extends we_dirSelector {
 		        $contentTypes = explode(',',$this->filter);
 		        $filterQuery .= ' AND (  ';
 		        foreach ($contentTypes AS $ct){
-		            $filterQuery .= 'ContentType=\'' . escape_sql_query($ct) . '\' OR ';
+		            $filterQuery .= 'ContentType=\'' . $this->db->escape($ct) . '\' OR ';
 		        }
 		        $filterQuery .= ' isFolder=1)';
 		    } else {
-		        $filterQuery = " AND (ContentType='".escape_sql_query($this->filter)."' OR IsFolder=1 ) ";
+		        $filterQuery = " AND (ContentType='".$this->db->escape($this->filter)."' OR IsFolder=1 ) ";
 		    }
 		}
 
@@ -81,7 +81,7 @@ class we_docSelector extends we_dirSelector {
 				$ac = getAllowedClasses($this->db);
 				foreach($ac as $cid){
 					$path = id_to_path($cid,OBJECT_TABLE);
-					$wsQuery .= " Path like '".escape_sql_query($path)."/%' OR Path='".escape_sql_query($path)."' OR ";
+					$wsQuery .= " Path like '".$this->db->escape($path)."/%' OR Path='".$this->db->escape($path)."' OR ";
 				}
 
 				if($wsQuery){
@@ -95,7 +95,7 @@ class we_docSelector extends we_dirSelector {
 
 		$q = "
 			SELECT ".$this->fields." FROM ".
-			escape_sql_query($this->table).
+			$this->db->escape($this->table).
 			" WHERE ParentID='".abs($this->dir)."'".
 			makeOwnersSql().
 			$wsQuery .
@@ -115,8 +115,8 @@ class we_docSelector extends we_dirSelector {
 				$_path = dirname($_path);
 			}
 			$_db = new DB_WE();
-			$_cid = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE PATH='".escape_sql_query($_path)."'", "ID", $_db);
-			$this->titleName = f("SELECT DefaultTitle FROM " .OBJECT_TABLE . " WHERE ID='".abs($_cid)."'","DefaultTitle", $_db);
+			$_cid = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE PATH='".$_db->escape($_path)."'", "ID", $_db);
+			$this->titleName = f("SELECT DefaultTitle FROM " .OBJECT_TABLE . " WHERE ID=".intval($_cid),"DefaultTitle", $_db);
 			if($this->titleName && strpos($this->titleName, '_')) {
 				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
 				while ($_db->next_record()) {
@@ -968,7 +968,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				if ($result['ContentType'] == "text/weTmpl") {
 					if (isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])) {
-						$mastertemppath = f("SELECT Text, Path FROM " . escape_sql_query($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
+						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
 						$_previewFields["masterTemplate"]["data"][] = array(
 							"caption" => "ID",
 							"content" => $result['MasterTemplateID']

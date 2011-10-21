@@ -37,7 +37,7 @@ class ImportOptions extends leWizardStepBase
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$WizardSuggest = & weSuggest::getInstance();
 
-		
+
 		// Hidden Field
 		$Hidden = "<input type=\"hidden\" name=\"startImport\" value=\"1\" />";
 
@@ -159,7 +159,7 @@ class ImportOptions extends leWizardStepBase
 							new DB_WE()));
 			$_condition = array();
 			foreach ($_wrkNavi as $_key => $_value) {
-				$_condition[] = 'Path LIKE "' . escape_sql_query(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
+				$_condition[] = 'Path LIKE "' . $_db->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
 			}
 			$_dirs = array();
 		}

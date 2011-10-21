@@ -337,7 +337,7 @@ class we_backup {
 				$contents=addslashes($contents);
 				$contents=str_replace("\n","\\n",$contents);
 				$contents=str_replace("\r","\\r",$contents);
-				$q="INSERT INTO ".BACKUP_TABLE." (Path,Data,IsFolder) VALUES ('".escape_sql_query($path)."','".escape_sql_query($contents)."',0)";
+				$q="INSERT INTO ".BACKUP_TABLE." (Path,Data,IsFolder) VALUES ('".$this->backup_db->escape($path)."','".$this->backup_db->escape($contents)."',0)";
 				$fh=fopen($this->dumpfilename,"ab");
 				fwrite($fh,$q.";".$nl);
 				fclose($fh);
@@ -368,7 +368,7 @@ class we_backup {
 		}
 		$path = substr($dir,strlen($rootdir),strlen($dir)-strlen($rootdir));
 		if(!$this->isPathExist($path)) {
-			$q="INSERT INTO ".BACKUP_TABLE." (Path,Data,IsFolder) VALUES ('".escape_sql_query($path)."','',1)";
+			$q="INSERT INTO ".BACKUP_TABLE." (Path,Data,IsFolder) VALUES ('".$this->backup_db->escape($path)."','',1)";
 			$fh=fopen($this->dumpfilename,"ab");
 			fwrite($fh,$q.";".$nl);
 			fclose($fh);

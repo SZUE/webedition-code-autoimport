@@ -40,7 +40,7 @@ if(isset($_REQUEST["we_cmd"][2])) {
 	$compareID = $_REQUEST["we_cmd"][2];
 	$oldDoc = weVersions::loadVersion(' WHERE ID='.intval($compareID));
 } else {
-	$oldDoc = weVersions::loadVersion(' WHERE version < '.intval($newDoc['version']).' AND documentTable="'.escape_sql_query($newDoc['documentTable']).'" AND documentID='.intval($newDoc['documentID']).' ORDER BY version DESC limit 1');
+	$oldDoc = weVersions::loadVersion(' WHERE version < '.intval($newDoc['version']).' AND documentTable="'.$_db->escape($newDoc['documentTable']).'" AND documentID='.intval($newDoc['documentID']).' ORDER BY version DESC limit 1');
 }
 
 $isObj = false;

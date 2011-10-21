@@ -62,7 +62,7 @@ function we_tag_sessionStart($attribs, $content){
 			}
 			if (isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID']))) {
 				if($_REQUEST['s']['Username'] != ''){
-					$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . escape_sql_query(strtolower($_REQUEST['s']['Username'])) . '"',$GLOBALS['DB_WE']);
+					$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape(strtolower($_REQUEST['s']['Username'])) . '"',$GLOBALS['DB_WE']);
 					if (isset($u['Password']) && $u['LoginDenied'] != 1) {
 						if (strtolower($_REQUEST['s']['Username']) == strtolower($u['Username']) && $_REQUEST['s']['Password'] == $u['Password']) {
 							$_SESSION['webuser'] = $u;
@@ -98,14 +98,14 @@ function we_tag_sessionStart($attribs, $content){
 			if ($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin']) ){
 				$autologinSeek = $_COOKIE['_we_autologin'];
 				if ($autologinSeek!=''){
-					$a = getHash('SELECT * from ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . escape_sql_query(sha1($autologinSeek)) . '"',$GLOBALS['DB_WE']);
+					$a = getHash('SELECT * from ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"',$GLOBALS['DB_WE']);
 					if (isset($a['WebUserID']) && $a['WebUserID']){
 						$u = getHash('SELECT * from ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($a['WebUserID']),$GLOBALS['DB_WE']);
 						if(isset($u['Password']) && $u['LoginDenied'] != 1 && $u['AutoLoginDenied'] != 1){
 							$_SESSION['webuser'] = $u;
 							$_SESSION['webuser']['registered'] = true;
 							$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)),true);
-							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_AUTOLOGIN_TABLE.' SET AutoLoginID="'.escape_sql_query(sha1($_SESSION['webuser']['AutoLoginID'])).'",LastIp="'.htmlspecialchars((string) $_SERVER['REMOTE_ADDR']).'",LastLogin=NOW() WHERE WebUserID='.intval($_SESSION['webuser']['ID']).' AND AutoLoginID="'.$GLOBALS['DB_WE']->escape(sha1($autologinSeek)).'"');
+							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_AUTOLOGIN_TABLE.' SET AutoLoginID="'.$GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])).'",LastIp="'.htmlspecialchars((string) $_SERVER['REMOTE_ADDR']).'",LastLogin=NOW() WHERE WebUserID='.intval($_SESSION['webuser']['ID']).' AND AutoLoginID="'.$GLOBALS['DB_WE']->escape(sha1($autologinSeek)).'"');
 							setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'],($currenttime+CUSTOMER_AUTOLOGIN_LIFETIME),'/');
 							$GLOBALS['WE_LOGIN'] = true;
 						} else {

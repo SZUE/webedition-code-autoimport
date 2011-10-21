@@ -212,7 +212,7 @@ function redirect($url,$_emosScontact=''){
 
 
 function check_recipient($email){
-	return (f('SELECT ID FROM '.RECIPIENTS_TABLE." WHERE Email='".escape_sql_query($email)."'",'ID',$GLOBALS['DB_WE'])?true:false);
+	return (f('SELECT ID FROM '.RECIPIENTS_TABLE." WHERE Email='".$GLOBALS['DB_WE']->escape($email)."'",'ID',$GLOBALS['DB_WE'])?true:false);
 }
 
 function check_captcha(){

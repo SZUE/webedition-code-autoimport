@@ -44,7 +44,7 @@ class weSelectorQuery {
 	 *
 	 * @return weSelectorQuery
 	 */
-	function weSelectorQuery() {
+	function __construct() {
 		$this->db = new DB_WE();
 		$this->fields = array('ID', 'Path');
 	}
@@ -82,7 +82,7 @@ class weSelectorQuery {
 		}
 
 		$userExtraSQL = $this->getUserExtraQuery($table);
-		$where = "WHERE Path = '".escape_sql_query($search)."'";
+		$where = "WHERE Path = '".$this->db->escape($search)."'";
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -93,7 +93,7 @@ class weSelectorQuery {
 					if ($types[$i]=="folder") {
 						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i<1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != "") {
-						$where .= empty($where) ? "WHERE ($typeField='".escape_sql_query($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".escape_sql_query($types[$i])."'";
+						$where .= empty($where) ? "WHERE ($typeField='".$this->db->escape($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".$this->db->escape($types[$i])."'";
 						$isFolder = 0;
 						$addCT = 1;
 					}
@@ -147,7 +147,7 @@ class weSelectorQuery {
 		}
 
 		$userExtraSQL = $this->getUserExtraQuery($table);
-		$where = "WHERE Path REGEXP '^".preg_quote(preg_quote($search))."[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '".escape_sql_query($rootDir)."' OR Path LIKE '".escape_sql_query($rootDir)."%')" : "") ;
+		$where = "WHERE Path REGEXP '^".preg_quote(preg_quote($search))."[^/]*$'" . (isset($rootDir) && !empty($rootDir) ? " AND  (Path LIKE '".$this->db->escape($rootDir)."' OR Path LIKE '".$this->db->escape($rootDir)."%')" : "") ;
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -159,7 +159,7 @@ class weSelectorQuery {
 					if ($types[$i]=="folder") {
 						$where .= empty($where) ? "WHERE (IsFolder=1" : ($i<1 ? " AND (" : " OR ") . "IsFolder=1";
 					} elseif(isset($typeField) && $typeField != "") {
-						$where .= empty($where) ? "WHERE ($typeField='".escape_sql_query($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".escape_sql_query($types[$i])."'";
+						$where .= empty($where) ? "WHERE ($typeField='".$this->db->escape($types[$i])."'" : ($i<1 ? " AND (" : " OR ") . "$typeField='".$this->db->escape($types[$i])."'";
 						$isFolder = 0;
 						$addCT = 1;
 					}
@@ -368,7 +368,7 @@ class weSelectorQuery {
 			$ac = getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid,OBJECT_TABLE);
-				$wsQuery .= " Path like '".escape_sql_query($path)."/%' OR Path='".escape_sql_query($path)."' OR ";
+				$wsQuery .= " Path like '".$this->db->escape($path)."/%' OR Path='".$this->db->escape($path)."' OR ";
 			}
 			if($wsQuery){
 				$wsQuery = substr($wsQuery,0,strlen($wsQuery)-3);

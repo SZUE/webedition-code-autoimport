@@ -219,9 +219,9 @@ class weGlossary extends weModelBase {
 
 
 	function getEntries($Language, $Mode = 'all', $Type = 'all') {
-		$Query = 	"SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE .	" WHERE Language = '" . escape_sql_query($Language) . "' ";
+		$Query = 	"SELECT Type, Text, Title, Attributes FROM " . GLOSSARY_TABLE .	" WHERE Language = '" . $GLOBALS['DB_WE']->escape($Language) . "' ";
 		if($Type != 'all') {
-			$Query .= "AND Type = '" . escape_sql_query($Type) . "' ";
+			$Query .= "AND Type = '" . $GLOBALS['DB_WE']->escape($Type) . "' ";
 		}
 		if($Mode == 'published') {
 			$Query .= "AND Published > 0 ";
