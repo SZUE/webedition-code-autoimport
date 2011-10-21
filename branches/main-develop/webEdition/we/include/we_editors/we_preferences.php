@@ -3579,7 +3579,7 @@ function build_dialog($selected_setting = "ui") {
 						$_start_weapp->selectOption($_seem_start_weapp);
 					}
 					$weAPPSelector = $_start_weapp->getHtmlCode();
-					$_seem_weapp_chooser = $we_button->create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
+					$_seem_weapp_chooser = we_button::create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
 					$permitedStartTypes[]="weapp";
 				}
 
