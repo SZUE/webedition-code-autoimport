@@ -3079,7 +3079,7 @@ function CheckAndConvertISObackend($utf8data) {
 
 /**internal function - do not call */
 function g_l_encodeArray($tmp){
-	$charset = (isset($GLOBALS['WE_MAIN_DOC']) && ($GLOBALS['WE_MAIN_DOC']->InWebEdition) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
+	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
 	return (is_array($tmp)?
 					array_map('g_l_encodeArray',$tmp):
 					mb_convert_encoding($tmp, $charset, 'UTF-8'));
@@ -3095,7 +3095,7 @@ function g_l_encodeArray($tmp){
  * @param $useEntities if set, return the string as html-entities
  */
 function g_l($name, $specific, $omitErrors=false) {
-	$charset = (isset($GLOBALS['WE_MAIN_DOC']) && ($GLOBALS['WE_MAIN_DOC']->InWebEdition) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
+	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
 	//cache last accessed lang var
 	static $cache = array();
 	//echo $name.$specific;
@@ -3111,9 +3111,9 @@ function g_l($name, $specific, $omitErrors=false) {
 		}
 	}else{
 		//FIXME: decide if in we - then turn off, else turn on
-		if(isset($GLOBALS['WE_MAIN_DOC']) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
+/*		if(isset($GLOBALS['WE_MAIN_DOC']) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && isset($cache)){
 			unset($cache);
-		}
+		}*/
 	}
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/'.str_replace('_','/',$name).'.inc.php';
 	if (file_exists($file)) {
@@ -3122,10 +3122,10 @@ function g_l($name, $specific, $omitErrors=false) {
 		//get local variable
 		if($tmp !== false){
 			$cache["l_$name"]=${"l_$name"};
-			return ($GLOBALS['WE_BACKENDCHARSET']!='UTF-8'?
+			return ($charset!='UTF-8'?
 								(is_array($tmp)?
 									array_map('g_l_encodeArray',$tmp):
-									mb_convert_encoding($tmp, $GLOBALS['WE_BACKENDCHARSET'], 'UTF-8')
+									mb_convert_encoding($tmp, $charset, 'UTF-8')
 									):
 								$tmp);
 		}else{
