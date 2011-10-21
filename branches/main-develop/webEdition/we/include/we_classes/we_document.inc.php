@@ -82,11 +82,6 @@ class we_document extends we_root {
 		parent::__construct();
 		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
 		array_push($this->persistent_slots,'schedArr');
-
-		//FIXME: remove in next Versions
-		if(defined('INCLUDE_ALL_WE_TAGS')){
-			if(function_exists('include_all_we_tags')) {include_all_we_tags();}
-		}
 	}
 
 	function copyDoc($id) {

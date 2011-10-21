@@ -369,7 +369,6 @@ $l_prefs = array(
 		 */
 		'backwardcompatibility' => "Abwärtskompatibilität",
 		'backwardcompatibility_tagloading' => "Lade alle 'alten' we_tag Funktionen",
-		'backwardcompatibility_tagloading_message' => "Wird nur benötigt, wenn in custom_tags oder Vorlagen we_tags in der Form we_tag_tagname() aufgerufen werden.<br/> Empfohlen wird ein Aufruf in der Form we_tag<br/>('tagname',&#36;attribs,&#36;content)",
 		/*		 * ***************************************************************************
 		 * ERROR HANDLING
 		 * *************************************************************************** */

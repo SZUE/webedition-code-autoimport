@@ -380,7 +380,6 @@ $l_prefs = array(
 		 */
 		'backwardcompatibility' => "Backward compatibility", //TRANSLATE
 		'backwardcompatibility_tagloading' => "Load all 'old' we_tag functions", //TRANSLATE
-		'backwardcompatibility_tagloading_message' => "Only necessary if in custom_tags or in PHP code inside templates we_tags are called in the form we_tag_tagname().<br/> Recommended call: we_tag<br/>('tagname',&#36;attribs,&#36;content)", //TRANSLATE
 
 
 		/*		 * ***************************************************************************

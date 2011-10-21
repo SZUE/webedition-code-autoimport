@@ -69,17 +69,15 @@ function we_tag_paypal($attribs, $content) {
 	$useVat = weTag_getAttribute('usevat', $attribs, true, true);
 	$currency = weTag_getAttribute('currency', $attribs);
 
-	//FIXME: calcVat is never used -
 	if ($useVat) {
 		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 
 		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
 		$weShopVatRule = weShopVatRule::getShopVatRule();
-		$calcVat = $weShopVatRule->executeVatRule($_customer);
 
 		//FIX: it was meant to write since now we know if a costumer needs to pay tax or the default is true
-		$useVat = $calcVat;
+		$useVat = $weShopVatRule->executeVatRule($_customer);
 	}
 
 

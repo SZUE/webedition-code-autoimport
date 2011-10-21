@@ -106,9 +106,6 @@ define("HIDENAMEATTRIBINWEIMG_DEFAULT", 0);
 // Default setting for hide name attribute in weform output
 define("HIDENAMEATTRIBINWEFORM_DEFAULT", 0);
 
-// Default setting for tag inclusion
-define("INCLUDE_ALL_WE_TAGS", 0);
-
 // Default setting for xml attribute
 define("XHTML_DEFAULT", 0);
 

@@ -669,27 +669,3 @@ function we_post_tag_listview(){
 		}
 	}
 }
-
-//FIXME: remove in next Versions
-function include_all_we_tags(){
-	if(defined('INCLUDE_ALL_WE_TAGS') && INCLUDE_ALL_WE_TAGS){
-		$taginclude = array('DID', 'a', 'author', 'back', 'block', 'calculate', 'category', 'categorySelect', 'checkForm', 'condition',
-			'conditionAdd', 'conditionAnd', 'conditionOr', 'css', 'date', 'dateSelect',
-			'delete', 'description', 'docType', 'field', 'flashmovie', 'formfield', 'hidden', 'href', 'icon', 'ifBack', 'ifCaptcha', 'ifCat', 'ifClient',
-			'ifCurrentDate', 'ifDoctype', 'ifEqual', 'ifField', 'ifHasChildren', 'ifHasCurrentEntry', 'ifHasEntries', 'ifNotShopField', 'ifPosition',
-			'ifSearch', 'ifSelf', 'ifRegisteredUserCanChange', 'ifShopField', 'ifShopFieldEmpty', 'ifTemplate',
-			'ifDeleted', 'ifEditmode', 'ifEmpty', 'ifFieldEmpty', 'ifIsDomain', 'ifNext', 'ifNoJavaScript', 'ifUserInputEmpty', 'ifVarEmpty',
-			'ifVar', 'ifVarSet', 'ifWorkspace', 'img', 'input', 'js', 'keywords', 'link', 'linkToSeeMode',
-			'linklist', 'list', 'listdir', 'listviewEnd', 'navigation', 'navigationEntries', 'navigationEntry',
-			'navigationField', 'navigationWrite', 'next', 'options', 'path', 'position', 'printVersion', 'processDateSelect',
-			'quicktime', 'registeredUser', 'returnPage', 'search', 'select', 'sendMail', 'sessionStart',
-			'setVar', 'sidebar', 'textarea', 'title', 'tracker', 'url', 'userInput', 'var', 'write', 'xmlfeed'
-		);
-		foreach($taginclude AS $fn){
-			$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/we_tag_' . $fn . '.inc.php';
-			if(!function_exists($fn) && is_file($file)){
-				include_once ($file);
-			}
-		}
-	}
-}
