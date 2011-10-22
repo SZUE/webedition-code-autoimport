@@ -339,7 +339,7 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	}
 }
 
-htmlTop(g_l('linklist_edit', "[edit_link]"));
+htmlTop(g_l('linklistEdit', "[edit_link]"));
 $yuiSuggest = & weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
@@ -508,11 +508,11 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST["we_cmd"][0] == "edit
 if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 
 	$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
-<option value="ext"' . (($type == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklist_edit', "[external_link]") . '</option>
-<option value="int"' . (($type == "int") ? ' selected="selected"' : '') . '>' . g_l('linklist_edit', "[internal_link]") . '</option>
+<option value="ext"' . (($type == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
+<option value="int"' . (($type == "int") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="mail"' . (($type == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
 ' . (defined("OBJECT_TABLE") ? '
-<option value="obj"' . (($type == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklist_edit', "[objectFile]") . '</option>' : '') . '
+<option value="obj"' . (($type == "obj") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' : '') . '
 </select>';
 
 
@@ -570,10 +570,10 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 	$anchor = htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
 	$accesskey = htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
 	$tabindex = htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);
-	$lang = getLangField('lang', $lang, g_l('linklist_edit', '[link_language]'), 140);
+	$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);
 	$relfield = getRevRelSelect("rel", $rel);
 	$revfield = getRevRelSelect("rev", $rev);
-	$hreflang = getLangField('hreflang', $hreflang, g_l('linklist_edit', '[href_language]'), 140);
+	$hreflang = getLangField('hreflang', $hreflang, g_l('linklistEdit', '[href_language]'), 140);
 	$params = htmlTextInput("params", 30, $params, "", "", "text", 300);
 	$title = htmlTextInput("title", 30, $title, "", "", "text", 300);
 	$ctarget = targetBox("target", 30, 300, "", $target);
@@ -656,9 +656,9 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 
 
 	$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
-<option value="text"' . (($ctype == "text") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklist_edit', "[text]")) . '</option>
-<option value="ext"' . (($ctype == "ext") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklist_edit', "[external_image]")) . '</option>
-<option value="int"' . (($ctype == "int") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklist_edit', "[internal_image]")) . '</option>
+<option value="text"' . (($ctype == "text") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[text]")) . '</option>
+<option value="ext"' . (($ctype == "ext") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[external_image]")) . '</option>
+<option value="int"' . (($ctype == "int") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[internal_image]")) . '</option>
 </select>';
 
 
@@ -749,7 +749,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 					<tr>
 						<td colspan="12" class="small">
-							' . g_l('linklist_edit', "[alt_text]") . '</td>
+							' . g_l('linklistEdit', "[alt_text]") . '</td>
 					</tr>
 					<tr>
 						<td colspan="12">
@@ -757,7 +757,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
                     <tr>
 						<td colspan="12" class="small">
-							' . g_l('linklist_edit', "[title]") . '</td>
+							' . g_l('linklistEdit', "[title]") . '</td>
 					</tr>
 					<tr>
 						<td colspan="12">
@@ -825,17 +825,17 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 			'space' => '150');
 
 
-	$_parts[] = array('headline' => g_l('linklist_edit', "[link_anchor]"),
+	$_parts[] = array('headline' => g_l('linklistEdit', "[link_anchor]"),
 			'html' => $anchor,
 			'space' => '150',
 			'noline' => 1);
 
-	$_parts[] = array('headline' => g_l('linklist_edit', "[link_params]"),
+	$_parts[] = array('headline' => g_l('linklistEdit', "[link_params]"),
 			'html' => $params,
 			'space' => '150',
 			'noline' => 1);
 
-	$_parts[] = array('headline' => g_l('linklist_edit', "[link_target]"),
+	$_parts[] = array('headline' => g_l('linklistEdit', "[link_target]"),
 			'html' => $ctarget,
 			'space' => '150');
 
@@ -850,21 +850,21 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
                             </tr>
 			                 </table>';
 
-		$_parts[] = array('headline' => g_l('linklist_edit', '[language]'),
+		$_parts[] = array('headline' => g_l('linklistEdit', '[language]'),
 				'html' => $_html,
 				'space' => '150',
 				'noline' => 1);
 
-		$_parts[] = array('headline' => g_l('linklist_edit', '[title]'),
+		$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
 				'space' => '150',
 				'noline' => 1);
 
 		$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td class="small">' . g_l('linklist_edit', '[accesskey]') . '</td>
+                                <td class="small">' . g_l('linklistEdit', '[accesskey]') . '</td>
 			                    <td>' . getPixel(20, 5) . '</td>
-			                    <td class="small">' . g_l('linklist_edit', '[tabindex]') . '</td>
+			                    <td class="small">' . g_l('linklistEdit', '[tabindex]') . '</td>
                             </tr>
                             <tr>
                                 <td>' . $accesskey . '</td>
@@ -873,7 +873,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
                             </tr>
 			                 </table>';
 
-		$_parts[] = array('headline' => g_l('linklist_edit', '[keyboard]'),
+		$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
 				'html' => $_html,
 				'space' => '150',
 				'noline' => 1);
@@ -891,7 +891,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 				'space' => '150',
 				'noline' => 1);
 
-		$_parts[] = array('headline' => g_l('linklist_edit', "[link_attr]"),
+		$_parts[] = array('headline' => g_l('linklistEdit', "[link_attr]"),
 				'html' => $cattribs,
 				'space' => '150');
 	}
@@ -917,7 +917,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 			<input type="hidden" name="we_transaction" value="<?php print $we_transaction; ?>" />
 			<input type="hidden" name="we_field" value="<?php print isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : ""; ?>" />
 			<?php
-			print we_multiIconBox::getHTML("", "100%", $_parts, 30, $buttons, -1, "", "", false, g_l('linklist_edit', "[edit_link]"), "", 671);
+			print we_multiIconBox::getHTML("", "100%", $_parts, 30, $buttons, -1, "", "", false, g_l('linklistEdit', "[edit_link]"), "", 671);
 			print $yuiSuggest->getYuiCss();
 			print $yuiSuggest->getYuiJs();
 			?>

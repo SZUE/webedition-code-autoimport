@@ -27,25 +27,25 @@
  * Provides language strings.
  * Language: English
  */
-$l_linklist_edit = array(
+$l_linklistEdit = array(
 		'objectFile' => "Object", // TRANSLATE
-		'edit_link' => "Edytuj link",
-		'link_attr' => "Atrybuty linku",
-		'link_anchor' => "Odnośnik",
-		'link_params' => "Parametr",
-		'link_target' => "Kierunek linku",
-		'alt_text' => "Alternatywny tekst",
-		'title' => "Tytuł",
-		'keyboard' => "Klawiatura",
-		'accesskey' => "Accesskey", // TRANSLATE
+		'edit_link' => "Wijzig link",
+		'link_attr' => "Koppel attributen",
+		'link_anchor' => "Anker",
+		'link_params' => "Parameters", // TRANSLATE
+		'link_target' => "Doel van koppeling",
+		'alt_text' => "Alternatieve tekst",
+		'title' => "Titel",
+		'keyboard' => "Toestenbord",
+		'accesskey' => "Toegangs sleutel",
 		'tabindex' => "Tabindex", // TRANSLATE
-		'language' => 'Język',
-		'link_language' => 'Link', // TRANSLATE
-		'href_language' => 'Zlinkowane strony',
-		'internal_image' => "Wewnętrzna grafika",
-		'external_image' => "Zewnętrzna grafika",
-		'internal_link' => "Wewnętrzny link",
-		'external_link' => "Zewnętrzny link",
+		'language' => 'Taal',
+		'link_language' => 'Koppeling',
+		'href_language' => 'Gekoppeld document',
+		'internal_image' => "Interne afbeelding",
+		'external_image' => "Externe afbeelding",
+		'internal_link' => "Interne koppeling",
+		'external_link' => "Externe koppeling",
 		'text' => "Tekst",
-		'new_link' => "Nowy link",
+		'new_link' => "Nieuwe Koppeling",
 );

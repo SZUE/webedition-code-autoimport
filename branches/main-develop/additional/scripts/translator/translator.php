@@ -4,25 +4,27 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL & ~E_NOTICE);
 //define('TESTMODE',1);
 
-define('MASTERLANG','English');
+define('MASTERLANG','Deutsch');
 
 if(!defined('TESTMODE')){
 	define('LANGS','English,Deutsch,French,Russian,Dutch,Finnish,Polish,Spanish');
 	define('RECURSE',1);
+	//define('DIR',$_SERVER['DOCUMENT_ROOT'] .'/we_language/');
 	define('DIR','../../../webEdition/we/include/we_language/');
-	define('QUIET',1);
+
+//	define('QUIET',1);
 }else{
 	define('LANGS','English,Deutsch');
 	define('DIR','test/');
 }
 
 
-define('FILE_TABLE','FILE_TABLE');
+/*define('FILE_TABLE','FILE_TABLE');
 define('TEMPLATES_TABLE','TEMPLATES_TABLE');
 define('WE_ZFVERSION','WE_ZFVERSION');
 define('OBJECT_FILES_TABLE','OBJECT_FILES_TABLE');
 define('OBJECT_TABLE','OBJECT_TABLE');
-
+*/
 //dummy function - should never be called
 function g_l($a,$b){
 	if(!defined('QUIET')){
@@ -35,17 +37,14 @@ function getVar($file){
 		eval('include($file);');
 		$vars=get_defined_vars();
 		unset($vars['file']);
-		foreach($vars as $name=>$v){
-			return $vars[$name];
-		}
-		return false;
+	return $vars;
 }
 
 function getVars($dir,&$langs,$file){
 	foreach($langs as $mylang=>&$val){
 		$var=getVar($dir.$mylang.$file);
 		if($var!==false){
-			$val[$file]=$var;
+			$val[str_replace('.inc.php','',ltrim($file,'/'))]=$var;
 		}
 	}
 }
@@ -98,7 +97,7 @@ function searchFiles($searchDir,&$langs,&$fileCnt){
 	}
 	foreach($files as $file){
 		if(is_dir($mydir.'/'.$file)){
-			if(!defined('RECURSE')||$file=='.'||$file=='..'||$file=='.svn'){
+			if(!defined('RECURSE')||substr($file,0,1)=='.'){
 				continue;
 			}
 			searchFiles($searchDir.'/'.$file,$langs,$fileCnt);
@@ -123,4 +122,36 @@ foreach(explode(',',LANGS) as $lang){
 $fileCnt=0;
 searchFiles('',$langs,$fileCnt);
 echo "Included $fileCnt Files each Language (".count($langs)."):\n";
-showDiff($langs);
+//showDiff($langs);
+//print_r($langs);
+
+$db=$GLOBALS['DB_WE'];
+$insert='INSERT DELAYED INTO lang_entry SET lang="%s",tmpLk1="%s",tmpLk2="%s",text="%s"';
+foreach($langs AS $lang=>$files){
+//	echo $lang.":\n";
+	foreach($files AS $file=>$vars){
+	//echo $file.":\n";
+	$file=str_replace('/','_',$file);
+		foreach($vars AS $var=>$val){
+			if(is_array($val)){
+			foreach($val as $var2=>$val2){
+				if(is_array($val2)){
+					foreach($val2 as $var3=>$val3){
+						if(is_array($val3)){
+						foreach($val3 as $var4=>$val4){
+							echo sprintf($insert,$lang,$file,'['.$var2.']['.$var3.']['.$var4.']',$val4)."\n";
+						}
+						}else{
+							echo sprintf($insert,$lang,$file,'['.$var2.']['.$var3.']',$val3)."\n";
+						}
+					}
+				}else{
+					echo sprintf($insert,$lang,$file,'['.$var2.']',$val2)."\n";
+				}
+			}
+		}else{
+		//ignore
+	}
+		}
+	}
+}

@@ -716,7 +716,7 @@ class we_imageDocument extends we_binaryDocument {
             $longdescPath = '';
 		}
 
-		
+
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("LonDesc");
 		$yuiSuggest->setContentType("folder,text/webEdition,text/html");
@@ -912,7 +912,7 @@ class we_imageDocument extends we_binaryDocument {
 		$RollOverPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = '$RollOverID='", "Path", $this->DB_WE);
 
 		$checkFlagName = "check_" . $this->Name . "_RollOverFlag";
-		
+
 		//javascript:we_cmd('openDocselector', document.forms['we_form'].elements['$idname'].value,'" . FILE_TABLE . "','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][2].checked=true;','',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
@@ -995,7 +995,7 @@ class we_imageDocument extends we_binaryDocument {
 
 			$_obj_link = "href" . we_htmlElement::htmlBr() . $_obj_link_table->getHtmlCode();
 
-			$_content->setCol(6, 0, array("valign" => "top"), we_forms::radiobutton("obj", ($linkType == "obj"), "we_" . $this->Name . "_txt[LinkType]", g_l('linklist_edit',"[objectFile]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
+			$_content->setCol(6, 0, array("valign" => "top"), we_forms::radiobutton("obj", ($linkType == "obj"), "we_" . $this->Name . "_txt[LinkType]", g_l('linklistEdit',"[objectFile]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
 			$_content->setCol(6, 1, array("class" => "defaultfont", "valign" => "top"), $_obj_link);
 		}
 

@@ -27,25 +27,25 @@
  * Provides language strings.
  * Language: English
  */
-$l_linklist_edit = array(
+$l_linklistEdit = array(
 		'objectFile' => "Object", // TRANSLATE
-		'edit_link' => "Éditer le lien",
-		'link_attr' => "Attributs de lien",
-		'link_anchor' => "Ancres",
-		'link_params' => "Parametre",
-		'link_target' => "Cible du Lien",
-		'alt_text' => "Texte alternative",
-		'title' => "Titre",
-		'keyboard' => "Clavier",
-		'accesskey' => "Clé d'accès",
+		'edit_link' => "Edytuj link",
+		'link_attr' => "Atrybuty linku",
+		'link_anchor' => "Odnośnik",
+		'link_params' => "Parametr",
+		'link_target' => "Kierunek linku",
+		'alt_text' => "Alternatywny tekst",
+		'title' => "Tytuł",
+		'keyboard' => "Klawiatura",
+		'accesskey' => "Accesskey", // TRANSLATE
 		'tabindex' => "Tabindex", // TRANSLATE
-		'language' => 'Langue',
-		'link_language' => 'Lien',
-		'href_language' => 'Site lié',
-		'internal_image' => "Graphique Interne",
-		'external_image' => "Graphique Externe",
-		'internal_link' => "Lien Interne",
-		'external_link' => "Lien Externe",
-		'text' => "Texte",
-		'new_link' => "Nouveau Lien",
+		'language' => 'Język',
+		'link_language' => 'Link', // TRANSLATE
+		'href_language' => 'Zlinkowane strony',
+		'internal_image' => "Wewnętrzna grafika",
+		'external_image' => "Zewnętrzna grafika",
+		'internal_link' => "Wewnętrzny link",
+		'external_link' => "Zewnętrzny link",
+		'text' => "Tekst",
+		'new_link' => "Nowy link",
 );

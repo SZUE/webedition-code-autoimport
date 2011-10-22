@@ -27,7 +27,7 @@
  * Provides language strings.
  * Language: Deutsch
  */
-$l_linklist_edit = array(
+$l_linklistEdit = array(
 		'objectFile' => "Objekt",
 		'edit_link' => "Link bearbeiten",
 		'link_attr' => "Link Attribute",
