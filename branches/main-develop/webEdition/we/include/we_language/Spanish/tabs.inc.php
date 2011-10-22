@@ -1,43 +1,36 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: we_tabs.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_tabs = array(
-		'editor' => array(
-				'properties' => "Properties", // TRANSLATE
-				'edit' => "Editar",
-				'information' => "Información",
-				'preview' => "Vista previa",
-				'scheduler' => "Planificador",
-				'scheduler_pro' => "Planificador PRO",
-				'workspace' => "Área de trabajo",
-				'meta' => "Meta-Información",
-				'fields' => "Campos",
-				'search' => "Búsqueda",
-				));
-include(dirname(__FILE__) . '/modules/we_tabs.inc.php');
+/** Generated language file of webEdition CMS */
+$l_tabs=array(
+	
+	'editor'=>array(
+		'edit'=>'Editar',
+		'fields'=>'Campos',
+		'information'=>'Información',
+		'meta'=>'Meta-Información',
+		'preview'=>'Vista previa',
+		'properties'=>'Properties',
+		'scheduler'=>'Planificador',
+		'scheduler_pro'=>'Planificador PRO',
+		'search'=>'Búsqueda',
+		'workspace'=>'Área de trabajo',
+	),
+	'module'=>array(
+		'admin_1'=>'Documentos de artículos',
+		'admin_2'=>'Objetos de artículos',
+		'admin_3'=>'Vista general de los ingresos',
+		'admin_6'=>'Tipos de pago',
+		'ArtAttribEdit'=>'Editar artículo',
+		'artList'=>'Lista de todos los artículos: %s',
+		'data'=>'Data',
+		'orderdata'=>'Orden y data de usuario',
+		'orderlist'=>'Todas las ordenes del cliente',
+		'overview'=>'Vista general',
+		'PayMethodEdit'=>'Editar tipos de pago',
+		'permissions'=>'Permisos',
+		'placement'=>'Ubicación',
+		'preferences'=>'Preferences',
+		'properties'=>'Propiedades',
+		'revenueTotal'=>'Ingresos en el año %s',
+		'statistics'=>'Estadísticas',
+		'workspace'=>'Área de Trabajo',
+));

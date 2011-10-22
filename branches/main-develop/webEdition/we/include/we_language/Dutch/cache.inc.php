@@ -1,56 +1,26 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: enc_we_class.inc.php
- * Provides language strings.
- * Language: English
- */
-
-$l_we_cache["cache"] = "Caching"; // TRANSLATE
-$l_we_cache["cache_lifetime"] = "Cache lifetime in seconden";
-$l_we_cache["cache_type"] = "Caching type"; // TRANSLATE
-$l_we_cache["cache_type_none"] = "Geen caching (Caching gedeactiveerd)";
-$l_we_cache["cache_type_wetag"] = "we:Tag cache (we:Tags worde gecached)";
-$l_we_cache["cache_type_document"] = "Document cache (ingevoegde documenten hebben eigen cache instellingen)";
-$l_we_cache["cache_type_full"] = "Volledige cache (het gehele document wordt gecached)";
-
-$l_we_cache["delete_cache"] = "Gehele cache nu legen?";
-$l_we_cache["cache_deleted"] = "De cache is succesvol geleegd!";
-$l_we_cache["cache_not_deleted"] = "De cache kon niet geleegd worden.";
-
-$l_we_cache['cacheLifeTimes'] = array();
-$l_we_cache['cacheLifeTimes'][0] = "";
-$l_we_cache['cacheLifeTimes'][60] = "1 minuut";
-$l_we_cache['cacheLifeTimes'][300] = "5 minuten";
-$l_we_cache['cacheLifeTimes'][600] = "10 minuten";
-$l_we_cache['cacheLifeTimes'][1800] = "30 minuten";
-$l_we_cache['cacheLifeTimes'][3600] = "1 uur";
-$l_we_cache['cacheLifeTimes'][21600] = "6 uur";
-$l_we_cache['cacheLifeTimes'][43200] = "12 uur";
-$l_we_cache['cacheLifeTimes'][86400] = "1 dag";
-
-?>
+/** Generated language file of webEdition CMS */
+$l_cache=array(
+	
+	'cacheLifeTimes'=>array(
+		'0'=>'',
+		'1800'=>'30 minuten',
+		'21600'=>'6 uur',
+		'300'=>'5 minuten',
+		'3600'=>'1 uur',
+		'43200'=>'12 uur',
+		'600'=>'10 minuten',
+		'60'=>'1 minuut',
+		'86400'=>'1 dag',
+	),
+	'cache'=>'Caching',
+	'cache_deleted'=>'De cache is succesvol geleegd!',
+	'cache_lifetime'=>'Cache lifetime in seconden',
+	'cache_not_deleted'=>'De cache kon niet geleegd worden.',
+	'cache_type'=>'Caching type',
+	'cache_type_document'=>'Document cache (ingevoegde documenten hebben eigen cache instellingen)',
+	'cache_type_full'=>'Volledige cache (het gehele document wordt gecached)',
+	'cache_type_none'=>'Geen caching (Caching gedeactiveerd)',
+	'cache_type_wetag'=>'we:Tag cache (we:Tags worde gecached)',
+	'delete_cache'=>'Gehele cache nu legen?',
+);

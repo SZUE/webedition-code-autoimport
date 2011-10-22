@@ -1,53 +1,29 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: users.inc.php
- * Provides language strings.
- * Language: English
- */
-
-$l_button["create_user"]["value"] = "Nowy użytkownik";
-$l_button["create_user"]["alt"] = "Add new user"; // TRANSLATE
-$l_button["create_user"]["width"] = 150;
-
-$l_button["create_group"]["value"] = "New group";
-$l_button["create_group"]["alt"] = "Add new group"; // TRANSLATE
-$l_button["create_group"]["width"] = 150;
-
-$l_button["create_alias"]["value"] = "New alias";
-$l_button["create_alias"]["alt"] = "Create new alias"; // TRANSLATE
-$l_button["create_alias"]["width"] = 150;
-
-$l_button["uncheckall"]["value"] = "Deselect all";
-$l_button["uncheckall"]["alt"]   = "Odznacza wszytstkie";
-$l_button["uncheckall"]["width"] = 150;
-
-$l_button["checkall"]["value"] = "Select all";
-$l_button["checkall"]["alt"]   = "Zaznacz wszystko";
-$l_button["checkall"]["width"] = 150;
-
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_users=array(
+	
+	'checkall'=>array(
+		'alt'=>'Zaznacz wszystko',
+		'value'=>'Select all',
+		'width'=>'150',
+	),
+	'create_alias'=>array(
+		'alt'=>'Create new alias',
+		'value'=>'New alias',
+		'width'=>'150',
+	),
+	'create_group'=>array(
+		'alt'=>'Add new group',
+		'value'=>'New group',
+		'width'=>'150',
+	),
+	'create_user'=>array(
+		'alt'=>'Add new user',
+		'value'=>'Nowy użytkownik',
+		'width'=>'150',
+	),
+	'uncheckall'=>array(
+		'alt'=>'Odznacza wszytstkie',
+		'value'=>'Deselect all',
+		'width'=>'150',
+));

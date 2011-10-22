@@ -1,56 +1,34 @@
 <?php
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-$l_modules_customerFilter = array(
-	'mode_off' 					=> 'Kein Filter benutzen (alle Besucher haben Zugriff)',
-	'mode_none' 				=> 'Nur nicht angemeldete Nutzer haben Zugriff',
-	'mode_all' 					=> 'Alle angemeldeten Kunden haben Zugriff',
-	'mode_specific' 			=> 'Nur bestimmte Kunden haben Zugriff',
-	'mode_filter' 				=> 'Kunden mit bestimmten Kriterien haben Zugriff',
-	'equal'						=> 'gleich (=)',
-	'not_equal'					=> 'nicht gleich (!=)',
-	'less'						=> 'kleiner (<)',
-	'less_equal'				=> 'kleiner gleich (<=)',
-	'greater'					=> 'größer (>)',
-	'greater_equal'				=> 'größer gleich (>=)',
-	'starts_with'				=> 'beginnt mit',
-	'ends_with'					=> 'endet mit',
-	'contains'					=> 'enthält',
-	'in'						=> 'ist eins von',
-	'AND'						=> 'UND',
-	'OR'						=> 'ODER',
-	'black_list'				=> 'Schwarze Liste (diese Kunden haben nie Zugriff):',
-	'white_list'				=> 'Weiße Liste (diese Kunden haben immer Zugriff):',
-	'documentNoLogin'			=> 'Fehlerdokument: Kunde ist nicht eingeloggt:',
-	'documentNoAccess'			=> 'Fehlerdokument: Kunde hat nicht die benötigten Rechte:',
-	'accessControlOnErrorDoc' 	=> 'Zugriff über Fehlerkontrolle',
-	'accessControlOnTemplate' 	=> 'Fehlerkontrolle wird von Vorlage übernommen',
-	'accessControl'				=> 'Zugriffskontrollsteuerung',
-	'apply_filter_isHot'		=> 'Bevor die Kundenfilter übertragen werden können, muss der Ordner zunächst gespeichert werden.',
-	'apply_filter_info'			=> 'Übertragen Sie die oben eingestellten Filter auf alle webEdition-Seiten/Objekte und Verzeichnisse, die dieses Verzeichnis enthält.',
-	'apply_filter'				=> 'Kundenfilter übertragen',
-	'apply_filter_done'			=> 'Die Kundenfilter wurden übertragen.',
-	'apply_filter_cofirm_close'	=> 'Momentan sind Unterelemente dieses Ordners geöffnet. Um die Kundenfilter zu übertragen müssen alle Unterelemente geschlossen werden. Wenn Sie fortfahren, werden diese automatisch geschlossen, ungespeicherte Änderungen werden dann allerdings ignoriert.',
-	'customerFilter'			=> 'Kundenfilter'
+/** Generated language file of webEdition CMS */
+$l_modules_customerFilter=array(
+	'accessControlOnErrorDoc'=>'Zugriff über Fehlerkontrolle',
+	'accessControlOnTemplate'=>'Fehlerkontrolle wird von Vorlage übernommen',
+	'accessControl'=>'Zugriffskontrollsteuerung',
+	'AND'=>'UND',
+	'apply_filter'=>'Kundenfilter übertragen',
+	'apply_filter_cofirm_close'=>'Momentan sind Unterelemente dieses Ordners geöffnet. Um die Kundenfilter zu übertragen müssen alle Unterelemente geschlossen werden. Wenn Sie fortfahren, werden diese automatisch geschlossen, ungespeicherte Änderungen werden dann allerdings ignoriert.',
+	'apply_filter_done'=>'Die Kundenfilter wurden übertragen.',
+	'apply_filter_info'=>'Übertragen Sie die oben eingestellten Filter auf alle webEdition-Seiten/Objekte und Verzeichnisse, die dieses Verzeichnis enthält.',
+	'apply_filter_isHot'=>'Bevor die Kundenfilter übertragen werden können, muss der Ordner zunächst gespeichert werden.',
+	'black_list'=>'Schwarze Liste (diese Kunden haben nie Zugriff):',
+	'contains'=>'enthält',
+	'customerFilter'=>'Kundenfilter',
+	'documentNoAccess'=>'Fehlerdokument: Kunde hat nicht die benötigten Rechte:',
+	'documentNoLogin'=>'Fehlerdokument: Kunde ist nicht eingeloggt:',
+	'ends_with'=>'endet mit',
+	'equal'=>'gleich (=)',
+	'greater'=>'größer (>)',
+	'greater_equal'=>'größer gleich (>=)',
+	'in'=>'ist eins von',
+	'less'=>'kleiner (<)',
+	'less_equal'=>'kleiner gleich (<=)',
+	'mode_all'=>'Alle angemeldeten Kunden haben Zugriff',
+	'mode_filter'=>'Kunden mit bestimmten Kriterien haben Zugriff',
+	'mode_none'=>'Nur nicht angemeldete Nutzer haben Zugriff',
+	'mode_off'=>'Kein Filter benutzen (alle Besucher haben Zugriff)',
+	'mode_specific'=>'Nur bestimmte Kunden haben Zugriff',
+	'not_equal'=>'nicht gleich (!=)',
+	'OR'=>'ODER',
+	'starts_with'=>'beginnt mit',
+	'white_list'=>'Weiße Liste (diese Kunden haben immer Zugriff):',
 );

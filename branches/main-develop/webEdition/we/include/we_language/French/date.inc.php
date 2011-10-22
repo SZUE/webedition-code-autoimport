@@ -1,85 +1,56 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: date.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_date = array(
-		'format' => array(
-				'default' => 'Y-m-d - H:i',
-				'mysqlDate' => '%d.%m.%Y',
+/** Generated language file of webEdition CMS */
+$l_date=array(
+	
+	'day'=>array(
+		'long'=>array(
+			'0'=>'Sunday',
+			'1'=>'Monday',
+			'2'=>'Tuesday',
+			'3'=>'Wednesday',
+			'4'=>'Thursday',
+			'5'=>'Friday',
+			'6'=>'Saturday',
 		),
-		'day' => array(
-				'short' => array(
-						'Su',
-						'Mo',
-						'Tu',
-						'We',
-						'Th',
-						'Fr',
-						'Sa',
-				),
-				'long' => array(
-						'Sunday',
-						'Monday',
-						'Tuesday',
-						'Wednesday',
-						'Thursday',
-						'Friday',
-						'Saturday',
-				),
+		'short'=>array(
+			'0'=>'Su',
+			'1'=>'Mo',
+			'2'=>'Tu',
+			'3'=>'We',
+			'4'=>'Th',
+			'5'=>'Fr',
+			'6'=>'Sa',
+	),),
+	'format'=>array(
+		'default'=>'Y-m-d - H:i',
+		'mysqlDate'=>'%d.%m.%Y',
+	),
+	'month'=>array(
+		'long'=>array(
+			'0'=>'janvier',
+			'10'=>'novembre',
+			'11'=>'décembre',
+			'1'=>'février',
+			'2'=>'mars',
+			'3'=>'avril',
+			'4'=>'mai',
+			'5'=>'Juin',
+			'6'=>'juillet',
+			'7'=>'août',
+			'8'=>'septembre',
+			'9'=>'octobre',
 		),
-		'month' => array(
-				'short' => array(
-						'jan',
-						'fév',
-						'mar',
-						'avr',
-						'mai',
-						'juin',
-						'jul',
-						'août',
-						'sep',
-						'oct',
-						'nov',
-						'déc',
-				),
-				'long' => array(
-						'janvier',
-						'février',
-						'mars',
-						'avril',
-						'mai',
-						'Juin',
-						'juillet',
-						'août',
-						'septembre',
-						'octobre',
-						'novembre',
-						'décembre',
-				),
-		),
-);
+		'short'=>array(
+			'0'=>'Jan',
+			'10'=>'Nov',
+			'11'=>'Dec',
+			'1'=>'fév',
+			'2'=>'Mar',
+			'3'=>'avr',
+			'4'=>'mai',
+			'5'=>'juin',
+			'6'=>'Jul',
+			'7'=>'août',
+			'8'=>'Sep',
+			'9'=>'Oct',
+)));

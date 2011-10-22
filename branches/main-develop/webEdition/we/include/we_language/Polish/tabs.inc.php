@@ -1,43 +1,36 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: we_tabs.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_tabs = array(
-		'editor' => array(
-				'properties' => "Properties", // TRANSLATE
-				'edit' => "Edycja",
-				'information' => "Informacje",
-				'preview' => "Podgląd",
-				'scheduler' => "Harmonogram",
-				'scheduler_pro' => "Harmonogram PRO",
-				'workspace' => "Obszar pracy",
-				'meta' => "Meta-informacje",
-				'fields' => "Pola",
-				'search' => "Szukaj",
-				));
-include(dirname(__FILE__) . '/modules/we_tabs.inc.php');
+/** Generated language file of webEdition CMS */
+$l_tabs=array(
+	
+	'editor'=>array(
+		'edit'=>'Edycja',
+		'fields'=>'Pola',
+		'information'=>'Informacje',
+		'meta'=>'Meta-informacje',
+		'preview'=>'Podgląd',
+		'properties'=>'Properties',
+		'scheduler'=>'Harmonogram',
+		'scheduler_pro'=>'Harmonogram PRO',
+		'search'=>'Szukaj',
+		'workspace'=>'Obszar pracy',
+	),
+	'module'=>array(
+		'admin_1'=>'Artykuł-Dokumenty',
+		'admin_2'=>'Artykuł-Obiekty',
+		'admin_3'=>'Przegląd obrotu',
+		'admin_6'=>'Rodzaje płatności',
+		'ArtAttribEdit'=>'Edytuj właściwości produktu',
+		'artList'=>'Zestawienie wszystkich artykułów: %s',
+		'data'=>'Data',
+		'orderdata'=>'Order and customer data',
+		'orderlist'=>'All customer\'s orders',
+		'overview'=>'Overview',
+		'PayMethodEdit'=>'Edytuj rodzaje płatności',
+		'permissions'=>'Uprawnienia',
+		'placement'=>'Placement',
+		'preferences'=>'Preferences',
+		'properties'=>'Właściwości',
+		'revenueTotal'=>'Obrót w roku %s',
+		'statistics'=>'Statystyki',
+		'workspace'=>'Workspace',
+));

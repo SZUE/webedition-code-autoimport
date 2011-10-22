@@ -1,66 +1,53 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: shop.inc.php
- * Provides language strings.
- * Language: English
- */
-
-$l_button["shop_orderlist"]["value"] = "Bestellijst";
-$l_button["shop_orderlist"]["alt"] = "Open bestel lijst...";
-$l_button["shop_orderlist"]["width"] = 100;
-
-$l_button["print"]["value"] = "Print";
-$l_button["print"]["alt"] = "Print...";
-$l_button["print"]["width"] = 100;
-
-$l_button["pref_shop"]["value"] = "Settings";
-$l_button["pref_shop"]["alt"] = "Open winkel instellingen...";
-$l_button["pref_shop"]["width"] = 150;
-
-$l_button["pref_shop"]["value"] = "Preferences";
-$l_button["pref_shop"]["alt"]   = "Open de winkel voorkeuren...";
-$l_button["pref_shop"]["width"] = 150;
-
-$l_button["quick_rev"]["value"] = "Article / Revenue";
-$l_button["quick_rev"]["alt"]   = "Open het artikel en inkomsten overzicht...";
-$l_button["quick_rev"]["width"] = 150;
-
-$l_button["payment_val"]["value"] = "Payment Provider";
-$l_button["payment_val"]["alt"]   = "Open de betalings aanbieder voorkeuren...";
-$l_button["payment_val"]["width"] = 150;
-
-// for shop purposes
-$l_button["btn_shop_addnew"]["alt"] = "Create a new Article";
-$l_button["btn_shop_extArt"]["alt"] = "Breid een bestaande bestelling uit";
-$l_button["btn_shop_delOrd"]["alt"] = "Verwijder een bestaande bestelling";
-$l_button["btn_shop_variants"]["alt"] = "Schakel over naar artikel overzicht";
-$l_button["btn_shop_sum"]["alt"] = "Schakel over naar artikee en inkomsten overzicht";
-$l_button["btn_shop_trash"]["alt"] = "Verwijder een bestaande bestelling";
-$l_button["btn_shop_pref"]["alt"] = "Schakel over naar winkel voorkeuren";
-$l_button["btn_payment_val"]["alt"] = "Schakel over naar betalings aanbieder voorkeuren";
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_shop=array(
+	
+	'btn_payment_val'=>array(
+		'alt'=>'Schakel over naar betalings aanbieder voorkeuren',
+	),
+	'btn_shop_addnew'=>array(
+		'alt'=>'Create a new Article',
+	),
+	'btn_shop_delOrd'=>array(
+		'alt'=>'Verwijder een bestaande bestelling',
+	),
+	'btn_shop_extArt'=>array(
+		'alt'=>'Breid een bestaande bestelling uit',
+	),
+	'btn_shop_pref'=>array(
+		'alt'=>'Schakel over naar winkel voorkeuren',
+	),
+	'btn_shop_sum'=>array(
+		'alt'=>'Schakel over naar artikee en inkomsten overzicht',
+	),
+	'btn_shop_trash'=>array(
+		'alt'=>'Verwijder een bestaande bestelling',
+	),
+	'btn_shop_variants'=>array(
+		'alt'=>'Schakel over naar artikel overzicht',
+	),
+	'payment_val'=>array(
+		'alt'=>'Open de betalings aanbieder voorkeuren...',
+		'value'=>'Payment Provider',
+		'width'=>'150',
+	),
+	'pref_shop'=>array(
+		'alt'=>'Open de winkel voorkeuren...',
+		'value'=>'Preferences',
+		'width'=>'150',
+	),
+	'print'=>array(
+		'alt'=>'Print...',
+		'value'=>'Print',
+		'width'=>'100',
+	),
+	'quick_rev'=>array(
+		'alt'=>'Open het artikel en inkomsten overzicht...',
+		'value'=>'Article / Revenue',
+		'width'=>'150',
+	),
+	'shop_orderlist'=>array(
+		'alt'=>'Open bestel lijst...',
+		'value'=>'Bestellijst',
+		'width'=>'100',
+));

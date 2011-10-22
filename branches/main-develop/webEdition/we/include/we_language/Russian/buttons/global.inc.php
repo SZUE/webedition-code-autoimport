@@ -1,404 +1,626 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: global.inc.php
- * Provides language strings.
- * Language: English
- */
-
-
-/*****************************************************************************
- * LOGIN-SCREEN
- *****************************************************************************/
-
-$l_button["login"]["value"] = "Login"; // TRANSLATE
-$l_button["login"]["alt"] = "Вход в систему webEdition";
-$l_button["login"]["width"] = 100;
-
-$l_button["back_to_login"]["value"] = "Back";
-$l_button["back_to_login"]["alt"] = "Назад к webEdition-Login";
-$l_button["back_to_login"]["width"] = 100;
-
-/*****************************************************************************
- * STARTMENU
- *****************************************************************************/
-
-$l_button["open_document"]["value"] = "Open document";
-$l_button["open_document"]["alt"] = "Открыть документ";
-$l_button["open_document"]["width"] = 200;
-
-$l_button["new_document"]["value"] = "New document";
-$l_button["new_document"]["alt"] = "Создать документ";
-$l_button["new_document"]["width"] = 200;
-
-$l_button["new_template"]["value"] = "New template";
-$l_button["new_template"]["alt"] = "Создать шаблон";
-$l_button["new_template"]["width"] = 200;
-
-$l_button["new_directory"]["value"] = "New directory";
-$l_button["new_directory"]["alt"] = "Создать директорию";
-$l_button["new_directory"]["width"] = 200;
-
-$l_button["unpublished_pages"]["value"] = "Unpublished documents";
-$l_button["unpublished_pages"]["alt"] = "Обзор неопубликованных страниц";
-$l_button["unpublished_pages"]["width"] = 200;
-
-$l_button["preferences"]["value"] = "Preferences";
-$l_button["preferences"]["alt"] = "Персональные настройки";
-$l_button["preferences"]["width"] = 200;
-
-/*****************************************************************************
- * DELETE SCREEN
- *****************************************************************************/
-
-$l_button["quit_delete"]["value"] = "Finish delete mode";
-$l_button["quit_delete"]["alt"] = "Завершить режим удаления";
-$l_button["quit_delete"]["width"] = 175;
-
-/*****************************************************************************
- * MOVE SCREEN
- *****************************************************************************/
-
-$l_button["quit_move"]["value"] = "Finish move mode";
-$l_button["quit_move"]["alt"] = "Finish move mode";
-$l_button["quit_move"]["width"] = 175;
-
-/*****************************************************************************
- * STANDARD
- *****************************************************************************/
-
-$l_button["ok"]["value"] = "OK";
-$l_button["ok"]["alt"]   = "Okay";
-$l_button["ok"]["width"] = 100;
-
-$l_button["cancel"]["value"] = "Cancel";
-$l_button["cancel"]["alt"] = "Отменить";
-$l_button["cancel"]["width"] = 100;
-
-$l_button["yes"]["value"] = "Yes";
-$l_button["yes"]["alt"]   = "Yes";
-$l_button["yes"]["width"] = 100;
-
-$l_button["no"]["value"] = "No";
-$l_button["no"]["alt"]   = "No";
-$l_button["no"]["width"] = 100;
-
-$l_button["save"]["value"] = "Save";
-$l_button["save"]["alt"] = "Сохранить";
-$l_button["save"]["width"] = 100;
-
-$l_button["publish"]["value"] = "Publish";
-$l_button["publish"]["alt"]   = "Save and publish the document"; // TRANSLATE
-$l_button["publish"]["width"] = 100;
-
-$l_button["saveversion"]["value"] = "Save Version";// TRANSLATE
-$l_button["saveversion"]["alt"]   = "Saves the template and creates a new version";// TRANSLATE
-$l_button["saveversion"]["width"] = 120;// TRANSLATE
-
-$l_button["delete"]["value"] = "Delete";
-$l_button["delete"]["alt"] = "Удалить";
-$l_button["delete"]["width"] = 100;
-
-$l_button["go"]["value"] = "Execute now";
-$l_button["go"]["alt"]   = ""; // TRANSLATE
-$l_button["go"]["width"] = 120;
-
-$l_button["openVersionWizard"]["value"] = "Versions-Wizard";
-$l_button["openVersionWizard"]["alt"]   = "Versions-Wizard"; // TRANSLATE
-$l_button["openVersionWizard"]["width"] = 120;
-
-$l_button["next"]["value"] = "Next";
-$l_button["next"]["alt"]   = "Next";
-$l_button["next"]["width"] = 100;
-
-$l_button["back"]["value"] = "Back";
-$l_button["back"]["alt"] = "Назад";
-$l_button["back"]["width"] = 100;
-
-$l_button["open"]["value"] = "Open";
-$l_button["open"]["alt"] = "Open";
-$l_button["open"]["width"] = 100;
-
-$l_button["default"]["value"] = "Default";
-$l_button["default"]["alt"] = ""; // TRANSLATE
-$l_button["default"]["width"] = 100;
-
-$l_button["reset"]["value"] = "Reset";
-$l_button["reset"]["alt"] = ""; // TRANSLATE
-$l_button["reset"]["width"] = 100;
-
-/*****************************************************************************
- * SAVING, PUBLISHING, ETC.
- *****************************************************************************/
-
-$l_button["unpublish"]["value"] = "Unpublish";
-$l_button["unpublish"]["alt"] = "Снять с публикации";
-$l_button["unpublish"]["width"] = 100;
-
-
-/*****************************************************************************
- * MAKE AN NEW DOCUMENT BASED ON TEMPLATE
- *****************************************************************************/
-
-$l_button["make_new_document"]["value"] = "New document";
-$l_button["make_new_document"]["alt"] = "Создать документ";
-$l_button["make_new_document"]["width"] = 125;
-
-/*****************************************************************************
- * SUPER-EASY-EDIT-MODE
- *****************************************************************************/
-
-$l_button["preview"]["value"] = "Preview";
-$l_button["preview"]["alt"] = "Включить предварительный просмотр";
-$l_button["preview"]["width"] = 100;
-
-$l_button["properties"]["value"] = "Properties";
-$l_button["properties"]["alt"] = "Показать свойства";
-$l_button["properties"]["width"] = 100;
-
-$l_button["thumbnails"]["value"] = "Thumbnails";
-$l_button["thumbnails"]["alt"]   = "Показывать иконки";
-$l_button["thumbnails"]["width"] = 100;
-
-$l_button["shopVariants"]["value"] = "Variants";
-$l_button["shopVariants"]["alt"] = "Редактировать варианты";
-$l_button["shopVariants"]["width"] = 100;
-
-/*****************************************************************************
- * DOCUMENT TYPES
- *****************************************************************************/
-
-$l_button["new_doctype"]["value"] = "New document type";
-$l_button["new_doctype"]["alt"] = "Создать новый тип документа";
-$l_button["new_doctype"]["width"] = 174;
-
-$l_button["delete_doctype"]["value"] = "Delete document type";
-$l_button["delete_doctype"]["alt"] = "Удалить выбранный тип документа";
-$l_button["delete_doctype"]["width"] = 174;
-
-/*****************************************************************************
- * XML
- *****************************************************************************/
-
-$l_button["import"]["value"] = "Import";
-$l_button["import"]["alt"]   = "Import selected file"; // TRANSLATE
-$l_button["import"]["width"] = 100;
-
-$l_button["export"]["value"] = "Export";
-$l_button["export"]["alt"]   = "Export selected files"; // TRANSLATE
-$l_button["export"]["width"] = 100;
-
-$l_button["browse"]["value"] = "Browse";
-$l_button["browse"]["alt"] = "Искать в директории";
-$l_button["browse"]["width"] = 100;
-
-/*****************************************************************************
- * FILE-SELECTOR
- *****************************************************************************/
-
-$l_button["root_dir"]["value"] = "/";
-$l_button["root_dir"]["alt"]   = "Go to the root directory"; // TRANSLATE
-$l_button["root_dir"]["width"] = 40;
-
-
-/*****************************************************************************
- * UPLOAD-DIALOG
- *****************************************************************************/
-
-$l_button["upload"]["value"] = "Upload";
-$l_button["upload"]["alt"]   = "Upload file"; // TRANSLATE
-$l_button["upload"]["width"] = 100;
-
-$l_button["close"]["value"] = "Close";
-$l_button["close"]["alt"]   = "Closes this window"; // TRANSLATE
-$l_button["close"]["width"] = 100;
-
-$l_button["overwrite"]["value"] = "Overwrite";
-$l_button["overwrite"]["alt"]   = "Overwrite file"; // TRANSLATE
-$l_button["overwrite"]["width"] = 100;
-
-$l_button["newName"]["value"] = "New name";
-$l_button["newName"]["alt"]   = "Insert a new name"; // TRANSLATE
-$l_button["newName"]["width"] = 100;
-
-
-/*****************************************************************************
- * PREFERENCES
- *****************************************************************************/
-
-$l_button["add_languages"]["value"] = "Add languages";
-$l_button["add_languages"]["alt"]   = "Устанавливает новые языки в систему webEdition";
-$l_button["add_languages"]["width"] = 175;
-
-$l_button["apply_current_dimension"]["value"] = "Apply current dimension";
-$l_button["apply_current_dimension"]["alt"]   = "Применяет текущий размер окна webEdition";
-$l_button["apply_current_dimension"]["width"] = 175;
-
-$l_button["res_800"]["value"] = "800x600";
-$l_button["res_800"]["alt"]   = "Установить 800x600";
-$l_button["res_800"]["width"] = 100;
-
-$l_button["res_1024"]["value"] = "1024x768";
-$l_button["res_1024"]["alt"]   = "Установить 1024x768";
-$l_button["res_1024"]["width"] = 100;
-
-$l_button["res_1280"]["value"] = "1280x960";
-$l_button["res_1280"]["alt"]   = "Установить 1280x960";
-$l_button["res_1280"]["width"] = 100;
-
-$l_button["res_1600"]["value"] = "1600x1200";
-$l_button["res_1600"]["alt"]   = "Установить 1600x1200";
-$l_button["res_1600"]["width"] = 100;
-
-$l_button["apply_current_editor_dimension"]["value"] = "Apply current dimension";
-$l_button["apply_current_editor_dimension"]["alt"]   = "Перенимает текущий размер редактора";
-$l_button["apply_current_editor_dimension"]["width"] = 175;
-
-$l_button["res_500"]["value"] = "500x300";
-$l_button["res_500"]["alt"]   = "Установить 500x300";
-$l_button["res_500"]["width"] = 100;
-
-$l_button["res_700"]["value"] = "700x320";
-$l_button["res_700"]["alt"]   = "Установить 700x320";
-$l_button["res_700"]["width"] = 100;
-
-$l_button["res_960"]["value"] = "960x420";
-$l_button["res_960"]["alt"]   = "Установить 960x420";
-$l_button["res_960"]["width"] = 100;
-
-$l_button["res_1300"]["value"] = "1300x650";
-$l_button["res_1300"]["alt"]   = "Установить 1300x650";
-$l_button["res_1300"]["width"] = 100;
-
-
-/*****************************************************************************
- * Rebuild
- *****************************************************************************/
-
-$l_button["rebuild"]["value"] = "Rebuild";
-$l_button["rebuild"]["alt"]   = "Start rebuild"; // TRANSLATE
-$l_button["rebuild"]["width"] = 100;
-
-/*****************************************************************************
- * UPDATE
- *****************************************************************************/
-
-$l_button["demoversion"]["value"] = "Demo version";
-$l_button["demoversion"]["alt"]   = "Демо-версия";
-$l_button["demoversion"]["width"] = 100;
-
-$l_button["register"]["value"] = "Register";
-$l_button["register"]["alt"]   = "Зарегистрировать";
-$l_button["register"]["width"] = 100;
-
-$l_button["backup"]["value"] = "Backup";
-$l_button["backup"]["alt"]   = "Backup";
-$l_button["backup"]["width"] = 100;
-
-$l_button["search"]["value"] = "Search";
-$l_button["search"]["alt"]   = "Поиск";
-$l_button["search"]["width"] = 100;
-
-$l_button["replace"]["value"] = "Replace"; //Translate
-$l_button["replace"]["alt"]   = "";
-$l_button["replace"]["width"] = 100;
-
-/*****************************************************************************
- * Backup
- *****************************************************************************/
-
-$l_button["restore_backup"]["value"] = "Recover Backup";
-$l_button["restore_backup"]["alt"]   = "Восстановить Backup";
-$l_button["restore_backup"]["width"] = 180;
-
-$l_button["make_backup"]["value"] = "Create Backup";
-$l_button["make_backup"]["alt"]   = "Создать Backup";
-$l_button["make_backup"]["width"] = 150;
-
-$l_button["delete_backup"]["value"] = "Delete backup file";
-$l_button["delete_backup"]["alt"]   = "Удалить выбранный резервный файл";
-$l_button["delete_backup"]["width"] = 150;
-
-/*****************************************************************************
- * Thumbnails
- *****************************************************************************/
-
-$l_button["edit_all_thumbs"]["value"] = "Edit thumbnails...";
-$l_button["edit_all_thumbs"]["alt"]   = ""; // TRANSLATE
-$l_button["edit_all_thumbs"]["width"] = 150;
-
-/*****************************************************************************
- * Navigation
- *****************************************************************************/
-$l_button["new_item"]["value"] = "New item";
-$l_button["new_item"]["alt"]   = ""; // TRANSLATE
-$l_button["new_item"]["width"] = 200;
-
-$l_button["new_folder"]["value"] = "New folder";
-$l_button["new_folder"]["alt"]   = ""; // TRANSLATE
-$l_button["new_folder"]["width"] = 200;
-
-/*****************************************************************************
- * Logbuch Formmail
- *****************************************************************************/
-$l_button["clear_log"]["value"] = "Clear logbook";
-$l_button["clear_log"]["alt"] = "Clear logbook";
-$l_button["clear_log"]["width"] = 120;
-
-$l_button["logbook"]["value"] = "Logbook";
-$l_button["logbook"]["alt"]   = "Журнал записей";
-$l_button["logbook"]["width"] = 100;
-
-/*****************************************************************************
- * Info
- *****************************************************************************/
-$l_button["revert_published"]["value"] = "Restore published version";
-$l_button["revert_published"]["alt"] = "Discard changes and restore published version."; // TRANSLATE
-$l_button["revert_published"]["width"] = 220;
-
-$l_button["btn_messages_copy"]["alt"] = "Копировать сообщение";
-$l_button["btn_messages_create"]["alt"] = "Создать сообщение";
-$l_button["btn_messages_cut"]["alt"] = "Вырезать сообщение";
-$l_button["btn_messages_paste"]["alt"] = "Вставить сообщение";
-$l_button["btn_messages_reply"]["alt"] = "Ответить на сообщение";
-$l_button["btn_messages_tasks"]["alt"] = "Запустить систему задач";
-$l_button["btn_messages_trash"]["alt"] = "Удалить сообщение";
-$l_button["btn_messages_update"]["alt"] = "Новые сообщения";
-
-$l_button["btn_task_copy"]["alt"] = "Копировать задачу";
-$l_button["btn_task_create"]["alt"] = "Создать задачу";
-$l_button["btn_task_cut"]["alt"] = "Вырезать задачу";
-$l_button["btn_task_forward"]["alt"] = "Перенаправить задачу";
-$l_button["btn_task_messages"]["alt"] = "Запустить систему сообщений";
-$l_button["btn_task_paste"]["alt"] = "Вставить задачу";
-$l_button["btn_task_reject"]["alt"] = "Отклонить задачу";
-$l_button["btn_task_status"]["alt"] = "Обновить статус";
-$l_button["btn_task_trash"]["alt"] = "Удалить задачу";
-$l_button["btn_task_update"]["alt"] = "Новые задачи";
-$l_button["date_picker"]["alt"] = "Select date"; //TRANSLATE
-$l_button['btn_add_note']['alt']='add note'; //TRANSLATE
-$l_button['btn_function_reload']['alt']='Reload';//TRANSLATE
+/** Generated language file of webEdition CMS */
+$l_buttons_global=array(
+	
+	'addCursorPosition'=>array(
+		'alt'=>'Insert selected text at cursor position',
+		'value'=>'Insert at cursor position',
+		'width'=>'180',
+	),
+	'add'=>array(
+		'alt'=>'',
+		'value'=>'Add',
+		'width'=>'100',
+	),
+	'add_languages'=>array(
+		'alt'=>'Устанавливает новые языки в систему webEdition',
+		'value'=>'Add languages',
+		'width'=>'175',
+	),
+	'append'=>array(
+		'alt'=>'Insert selected text after the source code',
+		'value'=>'Append',
+		'width'=>'110',
+	),
+	'apply'=>array(
+		'alt'=>'',
+		'value'=>'Apply',
+		'width'=>'100',
+	),
+	'apply_current_dimension'=>array(
+		'alt'=>'Применяет текущий размер окна webEdition',
+		'value'=>'Apply current dimension',
+		'width'=>'175',
+	),
+	'apply_current_editor_dimension'=>array(
+		'alt'=>'Перенимает текущий размер редактора',
+		'value'=>'Apply current dimension',
+		'width'=>'175',
+	),
+	'attributes'=>array(
+		'alt'=>'',
+		'value'=>'Attributes...',
+		'width'=>'100',
+	),
+	'backup'=>array(
+		'alt'=>'Backup',
+		'value'=>'Backup',
+		'width'=>'100',
+	),
+	'back'=>array(
+		'alt'=>'Назад',
+		'value'=>'Back',
+		'width'=>'100',
+	),
+	'back_to_login'=>array(
+		'alt'=>'Назад к webEdition-Login',
+		'value'=>'Back',
+		'width'=>'100',
+	),
+	'browse'=>array(
+		'alt'=>'Искать в директории',
+		'value'=>'Browse',
+		'width'=>'100',
+	),
+	'btn_add_cat'=>array(
+		'alt'=>'Add category',
+	),
+	'btn_add_field'=>array(
+		'alt'=>'Add field',
+	),
+	'btn_add_file'=>array(
+		'alt'=>'Add file',
+	),
+	'btn_add_flash'=>array(
+		'alt'=>'Add Flash movie',
+	),
+	'btn_add_image'=>array(
+		'alt'=>'Add image',
+	),
+	'btn_add_link'=>array(
+		'alt'=>'Add hyperlink',
+	),
+	'btn_add_listelement'=>array(
+		'alt'=>'Add list element',
+	),
+	'btn_add_note'=>array(
+		'alt'=>'add note',
+	),
+	'btn_add_quicktime'=>array(
+		'alt'=>'Add Quicktime movie',
+	),
+	'btn_add_schedule'=>array(
+		'alt'=>'Add timed task',
+	),
+	'btn_add_template'=>array(
+		'alt'=>'Add template',
+	),
+	'btn_add_thumbnail'=>array(
+		'alt'=>'Add Thumbnail',
+	),
+	'btn_direction_down'=>array(
+		'alt'=>'Down',
+	),
+	'btn_direction_left'=>array(
+		'alt'=>'Left',
+	),
+	'btn_direction_right'=>array(
+		'alt'=>'Right',
+	),
+	'btn_direction_up'=>array(
+		'alt'=>'Up',
+	),
+	'btn_edit_edit'=>array(
+		'alt'=>'Edit',
+	),
+	'btn_edit_flash'=>array(
+		'alt'=>'Select Flash file',
+	),
+	'btn_edit_image'=>array(
+		'alt'=>'Edit image',
+	),
+	'btn_edit_include'=>array(
+		'alt'=>'Edit include file',
+	),
+	'btn_edit_link'=>array(
+		'alt'=>'Edit hyperlink',
+	),
+	'btn_edit_list'=>array(
+		'alt'=>'Edit list',
+	),
+	'btn_edit_object'=>array(
+		'alt'=>'Edit object',
+	),
+	'btn_edit_pdf'=>array(
+		'alt'=>'Select PDF file',
+	),
+	'btn_edit_quicktime'=>array(
+		'alt'=>'Edit Quicktime file',
+	),
+	'btn_edit_real'=>array(
+		'alt'=>'Select Real Player file',
+	),
+	'btn_edit_wmp'=>array(
+		'alt'=>'Select Windows Media Player file',
+	),
+	'btn_fs_back'=>array(
+		'alt'=>'One level back',
+	),
+	'btn_function_plus'=>array(
+		'alt'=>'Add',
+	),
+	'btn_function_reload'=>array(
+		'alt'=>'Reload',
+	),
+	'btn_function_search'=>array(
+		'alt'=>'Search',
+	),
+	'btn_function_trash'=>array(
+		'alt'=>'Delete',
+	),
+	'btn_function_view'=>array(
+		'alt'=>'View',
+	),
+	'btn_help'=>array(
+		'alt'=>'Help',
+	),
+	'btn_mail_resend'=>array(
+		'alt'=>'',
+	),
+	'btn_mail_send'=>array(
+		'alt'=>'',
+	),
+	'btn_messages_copy'=>array(
+		'alt'=>'Копировать сообщение',
+	),
+	'btn_messages_create'=>array(
+		'alt'=>'Создать сообщение',
+	),
+	'btn_messages_cut'=>array(
+		'alt'=>'Вырезать сообщение',
+	),
+	'btn_messages_paste'=>array(
+		'alt'=>'Вставить сообщение',
+	),
+	'btn_messages_reply'=>array(
+		'alt'=>'Ответить на сообщение',
+	),
+	'btn_messages_tasks'=>array(
+		'alt'=>'Запустить систему задач',
+	),
+	'btn_messages_trash'=>array(
+		'alt'=>'Удалить сообщение',
+	),
+	'btn_messages_update'=>array(
+		'alt'=>'Новые сообщения',
+	),
+	'btn_new_bannergroup'=>array(
+		'alt'=>'Add new banner group',
+	),
+	'btn_new_dir'=>array(
+		'alt'=>'Add new directory',
+	),
+	'btn_open_sidebar'=>array(
+		'alt'=>'Open sidebar',
+	),
+	'btn_select_image'=>array(
+		'alt'=>'Select image',
+	),
+	'btn_task_copy'=>array(
+		'alt'=>'Копировать задачу',
+	),
+	'btn_task_create'=>array(
+		'alt'=>'Создать задачу',
+	),
+	'btn_task_cut'=>array(
+		'alt'=>'Вырезать задачу',
+	),
+	'btn_task_forward'=>array(
+		'alt'=>'Перенаправить задачу',
+	),
+	'btn_task_messages'=>array(
+		'alt'=>'Запустить систему сообщений',
+	),
+	'btn_task_paste'=>array(
+		'alt'=>'Вставить задачу',
+	),
+	'btn_task_reject'=>array(
+		'alt'=>'Отклонить задачу',
+	),
+	'btn_task_status'=>array(
+		'alt'=>'Обновить статус',
+	),
+	'btn_task_trash'=>array(
+		'alt'=>'Удалить задачу',
+	),
+	'btn_task_update'=>array(
+		'alt'=>'Новые задачи',
+	),
+	'cancel'=>array(
+		'alt'=>'Отменить',
+		'value'=>'Cancel',
+		'width'=>'100',
+	),
+	'change'=>array(
+		'alt'=>'',
+		'value'=>'Change',
+		'width'=>'100',
+	),
+	'check'=>array(
+		'alt'=>'',
+		'value'=>'Check',
+		'width'=>'100',
+	),
+	'clear_log'=>array(
+		'alt'=>'Clear logbook',
+		'value'=>'Clear logbook',
+		'width'=>'120',
+	),
+	'close'=>array(
+		'alt'=>'Closes this window',
+		'value'=>'Close',
+		'width'=>'100',
+	),
+	'date_picker'=>array(
+		'alt'=>'Select date',
+	),
+	'default'=>array(
+		'alt'=>'',
+		'value'=>'Default',
+		'width'=>'100',
+	),
+	'delete'=>array(
+		'alt'=>'Удалить',
+		'value'=>'Delete',
+		'width'=>'100',
+	),
+	'delete_all'=>array(
+		'alt'=>'',
+		'value'=>'Delete all',
+		'width'=>'100',
+	),
+	'delete_backup'=>array(
+		'alt'=>'Удалить выбранный резервный файл',
+		'value'=>'Delete backup file',
+		'width'=>'150',
+	),
+	'delete_doctype'=>array(
+		'alt'=>'Удалить выбранный тип документа',
+		'value'=>'Delete document type',
+		'width'=>'174',
+	),
+	'demoversion'=>array(
+		'alt'=>'Демо-версия',
+		'value'=>'Demo version',
+		'width'=>'100',
+	),
+	'deselectAll'=>array(
+		'alt'=>'Deselect complete selection',
+		'value'=>'Deselect all',
+		'width'=>'110',
+	),
+	'editor'=>array(
+		'alt'=>'',
+		'value'=>'Start Editor',
+		'width'=>'100',
+	),
+	'edit'=>array(
+		'alt'=>'',
+		'value'=>'Edit',
+		'width'=>'100',
+	),
+	'edit_all_thumbs'=>array(
+		'alt'=>'',
+		'value'=>'Edit thumbnails...',
+		'width'=>'150',
+	),
+	'export'=>array(
+		'alt'=>'Export selected files',
+		'value'=>'Export',
+		'width'=>'100',
+	),
+	'go'=>array(
+		'alt'=>'',
+		'value'=>'Execute now',
+		'width'=>'120',
+	),
+	'iconview'=>array(
+		'alt'=>'',
+		'value'=>'Iconview',
+		'width'=>'100',
+	),
+	'ignore'=>array(
+		'alt'=>'',
+		'value'=>'Ignore',
+		'width'=>'100',
+	),
+	'import'=>array(
+		'alt'=>'Import selected file',
+		'value'=>'Import',
+		'width'=>'100',
+	),
+	'listview'=>array(
+		'alt'=>'',
+		'value'=>'Listview',
+		'width'=>'100',
+	),
+	'logbook'=>array(
+		'alt'=>'Журнал записей',
+		'value'=>'Logbook',
+		'width'=>'100',
+	),
+	'login'=>array(
+		'alt'=>'Вход в систему webEdition',
+		'value'=>'Login',
+		'width'=>'100',
+	),
+	'make_backup'=>array(
+		'alt'=>'Создать Backup',
+		'value'=>'Create Backup',
+		'width'=>'150',
+	),
+	'make_new_document'=>array(
+		'alt'=>'Создать документ',
+		'value'=>'New document',
+		'width'=>'125',
+	),
+	'newName'=>array(
+		'alt'=>'Insert a new name',
+		'value'=>'New name',
+		'width'=>'100',
+	),
+	'new_directory'=>array(
+		'alt'=>'Создать директорию',
+		'value'=>'New directory',
+		'width'=>'200',
+	),
+	'new_doctype'=>array(
+		'alt'=>'Создать новый тип документа',
+		'value'=>'New document type',
+		'width'=>'174',
+	),
+	'new_document'=>array(
+		'alt'=>'Создать документ',
+		'value'=>'New document',
+		'width'=>'200',
+	),
+	'new_entry'=>array(
+		'alt'=>'',
+		'value'=>'New Entry',
+		'width'=>'100',
+	),
+	'new_folder'=>array(
+		'alt'=>'',
+		'value'=>'New folder',
+		'width'=>'200',
+	),
+	'new_item'=>array(
+		'alt'=>'',
+		'value'=>'New item',
+		'width'=>'200',
+	),
+	'new_service'=>array(
+		'alt'=>'',
+		'value'=>'New Service',
+		'width'=>'100',
+	),
+	'new_template'=>array(
+		'alt'=>'Создать шаблон',
+		'value'=>'New template',
+		'width'=>'200',
+	),
+	'next'=>array(
+		'alt'=>'Next',
+		'value'=>'Next',
+		'width'=>'100',
+	),
+	'no'=>array(
+		'alt'=>'No',
+		'value'=>'No',
+		'width'=>'100',
+	),
+	'ok'=>array(
+		'alt'=>'Okay',
+		'value'=>'OK',
+		'width'=>'100',
+	),
+	'openVersionWizard'=>array(
+		'alt'=>'Versions-Wizard',
+		'value'=>'Versions-Wizard',
+		'width'=>'120',
+	),
+	'open'=>array(
+		'alt'=>'Open',
+		'value'=>'Open',
+		'width'=>'100',
+	),
+	'open_document'=>array(
+		'alt'=>'Открыть документ',
+		'value'=>'Open document',
+		'width'=>'200',
+	),
+	'overwrite'=>array(
+		'alt'=>'Overwrite file',
+		'value'=>'Overwrite',
+		'width'=>'100',
+	),
+	'preferences'=>array(
+		'alt'=>'Персональные настройки',
+		'value'=>'Preferences',
+		'width'=>'200',
+	),
+	'prepend'=>array(
+		'alt'=>'Insert selected text before the source code',
+		'value'=>'Prepend',
+		'width'=>'110',
+	),
+	'preview'=>array(
+		'alt'=>'Включить предварительный просмотр',
+		'value'=>'Preview',
+		'width'=>'100',
+	),
+	'properties'=>array(
+		'alt'=>'Показать свойства',
+		'value'=>'Properties',
+		'width'=>'100',
+	),
+	'publish'=>array(
+		'alt'=>'Save and publish the document',
+		'value'=>'Publish',
+		'width'=>'100',
+	),
+	'quit_delete'=>array(
+		'alt'=>'Завершить режим удаления',
+		'value'=>'Finish delete mode',
+		'width'=>'175',
+	),
+	'quit_move'=>array(
+		'alt'=>'Finish move mode',
+		'value'=>'Finish move mode',
+		'width'=>'175',
+	),
+	'rebuild'=>array(
+		'alt'=>'Start rebuild',
+		'value'=>'Rebuild',
+		'width'=>'100',
+	),
+	'refresh'=>array(
+		'alt'=>'',
+		'value'=>'Refresh',
+		'width'=>'100',
+	),
+	'register'=>array(
+		'alt'=>'Зарегистрировать',
+		'value'=>'Register',
+		'width'=>'100',
+	),
+	'reindent'=>array(
+		'alt'=>'',
+		'value'=>'Reindent code',
+		'width'=>'100',
+	),
+	'replace'=>array(
+		'alt'=>'',
+		'value'=>'Replace',
+		'width'=>'100',
+	),
+	'reset'=>array(
+		'alt'=>'',
+		'value'=>'Reset',
+		'width'=>'100',
+	),
+	'restore_backup'=>array(
+		'alt'=>'Восстановить Backup',
+		'value'=>'Recover Backup',
+		'width'=>'180',
+	),
+	'res_1024'=>array(
+		'alt'=>'Установить 1024x768',
+		'value'=>'1024x768',
+		'width'=>'100',
+	),
+	'res_1280'=>array(
+		'alt'=>'Установить 1280x960',
+		'value'=>'1280x960',
+		'width'=>'100',
+	),
+	'res_1300'=>array(
+		'alt'=>'Установить 1300x650',
+		'value'=>'1300x650',
+		'width'=>'100',
+	),
+	'res_1600'=>array(
+		'alt'=>'Установить 1600x1200',
+		'value'=>'1600x1200',
+		'width'=>'100',
+	),
+	'res_500'=>array(
+		'alt'=>'Установить 500x300',
+		'value'=>'500x300',
+		'width'=>'100',
+	),
+	'res_700'=>array(
+		'alt'=>'Установить 700x320',
+		'value'=>'700x320',
+		'width'=>'100',
+	),
+	'res_800'=>array(
+		'alt'=>'Установить 800x600',
+		'value'=>'800x600',
+		'width'=>'100',
+	),
+	'res_960'=>array(
+		'alt'=>'Установить 960x420',
+		'value'=>'960x420',
+		'width'=>'100',
+	),
+	'revert_published'=>array(
+		'alt'=>'Discard changes and restore published version.',
+		'value'=>'Restore published version',
+		'width'=>'220',
+	),
+	'root_dir'=>array(
+		'alt'=>'Go to the root directory',
+		'value'=>'/',
+		'width'=>'40',
+	),
+	'saveversion'=>array(
+		'alt'=>'Saves the template and creates a new version',
+		'value'=>'Save Version',
+		'width'=>'120',
+	),
+	'save'=>array(
+		'alt'=>'Сохранить',
+		'value'=>'Save',
+		'width'=>'100',
+	),
+	'search'=>array(
+		'alt'=>'Поиск',
+		'value'=>'Search',
+		'width'=>'100',
+	),
+	'selectAll'=>array(
+		'alt'=>'Select complete text',
+		'value'=>'Select all',
+		'width'=>'110',
+	),
+	'select'=>array(
+		'alt'=>'',
+		'value'=>'Select',
+		'width'=>'100',
+	),
+	'shopVariants'=>array(
+		'alt'=>'Редактировать варианты',
+		'value'=>'Variants',
+		'width'=>'100',
+	),
+	'startEditor'=>array(
+		'alt'=>'Start editor by using the Editor-Plugin',
+		'value'=>'Start editor',
+		'width'=>'100',
+	),
+	'thumbnails'=>array(
+		'alt'=>'Показывать иконки',
+		'value'=>'Thumbnails',
+		'width'=>'100',
+	),
+	'unpublished_pages'=>array(
+		'alt'=>'Обзор неопубликованных страниц',
+		'value'=>'Unpublished documents',
+		'width'=>'200',
+	),
+	'unpublish'=>array(
+		'alt'=>'Снять с публикации',
+		'value'=>'Unpublish',
+		'width'=>'100',
+	),
+	'upload'=>array(
+		'alt'=>'Upload file',
+		'value'=>'Upload',
+		'width'=>'100',
+	),
+	'yes'=>array(
+		'alt'=>'Yes',
+		'value'=>'Yes',
+		'width'=>'100',
+));

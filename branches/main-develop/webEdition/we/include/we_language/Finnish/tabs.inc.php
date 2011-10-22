@@ -1,43 +1,36 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: we_tabs.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_tabs = array(
-		'editor' => array(
-				'properties' => "Ominaisuudet",
-				'edit' => "Muokkaa",
-				'information' => "Tietoja",
-				'preview' => "Esikatselu",
-				'scheduler' => "Ajastin",
-				'scheduler_pro' => "Ajastin PRO",
-				'workspace' => "Työtila",
-				'meta' => "Meta-tiedot",
-				'fields' => "Kentät",
-				'search' => "Etsi",
-				));
-include(dirname(__FILE__) . '/modules/we_tabs.inc.php');
+/** Generated language file of webEdition CMS */
+$l_tabs=array(
+	
+	'editor'=>array(
+		'edit'=>'Muokkaa',
+		'fields'=>'Kentät',
+		'information'=>'Tietoja',
+		'meta'=>'Meta-tiedot',
+		'preview'=>'Esikatselu',
+		'properties'=>'Ominaisuudet',
+		'scheduler'=>'Ajastin',
+		'scheduler_pro'=>'Ajastin PRO',
+		'search'=>'Etsi',
+		'workspace'=>'Työtila',
+	),
+	'module'=>array(
+		'admin_1'=>'Tuotedokumentit',
+		'admin_2'=>'Tuoteobjektit',
+		'admin_3'=>'Tulokatsaus',
+		'admin_6'=>'Maksutyypit',
+		'ArtAttribEdit'=>'Muokkaa tuotetta',
+		'artList'=>'Kaikkien tuotenimikkeiden lista: %s',
+		'data'=>'Tiedot',
+		'orderdata'=>'Tilaus- ja asiakastiedot',
+		'orderlist'=>'Kaikki asiakkaan tilaukset',
+		'overview'=>'Yleiset',
+		'PayMethodEdit'=>'Muokkaa maksutyyppejä',
+		'permissions'=>'Oikeudet',
+		'placement'=>'Sijoittelu',
+		'preferences'=>'Ominaisuudet',
+		'properties'=>'Ominaisuudet',
+		'revenueTotal'=>'Tulot vuonna %s',
+		'statistics'=>'Statistiikka',
+		'workspace'=>'Työtila',
+));

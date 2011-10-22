@@ -1,85 +1,56 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: date.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_date = array(
-		'format' => array(
-				'default' => 'd-m-Y - H:i',
-				'mysqlDate' => '%d.%m.%Y',
+/** Generated language file of webEdition CMS */
+$l_date=array(
+	
+	'day'=>array(
+		'long'=>array(
+			'0'=>'Sunnuntai',
+			'1'=>'Maanantai',
+			'2'=>'Tiistai',
+			'3'=>'Keskiviikko',
+			'4'=>'Torstai',
+			'5'=>'Perjantai',
+			'6'=>'Lauantai',
 		),
-		'day' => array(
-				'short' => array(
-						"Su",
-						"Ma",
-						"Ti",
-						"Ke",
-						"To",
-						"Pe",
-						"La",
-				),
-				'long' => array(
-						"Sunnuntai",
-						"Maanantai",
-						"Tiistai",
-						"Keskiviikko",
-						"Torstai",
-						"Perjantai",
-						"Lauantai",
-				),
+		'short'=>array(
+			'0'=>'Su',
+			'1'=>'Ma',
+			'2'=>'Ti',
+			'3'=>'Ke',
+			'4'=>'To',
+			'5'=>'Pe',
+			'6'=>'La',
+	),),
+	'format'=>array(
+		'default'=>'d-m-Y - H:i',
+		'mysqlDate'=>'%d.%m.%Y',
+	),
+	'month'=>array(
+		'long'=>array(
+			'0'=>'Tammikuu',
+			'10'=>'Marraskuu',
+			'11'=>'Joulukuu',
+			'1'=>'Helmikuu',
+			'2'=>'Maaliskuu',
+			'3'=>'Huhtikuu',
+			'4'=>'Toukokuu',
+			'5'=>'Kesäkuu',
+			'6'=>'Heinäkuu',
+			'7'=>'Elokuu',
+			'8'=>'Syyskuu',
+			'9'=>'Lokakuu',
 		),
-		'month' => array(
-				'short' => array(
-						"Tam",
-						"Hel",
-						"Maa",
-						"Huh",
-						"Tou",
-						"Kes",
-						"Hei",
-						"Elo",
-						"Syy",
-						"Lok",
-						"Mar",
-						"Jou",
-				),
-				'long' => array(
-						"Tammikuu",
-						"Helmikuu",
-						"Maaliskuu",
-						"Huhtikuu",
-						"Toukokuu",
-						"Kesäkuu",
-						"Heinäkuu",
-						"Elokuu",
-						"Syyskuu",
-						"Lokakuu",
-						"Marraskuu",
-						"Joulukuu",
-				),
-		),
-);
+		'short'=>array(
+			'0'=>'Tam',
+			'10'=>'Mar',
+			'11'=>'Jou',
+			'1'=>'Hel',
+			'2'=>'Maa',
+			'3'=>'Huh',
+			'4'=>'Tou',
+			'5'=>'Kes',
+			'6'=>'Hei',
+			'7'=>'Elo',
+			'8'=>'Syy',
+			'9'=>'Lok',
+)));

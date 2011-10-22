@@ -1,43 +1,36 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: we_tabs.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_tabs = array(
-		'editor' => array(
-				'properties' => "Свойства",
-				'edit' => "Редактировать",
-				'information' => "Справка",
-				'preview' => "Предварительный просмотр",
-				'scheduler' => "Планировщик",
-				'scheduler_pro' => "Планировщик ПРО",
-				'workspace' => "Рабочее пространство",
-				'meta' => "Мета-информация",
-				'fields' => "Поля",
-				'search' => "Поиск",
-				));
-include(dirname(__FILE__) . '/modules/we_tabs.inc.php');
+/** Generated language file of webEdition CMS */
+$l_tabs=array(
+	
+	'editor'=>array(
+		'edit'=>'Редактировать',
+		'fields'=>'Поля',
+		'information'=>'Справка',
+		'meta'=>'Мета-информация',
+		'preview'=>'Предварительный просмотр',
+		'properties'=>'Свойства',
+		'scheduler'=>'Планировщик',
+		'scheduler_pro'=>'Планировщик ПРО',
+		'search'=>'Поиск',
+		'workspace'=>'Рабочее пространство',
+	),
+	'module'=>array(
+		'admin_1'=>'Документы товара',
+		'admin_2'=>'Объекты товара',
+		'admin_3'=>'Выручка всего',
+		'admin_6'=>'Типы платежей',
+		'ArtAttribEdit'=>'Редактировать товар',
+		'artList'=>'Перечень всех товаров: %s',
+		'data'=>'Данные',
+		'orderdata'=>'Order and customer data',
+		'orderlist'=>'All customer\'s orders',
+		'overview'=>'Обзор',
+		'PayMethodEdit'=>'Редактировать типы платежей',
+		'permissions'=>'Права',
+		'placement'=>'Размещение',
+		'preferences'=>'Preferences',
+		'properties'=>'Свойства',
+		'revenueTotal'=>'Годовой оборот (выручка) за  %s',
+		'statistics'=>'Статистика',
+		'workspace'=>'Рабочее пространство',
+));

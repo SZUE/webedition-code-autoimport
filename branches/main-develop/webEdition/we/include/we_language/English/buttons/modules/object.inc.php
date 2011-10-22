@@ -1,56 +1,34 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: banner.inc.php
- * Provides language strings.
- * Language: Deutsch
- */
-
-$l_button["unpublished_objects"]["value"] = "Unpublished objects";
-$l_button["unpublished_objects"]["alt"]   = "Survey of unpublished objects ...";
-$l_button["unpublished_objects"]["width"] = 200;
-
-$l_button["new_object"]["value"] = "New object";
-$l_button["new_object"]["alt"]   = "Create a new object ...";
-$l_button["new_object"]["width"] = 200;
-
-$l_button["make_new_object"]["value"] = "New object";
-$l_button["make_new_object"]["alt"]   = "Create a new object ...";
-$l_button["make_new_object"]["width"] = 100;
-
-$l_button["new_class"]["value"] = "New class";
-$l_button["new_class"]["alt"]   = "Create a new class ...";
-$l_button["new_class"]["width"] = 200;
-
-$l_button["ws_from_class"]["value"] = "Adopt from class";
-$l_button["ws_from_class"]["alt"]   = "Adobt all workspaces from the class ...";
-$l_button["ws_from_class"]["width"] = 200;
-
-$l_button["workspace_button"]["value"] = "Workspace";
-$l_button["workspace_button"]["alt"]   = "Select workspace";
-$l_button["workspace_button"]["width"] = 100;
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_object=array(
+	
+	'make_new_object'=>array(
+		'alt'=>'Create a new object ...',
+		'value'=>'New object',
+		'width'=>'100',
+	),
+	'new_class'=>array(
+		'alt'=>'Create a new class ...',
+		'value'=>'New class',
+		'width'=>'200',
+	),
+	'new_object'=>array(
+		'alt'=>'Create a new object ...',
+		'value'=>'New object',
+		'width'=>'200',
+	),
+	'unpublished_objects'=>array(
+		'alt'=>'Survey of unpublished objects ...',
+		'value'=>'Unpublished objects',
+		'width'=>'200',
+	),
+	'workspace_button'=>array(
+		'alt'=>'Select workspace',
+		'value'=>'Workspace',
+		'width'=>'100',
+	),
+	'ws_from_class'=>array(
+		'alt'=>'Adobt all workspaces from the class ...',
+		'value'=>'Adopt from class',
+		'width'=>'200',
+));

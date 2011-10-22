@@ -1,87 +1,56 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: date.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_date = array(
-		'format' => array(
-				'default' => 'J-m-d - U:i',
-				'mysqlDate' => '%J-%m-%d',
+/** Generated language file of webEdition CMS */
+$l_date=array(
+	
+	'day'=>array(
+		'long'=>array(
+			'0'=>'Zondag',
+			'1'=>'Maandag',
+			'2'=>'Dinsdag',
+			'3'=>'Woensdag',
+			'4'=>'Donderdag',
+			'5'=>'Vrijdag',
+			'6'=>'Zaterdag',
 		),
-		'day' => array(
-				'short' => array(
-						"Zo",
-						"Ma",
-						"Di",
-						"Wo",
-						"Do",
-						"Vr",
-						"Za",
-				),
-				'long' => array(
-						"Zondag",
-						"Maandag",
-						"Dinsdag",
-						"Woensdag",
-						"Donderdag",
-						"Vrijdag",
-						"Zaterdag",
-				),
+		'short'=>array(
+			'0'=>'Zo',
+			'1'=>'Ma',
+			'2'=>'Di',
+			'3'=>'Wo',
+			'4'=>'Do',
+			'5'=>'Vr',
+			'6'=>'Za',
+	),),
+	'format'=>array(
+		'default'=>'J-m-d - U:i',
+		'mysqlDate'=>'%J-%m-%d',
+	),
+	'month'=>array(
+		'long'=>array(
+			'0'=>'Januari',
+			'10'=>'November',
+			'11'=>'December',
+			'1'=>'Februari',
+			'2'=>'Maart',
+			'3'=>'April',
+			'4'=>'Mei',
+			'5'=>'Juni',
+			'6'=>'Juli',
+			'7'=>'August',
+			'8'=>'September',
+			'9'=>'Oktober',
 		),
-		'month' => array(
-				'short' => array(
-						"Jan", // TRANSLATE
-						"Feb", // TRANSLATE
-						"Mar", // TRANSLATE
-						"Apr", // TRANSLATE
-						"Mei",
-						"Jun", // TRANSLATE
-						"Jul", // TRANSLATE
-						"Aug", // TRANSLATE
-						"Sep", // TRANSLATE
-						"Okt",
-						"Nov", // TRANSLATE
-						"Dec", // TRANSLATE
-				),
-				'long' => array(
-						"Januari",
-						"Februari",
-						"Maart",
-						"April", // TRANSLATE
-						"Mei",
-						"Juni",
-						"Juli",
-						"August", // TRANSLATE
-						"September", // TRANSLATE
-						"Oktober",
-						"November", // TRANSLATE
-						"December", // TRANSLATE
-				),
-		),
-);
+		'short'=>array(
+			'0'=>'Jan',
+			'10'=>'Nov',
+			'11'=>'Dec',
+			'1'=>'Feb',
+			'2'=>'Mar',
+			'3'=>'Apr',
+			'4'=>'Mei',
+			'5'=>'Jun',
+			'6'=>'Jul',
+			'7'=>'Aug',
+			'8'=>'Sep',
+			'9'=>'Okt',
+)));

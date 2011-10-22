@@ -1,55 +1,29 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: users.inc.php
- *
- * Provides language strings.
- *
- * Language: Deutsch
- */
-
-$l_button["create_user"]["value"] = "Neuer Benutzer";
-$l_button["create_user"]["alt"]   = "Neuer Benutzer erstellen";
-$l_button["create_user"]["width"] = 150;
-
-$l_button["create_group"]["value"] = "Neue Gruppe";
-$l_button["create_group"]["alt"]   = "Neue Gruppe erstellen";
-$l_button["create_group"]["width"] = 150;
-
-$l_button["create_alias"]["value"] = "Neues Alias";
-$l_button["create_alias"]["alt"]   = "Neues Alias erstellen";
-$l_button["create_alias"]["width"] = 150;
-
-$l_button["uncheckall"]["value"] = "Alle abwählen";
-$l_button["uncheckall"]["alt"]   = "Alle Rechte abwählen";
-$l_button["uncheckall"]["width"] = 150;
-
-$l_button["checkall"]["value"] = "Alle anwählen";
-$l_button["checkall"]["alt"]   = "Alle Rechte anwählen";
-$l_button["checkall"]["width"] = 150;
-
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_users=array(
+	
+	'checkall'=>array(
+		'alt'=>'Alle Rechte anwählen',
+		'value'=>'Alle anwählen',
+		'width'=>'150',
+	),
+	'create_alias'=>array(
+		'alt'=>'Neues Alias erstellen',
+		'value'=>'Neues Alias',
+		'width'=>'150',
+	),
+	'create_group'=>array(
+		'alt'=>'Neue Gruppe erstellen',
+		'value'=>'Neue Gruppe',
+		'width'=>'150',
+	),
+	'create_user'=>array(
+		'alt'=>'Neuer Benutzer erstellen',
+		'value'=>'Neuer Benutzer',
+		'width'=>'150',
+	),
+	'uncheckall'=>array(
+		'alt'=>'Alle Rechte abwählen',
+		'value'=>'Alle abwählen',
+		'width'=>'150',
+));

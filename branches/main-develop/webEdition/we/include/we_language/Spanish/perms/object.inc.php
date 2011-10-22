@@ -1,43 +1,15 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: object.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_perms_object = array(
-		'perm_group_title' => "DB/Object Module", // TRANSLATE
-
-		'CAN_SEE_OBJECTFILES' => "El usuario puede ver los objetos",
-		'NEW_OBJECTFILE' => "El usuario puede crear objetos",
-		'NEW_OBJECTFILE_FOLDER' => "El usuario puede crear directorios de objetos",
-		'DELETE_OBJECTFILE' => "El usuario puede borrar objetos",
-		'MOVE_OBJECTFILE' => "The user is allowed to move objects.", // TRANSLATE
-		'CAN_SEE_OBJECTS' => "El usuario puede ver las clases",
-		'NEW_OBJECT' => "El usuario puede crear clases",
-		'DELETE_OBJECT' => "El usuario puede borrar las clases",
-		'CAN_SELECT_OTHER_USERS_OBJECTS' => "The user is allowed to select objects outside of his workspace.", // TRANSLATE
-		'CAN_COPY_OBJECTS' => "The user is allowed to copy object folders", // TRANSLATE
+/** Generated language file of webEdition CMS */
+$l_perms_object=array(
+	'CAN_COPY_OBJECTS'=>'The user is allowed to copy object folders',
+	'CAN_SEE_OBJECTFILES'=>'El usuario puede ver los objetos',
+	'CAN_SEE_OBJECTS'=>'El usuario puede ver las clases',
+	'CAN_SELECT_OTHER_USERS_OBJECTS'=>'The user is allowed to select objects outside of his workspace.',
+	'DELETE_OBJECTFILE'=>'El usuario puede borrar objetos',
+	'DELETE_OBJECT'=>'El usuario puede borrar las clases',
+	'MOVE_OBJECTFILE'=>'The user is allowed to move objects.',
+	'NEW_OBJECTFILE'=>'El usuario puede crear objetos',
+	'NEW_OBJECTFILE_FOLDER'=>'El usuario puede crear directorios de objetos',
+	'NEW_OBJECT'=>'El usuario puede crear clases',
+	'perm_group_title'=>'DB/Object Module',
 );

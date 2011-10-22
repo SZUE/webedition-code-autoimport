@@ -1,535 +1,626 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: global.inc.php
- * Provides language strings.
- * Language: English
- */
-
-
-/*****************************************************************************
- * LOGIN-SCREEN
- *****************************************************************************/
-
-$l_button["login"]["value"] = "Kirjaudu";
-$l_button["login"]["alt"] = "Kirjaudu webEdition -järjestelmään";
-$l_button["login"]["width"] = 100;
-
-$l_button["back_to_login"]["value"] = "Takaisin";
-$l_button["back_to_login"]["alt"] = "Takaisin webEdition-kirjautumisikkunaan";
-$l_button["back_to_login"]["width"] = 100;
-
-/*****************************************************************************
- * STARTMENU
- *****************************************************************************/
-
-$l_button["open_document"]["value"] = "Avaa dokumentti";
-$l_button["open_document"]["alt"] = "Avaa dokumentti";
-$l_button["open_document"]["width"] = 200;
-
-$l_button["new_document"]["value"] = "Uusi dokumentti";
-$l_button["new_document"]["alt"] = "Uusi dokumentti";
-$l_button["new_document"]["width"] = 200;
-
-$l_button["new_template"]["value"] = "Uusi sivupohja";
-$l_button["new_template"]["alt"] = "Uusi sivupohja";
-$l_button["new_template"]["width"] = 200;
-
-$l_button["new_directory"]["value"] = "Uusi hakemisto";
-$l_button["new_directory"]["alt"] = "Uusi hakemisto";
-$l_button["new_directory"]["width"] = 200;
-
-$l_button["unpublished_pages"]["value"] = "Julkaisemattomat sivut";
-$l_button["unpublished_pages"]["alt"] = "Julkaisemattomat sivut";
-$l_button["unpublished_pages"]["width"] = 200;
-
-$l_button["preferences"]["value"] = "Asetukset";
-$l_button["preferences"]["alt"] = "Asetukset";
-$l_button["preferences"]["width"] = 200;
-
-/*****************************************************************************
- * DELETE SCREEN
- *****************************************************************************/
-
-$l_button["quit_delete"]["value"] = "Lopeta poistotila";
-$l_button["quit_delete"]["alt"] = "Lopeta poistotila";
-$l_button["quit_delete"]["width"] = 175;
-
-/*****************************************************************************
- * MOVE SCREEN
- *****************************************************************************/
-
-$l_button["quit_move"]["value"] = "Lopeta siirtotila";
-$l_button["quit_move"]["alt"] = "Lopeta siirtotila";
-$l_button["quit_move"]["width"] = 175;
-
-/*****************************************************************************
- * STANDARD
- *****************************************************************************/
-
-$l_button["ok"]["value"] = "OK";
-$l_button["ok"]["alt"]   = "Ok";
-$l_button["ok"]["width"] = 100;
-
-$l_button["cancel"]["value"] = "Peruuta";
-$l_button["cancel"]["alt"] = "Peruuta";
-$l_button["cancel"]["width"] = 100;
-
-$l_button["yes"]["value"] = "Kyllä";
-$l_button["yes"]["alt"]   = "Kyllä";
-$l_button["yes"]["width"] = 100;
-
-$l_button["no"]["value"] = "Ei";
-$l_button["no"]["alt"]   = "Ei";
-$l_button["no"]["width"] = 100;
-
-$l_button["save"]["value"] = "Tallenna";
-$l_button["save"]["alt"] = "Tallenna";
-$l_button["save"]["width"] = 100;
-
-$l_button["publish"]["value"] = "Julkaise";
-$l_button["publish"]["alt"]   = "Tallenna ja julkaise";
-$l_button["publish"]["width"] = 100;
-
-$l_button["saveversion"]["value"] = "Save Version";// TRANSLATE
-$l_button["saveversion"]["alt"]   = "Saves the template and creates a new version";// TRANSLATE
-$l_button["saveversion"]["width"] = 120;// TRANSLATE
-
-$l_button["delete"]["value"] = "Poista";
-$l_button["delete"]["alt"] = "Poista";
-$l_button["delete"]["width"] = 100;
-
-$l_button["go"]["value"] = "Suorita nyt";
-$l_button["go"]["alt"]   = "";
-$l_button["go"]["width"] = 120;
-
-$l_button["openVersionWizard"]["value"] = "Versio-Velho";
-$l_button["openVersionWizard"]["alt"]   = "Versio-Velho";
-$l_button["openVersionWizard"]["width"] = 120;
-
-$l_button["next"]["value"] = "Seuraava";
-$l_button["next"]["alt"]   = "Seuraava";
-$l_button["next"]["width"] = 100;
-
-$l_button["back"]["value"] = "Edellinen";
-$l_button["back"]["alt"] = "Edellinen";
-$l_button["back"]["width"] = 100;
-
-$l_button["open"]["value"] = "Avaa";
-$l_button["open"]["alt"] = "Avaa";
-$l_button["open"]["width"] = 100;
-
-$l_button["default"]["value"] = "Vakio";
-$l_button["default"]["alt"] = "Vakio";
-$l_button["default"]["width"] = 100;
-
-$l_button["reset"]["value"] = "Nollaa";
-$l_button["reset"]["alt"] = "Nollaa ...";
-$l_button["reset"]["width"] = 100;
-
-/*****************************************************************************
- * SAVING, PUBLISHING, ETC.
- *****************************************************************************/
-
-$l_button["unpublish"]["value"] = "Poista julkaisusta";
-$l_button["unpublish"]["alt"] = "Poista julkaisusta";
-$l_button["unpublish"]["width"] = 160;
-
-
-/*****************************************************************************
- * MAKE AN NEW DOCUMENT BASED ON TEMPLATE
- *****************************************************************************/
-
-$l_button["make_new_document"]["value"] = "Uusi dokumentti";
-$l_button["make_new_document"]["alt"] = "Luo uusi dokumentti";
-$l_button["make_new_document"]["width"] = 125;
-
-/*****************************************************************************
- * SUPER-EASY-EDIT-MODE
- *****************************************************************************/
-
-$l_button["preview"]["value"] = "Esikatsele";
-$l_button["preview"]["alt"] = "Esikatsele";
-$l_button["preview"]["width"] = 120;
-
-$l_button["properties"]["value"] = "Ominaisuudet";
-$l_button["properties"]["alt"] = "Ominaisuudet";
-$l_button["properties"]["width"] = 100;
-
-$l_button["thumbnails"]["value"] = "Pikkukuvat";
-$l_button["thumbnails"]["alt"]   = "Näytä pikkukuvat";
-$l_button["thumbnails"]["width"] = 100;
-
-$l_button["shopVariants"]["value"] = "Variantit";
-$l_button["shopVariants"]["alt"] = "Muokkaa variantteja";
-$l_button["shopVariants"]["width"] = 100;
-
-/*****************************************************************************
- * DOCUMENT TYPES
- *****************************************************************************/
-
-$l_button["new_doctype"]["value"] = "Uusi dokumenttityyppi";
-$l_button["new_doctype"]["alt"] = "Luo uusi dokumenttityyppi";
-$l_button["new_doctype"]["width"] = 174;
-
-$l_button["delete_doctype"]["value"] = "Poista dokumenttityyppi";
-$l_button["delete_doctype"]["alt"] = "Poista dokumenttityyppi";
-$l_button["delete_doctype"]["width"] = 174;
-
-/*****************************************************************************
- * XML
- *****************************************************************************/
-
-$l_button["import"]["value"] = "Tuo";
-$l_button["import"]["alt"]   = "Tuo valitut tiedostot";
-$l_button["import"]["width"] = 100;
-
-$l_button["export"]["value"] = "Vie";
-$l_button["export"]["alt"]   = "Vie valitut tiedostot";
-$l_button["export"]["width"] = 100;
-
-$l_button["browse"]["value"] = "Selaa";
-$l_button["browse"]["alt"] = "Selaa hakemistoa";
-$l_button["browse"]["width"] = 100;
-
-/*****************************************************************************
- * FILE-SELECTOR
- *****************************************************************************/
-
-$l_button["root_dir"]["value"] = "/";
-$l_button["root_dir"]["alt"]   = "Mene hakemiston juureen";
-$l_button["root_dir"]["width"] = 40;
-
-
-/*****************************************************************************
- * UPLOAD-DIALOG
- *****************************************************************************/
-
-$l_button["upload"]["value"] = "Lataa";
-$l_button["upload"]["alt"]   = "Lataa tiedosto";
-$l_button["upload"]["width"] = 100;
-
-$l_button["close"]["value"] = "Sulje";
-$l_button["close"]["alt"]   = "Sulje webEdition";
-$l_button["close"]["width"] = 100;
-
-$l_button["overwrite"]["value"] = "Korvaa";
-$l_button["overwrite"]["alt"]   = "Korvaa tiedosto";
-$l_button["overwrite"]["width"] = 100;
-
-$l_button["newName"]["value"] = "Uusi nimi";
-$l_button["newName"]["alt"]   = "Luo uusi nimi";
-$l_button["newName"]["width"] = 100;
-
-
-/*****************************************************************************
- * PREFERENCES
- *****************************************************************************/
-
-$l_button["add_languages"]["value"] = "Lisää kieliä";
-$l_button["add_languages"]["alt"]   = "Asenna muita kieliä webEditioniin";
-$l_button["add_languages"]["width"] = 175;
-
-$l_button["apply_current_dimension"]["value"] = "Aseta valitut mitat";
-$l_button["apply_current_dimension"]["alt"]   = "Aseta valitut mitat";
-$l_button["apply_current_dimension"]["width"] = 175;
-
-$l_button["res_800"]["value"] = "800x600";
-$l_button["res_800"]["alt"]   = "Aseta 800x600";
-$l_button["res_800"]["width"] = 100;
-
-$l_button["res_1024"]["value"] = "1024x768";
-$l_button["res_1024"]["alt"]   = "Aseta 1024x768";
-$l_button["res_1024"]["width"] = 100;
-
-$l_button["res_1280"]["value"] = "1280x960";
-$l_button["res_1280"]["alt"]   = "Aseta 1280x960";
-$l_button["res_1280"]["width"] = 100;
-
-$l_button["res_1600"]["value"] = "1600x1200";
-$l_button["res_1600"]["alt"]   = "Aseta 1600x1200";
-$l_button["res_1600"]["width"] = 100;
-
-$l_button["apply_current_editor_dimension"]["value"] = "Aseta valitut mitat";
-$l_button["apply_current_editor_dimension"]["alt"]   = "Aseta valitut mitat";
-$l_button["apply_current_editor_dimension"]["width"] = 175;
-
-$l_button["res_500"]["value"] = "500x300";
-$l_button["res_500"]["alt"]   = "Aseta 500x300";
-$l_button["res_500"]["width"] = 100;
-
-$l_button["res_700"]["value"] = "700x320";
-$l_button["res_700"]["alt"]   = "Aseta 700x320";
-$l_button["res_700"]["width"] = 100;
-
-$l_button["res_960"]["value"] = "960x420";
-$l_button["res_960"]["alt"]   = "Aseta 960x420";
-$l_button["res_960"]["width"] = 100;
-
-$l_button["res_1300"]["value"] = "1300x650";
-$l_button["res_1300"]["alt"]   = "Aseta 1300x650";
-$l_button["res_1300"]["width"] = 100;
-
-
-/*****************************************************************************
- * Rebuild
- *****************************************************************************/
-
-$l_button["rebuild"]["value"] = "Uudelleenrakennus";
-$l_button["rebuild"]["alt"]   = "Start rebuild...";
-$l_button["rebuild"]["width"] = 100;
-
-/*****************************************************************************
- * UPDATE
- *****************************************************************************/
-
-$l_button["demoversion"]["value"] = "Demoversio";
-$l_button["demoversion"]["alt"]   = "Demoversio";
-$l_button["demoversion"]["width"] = 100;
-
-$l_button["register"]["value"] = "Rekisteröi";
-$l_button["register"]["alt"]   = "Rekisteröi";
-$l_button["register"]["width"] = 100;
-
-$l_button["backup"]["value"] = "Varmuuskopioi";
-$l_button["backup"]["alt"]   = "Ota varmuuskopio";
-$l_button["backup"]["width"] = 100;
-
-$l_button["search"]["value"] = "Hae";
-$l_button["search"]["alt"]   = "Hae";
-$l_button["search"]["width"] = 100;
-
-$l_button["replace"]["value"] = "Replace"; //Translate
-$l_button["replace"]["alt"]   = "";
-$l_button["replace"]["width"] = 100;
-
-/*****************************************************************************
- * Backup
- *****************************************************************************/
-
-$l_button["restore_backup"]["value"] = "Palauta varmuuskopio";
-$l_button["restore_backup"]["alt"]   = "Palauta varmuuskopiosta";
-$l_button["restore_backup"]["width"] = 180;
-
-$l_button["make_backup"]["value"] = "Luo varmuuskopio";
-$l_button["make_backup"]["alt"]   = "Luo varmuuskopio";
-$l_button["make_backup"]["width"] = 150;
-
-$l_button["delete_backup"]["value"] = "Poista varmuuskopio";
-$l_button["delete_backup"]["alt"]   = "Poista varmuuskopiotiedosto";
-$l_button["delete_backup"]["width"] = 150;
-
-/*****************************************************************************
- * Thumbnails
- *****************************************************************************/
-
-$l_button["edit_all_thumbs"]["value"] = "Muokkaa pikkukuvia...";
-$l_button["edit_all_thumbs"]["alt"]   = "Muokkaa pikkukuvia";
-$l_button["edit_all_thumbs"]["width"] = 150;
-
-/*****************************************************************************
- * Navigation
- *****************************************************************************/
-$l_button["new_item"]["value"] = "Uusi linkki";
-$l_button["new_item"]["alt"]   = "Uusi linkki";
-$l_button["new_item"]["width"] = 200;
-
-$l_button["new_folder"]["value"] = "Uusi kansio";
-$l_button["new_folder"]["alt"]   = "Uusi kansio";
-$l_button["new_folder"]["width"] = 200;
-
-/*****************************************************************************
- * Logbuch Formmail
- *****************************************************************************/
-$l_button["clear_log"]["value"] = "Tyhjennä loki";
-$l_button["clear_log"]["alt"] = "Tyhjennä loki";
-$l_button["clear_log"]["width"] = 120;
-
-$l_button["logbook"]["value"] = "Loki";
-$l_button["logbook"]["alt"]   = "Näytä lokikirja";
-$l_button["logbook"]["width"] = 100;
-
-/*****************************************************************************
- * Info
- *****************************************************************************/
-$l_button["revert_published"]["value"] = "Palauta julkaistu versio";
-$l_button["revert_published"]["alt"] = "Hylkää muutokset ja palauta julkaistu versio.";
-$l_button["revert_published"]["width"] = 240;
-
-$l_button["delete_all"]["value"] = "Poista kaikki";
-$l_button["delete_all"]["alt"]   = "Poista kaikki";
-$l_button["delete_all"]["width"] = 100;
-
-$l_button["add"]["value"] = "Lisää";
-$l_button["add"]["alt"] = "Lisää";
-$l_button["add"]["width"] = 100;
-
-$l_button["select"]["value"] = "Valitse";
-$l_button["select"]["alt"] = "Valitse";
-$l_button["select"]["width"] = 100;
-
-$l_button["edit"]["value"] = "Muokkaa";
-$l_button["edit"]["alt"] = "Muokkaa";
-$l_button["edit"]["width"] = 100;
-
-$l_button["editor"]["value"] = "Käynnistä editori";
-$l_button["editor"]["alt"] = "Käynnistä editori";
-$l_button["editor"]["width"] = 120;
-
-$l_button["new_service"]["value"] = "Uusi palvelu";
-$l_button["new_service"]["alt"] = "Uusi palvelu";
-$l_button["new_service"]["width"] = 100;
-
-$l_button["new_entry"]["value"] = "Uusi linkki";
-$l_button["new_entry"]["alt"] = "Uusi linkki";
-$l_button["new_entry"]["width"] = 100;
-
-$l_button["attributes"]["value"] = "Attribuutit...";
-$l_button["attributes"]["alt"] = "Ominaisuudet...";
-$l_button["attributes"]["width"] = 100;
-
-$l_button["selectAll"]["value"] = "Valitse kaikki";
-$l_button["selectAll"]["alt"]   = "Valitse kaikki";
-$l_button["selectAll"]["width"] = 140;
-
-$l_button["deselectAll"]["value"] = "Kumoa valinta";
-$l_button["deselectAll"]["alt"]   = "Kumoa valinta";
-$l_button["deselectAll"]["width"] = 120;
-
-$l_button["prepend"]["value"] = "Liitä eteen";
-$l_button["prepend"]["alt"]   = "Liitä valittu teksti ennen lähdekoodia";
-$l_button["prepend"]["width"] = 140;
-
-$l_button["append"]["value"] = "Liitä jälkeen";
-$l_button["append"]["alt"]   = "Liitä valittu teksti lähdekoodin jälkeen";
-$l_button["append"]["width"] = 140;
-
-$l_button["addCursorPosition"]["value"] = "Insert at cursor position";
-$l_button["addCursorPosition"]["alt"]   = "Insert selected text at cursor position";
-$l_button["addCursorPosition"]["width"] = 180;
-
-$l_button["startEditor"]["value"] = "Käynnistä editori";
-$l_button["startEditor"]["alt"]   = "Käynnistä editori käyttämällä Editor-Plugin";
-$l_button["startEditor"]["width"] = 120;
-
-$l_button["refresh"]["value"] = "Päivitä";
-$l_button["refresh"]["alt"]   = "Päivitä";
-$l_button["refresh"]["width"] = 100;
-
-$l_button["ignore"]["value"] = "Hylkää";
-$l_button["ignore"]["alt"]   = "Hylkää";
-$l_button["ignore"]["width"] = 100;
-
-$l_button["change"]["value"] = "Muuta";
-$l_button["change"]["alt"]   = "Muuta";
-$l_button["change"]["width"] = 100;
-
-$l_button["apply"]["value"] = "Käytä";
-$l_button["apply"]["alt"]   = "Käytä";
-$l_button["apply"]["width"] = 100;
-
-$l_button["check"]["value"] = "Tarkista";
-$l_button["check"]["alt"]   = "Tarkista";
-$l_button["check"]["width"] = 100;
-
-$l_button["iconview"]["value"] = "Iconview";
-$l_button["iconview"]["alt"]   = "Iconview";
-$l_button["iconview"]["width"] = 100;
-
-$l_button["listview"]["value"] = "Listview";
-$l_button["listview"]["alt"]   = "Listview";
-$l_button["listview"]["width"] = 100;
-
-$l_button["reindent"]["value"] = "Reindent code";
-$l_button["reindent"]["alt"]   = "";
-$l_button["reindent"]["width"] = 100;
-
-
-$l_button["btn_messages_copy"]["alt"] = "Kopioi viesti(t)";
-$l_button["btn_messages_create"]["alt"] = "Luo viesti";
-$l_button["btn_messages_cut"]["alt"] = "Leikkaa viesti(t)";
-$l_button["btn_messages_paste"]["alt"] = "Liitä viesti(t)";
-$l_button["btn_messages_reply"]["alt"] = "Vastaa viesti(in)";
-$l_button["btn_messages_tasks"]["alt"] = "Suorita Tehtävänhallinta";
-$l_button["btn_messages_trash"]["alt"] = "Poista viesti(t)";
-$l_button["btn_messages_update"]["alt"] = "Etsi uudet viestit";
-
-$l_button["btn_task_copy"]["alt"] = "Kopioi tehtävä(t)";
-$l_button["btn_task_create"]["alt"] = "Luo tehtävä(t)";
-$l_button["btn_task_cut"]["alt"] = "Leikkaa tehtävä(t)";
-$l_button["btn_task_forward"]["alt"] = "Edelleenlähetä tehtävä(t)";
-$l_button["btn_task_messages"]["alt"] = "Suorita viestijärjestelmä";
-$l_button["btn_task_paste"]["alt"] = "Liitä tehtävä(t)";
-$l_button["btn_task_reject"]["alt"] = "Estä tehtävä(t)";
-$l_button["btn_task_status"]["alt"] = "Päivitä tila";
-$l_button["btn_task_trash"]["alt"] = "Poista tehtävä(t)";
-$l_button["btn_task_update"]["alt"] = "Etsi uusia tehtävät";
-
-$l_button["btn_add_field"]["alt"] = "Lisää kenttä";
-$l_button["btn_add_link"]["alt"] = "Lisää hyperlinkki";
-$l_button["btn_add_listelement"]["alt"] = "Lisää lista elementti";
-$l_button["btn_add_schedule"]["alt"] = "Lisää ajastettu tehtävä";
-$l_button["btn_add_template"]["alt"] = "Lisää sivupohja";
-$l_button["btn_add_image"]["alt"] = "Lisää kuva";
-$l_button["btn_add_thumbnail"]["alt"] = "Lisää esikatselukuva";
-$l_button["btn_add_flash"]["alt"] = "Lisää flash tiedosto";
-$l_button["btn_add_quicktime"]["alt"] = "Lisää Quicktime tiedosto";
-$l_button["btn_add_file"]["alt"] = "Lisää tiedosto";
-$l_button["btn_add_cat"]["alt"] = "Lisää kategoria";
-$l_button["btn_fs_back"]["alt"] = "Taaksepäin";
-$l_button["btn_new_dir"]["alt"] = "Uusi hakemisto";
-$l_button["btn_new_bannergroup"]["alt"] = "Luo uusi banneriryhmä";
-
-$l_button["btn_direction_down"]["alt"] = "Alas";
-$l_button["btn_direction_left"]["alt"] = "Vasemalle";
-$l_button["btn_direction_right"]["alt"] = "Oikealle";
-$l_button["btn_direction_up"]["alt"] = "Ylös";
-
-$l_button["btn_edit_edit"]["alt"] = "Muokkaa";
-$l_button["btn_edit_flash"]["alt"] = "Valitse Flash -tiedosto";
-$l_button["btn_edit_image"]["alt"] = "Muokkaa kuvaa";
-$l_button["btn_edit_include"]["alt"] = "Muokkaa include-tiedostoa";
-$l_button["btn_edit_link"]["alt"] = "Muokkaa hyperlinkkiä";
-$l_button["btn_edit_list"]["alt"] = "Muokkaa listaa";
-$l_button["btn_edit_object"]["alt"] = "Muokkaa objektia";
-$l_button["btn_edit_pdf"]["alt"] = "Valitse PDF -tiedosto";
-$l_button["btn_edit_quicktime"]["alt"] = "Muokkaa Quicktime -tiedostoa";
-$l_button["btn_edit_real"]["alt"] = "Valitse Real Player -tiedosto";
-$l_button["btn_edit_wmp"]["alt"] = "Valitse Windows Media Player -tiedosto";
-
-$l_button["btn_function_plus"]["alt"] = "Lisää";
-$l_button["btn_function_search"]["alt"] = "Etsi";
-$l_button["btn_function_trash"]["alt"] = "Poista";
-$l_button["btn_function_view"]["alt"] = "Katso";
-
-$l_button["btn_select_image"]["alt"] = "Valitse kuva";
-$l_button["btn_help"]["alt"] = "Ohje";
-
-$l_button["btn_open_sidebar"]["alt"] = "Avaa sivupalkki";
-$l_button["date_picker"]["alt"] = "Select date";//TRANSLATE
-$l_button['btn_add_note']['alt']='add note';//TRANSLATE
-$l_button['btn_function_reload']['alt']='Reload';//TRANSLATE
+/** Generated language file of webEdition CMS */
+$l_buttons_global=array(
+	
+	'addCursorPosition'=>array(
+		'alt'=>'Insert selected text at cursor position',
+		'value'=>'Insert at cursor position',
+		'width'=>'180',
+	),
+	'add'=>array(
+		'alt'=>'Lisää',
+		'value'=>'Lisää',
+		'width'=>'100',
+	),
+	'add_languages'=>array(
+		'alt'=>'Asenna muita kieliä webEditioniin',
+		'value'=>'Lisää kieliä',
+		'width'=>'175',
+	),
+	'append'=>array(
+		'alt'=>'Liitä valittu teksti lähdekoodin jälkeen',
+		'value'=>'Liitä jälkeen',
+		'width'=>'140',
+	),
+	'apply'=>array(
+		'alt'=>'Käytä',
+		'value'=>'Käytä',
+		'width'=>'100',
+	),
+	'apply_current_dimension'=>array(
+		'alt'=>'Aseta valitut mitat',
+		'value'=>'Aseta valitut mitat',
+		'width'=>'175',
+	),
+	'apply_current_editor_dimension'=>array(
+		'alt'=>'Aseta valitut mitat',
+		'value'=>'Aseta valitut mitat',
+		'width'=>'175',
+	),
+	'attributes'=>array(
+		'alt'=>'Ominaisuudet...',
+		'value'=>'Attribuutit...',
+		'width'=>'100',
+	),
+	'backup'=>array(
+		'alt'=>'Ota varmuuskopio',
+		'value'=>'Varmuuskopioi',
+		'width'=>'100',
+	),
+	'back'=>array(
+		'alt'=>'Edellinen',
+		'value'=>'Edellinen',
+		'width'=>'100',
+	),
+	'back_to_login'=>array(
+		'alt'=>'Takaisin webEdition-kirjautumisikkunaan',
+		'value'=>'Takaisin',
+		'width'=>'100',
+	),
+	'browse'=>array(
+		'alt'=>'Selaa hakemistoa',
+		'value'=>'Selaa',
+		'width'=>'100',
+	),
+	'btn_add_cat'=>array(
+		'alt'=>'Lisää kategoria',
+	),
+	'btn_add_field'=>array(
+		'alt'=>'Lisää kenttä',
+	),
+	'btn_add_file'=>array(
+		'alt'=>'Lisää tiedosto',
+	),
+	'btn_add_flash'=>array(
+		'alt'=>'Lisää flash tiedosto',
+	),
+	'btn_add_image'=>array(
+		'alt'=>'Lisää kuva',
+	),
+	'btn_add_link'=>array(
+		'alt'=>'Lisää hyperlinkki',
+	),
+	'btn_add_listelement'=>array(
+		'alt'=>'Lisää lista elementti',
+	),
+	'btn_add_note'=>array(
+		'alt'=>'add note',
+	),
+	'btn_add_quicktime'=>array(
+		'alt'=>'Lisää Quicktime tiedosto',
+	),
+	'btn_add_schedule'=>array(
+		'alt'=>'Lisää ajastettu tehtävä',
+	),
+	'btn_add_template'=>array(
+		'alt'=>'Lisää sivupohja',
+	),
+	'btn_add_thumbnail'=>array(
+		'alt'=>'Lisää esikatselukuva',
+	),
+	'btn_direction_down'=>array(
+		'alt'=>'Alas',
+	),
+	'btn_direction_left'=>array(
+		'alt'=>'Vasemalle',
+	),
+	'btn_direction_right'=>array(
+		'alt'=>'Oikealle',
+	),
+	'btn_direction_up'=>array(
+		'alt'=>'Ylös',
+	),
+	'btn_edit_edit'=>array(
+		'alt'=>'Muokkaa',
+	),
+	'btn_edit_flash'=>array(
+		'alt'=>'Valitse Flash -tiedosto',
+	),
+	'btn_edit_image'=>array(
+		'alt'=>'Muokkaa kuvaa',
+	),
+	'btn_edit_include'=>array(
+		'alt'=>'Muokkaa include-tiedostoa',
+	),
+	'btn_edit_link'=>array(
+		'alt'=>'Muokkaa hyperlinkkiä',
+	),
+	'btn_edit_list'=>array(
+		'alt'=>'Muokkaa listaa',
+	),
+	'btn_edit_object'=>array(
+		'alt'=>'Muokkaa objektia',
+	),
+	'btn_edit_pdf'=>array(
+		'alt'=>'Valitse PDF -tiedosto',
+	),
+	'btn_edit_quicktime'=>array(
+		'alt'=>'Muokkaa Quicktime -tiedostoa',
+	),
+	'btn_edit_real'=>array(
+		'alt'=>'Valitse Real Player -tiedosto',
+	),
+	'btn_edit_wmp'=>array(
+		'alt'=>'Valitse Windows Media Player -tiedosto',
+	),
+	'btn_fs_back'=>array(
+		'alt'=>'Taaksepäin',
+	),
+	'btn_function_plus'=>array(
+		'alt'=>'Lisää',
+	),
+	'btn_function_reload'=>array(
+		'alt'=>'Reload',
+	),
+	'btn_function_search'=>array(
+		'alt'=>'Etsi',
+	),
+	'btn_function_trash'=>array(
+		'alt'=>'Poista',
+	),
+	'btn_function_view'=>array(
+		'alt'=>'Katso',
+	),
+	'btn_help'=>array(
+		'alt'=>'Ohje',
+	),
+	'btn_mail_resend'=>array(
+		'alt'=>'',
+	),
+	'btn_mail_send'=>array(
+		'alt'=>'',
+	),
+	'btn_messages_copy'=>array(
+		'alt'=>'Kopioi viesti(t)',
+	),
+	'btn_messages_create'=>array(
+		'alt'=>'Luo viesti',
+	),
+	'btn_messages_cut'=>array(
+		'alt'=>'Leikkaa viesti(t)',
+	),
+	'btn_messages_paste'=>array(
+		'alt'=>'Liitä viesti(t)',
+	),
+	'btn_messages_reply'=>array(
+		'alt'=>'Vastaa viesti(in)',
+	),
+	'btn_messages_tasks'=>array(
+		'alt'=>'Suorita Tehtävänhallinta',
+	),
+	'btn_messages_trash'=>array(
+		'alt'=>'Poista viesti(t)',
+	),
+	'btn_messages_update'=>array(
+		'alt'=>'Etsi uudet viestit',
+	),
+	'btn_new_bannergroup'=>array(
+		'alt'=>'Luo uusi banneriryhmä',
+	),
+	'btn_new_dir'=>array(
+		'alt'=>'Uusi hakemisto',
+	),
+	'btn_open_sidebar'=>array(
+		'alt'=>'Avaa sivupalkki',
+	),
+	'btn_select_image'=>array(
+		'alt'=>'Valitse kuva',
+	),
+	'btn_task_copy'=>array(
+		'alt'=>'Kopioi tehtävä(t)',
+	),
+	'btn_task_create'=>array(
+		'alt'=>'Luo tehtävä(t)',
+	),
+	'btn_task_cut'=>array(
+		'alt'=>'Leikkaa tehtävä(t)',
+	),
+	'btn_task_forward'=>array(
+		'alt'=>'Edelleenlähetä tehtävä(t)',
+	),
+	'btn_task_messages'=>array(
+		'alt'=>'Suorita viestijärjestelmä',
+	),
+	'btn_task_paste'=>array(
+		'alt'=>'Liitä tehtävä(t)',
+	),
+	'btn_task_reject'=>array(
+		'alt'=>'Estä tehtävä(t)',
+	),
+	'btn_task_status'=>array(
+		'alt'=>'Päivitä tila',
+	),
+	'btn_task_trash'=>array(
+		'alt'=>'Poista tehtävä(t)',
+	),
+	'btn_task_update'=>array(
+		'alt'=>'Etsi uusia tehtävät',
+	),
+	'cancel'=>array(
+		'alt'=>'Peruuta',
+		'value'=>'Peruuta',
+		'width'=>'100',
+	),
+	'change'=>array(
+		'alt'=>'Muuta',
+		'value'=>'Muuta',
+		'width'=>'100',
+	),
+	'check'=>array(
+		'alt'=>'Tarkista',
+		'value'=>'Tarkista',
+		'width'=>'100',
+	),
+	'clear_log'=>array(
+		'alt'=>'Tyhjennä loki',
+		'value'=>'Tyhjennä loki',
+		'width'=>'120',
+	),
+	'close'=>array(
+		'alt'=>'Sulje webEdition',
+		'value'=>'Sulje',
+		'width'=>'100',
+	),
+	'date_picker'=>array(
+		'alt'=>'Select date',
+	),
+	'default'=>array(
+		'alt'=>'Vakio',
+		'value'=>'Vakio',
+		'width'=>'100',
+	),
+	'delete'=>array(
+		'alt'=>'Poista',
+		'value'=>'Poista',
+		'width'=>'100',
+	),
+	'delete_all'=>array(
+		'alt'=>'Poista kaikki',
+		'value'=>'Poista kaikki',
+		'width'=>'100',
+	),
+	'delete_backup'=>array(
+		'alt'=>'Poista varmuuskopiotiedosto',
+		'value'=>'Poista varmuuskopio',
+		'width'=>'150',
+	),
+	'delete_doctype'=>array(
+		'alt'=>'Poista dokumenttityyppi',
+		'value'=>'Poista dokumenttityyppi',
+		'width'=>'174',
+	),
+	'demoversion'=>array(
+		'alt'=>'Demoversio',
+		'value'=>'Demoversio',
+		'width'=>'100',
+	),
+	'deselectAll'=>array(
+		'alt'=>'Kumoa valinta',
+		'value'=>'Kumoa valinta',
+		'width'=>'120',
+	),
+	'editor'=>array(
+		'alt'=>'Käynnistä editori',
+		'value'=>'Käynnistä editori',
+		'width'=>'120',
+	),
+	'edit'=>array(
+		'alt'=>'Muokkaa',
+		'value'=>'Muokkaa',
+		'width'=>'100',
+	),
+	'edit_all_thumbs'=>array(
+		'alt'=>'Muokkaa pikkukuvia',
+		'value'=>'Muokkaa pikkukuvia...',
+		'width'=>'150',
+	),
+	'export'=>array(
+		'alt'=>'Vie valitut tiedostot',
+		'value'=>'Vie',
+		'width'=>'100',
+	),
+	'go'=>array(
+		'alt'=>'',
+		'value'=>'Suorita nyt',
+		'width'=>'120',
+	),
+	'iconview'=>array(
+		'alt'=>'Iconview',
+		'value'=>'Iconview',
+		'width'=>'100',
+	),
+	'ignore'=>array(
+		'alt'=>'Hylkää',
+		'value'=>'Hylkää',
+		'width'=>'100',
+	),
+	'import'=>array(
+		'alt'=>'Tuo valitut tiedostot',
+		'value'=>'Tuo',
+		'width'=>'100',
+	),
+	'listview'=>array(
+		'alt'=>'Listview',
+		'value'=>'Listview',
+		'width'=>'100',
+	),
+	'logbook'=>array(
+		'alt'=>'Näytä lokikirja',
+		'value'=>'Loki',
+		'width'=>'100',
+	),
+	'login'=>array(
+		'alt'=>'Kirjaudu webEdition -järjestelmään',
+		'value'=>'Kirjaudu',
+		'width'=>'100',
+	),
+	'make_backup'=>array(
+		'alt'=>'Luo varmuuskopio',
+		'value'=>'Luo varmuuskopio',
+		'width'=>'150',
+	),
+	'make_new_document'=>array(
+		'alt'=>'Luo uusi dokumentti',
+		'value'=>'Uusi dokumentti',
+		'width'=>'125',
+	),
+	'newName'=>array(
+		'alt'=>'Luo uusi nimi',
+		'value'=>'Uusi nimi',
+		'width'=>'100',
+	),
+	'new_directory'=>array(
+		'alt'=>'Uusi hakemisto',
+		'value'=>'Uusi hakemisto',
+		'width'=>'200',
+	),
+	'new_doctype'=>array(
+		'alt'=>'Luo uusi dokumenttityyppi',
+		'value'=>'Uusi dokumenttityyppi',
+		'width'=>'174',
+	),
+	'new_document'=>array(
+		'alt'=>'Uusi dokumentti',
+		'value'=>'Uusi dokumentti',
+		'width'=>'200',
+	),
+	'new_entry'=>array(
+		'alt'=>'Uusi linkki',
+		'value'=>'Uusi linkki',
+		'width'=>'100',
+	),
+	'new_folder'=>array(
+		'alt'=>'Uusi kansio',
+		'value'=>'Uusi kansio',
+		'width'=>'200',
+	),
+	'new_item'=>array(
+		'alt'=>'Uusi linkki',
+		'value'=>'Uusi linkki',
+		'width'=>'200',
+	),
+	'new_service'=>array(
+		'alt'=>'Uusi palvelu',
+		'value'=>'Uusi palvelu',
+		'width'=>'100',
+	),
+	'new_template'=>array(
+		'alt'=>'Uusi sivupohja',
+		'value'=>'Uusi sivupohja',
+		'width'=>'200',
+	),
+	'next'=>array(
+		'alt'=>'Seuraava',
+		'value'=>'Seuraava',
+		'width'=>'100',
+	),
+	'no'=>array(
+		'alt'=>'Ei',
+		'value'=>'Ei',
+		'width'=>'100',
+	),
+	'ok'=>array(
+		'alt'=>'Ok',
+		'value'=>'OK',
+		'width'=>'100',
+	),
+	'openVersionWizard'=>array(
+		'alt'=>'Versio-Velho',
+		'value'=>'Versio-Velho',
+		'width'=>'120',
+	),
+	'open'=>array(
+		'alt'=>'Avaa',
+		'value'=>'Avaa',
+		'width'=>'100',
+	),
+	'open_document'=>array(
+		'alt'=>'Avaa dokumentti',
+		'value'=>'Avaa dokumentti',
+		'width'=>'200',
+	),
+	'overwrite'=>array(
+		'alt'=>'Korvaa tiedosto',
+		'value'=>'Korvaa',
+		'width'=>'100',
+	),
+	'preferences'=>array(
+		'alt'=>'Asetukset',
+		'value'=>'Asetukset',
+		'width'=>'200',
+	),
+	'prepend'=>array(
+		'alt'=>'Liitä valittu teksti ennen lähdekoodia',
+		'value'=>'Liitä eteen',
+		'width'=>'140',
+	),
+	'preview'=>array(
+		'alt'=>'Esikatsele',
+		'value'=>'Esikatsele',
+		'width'=>'120',
+	),
+	'properties'=>array(
+		'alt'=>'Ominaisuudet',
+		'value'=>'Ominaisuudet',
+		'width'=>'100',
+	),
+	'publish'=>array(
+		'alt'=>'Tallenna ja julkaise',
+		'value'=>'Julkaise',
+		'width'=>'100',
+	),
+	'quit_delete'=>array(
+		'alt'=>'Lopeta poistotila',
+		'value'=>'Lopeta poistotila',
+		'width'=>'175',
+	),
+	'quit_move'=>array(
+		'alt'=>'Lopeta siirtotila',
+		'value'=>'Lopeta siirtotila',
+		'width'=>'175',
+	),
+	'rebuild'=>array(
+		'alt'=>'Start rebuild...',
+		'value'=>'Uudelleenrakennus',
+		'width'=>'100',
+	),
+	'refresh'=>array(
+		'alt'=>'Päivitä',
+		'value'=>'Päivitä',
+		'width'=>'100',
+	),
+	'register'=>array(
+		'alt'=>'Rekisteröi',
+		'value'=>'Rekisteröi',
+		'width'=>'100',
+	),
+	'reindent'=>array(
+		'alt'=>'',
+		'value'=>'Reindent code',
+		'width'=>'100',
+	),
+	'replace'=>array(
+		'alt'=>'',
+		'value'=>'Replace',
+		'width'=>'100',
+	),
+	'reset'=>array(
+		'alt'=>'Nollaa ...',
+		'value'=>'Nollaa',
+		'width'=>'100',
+	),
+	'restore_backup'=>array(
+		'alt'=>'Palauta varmuuskopiosta',
+		'value'=>'Palauta varmuuskopio',
+		'width'=>'180',
+	),
+	'res_1024'=>array(
+		'alt'=>'Aseta 1024x768',
+		'value'=>'1024x768',
+		'width'=>'100',
+	),
+	'res_1280'=>array(
+		'alt'=>'Aseta 1280x960',
+		'value'=>'1280x960',
+		'width'=>'100',
+	),
+	'res_1300'=>array(
+		'alt'=>'Aseta 1300x650',
+		'value'=>'1300x650',
+		'width'=>'100',
+	),
+	'res_1600'=>array(
+		'alt'=>'Aseta 1600x1200',
+		'value'=>'1600x1200',
+		'width'=>'100',
+	),
+	'res_500'=>array(
+		'alt'=>'Aseta 500x300',
+		'value'=>'500x300',
+		'width'=>'100',
+	),
+	'res_700'=>array(
+		'alt'=>'Aseta 700x320',
+		'value'=>'700x320',
+		'width'=>'100',
+	),
+	'res_800'=>array(
+		'alt'=>'Aseta 800x600',
+		'value'=>'800x600',
+		'width'=>'100',
+	),
+	'res_960'=>array(
+		'alt'=>'Aseta 960x420',
+		'value'=>'960x420',
+		'width'=>'100',
+	),
+	'revert_published'=>array(
+		'alt'=>'Hylkää muutokset ja palauta julkaistu versio.',
+		'value'=>'Palauta julkaistu versio',
+		'width'=>'240',
+	),
+	'root_dir'=>array(
+		'alt'=>'Mene hakemiston juureen',
+		'value'=>'/',
+		'width'=>'40',
+	),
+	'saveversion'=>array(
+		'alt'=>'Saves the template and creates a new version',
+		'value'=>'Save Version',
+		'width'=>'120',
+	),
+	'save'=>array(
+		'alt'=>'Tallenna',
+		'value'=>'Tallenna',
+		'width'=>'100',
+	),
+	'search'=>array(
+		'alt'=>'Hae',
+		'value'=>'Hae',
+		'width'=>'100',
+	),
+	'selectAll'=>array(
+		'alt'=>'Valitse kaikki',
+		'value'=>'Valitse kaikki',
+		'width'=>'140',
+	),
+	'select'=>array(
+		'alt'=>'Valitse',
+		'value'=>'Valitse',
+		'width'=>'100',
+	),
+	'shopVariants'=>array(
+		'alt'=>'Muokkaa variantteja',
+		'value'=>'Variantit',
+		'width'=>'100',
+	),
+	'startEditor'=>array(
+		'alt'=>'Käynnistä editori käyttämällä Editor-Plugin',
+		'value'=>'Käynnistä editori',
+		'width'=>'120',
+	),
+	'thumbnails'=>array(
+		'alt'=>'Näytä pikkukuvat',
+		'value'=>'Pikkukuvat',
+		'width'=>'100',
+	),
+	'unpublished_pages'=>array(
+		'alt'=>'Julkaisemattomat sivut',
+		'value'=>'Julkaisemattomat sivut',
+		'width'=>'200',
+	),
+	'unpublish'=>array(
+		'alt'=>'Poista julkaisusta',
+		'value'=>'Poista julkaisusta',
+		'width'=>'160',
+	),
+	'upload'=>array(
+		'alt'=>'Lataa tiedosto',
+		'value'=>'Lataa',
+		'width'=>'100',
+	),
+	'yes'=>array(
+		'alt'=>'Kyllä',
+		'value'=>'Kyllä',
+		'width'=>'100',
+));

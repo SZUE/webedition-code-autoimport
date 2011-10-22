@@ -1,66 +1,53 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: shop.inc.php
- * Provides language strings.
- * Language: English
- */
-
-$l_button["shop_orderlist"]["value"] = "Lista zamówień";
-$l_button["shop_orderlist"]["alt"] = ""; // TRANSLATE
-$l_button["shop_orderlist"]["width"] = 100;
-
-$l_button["print"]["value"] = "Print";
-$l_button["print"]["alt"] = ""; // TRANSLATE
-$l_button["print"]["width"] = 100;
-
-$l_button["pref_shop"]["value"] = "Settings";
-$l_button["pref_shop"]["alt"] = "Open shop settings..."; // TRANSLATE
-$l_button["pref_shop"]["width"] = 150;
-
-$l_button["pref_shop"]["value"] = "Preferences";
-$l_button["pref_shop"]["alt"]   = "Otwiera ustawienia modułu Shop...";
-$l_button["pref_shop"]["width"] = 150;
-
-$l_button["quick_rev"]["value"] = "Article / Revenue";
-$l_button["quick_rev"]["alt"]   = "Otwiera przegląd artykułów i płatności...";
-$l_button["quick_rev"]["width"] = 150;
-
-$l_button["payment_val"]["value"] = "Payment Provider";
-$l_button["payment_val"]["alt"]   = "Otwiera ustawienia realizatora płatności...";
-$l_button["payment_val"]["width"] = 150;
-
-// for shop purposes
-$l_button["btn_shop_addnew"]["alt"] = "Create a new Article";
-$l_button["btn_shop_extArt"]["alt"] = "Rozszerza istniejące zamówienie";
-$l_button["btn_shop_delOrd"]["alt"] = "Usuwa istniejące zamówienie";
-$l_button["btn_shop_variants"]["alt"] = "Przełącza na przegląd artykułów";
-$l_button["btn_shop_sum"]["alt"] = "Przełącza na przegląd artykułów i płatności";
-$l_button["btn_shop_trash"]["alt"] = "Usuwa istniejące zamówienie";
-$l_button["btn_shop_pref"]["alt"] = "Przełącza na ustawienia sklepu";
-$l_button["btn_payment_val"]["alt"] = "Przełącza na ustawienia realizatora płatności";
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_shop=array(
+	
+	'btn_payment_val'=>array(
+		'alt'=>'Przełącza na ustawienia realizatora płatności',
+	),
+	'btn_shop_addnew'=>array(
+		'alt'=>'Create a new Article',
+	),
+	'btn_shop_delOrd'=>array(
+		'alt'=>'Usuwa istniejące zamówienie',
+	),
+	'btn_shop_extArt'=>array(
+		'alt'=>'Rozszerza istniejące zamówienie',
+	),
+	'btn_shop_pref'=>array(
+		'alt'=>'Przełącza na ustawienia sklepu',
+	),
+	'btn_shop_sum'=>array(
+		'alt'=>'Przełącza na przegląd artykułów i płatności',
+	),
+	'btn_shop_trash'=>array(
+		'alt'=>'Usuwa istniejące zamówienie',
+	),
+	'btn_shop_variants'=>array(
+		'alt'=>'Przełącza na przegląd artykułów',
+	),
+	'payment_val'=>array(
+		'alt'=>'Otwiera ustawienia realizatora płatności...',
+		'value'=>'Payment Provider',
+		'width'=>'150',
+	),
+	'pref_shop'=>array(
+		'alt'=>'Otwiera ustawienia modułu Shop...',
+		'value'=>'Preferences',
+		'width'=>'150',
+	),
+	'print'=>array(
+		'alt'=>'',
+		'value'=>'Print',
+		'width'=>'100',
+	),
+	'quick_rev'=>array(
+		'alt'=>'Otwiera przegląd artykułów i płatności...',
+		'value'=>'Article / Revenue',
+		'width'=>'150',
+	),
+	'shop_orderlist'=>array(
+		'alt'=>'',
+		'value'=>'Lista zamówień',
+		'width'=>'100',
+));

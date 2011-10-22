@@ -1,44 +1,19 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: newsletter.inc.php
- * Provides language strings.
- * Language: English
- */
-
-$l_button["send"]["value"] = "Lähetä";
-$l_button["send"]["alt"] = "Lähetä uutiskirje ...";
-$l_button["send"]["width"] = 100;
-
-$l_button["new_newsletter"]["value"] = "Uusi uutiskirje";
-$l_button["new_newsletter"]["alt"] = "Luo uusi uutiskirje ...";
-$l_button["new_newsletter"]["width"] = 150;
-
-$l_button["new_newsletter_group"]["value"] = "Uusi ryhmä";
-$l_button["new_newsletter_group"]["alt"] = "Luo uusi ryhmä ...";
-$l_button["new_newsletter_group"]["width"] = 150;
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_newsletter=array(
+	
+	'new_newsletter'=>array(
+		'alt'=>'Luo uusi uutiskirje ...',
+		'value'=>'Uusi uutiskirje',
+		'width'=>'150',
+	),
+	'new_newsletter_group'=>array(
+		'alt'=>'Luo uusi ryhmä ...',
+		'value'=>'Uusi ryhmä',
+		'width'=>'150',
+	),
+	'send'=>array(
+		'alt'=>'Lähetä uutiskirje ...',
+		'value'=>'Lähetä',
+		'width'=>'100',
+));

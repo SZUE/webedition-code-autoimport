@@ -1,241 +1,104 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: javaMenu.inc.php
- * Provides language strings.
- * Language: English
- */
-/**
- * 	This file contains the text-entries for the java-menu
- * 	Only module names come from file: we_defines.inc.php
- * 	And the doctypes are always the same, come from table
- */
-$l_javaMenu_global = array(
-##################################
-######### Menu Datei #############
-##################################
-
-		'file' => "File",
-		'new' => "New",
-		##################################
-		###### SubMenu Datei/Neu #########
-		##################################
-
-		'webEdition_page' => "webEdition Page",
-		'empty_page' => "Empty Page",
-		'image' => "Image",
-		'other' => "Other",
-		##################################
-		### SubMenu Datei/Neu/Sonstige ###
-		##################################
-
-		'html_page' => "HTML Page",
-		'flash_movie' => "Flash Movie",
-		'quicktime_movie' => "Quicktime Movie",
-		'text_plain' => "Plain Text Document",
-		'text_xml' => "XML Document",
-		'javascript' => "Javascript",
-		'css_stylesheet' => "CSS Stylesheet",
-		'htaccess' => ".htaccess Document",
-		'other_files' => "Other Files",
-		#####################################################
-		########## End SubMenu Datei/Neu/Sonstige ###########
-		#####################################################
-
-		'template' => "Template",
-		##################################
-		## SubMenu Datei/Neu/Verzeichnis #
-		##################################
-
-		'document_directory' => "Document directory",
-		'template_directory' => "Template directory",
-		#################################################
-		######## End Submenu Datei/Neu/Verzeichnis  #####
-		#################################################
-
-		'directory' => "Directory",
-		'wizards' => "Wizards",
-		##################################
-		## SubMenu Datei/Neu/Wizards #####
-		##################################
-
-		'first_steps_wizard' => "First Steps Wizard",
-		############################################
-		######## End Submenu Datei/Neu  ############
-		############################################
-
-		'open' => "Open",
-		##################################
-		###### SubMenu Datei/Open ########
-		##################################
-		'open_document' => "Document",
-		'open_template' => "Template",
-		##################################
-		###### End SubMenu Datei/Open ####
-		##################################
-		// close
-		'close_single_document' => "Close tab",
-		'close_all_documents' => "Close all tabs",
-		'close_all_but_active_document' => "Close inactive tabs",
-		'delete_active_document' => "Delete active document/object",
-		'save' => "Save",
-		'publish' => "Publish",
-		'delete' => "Delete",
-		##################################
-		##### SubMenu Datei/Löschen ######
-		##################################
-
-		'documents' => "Documents",
-		'templates' => "Templates",
-		'cache' => "Cache",
-		##################################
-		######## End Submenu  ############
-		##################################
-
-		'move' => "Move",
-		#########################################
-		#####   	 Import/export		    #####
-		#########################################
-
-		'import_export' => "Import/Export",
-		'import' => "Import",
-		'export' => "Export",
-		#########################################
-		#####	    End Import/export	    #####
-		#########################################
-
-		'backup' => "Backup",
-		##################################
-		### SubMenu Datei/Backup ####
-		##################################
-
-		'make_backup' => "Create Backup",
-		'recover_backup' => "Recover Backup",
-		'view_backuplog' => "View Backup-Log", // TRANSLATE
-		##################################
-		### SubMenu Datei/Backup ####
-		##################################
-
-		'rebuild' => "Rebuild",
-		'clear_cache' => "Clear cache",
-		'browse_server' => "Browse Server",
-		'quit' => "Quit",
-		##################################
-		### SubMenu Cockpit           ####
-		##################################
-
-		'display' => "Display",
-		'new_widget' => "Add Widget",
-		###############################################
-		### SubMenu Cockpit/New Widget             ####
-		###############################################
-
-		'shortcuts' => "Shortcuts",
-		'rss_reader' => "RSS Reader",
-		'last_modified' => "Last modified",
-		'todo_messaging' => "ToDo/Messaging",
-		'users_online' => "Users Online",
-		'unpublished' => "Unpublished",
-		'my_documents' => "My documents",
-		'notepad' => "Notepad",
-		'pagelogger' => "pageLogger",
-		###############################################
-		### SubMenu Cockpit/Standard Einstellungen ####
-		###############################################
-
-		'default_settings' => "Reset default settings",
-		##################################
-		### End SubMenu Cockpit       ####
-		##################################
-########################################
-######### End / Menu Datei #############
-########################################
-##################################
-###### Menu Bearbeiten ###########
-##################################
-
-		'edit' => "Options",
-		'document_types' => "Document types",
-		'categories' => "Categories",
-		'thumbnails' => "Thumbnails",
-		'metadata' => "Metadata fields",
-		'navigation' => "Navigation",
-		'change_username' => "Change user name",
-		'change_password' => "Change password",
-		'formmail_recipients' => "Formmail recipients",
-		'proxy_server' => "Proxy-Server",
-		'unpublished_pages' => "Unpublished documents",
-		'preferences' => "Preferences",
-		'versioning' => "Version-Wizard",
-		'versioning_log' => "Version-Log",
-		'econda' => "Econda",
-##################################
-###### End Menu Bearbeiten #######
-##################################
-##############################
-###### Menu Module ###########
-##############################
-
-		'modules' => "Modules",
-		'module_installation' => "Module Installation",
-//	The content is generated dynamically
-		'extras' => "Extras",
-		'inactive_extras' => "Inactive Extras",
-#################################
-###### End Menu Module ###########
-##################################
-##################################
-######### Menu Hilfe #############
-##################################
-
-		'help' => "Help",
-		'onlinehelp' => "Online help",
-		'onlinehelp_documentation' => "Online documentation",
-		'onlinehelp_forum' => "webEdition forums",
-		'onlinehelp_bugtracker' => "Bug tracker",
-		'onlinehelp_tagreference' => "Tag reference",
-		'onlinehelp_demo' => "Online demo",
-		'onlinehelp_changelog' => "Version history",
-		'webEdition_online' => "webEdition online",
-		'sidebar' => "Sidebar",
-		'update' => "Update",
-		'upgrade' => "Update webEdition 5",
-		'register' => "Register",
-		'info' => "Info",
-########################################################
-######### Navigation back - forward - home #############
-########################################################
-
-		'close' => "Close",
-		'home' => "Home",
-		'back' => "Back",
-		'next' => "Forward",
-		'reload' => "Reload",
-		'not_installed_modules' => "Modules not installed",
-		'search' => "Search",
-		'common' => "Common",
-		'sysinfo' => "System information",
-		'showerrorlog' => "Errorlog",// TRANSLATE
-	);
+/** Generated language file of webEdition CMS */
+$l_javaMenu_global=array(
+	'backup'=>'Backup',
+	'back'=>'Back',
+	'browse_server'=>'Browse Server',
+	'categories'=>'Categories',
+	'change_password'=>'Change password',
+	'change_username'=>'Change user name',
+	'clear_cache'=>'Clear cache',
+	'close'=>'Close',
+	'close_all_but_active_document'=>'Close inactive tabs',
+	'close_all_documents'=>'Close all tabs',
+	'close_single_document'=>'Close tab',
+	'common'=>'Common',
+	'css_stylesheet'=>'CSS Stylesheet',
+	'default_settings'=>'Reset default settings',
+	'delete'=>'Delete',
+	'delete_active_document'=>'Delete active document/object',
+	'directory'=>'Directory',
+	'display'=>'Display',
+	'documents'=>'Documents',
+	'document_directory'=>'Document directory',
+	'document_types'=>'Document types',
+	'econda'=>'Econda',
+	'edit'=>'Options',
+	'empty_page'=>'Empty Page',
+	'export'=>'Export',
+	'extras'=>'Extras',
+	'file'=>'File',
+	'first_steps_wizard'=>'First Steps Wizard',
+	'flash_movie'=>'Flash Movie',
+	'formmail_recipients'=>'Formmail recipients',
+	'help'=>'Help',
+	'home'=>'Home',
+	'htaccess'=>'.htaccess Document',
+	'html_page'=>'HTML Page',
+	'image'=>'Image',
+	'import'=>'Import',
+	'import_export'=>'Import/Export',
+	'inactive_extras'=>'Inactive Extras',
+	'info'=>'Info',
+	'javascript'=>'Javascript',
+	'last_modified'=>'Last modified',
+	'make_backup'=>'Create Backup',
+	'metadata'=>'Metadata fields',
+	'modules'=>'Modules',
+	'module_installation'=>'Module Installation',
+	'move'=>'Move',
+	'my_documents'=>'My documents',
+	'navigation'=>'Navigation',
+	'new'=>'New',
+	'new_widget'=>'Add Widget',
+	'next'=>'Forward',
+	'notepad'=>'Notepad',
+	'not_installed_modules'=>'Modules not installed',
+	'onlinehelp'=>'Online help',
+	'onlinehelp_bugtracker'=>'Bug tracker',
+	'onlinehelp_changelog'=>'Version history',
+	'onlinehelp_demo'=>'Online demo',
+	'onlinehelp_documentation'=>'Online documentation',
+	'onlinehelp_forum'=>'webEdition forums',
+	'onlinehelp_tagreference'=>'Tag reference',
+	'open'=>'Open',
+	'open_document'=>'Document',
+	'open_template'=>'Template',
+	'other'=>'Other',
+	'other_files'=>'Other Files',
+	'pagelogger'=>'pageLogger',
+	'preferences'=>'Preferences',
+	'proxy_server'=>'Proxy-Server',
+	'publish'=>'Publish',
+	'quicktime_movie'=>'Quicktime Movie',
+	'quit'=>'Quit',
+	'rebuild'=>'Rebuild',
+	'recover_backup'=>'Recover Backup',
+	'register'=>'Register',
+	'reload'=>'Reload',
+	'rss_reader'=>'RSS Reader',
+	'save'=>'Save',
+	'search'=>'Search',
+	'shortcuts'=>'Shortcuts',
+	'showerrorlog'=>'Errorlog',
+	'sidebar'=>'Sidebar',
+	'sysinfo'=>'System information',
+	'templates'=>'Templates',
+	'template'=>'Template',
+	'template_directory'=>'Template directory',
+	'text_plain'=>'Plain Text Document',
+	'text_xml'=>'XML Document',
+	'thumbnails'=>'Thumbnails',
+	'todo_messaging'=>'ToDo/Messaging',
+	'unpublished'=>'Unpublished',
+	'unpublished_pages'=>'Unpublished documents',
+	'update'=>'Update',
+	'upgrade'=>'Update webEdition 5',
+	'users_online'=>'Users Online',
+	'versioning'=>'Version-Wizard',
+	'versioning_log'=>'Version-Log',
+	'view_backuplog'=>'View Backup-Log',
+	'webEdition_online'=>'webEdition online',
+	'webEdition_page'=>'webEdition Page',
+	'wizards'=>'Wizards',
+);

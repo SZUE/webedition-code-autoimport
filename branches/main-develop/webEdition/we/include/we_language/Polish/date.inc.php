@@ -1,85 +1,56 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: date.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_date = array(
-		'format' => array(
-				'default' => 'Y-m-d - H:i', // TRANSLATE
-				'mysqlDate' => '%d.%m.%Y',
+/** Generated language file of webEdition CMS */
+$l_date=array(
+	
+	'day'=>array(
+		'long'=>array(
+			'0'=>'Sunday',
+			'1'=>'Monday',
+			'2'=>'Tuesday',
+			'3'=>'Wednesday',
+			'4'=>'Thursday',
+			'5'=>'Friday',
+			'6'=>'Saturday',
 		),
-		'day' => array(
-				'short' => array(
-						"Su", // TRANSLATE
-						"Mo", // TRANSLATE
-						"Tu", // TRANSLATE
-						"We", // TRANSLATE
-						"Th", // TRANSLATE
-						"Fr", // TRANSLATE
-						"Sa", // TRANSLATE
-				),
-				'long' => array(
-						"Sunday", // TRANSLATE
-						"Monday", // TRANSLATE
-						"Tuesday", // TRANSLATE
-						"Wednesday", // TRANSLATE
-						"Thursday", // TRANSLATE
-						"Friday", // TRANSLATE
-						"Saturday", // TRANSLATE
-				),
+		'short'=>array(
+			'0'=>'Su',
+			'1'=>'Mo',
+			'2'=>'Tu',
+			'3'=>'We',
+			'4'=>'Th',
+			'5'=>'Fr',
+			'6'=>'Sa',
+	),),
+	'format'=>array(
+		'default'=>'Y-m-d - H:i',
+		'mysqlDate'=>'%d.%m.%Y',
+	),
+	'month'=>array(
+		'long'=>array(
+			'0'=>'January',
+			'10'=>'November',
+			'11'=>'December',
+			'1'=>'February',
+			'2'=>'March',
+			'3'=>'April',
+			'4'=>'May',
+			'5'=>'June',
+			'6'=>'July',
+			'7'=>'August',
+			'8'=>'September',
+			'9'=>'October',
 		),
-		'month' => array(
-				'short' => array(
-						"Jan", // TRANSLATE
-						"Feb", // TRANSLATE
-						"Mar", // TRANSLATE
-						"Apr", // TRANSLATE
-						"May", // TRANSLATE
-						"Jun", // TRANSLATE
-						"Jul", // TRANSLATE
-						"Aug", // TRANSLATE
-						"Sep", // TRANSLATE
-						"Oct", // TRANSLATE
-						"Nov", // TRANSLATE
-						"Dec", // TRANSLATE
-				),
-				'long' => array(
-						"January", // TRANSLATE
-						"February", // TRANSLATE
-						"March", // TRANSLATE
-						"April", // TRANSLATE
-						"May", // TRANSLATE
-						"June", // TRANSLATE
-						"July", // TRANSLATE
-						"August", // TRANSLATE
-						"September", // TRANSLATE
-						"October", // TRANSLATE
-						"November", // TRANSLATE
-						"December", // TRANSLATE
-				),
-		),
-);
+		'short'=>array(
+			'0'=>'Jan',
+			'10'=>'Nov',
+			'11'=>'Dec',
+			'1'=>'Feb',
+			'2'=>'Mar',
+			'3'=>'Apr',
+			'4'=>'May',
+			'5'=>'Jun',
+			'6'=>'Jul',
+			'7'=>'Aug',
+			'8'=>'Sep',
+			'9'=>'Oct',
+)));

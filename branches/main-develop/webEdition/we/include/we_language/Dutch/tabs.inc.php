@@ -1,43 +1,36 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: we_tabs.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_tabs = array(
-		'editor' => array(
-				'properties' => "Eigenschappen",
-				'edit' => "Wijzig",
-				'information' => "Informatie",
-				'preview' => "Voorvertoning",
-				'scheduler' => "Planner",
-				'scheduler_pro' => "Planner PRO",
-				'workspace' => "Werkgebied",
-				'meta' => "Meta-Informatie",
-				'fields' => "Velden",
-				'search' => "Zoek",
-				));
-include(dirname(__FILE__) . '/modules/we_tabs.inc.php');
+/** Generated language file of webEdition CMS */
+$l_tabs=array(
+	
+	'editor'=>array(
+		'edit'=>'Wijzig',
+		'fields'=>'Velden',
+		'information'=>'Informatie',
+		'meta'=>'Meta-Informatie',
+		'preview'=>'Voorvertoning',
+		'properties'=>'Eigenschappen',
+		'scheduler'=>'Planner',
+		'scheduler_pro'=>'Planner PRO',
+		'search'=>'Zoek',
+		'workspace'=>'Werkgebied',
+	),
+	'module'=>array(
+		'admin_1'=>'Artikel documenten',
+		'admin_2'=>'Artikel objecten',
+		'admin_3'=>'Inkomsten overzicht',
+		'admin_6'=>'Betalingsmogelijkheden',
+		'ArtAttribEdit'=>'Wijzig artikel',
+		'artList'=>'Lijst van alle artikelen: %s',
+		'data'=>'Data',
+		'orderdata'=>'Bestel- en Gebruikersdetails',
+		'orderlist'=>'Alle bestellingen klanten',
+		'overview'=>'Overzicht',
+		'PayMethodEdit'=>'Wijzig betalingmogelijkheden',
+		'permissions'=>'Rechten',
+		'placement'=>'Plaatsing',
+		'preferences'=>'Voorkeuren',
+		'properties'=>'Eigenschappen',
+		'revenueTotal'=>'Inkomsten in het jaar %s',
+		'statistics'=>'Statistieken',
+		'workspace'=>'Werkgebied',
+));

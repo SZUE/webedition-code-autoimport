@@ -1,61 +1,36 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: schedpro.inc.php
- * Provides language strings.
- * Language: English
- */
-$l_modules_schedpro = array(
-		'task' => array(
-				'headline' => "Task",
-				SCHEDULE_FROM => "Опубликовать",
-				SCHEDULE_TO => "Снять с публикации",
-				SCHEDULE_DELETE => "Удалить",
-				SCHEDULE_DOCTYPE => "Изменить тип документа",
-				SCHEDULE_CATEGORY => "Изменить категории",
-				SCHEDULE_DIR => "Изменить директорию",
-		),
-		'type' => array(
-				'headline' => "Frequency",
-				SCHEDULE_TYPE_ONCE => "Один раз",
-				SCHEDULE_TYPE_HOUR => "Каждый час",
-				SCHEDULE_TYPE_DAY => "Ежедневно",
-				SCHEDULE_TYPE_WEEK => "Еженедельно",
-				SCHEDULE_TYPE_MONTH => "Ежемесячно",
-				SCHEDULE_TYPE_YEAR => "Ежегодно",
-		),
-		'time' => "Время",
-		'months' => "Месяцы",
-		'days' => "Дни",
-		'weekdays' => "Дни недели",
-		'minutes' => "Минуты",
-		'datetime' => "Дата/время",
-		'categories' => "Категории",
-		'doctype' => "Тип документа",
-		'dirctory' => "Директория",
-		'active' => "Активно",
-		'doctypeAll' => "Значения по умолчанию",
-		'descriptiontext' => "Для добавления новой плановой задачи нажмите на кнопку «+».",
+/** Generated language file of webEdition CMS */
+$l_modules_schedpro=array(
+	'active'=>'Активно',
+	'categories'=>'Категории',
+	'datetime'=>'Дата/время',
+	'days'=>'Дни',
+	'descriptiontext'=>'Для добавления новой плановой задачи нажмите на кнопку «+».',
+	'dirctory'=>'Директория',
+	'doctypeAll'=>'Значения по умолчанию',
+	'doctype'=>'Тип документа',
+	'minutes'=>'Минуты',
+	'months'=>'Месяцы',
+	
+	'task'=>array(
+		'1'=>'Опубликовать',
+		'2'=>'Снять с публикации',
+		'3'=>'Удалить',
+		'4'=>'Изменить тип документа',
+		'5'=>'Изменить категории',
+		'6'=>'Изменить директорию',
+		'headline'=>'Task',
+	),
+	'time'=>'Время',
+	
+	'type'=>array(
+		'0'=>'Один раз',
+		'1'=>'Каждый час',
+		'2'=>'Ежедневно',
+		'3'=>'Еженедельно',
+		'4'=>'Ежемесячно',
+		'5'=>'Ежегодно',
+		'headline'=>'Frequency',
+	),
+	'weekdays'=>'Дни недели',
 );

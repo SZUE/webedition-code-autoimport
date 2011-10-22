@@ -1,44 +1,22 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-$l_xhtmlDebug = array(
-		'wrong_attribute' => array(
-				'text' => 'Het attribuut "%s" komt niet voor in het element "&lt;%s&gt;".',
-				'js' => 'Het attribuut \"%s\" komt niet voor in het element \"<%s>\".',
-				'error_log' => 'Het attribuut "%s" komt niet voor in het element "<%s>".',
-		),
-		'missing_attribute' => array(
-				'text' => 'Het vereiste attribuut "%s" ontbreekt in het element "&lt;%s&gt;".',
-				'js' => 'Het vereiste attribuut \"%s\" ontbreekt in het element \"<%s>\".',
-				'error_log' => 'Het vereiste attribuut "%s" ontbreekt in het element "<%s>".',
-		),
-		'wrong_element' => array(
-				'text' => 'Het element "&lt;%s&gt;" bestaat niet.',
-				'js' => 'Het element \"<%s>\" bestaat niet.',
-				'error_log' => 'Het element "<%s>" bestaat niet.',
-		),
-		'removed_element' => array(
-				'text' => 'Is verwijderd.',
-		),
-);
+/** Generated language file of webEdition CMS */
+$l_xhtmlDebug=array(
+	
+	'missing_attribute'=>array(
+		'error_log'=>'Het vereiste attribuut "%s" ontbreekt in het element "<%s>".',
+		'js'=>'Het vereiste attribuut "%s" ontbreekt in het element "<%s>".',
+		'text'=>'Het vereiste attribuut "%s" ontbreekt in het element "&lt;%s&gt;".',
+	),
+	'removed_element'=>array(
+		'text'=>'Is verwijderd.',
+	),
+	'wrong_attribute'=>array(
+		'error_log'=>'Het attribuut "%s" komt niet voor in het element "<%s>".',
+		'js'=>'Het attribuut "%s" komt niet voor in het element "<%s>".',
+		'text'=>'Het attribuut "%s" komt niet voor in het element "&lt;%s&gt;".',
+	),
+	'wrong_element'=>array(
+		'error_log'=>'Het element "<%s>" bestaat niet.',
+		'js'=>'Het element "<%s>" bestaat niet.',
+		'text'=>'Het element "&lt;%s&gt;" bestaat niet.',
+));

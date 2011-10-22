@@ -1,535 +1,626 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-/**
- * Language file: global.inc.php
- * Provides language strings.
- * Language: English
- */
-
-
-/*****************************************************************************
- * LOGIN-SCREEN
- *****************************************************************************/
-
-$l_button["login"]["value"] = "Login";
-$l_button["login"]["alt"] = "Login into webEdition";
-$l_button["login"]["width"] = 100;
-
-$l_button["back_to_login"]["value"] = "Back";
-$l_button["back_to_login"]["alt"] = "Back to the webEdition-Login";
-$l_button["back_to_login"]["width"] = 100;
-
-/*****************************************************************************
- * STARTMENU
- *****************************************************************************/
-
-$l_button["open_document"]["value"] = "Open document";
-$l_button["open_document"]["alt"] = "";
-$l_button["open_document"]["width"] = 200;
-
-$l_button["new_document"]["value"] = "New document";
-$l_button["new_document"]["alt"] = "Create new document";
-$l_button["new_document"]["width"] = 200;
-
-$l_button["new_template"]["value"] = "New template";
-$l_button["new_template"]["alt"] = "Create new template";
-$l_button["new_template"]["width"] = 200;
-
-$l_button["new_directory"]["value"] = "New directory";
-$l_button["new_directory"]["alt"] = "Create new directory";
-$l_button["new_directory"]["width"] = 200;
-
-$l_button["unpublished_pages"]["value"] = "Unpublished documents";
-$l_button["unpublished_pages"]["alt"] = "Survey of unpublished documents";
-$l_button["unpublished_pages"]["width"] = 200;
-
-$l_button["preferences"]["value"] = "Preferences";
-$l_button["preferences"]["alt"] = "";
-$l_button["preferences"]["width"] = 200;
-
-/*****************************************************************************
- * DELETE SCREEN
- *****************************************************************************/
-
-$l_button["quit_delete"]["value"] = "Finish delete mode";
-$l_button["quit_delete"]["alt"] = "";
-$l_button["quit_delete"]["width"] = 175;
-
-/*****************************************************************************
- * MOVE SCREEN
- *****************************************************************************/
-
-$l_button["quit_move"]["value"] = "Finish move mode";
-$l_button["quit_move"]["alt"] = "";
-$l_button["quit_move"]["width"] = 175;
-
-/*****************************************************************************
- * STANDARD
- *****************************************************************************/
-
-$l_button["ok"]["value"] = "OK";
-$l_button["ok"]["alt"]   = "";
-$l_button["ok"]["width"] = 100;
-
-$l_button["cancel"]["value"] = "Cancel";
-$l_button["cancel"]["alt"] = "";
-$l_button["cancel"]["width"] = 100;
-
-$l_button["yes"]["value"] = "Yes";
-$l_button["yes"]["alt"]   = "";
-$l_button["yes"]["width"] = 100;
-
-$l_button["no"]["value"] = "No";
-$l_button["no"]["alt"]   = "";
-$l_button["no"]["width"] = 100;
-
-$l_button["save"]["value"] = "Save";
-$l_button["save"]["alt"] = "";
-$l_button["save"]["width"] = 100;
-
-$l_button["publish"]["value"] = "Publish";
-$l_button["publish"]["alt"]   = "Save and publish the document";
-$l_button["publish"]["width"] = 100;
-
-$l_button["saveversion"]["value"] = "Save Version";
-$l_button["saveversion"]["alt"]   = "Saves the template and creates a new version";
-$l_button["saveversion"]["width"] = 120;
-
-
-$l_button["delete"]["value"] = "Delete";
-$l_button["delete"]["alt"] = "";
-$l_button["delete"]["width"] = 100;
-
-$l_button["go"]["value"] = "Execute now";
-$l_button["go"]["alt"]   = "";
-$l_button["go"]["width"] = 120;
-
-$l_button["openVersionWizard"]["value"] = "Versions-Wizard";
-$l_button["openVersionWizard"]["alt"]   = "Versions-Wizard";
-$l_button["openVersionWizard"]["width"] = 120;
-
-$l_button["next"]["value"] = "Next";
-$l_button["next"]["alt"]   = "";
-$l_button["next"]["width"] = 100;
-
-$l_button["back"]["value"] = "Back";
-$l_button["back"]["alt"] = "";
-$l_button["back"]["width"] = 100;
-
-$l_button["open"]["value"] = "Open";
-$l_button["open"]["alt"] = "";
-$l_button["open"]["width"] = 100;
-
-$l_button["default"]["value"] = "Default";
-$l_button["default"]["alt"] = "";
-$l_button["default"]["width"] = 100;
-
-$l_button["reset"]["value"] = "Reset";
-$l_button["reset"]["alt"] = "";
-$l_button["reset"]["width"] = 100;
-
-/*****************************************************************************
- * SAVING, PUBLISHING, ETC.
- *****************************************************************************/
-
-$l_button["unpublish"]["value"] = "Unpublish";
-$l_button["unpublish"]["alt"] = "";
-$l_button["unpublish"]["width"] = 100;
-
-
-/*****************************************************************************
- * MAKE AN NEW DOCUMENT BASED ON TEMPLATE
- *****************************************************************************/
-
-$l_button["make_new_document"]["value"] = "New document";
-$l_button["make_new_document"]["alt"] = "Create new document";
-$l_button["make_new_document"]["width"] = 125;
-
-/*****************************************************************************
- * SUPER-EASY-EDIT-MODE
- *****************************************************************************/
-
-$l_button["preview"]["value"] = "Preview";
-$l_button["preview"]["alt"] = "Show preview";
-$l_button["preview"]["width"] = 100;
-
-$l_button["properties"]["value"] = "Properties";
-$l_button["properties"]["alt"] = "Show properties";
-$l_button["properties"]["width"] = 100;
-
-$l_button["thumbnails"]["value"] = "Thumbnails";
-$l_button["thumbnails"]["alt"]   = "Show thumbnails";
-$l_button["thumbnails"]["width"] = 100;
-
-$l_button["shopVariants"]["value"] = "Variants";
-$l_button["shopVariants"]["alt"] = "Edit variants";
-$l_button["shopVariants"]["width"] = 100;
-
-/*****************************************************************************
- * DOCUMENT TYPES
- *****************************************************************************/
-
-$l_button["new_doctype"]["value"] = "New document type";
-$l_button["new_doctype"]["alt"] = "Create a new document type";
-$l_button["new_doctype"]["width"] = 174;
-
-$l_button["delete_doctype"]["value"] = "Delete document type";
-$l_button["delete_doctype"]["alt"] = "Delete the selected document type";
-$l_button["delete_doctype"]["width"] = 174;
-
-/*****************************************************************************
- * XML
- *****************************************************************************/
-
-$l_button["import"]["value"] = "Import";
-$l_button["import"]["alt"]   = "Import selected file";
-$l_button["import"]["width"] = 100;
-
-$l_button["export"]["value"] = "Export";
-$l_button["export"]["alt"]   = "Export selected files";
-$l_button["export"]["width"] = 100;
-
-$l_button["browse"]["value"] = "Browse";
-$l_button["browse"]["alt"] = "Browse directory";
-$l_button["browse"]["width"] = 100;
-
-/*****************************************************************************
- * FILE-SELECTOR
- *****************************************************************************/
-
-$l_button["root_dir"]["value"] = "/";
-$l_button["root_dir"]["alt"]   = "Go to the root directory";
-$l_button["root_dir"]["width"] = 40;
-
-
-/*****************************************************************************
- * UPLOAD-DIALOG
- *****************************************************************************/
-
-$l_button["upload"]["value"] = "Upload";
-$l_button["upload"]["alt"]   = "Upload file";
-$l_button["upload"]["width"] = 100;
-
-$l_button["close"]["value"] = "Close";
-$l_button["close"]["alt"]   = "Closes this window";
-$l_button["close"]["width"] = 100;
-
-$l_button["overwrite"]["value"] = "Overwrite";
-$l_button["overwrite"]["alt"]   = "Overwrite file";
-$l_button["overwrite"]["width"] = 100;
-
-$l_button["newName"]["value"] = "New name";
-$l_button["newName"]["alt"]   = "Insert a new name";
-$l_button["newName"]["width"] = 100;
-
-
-/*****************************************************************************
- * PREFERENCES
- *****************************************************************************/
-
-$l_button["add_languages"]["value"] = "Add languages";
-$l_button["add_languages"]["alt"]   = "Installs other languages for webEdition";
-$l_button["add_languages"]["width"] = 175;
-
-$l_button["apply_current_dimension"]["value"] = "Apply current dimension";
-$l_button["apply_current_dimension"]["alt"]   = "Applies the current size of the webEdition window";
-$l_button["apply_current_dimension"]["width"] = 175;
-
-$l_button["res_800"]["value"] = "800x600";
-$l_button["res_800"]["alt"]   = "Set 800x600";
-$l_button["res_800"]["width"] = 100;
-
-$l_button["res_1024"]["value"] = "1024x768";
-$l_button["res_1024"]["alt"]   = "Set 1024x768";
-$l_button["res_1024"]["width"] = 100;
-
-$l_button["res_1280"]["value"] = "1280x960";
-$l_button["res_1280"]["alt"]   = "Set 1280x960";
-$l_button["res_1280"]["width"] = 100;
-
-$l_button["res_1600"]["value"] = "1600x1200";
-$l_button["res_1600"]["alt"]   = "Set 1600x1200";
-$l_button["res_1600"]["width"] = 100;
-
-$l_button["apply_current_editor_dimension"]["value"] = "Apply current dimension";
-$l_button["apply_current_editor_dimension"]["alt"]   = "Applies the current size of the editor";
-$l_button["apply_current_editor_dimension"]["width"] = 175;
-
-$l_button["res_500"]["value"] = "500x300";
-$l_button["res_500"]["alt"]   = "Set 500x300";
-$l_button["res_500"]["width"] = 100;
-
-$l_button["res_700"]["value"] = "700x320";
-$l_button["res_700"]["alt"]   = "Set 700x320";
-$l_button["res_700"]["width"] = 100;
-
-$l_button["res_960"]["value"] = "960x420";
-$l_button["res_960"]["alt"]   = "Set 960x420";
-$l_button["res_960"]["width"] = 100;
-
-$l_button["res_1300"]["value"] = "1300x650";
-$l_button["res_1300"]["alt"]   = "Set 1300x650";
-$l_button["res_1300"]["width"] = 100;
-
-
-/*****************************************************************************
- * Rebuild
- *****************************************************************************/
-
-$l_button["rebuild"]["value"] = "Rebuild";
-$l_button["rebuild"]["alt"]   = "Start rebuild";
-$l_button["rebuild"]["width"] = 100;
-
-/*****************************************************************************
- * UPDATE
- *****************************************************************************/
-
-$l_button["demoversion"]["value"] = "Demo version";
-$l_button["demoversion"]["alt"]   = "";
-$l_button["demoversion"]["width"] = 100;
-
-$l_button["register"]["value"] = "Register";
-$l_button["register"]["alt"]   = "";
-$l_button["register"]["width"] = 100;
-
-$l_button["backup"]["value"] = "Backup";
-$l_button["backup"]["alt"]   = "";
-$l_button["backup"]["width"] = 100;
-
-$l_button["search"]["value"] = "Search";
-$l_button["search"]["alt"]   = "";
-$l_button["search"]["width"] = 100;
-
-$l_button["replace"]["value"] = "Replace"; //Translate
-$l_button["replace"]["alt"]   = "";
-$l_button["replace"]["width"] = 100;
-
-/*****************************************************************************
- * Backup
- *****************************************************************************/
-
-$l_button["restore_backup"]["value"] = "Recover Backup";
-$l_button["restore_backup"]["alt"]   = "";
-$l_button["restore_backup"]["width"] = 180;
-
-$l_button["make_backup"]["value"] = "Create Backup";
-$l_button["make_backup"]["alt"]   = "";
-$l_button["make_backup"]["width"] = 150;
-
-$l_button["delete_backup"]["value"] = "Delete backup file";
-$l_button["delete_backup"]["alt"]   = "Delete selected backup file";
-$l_button["delete_backup"]["width"] = 150;
-
-/*****************************************************************************
- * Thumbnails
- *****************************************************************************/
-
-$l_button["edit_all_thumbs"]["value"] = "Edit thumbnails...";
-$l_button["edit_all_thumbs"]["alt"]   = "";
-$l_button["edit_all_thumbs"]["width"] = 150;
-
-/*****************************************************************************
- * Navigation
- *****************************************************************************/
-$l_button["new_item"]["value"] = "New item";
-$l_button["new_item"]["alt"]   = "";
-$l_button["new_item"]["width"] = 200;
-
-$l_button["new_folder"]["value"] = "New folder";
-$l_button["new_folder"]["alt"]   = "";
-$l_button["new_folder"]["width"] = 200;
-
-/*****************************************************************************
- * Logbuch Formmail
- *****************************************************************************/
-$l_button["clear_log"]["value"] = "Clear logbook";
-$l_button["clear_log"]["alt"] = "";
-$l_button["clear_log"]["width"] = 120;
-
-$l_button["logbook"]["value"] = "Logbook";
-$l_button["logbook"]["alt"]   = "";
-$l_button["logbook"]["width"] = 100;
-
-/*****************************************************************************
- * Info
- *****************************************************************************/
-$l_button["revert_published"]["value"] = "Restore published version";
-$l_button["revert_published"]["alt"] = "Discard changes and restore published version.";
-$l_button["revert_published"]["width"] = 220;
-
-$l_button["delete_all"]["value"] = "Delete all";
-$l_button["delete_all"]["alt"]   = "";
-$l_button["delete_all"]["width"] = 100;
-
-$l_button["add"]["value"] = "Add";
-$l_button["add"]["alt"] = "";
-$l_button["add"]["width"] = 100;
-
-$l_button["select"]["value"] = "Select";
-$l_button["select"]["alt"] = "";
-$l_button["select"]["width"] = 100;
-
-$l_button["edit"]["value"] = "Edit";
-$l_button["edit"]["alt"] = "";
-$l_button["edit"]["width"] = 100;
-
-$l_button["editor"]["value"] = "Start Editor";
-$l_button["editor"]["alt"] = "";
-$l_button["editor"]["width"] = 100;
-
-$l_button["new_service"]["value"] = "New Service";
-$l_button["new_service"]["alt"] = "";
-$l_button["new_service"]["width"] = 100;
-
-$l_button["new_entry"]["value"] = "New Entry";
-$l_button["new_entry"]["alt"] = "";
-$l_button["new_entry"]["width"] = 100;
-
-$l_button["attributes"]["value"] = "Attributes...";
-$l_button["attributes"]["alt"] = "";
-$l_button["attributes"]["width"] = 100;
-
-$l_button["selectAll"]["value"] = "Select all";
-$l_button["selectAll"]["alt"]   = "Select complete text";
-$l_button["selectAll"]["width"] = 110;
-
-$l_button["deselectAll"]["value"] = "Deselect all";
-$l_button["deselectAll"]["alt"]   = "Deselect complete selection";
-$l_button["deselectAll"]["width"] = 110;
-
-$l_button["prepend"]["value"] = "Prepend";
-$l_button["prepend"]["alt"]   = "Insert selected text before the source code";
-$l_button["prepend"]["width"] = 110;
-
-$l_button["append"]["value"] = "Append";
-$l_button["append"]["alt"]   = "Insert selected text after the source code";
-$l_button["append"]["width"] = 110;
-
-$l_button["addCursorPosition"]["value"] = "Insert at cursor position";
-$l_button["addCursorPosition"]["alt"]   = "Insert selected text at cursor position";
-$l_button["addCursorPosition"]["width"] = 180;
-
-$l_button["startEditor"]["value"] = "Start editor";
-$l_button["startEditor"]["alt"]   = "Start editor by using the Editor-Plugin";
-$l_button["startEditor"]["width"] = 100;
-
-$l_button["refresh"]["value"] = "Refresh";
-$l_button["refresh"]["alt"]   = "";
-$l_button["refresh"]["width"] = 100;
-
-$l_button["ignore"]["value"] = "Ignore";
-$l_button["ignore"]["alt"]   = "";
-$l_button["ignore"]["width"] = 100;
-
-$l_button["change"]["value"] = "Change";
-$l_button["change"]["alt"]   = "";
-$l_button["change"]["width"] = 100;
-
-$l_button["apply"]["value"] = "Apply";
-$l_button["apply"]["alt"]   = "";
-$l_button["apply"]["width"] = 100;
-
-$l_button["check"]["value"] = "Check";
-$l_button["check"]["alt"]   = "";
-$l_button["check"]["width"] = 100;
-
-$l_button["iconview"]["value"] = "Iconview";
-$l_button["iconview"]["alt"]   = "";
-$l_button["iconview"]["width"] = 100;
-
-$l_button["listview"]["value"] = "Listview";
-$l_button["listview"]["alt"]   = "";
-$l_button["listview"]["width"] = 100;
-
-$l_button["reindent"]["value"] = "Reindent code";
-$l_button["reindent"]["alt"]   = "";
-$l_button["reindent"]["width"] = 100;
-
-
-$l_button["btn_messages_copy"]["alt"] = "Copy message(s)";
-$l_button["btn_messages_create"]["alt"] = "Create message";
-$l_button["btn_messages_cut"]["alt"] = "Cut message(s)";
-$l_button["btn_messages_paste"]["alt"] = "Paste message(s)";
-$l_button["btn_messages_reply"]["alt"] = "Reply to message(s)";
-$l_button["btn_messages_tasks"]["alt"] = "Launch Task System";
-$l_button["btn_messages_trash"]["alt"] = "Delete message(s)";
-$l_button["btn_messages_update"]["alt"] = "Look for new messages";
-
-$l_button["btn_task_copy"]["alt"] = "Copy task(s)";
-$l_button["btn_task_create"]["alt"] = "Create task(s)";
-$l_button["btn_task_cut"]["alt"] = "Cut task(s)";
-$l_button["btn_task_forward"]["alt"] = "Forward task(s)";
-$l_button["btn_task_messages"]["alt"] = "Launch Messaging System";
-$l_button["btn_task_paste"]["alt"] = "Paste task(s)";
-$l_button["btn_task_reject"]["alt"] = "Reject task(s)";
-$l_button["btn_task_status"]["alt"] = "Update status";
-$l_button["btn_task_trash"]["alt"] = "Delete task(s)";
-$l_button["btn_task_update"]["alt"] = "Look for new tasks";
-$l_button["btn_add_field"]["alt"] = "Add field";
-$l_button["btn_add_link"]["alt"] = "Add hyperlink";
-$l_button["btn_add_listelement"]["alt"] = "Add list element";
-$l_button["btn_add_schedule"]["alt"] = "Add timed task";
-$l_button["btn_add_template"]["alt"] = "Add template";
-$l_button["btn_add_image"]["alt"] = "Add image";
-$l_button["btn_add_thumbnail"]["alt"] = "Add Thumbnail";
-$l_button["btn_add_flash"]["alt"] = "Add Flash movie";
-$l_button["btn_add_quicktime"]["alt"] = "Add Quicktime movie";
-$l_button["btn_add_file"]["alt"] = "Add file";
-$l_button["btn_add_cat"]["alt"] = "Add category";
-$l_button["btn_fs_back"]["alt"] = "One level back";
-$l_button["btn_new_dir"]["alt"] = "Add new directory";
-$l_button["btn_new_bannergroup"]["alt"] = "Add new banner group";
-
-$l_button["btn_direction_down"]["alt"] = "Down";
-$l_button["btn_direction_left"]["alt"] = "Left";
-$l_button["btn_direction_right"]["alt"] = "Right";
-$l_button["btn_direction_up"]["alt"] = "Up";
-
-$l_button["btn_edit_edit"]["alt"] = "Edit";
-$l_button["btn_edit_flash"]["alt"] = "Select Flash file";
-$l_button["btn_edit_image"]["alt"] = "Edit image";
-$l_button["btn_edit_include"]["alt"] = "Edit include file";
-$l_button["btn_edit_link"]["alt"] = "Edit hyperlink";
-$l_button["btn_edit_list"]["alt"] = "Edit list";
-$l_button["btn_edit_object"]["alt"] = "Edit object";
-$l_button["btn_edit_pdf"]["alt"] = "Select PDF file";
-$l_button["btn_edit_quicktime"]["alt"] = "Edit Quicktime file";
-$l_button["btn_edit_real"]["alt"] = "Select Real Player file";
-$l_button["btn_edit_wmp"]["alt"] = "Select Windows Media Player file";
-
-$l_button["btn_function_plus"]["alt"] = "Add";
-$l_button["btn_function_search"]["alt"] = "Search";
-$l_button["btn_function_trash"]["alt"] = "Delete";
-$l_button["btn_function_view"]["alt"] = "View";
-
-$l_button["btn_select_image"]["alt"] = "Select image";
-$l_button["btn_help"]["alt"] = "Help";
-
-$l_button["btn_open_sidebar"]["alt"] = "Open sidebar";
-$l_button["date_picker"]["alt"] = "Select date";
-$l_button['btn_add_note']['alt']='add note';
-$l_button['btn_function_reload']['alt']='Reload';
+/** Generated language file of webEdition CMS */
+$l_buttons_global=array(
+	
+	'addCursorPosition'=>array(
+		'alt'=>'Insert selected text at cursor position',
+		'value'=>'Insert at cursor position',
+		'width'=>'180',
+	),
+	'add'=>array(
+		'alt'=>'',
+		'value'=>'Add',
+		'width'=>'100',
+	),
+	'add_languages'=>array(
+		'alt'=>'Installs other languages for webEdition',
+		'value'=>'Add languages',
+		'width'=>'175',
+	),
+	'append'=>array(
+		'alt'=>'Insert selected text after the source code',
+		'value'=>'Append',
+		'width'=>'110',
+	),
+	'apply'=>array(
+		'alt'=>'',
+		'value'=>'Apply',
+		'width'=>'100',
+	),
+	'apply_current_dimension'=>array(
+		'alt'=>'Applies the current size of the webEdition window',
+		'value'=>'Apply current dimension',
+		'width'=>'175',
+	),
+	'apply_current_editor_dimension'=>array(
+		'alt'=>'Applies the current size of the editor',
+		'value'=>'Apply current dimension',
+		'width'=>'175',
+	),
+	'attributes'=>array(
+		'alt'=>'',
+		'value'=>'Attributes...',
+		'width'=>'100',
+	),
+	'backup'=>array(
+		'alt'=>'',
+		'value'=>'Backup',
+		'width'=>'100',
+	),
+	'back'=>array(
+		'alt'=>'',
+		'value'=>'Back',
+		'width'=>'100',
+	),
+	'back_to_login'=>array(
+		'alt'=>'Back to the webEdition-Login',
+		'value'=>'Back',
+		'width'=>'100',
+	),
+	'browse'=>array(
+		'alt'=>'Browse directory',
+		'value'=>'Browse',
+		'width'=>'100',
+	),
+	'btn_add_cat'=>array(
+		'alt'=>'Add category',
+	),
+	'btn_add_field'=>array(
+		'alt'=>'Add field',
+	),
+	'btn_add_file'=>array(
+		'alt'=>'Add file',
+	),
+	'btn_add_flash'=>array(
+		'alt'=>'Add Flash movie',
+	),
+	'btn_add_image'=>array(
+		'alt'=>'Add image',
+	),
+	'btn_add_link'=>array(
+		'alt'=>'Add hyperlink',
+	),
+	'btn_add_listelement'=>array(
+		'alt'=>'Add list element',
+	),
+	'btn_add_note'=>array(
+		'alt'=>'add note',
+	),
+	'btn_add_quicktime'=>array(
+		'alt'=>'Add Quicktime movie',
+	),
+	'btn_add_schedule'=>array(
+		'alt'=>'Add timed task',
+	),
+	'btn_add_template'=>array(
+		'alt'=>'Add template',
+	),
+	'btn_add_thumbnail'=>array(
+		'alt'=>'Add Thumbnail',
+	),
+	'btn_direction_down'=>array(
+		'alt'=>'Down',
+	),
+	'btn_direction_left'=>array(
+		'alt'=>'Left',
+	),
+	'btn_direction_right'=>array(
+		'alt'=>'Right',
+	),
+	'btn_direction_up'=>array(
+		'alt'=>'Up',
+	),
+	'btn_edit_edit'=>array(
+		'alt'=>'Edit',
+	),
+	'btn_edit_flash'=>array(
+		'alt'=>'Select Flash file',
+	),
+	'btn_edit_image'=>array(
+		'alt'=>'Edit image',
+	),
+	'btn_edit_include'=>array(
+		'alt'=>'Edit include file',
+	),
+	'btn_edit_link'=>array(
+		'alt'=>'Edit hyperlink',
+	),
+	'btn_edit_list'=>array(
+		'alt'=>'Edit list',
+	),
+	'btn_edit_object'=>array(
+		'alt'=>'Edit object',
+	),
+	'btn_edit_pdf'=>array(
+		'alt'=>'Select PDF file',
+	),
+	'btn_edit_quicktime'=>array(
+		'alt'=>'Edit Quicktime file',
+	),
+	'btn_edit_real'=>array(
+		'alt'=>'Select Real Player file',
+	),
+	'btn_edit_wmp'=>array(
+		'alt'=>'Select Windows Media Player file',
+	),
+	'btn_fs_back'=>array(
+		'alt'=>'One level back',
+	),
+	'btn_function_plus'=>array(
+		'alt'=>'Add',
+	),
+	'btn_function_reload'=>array(
+		'alt'=>'Reload',
+	),
+	'btn_function_search'=>array(
+		'alt'=>'Search',
+	),
+	'btn_function_trash'=>array(
+		'alt'=>'Delete',
+	),
+	'btn_function_view'=>array(
+		'alt'=>'View',
+	),
+	'btn_help'=>array(
+		'alt'=>'Help',
+	),
+	'btn_mail_resend'=>array(
+		'alt'=>'',
+	),
+	'btn_mail_send'=>array(
+		'alt'=>'',
+	),
+	'btn_messages_copy'=>array(
+		'alt'=>'Copy message(s)',
+	),
+	'btn_messages_create'=>array(
+		'alt'=>'Create message',
+	),
+	'btn_messages_cut'=>array(
+		'alt'=>'Cut message(s)',
+	),
+	'btn_messages_paste'=>array(
+		'alt'=>'Paste message(s)',
+	),
+	'btn_messages_reply'=>array(
+		'alt'=>'Reply to message(s)',
+	),
+	'btn_messages_tasks'=>array(
+		'alt'=>'Launch Task System',
+	),
+	'btn_messages_trash'=>array(
+		'alt'=>'Delete message(s)',
+	),
+	'btn_messages_update'=>array(
+		'alt'=>'Look for new messages',
+	),
+	'btn_new_bannergroup'=>array(
+		'alt'=>'Add new banner group',
+	),
+	'btn_new_dir'=>array(
+		'alt'=>'Add new directory',
+	),
+	'btn_open_sidebar'=>array(
+		'alt'=>'Open sidebar',
+	),
+	'btn_select_image'=>array(
+		'alt'=>'Select image',
+	),
+	'btn_task_copy'=>array(
+		'alt'=>'Copy task(s)',
+	),
+	'btn_task_create'=>array(
+		'alt'=>'Create task(s)',
+	),
+	'btn_task_cut'=>array(
+		'alt'=>'Cut task(s)',
+	),
+	'btn_task_forward'=>array(
+		'alt'=>'Forward task(s)',
+	),
+	'btn_task_messages'=>array(
+		'alt'=>'Launch Messaging System',
+	),
+	'btn_task_paste'=>array(
+		'alt'=>'Paste task(s)',
+	),
+	'btn_task_reject'=>array(
+		'alt'=>'Reject task(s)',
+	),
+	'btn_task_status'=>array(
+		'alt'=>'Update status',
+	),
+	'btn_task_trash'=>array(
+		'alt'=>'Delete task(s)',
+	),
+	'btn_task_update'=>array(
+		'alt'=>'Look for new tasks',
+	),
+	'cancel'=>array(
+		'alt'=>'',
+		'value'=>'Cancel',
+		'width'=>'100',
+	),
+	'change'=>array(
+		'alt'=>'',
+		'value'=>'Change',
+		'width'=>'100',
+	),
+	'check'=>array(
+		'alt'=>'',
+		'value'=>'Check',
+		'width'=>'100',
+	),
+	'clear_log'=>array(
+		'alt'=>'',
+		'value'=>'Clear logbook',
+		'width'=>'120',
+	),
+	'close'=>array(
+		'alt'=>'Closes this window',
+		'value'=>'Close',
+		'width'=>'100',
+	),
+	'date_picker'=>array(
+		'alt'=>'Select date',
+	),
+	'default'=>array(
+		'alt'=>'',
+		'value'=>'Default',
+		'width'=>'100',
+	),
+	'delete'=>array(
+		'alt'=>'',
+		'value'=>'Delete',
+		'width'=>'100',
+	),
+	'delete_all'=>array(
+		'alt'=>'',
+		'value'=>'Delete all',
+		'width'=>'100',
+	),
+	'delete_backup'=>array(
+		'alt'=>'Delete selected backup file',
+		'value'=>'Delete backup file',
+		'width'=>'150',
+	),
+	'delete_doctype'=>array(
+		'alt'=>'Delete the selected document type',
+		'value'=>'Delete document type',
+		'width'=>'174',
+	),
+	'demoversion'=>array(
+		'alt'=>'',
+		'value'=>'Demo version',
+		'width'=>'100',
+	),
+	'deselectAll'=>array(
+		'alt'=>'Deselect complete selection',
+		'value'=>'Deselect all',
+		'width'=>'110',
+	),
+	'editor'=>array(
+		'alt'=>'',
+		'value'=>'Start Editor',
+		'width'=>'100',
+	),
+	'edit'=>array(
+		'alt'=>'',
+		'value'=>'Edit',
+		'width'=>'100',
+	),
+	'edit_all_thumbs'=>array(
+		'alt'=>'',
+		'value'=>'Edit thumbnails...',
+		'width'=>'150',
+	),
+	'export'=>array(
+		'alt'=>'Export selected files',
+		'value'=>'Export',
+		'width'=>'100',
+	),
+	'go'=>array(
+		'alt'=>'',
+		'value'=>'Execute now',
+		'width'=>'120',
+	),
+	'iconview'=>array(
+		'alt'=>'',
+		'value'=>'Iconview',
+		'width'=>'100',
+	),
+	'ignore'=>array(
+		'alt'=>'',
+		'value'=>'Ignore',
+		'width'=>'100',
+	),
+	'import'=>array(
+		'alt'=>'Import selected file',
+		'value'=>'Import',
+		'width'=>'100',
+	),
+	'listview'=>array(
+		'alt'=>'',
+		'value'=>'Listview',
+		'width'=>'100',
+	),
+	'logbook'=>array(
+		'alt'=>'',
+		'value'=>'Logbook',
+		'width'=>'100',
+	),
+	'login'=>array(
+		'alt'=>'Login into webEdition',
+		'value'=>'Login',
+		'width'=>'100',
+	),
+	'make_backup'=>array(
+		'alt'=>'',
+		'value'=>'Create Backup',
+		'width'=>'150',
+	),
+	'make_new_document'=>array(
+		'alt'=>'Create new document',
+		'value'=>'New document',
+		'width'=>'125',
+	),
+	'newName'=>array(
+		'alt'=>'Insert a new name',
+		'value'=>'New name',
+		'width'=>'100',
+	),
+	'new_directory'=>array(
+		'alt'=>'Create new directory',
+		'value'=>'New directory',
+		'width'=>'200',
+	),
+	'new_doctype'=>array(
+		'alt'=>'Create a new document type',
+		'value'=>'New document type',
+		'width'=>'174',
+	),
+	'new_document'=>array(
+		'alt'=>'Create new document',
+		'value'=>'New document',
+		'width'=>'200',
+	),
+	'new_entry'=>array(
+		'alt'=>'',
+		'value'=>'New Entry',
+		'width'=>'100',
+	),
+	'new_folder'=>array(
+		'alt'=>'',
+		'value'=>'New folder',
+		'width'=>'200',
+	),
+	'new_item'=>array(
+		'alt'=>'',
+		'value'=>'New item',
+		'width'=>'200',
+	),
+	'new_service'=>array(
+		'alt'=>'',
+		'value'=>'New Service',
+		'width'=>'100',
+	),
+	'new_template'=>array(
+		'alt'=>'Create new template',
+		'value'=>'New template',
+		'width'=>'200',
+	),
+	'next'=>array(
+		'alt'=>'',
+		'value'=>'Next',
+		'width'=>'100',
+	),
+	'no'=>array(
+		'alt'=>'',
+		'value'=>'No',
+		'width'=>'100',
+	),
+	'ok'=>array(
+		'alt'=>'',
+		'value'=>'OK',
+		'width'=>'100',
+	),
+	'openVersionWizard'=>array(
+		'alt'=>'Versions-Wizard',
+		'value'=>'Versions-Wizard',
+		'width'=>'120',
+	),
+	'open'=>array(
+		'alt'=>'',
+		'value'=>'Open',
+		'width'=>'100',
+	),
+	'open_document'=>array(
+		'alt'=>'',
+		'value'=>'Open document',
+		'width'=>'200',
+	),
+	'overwrite'=>array(
+		'alt'=>'Overwrite file',
+		'value'=>'Overwrite',
+		'width'=>'100',
+	),
+	'preferences'=>array(
+		'alt'=>'',
+		'value'=>'Preferences',
+		'width'=>'200',
+	),
+	'prepend'=>array(
+		'alt'=>'Insert selected text before the source code',
+		'value'=>'Prepend',
+		'width'=>'110',
+	),
+	'preview'=>array(
+		'alt'=>'Show preview',
+		'value'=>'Preview',
+		'width'=>'100',
+	),
+	'properties'=>array(
+		'alt'=>'Show properties',
+		'value'=>'Properties',
+		'width'=>'100',
+	),
+	'publish'=>array(
+		'alt'=>'Save and publish the document',
+		'value'=>'Publish',
+		'width'=>'100',
+	),
+	'quit_delete'=>array(
+		'alt'=>'',
+		'value'=>'Finish delete mode',
+		'width'=>'175',
+	),
+	'quit_move'=>array(
+		'alt'=>'',
+		'value'=>'Finish move mode',
+		'width'=>'175',
+	),
+	'rebuild'=>array(
+		'alt'=>'Start rebuild',
+		'value'=>'Rebuild',
+		'width'=>'100',
+	),
+	'refresh'=>array(
+		'alt'=>'',
+		'value'=>'Refresh',
+		'width'=>'100',
+	),
+	'register'=>array(
+		'alt'=>'',
+		'value'=>'Register',
+		'width'=>'100',
+	),
+	'reindent'=>array(
+		'alt'=>'',
+		'value'=>'Reindent code',
+		'width'=>'100',
+	),
+	'replace'=>array(
+		'alt'=>'',
+		'value'=>'Replace',
+		'width'=>'100',
+	),
+	'reset'=>array(
+		'alt'=>'',
+		'value'=>'Reset',
+		'width'=>'100',
+	),
+	'restore_backup'=>array(
+		'alt'=>'',
+		'value'=>'Recover Backup',
+		'width'=>'180',
+	),
+	'res_1024'=>array(
+		'alt'=>'Set 1024x768',
+		'value'=>'1024x768',
+		'width'=>'100',
+	),
+	'res_1280'=>array(
+		'alt'=>'Set 1280x960',
+		'value'=>'1280x960',
+		'width'=>'100',
+	),
+	'res_1300'=>array(
+		'alt'=>'Set 1300x650',
+		'value'=>'1300x650',
+		'width'=>'100',
+	),
+	'res_1600'=>array(
+		'alt'=>'Set 1600x1200',
+		'value'=>'1600x1200',
+		'width'=>'100',
+	),
+	'res_500'=>array(
+		'alt'=>'Set 500x300',
+		'value'=>'500x300',
+		'width'=>'100',
+	),
+	'res_700'=>array(
+		'alt'=>'Set 700x320',
+		'value'=>'700x320',
+		'width'=>'100',
+	),
+	'res_800'=>array(
+		'alt'=>'Set 800x600',
+		'value'=>'800x600',
+		'width'=>'100',
+	),
+	'res_960'=>array(
+		'alt'=>'Set 960x420',
+		'value'=>'960x420',
+		'width'=>'100',
+	),
+	'revert_published'=>array(
+		'alt'=>'Discard changes and restore published version.',
+		'value'=>'Restore published version',
+		'width'=>'220',
+	),
+	'root_dir'=>array(
+		'alt'=>'Go to the root directory',
+		'value'=>'/',
+		'width'=>'40',
+	),
+	'saveversion'=>array(
+		'alt'=>'Saves the template and creates a new version',
+		'value'=>'Save Version',
+		'width'=>'120',
+	),
+	'save'=>array(
+		'alt'=>'',
+		'value'=>'Save',
+		'width'=>'100',
+	),
+	'search'=>array(
+		'alt'=>'',
+		'value'=>'Search',
+		'width'=>'100',
+	),
+	'selectAll'=>array(
+		'alt'=>'Select complete text',
+		'value'=>'Select all',
+		'width'=>'110',
+	),
+	'select'=>array(
+		'alt'=>'',
+		'value'=>'Select',
+		'width'=>'100',
+	),
+	'shopVariants'=>array(
+		'alt'=>'Edit variants',
+		'value'=>'Variants',
+		'width'=>'100',
+	),
+	'startEditor'=>array(
+		'alt'=>'Start editor by using the Editor-Plugin',
+		'value'=>'Start editor',
+		'width'=>'100',
+	),
+	'thumbnails'=>array(
+		'alt'=>'Show thumbnails',
+		'value'=>'Thumbnails',
+		'width'=>'100',
+	),
+	'unpublished_pages'=>array(
+		'alt'=>'Survey of unpublished documents',
+		'value'=>'Unpublished documents',
+		'width'=>'200',
+	),
+	'unpublish'=>array(
+		'alt'=>'',
+		'value'=>'Unpublish',
+		'width'=>'100',
+	),
+	'upload'=>array(
+		'alt'=>'Upload file',
+		'value'=>'Upload',
+		'width'=>'100',
+	),
+	'yes'=>array(
+		'alt'=>'',
+		'value'=>'Yes',
+		'width'=>'100',
+));

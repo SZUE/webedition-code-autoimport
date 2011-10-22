@@ -1,79 +1,49 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-/**
- * Language file: sidebar.inc.php
- * Provides language strings for the sidebar.
- * Language: English
- */
-$l_sidebar = array(
-		'headline' => "Zijbalk",
-		'confirm_to_close_sidebar' => "Wilt u de zijbalk echt sluiten?",
-// shown on the default sidebar page
-		'default' => array(
-				array(
-						'headline' => 'Welcome!',
-						'text' => 'webEdition is succesvol ge�nstalleerd, maar bevat nog geen content.',
-				),
-				array(
-						'headline' => 'Manuals',
-						'text' => 'Hier vind u algemene informatie over de werking en structuur van webEdition',
-						'link' => 'http://documentation.webedition.org/wiki/en/start', // CHECK
-
-						'icon' => 'documentation.gif', // TRANSLATE
-				),
-				array(
-						'headline' => 'Other help resources',
-						'text' => 'Overzicht van verdere instructies en referenties',
-						'link' => 'javascript:top.we_cmd(\'help\');', // TRANSLATE
-						'icon' => 'help.gif', // TRANSLATE
-				),
-				array(
-						'headline' => 'Tag reference',
-						'text' => 'Here you will find a list of all webEdition we:Tags with attributes and examples. ',
-						'link' => 'http://tags.webedition.org/wiki/en/',
-						'icon' => 'firststepswizard.gif',
-				),
-				array(
-						'headline' => 'Forum',
-						'text' => 'Official webEdition support forum with many Q&A concerning all kind of webEdition problems ',
-						'link' => 'http://forum.webedition.org/viewforum.php?f=36',
-						'icon' => 'tutorial.gif',
-				),
-				array(
-						'headline' => 'Version history',
-						'text' => 'A complete changelog of all webEdition bugfixes and improvements',
-						'link' => 'http://documentation.webedition.org/wiki/en/webedition/change-log/start',
-						'icon' => 'demopages.gif',
-				),
+/** Generated language file of webEdition CMS */
+$l_sidebar=array(
+	
+	'admin'=>array(
+		'0'=>array(
+			'headline'=>'Preferences Sidebar',
+			'link'=>'javascript:top.we_cmd(\'openPreferences\');',
+			'text'=>'U vind de instellingen voor de zijbalk, zoals individuele start documenten, breedte of deactivatie van de zijbalk onder extras> voorkeuren > algemeen ... onder de "Gebruikers interface" tab',
+	),),
+	'confirm_to_close_sidebar'=>'Wilt u de zijbalk echt sluiten?',
+	
+	'default'=>array(
+		'0'=>array(
+			'headline'=>'Welcome!',
+			'text'=>'webEdition is succesvol ge�nstalleerd, maar bevat nog geen content.',
 		),
-// Only shown on the default sidebar page if user has administrator perms
-		'admin' => array(
-				array(
-						'headline' => 'Preferences Sidebar',
-						'text' => 'U vind de instellingen voor de zijbalk, zoals individuele start documenten, breedte of deactivatie van de zijbalk onder extras> voorkeuren > algemeen ... onder de "Gebruikers interface" tab',
-						'link' => 'javascript:top.we_cmd(\'openPreferences\');', // TRANSLATE
-				),
+		'1'=>array(
+			'headline'=>'Manuals',
+			'icon'=>'documentation.gif',
+			'link'=>'http://documentation.webedition.org/wiki/en/start',
+			'text'=>'Hier vind u algemene informatie over de werking en structuur van webEdition',
 		),
+		'2'=>array(
+			'headline'=>'Other help resources',
+			'icon'=>'help.gif',
+			'link'=>'javascript:top.we_cmd(\'help\');',
+			'text'=>'Overzicht van verdere instructies en referenties',
+		),
+		'3'=>array(
+			'headline'=>'Tag reference',
+			'icon'=>'firststepswizard.gif',
+			'link'=>'http://tags.webedition.org/wiki/en/',
+			'text'=>'Here you will find a list of all webEdition we:Tags with attributes and examples.',
+		),
+		'4'=>array(
+			'headline'=>'Forum',
+			'icon'=>'tutorial.gif',
+			'link'=>'http://forum.webedition.org/viewforum.php?f=36',
+			'text'=>'Official webEdition support forum with many Q&A concerning all kind of webEdition problems',
+		),
+		'5'=>array(
+			'headline'=>'Version history',
+			'icon'=>'demopages.gif',
+			'link'=>'http://documentation.webedition.org/wiki/en/webedition/change-log/start',
+			'text'=>'A complete changelog of all webEdition bugfixes and improvements',
+	),),
+	'headline'=>'Zijbalk',
 );

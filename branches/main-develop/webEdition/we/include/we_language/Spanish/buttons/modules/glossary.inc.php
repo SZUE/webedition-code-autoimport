@@ -1,96 +1,44 @@
 <?php
-
-
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-
-
-
-
-
-$l_button['new_glossary_acronym']['value'] = 'New acronym'; // TRANSLATE
-
-$l_button['new_glossary_acronym']['alt']   = 'Create a new acronym ...'; // TRANSLATE
-
-$l_button['new_glossary_acronym']['width'] = 150;
-
-
-
-$l_button['new_glossary_abbreviation']['value'] = 'New abbreviation';
-
-$l_button['new_glossary_abbreviation']['alt']   = 'Create a new abbreviation ...'; // TRANSLATE
-
-$l_button['new_glossary_abbreviation']['width'] = 150;
-
-
-
-$l_button['new_glossary_foreignword']['value'] = 'New foreign word';
-
-$l_button['new_glossary_foreignword']['alt']   = 'Create a new foreign word ...'; // TRANSLATE
-
-$l_button['new_glossary_foreignword']['width'] = 150;
-
-
-
-$l_button['new_glossary_link']['value'] = 'New hyperlink';
-
-$l_button['new_glossary_link']['alt']   = 'Create a new hyperlink ...'; // TRANSLATE
-
-$l_button['new_glossary_link']['width'] = 150;
-
-
-
-$l_button['execute']['value'] = 'Apply';
-
-$l_button['execute']['alt']   = 'Apply changes ...'; // TRANSLATE
-
-$l_button['execute']['width'] = 100;
-
-
-
-$l_button['new_entry']['value'] = 'new entry';
-
-$l_button['new_entry']['alt']   = 'create a new entry ...'; // TRANSLATE
-
-$l_button['new_entry']['width'] = 100;
-
-
-
-$l_button['to_glossary']['value'] = 'to glossary';
-
-$l_button['to_glossary']['alt']   = 'add to glossary ...'; // TRANSLATE
-
-$l_button['to_glossary']['width'] = 100;
-
-
-
-$l_button['deactivate']['value'] = 'Deactivate';
-
-$l_button['deactivate']['alt']   = 'deactivate replacement ...'; // TRANSLATE
-
-$l_button['deactivate']['width'] = 100;
-
-
-
-?>
+/** Generated language file of webEdition CMS */
+$l_buttons_modules_glossary=array(
+	
+	'deactivate'=>array(
+		'alt'=>'deactivate replacement ...',
+		'value'=>'Deactivate',
+		'width'=>'100',
+	),
+	'execute'=>array(
+		'alt'=>'Apply changes ...',
+		'value'=>'Apply',
+		'width'=>'100',
+	),
+	'new_entry'=>array(
+		'alt'=>'create a new entry ...',
+		'value'=>'new entry',
+		'width'=>'100',
+	),
+	'new_glossary_abbreviation'=>array(
+		'alt'=>'Create a new abbreviation ...',
+		'value'=>'New abbreviation',
+		'width'=>'150',
+	),
+	'new_glossary_acronym'=>array(
+		'alt'=>'Create a new acronym ...',
+		'value'=>'New acronym',
+		'width'=>'150',
+	),
+	'new_glossary_foreignword'=>array(
+		'alt'=>'Create a new foreign word ...',
+		'value'=>'New foreign word',
+		'width'=>'150',
+	),
+	'new_glossary_link'=>array(
+		'alt'=>'Create a new hyperlink ...',
+		'value'=>'New hyperlink',
+		'width'=>'150',
+	),
+	'to_glossary'=>array(
+		'alt'=>'add to glossary ...',
+		'value'=>'to glossary',
+		'width'=>'100',
+));

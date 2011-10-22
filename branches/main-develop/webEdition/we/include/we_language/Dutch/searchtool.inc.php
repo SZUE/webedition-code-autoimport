@@ -1,162 +1,122 @@
 <?php
-
-/**
- * webEdition CMS
- *
- * $Rev$
- * $Author$
- * $Date$
- *
- * This source is part of webEdition CMS. webEdition CMS is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- * A copy is found in the textfile
- * webEdition/licenses/webEditionCMS/License.txt
- *
- * @category   webEdition
- * @package    webEdition_language
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
-$l_searchtool = array(
-		'save_group_ok' => 'The group has been succesfully saved', // TRANSLATE
-		'save_ok' => 'The entry has been succesfully saved.', // TRANSLATE
-		'save_group_failed' => 'The group could not be saved.', // TRANSLATE
-		'save_failed' => 'The entry could not be saved.', // TRANSLATE
-		'weSearch' => 'Zoeken',
-		'suchen' => 'Search',
-		'NEW_SUCHE' => "De gebruiker is bevoegd om nieuwe zoek onderdelen aan te maken",
-		'DELETE_SUCHE' => "De gebruiker is bevoegd om zoek onderdelen te verwijderen",
-		'EDIT_SUCHE' => "De gebruiker is bevoegd om zoek onderdelen te wijzigen",
-//Tree
-		'vordefinierteSuchanfragen' => 'Voor gedefineerde zoekopdrachten',
-		'dokumente' => 'documenten',
-		'objekte' => 'objecten',
-		'unveroeffentlicheDokumente' => 'ongepubliceerde documenten',
-		'statischeDokumente' => 'statische documenten',
-		'dynamischeDokumente' => 'dynamische documenten',
-		'unveroeffentlicheObjekte' => 'ongepubliceerde objecten',
-		'eigeneSuchanfragen' => 'eigen zoekopdrachten',
-		'versionen' => 'versions', // TRANSLATE
-		'geloeschteDokumente' => 'deleted documents', // TRANSLATE
-		'geloeschteObjekte' => 'deleted objects', // TRANSLATE
-//Navigation
-		'menu_suche' => 'Zoeken',
-		'menu_info' => 'Info', // TRANSLATE
-		'menu_help' => 'Help', // TRANSLATE
-		'menu_new' => 'Nieuwe zoekopdracht',
-		'menu_save' => 'Bewaren',
-		'menu_delete' => 'Verwijderen',
-		'menu_exit' => 'Sluiten',
-		'forDocuments' => 'Voor documenten',
-		'forTemplates' => 'Voor sjablonen',
-		'forObjects' => 'Voor objecten',
-		'menu_new_group' => 'Nieuwe groep',
-		'menu_advSearch' => 'Geavanceerd zoeken',
-//Tabs
-		'documents' => 'Documenten',
-		'templates' => 'Sjablonen',
-		'advSearch' => 'Geavanceerd zoeken',
-		'properties' => 'Eigenschappen',
-		'objects' => 'Objecten',
-		'classes' => 'Classes', // TRANSLATE
-//Top
-		'topDir' => 'Map',
-		'topSuche' => 'Zoeken',
-//Content
-		'general' => 'Algemeen',
-		'suchenIn' => "Zoeken in",
-		'text' => 'Tekst',
-		'anzeigen' => 'Tonen',
-		'dir' => 'Map',
-		'optionen' => 'Opties',
-//Fields
-		'allFields' => 'alle velden',
-		'ID' => 'ID van invoer',
-		'Text' => 'Naam van invoer',
-		'Path' => 'Pad van invoer',
-		'ParentIDDoc' => 'Hoofd invoer documenten',
-		'ParentIDTmpl' => 'Hoofd invoer sjablonen',
-		'ParentIDObj' => 'Hoofd invoer objecten',
-		'temp_template_id' => 'Sjabloon',
-		'MasterTemplateID' => 'Hoofdsjabloon',
-		'ContentType' => 'Soort content',
-		'temp_doc_type' => 'Document-type', // TRANSLATE
-		'temp_category' => 'Categorie',
-		'CreatorID' => 'ID van eigenaar',
-		'CreatorName' => 'Naam van eigenaar',
-		'WebUserID' => 'ID van webgebruiker',
-		'WebUserName' => 'Naam van webgebruiker',
-		'Status' => 'Status', // TRANSLATE
-		'Speicherart' => 'Bewaar type',
-		'Published' => 'Datum van publicatie',
-		'CreationDate' => 'Datum van creatie',
-		'ModDate' => 'Datum van modificatie',
-		'CONTAIN' => 'bevat',
-		'IS' => 'gelijk aan (=)',
-		'START' => 'begint met',
-		'END' => 'eindigt op',
-		'<' => 'minder dan (<)',
-		'<=' => 'kleiner dan (<=)',
-		'>=' => 'groter dan (>=)',
-		'>' => 'meer dan (>)',
-		'jeder' => 'toon alle',
-		'geparkt' => 'ongepuliceerd',
-		'veroeffentlicht' => 'gepubliceerd',
-		'geaendert' => 'gewijzigd',
-		'veroeff_geaendert' => 'gepubliceerd en gewijzigd',
-		'geparkt_geaendert' => 'ongepubliceerd en gewijzigd',
-		'dynamisch' => 'dynamisch',
-		'statisch' => 'statisch',
-		'deleted' => 'deleted', // TRANSLATE
-
-
-		'onlyTitle' => "In yitel",
-		'onlyFilename' => "In bestandsnaam",
-		'Content' => "In alle gegevens",
-//result columns
-		'dateiname' => "Bestandsnaam",
-		'seitentitel' => "Titel",
-		'created' => "Aangemaakt",
-		'modified' => "Gewijzigd",
-//messages
-		'predefinedSearchmodify' => "Het is niet mogelijk om vooraf gedefineerde zoekopdrachten te bewaren!",
-		'predefinedSearchdelete' => "Het is niet mogelijk om vooraf gedefineerde zoekopdrachten te verwijderen!",
-		'nameForSearch' => "Kies een naam voor uw zoekopdracht:",
-		'no_hochkomma' => "Ongeldige naam! Ongeldige karakters zijn ' (apostrophe) of \" (quote)!",
-		'confirmDel' => 'Invoer verwijderen.\\nWeet u het zeker?',
-		'nameTooLong' => 'De naam mag maximaal 30 karakters bevatten!',
-		'nothingCheckedAdv' => 'Er is geen zoekopdracht geselecteerd!',
-		'nothingCheckedTmplDoc' => 'Er zij geen zoekonderdelen geselecteerd!',
-		'noTempTableRightsSearch' => 'In order to use the search it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.', // TRANSLATE
-		'noTempTableRightsDoclist' => 'In order to show all included documents it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.', // TRANSLATE
-
-		'date_format' => 'd.m.Y', // TRANSLATE
-
-		'eintraege_pro_seite' => 'Toon',
-		'no_template' => "-", // TRANSLATE
-		'creator' => "eigenaar",
-		'nobody' => "niemand",
-		'template' => "sjabloon",
-		'metafelder' => "Metavelden (max. 6)",
-		'dateityp' => 'Bestands type',
-		'groesse' => 'Grootte',
-		'aufloesung' => 'Resolutie',
-		'beschreibung' => 'Omschrijving',
-		'idDiv' => 'ID', // TRANSLATE
-
-		'publish_docs' => 'Do you want to publish the market documents?', // TRANSLATE
-		'notChecked' => 'No documents are selected.', // TRANSLATE
-		'publishOK' => 'Documents were published.', // TRANSLATE
+/** Generated language file of webEdition CMS */
+$l_searchtool=array(
+	'<='=>'kleiner dan (<=)',
+	'<'=>'minder dan (<)',
+	'>='=>'groter dan (>=)',
+	'>'=>'meer dan (>)',
+	'advSearch'=>'Geavanceerd zoeken',
+	'allFields'=>'alle velden',
+	'anzeigen'=>'Tonen',
+	'aufloesung'=>'Resolutie',
+	'beschreibung'=>'Omschrijving',
+	'classes'=>'Classes',
+	'confirmDel'=>'Invoer verwijderen.\nWeet u het zeker?',
+	'CONTAIN'=>'bevat',
+	'ContentType'=>'Soort content',
+	'Content'=>'In alle gegevens',
+	'created'=>'Aangemaakt',
+	'CreationDate'=>'Datum van creatie',
+	'CreatorID'=>'ID van eigenaar',
+	'CreatorName'=>'Naam van eigenaar',
+	'creator'=>'eigenaar',
+	'dateiname'=>'Bestandsnaam',
+	'dateityp'=>'Bestands type',
+	'date_format'=>'d.m.Y',
+	'deleted'=>'deleted',
+	'DELETE_SUCHE'=>'De gebruiker is bevoegd om zoek onderdelen te verwijderen',
+	'dir'=>'Map',
+	'documents'=>'Documenten',
+	'dokumente'=>'documenten',
+	'dynamischeDokumente'=>'dynamische documenten',
+	'dynamisch'=>'dynamisch',
+	'EDIT_SUCHE'=>'De gebruiker is bevoegd om zoek onderdelen te wijzigen',
+	'eigeneSuchanfragen'=>'eigen zoekopdrachten',
+	'eintraege_pro_seite'=>'Toon',
+	'END'=>'eindigt op',
+	'export_tool_weSearch_data'=>'Bewaar Zoeken gegevens',
+	'forDocuments'=>'Voor documenten',
+	'forObjects'=>'Voor objecten',
+	'forTemplates'=>'Voor sjablonen',
+	'geaendert'=>'gewijzigd',
+	'geloeschteDokumente'=>'deleted documents',
+	'geloeschteObjekte'=>'deleted objects',
+	'general'=>'Algemeen',
+	'geparkt'=>'ongepuliceerd',
+	'geparkt_geaendert'=>'ongepubliceerd en gewijzigd',
+	'groesse'=>'Grootte',
+	'idDiv'=>'ID',
+	'ID'=>'ID van invoer',
+	'import_tool_weSearch_data'=>'Herstel Zoeken gegevens',
+	'IS'=>'gelijk aan (=)',
+	'jeder'=>'toon alle',
+	'MasterTemplateID'=>'Hoofdsjabloon',
+	'menu_advSearch'=>'Geavanceerd zoeken',
+	'menu_delete'=>'Verwijderen',
+	'menu_exit'=>'Sluiten',
+	'menu_help'=>'Help',
+	'menu_info'=>'Info',
+	'menu_new'=>'Nieuwe zoekopdracht',
+	'menu_new_group'=>'Nieuwe groep',
+	'menu_save'=>'Bewaren',
+	'menu_suche'=>'Zoeken',
+	'metafelder'=>'Metavelden (max. 6)',
+	'ModDate'=>'Datum van modificatie',
+	'modified'=>'Gewijzigd',
+	'nameForSearch'=>'Kies een naam voor uw zoekopdracht:',
+	'nameTooLong'=>'De naam mag maximaal 30 karakters bevatten!',
+	'NEW_SUCHE'=>'De gebruiker is bevoegd om nieuwe zoek onderdelen aan te maken',
+	'nobody'=>'niemand',
+	'notChecked'=>'No documents are selected.',
+	'noTempTableRightsDoclist'=>'In order to show all included documents it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.',
+	'noTempTableRightsSearch'=>'In order to use the search it is necessary to generate a temporary table or to be able to delete tables. Therefore you do not have the specific mysql-user-right.',
+	'nothingCheckedAdv'=>'Er is geen zoekopdracht geselecteerd!',
+	'nothingCheckedTmplDoc'=>'Er zij geen zoekonderdelen geselecteerd!',
+	'no_hochkomma'=>'Ongeldige naam! Ongeldige karakters zijn \' (apostrophe) of " (quote)!',
+	'no_template'=>'-',
+	'objects'=>'Objecten',
+	'objekte'=>'objecten',
+	'onlyFilename'=>'In bestandsnaam',
+	'onlyTitle'=>'In yitel',
+	'optionen'=>'Opties',
+	'ParentIDDoc'=>'Hoofd invoer documenten',
+	'ParentIDObj'=>'Hoofd invoer objecten',
+	'ParentIDTmpl'=>'Hoofd invoer sjablonen',
+	'Path'=>'Pad van invoer',
+	'perm_group_title'=>'Zoeken',
+	'predefinedSearchdelete'=>'Het is niet mogelijk om vooraf gedefineerde zoekopdrachten te verwijderen!',
+	'predefinedSearchmodify'=>'Het is niet mogelijk om vooraf gedefineerde zoekopdrachten te bewaren!',
+	'properties'=>'Eigenschappen',
+	'Published'=>'Datum van publicatie',
+	'publishOK'=>'Documents were published.',
+	'publish_docs'=>'Do you want to publish the market documents?',
+	'save_failed'=>'The entry could not be saved.',
+	'save_group_failed'=>'The group could not be saved.',
+	'save_group_ok'=>'The group has been succesfully saved',
+	'save_ok'=>'The entry has been succesfully saved.',
+	'seitentitel'=>'Titel',
+	'Speicherart'=>'Bewaar type',
+	'START'=>'begint met',
+	'statischeDokumente'=>'statische documenten',
+	'statisch'=>'statisch',
+	'Status'=>'Status',
+	'suchenIn'=>'Zoeken in',
+	'suchen'=>'Search',
+	'templates'=>'Sjablonen',
+	'template'=>'sjabloon',
+	'temp_category'=>'Categorie',
+	'temp_doc_type'=>'Document-type',
+	'temp_template_id'=>'Sjabloon',
+	'text'=>'Naam van invoer',
+	'topDir'=>'Map',
+	'topSuche'=>'Zoeken',
+	'unveroeffentlicheDokumente'=>'ongepubliceerde documenten',
+	'unveroeffentlicheObjekte'=>'ongepubliceerde objecten',
+	'veroeffentlicht'=>'gepubliceerd',
+	'veroeff_geaendert'=>'gepubliceerd en gewijzigd',
+	'versionen'=>'versions',
+	'vordefinierteSuchanfragen'=>'Voor gedefineerde zoekopdrachten',
+	'WebUserID'=>'ID van webgebruiker',
+	'WebUserName'=>'Naam van webgebruiker',
+	'weSearch'=>'Zoeken',
 );
-
-$l_searchtool = array_merge($l_searchtool, array(
-		'perm_group_title' => $l_searchtool['weSearch'],
-		'perm_group_title' => $l_searchtool['weSearch'],
-		'import_tool_weSearch_data' => "Herstel " . $l_searchtool['weSearch'] . " gegevens",
-		'export_tool_weSearch_data' => "Bewaar " . $l_searchtool['weSearch'] . " gegevens",
-				));
