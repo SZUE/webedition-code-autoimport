@@ -207,7 +207,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc
 		we_htmlElement::htmlHead(
 		$_meta_content_type = we_htmlElement::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET'].
 		$js
-		).
+		)).
 		we_htmlElement::htmlBody(array("bgcolor"=>"white","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0","onload"=>"to=window.setTimeout('pingPlugin()',5000);"),
 
 				we_htmlElement::htmlDiv(array("id"=>"debug"),"") .
@@ -224,4 +224,4 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc
 				)
 				//.we_htmlElement::htmlInput(array("type"=>"button","onclick"=>"setFile('file');"))
 		)
-	)));
+	));
