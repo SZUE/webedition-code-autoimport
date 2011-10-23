@@ -248,32 +248,6 @@ function handleShutdown($code) {
 			return $foo;
 		}*/
 
-		/*
-		$d = dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tags");
-		$needEndtags=array();
-		while (false !== ($entry=$d->read())) {
-			if(substr($entry,0,7) == "we_tag_" && substr($entry,0,9) != "we_tag_if"){
-				$foo = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tags/".$entry;
-
-				$file = file($foo);
-				foreach($file as $foo){
-					if(preg_match('/\$GLOBALS\["needs_endtag"\][\s*]=[\s*][{\',"}]*([a-zA-Z0-9]*)[{\',"}]*;/i',$foo,$reg) && ($reg[1]=="1" || $reg[1]=="true")){
-
-						$foo = eregi_replace('^we_tag_([^\.]+)\..+$','\1',$entry);
-						array_push($needEndtags,$foo);
-					}
-				}
-			}
-		}
-
-		$d->close();
-		foreach($needEndtags as $tagname){
-			if(($foo = $this->checkEndtags($tagname,1,$tags))){
-				return $foo;
-			}
-		}*/
-
-
 		if(($foo=$tp->parseTags($code))!==true){
 			$this->errMsg=$foo;
 			return $foo;
@@ -328,14 +302,14 @@ function handleShutdown($code) {
 			$pre_code = '<?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>'.$pre_code;
 
 			//#### parse base href
-			$code = eregi_replace('(</title>)','\1<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>',$code);
+			$code = preg_replace('%(</title>)%i','\1<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>',$code);
 
 			$code = str_replace('</head>',"$head</head>",$code);
 
 			$code = str_replace('?>','__WE_?__WE__',
 							str_replace('=>','__WE_=__WE__',$code));
 
-			$code = eregi_replace("(<body[^>]*)(>)","\\1<?php if(isset(\$GLOBALS[\"we_editmode\"]) && \$GLOBALS[\"we_editmode\"]) print ' onUnload=\"doUnload()\"'; ?>\\2$preContent",$code);
+			$code = preg_replace('%(<body[^>]*)(>)%i',"\\1<?php if(isset(\$GLOBALS[\"we_editmode\"]) && \$GLOBALS[\"we_editmode\"]) print ' onUnload=\"doUnload()\"'; ?>\\2$preContent",$code);
 
 			$code = str_replace('__WE_?__WE__','?>',
 							str_replace('__WE_=__WE__','=>',$code));
@@ -356,7 +330,7 @@ function handleShutdown($code) {
 	}
 
 	function hasStartAndEndTag($tagname,$code){
-		return eregi('< ?/ ?'.$tagname.'[^>]*>',$code) && eregi('< ?'.$tagname.'[^>]*>',$code) && eregi('< ?'.$tagname.'[ >]',$code) && eregi('< ?/ ?'.$tagname.'[ >]',$code);
+		return preg_match('%< ?/ ?'.$tagname.'[^>]*>%i',$code) && preg_match('%< ?'.$tagname.'[^>]*>%i',$code) && preg_match('%< ?'.$tagname.'[ >]%i',$code) && preg_match('%< ?/ ?'.$tagname.'[ >]%i',$code);
 	}
 
 ### NEU###

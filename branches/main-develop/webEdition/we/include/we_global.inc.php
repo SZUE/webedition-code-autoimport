@@ -2175,18 +2175,16 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 }
 
 function removeHTML($val) {
-	$val = eregi_replace('<br ?/?>', '###BR###',
-					eregi_replace('<\?', '###?###',
-									eregi_replace('\?>', '###/?###',
-													eregi_replace('<[^><]+>', '', $val))));
-	return str_replace('###BR###', '<br>',
-					str_replace('###?###', '<?',
-									str_replace('###/?###', '?>', $val)));
+	$val = preg_replace('%<br ?/?>%i', '###BR###',
+					str_replace(array('<?','?>'),
+						array('###?###','###/?###'),$val));
+	$val=eregi_replace('<[^><]+>', '',$val);
+	return str_replace(array('###BR###','###?###','###/?###'),
+		array('<br/>','<?','?>'), $val);
 }
 
 function removePHP($val) {
-	$val = str_replace("<?", "",
-					str_replace("?>", "", $val));
+	$val = str_replace(array('<?','?>'), '', $val);
 	return preg_replace('|<script +language[^p]+php[^>]*>|si', '', $val);
 }
 

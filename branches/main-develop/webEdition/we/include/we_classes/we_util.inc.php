@@ -43,14 +43,14 @@ class we_util{
 	* @param array pattern Array of patterns
 	* @param string string
 	*/
-	function eregi_array($pattern,$string){
+	/*function eregi_array($pattern,$string){
 		foreach($pattern as $reg){
 			if(eregi($reg,$string)){
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	* Formates a number with a country specific format into computer readable format.

@@ -448,7 +448,7 @@ class searchtoolView extends weToolView
      treeData.unselectnode();
     }
        break;
-       
+
          case "tool_weSearch_new_forObjects":
     if (' . $this->editorBodyFrame . '.loaded) {
      ' . $this->topFrame . '.hot = 0;
@@ -464,7 +464,7 @@ class searchtoolView extends weToolView
      treeData.unselectnode();
     }
        break;
-       
+
 
          case "tool_weSearch_new_advSearch":
     if (' . $this->editorBodyFrame . '.loaded) {
@@ -559,7 +559,7 @@ class searchtoolView extends weToolView
 		//workaround for z-index ans selects in ie6
 		if (($GLOBALS['BROWSER'] == "IE")) {
 			$foo = explode(";", $_SERVER["HTTP_USER_AGENT"]);
-			$version = abs(eregi_replace("[^0-9\\.]", "", $foo[1]));
+			$version = intval(preg_replace('%[^0-9\\.]%', '', $foo[1]));
 			if ($version < 7) {
 				$IE6 = true;
 			}

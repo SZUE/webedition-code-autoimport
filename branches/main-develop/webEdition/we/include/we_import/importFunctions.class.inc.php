@@ -179,15 +179,9 @@ abstract class importFunctions{
 	* @desc corrects the filename if it contains invalid chars
 	*/
 	static function correctFilename($filename){
-		$filename = str_replace(" ","-",$filename);
-		$filename = str_replace("�","ae",$filename);
-		$filename = str_replace("�","oe",$filename);
-		$filename = str_replace("�","ue",$filename);
-		$filename = str_replace("�","Ae",$filename);
-		$filename = str_replace("�","Oe",$filename);
-		$filename = str_replace("�","Ue",$filename);
-		$filename = str_replace("�","ss",$filename);
-		$filename = eregi_replace('[^a-z0-9\._\-]','',$filename);
+		$filename = str_replace(array(' ','ä','ö','ü','Ä','Ö','Ü','ß'),
+			array('-','ae','oe','ue','Ae','Oe','Ue','ss'),$filename);
+		$filename = preg_replace('%[^a-z0-9\._\-]%i','',$filename);
 		if(strlen($filename) > 100){
 			$filename  = substr($filename,0,100);
 		}

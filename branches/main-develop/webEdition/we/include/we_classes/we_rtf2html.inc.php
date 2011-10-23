@@ -87,7 +87,6 @@ class we_rtf2html{
       	$this->parseRtf();
       	$this->correctLists();
       }else{
-      	//$this->htmlOut = eregi_replace('^.*<body[^>]*>(.*)</body>.*$','\1',$this->fileContent);
 		   $this->htmlOut = eregi_replace('<\?[^>]+>','',$this->fileContent);
       }
 

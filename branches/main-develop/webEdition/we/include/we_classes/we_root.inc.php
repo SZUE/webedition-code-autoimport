@@ -908,7 +908,6 @@ function formTriggerDocument($isclass=false){
 					if(is_array($v)){
 						foreach($v as $n2=>$v2){
 							$v2 = we_util::cleanNewLine($v2);
-							//$v2 = eregi_replace("&quot;","\"",$v2);  // check ob benoetigt
 							$type=$regs[1];
 							if($type=="date"){
 								$name = preg_replace('/^(.+)_[^_]+$/','\1',$n2);
