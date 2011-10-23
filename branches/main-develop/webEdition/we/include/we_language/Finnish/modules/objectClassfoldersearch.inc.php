@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_objectClassfoldersearch=array(
+$l_modules_objectClassfoldersearch=array(
 	'AB'=>'Työtilat',
 	'Ansicht'=>'Näytä',
 	'anzeige'=>'Näytä...',

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Actief',
 	'all'=>'Alle',
 	'bannercode'=>'Maak bannercode aan',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Document types',
 	'double_name'=>'De banner naam bestaat al!',
 	'error_ac_field'=>'FOUT: Ongeldige invoeren in gemarkeerde velden!',
-	'error_clickscript_empty'=>'Vul a.u.b. het veld \'Klik script\' in!',
-	'error_getscript_empty'=>'Vul a.u.b. het veld \'Verkrijg script\' in!',
-	'error_height_empty'=>'Vul a.u.b. het veld \'Hoogte\' in!',
-	'error_page_empty'=>'Vul a.u.b. het veld \'Pagina URL\' in!',
-	'error_tagname_empty'=>'Vul a.u.b. het veld \'Banner naam\' in!',
-	'error_width_empty'=>'Vul a.u.b. het veld \'Breedte\' in!',
+	'error_clickscript_empty'=>'Vul a.u.b. het veld `Klik script` in!',
+	'error_getscript_empty'=>'Vul a.u.b. het veld `Verkrijg script` in!',
+	'error_height_empty'=>'Vul a.u.b. het veld `Hoogte` in!',
+	'error_page_empty'=>'Vul a.u.b. het veld `Pagina URL` in!',
+	'error_tagname_empty'=>'Vul a.u.b. het veld `Banner naam` in!',
+	'error_width_empty'=>'Vul a.u.b. het veld `Breedte` in!',
 	'ext_url'=>'Externe URL',
 	'frequent'=>'regelmatig',
 	'from'=>'Van',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Gewicht',
 	'we_filename_notValid'=>'De groepsnaam is niet geldig!',
 	'width'=>'Breedte',
-	'wrongtext'=>'De naam is niet geldig! De volgende karakters kunnen niet gebruikt worden: /  \\  % \' "',
+	'wrongtext'=>'De naam is niet geldig! De volgende karakters kunnen niet gebruikt worden: /  \\  % ` "',
 );

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_objectClassfoldersearch=array(
+$l_modules_objectClassfoldersearch=array(
 	'AB'=>'Рабочее пространство',
 	'Ansicht'=>'Вид',
 	'anzeige'=>'Вывести на экран',

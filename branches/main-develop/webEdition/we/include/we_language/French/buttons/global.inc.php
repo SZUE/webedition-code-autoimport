@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_global=array(
+$l_buttons_global=array(
 	
 	'addCursorPosition'=>array(
 		'alt'=>'Insert selected text at cursor position',
@@ -33,7 +33,7 @@ $l_global=array(
 		'width'=>'175',
 	),
 	'apply_current_editor_dimension'=>array(
-		'alt'=>'Adopte la taille actuelle de l\'éditeur',
+		'alt'=>'Adopte la taille actuelle de l`éditeur',
 		'value'=>'Apply current dimension',
 		'width'=>'175',
 	),
@@ -129,7 +129,7 @@ $l_global=array(
 		'alt'=>'Éditer la Liste',
 	),
 	'btn_edit_object'=>array(
-		'alt'=>'Éditer l\'Object',
+		'alt'=>'Éditer l`Object',
 	),
 	'btn_edit_pdf'=>array(
 		'alt'=>'Choisir un document-PDF',
@@ -144,7 +144,7 @@ $l_global=array(
 		'alt'=>'Choisir un fichier de Windows Media Player',
 	),
 	'btn_fs_back'=>array(
-		'alt'=>'Réculer d\'un plan',
+		'alt'=>'Réculer d`un plan',
 	),
 	'btn_function_plus'=>array(
 		'alt'=>'Ajouter',
@@ -234,7 +234,7 @@ $l_global=array(
 		'alt'=>'Supprimer des Tâche',
 	),
 	'btn_task_update'=>array(
-		'alt'=>'Voir s\'il y a des nouveau Tâche',
+		'alt'=>'Voir s`il y a des nouveau Tâche',
 	),
 	'cancel'=>array(
 		'alt'=>'Cancel',
@@ -450,7 +450,7 @@ $l_global=array(
 		'width'=>'200',
 	),
 	'prepend'=>array(
-		'alt'=>'Insérer le texte choisi à l\'avant du texte source',
+		'alt'=>'Insérer le texte choisi à l`avant du texte source',
 		'value'=>'Prepend',
 		'width'=>'110',
 	),
@@ -595,7 +595,7 @@ $l_global=array(
 		'width'=>'100',
 	),
 	'startEditor'=>array(
-		'alt'=>'Démarrer l\'éditeur par le Plugin-Editeur',
+		'alt'=>'Démarrer l`éditeur par le Plugin-Editeur',
 		'value'=>'Start editor',
 		'width'=>'100',
 	),

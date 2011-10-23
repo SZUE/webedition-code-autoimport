@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Active',
 	'all'=>'All',
 	'bannercode'=>'Create banner code',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Document types',
 	'double_name'=>'The banner name already exits!',
 	'error_ac_field'=>'ERROR: Invalid entries in marked fields!',
-	'error_clickscript_empty'=>'Please fill out the \'Click script\' field!',
-	'error_getscript_empty'=>'Please fill out the \'Get script\' field!',
-	'error_height_empty'=>'Please fill out the \'Height\' field!',
-	'error_page_empty'=>'Please fill out the \'URL of page\' field!',
-	'error_tagname_empty'=>'Please fill out the \'Banner name\' field!',
-	'error_width_empty'=>'Please fill out the \'Width\' field!',
+	'error_clickscript_empty'=>'Please fill out the `Click script` field!',
+	'error_getscript_empty'=>'Please fill out the `Get script` field!',
+	'error_height_empty'=>'Please fill out the `Height` field!',
+	'error_page_empty'=>'Please fill out the `URL of page` field!',
+	'error_tagname_empty'=>'Please fill out the `Banner name` field!',
+	'error_width_empty'=>'Please fill out the `Width` field!',
 	'ext_url'=>'External URL',
 	'frequent'=>'frequent',
 	'from'=>'From',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Weight',
 	'we_filename_notValid'=>'The group name is not valid!',
 	'width'=>'Width',
-	'wrongtext'=>'The name is not valid! The following characters cannot be used: /  \  % \' "',
+	'wrongtext'=>'The name is not valid! The following characters cannot be used: /  \  % ` "',
 );

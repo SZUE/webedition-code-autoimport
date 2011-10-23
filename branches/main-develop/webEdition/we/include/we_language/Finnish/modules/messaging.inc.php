@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_messaging=array(
+$l_modules_messaging=array(
 	'addr_book'=>'Osoitekirja',
 	'addr_book_saved'=>'Osoitekirja on tallennettu.',
 	'assigned_by'=>'Osoittanut käyttäjä',

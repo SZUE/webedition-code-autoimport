@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_newsletter=array(
+$l_modules_newsletter=array(
 	'additional_clp'=>'Additional reply address (option -f)',
 	'add_email'=>'Adicionar dirección de E-Mail',
 	'all_list'=>'-- Todas las listas --',
@@ -36,7 +36,7 @@ $l_newsletter=array(
 	'csv_col'=>'Columna de E-Mail',
 	'csv_delimiter'=>'Delimitador',
 	'csv_download'=>'Descargar archivo CSV',
-	'csv_export'=>'El archivo \'%s\' fue salvado.',
+	'csv_export'=>'El archivo `%s` fue salvado.',
 	'csv_firstnamecol'=>'Columna de Nombre',
 	'csv_firstname_explain'=>'(0 - Ninguna columna de Nombre)',
 	'csv_hmcol'=>'Columna de HTML',
@@ -70,7 +70,7 @@ $l_newsletter=array(
 	'delete_nok'=>'Error: El boletín informativo no fue borrado',
 	'delete_ok'=>'El boletín informativo fue borrado.',
 	'delete_question'=>'Desea Ud borrar el boletín informativo actual?',
-	'del_email_file'=>'Borrar E-Mail \'%s\'?',
+	'del_email_file'=>'Borrar E-Mail `%s`?',
 	'details'=>'Detalles',
 	'dir'=>'Directorio',
 	'documents'=>'Documentos',
@@ -131,8 +131,8 @@ $l_newsletter=array(
 	'log_sending'=>'Crear entradas al diario cuando el E-Mail es enviado',
 	'log_start_send'=>'Inicie la campaña del boletín informativo.',
 	'mailing_list'=>'Lista de Correos %s',
-	'mail_failed'=>'El E-Mail \'%s\' no puede enviarse. ¡Una posible causa es la configuración incorrecta del servidor!',
-	'mail_not_sent'=>'El E-Mail \'%s\' no puede ser enviado.',
+	'mail_failed'=>'El E-Mail `%s` no puede enviarse. ¡Una posible causa es la configuración incorrecta del servidor!',
+	'mail_not_sent'=>'El E-Mail `%s` no puede ser enviado.',
 	'mail_sent'=>'El boletín informativo fue enviado a %s .',
 	'male_salutation'=>'Saludo masculino',
 	'malformed_mail_group'=>'La lista de correos contiene E-mail %s no válido!\nEl boletín informativo no fue salvado!',

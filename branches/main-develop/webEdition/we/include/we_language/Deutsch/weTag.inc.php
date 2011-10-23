@@ -17,7 +17,7 @@ $l_weTag=array(
 		'description'=>'Dieses Tag dient der Ausgabe der Antwortmöglichkeiten eines Votings.',
 	),
 	'author'=>array(
-		'description'=>'Das we:author-Tag dient dazu, um den Autor der Seite anzuzeigen. Ist das Attribut \'type\' nicht gesetzt, wird der Benutzername angezeigt. Wenn type="name" ist, dann wird der Vor- und Nachname des Benutzers angezeigt. Ist \'type="initials", dann werden die Initialen des Benutzers angezeigt. Ist kein Vor- und Nachname eingetragen, wird immer der Benutzername angezeigt.',
+		'description'=>'Das we:author-Tag dient dazu, um den Autor der Seite anzuzeigen. Ist das Attribut `type` nicht gesetzt, wird der Benutzername angezeigt. Wenn type="name" ist, dann wird der Vor- und Nachname des Benutzers angezeigt. Ist `type="initials", dann werden die Initialen des Benutzers angezeigt. Ist kein Vor- und Nachname eingetragen, wird immer der Benutzername angezeigt.',
 	),
 	'a'=>array(
 		'defaultvalue'=>'',
@@ -60,7 +60,7 @@ $l_weTag=array(
 	),
 	'checkForm'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Das Tag we:checkForm führt eine Validierung eines Formulars per JavaScript durch. <br />Die Kombination der Parameter \'match\' und \'type\' legen den \'name\',bzw. die \'id\' des zu kontrollierenden Formulars fest.<br />\'mandatory\' und \'email\' erwarten eine kommaseparierte Liste von Pflichtfeldern, bzw. Email-Adressen(Syntax-Check). In \'password\' können kommasepariert 2 Feldnamen und eine Mindestlänge eingegeben werden, die auf Gleichheit, bzw die Mindestlänge überprüft weden.<br />Mit onError kann im Fehlerfall eine eigene JavaScript-Funktion aufgerufen werden, die als Parameter arrays mit fehlenden Pflichtfeldern und den invaliden Email-Adressen erhält, als dritter Parameter wird ein Flag übergeben, ob die Passworteingabe korrekt war. Andernfalls wird der Standardwert im Fehlerfall ausgegeben.',
+		'description'=>'Das Tag we:checkForm führt eine Validierung eines Formulars per JavaScript durch. <br />Die Kombination der Parameter `match` und `type` legen den `name`,bzw. die `id` des zu kontrollierenden Formulars fest.<br />`mandatory` und `email` erwarten eine kommaseparierte Liste von Pflichtfeldern, bzw. Email-Adressen(Syntax-Check). In `password` können kommasepariert 2 Feldnamen und eine Mindestlänge eingegeben werden, die auf Gleichheit, bzw die Mindestlänge überprüft weden.<br />Mit onError kann im Fehlerfall eine eigene JavaScript-Funktion aufgerufen werden, die als Parameter arrays mit fehlenden Pflichtfeldern und den invaliden Email-Adressen erhält, als dritter Parameter wird ein Flag übergeben, ob die Passworteingabe korrekt war. Andernfalls wird der Standardwert im Fehlerfall ausgegeben.',
 	),
 	'colorChooser'=>array(
 		'description'=>'Das we:colorChooser Tag erzeugt ein Eingabefeld um Farbwerte auszuwählen',
@@ -382,7 +382,7 @@ $l_weTag=array(
 	),
 	'ifNotObjectLanguage'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab \'Sprachen\'.',
+		'description'=>'Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab `Sprachen`.',
 	),
 	'ifNotObject'=>array(
 		'defaultvalue'=>'',
@@ -390,7 +390,7 @@ $l_weTag=array(
 	),
 	'ifNotPageLanguage'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Mit we:ifNotPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab \'Sprachen\'.',
+		'description'=>'Mit we:ifNotPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab `Sprachen`.',
 	),
 	'ifNotPosition'=>array(
 		'defaultvalue'=>'',
@@ -414,7 +414,7 @@ $l_weTag=array(
 	),
 	'ifNotSelf'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Das we:ifNotSelf-Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nicht angezeigt wird, wenn das Dokument eine der unten eingetragenen ID\'s hat. Befindet sich das Tag nicht innerhalb von we:linklist oder we:listdir Tags, dann ist "id" ein erforderlicher Eintrag!',
+		'description'=>'Das we:ifNotSelf-Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nicht angezeigt wird, wenn das Dokument eine der unten eingetragenen ID`s hat. Befindet sich das Tag nicht innerhalb von we:linklist oder we:listdir Tags, dann ist "id" ein erforderlicher Eintrag!',
 	),
 	'ifNotSendMail'=>array(
 		'defaultvalue'=>'',
@@ -483,7 +483,7 @@ $l_weTag=array(
 	),
 	'ifObjectLanguage'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab \'Sprachen\'.',
+		'description'=>'Mit we:ifObjectLanguage kann auf die Spracheinstellung des Objectes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab `Sprachen`.',
 	),
 	'ifObject'=>array(
 		'defaultvalue'=>'',
@@ -495,7 +495,7 @@ $l_weTag=array(
 	),
 	'ifPageLanguage'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Mit we:ifPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab \'Sprachen\'.',
+		'description'=>'Mit we:ifPageLanguage kann auf die Spracheinstellung des Dokumentes getestet werden, dabei können mehrere Werte durch Komma separiert angegeben werden (oder-Verknüpfung). Die möglichen Werte ergeben sich aus dem Einstellungsdialog, Tab `Sprachen`.',
 	),
 	'ifPosition'=>array(
 		'defaultvalue'=>'',

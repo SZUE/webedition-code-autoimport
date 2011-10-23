@@ -35,8 +35,8 @@
 $l_button=array();
 $dir=dirname(__FILE__).'/buttons/';
 include($dir."global.inc.php");
-$l_button=array_merge($l_button,$l_global);
-unset($l_global);
+$l_button=array_merge($l_button,$l_buttons_global);
+unset($l_buttons_global);
 if (is_dir($dir."modules")) {
 
 	// Include language files of buttons used in modules
@@ -45,8 +45,8 @@ if (is_dir($dir."modules")) {
 		$var=substr($entry,0,-8);
 		if ($entry[0] != "." && substr($entry,-8 ) == ".inc..php") {
 			include($dir."modules/".$entry);
-			$l_button=array_merge($l_button,${"l_$var"});
-			unset(${"l_$var"});
+			$l_button=array_merge($l_button,${"l_buttons_modules_$var"});
+			unset(${"l_buttons_modules_$var"});
 		}
 	}
 	$d->close();

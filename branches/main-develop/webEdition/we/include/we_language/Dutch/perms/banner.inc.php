@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_perms_banner=array(
 	'DELETE_BANNER'=>'De gebruiker is bevoegd om banners en banner groepen te verwijderen.',
 	'EDIT_BANNER'=>'De gebruiker is bevoegd om banners en banner groepen te wijzigen.',
 	'NEW_BANNER'=>'De gebruiker is bevoegd om banners en banner groepen aan te maken.',

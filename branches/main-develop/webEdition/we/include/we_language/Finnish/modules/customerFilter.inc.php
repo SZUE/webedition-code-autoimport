@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_customerFilter=array(
+$l_modules_customerFilter=array(
 	'accessControlOnErrorDoc'=>'Käytä virhesivuja',
 	'accessControlOnTemplate'=>'Virheenkäsittely sivupohjan kautta',
 	'accessControl'=>'Pääsyoikeuksien hallinta',

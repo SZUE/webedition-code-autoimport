@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_global=array(
+$l_javaMenu_global=array(
 	'backup'=>'Reserva',
 	'back'=>'Atras',
 	'browse_server'=>'Navegar por el Servidor',

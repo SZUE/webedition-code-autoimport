@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_customer=array(
+$l_perms_customer=array(
 	'CAN_CHANGE_DOCS_CUSTOMER'=>'Käyttäjä voi lisätä asiakkaita dokumentteihin ja objekteihin.',
 	'CAN_EDIT_CUSTOMERFILTER'=>'Käyttäjä voi muokata asiakassuodattimia.',
 	'CUSTOMER_AUTOLOGINID_VISIBLE'=>'The user is allowed to see the auto login ID of the customers',

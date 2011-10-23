@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_voting=array(
+$l_modules_voting=array(
 	'access'=>'Dostęp',
 	'active_till'=>'Aktywne',
 	'AllowFreeText'=>'Allow free text',
@@ -20,11 +20,11 @@ $l_voting=array(
 	'cookie_method_help'=>'Wykorzystaj tą metodę, jeżeli nie chcesz/nie możesz korzystać z metody IP. Pamiętaj, że użytkownik może wyłączyć Cookies w przeglądarce. Opcja "Metoda Fallback IP" wymaga wykorzystania znaczników we:cookie w szablonie.',
 	'csv_charset'=>'Export charset',
 	'csv_download'=>'Download CSV file',
-	'csv_export'=>'Plik \'%s\' został zapisany.',
+	'csv_export'=>'Plik `%s` został zapisany.',
 	'data_deleted_info'=>'Dane zostały usunięte!',
 	'delete_alert'=>'Usuń aktualną ankietę/grupę.\n Jesteś pewien?',
 	'delete_ipdata_question'=>'Chcesz wyczyścić wszystkie zapamietane dane IP. Na pewno?',
-	'delete_ipdata_text'=>'Zapamiętane dane IP zajmują %s bajtów pamięci. Można je usunąć za pomocą przyciska  \'Usuń\'. Pamiętaj, że wszystkie zapisane dane IP głosowania zostaną usunięte a wyniki ?łosowania nie bedą już tak dokładne, ponieważ możliwe jest powtórzenie głosowania.',
+	'delete_ipdata_text'=>'Zapamiętane dane IP zajmują %s bajtów pamięci. Można je usunąć za pomocą przyciska  `Usuń`. Pamiętaj, że wszystkie zapisane dane IP głosowania zostaną usunięte a wyniki ?łosowania nie bedą już tak dokładne, ponieważ możliwe jest powtórzenie głosowania.',
 	'delete_log_question'=>'Chcesz usunąć wszystkie wpisy do logu głosowania.Na pewno?',
 	'disabled'=>'Wyłączony',
 	'enabled'=>'Włączony',

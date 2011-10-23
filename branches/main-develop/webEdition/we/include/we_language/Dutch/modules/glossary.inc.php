@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_glossary=array(
+$l_modules_glossary=array(
 	'abbreviation'=>'Afkorting',
 	'abbreviation_description'=>'Een afkorting is een kortere vorm van een woord. Specifieker, een afkorting bestaat uit een letter of een groep letters die uit een woord gehaald zijn en getoond worden om een woord af te korten. Bijvoorbeeld, het woord "Omschrijving" kan afgekort worden als "afschr."',
 	'accesskey'=>'Toegangsknop',
@@ -45,7 +45,7 @@ $l_glossary=array(
 	'input'=>'Invoer',
 	'item_deleted'=>'De invoer is succesvol verwijderd.',
 	'item_is_active'=>'Invoer is geavtiveerd',
-	'item_saved'=>'De invoer \'%s\' is succesvol bewaard!',
+	'item_saved'=>'De invoer `%s` is succesvol bewaard!',
 	'keyboard'=>'Toetsenbord',
 	'languages'=>'Talen',
 	'language'=>'Taal',
@@ -114,8 +114,8 @@ $l_glossary=array(
 	'publish_selected_items'=>'Activeer vervanging van geselecteerde invoeren.',
 	'publish_when_saved'=>'Activeren na bewaren',
 	'relation'=>'Relatie',
-	'replace_activated'=>'De vervanging voor \'%s\' is succesvol geactiveerd!',
-	'replace_deactivated'=>'De vervanging voor \'%s\' is succesvol gedeactiveerd!',
+	'replace_activated'=>'De vervanging voor `%s` is succesvol geactiveerd!',
+	'replace_deactivated'=>'De vervanging voor `%s` is succesvol gedeactiveerd!',
 	'save_changed_glossary'=>'This entry has been changed.\nDo you want to save your changes?',
 	'save_ok'=>'Invoer bewaard.',
 	'search'=>'Zoeken',

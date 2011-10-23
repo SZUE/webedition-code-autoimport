@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'Все поля',
 	'attributes'=>'Attributes',
 	'behaviour'=>'Вывод на экран',
@@ -46,9 +46,9 @@ $l_object=array(
 	'no_root_ws_select'=>'Корневой каталог невозможно выбрать!',
 	'no_workspace_defined'=>'Для данного объекта не заданы рабочие пространства. Можно выбрать специальные рабочие пространства для объекта в его классе.',
 	'objectFile_field'=>'Объект',
-	'objectFile_response_publish_ok'=>'Объект \'%s\' успешно опубликован!',
-	'objectFile_response_save_ok'=>'Объект \'%s\' успешно сохранен!',
-	'objectFile_response_unpublish_ok'=>'Объект \'%s\' успешно снят с публикации!',
+	'objectFile_response_publish_ok'=>'Объект `%s` успешно опубликован!',
+	'objectFile_response_save_ok'=>'Объект `%s` успешно сохранен!',
+	'objectFile_response_unpublish_ok'=>'Объект `%s` успешно снят с публикации!',
 	'objectid'=>'Object ID',
 	'objectname'=>'Имя объекта',
 	'objectpath'=>'Путь объекта',

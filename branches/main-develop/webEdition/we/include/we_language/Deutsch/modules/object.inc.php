@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'allen Feldern',
 	'attributes'=>'Attribute',
 	'behaviour'=>'Anzeige: listview',
@@ -46,9 +46,9 @@ $l_object=array(
 	'no_root_ws_select'=>'Das Root Verzeichnis kann nicht als Arbeitbereich ausgewählt werden!',
 	'no_workspace_defined'=>'Diesem Objekt wurden noch keine Arbeitsbereiche zugewiesen. Wollen Sie einem Objekt spezielle Arbeitsbereiche zuordnen, müssen Sie diese in der Klasse des Objekts auswählen.',
 	'objectFile_field'=>'Objekt',
-	'objectFile_response_publish_ok'=>'Das Objekt \'%s\' wurde erfolgreich veröffentlicht!',
-	'objectFile_response_save_ok'=>'Das Objekt \'%s\' wurde erfolgreich gespeichert!',
-	'objectFile_response_unpublish_ok'=>'Das Objekt \'%s\' wurde erfolgreich geparkt!',
+	'objectFile_response_publish_ok'=>'Das Objekt `%s` wurde erfolgreich veröffentlicht!',
+	'objectFile_response_save_ok'=>'Das Objekt `%s` wurde erfolgreich gespeichert!',
+	'objectFile_response_unpublish_ok'=>'Das Objekt `%s` wurde erfolgreich geparkt!',
 	'objectid'=>'Objekt-ID',
 	'objectname'=>'Objektname',
 	'objectpath'=>'Objektpfad',

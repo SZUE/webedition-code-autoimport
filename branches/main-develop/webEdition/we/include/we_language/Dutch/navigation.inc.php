@@ -153,5 +153,5 @@ $l_navigation=array(
 	'we_filename_notValid'=>'De gebruikersnaam is niet juist!\nAlfa-numerieke karakters, bovenkast en onderkast, evenals underscore, koppelteken, punt en leeg karakter {blank; space} (a-z, A-Z, 0-9, _,-.,) zijn geldig',
 	'workspace'=>'Workspace',
 	'wrongtext'=>'De naam is niet geldig!\nGeldige karakters zijn letters van a tot z (bovenkast of onderkast), figuren, underscore (_), scheidingsteken (-), punt (.), lege karakters ( ) en appenstaart symbolen (@).',
-	'wrongTitleField'=>'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.',
+	'wrongTitleField'=>'The navigation folder could not be saved, because the given title field doesn`t  exist. Please correct the title field on the "content" tab and save again.',
 );

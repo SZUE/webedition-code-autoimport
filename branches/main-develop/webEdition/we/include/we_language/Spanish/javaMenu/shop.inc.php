@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_javaMenu_shop=array(
 	'add_article_to_order'=>'Agregar Artículo',
 	'country_vat'=>'Países',
 	'delete_order'=>'Eliminar orden',

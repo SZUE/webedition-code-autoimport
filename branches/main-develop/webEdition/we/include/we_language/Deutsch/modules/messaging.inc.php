@@ -1,13 +1,13 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_messaging=array(
+$l_modules_messaging=array(
 	'addr_book'=>'Adressbuch',
 	'addr_book_saved'=>'Adressbuch gespeichert',
 	'assigned_by'=>'Zugewiesen von',
 	'assigner'=>'Zuweiser',
 	'attrib_line'=>'Sie schrieben',
 	'cant_create_folders'=>'Fehler: konnte keine Ordner für diesen User anlegen',
-	'cant_paste'=>'Can\'t paste to this folder',
+	'cant_paste'=>'Can`t paste to this folder',
 	'change_folder_settings'=>'Ordnereinstellungen ändern',
 	'check_step'=>'Prüfinterval',
 	'children_same_name'=>'Ordnername mit gleichem uebergeordnetem Ordner ist bereits vorhanden',

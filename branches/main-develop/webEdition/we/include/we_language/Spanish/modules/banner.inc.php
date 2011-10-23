@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Activo',
 	'all'=>'Todas',
 	'bannercode'=>'Crear código de la pancarta',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Tipo de documentos',
 	'double_name'=>'El nombre de la pancarta ya existe!',
 	'error_ac_field'=>'ERROR: Invalid entries in marked fields!',
-	'error_clickscript_empty'=>'Por favor, llenar el campo \'ClickScript\'!',
-	'error_getscript_empty'=>'Por favor, llenar el campo \'GetScript\'!',
-	'error_height_empty'=>'Por favor, llenar el campo \'Alto\'!',
-	'error_page_empty'=>'Por favor, llenar el campo \'URL de la Página\'!',
-	'error_tagname_empty'=>'Por favor, llenar el campo \'Nombre de la pancarta\'!',
-	'error_width_empty'=>'Por favor, llenar el campo \'Ancho\'!',
+	'error_clickscript_empty'=>'Por favor, llenar el campo `ClickScript`!',
+	'error_getscript_empty'=>'Por favor, llenar el campo `GetScript`!',
+	'error_height_empty'=>'Por favor, llenar el campo `Alto`!',
+	'error_page_empty'=>'Por favor, llenar el campo `URL de la Página`!',
+	'error_tagname_empty'=>'Por favor, llenar el campo `Nombre de la pancarta`!',
+	'error_width_empty'=>'Por favor, llenar el campo `Ancho`!',
 	'ext_url'=>'URL externo',
 	'frequent'=>'Frecuente',
 	'from'=>'Desde',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Peso',
 	'we_filename_notValid'=>'El nombre del grupo no es valido',
 	'width'=>'Ancho',
-	'wrongtext'=>'The name is not valid! The following characters cannot be used: /  \  % \' "',
+	'wrongtext'=>'The name is not valid! The following characters cannot be used: /  \  % ` "',
 );

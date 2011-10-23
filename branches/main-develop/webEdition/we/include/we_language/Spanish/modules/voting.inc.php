@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_voting=array(
+$l_modules_voting=array(
 	'access'=>'Acceso',
 	'active_till'=>'Activo hasta',
 	'AllowFreeText'=>'Allow free text',
@@ -20,11 +20,11 @@ $l_voting=array(
 	'cookie_method_help'=>'Si no puede usar el método de IP seleccione este. Recuerde, algunos usuarios pueden tener las cookies deshabilitadas en sus navegadores.',
 	'csv_charset'=>'Export charset',
 	'csv_download'=>'Descargar archivo CSV',
-	'csv_export'=>'El archivo \'%s\' ha sido guardado.',
+	'csv_export'=>'El archivo `%s` ha sido guardado.',
 	'data_deleted_info'=>'¡El dato ha sido eliminado!',
 	'delete_alert'=>'Eliminar la actual votación/grupo.\n Esta seguro?',
 	'delete_ipdata_question'=>'Usted quiere eliminar todos los datos de IP guardados. ¿Está usted seguro?',
-	'delete_ipdata_text'=>'Los datos de IP guardados ocupan %s Bytes de la memoria. Elimínelos usando el botón \Borrar\'. Por favor considere que toda la información de IP guardada será eliminada y por consiguiente los votos iterativos serán posibles.',
+	'delete_ipdata_text'=>'Los datos de IP guardados ocupan %s Bytes de la memoria. Elimínelos usando el botón \Borrar`. Por favor considere que toda la información de IP guardada será eliminada y por consiguiente los votos iterativos serán posibles.',
 	'delete_log_question'=>'Usted quiere eliminar todos los registros de votos entrados. ¿Está usted seguro?',
 	'disabled'=>'Desactivado',
 	'enabled'=>'Activado',

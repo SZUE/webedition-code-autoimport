@@ -17,7 +17,7 @@ $l_weTag=array(
 		'description'=>'Deze tag toont de reactie mogelijkheden van een peiling.',
 	),
 	'author'=>array(
-		'description'=>'De we:author tag toont de maker van het document. Wanneer het attribuut \'type\' niet ingevuld is, wordt de gebruikersnaam getoont. Wanneer type=&quot;name&quot;, worden de voor- en achter naam van de gebruiker getoont. Wanneer \'type=&quot;initials&quot;, worden de initialen van de gebruiker getoond. Indien er geen voor- of achter naam is ingevoerd, wordt de gebruikersnaam getoond.',
+		'description'=>'De we:author tag toont de maker van het document. Wanneer het attribuut `type` niet ingevuld is, wordt de gebruikersnaam getoont. Wanneer type=&quot;name&quot;, worden de voor- en achter naam van de gebruiker getoont. Wanneer `type=&quot;initials&quot;, worden de initialen van de gebruiker getoond. Indien er geen voor- of achter naam is ingevoerd, wordt de gebruikersnaam getoond.',
 	),
 	'a'=>array(
 		'defaultvalue'=>'',
@@ -52,15 +52,15 @@ $l_weTag=array(
 		'description'=>'Deze tag wordt gebruik om een uitklapmenu (&lt;select&gt;) in een webEdition document in te voegen. Gebruik deze tag om een categorie te selecteren. Door de eind tag direct achter de begin tag te plaatsen, zal het uitklapmenu alle, in webEdition gedefinieerde, categorieën bevatten.',
 	),
 	'category'=>array(
-		'description'=>'De we:category tag wordt vervangen door de categorie (of categorieën) die is / zijn toegekend aan het document in de eigenschappen venster. Als er meer categorieën zijn toegekend, gebruik dan een komma als scheidingsteken. Als u gebruik wenst te maken van een ander scheidingsteken, dan moet u die specificeren door middel van het \'tokken\' attribuut. Bijvoorbeeld: tokken=\'&nbsp;\' (in dit geval wordt er een spatie gebruikt om categorieën te scheiden).',
+		'description'=>'De we:category tag wordt vervangen door de categorie (of categorieën) die is / zijn toegekend aan het document in de eigenschappen venster. Als er meer categorieën zijn toegekend, gebruik dan een komma als scheidingsteken. Als u gebruik wenst te maken van een ander scheidingsteken, dan moet u die specificeren door middel van het `tokken` attribuut. Bijvoorbeeld: tokken=`&nbsp;` (in dit geval wordt er een spatie gebruikt om categorieën te scheiden).',
 	),
 	'charset'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we_charset tag genereert een meta tag die de karakterset voor de pagina bepaald. \'ISO-8859-1\' is gebruikelijk voor Nederlandse webpagina\'s. Deze tag moet binnen de meta tag van de HTML pagina worden geplaatst.',
+		'description'=>'De we_charset tag genereert een meta tag die de karakterset voor de pagina bepaald. `ISO-8859-1` is gebruikelijk voor Nederlandse webpagina`s. Deze tag moet binnen de meta tag van de HTML pagina worden geplaatst.',
 	),
 	'checkForm'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:checkForm tag valideert de invoer van een formulier mbv. JavaScript. <br/> De combinatie van de parameters \'match\' en \'type\' bepalen de \'name\' of het \'id\' van het te conroleren formulier. <br/> \'mandatory\' en \'email\' bevatten een komma gescheiden lijst van verplichte velden of e-mailvelden. In \'password\' is het mogelijk om 2 veldnamen en een minimum lengte van ingevoerde wachtwoorden te bepalen.<br/> Met \'onError\' kunt u de naam van een individuele JavaScript functie kiezen, die wordt aangeroepen in het geval van een fout. Deze functie geeft een opsomming en een markering van de ontbrekende verplichte velden en e-mailvelden, indien het wachtwoord juist is. Als \'onError\' niet is gedefinieerd of de functie bestaat niet dan wordt de standaard waarde weergegeven in een dialoog venster.',
+		'description'=>'De we:checkForm tag valideert de invoer van een formulier mbv. JavaScript. <br/> De combinatie van de parameters `match` en `type` bepalen de `name` of het `id` van het te conroleren formulier. <br/> `mandatory` en `email` bevatten een komma gescheiden lijst van verplichte velden of e-mailvelden. In `password` is het mogelijk om 2 veldnamen en een minimum lengte van ingevoerde wachtwoorden te bepalen.<br/> Met `onError` kunt u de naam van een individuele JavaScript functie kiezen, die wordt aangeroepen in het geval van een fout. Deze functie geeft een opsomming en een markering van de ontbrekende verplichte velden en e-mailvelden, indien het wachtwoord juist is. Als `onError` niet is gedefinieerd of de functie bestaat niet dan wordt de standaard waarde weergegeven in een dialoog venster.',
 	),
 	'colorChooser'=>array(
 		'description'=>'De we:colorChooser tag maakt een invoerveld aan, waarmee een kleur gekzoen kan worden.',
@@ -79,7 +79,7 @@ $l_weTag=array(
 	),
 	'condition'=>array(
 		'defaultvalue'=>'&lt;we:conditionAdd field="Type" var="type" compare="="/&gt;',
-		'description'=>'Deze tag wordt gebruikt in combinatie met &lt;we:conditionAdd&gt; om in een &lt;we:listview type=\'object\'&gt; dynamisch een voorwaarde toe te voegen aan het attribuut \'condition\' . Voorwaarden kunnen ingenesteld worden.',
+		'description'=>'Deze tag wordt gebruikt in combinatie met &lt;we:conditionAdd&gt; om in een &lt;we:listview type=`object`&gt; dynamisch een voorwaarde toe te voegen aan het attribuut `condition` . Voorwaarden kunnen ingenesteld worden.',
 	),
 	'content'=>array(
 		'description'=>'&lt;we:content /&gt; wordt alleen gebruikt binnen een hoofdsjabloon. Dit bepaalt de plek waar de content van het sjabloon wordt gebruikt in het hoofdsjabloon.',
@@ -104,17 +104,17 @@ $l_weTag=array(
 		'description'=>'De we:dateSelect tag geeft een keuzeveld weer voor data, welke gebruikt kunnen worden in combinatie met de we:processDateSelect tag bij het uitlezen van de datum gegevens naar een variabele zoals een UNIX tijdstempel.',
 	),
 	'date'=>array(
-		'description'=>'De we:date tag geeft de huidige datum weer op een pagina volgens de ingevoerde specificaties in onderstaand \'format\' veld. Als het een statische pagina betreft, kiest u bij type \'js\', zodat de datum gegeneerd wordt d.m.v. JavaScript.',
+		'description'=>'De we:date tag geeft de huidige datum weer op een pagina volgens de ingevoerde specificaties in onderstaand `format` veld. Als het een statische pagina betreft, kiest u bij type `js`, zodat de datum gegeneerd wordt d.m.v. JavaScript.',
 	),
 	'deleteShop'=>array(
 		'description'=>'De we:deleteShop tag verwijdert de volledige winkelmand.',
 	),
 	'delete'=>array(
-		'description'=>'De we:delete tag wordt gebruikt om webEdition documenten via &lt;we:a edit=\'document\' delete=\'true\'&gt; of &lt;we:a edit=\'object\' delete=\'true\'&gt; te verwijderen.',
+		'description'=>'De we:delete tag wordt gebruikt om webEdition documenten via &lt;we:a edit=`document` delete=`true`&gt; of &lt;we:a edit=`object` delete=`true`&gt; te verwijderen.',
 	),
 	'description'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:description tag genereert de HTML meta tag \'omschrijving\'. Als het omschrijvingsveld in het Eigenschappen venster leeg is, dan zal de inhoud tussen de begin en eind tag worden gebruikt als standaard omschrijving.',
+		'description'=>'De we:description tag genereert de HTML meta tag `omschrijving`. Als het omschrijvingsveld in het Eigenschappen venster leeg is, dan zal de inhoud tussen de begin en eind tag worden gebruikt als standaard omschrijving.',
 	),
 	'DID'=>array(
 		'description'=>'Deze tag stuurt het ID terug van een webEdition document.',
@@ -126,7 +126,7 @@ $l_weTag=array(
 		'description'=>'Deze tag wordt gebruikt om alternatieve condities toe te voegen binnen een if-type tag bijv. &lt;we:ifEditmode&gt;, &lt;we:ifNotVar&gt;, &lt;we:ifNotEmpty&gt;, &lt;we:ifFieldNotEmpty&gt;',
 	),
 	'field'=>array(
-		'description'=>'De we:field tag voegt de inhoud van het veld met de naam gedefinieerd in het attribuut \'name\' in. Het kan alleen gebruikt worden tussen de begin en eind tag van we:repeat.',
+		'description'=>'De we:field tag voegt de inhoud van het veld met de naam gedefinieerd in het attribuut `name` in. Het kan alleen gebruikt worden tussen de begin en eind tag van we:repeat.',
 	),
 	'flashmovie'=>array(
 		'description'=>'Met de we:flashmovie tag is het mogelijk een Flash film in een document in te voegen. Documenten die gebaseerd zijn op dit sjabloon, bevatten in de wijzig modus een wijzig knop. Wanneer u op deze knop drukt zal er een venster openen, waarbinnen u een Flash film kan kiezen die zich reeds binnen webEdition bevindt.',
@@ -155,7 +155,7 @@ $l_weTag=array(
 	),
 	'ifBack'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:if_back tag wordt gebruikt tussen de begin en de eind tags van &lt;we:listview&gt;. Alles binnen de begin en de eind tags van deze tag wordt getoond als er een \'vorige\' pagina is. Bijv. U kunt de tag gebruiken op de tweede pagina van een listview met 20 onderdelen, en bijv. 5 onderdelen per pagina.',
+		'description'=>'De we:if_back tag wordt gebruikt tussen de begin en de eind tags van &lt;we:listview&gt;. Alles binnen de begin en de eind tags van deze tag wordt getoond als er een `vorige` pagina is. Bijv. U kunt de tag gebruiken op de tweede pagina van een listview met 20 onderdelen, en bijv. 5 onderdelen per pagina.',
 	),
 	'ifbannerexists'=>array(
 		'defaultvalue'=>'',
@@ -167,11 +167,11 @@ $l_weTag=array(
 	),
 	'ifCat'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifCat tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als één of meer van de onder \'categories\' ingevoerde categorieën de document categorieën zijn.',
+		'description'=>'De we:ifCat tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als één of meer van de onder `categories` ingevoerde categorieën de document categorieën zijn.',
 	),
 	'ifClient'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifClient tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de client (browser) zich meet met de gevestigde standaards. Deze tag werkt alleen met dynamisch bewaarde pagina\'s!',
+		'description'=>'De we:ifClient tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de client (browser) zich meet met de gevestigde standaards. Deze tag werkt alleen met dynamisch bewaarde pagina`s!',
 	),
 	'ifConfirmFailed'=>array(
 		'defaultvalue'=>'',
@@ -191,7 +191,7 @@ $l_weTag=array(
 	),
 	'ifDoctype'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifDocType tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het onder \'doctype\' ingevoerde document type hetzelfde is als het document type van het document.',
+		'description'=>'De we:ifDocType tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het onder `doctype` ingevoerde document type hetzelfde is als het document type van het document.',
 	),
 	'ifDoubleOptIn'=>array(
 		'defaultvalue'=>'',
@@ -215,11 +215,11 @@ $l_weTag=array(
 	),
 	'ifEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifEmpty tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het veld met dezelfde naam als ingevoerd onder \'match\' leeg is. Het type veld moet gespecificeerd worden in het attribuut \'type\', als het een \'img\', \'flashmovie\' of \'href\' veld is.',
+		'description'=>'De we:ifEmpty tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het veld met dezelfde naam als ingevoerd onder `match` leeg is. Het type veld moet gespecificeerd worden in het attribuut `type`, als het een `img`, `flashmovie` of `href` veld is.',
 	),
 	'ifEqual'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifEqual tag vergelijkt de content van de velden \'name\' en \'eqname\'. Als de content van beide velden hetzelfde is, wordt alles tussen de begin en eind tag getoond. Als de tag gebruikt wordt in we:list, we:block of we:linklist, kan slechts één veld binnen deze tags vergeleken met één veld erbuiten. In dit geval moet u het attribuut \'name\' instellen op de naam van het veld binnen de we:block, we:list of we:linklist-tags. Het attribuut \'eqname\' moet dan ingesteld worden op de naam van een veld buiten deze tags. De tag kan ook geplaatst worden in dynamisch ingevoegde webEdition pagina\'s. In dit geval wordt \'name\' ingesteld op een veld binnen de bijgevoegde pagina en \'eqname\' wordt ingesteld op de naam van een veld in de hoofd pagina. Als het attribuut \'value\' ingevuld is, wordt \'eqname\' genegeerd en wordt de content van het veld \'name\' vergeleken met de waarde ingevuld in het attribuut \'value\'.',
+		'description'=>'De we:ifEqual tag vergelijkt de content van de velden `name` en `eqname`. Als de content van beide velden hetzelfde is, wordt alles tussen de begin en eind tag getoond. Als de tag gebruikt wordt in we:list, we:block of we:linklist, kan slechts één veld binnen deze tags vergeleken met één veld erbuiten. In dit geval moet u het attribuut `name` instellen op de naam van het veld binnen de we:block, we:list of we:linklist-tags. Het attribuut `eqname` moet dan ingesteld worden op de naam van een veld buiten deze tags. De tag kan ook geplaatst worden in dynamisch ingevoegde webEdition pagina`s. In dit geval wordt `name` ingesteld op een veld binnen de bijgevoegde pagina en `eqname` wordt ingesteld op de naam van een veld in de hoofd pagina. Als het attribuut `value` ingevuld is, wordt `eqname` genegeerd en wordt de content van het veld `name` vergeleken met de waarde ingevuld in het attribuut `value`.',
 	),
 	'ifFemale'=>array(
 		'defaultvalue'=>'',
@@ -227,11 +227,11 @@ $l_weTag=array(
 	),
 	'ifFieldEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifFieldEmpty tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het lijstweergave veld met dezelfde naam als opgegeven in \'match\' leeg is. Het type veld moet gespecificeerd worden in het attribuut \'type\' als het een \'img\', \'flashmovie\' of \'href\' veld is.',
+		'description'=>'De we:ifFieldEmpty tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het lijstweergave veld met dezelfde naam als opgegeven in `match` leeg is. Het type veld moet gespecificeerd worden in het attribuut `type` als het een `img`, `flashmovie` of `href` veld is.',
 	),
 	'ifFieldNotEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifFieldNotEmpty tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het lijstweergave veld met dezelfde naam als opgegeven in \'match\' niet leeg is. Het type veld moet gespecificeerd worden in het attribuut \'type\' als het een \'img\', \'flashmovie\' of \'href\' veld is.',
+		'description'=>'De we:ifFieldNotEmpty tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het lijstweergave veld met dezelfde naam als opgegeven in `match` niet leeg is. Het type veld moet gespecificeerd worden in het attribuut `type` als het een `img`, `flashmovie` of `href` veld is.',
 	),
 	'ifField'=>array(
 		'defaultvalue'=>'',
@@ -263,11 +263,11 @@ $l_weTag=array(
 	),
 	'ifIsDomain'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:iflsDomain tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de domein-naam van de server hetzelfde is als opgegeven in \'domain\'. Het resultaat kan alleen bekeken worden in de eigenlijke website of in de voorvertoning. In de Wijzig modus wordt alles getoond.',
+		'description'=>'De we:iflsDomain tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de domein-naam van de server hetzelfde is als opgegeven in `domain`. Het resultaat kan alleen bekeken worden in de eigenlijke website of in de voorvertoning. In de Wijzig modus wordt alles getoond.',
 	),
 	'ifIsNotDomain'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:iflsNotDomain tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de domein-naam van de server niet hetzelfde is als opgegeven in \'domain\'. Het resultaat kan alleen bekeken worden in de eigenlijke website of in de voorvertoning. In de Wijzig modus wordt alles getoond.',
+		'description'=>'De we:iflsNotDomain tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als de domein-naam van de server niet hetzelfde is als opgegeven in `domain`. Het resultaat kan alleen bekeken worden in de eigenlijke website of in de voorvertoning. In de Wijzig modus wordt alles getoond.',
 	),
 	'ifLastCol'=>array(
 		'defaultvalue'=>'',
@@ -322,7 +322,7 @@ $l_weTag=array(
 	),
 	'ifNotCat'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are none of the document\'s categories.',
+		'description'=>'The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are none of the document`s categories.',
 	),
 	'ifNotDeleted'=>array(
 		'defaultvalue'=>'',
@@ -338,11 +338,11 @@ $l_weTag=array(
 	),
 	'ifNotEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifNotEmpty zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het als het lijstweergave veld met dezelfde naam als opgegeven in \'match\' niet leeg is. Het type veld moet gespecificeerd worden in het attribuut \'type\', als het een \'img\', \'flashmovie\' of \'href\' veld is.',
+		'description'=>'De we:ifNotEmpty zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het als het lijstweergave veld met dezelfde naam als opgegeven in `match` niet leeg is. Het type veld moet gespecificeerd worden in het attribuut `type`, als het een `img`, `flashmovie` of `href` veld is.',
 	),
 	'ifNotEqual'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifNotEqual tag vergelijkt de content van de velden \'name\' en \'eqname\'. Als de content van beide velden hetzelfde is, wordt alles tussen de begin en eind tag niet getoond. Als de tag gebruikt wordt in we:list, we:block of we:linklist, kan slechts één veld binnen deze tags vergeleken met één veld erbuiten. In dit geval moet u het attribuut \'name\' instellen op de naam van het veld binnen de we:block, we:list of we:linklist-tags. Het attribuut \'eqname\' moet dan ingesteld worden op de naam van een veld buiten deze tags. De tag kan ook geplaatst worden in dynamisch ingevoegde webEdition pagina\'s. In dit geval wordt \'name\' ingesteld op een veld binnen de bijgevoegde pagina en \'eqname\' wordt ingesteld op de naam van een veld in de hoofd pagina. Als het attribuut \'value\' ingevuld is, wordt \'eqname\' genegeerd en wordt de content van het veld \'name\' vergeleken met de waarde ingevuld in het attribuut \'value\'.',
+		'description'=>'De we:ifNotEqual tag vergelijkt de content van de velden `name` en `eqname`. Als de content van beide velden hetzelfde is, wordt alles tussen de begin en eind tag niet getoond. Als de tag gebruikt wordt in we:list, we:block of we:linklist, kan slechts één veld binnen deze tags vergeleken met één veld erbuiten. In dit geval moet u het attribuut `name` instellen op de naam van het veld binnen de we:block, we:list of we:linklist-tags. Het attribuut `eqname` moet dan ingesteld worden op de naam van een veld buiten deze tags. De tag kan ook geplaatst worden in dynamisch ingevoegde webEdition pagina`s. In dit geval wordt `name` ingesteld op een veld binnen de bijgevoegde pagina en `eqname` wordt ingesteld op de naam van een veld in de hoofd pagina. Als het attribuut `value` ingevuld is, wordt `eqname` genegeerd en wordt de content van het veld `name` vergeleken met de waarde ingevuld in het attribuut `value`.',
 	),
 	'ifNotField'=>array(
 		'defaultvalue'=>'',
@@ -406,7 +406,7 @@ $l_weTag=array(
 	),
 	'ifNotSearch'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Door instellen van de  &lt;we:ifNotSearch&gt;-tag wordt de content tussen de begin- en eind tag alleen getoond wanneer er geen zoekterm verzonden is door &lt;we:search&gt; of leeg was. Als het attribuut &quot;set&quot; ingesteld is op &quot;true&quot;, wordt alleen de variabele \'request\' van &lt;we:search&gt; gevalideerd.',
+		'description'=>'Door instellen van de  &lt;we:ifNotSearch&gt;-tag wordt de content tussen de begin- en eind tag alleen getoond wanneer er geen zoekterm verzonden is door &lt;we:search&gt; of leeg was. Als het attribuut &quot;set&quot; ingesteld is op &quot;true&quot;, wordt alleen de variabele `request` van &lt;we:search&gt; gevalideerd.',
 	),
 	'ifNotSeeMode'=>array(
 		'defaultvalue'=>'',
@@ -414,7 +414,7 @@ $l_weTag=array(
 	),
 	'ifNotSelf'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De  we:ifNotSelf tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt niet getoond wordt als het document ID is ingevoerd in de tag. Als de tag zich niet bevindt binnen de we:linklist of we:listdir tags, is \'id\' een vereist veld!',
+		'description'=>'De  we:ifNotSelf tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt niet getoond wordt als het document ID is ingevoerd in de tag. Als de tag zich niet bevindt binnen de we:linklist of we:listdir tags, is `id` een vereist veld!',
 	),
 	'ifNotSendMail'=>array(
 		'defaultvalue'=>'',
@@ -433,7 +433,7 @@ $l_weTag=array(
 	),
 	'ifNotTemplate'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Show enclosed content only if the current document is not based on the given template.<br /><br />You\'ll find further information in the reference of the tag we:ifTemplate.',
+		'description'=>'Show enclosed content only if the current document is not based on the given template.<br /><br />You`ll find further information in the reference of the tag we:ifTemplate.',
 	),
 	'ifNotTop'=>array(
 		'defaultvalue'=>'',
@@ -445,11 +445,11 @@ $l_weTag=array(
 	),
 	'ifNotVarSet'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Content omsloten door deze tag wordt alleen getoond als de variabele \'name\' niet ingesteld is. Let op: &quot;Not set&quot; is niet hetzelfde als &quot;empty&quot;!',
+		'description'=>'Content omsloten door deze tag wordt alleen getoond als de variabele `name` niet ingesteld is. Let op: &quot;Not set&quot; is niet hetzelfde als &quot;empty&quot;!',
 	),
 	'ifNotVar'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifNotVar tag zorgt ervoor dat alles wat zich binnen de begin en de eind tag niet zichtbaar is als de variabele \'name\' dezelfde waarde heeft als ingevoerd onder \'match\'. Het type variabele kan gespecificeerd worden in het attribuut \'type\'.',
+		'description'=>'De we:ifNotVar tag zorgt ervoor dat alles wat zich binnen de begin en de eind tag niet zichtbaar is als de variabele `name` dezelfde waarde heeft als ingevoerd onder `match`. Het type variabele kan gespecificeerd worden in het attribuut `type`.',
 	),
 	'ifNotVoteActive'=>array(
 		'defaultvalue'=>'',
@@ -515,7 +515,7 @@ $l_weTag=array(
 	),
 	'ifSearch'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Door instellen van de  &lt;we:ifSearch&gt;-tag wordt de content tussen de begin- en eind tag alleen getoond wanneer er een zoekterm verzonden is door &lt;we:search&gt; en niet leeg is. Als het attribuut &quot;set&quot; ingesteld is op &quot;true&quot;, wordt alleen de variabele \'request\' van &lt;we:search&gt; gevalideerd.',
+		'description'=>'Door instellen van de  &lt;we:ifSearch&gt;-tag wordt de content tussen de begin- en eind tag alleen getoond wanneer er een zoekterm verzonden is door &lt;we:search&gt; en niet leeg is. Als het attribuut &quot;set&quot; ingesteld is op &quot;true&quot;, wordt alleen de variabele `request` van &lt;we:search&gt; gevalideerd.',
 	),
 	'ifSeeMode'=>array(
 		'defaultvalue'=>'',
@@ -523,7 +523,7 @@ $l_weTag=array(
 	),
 	'ifSelf'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De  we:ifSelf tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het document ID is ingevoerd in de tag. Als de tag zich niet bevindt binnen de we:linklist of we:listdir tags, is \'id\' een vereist veld!',
+		'description'=>'De  we:ifSelf tag zorgt ervoor dat alles wat zich tussen de begin tag en de eind tag bevindt alleen getoond wordt als het document ID is ingevoerd in de tag. Als de tag zich niet bevindt binnen de we:linklist of we:listdir tags, is `id` een vereist veld!',
 	),
 	'ifSendMail'=>array(
 		'defaultvalue'=>'',
@@ -596,11 +596,11 @@ $l_weTag=array(
 	),
 	'ifVarEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Content omsloten door deze tag is alleen zichtbaar indien de variabele genoemd in het attribuut \'match\' leeg is.',
+		'description'=>'Content omsloten door deze tag is alleen zichtbaar indien de variabele genoemd in het attribuut `match` leeg is.',
 	),
 	'ifVarNotEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Content omsloten door deze tag is alleen zichtbaar indien de variabele genoemd in het attribuut \'match\' niet leeg is.',
+		'description'=>'Content omsloten door deze tag is alleen zichtbaar indien de variabele genoemd in het attribuut `match` niet leeg is.',
 	),
 	'ifVarSet'=>array(
 		'defaultvalue'=>'',
@@ -608,7 +608,7 @@ $l_weTag=array(
 	),
 	'ifVar'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:ifVar tag zorgt ervoor dat alles wat zich binnen de begin en de eind tag alleen zichtbaar is indien de variabele \'name\' dezelfde waarde heeft als ingevoerd onder \'match\'. Het type variabele kan gespecificeerd worden in het attribuut \'type\'.',
+		'description'=>'De we:ifVar tag zorgt ervoor dat alles wat zich binnen de begin en de eind tag alleen zichtbaar is indien de variabele `name` dezelfde waarde heeft als ingevoerd onder `match`. Het type variabele kan gespecificeerd worden in het attribuut `type`.',
 	),
 	'ifVoteActive'=>array(
 		'defaultvalue'=>'',
@@ -651,13 +651,13 @@ $l_weTag=array(
 		'description'=>'Content omsloten door deze tag is alleen beschikbaar indien het schrijf proces van een webEdition document of object succesvol was. Zie &lt;we:write&gt;.',
 	),
 	'img'=>array(
-		'description'=>'De we:img tag is vereist om een afbeelding te plaatsen in de content van de pagina. In de Wijzig modus is een wijzig knop zichtbaar. Wanneer u op de knop drukt opent de bestandsmanager, waarmee u een afbeelding kunt selecteren binnen webEdition. Als de attributen \'width\', \'height\', \'border\', \'hspace\', \'vspace\', \'alt\', of \'align\' zijn ingesteld, worden deze gebruikt voor de afbeelding. Anders zijn de opgegeven instellingen van kracht. Als het attribuut ID is ingesteld, wordt de afbeelding gebruikt met dit ID, indien er geen andere afbeelding is geselecteerd. Het attribuut \'showimage\' geeft de mogelijkheid om de afbeelding te verbergen in de Wijzig modus, slechts de aanpas knoppen zijn zichtbaar. Met \'showinputs\' kunnen de invoer velden voor \'alt\' en \'titel\' gedeactiveerd worden.',
+		'description'=>'De we:img tag is vereist om een afbeelding te plaatsen in de content van de pagina. In de Wijzig modus is een wijzig knop zichtbaar. Wanneer u op de knop drukt opent de bestandsmanager, waarmee u een afbeelding kunt selecteren binnen webEdition. Als de attributen `width`, `height`, `border`, `hspace`, `vspace`, `alt`, of `align` zijn ingesteld, worden deze gebruikt voor de afbeelding. Anders zijn de opgegeven instellingen van kracht. Als het attribuut ID is ingesteld, wordt de afbeelding gebruikt met dit ID, indien er geen andere afbeelding is geselecteerd. Het attribuut `showimage` geeft de mogelijkheid om de afbeelding te verbergen in de Wijzig modus, slechts de aanpas knoppen zijn zichtbaar. Met `showinputs` kunnen de invoer velden voor `alt` en `titel` gedeactiveerd worden.',
 	),
 	'include'=>array(
-		'description'=>'De we:include tag geeft u de mogelijkheid om een webEdition document of een HTML pagina bij te voegen in het sjabloon. Dit is vooral handig in het geval van navigatie of onderdelen die op meerdere sjablonen terugkeren. Als u met de we:include tag werkt hoeft u niet in elk sjabloon de navigatie aan te passen. Het wijzigen van het bijgevoegde document volstaat. Naderhand hoeft u alleen een \'heropbouw\' uit te voeren en alle pagina\'s worden automatisch aangepast. Indien al uw pagina\'s dynamisch zijn hoeft u geen \'heropbouw\' uit te voeren. Op de plek van de we:include tag wordt de pagina met onderstaand ID ingevoegd. Met het attribuut \'gethttp\' kunt u aangeven of de pagina verzonden moet worden via HTTP of niet.<br>Het attribuut \'seem\' bepaalt of het document aanpasbaar is in de seeMode. Dit attribuut werkt alleen wanneer het document ID opgegeven is.',
+		'description'=>'De we:include tag geeft u de mogelijkheid om een webEdition document of een HTML pagina bij te voegen in het sjabloon. Dit is vooral handig in het geval van navigatie of onderdelen die op meerdere sjablonen terugkeren. Als u met de we:include tag werkt hoeft u niet in elk sjabloon de navigatie aan te passen. Het wijzigen van het bijgevoegde document volstaat. Naderhand hoeft u alleen een `heropbouw` uit te voeren en alle pagina`s worden automatisch aangepast. Indien al uw pagina`s dynamisch zijn hoeft u geen `heropbouw` uit te voeren. Op de plek van de we:include tag wordt de pagina met onderstaand ID ingevoegd. Met het attribuut `gethttp` kunt u aangeven of de pagina verzonden moet worden via HTTP of niet.<br>Het attribuut `seem` bepaalt of het document aanpasbaar is in de seeMode. Dit attribuut werkt alleen wanneer het document ID opgegeven is.',
 	),
 	'input'=>array(
-		'description'=>'De we:input tag creëert een single-line input box in de Wijzig modus van het document gebaseerd op dit sjabloon, wanneer type = \'text\' is geselecteerd. Voor alle andere types kunt u de handleiding of de help functie raadplegen.',
+		'description'=>'De we:input tag creëert een single-line input box in de Wijzig modus van het document gebaseerd op dit sjabloon, wanneer type = `text` is geselecteerd. Voor alle andere types kunt u de handleiding of de help functie raadplegen.',
 	),
 	'js'=>array(
 		'description'=>'De we:jstag creëert een HTML tag die refereert aan een intern webEdition JavaScript document met onderstaand ID. U kunt JavaScripts definiëren in een apart bestand.',
@@ -667,17 +667,17 @@ $l_weTag=array(
 	),
 	'linklist'=>array(
 		'defaultvalue'=>'&lt;we:link /&gt;&lt;we:postlink&gt;&lt;br /&gt;&lt;/we:postlink&gt;',
-		'description'=>'De we:linklist tag wordt gebruikt om koppeling lijsten aan te maken. Een \'plus\' knop is zichtbaar in de Wijzig modus. Wanneer u op de knop drukt komt er een nieuwe link bij in de lijst. De uitstraling van de link list wordt bepaald door de gebruikte HTML in de link list en het gebruik van \'we:prelink\' en \'we:postlink\'  tussen  <we:link> en </we:link>. Alle koppelingen kunnen worden verwijderd met een verwijder knop en gewijzigd worden met  wijzig knop.',
+		'description'=>'De we:linklist tag wordt gebruikt om koppeling lijsten aan te maken. Een `plus` knop is zichtbaar in de Wijzig modus. Wanneer u op de knop drukt komt er een nieuwe link bij in de lijst. De uitstraling van de link list wordt bepaald door de gebruikte HTML in de link list en het gebruik van `we:prelink` en `we:postlink`  tussen  <we:link> en </we:link>. Alle koppelingen kunnen worden verwijderd met een verwijder knop en gewijzigd worden met  wijzig knop.',
 	),
 	'linkToSeeMode'=>array(
 		'description'=>'Deze tag genereert een koppeling die het geselecteerde document opent in de seeMode.',
 	),
 	'link'=>array(
-		'description'=>'De we:link tag creeert een enkele koppeling welke gewijzigd kan worden door middel van de \'wijzig\' knop. De \'name\' attribuut mag niet gespecificeerd worden tussen de we:linklist begin tag en eind tag. De \'name\' attribuut moet gespecificeerd worden buiten de we:linklist tags. \'only\' geeft de mogelijkheid om één enkel attribuut (only=\'attribuut naam\') van de koppeling of alleen de content (only=\'content\') van de koppeling op te vragen.',
+		'description'=>'De we:link tag creeert een enkele koppeling welke gewijzigd kan worden door middel van de `wijzig` knop. De `name` attribuut mag niet gespecificeerd worden tussen de we:linklist begin tag en eind tag. De `name` attribuut moet gespecificeerd worden buiten de we:linklist tags. `only` geeft de mogelijkheid om één enkel attribuut (only=`attribuut naam`) van de koppeling of alleen de content (only=`content`) van de koppeling op te vragen.',
 	),
 	'listdir'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:listdir tag creëert  een nieuwe lijst die alle bestanden in dezelfde directory toont. In het attribuut \'field\' kunt u bepalen welk veld getoond moet worden. Als het veld leeg is of niet bestaat, wordt de bestandsnaam gebruikt. Directories worden doorzocht op index bestanden; indien er een index bestand is, wordt deze getoond. Welk veld er gebruikt moet worden om directories te tonen kunt u bepalen in het attribuut \'dirfield\'. Als het veld leeg is of niet bestaat, wordt de invoer van \'field\' respectief tot de naam van het bestand gebruikt. Als het attribuut \'id\' ingesteld is worden de bestanden of de directory met het aangegeven ID getoond.',
+		'description'=>'De we:listdir tag creëert  een nieuwe lijst die alle bestanden in dezelfde directory toont. In het attribuut `field` kunt u bepalen welk veld getoond moet worden. Als het veld leeg is of niet bestaat, wordt de bestandsnaam gebruikt. Directories worden doorzocht op index bestanden; indien er een index bestand is, wordt deze getoond. Welk veld er gebruikt moet worden om directories te tonen kunt u bepalen in het attribuut `dirfield`. Als het veld leeg is of niet bestaat, wordt de invoer van `field` respectief tot de naam van het bestand gebruikt. Als het attribuut `id` ingesteld is worden de bestanden of de directory met het aangegeven ID getoond.',
 	),
 	'listviewEnd'=>array(
 		'description'=>'Deze tag toont het nummer van de laatste invoer van de huidige &lt;we:listview&gt; pagina.',
@@ -686,7 +686,7 @@ $l_weTag=array(
 		'description'=>'Deze tag geeft het nummer op van de huidige pagina in een &lt;we:listview&gt;.',
 	),
 	'listviewPages'=>array(
-		'description'=>'Deze tag geeft het aantal pagina\'s op in een &lt;we:listview&gt;.',
+		'description'=>'Deze tag geeft het aantal pagina`s op in een &lt;we:listview&gt;.',
 	),
 	'listviewRows'=>array(
 		'description'=>'Deze tag geeft het aantal gevonden invoeren op in een &lt;we:listview&gt;.',
@@ -703,7 +703,7 @@ $l_weTag=array(
 	),
 	'list'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:list tag geeft u de mogelijkheid om expandable lists te maken. Alles binnen de begin tag en de eind tag wordt ingevoerd (alle HTML en bijna alle we:tags) als u op de \'plus\' knop drukt in de Wijzig modus.',
+		'description'=>'De we:list tag geeft u de mogelijkheid om expandable lists te maken. Alles binnen de begin tag en de eind tag wordt ingevoerd (alle HTML en bijna alle we:tags) als u op de `plus` knop drukt in de Wijzig modus.',
 	),
 	'makeMail'=>array(
 		'description'=>'Deze tag moet geplaatst worden op de eerste regel van elk sjabloon om een webEdition document te genereren die verstuurd kan worden met &lt;we:sendMail/&gt;.',
@@ -721,7 +721,7 @@ $l_weTag=array(
 	),
 	'navigationEntry'=>array(
 		'defaultvalue'=>'&lt;a href="&lt;we:navigationField name="href" /&gt;"&gt;&lt;we:navigationField name="text" /&gt;&lt;/a&gt;&lt;br /&gt;',
-		'description'=>'Met we:navigationEntry kan de weergave van een invoer gecontroleerd worden binnen de navigatie. Met de attributen "type", "level", "current" en "position" kunnen individuele elementen van verschillende niveau\'s specifiek gekozen en getoond worden.',
+		'description'=>'Met we:navigationEntry kan de weergave van een invoer gecontroleerd worden binnen de navigatie. Met de attributen "type", "level", "current" en "position" kunnen individuele elementen van verschillende niveau`s specifiek gekozen en getoond worden.',
 	),
 	'navigationField'=>array(
 		'description'=>'&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.<br/>Choose from <b>either</b> the attribute <i>name</i>, <b>or</b> from the attribute <i>attributes</i>, <b>or</b> from the attribute <i>complete</i>',
@@ -759,7 +759,7 @@ $l_weTag=array(
 	),
 	'object'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:object tag wordt gebruikt om objecten te tonen. De velden van een object kunnen getoond worden met de we:field tags binnen de begin tag en de eind tag. Als slechts het attribuut \'name\' is ingevoerd voor een object, of als deze een waarde heeft, wordt de object kiezer getoond in de Wijzig modus, en heeft de editor de keuze alle objecten te selecteren uit alle classen. Waneer ook het attribuut \'classid\' een waarde heeft, wordt de selectie in de object kiezer beperkt tot alle objecten gerelateerd aan de in \'classid\' gedefinieerde class. Met het attribuut \'id\' kunt u een voorselectie definiëren van een specifiek object gedefinieerd door \'classid\' en \'id\'. Het attribuut \'triggerid\' wordt gebruikt om dynamische pagina\'s  te tonen in een statische object listview.',
+		'description'=>'De we:object tag wordt gebruikt om objecten te tonen. De velden van een object kunnen getoond worden met de we:field tags binnen de begin tag en de eind tag. Als slechts het attribuut `name` is ingevoerd voor een object, of als deze een waarde heeft, wordt de object kiezer getoond in de Wijzig modus, en heeft de editor de keuze alle objecten te selecteren uit alle classen. Waneer ook het attribuut `classid` een waarde heeft, wordt de selectie in de object kiezer beperkt tot alle objecten gerelateerd aan de in `classid` gedefinieerde class. Met het attribuut `id` kunt u een voorselectie definiëren van een specifiek object gedefinieerd door `classid` en `id`. Het attribuut `triggerid` wordt gebruikt om dynamische pagina`s  te tonen in een statische object listview.',
 	),
 	'orderitem'=>array(
 		'defaultvalue'=>'',
@@ -777,7 +777,7 @@ $l_weTag=array(
 		'description'=>'De we:pagelogger tag genereert, aan de hand van het geselecteerde &quot;type&quot; attribuut, de benodigde code voor pageLogger of de bestandsserver - respectievelijk de download code.',
 	),
 	'path'=>array(
-		'description'=>'De we:path tag representeert het pad van het huidige document. Als er zich een index bestand bevindt in één van de subdirectories, wordt een koppeling ingesteld op de respectieve directory. De gebruikte index bestanden (komma gescheiden) kunnen gespecificeerd worden in het attribuut \'index\'. Als er niks gekozen is worden \'default.html\', \'index.htm\', \'index.php\', \'default. htm\', \'default.html\' en \'default.php\' gebruikt als standaard instellingen. In het attribuut \'home\' kunt u kiezen wat er aan het begin moet komen. Als er niks gekozen is wordt \'home\' automatisch getoond. De attribuut seperator omschrijft de afbakening tussen de directories. Als het attribuut leeg is wordt \'/\' gebruikt als scheiding. Het attribuut \'field\' definieert welk soort veld (bestanden, directories) word getoond. Het attribuut \'dirfield\' definieert welk veld wordt gebruikt bij vertoning in directories. Als het veld leeg is of niet bestaat wordt de invoer van \'field\' of de bestandsnaam gebruikt.',
+		'description'=>'De we:path tag representeert het pad van het huidige document. Als er zich een index bestand bevindt in één van de subdirectories, wordt een koppeling ingesteld op de respectieve directory. De gebruikte index bestanden (komma gescheiden) kunnen gespecificeerd worden in het attribuut `index`. Als er niks gekozen is worden `default.html`, `index.htm`, `index.php`, `default. htm`, `default.html` en `default.php` gebruikt als standaard instellingen. In het attribuut `home` kunt u kiezen wat er aan het begin moet komen. Als er niks gekozen is wordt `home` automatisch getoond. De attribuut seperator omschrijft de afbakening tussen de directories. Als het attribuut leeg is wordt `/` gebruikt als scheiding. Het attribuut `field` definieert welk soort veld (bestanden, directories) word getoond. Het attribuut `dirfield` definieert welk veld wordt gebruikt bij vertoning in directories. Als het veld leeg is of niet bestaat wordt de invoer van `field` of de bestandsnaam gebruikt.',
 	),
 	'paypal'=>array(
 		'description'=>'we:paypal implementeert een interface naar de betalings aanbieder paypal. Voor optimale werking van deze tag dient u additionele informatie toe te voegen in de backend van de winkel module.',
@@ -795,13 +795,13 @@ $l_weTag=array(
 	),
 	'printVersion'=>array(
 		'defaultvalue'=>'',
-		'description'=>'De we:printVersion tag creëert een HTML koppeling tag die refereert aan hetzelfde document, met een ander sjabloon. Het attribuut \'tid\' bepaalt het sjabloon ID. De tag koppelt alle content binnen de begin tag en de eind tag.',
+		'description'=>'De we:printVersion tag creëert een HTML koppeling tag die refereert aan hetzelfde document, met een ander sjabloon. Het attribuut `tid` bepaalt het sjabloon ID. De tag koppelt alle content binnen de begin tag en de eind tag.',
 	),
 	'processDateSelect'=>array(
 		'description'=>'De we:processDateSelect tag verwerkt de 3 waardes uit de select boxes van de we:dateSelect tag naar een UNIX tijdstempel. De waarde wordt bewaard naar een globale variabele met de naam die was ingevoerd in het attribuut &quot;name&quuot;.',
 	),
 	'quicktime'=>array(
-		'description'=>'De we:quicktime tag geeft de mogelijkheid een QuickTime film in te voegen in de content van een document. Documenten gebasseerd op dit sjabloon bevatten een Wijzig knop in de Wijzig modus. Wanneer u op deze knop drukt, opent u de Bestands manager waarmee u een QuickTime film kunt selecteren binnen webEdition. Er bestaat nog geen xhtml-valid output die werkt in gebruikelijke browsers (IE, Mozilla). Daarom staat xml altijd op \'false\'',
+		'description'=>'De we:quicktime tag geeft de mogelijkheid een QuickTime film in te voegen in de content van een document. Documenten gebasseerd op dit sjabloon bevatten een Wijzig knop in de Wijzig modus. Wanneer u op deze knop drukt, opent u de Bestands manager waarmee u een QuickTime film kunt selecteren binnen webEdition. Er bestaat nog geen xhtml-valid output die werkt in gebruikelijke browsers (IE, Mozilla). Daarom staat xml altijd op `false`',
 	),
 	'registeredUser'=>array(
 		'description'=>'De we:registeredUser tag wordt gebruikt om klant data, opgeslagen in de klant module, te printen.',
@@ -818,7 +818,7 @@ $l_weTag=array(
 		'description'=>'Content omsloten in deze tag wordt herhaald voor elke invoer gevonden door een &lt;we:listview&gt;. Deze tag wordt alleen gebruikt binnen een &lt;we:listview&gt; sectie.',
 	),
 	'returnPage'=>array(
-		'description'=>'De we:returnPage tag wordt gebruikt om de refererende URL te tonen, als de waarde van het attribuut \'return\' op \'true\' stond bij gebruik in de tags: &lt;we:a edit=\'document\'&gt; or &lt;we:a edit=\'object\'&gt;',
+		'description'=>'De we:returnPage tag wordt gebruikt om de refererende URL te tonen, als de waarde van het attribuut `return` op `true` stond bij gebruik in de tags: &lt;we:a edit=`document`&gt; or &lt;we:a edit=`object`&gt;',
 	),
 	'saferpay'=>array(
 		'description'=>'we:saferpay implementeert een interface naar de betalings aanbieder saferpay. Voor optimale werking van deze tag dient u additionele informatie toe te voegen in de backend van de winkel module.',
@@ -836,7 +836,7 @@ $l_weTag=array(
 		'description'=>'De we:select tag creeert een select box voor invoer in de Wijzig modus. Als "1" is gespecificeerd als grootte (size= "1" ), verschijnt de select box als een pop-up menu. Dit werkt hetzelfde als een HTML select tag. Binnen de begin tag en de eind-tag, worden invoeren bepaald door middel van normale HTML option tags.',
 	),
 	'sendMail'=>array(
-		'description'=>'De we:sendMail tag verstuurt een webEdition pagina als e-mail naar de adresssen die zijn opgegeven in het attribuut \'recipient\'.',
+		'description'=>'De we:sendMail tag verstuurt een webEdition pagina als e-mail naar de adresssen die zijn opgegeven in het attribuut `recipient`.',
 	),
 	'sessionField'=>array(
 		'description'=>'De we:sessionField tag creëert een HTML input, select of text area tag. Het wordt gebruikt voor elke invoer in sessie velden (bijv. Userdata, etc.).',
@@ -846,7 +846,7 @@ $l_weTag=array(
 		'description'=>'De we:sessionLogout tag creëert een HTML koppeling tag die refereert aan een intern webEdition document met het ID genoemd in de webEdition Tag Wizard. Indien dit webEdition document een we:sessionStart tag bevat met het attribuut "dynamic", dan wordt de active sessie geleegd en afgesloten. Er worden geen gegevens bewaard.',
 	),
 	'sessionStart'=>array(
-		'description'=>'Deze tag wordt gebruikt om een sessie te starten of om een bestaande sessie te hervatten. Deze tag is vereist in sjablonen die de volgende pagian\'s genereren: Pagina\'s die afgeschermd zijn met de Klant beheer module, Winkel pagina\'s en pagina\'s die front end invoer ondersteunen.&lt;br /&gt;Deze tag MOET geplaatst worden op de eerste regel van het sjabloon!',
+		'description'=>'Deze tag wordt gebruikt om een sessie te starten of om een bestaande sessie te hervatten. Deze tag is vereist in sjablonen die de volgende pagian`s genereren: Pagina`s die afgeschermd zijn met de Klant beheer module, Winkel pagina`s en pagina`s die front end invoer ondersteunen.&lt;br /&gt;Deze tag MOET geplaatst worden op de eerste regel van het sjabloon!',
 	),
 	'setVar'=>array(
 		'description'=>'De we:setVar tag wordt gebruikt om de waardes van verschillende types variabelen in te stellen.<br/><strong>Attention:</strong> Without the attribute <strong>striptags="true"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>',

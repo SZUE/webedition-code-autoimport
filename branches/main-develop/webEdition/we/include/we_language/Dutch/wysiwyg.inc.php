@@ -112,7 +112,7 @@ $l_wysiwyg=array(
 	'link_lang'=>'Koppeling',
 	'merge_cells2'=>'Verenig cellen',
 	'merge_cells'=>'Verenig cellen',
-	'mozilla_paste'=>'Vanwege veiligheidsredenen zijn de \'kopieer\', \'knip\' en \'plak\' menu functies in de Mozilla browser niet beschikbaar. Gebruik de toetsenbord commando\'s CTRL-C, CTRL-X en CTRL-V voor PC\'s of APPLE-C, APPLE-X EN APPLE-V op Macintosh computers!',
+	'mozilla_paste'=>'Vanwege veiligheidsredenen zijn de `kopieer`, `knip` en `plak` menu functies in de Mozilla browser niet beschikbaar. Gebruik de toetsenbord commando`s CTRL-C, CTRL-X en CTRL-V voor PC`s of APPLE-C, APPLE-X EN APPLE-V op Macintosh computers!',
 	'none'=>'Niets',
 	'normal'=>'Normaal',
 	'noshade'=>'Geen schaduw',
@@ -158,5 +158,5 @@ $l_wysiwyg=array(
 	'visible_borders'=>'Toon randen',
 	'vspace'=>'Verticale ruimte',
 	'width'=>'Breedte',
-	'window_title'=>'Wijzig veld \'%s\'',
+	'window_title'=>'Wijzig veld `%s`',
 );

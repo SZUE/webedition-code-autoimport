@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_voting=array(
+$l_modules_voting=array(
 	'access'=>'Access',
 	'active_till'=>'Active Until',
 	'AllowFreeText'=>'Allow free text',
@@ -20,11 +20,11 @@ $l_voting=array(
 	'cookie_method_help'=>'Use this method, if you do not want/are not able to use the IP method. Please keep in mind, that users might deactivate coockies in their browsers. The "Fallback IP method" option requires the use of the <we:cookie> tag in the template.',
 	'csv_charset'=>'Export charset',
 	'csv_download'=>'Download CSV file',
-	'csv_export'=>'File \'%s\' has been saved.',
+	'csv_export'=>'File `%s` has been saved.',
 	'data_deleted_info'=>'The data has been deleted!',
 	'delete_alert'=>'Delete the current voting/group.\nAre you sure?',
 	'delete_ipdata_question'=>'You want to delete all saved IP data. Are you sure?',
-	'delete_ipdata_text'=>'The saved  IP data occupy %s Bytes of the memory. Delete them by using the \Delete\' button. Please consider, that all saved IP data will be ereased and therefore iterate votings will be possible.',
+	'delete_ipdata_text'=>'The saved  IP data occupy %s Bytes of the memory. Delete them by using the \Delete` button. Please consider, that all saved IP data will be ereased and therefore iterate votings will be possible.',
 	'delete_log_question'=>'You want to delete all Voting Log entries.  Are you sure?',
 	'disabled'=>'Deactivated',
 	'enabled'=>'Activated',

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_buttons_modules_banner=array(
 	
 	'new_bannergroup'=>array(
 		'alt'=>'Maak nieuwe banner groep aan',

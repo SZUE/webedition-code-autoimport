@@ -1,11 +1,11 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_glossary=array(
+$l_modules_glossary=array(
 	'abbreviation'=>'Abkürzung',
 	'abbreviation_description'=>'Abkürzung (auch Abbreviatur, Kürzel) bezeichnet die verkürzte Form eines Wortes oder einer Wortgruppe. Hierzu gehören Akronyme, Kurzwörter, Initialwörter und Buchstabenketten. Was man abkürzt, ist auch gesellschaftlich bedingt. So erscheinen Abkürzungen wie AB für Anrufbeantworter oder HP für Homepage als regional, national oder durch die Textsorte begrenzt. Eine Abkürzung ist eine Schreib- und Leseerleichterung, sie dient der schnelleren und konzentrierteren Kommunikation. Des Weiteren dient die Abkürzung auch der Platzersparnis.',
 	'accesskey'=>'Accesskey',
 	'acronym'=>'Akronym',
-	'acronym_description'=>'Ein Akronym ist eine besondere Abkürzung, die aus den Anfangsbuchstaben mehrerer (Teil-) Wörter gebildet wird. Es wird im Deutschen in der Regel ohne Punkt gebildet (\'Lkw\'). Ein Akronym lässt sich darüber hinaus meist als Wort aussprechen (z. B. \'NATO\').',
+	'acronym_description'=>'Ein Akronym ist eine besondere Abkürzung, die aus den Anfangsbuchstaben mehrerer (Teil-) Wörter gebildet wird. Es wird im Deutschen in der Regel ohne Punkt gebildet (`Lkw`). Ein Akronym lässt sich darüber hinaus meist als Wort aussprechen (z. B. `NATO`).',
 	'action'=>'Aktion',
 	'all_words_identified'=>'Keine unbekannten Worte gefunden.',
 	'anchor'=>'Anker',
@@ -45,7 +45,7 @@ $l_glossary=array(
 	'input'=>'Eingabe',
 	'item_deleted'=>'Der Eintrag wurde erfolgreich gelöscht.',
 	'item_is_active'=>'Eintrag ist aktiv',
-	'item_saved'=>'Der Eintrag \'%s\' wurde erfolgreich gespeichert!',
+	'item_saved'=>'Der Eintrag `%s` wurde erfolgreich gespeichert!',
 	'keyboard'=>'Tastatur',
 	'languages'=>'Sprachen',
 	'language'=>'Sprache',
@@ -114,8 +114,8 @@ $l_glossary=array(
 	'publish_selected_items'=>'Ersetzung ausgewählter Einträge aktivieren.',
 	'publish_when_saved'=>'Beim Speichern aktivieren',
 	'relation'=>'Beziehung',
-	'replace_activated'=>'Die Ersetzung des Eintrages \'%s\' wurde erfolgreich aktiviert!',
-	'replace_deactivated'=>'Die Ersetzung des Eintrages \'%s\' wurde erfolgreich deaktiviert!',
+	'replace_activated'=>'Die Ersetzung des Eintrages `%s` wurde erfolgreich aktiviert!',
+	'replace_deactivated'=>'Die Ersetzung des Eintrages `%s` wurde erfolgreich deaktiviert!',
 	'save_changed_glossary'=>'Der Eintrag wurde geändert.\nMöchten Sie Ihre Änderungen speichern?',
 	'save_ok'=>'Eintrag wurde gespeichert.',
 	'search'=>'Suche',

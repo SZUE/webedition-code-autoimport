@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'Alle velden',
 	'attributes'=>'Attributen',
 	'behaviour'=>'Weergeven',
@@ -44,11 +44,11 @@ $l_object=array(
 	'not_published'=>'The object is not published',
 	'no_maximum'=>'niks invullen bij geen limiet',
 	'no_root_ws_select'=>'De root directory kan niet gekozen worden!',
-	'no_workspace_defined'=>'Er zijn geen werkgebieden gedefinieerd voor dit object. U kunt speciale werkgebieden selecteren voor een object binnen z\'n class.',
+	'no_workspace_defined'=>'Er zijn geen werkgebieden gedefinieerd voor dit object. U kunt speciale werkgebieden selecteren voor een object binnen z`n class.',
 	'objectFile_field'=>'Object',
-	'objectFile_response_publish_ok'=>'Het object \'%s\' is succesvol gepubliceerd!',
-	'objectFile_response_save_ok'=>'Het object \'%s\' is succesvol bewaard!',
-	'objectFile_response_unpublish_ok'=>'Het object \'%s\' is succesvol gedepubliceerd!',
+	'objectFile_response_publish_ok'=>'Het object `%s` is succesvol gepubliceerd!',
+	'objectFile_response_save_ok'=>'Het object `%s` is succesvol bewaard!',
+	'objectFile_response_unpublish_ok'=>'Het object `%s` is succesvol gedepubliceerd!',
 	'objectid'=>'Object ID',
 	'objectname'=>'Object naam',
 	'objectpath'=>'Object pad',

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_messaging=array(
+$l_modules_messaging=array(
 	'addr_book'=>'Adres boek',
 	'addr_book_saved'=>'Adresboek bewaard.',
 	'assigned_by'=>'Toegekend door',

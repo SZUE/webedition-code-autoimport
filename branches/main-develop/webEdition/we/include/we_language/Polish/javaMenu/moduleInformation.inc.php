@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_moduleInformation=array(
+$l_javaMenu_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Niestety nie zainstalowano jeszcze modułu Banner do programu webEdition. <p>Moduł oraz dalsze informacje znaleźć można pod adresem: %s',
@@ -13,7 +13,7 @@ $l_moduleInformation=array(
 		'text_short'=>'Klienci',
 	),
 	'editor'=>array(
-		'not_installed'=>'Jeżeli zostało dokupione Rozszerzenie Edytora, to można je aktywować pod <a href="javascript:opener.top.we_cmd(\'openPreferences\');">Opcje => Ustawienia</a>. Instalacja następuje wtedy automatycznie, od razu po zmianie na widok &quot;Edycja&quot; w szablonach.<p>Dalsze informacje na temat Rozszerzenia Edytora można znaleźć pod adresem: %s',
+		'not_installed'=>'Jeżeli zostało dokupione Rozszerzenie Edytora, to można je aktywować pod <a href="javascript:opener.top.we_cmd(`openPreferences`);">Opcje => Ustawienia</a>. Instalacja następuje wtedy automatycznie, od razu po zmianie na widok &quot;Edycja&quot; w szablonach.<p>Dalsze informacje na temat Rozszerzenia Edytora można znaleźć pod adresem: %s',
 		'text'=>'Rozszerzenie Edytora',
 		'text_short'=>'Rozszerzenie Edytora',
 	),

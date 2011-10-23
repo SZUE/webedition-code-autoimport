@@ -158,5 +158,5 @@ $l_wysiwyg=array(
 	'visible_borders'=>'Näytä reunat',
 	'vspace'=>'Väli pystysuunnassa',
 	'width'=>'Leveys',
-	'window_title'=>'Muokkaa kenttää \'%s\'',
+	'window_title'=>'Muokkaa kenttää `%s`',
 );

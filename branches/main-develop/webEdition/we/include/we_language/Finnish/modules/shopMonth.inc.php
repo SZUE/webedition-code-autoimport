@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shopMonth=array(
+$l_modules_shopMonth=array(
 	'10'=>'Lokakuu',
 	'11'=>'Marraskuu',
 	'12'=>'Joulukuu',

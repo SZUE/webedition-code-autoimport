@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Aktiivinen',
 	'all'=>'Kaikki',
 	'bannercode'=>'Luo bannerin koodi',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Dokumenttityypit',
 	'double_name'=>'Bannerin nimi on jo olemassa!',
 	'error_ac_field'=>'VIRHE: Virheellistä sisältöä merkityissä kentissä!',
-	'error_clickscript_empty'=>'Täytä kenttä \'Klikkaus skripti\'!',
-	'error_getscript_empty'=>'Täytä kenttä \'Lataa skripti\'!',
-	'error_height_empty'=>'Täytä kenttä \'Korkeus\'!',
-	'error_page_empty'=>'Täytä kenttä \'Sivun URL -osoite\'!',
-	'error_tagname_empty'=>'Täytä kenttä \'Bannerin nimi\'!',
-	'error_width_empty'=>'Täytä kenttä \'Leveys\'!',
+	'error_clickscript_empty'=>'Täytä kenttä `Klikkaus skripti`!',
+	'error_getscript_empty'=>'Täytä kenttä `Lataa skripti`!',
+	'error_height_empty'=>'Täytä kenttä `Korkeus`!',
+	'error_page_empty'=>'Täytä kenttä `Sivun URL -osoite`!',
+	'error_tagname_empty'=>'Täytä kenttä `Bannerin nimi`!',
+	'error_width_empty'=>'Täytä kenttä `Leveys`!',
 	'ext_url'=>'Ulkoinen URL -osoite',
 	'frequent'=>'Usein',
 	'from'=>'Keneltä',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Painotus',
 	'we_filename_notValid'=>'Ryhmän nimi ei ole sallittu!',
 	'width'=>'Leveys',
-	'wrongtext'=>'Nimi on virheellinen! Seuraavia merkkejä ei voi käyttää: /  \  % \' "',
+	'wrongtext'=>'Nimi on virheellinen! Seuraavia merkkejä ei voi käyttää: /  \  % ` "',
 );

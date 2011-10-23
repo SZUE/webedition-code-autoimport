@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'All fields',
 	'attributes'=>'Attributes',
 	'behaviour'=>'Display',
@@ -46,9 +46,9 @@ $l_object=array(
 	'no_root_ws_select'=>'The root directory cannot be choosen!',
 	'no_workspace_defined'=>'There are no workspaces defined for this object. You can select special workspaces for an object in its class.',
 	'objectFile_field'=>'Object',
-	'objectFile_response_publish_ok'=>'The object \'%s\' has been successfully published!',
-	'objectFile_response_save_ok'=>'The object \'%s\' has been successfully saved!',
-	'objectFile_response_unpublish_ok'=>'The object \'%s\' has been successfully unpublished!',
+	'objectFile_response_publish_ok'=>'The object `%s` has been successfully published!',
+	'objectFile_response_save_ok'=>'The object `%s` has been successfully saved!',
+	'objectFile_response_unpublish_ok'=>'The object `%s` has been successfully unpublished!',
 	'objectid'=>'Object ID',
 	'objectname'=>'Object name',
 	'objectpath'=>'Object path',

@@ -3,7 +3,7 @@
 $l_tools=array(
 	'backup_tables'=>'backup-table',
 	'cls_exists'=>'The model class exists!',
-	'cls_wrongtext'=>'The name of the model class is not valid!\nInvalid characters are \' (apostrophe) or " (quote)!.',
+	'cls_wrongtext'=>'The name of the model class is not valid!\nInvalid characters are ` (apostrophe) or " (quote)!.',
 	'default'=>'Default',
 	'delete_alert'=>'Delete Entry/Group.\nAre you sure?',
 	'entry'=>'Entry',
@@ -45,9 +45,9 @@ $l_tools=array(
 	'services'=>'Services',
 	'tags'=>'tags',
 	'tbl_exists'=>'The maintable exists!',
-	'tbl_wrongtext'=>'The name of the maintable is not valid!\nInvalid characters are \' (apostrophe) or " (quote)!.',
+	'tbl_wrongtext'=>'The name of the maintable is not valid!\nInvalid characters are ` (apostrophe) or " (quote)!.',
 	'tools'=>'Tools',
-	'we_filename_notValid'=>'Invalid username! Invalid characters are \' (apostrophe) or " (quote)!',
+	'we_filename_notValid'=>'Invalid username! Invalid characters are ` (apostrophe) or " (quote)!',
 	'wrongtext'=>'Name is not valid!
-Invalid characters are \' (apostrophe) or " (quote)!',
+Invalid characters are ` (apostrophe) or " (quote)!',
 );

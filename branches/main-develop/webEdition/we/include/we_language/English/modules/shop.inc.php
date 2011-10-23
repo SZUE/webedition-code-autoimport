@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_modules_shop=array(
 	
 	'add_article'=>array(
 		'empty_articles'=>'No Articles found.',
@@ -58,7 +58,7 @@ $l_shop=array(
 	'customJ'=>'Status J on:',
 	'datumeingabe'=>'You must enter the date in the format mm/dd/yy.',
 	'datum'=>'Date',
-	'delete_alert'=>'Delete all user details for user name \'%s\'.\n Are you sure?',
+	'delete_alert'=>'Delete all user details for user name `%s`.\n Are you sure?',
 	'delete_last_user'=>'At least one administrator is required for administration.\nYou cannot delete the administrator.',
 	'del_shop'=>'Are you sure that you want to delete this order?',
 	'docType'=>'Type',
@@ -116,7 +116,7 @@ $l_shop=array(
 	'lastOrder'=>'Last order - No.: %s, %s',
 	'lc'=>'Country Code',
 	'loscht'=>'Record deleted.',
-	'modify_last_admin'=>'At least one administrator is required for administration.\nYou cannot change the administrator\'s privileges.',
+	'modify_last_admin'=>'At least one administrator is required for administration.\nYou cannot change the administrator`s privileges.',
 	'monat'=>'Month',
 	'mwst'=>'Sales tax',
 	'mwst_expl'=>'Since version 3.5 it is possible to use several vat rates, which are saved directly with the article whithin the order. The value stored here is used only for older orders. Changes on this value affect all orders made without default vat rate or directly on article stored vat rate.',
@@ -146,7 +146,7 @@ $l_shop=array(
 	),
 	'order_comments'=>'Further comments to this order',
 	'order_data'=>'Order and<br>user details',
-	'order_liste'=>'All customer\'s orders:',
+	'order_liste'=>'All customer`s orders:',
 	'order_view'=>'Order summary',
 	'pageMod'=>'Records per Page',
 	'password'=>'Password',
@@ -268,12 +268,12 @@ $l_shop=array(
 	'unbezahlt'=>'Unpaid',
 	'username'=>'User name',
 	'username_empty'=>'User name has not been filled in!',
-	'username_exists'=>'User name \'%s\' already exists!',
+	'username_exists'=>'User name `%s` already exists!',
 	'user_data'=>'User details',
-	'user_deleted'=>'User \'%s\' has been successfully deleted.',
+	'user_deleted'=>'User `%s` has been successfully deleted.',
 	'user_permissions'=>'Editor',
-	'user_saved_nok'=>'User \'%s\' cannot be saved!',
-	'user_saved_ok'=>'User \'%s\' has been successfully saved.',
+	'user_saved_nok'=>'User `%s` cannot be saved!',
+	'user_saved_ok'=>'User `%s` has been successfully saved.',
 	'variant'=>'Variant',
 	
 	'vat'=>array(

@@ -17,7 +17,7 @@ $l_weTag=array(
 		'description'=>'This tag displays the response possibilities of a voting.',
 	),
 	'author'=>array(
-		'description'=>'The we:author tag shows the creator of the document. If the attribute \'type\' is not set, the user name will be displayed. If type="name", the first and last name of the user will be displayed. If \'type="initials", the initials of the user will be displayed. When no first or last name is entered, the username will be shown.',
+		'description'=>'The we:author tag shows the creator of the document. If the attribute `type` is not set, the user name will be displayed. If type="name", the first and last name of the user will be displayed. If `type="initials", the initials of the user will be displayed. When no first or last name is entered, the username will be shown.',
 	),
 	'a'=>array(
 		'defaultvalue'=>'',
@@ -60,7 +60,7 @@ $l_weTag=array(
 	),
 	'checkForm'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:checkForm tag validates the entries of a form with JavaScript.&lt;br /&gt;The combination of the parameters \'match\' and \'type\' determine the \'name\' or the \'id\' of the form to check.&lt;br /&gt;\'mandatory\' and \'email\' contain a commaseperated list of mandatory or e-mail fields. In \'password\' it is possible to insert 2 names of fields and a minimum length of inserted passwords.&lt;br /&gt;With \'onError\' you can choose the name of an individual JavaScript-function which is called in case of an error. This function will get an array with the names of missing mandatory and email fields and a flag, if the password was correct. If \'onError\' is not set or the function does not exist, the default value is displayed in an alert-box.',
+		'description'=>'The we:checkForm tag validates the entries of a form with JavaScript.&lt;br /&gt;The combination of the parameters `match` and `type` determine the `name` or the `id` of the form to check.&lt;br /&gt;`mandatory` and `email` contain a commaseperated list of mandatory or e-mail fields. In `password` it is possible to insert 2 names of fields and a minimum length of inserted passwords.&lt;br /&gt;With `onError` you can choose the name of an individual JavaScript-function which is called in case of an error. This function will get an array with the names of missing mandatory and email fields and a flag, if the password was correct. If `onError` is not set or the function does not exist, the default value is displayed in an alert-box.',
 	),
 	'colorChooser'=>array(
 		'description'=>'The we:colorChooser tag creates an input field for choosing a color value.',
@@ -167,7 +167,7 @@ $l_weTag=array(
 	),
 	'ifCat'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:ifCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are one of the document\'s categories.',
+		'description'=>'The we:ifCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are one of the document`s categories.',
 	),
 	'ifClient'=>array(
 		'defaultvalue'=>'',
@@ -191,7 +191,7 @@ $l_weTag=array(
 	),
 	'ifDoctype'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:ifDoctype tag ensures that everything located between the start tag and the end tag is only displayed if the document type which is entered under "doctype" is the same as the document\'s document type.',
+		'description'=>'The we:ifDoctype tag ensures that everything located between the start tag and the end tag is only displayed if the document type which is entered under "doctype" is the same as the document`s document type.',
 	),
 	'ifDoubleOptIn'=>array(
 		'defaultvalue'=>'',
@@ -322,7 +322,7 @@ $l_weTag=array(
 	),
 	'ifNotCat'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are none of the document\'s categories.',
+		'description'=>'The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are none of the document`s categories.',
 	),
 	'ifNotDeleted'=>array(
 		'defaultvalue'=>'',
@@ -414,7 +414,7 @@ $l_weTag=array(
 	),
 	'ifNotSelf'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:ifNotSelf tag ensures that everything located between the start tag and the end tag will not be displayed if the document has one of the ID\'s entered in the tag. If the tag is not located within we:linklist or we:listdir tags, "id" is a required field!',
+		'description'=>'The we:ifNotSelf tag ensures that everything located between the start tag and the end tag will not be displayed if the document has one of the ID`s entered in the tag. If the tag is not located within we:linklist or we:listdir tags, "id" is a required field!',
 	),
 	'ifNotSendMail'=>array(
 		'defaultvalue'=>'',
@@ -433,7 +433,7 @@ $l_weTag=array(
 	),
 	'ifNotTemplate'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Show enclosed content only if the current document is not based on the given template.<br /><br />You\'ll find further information in the reference of the tag we:ifTemplate.',
+		'description'=>'Show enclosed content only if the current document is not based on the given template.<br /><br />You`ll find further information in the reference of the tag we:ifTemplate.',
 	),
 	'ifNotTop'=>array(
 		'defaultvalue'=>'',

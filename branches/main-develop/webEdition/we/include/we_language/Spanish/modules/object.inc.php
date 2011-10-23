@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'Todos los campos',
 	'attributes'=>'Atributos',
 	'behaviour'=>'Mostrar',
@@ -46,9 +46,9 @@ $l_object=array(
 	'no_root_ws_select'=>'El directorio raï¿½z no puede ser escogido',
 	'no_workspace_defined'=>'No hay ï¿½reas de trabajo definidas para este objeto. UD puede seleccionar ï¿½reas de trabajo especiales para un objeto en su clase.',
 	'objectFile_field'=>'Objeto',
-	'objectFile_response_publish_ok'=>'El objeto \'%s\' fue publicado exitosameente!',
-	'objectFile_response_save_ok'=>'El objeto \'%s\' fue salvado exitosamente!',
-	'objectFile_response_unpublish_ok'=>'El objeto \'%s\' fue exitosamente despublicado!',
+	'objectFile_response_publish_ok'=>'El objeto `%s` fue publicado exitosameente!',
+	'objectFile_response_save_ok'=>'El objeto `%s` fue salvado exitosamente!',
+	'objectFile_response_unpublish_ok'=>'El objeto `%s` fue exitosamente despublicado!',
 	'objectid'=>'Object ID',
 	'objectname'=>'Nombre del objeto',
 	'objectpath'=>'Ruta de acceso del objeto',

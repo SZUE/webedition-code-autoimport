@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Aktiv',
 	'all'=>'Alle',
 	'bannercode'=>'Erzeuge Bannercode',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Dokument-Typen',
 	'double_name'=>'Der Banner Name existiert bereits!',
 	'error_ac_field'=>'FEHLER: Ungültige Werte in markierten Feldern!',
-	'error_clickscript_empty'=>'Bitte füllen Sie das Feld \'Click Script\' aus!',
-	'error_getscript_empty'=>'Bitte füllen Sie das Feld \'Get Script\' aus!',
-	'error_height_empty'=>'Bitte füllen Sie das Feld \'Höhe\' aus!',
-	'error_page_empty'=>'Bitte füllen Sie das Feld \'URL der Seite\' aus!',
-	'error_tagname_empty'=>'Bitte füllen Sie das Feld \'Bannername\' aus!',
-	'error_width_empty'=>'Bitte füllen Sie das Feld \'Breite\' aus!',
+	'error_clickscript_empty'=>'Bitte füllen Sie das Feld `Click Script` aus!',
+	'error_getscript_empty'=>'Bitte füllen Sie das Feld `Get Script` aus!',
+	'error_height_empty'=>'Bitte füllen Sie das Feld `Höhe` aus!',
+	'error_page_empty'=>'Bitte füllen Sie das Feld `URL der Seite` aus!',
+	'error_tagname_empty'=>'Bitte füllen Sie das Feld `Bannername` aus!',
+	'error_width_empty'=>'Bitte füllen Sie das Feld `Breite` aus!',
 	'ext_url'=>'Externe URL',
 	'frequent'=>'häufig',
 	'from'=>'Von',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Gewichtung',
 	'we_filename_notValid'=>'Der Gruppenname ist nicht gültig!',
 	'width'=>'Breite',
-	'wrongtext'=>'Der eingegebene Name ist ungültig! Folgende Zeichen dürfen nicht im Namen enthalten sein: /  \  % \' "',
+	'wrongtext'=>'Der eingegebene Name ist ungültig! Folgende Zeichen dürfen nicht im Namen enthalten sein: /  \  % ` "',
 );

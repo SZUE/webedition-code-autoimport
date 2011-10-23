@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_workflow=array(
+$l_javaMenu_workflow=array(
 	'delete'=>'Verwijder',
 	'empty_log'=>'Wis logboek',
 	'help'=>'Help',

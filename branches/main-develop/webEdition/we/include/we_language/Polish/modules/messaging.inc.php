@@ -1,13 +1,13 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_messaging=array(
+$l_modules_messaging=array(
 	'addr_book'=>'Książka adresowa',
 	'addr_book_saved'=>'Zapisano książkę adresową',
 	'assigned_by'=>'Przydzielony od',
 	'assigner'=>'Alokacja',
 	'attrib_line'=>'Piszesz',
 	'cant_create_folders'=>'Błąd: nie można utworzyć folderów dla tego użytkownika',
-	'cant_paste'=>'Can\'t paste to this folder',
+	'cant_paste'=>'Can`t paste to this folder',
 	'change_folder_settings'=>'Zmień ustawienia folderu',
 	'check_step'=>'Przedział kontrolny',
 	'children_same_name'=>'W tym katalogu już istnieje taka nazwa folderu',

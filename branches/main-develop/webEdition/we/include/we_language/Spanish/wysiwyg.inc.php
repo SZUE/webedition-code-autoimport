@@ -112,7 +112,7 @@ $l_wysiwyg=array(
 	'link_lang'=>'Vínculo',
 	'merge_cells2'=>'Reunir celdas',
 	'merge_cells'=>'Reunir celdas',
-	'mozilla_paste'=>'Because of security reasons the \'copy\', \'cut\' and \'paste\' functions are not working in the Mozilla browser. Please use the keyboard commands CTRL-C, CTRL-X or CTRL-V  on PCs or &#x2318;-C, &#x2318;-X or &#x2318;-V on Macintosh Computers!',
+	'mozilla_paste'=>'Because of security reasons the `copy`, `cut` and `paste` functions are not working in the Mozilla browser. Please use the keyboard commands CTRL-C, CTRL-X or CTRL-V  on PCs or &#x2318;-C, &#x2318;-X or &#x2318;-V on Macintosh Computers!',
 	'none'=>'None',
 	'normal'=>'Normal',
 	'noshade'=>'Sin matiz',
@@ -158,5 +158,5 @@ $l_wysiwyg=array(
 	'visible_borders'=>'Show borders',
 	'vspace'=>'Espacio vertical',
 	'width'=>'Ancho',
-	'window_title'=>'Editar campo \'%s\'',
+	'window_title'=>'Editar campo `%s`',
 );

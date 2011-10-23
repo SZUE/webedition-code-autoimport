@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_moduleInformation=array(
+$l_javaMenu_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Et ole asentanut Banneri/Statistiikkamoduulia. Lisätietoja moduulista osoitteesta: %s',
@@ -13,7 +13,7 @@ $l_moduleInformation=array(
 		'text_short'=>'Asiakas',
 	),
 	'editor'=>array(
-		'not_installed'=>'Jos olet hankkinut editori PlugIn, voit aktivoida sen päävalikosta: <a href="javascript:opener.top.we_cmd(\'openPreferences\');">Muokkaa => Asetukset</a>. Asennus tapahtuu automaattisesti kun avaat sivupohjat => Muokkaa tilassa.<br>Lisätietoja moduulista osoitteesta: %s',
+		'not_installed'=>'Jos olet hankkinut editori PlugIn, voit aktivoida sen päävalikosta: <a href="javascript:opener.top.we_cmd(`openPreferences`);">Muokkaa => Asetukset</a>. Asennus tapahtuu automaattisesti kun avaat sivupohjat => Muokkaa tilassa.<br>Lisätietoja moduulista osoitteesta: %s',
 		'text'=>'Editori PlugIn',
 		'text_short'=>'Editori PlugIn',
 	),

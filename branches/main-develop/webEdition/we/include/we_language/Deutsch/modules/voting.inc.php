@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_voting=array(
+$l_modules_voting=array(
 	'access'=>'Zugriff',
 	'active_till'=>'Aktiv',
 	'AllowFreeText'=>'Erlaube freie Texteingabe',
@@ -20,11 +20,11 @@ $l_voting=array(
 	'cookie_method_help'=>'Nutzen Sie diese Methode, wenn Sie die IP Methode nicht nutzen können/wollen. Bedenken Sie bitte, dass Benutzer Cookies im Browser deaktivieren können. Die "Fallback IP-Methode" Option benötigt die Nutzung des we:cookie Tags in der Vorlage.',
 	'csv_charset'=>'Export-Zeichensatz',
 	'csv_download'=>'CSV-Datei herunterladen',
-	'csv_export'=>'Die Datei \'%s\' wurde gespeichert.',
+	'csv_export'=>'Die Datei `%s` wurde gespeichert.',
 	'data_deleted_info'=>'Die Daten wurden gelöscht!',
 	'delete_alert'=>'Aktuelles Voting/Gruppe löschen.\n Sind Sie sich sicher?',
 	'delete_ipdata_question'=>'Sie möchten alle gespeicherten IP-Daten löchen. Sind Sie sicher?',
-	'delete_ipdata_text'=>'Die gespeicherten IP-Daten belegen %s Bytes des Speichers. Sie können sie mit dem \'Löschen\' Knopf löschen. Bitte achten Sie darauf, dass alle gespeichrten IP-Daten des Votings gelöscht wurden und die Voting-Ergebnise werden nicht mehr präzise sind, weil wiederholte Abstimmungen möglich werden.',
+	'delete_ipdata_text'=>'Die gespeicherten IP-Daten belegen %s Bytes des Speichers. Sie können sie mit dem `Löschen` Knopf löschen. Bitte achten Sie darauf, dass alle gespeichrten IP-Daten des Votings gelöscht wurden und die Voting-Ergebnise werden nicht mehr präzise sind, weil wiederholte Abstimmungen möglich werden.',
 	'delete_log_question'=>'Sie möchten alle Einträge des Voting Logbuches löchen. Sind Sie sicher?',
 	'disabled'=>'Deaktiviert',
 	'enabled'=>'Aktiviert',

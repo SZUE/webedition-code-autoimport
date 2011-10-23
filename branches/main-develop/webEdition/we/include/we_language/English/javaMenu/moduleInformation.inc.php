@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_moduleInformation=array(
+$l_javaMenu_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Sorry, but you have not yet installed the webEdition Banner Management. You will find the Banner Management itself and more information under: %s',

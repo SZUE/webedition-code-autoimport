@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_global=array(
+$l_javaMenu_global=array(
 	'backup'=>'Backup',
 	'back'=>'Terug',
 	'browse_server'=>'Doorzoek Server',
@@ -26,7 +26,7 @@ $l_global=array(
 	'edit'=>'Opties',
 	'empty_page'=>'Lege Pagina',
 	'export'=>'Exporteer',
-	'extras'=>'Extra\'s',
+	'extras'=>'Extra`s',
 	'file'=>'Archief',
 	'first_steps_wizard'=>'Eerste Stappen Assistent',
 	'flash_movie'=>'Flash Film',
@@ -38,7 +38,7 @@ $l_global=array(
 	'image'=>'Afbeelding',
 	'import'=>'Importeer',
 	'import_export'=>'Importeer/Exporteer',
-	'inactive_extras'=>'Inactieve extra\'s',
+	'inactive_extras'=>'Inactieve extra`s',
 	'info'=>'Info',
 	'javascript'=>'Javascript',
 	'last_modified'=>'laatst gewijzigd',
@@ -91,7 +91,7 @@ $l_global=array(
 	'thumbnails'=>'Thumbnails',
 	'todo_messaging'=>'Taken/Berichten',
 	'unpublished'=>'ongepubliceerd',
-	'unpublished_pages'=>'Ongepubliceerde pagina\'s',
+	'unpublished_pages'=>'Ongepubliceerde pagina`s',
 	'update'=>'Bijwerken',
 	'upgrade'=>'Bijwerken naar webEdition 5',
 	'users_online'=>'Gebruikers online',

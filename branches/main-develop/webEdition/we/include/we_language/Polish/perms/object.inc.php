@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_perms_object=array(
 	'CAN_COPY_OBJECTS'=>'The user is allowed to copy object folders',
 	'CAN_SEE_OBJECTFILES'=>'Użytkownik ma dostęp do obiektów',
 	'CAN_SEE_OBJECTS'=>'Użytkownik ma dostęp do klas',

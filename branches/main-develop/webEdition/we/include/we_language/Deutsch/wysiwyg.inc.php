@@ -112,7 +112,7 @@ $l_wysiwyg=array(
 	'link_lang'=>'Link',
 	'merge_cells2'=>'Zellen verbinden',
 	'merge_cells'=>'Zellen verbinden',
-	'mozilla_paste'=>'Die \'Kopieren\', \'Ausschneiden\' und \'Einf&#252;gen\' Funktion ist bei Mozilla wegen Sicherheitsgr&#252;nden nicht verf&#252;gbar. Bitte benutzen Sie die Tastenkombinationen CTRL-C, CTRL-X und CTRL-V bei PCs oder APFEL-C, APFEL-X oder APFEL-V bei Macintosh Computern!',
+	'mozilla_paste'=>'Die `Kopieren`, `Ausschneiden` und `Einf&#252;gen` Funktion ist bei Mozilla wegen Sicherheitsgr&#252;nden nicht verf&#252;gbar. Bitte benutzen Sie die Tastenkombinationen CTRL-C, CTRL-X und CTRL-V bei PCs oder APFEL-C, APFEL-X oder APFEL-V bei Macintosh Computern!',
 	'none'=>'Ohne',
 	'normal'=>'Normal (ohne)',
 	'noshade'=>'Ohne Schattierung',
@@ -158,5 +158,5 @@ $l_wysiwyg=array(
 	'visible_borders'=>'Zeige R&#228;nder',
 	'vspace'=>'Vertikaler Abstand',
 	'width'=>'Breite',
-	'window_title'=>'Feld \'%s\' bearbeiten',
+	'window_title'=>'Feld `%s` bearbeiten',
 );

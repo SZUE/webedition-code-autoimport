@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_javaMenu_object=array(
 	'classes'=>'Luokkia',
 	'class'=>'Luokka',
 	'objects'=>'Objekteja',

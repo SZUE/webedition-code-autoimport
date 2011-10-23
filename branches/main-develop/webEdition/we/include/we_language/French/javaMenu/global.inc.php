@@ -1,12 +1,12 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_global=array(
+$l_javaMenu_global=array(
 	'backup'=>'Sauvegardes',
 	'back'=>'Reculer',
 	'browse_server'=>'Fouiller le server',
 	'categories'=>'Categories',
 	'change_password'=>'Changer le mot de passe',
-	'change_username'=>'Changer l\'identifiant',
+	'change_username'=>'Changer l`identifiant',
 	'clear_cache'=>'Clear cache',
 	'close'=>'Close',
 	'close_all_but_active_document'=>'Close inactive tabs',
@@ -32,7 +32,7 @@ $l_global=array(
 	'flash_movie'=>'Vidéo Flash',
 	'formmail_recipients'=>'Destinataire de Formmail',
 	'help'=>'Aide',
-	'home'=>'Page d\'accueil',
+	'home'=>'Page d`accueil',
 	'htaccess'=>'.htaccess Document',
 	'html_page'=>'Site HTML',
 	'image'=>'Graphique',
@@ -60,7 +60,7 @@ $l_global=array(
 	'onlinehelp_demo'=>'Online demo',
 	'onlinehelp_documentation'=>'Documentation en ligne',
 	'onlinehelp_forum'=>'webEdition forums',
-	'onlinehelp_tagreference'=>'Reference d\'étiquete',
+	'onlinehelp_tagreference'=>'Reference d`étiquete',
 	'open'=>'Ouvrir',
 	'open_document'=>'Document',
 	'open_template'=>'Modèle',

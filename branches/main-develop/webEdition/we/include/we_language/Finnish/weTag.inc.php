@@ -17,7 +17,7 @@ $l_weTag=array(
 		'description'=>'Tagi näyttää äänestyksen vastausvaihtoehdot.',
 	),
 	'author'=>array(
-		'description'=>'Tagi we:author näyttää dokumentin luojan nimen. Jos attribuuttia \'type\' ei ole määritelty, näytetään käyttäjätunnus. Jos type="name", näytetään käyttäjän etu- ja sukunimi. Jos nimiä ei ole määritelty, näytetään edelleen vain käyttäjätunnus.',
+		'description'=>'Tagi we:author näyttää dokumentin luojan nimen. Jos attribuuttia `type` ei ole määritelty, näytetään käyttäjätunnus. Jos type="name", näytetään käyttäjän etu- ja sukunimi. Jos nimiä ei ole määritelty, näytetään edelleen vain käyttäjätunnus.',
 	),
 	'a'=>array(
 		'defaultvalue'=>'',
@@ -60,7 +60,7 @@ $l_weTag=array(
 	),
 	'checkForm'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:checkForm tagi luo JavaScript koodin jolla voi tarkistaa määritellyn lomakkeen syötteet.<br/>Parametrien \'match\' ja \'type\' avulla määritellään tarkistettavan lomakkeen \'name\' tai \'id\'.<br/>\'mandatory\' sisältää pilkkuerotellun listan pakollisten kenttien nimistä ja \'email\' sisältää samaan malliin koostetun listan kentistä joiden aiotut syöttet ovat tyypeiltään sähköpostiosoitteita. <br>Kentään \'password\' on mahdollista kirjoittaa 2 kenttänimeä joihin sovelletaan salasanatarkastusta, sekä kolmantena arvona numeerinen arvo joka määrittää salasanan minimipituuden (esim: salasana,salasana2,5). <br>\'onError\' kohtaan voit määrittää virhetilanteessa mahdollisesti kutsuttavan itse määrittelemäsi JavaScript -funktion nimen. Tämä funktio saa parametrina taulukon josta löytyvät puuttuvien pakollisten kenttien nimet, ja \'flagin\' siitä oliko salasanat oikein. Jos \'onError\' jätetään määrittelemättä tai funktiota ei ole lisätty sivupohjaan, näytetään oletusarvot alert-ikkunassa.',
+		'description'=>'we:checkForm tagi luo JavaScript koodin jolla voi tarkistaa määritellyn lomakkeen syötteet.<br/>Parametrien `match` ja `type` avulla määritellään tarkistettavan lomakkeen `name` tai `id`.<br/>`mandatory` sisältää pilkkuerotellun listan pakollisten kenttien nimistä ja `email` sisältää samaan malliin koostetun listan kentistä joiden aiotut syöttet ovat tyypeiltään sähköpostiosoitteita. <br>Kentään `password` on mahdollista kirjoittaa 2 kenttänimeä joihin sovelletaan salasanatarkastusta, sekä kolmantena arvona numeerinen arvo joka määrittää salasanan minimipituuden (esim: salasana,salasana2,5). <br>`onError` kohtaan voit määrittää virhetilanteessa mahdollisesti kutsuttavan itse määrittelemäsi JavaScript -funktion nimen. Tämä funktio saa parametrina taulukon josta löytyvät puuttuvien pakollisten kenttien nimet, ja `flagin` siitä oliko salasanat oikein. Jos `onError` jätetään määrittelemättä tai funktiota ei ole lisätty sivupohjaan, näytetään oletusarvot alert-ikkunassa.',
 	),
 	'colorChooser'=>array(
 		'description'=>'we:colorChooser tagi luo kontrollin jolla voidaan helposti valita väriarvo.',
@@ -215,11 +215,11 @@ $l_weTag=array(
 	),
 	'ifEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tagin sisällä oleva tieto näytetään ainoastaan jos kenttä on tyhjä jolla on sama nimi kuin match-arvona. Verrattavan kentän tyyppi täytyy määrittää, \'img,flashmovie, href,object\'',
+		'description'=>'Tagin sisällä oleva tieto näytetään ainoastaan jos kenttä on tyhjä jolla on sama nimi kuin match-arvona. Verrattavan kentän tyyppi täytyy määrittää, `img,flashmovie, href,object`',
 	),
 	'ifEqual'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:ifEqual tagi vertaa kenttien sisältöä \'name\' ja \'eqname\'. Jos sisältö on molemmissa sama niin sisältö näytetään. Jos tagia käytetään we:list:ssä, we:block:ssa tai we:linklist:ssä, vain yhtä kenttää voidaan verrata. Jos attribuuttia \'value\' käytetään, \'eqname\' hylätään ja sillon sisältöä verrataan \'value\'-arvoon',
+		'description'=>'we:ifEqual tagi vertaa kenttien sisältöä `name` ja `eqname`. Jos sisältö on molemmissa sama niin sisältö näytetään. Jos tagia käytetään we:list:ssä, we:block:ssa tai we:linklist:ssä, vain yhtä kenttää voidaan verrata. Jos attribuuttia `value` käytetään, `eqname` hylätään ja sillon sisältöä verrataan `value`-arvoon',
 	),
 	'ifFemale'=>array(
 		'defaultvalue'=>'',
@@ -227,15 +227,15 @@ $l_weTag=array(
 	),
 	'ifFieldEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:ifFieldEmpty varmistaa että kaikki tagin sisällä oleva tieto näytetään ainoastaan jos listview:n sisällä oleva kenttä on tyhjä ja jonka nimi täsmää \'match\'-arvoon. Kentän tyypin on määriteltävä.',
+		'description'=>'we:ifFieldEmpty varmistaa että kaikki tagin sisällä oleva tieto näytetään ainoastaan jos listview:n sisällä oleva kenttä on tyhjä ja jonka nimi täsmää `match`-arvoon. Kentän tyypin on määriteltävä.',
 	),
 	'ifFieldNotEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:ifFieldNotEmpty varmistaa että kaikki tagin sisällä oleva tieto näytetään ainoastaan jos listview:n sisällä oleva kenttä ei ole tyhjä ja jonka nimi täsmää \'match\'-arvoon. Kentän tyypin on määriteltävä.',
+		'description'=>'we:ifFieldNotEmpty varmistaa että kaikki tagin sisällä oleva tieto näytetään ainoastaan jos listview:n sisällä oleva kenttä ei ole tyhjä ja jonka nimi täsmää `match`-arvoon. Kentän tyypin on määriteltävä.',
 	),
 	'ifField'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tagia käytetään we:repeat -tagin sisällä. Kaikki sisältö näytetään jos attribuutin \'match\' arvo on identtinen tietokannasta löytyvään kenttään joka on määritetty listview:lle.',
+		'description'=>'Tagia käytetään we:repeat -tagin sisällä. Kaikki sisältö näytetään jos attribuutin `match` arvo on identtinen tietokannasta löytyvään kenttään joka on määritetty listview:lle.',
 	),
 	'ifFound'=>array(
 		'defaultvalue'=>'',
@@ -247,7 +247,7 @@ $l_weTag=array(
 	),
 	'ifHasCurrentEntry'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:ifHasCurrentEntry:ä voidaan käyttää we:navigationEntry type=\'folder\':n sisällä näyttääkseen aktiivista sisältöä',
+		'description'=>'we:ifHasCurrentEntry:ä voidaan käyttää we:navigationEntry type=`folder`:n sisällä näyttääkseen aktiivista sisältöä',
 	),
 	'ifHasEntries'=>array(
 		'defaultvalue'=>'',
@@ -255,7 +255,7 @@ $l_weTag=array(
 	),
 	'ifHasShopVariants'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:ifHasShopVariants voi näyttää sisältöä riippuen muuttujien olemassaolosta objektissa tai dokumentissa. Voidaan kontrolloida we:listview type=\'shopVariant\'. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>',
+		'description'=>'we:ifHasShopVariants voi näyttää sisältöä riippuen muuttujien olemassaolosta objektissa tai dokumentissa. Voidaan kontrolloida we:listview type=`shopVariant`. <b>This tag works in document and object templates attached by object-workspaces, but not inside the we:listview and we:object - tags</b>',
 	),
 	'ifHtmlMail'=>array(
 		'defaultvalue'=>'',
@@ -263,11 +263,11 @@ $l_weTag=array(
 	),
 	'ifIsDomain'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos palvelimen domain -nimi on sama kuin \'domain\' -arvo. Sisällön voi nähdä ainoastaan valmiissa sivussa tai esikatselussa. Muokkaustilassa tätä tagia ei oteta huomioon.',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos palvelimen domain -nimi on sama kuin `domain` -arvo. Sisällön voi nähdä ainoastaan valmiissa sivussa tai esikatselussa. Muokkaustilassa tätä tagia ei oteta huomioon.',
 	),
 	'ifIsNotDomain'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos palvelimen domain -nimi ei ole sama kuin \'domain\' -arvo. Sisällön voi nähdä ainoastaan valmiissa sivussa tai esikatselussa. Muokkaustilassa tätä tagia ei oteta huomioon..',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos palvelimen domain -nimi ei ole sama kuin `domain` -arvo. Sisällön voi nähdä ainoastaan valmiissa sivussa tai esikatselussa. Muokkaustilassa tätä tagia ei oteta huomioon..',
 	),
 	'ifLastCol'=>array(
 		'defaultvalue'=>'',
@@ -311,7 +311,7 @@ $l_weTag=array(
 	),
 	'ifNext'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos \'Seuraavat\' -objekteja on saatavilla',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos `Seuraavat` -objekteja on saatavilla',
 	),
 	'ifNoJavaScript'=>array(
 		'description'=>'Tämä tagi uudelleenohjaa sivun toiselle sivulle ID:n perusteella jos selaimessa ei ole tukea JavaScript:lle tai jos JavaScript on pois päältä. Tätä tagia voidaan käyttää ainoastaan templaten head-osiossa..',
@@ -322,7 +322,7 @@ $l_weTag=array(
 	),
 	'ifNotCat'=>array(
 		'defaultvalue'=>'',
-		'description'=>'The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are none of the document\'s categories.',
+		'description'=>'The we:ifNotCat tag ensures that everything located between the start tag and the end tag is only displayed if the categories which are entered under "categories" are none of the document`s categories.',
 	),
 	'ifNotDeleted'=>array(
 		'defaultvalue'=>'',
@@ -338,15 +338,15 @@ $l_weTag=array(
 	),
 	'ifNotEmpty'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämä tagi varmistaa että tämän tagin sisältö näytetään jos sen sisällä olevan we-tagin nimi vastaa \'match\' atribuutin arvoon EIKÄ se ole tyhjä. Tyyppi täytyy määrittää.',
+		'description'=>'Tämä tagi varmistaa että tämän tagin sisältö näytetään jos sen sisällä olevan we-tagin nimi vastaa `match` atribuutin arvoon EIKÄ se ole tyhjä. Tyyppi täytyy määrittää.',
 	),
 	'ifNotEqual'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämä tagi vertaa sisälläolevan we-tagin nimi atribuuttia \'eqname\':n arvoon, jos se eivät ole samat, sisältö näytetään. Jos attribuuttia \'value\' käytetään, \'eqname\' hylätään ja sillon sisältöä verrataan \'value\'-arvoon',
+		'description'=>'Tämä tagi vertaa sisälläolevan we-tagin nimi atribuuttia `eqname`:n arvoon, jos se eivät ole samat, sisältö näytetään. Jos attribuuttia `value` käytetään, `eqname` hylätään ja sillon sisältöä verrataan `value`-arvoon',
 	),
 	'ifNotField'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tagia käytetään we:repeat -tagin sisällä. Kaikki sisältö näytetään jos attribuutin \'match\' arvo ei ole identtinen tietokannasta löytyvään kenttään joka on määritetty listview:lle.',
+		'description'=>'Tagia käytetään we:repeat -tagin sisällä. Kaikki sisältö näytetään jos attribuutin `match` arvo ei ole identtinen tietokannasta löytyvään kenttään joka on määritetty listview:lle.',
 	),
 	'ifNotFound'=>array(
 		'defaultvalue'=>'',
@@ -386,7 +386,7 @@ $l_weTag=array(
 	),
 	'ifNotObject'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisältö näytetään vain jos listview:n sisältö ei ole objekti. Listviewin tyyppi täytyy olla \'search\';',
+		'description'=>'Tämän tagin sisältö näytetään vain jos listview:n sisältö ei ole objekti. Listviewin tyyppi täytyy olla `search`;',
 	),
 	'ifNotPageLanguage'=>array(
 		'defaultvalue'=>'',
@@ -394,7 +394,7 @@ $l_weTag=array(
 	),
 	'ifNotPosition'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämä tagi mahdollistaa toiminnon määrittelyn mitä EI tehdä tietyssä block:n, listview:n, linklist:n listdir:n kohdassa. Parametri \'position\' hyväksyy monipuolisia arvoja, \'first\',\'last\',\'all even\',\'all odd\', tai numeerisen määrittely (1,2,3...). Tyyppinä täytyy olla block tai linklist ja nimi sillä.',
+		'description'=>'Tämä tagi mahdollistaa toiminnon määrittelyn mitä EI tehdä tietyssä block:n, listview:n, linklist:n listdir:n kohdassa. Parametri `position` hyväksyy monipuolisia arvoja, `first`,`last`,`all even`,`all odd`, tai numeerisen määrittely (1,2,3...). Tyyppinä täytyy olla block tai linklist ja nimi sillä.',
 	),
 	'ifNotRegisteredUser'=>array(
 		'defaultvalue'=>'',
@@ -402,11 +402,11 @@ $l_weTag=array(
 	),
 	'ifNotReturnPage'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain luonnin tai muokkauksen jälkeen mikäli paluuarvo we:a edit=\'true\' on epätosi tai ei määritetty.',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain luonnin tai muokkauksen jälkeen mikäli paluuarvo we:a edit=`true` on epätosi tai ei määritetty.',
 	),
 	'ifNotSearch'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tagin sisältö tulostetaan vain jos hakutermiä ei lähetetty we:search:ltä tai se oli tyhjä. Jos attribuutti \'set\' = tosi, vain we:search:n pyydetyt muuttujat on varmennettu asettamattomiksi.',
+		'description'=>'Tagin sisältö tulostetaan vain jos hakutermiä ei lähetetty we:search:ltä tai se oli tyhjä. Jos attribuutti `set` = tosi, vain we:search:n pyydetyt muuttujat on varmennettu asettamattomiksi.',
 	),
 	'ifNotSeeMode'=>array(
 		'defaultvalue'=>'',
@@ -414,7 +414,7 @@ $l_weTag=array(
 	),
 	'ifNotSelf'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Mitään tietoa tämän tagin sisällä ei näytetä jos dokumentilla on yksikään tagiin syötetyistä ID:stä. Jos tagi ei sijaitse we:linklist:n, we:listdir:n sisällä \'id\' on pakollinen kenttä!',
+		'description'=>'Mitään tietoa tämän tagin sisällä ei näytetä jos dokumentilla on yksikään tagiin syötetyistä ID:stä. Jos tagi ei sijaitse we:linklist:n, we:listdir:n sisällä `id` on pakollinen kenttä!',
 	),
 	'ifNotSendMail'=>array(
 		'defaultvalue'=>'',
@@ -429,7 +429,7 @@ $l_weTag=array(
 	),
 	'ifNotSubscribe'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos tilaus epäonnistui. Tämä tagi pitäisi olla \'Tilaa uutiskirje\' templatessa we:addDelNewsletterEmail -tagin jälkeen.',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos tilaus epäonnistui. Tämä tagi pitäisi olla `Tilaa uutiskirje` templatessa we:addDelNewsletterEmail -tagin jälkeen.',
 	),
 	'ifNotTemplate'=>array(
 		'defaultvalue'=>'',
@@ -437,19 +437,19 @@ $l_weTag=array(
 	),
 	'ifNotTop'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisältö näytetään vain jos se sijaitsee \'include\' -dokumentissa.',
+		'description'=>'Tämän tagin sisältö näytetään vain jos se sijaitsee `include` -dokumentissa.',
 	),
 	'ifNotUnsubscribe'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos pyyntö ei toimi. Tämä tagi pitäisi olla \'Peru uutiskirjetilaus\' templatessa we:addDelNewsletterEmail -tagin jälkeen.',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos pyyntö ei toimi. Tämä tagi pitäisi olla `Peru uutiskirjetilaus` templatessa we:addDelNewsletterEmail -tagin jälkeen.',
 	),
 	'ifNotVarSet'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos muuttujaa nimellä \'name\' ei ole määritetty. Huom! \'Ei asetettu\' ei ole sama kuin tyhjä!',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos muuttujaa nimellä `name` ei ole määritetty. Huom! `Ei asetettu` ei ole sama kuin tyhjä!',
 	),
 	'ifNotVar'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä olevaa tietoa ei näytetä jos muuttujan \'name\' -arvo on sama kuin \'match\' -arvo. Muuttujan tyyppi voidaan määrittää \'type\'-attribuutilla',
+		'description'=>'Tämän tagin sisällä olevaa tietoa ei näytetä jos muuttujan `name` -arvo on sama kuin `match` -arvo. Muuttujan tyyppi voidaan määrittää `type`-attribuutilla',
 	),
 	'ifNotVoteActive'=>array(
 		'defaultvalue'=>'',
@@ -461,7 +461,7 @@ $l_weTag=array(
 	),
 	'ifNotVote'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos äänestystä ei tallennettu. \'type\' -attribuutti määrittää virheen tyypin.',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos äänestystä ei tallennettu. `type` -attribuutti määrittää virheen tyypin.',
 	),
 	'ifNotVotingField'=>array(
 		'description'=>'Checks if a votingField has not a value corresponding to the attribute match, the attribute combinations of name and type are the same as in the we:votingField tag',
@@ -475,7 +475,7 @@ $l_weTag=array(
 	),
 	'ifNotWorkspace'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tarkastaa, sijaitseeko dokumentti jossain muualla kuin työtilassa joka on määritelty \'path\' attribuutissa',
+		'description'=>'Tarkastaa, sijaitseeko dokumentti jossain muualla kuin työtilassa joka on määritelty `path` attribuutissa',
 	),
 	'ifNotWritten'=>array(
 		'defaultvalue'=>'',
@@ -487,7 +487,7 @@ $l_weTag=array(
 	),
 	'ifObject'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos löydettiin yksilöllinen rivi we:listview type=\'search\':lla joka on objekti.',
+		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos löydettiin yksilöllinen rivi we:listview type=`search`:lla joka on objekti.',
 	),
 	'ifobjektexists'=>array(
 		'defaultvalue'=>'',
@@ -499,7 +499,7 @@ $l_weTag=array(
 	),
 	'ifPosition'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämä tagi mahdollistaa toiminnon määrittelyn mitä tehdään tietyssä block:n, listview:n, linklist:n listdir:n kohdassa. Parametri \'position\' hyväksyy monipuolisia arvoja, \'first\',\'last\',\'all even\',\'all odd\', tai numeerisen määrittely (1,2,3...). Tyyppinä täytyy olla block tai linklist ja nimi sillä.',
+		'description'=>'Tämä tagi mahdollistaa toiminnon määrittelyn mitä tehdään tietyssä block:n, listview:n, linklist:n listdir:n kohdassa. Parametri `position` hyväksyy monipuolisia arvoja, `first`,`last`,`all even`,`all odd`, tai numeerisen määrittely (1,2,3...). Tyyppinä täytyy olla block tai linklist ja nimi sillä.',
 	),
 	'ifRegisteredUserCanChange'=>array(
 		'defaultvalue'=>'',
@@ -511,11 +511,11 @@ $l_weTag=array(
 	),
 	'ifReturnPage'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisältö näytetään webEdition dokumentin tai objektin luonnin tai muokkauksen jälkeen ja palautettava arvo \'result\' on we:a edit=\'document\' tai we:a edit=\'object\' on tosi.',
+		'description'=>'Tämän tagin sisältö näytetään webEdition dokumentin tai objektin luonnin tai muokkauksen jälkeen ja palautettava arvo `result` on we:a edit=`document` tai we:a edit=`object` on tosi.',
 	),
 	'ifSearch'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tagin sisältö tulostetaan vain jos hakutermi lähetettiin we:search:lle ja se ei ole tyhjä. Jos attribuutti \'set\' = tosi, vain we:search:n pyydetyt muuttujat on varmennettu asettamattomiksi.',
+		'description'=>'Tagin sisältö tulostetaan vain jos hakutermi lähetettiin we:search:lle ja se ei ole tyhjä. Jos attribuutti `set` = tosi, vain we:search:n pyydetyt muuttujat on varmennettu asettamattomiksi.',
 	),
 	'ifSeeMode'=>array(
 		'defaultvalue'=>'',
@@ -604,7 +604,7 @@ $l_weTag=array(
 	),
 	'ifVarSet'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tämän tagin sisältö näytetään jos kohde muutujaa ei ole asetettu. Huom! \'asetettu\' ei ole sama kuin \'ei tyhjä\'',
+		'description'=>'Tämän tagin sisältö näytetään jos kohde muutujaa ei ole asetettu. Huom! `asetettu` ei ole sama kuin `ei tyhjä`',
 	),
 	'ifVar'=>array(
 		'defaultvalue'=>'',
@@ -644,17 +644,17 @@ $l_weTag=array(
 	),
 	'ifWorkspace'=>array(
 		'defaultvalue'=>'',
-		'description'=>'Tarkistaa, sijaitseeko dokumentti työtilassa joka on määritelty \'path\' -attribuutissa.',
+		'description'=>'Tarkistaa, sijaitseeko dokumentti työtilassa joka on määritelty `path` -attribuutissa.',
 	),
 	'ifWritten'=>array(
 		'defaultvalue'=>'',
 		'description'=>'Tämän tagin sisältö on käytettävissä vian jos kirjoitus dokumenttiin tai objektiin onnisui. kts. we:write -tagi.',
 	),
 	'img'=>array(
-		'description'=>'we:img tagilla voidaan lisätä kuva dokumentin muokkaus-tilassa. Jos mitään attribuutteja ei määritetä, käytetään oletusarvoja. \'showimage\':lla kuva voidaan piilottaa muokkaus-tilassa. \'showinputs\':lla kuvan title- ja alt- attribuutit on pois käytöstä..',
+		'description'=>'we:img tagilla voidaan lisätä kuva dokumentin muokkaus-tilassa. Jos mitään attribuutteja ei määritetä, käytetään oletusarvoja. `showimage`:lla kuva voidaan piilottaa muokkaus-tilassa. `showinputs`:lla kuvan title- ja alt- attribuutit on pois käytöstä..',
 	),
 	'include'=>array(
-		'description'=>'Tällä tagilla voidaan liittää webEdition dokumentti tai HTML-sivu sivupohjaan. \'gethttp\':llä voidaan määrittää halutaanko liitetty tiedosto siirtää HTTP:n avulla vai ei.\'seeMode\':lla määritellään onko dokumentti muokattavissa \'seeModessa\'.',
+		'description'=>'Tällä tagilla voidaan liittää webEdition dokumentti tai HTML-sivu sivupohjaan. `gethttp`:llä voidaan määrittää halutaanko liitetty tiedosto siirtää HTTP:n avulla vai ei.`seeMode`:lla määritellään onko dokumentti muokattavissa `seeModessa`.',
 	),
 	'input'=>array(
 		'description'=>'The we:input tag creates a single-line input box in the edit mode of the document based on this template, if the type = "text" is selected. For all other types, see the manual or help.',
@@ -663,21 +663,21 @@ $l_weTag=array(
 		'description'=>'we:js tagi luo HTML-tagin joka viittaa webEditionin sisäiseen JavaScript-dokumenttiin jonka ID on määritelty listaan. JavaScriptit voi määrittää myös erillisessä tiedostossa..',
 	),
 	'keywords'=>array(
-		'description'=>'we:keywords -tagi luo avainsana -metatagin.  Jos \'Ominaisuus\' avainsana -kenttä on tyhjä, tämän tagin sisällä olevia sanoja käytetään avainsanoina. Muuten käytetään \'Ominaisuus\':ssa määriteltyjä avainsanoja.',
+		'description'=>'we:keywords -tagi luo avainsana -metatagin.  Jos `Ominaisuus` avainsana -kenttä on tyhjä, tämän tagin sisällä olevia sanoja käytetään avainsanoina. Muuten käytetään `Ominaisuus`:ssa määriteltyjä avainsanoja.',
 	),
 	'linklist'=>array(
 		'defaultvalue'=>'&lt;we:link /&gt;&lt;we:postlink&gt;&lt;br /&gt;&lt;/we:postlink&gt;',
 		'description'=>'we:linklist -tagilla luodaan linkkilista. we:prelink -tagin sisältö tulostetaan ennen linkkiä muokkaustilassa..',
 	),
 	'linkToSeeMode'=>array(
-		'description'=>'Tämä tagi luo linkin joka avautuu valittuun dokumenttiin \'seeMode\':ssa.',
+		'description'=>'Tämä tagi luo linkin joka avautuu valittuun dokumenttiin `seeMode`:ssa.',
 	),
 	'link'=>array(
-		'description'=>'we:link -tagi luo yksittäisen linkin jota voidaan muokata \'muokkaa\'-napilla. Jos we:link:iä käytetään we:linklist:n sisällä \'nimi\'-attribuuttia ei tule määritellä we:link-tagiin, muutoin kyllä. \'only\' -attribuuttiin voidaan määritellä attribuutti jonka linkki palauttaa, esim. \'only="content"\'.',
+		'description'=>'we:link -tagi luo yksittäisen linkin jota voidaan muokata `muokkaa`-napilla. Jos we:link:iä käytetään we:linklist:n sisällä `nimi`-attribuuttia ei tule määritellä we:link-tagiin, muutoin kyllä. `only` -attribuuttiin voidaan määritellä attribuutti jonka linkki palauttaa, esim. `only="content"`.',
 	),
 	'listdir'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:listdir -tagi luo listan joka näyttää kaikki dokumentit jotka ovat samassa kansiossa. \'field\' -attribuutilla voidaan määritellä minkä kentän arvo näytetään. Jos attribuutti on tyhjä tai ei ole olemassa, tiedoston nimi näytetään. Minkä kentän halutaan näyttävän kansioita tulee määrittää attribuuttiin \'dirfield\'. Jos attribuutti on tyhjä tai sitä ei ole olemassa, \'field\'-kentän nimi on verrannollinen käytetyn tiedoston nimeen. Jos käytetään \'id\'-attribuuttia, kansion tiedostot jossa on tämä sama id näytetään.',
+		'description'=>'we:listdir -tagi luo listan joka näyttää kaikki dokumentit jotka ovat samassa kansiossa. `field` -attribuutilla voidaan määritellä minkä kentän arvo näytetään. Jos attribuutti on tyhjä tai ei ole olemassa, tiedoston nimi näytetään. Minkä kentän halutaan näyttävän kansioita tulee määrittää attribuuttiin `dirfield`. Jos attribuutti on tyhjä tai sitä ei ole olemassa, `field`-kentän nimi on verrannollinen käytetyn tiedoston nimeen. Jos käytetään `id`-attribuuttia, kansion tiedostot jossa on tämä sama id näytetään.',
 	),
 	'listviewEnd'=>array(
 		'description'=>'Tämä tagi näyttää viimeisen rivin joka on we:listview:llä.',
@@ -717,11 +717,11 @@ $l_weTag=array(
 		'description'=>'',
 	),
 	'navigationEntries'=>array(
-		'description'=>'we:navigationEntry type=\'folder\' tulostaa luotuja kansio-tyyppisiä navigaatiopisteitä.',
+		'description'=>'we:navigationEntry type=`folder` tulostaa luotuja kansio-tyyppisiä navigaatiopisteitä.',
 	),
 	'navigationEntry'=>array(
 		'defaultvalue'=>'&lt;a href="&lt;we:navigationField name="href" /&gt;"&gt;&lt;we:navigationField name="text" /&gt;&lt;/a&gt;&lt;br /&gt;',
-		'description'=>'we:navigationEntry:llä voidaan valita tulostetaanko \'folder\' vai \'entry\'-tyyppisiä navigaatioita. Lisäattributeilla voidaan tarkentaa haluttua navigaatiotulostusta.',
+		'description'=>'we:navigationEntry:llä voidaan valita tulostetaanko `folder` vai `entry`-tyyppisiä navigaatioita. Lisäattributeilla voidaan tarkentaa haluttua navigaatiotulostusta.',
 	),
 	'navigationField'=>array(
 		'description'=>'&lt;we:navigationField&gt; is used within &lt;we:navigationEntry&gt; to print a value of the current navigation entry.<br/>Choose from <b>either</b> the attribute <i>name</i>, <b>or</b> from the attribute <i>attributes</i>, <b>or</b> from the attribute <i>complete</i>',
@@ -734,16 +734,16 @@ $l_weTag=array(
 	),
 	'newsletterConfirmLink'=>array(
 		'defaultvalue'=>'Todenna uutiskirje',
-		'description'=>'Tätä tagia käytetään \'double opt-in\' vahvistuslinkin luomiseen.',
+		'description'=>'Tätä tagia käytetään `double opt-in` vahvistuslinkin luomiseen.',
 	),
 	'newsletterField'=>array(
 		'description'=>'Displays a field from the recipient dataset within the newsletter.',
 	),
 	'newsletterSalutation'=>array(
-		'description'=>'Tätä tagia käytetään näytettäessä \'puhuttelu\'\'-kenttiä.',
+		'description'=>'Tätä tagia käytetään näytettäessä `puhuttelu``-kenttiä.',
 	),
 	'newsletterUnsubscribeLink'=>array(
-		'description'=>'Luo linkin uutiskirjeen perumiseen. Tagia voidaan käyttää ainoastaan \'sähköposti\' sivupohjissa!',
+		'description'=>'Luo linkin uutiskirjeen perumiseen. Tagia voidaan käyttää ainoastaan `sähköposti` sivupohjissa!',
 	),
 	'next'=>array(
 		'defaultvalue'=>'',
@@ -759,7 +759,7 @@ $l_weTag=array(
 	),
 	'object'=>array(
 		'defaultvalue'=>'',
-		'description'=>'we:object:lla näytetään objekteja. Objektin kenttiä voidaan näyttää we:field -tagilla. Jos \'name\'-attribuutti on määritelty niin objektivalitsin näytetään muokkaustilassa josta voi valita kaikki objektit kaikista luokista. Jos \'classid\' on määritelty objektivalitsimella voi valita kaikki objektit tietystä luokasta. Pelkällä \'id\':llä voidaan valita yksittäinen objekti..',
+		'description'=>'we:object:lla näytetään objekteja. Objektin kenttiä voidaan näyttää we:field -tagilla. Jos `name`-attribuutti on määritelty niin objektivalitsin näytetään muokkaustilassa josta voi valita kaikki objektit kaikista luokista. Jos `classid` on määritelty objektivalitsimella voi valita kaikki objektit tietystä luokasta. Pelkällä `id`:llä voidaan valita yksittäinen objekti..',
 	),
 	'orderitem'=>array(
 		'defaultvalue'=>'',

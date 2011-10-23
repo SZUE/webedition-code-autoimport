@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_modules_shop=array(
 	
 	'add_article'=>array(
 		'empty_articles'=>'No se encontraron artículos.',
@@ -58,7 +58,7 @@ $l_shop=array(
 	'customJ'=>'Status J on:',
 	'datumeingabe'=>'UD debe entrar la fecha en el formato dd.mm.aa.',
 	'datum'=>'Fecha',
-	'delete_alert'=>'Borrar todo el data del usuario para el nombre de usuario \'%s\'.\n Está UD seguro?',
+	'delete_alert'=>'Borrar todo el data del usuario para el nombre de usuario `%s`.\n Está UD seguro?',
 	'delete_last_user'=>'Para la administración se requiere por lo menos de un administrador.\nUd no puede borrar el administrador.',
 	'del_shop'=>'¿Está UD seguro que quiere borrar esta orden?',
 	'docType'=>'Tipo',
@@ -268,12 +268,12 @@ $l_shop=array(
 	'unbezahlt'=>'No pagado',
 	'username'=>'Nombre de usuario',
 	'username_empty'=>'El nombre de usuario no ha sido llenado!',
-	'username_exists'=>'El nombre de usuario \'%s\' ya existe!',
+	'username_exists'=>'El nombre de usuario `%s` ya existe!',
 	'user_data'=>'Data del usuario',
-	'user_deleted'=>'El usuario \'%s\' fue borrado exitosamente!',
+	'user_deleted'=>'El usuario `%s` fue borrado exitosamente!',
 	'user_permissions'=>'Editor',
-	'user_saved_nok'=>'El usuario \'%s\' no puede ser salvado!',
-	'user_saved_ok'=>'El usuario \'%s\' fue salvado exitosamente',
+	'user_saved_nok'=>'El usuario `%s` no puede ser salvado!',
+	'user_saved_ok'=>'El usuario `%s` fue salvado exitosamente',
 	'variant'=>'Variante',
 	
 	'vat'=>array(

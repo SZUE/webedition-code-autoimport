@@ -3,7 +3,7 @@
 $l_tools=array(
 	'backup_tables'=>'varmuuskopio-taulu',
 	'cls_exists'=>'Malliluokka on jo olemassa!',
-	'cls_wrongtext'=>'Malliluokan nimi on virheellinen!\nEi tuettuja merkkejä ovat \' (heittomerkki) tai " (lainaus)!',
+	'cls_wrongtext'=>'Malliluokan nimi on virheellinen!\nEi tuettuja merkkejä ovat ` (heittomerkki) tai " (lainaus)!',
 	'default'=>'Oletus',
 	'delete_alert'=>'Poista Kohde/Ryhmä.\nOletko varma?',
 	'entry'=>'Entry',
@@ -45,8 +45,8 @@ $l_tools=array(
 	'services'=>'Palvelut',
 	'tags'=>'tagit',
 	'tbl_exists'=>'Päätaulu on jo olemassa!',
-	'tbl_wrongtext'=>'Päätaulun nimi on virheellinen\nEi tuettuja merkkejä ovat \' (heittomerkki) tai " (lainaus)!!.',
+	'tbl_wrongtext'=>'Päätaulun nimi on virheellinen\nEi tuettuja merkkejä ovat ` (heittomerkki) tai " (lainaus)!!.',
 	'tools'=>'Työkalut',
-	'we_filename_notValid'=>'Virheellinen nimi! Ei tuettuja merkkejä ovat \' (heittomerkki) tai " (lainaus)!',
-	'wrongtext'=>'Virheellinen nimi!\nEi tuettuja merkkejä ovat \' (heittomerkki) tai " (lainaus)!',
+	'we_filename_notValid'=>'Virheellinen nimi! Ei tuettuja merkkejä ovat ` (heittomerkki) tai " (lainaus)!',
+	'wrongtext'=>'Virheellinen nimi!\nEi tuettuja merkkejä ovat ` (heittomerkki) tai " (lainaus)!',
 );

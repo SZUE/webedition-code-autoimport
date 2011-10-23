@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_voting=array(
+$l_modules_voting=array(
 	'access'=>'Käyttö',
 	'active_till'=>'Päättyy',
 	'AllowFreeText'=>'Allow free text',
@@ -20,11 +20,11 @@ $l_voting=array(
 	'cookie_method_help'=>'Jos et voi käyttää IP-osoite-metodia, valitse tämä. Muista, että osa käyttäjistä on voinut ottaa cookiet pois käytöstä selaimestaan.',
 	'csv_charset'=>'Export charset',
 	'csv_download'=>'Lataa CSV-tiedosto.',
-	'csv_export'=>'Tiedosto \'%s\' on tallennettu.',
+	'csv_export'=>'Tiedosto `%s` on tallennettu.',
 	'data_deleted_info'=>'Tiedot on poistettu!',
 	'delete_alert'=>'Poista valittu äänestys/ryhmä.\n Oletko varma?',
 	'delete_ipdata_question'=>'Oletko varma että haluat poistaa kaikki tallennetut IP-tiedot?',
-	'delete_ipdata_text'=>'Tallennettu IP data varaa %s tavua muistia. Poista tiedot painamalla \Poista\' painiketta. Ota huomioon että kaikki IP-data poistetaan ja täten uudelleenäänestäminen mahdollistuu.',
+	'delete_ipdata_text'=>'Tallennettu IP data varaa %s tavua muistia. Poista tiedot painamalla \Poista` painiketta. Ota huomioon että kaikki IP-data poistetaan ja täten uudelleenäänestäminen mahdollistuu.',
 	'delete_log_question'=>'Haluatko poistaa kaikki äänestyksen logitiedot?',
 	'disabled'=>'Passivoitu',
 	'enabled'=>'Aktivoitu',

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_buttons_modules_shop=array(
 	
 	'btn_payment_val'=>array(
 		'alt'=>'Przełącza na ustawienia realizatora płatności',

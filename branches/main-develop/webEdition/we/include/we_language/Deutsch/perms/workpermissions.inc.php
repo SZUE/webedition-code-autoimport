@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_workpermissions=array(
+$l_perms_workpermissions=array(
 	'BACKUPLOG'=>'Der Benutzer darf ein Backup-Log einsehen',
 	'BROWSE_SERVER'=>'Der Benutzer darf die Browse Server Funktion nutzen',
 	'CAN_COPY_FOLDERS'=>'Der Benutzer darf ganze Verzeichnisse kopieren',
@@ -8,7 +8,7 @@ $l_workpermissions=array(
 	'CAN_SEE_ACCESSIBLE_PARAMETERS'=>'Der Benutzer darf die "Barrierefreien"-Parameter des Link-Dialogs sehen',
 	'CAN_SEE_DOCUMENTS'=>'Der Benutzer darf Dokumente sehen',
 	'CAN_SEE_INFO'=>'Der Benutzer darf den Reiter Informationen (bei Dokumenten, Objekten usw.) sehen',
-	'CAN_SEE_PROPERTIES'=>'Der Benutzer darf den Reiter \'Eigenschaften\' (bei Dokumenten, Objekten usw.) sehen',
+	'CAN_SEE_PROPERTIES'=>'Der Benutzer darf den Reiter `Eigenschaften` (bei Dokumenten, Objekten usw.) sehen',
 	'CAN_SEE_QUICKSTART'=>'Der Benutzer darf das Cockpit sehen',
 	'CAN_SEE_TEMPLATES'=>'Der Benutzer darf Vorlagen sehen',
 	'CAN_SEE_VALIDATION'=>'Der Benutzer darf die Validierungsseite sehen',

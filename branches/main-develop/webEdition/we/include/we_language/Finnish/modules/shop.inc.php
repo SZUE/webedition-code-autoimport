@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_modules_shop=array(
 	
 	'add_article'=>array(
 		'empty_articles'=>'Tuotenimikkeitä ei löytynyt.',
@@ -58,7 +58,7 @@ $l_shop=array(
 	'customJ'=>'Status J on:',
 	'datumeingabe'=>'Päivämäärä täytyy syöttää muodossa kk/pp/vv.',
 	'datum'=>'Päivämäärä',
-	'delete_alert'=>'Poistetaan kaikki käyttäjätiedot käyttältä \'%s\'.\n Oletko varma?',
+	'delete_alert'=>'Poistetaan kaikki käyttäjätiedot käyttältä `%s`.\n Oletko varma?',
 	'delete_last_user'=>'Ainakin yksi järjestelmänvalvoja tarvitaan hallintaan.\nEt voi poistaa järjestelmänvalvojaa.',
 	'del_shop'=>'Oletko varma että haluat poistaa tilauksen?',
 	'docType'=>'Tyyppi',
@@ -268,12 +268,12 @@ $l_shop=array(
 	'unbezahlt'=>'Ei maksettu',
 	'username'=>'Käyttäjänimi',
 	'username_empty'=>'Käyttäjän nimeä ei ole syötetty!',
-	'username_exists'=>'Käyttäjänimi \'%s\' on jo olemassa!',
+	'username_exists'=>'Käyttäjänimi `%s` on jo olemassa!',
 	'user_data'=>'Käyttäjän tiedot',
-	'user_deleted'=>'Käyttäjä \'%s\' on poistettu.',
+	'user_deleted'=>'Käyttäjä `%s` on poistettu.',
 	'user_permissions'=>'Editori',
-	'user_saved_nok'=>'Käyttäjää \'%s\' ei voitu tallentaa!',
-	'user_saved_ok'=>'Käyttäjä \'%s\' on tallennettu.',
+	'user_saved_nok'=>'Käyttäjää `%s` ei voitu tallentaa!',
+	'user_saved_ok'=>'Käyttäjä `%s` on tallennettu.',
 	'variant'=>'Muunnelma',
 	
 	'vat'=>array(

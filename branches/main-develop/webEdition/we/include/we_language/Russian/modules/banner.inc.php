@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Активен',
 	'all'=>'Все',
 	'bannercode'=>'Создать код баннера',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Типы документов',
 	'double_name'=>'Имя баннера уже существует!',
 	'error_ac_field'=>'ERROR: Invalid entries in marked fields!',
-	'error_clickscript_empty'=>'Заполните, пожалуйста, поле \'Click Script\'!',
-	'error_getscript_empty'=>'Заполните, пожалуйста, поле \'Get Script\'!',
-	'error_height_empty'=>'Заполните, пожалуйста, поле \'Высота\'!',
-	'error_page_empty'=>'Заполните, пожалуйста, поле \'URL страницы\'!',
-	'error_tagname_empty'=>'Заполните, пожалуйста, поле \'Имя баннера\'!',
-	'error_width_empty'=>'Заполните, пожалуйста, поле \'Ширина\'!',
+	'error_clickscript_empty'=>'Заполните, пожалуйста, поле `Click Script`!',
+	'error_getscript_empty'=>'Заполните, пожалуйста, поле `Get Script`!',
+	'error_height_empty'=>'Заполните, пожалуйста, поле `Высота`!',
+	'error_page_empty'=>'Заполните, пожалуйста, поле `URL страницы`!',
+	'error_tagname_empty'=>'Заполните, пожалуйста, поле `Имя баннера`!',
+	'error_width_empty'=>'Заполните, пожалуйста, поле `Ширина`!',
 	'ext_url'=>'Внешний URL',
 	'frequent'=>'часто',
 	'from'=>'с',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Частота показа',
 	'we_filename_notValid'=>'Имя группы недействительно!',
 	'width'=>'Ширина',
-	'wrongtext'=>'Имя недействительно! Недопустимые символы: /  \  % \' "',
+	'wrongtext'=>'Имя недействительно! Недопустимые символы: /  \  % ` "',
 );

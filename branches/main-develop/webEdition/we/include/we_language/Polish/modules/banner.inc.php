@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_banner=array(
+$l_modules_banner=array(
 	'active'=>'Aktywny',
 	'all'=>'Wszystkie',
 	'bannercode'=>'Generuję kod banera',
@@ -26,12 +26,12 @@ $l_banner=array(
 	'doctypes'=>'Typy dokumentów',
 	'double_name'=>'Istnieje już baner o takiej nazwie!',
 	'error_ac_field'=>'ERROR: Invalid entries in marked fields!',
-	'error_clickscript_empty'=>'Wypełnij pole \'Click Script\'!',
-	'error_getscript_empty'=>'Wypełnij pole \'Get Script\'!',
-	'error_height_empty'=>'Wypełnij pole \'Wysokość\'!',
-	'error_page_empty'=>'Wypełnij pole \'URL strony\'!',
-	'error_tagname_empty'=>'Wypełnij pole \'Nazwa banera\'!',
-	'error_width_empty'=>'Wypełnij pole \'Szerokość\'!',
+	'error_clickscript_empty'=>'Wypełnij pole `Click Script`!',
+	'error_getscript_empty'=>'Wypełnij pole `Get Script`!',
+	'error_height_empty'=>'Wypełnij pole `Wysokość`!',
+	'error_page_empty'=>'Wypełnij pole `URL strony`!',
+	'error_tagname_empty'=>'Wypełnij pole `Nazwa banera`!',
+	'error_width_empty'=>'Wypełnij pole `Szerokość`!',
 	'ext_url'=>'Zewnętrzny URL',
 	'frequent'=>'często',
 	'from'=>'Od',
@@ -85,5 +85,5 @@ $l_banner=array(
 	'weight'=>'Liczebnik/waga',
 	'we_filename_notValid'=>'Nazwa grupy jest nieważna!',
 	'width'=>'Szerokość',
-	'wrongtext'=>'Podana nazwa jest nieprawidłowa! W nazwie nie mogą być stosowane następujące znaki: /  \\  % \' "',
+	'wrongtext'=>'Podana nazwa jest nieprawidłowa! W nazwie nie mogą być stosowane następujące znaki: /  \\  % ` "',
 );

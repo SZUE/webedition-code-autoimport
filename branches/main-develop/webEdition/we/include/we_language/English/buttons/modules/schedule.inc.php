@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_schedule=array(
+$l_buttons_modules_schedule=array(
 	
 	'schedule_button'=>array(
 		'alt'=>'Timebased actions',

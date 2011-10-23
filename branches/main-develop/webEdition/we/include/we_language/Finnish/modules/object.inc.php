@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'Kaikki kentät',
 	'attributes'=>'Ominaisuudet',
 	'behaviour'=>'Näytä',
@@ -46,9 +46,9 @@ $l_object=array(
 	'no_root_ws_select'=>'Juurihakemistoa ei voida valita!',
 	'no_workspace_defined'=>'Objektille ei ole määritetty työtilaa. Voit määrittää erityistyötilan tämän luokan objekteille.',
 	'objectFile_field'=>'Objekti',
-	'objectFile_response_publish_ok'=>'Objekti \'%s\' on julkaistu!',
-	'objectFile_response_save_ok'=>'Objekti \'%s\' on tallennettu!',
-	'objectFile_response_unpublish_ok'=>'Objekti \'%s\' on poistettu julkaisusta!',
+	'objectFile_response_publish_ok'=>'Objekti `%s` on julkaistu!',
+	'objectFile_response_save_ok'=>'Objekti `%s` on tallennettu!',
+	'objectFile_response_unpublish_ok'=>'Objekti `%s` on poistettu julkaisusta!',
 	'objectid'=>'Object ID',
 	'objectname'=>'Objektin nimi',
 	'objectpath'=>'Objektin polku',

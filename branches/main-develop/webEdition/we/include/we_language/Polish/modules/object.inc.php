@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_object=array(
+$l_modules_object=array(
 	'allFields'=>'wszystkie pola',
 	'attributes'=>'Atrybut',
 	'behaviour'=>'Wyďż˝wietl',
@@ -46,9 +46,9 @@ $l_object=array(
 	'no_root_ws_select'=>'Nie moďż˝na wybraďż˝ katalogu Root jako obszaru roboczego!',
 	'no_workspace_defined'=>'Temu obiektowi nie przyporzďż˝dkowano jeszcze obszaru roboczego. Jeďż˝eli chcesz przyporzďż˝dkowaďż˝ obiektowi specjalne obszary robocze, musisz wybraďż˝ je w klasie obiektu.',
 	'objectFile_field'=>'Obiekt',
-	'objectFile_response_publish_ok'=>'Opublikowano obiekt \'%s\' !',
-	'objectFile_response_save_ok'=>'Zapamiďż˝tano obiekt \'%s\' !',
-	'objectFile_response_unpublish_ok'=>'Wycofano obiekt \'%s\' !',
+	'objectFile_response_publish_ok'=>'Opublikowano obiekt `%s` !',
+	'objectFile_response_save_ok'=>'Zapamiďż˝tano obiekt `%s` !',
+	'objectFile_response_unpublish_ok'=>'Wycofano obiekt `%s` !',
 	'objectid'=>'Object ID',
 	'objectname'=>'Nazwa obiektu',
 	'objectpath'=>'ďż˝cieďż˝ka obiektu',

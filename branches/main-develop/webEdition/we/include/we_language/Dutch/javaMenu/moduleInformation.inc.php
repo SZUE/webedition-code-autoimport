@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_moduleInformation=array(
+$l_javaMenu_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Sorry, maar u heeft de webEdition Banner/Statistieken Module nog niet geinstalleerd. U vindt de module en meer informatie onder: %s',
@@ -13,7 +13,7 @@ $l_moduleInformation=array(
 		'text_short'=>'Klant',
 	),
 	'editor'=>array(
-		'not_installed'=>'Indien u de Editor PlugIn aangeschaft heeft, kunt u deze activeren in het hoofd menu in het <a href="javascript:opener.top.we_cmd(\'openPreferences\');">Opties => Voorkeuren</a> menu. De installatie start automatisch bij het openen van de Sjablonen =>Wijzig weergave naar &quot;edit&quot;.<br>Voor meer informatie over de Editor PlugIn, zie: %s',
+		'not_installed'=>'Indien u de Editor PlugIn aangeschaft heeft, kunt u deze activeren in het hoofd menu in het <a href="javascript:opener.top.we_cmd(`openPreferences`);">Opties => Voorkeuren</a> menu. De installatie start automatisch bij het openen van de Sjablonen =>Wijzig weergave naar &quot;edit&quot;.<br>Voor meer informatie over de Editor PlugIn, zie: %s',
 		'text'=>'Editor PlugIn',
 		'text_short'=>'Editor PlugIn',
 	),

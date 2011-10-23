@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_buttons_modules_shop=array(
 	
 	'btn_payment_val'=>array(
 		'alt'=>'Changer au préférence du fournisseur de paiement',
@@ -18,13 +18,13 @@ $l_shop=array(
 		'alt'=>'Changer au préférence de boutique',
 	),
 	'btn_shop_sum'=>array(
-		'alt'=>'Changer à l\'aperçu d\'article/volume d\'affaires',
+		'alt'=>'Changer à l`aperçu d`article/volume d`affaires',
 	),
 	'btn_shop_trash'=>array(
 		'alt'=>'Supprimer une commande existante',
 	),
 	'btn_shop_variants'=>array(
-		'alt'=>'Changer au sommaire d\'article',
+		'alt'=>'Changer au sommaire d`article',
 	),
 	'payment_val'=>array(
 		'alt'=>'ouvre les préférence du fournisseur de paiement...',
@@ -42,7 +42,7 @@ $l_shop=array(
 		'width'=>'100',
 	),
 	'quick_rev'=>array(
-		'alt'=>'ouvre l\'article et la somme de rendement...',
+		'alt'=>'ouvre l`article et la somme de rendement...',
 		'value'=>'Article / Revenue',
 		'width'=>'150',
 	),

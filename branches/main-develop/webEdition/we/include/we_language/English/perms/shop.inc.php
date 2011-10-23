@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_perms_shop=array(
 	'CAN_EDIT_VARIANTS'=>'The user is allowed to edit article variants',
 	'DELETE_SHOP_ARTICLE'=>'The user is allowed to delete items.',
 	'DELETE_SHOP_ORDER'=>'The user is allowed to delete orders.',

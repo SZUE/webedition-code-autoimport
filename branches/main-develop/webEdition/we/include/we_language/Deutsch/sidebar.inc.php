@@ -5,7 +5,7 @@ $l_sidebar=array(
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Einstellungen Sidebar',
-			'link'=>'javascript:top.we_cmd(\'openPreferences\');',
+			'link'=>'javascript:top.we_cmd(`openPreferences`);',
 			'text'=>'Einstellungen zur Sidebar, wie individuelle Startdokumente, Breite oder Deaktivierung der Sidebar, finden Sie unter Extras > Einstellungen > Allgemein... auf dem Karteireiter "Oberfläche".',
 	),),
 	'confirm_to_close_sidebar'=>'Möchten Sie die Sidebar wirklich schließen?',
@@ -24,7 +24,7 @@ $l_sidebar=array(
 		'2'=>array(
 			'headline'=>'Weitere Hilfe-Ressourcen',
 			'icon'=>'help.gif',
-			'link'=>'javascript:top.we_cmd(\'help\');',
+			'link'=>'javascript:top.we_cmd(`help`);',
 			'text'=>'Übersicht weiterer Anleitungen und Referenzen.',
 		),
 		'3'=>array(

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_global=array(
+$l_buttons_global=array(
 	
 	'addCursorPosition'=>array(
 		'alt'=>'Insert selected text at cursor position',
@@ -605,7 +605,7 @@ $l_global=array(
 		'width'=>'100',
 	),
 	'unpublished_pages'=>array(
-		'alt'=>'Overzicht van ongepubliceerde pagina\'s',
+		'alt'=>'Overzicht van ongepubliceerde pagina`s',
 		'value'=>'Unpublished documents',
 		'width'=>'200',
 	),

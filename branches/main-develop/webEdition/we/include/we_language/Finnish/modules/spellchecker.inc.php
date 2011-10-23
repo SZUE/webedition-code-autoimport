@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_spellchecker=array(
+$l_modules_spellchecker=array(
 	'active'=>'Aktiivinen',
 	'ask_dict_del'=>'Haluatko poistaa valitun sanaston?',
 	'building'=>'Rakentaa...',

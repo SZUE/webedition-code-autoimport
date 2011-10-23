@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_controlpermissions=array(
+$l_perms_controlpermissions=array(
 	'DELETE_GROUP'=>'Käyttäjä voi poistaa ryhmiä.',
 	'DELETE_USER'=>'Käyttäjä voi poistaa muita käyttäjiä.',
 	'EDIT_PASSWD'=>'Käyttäjä voi muuttaa salasanoja.',

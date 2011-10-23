@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_glossary=array(
+$l_modules_glossary=array(
 	'abbreviation'=>'Abbreviation',
 	'abbreviation_description'=>'An abbreviation (from Latin brevis "short") is a shorter form of a word. More particularly, an abbreviation is a letter or group of letters, taken from a word or words, and employed to represent them for the sake of brevity. For example, the word "abbreviation" can be abbreviated as "abbr." or "abbrev."',
 	'accesskey'=>'Accesskey',
@@ -45,7 +45,7 @@ $l_glossary=array(
 	'input'=>'Input',
 	'item_deleted'=>'The entry was succesfully deleted.',
 	'item_is_active'=>'Entry is activated',
-	'item_saved'=>'The entry \'%s\' has been successfully saved!',
+	'item_saved'=>'The entry `%s` has been successfully saved!',
 	'keyboard'=>'Keyboard',
 	'languages'=>'Languages',
 	'language'=>'Language',
@@ -114,8 +114,8 @@ $l_glossary=array(
 	'publish_selected_items'=>'Activate Replacement of selected entries.',
 	'publish_when_saved'=>'Activate after saving',
 	'relation'=>'Relation',
-	'replace_activated'=>'The substitution of \'%s\' has been successfully activated!',
-	'replace_deactivated'=>'The substitution of \'%s\' has been successfully deactivated!',
+	'replace_activated'=>'The substitution of `%s` has been successfully activated!',
+	'replace_deactivated'=>'The substitution of `%s` has been successfully deactivated!',
 	'save_changed_glossary'=>'This entry has been changed.\nDo you want to save your changes?',
 	'save_ok'=>'Entry saved.',
 	'search'=>'Search',

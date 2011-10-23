@@ -9,5 +9,5 @@ $l_notPublished=array(
 	'path'=>'Pad',
 	'published'=>'Laatst gepubliceerd',
 	'title_objects'=>'Gedepubliceerde objecten',
-	'title_pages'=>'Gedepubliceerde pagina\'s',
+	'title_pages'=>'Gedepubliceerde pagina`s',
 );

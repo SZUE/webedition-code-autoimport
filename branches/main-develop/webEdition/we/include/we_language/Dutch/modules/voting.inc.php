@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_voting=array(
+$l_modules_voting=array(
 	'access'=>'Toegang',
 	'active_till'=>'Actief tot',
 	'AllowFreeText'=>'Allow free text',
@@ -20,11 +20,11 @@ $l_voting=array(
 	'cookie_method_help'=>'Als u niet de IP methode kunt gebruiken, selecteer deze. Onthou dat sommige gebruikers cookies uitgeschakeld hebben in hun browser.',
 	'csv_charset'=>'Export charset',
 	'csv_download'=>'Download CSV bestand',
-	'csv_export'=>'Bestand \'%s\' is bewaard.',
+	'csv_export'=>'Bestand `%s` is bewaard.',
 	'data_deleted_info'=>'De gegevens zijn verwijderd!',
 	'delete_alert'=>'Verwijder de huidige peiling/groep.\n Weet u het zeker?',
 	'delete_ipdata_question'=>'U wilt alle opgeslagen IP gegevens verwijderen. Weet u dit zeker?',
-	'delete_ipdata_text'=>'De opgeslagen gegevens beslaan %s Bytes van het geheugen. Verwijder deze d.m.v. de knop \Verwijder\'. Neem in overweging dat alle opgeslagen IP gegevens verwijderd worden waardoor de stemming herhaald kan worden.',
+	'delete_ipdata_text'=>'De opgeslagen gegevens beslaan %s Bytes van het geheugen. Verwijder deze d.m.v. de knop \Verwijder`. Neem in overweging dat alle opgeslagen IP gegevens verwijderd worden waardoor de stemming herhaald kan worden.',
 	'delete_log_question'=>'U wilt alle Stemmings Log Invoeren verwijderen.  Weet u dit zeker?',
 	'disabled'=>'Gedeactiveerd',
 	'enabled'=>'Geactivateerd',

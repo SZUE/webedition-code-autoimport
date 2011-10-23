@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_moduleInformation=array(
+$l_javaMenu_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Вы не установили модуль «Баннер/статистика» системы webEdition. Модуль и более подробную информацию о нем Вы найдете здесь: %s',
@@ -13,7 +13,7 @@ $l_moduleInformation=array(
 		'text_short'=>'Клиент',
 	),
 	'editor'=>array(
-		'not_installed'=>'Если Вы приобрели модуль «Плагин-редактор», Вы можете активировать его в главном меню в <a href="javascript:opener.top.we_cmd(\'openPreferences\');">Опции => Персональные настройки</a>. Установка произойдет автоматически при переходе в &quot;редактировать&quot; в режиме «Шаблоны».<br>Подробнее о модуле «Плагин-редактор» здесь: %s.',
+		'not_installed'=>'Если Вы приобрели модуль «Плагин-редактор», Вы можете активировать его в главном меню в <a href="javascript:opener.top.we_cmd(`openPreferences`);">Опции => Персональные настройки</a>. Установка произойдет автоматически при переходе в &quot;редактировать&quot; в режиме «Шаблоны».<br>Подробнее о модуле «Плагин-редактор» здесь: %s.',
 		'text'=>'Плагин-редактор',
 		'text_short'=>'Плагин-редактор',
 	),

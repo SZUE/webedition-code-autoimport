@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_glossary=array(
+$l_modules_glossary=array(
 	'abbreviation'=>'Lyhenne',
 	'abbreviation_description'=>'Lyhenne on tilan tai vaivan säästämiseksi käytetty lyhyempi versio jostakin sanasta tai usean sanan kokonaisuudesta. Sana voidaan lyhentää lisäämällä loppuun piste. Tämä tehdään joko katkaisemalla sana konsonantin ja vokaalin välistä, tai käyttämällä koostelyhennettä, joka on ennalta sovittu, ja sen käyttäjien yleisesti tietämä. Yleisin lyhennetyyppi on ensimmäinen tavu plus seuraava kirjain (esim., joht.).',
 	'accesskey'=>'Pikanäppäin',
@@ -45,7 +45,7 @@ $l_glossary=array(
 	'input'=>'Syöte',
 	'item_deleted'=>'Merkintä onnistuneesti poistettu.',
 	'item_is_active'=>'Merkintä aktivoitu',
-	'item_saved'=>'Merkintä \'%s\' tallennettu!',
+	'item_saved'=>'Merkintä `%s` tallennettu!',
 	'keyboard'=>'Näppäimistö',
 	'languages'=>'Kielet',
 	'language'=>'Kieli',
@@ -114,8 +114,8 @@ $l_glossary=array(
 	'publish_selected_items'=>'Aktivoi valittujen korvaaminen.',
 	'publish_when_saved'=>'Aktivoi tallennuksen jälkeen',
 	'relation'=>'Relaatio',
-	'replace_activated'=>'Sanan \'%s\' korvaus on onnistuneesti aktivoitu!',
-	'replace_deactivated'=>'Sanan \'%s\' korvaus on onnistuneesti poistettu käytöstä!',
+	'replace_activated'=>'Sanan `%s` korvaus on onnistuneesti aktivoitu!',
+	'replace_deactivated'=>'Sanan `%s` korvaus on onnistuneesti poistettu käytöstä!',
 	'save_changed_glossary'=>'Merkintä on muokattu.\nHaluatko tallentaa muutokset?',
 	'save_ok'=>'Merkintä tallennettu.',
 	'search'=>'Etsi',

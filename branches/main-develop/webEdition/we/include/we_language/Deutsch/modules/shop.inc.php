@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_modules_shop=array(
 	
 	'add_article'=>array(
 		'empty_articles'=>'Es konnten keine Artikel gefunden werden.',
@@ -58,7 +58,7 @@ $l_shop=array(
 	'customJ'=>'Status J am:',
 	'datumeingabe'=>'Sie muessen das Datum im format dd.mm.yy angeben.',
 	'datum'=>'Datum',
-	'delete_alert'=>'Alle Benutzerdaten von Benutzer \'%s\' werden gelöscht.\n Sind Sie sicher?',
+	'delete_alert'=>'Alle Benutzerdaten von Benutzer `%s` werden gelöscht.\n Sind Sie sicher?',
 	'delete_last_user'=>'Zur Verwaltung wird mindestens ein Administrator benötigt.\nSie können den  Administrator nicht löschen.',
 	'del_shop'=>'Sind Sie sicher, dass Sie diese Bestellung löschen wollen?',
 	'docType'=>'Typ',
@@ -268,12 +268,12 @@ $l_shop=array(
 	'unbezahlt'=>'Davon unbezahlt',
 	'username'=>'Benutzername',
 	'username_empty'=>'Der Benutzername ist nicht ausgefüllt!',
-	'username_exists'=>'Der Benutzername \'%s\' existiert schon!',
+	'username_exists'=>'Der Benutzername `%s` existiert schon!',
 	'user_data'=>'Benutzerdaten',
-	'user_deleted'=>'Der Benutzer \'%s\' wurde erfolgreich gelöscht!',
+	'user_deleted'=>'Der Benutzer `%s` wurde erfolgreich gelöscht!',
 	'user_permissions'=>'Redakteur',
-	'user_saved_nok'=>'Der Benutzer \'%s\' kann nicht gespeichert werden!',
-	'user_saved_ok'=>'Der Benutzer \'%s\' wurde erfolgreich gespeichert',
+	'user_saved_nok'=>'Der Benutzer `%s` kann nicht gespeichert werden!',
+	'user_saved_ok'=>'Der Benutzer `%s` wurde erfolgreich gespeichert',
 	'variant'=>'Variante',
 	
 	'vat'=>array(

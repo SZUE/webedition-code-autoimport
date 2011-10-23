@@ -5,7 +5,7 @@ $l_sidebar=array(
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Preferences Sidebar',
-			'link'=>'javascript:top.we_cmd(\'openPreferences\');',
+			'link'=>'javascript:top.we_cmd(`openPreferences`);',
 			'text'=>'You find the settings for the Sidebar, like individual start documents, width or deactivation of the sidebar under extras> preferences > common ... on the "User interface" tab',
 	),),
 	'confirm_to_close_sidebar'=>'Would you really like to close the sidebar?',
@@ -24,7 +24,7 @@ $l_sidebar=array(
 		'2'=>array(
 			'headline'=>'Other help resources',
 			'icon'=>'help.gif',
-			'link'=>'javascript:top.we_cmd(\'help\');',
+			'link'=>'javascript:top.we_cmd(`help`);',
 			'text'=>'Overview of farther instructions and references',
 		),
 		'3'=>array(
@@ -36,7 +36,7 @@ $l_sidebar=array(
 		'4'=>array(
 			'headline'=>'First-Steps-Wizard',
 			'icon'=>'firststepswizard.gif',
-			'link'=>'javascript:top.we_cmd(\'openFirstStepsWizardMasterTemplate\');',
+			'link'=>'javascript:top.we_cmd(`openFirstStepsWizardMasterTemplate`);',
 			'text'=>'Use this wizard to install a ready-to-use base layouts. With "webEdition Online" you can install templates for special purposes at any time.',
 		),
 		'5'=>array(

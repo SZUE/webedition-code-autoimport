@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_workflow=array(
+$l_perms_workflow=array(
 	'DELETE_WORKFLOW'=>'Der Benutzer darf Workflows löschen',
 	'EDIT_WORKFLOW'=>'Der Benutzer darf Workflows bearbeiten',
 	'EMPTY_LOG'=>'Der Benutzer darf das Workflow-Logfile leeren',

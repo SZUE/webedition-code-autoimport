@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_importExportpermissions=array(
+$l_perms_importExportpermissions=array(
 	'CSV_EXPORT'=>'The user is allowed to export CSV files.',
 	'CSV_IMPORT'=>'The user is allowed to import CSV files.',
 	'DELETE_EXPORT'=>'The user is allowed to delete webEdition XML exports',

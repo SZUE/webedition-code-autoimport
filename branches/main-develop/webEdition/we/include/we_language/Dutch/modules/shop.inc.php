@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_shop=array(
+$l_modules_shop=array(
 	
 	'add_article'=>array(
 		'empty_articles'=>'Geen artikelen gevonden.',
@@ -58,7 +58,7 @@ $l_shop=array(
 	'customJ'=>'Status J on:',
 	'datumeingabe'=>'U moet de datum invoeren volgens mm/dd/jj.',
 	'datum'=>'Datum',
-	'delete_alert'=>'Verwijder alle gebruikers details voor gebruikersnaam \'%s\'.\n Weet u het zeker?',
+	'delete_alert'=>'Verwijder alle gebruikers details voor gebruikersnaam `%s`.\n Weet u het zeker?',
 	'delete_last_user'=>'Er is minimaal één administrator nodig voor handeling.\nU kunt de administrator niet verwijderen.',
 	'del_shop'=>'Weet u zeker dat u deze bestelling wilt verwijderen?',
 	'docType'=>'Type',
@@ -268,12 +268,12 @@ $l_shop=array(
 	'unbezahlt'=>'Niet betaald',
 	'username'=>'Gebruikersnaam',
 	'username_empty'=>'Gebruikersnaam is niet ingevuld!',
-	'username_exists'=>'Gebruikersnaam \'%s\' bestaat al!',
+	'username_exists'=>'Gebruikersnaam `%s` bestaat al!',
 	'user_data'=>'Details gebruiker',
-	'user_deleted'=>'Gebruiker \'%s\' is succesvol verwijderd.',
+	'user_deleted'=>'Gebruiker `%s` is succesvol verwijderd.',
 	'user_permissions'=>'Editor',
-	'user_saved_nok'=>'Gebruiker \'%s\' kan niet bewaard worden!',
-	'user_saved_ok'=>'Gebruiker \'%s\' is succesvol bewaard.',
+	'user_saved_nok'=>'Gebruiker `%s` kan niet bewaard worden!',
+	'user_saved_ok'=>'Gebruiker `%s` is succesvol bewaard.',
 	'variant'=>'Variant',
 	
 	'vat'=>array(

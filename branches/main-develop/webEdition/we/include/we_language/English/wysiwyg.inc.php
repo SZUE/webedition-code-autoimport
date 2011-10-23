@@ -112,7 +112,7 @@ $l_wysiwyg=array(
 	'link_lang'=>'Link',
 	'merge_cells2'=>'Merge cells',
 	'merge_cells'=>'Merge cells',
-	'mozilla_paste'=>'Because of security reasons the \'copy\', \'cut\' and \'paste\' functions are not working in the Mozilla browser. Please use the keyboard commands CTRL-C, CTRL-X or CTRL-V  on PCs or &#x2318;-C, &#x2318;-X or &#x2318;-V on Macintosh Computers!',
+	'mozilla_paste'=>'Because of security reasons the `copy`, `cut` and `paste` functions are not working in the Mozilla browser. Please use the keyboard commands CTRL-C, CTRL-X or CTRL-V  on PCs or &#x2318;-C, &#x2318;-X or &#x2318;-V on Macintosh Computers!',
 	'none'=>'None',
 	'normal'=>'Normal (without)',
 	'noshade'=>'No shading',
@@ -158,5 +158,5 @@ $l_wysiwyg=array(
 	'visible_borders'=>'Show borders',
 	'vspace'=>'Vertical space',
 	'width'=>'Width',
-	'window_title'=>'Edit field \'%s\'',
+	'window_title'=>'Edit field `%s`',
 );

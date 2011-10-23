@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_controlpermissions=array(
+$l_perms_controlpermissions=array(
 	'DELETE_GROUP'=>'The user is allowed to delete groups.',
 	'DELETE_USER'=>'The user is allowed to delete other users.',
 	'EDIT_PASSWD'=>'The user is allowed to change passwords.',

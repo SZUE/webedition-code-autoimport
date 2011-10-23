@@ -153,5 +153,5 @@ $l_navigation=array(
 	'we_filename_notValid'=>'The username is not correct!\nAlphanumeric characters, upper case and lower case, just as low line, hyphen, dot and blank character{blank; space} (a-z, A-Z, 0-9, _,-.,) are valid',
 	'workspace'=>'Workspace',
 	'wrongtext'=>'The name is not valid!\nValid characters are are letters from a to z (upper case or lower case), figures, low line (_), deficit (-), dot (.), blank characters ( ) and at symbols (@).',
-	'wrongTitleField'=>'The navigation folder could not be saved, because the given title field doesn\'t  exist. Please correct the title field on the "content" tab and save again.',
+	'wrongTitleField'=>'The navigation folder could not be saved, because the given title field doesn`t  exist. Please correct the title field on the "content" tab and save again.',
 );
