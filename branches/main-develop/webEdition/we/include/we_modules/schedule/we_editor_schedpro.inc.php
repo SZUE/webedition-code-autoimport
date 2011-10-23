@@ -35,12 +35,12 @@ if(defined("SCHEDULE_TABLE")){
 
 htmlTop();
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php"); 
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print STYLESHEET; ?>
 <script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 	</head>
 	<body  class="weEditorBody" onunload="doUnload()">
-<form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans(); 
+<form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans();
 
 $parts = array();
 
@@ -57,7 +57,7 @@ foreach($we_doc->schedArr as $i=>$sched){
 
 }
 array_push($parts, array(		"headline"=>"",
-								"html"=>htmlAlertAttentionBox(g_l('modules_schedpro',"[descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
+								"html"=>htmlAlertAttentionBox(g_l('modules_schedule',"[descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
 								"space"=>0
 						)
 				);

@@ -35,8 +35,8 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.
 
 //  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!
 //  Sie kommen von showDoc.php
-$id = abs(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '');
-$tmplID = abs(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '');
+$id = intval(isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : 0);
+$tmplID = intval(isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : 0);
 $baseHref = addslashes(isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : '');
 $we_editmode = addslashes(isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : '');
 $createFromTmpFile = addslashes(isset($_REQUEST['we_cmd'][7]) ? $_REQUEST['we_cmd'][7] : '');
@@ -84,7 +84,7 @@ if (isset($_REQUEST['vers_we_obj'])) {
 			// user has NO ACCESS => show errordocument
 			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 			if (($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))) { // use given document instead !
-				header('Location: ' . getServerProtocol(true) . $_SERVER['HTTP_HOST'] . $_errorDocPath);
+				header('Location: ' . getServerUrl() . $_errorDocPath);
 				unset($_errorDocPath);
 				unset($_errorDocId);
 				exit();
