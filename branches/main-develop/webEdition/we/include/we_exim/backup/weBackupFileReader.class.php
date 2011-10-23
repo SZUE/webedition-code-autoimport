@@ -38,7 +38,7 @@ class weBackupFileReader extends weXMLFileReader{
 			$attributes[0] = trim($attributes[0]);
 
 			if($attributes[0]=='name' || $attributes[0]=='table') {
-				$attributes[1] = trim(eregi_replace('["|\']','',$attributes[1]));
+				$attributes[1] = trim(str_replace(array('"','\''),'',$attributes[1]));
 
 				// if the table should't be imported
 				if(weBackupUtil::getRealTableName($attributes[1])===false){

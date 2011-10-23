@@ -92,7 +92,7 @@ class we_wysiwyg{
 
 		$this->width = $width;
 		$this->height = $height;
-		$this->ref = eregi_replace('[^0-9a-zA-Z_]','',$this->name);
+		$this->ref = preg_replace('%[^0-9a-zA-Z_]%','',$this->name);
 		$this->hiddenValue = $value;
 
 		if($inlineedit){
@@ -103,7 +103,7 @@ class we_wysiwyg{
 				$value = str_replace('script','##scr#ipt##',$value);
 				$value = str_replace('Script','##Scr#ipt##',$value);
 				$value = str_replace('SCRIPT','##SCR#IPT##',$value);
-				$value = eregi_replace('<\?xml[^>]*>','',$value);
+				$value = preg_replace('%<\?xml[^>]*>%i','',$value);
 				$value = str_replace('<?','||##?##||',$value);
 				$value = str_replace('?>','##||?||##',$value);
 			}

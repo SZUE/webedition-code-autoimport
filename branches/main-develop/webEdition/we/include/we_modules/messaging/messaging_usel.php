@@ -92,7 +92,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	}
 
 	$rcpts_str = '';
-	$rcpts = split(',', isset($_REQUEST["rs"]) ? $_REQUEST["rs"] : "");
+	$rcpts = explode(',', isset($_REQUEST["rs"]) ? $_REQUEST["rs"] : "");
 	foreach ($rcpts as $rcpt) {
 	    if (($uid = $messaging->get_userid($rcpt)) != -1) {
 		$rcpts_str .= 'new Array("we_messaging","' . $uid . '","' . $rcpt . '"),';

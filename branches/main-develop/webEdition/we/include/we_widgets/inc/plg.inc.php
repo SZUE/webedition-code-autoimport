@@ -41,5 +41,3 @@ $oTblCont->setCol(
 $aLang = array(
 	g_l('cockpit','[pagelogger]') . (($pLogUrl != "") ? " - " . $pLogUrl : ""), ""
 );
-
-?>

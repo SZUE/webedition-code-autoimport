@@ -312,7 +312,7 @@ class we_format extends we_class {
 		    case 're':
 			$ret .= $this->attribution_line . "\n";
 
-			$lines = split("\n", htmlspecialchars($this->sel_msg['body']['MessageText']));
+			$lines = explode("\n", htmlspecialchars($this->sel_msg['body']['MessageText']));
 
 			$ret .= (!empty($lines) ? htmlspecialchars($this->quoting_prefix) : '') . join("\n" . htmlspecialchars($this->quoting_prefix), $lines) . "\n\n";
 			break;
@@ -322,7 +322,7 @@ class we_format extends we_class {
 			    $ret .= $this->sel_msg['body']['MessageText'];
 			} else {
 			    if ($this->highlight_quoting) {
-				$lines = split("\n", isset($this->sel_msg['body']['MessageText']) ? $this->sel_msg['body']['MessageText'] : "");
+				$lines = explode("\n", isset($this->sel_msg['body']['MessageText']) ? $this->sel_msg['body']['MessageText'] : "");
 				foreach ($lines as $line) {
 				    $l = -1;
 				    $len = strlen($this->quoting_prefix);

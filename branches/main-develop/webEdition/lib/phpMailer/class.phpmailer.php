@@ -29,7 +29,7 @@
  * NOTE: Designed for use with PHP version 5 and up
  * @package PHPMailer
  * @author Andy Prevost
- * @copyright 2004 - 2008 Andy Prevost 
+ * @copyright 2004 - 2008 Andy Prevost
  */
 
 class PHPMailer {
@@ -474,7 +474,7 @@ class PHPMailer {
       $to .= $this->AddrFormat($this->to[$i]);
     }
 
-    $toArr = split(',', $to);
+    $toArr = explode(',', $to);
 
     $params = sprintf("-oi -f %s", $this->Sender);
     if ($this->Sender != '' && strlen(ini_get('safe_mode'))< 1) {
@@ -1721,7 +1721,7 @@ class PHPMailer {
           $directory = dirname($url);
           ($directory == '.')?$directory='':'';
           $cid = 'cid:' . md5($filename);
-          $fileParts = split("\.", $filename);
+          $fileParts = str_split($filename);
           $ext = $fileParts[1];
           $mimeType = $this->_mime_types($ext);
           if ( strlen($basedir) > 1 && substr($basedir,-1) != '/') { $basedir .= '/'; }

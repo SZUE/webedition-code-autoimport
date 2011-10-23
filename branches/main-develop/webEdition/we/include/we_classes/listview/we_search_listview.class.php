@@ -99,7 +99,7 @@ class we_search_listview extends listviewBase {
 				$orderArr1 = makeArrayFromCSV($this->order);
 				foreach($orderArr1 as $o){
 					if(trim($o)){
-						$foo = split(' +',$o);
+						$foo = preg_split('/ +/',$o);
 						$oname = $foo[0];
 						$otype = isset($foo[1]) ? $foo[1] : "";
 						array_push($orderArr,array("oname"=>$oname,"otype"=>$otype));
@@ -153,7 +153,7 @@ class we_search_listview extends listviewBase {
 
 
 
-		$bedingungen = split(" +",$this->search);
+		$bedingungen = preg_split('/ +/',$this->search);
 		$ranking = "0";
 		$worte = array();
 		$spalten=array(INDEX_TABLE . ".".$searchfield);

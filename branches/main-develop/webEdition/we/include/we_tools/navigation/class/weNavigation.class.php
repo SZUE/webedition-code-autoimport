@@ -697,7 +697,7 @@ class weNavigation extends weModelBase {
 		if ($this->IsFolder) {
 
 			$_path = '';
-			eval('$_param = "' . addslashes(eregi_replace("\\$", '$this->', $this->FolderParameter)) . '";');
+			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->FolderParameter)) . '";');
 			if ($this->FolderSelection == 'urlLink') {
 				$_path = $this->FolderUrl;
 			} else {
@@ -741,7 +741,7 @@ class weNavigation extends weModelBase {
 			}
 
 			$_path = '';
-			eval('$_param = "' . addslashes(eregi_replace("\\$", '$this->', $this->Parameter)) . '";');
+			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->Parameter)) . '";');
 
 			if ($this->SelectionType == 'urlLink') {
 				$_path = $this->Url;

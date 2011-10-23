@@ -198,7 +198,7 @@ class we_listview extends listviewBase {
 				}
 				$ws_where = " AND (".implode(" OR ", $cond).")";
 			}
-			$bedingungen = split(" +",$this->search);
+			$bedingungen = preg_split('/ +/',$this->search);
 			$searchfield = $this->casesensitive ? "BText" : "Text";
 
 			$ranking = "0";
@@ -430,7 +430,7 @@ class we_listview extends listviewBase {
 					$match=array();
 					$patterns=array('<>','<=','>=','=','<','>','LIKE','IN');
 					foreach($patterns as $pattern){
-						$match=preg_split("/$pattern/", $exp, -1, PREG_SPLIT_NO_EMPTY);
+						$match=preg_split('/'.$pattern.'/', $exp, -1, PREG_SPLIT_NO_EMPTY);
 						if(count($match)>1){
 							$sqlarr = (($sqlarr!="") ? $sqlarr.' '.strtoupper($oper). ' ' : '').$this->makeFieldCondition($match[0],$pattern,$match[1]);//"(".LINK_TABLE.".Name='".$match[0]."' AND ".CONTENT_TABLE.".Dat ".$pattern." ".$match[1].")";
 							break;

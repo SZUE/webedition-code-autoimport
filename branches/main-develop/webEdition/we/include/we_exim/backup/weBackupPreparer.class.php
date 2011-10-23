@@ -416,9 +416,9 @@
 					$match = array();
 					$encoding = 'ISO-8859-1';
 					$trenner = "[\040|\n|\t|\r]*";
-					$pattern ="(encoding".$trenner."=".$trenner."[\"|\'|\\\\]".$trenner.")([^\'\">\040? \\\]*)";
+					$pattern ="%(encoding".$trenner."=".$trenner."[\"|\'|\\\\]".$trenner.")([^\'\">\040? \\\]*)%";
 
-					if(eregi($pattern,$data,$match)){
+					if(preg_match($pattern,$data,$match)){
 						if(strtoupper($match[2])!='ISO-8859-1'){
 							$encoding = 'UTF-8';
 						}

@@ -74,7 +74,7 @@ abstract class we_class{
 	function we_initSessDat($sessDat){
 	}
 
-	
+
 	/* Constructor */
 	function __construct(){
 		$this->Name = md5(uniqid(rand()));
@@ -321,7 +321,7 @@ abstract class we_class{
 			$values = array();
 		}
 		$ret = '<select id="' . trim($name) . '" class="weSelect defaultfont" name="' . trim($name) . '" size="' . abs($size) . '"' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>' . "\n";
-		$selIndex = split(",", $selectedIndex);
+		$selIndex = explode(",", $selectedIndex);
 		while (list($value, $text) = each($values)) {
 			$ret .= '<option value="' . htmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text) . "", $selIndex) ? " selected=\"selected\"" : "") . '>' . $text . "</option>\n";
 		}
@@ -491,7 +491,7 @@ abstract class we_class{
 			$this->DB_WE->query('DELETE FROM '.LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID=".intval($this->ID));
 			$this->DB_WE->query('DELETE FROM '.LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID=".intval($this->ID));
 		}
-		return $this->DB_WE->query('DELETE FROM '.$this->DB_WE->escape($this->Table).' WHERE ID='.intval($this->ID));	
+		return $this->DB_WE->query('DELETE FROM '.$this->DB_WE->escape($this->Table).' WHERE ID='.intval($this->ID));
 	}
 
 # private ###################
