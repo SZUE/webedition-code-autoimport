@@ -49,7 +49,7 @@ class copyFolderFrag extends taskFragment
 		$newCategories = array();
 		foreach ($_REQUEST as $name => $val) {
 			if (!is_array($val)) {
-				if (eregi("^me(.*)variant0_me(.*)_item", $name)) {
+				if (preg_match('%^me(.*)variant0_me(.*)_item%i', $name)) {
 					$newCategories[] = path_to_id($val, CATEGORY_TABLE);
 				}
 			}

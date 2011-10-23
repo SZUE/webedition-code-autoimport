@@ -174,12 +174,12 @@ class weExport extends weModelBase{
 
 	function filenameNotValid($text){
 		//FIXME: check on utf-8 systems!! this string is not readable!
-			return eregi('[^a-z0-9���\._\@\ \-]',$text);
+			return preg_match('%[^a-z0-9äöü\._\@\ \-]%i',$text);
 	}
 
 	function exportToFilenameValid($filename) {
 
-		return (eregi("p?html?", $filename) || stripos($filename,"inc")!==false || eregi("php3?", $filename));
+		return (preg_match('%p?html?%i', $filename) || stripos($filename,'inc')!==false || preg_match('%php3?%i', $filename));
 	}
 
 	function setDefaults() {

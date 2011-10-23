@@ -810,7 +810,7 @@ class weExportFrames extends weModuleFrames {
 						$_filename = basename(urldecode($_GET["exportfile"]));
 
 						if (file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename)								// Does file exist?
-							&& !eregi("p?html?", $_filename) && stripos($_filename,"inc")===false && !eregi("php3?", $_filename)) {		// Security check
+							&& !preg_match('%p?html?%i', $_filename) && stripos($_filename,"inc")===false && !preg_match('%php3?%i', $_filename)) {		// Security check
 							$_size = filesize($_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$_filename);
 
 							if (we_isHttps()) {																		// Additional headers to make downloads work using IE in HTTPS mode.

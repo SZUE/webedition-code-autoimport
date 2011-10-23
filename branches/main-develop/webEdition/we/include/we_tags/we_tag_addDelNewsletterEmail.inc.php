@@ -198,7 +198,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 										while(!feof($fh)) $file.=fread($fh,filesize($realPath));
 									}
 									fclose($fh);
-									if(eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file)){
+									if(preg_match("%[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]%i",$file) || preg_match('%^'.$f["subscribe_mail"].",[^\r\n]+[\r\n]%i",$file)){
 										$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
 									}
 								} else {
@@ -463,7 +463,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 								while(!feof($fh)) $file.=fread($fh,filesize($path));
 							}
 							fclose($fh);
-							if((eregi("[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file) || eregi("^".$f["subscribe_mail"].",[^\r\n]+[\r\n]",$file))){
+							if((preg_match("%[\r\n]".$f["subscribe_mail"].",[^\r\n]+[\r\n]%i",$file) || preg_match('%^'.$f["subscribe_mail"].",[^\r\n]+[\r\n]%i",$file))){
 								$ok = false; // E-Mail schon vorhanden => Nix tun
 							}
 						}

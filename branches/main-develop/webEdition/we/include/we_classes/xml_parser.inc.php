@@ -185,7 +185,7 @@ class XML_Parser {
 		$this->mainXmlEncoding = $encoding;
 		return $encoding;
 	}
-	
+
 	/**
 	 * This method tries to parse the content of the given string and on success
 	 * stores the information retrieved into an array.
@@ -284,7 +284,7 @@ class XML_Parser {
 		// Add the character data.
 		$this->appendData($this->path, addslashes(($this->mode=='backup' ? $data : trim($data))));
 	}
-	
+
 	/**
 	 * All events not covered by the preceding handlers will be trapped and
 	 * resolved by this handler.
@@ -2569,9 +2569,9 @@ class XML_Parser {
 			$match = array();
 			$encoding = 'ISO-8859-1';
 			$trenner = "[\040|\n|\t|\r]*";
-			$pattern ="(encoding".$trenner."=".$trenner."[\"|\'|\\\\]".$trenner.")([^\'\">\040? \\\]*)";
+			$pattern ="%(encoding".$trenner."=".$trenner."[\"|\'|\\\\]".$trenner.")([^\'\">\040? \\\]*)%i";
 
-			if(eregi($pattern,$data,$match)){
+			if(preg_match($pattern,$data,$match)){
 				if(strtoupper($match[2])!='ISO-8859-1'){
 					$encoding = 'UTF-8';
 				}

@@ -299,7 +299,7 @@ class weVoting extends weModelBase{
 	}
 
 	function filenameNotValid($text){
-			return eregi('[^a-z0-9���\._\@\ \-]',$text);
+			return preg_match('%[^a-z0-9äüöß\._\@\ \-]%i',$text);
 	}
 
 	function getNext(){

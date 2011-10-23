@@ -1264,11 +1264,11 @@ class we_wysiwygToolbarElement{
 	}
 
 	function getHTML(){
-		return "";
+		return '';
 	}
 
 	function hasProp(){
-		return eregi(",".$this->cmd.",",$this->editor->propstring) || ($this->editor->propstring=="");
+		return preg_match('%,'.$this->cmd.',%i',$this->editor->propstring) || ($this->editor->propstring=='');
 	}
 }
 

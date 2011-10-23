@@ -602,11 +602,6 @@ class we_webEditionDocument extends we_textContentDocument {
 						}
 					}
 					$fieldTypes[$name] = we_webEditionDocument::getFieldType($tagname,$tag);
-/*					if (($tagname == "input") && eregi('xml="(on|true|xml)"',$tag) && strstr($tag,'type="text"')) {
-						if(!in_array($name,$xmlInputs)){
-							array_push($xmlInputs,$name);
-						}
-					}*/
 					switch($tagname) {
 						case "block":
 						case "list":

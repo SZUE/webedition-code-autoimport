@@ -22,27 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class weNavigationRuleControl
-{
+class weNavigationRuleControl{
 
 	var $NavigationRule;
 
-	function weNavigationRuleControl()
-	{
+	function weNavigationRuleControl(){
 
 		$this->NavigationRule = new weNavigationRule();
 	}
 
-	function processCommands()
-	{
+	function processCommands(){
 
 		$js = '';
 		$html = '';
 
-		if (isset($_REQUEST['cmd'])) {
+		if(isset($_REQUEST['cmd'])){
 
-			switch ($_REQUEST['cmd']) {
+			switch($_REQUEST['cmd']){
 
 				case "save_navigation_rule" :
 
@@ -55,12 +51,10 @@ class weNavigationRuleControl
 
 					// 1st check if name is allowed
 					//FIXME: is this correct on UTF-8??
-					if (!eregi(
-							'^[������a-z0-9_-]+$',
-							$this->NavigationRule->NavigationName)) {
+					if(!preg_match(
+							'%^[äöüßa-z0-9_-]+$%i', $this->NavigationRule->NavigationName)){
 						$js = we_message_reporting::getShowMessageCall(
-								g_l('navigation','[rules][invalid_name]'),
-								WE_MESSAGE_ERROR);
+								g_l('navigation', '[rules][invalid_name]'), WE_MESSAGE_ERROR);
 						$save = false;
 					}
 
@@ -74,24 +68,22 @@ class weNavigationRuleControl
 							AND ID != ' . abs($this->NavigationRule->ID);
 
 					$db->query($query);
-					if ($db->num_rows()) {
+					if($db->num_rows()){
 						$js = we_message_reporting::getShowMessageCall(
 								sprintf(
-										g_l('navigation','[rules][name_exists]'),
-										$this->NavigationRule->NavigationName),
-								WE_MESSAGE_ERROR);
+									g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), WE_MESSAGE_ERROR);
 						$save = false;
 					}
 
-					if ($save && $this->NavigationRule->save()) {
+					if($save && $this->NavigationRule->save()){
 
 						$js = "
 						doc = top.frames['content'];";
 
-						if ($isNew) {
+						if($isNew){
 							$js .= "
 						doc.weSelect.addOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');";
-						} else {
+						} else{
 							$js .= "
 						doc.weSelect.updateOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');";
 						}
@@ -102,21 +94,19 @@ class weNavigationRuleControl
 						";
 						$js .= we_message_reporting::getShowMessageCall(
 								sprintf(
-										g_l('navigation','[rules][saved_successful]'),
-										$this->NavigationRule->NavigationName),
-								WE_MESSAGE_NOTICE);
+									g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), WE_MESSAGE_NOTICE);
 					}
 					break;
 
 				case "delete_navigation_rule" :
-					if ($this->NavigationRule->delete()) {
+					if($this->NavigationRule->delete()){
 
 						$js = "
 						doc = top.frames['content'];
 						doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
 						doc.weInput.setValue('ID', " . 0 . ");
 						";
-					} else {
+					} else{
 
 					}
 					break;
@@ -127,28 +117,28 @@ class weNavigationRuleControl
 					$this->NavigationRule->initByID($_REQUEST['ID']);
 
 					$FolderIDPath = '';
-					if ($this->NavigationRule->FolderID) {
+					if($this->NavigationRule->FolderID){
 						$FolderIDPath = id_to_path($this->NavigationRule->FolderID, FILE_TABLE);
 					}
 
 					$ClassIDPath = '';
-					if (defined('OBJECT_TABLE') && $this->NavigationRule->ClassID) {
+					if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
 						$ClassIDPath = id_to_path($this->NavigationRule->ClassID, OBJECT_TABLE);
 					}
 
 					$NavigationIDPath = '';
-					if ($this->NavigationRule->NavigationID) {
+					if($this->NavigationRule->NavigationID){
 						$NavigationIDPath = id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE);
 					}
 
 					// workspaces:
-					$_workspaceList = 'optionList.push({"text":"' . g_l('navigation','[no_entry]') . '","value":"0"});';
+					$_workspaceList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
 					$_selectWorkspace = '';
-					if (defined('OBJECT_TABLE') && $this->NavigationRule->ClassID) {
+					if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
 
 						$_workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
 
-						foreach ($_workspaces as $key => $value) {
+						foreach($_workspaces as $key => $value){
 							$_workspaceList .= 'optionList.push({"text":"' . $value . '","value":"' . $key . '"});';
 						}
 						$_selectWorkspace = 'doc.weSelect.selectOption("WorkspaceID", "' . $this->NavigationRule->WorkspaceID . '" );';
@@ -156,12 +146,12 @@ class weNavigationRuleControl
 
 					// categories
 					$catJs = '';
-					if ($this->NavigationRule->Categories) {
+					if($this->NavigationRule->Categories){
 
 						$catIds = makeArrayFromCSV($this->NavigationRule->Categories);
 
-						foreach ($catIds as $catId) {
-							if (($path = id_to_path($catId, CATEGORY_TABLE))) {
+						foreach($catIds as $catId){
+							if(($path = id_to_path($catId, CATEGORY_TABLE))){
 								$catJs .= 'doc.categories_edit.addItem();doc.categories_edit.setItem(0,(doc.categories_edit.itemCount-1),"' . $path . '");
 							';
 							}
@@ -205,13 +195,13 @@ class weNavigationRuleControl
 
 				case "get_workspaces" :
 
-					if (defined('OBJECT_TABLE') && $_REQUEST['ClassID']) {
+					if(defined('OBJECT_TABLE') && $_REQUEST['ClassID']){
 
 						$_workspaces = $this->getWorkspacesByClassID($_REQUEST['ClassID']);
 
-						$optionList = 'optionList.push({"text":"' . g_l('navigation','[no_entry]') . '","value":"0"});';
+						$optionList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
 
-						foreach ($_workspaces as $key => $value) {
+						foreach($_workspaces as $key => $value){
 							$optionList .= 'optionList.push({"text":"' . $value . '","value":"' . $key . '"});';
 						}
 
@@ -237,28 +227,26 @@ class weNavigationRuleControl
 		}
 	}
 
-	function getWorkspacesByClassID($classId)
-	{
+	function getWorkspacesByClassID($classId){
 
 		$_workspaces = array();
 
-		if ($classId) {
+		if($classId){
 			$_workspaces = weDynList::getWorkspacesForClass($classId);
 			asort($_workspaces);
 		}
 		return $_workspaces;
 	}
 
-	function processVariables()
-	{
+	function processVariables(){
 
-		if (isset($_REQUEST['CategoriesControl']) && isset($_REQUEST['CategoriesCount'])) {
+		if(isset($_REQUEST['CategoriesControl']) && isset($_REQUEST['CategoriesCount'])){
 
 			$_categories = array();
 
-			for ($i = 0; $i < $_REQUEST['CategoriesCount']; $i++) {
-				if (isset(
-						$_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i])) {
+			for($i = 0; $i < $_REQUEST['CategoriesCount']; $i++){
+				if(isset(
+						$_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i])){
 
 					$_categories[] = $_REQUEST[$_REQUEST['CategoriesControl'] . '_variant0_' . $_REQUEST['CategoriesControl'] . '_item' . $i];
 				}
@@ -266,9 +254,9 @@ class weNavigationRuleControl
 
 			$categoryIds = array();
 
-			for ($i = 0; $i < sizeof($_categories); $i++) {
+			for($i = 0; $i < sizeof($_categories); $i++){
 
-				if ($path = path_to_id($_categories[$i], CATEGORY_TABLE)) {
+				if($path = path_to_id($_categories[$i], CATEGORY_TABLE)){
 
 					$categoryIds[] = path_to_id($_categories[$i], CATEGORY_TABLE);
 				}
@@ -277,11 +265,11 @@ class weNavigationRuleControl
 
 			$_catString = '';
 
-			if (sizeof($categoryIds)) {
+			if(sizeof($categoryIds)){
 
 				$_catString = ',';
 
-				foreach ($categoryIds as $catId) {
+				foreach($categoryIds as $catId){
 					$_catString .= "$catId,";
 				}
 			}
@@ -289,23 +277,22 @@ class weNavigationRuleControl
 			$this->NavigationRule->Categories = $_catString;
 		}
 
-		if (is_array($this->NavigationRule->persistent_slots)) {
-			foreach ($this->NavigationRule->persistent_slots as $val) {
-				if (isset($_REQUEST[$val])) {
+		if(is_array($this->NavigationRule->persistent_slots)){
+			foreach($this->NavigationRule->persistent_slots as $val){
+				if(isset($_REQUEST[$val])){
 					$this->NavigationRule->$val = $_REQUEST[$val];
 				}
 			}
 		}
 
-		if ($this->NavigationRule->ID == 0) {
+		if($this->NavigationRule->ID == 0){
 			$this->NavigationRule->isnew = true;
-		} else {
+		} else{
 			$this->NavigationRule->isnew = false;
 		}
 	}
 
-	function getAllNavigationRules()
-	{
+	function getAllNavigationRules(){
 
 		$db = new DB_WE();
 
@@ -317,10 +304,10 @@ class weNavigationRuleControl
 
 		$navigationRules = array();
 
-		while ($db->next_record()) {
+		while($db->next_record()) {
 
 			$_navigationRule = new weNavigationRule();
-			foreach ($_navigationRule->persistent_slots as $val) {
+			foreach($_navigationRule->persistent_slots as $val){
 
 				$_navigationRule->$val = $db->f($val);
 			}
@@ -328,4 +315,5 @@ class weNavigationRuleControl
 		}
 		return $navigationRules;
 	}
+
 }

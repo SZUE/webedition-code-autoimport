@@ -764,7 +764,7 @@ function processCommands() {
 					$ber='';
 					$fname=$this->customer->transFieldName($field,$ber);
 
-					if($ber=="" && eregi(g_l('modules_customer','[other]'),$field))
+					if($ber=="" && preg_match('%'.g_l('modules_customer','[other]').'%i',$field))
 						$this->deleteField($fname);
 					else
 						$this->deleteField($field);
