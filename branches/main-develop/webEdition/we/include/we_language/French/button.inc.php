@@ -43,7 +43,7 @@ if (is_dir($dir."modules")) {
 	$d = dir($dir."modules");
 	while (false !== ($entry = $d->read())) {
 		$var=substr($entry,0,-8);
-		if ($entry[0] != "." && substr($entry,-8 ) == ".inc..php") {
+		if (substr($entry,-8 ) == '.inc.php') {
 			include($dir."modules/".$entry);
 			$l_button=array_merge($l_button,${"l_buttons_modules_$var"});
 			unset(${"l_buttons_modules_$var"});
