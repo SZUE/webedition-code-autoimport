@@ -3,12 +3,12 @@
 $l_buttons_global=array(
 	
 	'addCursorPosition'=>array(
-		'alt'=>'',
+		'alt'=>'Ausgewählten Text an Cursor-Position einfügen',
 		'value'=>'An Cursorposition einfügen',
 		'width'=>'180',
 	),
 	'add'=>array(
-		'alt'=>'',
+		'alt'=>'hinzufügen',
 		'value'=>'Hinzufügen',
 		'width'=>'100',
 	),
@@ -18,12 +18,12 @@ $l_buttons_global=array(
 		'width'=>'175',
 	),
 	'append'=>array(
-		'alt'=>'',
+		'alt'=>'anhängen',
 		'value'=>'Hinten einfügen',
 		'width'=>'110',
 	),
 	'apply'=>array(
-		'alt'=>'',
+		'alt'=>'übernehmen',
 		'value'=>'Übernehmen',
 		'width'=>'100',
 	),
@@ -38,22 +38,22 @@ $l_buttons_global=array(
 		'width'=>'175',
 	),
 	'attributes'=>array(
-		'alt'=>'',
+		'alt'=>'Attribute',
 		'value'=>'Attribute...',
 		'width'=>'100',
 	),
 	'backup'=>array(
-		'alt'=>'',
+		'alt'=>'Backup',
 		'value'=>'Backup',
 		'width'=>'100',
 	),
 	'back'=>array(
-		'alt'=>'',
+		'alt'=>'Zurück',
 		'value'=>'Zurück',
 		'width'=>'100',
 	),
 	'back_to_login'=>array(
-		'alt'=>'Zurück zum webEdition-Login',
+		'alt'=>'Zurück zur webEdition-Anmeldung',
 		'value'=>'Zurück',
 		'width'=>'100',
 	),
@@ -237,23 +237,23 @@ $l_buttons_global=array(
 		'alt'=>'Nach neuen ToDos schauen',
 	),
 	'cancel'=>array(
-		'alt'=>'',
+		'alt'=>'Abbrechen',
 		'value'=>'Abbrechen',
 		'width'=>'100',
 	),
 	'change'=>array(
-		'alt'=>'',
+		'alt'=>'Ändern',
 		'value'=>'Austauschen',
 		'width'=>'100',
 	),
 	'check'=>array(
-		'alt'=>'',
+		'alt'=>'Überprüfen',
 		'value'=>'Prüfen',
 		'width'=>'100',
 	),
 	'clear_log'=>array(
-		'alt'=>'',
-		'value'=>'Logbuch leeren',
+		'alt'=>'Lösche Protokoll',
+		'value'=>'Protokoll löschen',
 		'width'=>'120',
 	),
 	'close'=>array(
@@ -265,22 +265,22 @@ $l_buttons_global=array(
 		'alt'=>'Datum auswählen',
 	),
 	'default'=>array(
-		'alt'=>'',
+		'alt'=>'Voreinstellung',
 		'value'=>'Standard',
 		'width'=>'100',
 	),
 	'delete'=>array(
-		'alt'=>'',
+		'alt'=>'Löschen',
 		'value'=>'Löschen',
 		'width'=>'100',
 	),
 	'delete_all'=>array(
-		'alt'=>'',
+		'alt'=>'Alle löschen',
 		'value'=>'Alle löschen',
 		'width'=>'100',
 	),
 	'delete_backup'=>array(
-		'alt'=>'',
+		'alt'=>'Löschen der ausgewählten Backup-Datei',
 		'value'=>'Backup-Datei löschen',
 		'width'=>'150',
 	),
@@ -295,7 +295,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'deselectAll'=>array(
-		'alt'=>'',
+		'alt'=>'Auswahl zurücknehmen',
 		'value'=>'Alles abwählen',
 		'width'=>'110',
 	),
@@ -345,13 +345,13 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'logbook'=>array(
-		'alt'=>'',
+		'alt'=>'Protokollbuch',
 		'value'=>'Logbuch',
 		'width'=>'100',
 	),
 	'login'=>array(
 		'alt'=>'An webEdition anmelden',
-		'value'=>'Login',
+		'value'=>'Anmelden',
 		'width'=>'100',
 	),
 	'make_backup'=>array(
@@ -425,8 +425,8 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'openVersionWizard'=>array(
-		'alt'=>'Versions-Wizard',
-		'value'=>'Versions-Wizard',
+		'alt'=>'Versions-Assistent',
+		'value'=>'Versions-Assistent',
 		'width'=>'120',
 	),
 	'open'=>array(
@@ -450,7 +450,7 @@ $l_buttons_global=array(
 		'width'=>'200',
 	),
 	'prepend'=>array(
-		'alt'=>'',
+		'alt'=>'Ausgewählten Text an den Anfang des Kodes einfügen',
 		'value'=>'Vorne einfügen',
 		'width'=>'110',
 	),
@@ -580,7 +580,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'selectAll'=>array(
-		'alt'=>'',
+		'alt'=>'Den gesamten Text auswählen',
 		'value'=>'Alles auswählen',
 		'width'=>'110',
 	),

@@ -162,7 +162,7 @@ $l_modules_customer=array(
 	'remark_csv'=>'Ud puede importar archivos CSV (Valores Separados por Comas) o formatos de texto modificados (z. B. *.txt). El delimitador de campo (z. B. , ; tabulador, espacio) y el delimitador de texto (= el cual encapsula las entradas de texto) pueden ser preajustadas en la importación de estos formatos de archivos.',
 	'remark_xml'=>'Para evitar la pausa predefinida de un script PHP, seleccione la opción"Importar registros por separado",para importar archivos extensos .<br>Si Ud no está seguro de que el archivo seleccionado sea un archivo XML de webEdition o no, este puede ser comprobado por validez y sintaxis.',
 	'rename_customer'=>'El cliente `%s` fue renombrado como `%s`',
-	'reset_edit_order_question'=>'',
+	'reset_edit_order_question'=>'Are you really sure? By proceeding all fields are set back to their original order on creation.',
 	'same_names'=>'Nombres iguales',
 	'same_overwrite'=>'Sobrescribir',
 	'same_rename'=>'Renombrar',

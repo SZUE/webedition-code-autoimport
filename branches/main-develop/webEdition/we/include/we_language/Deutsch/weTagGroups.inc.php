@@ -2,7 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_weTagGroups=array(
 	'alltags'=>'Alle we:tags',
-	'apptags'=>'Applikationen we:tags',
+	'apptags'=>'Applikations we:tags',
 	'custom'=>'Eigene we:tags',
 	'if_tags'=>'If we:tags',
 	'input_tags'=>'Eingabe we:tags',

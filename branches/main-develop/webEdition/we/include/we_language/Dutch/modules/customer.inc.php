@@ -162,7 +162,7 @@ $l_modules_customer=array(
 	'remark_csv'=>'U kunt CSV bestanden (Comma Separated Values) of aangepaste tekst formaten importeren (bijv. *.txt). De veld scheider (bijv. , ; tab, spatie) and tekst scheider (= welke de tekst invoer omvat) kunnen vooraf ingesteld worden bj het importeren van deze bestands formaten.',
 	'remark_xml'=>'Om de vooraf ingestelde timeout van een PHP-script te omzijlen, selecteer de optie "Importeer data-sets afzonderlijk", om grote bestanden te importeren.<br>Als u niet zeker weet of het geselecteerde bestand webEdition XML is of niet, kan het bestand getest worden op geldigheid en syntax.',
 	'rename_customer'=>'De klant `%s` is hernoemd naar `%s`',
-	'reset_edit_order_question'=>'',
+	'reset_edit_order_question'=>'Are you really sure? By proceeding all fields are set back to their original order on creation.',
 	'same_names'=>'Zelfde namen',
 	'same_overwrite'=>'Overschrijf',
 	'same_rename'=>'Hernoem',

@@ -165,10 +165,10 @@ $l_buttons_global=array(
 		'alt'=>'Aide',
 	),
 	'btn_mail_resend'=>array(
-		'alt'=>'',
+		'alt'=>'resend e-mail',
 	),
 	'btn_mail_send'=>array(
-		'alt'=>'',
+		'alt'=>'send e-mail',
 	),
 	'btn_messages_copy'=>array(
 		'alt'=>'Copier des Messages',
@@ -265,7 +265,7 @@ $l_buttons_global=array(
 		'alt'=>'Choisir le date',
 	),
 	'default'=>array(
-		'alt'=>'',
+		'alt'=>'default',
 		'value'=>'Default',
 		'width'=>'100',
 	),

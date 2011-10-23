@@ -2,7 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_validation=array(
 	'active'=>'Sie können Dienste zeitweise ausblenden.',
-	'additionalVars'=>'optional: var1=wert1&var2=wert2&...',
+	'additionalVars'=>'Optional: var1=wert1&var2=wert2&...',
 	'adjust_service'=>'Validierungsdienste bearbeiten',
 	'art_custom'=>'Benutzerdefinierte Dienste',
 	'art_default'=>'Voreingestellte Dienste',

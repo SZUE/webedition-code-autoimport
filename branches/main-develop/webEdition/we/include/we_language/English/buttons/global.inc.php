@@ -8,7 +8,7 @@ $l_buttons_global=array(
 		'width'=>'180',
 	),
 	'add'=>array(
-		'alt'=>'',
+		'alt'=>'add',
 		'value'=>'Add',
 		'width'=>'100',
 	),
@@ -23,7 +23,7 @@ $l_buttons_global=array(
 		'width'=>'110',
 	),
 	'apply'=>array(
-		'alt'=>'',
+		'alt'=>'apply',
 		'value'=>'Apply',
 		'width'=>'100',
 	),
@@ -38,17 +38,17 @@ $l_buttons_global=array(
 		'width'=>'175',
 	),
 	'attributes'=>array(
-		'alt'=>'',
+		'alt'=>'attributes',
 		'value'=>'Attributes...',
 		'width'=>'100',
 	),
 	'backup'=>array(
-		'alt'=>'',
+		'alt'=>'backup',
 		'value'=>'Backup',
 		'width'=>'100',
 	),
 	'back'=>array(
-		'alt'=>'',
+		'alt'=>'back',
 		'value'=>'Back',
 		'width'=>'100',
 	),
@@ -165,10 +165,10 @@ $l_buttons_global=array(
 		'alt'=>'Help',
 	),
 	'btn_mail_resend'=>array(
-		'alt'=>'',
+		'alt'=>'resend e-mail',
 	),
 	'btn_mail_send'=>array(
-		'alt'=>'',
+		'alt'=>'send e-mail',
 	),
 	'btn_messages_copy'=>array(
 		'alt'=>'Copy message(s)',
@@ -237,22 +237,22 @@ $l_buttons_global=array(
 		'alt'=>'Look for new tasks',
 	),
 	'cancel'=>array(
-		'alt'=>'',
+		'alt'=>'cancel',
 		'value'=>'Cancel',
 		'width'=>'100',
 	),
 	'change'=>array(
-		'alt'=>'',
+		'alt'=>'change',
 		'value'=>'Change',
 		'width'=>'100',
 	),
 	'check'=>array(
-		'alt'=>'',
+		'alt'=>'check',
 		'value'=>'Check',
 		'width'=>'100',
 	),
 	'clear_log'=>array(
-		'alt'=>'',
+		'alt'=>'clear log',
 		'value'=>'Clear logbook',
 		'width'=>'120',
 	),
@@ -265,17 +265,17 @@ $l_buttons_global=array(
 		'alt'=>'Select date',
 	),
 	'default'=>array(
-		'alt'=>'',
+		'alt'=>'default',
 		'value'=>'Default',
 		'width'=>'100',
 	),
 	'delete'=>array(
-		'alt'=>'',
+		'alt'=>'delete',
 		'value'=>'Delete',
 		'width'=>'100',
 	),
 	'delete_all'=>array(
-		'alt'=>'',
+		'alt'=>'delete all',
 		'value'=>'Delete all',
 		'width'=>'100',
 	),
@@ -445,7 +445,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'preferences'=>array(
-		'alt'=>'',
+		'alt'=>'Customize settings of webEdition',
 		'value'=>'Preferences',
 		'width'=>'200',
 	),

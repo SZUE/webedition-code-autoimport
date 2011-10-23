@@ -14,7 +14,7 @@ $l_javaMenu_moduleInformation=array(
 	),
 	'editor'=>array(
 		'not_installed'=>'Weitere Informationen zum Editor Plugin finden Sie unter: %s',
-		'text'=>'Editor PlugIn',
+		'text'=>'Editor Plugin',
 		'text_short'=>'Editor Plugin',
 	),
 	'export'=>array(

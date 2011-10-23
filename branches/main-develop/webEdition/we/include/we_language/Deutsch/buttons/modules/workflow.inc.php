@@ -13,7 +13,7 @@ $l_buttons_modules_workflow=array(
 		'width'=>'100',
 	),
 	'in_workflow'=>array(
-		'alt'=>'In workflow',
+		'alt'=>'In den Ablaufplan',
 		'value'=>'In workflow',
 		'width'=>'100',
 	),

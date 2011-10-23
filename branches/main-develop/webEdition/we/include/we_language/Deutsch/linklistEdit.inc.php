@@ -18,7 +18,7 @@ $l_linklistEdit=array(
 	'link_target'=>'Linkziel',
 	'new_link'=>'Neuer Link',
 	'objectFile'=>'Objekt',
-	'tabindex'=>'Tabindex',
+	'tabindex'=>'Tab-Index',
 	'text'=>'Text',
 	'title'=>'Titel',
 );

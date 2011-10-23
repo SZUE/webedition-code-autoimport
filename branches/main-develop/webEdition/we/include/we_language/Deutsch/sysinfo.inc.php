@@ -25,7 +25,7 @@ $l_sysinfo=array(
 	'protocol'=>'Protokoll',
 	'register_globals warning'=>'WARNUNG: register_globals kann die Sicherheit Ihres Systems erheblich beeinträchtigen. Wir empfehlen daher, diese Funktion zu deaktivieren!',
 	'safe_mode warning'=>'Der PHP Safe Mode kann u.U. zu Probelem bei Installation und Aktualisierung von webEdition führen. Deaktivieren Sie in diesem Fall den Safe Mode.',
-	'sdk_db warning'=>'SDK Operationen und WE-APPS mit Datenbanknutzung sind nicht verfügbar (benötigt: PDO &amp; PDO_mysql)',
+	'sdk_db warning'=>'SDK Operationen und WE-APPS mit Datenbanknutzung sind nicht verfügbar (benötigt: PDO & PDO_mysql)',
 	'sdk_db'=>'SDK/Apps DB Unterstützung',
 	'server_name'=>'Server-Name',
 	'short_open_tag warning'=>'WARNUNG: short_open_tag kann zu erheblichen Problemen bei der Verarbeitung von xml-Dateien führen, z.B. für die Erzeugung von Backup-Files. Wir empfehlen daher, diese Funktion zu deaktivieren!',
@@ -35,6 +35,6 @@ $l_sysinfo=array(
 	'version'=>'Version',
 	'we_max_upload_size'=>'Max. Dateigröße für Uploads',
 	'we_version'=>'webEdition-Version',
-	'zendframework_version'=>'Zend Framework version',
+	'zendframework_version'=>'Zend Framework Version',
 	'zend_framework warning'=>'Sie verwenden derzeit eine andere Version des Zend Framework als die für webEdition ursprünglich vorhergesehene Version %s.',
 );

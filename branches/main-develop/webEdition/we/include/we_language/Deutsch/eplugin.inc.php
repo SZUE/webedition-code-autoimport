@@ -1,7 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_eplugin=array(
-	'initialisation'=>'webEdition Plugin initialisation...',
+	'initialisation'=>'webEdition Plugin wird geladen...',
 	'lan_add_button'=>'Hinzufügen',
 	'lan_alert_nodefeditor_text'=>'Für diesen Dokument-Typ ist keinen Standard-Editor ausgewählt! Wählen Sie bitte den Standard-Editor in den Plugin-Einstellungen aus.',
 	'lan_alert_noeditor_text'=>'Der ausgewählte Editor kann nicht gestartet werden!',

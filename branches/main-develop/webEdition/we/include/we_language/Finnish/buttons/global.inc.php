@@ -165,10 +165,10 @@ $l_buttons_global=array(
 		'alt'=>'Ohje',
 	),
 	'btn_mail_resend'=>array(
-		'alt'=>'',
+		'alt'=>'resend e-mail',
 	),
 	'btn_mail_send'=>array(
-		'alt'=>'',
+		'alt'=>'send e-mail',
 	),
 	'btn_messages_copy'=>array(
 		'alt'=>'Kopioi viesti(t)',

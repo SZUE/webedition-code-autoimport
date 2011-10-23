@@ -28,7 +28,7 @@ $l_buttons_modules_shop=array(
 	),
 	'payment_val'=>array(
 		'alt'=>'Öffnet die Payment Provider Einstellungen...',
-		'value'=>'Payment Provider',
+		'value'=>'Zahlungsdienst',
 		'width'=>'150',
 	),
 	'pref_shop'=>array(
@@ -37,7 +37,7 @@ $l_buttons_modules_shop=array(
 		'width'=>'150',
 	),
 	'print'=>array(
-		'alt'=>'',
+		'alt'=>'Drucken',
 		'value'=>'Drucken',
 		'width'=>'100',
 	),

@@ -162,7 +162,7 @@ $l_modules_customer=array(
 	'remark_csv'=>'Voit tuoda CSV (Comma Separated Values) tiedostoja ja mukautettuja tekstitiedostoja (esim. *.txt). Kenttien erottimet (esim. , ; tab, space) ja tekstin rajoitusmerkki (= joka sulkee tekstisyötteet) voivat olla mukana näissä tiedostomuodoissa.',
 	'remark_xml'=>'Tuodessasi isoja tiedostoja valitse valitse vaihtoehto "Tuo tietueet erillisinä" välttääksesi ennaltamääritellyn PHP-skriptien aikakatkaisun.<br>Jos olet epävarma siitä onko tiedosto webEdition XML-formaatin mukainen, sen muoto ja syntaksi voidaan testata.',
 	'rename_customer'=>'Asiakas `%s` on uudelleennimetty asiakkaaksi `%s`',
-	'reset_edit_order_question'=>'',
+	'reset_edit_order_question'=>'Are you really sure? By proceeding all fields are set back to their original order on creation.',
 	'same_names'=>'Samat nimet',
 	'same_overwrite'=>'Ylikirjoita',
 	'same_rename'=>'Uudelleennimeä',

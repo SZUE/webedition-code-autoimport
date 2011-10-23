@@ -45,5 +45,5 @@ $l_sidebar=array(
 			'link'=>'http://documentation.webedition.org/wiki/de/webedition/change-log/start',
 			'text'=>'Alle Fehlerbehebungen und Neuerungen in webEdition mit Versionsangaben',
 	),),
-	'headline'=>'Sidebar',
+	'headline'=>'Seitenleiste',
 );

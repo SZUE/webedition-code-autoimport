@@ -14,7 +14,7 @@ $l_exchange=array(
 	'host'=>'Host / URL',
 	
 	'import_wizard'=>array(
-		'ftp_transfer'=>'Import via FTP',
+		'ftp_transfer'=>'Import über FTP',
 		'import_data'=>'Daten importieren',
 		'import_from'=>'Importieren von',
 		'save_to_folder'=>'Speicherort',
