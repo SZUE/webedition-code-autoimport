@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_workpermissions=array(
+$l_workpermissions=array(
 	'BACKUPLOG'=>'The user is allowed to view the backup log file',
 	'BROWSE_SERVER'=>'De gebruiker is bevoegd om de Doorzoek server functie te gebruiken.',
 	'CAN_COPY_FOLDERS'=>'De gebruiker is bevoegd om directories te kopiëren.',

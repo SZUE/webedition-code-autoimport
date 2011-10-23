@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_banner=array(
+$l_banner=array(
 	'active'=>'Active',
 	'all'=>'All',
 	'bannercode'=>'Create banner code',

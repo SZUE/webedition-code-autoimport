@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_shopMonth=array(
+$l_shopMonth=array(
 	'10'=>'Październik',
 	'11'=>'Listopad',
 	'12'=>'Grudzień',

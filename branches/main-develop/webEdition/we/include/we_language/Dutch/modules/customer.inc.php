@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_customer=array(
+$l_customer=array(
 	'add_field'=>'Voeg veld toe',
 	'add_mail'=>'Voer E-mail in',
 	'add_sort_group'=>'Voeg nieuwe groep in',

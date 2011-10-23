@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_schedpro=array(
+$l_schedpro=array(
 	'active'=>'Activo',
 	'categories'=>'Categoriás',
 	'datetime'=>'Fecha/Hora',

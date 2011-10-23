@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_javaMenu_users=array(
+$l_users=array(
 	'group'=>'Ryhmä',
 	'menu_alias'=>'Alias',
 	'menu_delete'=>'Poista',

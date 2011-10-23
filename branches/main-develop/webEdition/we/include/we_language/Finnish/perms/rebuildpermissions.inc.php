@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_rebuildpermissions=array(
+$l_rebuildpermissions=array(
 	'perm_group_title'=>'Rakenna uudelleen',
 	'REBUILD'=>'Käyttäjällä on oikeus käyttää rakenna uudelleen -toimintoa.',
 	'REBUILD_ALL'=>'Käyttäjällä on oikeus rakentaa uudelleet tiedostot ja sivupohjat',

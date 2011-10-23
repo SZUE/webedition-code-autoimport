@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_controlpermissions=array(
+$l_controlpermissions=array(
 	'DELETE_GROUP'=>'Право на удаление групп',
 	'DELETE_USER'=>'Право на удаление пользователей',
 	'EDIT_PASSWD'=>'Право изменения пароля',

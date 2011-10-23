@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_object=array(
+$l_object=array(
 	'allFields'=>'tous les champs',
 	'attributes'=>'Attributs',
 	'behaviour'=>'Montrer',

@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_javaMenu_global=array(
+$l_global=array(
 	'backup'=>'Sauvegardes',
 	'back'=>'Reculer',
 	'browse_server'=>'Fouiller le server',

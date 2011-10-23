@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_rebuildpermissions=array(
+$l_rebuildpermissions=array(
 	'perm_group_title'=>'Rebuild',
 	'REBUILD'=>'El usuario puede usar la función de reconstrucción',
 	'REBUILD_ALL'=>'El usuario puede reconstruir todos los archivos y plantillas',

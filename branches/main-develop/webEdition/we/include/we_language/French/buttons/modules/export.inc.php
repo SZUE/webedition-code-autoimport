@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_buttons_modules_export=array(
+$l_export=array(
 	
 	'new_export'=>array(
 		'alt'=>'Créer un nouveau Export ...',

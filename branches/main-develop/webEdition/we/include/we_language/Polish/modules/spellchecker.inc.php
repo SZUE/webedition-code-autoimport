@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_spellchecker=array(
+$l_spellchecker=array(
 	'active'=>'Active',
 	'ask_dict_del'=>'Do you want to delete the selected dictionary?',
 	'building'=>'Building...',

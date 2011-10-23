@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_customerFilter=array(
+$l_customerFilter=array(
 	'accessControlOnErrorDoc'=>'Zugriff über Fehlerkontrolle',
 	'accessControlOnTemplate'=>'Fehlerkontrolle wird von Vorlage übernommen',
 	'accessControl'=>'Zugriffskontrollsteuerung',

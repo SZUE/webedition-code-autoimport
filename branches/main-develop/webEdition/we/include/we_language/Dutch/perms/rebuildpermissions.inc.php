@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_rebuildpermissions=array(
+$l_rebuildpermissions=array(
 	'perm_group_title'=>'Heropbouwen',
 	'REBUILD'=>'De gebruiker is bevoegd om de heropbouw functie te gebruiken.',
 	'REBUILD_ALL'=>'De gebruiker is bevoegd om alle bestanden en sjablonen te herbouwen',

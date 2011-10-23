@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_glossary=array(
+$l_glossary=array(
 	'abbreviation'=>'Abbreviation',
 	'abbreviation_description'=>'An abbreviation (from Latin brevis "short") is a shorter form of a word. More particularly, an abbreviation is a letter or group of letters, taken from a word or words, and employed to represent them for the sake of brevity. For example, the word "abbreviation" can be abbreviated as "abbr." or "abbrev."',
 	'accesskey'=>'Accesskey',

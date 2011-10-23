@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_customer=array(
+$l_customer=array(
 	'CAN_CHANGE_DOCS_CUSTOMER'=>'Der Benutzer darf Dokumenten und Objekten Kunden zuweisen',
 	'CAN_EDIT_CUSTOMERFILTER'=>'Der Benutzer darf den Kundenfilter ändern',
 	'CUSTOMER_AUTOLOGINID_VISIBLE'=>'Der Benutzer darf die Auto-Login-ID der Kunden sehen',

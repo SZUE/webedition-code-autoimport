@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_buttons_modules_banner=array(
+$l_banner=array(
 	
 	'new_bannergroup'=>array(
 		'alt'=>'Crear nuevo grupo de pancartas ...',

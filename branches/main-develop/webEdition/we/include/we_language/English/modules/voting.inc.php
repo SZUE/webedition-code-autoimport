@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_voting=array(
+$l_voting=array(
 	'access'=>'Access',
 	'active_till'=>'Active Until',
 	'AllowFreeText'=>'Allow free text',

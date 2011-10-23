@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_newsletter=array(
+$l_newsletter=array(
 	'additional_clp'=>'Zusätzliche Antwortadresse (die Option -f)',
 	'add_email'=>'E-Mail-Adresse hinzufügen',
 	'all_list'=>'-- Alle Listen --',

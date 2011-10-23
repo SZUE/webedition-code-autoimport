@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_workflow=array(
+$l_workflow=array(
 	'action'=>'Acción',
 	'active'=>'El flujo de trabajo is activo',
 	'and'=>'y',

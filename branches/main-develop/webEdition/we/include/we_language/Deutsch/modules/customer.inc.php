@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_customer=array(
+$l_customer=array(
 	'add_field'=>'Feld hinzufügen',
 	'add_mail'=>'E-Mail hinzufügen',
 	'add_sort_group'=>'Neue Sortierungsgruppe einfügen',

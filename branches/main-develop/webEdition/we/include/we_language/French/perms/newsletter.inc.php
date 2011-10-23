@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_newsletter=array(
+$l_newsletter=array(
 	'DELETE_NEWSLETTER'=>'L\'utilisateur a le droit de supprimer des lettres d\'information',
 	'EDIT_NEWSLETTER'=>'L\'utilisateur a le droit d\'éditer des lettres d\'information',
 	'NEWSLETTER_FILES'=>'L\'utilisateur a le droit de  choisir des fichiers',

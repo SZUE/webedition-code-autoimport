@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_shop=array(
+$l_shop=array(
 	
 	'add_article'=>array(
 		'empty_articles'=>'No Articles found.',

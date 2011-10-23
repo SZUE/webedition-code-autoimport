@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_buttons_modules_shop=array(
+$l_shop=array(
 	
 	'btn_payment_val'=>array(
 		'alt'=>'Vaihda maksupalvelun toimittajan asetuksiin',

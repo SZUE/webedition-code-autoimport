@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_workflow=array(
+$l_workflow=array(
 	'action'=>'Toiminto',
 	'active'=>'Työnkulku on aktiivinen.',
 	'and'=>'ja',

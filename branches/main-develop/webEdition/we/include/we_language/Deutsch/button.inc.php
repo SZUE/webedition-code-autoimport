@@ -32,16 +32,23 @@
  * Language: Deutsch
  */
 
+$l_button=array();
 $dir=dirname(__FILE__).'/buttons/';
 include($dir."global.inc.php");
+$l_button=array_merge($l_button,$l_global);
+unset($l_global);
 if (is_dir($dir."modules")) {
 
 	// Include language files of buttons used in modules
 	$d = dir($dir."modules");
 	while (false !== ($entry = $d->read())) {
-		if ($entry[0] != "." && substr($entry,(-1 * strlen(".php"))) == ".php") {
+		$var=substr($entry,0,-8);
+		if ($entry[0] != "." && substr($entry,-8 ) == ".inc..php") {
 			include($dir."modules/".$entry);
+			$l_button=array_merge($l_button,${"l_$var"});
+			unset(${"l_$var"});
 		}
 	}
 	$d->close();
 }
+unset($dir);

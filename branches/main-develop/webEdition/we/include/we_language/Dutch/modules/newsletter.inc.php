@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_newsletter=array(
+$l_newsletter=array(
 	'additional_clp'=>'Additioneel antwoord adres (option -f)',
 	'add_email'=>'Voeg E-mail adres toe',
 	'all_list'=>'-- Alle lijsten --',

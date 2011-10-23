@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_buttons_modules_object=array(
+$l_object=array(
 	
 	'make_new_object'=>array(
 		'alt'=>'Créer un nouveau Object ...',

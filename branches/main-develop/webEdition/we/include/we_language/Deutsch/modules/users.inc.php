@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_users=array(
+$l_users=array(
 	'acces_temp_denied'=>'Zugriff zur Zeit nicht möglich',
 	'address'=>'Adresse',
 	'admin_permissions'=>'Administrator',

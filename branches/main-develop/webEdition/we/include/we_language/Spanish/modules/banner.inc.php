@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_banner=array(
+$l_banner=array(
 	'active'=>'Activo',
 	'all'=>'Todas',
 	'bannercode'=>'Crear código de la pancarta',

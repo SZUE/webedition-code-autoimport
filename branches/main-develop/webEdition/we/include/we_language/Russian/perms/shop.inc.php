@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_shop=array(
+$l_shop=array(
 	'CAN_EDIT_VARIANTS'=>'Право редактирования вариантов товаров',
 	'DELETE_SHOP_ARTICLE'=>'Право на удаление товаров',
 	'DELETE_SHOP_ORDER'=>'Право на удаление заказов',

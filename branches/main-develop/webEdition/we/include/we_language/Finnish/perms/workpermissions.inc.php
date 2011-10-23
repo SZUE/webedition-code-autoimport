@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_workpermissions=array(
+$l_workpermissions=array(
 	'BACKUPLOG'=>'The user is allowed to view the backup log file',
 	'BROWSE_SERVER'=>'Käyttäjä voi käyttää "Selaa palvelinta" toimintoa.',
 	'CAN_COPY_FOLDERS'=>'Käyttäjä voi kopioida hakemistoja.',

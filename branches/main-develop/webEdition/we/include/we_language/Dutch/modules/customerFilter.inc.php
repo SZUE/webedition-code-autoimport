@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_customerFilter=array(
+$l_customerFilter=array(
 	'accessControlOnErrorDoc'=>'Use error documents',
 	'accessControlOnTemplate'=>'Error treatment through template',
 	'accessControl'=>'Access Control',

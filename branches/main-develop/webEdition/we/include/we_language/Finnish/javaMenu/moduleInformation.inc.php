@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_javaMenu_moduleInformation=array(
+$l_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Et ole asentanut Banneri/Statistiikkamoduulia. Lisätietoja moduulista osoitteesta: %s',

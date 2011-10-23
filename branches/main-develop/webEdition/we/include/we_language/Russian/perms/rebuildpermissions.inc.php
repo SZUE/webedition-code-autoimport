@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_rebuildpermissions=array(
+$l_rebuildpermissions=array(
 	'perm_group_title'=>'Автоматическая перестройка',
 	'REBUILD'=>'Право на функцию перестройки',
 	'REBUILD_ALL'=>'Пользователь уполномочен перестраивать документы и шаблоны',

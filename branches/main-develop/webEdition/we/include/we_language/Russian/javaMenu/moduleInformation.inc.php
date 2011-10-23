@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_javaMenu_moduleInformation=array(
+$l_moduleInformation=array(
 	
 	'banner'=>array(
 		'not_installed'=>'Вы не установили модуль «Баннер/статистика» системы webEdition. Модуль и более подробную информацию о нем Вы найдете здесь: %s',

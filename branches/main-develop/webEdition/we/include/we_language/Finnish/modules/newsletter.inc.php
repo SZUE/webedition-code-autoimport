@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_newsletter=array(
+$l_newsletter=array(
 	'additional_clp'=>'Pakota lähettäjän osoite vastausosoite-kentästä (optio -f)',
 	'add_email'=>'Lisää sähköpostiosoite',
 	'all_list'=>'-- Kaikki listat --',

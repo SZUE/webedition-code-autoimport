@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_javaMenu_messaging=array(
+$l_messaging=array(
 	'copy'=>'Kopieër',
 	'cut'=>'Knip',
 	'delete'=>'Verwijder',

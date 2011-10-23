@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_rebuildpermissions=array(
+$l_rebuildpermissions=array(
 	'perm_group_title'=>'Rebuild',
 	'REBUILD'=>'The user is allowed to use the rebuild function.',
 	'REBUILD_ALL'=>'The user is allowed to rebuild all files and templates',

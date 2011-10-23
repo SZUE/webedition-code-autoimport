@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_glossary=array(
+$l_glossary=array(
 	'abbreviation'=>'Abkürzung',
 	'abbreviation_description'=>'Abkürzung (auch Abbreviatur, Kürzel) bezeichnet die verkürzte Form eines Wortes oder einer Wortgruppe. Hierzu gehören Akronyme, Kurzwörter, Initialwörter und Buchstabenketten. Was man abkürzt, ist auch gesellschaftlich bedingt. So erscheinen Abkürzungen wie AB für Anrufbeantworter oder HP für Homepage als regional, national oder durch die Textsorte begrenzt. Eine Abkürzung ist eine Schreib- und Leseerleichterung, sie dient der schnelleren und konzentrierteren Kommunikation. Des Weiteren dient die Abkürzung auch der Platzersparnis.',
 	'accesskey'=>'Accesskey',

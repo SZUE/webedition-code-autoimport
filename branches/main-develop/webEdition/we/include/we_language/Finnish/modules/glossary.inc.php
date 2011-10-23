@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_glossary=array(
+$l_glossary=array(
 	'abbreviation'=>'Lyhenne',
 	'abbreviation_description'=>'Lyhenne on tilan tai vaivan säästämiseksi käytetty lyhyempi versio jostakin sanasta tai usean sanan kokonaisuudesta. Sana voidaan lyhentää lisäämällä loppuun piste. Tämä tehdään joko katkaisemalla sana konsonantin ja vokaalin välistä, tai käyttämällä koostelyhennettä, joka on ennalta sovittu, ja sen käyttäjien yleisesti tietämä. Yleisin lyhennetyyppi on ensimmäinen tavu plus seuraava kirjain (esim., joht.).',
 	'accesskey'=>'Pikanäppäin',

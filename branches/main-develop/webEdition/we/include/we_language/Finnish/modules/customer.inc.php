@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_modules_customer=array(
+$l_customer=array(
 	'add_field'=>'Lisää kenttä',
 	'add_mail'=>'Lisää E-mail',
 	'add_sort_group'=>'Lisää uusi ryhmä',

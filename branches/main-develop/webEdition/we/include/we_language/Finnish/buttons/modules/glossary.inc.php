@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_buttons_modules_glossary=array(
+$l_glossary=array(
 	
 	'deactivate'=>array(
 		'alt'=>'poista korvaus käytöstä ...',

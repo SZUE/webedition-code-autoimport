@@ -1,6 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
-$l_perms_shop=array(
+$l_shop=array(
 	'CAN_EDIT_VARIANTS'=>'Käyttäjä voi muokata tuoteartikkelimuunnelmia',
 	'DELETE_SHOP_ARTICLE'=>'Käyttäjä voi poistaa tuotteita.',
 	'DELETE_SHOP_ORDER'=>'Käyttäjä voi poistaa tilauksia.',
