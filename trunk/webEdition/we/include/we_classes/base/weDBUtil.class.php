@@ -30,15 +30,19 @@
 	class weDBUtil {
 
 		function isColExist($tab,$col){
-			global $DB_WE;
-			$DB_WE->query("SHOW COLUMNS FROM ".$DB_WE->escape($tab)." LIKE '$col';");
-			if($DB_WE->next_record()) return true; else return false;
+			if($tab==''||$col==''){
+				return false;
+			}
+			$GLOBALS['DB_WE']->query("SHOW COLUMNS FROM ".$DB_WE->escape($tab)." LIKE '$col';");
+			return ($GLOBALS['DB_WE']->next_record());
 		}
 
 		function isTabExist($tab){
-			global $DB_WE;
-			$DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
-			if($DB_WE->num_rows()) return true; else return false;
+			if($tab==''){
+				return false;
+			}
+			$GLOBALS['DB_WE']->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
+			return (bool)($GLOBALS['DB_WE']->num_rows());
 		}
 
 		function addTable($tab,$cols,$keys=array()){

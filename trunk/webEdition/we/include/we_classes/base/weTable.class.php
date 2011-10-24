@@ -164,8 +164,11 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 		function getColumns(){
 			if(weDBUtil::isTabExist($this->table)){
 				$metadata=$this->db->query("SHOW CREATE TABLE $this->table;");
-				while($this->db->next_record()){
+				if($this->db->next_record()){
 					$zw=explode("\n",$this->db->f("Create Table"));
+					if(TBL_PREFIX != ''){
+						$zw[0]=str_replace($this->table,stripTblPrefix($this->table),$zw[0]);
+					}
 				}
 				$this->elements[$this->db->f("Table")] = array('Field'=>'create');
 				foreach($zw as $k => $v){
@@ -185,10 +188,14 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 				weDBUtil::delTable($this->table);
 			}
 			$myarray=$this->elements['create'];
-			array_shift($myarray);//get rid of 'create' - type of operation
-			array_shift($myarray);//get rid of old create Statement'
-			array_unshift($myarray,'CREATE TABLE '.$this->table.' (' );
-
+			unset($myarray['Field']);
+			if(TBL_PREFIX!=''){
+				foreach($myarray as &$cur){
+					if(substr($cur,0,6)=='CREATE'){
+						$cur=str_replace(stripTblPrefix($this->table),$this->table,$cur);
+					}
+				}
+			}
 			// Charset and Collation
 			$charset_collation = "";
 			if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
@@ -196,18 +203,12 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 				$Collation = DB_COLLATION;
 				$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
 			}
-
+			//FIXME: this is NOT Save for MySQL Updates!!!!
 			array_pop($myarray);//get rid of old Engine statement
 			$myarray[] =' ) '. $charset_collation .' ENGINE=MyISAM;';
 
-			$query = implode(" ",$myarray);
-			if ($DB_WE->query($query)) {
-				return true;
-			} else {
-				//p_r($query);		
-				return false;
-			}
+			$query = implode(' ',$myarray);
+			return ($DB_WE->query($query));
 		}
 
 	}
-
