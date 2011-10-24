@@ -62,7 +62,7 @@ $l_liveUpdate=array(
 		'register'=>'Registrieren',
 		'updatelog'=>'Protokoll',
 		'update'=>'Update',
-		'upgrade'=>'Update webEdition 5',
+		'upgrade'=>'Update webEdition 7',
 	),
 	'updatelog'=>array(
 		'action'=>'Aktion',

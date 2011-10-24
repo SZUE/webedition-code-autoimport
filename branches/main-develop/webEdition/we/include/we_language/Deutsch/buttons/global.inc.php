@@ -290,7 +290,7 @@ $l_buttons_global=array(
 		'width'=>'174',
 	),
 	'demoversion'=>array(
-		'alt'=>'',
+		'alt'=>'Demoversion',
 		'value'=>'Demoversion',
 		'width'=>'100',
 	),
@@ -300,17 +300,17 @@ $l_buttons_global=array(
 		'width'=>'110',
 	),
 	'editor'=>array(
-		'alt'=>'',
+		'alt'=>'Editor starten',
 		'value'=>'Editor starten',
 		'width'=>'100',
 	),
 	'edit'=>array(
-		'alt'=>'',
+		'alt'=>'Bearbeiten',
 		'value'=>'Bearbeiten',
 		'width'=>'100',
 	),
 	'edit_all_thumbs'=>array(
-		'alt'=>'',
+		'alt'=>'Miniaturansichten bearbeiten...',
 		'value'=>'Miniaturansichten bearbeiten...',
 		'width'=>'220',
 	),
@@ -320,17 +320,17 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'go'=>array(
-		'alt'=>'',
+		'alt'=>'Jetzt ausführen',
 		'value'=>'Jetzt ausführen',
 		'width'=>'120',
 	),
 	'iconview'=>array(
-		'alt'=>'',
+		'alt'=>'Miniaturansicht',
 		'value'=>'Miniaturansicht',
 		'width'=>'100',
 	),
 	'ignore'=>array(
-		'alt'=>'',
+		'alt'=>'ignorieren',
 		'value'=>'Ignorieren',
 		'width'=>'100',
 	),
@@ -340,7 +340,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'listview'=>array(
-		'alt'=>'',
+		'alt'=>'Listenansicht',
 		'value'=>'Listenansicht',
 		'width'=>'100',
 	),
@@ -355,7 +355,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'make_backup'=>array(
-		'alt'=>'',
+		'alt'=>'Backup erstellen',
 		'value'=>'Backup erstellen',
 		'width'=>'150',
 	),
@@ -385,22 +385,22 @@ $l_buttons_global=array(
 		'width'=>'200',
 	),
 	'new_entry'=>array(
-		'alt'=>'',
+		'alt'=>'Neuer Eintrag',
 		'value'=>'Neuer Eintrag',
 		'width'=>'100',
 	),
 	'new_folder'=>array(
-		'alt'=>'',
+		'alt'=>'Neues Verzeichnis',
 		'value'=>'Neuer Ordner',
 		'width'=>'200',
 	),
 	'new_item'=>array(
-		'alt'=>'',
+		'alt'=>'Neuer Eintrag',
 		'value'=>'Neuer Eintrag',
 		'width'=>'200',
 	),
 	'new_service'=>array(
-		'alt'=>'',
+		'alt'=>'Neuer Dienst',
 		'value'=>'Neuer Dienst',
 		'width'=>'100',
 	),
@@ -410,17 +410,17 @@ $l_buttons_global=array(
 		'width'=>'200',
 	),
 	'next'=>array(
-		'alt'=>'',
+		'alt'=>'weiter',
 		'value'=>'Weiter',
 		'width'=>'100',
 	),
 	'no'=>array(
-		'alt'=>'',
+		'alt'=>'nein',
 		'value'=>'Nein',
 		'width'=>'100',
 	),
 	'ok'=>array(
-		'alt'=>'',
+		'alt'=>'Ok',
 		'value'=>'OK',
 		'width'=>'100',
 	),
@@ -430,12 +430,12 @@ $l_buttons_global=array(
 		'width'=>'120',
 	),
 	'open'=>array(
-		'alt'=>'',
+		'alt'=>'Öffnen',
 		'value'=>'Öffnen',
 		'width'=>'100',
 	),
 	'open_document'=>array(
-		'alt'=>'',
+		'alt'=>'Dokument öffnen',
 		'value'=>'Dokument öffnen',
 		'width'=>'200',
 	),
@@ -470,12 +470,12 @@ $l_buttons_global=array(
 		'width'=>'120',
 	),
 	'quit_delete'=>array(
-		'alt'=>'',
+		'alt'=>'Lösch-Modus beenden',
 		'value'=>'Lösch-Modus beenden',
 		'width'=>'200',
 	),
 	'quit_move'=>array(
-		'alt'=>'',
+		'alt'=>'Verschieben-Modus beenden',
 		'value'=>'Verschieben-Modus beenden',
 		'width'=>'250',
 	),
@@ -485,32 +485,32 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'refresh'=>array(
-		'alt'=>'',
+		'alt'=>'Aktualisieren',
 		'value'=>'Aktualisieren',
 		'width'=>'100',
 	),
 	'register'=>array(
-		'alt'=>'',
+		'alt'=>'registrieren',
 		'value'=>'Registrieren',
 		'width'=>'100',
 	),
 	'reindent'=>array(
-		'alt'=>'',
+		'alt'=>'Code neu einrücken',
 		'value'=>'Code neu einrücken',
 		'width'=>'130',
 	),
 	'replace'=>array(
-		'alt'=>'',
+		'alt'=>'ersetzen',
 		'value'=>'Ersetzen',
 		'width'=>'100',
 	),
 	'reset'=>array(
-		'alt'=>'',
+		'alt'=>'Zurücksetzen',
 		'value'=>'Zurücksetzen',
 		'width'=>'100',
 	),
 	'restore_backup'=>array(
-		'alt'=>'',
+		'alt'=>'Backup wiederherstellen',
 		'value'=>'Backup wiederherstellen',
 		'width'=>'180',
 	),
@@ -570,12 +570,12 @@ $l_buttons_global=array(
 		'width'=>'120',
 	),
 	'save'=>array(
-		'alt'=>'',
+		'alt'=>'Speichern',
 		'value'=>'Speichern',
 		'width'=>'100',
 	),
 	'search'=>array(
-		'alt'=>'',
+		'alt'=>'Suchen',
 		'value'=>'Suche',
 		'width'=>'100',
 	),
@@ -585,7 +585,7 @@ $l_buttons_global=array(
 		'width'=>'110',
 	),
 	'select'=>array(
-		'alt'=>'',
+		'alt'=>'Auswählen',
 		'value'=>'Auswählen',
 		'width'=>'100',
 	),
@@ -595,7 +595,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'startEditor'=>array(
-		'alt'=>'',
+		'alt'=>'Editor-Plugin starten',
 		'value'=>'Editor starten',
 		'width'=>'100',
 	),
@@ -610,7 +610,7 @@ $l_buttons_global=array(
 		'width'=>'200',
 	),
 	'unpublish'=>array(
-		'alt'=>'',
+		'alt'=>'Parken',
 		'value'=>'Parken',
 		'width'=>'100',
 	),
@@ -620,7 +620,7 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'yes'=>array(
-		'alt'=>'',
+		'alt'=>'ja',
 		'value'=>'Ja',
 		'width'=>'100',
 ));
