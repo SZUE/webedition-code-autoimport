@@ -48,8 +48,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	?>
 <script language="JavaScript" type="text/javascript">
 	
-	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_Daten')){
-		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_Daten').innerHTML = "<?php
+	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>')){
+		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>').value = "<?php
 	print 
 			preg_replace(
 					'|script|i', 

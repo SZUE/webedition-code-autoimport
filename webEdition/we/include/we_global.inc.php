@@ -1407,6 +1407,10 @@ function stripTblPrefix($table){
 
 	return TBL_PREFIX!=''&&(strpos($table,TBL_PREFIX)!==FALSE)?substr($table, strlen(TBL_PREFIX)):$table;
 }
+function addTblPrefix($table){
+
+	return TBL_PREFIX.$table;
+}
 
 function cleanTempFiles($cleanSessFiles = 0) {
 	global $DB_WE;

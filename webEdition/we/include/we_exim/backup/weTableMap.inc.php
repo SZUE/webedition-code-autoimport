@@ -58,7 +58,7 @@
 	);
 
 	$tableMap['user']=array(
-				'tbluser'				=>	USER_TABLE,
+				'tbluser'				=>	USER_TABLE
 	);
 
 

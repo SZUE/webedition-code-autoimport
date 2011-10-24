@@ -63,7 +63,7 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select
 		if(in_array('customer',$_we_active_integrated_modules)){
 			
 			if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php")) {
-				include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php");
+				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php");
 				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db.inc.php");
 				$db = new DB_WE();
 				$db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
