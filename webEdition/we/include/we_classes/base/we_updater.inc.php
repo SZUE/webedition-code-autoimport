@@ -801,8 +801,8 @@
 	function convertTemporaryDoc(){
 		if($this->isColExist(TEMPORARY_DOC_TABLE,'ID')){
 			$GLOBALS['DB_WE']->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE Active=0');
-			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable="'.FILE_TABLE.'"');
-			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable="'.OBJECT_FILES_TABLE.'"');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable  LIKE "%tblFile"');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable LIKE "%tblObjectFiles"');
 			$this->delCol(TEMPORARY_DOC_TABLE,'ID');
 			$GLOBALS['DB_WE']->query('ALTER TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
 		}
