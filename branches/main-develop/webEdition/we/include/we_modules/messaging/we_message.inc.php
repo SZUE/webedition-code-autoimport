@@ -141,7 +141,7 @@ class we_message extends we_msg_proto {
 
     /* Getters And Setters */
     function get_newmsg_count() {
-		$this->DB->query('SELECT COUNT(ID) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . MSG_STATUS_SEEN . ') AND obj_type=' . MSG_MESSAGE_NR . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[MSG_FOLDER_INBOX] . ' AND UserID=' . abs($this->userid));
+		$this->DB->query('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE NOT (seenStatus & ' . MSG_STATUS_SEEN . ') AND obj_type=' . MSG_MESSAGE_NR . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[MSG_FOLDER_INBOX] . ' AND UserID=' . abs($this->userid));
 		if ($this->DB->next_record()) {
 		    return $this->DB->f('c');
 		}
@@ -150,7 +150,7 @@ class we_message extends we_msg_proto {
     }
 
     function get_count($folder_id) {
-		$this->DB->query('SELECT COUNT(ID) AS c FROM ' . $this->table . ' WHERE ParentID=' . abs($folder_id) . ' AND obj_type=' . MSG_MESSAGE_NR . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND UserID=' . abs($this->userid));
+		$this->DB->query('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . abs($folder_id) . ' AND obj_type=' . MSG_MESSAGE_NR . ' AND msg_type=' . abs($this->sql_class_nr) . ' AND UserID=' . abs($this->userid));
 		if ($this->DB->next_record())
 		    return $this->DB->f('c');
 

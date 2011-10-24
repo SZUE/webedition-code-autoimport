@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+	//FIXME: this should be determined on-the-fly
+
 	$tableKeys = array();
 
 	$tableKeys[strtolower(CLEAN_UP_TABLE)] = array('Path');
