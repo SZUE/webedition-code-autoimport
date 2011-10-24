@@ -5,6 +5,7 @@ $this->NeedsEndTag = true;
 //$this->Groups[] = 'input_tags';
 $this->Module = 'navigation';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->DefaultValue = '<a href="<we:navigationField name="href" />"><we:navigationField name="text" /></a><br />';
 
 $this->Attributes[] = new weTagData_textAttribute('navigationname', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('folder', false, ''), new weTagDataOption('item', false, '')), true, '');

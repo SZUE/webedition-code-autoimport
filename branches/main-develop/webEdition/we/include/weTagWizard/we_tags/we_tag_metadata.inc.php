@@ -5,5 +5,6 @@ $this->NeedsEndTag = true;
 //$this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->DefaultValue = '<we:field name="NameOfField" />';
 
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');

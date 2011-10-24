@@ -5,6 +5,8 @@ $this->NeedsEndTag = true;
 //$this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
+$this->DefaultValue = '<we:repeat>
+<we:field name="Title" alt="we_path" hyperlink="true"/>';
 
 $MultiSelector = new weTagData_multiSelectorAttribute('MultiSelector',FILE_TABLE, '', '', false, '');
 $name = new weTagData_textAttribute('name', false, '');
