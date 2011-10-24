@@ -757,7 +757,8 @@
 			$this->addTable(LOCK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
-		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
+		if($this->isColExist(LOCK_TABLE,'lock') && !$this->isColExist(LOCK_TABLE,'lockTime')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
+		if($this->isColExist(LOCK_TABLE,'lock')) $this->delCol(LOCK_TABLE,'lock');
 		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
 	}
 

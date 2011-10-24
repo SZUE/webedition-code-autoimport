@@ -105,7 +105,7 @@ class we_ui_controls_SelectObjectfield extends we_ui_controls_Select
 		if(in_array('object',$_we_active_integrated_modules)){
 			
 			if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php")) {
-				include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php");
+				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php");
 				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db.inc.php");
 				$db = new DB_WE();
 				$db->query("SHOW FIELDS FROM " .OBJECT_X_TABLE.$this->getObjectclassid());
