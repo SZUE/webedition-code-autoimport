@@ -804,7 +804,8 @@
 			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable  LIKE "%tblFile"');
 			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable LIKE "%tblObjectFiles"');
 			$this->delCol(TEMPORARY_DOC_TABLE,'ID');
-			$GLOBALS['DB_WE']->query('ALTER TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
+			$GLOBALS['DB_WE']->query('ALTER IGNORE TABLE '.TEMPORARY_DOC_TABLE.'  DROP PRIMARY KEY ');
+			$GLOBALS['DB_WE']->query('ALTER IGNORE TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
 		}
 	}
 
@@ -821,8 +822,8 @@
 		$this->updateWorkflow();
 		$this->updateLock();
 		$this->updateLangLink();
-		$this->updateTableKeys();
 		$this->convertTemporaryDoc();
+		$this->updateTableKeys();
 		}
 
 }
