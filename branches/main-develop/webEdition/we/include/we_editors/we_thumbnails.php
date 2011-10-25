@@ -239,7 +239,7 @@ function remember_value($settingvalue, $settingname) {
  */
 
 function save_all_values() {
-	global $DB_WE, $SYSTEM;
+	global $DB_WE;
 
 	/*************************************************************************
 	 * THUMBNAILS
@@ -263,9 +263,9 @@ function save_all_values() {
 }
 
 function build_dialog($selected_setting = "ui") {
-	global $DB_WE, $SYSTEM;
+	global $DB_WE;
 
-	
+
 	switch ($selected_setting) {
 		case "save":
 			/*****************************************************************

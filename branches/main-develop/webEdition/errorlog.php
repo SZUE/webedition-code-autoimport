@@ -114,9 +114,6 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 		if (isset($_REQUEST['delete'])){
 			$db->query('TRUNCATE TABLE `'.ERROR_LOG_TABLE.'`');
 		}
-		$q="SELECT * FROM ".ERROR_LOG_TABLE." ORDER BY ID DESC ";
-		$db->query($q);
-		$size = $db->num_rows();
 		$size = f('SELECT COUNT(1) as cnt FROM `'.ERROR_LOG_TABLE.'`','cnt',$db);
 		$count = 1;
 

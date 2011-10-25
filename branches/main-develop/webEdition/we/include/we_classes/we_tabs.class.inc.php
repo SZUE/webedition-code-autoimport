@@ -43,7 +43,6 @@ class we_tabs {
 	var $JSonResize;
 
 	function we_tabs() {
-		global $SYSTEM;
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
 		$this->containerEnd   = "</div>\n";
 

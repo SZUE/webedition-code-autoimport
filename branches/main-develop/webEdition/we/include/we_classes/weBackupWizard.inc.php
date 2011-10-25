@@ -1247,7 +1247,7 @@ class weBackupWizard{
 			}
 
 			$step=isset($_REQUEST["step"]) ? $_REQUEST["step"] : 0;
-			
+
 			if($this->mode==1){
 				switch($step){
 					case 1:
@@ -1746,7 +1746,6 @@ class weBackupWizard{
 
 
 	function printWarnings(&$we_backup_obj) {
-		global $SYSTEM;
 
 		$warnings = array();
 		$warnings = $we_backup_obj->getWarnings();

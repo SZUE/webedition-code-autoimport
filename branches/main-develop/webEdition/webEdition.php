@@ -434,7 +434,6 @@ function we_cmd() {
 
 	if (window.screen) {
 		h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
-		//h = screen.availHeight - <?php print ($GLOBALS['BROWSER'] == "IE" && $SYSTEM == "WIN") ? 73 : (($GLOBALS['BROWSER'] == "NN" && $SYSTEM == "WIN") ? 50: 40) ?>;
 		w = screen.availWidth; // - <?php print ($SYSTEM == "WIN") ? 10 : 20 ?>;
 	}
 

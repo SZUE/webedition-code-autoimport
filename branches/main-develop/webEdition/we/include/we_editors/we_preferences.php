@@ -3150,7 +3150,7 @@ function check_global_config($values) {
  */
 
 function build_dialog($selected_setting = "ui") {
-	global $DB_WE, $SYSTEM;
+	global $DB_WE;
 	$yuiSuggest =& weSuggest::getInstance();
 
 	switch ($selected_setting) {
