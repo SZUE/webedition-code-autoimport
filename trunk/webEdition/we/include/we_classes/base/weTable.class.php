@@ -192,7 +192,8 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/base/"
 			if(TBL_PREFIX!=''){
 				foreach($myarray as &$cur){
 					if(substr($cur,0,6)=='CREATE'){
-						$cur=str_replace(stripTblPrefix($this->table),$this->table,$cur);
+						//Regex because of backups <6.2.4
+						$cur=preg_replace('/(CREATE *`?)\w*'.stripTblPrefix($this->table).'/i','\\1'.$this->table,$cur,1);
 					}
 				}
 			}
