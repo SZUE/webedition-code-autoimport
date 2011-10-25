@@ -350,7 +350,9 @@
 
 				$_hasbinary = false;
 				while($_found=='unknown' && $_try<$_count) {
-
+					if(preg_match('/.*<webEdition.*type="backup".*>/',$_part)){
+						$_found = 'backup';
+					}else
 					if(eregi('<we:document',$_part) || eregi('<we:template',$_part) || eregi('<we:class',$_part) || eregi('<we:object',$_part) || eregi('<we:info',$_part) || eregi('<we:navigation',$_part)){
 						$_found = 'weimport';
 					} else if(eregi('<we:table',$_part)){
