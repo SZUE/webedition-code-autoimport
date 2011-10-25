@@ -96,10 +96,7 @@ class weModelBase {
 		$set = implode(",", $sets);
 
 		if ($this->isKeyDefined() && $this->isnew) {
-			$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ' . $where . ';');
-			if ($this->db->next_record())
-				$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $where . ';');
-			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
+			$query = 'REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
 
 			$this->db->query($query);
 			# get ID #
