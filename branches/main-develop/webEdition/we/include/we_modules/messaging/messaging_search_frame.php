@@ -32,9 +32,8 @@ print STYLESHEET;
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
-
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-    <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
     <script type="text/javascript">
 	function doSearch() {
 		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=search_messages&we_transaction=<?php echo $_REQUEST['we_transaction']?>&searchterm=' + document.we_messaging_search.messaging_search_keyword.value;

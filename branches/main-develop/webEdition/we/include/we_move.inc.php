@@ -141,7 +141,7 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 				g_l('alert',"[nothing_to_move]"),
 				WE_MESSAGE_ERROR) . "\n";
 	}
-	print '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
+	print we_htmlElement::jsScript(JS_DIR.'windows.js');
 	print '<script  type="text/javascript"><!--
 ' . $script . '
 //-->

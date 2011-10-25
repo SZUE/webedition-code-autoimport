@@ -47,7 +47,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	htmlTop();
 
-	print '<script type="text/javascript" src="/webEdition/js/we_showMessage.js"></script>
+	print we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').'
 <script type="text/javascript">
 
 document.onkeyup = function(e) {
@@ -265,7 +265,7 @@ function we_getImageResizeDialog(){
 	list($width,$height) = $GLOBALS["we_doc"]->getOrigSize();
 
 	$_content = array();
-	
+
 	$okbut = we_button::create_button("ok", "javascript:doOK();");
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 
@@ -304,7 +304,7 @@ function we_getImageResizeDialog(){
 function we_getImageConvertDialog(){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$_content = array();
-	
+
 	$okbut = we_button::create_button("ok", "javascript:doOK();");
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 	$buttons = we_button::position_yes_no_cancel($okbut,null,$cancelbut);
@@ -320,7 +320,7 @@ function we_getImageRotateDialog(){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 	$_content = array();
-	
+
 	$okbut = we_button::create_button("ok", "javascript:doOK();");
 	$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
 

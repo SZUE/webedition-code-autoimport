@@ -91,7 +91,7 @@ $rootDir = ((isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5] != "") ? $_
 
 <?php }
 if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") {?>
-	<?php print $_REQUEST["we_cmd"][4].";\n"; 
+	<?php print $_REQUEST["we_cmd"][4].";\n";
 	}?>
      close();
      }
@@ -104,7 +104,8 @@ if(isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4]!="") {?>
      }
 
 </script>
-<script type="text/javascript" src="<?php print JS_DIR . "keyListener.js"; ?>"></script>
+<?php
+echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 </head>
 
 <frameset rows="73,*,<?php print ( (isset($_REQUEST["we_cmd"][2]) && $_REQUEST["we_cmd"][2] ) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">

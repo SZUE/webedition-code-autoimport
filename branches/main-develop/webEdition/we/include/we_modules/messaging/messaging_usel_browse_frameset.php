@@ -36,12 +36,11 @@ htmlTop();
 print STYLESHEET;
 
 $browser = new we_browserDetect();
-
+echo we_htmlElement::jsScript(JS_DIR.'images.js').
+	we_htmlElement::jsScript(JS_DIR.'windows.js').
+	we_htmlElement::jsScript(JS_DIR.'messaging_hl.js').
+	we_htmlElement::jsScript(JS_DIR.'messaging_std.js');
 ?>
- <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
- <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
- <script type="text/javascript" src="<?php echo JS_DIR?>messaging_hl.js"></script>
- <script type="text/javascript" src="<?php echo JS_DIR?>messaging_std.js"></script>
  <script type="text/javascript">
 
  var loaded=0;

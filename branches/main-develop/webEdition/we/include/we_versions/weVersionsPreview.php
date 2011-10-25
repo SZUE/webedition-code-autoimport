@@ -718,8 +718,7 @@ function previewVersion(ID, newID) {
 }
 
 </script>
-<script src="<?php print JS_DIR; ?>windows.js"  type="text/javascript"></script>
-<?php print $js;?>
+<?php print we_htmlElement::jsScript(JS_DIR.'windows.js').$js;?>
 <style type="text/css" media="screen">
 body {margin: 0;padding: 0;}
 td {font-size:11px;vertical-align:top;}

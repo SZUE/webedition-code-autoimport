@@ -79,8 +79,8 @@ print STYLESHEET;
 //	---> Loading some Javascript
 //
 
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script  type="text/javascript">
 <!--
 function we_checkObjFieldname(i){
@@ -112,7 +112,7 @@ function we_checkObjFieldname(i){
 </head>
 
 <body onUnload="doUnload()" class="weEditorBody">
-<form name="we_form" method="post"><?php $we_doc->pHiddenTrans(); 
+<form name="we_form" method="post"><?php $we_doc->pHiddenTrans();
 
 if($we_doc->ID){
 	$ctable = OBJECT_X_TABLE.$we_doc->ID;

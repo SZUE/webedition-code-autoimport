@@ -280,8 +280,7 @@ class weDialog{
 	function getJs() {
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 		$_BROWSER=new we_browserDetect();
-		$js = '
-			<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>
+		$js = we_htmlElement::jsScript(JS_DIR.'windows.js').'
 			<script  type="text/javascript"><!--
 				var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
 				var textareaFocus = false;

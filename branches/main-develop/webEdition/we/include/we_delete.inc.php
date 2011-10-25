@@ -472,7 +472,7 @@ if (!$wfchk) {
 					g_l('alert',"[nothing_to_delete]"),
 					WE_MESSAGE_WARNING) . "\n";
 		}
-		print '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>' . "\n";
+		print we_htmlElement::jsScript(JS_DIR.'windows.js');
 		print '<script  type="text/javascript"><!--
 ' . $script . '
 //-->

@@ -669,8 +669,8 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getPropertyJS(){
-	?>
-		<script  type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+	echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+		?>
 		<script  type="text/javascript">
 			var loaded;
 
@@ -1256,7 +1256,7 @@ class weWorkflowView extends weWorkflowBase{
 		$_space = 100;
 		$_parts = array();
 
-		$out = '<script  type="text/javascript" src="'.JS_DIR.'tooltip.js"></script>';
+		$out = we_htmlElement::jsScript(JS_DIR.'tooltip.js');
 		$out .= '<script  type="text/javascript">function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
@@ -1448,7 +1448,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-		$out  = '<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>
+		$out  = we_htmlElement::jsScript(JS_DIR.'windows.js').'
 		<script  type="text/javascript">function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);

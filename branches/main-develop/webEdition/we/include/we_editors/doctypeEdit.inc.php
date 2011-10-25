@@ -173,19 +173,19 @@ echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
 
 print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-<script type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
 <script type="text/javascript"><!--
 	<?php if($we_show_response){
 		print $we_JavaScript.';';
 		 if($we_responseText){ ?>
 			opener.top.toggleBusy(0);
-			<?php print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type); 
+			<?php print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
 
-	 }} 
+	 }}
 	 if($_REQUEST["we_cmd"][0] == "deleteDocType"){
 		if(!we_hasPerm("EDIT_DOCTYPE")){
-			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR); 
+			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR);
 		}else{?>
 			if(confirm("<?php printf(g_l('weClass',"[doctype_delete_prompt]"),$we_doc->DocType); ?>")) {
 				we_cmd("deleteDocTypeok","<?php print $_REQUEST["we_cmd"][1]; ?>");
@@ -194,7 +194,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 	if($_REQUEST["we_cmd"][0] == "deleteDocTypeok"){ ?>
 		opener.top.makefocus = self;
 		opener.top.header.document.location.reload();
-		<?php print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE); 
+		<?php print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_NOTICE);
 	 } ?>
 
 	var countSaveLoop = 0;
@@ -325,7 +325,7 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 	function updateEntry(id,text,pid,tab) {
 		opener.top.updateEntry(id,text,pid,tab);
 	}
-	
+
 	function disableLangDefault(allnames,allvalues,deselect){
 		var arr = allvalues.split(",");
 
@@ -337,8 +337,8 @@ print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 		w=allnames+'['+deselect+']';
 		e = document.getElementById(w);
 		e.disabled=true;
-		
-		
+
+
 	}
 //-->
 </script>

@@ -89,4 +89,5 @@ echo $emos->getEmosJsFooter();
 ?>
 //-->
 </script>
-<script type="text/javascript" src="<?php print id_to_path(WE_ECONDA_ID); ?>"></script>
+<?php
+echo we_htmlElement::jsScript(id_to_path(WE_ECONDA_ID));

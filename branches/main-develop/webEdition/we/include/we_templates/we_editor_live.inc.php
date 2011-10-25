@@ -25,8 +25,8 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 htmlTop();
- print STYLESHEET; ?>
-<script  type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+ print STYLESHEET;
+ echo we_htmlElement::jsScript(JS_DIR.'windows.js');?>
 <script  type="text/javascript"><!--
 var w = new jsWindow("","live",100,100,350,220,true,false);
 var d = w.wind.document;

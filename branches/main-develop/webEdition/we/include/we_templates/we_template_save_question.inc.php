@@ -39,8 +39,8 @@ if ($nrTemplatesUsedByThisTemplate) {
 } else {
 	$alerttext = sprintf((($nrDocsUsedByThisTemplate==1) ? g_l('alert',"[template_save_warning1]") : g_l('alert',"[template_save_warning]")),$nrDocsUsedByThisTemplate);
 }
+echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');
 ?>
-<script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
 <script  type="text/javascript">
 
 // functions for keyBoard Listener

@@ -37,7 +37,7 @@ $messaging->init($_SESSION["we_data"]['we_messagin_setting']);
 <html>
 <head>
     <title><?php echo g_l('modules_messaging','[settings]') ?></title>
-    <script type="text/javascript" src="/webEdition/js/we_showMessage.js"></script>
+    <?php echo we_htmlElement::jsScript(JS_DIR.'we_showMessage.js');?>
     <script type="text/javascript">
     <!--
 <?php

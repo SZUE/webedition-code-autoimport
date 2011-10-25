@@ -57,12 +57,11 @@ if (isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview") {
 ";
 }
 
-?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>we_textarea.js"></script>
-<?php if (isset($GLOBALS["we_doc"])) { ?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>seeMode.php?EditPage=<?php print $GLOBALS["we_doc"]->EditPageNr; ?>&ContentType=<?php print $GLOBALS["we_doc"]->ContentType; ?>"></script>
+echo we_htmlElement::jsScript(JS_DIR.'we_textarea.js');
 
-<?php } ?>
+if (isset($GLOBALS["we_doc"])) {
+	echo we_htmlElement::jsScript(JS_DIR.'seeMode.php?EditPage='.$GLOBALS["we_doc"]->EditPageNr.'&ContentType='.$GLOBALS["we_doc"]->ContentType);
+} ?>
 <script  type="text/javascript">
 
 var _controller = (opener && opener.top.weEditorFrameController) ? opener.top.weEditorFrameController : top.weEditorFrameController;

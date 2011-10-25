@@ -256,12 +256,12 @@
 				}
 		}
 
-		function getHeader($encoding=''){
+		function getHeader($encoding='',$type=''){
 			if($encoding==''){
 				$encoding = $GLOBALS['WE_BACKENDCHARSET'];
 			}
 			return "<?xml version=\"1.0\" encoding=\"" . $encoding . "\" standalone=\"yes\"?>"."\n".
-					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">"."\n";
+					 "<webEdition version=\"".WE_VERSION."\" type=\""."\" xmlns:we=\"we-namespace\">"."\n";
 		}
 
 		function getFooter(){

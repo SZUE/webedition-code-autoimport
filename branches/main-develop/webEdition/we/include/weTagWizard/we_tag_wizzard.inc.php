@@ -116,11 +116,11 @@ if($typeAttribute = $weTag->getTypeAttribute()){
 print htmlTop();
 print STYLESHEET;
 print '
-<link href="' . CSS_DIR . 'tagWizard.css" rel="styleSheet" type="text/css">
-<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>
-<script  type="text/javascript" src="' . JS_DIR . 'tagWizard.js"></script>
-<script  type="text/javascript" src="' . JS_DIR . 'keyListener.js"></script>
-<script  type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
+<link href="' . CSS_DIR . 'tagWizard.css" rel="styleSheet" type="text/css">'.
+	we_htmlElement::jsScript(JS_DIR.'windows.js').
+	we_htmlElement::jsScript(JS_DIR.'tagWizard.js').
+	we_htmlElement::jsScript(JS_DIR.'keyListener.js').
+	we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').'
 <script type="text/javascript">
 
 function closeOnEscape() {

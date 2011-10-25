@@ -34,11 +34,10 @@ if($_SESSION["user"]["ID"]){
 	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID="'.abs($_SESSION["user"]["ID"]).'" AND sessionID="'.session_id().'"');
 }
 
+echo we_htmlElement::jsScript('/webEdition/js/libs/yui/yahoo-min.js').
+	we_htmlElement::jsScript('/webEdition/js/libs/yui/event-min.js').
+	we_htmlElement::jsScript('/webEdition/js/libs/yui/connection-min.js');
 ?>
-
-<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
 
 <script  type="text/javascript">
 

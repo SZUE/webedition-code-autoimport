@@ -32,8 +32,8 @@ htmlTop(g_l('global','[select_color]'));
 
 print STYLESHEET;
 
+echo we_htmlElement::jsScript(JS_DIR.'we_colors2.js');
 ?>
-<script  type="text/javascript" src="<?php print JS_DIR; ?>we_colors2.js"></script>
 <script  type="text/javascript">
 
 function selectColor(c){
@@ -52,7 +52,7 @@ function setColor(){
 		opener._EditorFrame.setEditorIsHot(true);
 		opener.we_cmd("reload_editpage");
 
-	<?php } 
+	<?php }
 	}else{ ?>
 	window.returnValue = document.we_form.colorvalue.value;
 <?php } ?>

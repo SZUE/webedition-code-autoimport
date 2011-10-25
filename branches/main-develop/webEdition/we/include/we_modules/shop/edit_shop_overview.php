@@ -96,9 +96,8 @@ function numfom($result){
 $mwst = (!empty($mwst))?$mwst:1;
 $info = g_l('modules_shop','[anzahl]').": <b>".($f+$r)."</b><br>".g_l('modules_shop','[unbearb]').": ".(($f)?$f:"0");
 $stat = g_l('modules_shop','[umsatzgesamt]').": <b>".numfom(($bezahlt+$unbezahlt)*$mwst)." $waehr </b><br><br>".g_l('modules_shop','[schonbezahlt]').": ".numfom($bezahlt*$mwst)." $waehr <br>".g_l('modules_shop','[unbezahlt]').": ".numfom($unbezahlt*$mwst)." $waehr";
+echo we_htmlElement::jsScript(JS_DIR.'images.js').we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-    <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 	</head>
 
 <body class="weEditorBody" onUnload="doUnload()"><?php

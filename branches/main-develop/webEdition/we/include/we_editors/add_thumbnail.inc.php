@@ -109,9 +109,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 '.we_button::create_state_changer();
 
-	print '
-<script src="'.JS_DIR.'windows.js" type="text/javascript"></script>
-';
+	print we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 
 	print STYLESHEET . "</head>";

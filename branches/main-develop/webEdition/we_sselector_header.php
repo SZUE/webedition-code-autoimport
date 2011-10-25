@@ -33,9 +33,8 @@ protect();
 htmlTop();
 
 print STYLESHEET;
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-
-<script  type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
 <script  type="text/javascript"><!--
   var name_ord=0;
   var type_ord=0;

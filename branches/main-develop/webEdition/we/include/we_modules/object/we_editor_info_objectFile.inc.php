@@ -107,9 +107,9 @@ if(defined("WORKFLOW_TABLE")){
 			);
 }
 
- print STYLESHEET; ?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
+ print STYLESHEET;
+ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php"); ?>
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 <?php

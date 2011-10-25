@@ -36,8 +36,8 @@ if(defined("SCHEDULE_TABLE")){
 htmlTop();
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
-print STYLESHEET; ?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+print STYLESHEET;
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');?>
 	</head>
 	<body  class="weEditorBody" onunload="doUnload()">
 <form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans();

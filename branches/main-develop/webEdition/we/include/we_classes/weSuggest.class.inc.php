@@ -71,7 +71,7 @@ class weSuggest {
 	var $inputMayBeEmpty      = array();
 	var $_doOnItemSelect      = array();
 	var $_doOnTextfieldBlur   = array();
-	
+
 
 
 	var $preCheck = "";
@@ -139,16 +139,15 @@ class weSuggest {
 	 * @return String
 	 */
 	function getYuiJsFiles() {
-		$out  = "<script type='text/javascript' src='/webEdition/js/libs/yui/yahoo-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/dom-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/event-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/datasource-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/connection-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/animation-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/json-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/libs/yui/autocomplete-min.js'></script>\n";
-		$out .= "<script type='text/javascript' src='/webEdition/js/utils/we_cmd_encode.js'></script>\n";
-		return $out;
+		return we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/dom-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/datasource-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/animation-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/json-min.js').
+			we_htmlElement::jsScript(JS_DIR.'libs/yui/autocomplete-min.js').
+			we_htmlElement::jsScript(JS_DIR.'utils/we_cmd_encode.js');
 	}
 
 	function getYuiCode(){

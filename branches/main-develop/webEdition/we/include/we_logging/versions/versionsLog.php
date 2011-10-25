@@ -37,10 +37,10 @@ htmlTop(g_l('versions','[versions_log]'));
 
 print STYLESHEET;
 
-echo '<script type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>';
-echo '<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>';
+echo we_htmlElement::jsScript(JS_DIR.'windows.js').
+	we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+	we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
+	we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js');
 
 print $versionsLogView->getJS();
 

@@ -603,7 +603,7 @@ class liveUpdateFunctions {
 					}
 					if (!$leDB->query($query)) {
 						$success = false;
-					}tblTemporaryDoc.sql
+					}
 				} else {//Old DB code
 					if (isset($_SESSION['le_db_prefix'])) {
 						$query = preg_replace("/^DROP TABLE IF EXISTS /", "DROP TABLE IF EXISTS " . $_SESSION['le_db_prefix'], $query, 1);

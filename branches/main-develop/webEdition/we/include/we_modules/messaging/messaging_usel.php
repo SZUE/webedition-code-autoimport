@@ -43,9 +43,9 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 <html>
   <head>
     <title><?php print g_l('modules_messaging','[sel_rcpts]'); ?></title>
-  <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-  <script type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
-  <script type="text/javascript" src="<?php print JS_DIR; ?>we_showMessage.js"></script>
+		<?php echo we_htmlElement::jsScript(JS_DIR.'windows.js').
+			we_htmlElement::jsScript(JS_DIR.'messaging_std.js').
+			we_htmlElement::jsScript(JS_DIR.'we_showMessage.js');?>
   <script type="text/javascript">
 	<?php
 	if (!empty($_REQUEST['mode']) && ($_REQUEST['mode'] == 'save_addrbook')) {

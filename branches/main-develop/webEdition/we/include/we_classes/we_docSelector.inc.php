@@ -458,7 +458,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 	}
 
 	function printFramesetJavaScriptIncludes() {
-		print '<script  type="text/javascript" src="'.WEBEDITION_DIR.'js/windows.js"></script>';
+		print we_htmlElement::jsScript(JS_DIR.'windows.js');
 	}
 
 	function printHeaderHeadlines() {

@@ -97,7 +97,7 @@ if(z != 0){
 ##################################################################################################
 
 	function getJs(){
-		return weDialog::getJs(). '<script  type="text/javascript" src="'.JS_DIR.'we_colors2.js"></script>
+		return weDialog::getJs(). we_htmlElement::jsScript(JS_DIR.'we_colors2.js').'
 <script  type="text/javascript">
 
 function selectColor(c){

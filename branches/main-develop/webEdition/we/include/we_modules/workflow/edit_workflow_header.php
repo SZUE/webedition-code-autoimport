@@ -38,9 +38,8 @@ print STYLESHEET;
     $port = defined("HTTP_PORT") ? HTTP_PORT : "";
     $protocol=getServerProtocol();
     $jmenu = new weJavaMenu($we_menu_workflow,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30);
-
+echo we_htmlElement::jsScript(JS_DIR.'images.js');
 ?>
-	<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
 	<script type="text/javascript">
         function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);

@@ -3185,7 +3185,7 @@ function we_templateInit(){
 function we_templateHead(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] ){
 		print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
-		print '<script  type="text/javascript" src="'.JS_DIR.'windows.js"></script>';
+		print we_htmlElement::jsScript(JS_DIR.'windows.js');
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_editors/we_editor_script.inc.php');
 	} else if(defined('WE_ECONDA_STAT') && defined('WE_ECONDA_PATH') && WE_ECONDA_STAT  && WE_ECONDA_PATH !='' && !$GLOBALS['we_doc']->InWebEdition) {
 		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTracking/econda/weEcondaImplementHeader.inc.php');

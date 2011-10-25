@@ -68,8 +68,7 @@ class weJavaMenu {
 			($this->port==443 && $this->protocol=="https") ||
 			(!$this->port)
 		) ? "" : ":".$this->port;
-		return '
-			<script type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>
+		return we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').'
 			<script  type="text/javascript"><!--
 				function menuaction(cmd) {
 					'.$this->lcmdFrame.'.location.replace("'.$this->protocol.'://'.$this->SERVER_NAME.$portVar.'/webEdition/we_lcmd.php?we_cmd[0]="+cmd);

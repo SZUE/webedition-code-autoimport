@@ -175,9 +175,10 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 
 <title><?php print 'Errorlog';?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET'];?>">
-
-<script type="text/javascript" src="<?php print JS_DIR; ?>attachKeyListener.js"></script>
-<script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
+<?php
+echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
+	we_htmlElement::jsScript(JS_DIR.'keyListener.js');
+?>
 <script type="text/javascript">
 	function closeOnEscape() {
 		return true;

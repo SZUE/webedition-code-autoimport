@@ -263,21 +263,21 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) && file_exists($tmp))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . '<br>';
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_htmlElement::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . '<br>';
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_htmlElement::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . '<br>';
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_htmlElement::htmlBr();
 	}
 
 	if($_error_count == 1){
-		$_error .= '<br>' . g_l('start', '[solution_one]');
+		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_one]');
 	} else if($_error_count > 1){
-		$_error .= '<br>' . g_l('start', '[solution_more]');
+		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_more]');
 	}
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
@@ -293,21 +293,21 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) && file_exists($tmp))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . '<br>';
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_htmlElement::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . '<br>';
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_htmlElement::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . '<br>';
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_htmlElement::htmlBr();
 	}
 
 	if($_error_count == 1){
-		$_error .= '<br>' . g_l('start', '[solution_one]');
+		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_one]');
 	} else if($_error_count > 1){
-		$_error .= '<br>' . g_l('start', '[solution_more]');
+		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_more]');
 	}
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
@@ -317,27 +317,27 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-	$_error = we_htmlElement::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . '<br><br>');
+	$_error = we_htmlElement::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_htmlElement::htmlBr().we_htmlElement::htmlBr());
 
 	$_error_count = 0;
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) && file_exists($tmp))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . '<br>';
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_htmlElement::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . '<br>';
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_htmlElement::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . '<br>';
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_htmlElement::htmlBr();
 	}
 
 	if($_error_count == 1){
-		$_error .= '<br>' . g_l('start', '[solution_one]');
+		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_one]');
 	} else if($_error_count > 1){
-		$_error .= '<br>' . g_l('start', '[solution_more]');
+		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_more]');
 	}
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
@@ -432,7 +432,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
 
-	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!<br/><br/></noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;">
+	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_htmlElement::htmlBr().we_htmlElement::htmlBr().'</noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;">
 	<tr style="height:10px;">
 		<td style="width:260px;background-color:#386AAB;"></td>
 		<td rowspan="2" style="width:430px;">' . $_loginTable . '</td>

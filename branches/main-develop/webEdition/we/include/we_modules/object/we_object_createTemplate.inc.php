@@ -170,7 +170,7 @@ function getTmplTableRow($type,$name,$isField=false){
 }
 
 htmlTop(g_l('weClass','[generateTemplate]'));
-echo "<script language='JavaScript' type='text/javascript' src='".WEBEDITION_DIR."js/windows.js'></script>";
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 print STYLESHEET;
 

@@ -318,7 +318,7 @@ EOS;
 
 		// add javascript tags for external JavaScript files
 		foreach ($this->_JSFiles as $file) {
-			$html .= "\t" . '<script type="text/javascript" src="' . $file . '"></script>' . "\n";
+			$html .=  we_htmlElement::jsScript($file);
 		}
 
 		$html .= "\t<script type=\"text/javascript\" language=\"JavaScript\">\n";

@@ -1263,7 +1263,7 @@ if (isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]) {
 					</td></tr>
 					<tr><td colspan="2">' . getPixel(2, 5) . '</td></tr>
 					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
-					<tr><td colspan="2">' . getPixel(2, 5) . '<br>' . copyFolderFrag::formCreateCategoryChooser() . we_htmlElement::htmlHidden(
+					<tr><td colspan="2">' . getPixel(2, 5) . we_htmlElement::htmlBr() . copyFolderFrag::formCreateCategoryChooser() . we_htmlElement::htmlHidden(
 			array(
 				"name" => "we_cmd[0]", "value" => $_REQUEST["we_cmd"][0]
 			)) . we_htmlElement::htmlHidden(array(

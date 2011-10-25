@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // exit if script called directly
-if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == '/we.inc.php') {
+if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == '/we.inc.php'){
 	exit();
 }
 
 // remove trailing slash
-if (isset($_SERVER['DOCUMENT_ROOT'])) {
+if(isset($_SERVER['DOCUMENT_ROOT'])){
 	$_SERVER['DOCUMENT_ROOT'] = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
 }
 
@@ -48,9 +48,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_installed_m
 // merge we_installed_modules and we_active_integrated_modules to we_active_modules
 $_we_active_modules = array_merge($_we_active_integrated_modules, $_we_installed_modules);
 
-foreach ($_we_active_modules as $active) {
-	if (file_exists(
-									$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php')) {
+foreach($_we_active_modules as $active){
+	if(file_exists(
+			$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
 	}
 }
@@ -58,20 +58,20 @@ foreach ($_we_active_modules as $active) {
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
-if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
+if(isset($_we_active_modules) && in_array('shop', $_we_active_modules)){
 	$MNEMONIC_EDITPAGES['11'] = 'variants';
 }
-if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
+if(isset($_we_active_modules) && in_array('customer', $_we_active_modules)){
 	$MNEMONIC_EDITPAGES['14'] = 'customer';
 }
 
 
-if (!defined('NO_SESS')) {
+if(!defined('NO_SESS')){
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_session.inc.php");
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
-	if (!empty($_tooldefines)) {
-		foreach ($_tooldefines as $_tooldefine) {
+	if(!empty($_tooldefines)){
+		foreach($_tooldefines as $_tooldefine){
 			@include_once ($_tooldefine);
 		}
 	}
@@ -80,64 +80,64 @@ if (!defined('NO_SESS')) {
 
 define('MULTIEDITOR_AMOUNT', (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16);
 
-if (defined('WE_WEBUSER_LANGUAGE')) {
+if(defined('WE_WEBUSER_LANGUAGE')){
 	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
 } else{
 	$sid = '';
 }
 //set new sessionID from dw-extension
-if ((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')) {
+if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUEST['weSessionId'] != '' && isset($_REQUEST['cns']) && $_REQUEST['cns'] == 'dw')){
 	$sid = strip_tags($_REQUEST['weSessionId']);
 	$sid = htmlspecialchars($sid);
 	session_id($sid);
 	@session_start();
 }
-if (!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC'])) {
+if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
 	@session_start();
 }
-if (isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != '') {
-	if (is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $_SESSION['prefs']['Language'])) {
+if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
+	if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $_SESSION['prefs']['Language'])){
 		$GLOBALS['WE_LANGUAGE'] = $_SESSION['prefs']['Language'];
-	} else { //  bugfix #4229
+	} else{ //  bugfix #4229
 		$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 		$_SESSION['prefs']['Language'] = WE_LANGUAGE;
 	}
-} else {
+} else{
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
-if (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != '') {
+if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] != ''){
 	$GLOBALS['WE_BACKENDCHARSET'] = $_SESSION['prefs']['BackendCharset'];
-} else {
-	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET')? WE_BACKENDCHARSET : 'UTF-8';
+} else{
+	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
-if (isset($_we_active_modules) && in_array('shop', $_we_active_modules)) {
+if(isset($_we_active_modules) && in_array('shop', $_we_active_modules)){
 	$MNEMONIC_EDITPAGES['11'] = 'variants';
 }
-if (isset($_we_active_modules) && in_array('customer', $_we_active_modules)) {
+if(isset($_we_active_modules) && in_array('customer', $_we_active_modules)){
 	$MNEMONIC_EDITPAGES['14'] = 'customer';
 }
 
 
-if (!isset($GLOBALS['WE_IS_DYN'])) {
+if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_perms.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_available_modules.inc.php');
 	//	At last we set the charset, as determined from the choosen language
 	define('WE_DEFAULT_TITLE', 'webEdition::');
 	define('WE_DEFAULT_HEAD', '<title>' . WE_DEFAULT_TITLE . '</title>' .
-					'<meta http-equiv="expires" content="0">' .
-					'<meta http-equiv="pragma" content="no-cache">' .
-					'<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
-					'<script type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>' .
-					'<script type="text/javascript" src="' . JS_DIR . 'attachKeyListener.js"></script>'
+		'<meta http-equiv="expires" content="0">' .
+		'<meta http-equiv="pragma" content="no-cache">' .
+		'<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
+		we_htmlElement::jsScript(JS_DIR . 'we_showMessage.js') .
+		we_htmlElement::jsScript(JS_DIR . 'we_showMessage.js')
 	);
 
-	
+
 	//send header?
-	if (isset($_REQUEST['we_cmd'][0])) {
-		switch ($_REQUEST['we_cmd'][0]) {
+	if(isset($_REQUEST['we_cmd'][0])){
+		switch($_REQUEST['we_cmd'][0]){
 			case 'edit_link':
 			case 'edit_linklist':
 			case 'show_newsletter':
@@ -147,37 +147,36 @@ if (!isset($GLOBALS['WE_IS_DYN'])) {
 				break;
 			case 'reload_editpage':
 				$header = (!($_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW ||
-								$_SESSION['EditPageNr'] == WE_EDITPAGE_CONTENT ||
-								$_SESSION['EditPageNr'] == WE_EDITPAGE_PROPERTIES
-								));
+					$_SESSION['EditPageNr'] == WE_EDITPAGE_CONTENT ||
+					$_SESSION['EditPageNr'] == WE_EDITPAGE_PROPERTIES
+					));
 				break;
 			case 'switch_edit_page':
 				$header = (!($_REQUEST['we_cmd'][1] == WE_EDITPAGE_CONTENT ||
-								$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PREVIEW ||
-								$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PROPERTIES
-								));
+					$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PREVIEW ||
+					$_REQUEST['we_cmd'][1] == WE_EDITPAGE_PROPERTIES
+					));
 				break;
 			case 'load_editor':
 				$header = (!(isset($_REQUEST['we_transaction']) &&
-								isset($_SESSION['we_data'][$_REQUEST['we_transaction']]) &&
-								$_SESSION['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
-								$_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW
-								));
+					isset($_SESSION['we_data'][$_REQUEST['we_transaction']]) &&
+					$_SESSION['we_data'][$_REQUEST['we_transaction']][0]['Table'] == FILE_TABLE &&
+					$_SESSION['EditPageNr'] == WE_EDITPAGE_PREVIEW
+					));
 				break;
 			default:
 				$header = true;
 		}
-	} else if ((isset($show_stylesheet) && $show_stylesheet)) {
+	} else if((isset($show_stylesheet) && $show_stylesheet)){
 		$header = false;
-	} else {
+	} else{
 		$header = true;
 	}
 
-	if ($header) {
+	if($header){
 		header('Content-Type: text/html; charset=' . g_l('charset', '[charset]'));
 		unset($header);
 	}
-
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_message_reporting/we_message_reporting.class.php');

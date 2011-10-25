@@ -753,8 +753,7 @@ function enableRootDirButs(){
 	}
 
 	function printHeaderJSIncluddes(){
-		print '<script  type="text/javascript" src="'.WEBEDITION_DIR.'js/images.js"></script>
-';
+		print we_htmlElement::jsScript(JS_DIR.'images.js');
 	}
 
 	function printHeaderJSDef(){

@@ -2092,14 +2092,14 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	// ********************************************************************************
 	// "Html output for order with articles"
 	//
-?>
-	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar.js"; ?>"></script>
-	<script type="text/javascript" src="<?php print JS_DIR."jscalendar/calendar-setup.js"; ?>"></script>
-	<script type="text/javascript" src="<?php print WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js"; ?>"></script>
+echo we_htmlElement::jsScript(JS_DIR."jscalendar/calendar.js").
+	we_htmlElement::jsScript(JS_DIR."jscalendar/calendar-setup.js").
+	we_htmlElement::jsScript(JS_DIR.WEBEDITION_DIR."we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/calendar.js").
+	we_htmlElement::jsScript(JS_DIR.'images.js').
+	we_htmlElement::jsScript(JS_DIR.'windows.js');
+	?>
 	<link type="text/css" rel="stylesheet" href="<?php print JS_DIR."jscalendar/skins/aqua/theme.css"; ?>" title="Aqua" />
 
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-    <script language="JavaScript" type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
 	<script language="JavaScript" type="text/javascript">
 	function SendMail(was){
 		document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=".$_REQUEST["bid"]; ?>&SendMail=" + was ;

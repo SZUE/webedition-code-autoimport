@@ -33,8 +33,8 @@ protect();
 htmlTop();
 
 print STYLESHEET;
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-<script  type="text/javascript" src="<?php print WEBEDITION_DIR; ?>js/windows.js"></script>
 <script  type="text/javascript"><!--
    function addOption(txt,id){
       var a=document.forms["we_form"].elements["filter"];

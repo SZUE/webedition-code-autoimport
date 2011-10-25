@@ -40,9 +40,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 			<meta name="description" content="<?php print $we_doc->getElement("Description") ?>">
 		<?php } ?>
 		<title><?php print $we_doc->getElement("Title") ?></title>
-		<?php if (isset($we_editmode) && $we_editmode) { ?>
-			<script  type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
-			<?php
+		<?php if (isset($we_editmode) && $we_editmode) {
+			echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 		} else {
 			print we_tag("textarea", array("name" => "HEAD"));

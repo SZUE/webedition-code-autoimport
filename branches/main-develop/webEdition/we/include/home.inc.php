@@ -35,7 +35,7 @@ htmlTop();
 
 $js_load=array('windows','utils/dimension','utils/prototypes','utils/cockpit');
 foreach($js_load as $js){
-	print'<script src="'.JS_DIR.$js.'.js" type="text/javascript"></script>';
+	print we_htmlElement::jsScript(JS_DIR.$js.'.js');
 }
 unset($js_load);
 
@@ -56,9 +56,7 @@ print
 	color: black;
 	text-decoration:none;
 }
-</style>
-<script language=\"JavaScript\" type=\"text/javascript\" src=\"".JS_DIR."/utils/prototypes.js\"></script>
-";
+</style>".we_htmlElement::jsScript(JS_DIR.'/utils/prototypes.js');
 
 if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 
@@ -1116,7 +1114,7 @@ function getUser(){
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
-	
+
 	print
 			we_htmlElement::jsElement(
 					'

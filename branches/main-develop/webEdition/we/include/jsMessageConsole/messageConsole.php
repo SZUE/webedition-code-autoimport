@@ -94,9 +94,8 @@ li.msgError {
 	color				: red;
 }
 </style>
-<script type="text/javascript" src="<?php print JS_DIR; ?>messageConsoleImages.js"></script>
-<script type="text/javascript" src="<?php print JS_DIR; ?>messageConsoleWindow.js"></script>
-
+<?php echo we_htmlElement::jsScript(JS_DIR.'messageConsoleImages.js').we_htmlElement::jsScript(JS_DIR.'messageConsoleWindow.js');
+?>
 </head>
 
 <body onload="messageConsoleWindow.init();" onunload="messageConsoleWindow.remove();" class="weDialogBody" style="overflow:hidden;">

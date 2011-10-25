@@ -88,8 +88,7 @@ switch ($exitDocCt) {
 }
 
 
-print "
-<script type=\"text/javascript\" src=\"" . JS_DIR . "keyListener.js\"></script>
+print we_htmlElement::jsScript(JS_DIR.'keyListener.js')."
 <script type=\"text/javascript\">
 
 	var _nextCmd = null;

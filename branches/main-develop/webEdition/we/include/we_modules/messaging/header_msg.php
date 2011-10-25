@@ -29,8 +29,8 @@ protect();
 
 <html>
 <head>
-	<?php print STYLESHEET; ?>
-	<script type="text/javascript" src="<?php print JS_DIR ?>attachKeyListener.js"></script>
+	<?php print STYLESHEET;
+	echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js');?>
 	<script type="text/javascript">
 
 		function update(newmsg_count, newtodo_count) {

@@ -153,9 +153,8 @@ switch($_REQUEST["mcmd"]) {
 	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
 	break;
     case 'new_message':
+			echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	?>
-
-	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
 	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_newmessage.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=<?php echo $_REQUEST['mode']?>", "messaging_new_message",-1,-1,670,530,true,false,true,false);
@@ -164,8 +163,8 @@ switch($_REQUEST["mcmd"]) {
 <?php
 		break;
 	case 'new_todo':
+		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
 	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
@@ -174,8 +173,8 @@ switch($_REQUEST["mcmd"]) {
 <?php
 		break;
 	case 'forward_todo':
+		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
 	<script type="text/javascript">
 	<!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
@@ -184,8 +183,8 @@ switch($_REQUEST["mcmd"]) {
 <?php
 		break;
 	case 'rej_todo':
+		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-	<script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
 
 	<script type="text/javascript">
 	<!--
@@ -207,8 +206,8 @@ switch($_REQUEST["mcmd"]) {
 	break;
     case 'update_todo':
 	if (!empty($messaging->selected_message)) {
-	    ?>
-	    <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
+		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+		?>
 	    <script type="text/javascript">
 	    <!--
 		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
@@ -373,8 +372,8 @@ switch($_REQUEST["mcmd"]) {
 	    }
 	    break;
     case 'edit_settings':
+			echo we_htmlElement::jsScript(JS_DIR.'windows.js');
         ?>
-   	    <script type="text/javascript" src="<?php echo JS_DIR?>windows.js"></script>
         <script type="text/javascript">
         <!--
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_settings.php?we_transaction=<?php echo    $_REQUEST['we_transaction']?>&mode=<?php echo $_REQUEST['mode']?>", "messaging_settings",-1,-   1,280,200,true,false,true,false);
@@ -385,8 +384,8 @@ switch($_REQUEST["mcmd"]) {
     case 'save_settings':
     	if ($ui) {
 	        if ($messaging->save_settings(array('update_interval' => $ui))) {
+						echo we_htmlElement::jsScript(JS_DIR.'messaging_std.js');
 		    ?>
-		    <script type="text/javascript" src="<?php echo JS_DIR?>messaging_std.js"></script>
 		    <script type="text/javascript">
     		<!--
     			<?php print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[saved]'), WE_MESSAGE_NOTICE ); ?>

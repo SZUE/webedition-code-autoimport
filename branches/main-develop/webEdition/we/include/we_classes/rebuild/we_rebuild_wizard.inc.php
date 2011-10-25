@@ -1035,7 +1035,7 @@ abstract class we_rebuild_wizard{
 		}
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
-				STYLESHEET . "\n" . '<script src="'.JS_DIR.'windows.js"  type="text/javascript"></script>'."\n".
+				STYLESHEET . we_htmlElement::jsScript(JS_DIR.'windows.js').
 								($contents[0] ?
 								we_htmlElement::jsElement("<!--\n".$contents[0]."\n//-->") :
 								"")).

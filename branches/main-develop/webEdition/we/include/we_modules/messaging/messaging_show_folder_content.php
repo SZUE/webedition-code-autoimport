@@ -36,10 +36,8 @@ $browser = new we_browserDetect();
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
-
+echo we_htmlElement::jsScript(JS_DIR.'windows.js').we_htmlElement::jsScript(JS_DIR.'messaging_std.js');
 ?>
- <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
- <script type="text/javascript" src="<?php print JS_DIR; ?>messaging_std.js"></script>
  <script type="text/javascript">
     NN4 = <?php echo $browser->getBrowser() == 'nn' && $browser->getBrowserVersion() < 5 ? 'true' : 'false'?>;
     check0_img = new Image();

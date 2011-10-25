@@ -26,9 +26,8 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-?>
-<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-<?php print STYLESHEET; ?>
+echo we_htmlElement::jsScript(JS_DIR.'images.js');
+print STYLESHEET; ?>
     </head>
     <frameset rows="1,*,40" framespacing="0" border="0" frameborder="NO">
     <frame src="<?php print HTML_DIR?>whiteWithTopLine.html" scrolling="no" noresize>

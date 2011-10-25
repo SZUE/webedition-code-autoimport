@@ -66,7 +66,7 @@ protect();
 // Ausgabe beginnen
 htmlTop();
 
-echo '<script  type="text/javascript" src="' . JS_DIR . 'windows.js"></script>';
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 echo $we_doc->getSearchJS();
 

@@ -77,11 +77,8 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
 		}
 	}
 
-?>
-
-
- <script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
- <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
+echo we_htmlElement::jsScript(JS_DIR.'images.js').we_htmlElement::jsScript(JS_DIR.'windows.js');
+	?>
  <script type="text/javascript">
 
  var hot = 0;
@@ -277,7 +274,7 @@ fr.write("&nbsp;");
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 			fr.write("</a>");
 
-<?php } 
+<?php }
 if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
 			fr.write("<A HREF=\"javascript://\" onClick=\"doFolderClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 

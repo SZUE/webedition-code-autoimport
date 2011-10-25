@@ -118,8 +118,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	$okBut = we_button::create_button("ok", "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
 	print STYLESHEET;
+	echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	?>
-<script src="<?php print JS_DIR;?>windows.js"	type="text/javascript"></script>
 <script  type="text/javascript">top.focus();</script>
 </head>
 <body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"

@@ -53,7 +53,7 @@
 
 			$src =		'';
 			if(!defined("weOrderContainer_JS_loaded")) {
-				$src =		'<script src="'.$jsPath.'/weOrderContainer.js?t='.time().'" type="text/javascript"></script>'."\n";
+				$src =		we_htmlElement::jsScript($jsPath.'/weOrderContainer.js?t='.time());
 				define("weOrderContainer_JS_loaded", true);
 			}
 			$src .=		'<script type="text/javascript">'."\n"

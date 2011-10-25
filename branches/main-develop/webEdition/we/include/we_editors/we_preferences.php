@@ -6752,7 +6752,7 @@ function setColorField(name) {
 
 ' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert','[field_in_tab_notvalid_pre]')."\\n\\n".$acErrorMsg."\\n".g_l('alert','[field_in_tab_notvalid_post]'), WE_MESSAGE_ERROR) : ""));
 
-	$_we_win_js = '<script src="'.JS_DIR.'windows.js"  type="text/javascript"></script>';
+	$_we_win_js = we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 
 

@@ -31,9 +31,9 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/java_m
 <link rel="stylesheet" type="text/css" href="<?php print WEBEDITION_DIR; ?>css/menu/pro_drop_1.css" />
 <!-- IE 6 -->
 <?php $_BROWSER = new we_browserDetect();
-if($_BROWSER->getBrowser()== 'ie' && $_BROWSER->getBrowserVersion()<7){?>
-<script src="<?php print WEBEDITION_DIR; ?>css/menu/stuHover.js" type="text/javascript"></script>
-<?php }
+if($_BROWSER->getBrowser()== 'ie' && $_BROWSER->getBrowserVersion()<7){
+	echo we_htmlElement::jsScript(WEBEDITION_DIR.'css/menu/stuHover.js');
+ }
 
 //	width of java-/XUL-Menu
 $_menu_width = 360;
@@ -80,9 +80,9 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 	);
 }
 
+echo we_htmlElement::jsScript(JS_DIR.'images.js').
+	we_htmlElement::jsScript(JS_DIR.'weSidebar.php');
 ?>
-		<script type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-		<script src="<?php print JS_DIR; ?>weSidebar.php" type="text/javascript"></script>
 		<script type="text/javascript">
 			// initialize siebar in webedition.php
 			top.weSidebar = weSidebar;

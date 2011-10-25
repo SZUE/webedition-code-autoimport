@@ -49,8 +49,7 @@ function we_tag_tracker($attribs, $content){
 	$trackerurl = ($ssl ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . WE_TRACKER_DIR;
 
 	if ($type == 'standard') {
-		return '<!-- pageLogger Code BEGIN -->
-<script type="text/javascript" src="' . $trackerurl . '/scripts/picmodejs.js"></script>
+		return '<!-- pageLogger Code BEGIN -->'.we_htmlElement::jsScript($trackerurl . '/scripts/picmodejs.js').'
 <script type="text/javascript">
 <!--
 _my_stat_write(\'' . $websitename . '\',\'' . $trackerurl . '\'' . ($trackname ? (",'" . addslashes(

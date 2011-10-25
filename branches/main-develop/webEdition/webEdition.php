@@ -74,17 +74,18 @@ htmlTop("webEdition - ".$sn." - ".$_SESSION["user"]["Username"]);
 
 $online_help=true;
 
+echo we_htmlElement::jsScript(JS_DIR.'windows.js').
+	we_htmlElement::jsScript(JS_DIR.'weJsStrings.php').
+	we_htmlElement::jsScript(JS_DIR.'md5.js').
+	we_htmlElement::jsScript(JS_DIR.'weNavigationHistory.php').
+	we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+	we_htmlElement::jsScript(JS_DIR.'js/libs/yui/event-min.js').
+	we_htmlElement::jsScript(JS_DIR.'js/libs/yui/connection-min.js').
+	we_htmlElement::jsScript(JS_DIR.'keyListener.js').
+	we_htmlElement::jsScript(JS_DIR.'messageConsole.js');
+
 ?>
 <link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico" />
-<script src="<?php print JS_DIR; ?>windows.js"  type="text/javascript"></script>
-<script type="text/javascript" src="<?php print JS_DIR . "weJsStrings.php"; ?>"></script>
-<script src="<?php print JS_DIR; ?>md5.js"  type="text/javascript"></script>
-<script src="<?php print JS_DIR; ?>weNavigationHistory.php" type="text/javascript"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/yahoo-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/event-min.js"></script>
-<script type="text/javascript" src="/webEdition/js/libs/yui/connection-min.js"></script>
-<script  type="text/javascript" src="<?php print JS_DIR ?>keyListener.js"></script>
-<script  type="text/javascript" src="<?php print JS_DIR ?>messageConsole.js"></script>
 
 <script  type="text/javascript">
 

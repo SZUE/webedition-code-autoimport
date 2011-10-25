@@ -1534,7 +1534,7 @@ class doclistView {
 
 			$out .= $rightContent;
 
-			$out .= '</div>' . (($GLOBALS ["BROWSER"] == "IE") ? '<br>' : '');
+			$out .= '</div>' . (($GLOBALS ["BROWSER"] == "IE") ? we_htmlElement::htmlBr() : '');
 
 			if ($i < (count ( $content ) - 1) && (! isset ( $c ["noline"] ))) {
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';

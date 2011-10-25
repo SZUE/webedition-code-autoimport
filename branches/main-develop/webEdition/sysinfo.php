@@ -308,8 +308,8 @@
 <html>
 <head>
 <title><?php print g_l('sysinfo','[sysinfo]')?></title>
-<script type="text/javascript" src="<?php print JS_DIR; ?>attachKeyListener.js"></script>
-<script type="text/javascript" src="<?php print JS_DIR; ?>keyListener.js"></script>
+<?php echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
+	we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 <script type="text/javascript">
 	function closeOnEscape() {
 		return true;

@@ -124,10 +124,10 @@ function we_tag_checkForm($attribs, $content) {
 				return parseError(g_l('parser', '[checkForm_jsIncludePath_not_found]'));
 			}
 		} else {
-			$jsEventHandler = '<script type="text/javascript" src="' . $jsIncludePath . '"></script>';
+			$jsEventHandler = we_htmlElement::jsScript($jsIncludePath);
 		}
 	} else {
-		$jsEventHandler = '<script type="text/javascript" src="' . JS_DIR . 'external/weCheckForm.js"></script>';
+		$jsEventHandler = we_htmlElement::jsScript(JS_DIR.'external/weCheckForm.js');
 	}
 
 	switch ($type) {
@@ -142,7 +142,7 @@ function we_tag_checkForm($attribs, $content) {
         var wrongEmail = new Array(0);
         var pwError    = false;
 
-        formular = document.getElementById("' . $match . '"); 
+        formular = document.getElementById("' . $match . '");
 
         ' . $jsMandatory . '
 

@@ -139,7 +139,7 @@ class we_wysiwyg{
 			switch(WYSIWYG_TYPE){
 				case 'tinyMCE':
 					//FIXME: remove onchange - bad practise
-					return '<script  type="text/javascript" src="/webEdition/editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+					return we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js').'
 <script  type="text/javascript">
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
@@ -309,12 +309,11 @@ function tinyMCEchanged(inst){
 
 				-->
 				</script>' .
-				'<script  type="text/javascript" src="' . JS_DIR . 'we_showMessage.js"></script>'
-				.
+				we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').
 					($GLOBALS["SAFARI_WYSIWYG"]
-						? '<script  type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwygSafari.js?'.WE_VERSION.'"></script>' .
-						  '<script  type="text/javascript" src="/webEdition/js/weDOM_Safari.js?'.WE_VERSION.'"></script>'
-						  : '<script  type="text/javascript" src="/webEdition/editors/content/wysiwyg/weWysiwyg.js?'.WE_VERSION.'"></script>')."\n";
+						? we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwygSafari.js').
+					we_htmlElement::jsScript(JS_DIR.'weDOM_Safari.js')
+						  : we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwyg.js'));
 		}
 	}
 

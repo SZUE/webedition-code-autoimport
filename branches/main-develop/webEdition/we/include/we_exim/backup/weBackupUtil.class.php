@@ -354,7 +354,10 @@
 				$_hasbinary = false;
 				while($_found=='unknown' && $_try<$_count) {
 
-					if(preg_match($_part,'-<we:(document|template|class|object|info|navigation)-i')){
+					if(preg_match($_part,'/<webEdition.*type="backup".*>/')){
+						$_found = 'backup';
+					}else
+					if(preg_match('-<we:(document|template|class|object|info|navigation)-i',$_part)){
 						$_found = 'weimport';
 					} else if(stripos($_part,'<we:table')!==false){
 						$_found = 'backup';

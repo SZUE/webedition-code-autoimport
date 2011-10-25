@@ -41,9 +41,9 @@ if(defined("OBJECT_TABLE")){
 
 $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : WE_TREE_DEFAULT_WIDTH;
 
+echo we_htmlElement::jsScript(JS_DIR.'images.js').
+	we_htmlElement::jsScript(JS_DIR.'we_tabs.js');
 ?>
-<script  type="text/javascript" src="<?php print JS_DIR; ?>images.js"></script>
-<script  type="text/javascript" src="<?php print JS_DIR; ?>we_tabs.js"></script>
 <script  type="text/javascript">
 
 
@@ -176,7 +176,7 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : 
 			toggleTree();
 		}
 	}
-	
+
 
 	function treeOut() {
 		if (top.getTreeWidth() <= 30) {

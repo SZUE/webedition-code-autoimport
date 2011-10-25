@@ -33,8 +33,9 @@ if(defined("WORKFLOW_TABLE")){
 }
 htmlTop();
 
-print STYLESHEET; ?>
-<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
+print STYLESHEET;
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+?>
 <script type="text/javascript">
 	function revertToPublished() {
 		if (confirm("<?php print addslashes(g_l('weEditorInfo',"[revert_publish_question]")); ?>")) {

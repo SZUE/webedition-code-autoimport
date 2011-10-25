@@ -38,9 +38,7 @@ if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be
 
 if ($we_editmode) {
 	htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
-	?>
-	<script  type="text/javascript" src="<?php print JS_DIR ?>windows.js"></script>
-	<?php
+	echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
 
@@ -470,13 +468,14 @@ function we_getCodeMirrorCode($code) {
 	}
 	$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
 	if (count($parser_js) > 0) { // CodeMirror will be used
-		$maineditor=we_get_CM_css().'<script src="/webEdition/editors/template/CodeMirror/js/codemirror.js" type="text/javascript"></script>';
+		$maineditor=we_get_CM_css().we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/js/codemirror.js');
 		if ($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //if we use tag completion we need additional files
-			$maineditor.='
-							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js" type="text/javascript"></script>
-							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js" type="text/javascript"></script>
-							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js" type="text/javascript"></script>
-							<script src="/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js" type="text/javascript"></script>
+			$maineditor.=
+			we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js').
+				we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js').
+				we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js').
+				we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js').
+			'
 							<script type="text/javascript">
 								if(top.we_tags==undefined) { //this is our tag cache
 									document.write("<scr"+"ipt src=\"/webEdition/editors/template/CodeMirror/contrib/webEdition/js/vocabulary.js.php\" type=\"text/javascript\"></sc"+"ript>");
@@ -756,13 +755,13 @@ function we_getCodeMirror2Code($code) {
 	}
 	$parser_css[] = WEBEDITION_DIR.'editors/template/CodeMirror2/mode/webEdition/css/webEdition.css';
 	if (count($parser_js) > 0) { // CodeMirror will be used
-		$maineditor='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.css">
-			<script src="'.WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.js" type="text/javascript"></script>';
+		$maineditor='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.css">'.
+			we_htmlElement::jsScript(WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.js');
 		foreach($parser_css as $css){
 			$maineditor.='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$css.'">';
 		}
 		foreach($parser_js as $js){
-			$maineditor.='<script src="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js.'" type="text/javascript"></script>';
+			$maineditor.=we_htmlElement::jsScript(WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js);
 		}
 
 		$maineditor.='

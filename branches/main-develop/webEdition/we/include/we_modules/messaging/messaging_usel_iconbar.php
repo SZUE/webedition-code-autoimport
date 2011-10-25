@@ -28,8 +28,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 protect();
 print STYLESHEET;
+echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-    <script type="text/javascript" src="<?php print JS_DIR; ?>windows.js"></script>
     <script type="text/javascript">
 	function get_selection() {
 		parent.do_selupdate();
