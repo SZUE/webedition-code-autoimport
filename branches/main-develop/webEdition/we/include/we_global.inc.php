@@ -1227,6 +1227,9 @@ function deleteContentFromDB($id, $table) {
 function stripTblPrefix($table){
 	return TBL_PREFIX!=''&&(strpos($table,TBL_PREFIX)!==FALSE)?substr($table, strlen(TBL_PREFIX)):$table;
 }
+function addTblPrefix($table){
+	return TBL_PREFIX.$table;
+}
 
 function cleanTempFiles($cleanSessFiles = false) {
 	$db2 = new DB_WE();

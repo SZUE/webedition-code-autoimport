@@ -747,7 +747,8 @@
 			$this->addTable(LOCK_TABLE,$cols,$keys);
 		}
 		if(!$this->isColExist(LOCK_TABLE,'sessionID'))  $this->addCol(LOCK_TABLE,'sessionID',"varchar(64) NOT NULL default ''",' AFTER UserID ');
-		if($this->isColExist(LOCK_TABLE,'lock')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
+		if($this->isColExist(LOCK_TABLE,'lock') && !$this->isColExist(LOCK_TABLE,'lockTime')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
+		if($this->isColExist(LOCK_TABLE,'lock')) $this->delCol(LOCK_TABLE,'lock');
 		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
 	}
 
@@ -790,10 +791,11 @@
 	function convertTemporaryDoc(){
 		if($this->isColExist(TEMPORARY_DOC_TABLE,'ID')){
 			$GLOBALS['DB_WE']->query('DELETE FROM '.TEMPORARY_DOC_TABLE.' WHERE Active=0');
-			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable="'.FILE_TABLE.'"');
-			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable="'.OBJECT_FILES_TABLE.'"');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblFile" WHERE DocTable  LIKE "%tblFile"');
+			$GLOBALS['DB_WE']->query('UPDATE '.TEMPORARY_DOC_TABLE.' SET DocTable="tblObjectFiles" WHERE DocTable LIKE "%tblObjectFiles"');
 			$this->delCol(TEMPORARY_DOC_TABLE,'ID');
-			$GLOBALS['DB_WE']->query('ALTER TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
+			$GLOBALS['DB_WE']->query('ALTER IGNORE TABLE '.TEMPORARY_DOC_TABLE.'  DROP PRIMARY KEY ');
+			$GLOBALS['DB_WE']->query('ALTER IGNORE TABLE '.TEMPORARY_DOC_TABLE.' ADD PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
 		}
 	}
 
@@ -810,8 +812,8 @@
 		$this->updateWorkflow();
 		$this->updateLock();
 		$this->updateLangLink();
-		$this->updateTableKeys();
 		$this->convertTemporaryDoc();
+		$this->updateTableKeys();
 		}
 
 }

@@ -34,7 +34,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 
-class we_htmlElement{
+abstract class we_htmlElement{
 
 	/**
 	 * Function generates html code for html form
@@ -348,7 +348,7 @@ class we_htmlElement{
 	 *
 	 * @return		string
 	 */
-	static function htmlP($attribs = array(), $content){
+	static function htmlP($attribs = array(), $content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('p', true, $attribs, $content));
 	}
 
@@ -366,7 +366,7 @@ class we_htmlElement{
 	 *
 	 * @return		string
 	 */
-	static function htmlApplet($attribs = array(), $content){
+	static function htmlApplet($attribs = array(), $content=''){
 		return we_baseElement::getHtmlCode(new we_baseElement('applet', true, $attribs, $content));
 	}
 

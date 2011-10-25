@@ -61,8 +61,7 @@
 	);
 
 	$tableMap['user']=array(
-				'tbluser'				=>	USER_TABLE,
-				'tbllock'				=>	LOCK_TABLE
+				'tbluser'				=>	USER_TABLE
 	);
 
 

@@ -184,9 +184,10 @@
 								$_files[] = WE_SPELLCHECKER_MODULE_PATH . 'spellchecker.conf.inc.php';
 								$_dir = dir(WE_SPELLCHECKER_MODULE_DIR . 'dict');
 								while (false !== ($entry = $_dir->read())) {
-									if($entry != '.' && $entry != '..' && preg_match('.(zip|php|dict)',$entry) && !is_dir(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry)){
-										$_files[] = WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry;
-									}
+									if($entry == '.' || $entry == '..' || (substr($entry,-4)=='.zip')||is_dir(WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry)){
+									continue;
+								}
+									$_files[] = WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry;
 								}
 								$_dir->close();
 

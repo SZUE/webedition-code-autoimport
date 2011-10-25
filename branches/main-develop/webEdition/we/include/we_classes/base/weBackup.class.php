@@ -68,7 +68,7 @@ class weBackup extends we_backup{
 		$this->nl="\n";
 
 		$this->header="<?xml version=\"1.0\" encoding=\"".g_l('charset','[charset]')."\" standalone=\"yes\"?>".$this->nl.
-					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">".$this->nl;
+					 "<webEdition version=\"".WE_VERSION."\" type=\"backup\" xmlns:we=\"we-namespace\">".$this->nl;
 		$this->footer=$this->nl."</webEdition>";
 
 		$this->properties[]="mode";

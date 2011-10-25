@@ -34,15 +34,21 @@
 	class weDBUtil {
 
 		function isColExist($tab,$col){
+			if($tab==''||$col==''){
+				return false;
+			}
 			global $DB_WE;
 			$DB_WE->query("SHOW COLUMNS FROM ".$DB_WE->escape($tab)." LIKE '$col';");
-			if($DB_WE->next_record()) return true; else return false;
+			return ($DB_WE->next_record());
 		}
 
 		function isTabExist($tab){
+			if($tab==''){
+				return false;
+			}
 			global $DB_WE;
 			$DB_WE->query("SHOW TABLES LIKE '".$DB_WE->escape($tab)."';");
-			if($DB_WE->num_rows()) return true; else return false;
+			return (bool)($DB_WE->num_rows());
 		}
 
 		function addTable($tab,$cols,$keys=array()){

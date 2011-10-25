@@ -353,7 +353,9 @@
 
 				$_hasbinary = false;
 				while($_found=='unknown' && $_try<$_count) {
-
+					if(preg_match('/.*<webEdition.*type="backup".*>/',$_part)){
+						$_found = 'backup';
+					}else
 					if(preg_match($_part,'/<webEdition.*type="backup".*>/')){
 						$_found = 'backup';
 					}else
