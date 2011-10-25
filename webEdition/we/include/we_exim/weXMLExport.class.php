@@ -135,7 +135,7 @@
 								$ws_where = " AND (" . FILE_TABLE . ".Path like '".$this->db->escape($workspace)."/%' OR " . FILE_TABLE . ".Path='".$this->db->escape($workspace)."') ";
 							}
 
-							$query = 'SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="'.$this->db->escape($doctype).'"'.$cat_sql;
+							$query = 'SELECT distinct ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND '.FILE_TABLE.'.IsFolder=0 AND '.FILE_TABLE.'.DocType="'.$this->db->escape($doctype).'"'.$cat_sql;
 
 							$this->db->query($query);
 							while($this->db->next_record()){
