@@ -82,11 +82,15 @@ class weTagData {
 			foreach ($this->TypeAttribute->Options as &$value) {
 				$value->AllowedAttributes[] = 'idTagRef_' . $this->TypeAttribute->Name . '_' . $value->Value . '_TagReferenz';
 				if ($value->Value != '-') {
-					$attribs[] = new weTagData_cmdAttribute('TagRef_' . $this->TypeAttribute->Name . '_' . $value->Value, 'TagReferenz', false, '', array('open_tagreference', $GLOBALS['TagRefURLName'] . '-' . $this->TypeAttribute->Name . '-' . $value->Name), $GLOBALS['l_taged']['tagreference_linktext']);
+					if (!$noDocuLink) {
+						$attribs[] = new weTagData_cmdAttribute('TagRef_' . $this->TypeAttribute->Name . '_' . $value->Value, 'TagReferenz', false, '', array('open_tagreference', $GLOBALS['TagRefURLName'] . '-' . $this->TypeAttribute->Name . '-' . $value->Name), $GLOBALS['l_taged']['tagreference_linktext']);
+					}
 				}
 			}
 		} else {
-			$attribs[] = new weTagData_cmdAttribute('TagRef_', 'TagReferenz', false, '', array('open_tagreference', $GLOBALS['TagRefURLName']), $GLOBALS['l_taged']['tagreference_linktext']);
+			if (!$noDocuLink) {
+				$attribs[] = new weTagData_cmdAttribute('TagRef_', 'TagReferenz', false, '', array('open_tagreference', $GLOBALS['TagRefURLName']), $GLOBALS['l_taged']['tagreference_linktext']);
+			}
 		}
 
 		$this->Name = $name;
