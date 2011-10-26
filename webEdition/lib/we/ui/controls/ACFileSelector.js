@@ -71,6 +71,9 @@ we_ui_controls_ACFileSelector.openSelector = function()
 		case "openDirselector":
 			new jsWindow(url,"we_selector",-1,-1,900,600,true,true,true,true);
 			break;
+		case "browse_server":
+			new jsWindow(url,"browse_server",-1,-1,900,600,true,true,true,true);
+			break;
 	}
 }
 
