@@ -55,7 +55,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 					'|script|i', 
 					'scr"+"ipt', 
 					str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", $newHTML))));
-	?>)";
+	?>");
 	}
 	
 	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View')){
