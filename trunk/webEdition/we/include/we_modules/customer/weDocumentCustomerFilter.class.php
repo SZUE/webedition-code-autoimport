@@ -138,21 +138,21 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @param we_db $db
 	 * @return weDocumentCustomerFilter
 	 */
-	function getFilterByDbObject(&$db) {
-		$_f = @unserialize($db->f('filter'));
+	function getFilterByDbHash(&$hash) {
+		$_f = @unserialize($hash['filter']);
 		return new weDocumentCustomerFilter(
-						abs($db->f("id")),
-						abs($db->f("modelId")),
-						$db->f("modelType"),
-						$db->f("modelTable"),
-						abs($db->f("accessControlOnTemplate")),
-						abs($db->f("errorDocNoLogin")),
-						abs($db->f("errorDocNoAccess")),
-						abs($db->f("mode")),
-						makeArrayFromCSV($db->f("specificCustomers")),
+						intval($hash['id']),
+						intval($hash['modelId']),
+						$hash['modelType'],
+						$hash['modelTable'],
+						intval($hash['accessControlOnTemplate']),
+						intval($hash['errorDocNoLogin']),
+						intval($hash['errorDocNoAccess']),
+						intval($hash['mode']),
+						makeArrayFromCSV($hash['specificCustomers']),
 						$_f,
-						makeArrayFromCSV($db->f("whiteList")),
-						makeArrayFromCSV($db->f("blackList"))
+						makeArrayFromCSV($hash['whiteList']),
+						makeArrayFromCSV($hash['blackList'])
 					);
 	}
 
@@ -197,7 +197,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @param mixed $model
 	 * @return weDocumentCustomerFilter
 	 */
-	function getFilterOfDocument( &$model ) {
+	static function getFilterOfDocument( &$model ) {
 		return weDocumentCustomerFilter::getFilterByIdAndTable($model->ID, $model->Table);
 	}
 
@@ -209,20 +209,15 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @param string $contentType
 	 * @return weDocumentCustomerFilter
 	 */
-	function getFilterByIdAndTable($id, $table) {
+	static function getFilterByIdAndTable($id, $table) {
 		$db = new DB_WE();
-		$query = "
-			SELECT *
-			FROM " . CUSTOMER_FILTER_TABLE . "
-			WHERE modelTable='" . $db->escape($table) . "'
-				AND modelId = '" . abs($id) . "'
-		";
-		$db->query($query);
-		if ( $db->next_record()) {
-			return weDocumentCustomerFilter::getFilterByDbObject($db);
+		$query = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape($table) . '" AND modelId = ' . intval($id);
+		$hash = getHash($query,$db);
+		if ( count($hash)) {
+			return weDocumentCustomerFilter::getFilterByDbHash($hash);
 		}
 		unset($db);
-		return ""; // important do NOT return null
+		return ''; // important do NOT return null
 	}
 
 	/**
@@ -547,7 +542,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 			if ($_db->num_rows()) {
 
 				while ($_db->next_record()) {
-					$_filters[] = weDocumentCustomerFilter::getFilterByDbObject($_db);
+					$_filters[] = weDocumentCustomerFilter::getFilterByDbHash($_db->Record);
 				}
 			}
 
@@ -582,7 +577,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @param boolean $_fromIfRegisteredUser
 	 * @return string
 	 */
-	function accessForVisitor( &$model, $modelHash="", $_fromIfRegisteredUser=false, $_fromListviewCheck=false ) {
+	function accessForVisitor( &$model, $modelHash=array(), $_fromIfRegisteredUser=false, $_fromListviewCheck=false ) {
 		if ( !empty($model) ) {
 			$modelHash["id"] = $model->ID;
 			$modelHash["contentType"] = $model->ContentType;
