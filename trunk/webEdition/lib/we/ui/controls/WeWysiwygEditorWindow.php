@@ -49,13 +49,13 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 <script language="JavaScript" type="text/javascript">
 	
 	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>')){
-		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>').value = encodeURIComponent("<?php
+		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>').innerHTML = "<?php
 	print 
 			preg_replace(
 					'|script|i', 
 					'scr"+"ipt', 
 					str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", $newHTML))));
-	?>");
+	?>";
 	}
 	
 	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View')){
