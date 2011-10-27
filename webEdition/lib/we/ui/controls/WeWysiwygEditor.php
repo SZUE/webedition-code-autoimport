@@ -132,11 +132,25 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 	protected $_cssClasses = '';
 
 	/**
+	 * fonts attribute
+	 *
+	 * @var string
+	 */
+	protected $_fonts = '';
+	
+	/**
 	 * commands attribute
 	 *
 	 * @var string
 	 */
 	protected $_commands = '';
+	
+	/**
+	 * preview attribute
+	 *
+	 * @var string
+	 */
+	protected $_previewStyle = '';
 	/**
 	 * Constructor
 	 * 
@@ -156,12 +170,12 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 		
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL('we_ui_controls_Textfield'));
+		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL('we_ui_controls_WeWysiwygEditor'));
 		$this->addCSSFiles($this->_buttonObj->getCSSFiles());
 		
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_Textfield'));
+		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_WeWysiwygEditor'));
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 	}
 
@@ -242,11 +256,40 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 	 * 
 	 * @return string
 	 */
-	public function getCssClasses()
+	public function getCssclasses()
 	{
 		return $this->_cssClasses;
 	}
 	
+	public function setPreviewStyle($style)
+	{
+		$this->_previewStyle = $style;
+	}
+
+	/**
+	 * Retrieve cssClasses
+	 * 
+	 * @return string
+	 */
+	public function getPreviewStyle()
+	{
+		return $this->_previewStyle;
+	}
+	
+	public function setFonts($fonts)
+	{
+		$this->_fonts = $fonts;
+	}
+
+	/**
+	 * Retrieve Fonts
+	 * 
+	 * @return string
+	 */
+	public function getFonts()
+	{
+		return $this->_fonts;
+	}
 	
 	public function setCommands($commands)
 	{
@@ -388,13 +431,17 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 		$onChange = '"opener.weEventController.fire(\'docChanged\')"';
 		$onChange = '""';
 		
-		
+		if($this->getFonts()!='') {
+			$Fonts='","'.$this->getFonts();
+		} else {
+			$Fonts='';
+		}
 		$Fieldname=$this->getName();
 		if ($this->getAppName() !== '') {
 			$appname = $this->getAppName();			
-			return 'we_ui_controls_WeWysiwygEditor.openWeWysiwyg("' . $appname . '","' . $Fieldname . '",' . $this->getDialogWidth() . ',' . $this->getDialogHeight() . ','   . $onChange . ',"'.$this->getCommands().'","'.$this->getCssClasses().'")';
+			return 'we_ui_controls_WeWysiwygEditor.openWeWysiwyg("' . $appname . '","' . $Fieldname . '",' . $this->getDialogWidth() . ',' . $this->getDialogHeight() . ','   . $onChange . ',"'.$this->getCommands().'","'.$this->getCssClasses().$Fonts.'")';
 		}		
-		$onClick = 'we_ui_controls_WeWysiwygEditor.openWeWysiwyg("' . $appname . '","' . $Fieldname . '",' . $this->getDialogWidth() . ',' . $this->getDialogHeight() . ', ' . $onChange . ',"'.$this->getCommands().'","'.$this->getCssClasses().'")';
+		$onClick = 'we_ui_controls_WeWysiwygEditor.openWeWysiwyg("' . $appname . '","' . $Fieldname . '",' . $this->getDialogWidth() . ',' . $this->getDialogHeight() . ', ' . $onChange . ',"'.$this->getCommands().'","'.$this->getCssClasses().$Fonts.'")';
 		return $onClick;
 	}
 
@@ -440,7 +487,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 		
 		$html = $this->_layouttableObj->getHTML();
 		
-		$html .= '<div id="'. $this->getId().'_View" style="border:1px solid white;width:'.$this->getWidth().'px" >'.parseInternalLinks($this->getText(),0).'</div><input type="hidden" id="'.$this->getId().'" name="'.$this->getName().'" value="'.$this->getText().'" />';		
+		$html .= '<div id="'. $this->getId().'_View" style="border:1px solid white;width:'.$this->getWidth().'px;'.$this->getPreviewStyle().'" >'.parseInternalLinks($this->getText(),0).'</div><textarea style="display:none" id="'.$this->getId().'" name="'.$this->getName().'" />'.$this->getText().'</textarea>';
 		if ($this->getHidden()) {
 			$this->_style .= 'display:none;';
 		}
