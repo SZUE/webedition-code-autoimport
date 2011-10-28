@@ -85,7 +85,7 @@ we_ui_controls_WeWysiwygEditor.setDisabled = function(idOrObject, disabled)
 
 	if (document.getElementById('yuiWysiwigButton_'+idOrObject)) {
 
-		we_ui_controls_Button.setDisabled('yuiAcButton_'+idOrObject, disabled);
+		we_ui_controls_Button.setDisabled('yuiWysiwigButton_'+idOrObject, disabled);
 
 	}
 
