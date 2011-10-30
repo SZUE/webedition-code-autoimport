@@ -10,6 +10,6 @@ CREATE TABLE ###TBLPREFIX###tblvalidationservices (
   additionalVars varchar(255) NOT NULL default '',
   ctype varchar(20) NOT NULL default '',
   fileEndings varchar(255) NOT NULL default '',
-  active tinyint(4) unsigned NOT NULL default '0',
+  active tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (PK_tblvalidationservices)
 ) ENGINE=MyISAM;

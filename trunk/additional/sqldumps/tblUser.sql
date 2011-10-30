@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblUser (
-  ID bigint(20) unsigned NOT NULL auto_increment,
+  ID int(10) unsigned NOT NULL auto_increment,
   ParentID bigint(20) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '',

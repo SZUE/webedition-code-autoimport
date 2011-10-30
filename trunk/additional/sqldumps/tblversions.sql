@@ -23,7 +23,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   `TemplateID` int(11) unsigned NOT NULL,
   `Filename` varchar(255) NOT NULL,
   `Extension` varchar(16) NOT NULL,
-  `IsDynamic` tinyint(4) unsigned NOT NULL,
+  `IsDynamic` tinyint(1) unsigned NOT NULL,
   `IsSearchable` tinyint(1) unsigned NOT NULL,
   `ClassName` varchar(64) NOT NULL,
   `DocType` varchar(64) NOT NULL,
