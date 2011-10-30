@@ -7,7 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   Display varchar(255) NOT NULL default '',
   ContentType varchar(255) NOT NULL default 'weNavigation',
   Icon varchar(32) NOT NULL default '0',
-  IsFolder tinyint(4) unsigned NOT NULL default '0',
+  IsFolder tinyint(1) unsigned NOT NULL default '0',
   TitleField varchar(255) NOT NULL default '',
   IconID bigint(20) unsigned NOT NULL default '0',
   Selection varchar(32) NOT NULL default '',

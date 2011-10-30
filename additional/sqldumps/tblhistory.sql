@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
   DID bigint(20) unsigned NOT NULL default '0',
   DocumentTable varchar(64) NOT NULL default '',
   ContentType varchar(32) NOT NULL default '',
-  ModDate bigint(20) unsigned NOT NULL default '0',
+  ModDate int(10) unsigned NOT NULL default '0',
   Act varchar(16) NOT NULL default '',
   UserName varchar(64) NOT NULL default '',
   PRIMARY KEY  (ID),
