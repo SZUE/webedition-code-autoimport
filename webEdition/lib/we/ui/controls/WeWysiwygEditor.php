@@ -68,12 +68,20 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 	 * @var object
 	 */
 	protected $_layouttableObj;
+	
 	/**
-	 * ac may be empty 
+	 * Label text
 	 *
-	 * @var boolean
+	 * @var string
 	 */
 	protected $_labelText = '';	
+	
+	/**
+	 * preset of Label style 
+	 *
+	 * @var string
+	 */	
+	protected $_labelStyle= 'display:block;';	
 	
 	/**
 	 * name of the application 
@@ -377,6 +385,26 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 	{
 		return $this->_labelText;
 	}
+	
+		/**
+	 * Set Label style
+	 * 
+	 * @param string $_Style
+	 */
+	public function setLabelStyle($_Style)
+	{
+		$this->_labelStyle .= ' '.$_Style;
+	}
+	
+	/**
+	 * Get Label style
+	 *
+	 * @return string
+	 */
+	public function getLabelStyle()
+	{
+		return $this->_labelStyle;
+	}
 
 	/**
 	 * Set onChange attribute
@@ -478,8 +506,9 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 		$this->_layouttableObj->setWidth($this->getWidth());
 		$this->_layouttableObj->setCellAttributes(array('align'=>'right'),1);
 		$this->_labelObj = new we_ui_controls_Label();
+		$this->_labelObj->setId($this->getId().'_Label');
 		$this->_labelObj->setText($this->getLabelText());
-		$this->_labelObj->setStyle('display:block;');
+		$this->_labelObj->setStyle($this->getLabelStyle());
 		
 		$this->_layouttableObj->addElement($this->_labelObj,0,0);
 		
