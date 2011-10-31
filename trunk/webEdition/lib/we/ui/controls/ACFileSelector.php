@@ -449,7 +449,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 	{
 		
 		$idFieldNameInteger = 'document.getElementById("yuiAcResult_' . $this->getId() . '").value';
-		$idFieldNameString = 'weCmdEnc(document.getElementById(\'yuiAcResult_' . $this->getId() . '\').value)';
+		$idFieldNameString = 'document.getElementById("yuiAcResult_' .$this->getId() . '").id';
 		$pathFieldName = '"document.getElementById(\\\'yuiAcInput_' . $this->getId() . '\\\').value"';
 		//TODO
 		$onChange = '"opener.weEventController.fire(\'docChanged\')"';
