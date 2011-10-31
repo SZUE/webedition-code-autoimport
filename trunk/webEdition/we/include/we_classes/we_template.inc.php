@@ -51,8 +51,9 @@ class we_template extends we_document
     var $TagWizardCode; // bugfix 1502
     var $TagWizardSelection; // bugfix 1502
     var $IncludedTemplates = "";
-		var $ContentType="text/weTmpl";
-		private $showShutdown=false;
+	var $ContentType="text/weTmpl";
+	private $showShutdown=false;
+	private $doUpdateCode=true;
     //######################################################################################################################################################
     //##################################################################### FUNCTIONS ######################################################################
     //######################################################################################################################################################
@@ -752,126 +753,132 @@ print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY; ?>
 	}
 
 	function _updateCompleteCode() {
-		$code = $this->getTemplateCode(false);
-
-		// find all we:master Tags
-		$masterTags = array();
-
-		preg_match_all("|(<we:master([^>+]*)>)([\\s\\S]*?)</we:master>|", $code, $regs, PREG_SET_ORDER);
-
-
-		foreach ($regs as $reg) {
-			$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : "");
-			$name = isset($attribs["name"]) ? $attribs["name"] : "";
-			if ($name) {
-				if (!isset($masterTags[$name])) {
-					$masterTags[$name] = array();
-				}
-				$masterTags[$name]["all"] = $reg[0];
-				$masterTags[$name]["startTag"] = $reg[1];
-				$masterTags[$name]["content"] = isset($reg[3]) ? $reg[3] : "";
-				$code = str_replace($reg[0],"",$code);
-			}
-		}
-
-
-
-		if ($this->MasterTemplateID != 0) {
-
-			$_templates = array();
-			getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
-			if (in_array($this->ID, $_templates)) {
-				$code = $GLOBALS["l_parser"]["template_recursion_error"];
-			} else {
-				// we have a master template. => surround current template with it
-				// first get template code
-				$templObj = new we_template();
-				$templObj->initByID($this->MasterTemplateID,TEMPLATES_TABLE);
-				$masterTemplateCode = $templObj->getTemplateCode(true);
-
-				$contentTags = array();
-				preg_match_all("|<we:content ?([^>+]*)/?>|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
-
-				foreach ($contentTags as $reg) {
-					$all = $reg[0];
-					$attribs = $this->_getAttribsArray($reg[1]);
-					$name = isset($attribs["name"]) ? $attribs["name"] : "";
-					if ($name) {
-						$we_masterTagCode = isset($masterTags[$name]["content"]) ? $masterTags[$name]["content"] : "";
-
-						$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
-					} else {
-						$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
+		if($this->doUpdateCode){
+			$code = $this->getTemplateCode(false);
+	
+			// find all we:master Tags
+			$masterTags = array();
+	
+			preg_match_all("|(<we:master([^>+]*)>)([\\s\\S]*?)</we:master>|", $code, $regs, PREG_SET_ORDER);
+	
+	
+			foreach ($regs as $reg) {
+				$attribs = $this->_getAttribsArray(isset($reg[2]) ? $reg[2] : "");
+				$name = isset($attribs["name"]) ? $attribs["name"] : "";
+				if ($name) {
+					if (!isset($masterTags[$name])) {
+						$masterTags[$name] = array();
 					}
+					$masterTags[$name]["all"] = $reg[0];
+					$masterTags[$name]["startTag"] = $reg[1];
+					$masterTags[$name]["content"] = isset($reg[3]) ? $reg[3] : "";
+					$code = str_replace($reg[0],"",$code);
 				}
-
-				$code = str_replace('</we:content>', '', $masterTemplateCode);
 			}
-		}
-		$this->IncludedTemplates = "";
-		// look for included templates (<we:include type="template" id="99">)
-		$tp = new we_tagParser();
-		$tags = $tp->getAllTags($code);
-		// go through all tags
-		foreach($tags as $tag) {
-			$regs = array();
-			// search for include tag
-			if (preg_match('|^<we:include ([^>]+)>$|i',$tag,$regs)) { // include found
-			// get attributes of tag
-				$attributes = $regs[1];
-				$foo = array();
-				$attribs = '';
-				preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
-				for($i=0;$i<sizeof($foo);$i++){
-					$attribs .= '"'.trim($foo[$i][1]).'"=>'.trim($foo[$i][2]).',';
-				}
-				@eval('$att = array('.$attribs.');');
-				// if type-attribute is equal to "template"
-				if (isset($att["type"]) && $att["type"]=="template") {
-
-					// if path is set - look for the id of the template
-					if (isset($att["path"]) && $att["path"]) {
-						// get id of template
-						$templId = path_to_id($att['path'], TEMPLATES_TABLE);
-						if ($templId) {
-							$att["id"] = $templId;
-						}
-					}
-
-					// if id attribute is set and greater 0
-					if (isset($att["id"]) && abs($att["id"]) > 0) {
-						$_templates = array();
-						getUsedTemplatesOfTemplate($att["id"], $_templates);
-						if (in_array($this->ID, $_templates)) {
-							$code = str_replace($tag,$GLOBALS["l_parser"]["template_recursion_error"],$code);
+	
+	
+	
+			if ($this->MasterTemplateID != 0) {
+	
+				$_templates = array();
+				getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
+				if (in_array($this->ID, $_templates)) {
+					$code = $GLOBALS["l_parser"]["template_recursion_error"];
+				} else {
+					// we have a master template. => surround current template with it
+					// first get template code
+					$templObj = new we_template();
+					$templObj->initByID($this->MasterTemplateID,TEMPLATES_TABLE);
+					$masterTemplateCode = $templObj->getTemplateCode(true);
+	
+					$contentTags = array();
+					preg_match_all("|<we:content ?([^>+]*)/?>|", $masterTemplateCode, $contentTags, PREG_SET_ORDER);
+	
+					foreach ($contentTags as $reg) {
+						$all = $reg[0];
+						$attribs = $this->_getAttribsArray($reg[1]);
+						$name = isset($attribs["name"]) ? $attribs["name"] : "";
+						if ($name) {
+							$we_masterTagCode = isset($masterTags[$name]["content"]) ? $masterTags[$name]["content"] : "";
+	
+							$masterTemplateCode = str_replace($all, $we_masterTagCode, $masterTemplateCode);
 						} else {
-							// get code of template
-							$templObj = new we_template();
-							$templObj->initByID($att["id"],TEMPLATES_TABLE);
-							$completeCode = (!(isset($att["included"]) && ($att["included"]=="false" || $att["included"]==="0" || $att["included"]=="off")));
-							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
-							// replace include tag with template code
-							$code = str_replace($tag,$includedTemplateCode,$code);
-							$this->IncludedTemplates .= "," . abs($att["id"]);
+							$masterTemplateCode = str_replace($all, $code, $masterTemplateCode);
+						}
+					}
+	
+					$code = str_replace('</we:content>', '', $masterTemplateCode);
+				}
+			}
+			$this->IncludedTemplates = "";
+			// look for included templates (<we:include type="template" id="99">)
+			$tp = new we_tagParser();
+			$tags = $tp->getAllTags($code);
+			// go through all tags
+			foreach($tags as $tag) {
+				$regs = array();
+				// search for include tag
+				if (preg_match('|^<we:include ([^>]+)>$|i',$tag,$regs)) { // include found
+				// get attributes of tag
+					$attributes = $regs[1];
+					$foo = array();
+					$attribs = '';
+					preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_SET_ORDER);
+					for($i=0;$i<sizeof($foo);$i++){
+						$attribs .= '"'.trim($foo[$i][1]).'"=>'.trim($foo[$i][2]).',';
+					}
+					@eval('$att = array('.$attribs.');');
+					// if type-attribute is equal to "template"
+					if (isset($att["type"]) && $att["type"]=="template") {
+	
+						// if path is set - look for the id of the template
+						if (isset($att["path"]) && $att["path"]) {
+							// get id of template
+							$templId = path_to_id($att['path'], TEMPLATES_TABLE);
+							if ($templId) {
+								$att["id"] = $templId;
+							}
+						}
+	
+						// if id attribute is set and greater 0
+						if (isset($att["id"]) && abs($att["id"]) > 0) {
+							$_templates = array();
+							getUsedTemplatesOfTemplate($att["id"], $_templates);
+							if (in_array($this->ID, $_templates)) {
+								$code = str_replace($tag,$GLOBALS["l_parser"]["template_recursion_error"],$code);
+							} else {
+								// get code of template
+								$templObj = new we_template();
+								$templObj->initByID($att["id"],TEMPLATES_TABLE);
+								$completeCode = (!(isset($att["included"]) && ($att["included"]=="false" || $att["included"]==="0" || $att["included"]=="off")));
+								$includedTemplateCode = $templObj->getTemplateCode($completeCode);
+								// replace include tag with template code
+								$code = str_replace($tag,$includedTemplateCode,$code);
+								$this->IncludedTemplates .= "," . abs($att["id"]);
+							}
 						}
 					}
 				}
 			}
+			if (strlen($this->IncludedTemplates) > 0) {
+				$this->IncludedTemplates .= ",";
+			}
+			$this->setElement("completeData",$code);
 		}
-		if (strlen($this->IncludedTemplates) > 0) {
-			$this->IncludedTemplates .= ",";
-		}
-		$this->setElement("completeData",$code);
 	}
 
-	function we_save($resave=0){
+	function we_save($resave=0,$updateCode=1){
 		$this->Extension = $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"]["Extension"];
-		$this->_updateCompleteCode();
-		if(defined('SHOP_TABLE')) {
-			$this->elements['allVariants'] = array();
-			$this->elements['allVariants']['type'] = 'variants';
-			$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
-		}
+		if($updateCode){
+			$this->_updateCompleteCode();
+			if(defined('SHOP_TABLE')) {
+				$this->elements['allVariants'] = array();
+				$this->elements['allVariants']['type'] = 'variants';
+				$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
+			}
+		
+		} else {$this->doUpdateCode=false;}
+		
 
 		// Check if the cachetype was changed and delete all
 		// cachefiles of the documents based on this template
