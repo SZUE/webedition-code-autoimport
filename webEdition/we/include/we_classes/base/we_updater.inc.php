@@ -760,6 +760,7 @@
 		if($this->isColExist(LOCK_TABLE,'lock') && !$this->isColExist(LOCK_TABLE,'lockTime')) $this->changeColName(LOCK_TABLE,'lock','lockTime');
 		if($this->isColExist(LOCK_TABLE,'lock')) $this->delCol(LOCK_TABLE,'lock');
 		if(!$this->isColExist(LOCK_TABLE,'lockTime'))  $this->addCol(LOCK_TABLE,'lockTime',"datetime NOT NULL",' AFTER sessionID ');
+		return true;
 	}
 
 	function updateTableKeys(){
