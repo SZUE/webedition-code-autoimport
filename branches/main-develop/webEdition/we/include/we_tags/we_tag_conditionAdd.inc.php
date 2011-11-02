@@ -44,7 +44,7 @@ function we_tag_conditionAdd($attribs, $content){
 
 	$regs = array();
 	if ($var && $compare == 'like') {
-		if (ereg('^(%)?([^%]+)(%)?$', $var, $regs)) {
+		if (preg_match('/^(%)?([^%]+)(%)?$/', $var, $regs)) {
 			$var = $regs[2];
 		}
 	}

@@ -5,7 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblvoting (
   IsFolder tinyint(1) unsigned default NULL,
   Icon varchar(255) default NULL,
   `Text` varchar(255) NOT NULL default '',
-  PublishDate bigint(20) unsigned NOT NULL default '0',
+  PublishDate int(10) unsigned NOT NULL default '0',
   QASet text NOT NULL,
   QASetAdditions text,
   IsRequired tinyint(1) unsigned NOT NULL DEFAULT '0',

@@ -291,7 +291,7 @@ class we_object extends we_document {
 			}
 
 			$this->DB_WE->query("DROP TABLE IF EXISTS $ctable");
-			$this->DB_WE->query("CREATE TABLE $ctable ($q, PRIMARY KEY (ID)$indexe)$charset_collation");
+			$this->DB_WE->query("CREATE TABLE $ctable ($q, PRIMARY KEY (ID)$indexe) ENGINE = MYISAM $charset_collation");
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query("INSERT INTO $ctable (OF_ID) VALUES (0)");

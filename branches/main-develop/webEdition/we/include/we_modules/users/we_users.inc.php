@@ -422,10 +422,7 @@ class we_user {
 		else {
 			$this->Text=$this->username;
 		}
-		if($this->Type==1)
-			$this->IsFolder=1;
-		else
-			$this->IsFolder=0;
+		$this->IsFolder=($this->Type==1? 1 : 0);
 		$this->Path=$this->getPath($this->ID);
 		$oldpath=$this->Path;
 		$this->saveWorkspaces();
@@ -1885,7 +1882,7 @@ function mapPermissions() {
 		$_tableObj->setCol(9, 0, null, $this->getUserfield("Handy","mobile"));
 		$_tableObj->setCol(9, 1, null, $this->getUserfield("Email","email"));
 
-		
+
 		$parts = array();
 		array_push($parts,
 						array(
@@ -2494,21 +2491,21 @@ function mapPermissions() {
 		}
 		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
 		$_charset->addOption('UTF-8', 'UTF-8');
-		$_charset->addOption('ISO-8859-1','ISO-8859-1'); 
-		$_charset->addOption('ISO-8859-2','ISO-8859-2'); 
-		$_charset->addOption('ISO-8859-3','ISO-8859-3'); 
-		$_charset->addOption('ISO-8859-4','ISO-8859-4'); 
-		$_charset->addOption('ISO-8859-5','ISO-8859-5'); 
-		$_charset->addOption('ISO-8859-6','ISO-8859-6'); 
-		$_charset->addOption('ISO-8859-7','ISO-8859-7'); 
-		$_charset->addOption('ISO-8859-8','ISO-8859-8'); 
-		$_charset->addOption('ISO-8859-9','ISO-8859-9'); 
-		$_charset->addOption('ISO-8859-10','ISO-8859-10'); 
-		$_charset->addOption('ISO-8859-11','ISO-8859-11'); 
-		$_charset->addOption('ISO-8859-12','ISO-8859-12'); 
-		$_charset->addOption('ISO-8859-13','ISO-8859-13'); 
-		$_charset->addOption('ISO-8859-14','ISO-8859-14'); 
-		$_charset->addOption('ISO-8859-15','ISO-8859-15'); 
+		$_charset->addOption('ISO-8859-1','ISO-8859-1');
+		$_charset->addOption('ISO-8859-2','ISO-8859-2');
+		$_charset->addOption('ISO-8859-3','ISO-8859-3');
+		$_charset->addOption('ISO-8859-4','ISO-8859-4');
+		$_charset->addOption('ISO-8859-5','ISO-8859-5');
+		$_charset->addOption('ISO-8859-6','ISO-8859-6');
+		$_charset->addOption('ISO-8859-7','ISO-8859-7');
+		$_charset->addOption('ISO-8859-8','ISO-8859-8');
+		$_charset->addOption('ISO-8859-9','ISO-8859-9');
+		$_charset->addOption('ISO-8859-10','ISO-8859-10');
+		$_charset->addOption('ISO-8859-11','ISO-8859-11');
+		$_charset->addOption('ISO-8859-12','ISO-8859-12');
+		$_charset->addOption('ISO-8859-13','ISO-8859-13');
+		$_charset->addOption('ISO-8859-14','ISO-8859-14');
+		$_charset->addOption('ISO-8859-15','ISO-8859-15');
 		$_charset->addOption('Windows-1251','Windows-1251');
 		$_charset->addOption('Windows-1252','Windows-1252');
 		if (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset']!=''){
@@ -2592,7 +2589,7 @@ function mapPermissions() {
 								document.getElementById('seem_start_document').style.display = 'none';
 								document.getElementById('seem_start_object').style.display = 'none';
 								document.getElementById('seem_start_weapp').style.display = 'block';
-								
+
 							} else {
 								document.getElementById('seem_start_document').style.display = 'none';
 								document.getElementById('seem_start_weapp').style.display = 'none';
@@ -2630,14 +2627,14 @@ function mapPermissions() {
 
 			}
 
-		
+
 		// WEAPP
 		} else if($this->Preferences['seem_start_type'] == "weapp") {
 			$_seem_start_type = "weapp";
 			if ($this->Preferences['seem_start_file'] != 0) {
 
 			}
-		
+
 		// Document
 		} else {
 			$_seem_start_type = "document";
@@ -2671,17 +2668,17 @@ function mapPermissions() {
 				$_start_weapp->addOption($_tool['name'], $_tool['text']);
 			}
 		}
-		
-		
+
+
 		if($_start_weapp->getOptionNum()){
 			$_start_type->addOption("weapp", $GLOBALS['l_prefs']["seem_start_type_weapp"]);
 		}
 		$_start_type->selectOption($_seem_start_type);
-		
+
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 		$weAPPSelector = $_start_weapp->getHtmlCode();
 		$_seem_weapp_chooser = $we_button->create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
-		
+
 		// Build SEEM select start document chooser
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("Doc");
@@ -2717,11 +2714,11 @@ function mapPermissions() {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_seem_object_chooser = we_button::create_button_table(array($weAcSelector), 10, array("id"=>"seem_start_object", "style"=>"display:none"));
-		
-		
-	
 
-		
+
+
+
+
 
 		// Build final HTML code
 		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);

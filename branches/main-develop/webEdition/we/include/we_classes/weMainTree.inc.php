@@ -29,7 +29,9 @@
 	class weMainTree extends weTree{
 
 		function weMainTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
-
+			if(!isset($GLOBALS["l_css"])){
+				$GLOBALS["l_css"]['font_family']='arial';
+			}
 			weTree::weTree($frameset,$topFrame,$treeFrame,$cmdFrame);
 
 
@@ -60,7 +62,7 @@
 			$this->setNodeLayouts($node_layouts);
 
 			$styles=array();
-
+		
 			$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').'; cursor: pointer;}';
 			$styles[]='.item a { text-decoration:none;}';
 

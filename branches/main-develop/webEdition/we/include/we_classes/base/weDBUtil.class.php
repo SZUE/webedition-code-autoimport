@@ -75,7 +75,7 @@
 
 			}
 
-			return $DB_WE->query("CREATE TABLE ".$DB_WE->escape($tab)." (".implode(",",$cols_sql).")$charset_collation;") ? true : false;
+			return $DB_WE->query("CREATE TABLE ".$DB_WE->escape($tab)." (".implode(",",$cols_sql).") ENGINE = MYISAM $charset_collation;") ? true : false;
 
 
 		}

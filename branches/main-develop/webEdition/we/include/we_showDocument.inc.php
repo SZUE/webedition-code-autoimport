@@ -77,19 +77,25 @@ if (isset($_REQUEST['vers_we_obj'])) {
 	// call session_start to init session, otherwise NO customer can exist
 	@session_start();
 
-	if (($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))) {
+		if (($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))) {
 
 		if (!($_visitorHasAccess == WECF_ACCESS || $_visitorHasAccess == WECF_CONTROLONTEMPLATE)) {
+				// user has NO ACCESS => show errordocument
+				$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
+				if (($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))) { // use given document instead !
+					if($_errorDocId){
+					unset($_errorDocId);
+//					header('Location: ' . getServerUrl() . $_errorDocPath);
+					@include($_SERVER['DOCUMENT_ROOT'].$_errorDocPath);
+					unset($_errorDocPath);
+					}
+					//exit();
+					return;
 
-			// user has NO ACCESS => show errordocument
-			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
-			if (($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))) { // use given document instead !
-				header('Location: ' . getServerUrl() . $_errorDocPath);
-				unset($_errorDocPath);
-				unset($_errorDocId);
-				exit();
-			} else {
-				die('Customer has no access to this document');
+				} else {
+					die('Customer has no access to this document');
+
+				}
 			}
 		}
 	}
@@ -122,7 +128,19 @@ if (($we_include = $we_doc->editor($baseHref))) {
 			include ($we_include);
 			weGlossaryReplace::end($GLOBALS['we_doc']->Language);
 		} else {
-			include ($we_include);
+			// --> Glossary Replacement
+
+			if ((defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])) &&
+				(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) ){
+					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryCache.php");
+					include_once (WE_GLOSSARY_MODULE_DIR . "weGlossaryReplace.php");
+
+					weGlossaryReplace::start();
+					include ($we_include);
+					weGlossaryReplace::end($GLOBALS["we_doc"]->Language);
+			}else{
+					include ($we_include);
+			}
 		}
 	} else {
 		protect(); //	only inside webEdition !!!

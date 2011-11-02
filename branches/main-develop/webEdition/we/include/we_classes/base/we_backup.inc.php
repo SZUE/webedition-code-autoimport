@@ -448,7 +448,7 @@ class we_backup {
 				$foo .= "   KEY $k (" . implode($v, ", ") . ")";
 			}
 		}
-		$foo .= "$nl)";
+		$foo .= "$nl) ENGINE = MYISAM";
 		return stripslashes($foo);
 	}
 
@@ -488,7 +488,7 @@ class we_backup {
 		if($this->backup_extern==1) {
 			if($this->backup_phase==0) {
 				$this->backup_db->query("DROP TABLE IF EXISTS ".BACKUP_TABLE);
-				$this->backup_db->query("CREATE TABLE ".BACKUP_TABLE." (ID bigint(20) NOT NULL auto_increment,Path varchar(255) NOT NULL,Data longblob NOT NULL,IsFolder tinyint(1) DEFAULT '0' NOT NULL,PRIMARY KEY (ID),UNIQUE ID (ID),KEY ID_2 (ID));");
+				$this->backup_db->query("CREATE TABLE ".BACKUP_TABLE." (ID bigint(20) NOT NULL auto_increment,Path varchar(255) NOT NULL,Data longblob NOT NULL,IsFolder tinyint(1) DEFAULT '0' NOT NULL,PRIMARY KEY (ID),UNIQUE ID (ID),KEY ID_2 (ID)) ENGINE = MYISAM;");
 				$fh=@fopen($this->dumpfilename,"ab");
 				@fwrite($fh,$nl);
 				@fwrite($fh,"#############################################################$nl");
@@ -1000,7 +1000,7 @@ class we_backup {
 				if(substr($line,0,1) != "#") {
 					$buff.=$line;
 					if((substr($buff,-2) == ";\n")||(substr($buff,-3) == ";\r\n")) {
-						if(ereg(";\r?\n.?$",$buff)) {
+						if(preg_match("/;\r?\n.?$/",$buff)) {
 							$buff = preg_replace("/\r?\n/"," ",$buff);
 						}
 						$buff=trim($buff);

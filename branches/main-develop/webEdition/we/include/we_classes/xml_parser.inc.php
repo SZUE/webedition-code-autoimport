@@ -1307,7 +1307,7 @@ class XML_Parser {
 		}
 
 		// Check if the predicate is a digit.
-		if (ereg("^[0-9]+(\.[0-9]+)?$", $predicate) ||
+		if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $predicate) ||
 			preg_match('|^\.[0-9]+$|', $predicate)) {
 			// Return the value of the digit.
 			return doubleval($predicate);
@@ -2066,7 +2066,7 @@ class XML_Parser {
 		$secondString = $this->evaluatePredicate($node, $secondString);
 
 		// Check if the second string is contained within the first string.
-		return (ereg($firstString, $secondString));
+		return strpos($firstString, $secondString)!==FALSE;
 	}
 
 	/**
@@ -2092,7 +2092,7 @@ class XML_Parser {
 		$secondString = $this->evaluatePredicate($node, $secondString);
 
 		// Check if the first string starts with the second string.
-    return (ereg("^".$secondString, $firstString));
+    return (strpos($firstString,$secondString)===0);
 	}
 
 	/**
@@ -2108,7 +2108,7 @@ class XML_Parser {
 	 */
 	function execMethod_string($node, $args) {
 		// Check what type of parameter is given.
-		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || preg_match('|^\.[0-9]+$|', $args)) {
+		if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $args) || preg_match('|^\.[0-9]+$|', $args)) {
 			// Convert the variable to a float value. && Return the string value
 			return strval(doubleval($args));
 		}	else if (is_bool($args)) {
@@ -2303,7 +2303,7 @@ class XML_Parser {
 	 */
 	function execMethod_number($node, $args) {
 		// Check the type of argument.
-		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) ||
+		if (preg_match('|^[0-9]+(\.[0-9]+)?$|', $args) ||
 			preg_match('|^\.[0-9]+$|', $args)) {
 			// Return the argument as a number.
 			return doubleval($args);
@@ -2378,7 +2378,7 @@ class XML_Parser {
 		$args = trim($args);
 
 		// Check the type of parameter.
-		if (ereg("^[0-9]+(\.[0-9]+)?$", $args) || preg_match('|^\.[0-9]+$|', $args)) {
+		if (preg_match('|^[0-9]+(\.[0-9]+)?$|', $args) || preg_match('|^\.[0-9]+$|', $args)) {
 			// Convert the digits to a number &&  Check if the number is 0.
 			return !(doubleval($args) == 0);
 		}	else if (empty($args)){

@@ -622,7 +622,7 @@ class weVoting extends weModelBase{
 		$ip = $_SERVER['REMOTE_ADDR'];
 		foreach($this->BlackList as $fip) {
 			$reg = str_replace('*','[0-9]+',$fip);
-			if(ereg($reg,$ip)) {
+			if(preg_match('/'.$reg.'/',$ip)) {
 				return true;
 			}
 		}

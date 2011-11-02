@@ -248,7 +248,7 @@ class weCustomerSettings {
 	}
 
 	function isFunctionForField($function, $field) {
-		if (ereg(g_l('modules_customer','[other]'), $field)) {
+		if (strpos($field, g_l('modules_customer','[other]')!==FALSE)) {
 			$field = str_replace(g_l('modules_customer','[other]') . '_', '', $field);
 		}
 		$fieldprops = $this->customer->getFieldDbProperties($field);

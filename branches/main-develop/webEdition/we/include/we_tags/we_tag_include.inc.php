@@ -38,7 +38,7 @@ function we_tag_include($attribs, $content) {
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
 	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
 	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
-
+	$isDynamic = true;
 
 	if ((!$id) && (!$path) && (!$name)) {
 		t_e('we:include - missing id, path or name');
@@ -60,7 +60,14 @@ function we_tag_include($attribs, $content) {
 		}
 	} else {//notEditmode
 		if ($name && !($id || $path)) {
+			$db = new DB_WE();
 			$path = we_tag('href', array('name' => $name, 'rootdir' => $rootdir));
+			$nint = $name . "_we_jkhdsf_int";
+			$int = ($GLOBALS["we_doc"]->getElement($nint) == "") ? 0 : $GLOBALS["we_doc"]->getElement($nint);
+			$intID = $GLOBALS["we_doc"]->getElement($nint.'ID');
+			if($int && $intID){
+				list($isDynamic,$ct) = getHash('SELECT IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID).' AND Published>0',$db);
+			}
 		}
 	}
 
@@ -71,11 +78,13 @@ function we_tag_include($attribs, $content) {
 		$db = new DB_WE();
 		if ($id) {
 			$__id__ = ($id == '' ? '' : $id);
-			$db->query('SELECT Path,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id)) . ' AND Published>0';
-			if ($db->next_record() === false) {
+			$db->query('SELECT Path,IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id).' AND Published>0');
+			if($db->next_record()===false){
 				return '';
 			}
 			$realPath = $db->f('Path');
+			$isDynamic = $db->f('IsDynamic');
+			$ct = $db->f('ContentType');
 		} else {
 			$realPath = $path;
 		}
@@ -88,6 +97,20 @@ function we_tag_include($attribs, $content) {
 			$content = getHTTP(SERVER_NAME, $realPath, '', defined('HTTP_USERNAME') ? HTTP_USERNAME : '', defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '');
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
+			//check Customer-Filter on static documents
+				$id=($id?$id:$intID);
+			if(!$isDynamic && $id){
+				include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
+
+				$filter=weDocumentCustomerFilter::getFilterByIdAndTable($id,FILE_TABLE);
+
+				if(is_object($filter)){
+				$obj=(object) array('ID'=>$id,'ContentType'=>$ct);
+				if($filter->accessForVisitor($obj,array(),true) != WECF_ACCESS){
+					return '';
+				}
+			}
+			}
 			$content = @file_get_contents($realPath);
 			if ($content === false) {
 				return '';

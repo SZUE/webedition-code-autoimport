@@ -74,7 +74,7 @@ class weBackupSqlFileReader{
    						$_first = substr($_buffer,0,64);
    						$_end = substr($_buffer,-20,20);
 
-  						if(ereg(";\r?\n",$_end)) {
+  						if(preg_match("/;\r?\n/",$_end)) {
 
 	   						if($this->preParse($_first,$create,$insert)) {
 

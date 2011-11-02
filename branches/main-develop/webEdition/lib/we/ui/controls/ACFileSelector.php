@@ -449,7 +449,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 	{
 		
 		$idFieldNameInteger = 'document.getElementById("yuiAcResult_' . $this->getId() . '").value';
-		$idFieldNameString = 'weCmdEnc(document.getElementById(\'yuiAcResult_' . $this->getId() . '\').value)';
+		$idFieldNameString = 'document.getElementById("yuiAcResult_' .$this->getId() . '").id';
 		$pathFieldName = '"document.getElementById(\\\'yuiAcInput_' . $this->getId() . '\\\').value"';
 		//TODO
 		$onChange = '"opener.weEventController.fire(\'docChanged\')"';
@@ -474,9 +474,13 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement
 			return 'we_ui_controls_ACFileSelector.openToolSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ', "' . $appname . '")';
 		}
 		
-		$table = '"' . (defined('TBL_PREFIX')?TBL_PREFIX:'').$this->getTable() . '"';
-		$onClick = 'we_ui_controls_ACFileSelector.openSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $table . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ',"","","' . $contentTypesString . '");';
-		
+		if($this->getTable()!='') {
+			$table = '"' . (defined('TBL_PREFIX')?TBL_PREFIX:'').$this->getTable() . '"';
+			$onClick = 'we_ui_controls_ACFileSelector.openSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $table . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ',"","","' . $contentTypesString . '");';
+
+		} else {
+			$onClick = 'we_ui_controls_ACFileSelector.openSelector("browse_server",' . $pathFieldName . ', "","","");';
+		}
 		return $onClick;
 	}
 

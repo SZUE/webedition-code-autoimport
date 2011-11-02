@@ -83,9 +83,15 @@ class weAbstractCustomerFilter {
 	function weAbstractCustomerFilter($mode=WECF_OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
-		$this->setBlackList($blackList);
-		$this->setWhiteList($whiteList);
-		$this->setFilter($filter);
+		if(is_array($blackList)){
+			$this->setBlackList($blackList);
+		}
+		if(is_array($whiteList)){
+			$this->setWhiteList($whiteList);
+		}
+		if(is_array($filter)){
+			$this->setFilter($filter);
+		}
 	}
 
 	/**
@@ -139,9 +145,9 @@ class weAbstractCustomerFilter {
 	 */
 	function customerHasFilterAccess() {
 
-		if (is_array($this->_blackList) && in_array($_SESSION["webuser"]["ID"], $this->_blackList)) {
+		if (in_array($_SESSION["webuser"]["ID"], $this->_blackList)) {
 			return false;
-		} else if (is_array($this->_whiteList) && in_array($_SESSION["webuser"]["ID"], $this->_whiteList)) {
+		} else if (in_array($_SESSION["webuser"]["ID"], $this->_whiteList)) {
 			return true;
 		}
 

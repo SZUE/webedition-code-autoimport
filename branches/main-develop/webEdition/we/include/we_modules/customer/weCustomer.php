@@ -124,7 +124,7 @@ class weCustomer extends weModelBase {
 	}
 
 	function transFieldName($real_name, &$banche) {
-		if (ereg(g_l('modules_customer','[other]'), $real_name)) {
+		if (strpos($real_name,g_l('modules_customer','[other]')!==FALSE)) {
 			return $real_name;
 		}
 		$pre = explode("_", $real_name);

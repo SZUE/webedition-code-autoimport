@@ -439,7 +439,7 @@ class we_objectFile extends we_document{
 	function i_check_requiredFields(){
 		foreach($this->DefArray as $n=>$v){
 			if(is_array($v) && isset($v['required']) && $v['required']){
-				list($type,$name) = explode('_',$n,1);
+				list($type,$name) = explode('_',$n,2);
 				switch($type){
 					case 'object':
 						$val = $this->getElement('we_object_'.$name);
