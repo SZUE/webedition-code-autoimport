@@ -48,8 +48,10 @@ class we_template extends we_document{
     var $TagWizardCode; // bugfix 1502
     var $TagWizardSelection; // bugfix 1502
     var $IncludedTemplates = "";
-		var $ContentType="text/weTmpl";
-		private $showShutdown=false;
+	var $ContentType="text/weTmpl";
+	private $showShutdown=false;
+	private $doUpdateCode=true;
+	
    /* Constructor */
     function we_template(){
         $this->we_document();
@@ -696,6 +698,9 @@ static function getUsedTemplatesOfTemplate($id, &$arr) {
 }
 
 	function _updateCompleteCode() {
+		if(!$this->doUpdateCode){
+			return true;
+		}
 		$code = $this->getTemplateCode(false);
 
 		// find all we:master Tags
@@ -808,16 +813,17 @@ static function getUsedTemplatesOfTemplate($id, &$arr) {
 		$this->setElement("completeData",$code);
 	}
 
-	function we_save($resave=0){
+	function we_save($resave=0,$updateCode=1){
 		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		$this->Extension = $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"]["Extension"];
-		$this->_updateCompleteCode();
-		if(defined('SHOP_TABLE')) {
-			$this->elements['allVariants'] = array();
-			$this->elements['allVariants']['type'] = 'variants';
-			$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
-		}
-
+		if($updateCode){
+			$this->_updateCompleteCode();
+			if(defined('SHOP_TABLE')) {
+				$this->elements['allVariants'] = array();
+				$this->elements['allVariants']['type'] = 'variants';
+				$this->elements['allVariants']['dat'] = serialize($this->readAllVariantFields($this->elements['completeData']['dat']));
+			}
+		} else {$this->doUpdateCode=false;}
 		$_ret = we_document::we_save($resave);
 		if ($_ret) {
 			$tmplPathWithTmplExt = parent::getRealPath();
