@@ -126,6 +126,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		$_REQUEST=array_merge($_REQUEST,$myRequest);
 		$_REQUEST['we_objectID']=$objectid;
 		$_REQUEST['we_oid']=$objectid;
+		$_GET=array_merge($_GET,$myRequest);
 
 		header("HTTP/1.0 200 OK", true,200);
 		header("Status: 200 OK", true,200);
