@@ -2895,14 +2895,12 @@ class we_objectFile extends we_document{
 	}
 
 	function isColExist($tab,$col){
-			global $DB_WE;
-			$DB_WE->query("SHOW COLUMNS FROM ".$tab." LIKE '$col';");
-			if($DB_WE->next_record()) return true; else return false;
+		$this->DB_WE->query("SHOW COLUMNS FROM ".$tab." LIKE '$col';");
+		if($this->DB_WE->next_record()) return true; else return false;
 	}
 
 	function addCol($tab,$col,$typ,$pos=""){
-			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE $tab ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
+		$this->DB_WE->query("ALTER TABLE $tab ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
 	}
 
 	function getContentDataFromTemporaryDocs($ObjectID,$loadBinary=0){
