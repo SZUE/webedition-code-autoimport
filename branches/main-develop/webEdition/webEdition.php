@@ -78,8 +78,8 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js').
 	we_htmlElement::jsScript(JS_DIR.'md5.js').
 	we_htmlElement::jsScript(JS_DIR.'weNavigationHistory.php').
 	we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-	we_htmlElement::jsScript(JS_DIR.'js/libs/yui/event-min.js').
-	we_htmlElement::jsScript(JS_DIR.'js/libs/yui/connection-min.js').
+	we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
+	we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js').
 	we_htmlElement::jsScript(JS_DIR.'keyListener.js').
 	we_htmlElement::jsScript(JS_DIR.'messageConsole.js');
 
