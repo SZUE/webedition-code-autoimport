@@ -2404,34 +2404,6 @@ $_we_active_integrated_modules = array();
 				$_update_prefs = true;
 				break;
 
-				/*				 * ***************************************************************
-				 * TEMPLATE EDITOR
-				 * *************************************************************** */
-				/*
-				  case '$_REQUEST["usePlugin"]':
-				  if (($GLOBALS['BROWSER'] == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
-				  $_SESSION["prefs"]["usePlugin"] = 0;
-				  }
-
-				  $_update_prefs = true;
-				  break;
-
-				  case '$_REQUEST["autostartPlugin"]':
-				  if (($GLOBALS['BROWSER'] == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
-				  $_SESSION["prefs"]["autostartPlugin"] = 0;
-				  }
-
-				  $_update_prefs = true;
-				  break;
-
-				  case '$_REQUEST["promptPlugin"]':
-				  if (($GLOBALS['BROWSER'] == "IE" || $_SESSION["MozillaActiveX"]) && $SYSTEM == "WIN") {
-				  $_SESSION["prefs"]["promptPlugin"] = 0;
-				  }
-
-				  $_update_prefs = true;
-				 */ break;
-
 			case '$_REQUEST["editorFont"]':
 				$_SESSION["prefs"]["editorFontname"] = "none";
 				$_SESSION["prefs"]["editorFontsize"] = -1;

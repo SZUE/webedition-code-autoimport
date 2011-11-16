@@ -76,7 +76,7 @@ switch ($GLOBALS['BROWSER']) {
 		$tabBG = "";
 		switch ($SYSTEM) {
 			case 'MAC':
-				if (isset($FF) && $FF < 3 && $BROWSER != 'NN6') {
+				if ($GLOBALS['brDetect']->isFF() && $GLOBALS['brDetect']->getBrowserVersion()<3) {
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				} else {
 					$tabContainerMargin = "0px 1px";
@@ -84,7 +84,7 @@ switch ($GLOBALS['BROWSER']) {
 				$tabBorder = "border: 0px; border-bottom: 0px solid #888888; border-right: 1px solid #888888;";
 				break;
 			case 'X11':
-				if (isset($FF) && $FF < 3) {
+				if ($GLOBALS['brDetect']->isFF() && $GLOBALS['brDetect']->getBrowserVersion()<3) {
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:0px -1px"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				} else {
 					$tabContainerMargin = "0px";
@@ -92,14 +92,14 @@ switch ($GLOBALS['BROWSER']) {
 				$tabBorder = "border:0px;";
 				break;
 			default:
-				if (isset($FF) && $FF < 3) {
+				if($GLOBALS['brDetect']->isFF() && $GLOBALS['brDetect']->getBrowserVersion()<3) {
 				} else {
 					$tabContainerMargin = "-1px";
 				}
 		}
 }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Horizontale Navigationsleiste zentriert</title>

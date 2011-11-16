@@ -303,7 +303,7 @@ abstract class we_htmlElement{
 		switch($version){
 			case '4Trans':
 			default:
-				return '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">';
+				return '<!DOCTYPE html>';
 		}
 	}
 

@@ -51,12 +51,12 @@ abstract class we_forms {
 		$_id = ($uniqid?uniqid($name . "_"):$name);
 
 		$labelonclick = "";
-		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
+/*		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
 
 			if($onClick){
 				$labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
 			}
-		}
+		}*/
 
 		// Create HTML tags
 		$foo = '
@@ -66,7 +66,7 @@ abstract class we_forms {
 						<input type="checkbox" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer; outline: 0;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
 					<td>
 						'.getPixel(4,2).'</td>
-					<td class="'.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'outline: 0;" hidefocus="hidefocus" unselectable="on">'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").($html ? $html : "").'</td>
+					<td class="'.$class.'" nowrap="nowrap"><label'./*(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : '').*/' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'outline: 0;" hidefocus="hidefocus" unselectable="on">'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").($html ? $html : "").'</td>
 				</tr>
 			</table>';
 
@@ -111,14 +111,14 @@ abstract class we_forms {
 		} else {
 			$_id = $name;
 		}
-		$labelonclick = "";
+/*		$labelonclick = "";
 		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
 
 			if($onClick){
 				$labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
 			}
 		}
-
+*/
 		// Create HTML tags
 		$foo = '
 			<table cellpadding="0" border="0" cellspacing="0">
@@ -127,7 +127,7 @@ abstract class we_forms {
 						<input type="radio" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;outline: 0;" hidefocus="hidefocus" '.($checked ? " checked=\"checked\"" : "").($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
 					<td class="weEditmodeStyle">
 						'.getPixel(4,2).'</td>
-					<td class="weEditmodeStyle '.$class.'" nowrap="nowrap"><label'.(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : '').' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'outline: 0;" hidefocus="hidefocus" unselectable="on"'.($onMouseUp ? " onmouseup=\"".str_replace("this.","document.getElementById('".$_id."').",$onMouseUp)."\"" : "").'>'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").
+					<td class="weEditmodeStyle '.$class.'" nowrap="nowrap"><label'./*(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : '').*/' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: gray; ' : 'cursor: pointer;').'outline: 0;" hidefocus="hidefocus" unselectable="on"'.($onMouseUp ? " onmouseup=\"".str_replace("this.","document.getElementById('".$_id."').",$onMouseUp)."\"" : "").'>'.$text.'</label>'.($description ? "<br>".getPixel(1,3)."<br>".htmlAlertAttentionBox($description, $type, $width) : "").
 				($extra_content ? ("<br>".getPixel(1,3)."<br>". $extra_content) : "").'</td>
 				</tr>
 			</table>';
@@ -164,7 +164,7 @@ abstract class we_forms {
 		$dhtmledit = weTag_getAttribute("dhtmledit",$attribs,false,true); //4614
 		$wysiwyg = weTag_getAttribute("wysiwyg",$attribs,false,true);
 
-		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['BROWSER']=="IE" || $GLOBALS['BROWSER'] == 'NN6' || $GLOBALS['BROWSER']=="OPERA" || ((defined("SAFARI_WYSIWYG") && SAFARI_WYSIWYG)));
+		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['brDetect']->isIE() || $GLOBALS['brDetect']->isGecko() || $GLOBALS['brDetect']->isOpera() || (defined("SAFARI_WYSIWYG") && $GLOBALS['brDetect']->isSafari()));
 		$cols = weTag_getAttribute("cols",$attribs);
 		$rows = weTag_getAttribute("rows",$attribs);
 		$width = weTag_getAttribute("width",$attribs);

@@ -25,20 +25,18 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 function we_browser_check() {
-	$GLOBALS['SAFARI_WYSIWYG'] = false;
-
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
-	$_BROWSER = new we_browserDetect();
+	$GLOBALS['brDetect'] = new we_browserDetect();
 
-	$GLOBALS['SYSTEM'] = strtoupper($_BROWSER->getSystem());
+	$GLOBALS['SYSTEM'] = strtoupper($GLOBALS['brDetect']->getSystem());
 	//renaming
 	if($GLOBALS['SYSTEM']=='UNIX'){
 		$GLOBALS['SYSTEM']='X11';
 	}
 
-	switch($_BROWSER->getBrowser()){
+	switch($GLOBALS['brDetect']->getBrowser()){
 		case 'opera':
 			$GLOBALS['BROWSER'] = 'OPERA';
 			break;
@@ -48,80 +46,21 @@ function we_browser_check() {
 		case 'appleWebKit':
 		case 'safari':
 			$GLOBALS['BROWSER'] = "SAFARI";
-			$wkV=$_BROWSER->getWebKitVersion();
-			$GLOBALS['SAFARI_WYSIWYG'] = (($wkV > 311 && $wkV < 400) || ($wkV > 411));
-      $GLOBALS['SAFARI_3'] = ($wkV > 522);
+/*			$wkV=$GLOBALS['brDetect']->getWebKitVersion();
+      $GLOBALS['SAFARI_3'] = ($wkV > 522);*/
 			break;
 		case 'mozilla':
 		case 'firefox':
 		case 'nn':
-			$GLOBALS['BROWSER'] = ($_BROWSER->isGecko()?'NN6':'NN');
+			$GLOBALS['BROWSER'] = ($GLOBALS['brDetect']->isGecko()?'NN6':'NN');
 			break;
 		default:
 			$GLOBALS['BROWSER'] = "UNKNOWN";
 
 	}
-
-
-#### Erkennung fuer Netscape >= 6.0
-
-	$GLOBALS['FF'] = ($_BROWSER->getBrowser()=='firefox'?abs($_BROWSER->getBrowserVersion()):'');
-}
-
-function checkSupportedBrowser() {
-	we_browser_check();
-
-	switch ($GLOBALS['SYSTEM']) {
-		case 'WIN' :
-			switch ($GLOBALS['BROWSER']) {
-				case 'IE':
-					return true;
-					break;
-
-				case 'OPERA':
-				case 'SAFARI':
-				case 'NN6':
-					return true;
-			}
-			break;
-
-		case 'MAC':
-			switch ($GLOBALS['BROWSER']) {
-				case 'OPERA':
-				case 'NN6':
-				case 'SAFARI':
-					return true;
-			}
-			break;
-
-		case 'X11':
-			switch ($GLOBALS['BROWSER']) {
-				case 'OPERA':
-				case 'NN6':
-					return true;
-			}
-
-			break;
-
-		case 'UNKNOWN':
-			switch ($GLOBALS['BROWSER']) {
-				case 'IE':
-					return true;
-					break;
-
-				case 'OPERA':
-				case 'NN6':
-				case 'SAFARI':
-					return true;
-			}
-
-			break;
-	}
-
-	return false;
 }
 
 
-if(!isset($GLOBALS['BROWSER'])||$GLOBALS['BROWSER']==''){
+if(!isset($GLOBALS['brDetect'])){
 	we_browser_check();
 }

@@ -434,7 +434,7 @@ function we_cmd() {
 
 	if (window.screen) {
 		h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
-		w = screen.availWidth; // - <?php print ($SYSTEM == "WIN") ? 10 : 20 ?>;
+		w = screen.availWidth;
 	}
 
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!

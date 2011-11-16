@@ -88,7 +88,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement
 	 *
 	 * @var string
 	 */
-	protected $_doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+	protected $_doctype = '<!DOCTYPE html>';
 
 	/**
 	 * array with attributes to insert in the body tag

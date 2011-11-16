@@ -61,7 +61,7 @@ class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
 function writeBody(d){
 	d.open();
 	//d.writeln('<?php print '<?php print $htmltop; ?>';?>'); Geht nicht im IE
-	d.writeln('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+	d.writeln('<!DOCTYPE html><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 	d.writeln('<?php print '<?php print STYLESHEET_SCRIPT;?>';?>');
 	d.writeln('</head>');
 	d.writeln('<scr'+'ipt>');

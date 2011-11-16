@@ -310,7 +310,7 @@ function tinyMCEchanged(inst){
 				-->
 				</script>' .
 				we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').
-					($GLOBALS["SAFARI_WYSIWYG"]
+					($GLOBALS['brDetect']->isSafari()
 						? we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwygSafari.js').
 					we_htmlElement::jsScript(JS_DIR.'weDOM_Safari.js')
 						  : we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwyg.js'));
@@ -381,10 +381,6 @@ function tinyMCEchanged(inst){
 	}
 
 	function setToolbarElements(){
-
-		global $SAFARI_WYSIWYG;
-
-
 			array_push(
 						$this->elements,
 						new we_wysiwygToolbarSelect(
@@ -402,7 +398,7 @@ function tinyMCEchanged(inst){
 															"h6"=>g_l('wysiwyg',"[h6]"),
 															"pre"=>g_l('wysiwyg',"[pre]"),
 															"address"=>g_l('wysiwyg',"[address]")
-														) : ($SAFARI_WYSIWYG ? array(
+														) : ($GLOBALS['brDetect']->isSafari() ? array(
 															"div"=>g_l('wysiwyg',"[normal]"),
 															"p"=>g_l('wysiwyg',"[paragraph]"),
 															"h1"=>g_l('wysiwyg',"[h1]"),
@@ -449,7 +445,7 @@ function tinyMCEchanged(inst){
 														$this,
 														"fontsize",
 														g_l('wysiwyg',"[fontsize]"),
-														$SAFARI_WYSIWYG ? array(
+														$GLOBALS['brDetect']->isSafari() ? array(
 															"8px"=>"8px",
 															"9px"=>"9px",
 															"10px"=>"10px",
@@ -888,7 +884,7 @@ function tinyMCEchanged(inst){
 					$this->elements,
 					new we_wysiwygToolbarSeparator($this)
 				);
-		if(($GLOBALS["BROWSER"]=='IE') || (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"])){
+		if($GLOBALS['brDetect']->isIE() || $GLOBALS['brDetect']->isSafari()){
 			array_push(
 					$this->elements,
 					new we_wysiwygToolbarButton(
@@ -1206,7 +1202,7 @@ tinyMCE.init({
 
 		$realWidth = max($min_w,$this->width);
 		$out .= '<table border="0" cellpadding="0" cellspacing="0"  unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true" ';
-if (isset($GLOBALS["SAFARI_WYSIWYG"]) && $GLOBALS["SAFARI_WYSIWYG"]) {
+if ($GLOBALS['brDetect']->isSafari()) {
 $out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"';
 } else {
 	$out.='style="display: block;color: black;border: 1px solid #A5ACB2;"';
@@ -1302,7 +1298,7 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 
 	function getHTML(){
 
-		if($GLOBALS["SAFARI_WYSIWYG"]){
+		if($GLOBALS['brDetect']->isSafari()){
 			return '<div unselectable="on" id="'.$this->editor->ref.'edit_'.$this->cmd.'Div" class="tbButton">
 <img unselectable="on" width="'.($this->width-2).'" height="'.$this->height.'" id="'.$this->editor->ref.'edit_'.$this->cmd.'" src="'.$this->imgSrc.'" alt="'.$this->tooltiptext.'" title="'.$this->tooltiptext.'"
 onmouseover="'.$this->editor->ref.'Obj.over(\''.$this->cmd.'\');"
@@ -1396,10 +1392,10 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 	}
 
 	function getHTML(){
-		if($GLOBALS["BROWSER"]=="OPERA"){
+		if($GLOBALS['brDetect']->isOpera()){
 			//FIMXE: opera not intended - but currently fixes racing condition
 			return '';
-		}else if ($GLOBALS["SAFARI_WYSIWYG"]) {
+		}else if ($GLOBALS['brDetect']->isSafari()) {
 			$out = '<select id="'.$this->editor->ref.'_sel_'.$this->cmd.'" style="width:'.$this->width.'px;margin-right:3px;" size="1" onmousedown="'.$this->editor->ref.'Obj.saveSelection();" onmouseup="'.$this->editor->ref.'Obj.restoreSelection();" onchange="'.$this->editor->ref.'Obj.restoreSelection();'.$this->editor->ref.'Obj.selectChanged(\''.$this->cmd.'\',this.value);this.selectedIndex=0">';
 			$out .= '<option value="">'.htmlspecialchars($this->title).'</option>'."\n";
  			foreach($this->vals as $val=>$txt){
