@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 protect();
 

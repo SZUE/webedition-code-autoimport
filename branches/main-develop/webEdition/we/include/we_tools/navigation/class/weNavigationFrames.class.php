@@ -1220,7 +1220,7 @@ class weNavigationFrames extends weToolFrames
 	{
 
 		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
-		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 		$defaultPreviewCode = str_replace("\r\n", '\n', addslashes($this->Model->defaultPreviewCode));
 		$defaultPreviewCode = str_replace("\n", '\n', $defaultPreviewCode);
@@ -1307,7 +1307,7 @@ class weNavigationFrames extends weToolFrames
 			$tabNr = 1;
 		}
 
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 		$_onSelectionTypeChangeJS = '
 <script type="text/javascript">
 function onSelectionTypeChangeJS(elem) {
@@ -1716,7 +1716,7 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLFieldSelector()
 	{
-		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 		$_type = $_REQUEST['type']; // doctype || class
 		$_selection = $_REQUEST['selection']; // templateid or classid
@@ -1928,7 +1928,7 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLDynPreview()
 	{
-		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$_select = new we_htmlSelect(
 				array(
 

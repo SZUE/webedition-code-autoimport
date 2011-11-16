@@ -923,7 +923,7 @@ class weVotingFrames extends weModuleFrames {
 
 		');
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$out .=	we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>($tabNr==1 ? '' : 'display: none')), we_multiIconBox::getHTML('',"100%",$this->getHTMLTab1(),30,'',-1,'','',false,$preselect)) .
 				(!$this->View->voting->IsFolder ?
 				(
@@ -1182,7 +1182,7 @@ class weVotingFrames extends weModuleFrames {
 	}
 
 	function getHTMLShowLogOld(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 
 		$close = we_button::create_button("close","javascript:self.close();");
@@ -1314,7 +1314,7 @@ class weVotingFrames extends weModuleFrames {
 
 	}
 	function getHTMLShowLogNew(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 		$close = we_button::create_button("close","javascript:self.close();");
 		$refresh = we_button::create_button("refresh","javascript:location.reload();");
@@ -1462,7 +1462,7 @@ class weVotingFrames extends weModuleFrames {
 	}
 
 	function getHTMLShowGroupLog(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 		$close = we_button::create_button("close","javascript:self.close();");
 		$refresh = we_button::create_button("refresh","javascript:location.reload();");

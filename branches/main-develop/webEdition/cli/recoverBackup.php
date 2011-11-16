@@ -144,7 +144,7 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
 //use we-error handler; ignore if logging is disabled!
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
 if(!defined('WE_ERROR_SHOW')){
 	define('WE_ERROR_SHOW',1);
 }

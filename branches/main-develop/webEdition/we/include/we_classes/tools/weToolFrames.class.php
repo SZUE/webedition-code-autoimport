@@ -416,7 +416,7 @@ class weToolFrames extends weModuleFrames {
 
 		$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr'])  : 1;
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 
 		$out = '';
 

@@ -505,7 +505,7 @@ class weSiteImport
 	 */
 	function _getCreateWePageSettingsHTML()
 	{
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"]) && $_SESSION["prefs"]["siteImportPrefs"]) ? unserialize(
 				$_SESSION["prefs"]["siteImportPrefs"]) : array();
 
@@ -753,7 +753,7 @@ class weSiteImport
 	 */
 	function _getContentHTML()
 	{
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 

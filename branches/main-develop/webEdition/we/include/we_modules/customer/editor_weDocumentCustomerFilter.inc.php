@@ -23,7 +23,7 @@
  */
 
 include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php" );
-include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php" );
+include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php" );
 include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php" );
 include_once( $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weDocumentCustomerFilterView.class.php" );
 

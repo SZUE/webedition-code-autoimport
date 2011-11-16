@@ -99,7 +99,6 @@ if (isset($_REQUEST['vers_we_obj'])) {
 			}
 		}
 	}
-}
 
 $we_doc->EditPageNr = $we_editmode ? WE_EDITPAGE_CONTENT : WE_EDITPAGE_PREVIEW;
 

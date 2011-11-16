@@ -76,7 +76,7 @@ function we_error_handler($in_webEdition = true){
 
 	// Check PHP version
 	if(version_compare(PHP_VERSION, '5.2.4') < 0){
-		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', '/webEdition/we/we_classes/base/we_error_handler.inc.php', 69);
+		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', '/webEdition/we/include/we_error_handler.inc.php', 69);
 		exit();
 	}
 

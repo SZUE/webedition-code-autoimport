@@ -244,7 +244,7 @@ class weExportFrames extends weModuleFrames {
 	function getHTMLProperties($preselect=""){
 		$this->SelectionTree->init($this->frameset,$this->editorBodyFrame,$this->editorBodyFrame,$this->cmdFrame);
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$out="";
 		$tabNr = isset($_REQUEST["tabnr"]) ? $_REQUEST["tabnr"] : 1;
 

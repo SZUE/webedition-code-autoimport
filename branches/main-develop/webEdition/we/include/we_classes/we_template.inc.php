@@ -51,7 +51,7 @@ class we_template extends we_document{
 	var $ContentType="text/weTmpl";
 	private $showShutdown=false;
 	private $doUpdateCode=true;
-	
+
    /* Constructor */
     function we_template(){
         $this->we_document();
@@ -286,7 +286,7 @@ function handleShutdown($code) {
 		// echoed in templates with CacheType = document
 		$pre_code = '<?php
 	// Activate the webEdition error handler
-	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_classes/base/we_error_handler.inc.php");
+	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_error_handler.inc.php");
 	we_error_handler(false);
 
 	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_global.inc.php");

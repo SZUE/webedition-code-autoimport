@@ -229,7 +229,7 @@ function htmlMessageBox($w, $h, $content, $headline = "", $buttons = ""){
 }
 
 function htmlDialogLayout($content, $headline, $buttons = "", $width = "100%", $marginLeft = "30", $height = "", $overflow = "auto"){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 	$parts = array(
 		array(
 			"html" => $content, "headline" => "", "space" => 0

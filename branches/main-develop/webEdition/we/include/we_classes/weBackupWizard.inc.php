@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weBackup.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 define("BACKUP_MODE",1);

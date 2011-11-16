@@ -40,7 +40,7 @@ if ($_memlimit < 32) {
 @ini_set('session.use_trans_sid', '0');
 
 // Activate the webEdition error handler
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_error_handler.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 if (!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }

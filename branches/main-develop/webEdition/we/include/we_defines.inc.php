@@ -57,7 +57,6 @@ if (version_compare(phpversion(), '5.1.3', '=')) {
 	}
 }
 
-define('WE_UA', 'BIG_U');
 define('LOAD_MAID_DB', 0);
 define('LOAD_TEMP_DB', 1);
 define('LOAD_REVERT_DB', 2);
@@ -65,11 +64,13 @@ define('LOAD_SCHEDULE_DB', 3);
 
 define('WE_TREE_DEFAULT_WIDTH', 300);
 define('WEBEDITION_DIR', '/webEdition/');
+define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'].'/webEdition/');
+
 define('WEBEDITION_INCLUDES_PATH',WEBEDITION_DIR.'we/include/');
-define('WEBEDITION_INCLUDES_DIR', $_SERVER['DOCUMENT_ROOT'].WEBEDITION_INCLUDES_PATH);
+define('WEBEDITION_INCLUDES_DIR', WEBEDITION_PATH.'we/include/');
 
 // Activate the webEdition error handler
-include_once (WEBEDITION_INCLUDES_DIR.'we_classes/base/we_error_handler.inc.php');
+include_once (WEBEDITION_INCLUDES_DIR.'we_error_handler.inc.php');
 if (!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
@@ -110,9 +111,6 @@ define('WE_EDITPAGE_VERSIONS', 17);
 
 define('FILE_ONLY', 0);
 define('FOLDER_ONLY', 1);
-
-define('WE_UB', 'SER_MODULE');
-
 
 // refresh pageExt array
 $PAGE_EXT = array(

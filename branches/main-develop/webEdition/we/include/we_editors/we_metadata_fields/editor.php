@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/Exif.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/IPTC.class.php");

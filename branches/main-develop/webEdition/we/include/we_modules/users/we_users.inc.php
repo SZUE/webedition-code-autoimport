@@ -31,7 +31,7 @@ if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don'
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 }
 
 

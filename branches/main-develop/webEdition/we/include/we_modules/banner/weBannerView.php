@@ -96,7 +96,7 @@ class weBannerView extends weBannerBase{
             $out = ob_get_contents();
             ob_end_clean();
 		}else{
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 			$out =$this->getJSProperty(). $yuiSuggest->getYuiJsFiles().'
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">

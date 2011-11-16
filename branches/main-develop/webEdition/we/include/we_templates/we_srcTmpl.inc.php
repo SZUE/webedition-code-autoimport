@@ -25,7 +25,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php'
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');

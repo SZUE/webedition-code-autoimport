@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.p
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_message_reporting/we_message_reporting.class.php");
 
 protect();

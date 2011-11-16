@@ -28,7 +28,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 
 class weWorkflowView extends weWorkflowBase{
@@ -197,7 +197,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	/**
-	* @return array		can be used by class we_multibox.inc.php as $content-array
+	* @return array		can be used by class we_multiIconBox.class.inc.php as $content-array
 	* @desc Enter description here...
  	*/
 	function getWorkflowHeaderMultiboxParts($space){

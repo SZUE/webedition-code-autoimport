@@ -25,7 +25,7 @@
 
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multibox.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 
 // check if there are variation fields defined
 $variationFields = $we_doc->getVariantFields();

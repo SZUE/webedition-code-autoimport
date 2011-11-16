@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modu
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterView.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterTree.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterDirSelector.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multibox.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
