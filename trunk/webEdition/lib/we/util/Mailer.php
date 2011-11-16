@@ -137,13 +137,14 @@ class we_util_Mailer extends Zend_Mail {
 				default :
 					//this should set return-path
 					$safeMode = ini_get('safe_mode');
-					if($reply != '' && !$safeMode){
+					$suhosin = in_array('suhosin',get_loaded_extensions());
+					if($reply != '' && !$safeMode && !$suhosin){
 						$_reply = $this->parseEmailUser($reply);
 						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_reply['email']);
 					}
 					else {
 						$_sender = $this->parseEmailUser($sender);
-						if (isset($_sender['email']) && $_sender['email']!='' && !$safeMode){
+						if (isset($_sender['email']) && $_sender['email']!='' && !$safeMode && !$suhosin){
 							$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
 						} else {
 							$tr = new Zend_Mail_Transport_Sendmail();
@@ -152,7 +153,7 @@ class we_util_Mailer extends Zend_Mail {
 					Zend_Mail::setDefaultTransport($tr);
 					break;
 			}
-			;
+			
 		}
 
 
