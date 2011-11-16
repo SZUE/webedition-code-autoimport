@@ -191,7 +191,7 @@ abstract class we_autoloader{
 
 	static public function autoload($class_name){
 		if(array_key_exists($class_name, self::$classes)){
-			include(WEBEDITION_INCLUDES_PATH.'we_classes/' . self::$classes[$class_name]);
+			include(WEBEDITION_INCLUDES_DIR.'we_classes/' . self::$classes[$class_name]);
 		}else{
 			t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 		}
