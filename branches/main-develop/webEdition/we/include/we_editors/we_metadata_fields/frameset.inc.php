@@ -28,8 +28,6 @@
  *****************************************************************************/
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php');
 
 /*****************************************************************************
  * INITIALIZATION
@@ -55,8 +53,8 @@ $_javascript = "
  *****************************************************************************/
 
 print
-	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
-	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
+	we_htmlElement::jsElement($_javascript) .
+	we_htmlElement::jsScript(JS_DIR . "keyListener.js") .
 	we_htmlElement::jsElement(
 		"
 			function closeOnEscape() {

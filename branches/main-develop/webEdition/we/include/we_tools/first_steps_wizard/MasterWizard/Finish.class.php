@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSidebarDocumentParser.class.php");
 
-class Finish extends leWizardStepBase
-{
+class Finish extends leWizardStepBase{
 
 	var $EnabledButtons = array();
 
-	function execute(&$Template)
-	{
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+	function execute(&$Template){
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		// set Default Master Template
 		$MasterTemplateID = path_to_id("/master/standard.tmpl", TEMPLATES_TABLE);
@@ -41,22 +39,18 @@ class Finish extends leWizardStepBase
 		$NewSidebarFile = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . "sidebar/first_steps_wizard.php";
 		$OldSidebarFile = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/SideBar.php";
 
-		if (file_exists($NewSidebarFile) && is_file($NewSidebarFile)) {
+		if(file_exists($NewSidebarFile) && is_file($NewSidebarFile)){
 
-			if (!unlink($NewSidebarFile)) {
+			if(!unlink($NewSidebarFile)){
 				return LE_WIZARDSTEP_ERROR;
-
 			}
-
 		}
 
-		if (file_exists($OldSidebarFile) && is_file($OldSidebarFile)) {
+		if(file_exists($OldSidebarFile) && is_file($OldSidebarFile)){
 
-			if (!copy($OldSidebarFile, $NewSidebarFile)) {
+			if(!copy($OldSidebarFile, $NewSidebarFile)){
 				return LE_WIZARDSTEP_ERROR;
-
 			}
-
 		}
 
 		// now change paths in sidebar document(!)
@@ -66,13 +60,12 @@ class Finish extends leWizardStepBase
 
 		// write new content
 		$fh = fopen($NewSidebarFile, "w+");
-		if (!$fh || !fputs($fh, $content) || !fclose($fh)) {
+		if(!$fh || !fputs($fh, $content) || !fclose($fh)){
 			return LE_WIZARDSTEP_ERROR;
-
 		}
 
 		// oputput of the wizard step
-		
+
 		$RebuildBtnWidth = ($GLOBALS["WE_LANGUAGE"] == "Finnish") ? "130" : "100";
 		$Rebuild = $weButton->create_button('rebuild', 'javascript:top.openRebuild();', true, $RebuildBtnWidth, 22);
 
@@ -101,7 +94,6 @@ EOF;
 		$this->setContent($Content);
 
 		return LE_WIZARDSTEP_NEXT;
-
 	}
 
 }

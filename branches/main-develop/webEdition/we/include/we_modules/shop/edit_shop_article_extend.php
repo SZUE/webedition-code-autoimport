@@ -25,12 +25,8 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 
 /* ************* fuction for orders  ************** */
@@ -57,18 +53,16 @@ function orderBy($a, $b) {
 
 function getTitleLinkObj($text, $orderKey) {
 
-	global $typeObj, $actPage, $classid, $orderBy;
-
 	$_href =	$_SERVER['SCRIPT_NAME'] .
-				'?typ=' . $typeObj .
+				'?typ=' . $GLOBALS['typeObj'] .
 				'&orderBy=' . $orderKey .
-				'&ViewClass=' . $classid .
-				'&actPage=' . $actPage .
-				( ($orderBy == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+				'&ViewClass=' . $GLOBALS['classid'] .
+				'&actPage=' . $GLOBALS['actPage'] .
+				( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
 
 	$arrow = '';
 
-	if ($orderBy == $orderKey) {
+	if ($GLOBALS['orderBy'] == $orderKey) {
 
 		if (isset($_REQUEST['orderDesc'])) {
 			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';

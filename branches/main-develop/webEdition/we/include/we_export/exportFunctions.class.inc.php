@@ -536,7 +536,6 @@ abstract class exportFunctions {
 	 */
 
 	static function exportDocument($ID, $format = "gxml", $filename, $path, $file_create = false, $file_complete = false, $cdata = false) {
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 
 		$_export_success = false;
 

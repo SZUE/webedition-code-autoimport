@@ -22,12 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class copyFolderFrag extends taskFragment
 {

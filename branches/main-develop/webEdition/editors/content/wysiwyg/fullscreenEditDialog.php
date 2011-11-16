@@ -43,4 +43,3 @@ editorObj.setText(src);
 top.close();
 ';
 }
-?>

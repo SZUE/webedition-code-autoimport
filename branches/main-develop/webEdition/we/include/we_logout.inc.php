@@ -51,11 +51,5 @@ if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with
 } else { //	normal logout from webEdition.
 	$jsCommand = "top.location.replace('" . WEBEDITION_DIR . "');\n";
 }
-?>
-<script  type="text/javascript">
-	<!--
-<?php
-print $jsCommand;
-?>
-	//-->
-</script>
+
+echo we_htmlElement::jsElement($jsCommand);

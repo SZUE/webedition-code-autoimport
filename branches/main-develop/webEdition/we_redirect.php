@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-
-include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-
-$row = getHash("SELECT Path,IsDynamic FROM ".FILE_TABLE." WHERE ID=" . abs($_REQUEST["id"]),$DB_WE);
-srand ((double)microtime()*1000000);
+$row = getHash("SELECT Path,Published FROM " . FILE_TABLE . " WHERE ID=" . intval($_REQUEST["id"]), $DB_WE);
+srand((double) microtime() * 1000000);
 $randval = rand();
 
-$DB_WE->query("SELECT Published FROM ".FILE_TABLE." WHERE ID=" . abs($_REQUEST["id"]));
-if($DB_WE->next_record()){
-	if($DB_WE->f("Published")){
-		header("Location: ".WE_SERVER_URL.$row["Path"]."?r=$randval");
-		exit;
-	}
+if($row["Published"]){
+	header("Location: " . WE_SERVER_URL . $row["Path"] . "?r=$randval");
+	exit;
 }
-header("Location: ".WE_SERVER_URL.WEBEDITION_DIR."notPublished.php");
+header("Location: " . WE_SERVER_URL . WEBEDITION_DIR . "notPublished.php");

@@ -77,4 +77,3 @@ editorObj.editAbbr(title,lang);
 top.close();
 ';
 }
-?>

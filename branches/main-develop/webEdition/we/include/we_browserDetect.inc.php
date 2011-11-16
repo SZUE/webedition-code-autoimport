@@ -220,4 +220,9 @@ class we_browserDetect {
 		return stristr(self::$ua, 'gecko');
 	}
 
+	//todo: implement from we_browser_check
+	function isSupported(){
+		return false;
+	}
+
 }

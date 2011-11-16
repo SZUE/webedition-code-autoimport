@@ -23,10 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 
 /**
  * This function creates a table.
@@ -666,34 +662,28 @@ function getDateInput2($name, $time = "", $setHot = false, $format = "", $onchan
 ';
 	if($_showDay || $_showMonth || $_showYear){
 
-		$retVal .= '<tr>
-	<td>';
+		$retVal .= '<tr><td>';
 		foreach($_datePosArray as $foo){
 			$retVal .= $foo;
 		}
-		$retVal .= '</td>
-</tr>
+		$retVal .= '</td></tr>
 ';
 	} else{
 		foreach($_datePosArray as $foo){
 			$retVal .= $foo;
 		}
-		$retVal .= "\n";
 	}
 	if($_showHour || $_showMinute){
-		$retVal .= '<tr>
-	<td>';
+		$retVal .= '<tr><td>';
 		foreach($_timePosArray as $foo){
 			$retVal .= $foo;
 		}
-		$retVal .= '</td>
-</tr>
+		$retVal .= '</td></tr>
 ';
 	} else{
 		foreach($_timePosArray as $foo){
 			$retVal .= $foo;
 		}
-		$retVal .= "\n";
 	}
 	$retVal .= '</table>
 ';

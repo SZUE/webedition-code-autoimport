@@ -1401,13 +1401,9 @@ class doclistView {
 	}
 
 	function getSearchParameterBottom($foundItems) {
-		if (isset ( $_REQUEST ["we_cmd"] ['obj'] )) {
-			$thisObj = new doclistView ( );
-		} else {
-			$thisObj = $this;
-		}
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-		 $publishButton = "";
+		$thisObj = (isset ( $_REQUEST ["we_cmd"] ['obj'] ) ? new doclistView () : $this);
+
+		$publishButton = "";
          $publishButtonCheckboxAll = "";
 
 		 if (we_hasPerm('PUBLISH')) {
