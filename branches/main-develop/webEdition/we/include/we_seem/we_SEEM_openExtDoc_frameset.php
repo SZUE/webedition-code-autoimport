@@ -99,15 +99,15 @@
 			);
 
 			extDocHeader.location = "about:blank";
-			extDocFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_classes/SEEM/we_SEEM_openExtDoc_footer.php" ?>";
+			extDocFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
 		}
 	}
 </script>
 </head>
 <frameset onLoad="_EditorFrame.initEditorFrameData({'EditorIsLoading':false});" rows="<?php if($GLOBALS['BROWSER'] == "NN"){print "48";}else{print "40";} ?>,*,40" framespacing="0" border="0" frameborder="NO">
 
-    <frame src="<?php print WEBEDITION_DIR . "we/include/we_classes/SEEM/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>" name="extDocHeader" noresize scrolling="no">
-    <frame onload="if(openedWithWE == 0){checkDocument();} openedWithWE = 0;" src="<?php print WEBEDITION_DIR . "we/include/we_classes/SEEM/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>&paras=<?php print (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
-    <frame src="<?php print WEBEDITION_DIR . "we/include/we_classes/SEEM/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
+    <frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>" name="extDocHeader" noresize scrolling="no">
+    <frame onload="if(openedWithWE == 0){checkDocument();} openedWithWE = 0;" src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>&paras=<?php print (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
+    <frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
 </frameset><noframes></noframes>
 </html>

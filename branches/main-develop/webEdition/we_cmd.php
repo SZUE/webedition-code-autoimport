@@ -147,13 +147,13 @@ if(!$INCLUDE){
 			$INCLUDE = "we_showDocument.inc.php";
 			break;
         case "open_url_in_editor": // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
-        	$INCLUDE = "/we_classes/SEEM/open_url_in_editor.php";
+        	$INCLUDE = "/we_seem/open_url_in_editor.php";
         	break;
 		case "open_form_in_editor": // Formular wird an dieses Skript umgeleitet, hier wird ein Kommando daraus gebaut, um das Dokument korrekt zu �ffnen
-        	$INCLUDE = "/we_classes/SEEM/open_form_in_editor.php";
+        	$INCLUDE = "/we_seem/open_form_in_editor.php";
         	break;
         case "open_extern_document"; // wird ben�tigt um ein externes Dokument aufzurufen
-		    $INCLUDE = "/we_classes/SEEM/we_SEEM_openExtDoc_frameset.php";
+		    $INCLUDE = "/we_seem/we_SEEM_openExtDoc_frameset.php";
 		    break;
         case "edit_document_with_parameters":
     	    $parastr = $_REQUEST["we_cmd"][4];

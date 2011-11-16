@@ -384,7 +384,7 @@ if(!isset($we_doc->elements['data']['dat'])){
     	var parameters = "<?php print $parastr; ?>";
 	<?php
     	}
-	
+
 
 	if($GLOBALS['we_doc']->ContentType != "text/weTmpl"){
 	?>
@@ -436,7 +436,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 			);
 
 			editHeader.location = "about:blank";
-			editFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_classes/SEEM/we_SEEM_openExtDoc_footer.php" ?>";
+			editFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
 
 					<?php
 				}
