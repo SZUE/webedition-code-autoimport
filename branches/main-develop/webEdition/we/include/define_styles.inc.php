@@ -21,6 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once(WEBEDITION_INCLUDES_PATH.'we_classes/html/we_htmlElement.inc.php');
 
 define("CSS_DIR", "/webEdition/css/");
 define("SCRIPT_BUTTONS_ONLY", we_htmlElement::jsScript(JS_DIR.'weButton.js'));
