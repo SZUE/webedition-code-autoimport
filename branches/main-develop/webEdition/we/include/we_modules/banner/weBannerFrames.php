@@ -248,8 +248,8 @@ $we_tabs->getHTML() .
 	</head>
 	<body>
     <form name="we_form">
-    <?php print $this->View->htmlHidden("ncmd","");?>
-    <?php print $this->View->htmlHidden("nopt","");?>
+    <?php print $this->View->htmlHidden("ncmd","");
+		print $this->View->htmlHidden("nopt","");?>
     </form>
     </body>
     </html>

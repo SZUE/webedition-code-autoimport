@@ -54,43 +54,6 @@ class we_progressBar{
 
 	function getJS(){
 		print $this->getJSCode();
-		/*
-		  ?>
-		  <script  type="text/javascript">
-		  function setProgressText(name,text){
-		  if(document.getElementById){
-		  var div = document.getElementById(name);
-		  div.innerHTML = text;
-		  }else if(document.all){
-		  var div = document.all[name];
-		  div.innerHTML = text;
-		  }
-		  }
-
-		  function setProgress(progress){
-		  var koef=<?php print ($this->stud_len/100)?>;
-		  <?php if($this->orientation==1){?>
-		  document.images["progress_image"].height=koef*progress;
-		  <?php if($this->showBack){?>document.images["progress_image_bg"].height=(koef*100)-(koef*progress);<?php }?>
-		  <?php }else{?>
-		  document.images["progress_image"].width=koef*progress;
-		  <?php if($this->showBack){?>document.images["progress_image_bg"].width=(koef*100)-(koef*progress);<?php }?>
-		  <?php }?>
-
-		  if (progress==100) {
-		  document.images["progress_image"].style.display="none";
-		  }
-
-		  <?php if($this->showProgressText){?>setProgressText("progress_text",progress+"%")<?php }?>
-		  <?php if($this->callback_code!=""){?>
-		  if(progress<100){ to=setTimeout('<?php print $this->callback_code;?>',<?php print $this->callback_timeout;?>);
-		  }else{ var to=clearTimeout(to);}?>
-		  <?php }?>
-		  }
-		  <?php if($this->callback_code!=""){?>var to=setTimeout('<?php print $this->callback_code;?>',<?php print $this->callback_timeout;?>); <?php }?>
-		  </script>
-
-		  <?php */
 	}
 
 	function getJSCode(){

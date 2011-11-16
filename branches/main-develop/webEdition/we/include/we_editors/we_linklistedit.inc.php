@@ -451,8 +451,7 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST["we_cmd"][0] == "edit
 			top.close();
 	<?php
 } else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($linklist) && $linklist) {
-	?>
-	<?php $_SESSION["WE_LINKLIST"] = $linklist; ?>
+	 $_SESSION["WE_LINKLIST"] = $linklist; ?>
 					opener.setScrollTo();
 					opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php

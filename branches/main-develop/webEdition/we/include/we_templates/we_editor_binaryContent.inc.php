@@ -38,8 +38,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;">
-		<?php $we_doc->pHiddenTrans(); ?>
-		<?php
+		<?php $we_doc->pHiddenTrans(); 
 
 
 		$parts = array();

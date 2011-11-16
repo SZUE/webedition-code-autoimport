@@ -31,46 +31,46 @@ htmlTop($GLOBALS['lang']['Template']['title']);
 $ButtonBack = we_button::create_button('back', 'javascript:leWizardForm.back();', true, 100, 22, "", "", true, false);
 $ButtonNext = we_button::create_button('next', 'javascript:leWizardForm.next();', true, 100, 22, "", "", false, false);
 $ButtonReload = we_button::create_button(
-		'image:function_reload', 
-		'javascript:leWizardForm.reload();', 
-		true, 
-		40, 
-		22, 
-		"", 
-		"", 
-		true, 
+		'image:function_reload',
+		'javascript:leWizardForm.reload();',
+		true,
+		40,
+		22,
+		"",
+		"",
+		true,
 		false);
 
 // Preview
 $ButtonClose = we_button::create_button(
-		'close', 
-		'javascript:top.frames[\'leLoadFrame\'].hidePreview();', 
-		true, 
-		100, 
-		22, 
-		"", 
-		"", 
-		false, 
+		'close',
+		'javascript:top.frames[\'leLoadFrame\'].hidePreview();',
+		true,
+		100,
+		22,
+		"",
+		"",
+		false,
 		false);
 $ButtonBackPreview = we_button::create_button(
-		'image:direction_left', 
-		'javascript:top.frames[\'leLoadFrame\'].backPreview();', 
-		true, 
-		40, 
-		22, 
-		"", 
-		"", 
-		false, 
+		'image:direction_left',
+		'javascript:top.frames[\'leLoadFrame\'].backPreview();',
+		true,
+		40,
+		22,
+		"",
+		"",
+		false,
 		false);
 $ButtonNextPreview = we_button::create_button(
-		'image:direction_right', 
-		'javascript:top.frames[\'leLoadFrame\'].nextPreview();', 
-		true, 
-		40, 
-		22, 
-		"", 
-		"", 
-		false, 
+		'image:direction_right',
+		'javascript:top.frames[\'leLoadFrame\'].nextPreview();',
+		true,
+		40,
+		22,
+		"",
+		"",
+		false,
 		false);
 
 ?>
@@ -168,8 +168,6 @@ echo $Status->get($WizardCollection, false, null, null);
 		<div id="leWizardPostContent">
 		<?php
 		echo $ButtonReload;
-		?>
-		<?php
 		echo $Progress->get();
 		?>
 		</div>
@@ -178,11 +176,7 @@ echo $Status->get($WizardCollection, false, null, null);
 <div id="leWizardEmoticon"></div>
 		<?php
 		echo $Content->getDescription();
-		?>
-		<?php
 		echo $ButtonBack;
-		?>
-		<?php
 		echo $ButtonNext;
 		?>
 	</div>
@@ -198,11 +192,7 @@ echo $Status->get($WizardCollection, false, null, null);
 <div id="leWizardPreviewText" class="defaultfont"></div>
 	<?php
 	echo $ButtonBackPreview;
-	?>
-	<?php
 	echo $ButtonNextPreview;
-	?>
-	<?php
 	echo $ButtonClose;
 	?>
 </div>

@@ -146,8 +146,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 	<body>
 <?php
 } else {
-?>
-		<?php
+
 			print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
 				  we_htmlElement::jsElement("
 					function saveOnKeyBoard() {

@@ -24,7 +24,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 //make sure we know which browser is used
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
 
@@ -481,8 +480,7 @@ function we_cmd() {
 						new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 							break;';
 			}
-		?>
-		<?php
+
 			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 			$_jsincludes = weToolLookup::getJsCmdInclude();
 			if(!empty($_jsincludes)) {

@@ -403,8 +403,7 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
        	 //eval('$v'.$DB_WE->f("mdate")."++;");
        }
 
-    ?>
-        <?php $year=(empty($_REQUEST["year"]))?date("Y"):$_REQUEST["year"];
+    $year=(empty($_REQUEST["year"]))?date("Y"):$_REQUEST["year"];
 //        unset($_SESSION["year"]);
     for($f=12;$f>0;$f--){
         eval('$r = (isset($v' . $f . $year . ') ? $v' . $f . $year .' : ""); ');
@@ -461,8 +460,7 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
 <?php } else { ?>
 			<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
 				<frame src="<?php print HTML_DIR; ?>safariResize.html" name="shop_separator_line" frameborder="0" noresize scrolling="no">
-<?php } ?>
-				<?php
+<?php } 
 
 				if (isset($_REQUEST['bid'])) {
 					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto>';

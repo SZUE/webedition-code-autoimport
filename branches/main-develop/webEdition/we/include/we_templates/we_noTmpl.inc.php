@@ -50,8 +50,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 	</head>
 	<?php if (isset($we_editmode) && $we_editmode){ ?>
 		<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15">
-			<form name="we_form" method="post"><?php $we_doc->pHiddenTrans() ?>
-				<?php
+			<form name="we_form" method="post"><?php $we_doc->pHiddenTrans();
 				$foo = '<pre class="defaultfont">&lt;html&gt;
 	&lt;head&gt;
 ';
@@ -72,8 +71,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 ' . we_tag("textarea", array("name" => "BODY", "rows" => "15", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
-				?>
-				<?php print htmlMessageBox(667, 650, $foo); ?>
+				 print htmlMessageBox(667, 650, $foo); ?>
 			</form>
 		</body>
 	<?php }else{ ?>

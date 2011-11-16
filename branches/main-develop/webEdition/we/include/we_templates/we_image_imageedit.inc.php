@@ -45,8 +45,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 <body class="weEditorBody" style="padding:20px;">
 
 	<form name="we_form" method="post" onsubmit="return false;">
-		<?php $we_doc->pHiddenTrans(); ?>
-		<?php
+		<?php $we_doc->pHiddenTrans();
 				$_headline = g_l('weClass',"[image]");
 				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 

@@ -224,8 +224,8 @@ class weWorkflowFrames extends weModuleFrames{
 	</head>
 	<body>
     <form name="we_form">
-    <?php print $this->View->htmlHidden("wcmd","");?>
-    <?php print $this->View->htmlHidden("wopt","");?>
+    <?php print $this->View->htmlHidden("wcmd","");
+		print $this->View->htmlHidden("wopt","");?>
     </form>
     </body>
     </html>

@@ -184,8 +184,6 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 						}
 						echo 'r_tree_open(' . $f['ID'] . ");\n";
 					}
-				?>
-				<?php
 					if (isset($f)) {
 						echo 'we_cmd(\'show_folder_content\', ' . $f['ID'] . ");\n";
 					}

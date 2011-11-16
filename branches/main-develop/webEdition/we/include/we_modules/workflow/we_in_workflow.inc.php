@@ -80,8 +80,7 @@ if($cmd == "ok"){
 
 <body class="weDialogBody">
 	<center>
-		<?php if($cmd!="ok"){ ?>
-			<?php
+		<?php if($cmd!="ok"){
 				if($we_doc->Table==FILE_TABLE) {
 					$wfDoc = weWorkflowUtility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID);
 				}
@@ -89,8 +88,7 @@ if($cmd == "ok"){
 					$wfDoc = weWorkflowUtility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID);
 				}
 				$wfID=$wfDoc->workflowID;
-			?>
-			<?php if($wfID){ ?>
+			 if($wfID){ ?>
 				<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 					<?php
 						$wf_select = '<select name="wf_select" size="1">';
