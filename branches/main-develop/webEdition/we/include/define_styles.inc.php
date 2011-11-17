@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('CSS_DIR', 'webEdition/css');
+define('CSS_DIR', 'webEdition/css/');
 define('SCRIPT_BUTTONS_ONLY', we_htmlElement::jsScript(JS_DIR . 'weButton.js'));
 define('STYLESHEET_BUTTONS_ONLY', '<link href="' . CSS_DIR . 'we_button.css" rel="styleSheet" type="text/css" />');
 define('STYLESHEET', '<link href="' . CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '" rel="styleSheet" type="text/css" />' . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY);
