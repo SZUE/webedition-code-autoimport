@@ -6,6 +6,7 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = '<we:link /><we:postlink><br /></we:postlink>';
+$this->Deprecated = true;
 
 $this->Attributes[] = new weTagData_textAttribute('name', true, '');
 $this->Attributes[] = new weTagData_textAttribute('limit', false, '');

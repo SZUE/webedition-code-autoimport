@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * webEdition CMS
  *
@@ -41,5 +41,3 @@
 		if(isset($toolInclude)) {
         	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $toolInclude);
         }
- 
-?>

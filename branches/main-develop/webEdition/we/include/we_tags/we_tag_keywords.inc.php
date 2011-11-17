@@ -22,6 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+function we_parse_tag_keywords($attribs, $content){
+	return '<?php printElement('.we_tagParser::printTag('keywords',$attribs,$content,true).');?>';
+}
+
 function we_tag_keywords($attribs, $content){
 	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true);
 	$attribs = removeAttribs($attribs, array(
