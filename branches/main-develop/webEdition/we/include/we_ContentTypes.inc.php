@@ -58,7 +58,7 @@ $GLOBALS["WE_CONTENT_TYPES"] = array(
 		'text/weTmpl' => array(
 				"Extension" => ".tmpl",
 				"Permission" => 'NEW_TEMPLATE',
-				"DefaultCode" => '<!DOCTYPE html>
+				"DefaultCode" => '<!DOCTYPE  HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
 <html dir="ltr" lang="<we:pageLanguage type="complete" doc="top" />">
 <head>
 	<we:title></we:title>

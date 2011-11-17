@@ -720,7 +720,7 @@ function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true)
 			"src" => JS_DIR . "attachKeyListener.js"
 		)) : "";
 
-	return '<!DOCTYPE html><html><head>' .
+	return '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head>' .
 		$_title .
 		$_meta_expires .
 		$_meta_no_cache .
