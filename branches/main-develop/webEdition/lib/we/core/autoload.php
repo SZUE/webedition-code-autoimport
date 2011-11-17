@@ -62,6 +62,8 @@ $loader = Zend_Loader_Autoloader::getInstance(); #3815
 $loader->setFallbackAutoloader(true); #3815
 $loader->suppressNotFoundWarnings(true);
 
+spl_autoload_register('we_autoloader::finalLoad');
+
 // include configuration file of webEdition
 include_once ($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'we_conf.inc.php');
 

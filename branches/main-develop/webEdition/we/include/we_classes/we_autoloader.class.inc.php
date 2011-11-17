@@ -189,12 +189,22 @@ abstract class we_autoloader{
 		'XML_Validate' => 'xml_validate.inc.php',
 	);
 
+	/**
+	 * default webEdition autoloader
+	 * @param type $class_name
+	 */
 	static public function autoload($class_name){
 		if(array_key_exists($class_name, self::$classes)){
 			include(WEBEDITION_INCLUDES_DIR.'we_classes/' . self::$classes[$class_name]);
-		}else{
-			t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 		}
+		//will try next auto-loader
+	}
+	/**
+	 * Added after Zend-Loader to trigger not found classes
+	 * @param type $class_name
+	 */
+	static public function finalLoad($class_name){
+			t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 	}
 }
 
