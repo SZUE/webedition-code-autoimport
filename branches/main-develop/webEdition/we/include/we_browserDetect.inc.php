@@ -248,7 +248,7 @@ class we_browserDetect{
 				break;
 
 			case 'mac':
-				switch($GLOBALS['BROWSER']){
+				switch(self::$br){
 					case 'opera':
 					case 'safari':
 						return true;
@@ -256,7 +256,7 @@ class we_browserDetect{
 				break;
 
 			case 'unix':
-				switch($GLOBALS['BROWSER']){
+				switch(self::$br){
 					case 'opera':
 						return true;
 				}
@@ -264,10 +264,8 @@ class we_browserDetect{
 				break;
 
 			case 'unknown':
-				switch($GLOBALS['BROWSER']){
+				switch(self::$br){
 					case 'ie':
-						return true;
-
 					case 'opera':
 					case 'safari':
 						return true;
@@ -277,5 +275,4 @@ class we_browserDetect{
 		}
 		return false;
 	}
-
 }
