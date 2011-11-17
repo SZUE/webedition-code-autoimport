@@ -24,7 +24,7 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
 
-class weNavigationRule extends weModelBase {
+class weNavigationRule extends weModelBase{
 
 	var $table = NAVIGATION_RULE_TABLE;
 	var $Table = NAVIGATION_RULE_TABLE;
@@ -43,27 +43,27 @@ class weNavigationRule extends weModelBase {
 	var $Href;
 	var $SelfCurrent;
 	var $persistent_slots = array(
-			'ID',
-			'NavigationName',
-			'NavigationID',
-			'SelectionType',
-			'FolderID',
-			'DoctypeID',
-			'ClassID',
-			'Categories',
-			'WorkspaceID'
+		'ID',
+		'NavigationName',
+		'NavigationID',
+		'SelectionType',
+		'FolderID',
+		'DoctypeID',
+		'ClassID',
+		'Categories',
+		'WorkspaceID'
 	);
 
-	function weNavigationRule() {
+	function weNavigationRule(){
 		$this->db = new DB_WE();
 	}
 
-	function initByID($ruleId) {
+	function initByID($ruleId){
 
 		parent::load(abs($ruleId));
 	}
 
-	function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true) {
+	function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true){
 
 		$_navigation = new weNavigationRule();
 		$_navigation->NavigationName = $navigationName;
@@ -81,20 +81,20 @@ class weNavigationRule extends weModelBase {
 		return $_navigation;
 	}
 
-	function we_load($id) {
+	function we_load($id){
 		$this->load($id);
 	}
 
-	function we_save() {
+	function we_save(){
 		parent::save($this->ID ? false : true);
 	}
 
 	// beide folgenden f�r Bug #4142
-	function deleteDB() {
+	function deleteDB(){
 		unset($this->db);
 	}
 
-	function renewDB() {
+	function renewDB(){
 		$this->db = new DB_WE();
 	}
 

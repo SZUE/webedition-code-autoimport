@@ -305,7 +305,7 @@ class weToolFrames extends weModuleFrames {
 			$GLOBALS['we_body_insert'] = we_htmlElement::htmlForm(array('name'=>'we_form'),
 					$this->View->getCommonHiddens($hiddens).we_htmlelement::htmlHidden(array('name'=>'home', 'value'=>'0'))
 			);
-			$GLOBALS['tool'] = $this->toolName;
+			$tool = $GLOBALS['tool'] = $this->toolName;
 			ob_start();
 			include($this->toolDir . 'home.inc.php');
             $out = ob_get_contents();
