@@ -52,6 +52,6 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   PRIMARY KEY  (`ID`),
   KEY documentID (documentID),
   KEY `timestamp` (`timestamp`,`CreationDate`),
-  KEY `binaryPath` (`binaryPath`)
+  KEY `binaryPath` (`binaryPath`),
   KEY `version` (`version`)
 ) ENGINE=MyISAM ;
