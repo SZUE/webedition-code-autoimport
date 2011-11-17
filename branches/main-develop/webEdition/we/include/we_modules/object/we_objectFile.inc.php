@@ -23,23 +23,16 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_document.inc.php');
 if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 }
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_class_folder.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_thumbnail.class.php');
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_versions/weVersions.class.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/class/weHook.class.php');
 
 /* a class for handling templates */
 class we_objectFile extends we_document{
-	//######################################################################################################################################################
-	//##################################################################### Variables ######################################################################
-	//######################################################################################################################################################
-
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName=__CLASS__;
 

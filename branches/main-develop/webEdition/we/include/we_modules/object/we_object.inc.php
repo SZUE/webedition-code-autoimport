@@ -23,18 +23,12 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_document.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_class_folder.inc.php");
-//FIMXE: remove include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
 
 /* a class for handling templates */
 class we_object extends we_document {
-	//######################################################################################################################################################
-	//##################################################################### Variables ######################################################################
-	//######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName=__CLASS__;

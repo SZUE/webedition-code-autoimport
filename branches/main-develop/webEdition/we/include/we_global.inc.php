@@ -163,7 +163,7 @@ function weFileExists($id, $table = FILE_TABLE, $db = '') {
 	if ($id == 0){
 		return true;
 	}
-	return f('SELECT ID FROM $table WHERE ID=' . $id, 'ID', ($db?$db:$db=new DB_WE()));
+	return f('SELECT ID FROM $table WHERE ID=' . $id, 'ID', ($db?$db:new DB_WE()));
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {
@@ -234,7 +234,7 @@ function we_getInputPasswordField($name, $value, $atts) {
 }
 
 function we_getHiddenField($name, $value, $xml = false) {
-	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . ' />';
+	return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" ' . ($xml ? ' /' : '') . '>';
 }
 
 function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false) {
@@ -283,7 +283,6 @@ function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsH
 
 function we_getInputCheckboxField($name, $value, $attr) {
 	//  returns a checkbox with associated hidden-field
-	//  This function replaced function: we_getCheckboxField, but is still used one time
 
 	$tmpname = md5(uniqid(time()));
 	if ($value) {
@@ -455,13 +454,16 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 		}
 		$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->getDefaultValueArray();
 	} else {
-		if (isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID'])
+		if (isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
 			$GLOBALS['we_object'][$formname]->initByID($_REQUEST['we_editObject_ID'], OBJECT_FILES_TABLE);
-		else
-		if ($session)
-			$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_'.$formname]);
-		if ($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID))
+		}else{
+			if ($session){
+				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_'.$formname]);
+			}
+		}
+		if ($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
 			$GLOBALS['we_object'][$formname]->TableID = $classID;
+		}
 		if (strlen($categories)) {
 			$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $categories;
@@ -518,10 +520,10 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 		}
 	}
 
-	checkAndPrepareImage($formname, "we_object");
-	checkAndPrepareFlashmovie($formname, "we_object");
-	checkAndPrepareQuicktime($formname, "we_object");
-	checkAndPrepareBinary($formname, "we_object");
+	we_imageDocument::checkAndPrepare($formname, "we_object");
+	we_flashDocument::checkAndPrepare($formname, "we_object");
+	we_quicktimeDocument::checkAndPrepare($formname, "we_object");
+	we_otherDocument::checkAndPrepare($formname, "we_object");
 
 	if ($session) {
 		$GLOBALS["we_object"][$formname]->saveInSession($_SESSION["we_object_session_$formname"]);
@@ -622,307 +624,15 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 		}
 	}
 
-	checkAndPrepareImage($formname, 'we_document');
-	checkAndPrepareFlashmovie($formname, 'we_document');
-	checkAndPrepareQuicktime($formname, 'we_document');
-	checkAndPrepareBinary($formname, 'we_document');
+	we_imageDocument::checkAndPrepare($formname, 'we_document');
+	we_flashDocument::checkAndPrepare($formname, 'we_document');
+	we_quicktimeDocument::checkAndPrepare($formname, 'we_document');
+	we_otherDocument::checkAndPrepare($formname, 'we_document');
 
 	if ($session) {
 		$GLOBALS['we_document'][$formname]->saveInSession($_SESSION["we_document_session_$formname"]);
 	}
 	return $GLOBALS['we_document'][$formname];
-}
-
-function checkAndPrepareImage($formname, $key = 'we_document') {
-	// check to see if there is an image to create or to change
-	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
-
-		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
-		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
-			foreach ($_FILES["we_ui_$formname"]["name"] as $imgName => $filename) {
-
-				$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName] : false;
-
-				if ($_imgDataId !== false && isset($_SESSION[$_imgDataId])) {
-
-					$_SESSION[$_imgDataId]['doDelete'] = false;
-
-					if (isset($_REQUEST['WE_UI_DEL_CHECKBOX_' . $imgName]) && $_REQUEST['WE_UI_DEL_CHECKBOX_' . $imgName] == 1) {
-						$_SESSION[$_imgDataId]['doDelete'] = true;
-					} else
-					if ($filename) {
-						// file is selected, check to see if it is an image
-						$ct = getContentTypeFromFile($filename);
-						if ($ct == 'image/*') {
-							$imgId = abs($GLOBALS[$key][$formname]->getElement($imgName));
-
-							// move document from upload location to tmp dir
-							$_SESSION[$_imgDataId]['serverPath'] = TMP_DIR . '/' . md5(
-															uniqid(rand(), 1));
-							move_uploaded_file(
-											$_FILES["we_ui_$formname"]["tmp_name"][$imgName],
-											$_SESSION[$_imgDataId]["serverPath"]);
-
-							include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_thumbnail.class.php');
-							$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
-
-							if (count($we_size) == 0) {
-								unset($_SESSION[$_imgDataId]);
-								return;
-							}
-
-							$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' . preg_replace(
-															'/[^A-Za-z0-9._-]/',
-															'',
-															$_FILES["we_ui_$formname"]["name"][$imgName]);
-
-							if ($imgId) {
-								$_SESSION[$_imgDataId]['id'] = $imgId;
-							}
-
-							$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
-							$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace(
-															'#^.+(\..+)$#',
-															'\\1',
-															$tmp_Filename) : '';
-							$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
-
-							//image needs to be scaled
-							if ((isset(
-															$_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) || (isset(
-															$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])) {
-								$fh = fopen($_SESSION[$_imgDataId]['serverPath'], 'rb');
-								$imageData = fread($fh, filesize($_SESSION[$_imgDataId]['serverPath']));
-								fclose($fh);
-								$thumb = new we_thumbnail();
-								$thumb->init(
-												'dummy',
-												$_SESSION[$_imgDataId]['width'],
-												$_SESSION[$_imgDataId]['height'],
-												$_SESSION[$_imgDataId]['keepratio'],
-												$_SESSION[$_imgDataId]['maximize'],
-												false,
-												'',
-												'dummy',
-												0,
-												'',
-												'',
-												$_SESSION[$_imgDataId]['extension'],
-												$we_size[0],
-												$we_size[1],
-												$imageData,
-												'',
-												$_SESSION[$_imgDataId]['quality']);
-
-								$imgData = '';
-								$thumb->getThumb($imgData);
-
-								$fh = fopen($_SESSION[$_imgDataId]['serverPath'], 'wb');
-								fwrite($fh, $imgData);
-								fclose($fh);
-
-								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
-							}
-
-							$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
-							$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
-							$_SESSION[$_imgDataId]['type'] = $_FILES["we_ui_$formname"]["type"][$imgName];
-							$_SESSION[$_imgDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$imgName];
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-function checkAndPrepareBinary($formname, $key = 'we_document') {
-	// check to see if there is an image to create or to change
-	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
-
-		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
-		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
-			foreach ($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename) {
-
-				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName] : false;
-
-				if ($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])) {
-
-					$_SESSION[$_binaryDataId]['doDelete'] = false;
-
-					if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1) {
-						$_SESSION[$_binaryDataId]['doDelete'] = true;
-					} else
-					if ($filename) {
-						// file is selected, check to see if it is an image
-						$ct = getContentTypeFromFile($filename);
-						if ($ct == "application/*") {
-							$binaryId = abs($GLOBALS[$key][$formname]->getElement($binaryName));
-
-							// move document from upload location to tmp dir
-							$_SESSION[$_binaryDataId]["serverPath"] = TMP_DIR . "/" . md5(
-															uniqid(rand(), 1));
-							move_uploaded_file(
-											$_FILES["we_ui_$formname"]["tmp_name"][$binaryName],
-											$_SESSION[$_binaryDataId]["serverPath"]);
-
-
-
-							$tmp_Filename = $binaryName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-															"/[^A-Za-z0-9._-]/",
-															"",
-															$_FILES["we_ui_$formname"]["name"][$binaryName]);
-
-							if ($binaryId) {
-								$_SESSION[$_binaryDataId]["id"] = $binaryId;
-							}
-
-							$_SESSION[$_binaryDataId]["fileName"] = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
-							$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-															'#^.+(\..+)$#',
-															'\\1',
-															$tmp_Filename) : "";
-							$_SESSION[$_binaryDataId]["text"] = $_SESSION[$_binaryDataId]["fileName"] . $_SESSION[$_binaryDataId]["extension"];
-							$_SESSION[$_binaryDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$binaryName];
-							$_SESSION[$_binaryDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$binaryName];
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-function checkAndPrepareFlashmovie($formname, $key = "we_document") {
-	// check to see if there is an image to create or to change
-	if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
-
-		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
-		if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
-			foreach ($_FILES["we_ui_$formname"]["name"] as $flashName => $filename) {
-
-				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
-
-				if ($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])) {
-
-					$_SESSION[$_flashmovieDataId]['doDelete'] = false;
-
-					if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1) {
-						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
-					} else
-					if ($filename) {
-						// file is selected, check to see if it is an image
-						$ct = getContentTypeFromFile($filename);
-						if ($ct == "application/x-shockwave-flash") {
-							$flashId = abs($GLOBALS[$key][$formname]->getElement($flashName));
-
-							// move document from upload location to tmp dir
-							$_SESSION[$_flashmovieDataId]["serverPath"] = TMP_DIR . "/" . md5(
-															uniqid(rand(), 1));
-							move_uploaded_file(
-											$_FILES["we_ui_$formname"]["tmp_name"][$flashName],
-											$_SESSION[$_flashmovieDataId]["serverPath"]);
-
-
-
-							$tmp_Filename = $flashName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-															'[^A-Za-z0-9._-]',
-															'',
-															$_FILES["we_ui_$formname"]["name"][$flashName]);
-
-							if ($flashId) {
-								$_SESSION[$_flashmovieDataId]["id"] = $flashId;
-							}
-
-							$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace(
-															'#^(.+)\..+$#',
-															'\\1',
-															$tmp_Filename);
-							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-															'#^.+(\..+)$#',
-															'\\1',
-															$tmp_Filename) : '';
-							$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
-
-							$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);
-							$_SESSION[$_flashmovieDataId]["imgwidth"] = $we_size[0];
-							$_SESSION[$_flashmovieDataId]["imgheight"] = $we_size[1];
-							$_SESSION[$_flashmovieDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$flashName];
-							$_SESSION[$_flashmovieDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$flashName];
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-function checkAndPrepareQuicktime($formname, $key = "we_document") {
-	// check to see if there is an image to create or to change
-	if (!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )) {
-		return;
-	}
-	$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
-	foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
-
-		$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
-
-		if ($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])) {
-
-			$_SESSION[$_quicktimeDataId]['doDelete'] = false;
-
-			if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1) {
-				$_SESSION[$_quicktimeDataId]['doDelete'] = true;
-			} else
-			if ($filename) {
-				// file is selected, check to see if it is an image
-				$ct = getContentTypeFromFile($filename);
-				if ($ct == "video/quicktime") {
-					$quicktimeId = abs($GLOBALS[$key][$formname]->getElement($quicktimeName));
-
-					// move document from upload location to tmp dir
-					$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
-													uniqid(rand(), 1));
-					move_uploaded_file(
-									$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName],
-									$_SESSION[$_quicktimeDataId]["serverPath"]);
-
-
-
-					$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-													"/[^A-Za-z0-9._-]/","",
-													$_FILES["we_ui_$formname"]["name"][$quicktimeName]);
-
-					if ($quicktimeId) {
-						$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
-					}
-
-					$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace(
-													'#^(.+)\..+$#',
-													"\\1",
-													$tmp_Filename);
-					$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-													'#^.+(\..+)$#',
-													"\\1",
-													$tmp_Filename) : "";
-					$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
-
-
-					//$_SESSION[$_quicktimeDataId]["imgwidth"] = $we_size[0];
-					//$_SESSION[$_quicktimeDataId]["imgheight"] = $we_size[1];
-					$_SESSION[$_quicktimeDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$quicktimeName];
-					$_SESSION[$_quicktimeDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$quicktimeName];
-				}
-			}
-		}
-	}
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE, $prePostKomma = true) {
@@ -962,12 +672,7 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 			}
 		}
 
-		if ($catOr) {
-			$cat_tail = preg_replace('#^(.*)OR $#', '\1', $cat_tail);
-		} else {
-			$cat_tail = preg_replace('#^(.*)AND $#', '\1', $cat_tail);
-		}
-		$cat_tail = trim($cat_tail);
+		$cat_tail = trim(preg_replace('#^(.*)'.($catOr ? 'OR':'AND').' $#', '\1', $cat_tail));
 
 		if ($cat_tail == "") {
 			$cat_tail = " AND " . $table . "." . $fieldName . " = '-1' ";
@@ -989,13 +694,7 @@ function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, $db = 
 			$cat_tail .= ( $sql . ($catOr ? " OR " : " AND "));
 		}
 
-		if ($catOr) {
-			$cat_tail = preg_replace('#^(.*)OR $#', '\1', $cat_tail);
-		} else {
-			$cat_tail = preg_replace('#^(.*)AND $#', '\1', $cat_tail);
-		}
-
-		$cat_tail = trim($cat_tail);
+		$cat_tail = trim(preg_replace('#^(.*)'.($catOr ? 'OR':'AND').' $#', '\1', $cat_tail));
 
 		if ($cat_tail == "") {
 			$cat_tail = " AND " . $table . "." . $fieldName . " = '-1' ";
@@ -1047,7 +746,7 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 			'error' => '' // error string
 	);
 
-	$server = str_replace('http://', '', $server);
+	$server = str_replace($protocol.'://', '', $server);
 	$port = defined('HTTP_PORT') ? HTTP_PORT : 80;
 	$_pathA = explode('?', $path);
 	$_url = $protocol . '://' . $server . ':' . $port . $_pathA[0];
@@ -1093,9 +792,9 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 		$_proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
 
 		if ($_proxyhost != '') {
-			curl_setopt($_session, CURLOPT_PROXY, $proxyhost . ':' . $proxyport);
-			if ($proxy_user != '') {
-				curl_setopt($_session, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_pass);
+			curl_setopt($_session, CURLOPT_PROXY, $_proxyhost . ':' . $_proxyport);
+			if ($_proxy_user != '') {
+				curl_setopt($_session, CURLOPT_PROXYUSERPWD, $_proxy_user . ':' . $_proxy_pass);
 			}
 			curl_setopt($_session, CURLOPT_SSL_VERIFYPEER, FALSE);
 		}
@@ -1210,13 +909,13 @@ function encode($in) {
 function deleteContentFromDB($id, $table) {
 	$DB_WE = new DB_WE();
 
-	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 0,1','cnt',$DB_WE) !=1){
+	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1','cnt',$DB_WE) !=1){
 		return true;
 	}
 
 	$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
-		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
-	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . abs($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
+		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
+	return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
 }
 
 /**
@@ -1225,10 +924,11 @@ function deleteContentFromDB($id, $table) {
  * @return string stripped tablename
  */
 function stripTblPrefix($table){
-	return TBL_PREFIX!=''&&(strpos($table,TBL_PREFIX)!==FALSE)?substr($table, strlen(TBL_PREFIX)):$table;
+	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) !== FALSE) ? substr($table, strlen(TBL_PREFIX)) : $table;
 }
+
 function addTblPrefix($table){
-	return TBL_PREFIX.$table;
+	return TBL_PREFIX . $table;
 }
 
 function cleanTempFiles($cleanSessFiles = false) {
@@ -1302,7 +1002,7 @@ function cleanTempFiles($cleanSessFiles = false) {
 
 
 function getTemplatesOfTemplate($id, &$arr) {
-	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . abs($id) . " OR IncludedTemplates LIKE '%," . abs($id) . ",%'",'IDS',$GLOBALS['DB_WE']);
+	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%'",'IDS',$GLOBALS['DB_WE']);
 
 	if(!$foo){
 		return;
@@ -1336,7 +1036,7 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
 	//}
 
-	$id = abs($id);
+	$id = intval($id);
 
 	// Bug Fix 6615
 	$tmpArray=$returnIDs['templateIDs'];
@@ -1488,7 +1188,7 @@ function we_getParentIDs($table, $id, &$ids, $db = '') {
 function we_getAliases($id, &$ids, $db = '') {
 	if (!$db)
 		$db = new DB_WE();
-	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . abs($id), 'IDS', $db);
+	$foo=f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', $db);
 	if($foo){
 		$ids=array_merge($ids,explode(',',$foo));
 	}
@@ -2011,16 +1711,16 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 	if (!$id) {
 		return '';
 	}
+	$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id),$DB_WE);
+
 	if (!$GLOBALS['we_doc']->InWebEdition) {
 		// check if object is published.
-		$published = f('SELECT Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id),'Published',$DB_WE);
-		if (!$published) {
+		if (!$foo['Published']) {
 			$GLOBALS['we_link_not_published'] = 1;
 			return '';
 		}
 	}
 
-	$foo = getHash('SELECT Workspaces, ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id),$DB_WE);
 	if (count($foo) == 0)
 		return '';
 	$showLink = false;
@@ -2048,12 +1748,14 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 		}
 		if (show_SeoLinks() && $objectseourls){
 
-			$objectdaten=getHash('SELECT  Url,TriggerID FROM '.OBJECT_FILES_TABLE." WHERE ID='" . abs($id) . "' LIMIT 1", $DB_WE);
+			$objectdaten=getHash('SELECT  Url,TriggerID FROM '.OBJECT_FILES_TABLE." WHERE ID=" . intval($id) . " LIMIT 1", $DB_WE);
 			$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 			if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 		} else {$objecturl='';}
 		$pidstr='';
-		if ($pid){$pidstr='?pid='.abs($pid);}
+		if ($pid){
+			$pidstr='?pid='.intval($pid);
+			}
 		if ($objectseourls && $objecturl!=''){
 
 			if($hidedirindex && show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES))){
@@ -2062,19 +1764,17 @@ function getHrefForObject($id, $pid, $path = '', $DB_WE = '',$hidedirindex=false
 				return ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$path_parts['filename'].'/'.$objecturl . $pidstr;
 			}
 		} else {
-			return $path . '?we_objectID=' . abs($id) . str_replace('?','&amp;',$pidstr);
+			return $path . '?we_objectID=' . intval($id) . str_replace('?','&amp;',$pidstr);
 		}
 	} else {
 		if ($foo['Workspaces']) {
 			$fooArr = makeArrayFromCSV($foo['Workspaces']);
 			$path = id_to_path($fooArr[0], FILE_TABLE, $DB_WE);
 			$path = f('SELECT Path FROM ' . FILE_TABLE . " WHERE Published > 0 AND ContentType='text/webedition' AND IsDynamic=1 AND Path like '" . $DB_WE->escape($path) . "%'","Path",$DB_WE);
-			if (!$path)
-				return '';
-			return $path . '?we_objectID=' . abs($id) . '&pid=' . abs($pid);
-		} else
-			return '';
+			return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) :'');
+		}
 	}
+	return '';
 }
 
 function getNextDynDoc($path, $pid, $ws1, $ws2, $DB_WE = '') {
@@ -2318,12 +2018,9 @@ function we_getDocumentByID($id, $includepath = '', $db = '', $charset = '') {
 		$db = new DB_WE();
 	}
 	// look what document it is and get the className
-	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . abs($id), 'ClassName', $db);
-	//include the right class
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/'.$clNm.'.inc.php');
+	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ClassName', $db);
+
 	// init Document
-
-
 	if (isset($GLOBALS['we_doc'])) {
 		$backupdoc = $GLOBALS['we_doc'];
 	}
@@ -2442,7 +2139,6 @@ function getPref($name) {
 	if (isset($_SESSION['prefs'][$name])) {
 		return $_SESSION['prefs'][$name];
 	} else {
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weConfParser.class.php');
 		$file_name = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_global.inc.php';
 		$parser = weConfParser::getConfParserByFile($file_name);
 		$all = $parser->getData();
@@ -2639,7 +2335,7 @@ function removeAttribs($attribs, $remove = array()) {
  */
 function removeEmptyAttribs($atts, $ignore = array()) {
 	foreach ($atts as $k => $v) {
-		if (!in_array($k, $ignore) && $v == '') {
+		if ($v == '' && !in_array($k, $ignore)) {
 			unset($atts[$k]);
 		}
 	}
@@ -2718,7 +2414,7 @@ function getNumberOfDays($month, $year) {
 		case 12:
 			return '31';
 		case 2:
-			return is_int($year / 4) ? '29' : '28';
+			return ($year % 4) == 0 ? '29' : '28';
 		default:
 			return '30';
 	}

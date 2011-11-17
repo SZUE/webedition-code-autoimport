@@ -1068,4 +1068,109 @@ class we_imageDocument extends we_binaryDocument {
 		return $content;
 
 	}
+
+	static function checkAndPrepare($formname, $key = 'we_document') {
+		// check to see if there is an image to create or to change
+		if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
+
+			$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+
+			if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
+				foreach ($_FILES["we_ui_$formname"]["name"] as $imgName => $filename) {
+
+					$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $imgName] : false;
+
+					if ($_imgDataId !== false && isset($_SESSION[$_imgDataId])) {
+
+						$_SESSION[$_imgDataId]['doDelete'] = false;
+
+						if (isset($_REQUEST['WE_UI_DEL_CHECKBOX_' . $imgName]) && $_REQUEST['WE_UI_DEL_CHECKBOX_' . $imgName] == 1) {
+							$_SESSION[$_imgDataId]['doDelete'] = true;
+						} else
+						if ($filename) {
+							// file is selected, check to see if it is an image
+							$ct = getContentTypeFromFile($filename);
+							if ($ct == 'image/*') {
+								$imgId = abs($GLOBALS[$key][$formname]->getElement($imgName));
+
+								// move document from upload location to tmp dir
+								$_SESSION[$_imgDataId]['serverPath'] = TMP_DIR . '/' . md5(
+																uniqid(rand(), 1));
+								move_uploaded_file(
+												$_FILES["we_ui_$formname"]["tmp_name"][$imgName],
+												$_SESSION[$_imgDataId]["serverPath"]);
+
+								include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_thumbnail.class.php');
+								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
+
+								if (count($we_size) == 0) {
+									unset($_SESSION[$_imgDataId]);
+									return;
+								}
+
+								$tmp_Filename = $imgName . '_' . md5(uniqid(rand(), 1)) . '_' . preg_replace(
+																'/[^A-Za-z0-9._-]/',
+																'',
+																$_FILES["we_ui_$formname"]["name"][$imgName]);
+
+								if ($imgId) {
+									$_SESSION[$_imgDataId]['id'] = $imgId;
+								}
+
+								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
+								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace(
+																'#^.+(\..+)$#',
+																'\\1',
+																$tmp_Filename) : '';
+								$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
+
+								//image needs to be scaled
+								if ((isset(
+																$_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) || (isset(
+																$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])) {
+									$fh = fopen($_SESSION[$_imgDataId]['serverPath'], 'rb');
+									$imageData = fread($fh, filesize($_SESSION[$_imgDataId]['serverPath']));
+									fclose($fh);
+									$thumb = new we_thumbnail();
+									$thumb->init(
+													'dummy',
+													$_SESSION[$_imgDataId]['width'],
+													$_SESSION[$_imgDataId]['height'],
+													$_SESSION[$_imgDataId]['keepratio'],
+													$_SESSION[$_imgDataId]['maximize'],
+													false,
+													'',
+													'dummy',
+													0,
+													'',
+													'',
+													$_SESSION[$_imgDataId]['extension'],
+													$we_size[0],
+													$we_size[1],
+													$imageData,
+													'',
+													$_SESSION[$_imgDataId]['quality']);
+
+									$imgData = '';
+									$thumb->getThumb($imgData);
+
+									$fh = fopen($_SESSION[$_imgDataId]['serverPath'], 'wb');
+									fwrite($fh, $imgData);
+									fclose($fh);
+
+									$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
+								}
+
+								$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
+								$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
+								$_SESSION[$_imgDataId]['type'] = $_FILES["we_ui_$formname"]["type"][$imgName];
+								$_SESSION[$_imgDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$imgName];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,90 +22,106 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_binaryDocument.inc.php");
 
 /*  a class for handling quicktimeDocuments. */
-class we_quicktimeDocument extends we_binaryDocument {
 
+class we_quicktimeDocument extends we_binaryDocument{
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName=__CLASS__;
+
+	var $ClassName = __CLASS__;
 
 	/* ContentType of the Object  */
-	var $ContentType="video/quicktime";
+	var $ContentType = "video/quicktime";
 
 	/* Parameternames which are placed within the object-Tag */
-	var $ObjectParamNames = array("width","height","name","vspace","hspace","style");
+	var $ObjectParamNames = array("width", "height", "name", "vspace", "hspace", "style");
 
 
 
 	/* Constructor */
+
 	function we_quicktimeDocument(){
 		parent::__construct();
-		array_push($this->EditPageNrs,WE_EDITPAGE_PREVIEW);
+		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW);
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
-	function editor() {
+
+	function editor(){
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PREVIEW:
-			return "we_templates/we_editor_flash_preview.inc.php";
+				return "we_templates/we_editor_flash_preview.inc.php";
 			default:
-			return parent::editor();
+				return parent::editor();
 		}
 	}
 
 	// is not written yet
 	function initByAttribs($attribs){
-		if (isset($attribs["sizingrel"])){
-			if(isset($attribs["width"])) {$orig_w = $attribs["width"];} else {$orig_w = $this->elements["width"]["dat"];}
-			if(isset($attribs["height"])) {$orig_h = $attribs["height"];} else {$orig_h = $this->elements["height"]["dat"];}
-			$attribs["width"] = round($orig_w*$attribs["sizingrel"]);
-			$attribs["height"] = round($orig_h*$attribs["sizingrel"]);
+		if(isset($attribs["sizingrel"])){
+			if(isset($attribs["width"])){
+				$orig_w = $attribs["width"];
+			} else{
+				$orig_w = $this->elements["width"]["dat"];
+			}
+			if(isset($attribs["height"])){
+				$orig_h = $attribs["height"];
+			} else{
+				$orig_h = $this->elements["height"]["dat"];
+			}
+			$attribs["width"] = round($orig_w * $attribs["sizingrel"]);
+			$attribs["height"] = round($orig_h * $attribs["sizingrel"]);
 			unset($attribs["sizingrel"]);
 		}
-		if (isset($attribs['sizingbase']) && $attribs['sizingbase']!= 16 ){
-				$sizingbase = $attribs['sizingbase'];
-			} else {
-				$sizingbase = 16;
-			}
-		if (isset($attribs['sizingbase']) ) {unset($attribs['sizingbase']);}
+		if(isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16){
+			$sizingbase = $attribs['sizingbase'];
+		} else{
+			$sizingbase = 16;
+		}
+		if(isset($attribs['sizingbase'])){
+			unset($attribs['sizingbase']);
+		}
 
-		if (isset($attribs['sizingstyle']) ) {
-			if ($attribs['sizingstyle'] =="none") {
+		if(isset($attribs['sizingstyle'])){
+			if($attribs['sizingstyle'] == "none"){
 				$sizingstyle = false;
-			} else {
+			} else{
 				$sizingstyle = $attribs['sizingstyle'];
 			}
 			unset($attribs['sizingstyle']);
-		} else {$sizingstyle = false;}
+		} else{
+			$sizingstyle = false;
+		}
 
-		if ($sizingstyle){
-			$style_width = round($attribs["width"]/$sizingbase,6);
-			$style_height = round($attribs["height"]/$sizingbase,6);
-			if (isset($attribs["style"]) ) {
+		if($sizingstyle){
+			$style_width = round($attribs["width"] / $sizingbase, 6);
+			$style_height = round($attribs["height"] / $sizingbase, 6);
+			if(isset($attribs["style"])){
 				$newstyle = $attribs["style"];
-			} else {$newstyle="";}
+			} else{
+				$newstyle = "";
+			}
 
 			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
-			$attribs["style"]= $newstyle;
+			$attribs["style"] = $newstyle;
 			unset($attribs['width']);
 			unset($attribs['height']);
 		}
 
-		foreach($attribs as $a=>$b){
+		foreach($attribs as $a => $b){
 			if($b != ""){
 				if($a == "Pluginspage" || $a == "Codebase"){
-					$this->setElement($a,$b,"txt");
-				}else{
-					$this->setElement($a,$b,"attrib");
+					$this->setElement($a, $b, "txt");
+				} else{
+					$this->setElement($a, $b, "attrib");
 				}
 			}
 		}
 	}
 
 	/* gets the HTML for including in HTML-Docs */
+
 	function getHtml($dyn=false){
 		global $we_transaction;
 
@@ -112,109 +129,106 @@ class we_quicktimeDocument extends we_binaryDocument {
 		//    non xhtml valid
 
 		$_data = $this->getElement("data");
-		if ($this->ID || ($_data && !is_dir($_data) && is_readable($_data))) {
+		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			$pluginspage = $this->getElement("Pluginspage") ? $this->getElement("Pluginspage") : "http://www.apple.com/quicktime/download/";
 			$codebase = $this->getElement("Codebase") ? $this->getElement("Codebase") : "http://www.apple.com/qtactivex/qtplugin.cab";
 
-			/***********************************************
-			first we make valid object-tag
-			************************************************/
-			srand ((double)microtime()*1000000);
+			/*			 * *********************************************
+			  first we make valid object-tag
+			 * ********************************************** */
+			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-					WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]='.$this->ContentType.'&we_cmd[2]='.$we_transaction."&rand=".$randval :
-					$this->Path;
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $we_transaction . "&rand=" . $randval :
+				$this->Path;
 
-			$filter = array("filesize","type","xml");
-            $noAtts = array("scale","volume");      //  no atts for xml
-
+			$filter = array("filesize", "type", "xml");
+			$noAtts = array("scale", "volume");			//  no atts for xml
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
-            if (isset($this->elements["bgcolor"])) {
-            	$this->elements["bgcolor"]["type"] = "attrib";
-            }
+			if(isset($this->elements["bgcolor"])){
+				$this->elements["bgcolor"]["type"] = "attrib";
+			}
 
-            $this->resetElements();
-            while(list($k,$v) = $this->nextElement("attrib")){
-            	if(in_array($k,$this->ObjectParamNames)){
-            		$_objectAtts[$k] = $v["dat"];
-            	}
-            }
+			$this->resetElements();
+			while(list($k, $v) = $this->nextElement("attrib")) {
+				if(in_array($k, $this->ObjectParamNames)){
+					$_objectAtts[$k] = $v["dat"];
+				}
+			}
 
-            //  $_xml = $this->getElement("xml");
-            //  xhtml output is not possible to work for IE and Mozilla
-            //  therefore it is deactivated
-            $_xml = 'false';
-            $_objectAtts['xml'] = $_xml;
+			//  $_xml = $this->getElement("xml");
+			//  xhtml output is not possible to work for IE and Mozilla
+			//  therefore it is deactivated
+			$_xml = 'false';
+			$_objectAtts['xml'] = $_xml;
 
-            //  <embed> for none xhtml
-            $_embed = '';
+			//  <embed> for none xhtml
+			$_embed = '';
 
-            //  <params>
-            $_params = "\n" . getHtmlTag('param', array('name' => 'src', 'value' => $src, 'xml' => $_xml)) . "\n";
+			//  <params>
+			$_params = "\n" . getHtmlTag('param', array('name' => 'src', 'value' => $src, 'xml' => $_xml)) . "\n";
 
-			if($_xml == "true"){  //  only object tag
+			if($_xml == "true"){	//  only object tag
+				$_objectAtts['type'] = 'video/quicktime';
+				$_objectAtts['data'] = $src;
 
-               $_objectAtts['type'] = 'video/quicktime';
-               $_objectAtts['data'] = $src;
+				$this->resetElements();
+				while(list($k, $v) = $this->nextElement("attrib")) {
+					if(!in_array($k, $filter) && !in_array($k, $this->ObjectParamNames)){
 
-            	$this->resetElements();
-            	while(list($k,$v) = $this->nextElement("attrib")){
-            		if(!in_array($k,$filter) && !in_array($k,$this->ObjectParamNames)){
+						if($v["dat"] != ""){		//  dont use empty params
+							if(!in_array($k, $noAtts)){
+								$_objectAtts[$k] = $v["dat"];
+							}
+							$_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
+						}
+					}
+				}
+			} else{																 //  object tag and embed
+				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
+				$_objectAtts['codebase'] = $codebase;
+				//   we need embed as well
 
-                        if($v["dat"] != ""){    //  dont use empty params
-                            if(!in_array($k,$noAtts)){
-                                $_objectAtts[$k] = $v["dat"];
-                            }
-                            $_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
-            		    }
-            		}
-            	}
+				$_embedAtts['type'] = 'video/quicktime';
+				$_embedAtts['pluginspace'] = $pluginspage;
+				$_embedAtts['xml'] = $_xml;
+				$_embedAtts['src'] = $src;
 
-			} else {                                 //  object tag and embed
-    			$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
-    			$_objectAtts['codebase'] = $codebase;
-			    //   we need embed as well
+				$this->resetElements();
+				while(list($k, $v) = $this->nextElement("attrib")) {
+					if(!in_array($k, $filter) && $v["dat"] != ""){
 
-			    $_embedAtts['type'] = 'video/quicktime';
-			    $_embedAtts['pluginspace'] = $pluginspage;
-			    $_embedAtts['xml'] = $_xml;
-			    $_embedAtts['src'] = $src;
+						if($v["dat"] != ""){		//  dont use empty params
+							$_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
+						}
 
-			    $this->resetElements();
-			    while(list($k,$v) = $this->nextElement("attrib")){
-           			if(!in_array($k,$filter) && $v["dat"] != ""){
-
-                        if($v["dat"] != ""){    //  dont use empty params
-                            $_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
-            		    }
-
-            		    $_embedAtts[$k] = $v["dat"];
-            		}
-            	}
-            	$_embed = "\n" . getHtmlTag('embed', $_embedAtts, "", true);
+						$_embedAtts[$k] = $v["dat"];
+					}
+				}
+				$_embed = "\n" . getHtmlTag('embed', $_embedAtts, "", true);
 			}
 			$_objectAtts = removeEmptyAttribs($_objectAtts);
-			$this->html = getHtmlTag('object', $_objectAtts,$_params . $_embed);
-
-
-		}else{
-			if($GLOBALS['we_doc']->InWebEdition == 1) {
+			$this->html = getHtmlTag('object', $_objectAtts, $_params . $_embed);
+		} else{
+			if($GLOBALS['we_doc']->InWebEdition == 1){
 				/* Anzeige des No_quicktime-Bildes in der Vorschau
-				$_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
-				$_imgAttr['width']  = 64;
-				$_imgAttr['height'] = 64;
-				$_imgAttr['border'] = 0;
-				$_imgAtts["style"] = "margin:8px 18px;";
-				$_imgAttr['alt'] = "";
-				$_imgAttr['xml'] = $this->getElement("xml");
+				  $_imgAttr['src']    = IMAGE_DIR.'icons/no_quicktime.gif';
+				  $_imgAttr['width']  = 64;
+				  $_imgAttr['height'] = 64;
+				  $_imgAttr['border'] = 0;
+				  $_imgAtts["style"] = "margin:8px 18px;";
+				  $_imgAttr['alt'] = "";
+				  $_imgAttr['xml'] = $this->getElement("xml");
 
-				if(isset($this->name)){
-					$_imgAttr['name'] = $this->name;
-				}
-				$this->html = getHtmlTag('img', $_imgAttr);
-				*/
-				$this->html ='';
-			} else {$this->html ='';}
+				  if(isset($this->name)){
+				  $_imgAttr['name'] = $this->name;
+				  }
+				  $this->html = getHtmlTag('img', $_imgAttr);
+				 */
+				$this->html = '';
+			} else{
+				$this->html = '';
+			}
 		}
 		return $this->html;
 	}
@@ -222,73 +236,72 @@ class we_quicktimeDocument extends we_binaryDocument {
 	function formProperties(){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
-		<td>'.$this->formInput2(155,"width",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formInput2(155,"height",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(
-					155,"scale",array(
-									""=>"",
-									"tofit"=>"tofit",
-									"aspect"=>"aspect",
-									"0.5"=>"0,5x",
-									"2"=>"2x",
-									"4"=>"4x"
-									),
-					"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\""
-									).'</td>
+		<td>' . $this->formInput2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formInput2(155, "height", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formSelectElement2(
+				155, "scale", array(
+				"" => "",
+				"tofit" => "tofit",
+				"aspect" => "aspect",
+				"0.5" => "0,5x",
+				"2" => "2x",
+				"4" => "4x"
+				), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\""
+			) . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">'.getPixel(2,5).'</td>
+		<td colspan="5">' . getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>'.$this->formInput2(155,"hspace",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formInput2(155,"vspace",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formInput2(155,"name",10,"attrib","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formInput2(155, "name", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">'.getPixel(2,5).'</td>
+		<td colspan="5">' . getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>'.$this->formSelectElement2(155,"autoplay",array(""=>g_l('global','[true]'),"false"=>g_l('global','[false]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(155,"controller",array(""=>g_l('global','[true]'),"false"=>g_l('global','[false]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formColor(155,"bgcolor",25,"attrib").'</td>
+		<td>' . $this->formSelectElement2(155, "autoplay", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formSelectElement2(155, "controller", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">'.getPixel(2,5).'</td>
+		<td colspan="5">' . getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
-		<td>'.$this->formSelectElement2(155,"volume",array("100"=>"",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(155,"hidden",array("true"=>g_l('global','[true]'),""=>g_l('global','[false]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
-		<td>'.getPixel(18,2).'</td>
-		<td>'.$this->formSelectElement2(155,"loop",array(""=>g_l('global','[true]'),"false"=>g_l('global','[false]')),"attrib",1,"onChange=\"_EditorFrame.setEditorIsHot(true);\"") .'</td>
+		<td>' . $this->formSelectElement2(155, "volume", array("100" => "", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formSelectElement2(155, "hidden", array("true" => g_l('global', '[true]'), "" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . getPixel(18, 2) . '</td>
+		<td>' . $this->formSelectElement2(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 </table>
 ';
 		return $content;
- 	}
+	}
 
- 	function formOther(){
+	function formOther(){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
-		<td>'.$this->formInputField("txt","Pluginspage","Pluginspage",24,388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
-		<td>'.$this->formInputField("txt","Codebase","Codebase",24,388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
+		<td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 </table>
 ';
 
 
- 		return $content;
+		return $content;
 	}
 
-	function getThumbnail() {
+	function getThumbnail(){
 		$_width = $this->getElement("width");
 		$_height = $this->getElement("height");
 		$_scale = $this->getElement("scale");
@@ -330,5 +343,65 @@ class we_quicktimeDocument extends we_binaryDocument {
 		return $html;
 	}
 
+	static function checkAndPrepare($formname, $key = "we_document") {
+		// check to see if there is an image to create or to change
+		if (!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )) {
+			return;
+		}
+		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
+		foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
+
+			$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
+
+			if ($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])) {
+
+				$_SESSION[$_quicktimeDataId]['doDelete'] = false;
+
+				if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1) {
+					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
+				} else
+				if ($filename) {
+					// file is selected, check to see if it is an image
+					$ct = getContentTypeFromFile($filename);
+					if ($ct == "video/quicktime") {
+						$quicktimeId = abs($GLOBALS[$key][$formname]->getElement($quicktimeName));
+
+						// move document from upload location to tmp dir
+						$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
+														uniqid(rand(), 1));
+						move_uploaded_file(
+										$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName],
+										$_SESSION[$_quicktimeDataId]["serverPath"]);
+
+
+
+						$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
+														"/[^A-Za-z0-9._-]/","",
+														$_FILES["we_ui_$formname"]["name"][$quicktimeName]);
+
+						if ($quicktimeId) {
+							$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
+						}
+
+						$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace(
+														'#^(.+)\..+$#',
+														"\\1",
+														$tmp_Filename);
+						$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
+														'#^.+(\..+)$#',
+														"\\1",
+														$tmp_Filename) : "";
+						$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
+
+
+						//$_SESSION[$_quicktimeDataId]["imgwidth"] = $we_size[0];
+						//$_SESSION[$_quicktimeDataId]["imgheight"] = $we_size[1];
+						$_SESSION[$_quicktimeDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$quicktimeName];
+						$_SESSION[$_quicktimeDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$quicktimeName];
+					}
+				}
+			}
+		}
+	}
 
 }
