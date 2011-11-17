@@ -546,8 +546,7 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 		if (isset($_REQUEST['we_editDocument_ID']) && $_REQUEST['we_editDocument_ID']) {
 			$GLOBALS['we_document'][$formname]->initByID($_REQUEST['we_editDocument_ID'], FILE_TABLE);
 		} else {
-			$dt = f(
-											'SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'",
+			$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType like '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'",
 											'ID',
 											$GLOBALS['we_document'][$formname]->DB_WE);
 			$GLOBALS['we_document'][$formname]->changeDoctype($dt);

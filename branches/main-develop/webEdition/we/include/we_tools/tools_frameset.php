@@ -133,8 +133,8 @@ print we_htmlElement::jsScript(JS_DIR . "libs/yui/connection-min.js") ;
 ?>
 </head>
 	<frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
-		<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $tool; ?>" name="navi" noresize scrolling="no">
-		<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php echo $tool; echo (isset($modelid)) ?('&modelid=' . $modelid) : ''; echo (isset($tab)) ?('&tab=' . $tab) : ''; ?>" name="content" noresize scrolling="no">
+		<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no">
+		<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php echo $_REQUEST['tool']; echo (isset($modelid)) ?('&modelid=' . $modelid) : ''; echo (isset($tab)) ?('&tab=' . $tab) : ''; ?>" name="content" noresize scrolling="no">
 	</frameset>
 	<body bgcolor="#ffffff"></body>
 </html>
