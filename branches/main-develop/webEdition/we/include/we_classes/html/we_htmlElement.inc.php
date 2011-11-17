@@ -119,6 +119,12 @@ abstract class we_htmlElement{
 		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
 	}
 
+	static function cssLink($url){
+		return we_baseElement::getHtmlCode(new we_baseElement('link', false,
+			array('href'=>$url,'rel'=>'styleSheet','type'=>'text/css')
+			));
+	}
+
 	/**
 	 * Function generates link code
 	 *

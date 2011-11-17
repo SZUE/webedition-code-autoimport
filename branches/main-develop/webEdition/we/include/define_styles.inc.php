@@ -24,6 +24,6 @@
  */
 define('CSS_DIR', '/webEdition/css/');
 define('SCRIPT_BUTTONS_ONLY', we_htmlElement::jsScript(JS_DIR . 'weButton.js'));
-define('STYLESHEET_BUTTONS_ONLY', '<link href="' . CSS_DIR . 'we_button.css" rel="styleSheet" type="text/css" />');
-define('STYLESHEET', '<link href="' . CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '" rel="styleSheet" type="text/css" />' . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY);
-define('STYLESHEET_SCRIPT', '<link href="' . CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '" rel="styleSheet" type="text/css" />' . STYLESHEET_BUTTONS_ONLY);
+define('STYLESHEET_BUTTONS_ONLY', we_htmlElement::cssLink(CSS_DIR . 'we_button.css'));
+define('STYLESHEET', we_htmlElement::cssLink(CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"]). STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY);
+define('STYLESHEET_SCRIPT', we_htmlElement::cssLink(CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"]) . STYLESHEET_BUTTONS_ONLY);

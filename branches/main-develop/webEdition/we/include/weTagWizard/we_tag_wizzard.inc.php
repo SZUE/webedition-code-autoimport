@@ -115,8 +115,7 @@ if($typeAttribute = $weTag->getTypeAttribute()){
 // print html header of page
 print htmlTop();
 print STYLESHEET;
-print '
-<link href="' . CSS_DIR . 'tagWizard.css" rel="styleSheet" type="text/css">'.
+print we_htmlElement::cssLink(CSS_DIR . 'tagWizard.css').
 	we_htmlElement::jsScript(JS_DIR.'windows.js').
 	we_htmlElement::jsScript(JS_DIR.'tagWizard.js').
 	we_htmlElement::jsScript(JS_DIR.'keyListener.js').
