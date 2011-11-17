@@ -1159,7 +1159,7 @@ class weSiteImport
 						array(
 
 								"headline" => g_l('weClass',"[quality]"),
-								"html" => we_qualitySelect("quality", $this->quality),
+								"html" => we_image_edit::qualitySelect("quality", $this->quality),
 								"space" => 120
 						));
 			} else {

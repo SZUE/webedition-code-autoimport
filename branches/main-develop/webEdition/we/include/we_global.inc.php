@@ -1689,7 +1689,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 	}
 }
 
-function getHashArrayFromCSV($csv, $firstEntry, $db) {
+function getHashArrayFromCSV($csv, $firstEntry, $db='') {
 	if (!$csv)
 		return array();
 	if (!$db)
@@ -1752,31 +1752,35 @@ function getPathsFromTable($table = FILE_TABLE, $db = '', $type = FILE_ONLY, $ws
 function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = '') {
 	$tmpArr = $arr;
 	$tmpArr2 = array();
-	foreach ($arr as $id)
+	foreach ($arr as $id){
 		pushChilds($tmpArr, $id, $table, $isFolder);
-	foreach (array_unique($tmpArr) as $id)
-		array_push($tmpArr2, $id);
+	}
+	foreach (array_unique($tmpArr) as $id){
+		$tmpArr2[]=$id;
+	}
 	return $tmpArr2;
 }
 
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '') {
 	$db = new DB_WE();
-	array_push($arr, $id);
+	$arr[]= $id;
 	$db->query('SELECT ID FROM '.$table.' WHERE ParentID=' . abs($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
-	while ($db->next_record())
+	while ($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
+	}
 }
 
 function uniqueCSV($csv, $prePost = false) {
 	$arr = array_unique(makeArrayFromCSV($csv));
 	$foo = array();
-	foreach ($arr as $v)
-		array_push($foo, $v);
+	foreach ($arr as $v){
+		$foo[]= $v;
+	}
 	return makeCSVFromArray($foo, $prePost);
 }
 
-function get_ws($table = FILE_TABLE, $prePostKomma = false) {
-	switch ($table) {
+function get_ws($table = FILE_TABLE, $prePostKomma = false){
+	switch($table){
 		case FILE_TABLE :
 			$type = 0;
 			break;
@@ -1786,15 +1790,13 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false) {
 		case NAVIGATION_TABLE :
 			$type = 3;
 			break;
+		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
+			$type = 2;
+			break;
+		case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : -2):
+			$type = 4;
+			break;
 		default :
-			if (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) {
-				$type = 2;
-				break;
-			} else
-			if (defined('NEWSLETTER_TABLE') && $table == NEWSLETTER_TABLE) {
-				$type = 4;
-				break;
-			}
 			return '';
 	}
 
@@ -1820,7 +1822,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 			array_push($parentlist, $db_temp->f('ParentID'));
 			break;
 		} else {
-			$db_temp1->query('SELECT '.$match.' FROM '.$tab.' WHERE ID=' . abs($db_temp->f('ParentID')));
+			$db_temp1->query('SELECT '.$match.' FROM '.$tab.' WHERE ID=' . intval($db_temp->f('ParentID')));
 			if ($db_temp1->next_record())
 				if ($db_temp1->f($match) == $matchvalue) {
 					array_push($parentlist, $db_temp->f('ParentID'));
@@ -1831,7 +1833,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder') {
 	$db_temp = new DB_WE();
-	$db_temp->query('SELECT ID,'.$match.' FROM '.$tab.' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . abs($pid) . $where);
+	$db_temp->query('SELECT ID,'.$match.' FROM '.$tab.' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . $where);
 	while ($db_temp->next_record()) {
 		if ($db_temp->f($match) == $matchvalue) {
 			we_readChilds($db_temp->f('ID'), $childlist, $tab, $folderOnly);
@@ -2342,7 +2344,6 @@ function we_getDocumentByID($id, $includepath = '', $db = '', $charset = '') {
 }
 
 function we_getObjectFileByID($id, $includepath = '') {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
 	$mydoc = new we_objectFile();
 	$mydoc->initByID($id, OBJECT_FILES_TABLE, LOAD_MAID_DB);
 	return $mydoc->i_getDocument($includepath);
@@ -2399,21 +2400,6 @@ function getRequestVar($name, $default, $yescode = '', $nocode = '') {
 }
 
 /**
- * Gets the Directory for thumbnails
- *
- * @return str
- * @param bool $realpath  if set to true, Document_ROOT will be appended before
- */
-function getThumbDirectory($realpath = false) {
-	$dir = (defined('WE_THUMBNAIL_DIRECTORY') && WE_THUMBNAIL_DIRECTORY) ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__';
-	$dir = preg_replace('#^\.?(.*)$#', '\1', $dir);
-	if (substr($dir, 0, 1) != '/') {
-		$dir = '/' . $dir;
-	}
-	return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
-}
-
-/**
  * Converts a given number in a via array specified system.
  * as default a number is converted in the matching chars 0->^,1->a,2->b, ...
  * other systems can simply set via the parameter $chars for example -> array(0,1)
@@ -2442,29 +2428,6 @@ function number2System($value, $chars = array(), $str = '') {
 	return ($_result > 0 ? number2System($_result, $chars, $str) : $str);
 }
 
-/**
- * returns the HTML for a quality output select box
- *
- * @return string
- * @param string $name
- * @param string[optional] $sel
- */
-function we_qualitySelect($name = 'quality', $sel = 8) {
-	return '<select name="' . $name . '" class="weSelect" size="1">
-<option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . g_l('weClass','[quality_low]') . '</option>
-<option value="1"' . (($sel == 1) ? ' selected' : '') . '>1</option>
-<option value="2"' . (($sel == 2) ? ' selected' : '') . '>2</option>
-<option value="3"' . (($sel == 3) ? ' selected' : '') . '>3</option>
-<option value="4"' . (($sel == 4) ? ' selected' : '') . '>4 - ' . g_l('weClass','[quality_medium]') . '</option>
-<option value="5"' . (($sel == 5) ? ' selected' : '') . '>5</option>
-<option value="6"' . (($sel == 6) ? ' selected' : '') . '>6</option>
-<option value="7"' . (($sel == 7) ? ' selected' : '') . '>7</option>
-<option value="8"' . (($sel == 8) ? ' selected' : '') . '>8 - ' . g_l('weClass','[quality_high]') . '</option>
-<option value="9"' . (($sel == 9) ? ' selected' : '') . '>9</option>
-<option value="10"' . (($sel == 10) ? ' selected' : '') . '>10 - ' . g_l('weClass','[quality_maximum]') . '</option>
-</select>
-';
-}
 
 /**
  * This function returns preference for given name; Checks first the users preferences and then global
@@ -2880,10 +2843,6 @@ function we_writeLanguageConfig($default, $available = array()) {
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
- *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -3064,7 +3023,7 @@ function getVarArray($arr, $string) {
 
 function CheckAndConvertISOfrontend($utf8data) {
 	if (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] != '' && $GLOBALS['CHARSET'] != 'UTF-8') {
-		return iconv('UTF-8', $GLOBALS['CHARSET'] . '//TRANSLATE', $utf8data);
+		return iconv('UTF-8', $GLOBALS['CHARSET'] , $utf8data);
 	} else {
 		return $utf8data;
 	}
@@ -3160,8 +3119,7 @@ function we_templateInit(){
 		$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
-		$__tmp = explode('_',$GLOBALS['we_doc']->Language);
-		$__lang = strtolower($__tmp[0]);
+		list($__lang) = explode('_',$GLOBALS['we_doc']->Language);
 		if ($__lang) {
 			$__parts = split('_', $GLOBALS['WE_LANGUAGE']);
 			$__last = array_pop($__parts);

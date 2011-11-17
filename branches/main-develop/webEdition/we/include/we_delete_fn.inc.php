@@ -270,7 +270,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 
 function deleteThumbsByImageID($id)
 {
-	$thumbsdir = getThumbDirectory(true);
+	$thumbsdir = we_thumbnail::getThumbDirectory(true);
 	$dir_obj = @dir($thumbsdir);
 	$filestodelete = array();
 	if ($dir_obj) {
@@ -299,7 +299,7 @@ function deleteThumbsByImageID($id)
 
 function deleteThumbsByThumbID($id)
 {
-	$thumbsdir = getThumbDirectory(true);
+	$thumbsdir = we_thumbnail::getThumbDirectory(true);
 	$dir_obj = @dir($thumbsdir);
 	$filestodelete = array();
 	if ($dir_obj) {

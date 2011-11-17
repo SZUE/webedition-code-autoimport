@@ -478,7 +478,7 @@ function build_dialog($selected_setting = "ui") {
 
 			$_thumbnail_specify_table->setCol(0, 2, null, htmlTextInput("thumbnail_width", 6, ($_thumbnail_width != -1 ? $_thumbnail_width : ""), 4, ($_thumbnail_width == -1 ? "disabled=\"disabled\"" : ""), "text", 60));
 			$_thumbnail_specify_table->setCol(2, 2, null, htmlTextInput("thumbnail_height", 6, ($_thumbnail_height != -1 ? $_thumbnail_height : ""), 4, ($_thumbnail_height == -1 ? "disabled=\"disabled\"" : ""), "text", 60));
-			$_thumbnail_specify_table->setCol(4, 2, array("class" => "defaultfont", "id" => "thumbnail_quality_value_cell"), we_qualitySelect("thumbnail_quality",$_thumbnail_quality));
+			$_thumbnail_specify_table->setCol(4, 2, array("class" => "defaultfont", "id" => "thumbnail_quality_value_cell"), we_image_edit::qualitySelect("thumbnail_quality",$_thumbnail_quality));
 
 			// Create checkboxes for options for thumbnails
 			$_thumbnail_ratio = ($_GET["id"] != -1) ? f("SELECT Ratio FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Ratio", $DB_WE) : -1;

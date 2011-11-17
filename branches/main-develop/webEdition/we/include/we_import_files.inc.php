@@ -449,7 +449,7 @@ class we_import_files
 						array(
 
 								"headline" => g_l('weClass',"[quality]"),
-								"html" => we_qualitySelect("quality", $this->quality),
+								"html" => we_image_edit::qualitySelect("quality", $this->quality),
 								"space" => 150
 						));
 

@@ -383,7 +383,7 @@ class we_thumbnail {
 			return WE_THUMB_INPUTFORMAT_NOT_SUPPORTED;
 		}
 
-		$_thumbdir = $this->getThumbDirectory(true);
+		$_thumbdir = self::getThumbDirectory(true);
 		if (!file_exists($_thumbdir)) {
 			createLocalFolder($_thumbdir);
 		}
@@ -442,8 +442,13 @@ class we_thumbnail {
 	* @return str
 	* @param bool $realpath  if set to true, Document_ROOT will be appended before
 	*/
-	function getThumbDirectory($realpath=false){
-		return getThumbDirectory($realpath);
+	static function getThumbDirectory($realpath=false){
+		$dir = (defined('WE_THUMBNAIL_DIRECTORY') && WE_THUMBNAIL_DIRECTORY) ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__';
+		$dir = preg_replace('#^\.?(.*)$#', '\1', $dir);
+		if(substr($dir, 0, 1) != '/'){
+			$dir = '/' . $dir;
+		}
+		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] : '') . $dir;
 	}
 
 	/**
@@ -534,7 +539,7 @@ class we_thumbnail {
 			we_image_edit::is_imagetype_read_supported(isset($GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)]) ?
 				$GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)] : "")	&&
 			( (!$this->_useOriginalSize()) || ( !$this->_hasOriginalType() ) ) ){
-				$this->outputPath = getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName.".".$this->outputFormat;
+				$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName.".".$this->outputFormat;
 		}else{
 			$this->outputPath = $this->imagePath;
 		}

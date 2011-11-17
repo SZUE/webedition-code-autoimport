@@ -125,10 +125,10 @@ if($tool=="weSearch") {
 	}
 }
 
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "libs/yui/yahoo-min.js")) ;
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "libs/yui/event-min.js")) ;
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "libs/yui/connection-min.js")) ;
+print we_htmlElement::jsScript(JS_DIR . "keyListener.js");
+print we_htmlElement::jsScript(JS_DIR . "libs/yui/yahoo-min.js") ;
+print we_htmlElement::jsScript(JS_DIR . "libs/yui/event-min.js") ;
+print we_htmlElement::jsScript(JS_DIR . "libs/yui/connection-min.js") ;
 
 ?>
 </head>

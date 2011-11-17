@@ -627,4 +627,28 @@ class we_image_edit {
 
 	}
 
+	/**
+	 * returns the HTML for a quality output select box
+	 *
+	 * @return string
+	 * @param string $name
+	 * @param string[optional] $sel
+	 */
+	static function qualitySelect($name = 'quality', $sel = 8){
+		return '<select name="' . $name . '" class="weSelect" size="1">
+<option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . g_l('weClass', '[quality_low]') . '</option>
+<option value="1"' . (($sel == 1) ? ' selected' : '') . '>1</option>
+<option value="2"' . (($sel == 2) ? ' selected' : '') . '>2</option>
+<option value="3"' . (($sel == 3) ? ' selected' : '') . '>3</option>
+<option value="4"' . (($sel == 4) ? ' selected' : '') . '>4 - ' . g_l('weClass', '[quality_medium]') . '</option>
+<option value="5"' . (($sel == 5) ? ' selected' : '') . '>5</option>
+<option value="6"' . (($sel == 6) ? ' selected' : '') . '>6</option>
+<option value="7"' . (($sel == 7) ? ' selected' : '') . '>7</option>
+<option value="8"' . (($sel == 8) ? ' selected' : '') . '>8 - ' . g_l('weClass', '[quality_high]') . '</option>
+<option value="9"' . (($sel == 9) ? ' selected' : '') . '>9</option>
+<option value="10"' . (($sel == 10) ? ' selected' : '') . '>10 - ' . g_l('weClass', '[quality_maximum]') . '</option>
+</select>
+';
+	}
+
 }
