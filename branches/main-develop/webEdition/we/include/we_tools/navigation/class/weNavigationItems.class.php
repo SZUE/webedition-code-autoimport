@@ -645,7 +645,7 @@ class weNavigationItems{
 
 		foreach($this->items as $_k => &$_item){
 			if(strtolower(get_class($_item)) == 'wenavigationitem'){
-				$this->hasCurrent = ($_items->isCurrent($this));
+				$this->hasCurrent = ($_item->isCurrent($this));
 			}
 		}
 
