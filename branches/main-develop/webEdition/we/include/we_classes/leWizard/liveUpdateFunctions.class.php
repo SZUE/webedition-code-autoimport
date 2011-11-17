@@ -858,7 +858,7 @@ class liveUpdateFunctions {
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+	static function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
 
 		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
 		$GLOBALS['liveUpdateError']["errorString"] = $errstr;

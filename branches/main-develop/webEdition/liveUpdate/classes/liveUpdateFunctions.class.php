@@ -34,12 +34,7 @@ class liveUpdateFunctions {
 	 * Functions for updatelog
 	 */
 	function insertUpdateLogEntry($action, $version, $errorCode) {
-		$query =
-			"INSERT INTO " . UPDATE_LOG_TABLE . "
-			(datum, aktion, versionsnummer, error)
-			VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode);";
-
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode);");
 	}
 
 	/**
@@ -854,7 +849,7 @@ class liveUpdateFunctions {
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+	static function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
 		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
 		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
 		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
