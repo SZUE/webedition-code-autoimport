@@ -1,7 +1,6 @@
 <?php
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_installed_modules.inc.php");
 
 class weModuleInfo {
 
@@ -63,9 +62,7 @@ class weModuleInfo {
 	 */
 	function isModuleInstalled($mKey) {
 
-		global $_we_installed_modules;
-
-		if (in_array($mKey, $_we_installed_modules) || $mKey == "editor") {
+		if (in_array($mKey, $GLOBALS['_we_active_integrated_modules']) || $mKey == "editor") {
 			return true;
 		}
 

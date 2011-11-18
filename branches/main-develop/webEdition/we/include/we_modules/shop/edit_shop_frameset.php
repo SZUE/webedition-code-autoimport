@@ -62,10 +62,8 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
        $resultO = array_shift ($fe);
 
     $dbTitlename="shoptitle";
-    // wether the resultset ist empty?
-	$DB_WE->query("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='$dbTitlename'");
-	$DB_WE->next_record();
-	$resultD = $DB_WE->f("Anzahl");
+    // whether the resultset is empty?
+		$resultD = f("SELECT count(Name) as Anzahl FROM ".LINK_TABLE." WHERE Name ='$dbTitlename'",'Anzahl',$DB_WE);
 
 
 	$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
@@ -460,7 +458,7 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
 <?php } else { ?>
 			<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
 				<frame src="<?php print HTML_DIR; ?>safariResize.html" name="shop_separator_line" frameborder="0" noresize scrolling="no">
-<?php } 
+<?php }
 
 				if (isset($_REQUEST['bid'])) {
 					print '<frame src="' . WE_SHOP_MODULE_PATH . 'edit_shop_editorFrameset.php?bid=' . $_REQUEST['bid'] . '" name="shop_properties" scrolling=auto>';

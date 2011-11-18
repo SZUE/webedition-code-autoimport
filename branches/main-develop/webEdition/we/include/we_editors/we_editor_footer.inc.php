@@ -524,7 +524,7 @@ if(inWorkflow($we_doc)) {
 	* @desc prints the footer for the See-Mode
  	*/
 	function showEditFooterForSEEMMode() {
-		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $_we_active_modules;
+		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $_we_active_integrated_modules;
 
 		$_seeModeTable = new we_htmlTable(	array(	"cellpadding" => 0,
 													"cellspacing" => 0,

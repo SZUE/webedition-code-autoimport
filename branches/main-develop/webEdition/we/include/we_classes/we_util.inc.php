@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,91 +23,117 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
-* Util Functions
-*
-* all functions in this class are static! Please use it in static form:
-*    we_util::function_name();
-*
-*
-* @static
-*/
+ * Util Functions
+ *
+ * all functions in this class are static! Please use it in static form:
+ *    we_util::function_name();
+ *
+ *
+ * @static
+ */
 class we_util{
+	/**
+	 * Searches a string for matches to the regular expressions given in pattern
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @param array pattern Array of patterns
+	 * @param string string
+	 */
+	/* function eregi_array($pattern,$string){
+	  foreach($pattern as $reg){
+	  if(eregi($reg,$string)){
+	  return true;
+	  }
+	  }
+	  return false;
+	  } */
 
 	/**
-	* Searches a string for matches to the regular expressions given in pattern
-	*
-	* @static
-	* @access public
-	*
-	* @param array pattern Array of patterns
-	* @param string string
-	*/
-	/*function eregi_array($pattern,$string){
-		foreach($pattern as $reg){
-			if(eregi($reg,$string)){
-				return true;
-			}
+	 * Formates a number with a country specific format into computer readable format.
+	 * Returns the formated number.
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @param mixed number
+	 */
+	static function std_numberformat($number){
+		if(strpos($number, 'E')){	 //  when number is too big, it is shown with E+xx
+			$number = number_format($number, 2, '.', '');
 		}
-		return false;
-	}*/
-
-	/**
-	* Formates a number with a country specific format into computer readable format.
-	* Returns the formated number.
-	*
-	* @static
-	* @access public
-	*
-	* @param mixed number
-	*/
-	function std_numberformat($number){
-	    if(strpos($number,'E')){   //  when number is too big, it is shown with E+xx
-	        $number = number_format($number,2,'.','');
-	    }
-		if(preg_match('|.*,[0-9]*$|',$number)){ // deutsche schreibweise
-			$umschreib = ereg_replace('(.*),([0-9]*)$','\1.\2',$number);
-			$pos = strrpos($number,",");
-			$vor = str_replace(".","",substr($umschreib,0,$pos));
-			$number = $vor . substr($umschreib,$pos,strlen($umschreib)-$pos);
-		}else if(preg_match('|.*\.[0-9]*$|',$number)){ // engl schreibweise
-			$pos = strrpos($number,".");
-			$vor = substr($number,0,$pos);
-			$vor = ereg_replace('[,\.]','',$vor);
-			$number = $vor . substr($number,$pos,strlen($number)-$pos);
-		}else{
-			$number = ereg_replace('[,\.]','',$number);
+		if(preg_match('|.*,[0-9]*$|', $number)){ // deutsche schreibweise
+			$umschreib = ereg_replace('(.*),([0-9]*)$', '\1.\2', $number);
+			$pos = strrpos($number, ",");
+			$vor = str_replace(".", "", substr($umschreib, 0, $pos));
+			$number = $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
+		} else if(preg_match('|.*\.[0-9]*$|', $number)){ // engl schreibweise
+			$pos = strrpos($number, ".");
+			$vor = substr($number, 0, $pos);
+			$vor = ereg_replace('[,\.]', '', $vor);
+			$number = $vor . substr($number, $pos, strlen($number) - $pos);
+		} else{
+			$number = ereg_replace('[,\.]', '', $number);
 		}
 		return $number;
 	}
 
 	/**
-	* Converts all windows and mac newlines from string to unix newlines
-	* Returns the converted String.
-	*
-	* @static
-	* @access public
-	*
-	* @param mixed number
-	*/
-	function cleanNewLine($string){
-		return str_replace("\r","\n",str_replace("\r\n","\n",str_replace("\n\r","\n",$string)));
+	 * Converts all windows and mac newlines from string to unix newlines
+	 * Returns the converted String.
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @param mixed number
+	 */
+	static function cleanNewLine($string){
+		return str_replace("\r", "\n", str_replace("\r\n", "\n", str_replace("\n\r", "\n", $string)));
 	}
-
 
 	/**
-	* Removes from string all newlines and converts all <br> to newlines
-	* Returns the converted String.
-	*
-	* @static
-	* @access public
-	*
-	* @param mixed number
-	*/
-	function br2nl($string){
-		$string = str_replace("\n","",str_replace("\r","",$string));
-		return eregi_replace("<br ?/?>","\n",$string);
+	 * Removes from string all newlines and converts all <br> to newlines
+	 * Returns the converted String.
+	 *
+	 * @static
+	 * @access public
+	 *
+	 * @param mixed number
+	 */
+	static function br2nl($string){
+		$string = str_replace("\n", "", str_replace("\r", "", $string));
+		return eregi_replace("<br ?/?>", "\n", $string);
 	}
+
+	static function rmPhp($in){
+		$out = '';
+		$starttag = strpos($in, '<?');
+		if($starttag === false)
+			return $in;
+		$lastStart = 0;
+		while(!($starttag === false)) {
+			$endtag = strpos($in, '?>', $starttag);
+			$out .= substr($in, $lastStart, ($starttag - $lastStart));
+			$lastStart = $endtag + 2;
+			$starttag = strpos($in, '<?', $lastStart);
+		}
+		if($lastStart < strlen($in))
+			$out .= substr($in, $lastStart, (strlen($in) - $lastStart));
+		return $out;
+	}
+
+	static function getGlobalPath() {
+	if (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)) {
+		return $GLOBALS['WE_MAIN_DOC']->Path;
+	} else {
+		return '';
+	}
+}
+
+static function html2uml($text) {
+	return corretUml(html_entity_decode($text));
+}
 
 }

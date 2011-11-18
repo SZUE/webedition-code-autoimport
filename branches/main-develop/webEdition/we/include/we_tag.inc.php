@@ -317,8 +317,8 @@ function cutText($text, $max = 0){
 
 	$text = strip_tags($text, '<b>,<i>,<em>,<strong>,<a>,<u>,<br>,<div>,<span>');
 	$htmlfree = strip_tags($text);
-	$text = we_html2uml($text);
-	$htmlfree = we_html2uml($htmlfree);
+	$text = we_util::html2uml($text);
+	$htmlfree = we_util::html2uml($htmlfree);
 	$left = substr($htmlfree, 0, $max);
 	$left = ereg_replace('^(.+)[ \.,].*$', '\1', $left);
 	$lastword = ereg_replace('^.+[ \.,;\r\n](.+)$', '\1', $left);

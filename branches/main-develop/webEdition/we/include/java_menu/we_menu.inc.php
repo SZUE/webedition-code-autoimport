@@ -540,9 +540,9 @@ if (sizeof($GLOBALS['_we_active_modules']) > 0) {
 }
 
 foreach ($GLOBALS['_we_available_modules'] as $key => $val) {
-	if ($val['integrated']) {
+	//if ($val['integrated']) {
 		$moduleList .= $key . '|';
-	}
+	//}
 }
 $_SESSION['we_module_list'] = rtrim($moduleList, '|');
 

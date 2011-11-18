@@ -82,7 +82,7 @@ class we_wysiwyg{
 		$this->fontnames = array();
 
 
-		$this->baseHref = $baseHref ? $baseHref : we_getGlobalPath();
+		$this->baseHref = $baseHref ? $baseHref : we_util::getGlobalPath();
 		$this->charset = $charset;
 
 

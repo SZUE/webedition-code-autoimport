@@ -22,37 +22,33 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function saveFile($file_name, $sourceCode = "")
-{
+function saveFile($file_name, $sourceCode = ""){
 	createLocalFolderByPath(str_replace("\\", "/", dirname($file_name)));
 	$fh = @fopen($file_name, "wb");
-	if (!$fh) {
+	if(!$fh){
 		return false;
 	}
-	if ($sourceCode) {
+	if($sourceCode){
 		$ret = fwrite($fh, $sourceCode);
-	} else {
+	} else{
 		$ret = true;
 	}
 	fclose($fh);
 	return $ret;
 }
 
-function createLocalFolder($RootDir, $path = "")
-{
+function createLocalFolder($RootDir, $path = ""){
 
 	$completeDirPath = $RootDir . $path;
 
 	return createLocalFolderByPath($completeDirPath);
 }
 
-function createLocalFolderByPath($completeDirPath)
-{
+function createLocalFolderByPath($completeDirPath){
 
 	$returnValue = true;
 
-	if (checkAndMakeFolder($completeDirPath))
+	if(checkAndMakeFolder($completeDirPath))
 		return $returnValue;
 
 	$cf = array(
@@ -62,24 +58,24 @@ function createLocalFolderByPath($completeDirPath)
 	$parent = dirname($completeDirPath);
 	$parent = str_replace("\\", "/", $parent);
 
-	while (!checkAndMakeFolder($parent)) {
+	while(!checkAndMakeFolder($parent)) {
 		array_push($cf, $parent);
 		$parent = dirname($parent);
 		$parent = str_replace("\\", "/", $parent);
 	}
 
-	for ($i = (sizeof($cf) - 1); $i >= 0; $i--) {
+	for($i = (sizeof($cf) - 1); $i >= 0; $i--){
 		$oldumask = @umask(0000);
 
-		if (defined("WE_NEW_FOLDER_MOD")) {
+		if(defined("WE_NEW_FOLDER_MOD")){
 			eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
-		} else {
+		} else{
 			$mod = 0755;
 		}
 
-		if (!@mkdir($cf[$i], $mod)) {
+		if(!@mkdir($cf[$i], $mod)){
 			insertIntoErrorLog(
-					"Could not create local Folder at we_live_tools.inc.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
+				"Could not create local Folder at we_live_tools.inc.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
 			$returnValue = false;
 		}
 		@umask($oldumask);
@@ -88,42 +84,40 @@ function createLocalFolderByPath($completeDirPath)
 	return $returnValue;
 }
 
-function insertIntoCleanUp($path, $date)
-{
+function insertIntoCleanUp($path, $date){
 	$DB_WE = new DB_WE();
-	if (f("SELECT Date FROM " . CLEAN_UP_TABLE . " WHERE Path='".$DB_WE->escape($path)."'", "Date", $DB_WE)) {
-		$DB_WE->query("UPDATE " . CLEAN_UP_TABLE . " SET DATE='".$DB_WE->escape($date)."' WHERE  Path='".$DB_WE->escape($path)."'");
-	} else {
-		$DB_WE->query("INSERT INTO " . CLEAN_UP_TABLE . " (Path,Date) VALUES ('".$DB_WE->escape($path)."','".$DB_WE->escape($date)."')");
+	if(f("SELECT Date FROM " . CLEAN_UP_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "'", "Date", $DB_WE)){
+		$DB_WE->query("UPDATE " . CLEAN_UP_TABLE . " SET DATE='" . $DB_WE->escape($date) . "' WHERE  Path='" . $DB_WE->escape($path) . "'");
+	} else{
+		$DB_WE->query("INSERT INTO " . CLEAN_UP_TABLE . " (Path,Date) VALUES ('" . $DB_WE->escape($path) . "','" . $DB_WE->escape($date) . "')");
 	}
 }
 
-function checkAndMakeFolder($path)
-{
+function checkAndMakeFolder($path){
 	/* if the directory exists, we have nothing to do and then we return true  */
-	if (file_exists($path) && is_dir($path))
+	if(file_exists($path) && is_dir($path))
 		return true;
 	$docroot = ereg_replace('^(.*)/$', '\1', $_SERVER['DOCUMENT_ROOT']);
 	$path2 = ereg_replace('^(.*)/$', '\1', $path);
-	if (strtolower($docroot) == strtolower($path2))
+	if(strtolower($docroot) == strtolower($path2))
 		return true;
 
 	/* if instead of the directory a file exists, we delete the file and create the directory */
-	if (file_exists($path) && (!is_dir($path))) {
-		if (!deleteLocalFile($path)) {
+	if(file_exists($path) && (!is_dir($path))){
+		if(!deleteLocalFile($path)){
 			insertIntoErrorLog("Could not delete File '" . $path . "'");
 		}
 	}
 
 	$oldumask = @umask(0000);
 
-	if (defined("WE_NEW_FOLDER_MOD")) {
+	if(defined("WE_NEW_FOLDER_MOD")){
 		eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
-	} else {
+	} else{
 		$mod = 0755;
 	}
 
-	if (!@mkdir($path, $mod,true)) {
+	if(!@mkdir($path, $mod, true)){
 		@umask($oldumask);
 		insertIntoErrorLog("Could not create local Folder at we_live_tools.inc.php/checkAndMakeFolder(): '" . $path . "'");
 		return false;
@@ -135,36 +129,30 @@ function checkAndMakeFolder($path)
 function insertIntoErrorLog($text){
 	$DB_WE = new DB_WE();
 	$DB_WE->query('INSERT INTO ' . ERROR_LOG_TABLE . ' (Text) VALUES(\'' . $DB_WE->escape($text) . '\')');
-
 }
 
-function getContentDirectFromDB($id, $name, $db = "")
-{
+function getContentDirectFromDB($id, $name, $db = ""){
 	$db = $db ? $db : new DB_WE();
 	return f(
-			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=".abs($id)." AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='".$db->escape($name)."'",
-			"Dat",
-			$db);
+			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . abs($id) . " AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='" . $db->escape($name) . "'", "Dat", $db);
 }
 
-function renameFile($old, $new)
-{
+function renameFile($old, $new){
 	return rename($old, $new);
 }
 
-function deleteLocalFolder($filename, $delAll = 0)
-{
-	if (!file_exists($filename))
+function deleteLocalFolder($filename, $delAll = 0){
+	if(!file_exists($filename))
 		return false;
-	if ($delAll) {
+	if($delAll){
 		$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
 		$d = dir($filename);
-		while (false !== ($entry = $d->read())) {
-			if ($entry != ".." && $entry != ".") {
+		while(false !== ($entry = $d->read())) {
+			if($entry != ".." && $entry != "."){
 				$path = $foo . $entry;
-				if (is_dir($path)) {
+				if(is_dir($path)){
 					deleteLocalFolder($path, 1);
-				} else {
+				} else{
 					deleteLocalFile($path);
 				}
 			}

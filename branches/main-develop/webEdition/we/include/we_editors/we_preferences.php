@@ -1321,8 +1321,8 @@ function remember_value($settingvalue, $settingname){
 
 					$_formmail_deleted = explode(",", $_REQUEST["formmail_deleted"]);
 
-					for($i = 0; $i < sizeof($_formmail_deleted); $i++){
-						$DB_WE->query("DELETE FROM " . RECIPIENTS_TABLE . " WHERE ID=" . abs($_formmail_deleted[$i]));
+					foreach($_formmail_deleted as $del){
+						$DB_WE->query('DELETE FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($del));
 					}
 				}
 				$_update_prefs = true;
@@ -1331,17 +1331,14 @@ function remember_value($settingvalue, $settingname){
 
 			case '$_REQUEST["active_integrated_modules"]':
 
-				$_activeIntegratedModulesFile = "";
+				$_activeIntegratedModulesFile = '';
 				foreach($_REQUEST["active_integrated_modules"] as $_module){
-					$_activeIntegratedModulesFile .= '
-$_we_active_integrated_modules[] = "' . $_module . '";';
+					$_activeIntegratedModulesFile .= "\t'" . $_module . "',\n";
 				}
 
 				$_activeIntegratedModulesFile = '<?php
-$_we_active_integrated_modules = array();
-' . $_activeIntegratedModulesFile . '
-
-?>';
+$_we_active_integrated_modules = array(
+' . $_activeIntegratedModulesFile . ');';
 				// save active integrated modules
 				$GLOBALS['config_files']['active_integrated_modules']['content'] = $_activeIntegratedModulesFile;
 

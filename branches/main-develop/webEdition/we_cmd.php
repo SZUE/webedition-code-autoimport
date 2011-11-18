@@ -37,13 +37,13 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.ph
 
 $INCLUDE = "";
 //	In we.inc.php all names of the active modules have already been searched
-//	so we only have to use the array $_we_active_modules
-if(isset($_we_active_modules)){
-	for($i=0;$i<sizeof($_we_active_modules);$i++){
+//	so we only have to use the array $_we_active_integrated_modules
+if(isset($_we_active_integrated_modules)){
+	foreach($_we_active_integrated_modules as $mod){
 
-		if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_cmd_" . $_we_active_modules[$i] . ".inc.php")){
+		if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $mod . "/we_cmd_" . $mod . ".inc.php")){
 
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $_we_active_modules[$i] . "/we_cmd_" . $_we_active_modules[$i] . ".inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $mod . "/we_cmd_" . $mod . ".inc.php");
 		}
 
 	}
@@ -346,21 +346,21 @@ if(!$INCLUDE){
 				break;
 			}
 	//	In we.inc.php all names of the installed modules have already been searched
-	//	so we only have to use the array $_we_active_modules
+	//	so we only have to use the array $_we_active_integrated_modules
 
 			$foo = false;
 			foreach($_we_available_modules as $m){
-				if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "edit_".$m["name"]."_ifthere" && (!in_array($m["name"],$_we_active_modules))){
+				if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "edit_".$m["name"]."_ifthere" && (!in_array($m["name"],$_we_active_integrated_modules))){
 
 					$foo = true;
-					if ($m["integrated"]) {
+					//if ($m["integrated"]) {
 						$_moduleName = $m["text_short"];
 						$INCLUDE="messageModuleNotActivated.inc.php";
 
-					} else {
+					/*} else {
 						// buyable module that is not installed should be opened
 						print "DEBUG ME";
-					}
+					}*/
 					break;
 				}
 			}

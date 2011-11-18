@@ -211,7 +211,7 @@ class weExportWizard{
  	}
 
 	function getHTMLStep0() {
-		global $_we_active_modules;
+		global $_we_active_integrated_modules;
 
 		$wexpotEnabled = (we_hasPerm('NEW_EXPORT') || we_hasPerm('DELETE_EXPORT') || we_hasPerm('EDIT_EXPORT') || we_hasPerm('MAKE_EXPORT') || we_hasPerm('ADMINISTRATOR'));
 
@@ -259,7 +259,7 @@ class weExportWizard{
 			"noline"	=> 1)
 		);
 
-		if( in_array("object", $_we_active_modules) ){
+		if( in_array("object", $_we_active_integrated_modules) ){
 			array_push($parts, array(
 				"html"		=> we_forms::radiobutton("csv", ($extype=="csv" && we_hasPerm("CSV_EXPORT")), "extype", g_l('export',"[csv_export]"), true, "defaultfont", "", !we_hasPerm("CSV_EXPORT"), g_l('export',"[txt_csv_export]"), 0, 500),
 				"space"		=> 0,

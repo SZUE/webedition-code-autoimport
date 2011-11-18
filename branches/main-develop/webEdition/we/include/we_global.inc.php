@@ -43,31 +43,6 @@ function we_getModuleNameByContentType($ctype) {
 	return $_moduleDir;
 }
 
-function we_getGlobalPath() {
-	if (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)) {
-		return $GLOBALS['WE_MAIN_DOC']->Path;
-	} else {
-		return '';
-	}
-}
-
-function rmPhp($in) {
-	$out = '';
-	$starttag = strpos($in, '<?');
-	if ($starttag === false)
-		return $in;
-	$lastStart = 0;
-	while (!($starttag === false)) {
-		$endtag = strpos($in, '?>', $starttag);
-		$out .= substr($in, $lastStart, ($starttag - $lastStart));
-		$lastStart = $endtag + 2;
-		$starttag = strpos($in, '<?', $lastStart);
-	}
-	if ($lastStart < strlen($in))
-		$out .= substr($in, $lastStart, (strlen($in) - $lastStart));
-	return $out;
-}
-
 function we_getIndexFileIDs($db) {
 	return f('SELECT GROUP_CONCAT(ID) AS IDs FROM ' . FILE_TABLE . ' WHERE IsSearchable=1 AND ((Published > 0 AND (ContentType="text/html" OR ContentType="text/webedition")) OR (ContentType="application/*") )','IDs',$db);
 }
@@ -78,10 +53,6 @@ function we_getIndexObjectIDs($db) {
 
 function correctUml($in) {
 	return str_replace(array('ä','ö','ü','Ä','Ö','Ü','ß'), array('ae','oe','ue','Ae','Oe','Ue','ss'), $in);
-}
-
-function we_html2uml($text) {
-	return corretUml(html_entity_decode($text));
 }
 
 function inWorkflow($doc) {

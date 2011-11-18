@@ -33,22 +33,16 @@ if(isset($_SERVER['DOCUMENT_ROOT'])){
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php'); //	New absolute minimum include for any we-file, reduces memory consumption for special usages about 20 MB.
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_active_integrated_modules.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_installed_modules.inc.php');
 
 // use the following arrays:
 // we_available_modules - modules and informations about integrated and none integrated modules
-// we_installed_modules - all installed (none integrated) modules
 // we_active_integrated_modules - all active integrated modules
-// we_active_modules - all active modules integrated and none integrated
-// merge we_installed_modules and we_active_integrated_modules to we_active_modules
-$_we_active_modules = array_merge($_we_active_integrated_modules, $_we_installed_modules);
 
-foreach($_we_active_modules as $active){
+foreach($_we_active_integrated_modules as $active){
 	if(file_exists(
 			$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
@@ -58,10 +52,10 @@ foreach($_we_active_modules as $active){
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
-if(isset($_we_active_modules) && in_array('shop', $_we_active_modules)){
+if(isset($_we_active_integrated_modules) && in_array('shop', $_we_active_integrated_modules)){
 	$MNEMONIC_EDITPAGES['11'] = 'variants';
 }
-if(isset($_we_active_modules) && in_array('customer', $_we_active_modules)){
+if(isset($_we_active_integrated_modules) && in_array('customer', $_we_active_integrated_modules)){
 	$MNEMONIC_EDITPAGES['14'] = 'customer';
 }
 
@@ -112,10 +106,10 @@ if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCha
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
-if(isset($_we_active_modules) && in_array('shop', $_we_active_modules)){
+if(in_array('shop', $_we_active_integrated_modules)){
 	$MNEMONIC_EDITPAGES['11'] = 'variants';
 }
-if(isset($_we_active_modules) && in_array('customer', $_we_active_modules)){
+if(in_array('customer', $_we_active_integrated_modules)){
 	$MNEMONIC_EDITPAGES['14'] = 'customer';
 }
 

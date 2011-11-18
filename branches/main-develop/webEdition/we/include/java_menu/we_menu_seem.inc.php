@@ -420,7 +420,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 	$userHasAllModules = true;
 	$moduleList = "schedpro|";
 
-	if (sizeof($_we_installed_modules) > 0) {
+	if (sizeof($_we_active_integrated_modules) > 0) {
 
 		foreach ($buyableModules as $m) {
 
@@ -437,7 +437,7 @@ $we_menu["3000000"]["parent"] = "0000000";
 				$we_menu[$menNr]["perm"] = isset($m["perm"]) ? $m["perm"] : "";
 				$we_menu[$menNr]["enabled"] = "1";
 				$z++;
-			} else if(in_array($m["name"],$_we_installed_modules)) {
+			} else if(in_array($m["name"],$_we_active_integrated_modules)) {
 				$moduleList .= $m["name"] . "|" ;
 			}
 			if (!weModuleInfo::isModuleInstalled($m["name"])) {
@@ -460,9 +460,9 @@ $we_menu["3000000"]["parent"] = "0000000";
 	$we_menu["3010002"]["enabled"] = "1";
 
 	foreach($_we_available_modules as $key=>$val) {
-		if($val["integrated"]) {
+		//if($val["integrated"]) {
 			$moduleList .= $key . "|";
-		}
+		//}
 	}
 	$_SESSION["we_module_list"] = ereg_replace('^(.+)\|$','\1',$moduleList);
 
@@ -651,7 +651,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 	$userHasAllModules = true;
 	$moduleList = "";
 
-	if (sizeof($_we_installed_modules) > 0) {
+	if (sizeof($_we_active_integrated_modules) > 0) {
 
 		foreach ($buyableModules as $m) {
 
@@ -717,7 +717,7 @@ $we_menu["5000000"]["enabled"] = "1";
 	reset($_we_available_modules);
 	while(list($key, $val) = each($_we_available_modules)){
 
-		if (!isset($val["integrated"]) || ( in_array($val["name"], $_we_active_modules) )) {
+		if (!isset($val["integrated"]) || ( in_array($val["name"], $_we_active_integrated_modules) )) {
 
 			if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/we_menu_" . $val["name"] . ".inc.php")){
 				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/we_menu_" . $val["name"] . ".inc.php");
