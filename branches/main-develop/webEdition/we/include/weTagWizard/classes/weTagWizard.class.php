@@ -25,13 +25,21 @@
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 
 class weTagWizard{
+	static function cleanCache(){
+		if(file_exists(WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/clean')){
+		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 1800, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
+		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+		//remove file
+		unlink(WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/clean');
+		}
+	}
 
 	static function getExistingWeTags(){
 		$retTags = array();
 		$main = self::getMainTagModules();
 		foreach($main as $modulename => $tags){
 
-			if($modulename == 'basis' || in_array($modulename, $GLOBALS['_we_active_modules'])){
+			if($modulename == 'basis' || $modulename == 'navigation' || in_array($modulename, $GLOBALS['_we_active_modules'])){
 				$retTags = array_merge($retTags, $tags);
 			}
 		}
@@ -117,7 +125,7 @@ class weTagWizard{
 	 * Initializes database for all tags
 	 */
 	static function initTagLists($tags){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 24*3600, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
+		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 24 * 3600, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
 		if(($count = $cache->load('_tagCount')) && (count($tags) == $count)){
 			return;
 		}
@@ -146,8 +154,9 @@ class weTagWizard{
 		$cache->save($modules, '_modules');
 	}
 
+	//FIXME: check if custom tags are updated correctly!
 	static function getTagsWithEndTag(){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 24*3600, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
+		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 24 * 3600, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
 		if(!($tags = $cache->load('_needsEndTag'))){
 			self::getExistingWeTags();
 			$tags = $cache->load('_needsEndTag');
