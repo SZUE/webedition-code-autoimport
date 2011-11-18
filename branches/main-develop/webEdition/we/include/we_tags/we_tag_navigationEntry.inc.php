@@ -24,6 +24,10 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
+function we_parse_tag_navigationEntry($attribs, $content) {
+	return '<?php printElement('.we_tagParser::printTag('navigationEntry',$attribs,$content,true).');?>';
+}
+
 function we_tag_navigationEntry($attribs, $content) {
 	if (($foo = attributFehltError($attribs, 'type', 'navigation'))) {
 		echo $foo;
