@@ -140,7 +140,7 @@ class weExportTree extends weMainTree
 
 		return '
  		function drawTree(){
-			var out=\'<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td>' . getPixel(
+			var out=\'<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td>' . we_html_tools::getPixel(
 				5,
 				7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
 			out+=draw(treeData.startloc,"");
@@ -245,7 +245,7 @@ class weExportTree extends weMainTree
 
 		$header->setCol(0, 0, array(
 			"bgcolor" => "white"
-		), getPixel(5, 5));
+		), we_html_tools::getPixel(5, 5));
 
 		$captions = array();
 
@@ -262,8 +262,8 @@ class weExportTree extends weMainTree
 			$captions[OBJECT_TABLE] = g_l('export',"[classes]");
 		}
 
-		//$header->setColContent(1,0,htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));
-		$header->setColContent(2, 0, getPixel(5, 5));
+		//$header->setColContent(1,0,we_html_tools::htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));
+		$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 
 		return $js . $header->getHtmlCode() . we_htmlElement::htmlDiv(
 				array(

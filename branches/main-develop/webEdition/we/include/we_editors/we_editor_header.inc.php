@@ -24,11 +24,10 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/weModuleInfo.class.php");
 
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
@@ -250,7 +249,7 @@ print STYLESHEET;
 </head>
 <body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 <div id="main" ><?php
-print getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span> (ID: <span id="h_id"></span>)</div>'.getPixel(100,3);
+print we_html_tools::getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span> (ID: <span id="h_id"></span>)</div>'.we_html_tools::getPixel(100,3);
 
 if ($_SESSION["we_mode"] != "seem") {
 	print $we_tabs->getHTML();

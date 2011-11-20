@@ -24,9 +24,8 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 protect();
-htmlTop(g_l('global','[question]'));
+we_html_tools::htmlTop(g_l('global','[question]'));
 
 $yesCmd = "yes_cmd_pressed();";
 $cancelCmd = "self.close();";
@@ -151,7 +150,7 @@ print STYLESHEET;
 </head>
 
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
-	<?php print htmlYesNoCancelDialog($content,IMAGE_DIR."alert.gif",true,false,true,$yesCmd,"",$cancelCmd); ?>
+	<?php print we_html_tools::htmlYesNoCancelDialog($content,IMAGE_DIR."alert.gif",true,false,true,$yesCmd,"",$cancelCmd); ?>
 </body>
 
 </html>

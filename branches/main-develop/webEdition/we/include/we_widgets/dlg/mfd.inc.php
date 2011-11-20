@@ -188,7 +188,7 @@ $addbut = we_button::create_button(
 		"javascript:opener.getUser('browse_users','".$wecmdenc1."','".$wecmdenc2."','','','".$wecmdenc5."','','',1);");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">';
-$content .= '<tr><td>' . getPixel(20, 2) . '</td><td>' . getPixel(254, 2) . '</td><td>' . getPixel(26, 2) . '</td></tr>' . "\n";
+$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>' . "\n";
 
 if (sizeof($users)) {
 	$db = new DB_WE();
@@ -201,7 +201,7 @@ if (sizeof($users)) {
 } else {
 	$content .= '<tr><td><img src="' . ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('cockpit','[all_users]') . '</td><td></td><td></td></tr>' . "\n";
 }
-$content .= '<tr><td>' . getPixel(20, 2) . '</td><td>' . getPixel(254, 2) . '</td><td>' . getPixel(26, 2) . '</td></tr></table>' . "\n";
+$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>' . "\n";
 
 $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_htmlElement::htmlDiv(
 		array(
@@ -211,12 +211,12 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 	"name" => "UserNameTmp", "value" => ""
 )) . we_htmlElement::htmlHidden(array(
 	"name" => "UserIDTmp", "value" => ""
-)) . '</td></tr><tr><td align="right">' . getPixel(2, 8) . we_htmlElement::htmlBr() . we_button::create_button_table(
+)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_htmlElement::htmlBr() . we_button::create_button_table(
 		array(
 			$delallbut, $addbut
 		)) . '</td></tr></table>';
 
-$oShowUser = htmlFormElementTable($sUsrContent, g_l('cockpit','[following_users]'), "left", "defaultfont");
+$oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit','[following_users]'), "left", "defaultfont");
 
 // Typ block
 while (strlen($sType) < 4) {
@@ -294,7 +294,7 @@ $oDbTableType = new we_htmlTable(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
-$oDbTableType->setCol(0, 1, null, getPixel(10, 1));
+$oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
 $oSctDate = new we_htmlSelect(array(
@@ -355,12 +355,12 @@ $oSelMaxEntries = new we_htmlTable(array(
 $oSelMaxEntries->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"
 ), g_l('cockpit','[max_amount_entries]'));
-$oSelMaxEntries->setCol(0, 1, null, getPixel(5, 1));
+$oSelMaxEntries->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 $oSelMaxEntries->setCol(0, 2, array(
 	"valign" => "middle"
 ), $oSctNumEntries->getHTMLCode());
 
-$show = $oSelMaxEntries->getHTMLCode() . getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . getPixel(1, 5) . we_htmlElement::htmlBr() . $oShowUser;
+$show = $oSelMaxEntries->getHTMLCode() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oShowUser;
 
 array_push($parts, array(
 	"headline" => g_l('cockpit','[type]'), "html" => $oDbTableType->getHTMLCode(), "space" => 80

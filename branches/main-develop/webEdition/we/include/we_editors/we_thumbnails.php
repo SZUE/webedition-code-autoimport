@@ -29,16 +29,9 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_delete_fn.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_image_edit.class.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 
 
 /*****************************************************************************
@@ -437,8 +430,8 @@ function build_dialog($selected_setting = "ui") {
 			$_thumbnails_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 3);
 
 			$_thumbnails_table->setCol(0, 0, null, we_htmlElement::htmlHidden(array("name" => "edited_id", "value" => $_GET["id"])) . $_thumbnails->getHtmlCode());
-			$_thumbnails_table->setCol(0, 1, null, getPixel(10, 1));
-			$_thumbnails_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_thumbnail();") . getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_thumbnail();", true, 100, 22, "", "", !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+			$_thumbnails_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_thumbnail();") . we_html_tools::getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_thumbnail();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 			// Build dialog
 			array_push($_thumbs, array("headline" => "", "html" => $_thumbnails_table->getHtmlCode(), "space" => 0));
@@ -449,7 +442,7 @@ function build_dialog($selected_setting = "ui") {
 
 			$_thumbnail_name = ($_GET["id"] != -1) ? f("SELECT Name FROM " . THUMBNAILS_TABLE . " WHERE ID='" . abs($_GET["id"]) . "'", "Name", $DB_WE) : -1;
 
-			$_thumbnail_name_input = htmlTextInput("thumbnail_name", 22, ($_thumbnail_name != -1 ? $_thumbnail_name : ""), 255, ($_thumbnail_name == -1 ? "disabled=\"true\"" : ""), "text", 225);
+			$_thumbnail_name_input = we_html_tools::htmlTextInput("thumbnail_name", 22, ($_thumbnail_name != -1 ? $_thumbnail_name : ""), 255, ($_thumbnail_name == -1 ? "disabled=\"true\"" : ""), "text", 225);
 
 			// Build dialog
 			array_push($_thumbs, array("headline" => g_l('thumbnails',"[name]"), "html" => $_thumbnail_name_input, "space" => 200));
@@ -465,19 +458,19 @@ function build_dialog($selected_setting = "ui") {
 
 			$_thumbnail_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 3);
 
-			$_thumbnail_specify_table->setCol(1, 0, array("width" => "60"), getPixel(1, 5));
-			$_thumbnail_specify_table->setCol(3, 0, array("colspan" => "3"), getPixel(1, 5));
+			$_thumbnail_specify_table->setCol(1, 0, array("width" => "60"), we_html_tools::getPixel(1, 5));
+			$_thumbnail_specify_table->setCol(3, 0, array("colspan" => "3"), we_html_tools::getPixel(1, 5));
 
 			$_thumbnail_specify_table->setCol(0, 0, array("class" => "defaultfont"), g_l('thumbnails',"[width]") . ":");
 			$_thumbnail_specify_table->setCol(2, 0, array("class" => "defaultfont"), g_l('thumbnails',"[height]") . ":");
 			$_thumbnail_specify_table->setCol(4, 0, array("class" => "defaultfont", "id" => "thumbnail_quality_text_cell"), g_l('thumbnails',"[quality]") . ":");
 
-			$_thumbnail_specify_table->setCol(0, 1, null, getPixel(10, 1));
-			$_thumbnail_specify_table->setCol(2, 1, null, getPixel(10, 1));
-			$_thumbnail_specify_table->setCol(4, 1, null, getPixel(10, 22));
+			$_thumbnail_specify_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+			$_thumbnail_specify_table->setCol(2, 1, null, we_html_tools::getPixel(10, 1));
+			$_thumbnail_specify_table->setCol(4, 1, null, we_html_tools::getPixel(10, 22));
 
-			$_thumbnail_specify_table->setCol(0, 2, null, htmlTextInput("thumbnail_width", 6, ($_thumbnail_width != -1 ? $_thumbnail_width : ""), 4, ($_thumbnail_width == -1 ? "disabled=\"disabled\"" : ""), "text", 60));
-			$_thumbnail_specify_table->setCol(2, 2, null, htmlTextInput("thumbnail_height", 6, ($_thumbnail_height != -1 ? $_thumbnail_height : ""), 4, ($_thumbnail_height == -1 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_thumbnail_specify_table->setCol(0, 2, null, we_html_tools::htmlTextInput("thumbnail_width", 6, ($_thumbnail_width != -1 ? $_thumbnail_width : ""), 4, ($_thumbnail_width == -1 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_thumbnail_specify_table->setCol(2, 2, null, we_html_tools::htmlTextInput("thumbnail_height", 6, ($_thumbnail_height != -1 ? $_thumbnail_height : ""), 4, ($_thumbnail_height == -1 ? "disabled=\"disabled\"" : ""), "text", 60));
 			$_thumbnail_specify_table->setCol(4, 2, array("class" => "defaultfont", "id" => "thumbnail_quality_value_cell"), we_image_edit::qualitySelect("thumbnail_quality",$_thumbnail_quality));
 
 			// Create checkboxes for options for thumbnails
@@ -488,15 +481,15 @@ function build_dialog($selected_setting = "ui") {
 			$_thumbnail_option_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
 
 			$_thumbnail_option_table->setCol(0, 0, null, we_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), "Ratio", g_l('thumbnails',"[ratio]"), false, "defaultfont", "", ($_thumbnail_ratio == -1)));
-			$_thumbnail_option_table->setCol(1, 0, null, getPixel(1, 5));
+			$_thumbnail_option_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 			$_thumbnail_option_table->setCol(2, 0, null, we_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), "Maxsize", g_l('thumbnails',"[maximize]"), false, "defaultfont", "", ($_thumbnail_maximize == -1)));
-			$_thumbnail_option_table->setCol(3, 0, null, getPixel(1, 5));
+			$_thumbnail_option_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
 			$_thumbnail_option_table->setCol(4, 0, null, we_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), "Interlace", g_l('thumbnails',"[interlace]"), false, "defaultfont", "", ($_thumbnail_interlace == -1)));
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
 			$_window_html->setCol(0, 0, null, $_thumbnail_specify_table->getHtmlCode());
-			$_window_html->setCol(1, 0, null, getPixel(1, 10));
+			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_html->setCol(2, 0, null, $_thumbnail_option_table->getHtmlCode());
 
 			// Build dialog
@@ -569,7 +562,7 @@ function render_dialog() {
  * RENDER FILE
  *****************************************************************************/
 
-htmlTop();
+we_html_tools::htmlTop();
 
 // Check if we need to save settings
 if (isset($_REQUEST["save_thumbnails"]) && $_REQUEST["save_thumbnails"] == "true") {

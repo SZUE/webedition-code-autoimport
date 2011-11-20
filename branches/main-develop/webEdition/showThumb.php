@@ -42,7 +42,7 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 
 	$thumbIDs = makeArrayFromCSV($_GET['id']);
 
-	htmlTop();
+	we_html_tools::htmlTop();
 
 	print STYLESHEET . "</head>";
 

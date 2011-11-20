@@ -116,15 +116,15 @@ class weCustomerAdd{
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num,0,array("class"=>"defaultfont"),getPixel(180,5));
-			$sort_table->setCol($row_num,1,array("class"=>"defaultfont"),getPixel(180,5));
-			$sort_table->setCol($row_num,2,array("class"=>"defaultfont"),getPixel(130,5));
-			$sort_table->setCol($row_num,3,array("class"=>"defaultfont"),getPixel(90,5));
-			$sort_table->setCol($row_num,4,array("class"=>"defaultfont"),getPixel(22,5));
+			$sort_table->setCol($row_num,0,array("class"=>"defaultfont"),we_html_tools::getPixel(180,5));
+			$sort_table->setCol($row_num,1,array("class"=>"defaultfont"),we_html_tools::getPixel(180,5));
+			$sort_table->setCol($row_num,2,array("class"=>"defaultfont"),we_html_tools::getPixel(130,5));
+			$sort_table->setCol($row_num,3,array("class"=>"defaultfont"),we_html_tools::getPixel(90,5));
+			$sort_table->setCol($row_num,4,array("class"=>"defaultfont"),we_html_tools::getPixel(22,5));
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num,4,array(),getPixel(2,5).we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort_field',document.we_form.sort_".$counter.".value)",true,30));
+			$sort_table->setCol($row_num,4,array(),we_html_tools::getPixel(2,5).we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort_field',document.we_form.sort_".$counter.".value)",true,30));
 
 
 			$fhidden.=we_htmlElement::htmlHidden(array("name"=>"fcounter_".$counter,"value"=>"$fcounter"));
@@ -339,24 +339,24 @@ class weCustomerAdd{
 
 					if ($i!=0) {
 						$advsearch->addRow();
-						$advsearch->setCol($c,0,array("colspan"=>$colspan),htmlSelect("logic_".$i,$logic,1,(isset($search_arr["logic_".$i]) ? $search_arr["logic_".$i] : ""),false,'',"value","70"));
+						$advsearch->setCol($c,0,array("colspan"=>$colspan),we_html_tools::htmlSelect("logic_".$i,$logic,1,(isset($search_arr["logic_".$i]) ? $search_arr["logic_".$i] : ""),false,'',"value","70"));
 						$c++;
 					}
-					$value_i = htmlTextInput("value_".$i,20,(isset($search_arr["value_".$i]) ? $search_arr["value_".$i] : ""),"","id='value_$i'","text","185");
-					$value_date_i = htmlTextInput("value_date_$i",20,"","","id='value_date_$i' style='display:none; width:150' readonly","text",""); // empty field to display the timestemp in date formate - handeld on the client in js
+					$value_i = we_html_tools::htmlTextInput("value_".$i,20,(isset($search_arr["value_".$i]) ? $search_arr["value_".$i] : ""),"","id='value_$i'","text","185");
+					$value_date_i = we_html_tools::htmlTextInput("value_date_$i",20,"","","id='value_date_$i' style='display:none; width:150' readonly","text",""); // empty field to display the timestemp in date formate - handeld on the client in js
 					$btnDatePicker = we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"_$i");
 					$advsearch->addRow();
 					$advsearch->setCol($c,0,array(),$branch->getHtmlCode());
 					$advsearch->setCol($c,1,array(),$field->getHtmlCode());
-					$advsearch->setCol($c,2,array(),htmlSelect("operator_".$i,$operators,1,(isset($search_arr["operator_".$i]) ? $search_arr["operator_".$i] : ""),false,'',"value","60"));
+					$advsearch->setCol($c,2,array(),we_html_tools::htmlSelect("operator_".$i,$operators,1,(isset($search_arr["operator_".$i]) ? $search_arr["operator_".$i] : ""),false,'',"value","60"));
 					$advsearch->setCol($c,3,array("width"=>"190"),
-						"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".$value_i.$value_date_i."</td><td>".getPixel(3,1)."</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
+						"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".$value_i.$value_date_i."</td><td>".we_html_tools::getPixel(3,1)."</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
 					$c++;
 
 			}
 
 			$advsearch->addRow();
-			$advsearch->setCol($c,0,array("colspan"=>$colspan),getPixel(5,5));
+			$advsearch->setCol($c,0,array("colspan"=>$colspan),we_html_tools::getPixel(5,5));
 
 			$c++;
 			$advsearch->addRow();
@@ -373,7 +373,7 @@ class weCustomerAdd{
 				$advsearch->getHtmlCode()
 
 			);
-			$search->setCol(2,0,array(),getPixel(5,5));
+			$search->setCol(2,0,array(),we_html_tools::getPixel(5,5));
 			$search->setCol(3,0,array("align"=>"right","colspan"=>$colspan),
 									"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".we_button::create_button_table(
 										array(
@@ -431,7 +431,7 @@ class weCustomerAdd{
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
-		$table1->setCol(0,0,array("nowrap"=>null,"class"=>"small"),getPixel(300,1));
+		$table1->setCol(0,0,array("nowrap"=>null,"class"=>"small"),we_html_tools::getPixel(300,1));
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,3);
 		$table->setRow(0,array("valign"=>"bottom"));

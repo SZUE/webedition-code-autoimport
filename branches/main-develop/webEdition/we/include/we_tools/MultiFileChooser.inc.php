@@ -41,10 +41,10 @@ var $diabledDelReason ="";
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>abs($this->width-20)),1,4);
 
-		$table->setCol(0,0,array(),getPixel(20,3));
-		$table->setCol(0,1,array(),getPixel(abs($this->width-101),3));
-		$table->setCol(0,2,array(),getPixel(66,3));
-		$table->setCol(0,2,array(),getPixel(15,3));
+		$table->setCol(0,0,array(),we_html_tools::getPixel(20,3));
+		$table->setCol(0,1,array(),we_html_tools::getPixel(abs($this->width-101),3));
+		$table->setCol(0,2,array(),we_html_tools::getPixel(66,3));
+		$table->setCol(0,2,array(),we_html_tools::getPixel(15,3));
 
 
 		$this->nr=0;
@@ -94,10 +94,10 @@ var $diabledDelReason ="";
 				$c++;
 
 				$table->addRow();
-				$table->setCol($c,0,array(),getPixel(20,3));
-				$table->setCol($c,1,array(),getPixel(abs($this->width-101),3));
-				$table->setCol($c,2,array(),getPixel(66,3));
-				$table->setCol($c,3,array(),getPixel(15,3));
+				$table->setCol($c,0,array(),we_html_tools::getPixel(20,3));
+				$table->setCol($c,1,array(),we_html_tools::getPixel(abs($this->width-101),3));
+				$table->setCol($c,2,array(),we_html_tools::getPixel(66,3));
+				$table->setCol($c,3,array(),we_html_tools::getPixel(15,3));
 
 				$c++;
 
@@ -105,7 +105,7 @@ var $diabledDelReason ="";
 		}
 		else{
 			$table->addRow();
-			$table->setCol(1,0,array(),getPixel(20,12));
+			$table->setCol(1,0,array(),we_html_tools::getPixel(20,12));
 		}
 
 
@@ -116,7 +116,7 @@ var $diabledDelReason ="";
 		);
 		if($this->addbut){
 			$table2->addRow(2);
-			$table2->setCol(1,0,array(),getPixel(2,5));
+			$table2->setCol(1,0,array(),we_html_tools::getPixel(2,5));
 			$table2->setCol(2,0,array("align"=>"right"),$this->addbut);
 		}
 

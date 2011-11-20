@@ -24,13 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 
 protect();
 
@@ -47,7 +41,7 @@ $_thumbs = array();
 
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
-	htmlTop(g_l('weClass',"[thumbnails]"));
+	we_html_tools::htmlTop(g_l('weClass',"[thumbnails]"));
 	print '<script type="text/javascript">
 
 	function select_thumbnails(sel){

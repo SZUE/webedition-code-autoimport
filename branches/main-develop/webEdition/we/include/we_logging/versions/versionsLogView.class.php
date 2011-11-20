@@ -239,7 +239,7 @@ class versionsLogView {
 			$out .= date("d.m.y - H:i:s",$content[$i]['timestamp']);
 			$out .= '</td>';
 			$out .= '<td width="auto">';
-			$out .= getPixel(1,1);
+			$out .= we_html_tools::getPixel(1,1);
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '<tr>';
@@ -265,7 +265,7 @@ class versionsLogView {
 			$out .= $this->handleData($content[$i]['ID'],0,$this->versionPerPage);
 			$out .= '</div>';
 			$out .= '<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;">';
-			$out .= getPixel(1,1);
+			$out .= we_html_tools::getPixel(1,1);
 			$out .= '</div>';
 			$out .= '</td>';
 			$out .= '</tr>';
@@ -332,7 +332,7 @@ class versionsLogView {
 			$out .= '<thead>';
 			$out .= '<tr style="background-color:#dddddd;font-weight:bold;">';
 			$out .= '<td>';
-			$out .= getPixel(1,1);
+			$out .= we_html_tools::getPixel(1,1);
 			$out .= '</td>';
 			$out .= '<td>';
 			$out .= g_l('logging','[ID]')."";
@@ -398,7 +398,7 @@ class versionsLogView {
 			$out .= ($anzGesamt>$this->versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_'.$logId.'" href="#" onclick="showAll('.$logId.');">'.g_l('logging','[all]').'</a></span>' : "";
 			$out .= '<span style="margin-right:5px;"><a title="'.g_l('logging','[back]').'" href="#" onclick="back('.$logId.');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_left.gif\' id="back_'.$logId.'" style="display:none;border:2px solid #DDD;"  /></a></span>';
 			$out .= ($anzGesamt>$this->versionPerPage) ? '<span style="margin-right:5px;"><a title="'.g_l('logging','[next]').'" href="#" onclick="next('.$logId.');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_'.$logId.'" style="border:2px solid #DDD;" /></a></span>' : "";
-			$out .= hidden("start_".$logId ,$start);
+			$out .= we_html_tools::hidden("start_".$logId ,$start);
 			$out .= '</td>';
 			$out .= '</tr>';
 

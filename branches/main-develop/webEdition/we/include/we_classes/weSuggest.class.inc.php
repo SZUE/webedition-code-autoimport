@@ -23,9 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 
 
 /**
@@ -36,7 +33,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSe
  * echo $yuiSuggest->createAutocompleter(																								// GUI-Element mit Input-Feld und Auswahl-Button
  *			"Doc", 																														// AC-Id
  *			we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
- *			htmlTextInput("seem_start_document_name", 11, $_document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
+ *			we_html_tools::htmlTextInput("seem_start_document_name", 11, $_document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
  *			'yuiAcInputDoc',																											// Input-Feld-Id. Die Id besteht aus 'yuiAcInput' und AC-Id
  *			we_htmlElement::htmlHidden(array("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) f�r die Document-, Folder-, Object-,...ID
  *			'yuiAcResultDoc', 																											// Result-Feld-Id. Die Id besteht aus 'yuiAcResult' und AC-Id
@@ -932,7 +929,7 @@ function doDebugResizeH(){
 			$iField = $inputField;
 		}
 
-		$autoSuggest = "<div id=\"$layerId\" class=\"yuiAcLayer\">".$iField."<div id=\"$containerId\"></div></div>".getPixel(1,1);
+		$autoSuggest = "<div id=\"$layerId\" class=\"yuiAcLayer\">".$iField."<div id=\"$containerId\"></div></div>".we_html_tools::getPixel(1,1);
 		$containerWidth = (empty($this->containerWidth)?$width:$this->containerWidth);
 		if (!$this->containerWidthForAll) {
 			$this->containerWidth = "";
@@ -945,12 +942,12 @@ function doDebugResizeH(){
 				$_button = array("text" => "<div>".$button[0]."</div>", "valign" => "top");
 				$_button1 = array("text" => "<div>".$button[1]."</div>", "valign" => "top");
 				$_space = $width+$inputButtonSpace-1;
-				$_space2 = getPixel($buttonButtonSpace,4);
+				$_space2 = we_html_tools::getPixel($buttonButtonSpace,4);
 			} else {
 				$_button = array("text" => $button[0], "valign" => "top");
 				$_button1 = array("text" => $button[1], "valign" => "top");
 				$_space = $width+$inputButtonSpace;
-				$_space2 = getPixel($buttonButtonSpace,4);
+				$_space2 = we_html_tools::getPixel($buttonButtonSpace,4);
 			}
 
 		} else {
@@ -986,7 +983,7 @@ function doDebugResizeH(){
 		}
 
 		return htmlFormElementTable(
-				array("text"=>$resultField.$autoSuggest.getPixel($_space,4), "valign"=>"top", "style"=>"height:10px"),
+				array("text"=>$resultField.$autoSuggest.we_html_tools::getPixel($_space,4), "valign"=>"top", "style"=>"height:10px"),
 				$label,
 				"left",
 				"defaultfont",
@@ -1004,16 +1001,16 @@ function doDebugResizeH(){
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer".$this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer".$this->acId, array($resultId), $this->checkFieldValue, ($GLOBALS['BROWSER']=="IE"?$containerWidth:($containerWidth-8)), $this->mayBeEmpty,$this->rootDir);
 		$inputField  = $this->_htmlTextInput($this->inputName,30,$this->inputValue,"", 'id="'.$inputId.'" '.$this->inputAttribs,"text", $this->width, 0,"", $this->inputDisabled);
-		$resultField = hidden($this->resultName,$this->resultValue,array('id' => $resultId));
-		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">".$inputField."<div id=\"yuiAcContainer{$this->acId}\"></div></div>".getPixel(1,1);
+		$resultField = we_html_tools::hidden($this->resultName,$this->resultValue,array('id' => $resultId));
+		$autoSuggest = "<div id=\"yuiAcLayer{$this->acId}\" class=\"yuiAcLayer\">".$inputField."<div id=\"yuiAcContainer{$this->acId}\"></div></div>".we_html_tools::getPixel(1,1);
 
-		$html =  htmlFormElementTable(
-					array("text"=>$resultField.$autoSuggest.getPixel($selectButtonSpace,4), "valign"=>"top", "style"=>"height:10px"),
+		$html =  we_html_tools::htmlFormElementTable(
+					array("text"=>$resultField.$autoSuggest.we_html_tools::getPixel($selectButtonSpace,4), "valign"=>"top", "style"=>"height:10px"),
 					$this->label,
 					"left",
 					"defaultfont",
 					array("text"=>"<div style=''>".$this->selectButton."</div>", "valign"=>"top"),
-					getPixel($this->trashButtonSpace,4),
+					we_html_tools::getPixel($this->trashButtonSpace,4),
 					(empty($this->trashButton) ? "" : array("text"=>"<div style='margin-right:".$this->trashButtonSpace."px'>".$this->trashButton."</div>", "valign"=>"top")),
 					(empty($this->openButton) ? "" : array("text"=>"<div style='margin-right:".$this->openButtonSpace."px'>".$this->openButton."</div>", "valign"=>"top")),
 					(empty($this->createButton) ? "" : array("text"=>"<div style='margin-right:".$this->createButtonSpace."px'>".$this->createButton."</div>", "valign"=>"top"))

@@ -83,7 +83,7 @@ $_parts = array();
 $_parts[] = array(
 
 		'headline' => g_l('navigation','[name]'),
-		'html' => htmlTextInput(
+		'html' => we_html_tools::htmlTextInput(
 				'Text',
 				24,
 				$_navi->Text,
@@ -96,7 +96,7 @@ $_parts[] = array(
 $_parts[] = array(
 
 		'headline' => g_l('navigation','[group]'),
-		'html' => htmlSelect(
+		'html' => we_html_tools::htmlSelect(
 				'ParentID',
 				$_dirs,
 				1,
@@ -118,14 +118,14 @@ $_parts[] = array(
 $_parts[] = array(
 
 		'headline' => g_l('navigation','[order]'),
-		'html' => hidden('Ordn', $_navi->Ordn) . htmlTextInput(
+		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) . we_html_tools::htmlTextInput(
 				'OrdnTxt',
 				8,
 				($_navi->Ordn + 1),
 				'',
 				'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"',
 				'text',
-				117) . getPixel(6, 5) . htmlSelect(
+				117) . we_html_tools::getPixel(6, 5) . we_html_tools::htmlSelect(
 				'OrdnSelect',
 				array(
 					'begin' => g_l('navigation','[begin]'), 'end' => g_l('navigation','[end]')

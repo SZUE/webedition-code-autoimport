@@ -135,11 +135,11 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 				$nextprev .= we_button::create_button("next", "", false, 100, 22, "", "", true);
 			}
 
-			$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size-$start);
+			$nextprev .= we_html_tools::getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size-$start);
 
 			//$nextprev .= "&nbsp;-&nbsp".($size-$start+$count);
 
-			$nextprev .= "&nbsp;".g_l('global','[from]')." ".($size)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global','[from]')." ".($size)."</b></td><td>".we_html_tools::getPixel(23,1);
 
 			if($next < $size){
 				$nextprev .= we_button::create_button("back",'/webEdition/errorlog.php' . "?start=".$next); //bt_next

@@ -426,7 +426,7 @@ class weSiteImport{
 				$i++;
 			}
 		}
-		return htmlDialogBorder3(420, 270, $content, $headlines, "middlefont", "", "", "fields", "margin-top:5px;");
+		return we_html_tools::htmlDialogBorder3(420, 270, $content, $headlines, "middlefont", "", "", "fields", "margin-top:5px;");
 	}
 
 	/**
@@ -479,8 +479,8 @@ class weSiteImport{
 			"unix" => g_l('import', '[uts]'), "gmt" => g_l('import', '[gts]'), "own" => g_l('import', '[fts]')
 		);
 		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
-				g_l('siteimport', "[dateFormat]"), ENT_QUOTES) . ':</td><td>' . htmlSelect(
-				"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, 'onchange="dateFormatChanged(this);"') . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . htmlTextInput(
+				g_l('siteimport', "[dateFormat]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
+				"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, 'onchange="dateFormatChanged(this);"') . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
 				"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML(
@@ -496,8 +496,8 @@ class weSiteImport{
 		);
 
 		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . htmlspecialchars(
-				g_l('siteimport', "[importKind]"), ENT_QUOTES) . ':</td><td>' . htmlSelect(
-				"createType", $vals, 1, $_valueCreateType, false, 'onchange="createTypeChanged(this);"') . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . htmlAlertAttentionBox(
+				g_l('siteimport', "[importKind]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
+				"createType", $vals, 1, $_valueCreateType, false, 'onchange="createTypeChanged(this);"') . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
 				g_l('siteimport', "[autoExpl]"), 2, 450) . weSiteImport::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$_html = '<div style="height:480px">' . $_html . '</div>';
@@ -642,9 +642,9 @@ class weSiteImport{
 		$button = we_button::create_button(
 				"select", "javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','text/weTmpl',1)");
 
-		$foo = htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
-		return htmlFormElementTable(
-				$foo, htmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_getHiddenField($idname, $tid), getPixel(20, 4), $button);
+		$foo = we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 320, 0);
+		return we_html_tools::htmlFormElementTable(
+				$foo, htmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_getHiddenField($idname, $tid), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
@@ -663,10 +663,10 @@ class weSiteImport{
 		$_from_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
 				"select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','folder',document.we_form.elements['from'].value)") : "";
 
-		$_input = htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
+		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 
-		$_importFrom = htmlFormElementTable(
-			$_input, g_l('siteimport', "[importFrom]"), "left", "defaultfont", getPixel(10, 1), $_from_button, "", "", "", 0);
+		$_importFrom = we_html_tools::htmlFormElementTable(
+			$_input, g_l('siteimport', "[importFrom]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_from_button, "", "", "", 0);
 
 		// Destination Directory
 		//javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'to\\'].value','document.we_form.elements[\\'toPath\\'].value','','','0')"
@@ -676,9 +676,9 @@ class weSiteImport{
 		$_to_button = we_button::create_button(
 				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
-		//$_hidden = hidden("to",$this->to);
-		//$_input = htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
-		//$_importTo = htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", getPixel(10, 1), $_to_button, $_hidden, "", "", 0);
+		//$_hidden = we_html_tools::hidden("to",$this->to);
+		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
+		//$_importTo = we_html_tools::htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_to_button, $_hidden, "", "", 0);
 
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -726,7 +726,7 @@ class weSiteImport{
 		$_wePagesOptionButton = we_button::create_button(
 				"preferences", "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
-		$_select = htmlSelect(
+		$_select = we_html_tools::htmlSelect(
 			"depth", array(
 			"-1" => g_l('siteimport', "[nolimit]"),
 			0,
@@ -762,7 +762,7 @@ class weSiteImport{
 			30
 			), 1, $this->depth, false, "", "value", 150);
 
-		$_depth = htmlFormElementTable($_select, g_l('siteimport', "[depth]"));
+		$_depth = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[depth]"));
 		$maxallowed = round(getMaxAllowedPacket($GLOBALS['DB_WE']) / (1024 * 1024));
 		$maxallowed = $maxallowed ? $maxallowed : 20;
 		$maxarray = array(
@@ -773,23 +773,23 @@ class weSiteImport{
 		}
 
 		// maxSize
-		$_select = htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, "", "value", 150);
-		$_maxSize = htmlFormElementTable($_select, g_l('siteimport', "[maxSize]"));
+		$_select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, "", "value", 150);
+		$_maxSize = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[maxSize]"));
 
 		$thumbsarray = array();
 		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 		while($GLOBALS['DB_WE']->next_record()) {
 			$thumbsarray[$GLOBALS['DB_WE']->f("ID")] = $GLOBALS['DB_WE']->f("Name");
 		}
-		$_select = htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, "", "value", 150);
-		$_thumbs = htmlFormElementTable($_select, g_l('importFiles', "[thumbnails]"));
+		$_select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, "", "value", 150);
+		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', "[thumbnails]"));
 
 		$parts = array();
 
 		array_push(
 			$parts, array(
 			"headline" => g_l('siteimport', "[dirs_headline]"),
-			"html" => $_importFrom . getPixel(20, 5) . $_importTo,
+			"html" => $_importFrom . we_html_tools::getPixel(20, 5) . $_importTo,
 			"space" => 120
 		));
 
@@ -811,9 +811,9 @@ class weSiteImport{
 		$_tableObj->setCol(3, 0, null, "");
 		$_tableObj->setCol(3, 1, null, $_createWePages);
 		$_tableObj->setCol(4, 1, null, $_wePagesOptionButton);
-		$_tableObj->setCol(5, 0, null, getPixel(20, 1));
-		$_tableObj->setCol(5, 1, null, getPixel(200, 1));
-		$_tableObj->setCol(5, 2, null, getPixel(180, 1));
+		$_tableObj->setCol(5, 0, null, we_html_tools::getPixel(20, 1));
+		$_tableObj->setCol(5, 1, null, we_html_tools::getPixel(200, 1));
+		$_tableObj->setCol(5, 2, null, we_html_tools::getPixel(180, 1));
 		$_tableObj->setCol(0, 2, null, $_jss);
 		$_tableObj->setCol(1, 2, null, $_css);
 		$_tableObj->setCol(2, 2, null, $_text);
@@ -832,8 +832,8 @@ class weSiteImport{
 		$_tableObj = new we_htmlTable($_attr, 2, 2);
 		$_tableObj->setCol(0, 0, null, $_depth);
 		$_tableObj->setCol(0, 1, null, $_maxSize);
-		$_tableObj->setCol(1, 0, null, getPixel(220, 1));
-		$_tableObj->setCol(1, 1, null, getPixel(180, 1));
+		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(220, 1));
+		$_tableObj->setCol(1, 1, null, we_html_tools::getPixel(180, 1));
 
 		array_push(
 			$parts, array(
@@ -842,8 +842,8 @@ class weSiteImport{
 			"space" => 120
 		));
 
-		$content = htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), 2, "410");
-		$content .= getPixel(200, 10);
+		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), 2, "410");
+		$content .= we_html_tools::getPixel(200, 10);
 		$content .= we_forms::radiobutton(
 				"overwrite", ($this->sameName == "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]"));
 		$content .= we_forms::radiobutton(
@@ -876,8 +876,8 @@ class weSiteImport{
 					"space" => 120
 				));
 
-				$widthInput = htmlTextInput("width", "10", $this->width, "", '', "text", 60);
-				$heightInput = htmlTextInput("height", "10", $this->height, "", '', "text", 60);
+				$widthInput = we_html_tools::htmlTextInput("width", "10", $this->width, "", '', "text", 60);
+				$heightInput = we_html_tools::htmlTextInput("height", "10", $this->height, "", '', "text", 60);
 
 				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
@@ -932,7 +932,7 @@ class weSiteImport{
 				array_push(
 					$parts, array(
 					"headline" => "",
-					"html" => htmlAlertAttentionBox(
+					"html" => we_html_tools::htmlAlertAttentionBox(
 						g_l('importFiles', "[add_description_nogdlib]"), 2, ""),
 					"space" => 0
 				));
@@ -1124,12 +1124,12 @@ class weSiteImport{
 
 		/*
 
-		  $dirChooser = htmlFormElementTable(htmlTextInput($textname,30,$path,"",' readonly',"text",320,0),
+		  $dirChooser = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname,30,$path,"",' readonly',"text",320,0),
 		  g_l('weClass',"[dir]"),
 		  "left",
 		  "defaultfont",
-		  hidden($idname,0),
-		  getPixel(20,4),
+		  we_html_tools::hidden($idname,0),
+		  we_html_tools::getPixel(20,4),
 		  $button);
 		 */
 
@@ -1137,20 +1137,20 @@ class weSiteImport{
 			<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 				<tr>
 					<td>
-						' . htmlFormElementTable(
-				htmlTextInput("templateName", 30, $templateName, 255, "", "text", 320), g_l('siteimport', "[nameOfTemplate]")) . '</td>
+						' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput("templateName", 30, $templateName, 255, "", "text", 320), g_l('siteimport', "[nameOfTemplate]")) . '</td>
 					<td></td>
 					<td>
-						' . htmlFormElementTable(
+						' . we_html_tools::htmlFormElementTable(
 				'<span class="defaultfont"><b>.tmpl</b></span>', g_l('weClass', "[extension]")) . '</td>
 				</tr>
 				<tr>
 					<td>
-						' . getPixel(20, 4) . '</td>
+						' . we_html_tools::getPixel(20, 4) . '</td>
 					<td>
-						' . getPixel(20, 2) . '</td>
+						' . we_html_tools::getPixel(20, 2) . '</td>
 					<td>
-						' . getPixel(100, 2) . '</td>
+						' . we_html_tools::getPixel(100, 2) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">

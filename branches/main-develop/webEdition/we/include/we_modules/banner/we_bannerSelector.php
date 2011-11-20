@@ -73,13 +73,13 @@ function doClick(id,ct){
   	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
 					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td width="300">'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';

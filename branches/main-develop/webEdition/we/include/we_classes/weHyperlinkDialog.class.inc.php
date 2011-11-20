@@ -324,7 +324,7 @@ class weHyperlinkDialog extends weDialog{
 </select>';
 
 
-			$_external_link = htmlTextInput("we_dialog_args[extHref]",30,$extHref,"",'',"text",300);
+			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]",30,$extHref,"",'',"text",300);
 
 
 			// INTERNAL LINK
@@ -332,7 +332,7 @@ class weHyperlinkDialog extends weDialog{
 
 			// E-MAIL LINK
 
-			$_email_link = htmlTextInput("we_dialog_args[mailHref]",30,$this->args["mailHref"],"",'',"text",300);
+			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]",30,$this->args["mailHref"],"",'',"text",300);
 
 			// OBJECT LINK
 			$_object_link = "";
@@ -351,7 +351,7 @@ class weHyperlinkDialog extends weDialog{
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['we_dialog_args[extHref]'].value");
 			$_external_select_button = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '".$wecmdenc1."', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>".htmlFormElementTable(htmlTextInput("we_dialog_args[extHref]",30,$extHref ? $extHref : "http://","",'onchange="if(this.value==\'\'){this.value=\'http://\'}"',"text",300), "", "left", "defaultfont", getPixel(10, 1), $_external_select_button, "", "", "", 0)."</div>";
+			$_external_link = "<div style='margin-top:1px'>".we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]",30,$extHref ? $extHref : "http://","",'onchange="if(this.value==\'\'){this.value=\'http://\'}"',"text",300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, "", "", "", 0)."</div>";
 
 
 			// INTERNAL LINK
@@ -374,7 +374,7 @@ class weHyperlinkDialog extends weDialog{
 			$_internal_link = $yuiSuggest->getHTML();
 			// E-MAIL LINK
 
-			$_email_link = htmlFormElementTable(htmlTextInput("we_dialog_args[mailHref]",30,$this->args["mailHref"],"",'',"text",300), "", "left", "defaultfont", "", "", "", "", "", 0);
+			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]",30,$this->args["mailHref"],"",'',"text",300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
 			if(defined("OBJECT_TABLE") && ($_SESSION["we_mode"] == "normal" || we_hasPerm("CAN_SEE_OBJECTFILES"))){
@@ -397,18 +397,18 @@ class weHyperlinkDialog extends weDialog{
 
 				$_object_link = $yuiSuggest->getHTML();
 /*
-				$_object_link = htmlFormElementTable(htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, "0", "", !we_hasPerm("CAN_SEE_OBJECTFILES")) .
-				'<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", getPixel(10, 1), $_object_select_button, "", "", "", 0);
+				$_object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, "0", "", !we_hasPerm("CAN_SEE_OBJECTFILES")) .
+				'<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_object_select_button, "", "", "", 0);
 				*/
 			}
 		}
 
 		$_anchorSel = '<script  type="text/javascript">showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")</script>';
-		$_anchorInput = htmlTextInput("we_dialog_args[anchor]",30,$this->args["anchor"],"","","text",300);
+		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]",30,$this->args["anchor"],"","","text",300);
 
-		$_anchor = htmlFormElementTable($_anchorInput, "", "left", "defaultfont", getPixel(10, 1), $_anchorSel, "", "", "", 0);
+		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
 
-		$_param = htmlTextInput("we_dialog_args[param]",30,utf8_decode($this->args["param"]),"","","text",300);
+		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]",30,utf8_decode($this->args["param"]),"","","text",300);
 
 		// CSS STYLE
 		$classSelect = '
@@ -422,15 +422,15 @@ class weHyperlinkDialog extends weDialog{
 		$_lang = $this->getLangField("lang",g_l('wysiwyg',"[link_lang]"),145);
 		$_hreflang = $this->getLangField("hreflang",g_l('wysiwyg',"[href_lang]"),145);
 
-		$_title = htmlTextInput("we_dialog_args[title]",30,$this->args["title"],"","","text",300);
+		$_title = we_html_tools::htmlTextInput("we_dialog_args[title]",30,$this->args["title"],"","","text",300);
 
 
-		$_accesskey = htmlFormElementTable(htmlTextInput("we_dialog_args[accesskey]",30,$this->args["accesskey"],"","","text",145),"accesskey");
-		$_tabindex = htmlFormElementTable(htmlTextInput("we_dialog_args[tabindex]",30,$this->args["tabindex"],"",' onkeypress="return IsDigit(event);"',"text",145),"tabindex");
+		$_accesskey = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[accesskey]",30,$this->args["accesskey"],"","","text",145),"accesskey");
+		$_tabindex = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[tabindex]",30,$this->args["tabindex"],"",' onkeypress="return IsDigit(event);"',"text",145),"tabindex");
 
 
-		$_rev = htmlFormElementTable($this->getRevRelSelect("rev"),"rev");
-		$_rel = htmlFormElementTable($this->getRevRelSelect("rel"),"rel");
+		$_rev = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rev"),"rev");
+		$_rel = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rel"),"rel");
 
 
 		$parts = array();
@@ -498,7 +498,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr>
 					<td colspan="2">
-						' . getPixel(110, 10) . '</td>
+						' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr>
 					<td class="defaultgray" valign="top">
@@ -508,7 +508,7 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr>
 					<td colspan="2">
-						' . getPixel(110, 10) . '</td>
+						' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr>
 					<td class="defaultgray" valign="top">
@@ -518,13 +518,13 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 			 	<tr>
 					<td colspan="2">
-						' . getPixel(110, 10) . '</td>
+						' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr>
 					<td class="defaultgray" valign="top">
 						' . g_l('linklistEdit',"[link_target]") . '</td>
 					<td>
-						' . targetBox("we_dialog_args[target]", 29, 300, "we_dialog_args[target]", $this->args["target"], "", 10, 100) . '</td>
+						' . we_html_tools::targetBox("we_dialog_args[target]", 29, 300, "we_dialog_args[target]", $this->args["target"], "", 10, 100) . '</td>
 				</tr>
 			</table>';
 			$parts[] = array("html"=>$table);
@@ -535,11 +535,11 @@ class weHyperlinkDialog extends weDialog{
 					<td class="defaultgray" valign="top" width="100">
 						' . g_l('wysiwyg',"[language]") . '</td>
 					<td>
-						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lang . '</td><td>'.getPixel(10,2).'</td><td>'.$_hreflang.'</td></tr></table></td>
+						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lang . '</td><td>'.we_html_tools::getPixel(10,2).'</td><td>'.$_hreflang.'</td></tr></table></td>
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td colspan="2">
-						' . getPixel(110, 10) . '</td>
+						' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top">
@@ -549,27 +549,27 @@ class weHyperlinkDialog extends weDialog{
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td colspan="2">
-						' . getPixel(110, 5) . '</td>
+						' . we_html_tools::getPixel(110, 5) . '</td>
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top">
 						' . g_l('wysiwyg',"[keyboard]") . '</td>
 					<td>
-						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_accesskey . '</td><td>'.getPixel(10,2).'</td><td>'.$_tabindex.'</td></tr></table></td>
+						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_accesskey . '</td><td>'.we_html_tools::getPixel(10,2).'</td><td>'.$_tabindex.'</td></tr></table></td>
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td colspan="2">
-						' . getPixel(110, 5) . '</td>
+						' . we_html_tools::getPixel(110, 5) . '</td>
 				</tr>
 				<tr'.$show_accessible_class.'>
 					<td class="defaultgray" valign="top">
 						'.g_l('wysiwyg',"[relation]").'</td>
 					<td>
-						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_rel . '</td><td>'.getPixel(10,2).'</td><td>'.$_rev.'</td></tr></table></td>
+						<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_rel . '</td><td>'.we_html_tools::getPixel(10,2).'</td><td>'.$_rev.'</td></tr></table></td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						' . getPixel(110, 10) . '</td>
+						' . we_html_tools::getPixel(110, 10) . '</td>
 				</tr>
 			</table>';
 

@@ -23,15 +23,12 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_widget.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
 //make sure we know which browser is used
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
 
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 $js_load=array('windows','utils/dimension','utils/prototypes','utils/cockpit');
 foreach($js_load as $js){
@@ -1171,13 +1168,13 @@ function getUser(){
 							array(
 								"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 							),
-							(we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? htmlAlertAttentionBox(
+							(we_hasPerm("CHANGE_START_DOCUMENT") && we_hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
 									"<strong>" . g_l('SEEM',"[question_change_startdocument]") . "</strong><br /><br />" . we_button::create_button(
 											"preferences",
 											"javascript:top.we_cmd('openPreferences');"),
 									1,
 									0,
-									false) : htmlAlertAttentionBox(
+									false) : we_html_tools::htmlAlertAttentionBox(
 									"<strong>" . g_l('SEEM',"[start_with_SEEM_no_startdocument]") . "</strong>",
 									1,
 									0,

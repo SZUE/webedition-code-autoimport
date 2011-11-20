@@ -23,8 +23,9 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-htmlTop();
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+
+we_html_tools::htmlTop();
  print STYLESHEET;
  echo we_htmlElement::jsScript(JS_DIR.'windows.js');?>
 <script  type="text/javascript"><!--

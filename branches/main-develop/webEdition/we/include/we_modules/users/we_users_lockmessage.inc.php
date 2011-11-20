@@ -24,11 +24,10 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -48,7 +47,7 @@ top.toggleBusy(0);
     <body class="weDialogBody">
 <?php
 
-	print htmlDialogLayout($content,g_l('alert',"[temporaere_no_access]"));
+	print we_html_tools::htmlDialogLayout($content,g_l('alert',"[temporaere_no_access]"));
 
 	//	For SEEM-Mode
 	if($_SESSION["we_mode"] == "seem"){

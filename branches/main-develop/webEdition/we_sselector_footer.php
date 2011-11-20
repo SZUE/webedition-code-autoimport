@@ -24,13 +24,11 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
@@ -75,7 +73,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 					<td colspan="5"><img src="<?php print IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
 				</tr>
 				<tr>
-					<td colspan="5"><?php print getPixel(5,5); ?></td>
+					<td colspan="5"><?php print we_html_tools::getPixel(5,5); ?></td>
 				</tr>
 <?php
 
@@ -110,7 +108,7 @@ if($_REQUEST["ret"]==1){
 					<td></td>
 				</tr>
 				<tr>
-					<td colspan="5"><?php print getPixel(5,5); ?></td>
+					<td colspan="5"><?php print we_html_tools::getPixel(5,5); ?></td>
 				</tr>
 <?php } ?>
 				<tr>
@@ -119,21 +117,21 @@ if($_REQUEST["ret"]==1){
 						<b><?php if($_REQUEST["filter"] == "folder"){print g_l('fileselector',"[name]");}else{print g_l('fileselector',"[name]");} ?></b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left"><?php print htmlTextInput("fname",24,$_REQUEST["currentName"],"","style=\"width:100%\" readonly=\"readonly\""); ?>
+					<td class="defaultfont" align="left"><?php print we_html_tools::htmlTextInput("fname",24,$_REQUEST["currentName"],"","style=\"width:100%\" readonly=\"readonly\""); ?>
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10"><?php print getPixel(10,5); ?></td>
-					<td width="70"><?php print getPixel(70,5); ?></td>
-					<td width="10"><?php print getPixel(10,5); ?></td>
-					<td><?php print getPixel(5,5); ?></td>
-					<td width="10"><?php print getPixel(10,5); ?></td>
+					<td width="10"><?php print we_html_tools::getPixel(10,5); ?></td>
+					<td width="70"><?php print we_html_tools::getPixel(70,5); ?></td>
+					<td width="10"><?php print we_html_tools::getPixel(10,5); ?></td>
+					<td><?php print we_html_tools::getPixel(5,5); ?></td>
+					<td width="10"><?php print we_html_tools::getPixel(10,5); ?></td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right"><?php print $buttons; ?></td>
-					<td width="10"><?php print getPixel(10,5); ?></td>
+					<td width="10"><?php print we_html_tools::getPixel(10,5); ?></td>
 				</tr>
 			</table>
       </form>

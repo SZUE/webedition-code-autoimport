@@ -24,9 +24,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
 
@@ -41,10 +38,10 @@ if ( ($resultD > 0) && (!empty($resultO)) ){  //docs and objects
 	$prefshop2 = we_button::create_button("quick_rev", "javascript:top.content.shop_properties.location='we/include/we_modules/shop/edit_shop_editorFramesetTop.php?typ=document '", true);
 }
 
-$content = $prefshop.getPixel(2,14);
-$content .= $prefshop1.getPixel(2,14);
+$content = $prefshop.we_html_tools::getPixel(2,14);
+$content .= $prefshop1.we_html_tools::getPixel(2,14);
 if(isset($prefshop2)) {
-	$content .= $prefshop2.getPixel(2,14);
+	$content .= $prefshop2.we_html_tools::getPixel(2,14);
 }
 
 $modimage = "shop.gif";

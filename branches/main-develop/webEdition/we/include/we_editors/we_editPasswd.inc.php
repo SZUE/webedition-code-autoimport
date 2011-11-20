@@ -24,12 +24,10 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop(g_l('global','[changePass]'));
+we_html_tools::htmlTop(g_l('global','[changePass]'));
 
 if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 	print STYLESHEET;
@@ -48,9 +46,9 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 		<center>
 			<form target="passwdload" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
-					$oldpass =  htmlTextInput("oldpasswd",20,"","32","","password",200);
-					$newpass = htmlTextInput("newpasswd",20,"","32","","password",200);
-					$newpass2 = htmlTextInput("newpasswd2",20,"","32","","password",200);
+					$oldpass =  we_html_tools::htmlTextInput("oldpasswd",20,"","32","","password",200);
+					$newpass = we_html_tools::htmlTextInput("newpasswd",20,"","32","","password",200);
+					$newpass2 = we_html_tools::htmlTextInput("newpasswd2",20,"","32","","password",200);
 
 					$okbut     = we_button::create_button("save", "javascript:document.forms[0].submit();");
 					$cancelbut = we_button::create_button("cancel", "javascript:top.close();");
@@ -67,7 +65,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 							</tr>
 							<tr>
 								<td>
-									' . getPixel(2,5) . '</td>
+									' . we_html_tools::getPixel(2,5) . '</td>
 							</tr>
 							<tr>
 								<td class="defaultfont">
@@ -79,7 +77,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 							</tr>
 							<tr>
 								<td>
-									' . getPixel(2,5) . '</td>
+									' . we_html_tools::getPixel(2,5) . '</td>
 							</tr>
 							<tr>
 								<td class="defaultfont">
@@ -96,7 +94,7 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 																	null,
 																	$cancelbut);
 
-					$frame = htmlDialogLayout($content, g_l('global','[changePass]'), $_buttons);
+					$frame = we_html_tools::htmlDialogLayout($content, g_l('global','[changePass]'), $_buttons);
 					print $frame;
 					print '	<input type="hidden" name="cmd" value="ok" />
 							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST["we_cmd"][0] . '" />

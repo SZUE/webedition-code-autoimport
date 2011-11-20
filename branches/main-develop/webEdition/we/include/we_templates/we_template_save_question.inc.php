@@ -24,9 +24,8 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 protect();
-htmlTop(g_l('global','[question]'));
+we_html_tools::htmlTop(g_l('global','[question]'));
 
 $_we_cmd6 = "";
 if (isset($_REQUEST["we_cmd"][6])) {
@@ -80,7 +79,7 @@ self.focus();
 <?php print STYLESHEET; ?>
 	</head>
 	<body class="weEditorBody" onBlur="self.focus()">
-	  <?php print htmlYesNoCancelDialog($alerttext,IMAGE_DIR."alert.gif",true,true,true,"pressed_yes_button()","pressed_no_button()","pressed_cancel_button()"); ?>
+	  <?php print we_html_tools::htmlYesNoCancelDialog($alerttext,IMAGE_DIR."alert.gif",true,true,true,"pressed_yes_button()","pressed_no_button()","pressed_cancel_button()"); ?>
 	</body>
 
 </html>

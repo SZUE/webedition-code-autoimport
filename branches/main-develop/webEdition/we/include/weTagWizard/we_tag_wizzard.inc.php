@@ -113,7 +113,7 @@ if($typeAttribute = $weTag->getTypeAttribute()){
 }
 // additional javascript for the individual tags - end
 // print html header of page
-print htmlTop();
+print we_html_tools::htmlTop();
 print STYLESHEET;
 print we_htmlElement::cssLink(CSS_DIR . 'tagWizard.css').
 	we_htmlElement::jsScript(JS_DIR.'windows.js').

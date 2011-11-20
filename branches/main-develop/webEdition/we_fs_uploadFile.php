@@ -24,15 +24,11 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 protect();
 
-htmlTop(g_l('newFile',"[import_File_from_hd_title]"));
+we_html_tools::htmlTop(g_l('newFile',"[import_File_from_hd_title]"));
 $parts = array();
 
 print STYLESHEET;
@@ -191,8 +187,8 @@ if($we_ContentType == "image/*"){
 
 	array_push($parts,array("headline"=>"","html"=>we_forms::checkbox("1", true, "import_metadata", g_l('metadata',"[import_metadata_at_upload]")),"space"=>0));
 	array_push($parts,array("headline"=>"","html"=>g_l('thumbnails',"[create_thumbnails]")."<br>".$_thumbnails->getHtmlCode(),"space"=>0));
-	array_push($parts,array("headline"=>"","html"=>g_l('global',"[title]")."<br>".htmlTextInput("img_title",24,"","","","text",330),"space"=>0));
-	array_push($parts,array("headline"=>"","html"=>g_l('weClass',"[alt]")."<br>".htmlTextInput("img_alt",24,"","","","text",330),"space"=>0));
+	array_push($parts,array("headline"=>"","html"=>g_l('global',"[title]")."<br>".we_html_tools::htmlTextInput("img_title",24,"","","","text",330),"space"=>0));
+	array_push($parts,array("headline"=>"","html"=>g_l('weClass',"[alt]")."<br>".we_html_tools::htmlTextInput("img_alt",24,"","","","text",330),"space"=>0));
 }
 
 

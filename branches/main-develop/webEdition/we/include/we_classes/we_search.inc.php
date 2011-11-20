@@ -340,7 +340,7 @@ class we_search extends DB_WE{
 		}
 
 		$out .=		'</td>'
-				.	'<td>'.getPixel(10,2).'</td>'
+				.	'<td>'.we_html_tools::getPixel(10,2).'</td>'
 				.	'<td class="defaultfont"><b>'.(($we_search_anzahl)?$this->searchstart+1:0).'-';
 
 		if( ($we_search_anzahl-$this->searchstart) < $this->anzahl){
@@ -350,7 +350,7 @@ class we_search extends DB_WE{
 		}
 
 		$out .= 	' '.g_l('global',"[from]").' '.$we_search_anzahl.'</b></td>'
-				.	'<td>'.getPixel(10,2).'</td>'
+				.	'<td>'.we_html_tools::getPixel(10,2).'</td>'
 				.	'<td>';
 
 		if(($this->searchstart+$this->anzahl) < $we_search_anzahl){
@@ -359,7 +359,7 @@ class we_search extends DB_WE{
 			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
 		$out .= 	'</td>'
-				.	'<td>'.getPixel(10,2).'</td>'
+				.	'<td>'.we_html_tools::getPixel(10,2).'</td>'
 				.	'<td>';
 
 		$pages = array();
@@ -369,10 +369,10 @@ class we_search extends DB_WE{
 
 		$page = ceil($this->searchstart / $this->anzahl) * $this->anzahl;
 
-		$select = htmlSelect("page", $pages, 1, $page, false, "onChange=\"this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');\"");
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, "onChange=\"this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');\"");
 		if(!defined("SearchStart")) {
 			define("SearchStart", true);
-			$out .= hidden("SearchStart", $this->searchstart);
+			$out .= we_html_tools::hidden("SearchStart", $this->searchstart);
 		}
 
 		$out .= $select;

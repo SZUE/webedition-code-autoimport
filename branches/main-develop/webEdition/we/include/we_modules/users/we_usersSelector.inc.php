@@ -254,7 +254,7 @@ function selectFile(id){
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
 		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
@@ -269,21 +269,21 @@ function selectFile(id){
 						<b>'.g_l('fileselector',"[name]").'</b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
+					<td class="defaultfont" align="left">'.we_html_tools::htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td width="70">'.getPixel(70,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td>'.getPixel(5,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td width="70">'.we_html_tools::getPixel(70,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td>'.we_html_tools::getPixel(5,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right">'.$buttons.'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table>';
 	}

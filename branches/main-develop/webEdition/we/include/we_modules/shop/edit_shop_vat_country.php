@@ -33,7 +33,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_c
 require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -105,7 +105,7 @@ $parts = array();
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[vat_country][defaultReturn_desc]'), 2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][defaultReturn_desc]'), 2,600),
 			'space' => 0
 		)
 	);
@@ -121,7 +121,7 @@ $parts = array();
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[vat_country][stateField_desc]'), 2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][stateField_desc]'), 2,600),
 			'space' => 0
 		)
 	);
@@ -139,7 +139,7 @@ $parts = array();
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesLiableToVat_desc]'),2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesLiableToVat_desc]'),2,600),
 			'space' => 0
 		)
 	);
@@ -156,7 +156,7 @@ $parts = array();
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesNotLiableToVat_desc]'),2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesNotLiableToVat_desc]'),2,600),
 			'space' => 0
 		)
 	);
@@ -180,7 +180,7 @@ $parts = array();
 		)
 	);
 	array_push($parts, array(
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesSpecialRules_desc]'),2,600),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[vat_country][statesSpecialRules_desc]'),2,600),
 			'space' => 0,
 			'noline' => 1
 		)

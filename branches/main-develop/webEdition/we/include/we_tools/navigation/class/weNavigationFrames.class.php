@@ -209,7 +209,7 @@ class weNavigationFrames extends weToolFrames
 			"width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 		), 3, 1);
 
-		$table->setCol(0, 0, array(), getPixel(1, 3));
+		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
 		$table->setCol(
 				1,
@@ -217,7 +217,7 @@ class weNavigationFrames extends weToolFrames
 				array(
 					"valign" => "top", "class" => "small"
 				),
-				getPixel(15, 2) . we_htmlElement::htmlB(
+				we_html_tools::getPixel(15, 2) . we_htmlElement::htmlB(
 						($this->Model->IsFolder ? g_l('navigation','[group]') :g_l('navigation','[entry]')) . ':&nbsp;' . str_replace(
 								'&amp;',
 								'&',
@@ -243,11 +243,11 @@ class weNavigationFrames extends weToolFrames
 						"onload" => "setFrameSize()",
 						"onresize" => "setFrameSize()"
 				),
-				'<div id="main" >' . getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_htmlElement::htmlB(
+				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_htmlElement::htmlB(
 						($this->Model->IsFolder ? g_l('navigation','[group]') :g_l('navigation','[entry]')) . ':&nbsp;' . str_replace(
 								'&amp;',
 								'&',
-								$this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . getPixel(
+								$this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
 						100,
 						3) . $we_tabs->getHTML() . '</div>' . we_htmlElement::jsElement($extraJS))//			$js.
 		//			$table->getHtmlCode() .
@@ -281,7 +281,7 @@ class weNavigationFrames extends weToolFrames
 		$_table->setColContent(
 				0,
 				1,
-				htmlTextInput(
+				we_html_tools::htmlTextInput(
 						'Ordn',
 						'',
 						($this->Model->Ordn + 1),
@@ -346,8 +346,8 @@ class weNavigationFrames extends weToolFrames
 						'html' => we_htmlElement::htmlHidden(
 								array(
 									'name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0)
-								)) . htmlFormElementTable(
-								htmlTextInput(
+								)) . we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
 										'Text',
 										'',
 										strtr(
@@ -355,8 +355,8 @@ class weNavigationFrames extends weToolFrames
 												array_flip(get_html_translation_table(HTML_SPECIALCHARS))),
 										'',
 										'style="width: ' . $this->_width_size . '" onChange="' . $this->topFrame . '.mark();"'),
-								g_l('navigation','[name]')) . htmlFormElementTable(
-								htmlTextInput(
+								g_l('navigation','[name]')) . we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
 										'Display',
 										'',
 										$this->Model->Display,
@@ -406,7 +406,7 @@ class weNavigationFrames extends weToolFrames
 								'opener.' . $this->topFrame . '.mark()',
 								'image/*',
 								false,
-								true) . getPixel($this->_width_size, 10) . '<table><tr><td>' . we_multiIconBox::getJS() . we_multiIconBox::_getButton(
+								true) . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_multiIconBox::getJS() . we_multiIconBox::_getButton(
 								$uniqname,
 								"weToggleBox('$uniqname','" . addslashes(g_l('navigation','[icon_properties_out]')) . "','" . addslashes(
 										g_l('navigation','[icon_properties]')) . "')",
@@ -469,7 +469,7 @@ class weNavigationFrames extends weToolFrames
 				'SortCount',
 				(isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) . '
 			<div style="display: block;">
-			' . htmlSelect(
+			' . we_html_tools::htmlSelect(
 				'Selection',
 				array(
 					'dynamic' => g_l('navigation','[dyn_selection]'), 'static' => g_l('navigation','[stat_selection]')
@@ -479,7 +479,7 @@ class weNavigationFrames extends weToolFrames
 				false,
 				'onChange="closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');' . $this->topFrame . '.mark();setCustomerFilter(this);"',
 				'value',
-				$this->_width_size) . '<br />' . htmlSelect(
+				$this->_width_size) . '<br />' . we_html_tools::htmlSelect(
 				'SelectionType',
 				$_seltype,
 				1,
@@ -502,8 +502,8 @@ class weNavigationFrames extends weToolFrames
 				' . $this->getHTMLLink() . '
 				</div>
 				<div style="margin-top:' . $this->_margin_top . ';">
-				' . htmlFormElementTable(
-				htmlTextInput(
+				' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'Parameter',
 						58,
 						$this->Model->Parameter,
@@ -587,7 +587,7 @@ class weNavigationFrames extends weToolFrames
 
 		$_selection = '
 		<div style="display: block;">
-		' . htmlSelect(
+		' . we_html_tools::htmlSelect(
 				'FolderSelection',
 				$_seltype,
 				1,
@@ -601,7 +601,7 @@ class weNavigationFrames extends weToolFrames
 
 		</div>
 		<div id="folderUrlDiv" style="display: ' . ($this->Model->FolderSelection == 'urlLink' ? 'block' : 'none') . '; margin-top:' . $this->_margin_top . '">
-			' . htmlTextInput(
+			' . we_html_tools::htmlTextInput(
 				'FolderUrl',
 				58,
 				$this->Model->FolderUrl,
@@ -611,8 +611,8 @@ class weNavigationFrames extends weToolFrames
 				$this->_width_size,
 				0) . '
 		</div>
-		' . $this->getHTMLWorkspace('object', 0, 'FolderWsID') . htmlFormElementTable(
-				htmlTextInput(
+		' . $this->getHTMLWorkspace('object', 0, 'FolderWsID') . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'FolderParameter',
 						58,
 						$this->Model->FolderParameter,
@@ -645,7 +645,7 @@ class weNavigationFrames extends weToolFrames
 					array(
 
 							'headline' => g_l('navigation','[charset]'),
-							'html' => htmlAlertAttentionBox(g_l('navigation','[charset_desc]'), 2, $this->_width_size) . $this->getHTMLCharsetTable(),
+							'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation','[charset_desc]'), 2, $this->_width_size) . $this->getHTMLCharsetTable(),
 							'space' => $this->_space_size,
 							'noline' => 1
 					));
@@ -672,7 +672,7 @@ class weNavigationFrames extends weToolFrames
 
 						'headline' => g_l('weClass',"[copyFolder]"),
 						'html' => "<script type='text/javascript'>\nvar selfNaviPath ='" . addslashes(
-								$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';\n</script>\n" . "<div style='float:left; margin-right:20px'>" . htmlAlertAttentionBox(
+								$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';\n</script>\n" . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
 								g_l('weClass',"[copy_owners_expl]") . $_disabledNote,
 								2,
 								($this->_width_size - 120),
@@ -825,7 +825,7 @@ class weNavigationFrames extends weToolFrames
 		$_sortVal = isset($this->Model->Sort[0]['field']) ? $this->Model->Sort[0]['field'] : "";
 		$_sortOrder = isset($this->Model->Sort[0]['order']) ? $this->Model->Sort[0]['order'] : "ASC";
 
-		$_sortSelect = htmlSelect(
+		$_sortSelect = we_html_tools::htmlSelect(
 				"SortOrder",
 				array(
 					"ASC" => g_l('navigation','[ascending]'), "DESC" => g_l('navigation','[descending]')
@@ -844,8 +844,8 @@ class weNavigationFrames extends weToolFrames
 		') . '
 		<div style="display: block;">
 			<div id="doctype" style="' . ($this->Model->SelectionType == 'doctype' ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . '">
-				' . htmlFormElementTable(
-				htmlSelect(
+				' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlSelect(
 						'DocTypeID',
 						$docTypes,
 						1,
@@ -857,8 +857,8 @@ class weNavigationFrames extends weToolFrames
 				g_l('navigation','[doctype]')) . '
 			</div>
 			<div id="classname" style="' . ($this->Model->SelectionType == 'classname' ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . ';margin-top:' . $this->_margin_top . ';">
-				' . (defined('OBJECT_TABLE') ? htmlFormElementTable(
-				htmlSelect(
+				' . (defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlSelect(
 						'ClassID',
 						$classNames,
 						1,
@@ -895,8 +895,8 @@ class weNavigationFrames extends weToolFrames
 			' . $this->getHTMLLink('dynamic_') . '
 			</div>
 			<div style="width: ' . $this->_width_size . ';margin-top: ' . $this->_margin_top . ';">
-			' . htmlFormElementTable(
-				htmlTextInput(
+			' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'dynamic_Parameter',
 						58,
 						$this->Model->Parameter,
@@ -938,7 +938,7 @@ class weNavigationFrames extends weToolFrames
 		}
 
 		$rootDirID = 0;
-		
+
 		//javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','','" . session_id() . "','$rootDirID',''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['LinkID'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['LinkPath'].value");
@@ -1018,7 +1018,7 @@ class weNavigationFrames extends weToolFrames
 				(isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) . '
 			<div style="display: block;">
 				<div style="display:block;">
-				' . htmlSelect(
+				' . we_html_tools::htmlSelect(
 				'Selection',
 				array(
 					'nodynamic' => g_l('navigation','[no_dyn_content]'),
@@ -1032,7 +1032,7 @@ class weNavigationFrames extends weToolFrames
 				$this->_width_size) . '
 				</div>
 				<div id="dynamic" style="' . ($this->Model->Selection == 'dynamic' ? 'display: block;' : 'display: none;') . ';margin-top:' . $this->_margin_top . '">
-				' . htmlSelect(
+				' . we_html_tools::htmlSelect(
 				'SelectionType',
 				$_seltype,
 				1,
@@ -1183,7 +1183,7 @@ class weNavigationFrames extends weToolFrames
 		$parts[] = array(
 
 				'headline' => g_l('navigation','[entries]'),
-				'html' => htmlSelect(
+				'html' => we_html_tools::htmlSelect(
 						'dynContent',
 						$this->View->getItems($this->Model->ID),
 						20,
@@ -1266,7 +1266,7 @@ class weNavigationFrames extends weToolFrames
 					}
 				') . $this->View->getCommonHiddens(array(
 			'pnt' => 'preview', 'tabnr' => 'preview'
-		)) . htmlDialogLayout($out, g_l('navigation','[preview]'));
+		)) . we_html_tools::htmlDialogLayout($out, g_l('navigation','[preview]'));
 	}
 
 	function getHTMLEditorPreviewIframe()
@@ -1457,8 +1457,8 @@ function onFolderSelectionChangeJS(elem) {
 		$_button = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled, false, "_$name");
 		if ($extraField == "") {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
-			return htmlFormElementTable(
-					hidden($name, $value) . $this->htmlTextInput(
+			return we_html_tools::htmlFormElementTable(
+					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
 							"__" . $name,
 							58,
 							$showValue,
@@ -1471,12 +1471,12 @@ function onFolderSelectionChangeJS(elem) {
 					'left',
 					'defaultfont',
 					'',
-					getPixel(20, 4),
+					we_html_tools::getPixel(20, 4),
 					$_button);
 		} else {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
-			return htmlFormElementTable(
-					hidden($name, $value) . $this->htmlTextInput(
+			return we_html_tools::htmlFormElementTable(
+					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
 							"__" . $name,
 							58,
 							$showValue,
@@ -1489,9 +1489,9 @@ function onFolderSelectionChangeJS(elem) {
 					'left',
 					'defaultfont',
 					'',
-					getPixel(20, 4),
+					we_html_tools::getPixel(20, 4),
 					$extraField,
-					getPixel(10, 4),
+					we_html_tools::getPixel(10, 4),
 					$_button);
 		}
 
@@ -1562,7 +1562,7 @@ function onFolderSelectionChangeJS(elem) {
 			$_button = we_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled);
 		}
 
-		//$_input  = htmlTextInput($PathName,58,$_path,'','id="yuiAcInput'.$PathName.'"','text',($this->_width_size-$_width),0);
+		//$_input  = we_html_tools::htmlTextInput($PathName,58,$_path,'','id="yuiAcInput'.$PathName.'"','text',($this->_width_size-$_width),0);
 		$_result = we_htmlElement::htmlHidden(
 				array(
 					'name' => $IDName, 'value' => $IDValue, 'id' => 'yuiAcResult' . $PathName
@@ -1586,15 +1586,15 @@ function onFolderSelectionChangeJS(elem) {
 		if (isset($weAcSelector)) {
 			return $weAcSelector;
 		} else {
-			return htmlFormElementTable(
-					htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', ($this->_width_size - $_width), 0),
+			return we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', ($this->_width_size - $_width), 0),
 					$title,
 					'left',
 					'defaultfont',
 					we_htmlElement::htmlHidden(array(
 						'name' => $IDName, 'value' => $IDValue
 					)),
-					getPixel(20, 4),
+					we_html_tools::getPixel(20, 4),
 					$_button);
 		}
 
@@ -1650,7 +1650,7 @@ function onFolderSelectionChangeJS(elem) {
 				5,
 				1);
 
-		$table->setColContent(0, 0, getPixel(5, 5));
+		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
 		$table->setCol(1, 0, array(
 			'class' => 'defaultfont'
 		), g_l('navigation','[categories]'));
@@ -1665,7 +1665,7 @@ function onFolderSelectionChangeJS(elem) {
 								'style' => 'width: ' . ($this->_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
 						)));
 
-		$table->setColContent(3, 0, getPixel(5, 5));
+		$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
 
 		$table->setCol(
 				4,
@@ -1787,7 +1787,7 @@ function onFolderSelectionChangeJS(elem) {
 		$_parts[] = array(
 
 				'headline' => '',
-				'html' => htmlSelect(
+				'html' => we_html_tools::htmlSelect(
 						'fields',
 						$__fields,
 						20,
@@ -1841,8 +1841,8 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLCount()
 	{
-		$_code = '<div style="width: ' . $this->_width_size . '; margin-top: ' . $this->_margin_top . '">' . htmlFormElementTable(
-				htmlTextInput(
+		$_code = '<div style="width: ' . $this->_width_size . '; margin-top: ' . $this->_margin_top . '">' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'ShowCount',
 						30,
 						$this->Model->ShowCount,
@@ -1877,15 +1877,15 @@ function onFolderSelectionChangeJS(elem) {
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3= we_cmd_enc("opener." . $this->topFrame . ".mark();");
 		$_button_obj = defined('OBJECT_TABLE') ? we_button::create_button(
-				'select', 
-				"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "',objectDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", 
-				true, 
-				100, 
-				22, 
-				"", 
-				"", 
-				($_countClasses ? false : true), 
-				false, 
+				'select',
+				"javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "',objectDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])",
+				true,
+				100,
+				22,
+				"",
+				"",
+				($_countClasses ? false : true),
+				false,
 				"_XFolder") : '';
 
 		$_button_cat = we_button::create_button(
@@ -1959,7 +1959,7 @@ function onFolderSelectionChangeJS(elem) {
 		$_parts[] = array(
 
 				'headline' => '',
-				'html' => htmlFormElementTable(
+				'html' => we_html_tools::htmlFormElementTable(
 						$_select->getHtmlCode(),
 						$this->Model->SelectionType == 'category' ? g_l('navigation','[categories]') : ($this->Model->SelectionType == 'classname' ? g_l('navigation','[objects]') : g_l('navigation','[documents]'))),
 				'space' => 0
@@ -2006,8 +2006,8 @@ function onFolderSelectionChangeJS(elem) {
 					$_wsid = weDynList::getWorkspacesForClass($defClassID);
 				}
 
-			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == 'dynamic') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . htmlFormElementTable(
-					htmlSelect(
+			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == 'dynamic') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlSelect(
 							'WorkspaceIDClass',
 							$_wsid,
 							1,
@@ -2024,8 +2024,8 @@ function onFolderSelectionChangeJS(elem) {
 					$_wsid = weDynList::getWorkspacesForObject($this->Model->LinkID);
 				}
 
-				return '<div id="objLinkWorkspace" style="display: ' . (($this->Model->SelectionType == 'objLink' && ($this->Model->WorkspaceID > -1)) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . htmlFormElementTable(
-						htmlSelect(
+				return '<div id="objLinkWorkspace" style="display: ' . (($this->Model->SelectionType == 'objLink' && ($this->Model->WorkspaceID > -1)) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlSelect(
 								'WorkspaceID',
 								$_wsid,
 								1,
@@ -2039,8 +2039,8 @@ function onFolderSelectionChangeJS(elem) {
 					$_wsid = weDynList::getWorkspacesForObject($this->Model->LinkID);
 				}
 
-				return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->FolderSelection == 'objLink' && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . htmlFormElementTable(
-						htmlSelect(
+				return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->FolderSelection == 'objLink' && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlSelect(
 								'FolderWsID',
 								$_wsid,
 								1,
@@ -2059,9 +2059,9 @@ function onFolderSelectionChangeJS(elem) {
 		//javascript:we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['" . $prefix . "UrlID'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['" . $prefix . "UrlIDPath'].value");
-		$wecmdenc3= we_cmd_enc("opener." . $this->topFrame . ".mark()");	
+		$wecmdenc3= we_cmd_enc("opener." . $this->topFrame . ".mark()");
 		$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "',0,'text/webedition'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
-		
+
 		$_path = id_to_path($this->Model->UrlID);
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -2092,8 +2092,8 @@ function onFolderSelectionChangeJS(elem) {
 						}
 
 					}
-				') . '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == 'catLink' || $this->Model->SelectionType == 'category') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . htmlFormElementTable(
-				htmlSelect(
+				') . '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == 'catLink' || $this->Model->SelectionType == 'category') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlSelect(
 						$prefix . 'LinkSelection',
 						array(
 							'intern' => g_l('navigation','[intern]'),
@@ -2108,7 +2108,7 @@ function onFolderSelectionChangeJS(elem) {
 				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection == 'intern' && $this->Model->SelectionType != 'urlLink') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">
 				' . $weAcSelector . '
 				</div>
-				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection == 'extern' || $this->Model->SelectionType == 'urlLink') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . htmlTextInput(
+				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection == 'extern' || $this->Model->SelectionType == 'urlLink') ? 'block' : 'none') . ';margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlTextInput(
 				$prefix . 'Url',
 				58,
 				$this->Model->Url,
@@ -2116,8 +2116,8 @@ function onFolderSelectionChangeJS(elem) {
 				'onchange="' . $this->topFrame . '.mark();"',
 				'text',
 				$this->_width_size) . '</div>
-				<div style="margin-top: ' . $this->_margin_top . ';">' . htmlFormElementTable(
-				htmlTextInput(
+				<div style="margin-top: ' . $this->_margin_top . ';">' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						$prefix . 'CatParameter',
 						58,
 						$this->Model->CatParameter,
@@ -2144,13 +2144,13 @@ function onFolderSelectionChangeJS(elem) {
 		$table = new we_htmlTable(array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 		), 1, 3);
-		$table->setCol(0, 0, null, htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
-		$table->setCol(0, 1, null, getPixel(2, 10, 0));
+		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
+		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
 		$table->setCol(
 				0,
 				2,
 				null,
-				htmlSelect(
+				we_html_tools::htmlSelect(
 						"CharsetSelect",
 						$charsets,
 						1,
@@ -2167,7 +2167,7 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getLangField($name, $value, $title, $width)
 	{
-		$input = htmlTextInput(
+		$input = we_html_tools::htmlTextInput(
 				"Attributes[$name]",
 				15,
 				$value,
@@ -2186,12 +2186,12 @@ function onFolderSelectionChangeJS(elem) {
 						<option value="nl">nl</option>
 						<option value="pl">pl</option>
 					</select>';
-		return htmlFormElementTable($input, $title, "left", "defaultfont", $select);
+		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
 	function getRevRelSelect($type, $value, $title)
 	{
-		$input = htmlTextInput(
+		$input = we_html_tools::htmlTextInput(
 				"Attributes[$type]",
 				15,
 				$value,
@@ -2218,7 +2218,7 @@ function onFolderSelectionChangeJS(elem) {
 		<option>nofollow</option>
 		</select>
 		';
-		return htmlFormElementTable($input, $title, "left", "defaultfont", $select);
+		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
 	function getHTMLAttributes()
@@ -2228,13 +2228,13 @@ function onFolderSelectionChangeJS(elem) {
 		$_parts[] = array(
 
 				'headline' => '',
-				'html' => htmlAlertAttentionBox(g_l('navigation','[linkprops_desc]'), 2, $this->_width_size),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation','[linkprops_desc]'), 2, $this->_width_size),
 				'space' => $this->_space_size,
 				'noline' => 1
 		);
 
-		$_title = htmlFormElementTable(
-				htmlTextInput(
+		$_title = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'Attributes[title]',
 						30,
 						$this->Model->getAttribute('title'),
@@ -2244,8 +2244,8 @@ function onFolderSelectionChangeJS(elem) {
 						$this->_width_size),
 				g_l('navigation','[title]'));
 
-		$_anchor = htmlFormElementTable(
-				htmlTextInput(
+		$_anchor = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'Attributes[anchor]',
 						30,
 						$this->Model->getAttribute('anchor'),
@@ -2261,8 +2261,8 @@ function onFolderSelectionChangeJS(elem) {
 						$this->topFrame . '.mark();"'),
 				g_l('navigation','[anchor]'));
 
-		$_target = htmlFormElementTable(
-				targetBox(
+		$_target = we_html_tools::htmlFormElementTable(
+				we_html_tools::targetBox(
 						'Attributes[target]',
 						30,
 						($this->_width_size - 100),
@@ -2273,8 +2273,8 @@ function onFolderSelectionChangeJS(elem) {
 						100),
 				g_l('navigation','[target]'));
 
-		$_link = htmlFormElementTable(
-				htmlTextInput(
+		$_link = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'Attributes[link_attribute]',
 						30,
 						$this->Model->getAttribute('link_attribute'),
@@ -2311,8 +2311,8 @@ function onFolderSelectionChangeJS(elem) {
 				'noline' => 1
 		);
 
-		$_accesskey = htmlFormElementTable(
-				htmlTextInput(
+		$_accesskey = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'Attributes[accesskey]',
 						30,
 						$this->Model->getAttribute('accesskey'),
@@ -2322,8 +2322,8 @@ function onFolderSelectionChangeJS(elem) {
 						$this->_width_size),
 				g_l('navigation','[accesskey]'));
 
-		$_tabindex = htmlFormElementTable(
-				htmlTextInput(
+		$_tabindex = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						'Attributes[tabindex]',
 						30,
 						$this->Model->getAttribute('tabindex'),
@@ -2389,8 +2389,8 @@ function onFolderSelectionChangeJS(elem) {
 				1,
 				0,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[popup_xposition]',
 								5,
 								$this->Model->getAttribute('popup_xposition'),
@@ -2403,8 +2403,8 @@ function onFolderSelectionChangeJS(elem) {
 				1,
 				1,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[popup_yposition]',
 								5,
 								$this->Model->getAttribute('popup_yposition'),
@@ -2417,8 +2417,8 @@ function onFolderSelectionChangeJS(elem) {
 				1,
 				2,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[popup_width]',
 								5,
 								$this->Model->getAttribute('popup_width'),
@@ -2432,8 +2432,8 @@ function onFolderSelectionChangeJS(elem) {
 				1,
 				3,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[popup_height]',
 								5,
 								$this->Model->getAttribute('popup_height'),
@@ -2545,8 +2545,8 @@ function onFolderSelectionChangeJS(elem) {
 				0,
 				0,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_width]',
 								5,
 								$this->Model->getAttribute('icon_width'),
@@ -2559,8 +2559,8 @@ function onFolderSelectionChangeJS(elem) {
 				0,
 				1,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_height]',
 								5,
 								$this->Model->getAttribute('icon_height'),
@@ -2573,8 +2573,8 @@ function onFolderSelectionChangeJS(elem) {
 				0,
 				2,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_border]',
 								5,
 								$this->Model->getAttribute('icon_border'),
@@ -2587,8 +2587,8 @@ function onFolderSelectionChangeJS(elem) {
 				0,
 				3,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_hspace]',
 								5,
 								$this->Model->getAttribute('icon_hspace'),
@@ -2601,8 +2601,8 @@ function onFolderSelectionChangeJS(elem) {
 				0,
 				4,
 				array(),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_vspace]',
 								5,
 								$this->Model->getAttribute('icon_vspace'),
@@ -2617,8 +2617,8 @@ function onFolderSelectionChangeJS(elem) {
 				array(
 					'colspan' => '5'
 				),
-				htmlFormElementTable(
-						htmlSelect(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlSelect(
 								'Attributes[icon_align]',
 								array(
 
@@ -2644,8 +2644,8 @@ function onFolderSelectionChangeJS(elem) {
 				array(
 					'colspan' => '5'
 				),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_alt]',
 								5,
 								$this->Model->getAttribute('icon_alt'),
@@ -2660,8 +2660,8 @@ function onFolderSelectionChangeJS(elem) {
 				array(
 					'colspan' => '5'
 				),
-				htmlFormElementTable(
-						htmlTextInput(
+			we_html_tools::htmlFormElementTable(
+						we_html_tools::htmlTextInput(
 								'Attributes[icon_title]',
 								5,
 								$this->Model->getAttribute('icon_title'),
@@ -2718,7 +2718,7 @@ function onFolderSelectionChangeJS(elem) {
 		), 1, 1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
-		), getPixel(1600, 10));
+		), we_html_tools::getPixel(1600, 10));
 
 		$table2 = new we_htmlTable(array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"

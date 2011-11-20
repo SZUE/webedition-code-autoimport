@@ -90,9 +90,9 @@ class weLangDialog extends weDialog{
 ';
 
 		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")) {
-			$table .=  hidden("weSaveToGlossary", 0);
-			$table .=  hidden("language", isset($_REQUEST['language']) ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
-			$table .=  hidden("text", "");
+			$table .=  we_html_tools::hidden("weSaveToGlossary", 0);
+			$table .=  we_html_tools::hidden("language", isset($_REQUEST['language']) ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
+			$table .=  we_html_tools::hidden("text", "");
 		}
 
 		return $table;

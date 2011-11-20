@@ -24,14 +24,12 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
 if(!we_hasPerm("BROWSE_SERVER")) exit();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -71,7 +69,7 @@ $content='<textarea name="editFile" id="editFile" style="width:540px;height:380p
 		ta.style.width=document.body.offsetWidth-60;
 		ta.style.height=document.body.offsetHeight-118;
 	}
-<?php if(isset($we_alerttext)){ 
+<?php if(isset($we_alerttext)){
 	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR); ?>
 self.close();
 <?php } ?>
@@ -86,7 +84,7 @@ self.focus();
 <body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
 <form method="post">
    <input type="hidden" name="cmd" value="save" />
-   <?php print htmlDialogLayout($content,g_l('global','[edit_file]').": <span class=\"weMultiIconBoxHeadline\">".ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons)."</span>"; ?>
+   <?php print we_html_tools::htmlDialogLayout($content,g_l('global','[edit_file]').": <span class=\"weMultiIconBoxHeadline\">".ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons)."</span>"; ?>
 </form></center>
 </body>
 </html>

@@ -275,7 +275,7 @@ class we_import_files
 		$button = we_button::create_button(
 				"select",
 				"javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','','0')");
-		$content = hidden('we_cmd[0]', 'import_files') . hidden('cmd', 'content') . hidden('step', '2'); // fix for categories require reload!
+		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2'); // fix for categories require reload!
 		$content .= we_htmlElement::htmlHidden(array(
 			'name' => 'categories', 'value' => ''
 		));
@@ -302,8 +302,8 @@ class we_import_files
 						"space" => 150
 				));
 
-		$content = htmlAlertAttentionBox(g_l('importFiles',"[sameName_expl]"), 2, 380);
-		$content .= getPixel(200, 10);
+		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles',"[sameName_expl]"), 2, 380);
+		$content .= we_html_tools::getPixel(200, 10);
 		$content .= we_forms::radiobutton(
 				"overwrite",
 				($this->sameName == "overwrite"),
@@ -361,7 +361,7 @@ class we_import_files
 
 			if (we_image_edit::gd_version() > 0) {
 				$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
-				$Thselect = g_l('importFiles',"[thumbnails]") . "<br>" . getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
+				$Thselect = g_l('importFiles',"[thumbnails]") . "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
 				while ($GLOBALS['DB_WE']->next_record()) {
@@ -380,8 +380,8 @@ class we_import_files
 								"space" => 150
 						));
 
-				$widthInput = htmlTextInput("width", "10", $this->width, "", '', "text", 60);
-				$heightInput = htmlTextInput("height", "10", $this->height, "", '', "text", 60);
+				$widthInput = we_html_tools::htmlTextInput("width", "10", $this->width, "", '', "text", 60);
+				$heightInput = we_html_tools::htmlTextInput("height", "10", $this->height, "", '', "text", 60);
 
 				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[pixel]") . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[percent]") . '</option></select>';
 				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass',"[percent]") . '</option></select>';
@@ -459,7 +459,7 @@ class we_import_files
 						array(
 
 								"headline" => "",
-								"html" => htmlAlertAttentionBox(
+								"html" => we_html_tools::htmlAlertAttentionBox(
 										g_l('importFiles',"[add_description_nogdlib]"),
 										2,
 										""),
@@ -546,15 +546,15 @@ class we_import_files
 		$maxsize = getUploadMaxFilesize(false, $GLOBALS['DB_WE']);
 		$maxsize = round($maxsize / (1024 * 1024), 3) . "MB";
 
-		$content = hidden('we_cmd[0]', 'import_files') . hidden('cmd', 'content') . hidden('step', '2') . we_htmlElement::htmlDiv(
+		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . we_htmlElement::htmlDiv(
 				array(
 					'id' => 'desc'
 				),
-				htmlAlertAttentionBox(sprintf(g_l('importFiles',"[import_expl]"), $maxsize), 2, "520", false)) . we_htmlElement::htmlDiv(
+				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles',"[import_expl]"), $maxsize), 2, "520", false)) . we_htmlElement::htmlDiv(
 				array(
 					'id' => 'descJupload', 'style' => 'display:none;'
 				),
-				htmlAlertAttentionBox(
+				we_html_tools::htmlAlertAttentionBox(
 						sprintf(g_l('importFiles',"[import_expl_jupload]"), $maxsize),
 						2,
 						"520",
@@ -576,7 +576,7 @@ class we_import_files
 						"onchange" => "checkFileinput();"
 				)) . $but;
 
-		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles',"[file]") . '&nbsp;<span id="uploadFiles_headline_WEFORMNUM">WE_FORM_NUM</span></td><td>' . getPixel(
+		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles',"[file]") . '&nbsp;<span id="uploadFiles_headline_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
 				35,
 				5) . '</td><td>' . $fileinput . '</td></tr></table>';
 
@@ -703,7 +703,7 @@ class we_import_files
 
 			$parts[] = array(
 
-					'html' => htmlAlertAttentionBox(
+					'html' => we_html_tools::htmlAlertAttentionBox(
 							sprintf(str_replace('\n', '<br>', g_l('importFiles',"[error]")), $filelist),
 							1,
 							"520",
@@ -713,7 +713,7 @@ class we_import_files
 		} else {
 
 			$parts[] = array(
-				'html' => htmlAlertAttentionBox(g_l('importFiles',"[finished]"), 2, "520", false)
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles',"[finished]"), 2, "520", false)
 			);
 
 		}
@@ -1219,7 +1219,7 @@ class we_import_files
 				4,
 				1);
 
-		$table->setColContent(0, 0, getPixel(5, 5));
+		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
 		$table->setColContent(
 				1,
 				0,
@@ -1230,7 +1230,7 @@ class we_import_files
 								'class' => 'blockWrapper',
 								'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
 						)));
-		$table->setColContent(2, 0, getPixel(5, 5));
+		$table->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 		$table->setCol(
 				3,
 				0,

@@ -232,7 +232,7 @@ function reloadDir() {
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 
 ?>
@@ -344,7 +344,7 @@ function writeBody(d){
 		d.writeln('<td class="selector">');
 		d.writeln(entries[i].modDate);
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="4"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="4"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
 	d.writeln('<?php echo str_replace("'","\\'",$this->tableSizer); ?>');
@@ -474,7 +474,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 	function printHeaderTableExtraCols() {
 		we_dirSelector::printHeaderTableExtraCols();
 		if($this->filter != "text/weTmpl" && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != "text/webedition"){
-			print '<td width="10">'.getPixel(10,10).'</td><td width="40">';
+			print '<td width="10">'.we_html_tools::getPixel(10,10).'</td><td width="40">';
 			$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 			print '<script  type="text/javascript">newFileState='.$newFileState.';</script>';
 			if($this->filter=="image/*" ||  $this->filter=="video/quicktime" ||  $this->filter=="application/x-shockwave-flash") {
@@ -555,7 +555,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 		print '
 			<tr>
 				<td colspan="13">
-					'.getPixel(5,10).'</td>
+					'.we_html_tools::getPixel(5,10).'</td>
 			</tr>';
 	}
 
@@ -589,7 +589,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
 		if($this->filter=="") {
 			print '
@@ -611,7 +611,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					<td></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
 		}
 		$buttons = we_button::position_yes_no_cancel(
@@ -627,21 +627,21 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 						<b>'.g_l('fileselector',"[name]").'</b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$seval,"","style=\"width:100%\" readonly=\"readonly\"").'
+					<td class="defaultfont" align="left">'.we_html_tools::htmlTextInput("fname",24,$seval,"","style=\"width:100%\" readonly=\"readonly\"").'
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td width="70">'.getPixel(70,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td>'.getPixel(5,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td width="70">'.we_html_tools::getPixel(70,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td>'.we_html_tools::getPixel(5,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right">'.$buttons.'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table>';
 	}

@@ -24,9 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_document.inc.php");
-if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-}
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_linklist.inc.php");
 
 /*  a class for handling text-documents */

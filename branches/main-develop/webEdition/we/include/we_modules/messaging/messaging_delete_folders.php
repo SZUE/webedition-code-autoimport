@@ -24,15 +24,13 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -107,9 +105,9 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $content = "<span class=\"defaultfont\">" . g_l('modules_messaging','[deltext]') . "</span>";
 
 $form = '<form name="we_form" method="post">' .
-    hidden('we_transaction', $_REQUEST['we_transaction']) .
-    hidden('folders','') .
-    hidden('mcmd', 'delete_folders')
+    we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) .
+    we_html_tools::hidden('folders','') .
+    we_html_tools::hidden('mcmd', 'delete_folders')
     .
     '</form>';
 
@@ -121,7 +119,7 @@ $_buttons = we_button::position_yes_no_cancel(	we_button::create_button("ok", "j
 </head>
 
 <body bgcolor="white" marginwidth="10" marginheight="10" leftmargin="10" topmargin="10" background="/webEdition/images/msg_white_bg.gif">
-<?php echo htmlMessageBox(400,120,$content,g_l('modules_messaging','[rm_folders]'), $_buttons);
+<?php echo we_html_tools::htmlMessageBox(400,120,$content,g_l('modules_messaging','[rm_folders]'), $_buttons);
 echo $form ?>
 </body>
 

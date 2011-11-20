@@ -42,10 +42,10 @@ function getPLogChart($vals)
 			array(
 				"height" => 16, "colspan" => 3, "class" => "tablehead"
 			),
-			getPixel(2, 5) . we_htmlElement::htmlImg(
+			we_html_tools::getPixel(2, 5) . we_htmlElement::htmlImg(
 					array(
 						"src" => IMAGE_DIR . "pd/bullet_circle.gif", "class" => "bulletCircle"
-					)) . getPixel(2, 5) . g_l('cockpit','['.$vals[0].']'));
+					)) . we_html_tools::getPixel(2, 5) . g_l('cockpit','['.$vals[0].']'));
 	$_chart->setCol(1, 0, array(
 		"colspan" => 3
 	), we_htmlElement::htmlImg(array(
@@ -54,7 +54,7 @@ function getPLogChart($vals)
 	for ($i = 2; $i < count($vals) + 1; $i++) {
 		$_chart->setCol($i, 0, array(
 			"width" => "53%", "height" => 19, "class" => "boxbg"
-		), getPixel(3, 5) . g_l('cockpit','['.($vals[$i - 1]).']'));
+		), we_html_tools::getPixel(3, 5) . g_l('cockpit','['.($vals[$i - 1]).']'));
 		$_chart->setCol($i, 1, array(
 			"width" => "2%", "height" => 19, "class" => "boxbg"
 		), ":");

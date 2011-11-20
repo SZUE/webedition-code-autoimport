@@ -23,12 +23,8 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_live_tools.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_move_fn.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 protect();
 $table = $_REQUEST["we_cmd"][2];
@@ -167,7 +163,7 @@ if ($_SESSION["we_mode"] == "seem") {
 	exit();
 }
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -373,7 +369,7 @@ $_buttons = we_button::position_yes_no_cancel(
 		"left");
 
 $form = '
-' . hidden("sel", "") . '
+' . we_html_tools::hidden("sel", "") . '
 </form>
 ';
 

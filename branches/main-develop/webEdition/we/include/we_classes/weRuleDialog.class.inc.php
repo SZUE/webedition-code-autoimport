@@ -62,16 +62,16 @@ class weRuleDialog extends weDialog{
 
 	function getDialogContentHTML(){
 		$foo = $this->formColor(7,"we_dialog_args[color]",(isset($this->args["color"]) ? $this->args["color"] : ""),50);
-		$color = htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));
+		$color = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));
 
-		$foo = htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
-		$width = htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
+		$width = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
 
-		$foo = htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
-		$height = htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
+		$height = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
 
 		$noshade = '<table cellpadding="0" cellspacing="0" border="0">
-<tr><td><input type="checkbox" name="we_dialog_args[noshade]" value="1"'.((isset($this->args["noshade"]) && $this->args["noshade"]) ? " checked" : "").' /></td><td>'.getPixel(8,2).'</td><td class="defaultfont">'.
+<tr><td><input type="checkbox" name="we_dialog_args[noshade]" value="1"'.((isset($this->args["noshade"]) && $this->args["noshade"]) ? " checked" : "").' /></td><td>'.we_html_tools::getPixel(8,2).'</td><td class="defaultfont">'.
 				g_l('wysiwyg',"[noshade]").'</td></tr></table>';
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
@@ -80,13 +80,13 @@ class weRuleDialog extends weDialog{
 							<option value="center"'.((isset($this->args["align"]) && $this->args["align"] == "center") ? "selected" : "").'>Center</option>
 							<option value="right"'.((isset($this->args["align"]) && $this->args["align"] == "right") ? "selected" : "").'>Right</option>
 						</select>';
-		$align = htmlFormElementTable($foo,g_l('wysiwyg',"[halignment]"));
+		$align = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[halignment]"));
 
 	$table = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>'.$width.'</td><td>'.$height.'</td></tr>
-<tr><td>'.getPixel(135,10).'</td><td>'.getPixel(90,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(135,10).'</td><td>'.we_html_tools::getPixel(90,4).'</td></tr>
 <tr><td>'.$align.'</td><td>'.$color.'</td></tr>
-<tr><td>'.getPixel(135,10).'</td><td>'.getPixel(90,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(135,10).'</td><td>'.we_html_tools::getPixel(90,4).'</td></tr>
 <tr><td colspan="2">'.$noshade.'</td></tr>
 </table>
 ';

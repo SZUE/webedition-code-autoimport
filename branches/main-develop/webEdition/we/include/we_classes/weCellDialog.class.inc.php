@@ -77,17 +77,17 @@ class weCellDialog extends weDialog{
 	function getDialogContentHTML(){
 
 		$foo = $this->formColor(10,"we_dialog_args[bgcolor]",(isset($this->args["bgcolor"]) ? $this->args["bgcolor"] : ""),50);
-		$bgcolor = htmlFormElementTable($foo,g_l('wysiwyg',"[bgcolor]"));
+		$bgcolor = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[bgcolor]"));
 
-		$foo = htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
-		$width = htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
+		$width = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
 
-		$foo = htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
-		$height = htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);"', "text" , 50 );
+		$height = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
 
-		$foo = htmlTextInput("we_dialog_args[colspan]", 5, (isset($this->args["colspan"]) ? $this->args["colspan"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[colspan]", 5, (isset($this->args["colspan"]) ? $this->args["colspan"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
 
-		$colspan = htmlFormElementTable($foo,g_l('wysiwyg',"[colspan]"));
+		$colspan = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[colspan]"));
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
 							<option value="">Default</option>
@@ -95,7 +95,7 @@ class weCellDialog extends weDialog{
 							<option value="center"'.((isset($this->args["align"]) && $this->args["align"] == "center") ? "selected" : "").'>Center</option>
 							<option value="right"'.((isset($this->args["align"]) && $this->args["align"] == "right") ? "selected" : "").'>Right</option>
 						</select>';
-		$align = htmlFormElementTable($foo,g_l('wysiwyg',"[halignment]"));
+		$align = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[halignment]"));
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[valign]" size="1">
 							<option value="">Default</option>
@@ -103,18 +103,18 @@ class weCellDialog extends weDialog{
 							<option value="middle"'.((isset($this->args["valign"]) && $this->args["valign"] == "middle") ? "selected" : "").'>Middle</option>
 							<option value="bottom"'.((isset($this->args["valign"]) && $this->args["valign"] == "bottom") ? "selected" : "").'>Bottom</option>
 						</select>';
-		$valign = htmlFormElementTable($foo,g_l('wysiwyg',"[valignment]"));
+		$valign = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[valignment]"));
 
 		$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "").'","");</script>';
-		$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
+		$classSelect = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
 		$_isheader = we_forms::checkboxWithHidden($this->args["isheader"] == 1, "we_dialog_args[isheader]", g_l('wysiwyg',"[isheader]"));
 
-		$foo = htmlTextInput("we_dialog_args[id]", 5, (isset($this->args["id"]) ? $this->args["id"] :""), "", '', "text" , 50 );
-		$_id = htmlFormElementTable($foo,"id");
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[id]", 5, (isset($this->args["id"]) ? $this->args["id"] :""), "", '', "text" , 50 );
+		$_id = we_html_tools::htmlFormElementTable($foo,"id");
 
-		$foo = htmlTextInput("we_dialog_args[headers]", 5, (isset($this->args["headers"]) ? $this->args["headers"] :""), "", '', "text" , 50 );
-		$_headers = htmlFormElementTable($foo,"headers");
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[headers]", 5, (isset($this->args["headers"]) ? $this->args["headers"] :""), "", '', "text" , 50 );
+		$_headers = we_html_tools::htmlFormElementTable($foo,"headers");
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[scope]" size="1">
 							<option value="">Default</option>
@@ -123,18 +123,18 @@ class weCellDialog extends weDialog{
 							<option value="rowgroup"'.((isset($this->args["scope"]) && $this->args["scope"] == "rowgroup") ? "selected" : "").'>rowgroup</option>
 							<option value="colgroup"'.((isset($this->args["scope"]) && $this->args["scope"] == "colgroup") ? "selected" : "").'>colgroup</option>
 						</select>';
-		$_scope = htmlFormElementTable($foo,"scope");
+		$_scope = we_html_tools::htmlFormElementTable($foo,"scope");
 
 
 	$table = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>'.$width.'</td><td>'.$height.'</td><td>'.$colspan.'</td></tr>
-<tr><td>'.getPixel(135,10).'</td><td>'.getPixel(135,4).'</td><td>'.getPixel(135,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(135,10).'</td><td>'.we_html_tools::getPixel(135,4).'</td><td>'.we_html_tools::getPixel(135,4).'</td></tr>
 <tr><td>'.$align.'</td><td>'.$valign.'</td><td>'.$bgcolor.'</td></tr>
-<tr><td>'.getPixel(135,10).'</td><td>'.getPixel(135,4).'</td><td>'.getPixel(135,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(135,10).'</td><td>'.we_html_tools::getPixel(135,4).'</td><td>'.we_html_tools::getPixel(135,4).'</td></tr>
 <tr><td>'.$_isheader.'</td><td>'.$_id.'</td><td>'.$_headers.'</td></tr>
-<tr><td>'.getPixel(135,10).'</td><td>'.getPixel(135,4).'</td><td>'.getPixel(135,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(135,10).'</td><td>'.we_html_tools::getPixel(135,4).'</td><td>'.we_html_tools::getPixel(135,4).'</td></tr>
 <tr><td colspan="3">'.$_scope.'</td></tr>
-<tr><td>'.getPixel(135,10).'</td><td>'.getPixel(135,4).'</td><td>'.getPixel(135,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(135,10).'</td><td>'.we_html_tools::getPixel(135,4).'</td><td>'.we_html_tools::getPixel(135,4).'</td></tr>
 <tr><td colspan="3">'.$classSelect.'</td></tr>
 </table>
 ';

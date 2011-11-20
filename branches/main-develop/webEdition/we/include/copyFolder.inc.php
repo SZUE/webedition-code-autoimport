@@ -870,7 +870,7 @@ HTS;
 
 		$table->setCol(0, 0, array(
 			'colspan' => 2
-			), getPixel(5, 5));
+			), we_html_tools::getPixel(5, 5));
 		$table->setCol(1, 0, array(
 			'class' => 'defaultfont', 'width' => 100
 			), g_l('copyFolder', '[categories]'));
@@ -891,7 +891,7 @@ HTS;
 
 		$table->setCol(3, 0, array(
 			'colspan' => 2
-			), getPixel(5, 5));
+			), we_html_tools::getPixel(5, 5));
 
 		$table->setCol(
 			4, 0, array(
@@ -965,7 +965,7 @@ class copyFolderFinishFrag extends copyFolderFrag{
 	}
 
 	function printHeader(){
-		htmlTop(g_l('copyFolder', "[headline]"));
+		we_html_tools::htmlTop(g_l('copyFolder', "[headline]"));
 		print STYLESHEET;
 	}
 
@@ -1080,8 +1080,8 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 		$content .= we_forms::checkbox("1", 0, "DoNotCopyFolders", g_l('copyFolder', "[object_copy_no_folders]"));
 		$content .= '&nbsp;<br/>' . g_l('copyFolder', "[sameName_headline]") . '<br/>';
 
-		$content .= htmlAlertAttentionBox(g_l('copyFolder', "[sameName_expl]"), 2, 380);
-		$content .= getPixel(200, 10);
+		$content .= we_html_tools::htmlAlertAttentionBox(g_l('copyFolder', "[sameName_expl]"), 2, 380);
+		$content .= we_html_tools::getPixel(200, 10);
 		$content .= we_forms::radiobutton(
 				"overwrite", 0, "OverwriteObjects", g_l('copyFolder', "[sameName_overwrite]"));
 		$content .= we_forms::radiobutton(
@@ -1108,9 +1108,9 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 					</div></td><td valign="top">' . we_forms::checkbox(
 				"1", 0, 'CreateDoctypes', g_l('copyFolder', "[create_new_doctypes]")) . '
 					</td></tr>
-					<tr><td colspan="2">' . getPixel(2, 5) . '</td></tr>
+					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
-					<tr><td colspan="2">' . getPixel(2, 5) . we_htmlElement::htmlBr() . copyFolderFrag::formCreateCategoryChooser() . we_htmlElement::htmlHidden(
+					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_htmlElement::htmlBr() . copyFolderFrag::formCreateCategoryChooser() . we_htmlElement::htmlHidden(
 				array(
 					"name" => "we_cmd[0]", "value" => $_REQUEST["we_cmd"][0]
 			)) . we_htmlElement::htmlHidden(array(
@@ -1126,7 +1126,7 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 		'<body class="weDialogBody">' . "\n" . $js . "\n" . '<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' . "\n";
 
 	print
-		htmlDialogLayout(
+		we_html_tools::htmlDialogLayout(
 			$content, g_l('copyFolder', "[headline]") . ": " . shortenPath(
 				id_to_path($_REQUEST["we_cmd"][1]), 46), $buttons);
 

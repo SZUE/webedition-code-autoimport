@@ -128,9 +128,9 @@ class we_catSelector extends we_multiSelector{
 ';
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="70" class="defaultfont"><b>'.g_l('fileselector',"[lookin]").'</b></td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 ';
@@ -138,27 +138,27 @@ class we_catSelector extends we_multiSelector{
 
 		print '</select>
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("root_dir", "javascript:top.setRootDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("image:btn_new_dir", "javascript:if(editCatState==1){top.drawNewFolder();}", true, -1, 22, "", "", !$editCatState, false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="38">
 						'. we_button::create_button("image:btn_add_cat", "javascript:if(editCatState==1){top.drawNewCat();}", true, -1, 22, "", "", !$editCatState, false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="27">
 						'. we_button::create_button("image:btn_function_trash", "javascript:if(changeCatState==1){top.deleteEntry();}", true, 27, 22, "", "", !$changeCatState, false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 				</tr>
  ';
  		$this->printHeaderTableSpaceRow();
@@ -169,7 +169,7 @@ class we_catSelector extends we_multiSelector{
 
 	function printHeaderTableSpaceRow(){
 		print '				<tr>
-					<td colspan="15">'.getPixel(5,10).'</td>
+					<td colspan="15">'.we_html_tools::getPixel(5,10).'</td>
 				</tr>
 ';
 
@@ -250,7 +250,7 @@ $out .= '		self.close();
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
@@ -344,11 +344,11 @@ function writeBody(d){
 			d.writeln(cutText(entries[i].text,80));
 		}
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="2"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(150,2)?></td>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(150,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	d.writeln('</body>');
@@ -428,7 +428,7 @@ var old=0;
 	}
 
 	function printCreateEntryHTML($what=0){
-		htmlTop();
+		we_html_tools::htmlTop();
 		print '<script>
 top.clearEntries();
 ';
@@ -509,7 +509,7 @@ top.selectFile(top.currentID);
   	}
 
 	function printDoRenameEntryHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 protect();
 		$foo = getHash("SELECT IsFolder,Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editCatID),$this->db);
 		$IsDir = $foo["IsFolder"];
@@ -817,7 +817,7 @@ function setDir(id){
 	}
 
 	function printDoDelEntryHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 
 
@@ -968,7 +968,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
 		$cancelbut = we_button::create_button("close", "javascript:top.exit_close();");
 		if($okBut){
@@ -986,21 +986,21 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 						<b>'.g_l('fileselector',"[catname]").'</b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
+					<td class="defaultfont" align="left">'.we_html_tools::htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td width="70">'.getPixel(70,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td>'.getPixel(5,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td width="70">'.we_html_tools::getPixel(70,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td>'.we_html_tools::getPixel(5,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right">'.$buttons.'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table>';
 	}
@@ -1072,7 +1072,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			if($updateok) {
 				$this->renameChildrenPath(abs($_POST["catid"]));
 			}
-			htmlTop();
+			we_html_tools::htmlTop();
 			protect();
 			print '<script>'.$js.'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
 				($updateok
@@ -1116,15 +1116,15 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			$description = $fields[$_SESSION["we_catVariant"]]["Description"];
 			unset($result);
 
-			$dir_hidden = hidden('FolderID', $parentId);
-			$dir_input = htmlTextInput('FolderIDPath', 24, $path, '', "style='width: 240px;'");
+			$dir_hidden = we_html_tools::hidden('FolderID', $parentId);
+			$dir_input = we_html_tools::htmlTextInput('FolderIDPath', 24, $path, '', "style='width: 240px;'");
 
 			$dir_chooser = we_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
 
 			$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"),4, 3);
 
 			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), '<b>'.g_l('weClass',"[category]").'</b>');
-			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), htmlTextInput("Category",50,$category,"",' id="category"',"text",360));
+			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), we_html_tools::htmlTextInput("Category",50,$category,"",' id="category"',"text",360));
 
 			$table->setCol(1, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), "<b>ID</b>");
 			$table->setCol(1, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), $catID);
@@ -1134,9 +1134,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			$table->setCol(2, 2, array("style" => "width:110px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont", "align" => "right"), $dir_chooser);
 
 			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), "<b>".g_l('global',"[title]")."</b>");
-			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), htmlTextInput("catTitle",50,$title,"",'',"text",360));
+			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), we_html_tools::htmlTextInput("catTitle",50,$title,"",'',"text",360));
 
-			$ta = htmlFormElementTable(we_forms::weTextarea("catDescription",$description,array("bgcolor"=>"white","inlineedit"=>"true","wysiwyg"=>"true","width"=>"450", "height"=>"130"), true, 'autobr',true,"",true,true,true,false,""),
+			$ta = we_html_tools::htmlFormElementTable(we_forms::weTextarea("catDescription",$description,array("bgcolor"=>"white","inlineedit"=>"true","wysiwyg"=>"true","width"=>"450", "height"=>"130"), true, 'autobr',true,"",true,true,true,false,""),
 			"<b>".g_l('global',"[description]") ."</b>", "left", "defaultfont", "", "", "", "", "", 0);
 			$saveBut = we_button::create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
 
@@ -1145,7 +1145,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 
 
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 		print we_htmlElement::jsScript(JS_DIR.'we_textarea.js').we_htmlElement::jsScript(JS_DIR.'windows.js').'
 <script type="text/javascript">

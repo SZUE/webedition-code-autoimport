@@ -271,10 +271,10 @@ class weToolFrames extends weModuleFrames {
 
 		$table=new we_htmlTable(array("width"=>"3000","cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),3,1);
 
-		$table->setCol(0,0,array(),getPixel(1,3));
+		$table->setCol(0,0,array(),we_html_tools::getPixel(1,3));
 
 		$table->setCol(1,0,array("valign"=>"top","class"=>"small"),
-							getPixel(15,2).
+							we_html_tools::getPixel(15,2).
 							we_htmlElement::htmlB(
 								($this->Model->IsFolder ? g_l('tools','[group]') : g_l('tools','[entry]')) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>' .
 								we_htmlElement::htmlImg(array("align"=>"absmiddle","height"=>"19","width"=>"1600","src"=>IMAGE_DIR."pixel.gif"))
@@ -283,7 +283,7 @@ class weToolFrames extends weModuleFrames {
 
 		$extraJS = 'document.getElementById("tab_"+'.$this->topFrame.'.activ_tab).className="tabActive";';
 		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"),
-			'<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(($this->Model->IsFolder ? g_l('tools','[group]') : g_l('tools','[entry]')) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>').'</div>' . getPixel(100,3) .
+			'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(($this->Model->IsFolder ? g_l('tools','[group]') : g_l('tools','[entry]')) . ':&nbsp;'. str_replace('&amp;','&',$this->Model->Text) . '<div id="mark" style="display: none;">*</div>').'</div>' . we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>' . we_htmlElement::jsElement($extraJS)
 		);
@@ -337,7 +337,7 @@ class weToolFrames extends weModuleFrames {
 		}
 
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
-		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),getPixel(1600,10));
+		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),we_html_tools::getPixel(1600,10));
 
 
 		$_but_table = we_button::create_button_table(array(
@@ -400,7 +400,7 @@ class weToolFrames extends weModuleFrames {
 		array_push($parts,array(
 				'headline'=> g_l('tools','[general]'),
 				'html'=>	we_htmlElement::htmlHidden(array('name'=>'newone','value'=>($this->Model->ID==0 ? 1 : 0))) .
-							htmlFormElementTable(htmlTextInput('Text','',$this->Model->Text,'','style="width: '.$this->_width_size.'" onChange="'.$this->topFrame.'.mark();"'), g_l('tools','[name]')) .
+						we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text','',$this->Model->Text,'','style="width: '.$this->_width_size.'" onChange="'.$this->topFrame.'.mark();"'), g_l('tools','[name]')) .
 							$this->getHTMLChooser(g_l('tools','[group]'),$this->Table,0,'ParentID',$this->Model->ParentID,'ParentPath','opener.'.$this->topFrame.'.mark()',''),
 				'space'=>$this->_space_size,
 				'noline'=>1
@@ -511,12 +511,12 @@ class weToolFrames extends weModuleFrames {
 		$wecmdenc4= '';
 	  	$button =  we_button::create_button('select',"javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
-		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,'','readonly','text',($this->_width_size-120),0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName,30,$IDValue,'','readonly','text',($this->_width_size-120),0),
 			"",
 			"left",
 			"defaultfont",
 			"",
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
@@ -538,7 +538,7 @@ class weToolFrames extends weModuleFrames {
 			</head>
 
 			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">
-					' . htmlYesNoCancelDialog(g_l('tools','[exit_doc_question]'),IMAGE_DIR."alert.gif","ja","nein","abbrechen",$_yes,$_no,$_cancel) . '
+					' . we_html_tools::htmlYesNoCancelDialog(g_l('tools','[exit_doc_question]'),IMAGE_DIR."alert.gif","ja","nein","abbrechen",$_yes,$_no,$_cancel) . '
 			</body>
 
 			</html>
@@ -582,12 +582,12 @@ class weToolFrames extends weModuleFrames {
 			$_width = 120;
 		}
 
-		return htmlFormElementTable(htmlTextInput($PathName,58,$_path,'','readonly','text',($this->_width_size-$_width),0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($PathName,58,$_path,'','readonly','text',($this->_width_size-$_width),0),
 			$title,
 			'left',
 			'defaultfont',
 			we_htmlElement::htmlHidden(array('name'=>$IDName,'value'=>$IDValue)),
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$_button
 		);
 

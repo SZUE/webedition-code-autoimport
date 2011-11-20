@@ -109,11 +109,11 @@
                 //  change base href -> css of included page is loaded correctly
                 print str_replace('<head>', '<head><base href="http://' . $host . '" />',$http_response->http_body);
             } else {    //  no correct answer
-                htmlTop();
+                we_html_tools::htmlTop();
                 print STYLESHEET;
                 print '</head>
                 <body>';
-                print htmlAlertAttentionBox(sprintf(g_l('validation','[connection_problems]'), $http_response->getHttp_answer()),1,0,false);
+                print we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation','[connection_problems]'), $http_response->getHttp_answer()),1,0,false);
                 print '</body></html>';
             }
         } else {

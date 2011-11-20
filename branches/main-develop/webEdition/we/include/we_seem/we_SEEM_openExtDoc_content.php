@@ -65,9 +65,9 @@
 											"border"      => 0),
 													4,
 													2);
-		$_table->setColContent(0, 0, getPixel(20,20));
+		$_table->setColContent(0, 0, we_html_tools::getPixel(20,20));
 		$_table->setCol(1, 1, array("class" => "defaultfont"),  sprintf(g_l('SEEM',"[ext_doc_not_found]"), $_REQUEST["filepath"]) . "<br>");
-		$_table->setColContent(2, 0, getPixel(20,6));
+		$_table->setColContent(2, 0, we_html_tools::getPixel(20,6));
 
 		//	there must be a navigation-history - so use it
 		$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));

@@ -25,8 +25,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-htmlTop();
+we_html_tools::htmlTop();
 echo we_htmlElement::jsScript(JS_DIR.'images.js');
 	print STYLESHEET;
 ?>
@@ -41,7 +40,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js');
 			<tr>
 				<td><img width="5" src="<?php print IMAGE_DIR ?>pixel.gif" /></td>
 				<td><?php print
-				we_button::create_button_table(array(htmlTextInput("keyword",14,"","","","text",120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
+				we_button::create_button_table(array(we_html_tools::htmlTextInput("keyword",14,"","","","text",120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
 				?></td>
 			</tr>
 		</table>

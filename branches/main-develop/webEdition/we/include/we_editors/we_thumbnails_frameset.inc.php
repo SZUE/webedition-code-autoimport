@@ -38,7 +38,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/w
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 /*****************************************************************************
  * CREATE JAVASCRIPT

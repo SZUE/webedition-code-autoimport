@@ -25,10 +25,9 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 protect();
 if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"])){
-	htmlTop();
+	we_html_tools::htmlTop();
 }
 print STYLESHEET;
 print we_htmlElement::jsElement("", array("src"=>JS_DIR . "attachKeyListener.js"));

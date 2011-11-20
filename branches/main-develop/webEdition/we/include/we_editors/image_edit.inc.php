@@ -24,12 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_message_reporting/we_message_reporting.class.php");
 
 protect();
@@ -45,7 +40,7 @@ include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc
 
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
-	htmlTop();
+	we_html_tools::htmlTop();
 
 	print we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').'
 <script type="text/javascript">
@@ -271,8 +266,8 @@ function we_getImageResizeDialog(){
 
 	$buttons = we_button::position_yes_no_cancel($okbut,null,$cancelbut);
 
-	$widthInput = htmlTextInput("width","10",$width,"",'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"',"text",60);
-	$heightInput = htmlTextInput("height","10",$height,"",'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"',"text",60);
+	$widthInput = we_html_tools::htmlTextInput("width","10",$width,"",'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"',"text",60);
+	$heightInput = we_html_tools::htmlTextInput("height","10",$height,"",'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"',"text",60);
 
 	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">'.g_l('weClass',"[pixel]").'</option><option value="percent">'.g_l('weClass',"[percent]").'</option></select>';
 	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">'.g_l('weClass',"[pixel]").'</option><option value="percent">'.g_l('weClass',"[percent]").'</option></select>';

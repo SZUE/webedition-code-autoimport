@@ -159,11 +159,11 @@ function we_tag_sendMail($attribs, $content){
 				$css = array('media' => 'screen','rel'	=> 'stylesheet','type'	=> 'text/css','href'	=> WEBEDITION_DIR."css/global.php?WE_LANGUAGE=".$GLOBALS["WE_LANGUAGE"]."&amp;WE_BACKENDCHARSET=".$GLOBALS["WE_BACKENDCHARSET"]);
 
 				print '<!DOCTYPE  HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">';
-				print htmlTop();
+				print we_html_tools::htmlTop();
 				print getHtmlTag("link", $css);
 				print "</head>";
 				print getHtmlTag("body", array("class"=>"weEditorBody"), "", false, true);
-				print htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content),$headline);
+				print we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content),$headline);
 				print "</body></html>";
 
 				exit;

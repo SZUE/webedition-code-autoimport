@@ -25,7 +25,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
 
 
@@ -127,7 +126,7 @@ function getPagerLinkDoc() {
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 
 print STYLESHEET;
@@ -371,7 +370,7 @@ if (isset($daten)){
             }
 
 			array_push($parts, array(
-				'html' => htmlDialogBorder3(670,100,$content, $headline),
+				'html' => we_html_tools::htmlDialogBorder3(670,100,$content, $headline),
 				'space' => 0,
 				'noline' => true
 				)
@@ -496,7 +495,7 @@ if (isset($daten)){
             }
             if(!isset($content)) $content = array();
             array_push($parts, array(
-                    'html' => htmlDialogBorder3(670,100,$content, $headline),
+                    'html' => we_html_tools::htmlDialogBorder3(670,100,$content, $headline),
                     'space' => 0,
                     'noline' => true
                 )

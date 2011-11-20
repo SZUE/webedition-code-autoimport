@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -201,7 +201,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 			</tr>';
 	    }
 
-	    echo '<tr><td>' . getPixel(1, 3) . '</td><td>' . getPixel(1, 3) . '</td><td>' . getPixel(1, 3) . '</td><td>' . getPixel(1, 3) . '</td></tr>';
+	    echo '<tr><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td></tr>';
 	}
 	?></table><?php
 

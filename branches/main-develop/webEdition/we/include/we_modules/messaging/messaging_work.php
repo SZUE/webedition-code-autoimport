@@ -24,15 +24,14 @@
 
 
   include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-  include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-
+  
 	if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 		exit();
 	}
 
   protect();
 
-  htmlTop();
+  we_html_tools::htmlTop();
 ?>
     <script type="text/javascript">
 	do_mark_messages = 0;

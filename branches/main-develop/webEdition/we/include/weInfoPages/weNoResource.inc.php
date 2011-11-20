@@ -23,11 +23,10 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -43,7 +42,7 @@ _EditorFrame.setEditorIsLoading(false);
 
 <body class="weDialogBody">
 <?php
-print htmlDialogLayout($content, g_l('alert',"[noResourceTitle]"));
+print we_html_tools::htmlDialogLayout($content, g_l('alert',"[noResourceTitle]"));
 ?>
     </body>
 </html>

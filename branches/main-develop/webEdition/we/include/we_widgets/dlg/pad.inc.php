@@ -186,7 +186,7 @@ $sort = new we_htmlTable(array(
 $sort->setCol(0, 0, array(
 	"width" => 145
 ), $oRdoSort[0]);
-$sort->setCol(0, 1, null, getPixel(10, 1));
+$sort->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $sort->setCol(0, 2, array(
 	"width" => 145
 ), $oRdoSort[3]);
@@ -229,7 +229,7 @@ $display = new we_htmlTable(array(
 $display->setCol(0, 0, array(
 	"width" => 145
 ), $oRdoDisplay[0]);
-$display->setCol(0, 1, null, getPixel(10, 1));
+$display->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $display->setCol(0, 2, array(
 	"width" => 145
 ), $oRdoDisplay[1]);
@@ -331,7 +331,7 @@ $prio = new we_htmlTable(array(
 $prio->setCol(0, 0, array(
 	"width" => 70
 ), $oRdoPrio[0]);
-$prio->setCol(0, 1, null, getPixel(10, 1));
+$prio->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 
 $prio->setCol(0, 2, array(
 	"width" => 20
@@ -351,7 +351,7 @@ array_push($parts, array(
 	"headline" => g_l('cockpit','[default_priority]'), "html" => $prio->getHTMLCode(), "space" => 100
 ));
 
-$oSctValid = htmlSelect("sct_valid", array(
+$oSctValid = we_html_tools::htmlSelect("sct_valid", array(
 	g_l('cockpit','[always]'),g_l('cockpit','[from_date]'), g_l('cockpit','[period]')
 ), 1, g_l('cockpit','[always]'), false, 'style="width:120px;" onChange=""', 'value', 120);
 
@@ -370,7 +370,7 @@ $_options = array(
 while ($DB_WE->next_record()) {
 	$_options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
 }
-$oSctTitle = htmlSelect("sct_title", array_unique($_options), 1, "", false, 'id="title" onChange=""', 'value');
+$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, 'id="title" onChange=""', 'value');
 array_push($parts, array(
 	"headline" => g_l('cockpit','[title]'), "html" => $oSctTitle, "space" => 100
 ));

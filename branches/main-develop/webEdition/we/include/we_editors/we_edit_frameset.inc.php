@@ -232,7 +232,7 @@ if($we_doc->EditPageNr === -1 ){	//	there is no view available for this document
 					STYLESHEET
 				) .
 				we_htmlElement::htmlBody(array( 'class'=>'weDialogBody'),
-					htmlDialogLayout(htmlAlertAttentionBox(g_l('alert','[no_views][description]'),1, 500, true), g_l('alert','[no_views][headline]'))
+					we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert','[no_views][description]'),1, 500, true), g_l('alert','[no_views][headline]'))
 				)
 			);
 	exit;

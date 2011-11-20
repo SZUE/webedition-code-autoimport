@@ -24,9 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
@@ -82,7 +80,7 @@ $messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-			echo htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
+			echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
 		?>
 	</body>
 

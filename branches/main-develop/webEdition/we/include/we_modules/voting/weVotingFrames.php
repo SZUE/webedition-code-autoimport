@@ -123,10 +123,10 @@ class weVotingFrames extends weModuleFrames {
 
 		$table=new we_htmlTable(array("width"=>"3000","cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),3,1);
 
-		$table->setCol(0,0,array(),getPixel(1,3));
+		$table->setCol(0,0,array(),we_html_tools::getPixel(1,3));
 
 		$table->setCol(1,0,array("valign"=>"top","class"=>"small"),
-							getPixel(15,2).
+							we_html_tools::getPixel(15,2).
 							we_htmlElement::htmlB(
 								($this->View->voting->IsFolder ? g_l('modules_voting','[group]') : g_l('modules_voting','[voting]')) . ':&nbsp;'.$this->View->voting->Text.
 								we_htmlElement::htmlImg(array("align"=>"absmiddle","height"=>"19","width"=>"1600","src"=>IMAGE_DIR."pixel.gif"))
@@ -135,7 +135,7 @@ class weVotingFrames extends weModuleFrames {
 
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"),
-			'<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",($this->View->voting->IsFolder ? g_l('modules_voting','[group]') : g_l('modules_voting','[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$this->View->voting->Path).'</b></span></nobr></div>' . getPixel(100,3) .
+			'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",($this->View->voting->IsFolder ? g_l('modules_voting','[group]') : g_l('modules_voting','[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$this->View->voting->Path).'</b></span></nobr></div>' . we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>' . we_htmlElement::jsElement($extraJS)
 		);
@@ -184,11 +184,11 @@ class weVotingFrames extends weModuleFrames {
 		}
 
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
-		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),getPixel(1600,10));
+		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),we_html_tools::getPixel(1600,10));
 
 		$table2=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"300"),1,2);
 		$table2->setRow(0,array("valign"=>"middle"));
-		$table2->setCol(0,0,array("nowrap"=>null),getPixel(5,5));
+		$table2->setCol(0,0,array("nowrap"=>null),we_html_tools::getPixel(5,5));
 		$table2->setCol(0,1,array("nowrap"=>null),
 					we_button::create_button("save", "javascript:we_save()",true,100,22,'','',(!we_hasPerm('NEW_VOTING') && !we_hasPerm('EDIT_VOTING')))
 		);
@@ -393,12 +393,12 @@ class weVotingFrames extends weModuleFrames {
 				'html'=>we_htmlElement::htmlHidden(array('name'=>'owners_name','value'=>'')) .
 						we_htmlElement::htmlHidden(array('name'=>'owners_count','value'=>'0')) .
 						we_htmlElement::htmlHidden(array('name'=>'newone','value'=>($this->View->voting->ID==0 ? 1 : 0))) .
-						htmlFormElementTable(htmlTextInput('Text','',$this->View->voting->Text,'','style="width: '.$this->_width_size.'" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'),g_l('modules_voting','[headline_name]')) .
+					we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text','',$this->View->voting->Text,'','style="width: '.$this->_width_size.'" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'),g_l('modules_voting','[headline_name]')) .
 						we_htmlElement::htmlBr() .
 						$this->getHTMLDirChooser() .
 						$yuiSuggest->getYuiJsFiles().$yuiSuggest->getYuiCss().$yuiSuggest->getYuiJs().
 						we_htmlElement::htmlBr() .
-						(!$this->View->voting->IsFolder ? htmlFormElementTable(getDateInput2('PublishDate%s',$this->View->voting->PublishDate,false,'','top.content.setHot();'),g_l('modules_voting','[headline_publish_date]')) : ''),
+						(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('PublishDate%s',$this->View->voting->PublishDate,false,'','top.content.setHot();'),g_l('modules_voting','[headline_publish_date]')) : ''),
 				'space'=>$this->_space_size,
 				'noline'=>1)
 		);
@@ -412,7 +412,7 @@ class weVotingFrames extends weModuleFrames {
 			);
 
 			$table = new we_htmlTable(array('id'=>'ownersTable','style'=>'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';','cellpadding' => 2,'cellspacing' => 2,"border"=>0),3,2);
-			$table->setColContent(0,0,getPixel(10,5));
+			$table->setColContent(0,0,we_html_tools::getPixel(10,5));
 			$table->setCol(0,1,array('colspan'=>'2','class'=>'defaultfont'),g_l('modules_voting','[limit_access_text]'));
 			$table->setColContent(1,1,we_htmlElement::htmlDiv(array('id'=>'owners','class'=>'blockWrapper','style'=>'width: '.($this->_width_size-10).'px; height: 60px; border: #AAAAAA solid 1px;')));
 			$idname = 'owner_id';
@@ -436,7 +436,7 @@ class weVotingFrames extends weModuleFrames {
 		if($this->View->voting->IsFolder) {
 
 			$table = new we_htmlTable(array('id'=>'LogGroupData','cellpadding' => 2,'cellspacing' => 2,"border"=>0),1,2);
-			$table->setColContent(0,0,getPixel(10,5));
+			$table->setColContent(0,0,we_html_tools::getPixel(10,5));
 			$table->setColContent(0,1,
 				we_button::position_yes_no_cancel(
 												we_button::create_button('logbook','javascript:we_cmd(\'show_log\')'),
@@ -458,9 +458,9 @@ class weVotingFrames extends weModuleFrames {
 
 			$export_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),12,1);
 
-			$export_box->setCol(0,0,array(),getPixel(10,10));
-			$export_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),g_l('export','[dir]')));
-			$export_box->setCol(2,0,array(),getPixel(5,5));
+			$export_box->setCol(0,0,array(),we_html_tools::getPixel(10,10));
+			$export_box->setCol(1,0,array(),we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),g_l('export','[dir]')));
+			$export_box->setCol(2,0,array(),we_html_tools::getPixel(5,5));
 
 			$lineend = new we_htmlSelect(array('name'=>'csv_lineend','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
 			$lineend->addOption('windows', g_l('export','[windows]'));
@@ -472,8 +472,8 @@ class weVotingFrames extends weModuleFrames {
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				$charset=$GLOBALS['WE_BACKENDCHARSET'];
 				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-				$_importCharset = htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
-				$_importCharsetChooser = htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false,"onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",325,"defaultfont",false);
+				$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
+				$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false,"onChange=\"document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",325,"defaultfont",false);
 				$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
@@ -489,14 +489,14 @@ class weVotingFrames extends weModuleFrames {
 			$enclose->addOption(0,g_l('export','[double_quote]'));
 			$enclose->addOption(1,g_l('export','[single_quote]'));
 
-			$export_box->setCol(3, 0, array("class" => "defaultfont"), htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
-			$export_box->setColContent(4,0,getPixel(5,5));
-			$export_box->setCol(5, 0, array("class" => "defaultfont"), htmlFormElementTable($import_Charset,g_l('modules_voting','[csv_charset]')));
-			$export_box->setColContent(6,0,getPixel(5,5));
-			$export_box->setColContent(7,0, htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
-			$export_box->setColContent(8,0,getPixel(5,5));
-			$export_box->setColContent(9,0, htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
-			$export_box->setColContent(10,0,getPixel(5,15));
+			$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
+			$export_box->setColContent(4,0,we_html_tools::getPixel(5,5));
+			$export_box->setCol(5, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($import_Charset,g_l('modules_voting','[csv_charset]')));
+			$export_box->setColContent(6,0,we_html_tools::getPixel(5,5));
+			$export_box->setColContent(7,0, we_html_tools::htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
+			$export_box->setColContent(8,0,we_html_tools::getPixel(5,5));
+			$export_box->setColContent(9,0, we_html_tools::htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
+			$export_box->setColContent(10,0,we_html_tools::getPixel(5,15));
 			$export_box->setCol(11,0,array("nowrap"=>null),
 			we_button::create_button_table(array($ok))
 			);
@@ -521,7 +521,7 @@ class weVotingFrames extends weModuleFrames {
 		$activeTime->selectOption($this->View->voting->ActiveTime);
 
 		$table = new we_htmlTable(array('cellpadding' => 2,'cellspacing' => 2,"border"=>0),4,2);
-		$table->setCol(0,0,array('colspan'=>'2'),htmlAlertAttentionBox(g_l('modules_voting','[valid_txt]'),2,$this->_width_size,false,133));
+		$table->setCol(0,0,array('colspan'=>'2'),we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[valid_txt]'),2,$this->_width_size,false,133));
 		$table->setCol(1,0,array('colspan'=>'2'),we_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting','[active_till]'),false,'defaultfont','toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
 		$table->setColContent(2,1,we_htmlElement::htmlDiv(array('id'=>'activetime','style'=>'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';') ,
@@ -530,7 +530,7 @@ class weVotingFrames extends weModuleFrames {
 		);
 		$table->setColContent(3,1,
 				we_htmlElement::htmlDiv(array('id'=>'valid','style'=>'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime ? 'block' : 'none') . ';') ,
-						htmlFormElementTable(getDateInput2('Valid%s',$this->View->voting->Valid,false,'','top.content.setHot();'),"")
+					we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('Valid%s',$this->View->voting->Valid,false,'','top.content.setHot();'),"")
 				)
 		);
 
@@ -551,8 +551,8 @@ class weVotingFrames extends weModuleFrames {
 
 		$successor_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),2,1);
 
-		$successor_box->setCol(0,0,array(),getPixel(10,10));
-		$successor_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'Successor','/','',''),g_l('modules_voting','[voting-successor]')));
+		$successor_box->setCol(0,0,array(),we_html_tools::getPixel(10,10));
+		$successor_box->setCol(1,0,array(),we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size-130,'Successor','/','',''),g_l('modules_voting','[voting-successor]')));
 
 
   		if ($this->View->voting->AllowSuccessor) {$displaySuccessor = 'block';} else {$displaySuccessor = 'none';}
@@ -566,7 +566,7 @@ class weVotingFrames extends weModuleFrames {
 				we_forms::checkboxWithHidden($this->View->voting->AllowImages ? true : false, 'AllowImages', g_l('modules_voting','[AllowImages]'),false,'defaultfont','top.content.setHot();answers_edit.toggleImages();') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowMedia ? true : false, 'AllowMedia', g_l('modules_voting','[AllowMedia]'),false,'defaultfont','top.content.setHot();answers_edit.toggleMedia();') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessor ? true : false, 'AllowSuccessor', g_l('modules_voting','[AllowSuccessor]'),false,'defaultfont','top.content.setHot(); toggle(\'Successor\')') .
-				htmlFormElementTable(htmlTextInput('Successor','',$this->View->voting->Successor,'','style="width: '.$this->_width_size.';display:'.$displaySuccessor.'" id="Successor" onchange="top.content.setHot();" '),'') .
+			we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Successor','',$this->View->voting->Successor,'','style="width: '.$this->_width_size.';display:'.$displaySuccessor.'" id="Successor" onchange="top.content.setHot();" '),'') .
 				we_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting','[AllowSuccessors]'),false,'defaultfont','top.content.setHot();answers_edit.toggleSuccessors();')
 				,
 				'space'=>$this->_space_size
@@ -590,10 +590,10 @@ class weVotingFrames extends weModuleFrames {
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),5,1);
 
 		$table->setColContent(0,0,$selectCode);
-		$table->setColContent(1,0,getPixel(10,7));
-		$table->setColContent(2,0,htmlFormElementTable(we_htmlElement::htmlDiv(array('id'=>'question')),g_l('modules_voting','[inquiry_question]')));
-		$table->setColContent(3,0,getPixel(10,7));
-		$table->setColContent(4,0,htmlFormElementTable(we_htmlElement::htmlDiv(array('id'=>'answers')),g_l('modules_voting','[inquiry_answers]')));
+		$table->setColContent(1,0,we_html_tools::getPixel(10,7));
+		$table->setColContent(2,0,we_html_tools::htmlFormElementTable(we_htmlElement::htmlDiv(array('id'=>'question')),g_l('modules_voting','[inquiry_question]')));
+		$table->setColContent(3,0,we_html_tools::getPixel(10,7));
+		$table->setColContent(4,0,we_html_tools::htmlFormElementTable(we_htmlElement::htmlDiv(array('id'=>'answers')),g_l('modules_voting','[inquiry_answers]')));
 
 		array_push($parts,array(
 				'headline'=>g_l('modules_voting','[headline_data]'),
@@ -628,7 +628,7 @@ class weVotingFrames extends weModuleFrames {
 
 		$table = new we_htmlTable(array('id' => 'method_table', 'style' => 'display: ' . ($this->View->voting->RevoteTime == 0 ? 'none' : 'block') ,'cellpadding' => 2,'cellspacing' => 1,'border' => 0),10,2);
 		$table->setCol(0,0,array('colspan'=>2),
-			htmlAlertAttentionBox(
+			we_html_tools::htmlAlertAttentionBox(
 				we_htmlElement::htmlB(g_l('modules_voting','[cookie_method]')).we_htmlElement::htmlBr().
 				g_l('modules_voting','[cookie_method_help]') .
 				we_htmlElement::htmlBr().we_htmlElement::htmlB(g_l('modules_voting','[ip_method]')).we_htmlElement::htmlBr().
@@ -640,10 +640,10 @@ class weVotingFrames extends weModuleFrames {
 
 		$table->setCol(2,0,array('colspan'=>2),we_forms::radiobutton(1, ($this->View->voting->RevoteControl==1 ? true : false), 'RevoteControl', g_l('modules_voting','[cookie_method]') ,true, "defaultfont", "top.content.setHot();"));
 
-		$table->setColContent(3,0,getPixel(10,5));
+		$table->setColContent(3,0,we_html_tools::getPixel(10,5));
 		$table->setColContent(3,1,we_forms::checkboxWithHidden($this->View->voting->FallbackIp ? true : false, 'FallbackIp', g_l('modules_voting','[fallback]') ,false, "defaultfont", "top.content.setHot();"));
 
-		$table->setColContent(4,0,getPixel(10,10));
+		$table->setColContent(4,0,we_html_tools::getPixel(10,10));
 
 		$table->setCol(5,0,array('colspan'=>2),we_forms::radiobutton(0, ($this->View->voting->RevoteControl==0 ? true : false), 'RevoteControl', g_l('modules_voting','[ip_method]') ,true, "defaultfont", "top.content.setHot();"));
 
@@ -652,10 +652,10 @@ class weVotingFrames extends weModuleFrames {
 		$table->setColContent(6,1,we_forms::checkboxWithHidden($this->View->voting->UserAgent ? true : false, 'UserAgent', g_l('modules_voting','[save_user_agent]') ,false, "defaultfont", "top.content.setHot();"));
 
 		$table->setCol(7,1,array('id'=>'delete_ip_data','style'=>'display: ' . ($datasize>0 ? 'block' : 'none')),
-								htmlAlertAttentionBox(sprintf(g_l('modules_voting','[delete_ipdata_text]'),we_htmlElement::htmlSpan(array('id'=>'ip_mem_size'),$datasize)),2,($this->_width_size-20),false,100) .
+								we_html_tools::htmlAlertAttentionBox(sprintf(g_l('modules_voting','[delete_ipdata_text]'),we_htmlElement::htmlSpan(array('id'=>'ip_mem_size'),$datasize)),2,($this->_width_size-20),false,100) .
 								we_button::create_button('delete','javascript:we_cmd(\'reset_ipdata\')')
 		);
-		$table->setColContent(8,0,getPixel(10,5));
+		$table->setColContent(8,0,we_html_tools::getPixel(10,5));
 		$table->setCol(9,0,array('colspan'=>2),we_forms::radiobutton(2, ($this->View->voting->RevoteControl==2 ? true : false), 'RevoteControl', g_l('modules_voting','[userid_method]') ,true, "defaultfont", "top.content.setHot();"));
 
 
@@ -663,7 +663,7 @@ class weVotingFrames extends weModuleFrames {
 					'headline'=>g_l('modules_voting','[headline_revote]'),
 					'html'=>htmlAlertAttentionBox(g_l('modules_voting','[time_after_voting_again_help]'), 2,$this->_width_size,false,100).
 							we_htmlElement::htmlBr().
-							htmlFormElementTable($selectTime->getHtmlCode(),g_l('modules_voting','[time_after_voting_again]')) .
+						we_html_tools::htmlFormElementTable($selectTime->getHtmlCode(),g_l('modules_voting','[time_after_voting_again]')) .
 							we_htmlElement::htmlBr().
 							$table->getHtmlCode() ,
 					'space'=>$this->_space_size
@@ -671,7 +671,7 @@ class weVotingFrames extends weModuleFrames {
 		);
 
 		$table = new we_htmlTable(array('id'=>'LogData','style'=>'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';','cellpadding' => 2,'cellspacing' => 2,"border"=>0),1,2);
-		$table->setColContent(0,0,getPixel(10,5));
+		$table->setColContent(0,0,we_html_tools::getPixel(10,5));
 		$table->setColContent(0,1,
 			we_button::position_yes_no_cancel(
 												we_button::create_button('logbook','javascript:we_cmd(\'show_log\')'),
@@ -699,7 +699,7 @@ class weVotingFrames extends weModuleFrames {
 
 
 		$table = new we_htmlTable(array('id'=>'RestrictIPDiv','style'=>'display: ' . ($this->View->voting->RestrictIP ? 'block' : 'none') . ';','cellpadding' => 2,'cellspacing' => 2,"border"=>0),2,2);
-		$table->setColContent(0,0,getPixel(10,5));
+		$table->setColContent(0,0,we_html_tools::getPixel(10,5));
 		$table->setColContent(0,1,we_htmlElement::htmlDiv(array('id'=>'iptable','class'=>'blockWrapper','style'=>'width: '.($this->_width_size-10).'px; height: 60px; border: #AAAAAA solid 1px;padding: 5px;')));
 
 		$table->setCol(1,0,array('colspan'=>'2','align'=>'right'),
@@ -793,12 +793,12 @@ class weVotingFrames extends weModuleFrames {
 				$table->setCol($i,0,array('style'=>'width: '.($this->_width_size-150).'px'),we_htmlElement::htmlSpan(array('id'=>'answers_score_' . $key), htmlspecialchars(stripslashes($value))));
 				$table->setColContent($i,1,$pb->getJS().$pb->getHTML());
 				$table->setColContent($i,2,'&nbsp;');
-				$table->setColContent($i,3,htmlTextInput('scores_'.$key,4,$this->View->voting->Scores[$key],'','id="scores_'.$key.'" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value='.$this->View->voting->Scores[$key].'; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));
+				$table->setColContent($i,3,we_html_tools::htmlTextInput('scores_'.$key,4,$this->View->voting->Scores[$key],'','id="scores_'.$key.'" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value='.$this->View->voting->Scores[$key].'; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));
 				$i++;
 			}
 		}
 	    $table->addRow();
-	    $table->setColContent($i,0,we_htmlElement::htmlB(g_l('modules_voting','[total_voting]').':').hidden("updateScores","false",array("id"=>'updateScores')));
+	    $table->setColContent($i,0,we_htmlElement::htmlB(g_l('modules_voting','[total_voting]').':').we_html_tools::hidden("updateScores","false",array("id"=>'updateScores')));
 	    $table->setCol($i,3,array('colspan'=>3),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'total'),$total_score)));
 
 	    $butt = we_button::create_button("reset_score", "javascript:top.content.setHot();resetScores();");
@@ -858,9 +858,9 @@ class weVotingFrames extends weModuleFrames {
 
 		$export_box=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),10,1);
 
-		$export_box->setCol(0,0,array(),getPixel(10,10));
-		$export_box->setCol(1,0,array(),htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),g_l('export','[dir]')));
-		$export_box->setCol(2,0,array(),getPixel(5,5));
+		$export_box->setCol(0,0,array(),we_html_tools::getPixel(10,10));
+		$export_box->setCol(1,0,array(),we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size-130,'csv_dir','/','','folder'),g_l('export','[dir]')));
+		$export_box->setCol(2,0,array(),we_html_tools::getPixel(5,5));
 
 		$lineend = new we_htmlSelect(array('name'=>'csv_lineend','size'=>'1','class'=>'defaultfont','style'=>'width: '.$this->_width_size.'px'));
 		$lineend->addOption('windows', g_l('export','[windows]'));
@@ -878,12 +878,12 @@ class weVotingFrames extends weModuleFrames {
 		$enclose->addOption(0,g_l('export','[double_quote]'));
 		$enclose->addOption(1,g_l('export','[single_quote]'));
 
-		$export_box->setCol(3, 0, array("class" => "defaultfont"), htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
-		$export_box->setColContent(4,0,getPixel(5,5));
-		$export_box->setColContent(5,0, htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
-		$export_box->setColContent(6,0,getPixel(5,5));
-		$export_box->setColContent(7,0, htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
-		$export_box->setColContent(8,0,getPixel(5,15));
+		$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
+		$export_box->setColContent(4,0,we_html_tools::getPixel(5,5));
+		$export_box->setColContent(5,0, we_html_tools::htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
+		$export_box->setColContent(6,0,we_html_tools::getPixel(5,5));
+		$export_box->setColContent(7,0, we_html_tools::htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
+		$export_box->setColContent(8,0,we_html_tools::getPixel(5,15));
 		$export_box->setCol(9,0,array("nowrap"=>null),
 						we_button::create_button_table(array($ok))
 		);
@@ -1044,22 +1044,22 @@ class weVotingFrames extends weModuleFrames {
 
 			$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),7,1);
 
-			$table->setCol(0,0,array(),getPixel(5,5));
+			$table->setCol(0,0,array(),we_html_tools::getPixel(5,5));
 
 			$table->setCol(1,0,array("class"=>"defaultfont"),sprintf(g_l('modules_voting','[csv_export]'),$link));
 
-			$table->setCol(2,0,array(),getPixel(5,10));
+			$table->setCol(2,0,array(),we_html_tools::getPixel(5,10));
 
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBrowser.class.php');
 
 			$table->setCol(3,0,array("class"=>"defaultfont"),weBrowser::getDownloadLinkText());
-			$table->setCol(4,0,array(),getPixel(5,10));
+			$table->setCol(4,0,array(),we_html_tools::getPixel(5,10));
 			$table->setCol(5,0,array("class"=>"defaultfont"),
 				we_htmlElement::htmlA(array("href"=>$down),
 					g_l('modules_voting','[csv_download]')
 				)
 			);
-			$table->setCol(6,0,array(),getPixel(100,10));
+			$table->setCol(6,0,array(),we_html_tools::getPixel(100,10));
 
 
 			$close = we_button::create_button("close","javascript:self.close();");
@@ -1068,7 +1068,7 @@ class weVotingFrames extends weModuleFrames {
 			$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
 								we_htmlElement::htmlForm(array("name"=>"we_form","method"=>"post"),
 									we_htmlElement::htmlHidden(array("name"=>"group","value"=>(isset($group) ? $group : ""))).
-									htmlDialogLayout(
+									we_html_tools::htmlDialogLayout(
 															$table->getHtmlCode(),
 															g_l('modules_voting','[csv_download]'),
 															we_button::position_yes_no_cancel(null,$close,null),"100%","30",350)
@@ -1093,22 +1093,22 @@ class weVotingFrames extends weModuleFrames {
 
 			$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),7,1);
 
-			$table->setCol(0,0,array(),getPixel(5,5));
+			$table->setCol(0,0,array(),we_html_tools::getPixel(5,5));
 
 			$table->setCol(1,0,array("class"=>"defaultfont"),sprintf(g_l('modules_voting','[csv_export]'),$link));
 
-			$table->setCol(2,0,array(),getPixel(5,10));
+			$table->setCol(2,0,array(),we_html_tools::getPixel(5,10));
 
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBrowser.class.php');
 
 			$table->setCol(3,0,array("class"=>"defaultfont"),weBrowser::getDownloadLinkText());
-			$table->setCol(4,0,array(),getPixel(5,10));
+			$table->setCol(4,0,array(),we_html_tools::getPixel(5,10));
 			$table->setCol(5,0,array("class"=>"defaultfont"),
 				we_htmlElement::htmlA(array("href"=>$down),
 					g_l('modules_voting','[csv_download]')
 				)
 			);
-			$table->setCol(6,0,array(),getPixel(100,10));
+			$table->setCol(6,0,array(),we_html_tools::getPixel(100,10));
 
 
 			$close = we_button::create_button("close","javascript:self.close();");
@@ -1117,7 +1117,7 @@ class weVotingFrames extends weModuleFrames {
 			$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
 								we_htmlElement::htmlForm(array("name"=>"we_form","method"=>"post"),
 									we_htmlElement::htmlHidden(array("name"=>"group","value"=>(isset($group) ? $group : ""))).
-									htmlDialogLayout(
+									we_html_tools::htmlDialogLayout(
 															$table->getHtmlCode(),
 															g_l('modules_voting','[csv_download]'),
 															we_button::position_yes_no_cancel(null,$close,null),"100%","30",350)
@@ -1138,12 +1138,12 @@ class weVotingFrames extends weModuleFrames {
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 	  	$button =  we_button::create_button("select","javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
-		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,"",'readonly onchange="top.content.setHot();"',"text",$width,0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName,30,$IDValue,"",'readonly onchange="top.content.setHot();"',"text",$width,0),
 			"",
 			"left",
 			"defaultfont",
 			"",
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
@@ -1153,7 +1153,7 @@ class weVotingFrames extends weModuleFrames {
 		$close = we_button::create_button("close","javascript:self.close();");
 
 		$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
-				htmlDialogLayout(
+				we_html_tools::htmlDialogLayout(
 										we_htmlElement::htmlSpan(array('class'=>'defaultfont'),g_l('modules_voting','[data_deleted_info]')),
 										g_l('modules_voting','[voting]'),
 										we_button::position_yes_no_cancel(null,$close,null)) .
@@ -1170,7 +1170,7 @@ class weVotingFrames extends weModuleFrames {
 		$close = we_button::create_button("close","javascript:self.close();");
 
 		$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
-				htmlDialogLayout(
+				we_html_tools::htmlDialogLayout(
 										we_htmlElement::htmlSpan(array('class'=>'defaultfont'),g_l('modules_voting','[data_deleted_info]')),
 										g_l('modules_voting','[voting]'),
 										we_button::position_yes_no_cancel(null,$close,null)) .
@@ -1270,11 +1270,11 @@ class weVotingFrames extends weModuleFrames {
 				$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 			}
 
-			$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size - $start + 1)."&nbsp;-&nbsp;";
+			$nextprev .= we_html_tools::getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size - $start + 1)."&nbsp;-&nbsp;";
 
 			$nextprev .= ($size - $next);
 
-			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".we_html_tools::getPixel(23,1);
 
 			if($next > 0){
 				$nextprev .= we_button::create_button("next", $this->frameset . "?pnt=show_log&start=".$next); //bt_next
@@ -1287,7 +1287,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$parts[]=array(
 					'headline' => '',
-					'html' => htmlDialogBorder3(730,300,$content,$headline) . $nextprev,
+					'html' => we_html_tools::htmlDialogBorder3(730,300,$content,$headline) . $nextprev,
 					'space' => 0,
 					'noline'=>1
 
@@ -1417,11 +1417,11 @@ class weVotingFrames extends weModuleFrames {
 				$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 			}
 
-			$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size - $start + 1)."&nbsp;-&nbsp;";
+			$nextprev .= we_html_tools::getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size - $start + 1)."&nbsp;-&nbsp;";
 
 			$nextprev .= ($size - $next);
 
-			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".we_html_tools::getPixel(23,1);
 
 			if($next > 0){
 				$nextprev .= we_button::create_button("next", $this->frameset . "?pnt=show_log&start=".$next); //bt_next
@@ -1434,7 +1434,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$parts[]=array(
 					'headline' => '',
-					'html' => htmlDialogBorder4(1000,300,$content,$headline) . $nextprev,
+					'html' => we_html_tools::htmlDialogBorder4(1000,300,$content,$headline) . $nextprev,
 					'space' => 0,
 					'noline'=>1
 
@@ -1550,11 +1550,11 @@ class weVotingFrames extends weModuleFrames {
 				$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 			}
 
-			$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size - $start + 1)."&nbsp;-&nbsp;";
+			$nextprev .= we_html_tools::getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($size - $start + 1)."&nbsp;-&nbsp;";
 
 			$nextprev .= ($size - $next);
 
-			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".getPixel(23,1);
+			$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($size+1)."</b></td><td>".we_html_tools::getPixel(23,1);
 
 			if($next > 0){
 				$nextprev .= we_button::create_button("next", $this->frameset . "?pnt=show_log&start=".$next); //bt_next
@@ -1567,7 +1567,7 @@ class weVotingFrames extends weModuleFrames {
 
 			$parts[]=array(
 					'headline' => '',
-					'html' => htmlDialogBorder3(730,300,$content,$headline) . $nextprev,
+					'html' => we_html_tools::htmlDialogBorder3(730,300,$content,$headline) . $nextprev,
 					'space' => 0,
 					'noline'=>1
 
@@ -1600,7 +1600,7 @@ class weVotingFrames extends weModuleFrames {
 		$close = we_button::create_button("close","javascript:self.close();");
 
 		$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
-				htmlDialogLayout(
+				we_html_tools::htmlDialogLayout(
 										we_htmlElement::htmlSpan(array('class'=>'defaultfont'),g_l('modules_voting','[data_deleted_info]')),
 										g_l('modules_voting','[voting]'),
 										we_button::position_yes_no_cancel(null,$close,null)) .

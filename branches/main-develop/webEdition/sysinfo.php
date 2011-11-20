@@ -26,9 +26,6 @@
 
 		protect();
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/lib/we/core/autoload.php");
 
 

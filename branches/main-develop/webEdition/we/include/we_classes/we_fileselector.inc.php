@@ -24,8 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
 
 protect();
@@ -247,7 +245,6 @@ class we_fileselector{
 
 
 	function printFramesetHTML(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 		htmltop();
 		print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js" ));
@@ -481,7 +478,7 @@ function queryString(what,id,o){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
@@ -506,8 +503,8 @@ function writeBody(d){
 		d.writeln(link+cutText(entries[i].text,70)+'</a>');
 		d.writeln('</td></tr>');
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(200,2)?></td></tr>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(200,2)?></td></tr>');
 	}
 	d.writeln('</table></body>');
 	d.close();
@@ -596,7 +593,7 @@ function clearEntries(){
 	##############################################
 
 	function printHeaderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		print STYLESHEET;
 		$this->setDirAndID();
 		$this->printHeaderJSIncluddes();
@@ -644,7 +641,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 
 	function printHeaderTableSpaceRow(){
 		print '				<tr>
-					<td colspan="9">'.getPixel(5,10).'</td>
+					<td colspan="9">'.we_html_tools::getPixel(5,10).'</td>
 				</tr>
 ';
 
@@ -679,9 +676,9 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 ';
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="70" class="defaultfont"><b>'.g_l('fileselector',"[lookin]").'</b></td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 ';
@@ -689,11 +686,11 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 
 		print '</select>
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '
 					</td>
@@ -701,7 +698,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 ';
 		$this->printHeaderTableExtraCols();
 
-		print '				<td width="10">'.getPixel(10,29).'</td></tr>
+		print '				<td width="10">'.we_html_tools::getPixel(10,29).'</td></tr>
 ';
 		$this->printHeaderTableSpaceRow();
 
@@ -712,12 +709,12 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
 					<td class="selector"><b><a href="#" onClick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('fileselector',"[filename]").'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td>'.getPixel(200,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td>'.we_html_tools::getPixel(200,1).'</td>
 				</tr>
 			</table>
 ';
@@ -824,7 +821,7 @@ top.fsheader.selectIt();
 	##############################################
 
 	function printFooterHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 
 		print STYLESHEET;
 
@@ -870,7 +867,7 @@ top.fsheader.selectIt();
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
 		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
@@ -885,21 +882,21 @@ top.fsheader.selectIt();
 						<b>'.g_l('fileselector',"[name]").'</b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
+					<td class="defaultfont" align="left">'.we_html_tools::htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td width="70">'.getPixel(70,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td>'.getPixel(5,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td width="70">'.we_html_tools::getPixel(70,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td>'.we_html_tools::getPixel(5,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right">'.$buttons.'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table>';
 	}
@@ -911,7 +908,7 @@ top.fsheader.selectIt();
 			case $objectTable:
 			case TEMPLATES_TABLE:
 				$this->col2js = "entries[i].ID";
-				$this->tableSizer = "<td>".getPixel( 25,1)."</td><td>".getPixel(350,1)."</td><td>".getPixel(70,1)."</td><td>".getPixel(150,1)."</td>";
+				$this->tableSizer = "<td>".we_html_tools::getPixel( 25,1)."</td><td>".we_html_tools::getPixel(350,1)."</td><td>".we_html_tools::getPixel(70,1)."</td><td>".we_html_tools::getPixel(150,1)."</td>";
 				$this->tableHeadlines  = "
 					<td></td>
 					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>".g_l('fileselector','[filename]')."</a></b></td>
@@ -921,7 +918,7 @@ top.fsheader.selectIt();
 				break;
 			default:
 				$this->col2js = "entries[i].title";
-				$this->tableSizer = "<td>".getPixel( 25,1)."</td><td>".getPixel(200,1)."</td><td>".getPixel(220,1)."</td><td>".getPixel(150,1)."</td>";
+				$this->tableSizer = "<td>".we_html_tools::getPixel( 25,1)."</td><td>".we_html_tools::getPixel(200,1)."</td><td>".we_html_tools::getPixel(220,1)."</td><td>".we_html_tools::getPixel(150,1)."</td>";
 				$this->tableHeadlines  = "
 					<td></td>
 					<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"IsFolder DESC, Text\");'>".g_l('fileselector','[filename]')."</a></b></td>

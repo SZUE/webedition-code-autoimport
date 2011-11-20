@@ -47,7 +47,7 @@ if(sizeof($messaging->selected_message) == 0){
 $format = new we_format('view', $messaging->selected_message);
 $format->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
-htmlTop();
+we_html_tools::htmlTop();
 
 protect();
 
@@ -88,7 +88,7 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 				);
 
 	
-	$html = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">'. $messaging->selected_message['hdrs']['status'].'%</td><td>'.getPixel(20,2).
+	$html = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">'. $messaging->selected_message['hdrs']['status'].'%</td><td>'.we_html_tools::getPixel(20,2).
 				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>'.we_button::create_button(
 								"percent100",
 								"javascript:todo_markdone()").'</td>' : '') . '</tr></table>';

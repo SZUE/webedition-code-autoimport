@@ -82,15 +82,15 @@ $parts  = array();
 // WYSIWYG && FORBIDHTML && FORBIDPHP
 $vals = array('off' => 'false', 'on' => 'true');
 $selected = (isset ($we_doc->elements[$name."dhtmledit"]) && isset ($we_doc->elements[$name."dhtmledit"]["dat"]) && $we_doc->elements[$name."dhtmledit"]["dat"]=="on") ? 'on' : 'off';
-$wysiwyg = htmlSelect("dhtmledit",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$wysiwyg = we_html_tools::htmlSelect("dhtmledit",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $vals = array('off' => 'false', 'on' => 'true');
 $selected =  (isset ($we_doc->elements[$name."forbidhtml"]) && isset ($we_doc->elements[$name."forbidhtml"]["dat"]) && $we_doc->elements[$name."forbidhtml"]["dat"]=="on") ? 'on' : 'off';
-$forbidhtml = htmlSelect("forbidhtml",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$forbidhtml = we_html_tools::htmlSelect("forbidhtml",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $vals = array('off' => 'false', 'on' => 'true');
 $selected = ( (!isset ($we_doc->elements[$name."forbidphp"]["dat"])) || $we_doc->elements[$name."forbidphp"]["dat"]=="on" ? 'on' : 'off');
-$forbidphp = htmlSelect("forbidphp",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$forbidphp = we_html_tools::htmlSelect("forbidphp",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'<tr>'
@@ -99,12 +99,12 @@ $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'	<td class="defaultfont" align="right">forbidhtml&nbsp;</td><td>'.$forbidhtml.'</td>'
 		.	'</tr>'
 		.	'<tr>'
-		.	'	<td>'.getPixel(70,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(95,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(140,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(70,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(95,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(140,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
 		.	'</tr>'
 		.	'</table>';
 
@@ -118,11 +118,11 @@ array_push($parts, array(
 // XML && REMOVEFIRSTPARAGRAPH
 $vals = array('off' => 'false', 'on' => 'true');
 $selected = ( (!isset ($we_doc->elements[$name."xml"]["dat"])) || $we_doc->elements[$name."xml"]["dat"]=="on" ? 'on' : 'off');
-$xml = htmlSelect("xml",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$xml = we_html_tools::htmlSelect("xml",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $vals = array('off' => 'false', 'on' => 'true');
 $selected = ( (!isset ($we_doc->elements[$name."removefirstparagraph"]["dat"])) || $we_doc->elements[$name."removefirstparagraph"]["dat"]=="on" ? 'on' : 'off');
-$removefirstparagraph = htmlSelect("removefirstparagraph",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $table =	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'<tr>'
@@ -131,12 +131,12 @@ $table =	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'	<td class="defaultfont" align="right">removefirstparagraph&nbsp;</td><td>'.$removefirstparagraph.'</td>'
 		.	'</tr>'
 		.	'<tr>'
-		.	'	<td>'.getPixel(70,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(95,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(140,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(70,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(95,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(140,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
 		.	'</tr>'
 		.	'</table>';
 
@@ -151,11 +151,11 @@ array_push($parts, array(
 // INLINEEDIT && SHOWMENUS
 $vals = array('off' => 'false', 'on' => 'true');
 $selected = ( (!isset ($we_doc->elements[$name."inlineedit"]["dat"])) || $we_doc->elements[$name."inlineedit"]["dat"]=="on" ? 'on' : 'off');
-$inlineedit = htmlSelect("inlineedit",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$inlineedit = we_html_tools::htmlSelect("inlineedit",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $vals = array('off' => 'false', 'on' => 'true');
 $selected = ( (!isset ($we_doc->elements[$name."showmenus"]["dat"])) || $we_doc->elements[$name."showmenus"]["dat"]=="on" ? 'on' : 'off');
-$showmenus = htmlSelect("showmenus",$vals,1,$selected,false,'class="defaultfont"','value',60);
+$showmenus = we_html_tools::htmlSelect("showmenus",$vals,1,$selected,false,'class="defaultfont"','value',60);
 
 $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'<tr>'
@@ -164,12 +164,12 @@ $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'	<td class="defaultfont" align="right">showmenus&nbsp;</td><td>'.$showmenus.'</td>'
 		.	'</tr>'
 		.	'<tr>'
-		.	'	<td>'.getPixel(70,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(95,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(140,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(70,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(95,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(140,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
 		.	'</tr>'
 		.	'</table>';
 
@@ -184,17 +184,17 @@ array_push($parts, array(
 // WIDTH & HEIGHT
 $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'<tr>'
-		.	'	<td class="defaultfont" align="right">width&nbsp;</td><td>'.htmlTextInput('width',24,$we_doc->elements[$name."width"]["dat"],3,'','text',60,0).'</td>'
-		.	'	<td class="defaultfont" align="right">height&nbsp;</td><td>'.htmlTextInput('height',24,$we_doc->elements[$name."height"]["dat"],3,'','text',60,0).'</td>'
+		.	'	<td class="defaultfont" align="right">width&nbsp;</td><td>'.we_html_tools::htmlTextInput('width',24,$we_doc->elements[$name."width"]["dat"],3,'','text',60,0).'</td>'
+		.	'	<td class="defaultfont" align="right">height&nbsp;</td><td>'.we_html_tools::htmlTextInput('height',24,$we_doc->elements[$name."height"]["dat"],3,'','text',60,0).'</td>'
 		.	'	<td class="defaultfont" align="right"></td><td></td>'
 		.	'</tr>'
 		.	'<tr>'
-		.	'	<td>'.getPixel(70,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(95,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
-		.	'	<td>'.getPixel(140,1).'</td>'
-		.	'	<td>'.getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(70,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(95,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(140,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(60,1).'</td>'
 		.	'</tr>'
 		.	'</table>';
 
@@ -214,8 +214,8 @@ $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'</td>'
 		.	'</tr>'
 		.	'<tr>'
-		.	'	<td>'.getPixel(70,1).'</td>'
-		.	'	<td>'.getPixel(415,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(70,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(415,1).'</td>'
 		.	'</tr>'
 		.	'</table>';
 
@@ -229,7 +229,7 @@ array_push($parts, array(
 // COMMANDS
 $vals = makeArrayFromCSV(",,".WE_WYSIWYG_COMMANDS);
 sort($vals);
-$select = htmlSelect("tmp_commands",$vals,1,"",false,'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
+$select = we_html_tools::htmlSelect("tmp_commands",$vals,1,"",false,'onchange="var elem=document.getElementById(\'commands\'); var txt = this.options[this.selectedIndex].text; if(elem.value.indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + \',\' + txt) : txt;}this.selectedIndex=-1"');
 
 $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'<tr>'
@@ -238,8 +238,8 @@ $table = 	'<table border="0" cellpadding="0" cellspacing="0">'
 		.	'</td>'
 		.	'</tr>'
 		.	'<tr>'
-		.	'	<td>'.getPixel(70,1).'</td>'
-		.	'	<td>'.getPixel(415,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(70,1).'</td>'
+		.	'	<td>'.we_html_tools::getPixel(415,1).'</td>'
 		.	'</tr>'
 		.	'</table>';
 

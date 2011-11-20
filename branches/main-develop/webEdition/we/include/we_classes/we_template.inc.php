@@ -611,7 +611,7 @@ function handleShutdown($code) {
 			"left",
 			"defaultfont",
 			"",
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button);
 	}
 
@@ -627,11 +627,11 @@ function handleShutdown($code) {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(20,4).'</td>
+						'.we_html_tools::getPixel(20,4).'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
-						'.getPixel(100,2).'</td>
+						'.we_html_tools::getPixel(100,2).'</td>
 				</tr>
 				<tr>
 					<td class="defaultfont" colspan="3">' . $l_we_cache['cache_lifetime'] . '</td>

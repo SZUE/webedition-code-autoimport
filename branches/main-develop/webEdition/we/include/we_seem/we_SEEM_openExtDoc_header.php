@@ -45,10 +45,10 @@
 								2,
 								4);
 
-	$_table->setColContent(0, 0, getPixel(20,6));
-	$_table->setColContent(1, 0, getPixel(1,1));
+	$_table->setColContent(0, 0, we_html_tools::getPixel(20,6));
+	$_table->setColContent(1, 0, we_html_tools::getPixel(1,1));
 	$_table->setColContent(1, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif", "width" => 25, "height" => 27)));
-	$_table->setColContent(1, 2, getPixel(9,1));
+	$_table->setColContent(1, 2, we_html_tools::getPixel(9,1));
 	$_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg );
 
 

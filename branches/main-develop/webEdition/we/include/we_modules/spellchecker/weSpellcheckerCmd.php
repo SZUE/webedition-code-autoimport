@@ -2,9 +2,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 if(empty($_SESSION["user"]["Username"])) {
@@ -19,7 +16,7 @@ if(empty($_SESSION["user"]["Username"])) {
 	protect();
 }
 
-htmlTop();
+we_html_tools::htmlTop();
 
 function saveSettings($default,$active,$langs=array()) {
 

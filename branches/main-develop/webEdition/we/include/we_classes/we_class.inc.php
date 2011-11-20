@@ -174,9 +174,9 @@ abstract class we_class{
 		}
 
 		$out .='</td>
-			<td>' . getPixel(6, 4) . '</td>
+			<td>' . we_html_tools::getPixel(6, 4) . '</td>
 			<td>' . $but . '</td>
-			<td>' . getPixel(5, 2) . '</td>
+			<td>' . we_html_tools::getPixel(5, 2) . '</td>
 			<td>' . $trashbut . '</td>
 		</tr>
 ';
@@ -196,7 +196,7 @@ abstract class we_class{
 			$width -= 4;
 		}
 		$formname = "we_" . $this->Name . "_" . $type . "[$name]";
-		$out = $this->htmlHidden($formname, $this->getElement($name)) . '<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . getPixel($width, $height) . '</a></td></tr></table>';
+		$out = $this->htmlHidden($formname, $this->getElement($name)) . '<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 		return g_l('weClass','['.$name.']')!==false ? $this->htmlFormElementTable($out, g_l('weClass','['.$name.']')) : $out;
 	}
 
@@ -260,7 +260,7 @@ abstract class we_class{
 	}
 
 	function htmlTextInput($name, $size=24, $value="", $maxlength="", $attribs="", $type="text", $width="0", $height="0") {
-		return htmlTextInput($name, $size, $value, $maxlength, $attribs, $type, $width, $height);
+		return we_html_tools::htmlTextInput($name, $size, $value, $maxlength, $attribs, $type, $width, $height);
 	}
 
 	function htmlHidden($name, $value="", $params=null) {
@@ -341,7 +341,7 @@ abstract class we_class{
 	}
 
 	function htmlFormElementTable($element, $text, $textalign="left", $textclass="defaultfont", $col2="", $col3="", $col4="", $col5="", $col6="") {
-		return htmlFormElementTable($element, $text, $textalign, $textclass, $col2, $col3, $col4, $col5, $col6);
+		return we_html_tools::htmlFormElementTable($element, $text, $textalign, $textclass, $col2, $col3, $col4, $col5, $col6);
 	}
 
 	############## new fns
@@ -390,7 +390,7 @@ abstract class we_class{
 			$pop = $this->htmlSelect($myname . "Tmp", $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 
 			if ($precode || $postcode) {
-				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
+				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . we_html_tools::getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . we_html_tools::getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
 			}
 
 			return $this->htmlHidden($myname, $selectedIndex) . $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
@@ -399,7 +399,7 @@ abstract class we_class{
 				eval('$ps=$this->' . $name . ";");
 			$pop = $this->htmlSelect($myname, $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 			if ($precode || $postcode) {
-				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
+				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . we_html_tools::getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . we_html_tools::getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
 			}
 			return $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
 		}

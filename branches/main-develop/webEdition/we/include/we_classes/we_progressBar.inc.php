@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 define("PROGRESS_H_IMAGE", IMAGE_DIR . 'balken.gif');
 define("PROGRESS_H_IMAGE_BG", IMAGE_DIR . 'balken_bg.gif');
 
@@ -187,14 +186,14 @@ class we_progressBar{
 			switch($text["place"]){
 				case 0:
 					$top.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
-					$top.='<td>' . getPixel(5, $text["height"]) . '</td>';
+					$top.='<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
 					break;
 				case 1:
 					$right.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
 					break;
 				case 2:
 					$bottom.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
-					$bottom.='<td>' . getPixel(5, $text["height"]) . '</td>';
+					$bottom.='<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
 					break;
 				case 3:
 					$left.='<td ' . ($text["name"] != "" ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
@@ -213,7 +212,7 @@ class we_progressBar{
 		}
 
 		$out.='<table border="0" cellpadding="0" cellspacing="0">' . "\r\n";
-		$out.='<tr>' . ($left != "" ? $left . "<td>" . getPixel(5, 1) . "</td>" : "");
+		$out.='<tr>' . ($left != "" ? $left . "<td>" . we_html_tools::getPixel(5, 1) . "</td>" : "");
 
 		if($this->orientation == 1){
 			$out.='<td><table border="0" cellpadding="0" cellspacing="0">' . ($this->showBack ? '<tr><td><img name="progress_image_bg" src="' . $this->progress_image_bg . '" height="' . $rest_len . '" width="' . $this->stud_width . '" /></td></tr>' : "") . '<tr><td><img  name="progress_image" src="' . $this->progress_image . '" height="' . $progress_len . '" width="' . $this->stud_width . '" /></td></tr></table></td>';
@@ -221,7 +220,7 @@ class we_progressBar{
 			$out.='<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' . ($this->showBack ? '<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' : "");
 		}
 
-		$out.=($right != "" ? "<td>" . getPixel(5, 1) . "</td>" . $right : "") . "</tr>";
+		$out.=($right != "" ? "<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right : "") . "</tr>";
 		$out.="</table>";
 
 		if($bottom != ""){

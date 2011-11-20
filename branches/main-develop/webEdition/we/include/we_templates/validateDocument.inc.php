@@ -35,7 +35,7 @@
     //  when the server is accessible via web
 
     protect();
-    htmlTop();
+    we_html_tools::htmlTop();
 
     //  for predefined services include properties file, depending on content-Type
     //  and depending on fileending.
@@ -107,13 +107,13 @@
         }
         $_select .= '</optgroup></optgroup></select>';
         $selectedService = $validationService[0];
-        $_hiddens = hidden('host', $selectedService->host) .
-                    hidden('path', $selectedService->path) .
-                    hidden('ctype', $selectedService->ctype) .
-                    hidden('s_method', $selectedService->method) .
-                    hidden('checkvia', $selectedService->checkvia) .
-                    hidden('varname', $selectedService->varname) .
-                    hidden('additionalVars',$selectedService->additionalVars);
+        $_hiddens = we_html_tools::hidden('host', $selectedService->host) .
+                    we_html_tools::hidden('path', $selectedService->path) .
+                    we_html_tools::hidden('ctype', $selectedService->ctype) .
+                    we_html_tools::hidden('s_method', $selectedService->method) .
+                    we_html_tools::hidden('checkvia', $selectedService->checkvia) .
+                    we_html_tools::hidden('varname', $selectedService->varname) .
+                    we_html_tools::hidden('additionalVars',$selectedService->additionalVars);
     } else {
         $_select = g_l('validation','[no_services_available]');
     }
@@ -211,9 +211,9 @@
                                     <td class="defaultfont">' .
                                     $_select .
                                     $_hiddens .
-                                    '</td><td>' . getPixel(20,5). '</td><td>' .
+                                    '</td><td>' . we_html_tools::getPixel(20,5). '</td><td>' .
                                     $button->create_button('edit','javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !we_hasPerm("CAN_EDIT_VALIDATION"))
-                                    . '</td><td>' . getPixel(20,5). '</td><td>' .
+                                    . '</td><td>' . we_html_tools::getPixel(20,5). '</td><td>' .
                                     $button->create_button('ok','javascript:we_cmd(\'checkDocument\')',true,100,22,'','',(!sizeof($services) > 0))
                                     . '</td></tr></table>'
                             ,'space'=>95));
@@ -223,7 +223,7 @@
 
     $body = '
         <form name="we_form">'
-        . hidden('we_transaction',(preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0))
+        . we_html_tools::hidden('we_transaction',(preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0))
         . we_multiIconBox::getHTML('weDocValidation',"100%",$parts,20,'',-1,'','',false) .
         '</form>'
         ;

@@ -23,8 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_logging/versions/versionsLogView.class.php");
 
 protect();
@@ -33,7 +31,7 @@ $versionsLogView = new versionsLogView();
 $content = $versionsLogView->getContent();
 $out = $versionsLogView->printContent($content);
 
-htmlTop(g_l('versions','[versions_log]'));
+we_html_tools::htmlTop(g_l('versions','[versions_log]'));
 
 print STYLESHEET;
 

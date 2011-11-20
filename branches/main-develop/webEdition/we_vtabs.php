@@ -24,9 +24,8 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 
 $showDocuments = we_hasPerm("CAN_SEE_DOCUMENTS") || we_hasPerm("ADMINISTRATOR");

@@ -30,7 +30,7 @@
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
     protect();
-    htmlTop();
+    we_html_tools::htmlTop();
 
     //  css for webSite
     print STYLESHEET;
@@ -148,10 +148,10 @@
                 $selectedService = $service;
             }
         }
-        $hiddenFields = hidden('id',$selectedService->id) .
-                        hidden('art','custom');
+        $hiddenFields = we_html_tools::hidden('id',$selectedService->id) .
+                        we_html_tools::hidden('art','custom');
     } else {
-        $hiddenFields = hidden('art','custom');
+        $hiddenFields = we_html_tools::hidden('art','custom');
         $selectArr = array();
     }
 
@@ -163,8 +163,8 @@
 
     //  table with new and delete
     $_table = '<table>
-    <tr><td>' . htmlSelect('validationService',$selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, 'onchange=we_cmd(\'customValidationService\',\'selectService\');',"value",320) . '</td>
-        <td>' . getPixel(10,2) . '</td>
+    <tr><td>' . we_html_tools::htmlSelect('validationService',$selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, 'onchange=we_cmd(\'customValidationService\',\'selectService\');',"value",320) . '</td>
+        <td>' . we_html_tools::getPixel(10,2) . '</td>
         <td valign="top">' . $button->create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
     					   . '<div style="height:10px;"></div>'
                            . $button->create_button('delete', 'javascript:we_cmd(\'customValidationService\',\'deleteService\');',true,100,22,'','',!(sizeof($services) > 0)) .'

@@ -107,7 +107,7 @@ function importFile(){
 ########################################################################
 				$content='<table border="0" cellpadding="0" cellspacing="0" width="550">
 	<tr>
-		<td>'.getPixel(550,5).'</td>
+		<td>'.we_html_tools::getPixel(550,5).'</td>
 	</tr>
 	<tr>
 		<td class="defaultfont"><b>'.g_l('importrtf',"[chose]").'</b></td>
@@ -116,7 +116,7 @@ function importFile(){
 		<td><input type="file" name="fileName" size="50" onKeyDown="return false" /></td>
 	</tr>
 	<tr>
-		<td>'.getPixel(5,10).'</td>
+		<td>'.we_html_tools::getPixel(5,10).'</td>
 	</tr>
 	<tr>
 		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontName"]) && $this->args["applyFontName"] == 1),"we_dialog_args[applyFontName]",g_l('importrtf',"[use_fontname]")).'</td>
@@ -128,7 +128,7 @@ function importFile(){
 		<td>'.we_forms::checkbox("1",(isset($this->args["applyFontColor"]) && $this->args["applyFontColor"] == 1),"we_dialog_args[applyFontColor]",g_l('importrtf',"[use_fontcolor]")).'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(5,22).'</td>
+		<td>'.we_html_tools::getPixel(5,22).'</td>
 	</tr>
 </table><input type="hidden" name="we_pageNr" value="2" />
 ';
@@ -160,7 +160,7 @@ function importFile(){
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">'.getPixel(5,22).'</td>
+		<td colspan="2">'.we_html_tools::getPixel(5,22).'</td>
 	</tr>
 </table>
 ';

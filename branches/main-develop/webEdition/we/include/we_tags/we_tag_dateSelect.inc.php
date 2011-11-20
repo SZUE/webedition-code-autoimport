@@ -162,7 +162,7 @@ WE_checkDate_' . $name . '();
 	}
 
 	$submitonchange = weTag_getAttribute("submitonchange", $attribs, false, true);
-	return getDateInput2(
+	return we_html_tools::getDateInput2(
 			"$name%s",
 			(((!isset($_REQUEST[$name])) || $_REQUEST[$name] == -1) ? time() : $_REQUEST[$name]),
 			false,

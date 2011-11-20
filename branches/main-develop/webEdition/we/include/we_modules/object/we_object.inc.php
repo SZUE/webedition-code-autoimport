@@ -898,7 +898,7 @@ class we_object extends we_document {
 			$foo = $this->getElement($name,"dat");
 			if ($type == 'shopVat') {
 				$foo = WE_SHOP_VAT_FIELD_NAME;
-				$content .= hidden("we_".$this->Name."_input[$name]", $foo);
+				$content .= we_html_tools::hidden("we_".$this->Name."_input[$name]", $foo);
 				$content .= $this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME,40,$foo,52,' readonly="readonly" disabled="disabled"',"text",388);
 			} else {
 				$foo = $foo ? $foo : g_l('modules_object','[new_field]');
@@ -1014,9 +1014,9 @@ class we_object extends we_document {
 			<option'.(($dirVal=="false") ? " selected" : "").' value="false">true
 			</select>';
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"  valign="top"></td>';
-			$content .= '<td class="defaultfont">type'.getPixel(8,2);
-			$content .= $typeSelect.getPixel(30,2)."file".getPixel(8,2);
-			$content .= $fileSelect.getPixel(30,2)."directory".getPixel(8,2);
+			$content .= '<td class="defaultfont">type'.we_html_tools::getPixel(8,2);
+			$content .= $typeSelect.we_html_tools::getPixel(30,2)."file".we_html_tools::getPixel(8,2);
+			$content .= $fileSelect.we_html_tools::getPixel(30,2)."directory".we_html_tools::getPixel(8,2);
 			$content .= $dirSelect;
 			$content .= '</td></tr>';
 			$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">'.g_l('object','[default]').'</td>';
@@ -1107,7 +1107,7 @@ class we_object extends we_document {
 			$d = abs($this->getElement($name."default","dat"));
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>';
 			$content .= '<td width="170" class="defaultfont">';
-			$content .= getDateInput2("we_".$this->Name."_date[".$name."default]",($d ? $d : time()),true);
+			$content .= we_html_tools::getDateInput2("we_".$this->Name."_date[".$name."default]",($d ? $d : time()),true);
 			$content .= '</td></tr>';
 
 			break;
@@ -1435,8 +1435,8 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			"left",
 			"defaultfont",
 			$this->htmlHidden($idname,$myid),
-			getPixel(10,4),
-			$button,getPixel(5,4),$delbutton) . ($DoubleNames ? '<span style="color:red" >' .g_l('modules_object','[incObject_sameFieldname_start]') . implode(', ',$DoubleNames). g_l('modules_object','[incObject_sameFieldname_end]') .'</span>':'');
+			we_html_tools::getPixel(10,4),
+			$button,we_html_tools::getPixel(5,4),$delbutton) . ($DoubleNames ? '<span style="color:red" >' .g_l('modules_object','[incObject_sameFieldname_start]') . implode(', ',$DoubleNames). g_l('modules_object','[incObject_sameFieldname_end]') .'</span>':'');
 		}
 	}
 
@@ -1548,16 +1548,16 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	function formUsers1($name,$nr=0){
 		$users = $this->getElement($name."users","dat") ? explode(",",$this->getElement($name."users","dat")) : array();
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">';
-		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(324,2).'</td><td>'.getPixel(26,2).'</td></tr>'."\n";
+		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(324,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr>'."\n";
 		if(sizeof($users)){
 			for($i=1;$i<(sizeof($users) -1);$i++){
 				$foo = getHash("SELECT ID,Path,Icon FROM " . USER_TABLE . " WHERE ID='".$users[$i]."'",$this->DB_WE);
 				$content .= '<tr><td><img src="'.ICON_DIR.$foo["Icon"].'" width="16" height="18" /></td><td class="defaultfont">'.$foo["Path"].'</td><td>' . we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_user_from_field','".$GLOBALS['we_transaction']."','".$nr."',".$users[$i].",'".$name."');").'</td></tr>'."\n";
 			}
 		}else{
-			$content .= '<tr><td><img src="'.ICON_DIR.'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[everybody]").'</td><td>'.getPixel(26,18).'</td></tr>'."\n";
+			$content .= '<tr><td><img src="'.ICON_DIR.'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[everybody]").'</td><td>'.we_html_tools::getPixel(26,18).'</td></tr>'."\n";
 		}
-		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(324,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
+		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(324,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr></table>'."\n";
 
 		$textname = "we_".$this->Name."_input[".$name."usertext]";
 		$idname = "we_".$this->Name."_input[".$name."userid]";
@@ -1565,7 +1565,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$addbut = $this->htmlHidden($idname,"0").$this->htmlHidden($textname,"").we_button::create_button("add", "javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','',document.forms['we_form'].elements['".$idname."'].value,'fillIDs();opener.we_cmd(\\'add_user_to_field\\',\\'".$GLOBALS['we_transaction']."\\',\\'".$nr."\\', top.allIDs,\\'".$name."\\')','','',1)");
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.
-		'<div style="width:388px;" class="multichooser">'.$content.'</div></td></tr><tr><td align="right">'.getPixel(2,4).we_button::create_button_table(array($delallbut, $addbut)).'</td></tr></table>';
+		'<div style="width:388px;" class="multichooser">'.$content.'</div></td></tr><tr><td align="right">'.we_html_tools::getPixel(2,4).we_button::create_button_table(array($delallbut, $addbut)).'</td></tr></table>';
 	}
 
 	function formUsers($canChange=true){
@@ -1574,7 +1574,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$usersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">';
-		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(333,2).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(80,2).'</td><td>'.getPixel(26,2).'</td></tr>'."\n";
+		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(333,2).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(80,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr>'."\n";
 		if(sizeof($users)){
 			for($i=0;$i<sizeof($users);$i++){
 				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='".$users[$i]."'",$this->DB_WE);
@@ -1586,7 +1586,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}else{
 			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[onlyOwner]").'</td><td></td></tr>'."\n";
 		}
-		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(333,2).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(80,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
+		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(333,2).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(80,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr></table>'."\n";
 
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
@@ -1601,7 +1601,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td><div style="width:506px;" class="multichooser">'.$content.'</div></td></tr>
-'.($canChange ? '<tr><td align="right">'.getPixel(2,6).'<br>'.we_button::create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
+'.($canChange ? '<tr><td align="right">'.we_html_tools::getPixel(2,6).'<br>'.we_button::create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
 
 		return $this->htmlFormElementTable($content,
 		g_l('weClass',"[otherowners]"),
@@ -1943,39 +1943,39 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 
 	<tr>
-		<td colspan="2" class="defaultfont" valign=top>'.g_l('modules_object','[name]').'</td><td>'.getPixel(20,20).'</td>
+		<td colspan="2" class="defaultfont" valign=top>'.g_l('modules_object','[name]').'</td><td>'.we_html_tools::getPixel(20,20).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$select.'</td>
 	</tr>
 
 	<tr>
-		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,16).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 
 	<tr>
-		<td colspan="2" class="defaultfont" valign=top>'.g_l('modules_object','[seourl]').'</td><td>'.getPixel(20,20).'</td>
+		<td colspan="2" class="defaultfont" valign=top>'.g_l('modules_object','[seourl]').'</td><td>'.we_html_tools::getPixel(20,20).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$select2.'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,16).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$this->formTriggerDocument(true).'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,16).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" valign=top>'.g_l('global',"[categorys]").'</td><td>'.getPixel(20,20).'</td><td>'.getPixel(100,2).'</td>
+		<td class="defaultfont" valign=top>'.g_l('global',"[categorys]").'</td><td>'.we_html_tools::getPixel(20,20).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$this->formCategory().'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,16).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,16).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 ';
 			$content .= '	<tr>
@@ -1985,7 +1985,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			if($this->RestrictUsers){
 				$content .= '
 	<tr>
-		<td>'.getPixel(20,10).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,10).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" >'.$this->formUsers().'</td>
@@ -2105,11 +2105,11 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(20,4).'</td>
+						'.we_html_tools::getPixel(20,4).'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
-						'.getPixel(100,2).'</td>
+						'.we_html_tools::getPixel(100,2).'</td>
 				</tr>
 				<tr>
 					<td class="defaultfont" colspan="3">' . $l_we_cache['cache_lifetime'] . '</td>
@@ -2601,7 +2601,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			"left",
 			"defaultfont",
 			$this->htmlHidden($idname,$pathID),
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button);
 	}
 

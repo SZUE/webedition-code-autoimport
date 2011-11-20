@@ -57,7 +57,7 @@ $oTblCont->setCol(
 				), $newmsg_count) . ")"));
 $oTblCont->setCol(1, 0, array(
 	"height" => "3"
-), getPixel(1, 3));
+), we_html_tools::getPixel(1, 3));
 $oTblCont->setCol(2, 0, array(
 	"width" => "34", "valign" => "middle", "class" => "middlefont"
 ), $todo_button);

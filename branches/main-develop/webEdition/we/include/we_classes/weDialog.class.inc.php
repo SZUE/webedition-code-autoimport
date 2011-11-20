@@ -24,8 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class weDialog{
 
@@ -200,7 +198,7 @@ class weDialog{
 	}
 
 	function getbackBut() {
-		return ($this->pageNr > 1) ? we_button::create_button("back", "javascript:history.back();") . getPixel(10,2) : "";
+		return ($this->pageNr > 1) ? we_button::create_button("back", "javascript:history.back();") . we_html_tools::getPixel(10,2) : "";
 	}
 
 	function getDialogHTML() {
@@ -212,7 +210,7 @@ class weDialog{
 		if (is_array($dc)) {
 			$dialogContent = we_multiIconBox::getHTML("","100%",$dc,30,$this->getDialogButtons(),-1,"","",false,$this->dialogTitle,"",$this->getDialogHeight());
 		} else {
-			$dialogContent = htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons());
+			$dialogContent = we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons());
 		}
 		return $this->getFormHTML() . $dialogContent .
 			'<input type="hidden" name="we_what" value="cmd" />' . $this->getHiddenArgs() . '</form>';
@@ -266,7 +264,7 @@ class weDialog{
 	}
 
 	function getHeaderHTML($printJS_Style=false) {
-		$out = htmlTop($this->dialogTitle,$this->charset);
+		$out = we_html_tools::htmlTop($this->dialogTitle,$this->charset);
 
 		if ($printJS_Style) {
 			$out .= "\n". STYLESHEET ."\n";
@@ -385,7 +383,7 @@ class weDialog{
 	}
 
 	function getLangField($name,$title,$width){
-		$foo = htmlTextInput("we_dialog_args[".$name."]", 15, (isset($this->args[$name]) ? $this->args[$name] :""), "", '', "text" , $width-50 );
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[".$name."]", 15, (isset($this->args[$name]) ? $this->args[$name] :""), "", '', "text" , $width-50 );
 		$foo2 = '<select style="width:50px;" class="defaultfont" name="'.$name.'_select" size="1" onChange="this.form.elements[\'we_dialog_args['.$name.']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 							<option value=""></option>
 							<option value="en">en</option>
@@ -397,7 +395,7 @@ class weDialog{
 							<option value="nl">nl</option>
 							<option value="pl">pl</option>
 						</select>';
-		return htmlFormElementTable($foo,$title,"left","defaultfont",$foo2);
+		return we_html_tools::htmlFormElementTable($foo,$title,"left","defaultfont",$foo2);
 	}
 
 }

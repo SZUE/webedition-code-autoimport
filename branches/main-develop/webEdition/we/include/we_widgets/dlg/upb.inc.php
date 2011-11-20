@@ -131,7 +131,7 @@ $oChbxObjs = we_forms::checkbox(
 		$width = 0);
 $dbTableType = "<table><tr>";
 if (defined("FILE_TABLE"))
-	$dbTableType .= "<td>" . $oChbxDocs . "</td><td>" . getPixel(10, 1) . "</td>";
+	$dbTableType .= "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>";
 if (defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"))
 	$dbTableType .= "<td>" . $oChbxObjs . "</td>";
 $dbTableType .= "</tr></table>";

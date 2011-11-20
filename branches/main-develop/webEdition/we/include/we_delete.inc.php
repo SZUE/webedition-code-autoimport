@@ -23,11 +23,8 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_history.class.php');
 
 protect();
 
@@ -64,7 +61,7 @@ if (!$wfchk) {
 				WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' . "\n";
-	$wfchk_html .= hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>" . "\n";
+	$wfchk_html .= we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>" . "\n";
 
 } else
 	if ($_REQUEST["we_cmd"][0] == "do_delete" || $_REQUEST["we_cmd"][0] == "delete_single_document") {
@@ -498,7 +495,7 @@ if ($_SESSION["we_mode"] == "seem") {
 	exit();
 }
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -623,7 +620,7 @@ $_buttons = we_button::position_yes_no_cancel(
 		"left");
 
 $form = '<form name="we_form" method="post">
-' . hidden("sel", "") . '
+' . we_html_tools::hidden("sel", "") . '
 </form>
 ';
 

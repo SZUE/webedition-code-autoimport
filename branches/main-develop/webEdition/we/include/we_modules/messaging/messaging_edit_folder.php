@@ -24,8 +24,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
@@ -82,25 +80,25 @@ print STYLESHEET;
 ?>
 <body class="weDialogBody" style="border-top: 1px solid black;">
 <form name="edit_folder" action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_edit_folder.php" method="post">
-<?php echo hidden('we_transaction', $_REQUEST['we_transaction']);
-    echo hidden('mcmd', 'save_folder_settings');
-    echo hidden('mode', $_REQUEST['mode']);
+<?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+    echo we_html_tools::hidden('mcmd', 'save_folder_settings');
+    echo we_html_tools::hidden('mode', $_REQUEST['mode']);
 
     if (isset($_REQUEST['fid'])) {
 
-	echo hidden('fid', $_REQUEST['fid']);
+	echo we_html_tools::hidden('fid', $_REQUEST['fid']);
 	}
 
     if ($_REQUEST["mode"] == 'new') {
 
 	$heading = g_l('modules_messaging','[new_folder]');
-	$acc_html = html_select('foldertypes', 1, $messaging->get_wesel_folder_types(),"","top.content.setHot();");
+	$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(),"","top.content.setHot();");
 
     } elseif ($_REQUEST["mode"] == 'edit') {
 
 	$heading = g_l('modules_messaging','[change_folder_settings]');
 	$finf = $messaging->get_folder_info($_REQUEST['fid']);
-	$acc_html = html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'],"top.content.setHot();");
+	$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'],"top.content.setHot();");
     }
 
     $n = isset($finf) ? $finf['Name'] : '';
@@ -123,11 +121,11 @@ print STYLESHEET;
     $input_tbl = '<table border="0" cellpadding="5" >
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging','[folder_name]') . '</td>
-	  <td class="defaultfont">' . ($specialfolder ? ($n.hidden("folder_name",$orgn))  : htmlTextInput('folder_name', 24, $n, 24, 'onchange="top.content.setHot();"')) . '</td>
+	  <td class="defaultfont">' . ($specialfolder ? ($n.we_html_tools::hidden("folder_name",$orgn))  : we_html_tools::htmlTextInput('folder_name', 24, $n, 24, 'onchange="top.content.setHot();"')) . '</td>
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging','[parent_folder]') . '</td>
-	  <td>' . html_select('parent_folder', 1, $messaging->get_wesel_available_folders(), isset($finf) ? $finf['ParentID'] : '',"top.content.setHot();") . '</td>
+	  <td>' . we_html_tools::html_select('parent_folder', 1, $messaging->get_wesel_available_folders(), isset($finf) ? $finf['ParentID'] : '',"top.content.setHot();") . '</td>
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging','[type]') . '</td>
@@ -140,7 +138,7 @@ print STYLESHEET;
 													we_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . (isset($_REQUEST["table"]) ? $_REQUEST["table"] : "") . "')")
 										 	 )
 	;
- print htmlDialogLayout($input_tbl, $heading, $_btn_tbl,"100%","30","","none"); ?></td>
+ print we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl,"100%","30","","none"); ?></td>
     </form>
   </body>
 </html>

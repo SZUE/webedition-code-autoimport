@@ -87,8 +87,8 @@ class weAcronymDialog extends weDialog{
 ##################################################################################################
 
 	function getDialogContentHTML() {
-		$foo = htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] :""), "", '', "text" , 350 );
-		$title = htmlFormElementTable($foo,g_l('wysiwyg',"[title]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] :""), "", '', "text" , 350 );
+		$title = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[title]"));
 
 		$lang = $this->getLangField("lang",g_l('wysiwyg',"[language]"),350);
 
@@ -96,14 +96,14 @@ class weAcronymDialog extends weDialog{
 
 	$table = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>'.$title.'</td></tr>
-<tr><td>'.getPixel(225,10).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(225,10).'</td></tr>
 <tr><td>'.$lang.'</td></tr>
 </table>
 ';
 		if(defined("GLOSSARY_TABLE") && we_hasPerm("NEW_GLOSSARY")) {
-			$table .=  hidden("weSaveToGlossary", 0);
-			$table .=  hidden("language", isset($_REQUEST['language']) && $_REQUEST['language'] != "" ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
-			$table .=  hidden("text", "");
+			$table .=  we_html_tools::hidden("weSaveToGlossary", 0);
+			$table .=  we_html_tools::hidden("language", isset($_REQUEST['language']) && $_REQUEST['language'] != "" ? $_REQUEST['language'] : $GLOBALS['weDefaultFrontendLanguage']);
+			$table .=  we_html_tools::hidden("text", "");
 		}
 
 		return $table;

@@ -33,7 +33,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_c
 //require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -168,7 +168,7 @@ array_push($parts, array(
 	);
 array_push($parts, array(
 
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintEMailDaten]'),2,650,false),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintEMailDaten]'),2,650,false),
 			'space' => 0,
 			'noline' => 1
 		)
@@ -193,7 +193,7 @@ array_push($parts, array(
 	);
 array_push($parts, array(
 			'space' => 0,
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintSprache]'),2,650,false),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintSprache]'),2,650,false),
 			'noline' => 1
 		)
 	);
@@ -205,7 +205,7 @@ array_push($parts, array(
 		)
 	);
 array_push($parts, array(
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintISO]'),2,650,false),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintISO]'),2,650,false),
 			'space' => 0
 		)
 	);
@@ -245,7 +245,7 @@ array_push($parts, array(
 	);
 array_push($parts, array(
 			'space' => 0,
-			'html' => htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintDokumente]'),2,650,false),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[statusmails][hintDokumente]'),2,650,false),
 			'noline' => 1
 		)
 	);

@@ -74,11 +74,11 @@
 					$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 				}
 
-				$nextprev .= getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($start+1)."&nbsp;-&nbsp;";
+				$nextprev .= we_html_tools::getPixel(23,1)."</td><td align='center' class='defaultfont' width='120'><b>".($start+1)."&nbsp;-&nbsp;";
 
 				$nextprev .= min($num_all, $start+$count);
 
-				$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($num_all)."</b></td><td>".getPixel(23,1);
+				$nextprev .= "&nbsp;".g_l('global',"[from]")." ".($num_all)."</b></td><td>".we_html_tools::getPixel(23,1);
 
 				$next = $start + $count;
 
@@ -93,7 +93,7 @@
 
 				$parts[]=array(
 						'headline' => '',
-						'html' => htmlDialogBorder3(730,300,$content,$headline) . $nextprev,
+						'html' => we_html_tools::htmlDialogBorder3(730,300,$content,$headline) . $nextprev,
 						'space' => 0,
 						'noline'=>1
 

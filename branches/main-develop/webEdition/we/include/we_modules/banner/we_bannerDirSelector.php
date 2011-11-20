@@ -55,13 +55,13 @@ class we_bannerDirSelector extends we_dirSelector{
   	function printHeaderHeadlines(){
 		print '<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
 					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('modules_banner','[name]').'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td width="300">'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';
@@ -74,7 +74,7 @@ class we_bannerDirSelector extends we_dirSelector{
 					<td colspan="5"><img src="'.IMAGE_DIR.'umr_h_small.gif" width="100%" height="2" border="0" /></td>
 				</tr>
 				<tr>
-					<td colspan="5">'.getPixel(5,5).'</td>
+					<td colspan="5">'.we_html_tools::getPixel(5,5).'</td>
 				</tr>';
 		$cancel_button = we_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_button::create_button("ok", "javascript:press_ok_button();");
@@ -89,28 +89,28 @@ class we_bannerDirSelector extends we_dirSelector{
 						<b>'.g_l('modules_banner','[name]').'</b>
 					</td>
 					<td></td>
-					<td class="defaultfont" align="left">'.htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
+					<td class="defaultfont" align="left">'.we_html_tools::htmlTextInput("fname",24,$this->values["Text"],"","style=\"width:100%\" readonly=\"readonly\"").'
 					</td>
 					<td></td>
 				</tr>
 				<tr>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td width="70">'.getPixel(70,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
-					<td>'.getPixel(5,5).'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td width="70">'.we_html_tools::getPixel(70,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
+					<td>'.we_html_tools::getPixel(5,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td align="right">'.$buttons.'</td>
-					<td width="10">'.getPixel(10,5).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,5).'</td>
 				</tr>
 			</table>';
 	}
 
 
 	function printHeaderTableExtraCols(){
-		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
+		print '                <td width="10">'.we_html_tools::getPixel(10,10).'</td><td width="40">
 ';
         $makefolderState = we_hasPerm("NEW_BANNER");
        	print '<script type="text/javascript">makefolderState='.$makefolderState.';</script>';
@@ -120,7 +120,7 @@ class we_bannerDirSelector extends we_dirSelector{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
@@ -222,11 +222,11 @@ function writeBody(d){
 			d.writeln(cutText(entries[i].text,24));
 		}
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="3"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(200,2)?></td>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(200,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){
@@ -293,7 +293,7 @@ function addEntry(ID,icon,text,isFolder,path){
   	}
 
 	function printCreateFolderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 protect();
 
 		print '<script>
@@ -357,7 +357,7 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 
 		print '<script>

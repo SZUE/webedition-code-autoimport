@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
@@ -38,7 +37,7 @@ if(file_exists($supportDebuggingFile)){
 	}
 }
 
-htmlTop();
+we_html_tools::htmlTop();
 print STYLESHEET . "\n";
 
 function _cutText($text, $l){
@@ -235,7 +234,7 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 	?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0"></td>
-					<td class="selector" width="200"><?php print htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
+					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector" width="150"><?php print g_l('fileselector', "[folder]") ?></td>
 					<td class="selector"><?php print date("d-m-Y H:i:s") ?></td>
 					<td class="selector"></td>
@@ -293,12 +292,12 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 					$_size = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . htmlspecialchars($_size) . '">' . $_size . '</span>';
 				}
 				if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_folder") && ($entry == $_REQUEST["sid"]) && ($isfolder) && (!$indb)){
-					$_text_to_show = htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
+					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 					$set_rename = true;
 					$_type = g_l('contentTypes', '[folder]');
 					$_date = date("d-m-Y H:i:s");
 				} else if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "rename_file") && ($entry == $_REQUEST["sid"]) && (!$indb)){
-					$_text_to_show = htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
+					$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 					$set_rename = true;
 					$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . htmlspecialchars($type) . '">' . htmlspecialchars(_cutText($type, 17)) . '</span>';
 					$_date = date("d-m-Y H:i:s");
@@ -320,11 +319,11 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
  </tr>';
 					?>
 					<tr>
-						<td width="25"><?php print getPixel(25, 1) ?></td>
-						<td width="200"><?php print getPixel(200, 1) ?></td>
-						<td width="150"><?php print getPixel(150, 1) ?></td>
-						<td width="200"><?php print getPixel(200, 1) ?></td>
-						<td><?php print getPixel(10, 1) ?></td>
+						<td width="25"><?php print we_html_tools::getPixel(25, 1) ?></td>
+						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
+						<td width="150"><?php print we_html_tools::getPixel(150, 1) ?></td>
+						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
+						<td><?php print we_html_tools::getPixel(10, 1) ?></td>
 					</tr>
 		<?php
 	}

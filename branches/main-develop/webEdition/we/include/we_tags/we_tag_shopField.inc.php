@@ -101,7 +101,7 @@ function we_tag_shopField($attribs,$content) {
 		break;
 
 		case 'hidden':
-			return hidden($fieldname, $savedVal);
+			return we_html_tools::hidden($fieldname, $savedVal);
 		break;
 
 		case 'print':

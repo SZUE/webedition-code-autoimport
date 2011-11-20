@@ -70,17 +70,17 @@ class rpcGetRssCmd extends rpcCmd {
 			if ($bShowTitle) {
 				$sRssOut .= ($bShowLink)? we_htmlElement::htmlA(array("href"=>$item['link'],"target"=>"_blank"),we_htmlElement::htmlB($item['title'])) :
 					we_htmlElement::htmlB($item['title']);
-				$sRssOut .= we_htmlElement::htmlBr().getPixel(1,5).(($bShowDesc || $bShowContEnc)? we_htmlElement::htmlBr() : "");
+				$sRssOut .= we_htmlElement::htmlBr().we_html_tools::getPixel(1,5).(($bShowDesc || $bShowContEnc)? we_htmlElement::htmlBr() : "");
 			}
 			if ($bShowPubdate) {
 				$sRssOut .= g_l('cockpit',"[published]").": ".date(g_l('date','[format][default]'), strtotime($item['pubdate']));
 			}
 			if ($bShowCategory) {
-				$sRssOut .= ($bShowPubdate)? we_htmlElement::htmlBr().getPixel(1,2).we_htmlElement::htmlBr() : "";
+				$sRssOut .= ($bShowPubdate)? we_htmlElement::htmlBr().we_html_tools::getPixel(1,2).we_htmlElement::htmlBr() : "";
 				$sRssOut .= g_l('cockpit',"[category]").": ".$item['category'];
 			}
 			if ($bShowPubdate || $bShowCategory) {
-				$sRssOut .= we_htmlElement::htmlBr().getPixel(1,5).we_htmlElement::htmlBr();
+				$sRssOut .= we_htmlElement::htmlBr().we_html_tools::getPixel(1,5).we_htmlElement::htmlBr();
 			}
 			$sLink = (($bCfgLink && isset($item['link']))&&!$bShowTitle)? " &nbsp;".
 				we_htmlElement::htmlA(array("href"=>$item['link'],"target"=>"_blank","style"=>"text-decoration:underline;"),g_l('cockpit','[more]')) : "";
@@ -92,7 +92,7 @@ class rpcGetRssCmd extends rpcCmd {
 			} else if(!$bShowDesc) {
 				$sRssOut .= $sLink.we_htmlElement::htmlBr();
 			}
-			$sRssOut .= ($bShowDesc || $bShowContEnc)? getPixel(1,10).we_htmlElement::htmlBr() : "";
+			$sRssOut .= ($bShowDesc || $bShowContEnc)? we_html_tools::getPixel(1,10).we_htmlElement::htmlBr() : "";
 			if ($iNumItems) {
 				$iCurrItem++;
 				if ($iCurrItem==$iNumItems) {

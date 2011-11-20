@@ -461,7 +461,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchFields[__we_new_id__]',
 										$this->searchclass->getFields(),
 										1,
@@ -472,7 +472,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'location[__we_new_id__]',
 										$this->searchclass->getLocation(),
 										1,
@@ -483,7 +483,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'search[__we_new_id__]',
 										$this->searchclass->getModFields(),
 										1,
@@ -534,7 +534,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchFields[__we_new_id__]',
 										$this->searchclass->getFields(),
 										1,
@@ -545,7 +545,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'location[__we_new_id__]',
 										$this->searchclass->getLocation(),
 										1,
@@ -553,7 +553,7 @@ class weVersionsView
 										false,
 										'class="defaultfont" id="location[__we_new_id__]"  '))) . '";
 		        var search = "' . addslashes(
-						htmlTextInput(
+						we_html_tools::htmlTextInput(
 								'search[__we_new_id__]',
 								24,
 								"",
@@ -581,7 +581,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'search[__we_new_id__]',
 										$this->searchclass->getModFields(),
 										1,
@@ -608,7 +608,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'location[__we_new_id__]',
 										$this->searchclass->getLocation("date"),
 										1,
@@ -663,7 +663,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'search[__we_new_id__]',
 										$this->searchclass->getUsers(),
 										1,
@@ -696,7 +696,7 @@ class weVersionsView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'search[__we_new_id__]',
 										$this->searchclass->getStats(),
 										1,
@@ -761,12 +761,12 @@ class weVersionsView
 				<tr>
 				<td class="weDocListSearchHeadline">' . g_l('versions','[weSearch]') . '
 				</td>
-				<td>' . getPixel(10, 2) . '
+				<td>' . we_html_tools::getPixel(10, 2) . '
 				</td>
-				<td>' . getPixel(
+				<td>' . we_html_tools::getPixel(
 				40,
 				2) . '' . we_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
-				<td width="100%">' . getPixel(10, 2) . '
+				<td width="100%">' . we_html_tools::getPixel(10, 2) . '
 				</td>
 				</tr>
 				</table>';
@@ -775,12 +775,12 @@ class weVersionsView
 				<tr>
 				<td class="weDocListSearchHeadline">' . g_l('versions','[weSearch]') . '
 				</td>
-				<td>' . getPixel(10, 2) . '
+				<td>' . we_html_tools::getPixel(10, 2) . '
 				</td>
-				<td>' . getPixel(
+				<td>' . we_html_tools::getPixel(
 				40,
 				2) . '' . we_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
-				<td width="100%">' . getPixel(10, 2) . '
+				<td width="100%">' . we_html_tools::getPixel(10, 2) . '
 				</td>
 				</tr>
 				</table>';
@@ -835,7 +835,7 @@ class weVersionsView
 			$fieldsSearch = "";
 			$handle = "";
 
-			$search = htmlSelect(
+			$search = we_html_tools::htmlSelect(
 					"search[" . $i . "]",
 					$this->searchclass->getModFields(),
 					1,
@@ -850,7 +850,7 @@ class weVersionsView
 			if (isset($this->searchclass->searchFields[$i])) {
 
 				if ($this->searchclass->searchFields[$i] == "allModsIn") {
-					$search = htmlSelect(
+					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]",
 							$this->searchclass->getModFields(),
 							1,
@@ -860,7 +860,7 @@ class weVersionsView
 							'class="defaultfont" style="width:190px;" id="search[' . $i . ']" ');
 				}
 				if ($this->searchclass->searchFields[$i] == "modifierID") {
-					$search = htmlSelect(
+					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]",
 							$this->searchclass->getUsers(),
 							1,
@@ -870,7 +870,7 @@ class weVersionsView
 							'class="defaultfont" style="width:190px;" id="search[' . $i . ']" ');
 				}
 				if ($this->searchclass->searchFields[$i] == "status") {
-					$search = htmlSelect(
+					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]",
 							$this->searchclass->getStats(),
 							1,
@@ -893,7 +893,7 @@ class weVersionsView
 
 			$out .= '
 				<tr id="filterRow_' . $i . '">
-					<td>' . htmlSelect(
+					<td>' . we_html_tools::htmlSelect(
 					"searchFields[" . $i . "]",
 					$this->searchclass->getFields(),
 					1,
@@ -901,7 +901,7 @@ class weVersionsView
 							$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""),
 					false,
 					'class="defaultfont" id="searchFields[' . $i . ']" onChange="changeit(this.value, ' . $i . ');" ') . '</td>
-					<td id="td_location[' . $i . ']">' . htmlSelect(
+					<td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect(
 					"location[" . $i . "]",
 					$this->searchclass->getLocation($handle),
 					1,
@@ -919,7 +919,7 @@ class weVersionsView
 
 		$out .= '<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 				<tr>
-					<td colspan="4">' . getPixel(20, 10) . '</td>
+					<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 				</tr>
 				<tr>
 					<td width="215">' . we_button::create_button(
@@ -1001,14 +1001,14 @@ class weVersionsView
 			$Path = $GLOBALS['we_doc']->Path;
 		}
 
-		$out .= hidden("we_transaction", $we_transaction);
-		$out .= hidden("order", $order);
-		$out .= hidden("mode", $mode);
-		$out .= hidden("height", $height);
+		$out .= we_html_tools::hidden("we_transaction", $we_transaction);
+		$out .= we_html_tools::hidden("order", $order);
+		$out .= we_html_tools::hidden("mode", $mode);
+		$out .= we_html_tools::hidden("height", $height);
 
 		$out .= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>' . getPixel(1, 20) . '</td>
+					<td>' . we_html_tools::getPixel(1, 20) . '</td>
 				</tr>
 				<tr id="beschreibung_print" class="defaultfont">
 					<td>
@@ -1019,9 +1019,9 @@ class weVersionsView
 					</td>
 				</tr>
 				 <tr>
-					<td>' . getPixel(19, 12) . '</td>
+					<td>' . we_html_tools::getPixel(19, 12) . '</td>
 					<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions','[eintraege_pro_seite]') . ':</td>
-					<td class="defaultgray" style="width:70px;">' . htmlSelect(
+					<td class="defaultgray" style="width:70px;">' . we_html_tools::htmlSelect(
 				"anzahl",
 				$anzahl_all,
 				1,
@@ -1031,12 +1031,12 @@ class weVersionsView
 					</td>
 					<td class="defaultfont" id="eintraege">' . g_l('versions','[eintraege]') . '</td>
 					<td>' . self::getNextPrev($foundItems) . '</td>
-					<td id="print" class="defaultfont">' . getPixel(
+					<td id="print" class="defaultfont">' . we_html_tools::getPixel(
 				10,
 				12) . '<a href="javascript:printScreen();">' . g_l('versions','[printPage]') . '</a></td>
 				</tr>
 				<tr>
-					<td colspan="12">' . getPixel(1, 12) . '</td>
+					<td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
 				</tr>
 				</table>';
 
@@ -1053,9 +1053,9 @@ class weVersionsView
 
 		$out = '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 				 <tr id="paging_bottom">
-					<td>' . getPixel(19, 12) . '</td>
-					<td style="font-size:12px;width:130px;">' . getPixel(30, 12) . '</td>
-					<td class="defaultgray" style="width:70px;">' . getPixel(30, 12) . '</td>
+					<td>' . we_html_tools::getPixel(19, 12) . '</td>
+					<td style="font-size:12px;width:130px;">' . we_html_tools::getPixel(30, 12) . '</td>
+					<td class="defaultgray" style="width:70px;">' . we_html_tools::getPixel(30, 12) . '</td>
 					<td style="width:370px;" id="bottom">' . self::getNextPrev($foundItems) . '</td>
 				</tr>
 				</table>';
@@ -1088,7 +1088,7 @@ class weVersionsView
 			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
 		}
 
-		$out .= '</td><td>' . getPixel(10, 2) . '</td>
+		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
 				<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
 
 		if (($we_search_anzahl - $searchstart) < $anzahl) {
@@ -1097,14 +1097,14 @@ class weVersionsView
 			$out .= $searchstart + $anzahl;
 		}
 
-		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . getPixel(10, 2) . '</td><td id="weiter">';
+		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
 			$out .= we_button::create_button("next", "javascript:next(" . $anzahl . ");"); //bt_back
 		} else {
 			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
-		$out .= '</td><td>' . getPixel(10, 2) . '</td><td>';
+		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for ($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++) {
@@ -1113,7 +1113,7 @@ class weVersionsView
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = htmlSelect(
+		$select = we_html_tools::htmlSelect(
 				"page",
 				$pages,
 				1,
@@ -1124,7 +1124,7 @@ class weVersionsView
 		if (!isset($_REQUEST['we_cmd']['setInputSearchstart'])) {
 			if (!defined("searchstart")) {
 				define("searchstart", true);
-				$out .= hidden("searchstart", $searchstart);
+				$out .= we_html_tools::hidden("searchstart", $searchstart);
 			}
 		}
 
@@ -1260,7 +1260,7 @@ class weVersionsView
 					$disabledReset) . "</span>";
 			$content[$f][6]["dat"] = "<span class='printShow'>" . we_button::create_button(
 					"preview",
-					"javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>".getPixel(1,1);
+					"javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>".we_html_tools::getPixel(1,1);
 			$content[$f][7]["dat"] = "<span class='printShow'>";
 			$content[$f][7]["dat"] .= ($_versions[$f]["ContentType"] == "text/webedition" || $_versions[$f]["ContentType"] == "text/html" || $_versions[$f]["ContentType"] == "objectFile") ? we_forms::checkbox(
 					$_versions[$f]["ID"],
@@ -1270,7 +1270,7 @@ class weVersionsView
 					false,
 					"middlefont",
 					"") : '';
-			$content[$f][7]["dat"] .= "</span>".getPixel(1,1);
+			$content[$f][7]["dat"] .= "</span>".we_html_tools::getPixel(1,1);
 		}
 
 		return $content;
@@ -1309,10 +1309,10 @@ class weVersionsView
 				"checkAll();");
 
 
-		$headline[5]["dat"] = getPixel(1, 1);
-		$headline[6]["dat"] = getPixel(1, 1);
-		$headline[7]["dat"] = getPixel(1, 1);
-		$headline[8]["dat"] = getPixel(1, 1);
+		$headline[5]["dat"] = we_html_tools::getPixel(1, 1);
+		$headline[6]["dat"] = we_html_tools::getPixel(1, 1);
+		$headline[7]["dat"] = we_html_tools::getPixel(1, 1);
+		$headline[8]["dat"] = we_html_tools::getPixel(1, 1);
 
 		return $headline;
 	}
@@ -1391,7 +1391,7 @@ class weVersionsView
 			return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
 		}
 
-		return getPixel(11, 8);
+		return we_html_tools::getPixel(11, 8);
 
 	}
 
@@ -1405,11 +1405,11 @@ class weVersionsView
 		$anz = count($headline) - 1;
 		$out = '<table border="0" style="background-color:#fff;" width="100%" cellpadding="5" cellspacing="0">';
 		$out .= '<tr>';
-		$out .= '<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . getPixel(15, 1) . '</td>';
-		$out .= '<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . getPixel(110, 1) . '</td>';
-		$out .= '<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . getPixel(110, 1) . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . getPixel(120, 1) . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . getPixel(120, 1) . '</td>';
+		$out .= '<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>';
+		$out .= '<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>';
+		$out .= '<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>';
+		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>';
+		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>';
 		$out .= '<td valign="top" style="width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>';
 		$out .= '</tr>';
 		$out .= '</table>';
@@ -1451,7 +1451,7 @@ class weVersionsView
 		$anz = count($content) - 1;
 		$out = '';
 
-		$out .= '<td valign="top" style="width:15px;">' . getPixel(1, 1) . '</td>';
+		$out .= '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>';
 
 		$out .= '<td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>';
 		$out .= '<td valign="top" style="width:110px;" class="middlefont">' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</td>';
@@ -1462,12 +1462,12 @@ class weVersionsView
 		$out .= '</tr>';
 		$out .= '<tr>';
 
-		$out .= '<td style="width:15px;border-bottom:1px solid #D1D1D1;">' . getPixel(15, 1) . '</td>';
+		$out .= '<td style="width:15px;border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(15, 1) . '</td>';
 
 		$out .= '<td valign="top" colspan="2" style="width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[5]["dat"]) && $content[5]["dat"]) ? $content[5]["dat"] : "&nbsp;") . ((isset($content[7]["dat"]) && $content[7]["dat"]) ? $content[7]["dat"] : "&nbsp;") . '</td>';
 		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((isset($content[6]["dat"]) && $content[6]["dat"]) ? $content[6]["dat"] : "&nbsp;") . '</td>';
-		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . getPixel(120, 1) . '</td>';
-		$out .= '<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . getPixel(1, 1) . '</td>';
+		$out .= '<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>';
+		$out .= '<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(1, 1) . '</td>';
 
 		return $out;
 	}

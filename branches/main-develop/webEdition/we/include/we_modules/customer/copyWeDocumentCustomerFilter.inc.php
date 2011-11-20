@@ -222,7 +222,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 
 	$_iframeLocation = "/webEdition/we_cmd.php?we_cmd[0]=" . $_REQUEST["we_cmd"][0] . "&we_cmd[1]=" . $_REQUEST["we_cmd"][1] . "&we_cmd[2]=" . $_REQUEST["we_cmd"][2] . (isset($_REQUEST["we_cmd"][3]) ? "&we_cmd[3]=" . $_REQUEST["we_cmd"][3] : "" ) ."&startCopy=1";
 
-	htmlTop();
+	we_html_tools::htmlTop();
 	print STYLESHEET;
 	print we_htmlElement::jsElement("
 
@@ -253,7 +253,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 	print "</head>
 <body class=\"weDialogBody\" onload=\"checkForOpenChilds()\">
 " . $js . "
-" . htmlDialogLayout($content, g_l('modules_customerFilter',"[apply_filter]"), $buttonBar) . "
+" . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter',"[apply_filter]"), $buttonBar) . "
 <div style=\"display: none;\"> <!-- hidden -->
 	<iframe style=\"position: absolute; top: 150; height: 1px; width: 1px;\" name=\"iframeCopyWeDocumentCustomerFilter\" id=\"iframeCopyWeDocumentCustomerFilter\" src=\"about:blank\"></iframe>
 </div>

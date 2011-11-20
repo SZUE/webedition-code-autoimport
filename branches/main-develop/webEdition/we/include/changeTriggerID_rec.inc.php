@@ -19,7 +19,6 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 $ok = false;
@@ -35,7 +34,7 @@ if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 
 }
 
-htmlTop();
+we_html_tools::htmlTop();
 ?>
 <script type="text/javascript"><!--
 	<?php

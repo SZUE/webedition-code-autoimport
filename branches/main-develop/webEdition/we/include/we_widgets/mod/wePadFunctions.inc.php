@@ -63,12 +63,12 @@ function getDateSelector($_label, $_name, $_btn)
 	$oSelector->setCol(0, 0, array(
 		"class" => "middlefont"
 	), $_label);
-	$oSelector->setCol(0, 1, null, getPixel(5, 1));
+	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(
 			0,
 			2,
 			null,
-			htmlTextInput(
+			we_html_tools::htmlTextInput(
 					$name = $_name,
 					$size = 55,
 					$value = "",
@@ -77,7 +77,7 @@ function getDateSelector($_label, $_name, $_btn)
 					$type = "text",
 					$width = 70,
 					$height = 0));
-	$oSelector->setCol(0, 3, null, getPixel(5, 1));
+	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 4, null, we_htmlElement::htmlA(array(
 		"href" => "#"
 	), $btnDatePicker));
@@ -169,7 +169,7 @@ function getNoteList($_sql, $bDate, $bDisplay)
 		$showTitle = str_replace("'", '&#039;', $showTitle);
 		$showTitle = str_replace('"', '&quot;', $showTitle);
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">';
-		$_notes .= '<td width="5">' . getPixel(5, 1) . '</td>';
+		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 		$_notes .= '<td width="15" height="20" valign="middle" nowrap>' . we_htmlElement::htmlImg(
 				array(
 
@@ -177,11 +177,11 @@ function getNoteList($_sql, $bDate, $bDisplay)
 						"width" => 13,
 						"height" => 14
 				)) . '</td>';
-		$_notes .= '<td width="5">' . getPixel(5, 1) . '</td>';
+		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 		$_notes .= '<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>';
-		$_notes .= '<td width="5">' . getPixel(5, 1) . '</td>';
+		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 		$_notes .= '<td valign="middle" class="middlefont">' . $showTitle . '</td>';
-		$_notes .= '<td width="5">' . getPixel(5, 1) . '</td>';
+		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 		$_notes .= '</tr>';
 		$_rcd++;
 	}

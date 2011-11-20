@@ -31,9 +31,9 @@
 									2,
 									4);
 	//	spaceholder
-	$_messageTbl->setColContent(0,0, getPixel(20,7));
+	$_messageTbl->setColContent(0,0, we_html_tools::getPixel(20,7));
 	$_messageTbl->setColContent(1,1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-	$_messageTbl->setColContent(1,2, getPixel(5,2));
+	$_messageTbl->setColContent(1,2, we_html_tools::getPixel(5,2));
 	$_messageTbl->setCol(1,3, array("class" => "defaultfont"), str_replace( "<br>", " ", sprintf(g_l('alert',"[no_perms]"),f("SELECT Username FROM ".USER_TABLE." WHERE ID='".$we_doc->CreatorID."'","Username",$DB_WE))));
 
 

@@ -28,11 +28,6 @@
 //
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tag.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/js_gui/weOrderContainer.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
 protect();
@@ -66,7 +61,7 @@ if(isset($we_doc->elements["Charset"]["dat"])){	//	send charset which might be d
 //	---> Output the HTML Header
 //
 
-htmlTop();
+we_html_tools::htmlTop();
 
 
 //
@@ -148,7 +143,7 @@ switch($cmd) {
 					.	'</td>'
 					.	'</tr>'
 					.	'<tr>'
-					.	'<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.getPixel(1,1).'</div></td>'
+					.	'<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;">'.we_html_tools::getPixel(1,1).'</div></td>'
 					.	'</tr>'
 					.	'</table>'
 					.	'</div>';

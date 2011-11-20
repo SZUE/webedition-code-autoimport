@@ -147,7 +147,7 @@ class weWorkflowFrames extends weModuleFrames{
    ' . $tab_header . '
    </head>
    <body bgcolor="white" background="'.IMAGE_DIR.'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()", onresize="setFrameSize()">
-		<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.htmlspecialchars($textPre).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.htmlspecialchars($textPost).'</b></span></nobr></div>' . getPixel(100,3) .
+		<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.htmlspecialchars($textPre).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.htmlspecialchars($textPost).'</b></span></nobr></div>' . we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>' . we_htmlElement::jsElement('document.getElementById("tab_'.$page.'").className="tabActive";') . '
 	</body>';
@@ -189,13 +189,13 @@ class weWorkflowFrames extends weModuleFrames{
     <form name="we_form">
 	<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
-				<td valign="top" colspan="2"><?php print getPixel(1600,10) ?></td>
+				<td valign="top" colspan="2"><?php print we_html_tools::getPixel(1600,10) ?></td>
 			</tr>
 	</table>
 	<table border="0" cellpadding="0" cellspacing="0" width="300">
 	<?php if($mode==0){?>
 			<tr>
-				<td><?php print getPixel(15,5)?></td>
+				<td><?php print we_html_tools::getPixel(15,5)?></td>
 				<td><?php print we_button::create_button("save", "javascript:we_save();") ?></td>
 				<td class="defaultfont"><?php print $this->View->getStatusHTML();?></td>
 			</tr>

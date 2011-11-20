@@ -88,7 +88,7 @@ abstract class we_versions_wizard
 			$buttons = we_button::create_button_table(array(
 				$refreshButton, $cancelButton
 			), 10);
-			$pb = htmlDialogLayout($pb, g_l('rebuild',"[rebuild]"), $buttons);
+			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild',"[rebuild]"), $buttons);
 		} else {
 			$prevButton = we_button::create_button(
 					"back",
@@ -354,7 +354,7 @@ abstract class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox(g_l('versions','[ct_delete_text]'), 2, 520),
+						'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions','[ct_delete_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -465,7 +465,7 @@ abstract class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox(g_l('versions','[date_delete_text]'), 2, 520),
+						'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions','[date_delete_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -660,7 +660,7 @@ abstract class we_versions_wizard
 				$parts,
 				array(
 
-						'html' => htmlAlertAttentionBox(g_l('versions','[ct_reset_text]'), 2, 520),
+						'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions','[ct_reset_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -710,7 +710,7 @@ abstract class we_versions_wizard
 		array_push(
 				$parts,
 				array(
-						'html' => htmlAlertAttentionBox(g_l('versions','[doPublish_text]'), 2, 520),
+						'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions','[doPublish_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));
@@ -791,7 +791,7 @@ abstract class we_versions_wizard
 		array_push(
 				$parts,
 				array(
-						'html' => htmlAlertAttentionBox(g_l('versions','[date_reset_text]'), 2, 520),
+						'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions','[date_reset_text]'), 2, 520),
 						'noline' => 1,
 						'space' => 0
 				));

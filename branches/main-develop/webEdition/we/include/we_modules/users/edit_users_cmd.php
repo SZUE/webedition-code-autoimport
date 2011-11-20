@@ -25,11 +25,10 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 protect();
 
     if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")){

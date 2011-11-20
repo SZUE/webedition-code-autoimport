@@ -46,11 +46,11 @@
 	}
 
 	//	spaceholder
-	$_messageTbl->setColContent(0,0, getPixel(20,7));
+	$_messageTbl->setColContent(0,0, we_html_tools::getPixel(20,7));
 	$_messageTbl->setColContent(1,1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-	$_messageTbl->setColContent(1,2, getPixel(5,2));
+	$_messageTbl->setColContent(1,2, we_html_tools::getPixel(5,2));
 	$_messageTbl->setCol(1,3, array("class" => "defaultfont"), sprintf(g_l('alert',"[file_locked_footer]"), $_username));
-	$_messageTbl->setColContent(1,4, getPixel(5,2));
+	$_messageTbl->setColContent(1,4, we_html_tools::getPixel(5,2));
 	$_messageTbl->setColContent(1,5, $refreshButton);
 
 

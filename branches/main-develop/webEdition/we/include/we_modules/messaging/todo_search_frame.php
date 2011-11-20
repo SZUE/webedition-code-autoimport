@@ -23,11 +23,9 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 if (!preg_match('|^([a-f0-9]){32}|i',$_REQUEST['we_transaction'])) {
 	exit();
@@ -54,13 +52,13 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
   <body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="/webEdition/images/msg_white_bg.gif">
     <nobr>
     <form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_PATH ?>todo_search_frame.php" onSubmit="return doSearch()">
-      <?php echo hidden('we_transaction', $_REQUEST['we_transaction']) ?>
+      <?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) ?>
       <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
 	  <td class="defaultfont"><?php print g_l('modules_messaging',"[search_todos]"); ?>:</td>
 	<?php
-	    echo '<td class="defaultfont">' . getPixel(10, 1) . htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) . '</td>';
-	    echo '<td class="defaultfont">' . getPixel(10, 1) . '</td>';
+	    echo '<td class="defaultfont">' . we_html_tools::getPixel(10, 1) . we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) . '</td>';
+	    echo '<td class="defaultfont">' . we_html_tools::getPixel(10, 1) . '</td>';
 	    print "<td>" . we_button::create_button_table(array(	we_button::create_button("search", "javascript:doSearch();"),
 	    														we_button::create_button("advanced", "javascript:launchAdvanced()"),
 	    														we_button::create_button("reset_search", "javascript:clearSearch()")),10)

@@ -120,10 +120,10 @@ class weExportFrames extends weModuleFrames {
 
 		$table=new we_htmlTable(array("width"=>"3000","cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),3,1);
 
-		$table->setCol(0,0,array(),getPixel(1,3));
+		$table->setCol(0,0,array(),we_html_tools::getPixel(1,3));
 
 		$table->setCol(1,0,array("valign"=>"top","class"=>"small"),
-							getPixel(15,2).
+							we_html_tools::getPixel(15,2).
 							we_htmlElement::htmlB(
 								g_l('export','[export]') . ':&nbsp;'.$this->View->export->Text.
 								we_htmlElement::htmlImg(array("align"=>"absmiddle","height"=>"19","width"=>"1600","src"=>IMAGE_DIR."pixel.gif"))
@@ -132,8 +132,8 @@ class weExportFrames extends weModuleFrames {
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/".$this->View->export->Text;
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"),
-		//	'<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(g_l('export','[export]') . ':&nbsp;'.$this->View->export->Text).'</div>' . getPixel(100,3) .
-			'<div id="main" >' . getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",we_htmlElement::htmlB(g_l('export','[export]'))).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$text).'</b></span></nobr></div>'.getPixel(100,3).
+		//	'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(g_l('export','[export]') . ':&nbsp;'.$this->View->export->Text).'</div>' . we_html_tools::getPixel(100,3) .
+			'<div id="main" >' . we_html_tools::getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",we_htmlElement::htmlB(g_l('export','[export]'))).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$text).'</b></span></nobr></div>'.we_html_tools::getPixel(100,3).
 			$we_tabs->getHTML() .
 			'</div>' . we_htmlElement::jsElement($extraJS)
 //			$js.
@@ -176,7 +176,7 @@ class weExportFrames extends weModuleFrames {
 
 
 		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
-		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),getPixel(1600,10));
+		$table1->setCol(0,0,array("nowrap"=>null,"valign"=>"top"),we_html_tools::getPixel(1600,10));
 
 		$table2=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"210"),1,5);
 		$table2->setRow(0,array("valign"=>"middle"));
@@ -184,7 +184,7 @@ class weExportFrames extends weModuleFrames {
 					we_button::create_button("save", "javascript:we_save()")
 		);
 
-		$table2->setCol(0,1,array("nowrap"=>null),getPixel(5,5));
+		$table2->setCol(0,1,array("nowrap"=>null),we_html_tools::getPixel(5,5));
 
 		if($this->View->export->IsFolder==0) {
 			$table2->setCol(0,2,array("nowrap"=>null),
@@ -192,7 +192,7 @@ class weExportFrames extends weModuleFrames {
 			);
 		}
 
-		$table2->setCol(0,3,array("nowrap"=>null),getPixel(290,5));
+		$table2->setCol(0,3,array("nowrap"=>null),we_html_tools::getPixel(290,5));
 
 		$js = we_htmlElement::jsElement('
 				function we_save() {
@@ -281,7 +281,7 @@ class weExportFrames extends weModuleFrames {
 		$parts = array();
 		array_push($parts,array(
 				"headline"=>g_l('export',"[property]"),
-				"html"=>htmlFormElementTable(htmlTextInput("Text",'',$this->View->export->Text,'','style="width: '.$this->_width_size.'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export','[name]')).'<br>'.
+				"html"=>htmlFormElementTable(we_html_tools::htmlTextInput("Text",'',$this->View->export->Text,'','style="width: '.$this->_width_size.'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export','[name]')).'<br>'.
 						$this->getHTMLDirChooser(),
 				"space"=>$this->_space_size)
 		);
@@ -290,15 +290,15 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 							"headline"=>g_l('export',"[export_to]"),
-							"html"=>htmlFormElementTable(htmlTextInput("Filename",$this->_text_size,$this->View->export->Filename,'','style="width: '.$this->_width_size.'px;" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export',"[filename]")),
+							"html"=>htmlFormElementTable(we_html_tools::htmlTextInput("Filename",$this->_text_size,$this->View->export->Filename,'','style="width: '.$this->_width_size.'px;" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export',"[filename]")),
 							"space"=>$this->_space_size,
 							"noline"=> 1)
 		);
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),3,1);
-		$table->setColContent(0,0,htmlSelect('ExportTo',array('local'=>g_l('export','[export_to_local]'),"server"=>g_l('export',"[export_to_server]")),1,$this->View->export->ExportTo,false,'onChange="toggle(\'save_to\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
-		$table->setColContent(1,0,getPixel(10,10));
-		$table->setCol(2,0,array("id"=>"save_to","style"=>($this->View->export->ExportTo=='server' ? 'display: ""' : 'display: none')),htmlFormElementTable($this->formFileChooser(($this->_width_size - 120),"ServerPath",$this->View->export->ServerPath,"","folder"),g_l('export',"[save_to]")));
+		$table->setColContent(0,0,we_html_tools::htmlSelect('ExportTo',array('local'=>g_l('export','[export_to_local]'),"server"=>g_l('export',"[export_to_server]")),1,$this->View->export->ExportTo,false,'onChange="toggle(\'save_to\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
+		$table->setColContent(1,0,we_html_tools::getPixel(10,10));
+		$table->setCol(2,0,array("id"=>"save_to","style"=>($this->View->export->ExportTo=='server' ? 'display: ""' : 'display: none')),we_html_tools::htmlFormElementTable($this->formFileChooser(($this->_width_size - 120),"ServerPath",$this->View->export->ServerPath,"","folder"),g_l('export',"[save_to]")));
 
 
 		array_push($parts,array(
@@ -348,15 +348,15 @@ class weExportFrames extends weModuleFrames {
 		$seltype = array('doctype'=>g_l('export',"[doctypename]"));
 		if(defined("OBJECT_TABLE")) $seltype['classname']=g_l('export','[classname]');
 
-		$table->setColContent(0,0,htmlSelect('SelectionType',$seltype,1,$this->View->export->SelectionType,false,'onChange="closeAllType();toggle(this.value);'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
-		$table->setColContent(1,0,getPixel(5,5));
+		$table->setColContent(0,0,we_html_tools::htmlSelect('SelectionType',$seltype,1,$this->View->export->SelectionType,false,'onChange="closeAllType();toggle(this.value);'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
+		$table->setColContent(1,0,we_html_tools::getPixel(5,5));
 		$table->setCol(2,0,array("id"=>"doctype","style"=>($this->View->export->SelectionType=='doctype' ? 'display: ""' : 'display: none')),
-				htmlSelect('DocType',$docTypes,1,$this->View->export->DocType,false,'onChange="'.$this->topFrame.'.hot=1;"','value',$this->_width_size).
-				htmlFormElementTable($this->formWeChooser(FILE_TABLE,($this->_width_size - 120),0,'Folder',$this->View->export->Folder,'FolderPath',$FolderPath),g_l('export','[dir]'))
+				we_html_tools::htmlSelect('DocType',$docTypes,1,$this->View->export->DocType,false,'onChange="'.$this->topFrame.'.hot=1;"','value',$this->_width_size).
+			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE,($this->_width_size - 120),0,'Folder',$this->View->export->Folder,'FolderPath',$FolderPath),g_l('export','[dir]'))
 		);
 		if(defined("OBJECT_TABLE")){
 			$table->setCol(3,0,array("id"=>"classname","style"=>($this->View->export->SelectionType=="classname" ? "display: ''" : "display: none")),
-				htmlSelect('ClassName',$classNames,1,$this->View->export->ClassName,false,'onChange="'.$this->topFrame.'.hot=1;"','value',$this->_width_size)
+				we_html_tools::htmlSelect('ClassName',$classNames,1,$this->View->export->ClassName,false,'onChange="'.$this->topFrame.'.hot=1;"','value',$this->_width_size)
 			);
 		}
 
@@ -365,15 +365,15 @@ class weExportFrames extends weModuleFrames {
 		$selectionTypeHtml = $table->getHTMLCode();
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),4,1);
-		$table->setColContent(0,0,htmlSelect('Selection',array('auto'=>g_l('export',"[auto_selection]"),"manual"=>g_l('export',"[manual_selection]")),1,$this->View->export->Selection,false,'onChange="closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
-		$table->setColContent(1,0,getPixel(5,5));
+		$table->setColContent(0,0,we_html_tools::htmlSelect('Selection',array('auto'=>g_l('export',"[auto_selection]"),"manual"=>g_l('export',"[manual_selection]")),1,$this->View->export->Selection,false,'onChange="closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
+		$table->setColContent(1,0,we_html_tools::getPixel(5,5));
 		$table->setCol(2,0,array("id"=>"auto","style"=>($this->View->export->Selection=='auto' ? 'display: ""' : 'display: none')),
-				htmlAlertAttentionBox(g_l('export',"[txt_auto_selection]"),2,$this->_width_size).
+				we_html_tools::htmlAlertAttentionBox(g_l('export',"[txt_auto_selection]"),2,$this->_width_size).
 				$selectionTypeHtml
 		);
 
 		$table->setCol(3,0,array("id"=>"manual","style"=>($this->View->export->Selection=="manual" ? "display: ''" : "display: none")),
-			htmlAlertAttentionBox(g_l('export',"[txt_manual_selection]")." ".g_l('export',"[select_export]"),2,$this->_width_size).
+			we_html_tools::htmlAlertAttentionBox(g_l('export',"[txt_manual_selection]")." ".g_l('export',"[select_export]"),2,$this->_width_size).
 			$this->SelectionTree->getHTMLMultiExplorer($this->_width_size,200)
 		);
 
@@ -425,7 +425,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 							"headline"=>g_l('export',"[export_depth]"),
-							"html"=>htmlAlertAttentionBox(g_l('export','[txt_exportdeep_options]'),2,$this->_width_size) .'<br>'. we_htmlElement::htmlLabel(null,g_l('export',"[to_level]")).getPixel(5,5).htmlTextInput("ExportDepth",10,$this->View->export->ExportDepth,"","onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=".$this->View->export->ExportDepth."; else{ this.value=r; ".$this->topFrame.".hot=1;}\"","text",50),
+							"html"=>htmlAlertAttentionBox(g_l('export','[txt_exportdeep_options]'),2,$this->_width_size) .'<br>'. we_htmlElement::htmlLabel(null,g_l('export',"[to_level]")).we_html_tools::getPixel(5,5).we_html_tools::htmlTextInput("ExportDepth",10,$this->View->export->ExportDepth,"","onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=".$this->View->export->ExportDepth."; else{ this.value=r; ".$this->topFrame.".hot=1;}\"","text",50),
 							"space"=>$this->_space_size)
 		);
 
@@ -637,12 +637,12 @@ class weExportFrames extends weModuleFrames {
 						if(!$xmlExIm->prepare) {
 							$_progress_update =
 								we_htmlElement::jsElement('
-										if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(10,10)) . we_htmlElement::htmlB(g_l('export','[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
-										if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(20,5)) . we_htmlElement::htmlB(g_l('export','[prepare]')) . '<br>");
+										if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('export','[start_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
+										if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('export','[prepare]')) . '<br>");
 										if ('.$this->topFrame.'.resize.right.editor.edfooter.doProgress) '.$this->topFrame.'.resize.right.editor.edfooter.doProgress(0);
 										if('.$this->topFrame.'.resize.right.editor.edfooter.setProgressText) '.$this->topFrame.'.resize.right.editor.edfooter.setProgressText("current_description","'.g_l('export','[working]').'");
 										if ('.$this->editorBodyFrame.'.addLog){
-										'.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(20,5)) . we_htmlElement::htmlB(g_l('export','[export]')) . '<br>");
+										'.$this->editorBodyFrame.'.addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('export','[export]')) . '<br>");
 									}
 								');
 							weFile::save($this->View->export->ExportFilename,$xmlExIm->getHeader(),"wb");
@@ -706,7 +706,7 @@ class weExportFrames extends weModuleFrames {
 								if($ref->ContentType == "weBinary") {
 									$_progress_update .= "\n".
 										we_htmlElement::jsElement('
-											if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(50,5)) . we_htmlElement::htmlB(g_l('export','[weBinary]')) . '&nbsp;&nbsp;' . $ref->ID . '<br>");
+											if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(we_html_tools::getPixel(50,5)) . we_htmlElement::htmlB(g_l('export','[weBinary]')) . '&nbsp;&nbsp;' . $ref->ID . '<br>");
 										')."\n";
 								} else {
 									if($ref->ContentType == 'doctype') {
@@ -727,7 +727,7 @@ class weExportFrames extends weModuleFrames {
 
 									$_progress_update .= "\n".
 										we_htmlElement::jsElement('
-											if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(50,5)) . $_progress_text . '<br>");
+											if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(we_html_tools::getPixel(50,5)) . $_progress_text . '<br>");
 										');
 								}
 							}
@@ -767,15 +767,15 @@ class weExportFrames extends weModuleFrames {
 							$_progress_update .= "\n".
 								we_htmlElement::jsElement('
 									if ('.$this->topFrame.'.resize.right.editor.edfooter.doProgress) '.$this->topFrame.'.resize.right.editor.edfooter.doProgress(100);
-									if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("<br>' . addslashes(getPixel(10,10)) . we_htmlElement::htmlB(g_l('export','[end_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
+									if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("<br>' . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('export','[end_export]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
 							')."\n".
 							($this->View->export->ExportTo == 'local' ?
 									we_htmlElement::jsElement($this->editorBodyFrame.'.addLog(\'' .
 										we_htmlElement::htmlSpan(array("class" => "defaultfont"),
-												addslashes(getPixel(10,1)) .g_l('export',"[backup_finished]") . "<br>" .
-												addslashes(getPixel(10,1)) .g_l('export',"[download_starting2]") . "<br><br>" .
-												addslashes(getPixel(10,1)) .g_l('export',"[download_starting3]") . "<br>" .
-												addslashes(getPixel(10,1)) .we_htmlElement::htmlB(we_htmlElement::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename)), g_l('export',"[download]"))) ."<br><br>"
+												addslashes(we_html_tools::getPixel(10,1)) .g_l('export',"[backup_finished]") . "<br>" .
+												addslashes(we_html_tools::getPixel(10,1)) .g_l('export',"[download_starting2]") . "<br><br>" .
+												addslashes(we_html_tools::getPixel(10,1)) .g_l('export',"[download_starting3]") . "<br>" .
+												addslashes(we_html_tools::getPixel(10,1)) .we_htmlElement::htmlB(we_htmlElement::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename)), g_l('export',"[download]"))) ."<br><br>"
 										).
 									'\');')
 									:
@@ -873,12 +873,12 @@ class weExportFrames extends weModuleFrames {
 		$wecmdenc4= '';
 	  	$button =  we_button::create_button("select","javascript:top.content.setHot();formFileChooser('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
-		return $js.htmlFormElementTable(htmlTextInput($IDName,42,$IDValue,"",' readonly onChange="'.$this->topFrame.'.hot=1;"',"text",$width,0),
+		return $js.we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName,42,$IDValue,"",' readonly onChange="'.$this->topFrame.'.hot=1;"',"text",$width,0),
 			"",
 			"left",
 			"defaultfont",
 			"",
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
@@ -955,6 +955,6 @@ class weExportFrames extends weModuleFrames {
 		if (!we_hasPerm("EDIT_KATEGORIE")) {
 			$cats->isEditable=false;
 		}
-		return $hiddens.htmlFormElementTable($cats->get(),g_l('export',"[categories]"), "left", "defaultfont");
+		return $hiddens.we_html_tools::htmlFormElementTable($cats->get(),g_l('export',"[categories]"), "left", "defaultfont");
 	}
 }

@@ -400,7 +400,7 @@ class weShopVariants {
 						<td>' . $model->getFieldHTML($name, $type, $attributes, true, true) . '</td>
 						</tr>
 						<tr>
-							<td>' . getPixel(1,8) . '</td>
+							<td>' . we_html_tools::getPixel(1,8) . '</td>
 						</tr>
 					';
 				}

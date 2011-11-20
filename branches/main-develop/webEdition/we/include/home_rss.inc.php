@@ -27,7 +27,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEA
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Parser.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/RSS.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 print STYLESHEET;
 print
 		'<style type="text/css">div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . g_l('css','[font_family]') . ';}</style>';
@@ -41,7 +41,7 @@ foreach ($rss->getItems() as $item) {
 	if (isset($item['link']) && !empty($item['link']))
 		$rss_out .= "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit','[more]') . "</a>";
 	$rss_out .= "</p>\n";
-	$rss_out .= getPixel(1, 10) . "<br>";
+	$rss_out .= we_html_tools::getPixel(1, 10) . "<br>";
 }
 $rss_out .= '</div>';
 print $rss_out;

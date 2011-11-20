@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,8 +22,8 @@
  */
 
 /**
- * static class with utility image functions   
- * 
+ * static class with utility image functions
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
@@ -326,7 +326,7 @@ class we_ui_layout_Image
 	 * path of tree zip
 	 */
 	const kTreeIconZip = '/webEdition/images/tree/icons/zip.gif';
-	
+
 	/**
 	 * loading
 	 */
@@ -334,7 +334,7 @@ class we_ui_layout_Image
 
 	/**
 	 * Returns HTML img tag which points to a transparent image
-	 * 
+	 *
 	 * @param integer $w with of the image
 	 * @param integer $h height of the image
 	 * @return string
@@ -346,7 +346,7 @@ class we_ui_layout_Image
 
 	/**
 	 * Maps the contentType to its css class name to display specific icons
-	 * 
+	 *
 	 * @param string $contentType
 	 * @param string $extension
 	 * @return string

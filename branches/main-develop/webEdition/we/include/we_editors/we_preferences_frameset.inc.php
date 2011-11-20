@@ -36,7 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 $tabname = isset($_REQUEST["tabname"]) ? $_REQUEST["tabname"] : (isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "setting_ui");
 /*****************************************************************************

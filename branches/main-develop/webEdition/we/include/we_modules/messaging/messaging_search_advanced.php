@@ -24,9 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
@@ -93,7 +91,7 @@ print STYLESHEET;
 
 	$_buttontable = we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:save_settings();"),null,we_button::create_button("cancel", "javascript:self.close()"));
 
-	print  htmlDialogLayout($table,"",$_buttontable,"90%");
+	print  we_html_tools::htmlDialogLayout($table,"",$_buttontable,"90%");
 ?>
 
 </form>

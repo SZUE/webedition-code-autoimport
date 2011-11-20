@@ -23,7 +23,7 @@
  */
 
 @header("Content-Type: text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']);
-htmlTop();
+we_html_tools::htmlTop();
 
 ?>
 

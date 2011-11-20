@@ -95,7 +95,7 @@ if($cmd == "ok") {
 					$_button = we_button::position_yes_no_cancel(	$okbut,
 																	"",
 																	$cancelbut);
-					$frame = htmlDialogLayout($content,$g_l('modules_workflow','[decline_workflow]'), $_button);
+					$frame = we_html_tools::htmlDialogLayout($content,$g_l('modules_workflow','[decline_workflow]'), $_button);
 					print $frame;
 					print '
 						<input type="hidden" name="cmd" value="ok" />

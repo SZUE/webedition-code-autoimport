@@ -113,6 +113,7 @@ abstract class we_autoloader{
 		'we_htmlFrameset' => 'html/we_htmlFrameset.inc.php',
 		'we_htmlSelect' => 'html/we_htmlSelect.inc.php',
 		'we_htmlTable' => 'html/we_htmlTable.inc.php',
+		'we_html_tools'=>'html/we_html_tools.class.inc.php',
 		'weHyperlinkDialog' => 'weHyperlinkDialog.class.inc.php',
 		'we_image_crop' => 'base/we_image_crop.class.php',
 		'weImageDialog' => 'weImageDialog.class.inc.php',

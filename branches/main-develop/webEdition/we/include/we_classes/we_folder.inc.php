@@ -506,17 +506,17 @@ class we_folder extends we_root
 		<td class="defaultfont">'.$this->formInputField("",($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? "Filename" : "Text",g_l('weClass',"[filename]"),50,388,255,"onChange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();").'</td><td></td><td></td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,10).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,10).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3" class="defaultfont">'.$this->formDirChooser(388).'</td>
 	</tr>';
 	if ($this->Table== OBJECT_FILES_TABLE){
 		$content .='	<tr>
-		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,4).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 		</tr>
 		<tr>
-		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,4).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 		<tr>
 			<td colspan="3" class="defaultfont">'.$this->formTriggerDocument().'</td>
@@ -529,9 +529,9 @@ class we_folder extends we_root
 			$_disabled = true;
 			$_disabledNote = " ".g_l('weClass',"[availableAfterSave]");
 		}
-		$content .='<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. htmlAlertAttentionBox(g_l('weClass',"[grant_tid_expl]").$_disabledNote,2,388,false) .'</td><td>'.
+		$content .='<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[grant_tid_expl]").$_disabledNote,2,388,false) .'</td><td>'.
 						we_button::create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall( g_l('weClass',"[saveFirstMessage]"), WE_MESSAGE_ERROR ) ."; } else {;we_cmd('changeTriggerIDRecursive','".$GLOBALS["we_transaction"]."');}",true,100,22,"","",$_disabled) . '</td></tr>
-					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>
+					<tr><td>'.we_html_tools::getPixel(409,2).'</td><td></td></tr></table>
 
 		';
 
@@ -574,7 +574,7 @@ $content .='
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -582,7 +582,7 @@ $content .='
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(2,20).'</td>
+						'.we_html_tools::getPixel(2,20).'</td>
 				</tr>
 				<tr>
 					<td class="defaultfont" align="left">
@@ -614,9 +614,9 @@ $content .='
 			$_disabledNote = " ".g_l('weClass',"[availableAfterSave]");
 		}
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. htmlAlertAttentionBox(g_l('modules_users',"[grant_owners_expl]").$_disabledNote,2,388,false) .'</td><td>'.
+		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. we_html_tools::htmlAlertAttentionBox(g_l('modules_users',"[grant_owners_expl]").$_disabledNote,2,388,false) .'</td><td>'.
 						we_button::create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall( g_l('weClass',"[saveFirstMessage]"), WE_MESSAGE_ERROR ) ."; } else {;we_cmd('changeR','".$GLOBALS["we_transaction"]."');}",true,100,22,"","",$_disabled) . '</td></tr>
-					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>';
+					<tr><td>'.we_html_tools::getPixel(409,2).'</td><td></td></tr></table>';
 		return $content;
 	}
 
@@ -629,9 +629,9 @@ $content .='
 			$_disabledNote = " ".g_l('weClass',"[availableAfterSave]");
 		}
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. htmlAlertAttentionBox(g_l('weClass',"[grant_language_expl]").$_disabledNote,2,388,false) .'</td><td>'.
+		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'. we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[grant_language_expl]").$_disabledNote,2,388,false) .'</td><td>'.
 						we_button::create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall( g_l('weClass',"[saveFirstMessage]"),WE_MESSAGE_ERROR ) ."; } else {;we_cmd('changeLanguageRecursive','".$GLOBALS["we_transaction"]."');}",true,100,22,"","",$_disabled) . '</td></tr>
-					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>';
+					<tr><td>'.we_html_tools::getPixel(409,2).'</td><td></td></tr></table>';
 		return $content;
 	}
 
@@ -654,9 +654,9 @@ $content .='
 		$wecmdenc3= we_cmd_enc("var parents = '".$ParentsCSV."';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert','[copy_folder_not_valid]'), WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID,".$this->ID.",1,'".$this->Table."');}");
 		$but = we_button::create_button("select", $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', '', 'var parents = \\'".$ParentsCSV."\\';if(parents.indexOf(\\',\\' WE_PLUS currentID WE_PLUS \\',\\') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert','[copy_folder_not_valid]'), WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd(\\'copyFolder\\', currentID,".$this->ID.",1,\\'".$this->Table."\\');}');" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert','[copy_folders_no_id]'), WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox(g_l('weClass',"[copy_owners_expl]").$_disabledNote,2,388,false).'</td><td>'.
+		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[copy_owners_expl]").$_disabledNote,2,388,false).'</td><td>'.
 						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>
-					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>';
+					<tr><td>'.we_html_tools::getPixel(409,2).'</td><td></td></tr></table>';
 
 
 		return $content;

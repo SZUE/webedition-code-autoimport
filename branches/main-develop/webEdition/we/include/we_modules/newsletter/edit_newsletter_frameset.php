@@ -41,7 +41,7 @@
 	}
 
 	if ($what != "send" && $what != "send_body" && $what != "send_cmd" && $what != "edbody" && $what != "preview" && $what != "black_list" && $what != "newsletter_settings" && $what != "eemail" && $what != "edit_file" && $what != "clear_log" && $what != "export_csv_mes" && $what != "qsend" && $what != "qsave1")  {
-		htmlTop();
+		we_html_tools::htmlTop();
 		print STYLESHEET;
 	}
 

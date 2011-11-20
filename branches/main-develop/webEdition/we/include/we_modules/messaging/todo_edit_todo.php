@@ -26,12 +26,10 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_format.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop(g_l('modules_messaging','[wintitle]'));
+we_html_tools::htmlTop(g_l('modules_messaging','[wintitle]'));
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
@@ -98,9 +96,9 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	?>
 	<form action="<?php print WE_MESSAGING_MODULE_PATH; ?>todo_send_ntodo.php" name="compose_form" method="post">
 		<?php
-            echo hidden('we_transaction', $_REQUEST['we_transaction']);
-	        echo hidden('rcpts_string', '');
-	        echo hidden('mode', $mode);
+            echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+	        echo we_html_tools::hidden('rcpts_string', '');
+	        echo we_html_tools::hidden('mode', $mode);
 
 			if ($mode == 'reject') {
 				$tbl =  '
@@ -138,23 +136,23 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 							<td class="defaultgray">
 								<a href="javascript:selectRecipient()">' . g_l('modules_messaging','[recipient]') . ':</a></td>
 							<td>
-								' . htmlTextInput('mn_recipients', 40, ($mode == 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
+								' . we_html_tools::htmlTextInput('mn_recipients', 40, ($mode == 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
 								' . g_l('modules_messaging','[subject]') . ':</td>
 							<td>
-								' . htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td>
+								' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">
 								' . g_l('modules_messaging','[deadline]') . ':</td>
 							<td>
-								' . getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
+								' . we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
 						</tr>
 						<tr>
 							<td class="defaultgray">' . g_l('modules_messaging','[priority]') . ':</td>
-							<td>' . html_select('mn_priority', 1, array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10)) . '</td>
+							<td>' . we_html_tools::html_select('mn_priority', 1, array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10)) . '</td>
 						</tr>
 					</table>
 					<table cellpadding="6">';
@@ -178,7 +176,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
     												"",
     												we_button::create_button("cancel", "javascript:top.window.close()")
     											 );
-			echo htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons,"100","24");
+			echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons,"100","24");
 		?>
 	</form>
 </body>

@@ -231,7 +231,7 @@ class we_document extends we_root {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				'. $_headline . '
 				<tr>
@@ -240,7 +240,7 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(2,20).'</td>
+						'.we_html_tools::getPixel(2,20).'</td>
 				</tr>
 				<tr>
 					<td class="defaultfont" align="left">
@@ -254,7 +254,7 @@ class we_document extends we_root {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				'. $_headline . '
 				<tr>
@@ -308,7 +308,7 @@ class we_document extends we_root {
 		} else {	//	bestehendes Dokument oder Dokument mit DocType
             $selected=$this->Extension;
 		}
-		return $this->htmlFormElementTable(getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),g_l('weClass',"[extension]"));
+		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_'.$this->Name.'_Extension',$selected,$this->Extensions,100,'onselect="_EditorFrame.setEditorIsHot(true);"', we_hasPerm('EDIT_DOCEXTENSION')),g_l('weClass',"[extension]"));
 	}
 
 	function formPath() {
@@ -330,11 +330,11 @@ class we_document extends we_root {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(20,4).'</td>
+						'.we_html_tools::getPixel(20,4).'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
-						'.getPixel(100,2).'</td>
+						'.we_html_tools::getPixel(100,2).'</td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -347,9 +347,9 @@ class we_document extends we_root {
 	function formMetaInfos() {
 		$content = '<table border="0" cellpadding="0" cellspacing="0">'.
 				'<tr><td colspan="2">'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
-				'<tr><td>'.getPixel(2,4).'</td></tr>'.
+				'<tr><td>'.we_html_tools::getPixel(2,4).'</td></tr>'.
 				'<tr><td colspan="2">'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
-				'<tr><td>'.getPixel(2,4).'</td></tr>'.
+				'<tr><td>'.we_html_tools::getPixel(2,4).'</td></tr>'.
 				'<tr><td colspan="2">'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
 			'</table>';
 			if($this->ContentType == 'image/*' && (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != '1')) {

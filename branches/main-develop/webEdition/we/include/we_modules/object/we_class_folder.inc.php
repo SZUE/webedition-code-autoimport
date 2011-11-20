@@ -245,9 +245,9 @@ class we_class_folder extends we_folder{
 		$wecmdenc3= we_cmd_enc("var parents = '".$ParentsCSV."';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall($GLOBALS["l_alert"]["copy_folder_not_valid"], WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID,".$this->ID.",1,'".$this->Table."');};");
 		$but = we_button::create_button('select', $this->ID ? "javascript:we_cmd('openDirselector', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '".$wecmdenc1."', '', '".$wecmdenc3."','',".$this->RootfolderID.");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert',"[copy_folders_no_id]"), WE_MESSAGE_ERROR),true,100,22,"","",$_disabled);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.htmlAlertAttentionBox(g_l('weClass',"[copy_owners_expl]").$_disabledNote,2,388,false).'</td><td>'.
+		$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>'.we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[copy_owners_expl]").$_disabledNote,2,388,false).'</td><td>'.
 						$this->htmlHidden($idname,$this->CopyID).$but . '</td></tr>
-					<tr><td>'.getPixel(409,2).'</td><td></td></tr></table>';
+					<tr><td>'.we_html_tools::getPixel(409,2).'</td><td></td></tr></table>';
 
 
 		return $content;
@@ -658,7 +658,7 @@ class we_class_folder extends we_folder{
 		for($i=0;$i <= $this->searchclass->height ;$i++){
 
 			if($i==0) {
-				$button = getPixel(26,10);
+				$button = we_html_tools::getPixel(26,10);
 			}
 			else {
 				$button = we_button::create_button("image:btn_function_trash", "javascript:del(".$i.");", true, 26, 22, "", "", false);
@@ -683,14 +683,14 @@ class we_class_folder extends we_folder{
 				$out .= '
 				<tr>
 					<td class="defaultfont">'.g_l('global',"[search]").'</td>
-					<td width="50">'.getPixel(5,2).'</td>'
+					<td width="50">'.we_html_tools::getPixel(5,2).'</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->ClassPath).'</td>
-					<td>'.getPixel(10,2).'</td>
+					<td>'.we_html_tools::getPixel(10,2).'</td>
 					<td width="50">'.$this->searchclass->getLocationMeta("objlocation[".$i."]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '') ).'</td>
-					<td>'.getPixel(10,2).'</td>
-					<td>'.htmlSelect('objsearch['.$i.']',$values,1,$this->searchclass->objsearch[$i],false,"","value").'</td>
-					<td>'.getPixel(10,2).'</td>
+					<td>'.we_html_tools::getPixel(10,2).'</td>
+					<td>'.we_html_tools::htmlSelect('objsearch['.$i.']',$values,1,$this->searchclass->objsearch[$i],false,"","value").'</td>
+					<td>'.we_html_tools::getPixel(10,2).'</td>
 					<td align="right">'.$button.'</td>
 				</tr>';
 
@@ -743,20 +743,20 @@ class we_class_folder extends we_folder{
 				$out .= '
 				<tr>
 					<td class="defaultfont">'.g_l('global',"[search]").'</td>
-					<td>'.getPixel(5,2).'</td>'
+					<td>'.we_html_tools::getPixel(5,2).'</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->ClassPath).'</td>
-					<td>'.getPixel(10,2).'</td>
+					<td>'.we_html_tools::getPixel(10,2).'</td>
 					<td>'.$this->searchclass->getLocationDate("objlocation[".$i."]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '') ).'</td>
-					<td>'.getPixel(10,2).'</td>
+					<td>'.we_html_tools::getPixel(10,2).'</td>
 					<td>
-						'.htmlTextInput('objsearch['.$i.'][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y") ), 4).' -
-						'.htmlSelect('objsearch['.$i.'][month]',$month,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m") )).' -
-						'.htmlSelect('objsearch['.$i.'][day]',$day,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d") )).' &nbsp;
-						'.htmlSelect('objsearch['.$i.'][hour]',$hour,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H") )).' :
-						'.htmlSelect('objsearch['.$i.'][minute]',$minute,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i") )).'
+						'.we_html_tools::htmlTextInput('objsearch['.$i.'][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y") ), 4).' -
+						'.we_html_tools::htmlSelect('objsearch['.$i.'][month]',$month,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m") )).' -
+						'.we_html_tools::htmlSelect('objsearch['.$i.'][day]',$day,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d") )).' &nbsp;
+						'.we_html_tools::htmlSelect('objsearch['.$i.'][hour]',$hour,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H") )).' :
+						'.we_html_tools::htmlSelect('objsearch['.$i.'][minute]',$minute,1,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i") )).'
 					</td>
-					<td>'.getPixel(10,2).'</td>
+					<td>'.we_html_tools::getPixel(10,2).'</td>
 					<td align="right">'.$button.'</td>
 				</tr>';
 
@@ -764,14 +764,14 @@ class we_class_folder extends we_folder{
 				$out .= '
 				<tr>
 					<td class="defaultfont">'.g_l('global',"[search]").'</td>
-					<td>'.getPixel(1,2).'</td>'
+					<td>'.we_html_tools::getPixel(1,2).'</td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->Path).'</td> #4076 orig
 					.'<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : "" ),$this->ClassPath).'</td>
-					<td>'.getPixel(1,2).'</td>
+					<td>'.we_html_tools::getPixel(1,2).'</td>
 					<td>'.$this->searchclass->getLocation("objlocation[".$i."]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '') ).'</td>
-					<td>'.getPixel(1,2).'</td>
-					<td>'.htmlTextInput("objsearch[".$i."]",30,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : '' ),"","","text",200).'</td>
-					<td>'.getPixel(1,2).'</td>
+					<td>'.we_html_tools::getPixel(1,2).'</td>
+					<td>'.we_html_tools::htmlTextInput("objsearch[".$i."]",30,(isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : '' ),"","","text",200).'</td>
+					<td>'.we_html_tools::getPixel(1,2).'</td>
 					<td align="right">'.$button.'</td>
 				</tr>';
 			}
@@ -814,14 +814,14 @@ class we_class_folder extends we_folder{
 			<td colspan="3">'.$this->formDirChooser(388,0,FILE_TABLE,"WorkspacePath","WorkspaceID","opener.we_cmd('reload_editpage');",false).'</td>
 		</tr>
 		<tr>
-			<td colspan="4">'.getPixel(18,12).'</td>
+			<td colspan="4">'.we_html_tools::getPixel(18,12).'</td>
 		</tr>
 		<tr>
 			<td class="defaultgray">'.g_l('modules_objectClassfoldersearch','[Ansicht]').'</td>
-			<td>'.htmlSelect("Anzahl",$values,1,$this->searchclass->anzahl,"",'onChange=\'this.form.elements["SearchStart"].value=0;we_cmd("reload_editpage");\'');
+			<td>'.we_html_tools::htmlSelect("Anzahl",$values,1,$this->searchclass->anzahl,"",'onChange=\'this.form.elements["SearchStart"].value=0;we_cmd("reload_editpage");\'');
 
-		$out .= hidden("Order",$this->searchclass->Order);
-		$out .= hidden("do","");
+		$out .= we_html_tools::hidden("Order",$this->searchclass->Order);
+		$out .= we_html_tools::hidden("do","");
 
 		$out .=  '</td>
 			<td>&nbsp;</td>
@@ -830,10 +830,10 @@ class we_class_folder extends we_folder{
 
 		$out .= '
 		<tr>
-			<td>'.getPixel(128,20).'</td>
-			<td>'.getPixel(40,15).'</td>
-			<td>'.getPixel(10,15).'</td>
-			<td>'.getPixel(350,15).'</td>
+			<td>'.we_html_tools::getPixel(128,20).'</td>
+			<td>'.we_html_tools::getPixel(40,15).'</td>
+			<td>'.we_html_tools::getPixel(10,15).'</td>
+			<td>'.we_html_tools::getPixel(350,15).'</td>
 		</tr>
 		</table>
 		<table border="0" cellpadding="0" cellspacing="0">
@@ -848,146 +848,146 @@ class we_class_folder extends we_folder{
 			<td align="right">'.$this->searchclass->getNextPrev($foundItems).'</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		</table>';
 
-		$out .= htmlDialogBorder3(900,0, $content ,$headline);
+		$out .= we_html_tools::htmlDialogBorder3(900,0, $content ,$headline);
 
 		$out .= '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(5,1).(we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("selectAll", "javascript: ".$javascriptAll."") : "").'</td>
+			<td>'.we_html_tools::getPixel(5,1).(we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("selectAll", "javascript: ".$javascriptAll."") : "").'</td>
 			<td align="right">'.$this->searchclass->getNextPrev($foundItems).'</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("DELETE_OBJECTFILE") ? we_button::create_button("image:btn_function_trash", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichloeschen]')."'))document.we_form.elements['do'].value='delete';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[loesch]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_publish", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichveroeffentlichen]')."'))document.we_form.elements['do'].value='publish';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[veroeffentlichen]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichparken]')."'))document.we_form.elements['do'].value='unpublish';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[parken]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_searchable", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichsearchable]')."'))document.we_form.elements['do'].value='searchable';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[searchable]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_unsearchable", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichunsearchable]')."'))document.we_form.elements['do'].value='unsearchable';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[unsearchable]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_copy", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichcopychar]')."'))document.we_form.elements['do'].value='copychar';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[copychar]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_copy", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichcopyws]')."'))document.we_form.elements['do'].value='copyws';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[copyws]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>'.getPixel(175,12).'</td>
-			<td>'.getPixel(460,12).'</td>
+			<td>'.we_html_tools::getPixel(175,12).'</td>
+			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("image:btn_function_copy", "javascript: if(confirm('".g_l('modules_objectClassfoldersearch','[wirklichcopytid]')."'))document.we_form.elements['do'].value='copytid';we_cmd('reload_editpage');") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_objectClassfoldersearch','[copytid]') : "").'</td>
 				</tr>
 				</table>
@@ -1110,7 +1110,7 @@ EOF;
 			}
 			return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
 		}
-		return getPixel(11,8);
+		return we_html_tools::getPixel(11,8);
 	}
 
 

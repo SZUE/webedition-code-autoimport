@@ -25,12 +25,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 
 function prepareFieldname($str){
 
@@ -44,7 +38,7 @@ function prepareFieldname($str){
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -148,44 +142,44 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 
 	$_row = 0;
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[waehrung]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	$_htmlTable->setColContent($_row++, 2, htmlTextInput("waehr",6,$feldnamen[0],"","","text",50) );
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("waehr",6,$feldnamen[0],"","","text",50) );
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
 
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign'=>'top'), g_l('modules_shop','[mwst]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	$_htmlTable->setCol($_row++, 2, array('class'=>'defaultfont'), htmlTextInput("mwst",6,$feldnamen[1],"","","text",50) . '&nbsp%');
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 3), getPixel(5,5));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), htmlAlertAttentionBox(g_l('modules_shop','[mwst_expl]'), 2, "100%" , false, 100));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 3), getPixel(20,15));
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+	$_htmlTable->setCol($_row++, 2, array('class'=>'defaultfont'), we_html_tools::htmlTextInput("mwst",6,$feldnamen[1],"","","text",50) . '&nbsp%');
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(5,5));
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[mwst_expl]'), 2, "100%" , false, 100));
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(20,15));
 
 	$list = array("german" => "german","english" => "english","french" => "french", "swiss"=>"swiss");
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[format]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	$_htmlTable->setColContent($_row++, 2, htmlSelect('format', $list, 1, $feldnamen[2]) );
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('format', $list, 1, $feldnamen[2]) );
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
 
 	$pager = array("default" => "-", "5" => "5", "10" => "10", "15" => "15" , "20" => "20", "25" => "25" ,"30" => "30", "35" => "35", "40" =>"40", "45" =>"45", "50" => "50");
 
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[pageMod]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	$_htmlTable->setColContent($_row++, 2, htmlSelect('pag', $pager, 1, $feldnamen[4]) );
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('pag', $pager, 1, $feldnamen[4]) );
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
 
 	if (defined('OBJECT_TABLE')) {
 
 		$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop','[classID]'));
-		$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-		$_htmlTable->setColContent($_row++, 2, htmlTextInput("classID",6,(isset($feldnamen[3]) ? $feldnamen[3] : ''),"","","text",50). '<span class="small">&nbsp'. g_l('modules_shop','[classIDext]').' </span>' );
-		$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+		$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+		$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("classID",6,(isset($feldnamen[3]) ? $feldnamen[3] : ''),"","","text",50). '<span class="small">&nbsp'. g_l('modules_shop','[classIDext]').' </span>' );
+		$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
 	} else {
 
 
-		$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+		$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 	}
 
 	// look for all available fields in tblCustomer
@@ -240,30 +234,30 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	}
 
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), g_l('modules_shop','[preferences][customerFields]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	$_htmlTable->setColContent($_row++, 2, htmlSelect('orderfields[]', $_availFields, (sizeof($_availFields) > 5 ? '5' : sizeof($_availFields)), implode(",", $fields['customerFields']), true, "", "value", 280 ) );
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $_availFields, (sizeof($_availFields) > 5 ? '5' : sizeof($_availFields)), implode(",", $fields['customerFields']), true, "", "value", 280 ) );
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), g_l('modules_shop','[preferences][orderCustomerFields]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
-	$_htmlTable->setColContent($_row++, 2, htmlSelect('ordercustomerfields[]', $_availFields, (sizeof($_availFields) > 5 ? '5' : sizeof($_availFields)), implode(",", $fields['orderCustomerFields']), true, "", "value", 280 ) );
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
+	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $_availFields, (sizeof($_availFields) > 5 ? '5' : sizeof($_availFields)), implode(",", $fields['orderCustomerFields']), true, "", "value", 280 ) );
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), g_l('modules_shop','[preferences][CountryField]'));
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
 
 	$countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
 	$countrySelectISO = we_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop','[preferences][ISO-Kodiert]'),false,"defaultfont");
 	$_htmlTable->setColContent($_row++, 2, $countrySelect.'<br/>'.$countrySelectISO  );
 
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,15));
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 	$_htmlTable->setCol($_row, 0, array('class'=>'defaultfont', 'valign' => 'top'), g_l('modules_shop','[preferences][LanguageField]'));
 	$languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
 	$languageSelectISO = we_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop','[preferences][ISO-Kodiert]'),false,"defaultfont");
 	$_htmlTable->setColContent($_row++, 2, $languageSelect.'<br/>'.$languageSelectISO  );
-	$_htmlTable->setColContent($_row, 1, getPixel(10,5) );
+	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
 
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), getPixel(20,25));
+	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,25));
 
 
 
@@ -272,7 +266,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 													we_button::create_button("cancel", "javascript:self.close();")
 													);
 
-	$frame = htmlDialogLayout($_htmlTable->getHtmlCode(), g_l('modules_shop','[pref]'), $_buttons);
+	$frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtmlCode(), g_l('modules_shop','[pref]'), $_buttons);
 
 
 echo '<script type="text/javascript">self.focus();</script>

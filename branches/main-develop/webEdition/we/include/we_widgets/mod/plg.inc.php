@@ -102,7 +102,7 @@ $_gap = false;
 for ($i = 0; $i <= 10; $i++) {
 	if ($_pLogCsv[$i]) {
 		if ($_gap) {
-			$_pLogOut .= getPixel(1, 8) . we_htmlElement::htmlBr();
+			$_pLogOut .= we_html_tools::getPixel(1, 8) . we_htmlElement::htmlBr();
 		} else {
 			$_gap = true;
 		}

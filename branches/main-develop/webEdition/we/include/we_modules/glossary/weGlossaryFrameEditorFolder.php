@@ -98,14 +98,14 @@
 						</tr>
 						<tr>
 							<td>
-								'.getPixel(2,4).'</td>
+								'.we_html_tools::getPixel(2,4).'</td>
 						<tr>
 							<td>
 								' . g_l('modules_glossary','[number_of_entries]') . ': ' . $items . '</td>
 						</tr>
 						<tr>
 							<td>
-								'.getPixel(2,4).'</td>
+								'.we_html_tools::getPixel(2,4).'</td>
 						</tr>
 						<tr>
 							<td align="right">

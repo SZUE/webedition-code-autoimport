@@ -1642,8 +1642,8 @@ function mapPermissions() {
 			//-->
 			</script>';
 
-		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username");
-		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
+		$_username = ($this->ID) ? we_html_tools::htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username");
+		$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . we_html_tools::htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
 
 
 
@@ -1652,13 +1652,13 @@ function mapPermissions() {
 
 		$_tableObj->setCol(0, 0, null, $this->getUserfield("First","first_name"));
 		$_tableObj->setCol(0, 1, null, $this->getUserfield("Second","second_name"));
-		$_tableObj->setCol(1, 0, null, getPixel(280,20));
-		$_tableObj->setCol(1, 1, null, getPixel(280,5));
+		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(280,20));
+		$_tableObj->setCol(1, 1, null, we_html_tools::getPixel(280,5));
 		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', g_l('modules_users',"[login_denied]"), false, "defaultfont", "", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
-		$_tableObj->setCol(3, 0, null, getPixel(280,20));
-		$_tableObj->setCol(3, 1, null, getPixel(280,5));
+		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(280,20));
+		$_tableObj->setCol(3, 1, null, we_html_tools::getPixel(280,5));
 		$_tableObj->setCol(4, 0, null, $_username);
-		$_tableObj->setCol(4, 1, null,htmlFormElementTable($_password,g_l('modules_users',"[password]")));
+		$_tableObj->setCol(4, 1, null,we_html_tools::htmlFormElementTable($_password,g_l('modules_users',"[password]")));
 
 		$parts = array();
 		array_push($parts,
@@ -1679,7 +1679,7 @@ function mapPermissions() {
 
 		$adminperm=$this->checkPermission("ADMINISTRATOR");
 		$publishperm=$this->checkPermission("PUBLISH");
-		$_input = '<input type="hidden" name="'.$this->Name.'_workSpace" value="'.$_ws.'" />'.htmlTextInput('specify_location',40,$wpath,"",'onchange="top.content.setHot()" readonly="readonly"','text',365);
+		$_input = '<input type="hidden" name="'.$this->Name.'_workSpace" value="'.$_ws.'" />'.we_html_tools::htmlTextInput('specify_location',40,$wpath,"",'onchange="top.content.setHot()" readonly="readonly"','text',365);
 		$_button = we_button::create_button("select", "javascript:choseDir()",true,-1,-1,"","",$adminperm,false);
 		$_chooser = we_button::create_button_table(array($_input,$_button));
 
@@ -1694,9 +1694,9 @@ function mapPermissions() {
 		$_tableObj->setCol(3, 2, null, $_chooser);
 		$_tableObj->setCol(4, 0, null);
 		$_tableObj->setCol(4, 1, array("colspan"=>"2"), we_forms::checkbox("1",($adminperm=="0") && $publishperm==1,$this->Name.'_PUBLISH',g_l('modules_users',"[publish_specify]"),false,"defaultfont","top.content.setHot()"));
-		$_tableObj->setCol(5, 0, null,getPixel(20,1));
-		$_tableObj->setCol(5, 1, null,getPixel(20,1));
-		$_tableObj->setCol(5, 2, null,getPixel(400,1));
+		$_tableObj->setCol(5, 0, null,we_html_tools::getPixel(20,1));
+		$_tableObj->setCol(5, 1, null,we_html_tools::getPixel(20,1));
+		$_tableObj->setCol(5, 2, null,we_html_tools::getPixel(400,1));
 
 
 
@@ -1753,7 +1753,7 @@ function mapPermissions() {
 						<table border="0" cellpadding="0" cellspacing="2">
 						<tr>
 							<td><input type="hidden" name="seem_start_file" value="' . $startDocid . '" /></td>
-							<td valign="middle">'.htmlTextInput('seem_start_file_name',40,$startDocPath,"",'readonly="readonly" onChange="top.content.setHot();"','text',411).'</td>
+							<td valign="middle">'.we_html_tools::htmlTextInput('seem_start_file_name',40,$startDocPath,"",'readonly="readonly" onChange="top.content.setHot();"','text',411).'</td>
 							<td width="5"></td>
 							<td>' . we_button::create_button("select", "javascript:top.content.setHot(); we_cmd('select_seem_start');") . '</td>
 						</tr>
@@ -1781,7 +1781,7 @@ function mapPermissions() {
 
 		$_tableObj = new we_htmlTable($_attr, 5, 1);
 
-		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b><input type="hidden" id="yuiAcInputPathName" value="'.($this->username).'">',g_l('modules_users',"[group_name]")) : $this->getUserfield("username","group_name","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
+		$_username = ($this->ID) ? we_html_tools::htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b><input type="hidden" id="yuiAcInputPathName" value="'.($this->username).'">',g_l('modules_users',"[group_name]")) : $this->getUserfield("username","group_name","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="'.$this->Name.'_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onChange="top.content.setHot();">'.$this->Description.'</textarea>';
 		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($this->ParentID));
 
@@ -1806,10 +1806,10 @@ function mapPermissions() {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_tableObj->setCol(0, 0, null, $_username);
-		$_tableObj->setCol(1, 0, null, getPixel(560,4));
-		$_tableObj->setCol(2, 0, null, htmlFormElementTable($_description,g_l('modules_users',"[description]")));
-		$_tableObj->setCol(3, 0, null, getPixel(560,10));
-		$_tableObj->setCol(4, 0, null, htmlFormElementTable($weAcSelector,g_l('modules_users',"[group]")));
+		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(560,4));
+		$_tableObj->setCol(2, 0, null, we_html_tools::htmlFormElementTable($_description,g_l('modules_users',"[description]")));
+		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(560,10));
+		$_tableObj->setCol(4, 0, null, we_html_tools::htmlFormElementTable($weAcSelector,g_l('modules_users',"[group]")));
 
 		$parts = array();
 
@@ -1829,7 +1829,7 @@ function mapPermissions() {
 			}
 		}
 
-		$content.='</select><br>'.getPixel(5,10).'<br>'.we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form.".$this->Name."_Users.value)",true,-1,-1,"","",true,false);
+		$content.='</select><br>'.we_html_tools::getPixel(5,10).'<br>'.we_button::create_button("edit", "javascript:we_cmd('display_user',document.we_form.".$this->Name."_Users.value)",true,-1,-1,"","",true,false);
 
 			array_push($parts,
 						array(
@@ -1853,7 +1853,7 @@ function mapPermissions() {
 				$val = "";
 			}
 		}
-		return htmlFormElementTable(htmlTextInput($this->Name.'_'.$name,20,$val,$maxlen,'onchange="top.content.setHot()" '.(empty($attribs)?'':$attribs),$type,240),g_l('modules_users',"[$lngkey]"));
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->Name.'_'.$name,20,$val,$maxlen,'onchange="top.content.setHot()" '.(empty($attribs)?'':$attribs),$type,240),g_l('modules_users',"[$lngkey]"));
 	}
 
 	function formUserData() {
@@ -1865,16 +1865,16 @@ function mapPermissions() {
 		$_tableObj->setCol(0, 1, "");
 		$_tableObj->setCol(1, 0, null, $this->getUserfield("First","first_name"));
 		$_tableObj->setCol(1, 1, null, $this->getUserfield("Second","second_name"));
-		$_tableObj->setCol(2, 0, null, getPixel(280,20));
-		$_tableObj->setCol(2, 1, null, getPixel(280,5));
+		$_tableObj->setCol(2, 0, null, we_html_tools::getPixel(280,20));
+		$_tableObj->setCol(2, 1, null, we_html_tools::getPixel(280,5));
 		$_tableObj->setCol(3, 0, null, $this->getUserfield("Address","address"));
 		$_tableObj->setCol(3, 1, null, $this->getUserfield("HouseNo","houseno"));
 		$_tableObj->setCol(4, 0, null, $this->getUserfield("PLZ","PLZ","text","16",true));
 		$_tableObj->setCol(4, 1, null, $this->getUserfield("City","city"));
 		$_tableObj->setCol(5, 0, null, $this->getUserfield("State","state"));
 		$_tableObj->setCol(5, 1, null, $this->getUserfield("Country","country"));
-		$_tableObj->setCol(6, 0, null, getPixel(280,20));
-		$_tableObj->setCol(6, 1, null, getPixel(280,5));
+		$_tableObj->setCol(6, 0, null, we_html_tools::getPixel(280,20));
+		$_tableObj->setCol(6, 1, null, we_html_tools::getPixel(280,5));
 		$_tableObj->setCol(7, 0, null, $this->getUserfield("Tel_preselection","tel_pre"));
 		$_tableObj->setCol(7, 1, null, $this->getUserfield("Telephone","telephone"));
 		$_tableObj->setCol(8, 0, null, $this->getUserfield("Fax_preselection","fax_pre"));
@@ -1897,12 +1897,12 @@ function mapPermissions() {
 
 		$_tableObj = new we_htmlTable($_attr, 8, 2);
 
-		$_username = ($this->ID) ? htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
+		$_username = ($this->ID) ? we_html_tools::htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 
 		if(isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["ID"] && $_SESSION["user"]["ID"]==$this->ID && !we_hasPerm("EDIT_PASSWD"))
 			$_password="****************";
 		else
-			$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
+			$_password = '<input type="hidden" name="'.$this->Name.'_clearpasswd" value="'.$this->clearpasswd.'" />' . we_html_tools::htmlTextInput('input_pass',20,"","255",'onchange="top.content.setHot()" autocomplete="off"','password',240);
 
 		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID='".$this->ParentID."'");
 
@@ -1927,16 +1927,16 @@ function mapPermissions() {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_tableObj->setCol(0, 0, null, $_username);
-		$_tableObj->setCol(0, 1, null, htmlFormElementTable($_password, g_l('modules_users',"[password]")));
-		$_tableObj->setCol(1, 0, null, getPixel(280,10));
-		$_tableObj->setCol(1, 1, null, getPixel(280,5));
+		$_tableObj->setCol(0, 1, null, we_html_tools::htmlFormElementTable($_password, g_l('modules_users',"[password]")));
+		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(280,10));
+		$_tableObj->setCol(1, 1, null, we_html_tools::getPixel(280,5));
 		$_tableObj->setCol(2, 0, null, we_forms::checkboxWithHidden($this->LoginDenied, $this->Name.'_LoginDenied', g_l('modules_users',"[login_denied]"), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"]==$this->ID || !we_hasPerm("ADMINISTRATOR")) ));
 		$_tableObj->setCol(2, 1, array("class"=>"defaultfont"), g_l('modules_users',"[lastPing]").' '.(($this->Ping) ? date('d.m.Y H:i:s',$this->Ping):'-'));
-		$_tableObj->setCol(3, 0, null, getPixel(280,10));
-		$_tableObj->setCol(3, 1, null, getPixel(280,5));
-		$_tableObj->setCol(4, 0, array("colspan"=>"2"), htmlFormElementTable($weAcSelector,g_l('modules_users',"[group]")));
-		$_tableObj->setCol(5, 0, null, getPixel(280,10));
-		$_tableObj->setCol(5, 1, null, getPixel(280,5));
+		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(280,10));
+		$_tableObj->setCol(3, 1, null, we_html_tools::getPixel(280,5));
+		$_tableObj->setCol(4, 0, array("colspan"=>"2"), we_html_tools::htmlFormElementTable($weAcSelector,g_l('modules_users',"[group]")));
+		$_tableObj->setCol(5, 0, null, we_html_tools::getPixel(280,10));
+		$_tableObj->setCol(5, 1, null, we_html_tools::getPixel(280,5));
 		if($this->CreatorID){
 			$this->DB_WE->query("SELECT username,first,second FROM ".USER_TABLE." WHERE ID='".$this->CreatorID."'");
 			if ($this->DB_WE->next_record()) {
@@ -2104,7 +2104,7 @@ function mapPermissions() {
 					<table cellpadding="0" cellspacing="0" border="0" width="500">
 						<tr>
 							<td>
-								' . getPixel(1, 5) . '</td>
+								' . we_html_tools::getPixel(1, 5) . '</td>
 						</tr>
 						<tr>
 							<td>
@@ -2346,16 +2346,16 @@ function mapPermissions() {
 				else {
 					$content1.='
 						<td>
-							'.getPixel(5,5).'</td>';
+							'.we_html_tools::getPixel(5,5).'</td>';
 				}
 				$content1.='</tr>';
 			}
 			$content1.='
 					<tr>
-						<td>'.getPixel(300,3).'</td>
-						<td>'.getPixel(110,3).'</td>
-						<td>'.getPixel(40,3).'</td>
-						<td>'.getPixel(90,3).'</td>
+						<td>'.we_html_tools::getPixel(300,3).'</td>
+						<td>'.we_html_tools::getPixel(110,3).'</td>
+						<td>'.we_html_tools::getPixel(40,3).'</td>
+						<td>'.we_html_tools::getPixel(90,3).'</td>
 					</tr>
 					<tr>
 						<td colspan="4">
@@ -2424,7 +2424,7 @@ function mapPermissions() {
 		$_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
 
 		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name."_Preference_force_glossary_check", g_l('prefs','[force_glossary_check]'), "false", "defaultfont", "top.content.setHot()" ));
-		$_table->setCol(1, 0, null, getPixel(1, 5));
+		$_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 		$_table->setCol(2, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name."_Preference_force_glossary_action", g_l('prefs','[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()" ));
 
 		// Build dialog if user has permission
@@ -2722,7 +2722,7 @@ function mapPermissions() {
 
 		// Build final HTML code
 		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
-		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode() . getPixel(200,1));
+		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode() . we_html_tools::getPixel(200,1));
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser.$_seem_weapp_chooser);
 
 		if (we_hasPerm("CHANGE_START_DOCUMENT")) {
@@ -2776,7 +2776,7 @@ function mapPermissions() {
 			$_file_tree_count->selectOption($_tree_count);
 		}
 
-		array_push($_settings, array("headline" => g_l('prefs','[tree_title]'), "html" => htmlAlertAttentionBox(g_l('prefs','[tree_count_description]'),2)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs','[tree_count_description]'),2)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
 
 
 		/*****************************************************************
@@ -2803,32 +2803,32 @@ function mapPermissions() {
 		// Create specify window dimension input
 		$_window_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
 
-		$_window_specify_table->setCol(0, 0, null, getPixel(1, 10));
-		$_window_specify_table->setCol(1, 0, null, getPixel(40, 1));
-		$_window_specify_table->setCol(2, 0, null, getPixel(1, 5));
-		$_window_specify_table->setCol(3, 0, null, getPixel(40, 1));
+		$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
+		$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(40, 1));
+		$_window_specify_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
+		$_window_specify_table->setCol(3, 0, null, we_html_tools::getPixel(40, 1));
 
 		$_window_specify_table->setCol(1, 1, array("class" => "defaultfont"), g_l('prefs','[width]') . ":");
 		$_window_specify_table->setCol(3, 1, array("class" => "defaultfont"), g_l('prefs','[height]') . ":");
 
-		$_window_specify_table->setCol(1, 2, null, getPixel(10, 1));
-		$_window_specify_table->setCol(3, 2, null, getPixel(10, 1));
+		$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
+		$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_window_specify_table->setCol(1, 3, null, htmlTextInput($this->Name."_Preference_weWidth", 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
-		$_window_specify_table->setCol(3, 3, null, htmlTextInput($this->Name."_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput($this->Name."_Preference_weWidth", 6, ($this->Preferences['weWidth'] != '' && $this->Preferences['weWidth'] != '0' ? $this->Preferences['weWidth'] : 800), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
+		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name."_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
 		$_window_current_dimension_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);
 
-		$_window_current_dimension_table->setCol(0, 0, null, getPixel(90, 1));
+		$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(90, 1));
 		$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true,210));
 
 		// Build final HTML code
 		$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
 		$_window_html->setCol(0, 0, null, $_window_max_code);
-		$_window_html->setCol(1, 0, null, getPixel(1, 10));
+		$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 		$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtmlCode());
-		$_window_html->setCol(3, 0, null, getPixel(1, 10));
+		$_window_html->setCol(3, 0, null, we_html_tools::getPixel(1, 10));
 		$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtmlCode());
 
 		// Build dialog
@@ -2840,7 +2840,7 @@ function mapPermissions() {
 		$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '800';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '1024';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '768';", true))));
 		$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '1280';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '1600';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '1200';", true))));
 
-		$_window_predefined_table->setCol(1, 0, null, getPixel(1, 10));
+		$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
 		// Build dialog
 		array_push($_settings, array("headline" => g_l('prefs','[predefined]'), "html" => $_window_predefined_table->getHtmlCode(), "space" => 200));
@@ -2893,16 +2893,16 @@ function mapPermissions() {
 		// Create specify window dimension input
 		$_template_editor_font_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
 
-		$_template_editor_font_specify_table->setCol(0, 0, null, getPixel(1, 10));
-		$_template_editor_font_specify_table->setCol(1, 0, null, getPixel(50, 1));
-		$_template_editor_font_specify_table->setCol(2, 0, null, getPixel(1, 5));
-		$_template_editor_font_specify_table->setCol(3, 0, null, getPixel(50, 1));
+		$_template_editor_font_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
+		$_template_editor_font_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
+		$_template_editor_font_specify_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
+		$_template_editor_font_specify_table->setCol(3, 0, null, we_html_tools::getPixel(50, 1));
 
 		$_template_editor_font_specify_table->setCol(1, 1, array("class" => "defaultfont"), g_l('prefs','[editor_fontname]') . ":");
 		$_template_editor_font_specify_table->setCol(3, 1, array("class" => "defaultfont"), g_l('prefs','[editor_fontsize]') . ":");
 
-		$_template_editor_font_specify_table->setCol(1, 2, null, getPixel(10, 1));
-		$_template_editor_font_specify_table->setCol(3, 2, null, getPixel(10, 1));
+		$_template_editor_font_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
+		$_template_editor_font_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
 		$_template_editor_font_select_box = new we_htmlSelect(array("class" => "weSelect", "name" => $this->Name."_Preference_editorFontname",  "size" => "1", "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();" ));
 
@@ -3007,9 +3007,9 @@ function mapPermissions() {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(170,5).'</td>
+						'.we_html_tools::getPixel(170,5).'</td>
 					<td>
-						'.getPixel(330,5).'</td>
+						'.we_html_tools::getPixel(330,5).'</td>
 				</tr>
 				<tr>
 					<td class="defaultfont">
@@ -3020,9 +3020,9 @@ function mapPermissions() {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(170,1).'</td>
+						'.we_html_tools::getPixel(170,1).'</td>
 					<td>
-						'.getPixel(330,1).'</td>
+						'.we_html_tools::getPixel(330,1).'</td>
 				</tr>
 			</table>';
 
@@ -3036,8 +3036,8 @@ function mapPermissions() {
 							)
 					);
 
-		$content = $this->formInherits("_ParentPerms",$this->ParentPerms,g_l('modules_users',"[inherit]")) . getPixel(5,5) .
-										$this->formInherits("_ParentWs",$this->ParentWs,g_l('modules_users',"[inherit_ws]")) . getPixel(5,5) .
+		$content = $this->formInherits("_ParentPerms",$this->ParentPerms,g_l('modules_users',"[inherit]")) . we_html_tools::getPixel(5,5) .
+										$this->formInherits("_ParentWs",$this->ParentWs,g_l('modules_users',"[inherit_ws]")) . we_html_tools::getPixel(5,5) .
 										$this->formInherits("_ParentWst",$this->ParentWst,g_l('modules_users',"[inherit_wst]"));
 
 
@@ -3148,7 +3148,7 @@ function mapPermissions() {
 			$headline1=g_l('javaMenu_users','[menu_user]').': ';
 		}
 		$headline2=empty($this->Path)?$this->getPath($this->ParentID):$this->Path;
-		$out .= '<div id="main" >' . getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).'&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$headline2).'</b></span></nobr></div>'.getPixel(100,3).$we_tabs->getHTML().'</div>';
+		$out .= '<div id="main" >' . we_html_tools::getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).'&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$headline2).'</b></span></nobr></div>'.we_html_tools::getPixel(100,3).$we_tabs->getHTML().'</div>';
 
 		$out .= $tab_body ;
 		return $out;

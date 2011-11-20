@@ -26,7 +26,7 @@
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 	include_once(WE_BANNER_MODULE_DIR."weBannerFrames.php");
 	protect();
-	htmlTop();
+	we_html_tools::htmlTop();
 	print STYLESHEET;
 
 	$bannerFrame=new weBannerFrames();

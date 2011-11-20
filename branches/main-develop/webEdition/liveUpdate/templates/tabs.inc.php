@@ -43,7 +43,7 @@ $tabs->onResize();
 $_tabHead  = $tabs->getHeader();
 $_tabJs = $tabs->getJS();
 
-$bodyContent =	'<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">' . getPixel(100,10) . '</div>' . getPixel(100,3) .
+$bodyContent =	'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">' . we_html_tools::getPixel(100,10) . '</div>' . we_html_tools::getPixel(100,3) .
 			$tabs->getHTML() . 
 			'</div>';
 

@@ -27,8 +27,6 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 }
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 protect();
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
@@ -289,7 +287,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
         </td>
       </tr>
       <tr>
-	<td>' . getPixel(22, 1) . '</td>
+	<td>' . we_html_tools::getPixel(22, 1) . '</td>
       </tr>
       <tr>
 	<td valign="top">' . we_button::create_button("image:btn_direction_right", "javascript:add_addr2sel()") . '</td>
@@ -300,20 +298,20 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	<td>' . we_button::create_button("delete", "javascript:rm_sel_user();") . '</td>
       </tr>
       <tr>
-	<td colspan="3">' . getPixel(1, 15) . '<td>
+	<td colspan="3">' . we_html_tools::getPixel(1, 15) . '<td>
       </tr>
       <tr>
 	<td>' . we_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
 	<td colspan="2">' . we_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
-    echo htmlDialogLayout($tbl, g_l('modules_messaging','[sel_rcpts]'),we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:ok()"),  "", we_button::create_button("cancel", "javascript:window.close();")));
+    echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging','[sel_rcpts]'),we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:ok()"),  "", we_button::create_button("cancel", "javascript:window.close();")));
 ?>
     </form>
     <form action="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_usel.php" method="post" name="addrbook_data">
-	<?php echo hidden('mode', 'save_addrbook');
-	      echo hidden('we_transaction', $_REQUEST['we_transaction']);
-	      echo hidden('addrbook_arr', '');
+	<?php echo we_html_tools::hidden('mode', 'save_addrbook');
+	      echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+	      echo we_html_tools::hidden('addrbook_arr', '');
 	?>
     </form>
     <script type="text/javascript">

@@ -50,7 +50,7 @@ class we_makenewtemplate extends we_template
 			"left",
 			"defaultfont",
 			$this->htmlHidden($idname,0),//$myid
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button);
 	}
 
@@ -169,7 +169,7 @@ function getTmplTableRow($type,$name,$isField=false){
 	}
 }
 
-htmlTop(g_l('weClass','[generateTemplate]'));
+we_html_tools::htmlTop(g_l('weClass','[generateTemplate]'));
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 print STYLESHEET;
@@ -268,7 +268,7 @@ $buttons = we_button::position_yes_no_cancel(
 											);
 
 
-echo htmlDialogLayout($tmpl->formPath(),g_l('weClass','[generateTemplate]'),$buttons);
+echo we_html_tools::htmlDialogLayout($tmpl->formPath(),g_l('weClass','[generateTemplate]'),$buttons);
 echo '<input type="hidden" name="SID" value="'.$tmpl->Name.'" />';
 echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST["we_cmd"][3].'" />';
 echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';

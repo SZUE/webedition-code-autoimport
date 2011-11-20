@@ -23,7 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
@@ -37,7 +36,7 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 	$_cmd_string .= ",'SEEM_edit_include'";
 }
 
-htmlTop();
+we_html_tools::htmlTop();
 ?>
 <script type="text/javascript">
 	function we_cmd(){

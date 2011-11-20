@@ -28,7 +28,7 @@
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowFrames.php");
 
 	protect();
-	htmlTop();
+	we_html_tools::htmlTop();
 
 	print STYLESHEET;
 

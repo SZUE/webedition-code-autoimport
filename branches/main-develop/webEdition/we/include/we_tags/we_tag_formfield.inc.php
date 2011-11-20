@@ -153,7 +153,7 @@ function we_tag_formfield($attribs, $content){
 						$tbl .= $foo . '<input type="hidden" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" value="' . $foo . '" />';
 					}
 				}
-				$tbl .= '</span></nobr></td><td class=\"weEditmodeStyle\">' . getPixel(5, 2) . "</td>\n";
+				$tbl .= '</span></nobr></td><td class=\"weEditmodeStyle\">' . we_html_tools::getPixel(5, 2) . "</td>\n";
 			}
 			$tbl .= '				</tr>
 			</table>

@@ -241,7 +241,7 @@ class we_textContentDocument extends we_textDocument{
 		<td class="defaultfont" align="left">'.$this->formDocType2(388,$this->Published).'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(2,6).'</td>
+		<td>'.we_html_tools::getPixel(2,6).'</td>
 	</tr>
 	<tr>
 		<td>'.$this->formIsSearchable().'</td>

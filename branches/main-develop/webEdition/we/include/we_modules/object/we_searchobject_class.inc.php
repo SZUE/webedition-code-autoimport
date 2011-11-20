@@ -154,7 +154,7 @@ class objectsearch extends we_search {
 							<td>
 								'.$checkbox.'</td>
 							<td>
-								'.getPixel(5,2).'</td>
+								'.we_html_tools::getPixel(5,2).'</td>
 							<td class="middlefont">
 								&nbsp;<a href="javascript:setWs(\''.$p.'\',\''.$exws[$i].'\')" style="text-decoration:none" class="middlefont" title="'.$p.'">'.shortenPath($p,$we_extraWsLength).'</a><td>
 						</tr>';

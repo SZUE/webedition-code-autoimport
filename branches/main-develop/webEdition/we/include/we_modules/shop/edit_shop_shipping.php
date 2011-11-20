@@ -34,7 +34,7 @@ require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 
 print STYLESHEET;
@@ -300,7 +300,7 @@ if (isset($weShipping)) { // show the shipping which must be edited
 		array(
 			'headline' => g_l('modules_shop','[shipping][name]'),
 			'space' => 150,
-			'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . hidden('weShippingId', $weShipping->id),
+			'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_tools::hidden('weShippingId', $weShipping->id),
 			'noline' => 1
 
 		)

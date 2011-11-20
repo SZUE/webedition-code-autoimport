@@ -60,7 +60,7 @@ array_push( $parts, $_docWebUser );
 
 
 
-print htmlTop();
+print we_html_tools::htmlTop();
 print STYLESHEET;
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print we_htmlElement::cssElement("
@@ -84,8 +84,8 @@ print "<body class=\"weEditorBody\">\n";
 print "<form name=\"we_form\" onsubmit=\"return false\">\n";
 print $we_doc->hiddenTrans();
 if ($we_doc->ClassName != "we_imageDocument") {
-	print hidden("we_edit_weDocumentCustomerFilter", 1);
-	print hidden("weDocumentCustomerFilter_id", $_filter->getId());
+	print we_html_tools::hidden("we_edit_weDocumentCustomerFilter", 1);
+	print we_html_tools::hidden("weDocumentCustomerFilter_id", $_filter->getId());
 }
 print we_multiIconBox::getHTML("weDocProp","100%",$parts,20,"",-1,g_l('weClass',"[moreProps]"),g_l('weClass',"[lessProps]"));
 print "</form>\n";
@@ -123,8 +123,8 @@ function formWebuser($canChange,$width=388){
 		"left",
 		"defaultfont",
 		$idfield,
-		getPixel(20,4),
-		$button,getPixel(5,4),$_trashBut);
+		we_html_tools::getPixel(20,4),
+		$button,we_html_tools::getPixel(5,4),$_trashBut);
 		*/
 		$yuiSuggest =& weSuggest::getInstance();
 		$yuiSuggest->setAcId("Customer");

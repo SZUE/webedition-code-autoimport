@@ -48,7 +48,6 @@ protect();
 <?php
     if (defined("MESSAGING_SYSTEM")) {
         include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-        include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
         $messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
         $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
         $messaging->add_msgobj('we_message', 1);
@@ -61,17 +60,17 @@ protect();
 <table border="0" cellpadding="0" cellspacing="0">
 <?php echo '
 <tr>
-	<td>'.getPixel(25,2).'</td>
-	<td colspan="2">'.getPixel(2,2).'</td>
+	<td>'.we_html_tools::getPixel(25,2).'</td>
+	<td colspan="2">'.we_html_tools::getPixel(2,2).'</td>
 </tr>
 <tr>
 	<td id="msgCount" align="right" class="middlefont' . ($newmsg_count ? 'red' : '') . '"><a style="text-decoration:none"  href="' . $msg_cmd . '">' . $newmsg_count . '</a></td>
-	<td>' . getPixel(5, 1) . '</td>
+	<td>' . we_html_tools::getPixel(5, 1) . '</td>
 	<td valign="bottom"><a href="' . $msg_cmd . '"><img src="'. IMAGE_DIR . 'modules/messaging/launch_messages.gif" border="0" width="16" height="12" alt="" /></a></td>
 </tr>
 <tr>
 	<td id="todoCount" align="right" class="middlefont' . ($newtodo_count ? 'red' : '') . '"><a style="text-decoration:none" href="' . $todo_cmd . '">' . $newtodo_count . '</a></td>
-	<td>' . getPixel(5, 1) . '</td>
+	<td>' . we_html_tools::getPixel(5, 1) . '</td>
 	<td valign="bottom"><a href="' . $todo_cmd . '"><img src="'. IMAGE_DIR . 'modules/messaging/launch_tasks.gif" border="0" width="16" height="12" alt="" /></a></td>
 </tr>'
 ?>

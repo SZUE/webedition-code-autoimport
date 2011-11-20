@@ -104,9 +104,9 @@ function getHTMLDirSelector($_selType)
 			array(
 				"style" => "margin-top:10px;"
 			),
-			htmlFormElementTable(
+		we_html_tools::htmlFormElementTable(
 					"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
-							"yuiAcErrorMarkDoc") . htmlTextInput(
+							"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput(
 							"FolderPath",
 							58,
 							$_path,
@@ -118,11 +118,11 @@ function getHTMLDirSelector($_selType)
 					g_l('cockpit',"[dir]"),
 					"left",
 					"defaultfont",
-					getPixel(300, 20),
+					we_html_tools::getPixel(300, 20),
 					we_htmlElement::htmlHidden(array(
 						"name" => "FolderID", "value" => $folderID, "id" => "yuiAcIdDoc"
 					)),
-					getPixel(20, 4),
+					we_html_tools::getPixel(20, 4),
 					$_buttons));
 }
 
@@ -134,8 +134,8 @@ $DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
 while ($DB_WE->next_record()) {
 	$docTypes[$DB_WE->f("ID")] = $DB_WE->f("DocType");
 }
-$doctypeElement = htmlFormElementTable(
-		htmlSelect(
+$doctypeElement = we_html_tools::htmlFormElementTable(
+		we_html_tools::htmlSelect(
 				"DocTypeID",
 				$docTypes,
 				1,
@@ -224,7 +224,7 @@ function getHTMLCategory()
 			5,
 			1);
 
-	$table->setColContent(0, 0, getPixel(5, 5));
+	$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
 	$table->setCol(1, 0, array(
 		'class' => 'defaultfont'
 	), "Kategorien");
@@ -239,7 +239,7 @@ function getHTMLCategory()
 							'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;'
 					)));
 
-	$table->setColContent(3, 0, getPixel(5, 5));
+	$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
 
 	$table->setCol(
 			4,
@@ -467,15 +467,15 @@ $divDynamic = we_htmlElement::htmlDiv(
 		array(
 			"id" => "dynamic", "style" => (!$_selection ? "display:block;" : "display:none;")
 		),
-		getHTMLDirSelector($_selType) . getPixel(1, 5) . we_htmlElement::htmlBr() . ((!$_selType) ? $doctypeElement : htmlFormElementTable(
+		getHTMLDirSelector($_selType) . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
 				$cls->getHTMLCode(),
-				g_l('cockpit',"[class]"))) . getPixel(1, 5) . we_htmlElement::htmlBr() . getHTMLCategory());
+				g_l('cockpit',"[class]"))) . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . getHTMLCategory());
 
 $divContent = we_htmlElement::htmlDiv(
 		array(
 			"style" => "display:block;"
 		),
-		htmlSelect(
+		we_html_tools::htmlSelect(
 				"Selection",
 				array(
 					"dynamic" => g_l('cockpit',"[dyn_selection]"), "static" => g_l('cockpit','[stat_selection]')
@@ -484,7 +484,7 @@ $divContent = we_htmlElement::htmlDiv(
 				($_selection ? "static" : "dynamic"),
 				false,
 				'style="width:420px;border:#AAAAAA solid 1px;" onChange="closeAllSelection();we_submit();"',
-				'value') . we_htmlElement::htmlBr() . htmlSelect(
+				'value') . we_htmlElement::htmlBr() . we_html_tools::htmlSelect(
 				"headerSwitch",
 				$captions,
 				1,
@@ -492,8 +492,8 @@ $divContent = we_htmlElement::htmlDiv(
 				false,
 				'style="width:420px;border:#AAAAAA solid 1px;margin-top:10px;" onChange="setHead(this.value);we_submit();"',
 				'value',
-				420) . $divStatic . $divDynamic . getPixel(1, 5) . we_htmlElement::htmlBr() . htmlFormElementTable(
-				htmlTextInput(
+				420) . $divStatic . $divDynamic . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput(
 						$name = "title",
 						$size = 55,
 						$value = $_title,

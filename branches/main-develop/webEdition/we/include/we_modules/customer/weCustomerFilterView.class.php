@@ -301,8 +301,8 @@ EO_SCRIPT;
 				)
 			);
 
-		$_select = hidden($name.'Control',(isset($_REQUEST[$name.'Control']) ? $_REQUEST[$name.'Control'] : 0)) .
-			hidden($name.'Count',(isset($data) ? count($data) : '0')) .
+		$_select = we_html_tools::hidden($name.'Control',(isset($_REQUEST[$name.'Control']) ? $_REQUEST[$name.'Control'] : 0)) .
+			we_html_tools::hidden($name.'Count',(isset($data) ? count($data) : '0')) .
 			($headline ? '<div class="defaultfont">'.$headline.'</div>' : '') .
 			'<div id="'.$name.'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:'.($this->_width+($GLOBALS['BROWSER']=="IE" ? 13 : 0)).'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
 			'<div style="width:'.($this->_width+13).'px;" align="right">'.$_buttonTable . '</div>
@@ -369,17 +369,17 @@ EO_SCRIPT;
 				<tr id="filterRow_'.$_i.'">
 					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
-						(($_i == 0) ? getPixel(64,1) : htmlSelect('filterLogic_'.$_i,$_filter_logic,1,$_value['logic'],false,'onchange="wecf_logic_changed(this);" class="defaultfont" style="'.$_styleLogic.'"'))
+						(($_i == 0) ? we_html_tools::getPixel(64,1) : we_html_tools::htmlSelect('filterLogic_'.$_i,$_filter_logic,1,$_value['logic'],false,'onchange="wecf_logic_changed(this);" class="defaultfont" style="'.$_styleLogic.'"'))
 						.
 					'</td>
 					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
-						htmlSelect('filterSelect_'.$_i,$_filter_args,1,$_value['field'],false,'onchange="wecf_hot();" class="defaultfont" style="'.$_styleLeft.'"')
+						we_html_tools::htmlSelect('filterSelect_'.$_i,$_filter_args,1,$_value['field'],false,'onchange="wecf_hot();" class="defaultfont" style="'.$_styleLeft.'"')
 						.
 					'</td>
 					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
-						htmlSelect('filterOperation_'.$_i,$_filter_op,1,$_value['operation'],false,'onchange="wecf_hot();" class="defaultfont" style="'.$_styleMiddle.'"')
+						we_html_tools::htmlSelect('filterOperation_'.$_i,$_filter_op,1,$_value['operation'],false,'onchange="wecf_hot();" class="defaultfont" style="'.$_styleMiddle.'"')
 						.
 					'</td>
 					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
@@ -393,7 +393,7 @@ EO_SCRIPT;
 					'</td>
 					<td style="padding-left:5px;padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
-						(($_i == 0) ? getPixel(25,1) : we_button::create_button("image:btn_function_trash", "javascript:delRow($_i)",true, 25))
+						(($_i == 0) ? we_html_tools::getPixel(25,1) : we_button::create_button("image:btn_function_trash", "javascript:delRow($_i)",true, 25))
 						.
 					'</td>
 				</tr>
@@ -454,7 +454,7 @@ EO_SCRIPT;
 		       		if (rowNr > 0) {
 						_cell.innerHTML=\'<select onchange="wecf_logic_changed(this);" class="weSelect" size="1" style="'.$_styleLogic.'">'.$_filter_logic_str.'</select>\';
 		       		} else {
-		       			_cell.innerHTML=\''.getPixel(64,1).'\';
+		       			_cell.innerHTML=\''.we_html_tools::getPixel(64,1).'\';
 		       		}
 	       			_newRow.appendChild(_cell);
 
@@ -542,7 +542,7 @@ EO_SCRIPT;
 	    				_cell.innerHTML =\''.we_button::create_button("image:btn_function_plus", "javascript:addRow('+i+')",true, 25).'\';
 
 	    				_cell = _row.cells[5];  // trash
-	    				_cell.innerHTML = (i==0) ? \''.getPixel(25,1).'\' : \''.we_button::create_button("image:btn_function_trash", "javascript:delRow('+i+')",true, 25).'\';
+	    				_cell.innerHTML = (i==0) ? \''.we_html_tools::getPixel(25,1).'\' : \''.we_button::create_button("image:btn_function_trash", "javascript:delRow('+i+')",true, 25).'\';
 
 						if (i > 0) {
 							_cell = _row.cells[0]

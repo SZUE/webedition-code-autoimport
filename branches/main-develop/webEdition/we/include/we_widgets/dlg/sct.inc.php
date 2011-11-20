@@ -478,7 +478,7 @@ $oBtnDelete = we_button::create_button(
 		"",
 		false,
 		false);
-$oShortcutsRem = htmlAlertAttentionBox(g_l('cockpit','[sct_rem]'), 2, 420);
+$oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit','[sct_rem]'), 2, 420);
 
 $oPool = new we_htmlTable(array(
 	"border" => "0", "width" => 420, "cellpadding" => "0", "cellspacing" => "0"
@@ -524,16 +524,16 @@ $oPool->setCol(
 					"src" => IMAGE_DIR . "pd/arrow_down.gif", "border" => 0
 				))));
 $oPool->setCol(0, 2, null, $oSctList21->getHTMLCode());
-$oPool->setCol(1, 0, null, getPixel(1, 5));
+$oPool->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 $oPool->setCol(2, 0, array(
 	"align" => "right", "colspan" => 3
 ), $oBtnDelete);
 
-$content = $oShortcutsRem . getPixel(1, 5) . we_htmlElement::htmlBr() . htmlFormElementTable(
+$content = $oShortcutsRem . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . we_html_tools::htmlFormElementTable(
 		$oSctPool->getHTMLCode(),
 		g_l('cockpit','[select_buttons]'),
 		"left",
-		"defaultfont") . getPixel(1, 5) . we_htmlElement::htmlBr() . $oPool->getHTMLCode();
+		"defaultfont") . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oPool->getHTMLCode();
 
 array_push($parts, array(
 	"headline" => "", "html" => $content, "space" => 0

@@ -907,7 +907,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchFieldsAdvSearch[__we_new_id__]',
 										$this->searchclass->getFields("__we_new_id__", ""),
 										1,
@@ -918,7 +918,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'locationAdvSearch[__we_new_id__]',
 										$this->searchclass->getLocation(),
 										1,
@@ -926,7 +926,7 @@ class searchtoolView extends weToolView
 										false,
 										'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
     var search = "' . addslashes(
-						htmlTextInput(
+						we_html_tools::htmlTextInput(
 								'searchAdvSearch[__we_new_id__]',
 								24,
 								"",
@@ -995,7 +995,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchFieldsAdvSearch[__we_new_id__]',
 										$this->searchclass->getFields("__we_new_id__", ""),
 										1,
@@ -1006,7 +1006,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'locationAdvSearch[__we_new_id__]',
 										$this->searchclass->getLocation(),
 										1,
@@ -1014,7 +1014,7 @@ class searchtoolView extends weToolView
 										false,
 										'class="defaultfont" id="locationAdvSearch[__we_new_id__]"  '))) . '";
     var search = "' . addslashes(
-						htmlTextInput(
+						we_html_tools::htmlTextInput(
 								'searchAdvSearch[__we_new_id__]',
 								24,
 								"",
@@ -1170,7 +1170,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchAdvSearch[__we_new_id__]',
 										$this->searchclass->getDoctypes(),
 										1,
@@ -1204,7 +1204,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchAdvSearch[__we_new_id__]',
 										$this->searchclass->getFieldsStatus(),
 										1,
@@ -1238,7 +1238,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchAdvSearch[__we_new_id__]',
 										$this->searchclass->getFieldsSpeicherart(),
 										1,
@@ -1267,7 +1267,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'locationAdvSearch[__we_new_id__]',
 										$this->searchclass->getLocation("date"),
 										1,
@@ -1323,7 +1323,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchAdvSearch[__we_new_id__]',
 										$this->searchclass->getModFields(),
 										1,
@@ -1357,7 +1357,7 @@ class searchtoolView extends weToolView
 						"\n",
 						"\\n",
 						addslashes(
-								htmlSelect(
+								we_html_tools::htmlSelect(
 										'searchAdvSearch[__we_new_id__]',
 										$this->searchclass->getUsers(),
 										1,
@@ -1659,7 +1659,7 @@ class searchtoolView extends weToolView
 			$out .= we_button::create_button("back", "", true, 100, 22, "", "", true);
 		}
 
-		$out .= '</td><td>' . getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
+		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-';
 
 		if (($we_search_anzahl - $searchstart) < $anzahl) {
 			$out .= $we_search_anzahl;
@@ -1668,7 +1668,7 @@ class searchtoolView extends weToolView
 			$out .= $searchstart + $anzahl;
 		}
 
-		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . getPixel(10, 2) . '</td><td>';
+		$out .= ' ' . g_l('global',"[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		if (($searchstart + $anzahl) < $we_search_anzahl) {
 			//bt_back
@@ -1677,7 +1677,7 @@ class searchtoolView extends weToolView
 
 			$out .= we_button::create_button("next", "", true, 100, 22, "", "", true);
 		}
-		$out .= '</td><td>' . getPixel(10, 2) . '</td><td>';
+		$out .= '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for ($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++) {
@@ -1686,7 +1686,7 @@ class searchtoolView extends weToolView
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = htmlSelect(
+		$select = we_html_tools::htmlSelect(
 				"page",
 				$pages,
 				1,
@@ -1696,7 +1696,7 @@ class searchtoolView extends weToolView
 		if (!isset($_REQUEST['we_cmd']['setInputSearchstart'])) {
 			if (!defined("searchstart" . $whichSearch . "")) {
 				define("searchstart" . $whichSearch . "", true);
-				$out .= hidden("searchstart" . $whichSearch . "", $searchstart);
+				$out .= we_html_tools::hidden("searchstart" . $whichSearch . "", $searchstart);
 			}
 		}
 		$out .= $select;
@@ -1714,7 +1714,7 @@ class searchtoolView extends weToolView
 				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
 			}
 		}
-		return getPixel(11, 8);
+		return we_html_tools::getPixel(11, 8);
 	}
 
 	function getSearchDialogCheckboxes($whichSearch)
@@ -2039,7 +2039,7 @@ class searchtoolView extends weToolView
 					$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
 				}
 
-				$searchInput = htmlTextInput(
+				$searchInput = we_html_tools::htmlTextInput(
 						$searchTextName,
 						30,
 						(isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset(
@@ -2083,7 +2083,7 @@ class searchtoolView extends weToolView
 					$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
 				}
 
-				$searchInput = htmlTextInput(
+				$searchInput = we_html_tools::htmlTextInput(
 						$searchTextName,
 						30,
 						(isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset(
@@ -2108,8 +2108,8 @@ class searchtoolView extends weToolView
     </tr>
     <tr>
      <td>' . $searchInput . '</td>
-     <td>' . hidden($locationName, 'CONTAIN') . '</td>
-     <td>' . hidden($searchTables, 1) . '</td>
+     <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
+     <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
     </tr></tbody></table>';
 
 		return $out;
@@ -2796,13 +2796,13 @@ class searchtoolView extends weToolView
 						"",
 						false,
 						"middlefont",
-						"") : getPixel(20, 10) : '';
+						"") : we_html_tools::getPixel(20, 10) : '';
 
 				//if (stripos($GLOBALS['WE_LANGUAGE'],'_UTF-8') !==false) { //was #4422
 				//	$_result[$f]["SiteTitle"] = utf8_encode($_result[$f]["SiteTitle"]);
 				//}
 
-				$content[$f][0]["dat"] = getPixel(20,1).$publishCheckbox;
+				$content[$f][0]["dat"] = we_html_tools::getPixel(20,1).$publishCheckbox;
 				$content[$f][1]["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
 				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . shortenPath(
 						$_result[$f]["Text"],
@@ -2996,10 +2996,10 @@ class searchtoolView extends weToolView
    <input type="hidden" name="do" />
    <table border="0" cellpadding="0" cellspacing="0">
    <tr>
-   <td>' . getPixel(30, 12) . '</td>
+   <td>' . we_html_tools::getPixel(30, 12) . '</td>
    <td style="font-size:12px;width:125px;">' . g_l('searchtool',"[eintraege_pro_seite]") . ':</td>
    <td class="defaultgray" style="width:60px;">
-   ' . htmlSelect(
+   ' . we_html_tools::htmlSelect(
 				$anzahl,
 				$values,
 				1,
@@ -3035,7 +3035,7 @@ class searchtoolView extends weToolView
    </td>
    </tr>
    <tr>
-    <td colspan="12">' . getPixel(1, 12) . '</td>
+    <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
    </tr>
    </table>';
 
@@ -3085,12 +3085,12 @@ class searchtoolView extends weToolView
 					     <td style="width:400px;">' . $resetButton . '</td>
              			</tr>
 
-     <tr> <td>' . getPixel(10, 12) . '</td>
+     <tr> <td>' . we_html_tools::getPixel(10, 12) . '</td>
      </tr>
      <tr>
-     <td>' . getPixel(19, 12) . '</td>
-     <td style="font-size:12px;width:140px;">' . getPixel(30, 12) . '</td>
-     <td class="defaultgray" style="width:60px;">' . getPixel(30, 12) . '</td>
+     <td>' . we_html_tools::getPixel(19, 12) . '</td>
+     <td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
+     <td class="defaultgray" style="width:60px;">' . we_html_tools::getPixel(30, 12) . '</td>
      <td style="width:400px;">' . $thisObj->getNextPrev(
 				$foundItems,
 				$whichSearch) . '</td>
@@ -3220,7 +3220,7 @@ class searchtoolView extends weToolView
 			$locationDisabled = "";
 			$handle = "";
 
-			$searchInput = htmlTextInput(
+			$searchInput = we_html_tools::htmlTextInput(
 					"searchAdvSearch[" . $i . "]",
 					30,
 					(isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
@@ -3236,7 +3236,7 @@ class searchtoolView extends weToolView
 				}
 
 				if ($this->Model->searchFieldsAdvSearch[$i] == "allModsIn") {
-					$searchInput = htmlSelect(
+					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]",
 							$this->searchclass->getModFields(),
 							1,
@@ -3247,7 +3247,7 @@ class searchtoolView extends weToolView
 				}
 
 				if ($this->Model->searchFieldsAdvSearch[$i] == "Status") {
-					$searchInput = htmlSelect(
+					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]",
 							$this->searchclass->getFieldsStatus(),
 							1,
@@ -3258,7 +3258,7 @@ class searchtoolView extends weToolView
 				}
 
 				if ($this->Model->searchFieldsAdvSearch[$i] == "Speicherart") {
-					$searchInput = htmlSelect(
+					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]",
 							$this->searchclass->getFieldsSpeicherart(),
 							1,
@@ -3278,7 +3278,7 @@ class searchtoolView extends weToolView
 				}
 
 				if ($this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type") {
-					$searchInput = htmlSelect(
+					$searchInput = we_html_tools::htmlSelect(
 							"searchAdvSearch[" . $i . "]",
 							$this->searchclass->getDocTypes(),
 							1,
@@ -3298,8 +3298,8 @@ class searchtoolView extends weToolView
 					$wecmdenc3= '';
 					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','$_rootDirID','','')";
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = htmlFormElementTable(
-							htmlTextInput(
+					$selector = we_html_tools::htmlFormElementTable(
+							we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']',
 									58,
 									$_linkPath,
@@ -3315,7 +3315,7 @@ class searchtoolView extends weToolView
 									array(
 										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
 									)),
-							getPixel(5, 4),
+							we_html_tools::getPixel(5, 4),
 							$_button);
 
 					$searchInput = $selector;
@@ -3330,8 +3330,8 @@ class searchtoolView extends weToolView
 					$wecmdenc3= '';
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','$_rootDirID','','text/weTmpl')";
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = htmlFormElementTable(
-							htmlTextInput(
+					$selector = we_html_tools::htmlFormElementTable(
+							we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']',
 									58,
 									$_linkPath,
@@ -3347,7 +3347,7 @@ class searchtoolView extends weToolView
 									array(
 										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
 									)),
-							getPixel(5, 4),
+							we_html_tools::getPixel(5, 4),
 							$_button);
 
 					$searchInput = $selector;
@@ -3359,8 +3359,8 @@ class searchtoolView extends weToolView
 
 					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','" . session_id() . "','$_rootDirID','','')";
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = htmlFormElementTable(
-							htmlTextInput(
+					$selector = we_html_tools::htmlFormElementTable(
+							we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']',
 									58,
 									$_linkPath,
@@ -3376,7 +3376,7 @@ class searchtoolView extends weToolView
 									array(
 										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
 									)),
-							getPixel(5, 4),
+							we_html_tools::getPixel(5, 4),
 							$_button);
 
 					$searchInput = $selector;
@@ -3386,9 +3386,9 @@ class searchtoolView extends weToolView
 			$out .= '
 
     <tr id="filterRow_' . $i . '">
-     <td>' . hidden(
+     <td>' . we_html_tools::hidden(
 					"hidden_searchFieldsAdvSearch[" . $i . "]",
-					isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") . '' . htmlSelect(
+					isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") . '' . we_html_tools::htmlSelect(
 					"searchFieldsAdvSearch[" . $i . "]",
 					$this->searchclass->getFields($i, ""),
 					1,
@@ -3396,7 +3396,7 @@ class searchtoolView extends weToolView
 							$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""),
 					false,
 					'class="defaultfont" id="searchFieldsAdvSearch[' . $i . ']" onChange="changeit(this.value, ' . $i . ');" ') . '</td>
-     <td id="td_locationAdvSearch[' . $i . ']">' . htmlSelect(
+     <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect(
 					"locationAdvSearch[" . $i . "]",
 					$this->searchclass->getLocation($handle),
 					1,
@@ -3417,7 +3417,7 @@ class searchtoolView extends weToolView
       <td>' . we_button::create_button(
 				"add",
 				"javascript:newinputAdvSearch();") . '</td>
-      <td>' . getPixel(10, 10) . '</td>
+      <td>' . we_html_tools::getPixel(10, 10) . '</td>
       <td colspan="7" align="right"></td>
      </tr>
     </table></div>';
@@ -3450,7 +3450,7 @@ class searchtoolView extends weToolView
 				0,
 				2,
 				null,
-				htmlTextInput(
+				we_html_tools::htmlTextInput(
 						$name = $_name,
 						$size = 55,
 						$value,
@@ -3490,8 +3490,8 @@ class searchtoolView extends weToolView
 		$anz = sizeof($headline);
 		$out = '<table border="0" style="background-color:#fff;" cellpadding="0" cellspacing="0" width="100%">
        <tr style="height:20px;">
-     <td style="border-bottom:1px solid #D1D1D1;">' . getPixel(56, 10) . '</td>
-     <td style="border-bottom:1px solid #D1D1D1;">' . getPixel(1, 10) . '</td>';
+     <td style="border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(56, 10) . '</td>
+     <td style="border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(1, 10) . '</td>';
 
 		// widths of columns in headline in %
 		$columnWidths = array(
@@ -3643,7 +3643,7 @@ class searchtoolView extends weToolView
 
 			$outDivs .= '<div style="padding:0px 0px 6px 15px;position:relative;top:0px;left:0px;width:360px;">';
 			if ($content[$n][11]["dat"] != "") {
-				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool',"[beschreibung]") . ':</td><td>' . getPixel(
+				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool',"[beschreibung]") . ':</td><td>' . we_html_tools::getPixel(
 						15,
 						5) . '</td><td>';
 				$outDivs .= shortenPath($content[$n][11]["dat"], 150);
@@ -3709,7 +3709,7 @@ class searchtoolView extends weToolView
 				$align = "center";
 			} else {
 				$width = "width:" . $columnWidths[$f] . "%;";
-				$plcholder = getPixel(10, 1);
+				$plcholder = we_html_tools::getPixel(10, 1);
 				$align = "left";
 			}
 			$out .= '<td align="' . $align . '" style="font-weight:bold;height:30px;font-size:11px;' . $width . '">' . $plcholder . ((isset(
@@ -3722,7 +3722,7 @@ class searchtoolView extends weToolView
 
 			foreach ($content[0]["version"] as $k => $v) {
 				$out .= '</tr><tr>';
-				$out .= '<td style="width:20px;">' . getPixel(20, 10) . '</td>';
+				$out .= '<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for ($y = 0; $y < $anz; $y++) {
 
 					if ($f == 0) {
@@ -3730,12 +3730,12 @@ class searchtoolView extends weToolView
 					} else {
 						$width = "";
 					}
-					$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . getPixel(5, 10) . $content[$y]["version"][$k] . '</td>';
+					$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(5, 10) . $content[$y]["version"][$k] . '</td>';
 
 				}
 
 				$out .= '</tr><tr>';
-				$out .= '<td style="width:20px;">' . getPixel(20, 10) . '</td>';
+				$out .= '<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for ($y = 0; $y < $anz; $y++) {
 
 					if ($f == 0) {
@@ -3746,7 +3746,7 @@ class searchtoolView extends weToolView
 					if ($y == 2) {
 						$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . $content[5]["version"][$k] . '<br/></td>';
 					} else {
-						$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . getPixel(1, 1) . '</td>';
+						$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(1, 1) . '</td>';
 					}
 
 				}

@@ -24,9 +24,8 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 ?>
 </head>
 <frameset rows="*" framespacing="0" border="0" frameborder="NO" onLoad="self.focus()">

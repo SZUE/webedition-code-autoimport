@@ -178,11 +178,11 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(20,4).'</td>
+						'.we_html_tools::getPixel(20,4).'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
-						'.getPixel(100,2).'</td>
+						'.we_html_tools::getPixel(100,2).'</td>
 				</tr>
 				<tr>
 					<td colspan="3" class="defaultfont" align="left">
@@ -190,11 +190,11 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(20,4).'</td>
+						'.we_html_tools::getPixel(20,4).'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
-						'.getPixel(100,2).'</td>
+						'.we_html_tools::getPixel(100,2).'</td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -381,7 +381,7 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -389,7 +389,7 @@ class we_webEditionDocument extends we_textContentDocument {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -458,7 +458,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 		 	return	'<tr>
 						<td colspan="2">
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td><table border="0" cellpadding="0" cellspacing="0">
@@ -475,7 +475,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			//getCharsets
 			return	'<tr>
 						<td colspan="2">
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td><table border="0" cellpadding="0" cellspacing="0">

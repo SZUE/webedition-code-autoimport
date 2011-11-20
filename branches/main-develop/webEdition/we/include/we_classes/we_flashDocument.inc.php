@@ -246,49 +246,49 @@ class we_flashDocument extends we_binaryDocument{
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
 		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement2(155, "scale", array("" => "", "showall" => g_l('global', '[showall]'), "noborder" => g_l('global', '[noborder]'), "exactfit" => g_l('global', '[exactfit]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">' . getPixel(2, 5) . '</td>
+		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
 		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInput2(155, "name", 10, "attrib", "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">' . getPixel(2, 5) . '</td>
+		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
 		<td>' . $this->formSelectElement2(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement2(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">' . getPixel(2, 5) . '</td>
+		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
 		<td>' . $this->formSelectElement2(155, "align", array("" => "", "left" => g_l('global', '[left]'), "right" => g_l('global', '[right]'), "top" => g_l('global', '[top]'), "bottom" => g_l('global', '[bottom]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement2(155, "salign", array("" => "", "l" => g_l('global', '[left]'), "r" => g_l('global', '[right]'), "t" => g_l('global', '[top]'), "b" => g_l('global', '[bottom]'), "tl" => g_l('global', '[topleft]'), "tr" => g_l('global', '[topright]'), "bl" => g_l('global', '[bottomleft]'), "br" => g_l('global', '[bottomright]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement2(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr valign="top">
-		<td colspan="5">' . getPixel(2, 5) . '</td>
+		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
 		<td>' . $this->formSelectElement2(155, "wmode", array("" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"), "attrib", 1, "onChange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td></td>
-		<td>' . getPixel(18, 2) . '</td>
+		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td></td>
 	</tr>
 

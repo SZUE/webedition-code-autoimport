@@ -216,7 +216,7 @@ class weNavigationRuleControl{
 					break;
 			}
 
-			print htmlTop();
+			print we_html_tools::htmlTop();
 			print we_htmlElement::jsElement($js);
 			print "</head>
 			<body>

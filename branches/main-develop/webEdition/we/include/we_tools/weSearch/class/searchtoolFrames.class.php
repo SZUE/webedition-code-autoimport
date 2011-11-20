@@ -223,9 +223,9 @@ class searchtoolFrames extends weToolFrames
 						"onload" => "setFrameSize()",
 						"onresize" => "setFrameSize()"
 				),
-				'<div id="main" >' . getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_htmlElement::htmlB(
+				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_htmlElement::htmlB(
 						($this->Model->IsFolder ? g_l('searchtool','[topDir]'): g_l('searchtool','[topSuche]')) . ':&nbsp;' .
-								$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' . getPixel(
+								$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
 						100,
 						3) . $we_tabs->getHTML() . '</div>' . we_htmlElement::jsElement($setActiveTabJS));
 
@@ -363,7 +363,7 @@ class searchtoolFrames extends weToolFrames
 				1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
-		), getPixel(1600, 10));
+		), we_html_tools::getPixel(1600, 10));
 
 		$_but_table = we_button::create_button_table(
 				array(
@@ -466,8 +466,8 @@ class searchtoolFrames extends weToolFrames
 				array(
 
 						'headline' => g_l('searchtool','[general]'),
-						'html' => htmlFormElementTable(
-								htmlTextInput(
+						'html' => we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
 										'Text',
 										'',
 										$this->Model->Text,

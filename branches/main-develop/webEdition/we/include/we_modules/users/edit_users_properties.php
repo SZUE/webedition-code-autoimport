@@ -32,7 +32,7 @@ protect();
 
 $yuiSuggest =& weSuggest::getInstance();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 

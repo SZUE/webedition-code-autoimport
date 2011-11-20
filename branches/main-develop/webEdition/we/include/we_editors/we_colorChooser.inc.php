@@ -24,11 +24,9 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
-htmlTop(g_l('global','[select_color]'));
+we_html_tools::htmlTop(g_l('global','[select_color]'));
 
 print STYLESHEET;
 
@@ -101,7 +99,7 @@ if(z != 0){
 	';
 
 	$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
-	$color = htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));
+	$color = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));
 
 if($_REQUEST["we_cmd"][0]){
 	$buttons =
@@ -121,7 +119,7 @@ if($_REQUEST["we_cmd"][0]){
 		<td>'.$colortable.'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(2,10).'</td>
+		<td>'.we_html_tools::getPixel(2,10).'</td>
 	</tr>
 	<tr>
 		<td>'.$color.'</td>
@@ -129,7 +127,7 @@ if($_REQUEST["we_cmd"][0]){
 </table>
 ';
 
-	print htmlDialogLayout($table,g_l('global','[select_color]'), $buttons);
+	print we_html_tools::htmlDialogLayout($table,g_l('global','[select_color]'), $buttons);
 	?>
 		</form>
 	</body>

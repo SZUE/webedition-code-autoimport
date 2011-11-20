@@ -54,7 +54,7 @@ class weNavigationRuleFrames{
 	}
 
 	function getHTMLFrameset(){
-		return htmlTop() . '
+		return we_html_tools::htmlTop() . '
    <frameset rows="*,' . (($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0) . '" framespacing="0" border="1" frameborder="Yes">
    <frame src="' . $this->Frameset . '?pnt=content" name="content" scrolling=no>
    <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
@@ -85,9 +85,9 @@ class weNavigationRuleFrames{
 			'headline' => g_l('navigation', '[rules][available_rules]'),
 			'space' => 200,
 			'html' => $yuiSuggest->getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
-										<tr><td>' . htmlSelect(
+										<tr><td>' . we_html_tools::htmlSelect(
 				'navigationRules', $_rules, 8, '', false, ' style="width: 275px;" onclick="we_cmd(\'edit_navigation_rule\', this.value)"') . '</td>
-											<td>' . getPixel(10, 1) . '</td>
+											<td>' . we_html_tools::getPixel(10, 1) . '</td>
 											<td valign="top">
 												' . we_button::create_button(
 				'new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>
@@ -105,7 +105,7 @@ class weNavigationRuleFrames{
 			$parts, array(
 			'headline' => g_l('navigation', '[rules][rule_name]'),
 			'space' => 200,
-			'html' => htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
+			'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
 			'noline' => 1
 		));
 
@@ -142,7 +142,7 @@ class weNavigationRuleFrames{
 			$parts, array(
 			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
 			'space' => 200,
-			'html' => htmlSelect(
+			'html' => we_html_tools::htmlSelect(
 				'SelectionType', $selectionTypes, 1, 0, false, "style=\"width: 275px;\" onchange=\"switchType(this.value);\"")
 		));
 
@@ -179,7 +179,7 @@ class weNavigationRuleFrames{
 
 		$formTable = '<table border="0" cellspacing="0" cellpadding="0">
 <tr>
-	<td width="200">' . getPixel(200, 1) . '</td>
+	<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
 </tr>
 <tr id="trFolderID">
 	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation', '[rules][rule_folder]') . '</td>
@@ -187,7 +187,7 @@ class weNavigationRuleFrames{
 </tr>
 <tr id="trDoctypeID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
-	<td>' . htmlSelect(
+	<td>' . we_html_tools::htmlSelect(
 				'DoctypeID', $docTypes, 1, 0, false, "style=\"width: 275px;\"") . '</td>
 </tr>';
 
@@ -219,7 +219,7 @@ class weNavigationRuleFrames{
 </tr>
 <tr id="trWorkspaceID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_workspace]') . '</td>
-	<td>' . htmlSelect(
+	<td>' . we_html_tools::htmlSelect(
 					'WorkspaceID', array(), 1, '', false, "style=\"width: 275px;\"") . '</td>
 </tr>';
 		}
@@ -240,7 +240,7 @@ class weNavigationRuleFrames{
 		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 		$acErrorMsg = we_message_reporting::getShowMessageCall(
 				g_l('alert', '[save_error_fields_value_not_valid]'), WE_MESSAGE_ERROR);
-		return htmlTop() . STYLESHEET . '
+		return we_html_tools::htmlTop() . STYLESHEET . '
 
 ' . we_htmlElement::jsElement(
 				'', array(
@@ -364,8 +364,8 @@ function we_cmd(){
 </head>
 <body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
-	' . hidden('cmd', '') . '
-	' . hidden('ID', '0') . '
+	' . we_html_tools::hidden('cmd', '') . '
+	' . we_html_tools::hidden('ID', '0') . '
 	' . we_multiIconBox::getHTML(
 				'navigationRules', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
 	</form>
@@ -422,7 +422,7 @@ function we_cmd(){
 					'style' => 'width: 380px; height: 80px; border: #AAAAAA solid 1px;'
 			)));
 
-		$table->setColContent(1, 0, getPixel(5, 5));
+		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
 
 		$table->setCol(
 			2, 0, array(
@@ -432,7 +432,7 @@ function we_cmd(){
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 			)));
 
-		return $table->getHtmlCode() . hidden('CategoriesControl', 0) . hidden('CategoriesCount', 0) . $js . we_htmlElement::jsElement(
+		return $table->getHtmlCode() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_htmlElement::jsElement(
 				'
 
 							function removeAllCats(){

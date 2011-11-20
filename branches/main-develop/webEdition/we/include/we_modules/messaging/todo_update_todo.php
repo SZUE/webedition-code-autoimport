@@ -27,16 +27,13 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 }
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_format.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop(g_l('modules_messaging','[wintitle]').' - Update Status');
+we_html_tools::htmlTop(g_l('modules_messaging','[wintitle]').' - Update Status');
 
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
@@ -70,9 +67,9 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 ?>
     <form action="<?php print WE_MESSAGING_MODULE_PATH; ?>todo_update.php" name="update_todo_form" method="post">
 <?php
-	echo hidden('we_transaction', $_REQUEST['we_transaction']);
-	echo hidden('rcpts_string', '');
-	echo hidden('mode', $_REQUEST['mode']);
+	echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
+	echo we_html_tools::hidden('rcpts_string', '');
+	echo we_html_tools::hidden('mode', $_REQUEST['mode']);
 
     $parts = array();
 	array_push	($parts, array(	"headline" => g_l('modules_messaging','[assigner]'),
@@ -88,19 +85,19 @@ $compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"])
 								)
 				);
 	array_push	($parts, array(	"headline" => g_l('modules_messaging','[deadline]'),
-								"html"     => getDateInput2('td_deadline%s', $compose->get_deadline()),
+								"html"     => we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()),
 								"space"    => 120,
 								"noline"   => 1
 								)
 				);
 	array_push	($parts, array(	"headline" => g_l('modules_messaging','[status]'),
-								"html"     => htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
+								"html"     => we_html_tools::htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
 								"space"    => 120,
 								"noline"   => 1
 								)
 				);
 	array_push	($parts, array(	"headline" => g_l('modules_messaging','[priority]'),
-								"html"     => html_select('todo_priority', 1, array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10), $compose->get_priority()),
+								"html"     => we_html_tools::html_select('todo_priority', 1, array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10), $compose->get_priority()),
 								"space"    => 120,
 								)
 				);

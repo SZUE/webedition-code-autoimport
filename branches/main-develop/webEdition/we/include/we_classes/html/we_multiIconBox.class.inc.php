@@ -310,7 +310,7 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 		<td style="padding-left:'.$marginLeft.'px;padding-bottom:10px;" class="weDialogHeadline">'.$headline.'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(2,8).'</td>
+		<td>'.we_html_tools::getPixel(2,8).'</td>
 	</tr>
 	<tr>
 		<td id="'.$uniqname.'_td">';
@@ -324,7 +324,7 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 			}
 			return '<table width="'.$w.'" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;width:'.$wp.';">
 	<tr>
-		<td class="defaultfont"><b>'.getPixel($w,2).'</b></td>
+		<td class="defaultfont"><b>'.we_html_tools::getPixel($w,2).'</b></td>
 	</tr>
 	<tr>
 		<td id="'.$uniqname.'_td">';
@@ -342,7 +342,7 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 	}
 
 	function _getButton($name, $cmd, $state="right", $title=""){
-		return '<script  type="text/javascript">weSetCookieVariable("but_'.$name.'","'.$state.'");var btn_direction_'.$name.'_mouse_event = false;</script><table cellpadding="0" cellspacing="0" border="0" style="cursor: pointer; width: 21px;" id="btn_direction_'.$name.'_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_'.$name.'_middle\').style.background = \'url('.BUTTONS_DIR.'btn_direction_\'+weGetCookieVariable(\'but_'.$name.'\')+\'.gif)\';btn_direction_'.$name.'_mouse_event = false;'.$cmd.';"><tr title="'.$title.'" style="height: 22px;"><td align="center" id="btn_direction_'.$name.'_middle" style="background-image:url('.BUTTONS_DIR.'/btn_direction_'.$state.'.gif);width: 21px;" nowrap="nowrap">'.getPixel(21,22).'</td></tr></table>';
+		return '<script  type="text/javascript">weSetCookieVariable("but_'.$name.'","'.$state.'");var btn_direction_'.$name.'_mouse_event = false;</script><table cellpadding="0" cellspacing="0" border="0" style="cursor: pointer; width: 21px;" id="btn_direction_'.$name.'_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_'.$name.'_middle\').style.background = \'url('.BUTTONS_DIR.'btn_direction_\'+weGetCookieVariable(\'but_'.$name.'\')+\'.gif)\';btn_direction_'.$name.'_mouse_event = false;'.$cmd.';"><tr title="'.$title.'" style="height: 22px;"><td align="center" id="btn_direction_'.$name.'_middle" style="background-image:url('.BUTTONS_DIR.'/btn_direction_'.$state.'.gif);width: 21px;" nowrap="nowrap">'.we_html_tools::getPixel(21,22).'</td></tr></table>';
 	}
 
 

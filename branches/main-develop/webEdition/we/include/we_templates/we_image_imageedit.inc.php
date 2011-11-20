@@ -24,11 +24,9 @@
 
 define("WE_EDIT_IMAGE",true);
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 
 if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doImage_convert"){
 	print '<script  type="text/javascript">parent.frames[0].we_setPath("'.$we_doc->Path.'","' . $we_doc->Text . '", "' . $we_doc->ID . '");</script>'."\n";
@@ -68,10 +66,10 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 								<td>' . $editselect . '</td>
 							</tr>
 							<tr>
-									<td>' . getPixel(2, 10) . '</td>
+									<td>' . we_html_tools::getPixel(2, 10) . '</td>
 							</tr>
 							<tr>
-									<td>' . getPixel(2, 10) . '</td>
+									<td>' . we_html_tools::getPixel(2, 10) . '</td>
 							</tr>
 							';
 				}

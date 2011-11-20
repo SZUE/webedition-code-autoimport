@@ -21,11 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
@@ -38,7 +35,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;">
-		<?php $we_doc->pHiddenTrans(); 
+		<?php $we_doc->pHiddenTrans();
 
 
 		$parts = array();

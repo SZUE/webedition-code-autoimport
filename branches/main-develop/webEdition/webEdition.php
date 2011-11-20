@@ -23,7 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 //make sure we know which browser is used
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
 
@@ -69,7 +68,7 @@ if(!isset($_REQUEST["we_cmd"][0]) || $_REQUEST["we_cmd"][0] != "edit_include_doc
 }
 $DB_WE->query('UPDATE '.USER_TABLE.'	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-'.(PING_TIME + PING_TOLERANZ).')');
 
-htmlTop("webEdition - ".$sn." - ".$_SESSION["user"]["Username"]);
+we_html_tools::htmlTop("webEdition - ".$sn." - ".$_SESSION["user"]["Username"]);
 
 $online_help=true;
 

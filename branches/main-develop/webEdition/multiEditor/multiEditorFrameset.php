@@ -23,7 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
@@ -31,7 +30,7 @@ $cols = array();
 $frames = "";
 
 for ($i=0;$i<MULTIEDITOR_AMOUNT;$i++) {
-	
+
 	$cols[] = "*";
 	$frames .= '	<frame src="about:blank" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize />'."\n";
 }

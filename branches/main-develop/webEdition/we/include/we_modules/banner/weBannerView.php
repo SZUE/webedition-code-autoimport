@@ -861,9 +861,9 @@ class weBannerView extends weBannerBase{
 		sort($tagnames);
 
 		$code = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">'.
-		htmlTextInput($this->uid."_TagName",50,$this->banner->TagName,"",'style="width:250px" onchange="top.content.setHot();"').
+		we_html_tools::htmlTextInput($this->uid."_TagName",50,$this->banner->TagName,"",'style="width:250px" onchange="top.content.setHot();"').
 		'</td>
-<td class="defaultfont">'.getPixel(10,2).'</td>
+<td class="defaultfont">'.we_html_tools::getPixel(10,2).'</td>
 <td class="defaultfont"><select style="width:240px" class="weSelect" name="'.$this->uid.'_TagName_tmp" size="1" onchange="top.content.setHot(); this.form.elements[\''.$this->uid.'_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">'."\n";
 		$code .= '<option value=""></option>'."\n";
 		foreach($tagnames as $tagname){
@@ -940,15 +940,15 @@ class weBannerView extends weBannerBase{
 	function formStat($class="middlefont"){
 
 		$datefilterCheck = we_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner','[datefilter]'),false,"defaultfont","top.content.setHot(); we_cmd('switchPage','".$this->page."')");
-		$datefilter = getDateInput2("dateFilter%s",($this->FilterDate == -1 ? time() : $this->FilterDate),false,"dmy","top.content.setHot(); we_cmd('switchPage','".$this->page."');",$class);
-		$datefilter2 = getDateInput2("dateFilter2%s",($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd),false,"dmy","top.content.setHot(); we_cmd('switchPage','".$this->page."');",$class);
+		$datefilter = we_html_tools::getDateInput2("dateFilter%s",($this->FilterDate == -1 ? time() : $this->FilterDate),false,"dmy","top.content.setHot(); we_cmd('switchPage','".$this->page."');",$class);
+		$datefilter2 = we_html_tools::getDateInput2("dateFilter2%s",($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd),false,"dmy","top.content.setHot(); we_cmd('switchPage','".$this->page."');",$class);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="2">'.$datefilterCheck.'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,5).'</td><td>'.getPixel(500,2).'</td>
+		<td>'.we_html_tools::getPixel(20,5).'</td><td>'.we_html_tools::getPixel(500,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="2"><table border="0" cellpadding="0" cellspacing="0">
@@ -986,10 +986,10 @@ class weBannerView extends weBannerBase{
 			array_push($rows, array(array("dat"=>($GLOBALS["lv"]->f("page") ? '' : '<a href="'.$GLOBALS["lv"]->f("WE_PATH").'" target="_blank">').$GLOBALS["lv"]->f("WE_PATH").($GLOBALS["lv"]->f("page") ? '' : '</a>'),FILE_TABLE),array("dat"=>$GLOBALS["lv"]->f("views")),array("dat"=>$GLOBALS["lv"]->f("clicks")),array("dat"=>$GLOBALS["lv"]->f("rate")."%","align"=>"right")));
 		}
 
-		$table = htmlDialogBorder3(650, 0,  $rows ,$headline,$class);
+		$table = we_html_tools::htmlDialogBorder3(650, 0,  $rows ,$headline,$class);
 		$delbut = we_button::create_button("delete", "javascript:top.content.setHot();we_cmd('delete_stat')");
 
-		return  $content.getPixel(2,10).$table.getPixel(2,10)."<br>".$delbut;
+		return  $content.we_html_tools::getPixel(2,10).$table.we_html_tools::getPixel(2,10)."<br>".$delbut;
 	}
 
 	function formBanner($leftsize=120){
@@ -1000,7 +1000,7 @@ class weBannerView extends weBannerBase{
 ';
 		if($this->banner->bannerID){
 			$content .= '	<tr>
-		<td>'.getPixel(20,10).'</td>
+		<td>'.we_html_tools::getPixel(20,10).'</td>
 	</tr>
 	<tr>
 		<td>'.$this->previewBanner().'</td>
@@ -1008,13 +1008,13 @@ class weBannerView extends weBannerBase{
 ';
 		}
 		$content .= '	<tr>
-		<td>'.getPixel(20,10).'</td>
+		<td>'.we_html_tools::getPixel(20,10).'</td>
 	</tr>
 	<tr>
 		<td>'.$this->formBannerHref().'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,10).'</td>
+		<td>'.we_html_tools::getPixel(20,10).'</td>
 	</tr>
 	<tr>
 		<td>'.$this->formBannerNumbers().'</td>
@@ -1042,13 +1042,13 @@ class weBannerView extends weBannerBase{
 	</tr>
 	<tr>
 		<td></td>
-		<td>'.getPixel(20,2).'</td>
+		<td>'.we_html_tools::getPixel(20,2).'</td>
 		<td></td>
 	</tr>
 	<tr>
-		<td>'.getDateInput2("we__From%s",$from,false,"","top.content.setHot();").'</td>
+		<td>'.we_html_tools::getDateInput2("we__From%s",$from,false,"","top.content.setHot();").'</td>
 		<td></td>
-		<td>'.getDateInput2("we__To%s",$to,false,"","top.content.setHot();").'</td>
+		<td>'.we_html_tools::getDateInput2("we__To%s",$to,false,"","top.content.setHot();").'</td>
 	</tr>
 </table>
 ';
@@ -1069,10 +1069,10 @@ class weBannerView extends weBannerBase{
 	function formPath($leftsize=120){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.htmlFormElementTable(htmlTextInput($this->uid."_Text",37,$this->banner->Text,"",'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'),g_l('modules_banner','[name]')).'</td>
+		<td>'.we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid."_Text",37,$this->banner->Text,"",'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'),g_l('modules_banner','[name]')).'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,10).'</td>
+		<td>'.we_html_tools::getPixel(20,10).'</td>
 	</tr>
 	<tr>
 		<td>'.$this->formDirChooser(388,BANNER_TABLE,$this->banner->ParentID,$this->uid."_ParentID",g_l('modules_banner','[group]'),"","PathGroup").'</td>
@@ -1147,15 +1147,15 @@ class weBannerView extends weBannerBase{
 	function formBannerNumbers(){
 		$cn = md5(uniqid(rand()));
 		$activeCheckbox = we_forms::checkboxWithHidden($this->banner->IsActive, $this->uid.'_IsActive', g_l('modules_banner','[active]'),false,"defaultfont","top.content.setHot();");
-		$maxShow = htmlFormElementTable(htmlTextInput($this->uid."_maxShow",10,$this->banner->maxShow,"","onchange=\"top.content.setHot();\"","text","100",0),
+		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid."_maxShow",10,$this->banner->maxShow,"","onchange=\"top.content.setHot();\"","text","100",0),
 			g_l('modules_banner','[max_show]'),
 			"left",
 			"defaultfont");
-		$maxClicks = htmlFormElementTable(htmlTextInput($this->uid."_maxClicks",10,$this->banner->maxClicks,"","onchange=\"top.content.setHot();\"","text","100",0),
+		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid."_maxClicks",10,$this->banner->maxClicks,"","onchange=\"top.content.setHot();\"","text","100",0),
 			g_l('modules_banner','[max_clicks]'),
 			"left",
 			"defaultfont");
-		$weight = htmlFormElementTable(htmlSelect(	$this->uid."_weight",array("8"=>"1 (".g_l('modules_banner','[infrequent]').")", "7"=>"2", "6"=>"3", "5"=>"4", "4"=>"5 (".g_l('modules_banner','[normal]').")", "3"=>"6", "2"=>"7", "1"=>"8", "0"=>"9 (".g_l('modules_banner','[frequent]').")") ,
+		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect(	$this->uid."_weight",array("8"=>"1 (".g_l('modules_banner','[infrequent]').")", "7"=>"2", "6"=>"3", "5"=>"4", "4"=>"5 (".g_l('modules_banner','[normal]').")", "3"=>"6", "2"=>"7", "1"=>"8", "0"=>"9 (".g_l('modules_banner','[frequent]').")") ,
 													1,
 													$this->banner->weight) ,
 			g_l('modules_banner','[weight]'),
@@ -1165,11 +1165,11 @@ class weBannerView extends weBannerBase{
 		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>'.$activeCheckbox.'</td>
-		<td>'.getPixel(40,2).'</td>
+		<td>'.we_html_tools::getPixel(40,2).'</td>
 		<td>'.$maxShow.'</td>
-		<td>'.getPixel(40,2).'</td>
+		<td>'.we_html_tools::getPixel(40,2).'</td>
 		<td>'.$maxClicks.'</td>
-		<td>'.getPixel(40,2).'</td>
+		<td>'.we_html_tools::getPixel(40,2).'</td>
 		<td>'.$weight.'</td>
 	</tr>
 </table>
@@ -1223,10 +1223,10 @@ class weBannerView extends weBannerBase{
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 
-		return htmlFormElementTable(htmlTextInput($this->uid."_bannerUrl",30,$this->banner->bannerUrl,"",'id="'.$this->uid.'_bannerUrl" onkeydown="'.$onkeydown.'"',"text",$width,0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid."_bannerUrl",30,$this->banner->bannerUrl,"",'id="'.$this->uid.'_bannerUrl" onkeydown="'.$onkeydown.'"',"text",$width,0),
 			$title1,
 			"left",
-			"defaultfont","","","","","",0).getPixel(10,5).$yuiSuggest->getHTML();
+			"defaultfont","","","","","",0).we_html_tools::getPixel(10,5).$yuiSuggest->getHTML();
 	}
 
 }

@@ -51,7 +51,7 @@ class ImportOptions extends leWizardStepBase
 		$myid = FSW_DEFAULT_MASTER_TEMPLATE;
 		$path = id_to_path(FSW_DEFAULT_MASTER_TEMPLATE, TEMPLATES_TABLE);
 
-		$MastertemplateInput = htmlTextInput(
+		$MastertemplateInput = we_html_tools::htmlTextInput(
 				$textname,
 				30,
 				$path,
@@ -75,14 +75,14 @@ class ImportOptions extends leWizardStepBase
 				22);
 
 		$MastertemplateChooserText = $this->Language['choose_mastertemplate'];
-		$MastertemplateChooser = htmlFormElementTable(
+		$MastertemplateChooser = we_html_tools::htmlFormElementTable(
 				$MastertemplateInput,
 				"",
 				"left",
 				"defaultfont",
-				$MastertemplateHidden . getPixel(20, 1),
+				$MastertemplateHidden . we_html_tools::getPixel(20, 1),
 				$MastertemplateButton,
-				getPixel(10, 1),
+				we_html_tools::getPixel(10, 1),
 				$MastertemplateTrash);
 
 		// Use Documents
@@ -102,7 +102,7 @@ class ImportOptions extends leWizardStepBase
 		$myid = 0;
 		$path = "/";
 
-		$DocumentInput = htmlTextInput(
+		$DocumentInput = we_html_tools::htmlTextInput(
 				$textname,
 				30,
 				$path,
@@ -126,14 +126,14 @@ class ImportOptions extends leWizardStepBase
 				22);
 
 		$DocumentChooserText = $this->Language['choose_document_path'];
-		$DocumentChooser = htmlFormElementTable(
+		$DocumentChooser = we_html_tools::htmlFormElementTable(
 				$DocumentInput,
 				"",
 				"left",
 				"defaultfont",
-				$DocumentHidden . getPixel(20, 1),
+				$DocumentHidden . we_html_tools::getPixel(20, 1),
 				$DocumentButton,
-				getPixel(10, 1),
+				we_html_tools::getPixel(10, 1),
 				$DocumentTrash);
 
 		// Use Navigation
@@ -174,7 +174,7 @@ class ImportOptions extends leWizardStepBase
 		}
 
 		$NavigationChooserText = $this->Language['choose_navigation_path'];
-		$NavigationChooser = htmlSelect('NavigationPathID', $_dirs, 1, 0, false, 'style="width: 388px;"');
+		$NavigationChooser = we_html_tools::htmlSelect('NavigationPathID', $_dirs, 1, 0, false, 'style="width: 388px;"');
 
 		// Suggestion
 

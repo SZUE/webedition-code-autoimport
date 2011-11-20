@@ -188,16 +188,16 @@
 	        	$content .= '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
-			<td>' . getPixel(632,12) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(632,12) . '</td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
 			<td class="defaultfont">' . g_l('modules_glossary','[no_entries_found]') . '</td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
-			<td>' . getPixel(632,12) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(632,12) . '</td>
 		</tr>
 		</table>';
 
@@ -380,7 +380,7 @@
 
 			}
 
-			$retVal .= htmlDialogBorder3(636,0, $content ,$headline);
+			$retVal .= we_html_tools::htmlDialogBorder3(636,0, $content ,$headline);
 
 			return $retVal;
 
@@ -415,22 +415,22 @@
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary','[search]') . '</td>
-			<td colspan="2">'.htmlTextInput('Keyword', 24, isset($_REQUEST['Keyword'])?$_REQUEST['Keyword']:'', "", "style=\"width: 430px\"").'</td>
-			<td>'.getPixel(18,2).'</td>
+			<td colspan="2">'.we_html_tools::htmlTextInput('Keyword', 24, isset($_REQUEST['Keyword'])?$_REQUEST['Keyword']:'', "", "style=\"width: 430px\"").'</td>
+			<td>'.we_html_tools::getPixel(18,2).'</td>
 			<td>' . $button . '</td>
 		</tr>
 		<tr>
-			<td colspan="5">'.getPixel(18,12).'</td>
+			<td colspan="5">'.we_html_tools::getPixel(18,12).'</td>
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary','[view]') . '</td>
-			<td>'.htmlSelect("Rows",$_rows,1,$Search->Rows,"",'onchange="SubmitForm();"').'</td>
+			<td>'.we_html_tools::htmlSelect("Rows",$_rows,1,$Search->Rows,"",'onchange="SubmitForm();"').'</td>
 			<td>'.we_forms::checkboxWithHidden(isset($_REQUEST['GreenOnly'])&&$_REQUEST['GreenOnly']==1?true:false, "GreenOnly", g_l('modules_glossary','[show_only_visible_items]'),false,"defaultfont","jump(0);").'</td>
-			<td>'.getPixel(18,2).'</td>
+			<td>'.we_html_tools::getPixel(18,2).'</td>
 			<td>' . $newButton . '</td>
 		</tr>
 		<tr>
-			<td colspan="5">'.getPixel(18,12).'</td>
+			<td colspan="5">'.we_html_tools::getPixel(18,12).'</td>
 		</tr>
 		</table>';
 
@@ -465,35 +465,35 @@
 
 			$pages = $Search->getPages();
 
-			$select = htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, "onchange=\"jump(this.value);\"");
+			$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, "onchange=\"jump(this.value);\"");
 
 			$out = '
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
-			<td>' . getPixel(195,12) . '</td>
-			<td>' . getPixel(437,12) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(195,12) . '</td>
+			<td>' . we_html_tools::getPixel(437,12) . '</td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
 			<td>' . ($extended && (we_hasPerm("DELETE_GLOSSARY") || we_hasPerm("NEW_GLOSSARY")) ? we_button::create_button("selectAll", "javascript: AllItems();") : "") . '</td>
 			<td align="right"><table cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td></td>
 					<td>' . $prev . '</td>
-					<td>' . getPixel(10,2) . '</td>
+					<td>' . we_html_tools::getPixel(10,2) . '</td>
 					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global',"[from]") . ' ' . $sum . '</b></td>
-					<td>' . getPixel(10,2) . '</td>
+					<td>' . we_html_tools::getPixel(10,2) . '</td>
 					<td>' . $next . '</td>
-					<td>' . getPixel(10,2) . '</td>
+					<td>' . we_html_tools::getPixel(10,2) . '</td>
 					<td>' . $select . '</td>
 				</tr>
 				</table></td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
-			<td>' . getPixel(195,12) . '</td>
-			<td>' . getPixel(437,12) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(195,12) . '</td>
+			<td>' . we_html_tools::getPixel(437,12) . '</td>
 		</tr>
 		';
 
@@ -502,43 +502,43 @@
 			<td colspan="3">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("DELETE_GLOSSARY") ? we_button::create_button("image:btn_function_trash", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_delete]")."')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_glossary','[delete_selected_items]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		<tr>
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
-			<td>' . getPixel(195,12) . '</td>
-			<td>' . getPixel(437,12) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(195,12) . '</td>
+			<td>' . we_html_tools::getPixel(437,12) . '</td>
 		</tr>
 		<tr>
 			<td colspan="3">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? we_button::create_button("image:btn_function_publish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_publish]")."')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_glossary','[publish_selected_items]') : "").'</td>
 				</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5,1) . '</td>
-			<td>' . getPixel(195,12) . '</td>
-			<td>' . getPixel(437,12) . '</td>
+			<td>' . we_html_tools::getPixel(5,1) . '</td>
+			<td>' . we_html_tools::getPixel(195,12) . '</td>
+			<td>' . we_html_tools::getPixel(437,12) . '</td>
 		</tr>
 		<tr>
 			<td colspan="3">
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">'.(we_hasPerm("NEW_GLOSSARY") ? we_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('".g_l('modules_glossary',"[confirm_unpublish]")."')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") .'</td>
-					<td>'.getPixel(5,1).'</td>
+					<td>'.we_html_tools::getPixel(5,1).'</td>
 					<td class="small">&nbsp;'.g_l('modules_glossary','[unpublish_selected_items]') : "").'</td>
 				</tr>
 				</table>

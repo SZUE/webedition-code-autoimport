@@ -116,7 +116,7 @@ if($cmd == "ok"){
 								</tr>
 								<tr>
 									<td>
-										'.getPixel(2,5).'</td>
+										'.we_html_tools::getPixel(2,5).'</td>
 								</tr>';
 						}
 						else {
@@ -139,7 +139,7 @@ if($cmd == "ok"){
 																		$cancelbut);
 
 
-						$frame = htmlDialogLayout($content,g_l('modules_workflow','[in_workflow]'), $_buttons);
+						$frame = we_html_tools::htmlDialogLayout($content,g_l('modules_workflow','[in_workflow]'), $_buttons);
 
 						print $frame;
 						print '

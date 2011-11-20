@@ -19,11 +19,6 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
 
 $defaultCharset = "UTF-8";
 
@@ -33,7 +28,7 @@ protect();
 
 
 $fieldName = $_REQUEST["we_cmd"][1];
-htmlTop(
+we_html_tools::htmlTop(
 		sprintf(g_l('wysiwyg',"[window_title]"), $fieldName), $defaultCharset);
 
 if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]) {

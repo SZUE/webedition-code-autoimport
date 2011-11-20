@@ -327,16 +327,16 @@ class we_dynamicControls {
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $_seperator_color . '">
 						<td>
-							' . getPixel(10, 1) . '</td>
+							' . we_html_tools::getPixel(10, 1) . '</td>
 						<td>
-							' . getPixel($width, 1) . '</td>
+							' . we_html_tools::getPixel($width, 1) . '</td>
 					</tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $bgcolor . '">
 						<td width="30" nowrap>
-							' . getPixel(5, 24) . '
+							' . we_html_tools::getPixel(5, 24) . '
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -367,9 +367,9 @@ class we_dynamicControls {
 						</tr>
 						<tr valign="middle" bgcolor="' . $bgcolor . '">
 							<td>
-								' . getPixel(10, 1) . '</td>
+								' . we_html_tools::getPixel(10, 1) . '</td>
 							<td>
-								' . getPixel($width, 1) . '</td>
+								' . we_html_tools::getPixel($width, 1) . '</td>
 						</tr>
 					</table>';
 
@@ -405,7 +405,7 @@ class we_dynamicControls {
 										' . we_forms::checkbox(($_group_item_value ? $_group_item_value : "0"), ($_group_item_value ? true : false), $item_names . "_Permission_" . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
 								<tr>
 									<td>
-										' . getPixel(15, 3) . '</td>
+										' . we_html_tools::getPixel(15, 3) . '</td>
 								</tr>';
 						}
 					}
@@ -494,16 +494,16 @@ class we_dynamicControls {
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $_seperator_color . '">
 						<td>
-							' . getPixel(10, 1) . '</td>
+							' . we_html_tools::getPixel(10, 1) . '</td>
 						<td>
-							' . getPixel($width, 1) . '</td>
+							' . we_html_tools::getPixel($width, 1) . '</td>
 					</tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr valign="middle" bgcolor="' . $bgcolor . '">
 						<td width="30" nowrap>
-							' . getPixel(5, 24) . '
+							' . we_html_tools::getPixel(5, 24) . '
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -534,14 +534,14 @@ class we_dynamicControls {
 						</tr>
 						<tr valign="middle" bgcolor="' . $bgcolor . '">
 							<td>
-								' . getPixel(10, 1) . '</td>
+								' . we_html_tools::getPixel(10, 1) . '</td>
 							<td>
-								' . getPixel($width, 1) . '</td>
+								' . we_html_tools::getPixel($width, 1) . '</td>
 						</tr>
 					</table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . getPixel(30,10) . '</td><td colspan="2">' . getPixel($width,10) . '</td></tr>';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . we_html_tools::getPixel(30,10) . '</td><td colspan="2">' . we_html_tools::getPixel($width,10) . '</td></tr>';
 
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){
@@ -555,7 +555,7 @@ class we_dynamicControls {
 								</tr>
 								<tr>
 									<td></td>
-									<td>'.getPixel($c["space"],15).'</td>
+									<td>'.we_html_tools::getPixel($c["space"],15).'</td>
 									<td></td>
 								</tr>';
 						if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){

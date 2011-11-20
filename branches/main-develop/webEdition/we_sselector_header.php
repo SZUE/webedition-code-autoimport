@@ -25,12 +25,10 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
@@ -104,35 +102,35 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	 <form name="we_form" method="post">
  		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr valign="middle">
-				<td width="10"><?php print getPixel(10,49); ?></td>
+				<td width="10"><?php print we_html_tools::getPixel(10,49); ?></td>
 				<td width="70" class="defaultfont"><b><?php print g_l('fileselector',"[lookin]")?></b></td>
-				<td width="10"><?php print getPixel(10,29); ?></td>
+				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
 				<td><select name="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
 						<option value="/">/</option>
-					</select><?php print getPixel(1,1); ?></td>
- 				<td width="10"><?php print getPixel(10,29); ?></td>
+					</select><?php print we_html_tools::getPixel(1,1); ?></td>
+ 				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
 				<td width="40">
 					<?php print we_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
 				</td>
-				<td width="10"><?php print getPixel(10,29); ?></td>
+				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
 				<td width="40">
 					<?php print we_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
 				</td>
 <?php if(!$_REQUEST["ret"]){ ?>
-				<td width="10"><?php print getPixel(10,29); ?></td>
+				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
 				<td width="40">
 					<?php print we_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();",true,100,22,"","",false,false,"_ss"); ?>
 				</td>
- 				<td width="10"><?php print getPixel(10,29); ?></td>
+ 				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
                 <td width="40">
                    <?php print we_button::create_button("image:btn_add_file", "javascript:javascript:openFile();",true,100,22,"","",false,false,"_ss"); ?>
                 </td>
-				<td width="10"><?php print getPixel(10,29); ?></td>
+				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
                 <td width="25">
                    <?php print we_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();",true,100,22,"","",false,false,"_ss"); ?>
                 </td>
 <?php  }   ?>
- 				<td width="10"><?php print getPixel(10,29); ?></td>
+ 				<td width="10"><?php print we_html_tools::getPixel(10,29); ?></td>
 			</tr>
 		</table>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -142,18 +140,18 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
         </table>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
          <tr>
-            <td><?php print getPixel(25,20)?></td>
+            <td><?php print we_html_tools::getPixel(25,20)?></td>
             <td class="selector"><b><a href="#" onclick="reorder('name');"><?php print g_l('fileselector',"[filename]")?></a></b></td>
             <td class="selector"><b><a href="#" onclick="reorder('type');"><?php print g_l('fileselector',"[type]")?></b></a></td>
             <td class="selector"><b><a href="#" onclick="reorder('date');"><?php print g_l('fileselector',"[modified]")?></b></a></td>
             <td class="selector"><b><a href="#" onclick="reorder('size');"><?php print g_l('fileselector',"[filesize]")?></b></a></td>
          </tr>
          <tr>
-            <td width="25"><?php print getPixel(25,1)?></td>
-            <td width="200"><?php print getPixel(200,1)?></td>
-            <td width="150"><?php print getPixel(150,1)?></td>
-            <td width="200"><?php print getPixel(200,1)?></td>
-            <td><?php print getPixel(15,1)?></td>
+            <td width="25"><?php print we_html_tools::getPixel(25,1)?></td>
+            <td width="200"><?php print we_html_tools::getPixel(200,1)?></td>
+            <td width="150"><?php print we_html_tools::getPixel(150,1)?></td>
+            <td width="200"><?php print we_html_tools::getPixel(200,1)?></td>
+            <td><?php print we_html_tools::getPixel(15,1)?></td>
          </tr>
         </table>
 

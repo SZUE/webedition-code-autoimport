@@ -34,11 +34,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_message_repo
  * *************************************************************************** */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
 
 $ignore_browser = isset($_REQUEST['ignore_browser']) && ($_REQUEST['ignore_browser'] === 'true');
 
@@ -59,7 +55,7 @@ function printHeader($login){
 	/*	 * ***************************************************************************
 	 * CREATE HEADER
 	 * *************************************************************************** */
-	htmlTop($_SERVER['SERVER_NAME'] . ' webEdition ');
+	we_html_tools::htmlTop($_SERVER['SERVER_NAME'] . ' webEdition ');
 	print STYLESHEET;
 
 	print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));
@@ -226,7 +222,7 @@ $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE LoginDat
 $count = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="' . addslashes($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . abs(LOGIN_FAILED_TIME) . ' MINUTE)', 'count', $DB_WE);
 
 if($count >= LOGIN_FAILED_NR){
-	htmlTop('webEdition ');
+	we_html_tools::htmlTop('webEdition ');
 	print we_htmlElement::jsElement(
 			we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), WE_MESSAGE_ERROR)
 		);
@@ -284,7 +280,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
@@ -314,7 +310,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
@@ -344,7 +340,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
@@ -397,18 +393,18 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	}
 
 
-	$_browser_table->setCol(0, 0, array('colspan' => $supportedBrowserCnt), getPixel(1, 20));
-	$_browser_table->setCol(2, 0, array('colspan' => $supportedBrowserCnt), getPixel(1, 50));
-	$_browser_table->setCol(4, 0, array('colspan' => $supportedBrowserCnt), getPixel(1, 30));
-	$_browser_table->setCol(6, 0, array('colspan' => $supportedBrowserCnt), getPixel(1, 10));
-	$_browser_table->setCol(8, 0, array('colspan' => $supportedBrowserCnt), getPixel(1, 5));
-	$_browser_table->setCol(10, 0, array('colspan' => $supportedBrowserCnt), getPixel(1, 50));
+	$_browser_table->setCol(0, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 20));
+	$_browser_table->setCol(2, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 50));
+	$_browser_table->setCol(4, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 30));
+	$_browser_table->setCol(6, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 10));
+	$_browser_table->setCol(8, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 5));
+	$_browser_table->setCol(10, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 50));
 
 	$_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_htmlElement::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=true'), g_l('start', '[ignore_browser]')));
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(htmlMessageBox(500, 380, $_browser_table->getHtmlCode(), g_l('start', '[cannot_start_we]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtmlCode(), g_l('start', '[cannot_start_we]'))));
 
 	printHeader($login);
 	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
@@ -478,20 +474,20 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
 
-	$_layouttable->setCol(1, 0, array('background' => IMAGE_DIR . 'info/left2.gif'), getPixel($_layoutLeft2, 1));
+	$_layouttable->setCol(1, 0, array('background' => IMAGE_DIR . 'info/left2.gif'), we_html_tools::getPixel($_layoutLeft2, 1));
 	$_layouttable->setCol(1, 1, array('colspan' => 3, 'width' => $_contenttable), $_loginTable);
-	$_layouttable->setCol(1, 4, array('width' => $_layoutRight2, 'background' => IMAGE_DIR . 'info/right.gif'), getPixel($_layoutRight2, 1));
+	$_layouttable->setCol(1, 4, array('width' => $_layoutRight2, 'background' => IMAGE_DIR . 'info/right.gif'), we_html_tools::getPixel($_layoutRight2, 1));
 
 	$_layouttable->setCol(2, 0, array('width' => $_layoutLeft2), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left2.gif', 'width' => $_layoutLeft2, 'height' => 16)));
 	$_layouttable->setCol(2, 1, null, we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left.gif', 'width' => $_layoutLeft, 'height' => 16)));
-	$_layouttable->setCol(2, 2, array('background' => IMAGE_DIR . 'info/bottom.gif'), getPixel(1, 16));
+	$_layouttable->setCol(2, 2, array('background' => IMAGE_DIR . 'info/bottom.gif'), we_html_tools::getPixel(1, 16));
 	$_layouttable->setCol(2, 3, array('colspan' => 2, 'width' => $_layoutRight), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_right.gif', 'width' => $_layoutRight, 'height' => 16)));
 
-	$_layouttable->setCol(3, 0, null, getPixel($_layoutLeft2, 1));
-	$_layouttable->setCol(3, 1, null, getPixel($_layoutLeft, 1));
-	$_layouttable->setCol(3, 2, null, getPixel($_layoutMiddle, 1));
-	$_layouttable->setCol(3, 3, null, getPixel($_layoutRight1, 1));
-	$_layouttable->setCol(3, 4, null, getPixel($_layoutRight2, 1));
+	$_layouttable->setCol(3, 0, null, we_html_tools::getPixel($_layoutLeft2, 1));
+	$_layouttable->setCol(3, 1, null, we_html_tools::getPixel($_layoutLeft, 1));
+	$_layouttable->setCol(3, 2, null, we_html_tools::getPixel($_layoutMiddle, 1));
+	$_layouttable->setCol(3, 3, null, we_html_tools::getPixel($_layoutRight1, 1));
+	$_layouttable->setCol(3, 4, null, we_html_tools::getPixel($_layoutRight2, 1));
 
 	/*	 * ***********************************************************************
 	 * GENERATE NEEDED JAVASCRIPTS

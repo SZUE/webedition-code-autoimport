@@ -345,7 +345,7 @@ class we_button {
 
 			// Check if we have to create a gap
 			if (($i > 0) && ($i < $_count_button)) {
-				$_button_table->setCol(0, (($i * 2) - 1), array("class"=>"weEditmodeStyle"), getPixel($gap, 1));
+				$_button_table->setCol(0, (($i * 2) - 1), array("class"=>"weEditmodeStyle"), we_html_tools::getPixel($gap, 1));
 			}
 		}
 
@@ -412,7 +412,7 @@ class we_button {
 		//	Extra gap at left side?
 		if (($aligngap > 0) && ($attr["align"] == "left")) {
 			$_button_table->addCol(1);
-			$_button_table->setCol(0, 0,  array("class"=>"weEditmodeStyle"), getPixel($aligngap, 1));
+			$_button_table->setCol(0, 0,  array("class"=>"weEditmodeStyle"), we_html_tools::getPixel($aligngap, 1));
 		}
 
 		//	Write buttons
@@ -420,14 +420,14 @@ class we_button {
 			if ($i % 2 == 0){ // Set button
 				$_button_table->setCol(0, ((($aligngap > 0) && ($attr["align"] == "left")) ? $i + 1 : $i), array("class"=>"weEditmodeStyle"), $_buttons[$j++]);
 			} else { // Set gap
-				$_button_table->setCol(0, ((($aligngap > 0) && ($attr["align"] == "left")) ? $i + 1 : $i), array("class"=>"weEditmodeStyle"), getPixel($gap, 1));
+				$_button_table->setCol(0, ((($aligngap > 0) && ($attr["align"] == "left")) ? $i + 1 : $i), array("class"=>"weEditmodeStyle"), we_html_tools::getPixel($gap, 1));
 			}
 		}
 
 		//	Extra gap at left or right side?
 		if (($aligngap > 0) && ($attr["align"] == "right")) {
 			$_button_table->addCol(1);
-			$_button_table->setCol(0, $_cols, array("class"=>"weEditmodeStyle"), getPixel($aligngap, 1));
+			$_button_table->setCol(0, $_cols, array("class"=>"weEditmodeStyle"), we_html_tools::getPixel($aligngap, 1));
 		}
 
 		// Return created HTML

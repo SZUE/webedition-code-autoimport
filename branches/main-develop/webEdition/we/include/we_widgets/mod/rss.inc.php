@@ -29,7 +29,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/RSS
 
 protect();
 
-print htmlTop();
+print we_html_tools::htmlTop();
 print
 		"<script type=\"text/javascript\">
 

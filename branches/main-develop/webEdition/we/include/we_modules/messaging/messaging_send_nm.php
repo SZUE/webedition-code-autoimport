@@ -23,9 +23,7 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 protect();
 $_REQUEST['we_transaction'] = (preg_match("/^([a-f0-9]){32}$/i", $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 if (is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
@@ -86,24 +84,24 @@ if (is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
                     <td class="defaultfont">
                         <ul>
             ';
-            
+
             foreach ($res['ok'] as $ok) {
                 $tbl .= '<li>' . htmlspecialchars($ok) . '</li>';
             }
-                        
+
             $tbl .= '
                         </ul>
                     </td>
                 </tr>
             ';
         }
-                
+
         if ($res['failed']) {
             $tbl .= '
                 <tr>
                     <td class="defaultfont" valign="top">' . g_l('messaging','[n_sent_to]') . ':</td>
                     <td class="defaultfont">
-                        <ul>    
+                        <ul>
             ';
 
             foreach ($res['failed'] as $failed) {
@@ -132,12 +130,12 @@ if (is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
             $tbl .= '
                         </ul>
                     </td>
-                </tr>    
+                </tr>
             ';
         }
 
 		$tbl .= '</table>';
-        echo htmlDialogLayout($tbl, g_l('messaging','[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
+        echo we_html_tools::htmlDialogLayout($tbl, g_l('messaging','[message_send]') . '...', we_button::create_button("ok", "javascript:window.close()"), "100%", "20", "", "hidden");
 		?>
 	</body>
 

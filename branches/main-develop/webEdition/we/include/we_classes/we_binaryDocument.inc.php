@@ -129,10 +129,10 @@ class we_binaryDocument extends we_document
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 		return (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])) ? weFile::load($this->elements["data"]["dat"]) : "";
 	}
-	
+
 	protected function i_writeDocument(){
 		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
-			if ($this->elements["data"]["dat"]!=$this->getSitePath()){				
+			if ($this->elements["data"]["dat"]!=$this->getSitePath()){
 				if(!we_util_File::copyFile($this->elements["data"]["dat"],$this->getSitePath())){
 					return false;
 				}
@@ -145,7 +145,7 @@ class we_binaryDocument extends we_document
 		}
 		return true;
 	}
-	
+
 	protected function i_writeSiteDir($doc) {
 		$is_ok = false;
 		if (isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
@@ -167,7 +167,7 @@ class we_binaryDocument extends we_document
 		}
 		return $is_ok;
 	}
-	
+
 	/* gets the filesize of the document */
 	function getFilesize(){
 		return filesize($this->elements["data"]["dat"]);
@@ -259,8 +259,8 @@ class we_binaryDocument extends we_document
 					break;
 
 					case "date":
-						$_inp = htmlFormElementTable(
-							getDateInput2('we_'.$this->Name.'_date['.$_tagName.']', abs($this->getElement($_tagName)),true),
+						$_inp = we_html_tools::htmlFormElementTable(
+							we_html_tools::getDateInput2('we_'.$this->Name.'_date['.$_tagName.']', abs($this->getElement($_tagName)),true),
 							$_tagName
 						);
 					break;
@@ -272,7 +272,7 @@ class we_binaryDocument extends we_document
 
 				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
 				$_fieldcounter++;
-				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), getPixel(1, 5));
+				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 				$_fieldcounter++;
 			}
 		}
@@ -337,14 +337,14 @@ class we_binaryDocument extends we_document
 			$foo .= '</td>
 					</tr>
 					<tr>
-							<td>' . getPixel(2, 20) . '</td>
-							<td>' . getPixel(2, 20) . '</td>
+							<td>' . we_html_tools::getPixel(2, 20) . '</td>
+							<td>' . we_html_tools::getPixel(2, 20) . '</td>
 					</tr>
 					<tr>';
 			if($GLOBALS["we_doc"]->getFilesize() != 0){
-					$foo .= '<td colspan="2" class="defaultfont">' . htmlAlertAttentionBox(g_l('weClass',"[upload_will_replace]"),1,508) . '</td>';
+					$foo .= '<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[upload_will_replace]"),1,508) . '</td>';
 			} else {
-					$foo .= '<td colspan="2" class="defaultfont">' . htmlAlertAttentionBox(g_l('weClass',"[upload_single_files]"),1,508) . '</td>';
+					$foo .= '<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[upload_single_files]"),1,508) . '</td>';
 			}
 			$foo .= '</tr>';
 

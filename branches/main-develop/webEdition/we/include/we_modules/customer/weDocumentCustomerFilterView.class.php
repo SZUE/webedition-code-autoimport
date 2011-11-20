@@ -158,7 +158,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . g_l('modules_customerFilter','[apply_filter]') . "</div>
 			<table>
 			<tr>
-				<td>" . htmlAlertAttentionBox(g_l('modules_customerFilter','[apply_filter_info]'),2,432,false) . "</td>
+				<td>" . we_html_tools::htmlAlertAttentionBox(g_l('modules_customerFilter','[apply_filter_info]'),2,432,false) . "</td>
 				<td style=\"padding-left:17px;\">" . $_ok_button . "</td>
 			</tr>
 			</table>

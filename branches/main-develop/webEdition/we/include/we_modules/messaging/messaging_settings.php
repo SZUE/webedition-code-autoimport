@@ -24,9 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 $messaging = new we_messaging($_SESSION["we_data"]['we_messagin_setting']);
@@ -73,9 +71,9 @@ if( isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_
 <?php
 if ( isset( $_REQUEST['we_transaction'] ) ) {
 	$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
-	echo hidden('we_transaction', $_REQUEST['we_transaction']);
+	echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
 }
-echo hidden('mcmd', 'save_settings');
+echo we_html_tools::hidden('mcmd', 'save_settings');
 
 $heading = g_l('modules_messaging','[settings]');
 $t_vals = array('-1' => '0', '1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '10' => '10', '15' => '15', '30' => '30', '45' => '45', '60' => '60');
@@ -85,7 +83,7 @@ $check_step = isset($settings['check_step']) ? $settings['check_step'] : "";
 $input_tbl = '<table>
 <tr>
     <td class="defaultfont">' . g_l('modules_messaging','[check_step]') . '</td>
-    <td>' . html_select('check_step', 1, $t_vals, $check_step) . '</td>
+    <td>' . we_html_tools::html_select('check_step', 1, $t_vals, $check_step) . '</td>
 	<td class="defaultfont">' . g_l('modules_messaging','[minutes]') . '</td>
 </tr>
 </table>';
@@ -96,7 +94,7 @@ $_buttons = we_button::position_yes_no_cancel(	we_button::create_button("save", 
 											)
 											;
 
-echo htmlDialogLayout($input_tbl, $heading, $_buttons);
+echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_buttons);
 
 
 ?>

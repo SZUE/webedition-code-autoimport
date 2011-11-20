@@ -23,13 +23,10 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 
-htmlTop();
+we_html_tools::htmlTop();
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print STYLESHEET;
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');?>
@@ -100,7 +97,7 @@ if(we_image_edit::gd_version() > 0){
 
 
 			$thumbnail = '<table border="0" cellpadding="0" cellspacing="0" width="570"><tr><td width="538"><img src="'.$src.'" width="'.$thumbObj->getOutputWidth().
-						'" height="'.$thumbObj->getOutputHeight().'" border="0" /></td><td width="10">'.getPixel(10,2).'</td><td width="22">'.$delbut.'</td></tr></table>';
+						'" height="'.$thumbObj->getOutputHeight().'" border="0" /></td><td width="10">'.we_html_tools::getPixel(10,2).'</td><td width="22">'.$delbut.'</td></tr></table>';
 
 			array_push($parts, array(	"headline"=>$thumbObj->getThumbName(),
 										"html"=>$thumbnail,

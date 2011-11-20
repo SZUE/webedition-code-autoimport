@@ -32,7 +32,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetec
 require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 

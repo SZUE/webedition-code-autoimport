@@ -22,12 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
 protect();
 
 function getLangField($name, $value, $title, $width) {
-	$input = htmlTextInput($name, 15, $value, "", '', "text", $width - 50);
+	$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", $width - 50);
 	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 						<option value=""></option>
 						<option value="en">en</option>
@@ -39,11 +37,11 @@ function getLangField($name, $value, $title, $width) {
 						<option value="nl">nl</option>
 						<option value="pl">pl</option>
 					</select>';
-	return htmlFormElementTable($input, $title, "left", "small", $select);
+	return we_html_tools::htmlFormElementTable($input, $title, "left", "small", $select);
 }
 
 function getRevRelSelect($type, $value) {
-	$input = htmlTextInput($type, 15, $value, "", '', "text", 70);
+	$input = we_html_tools::htmlTextInput($type, 15, $value, "", '', "text", 70);
 	$select = '<select name="' . $type . '_sel" class="defaultfont" size="1" style="width:70px;" onchange="this.form.elements[\'' . $type . '\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 <option></option>
 <option>contents</option>
@@ -63,7 +61,7 @@ function getRevRelSelect($type, $value) {
 <option>nofollow</option>
 </select>
 ';
-	return htmlFormElementTable($input, $type, "left", "small", $select);
+	return we_html_tools::htmlFormElementTable($input, $type, "left", "small", $select);
 }
 
 // init document
@@ -336,7 +334,7 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	}
 }
 
-htmlTop(g_l('linklistEdit', "[edit_link]"));
+we_html_tools::htmlTop(g_l('linklistEdit', "[edit_link]"));
 $yuiSuggest = & weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
@@ -522,8 +520,8 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 	} else {
 		$butspace = 10;
 	}
-	$extLink = htmlFormElementTable(htmlTextInput("href", 30, $href, "", '', "text", 300), "", "left", "defaultfont", getPixel($butspace, 20), $but, "", "", "", 0);
-	$emailLink = htmlTextInput("emaillink", 30, $emaillink, "", '', "text", 300);
+	$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, "", '', "text", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
+	$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", '', "text", 300);
 
 	//javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_int\\'].value','','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
 	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['id'].value");
@@ -563,17 +561,17 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 
 		$objLink = $yuiSuggest->getHTML();
 	}
-	$anchor = htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
-	$accesskey = htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
-	$tabindex = htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);
+	$anchor = we_html_tools::htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
+	$accesskey = we_html_tools::htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
+	$tabindex = we_html_tools::htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);
 	$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);
 	$relfield = getRevRelSelect("rel", $rel);
 	$revfield = getRevRelSelect("rev", $rev);
 	$hreflang = getLangField('hreflang', $hreflang, g_l('linklistEdit', '[href_language]'), 140);
-	$params = htmlTextInput("params", 30, $params, "", "", "text", 300);
-	$title = htmlTextInput("title", 30, $title, "", "", "text", 300);
-	$ctarget = targetBox("target", 30, 300, "", $target);
-	$cattribs = htmlTextInput("attribs", 30, $attribs, "", "", "text", 300);
+	$params = we_html_tools::htmlTextInput("params", 30, $params, "", "", "text", 300);
+	$title = we_html_tools::htmlTextInput("title", 30, $title, "", "", "text", 300);
+	$ctarget = we_html_tools::targetBox("target", 30, 300, "", $target);
+	$cattribs = we_html_tools::htmlTextInput("attribs", 30, $attribs, "", "", "text", 300);
 	$jsWinProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width=100%>
 					<tr>
@@ -593,26 +591,26 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 					<tr>
 						<td>
-							' . htmlTextInput("jsposx", 4, $jsposx, "", "", "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("jsposx", 4, $jsposx, "", "", "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("jsposy", 4, $jsposy, "", "", "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("jsposy", 4, $jsposy, "", "", "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("jswidth", 4, $jswidth, "", ' onChange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '
+							' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, "", ' onChange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '
 						</td>
-						<td>' . getPixel(10, 2) . '</td>
+						<td>' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("jsheight", 4, $jsheight, "", ' onChange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '
+							' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onChange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '
 						</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 					</tr>
 					<tr>
 						<td colspan="9">
-							' . getPixel(2, 2) . '</td>
+							' . we_html_tools::getPixel(2, 2) . '</td>
 					</tr>
 					<tr>
 						<td>' . we_forms::checkbox("1", $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
@@ -643,12 +641,12 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 						<td>
 							' . we_forms::checkbox("1", $jswin, "jswin", g_l('global', "[open]")) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
 							' . we_forms::checkbox("1", $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 					</tr>
 				</table>';
-	$jswinonoff = htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", getPixel(10, 2), "", "", "", "", 0);
+	$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 
 
 	$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
@@ -658,13 +656,13 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 </select>';
 
 
-	$ctext = htmlTextInput("text", 30, $text, "", "", "text", 300);
+	$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
 	//javascript:we_cmd('browse_server', 'document.we_form.img_src.value', '', document.we_form.img_src.value, '')
 	$wecmdenc1 = we_cmd_enc("document.we_form.img_src.value");
 	$wecmdenc4 = '';
 	$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
-	$extImg = htmlFormElementTable(htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", getPixel(10, 2), $but, "", "", "", 0);
+	$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), $but, "", "", "", 0);
 
 	//javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'img_id\\'].value','document.forms[\\'we_form\\'].elements[\\'src_int\\'].value','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
 	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['img_id'].value");
@@ -706,25 +704,25 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 					<tr>
 						<td>
-							' . htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
-							' . htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+							' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
 						<td>
-							' . getPixel(10, 2) . '</td>
+							' . we_html_tools::getPixel(10, 2) . '</td>
 						<td>
 							<select class="defaultfont" name="align" size="1">
 							<option value="">Default</option>
@@ -741,7 +739,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 					<tr>
 						<td colspan="12">
-							' . getPixel(2, 2) . '</td>
+							' . we_html_tools::getPixel(2, 2) . '</td>
 					</tr>
 					<tr>
 						<td colspan="12" class="small">
@@ -749,7 +747,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 					<tr>
 						<td colspan="12">
-							' . htmlTextInput("alt", 20, $alt, "", '', "text", 300) . '</td>
+							' . we_html_tools::htmlTextInput("alt", 20, $alt, "", '', "text", 300) . '</td>
 					</tr>
                     <tr>
 						<td colspan="12" class="small">
@@ -757,7 +755,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 					<tr>
 						<td colspan="12">
-							' . htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td>
+							' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td>
 					</tr>
 				</table>';
 	$buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:document.forms['we_form'].submit()"), null, we_button::create_button("cancel", "javascript:self.close()"));
@@ -812,7 +810,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 						<td>' . $intImg . '</td>
 					</tr>
 					<tr id="cimgprops_tr" style="display:' . (($ctype == "text") ? "none" : "") . ';">
-						<td>' . getPixel(10, 3) . "<br>" . $imgProps . '</td>
+						<td>' . we_html_tools::getPixel(10, 3) . "<br>" . $imgProps . '</td>
 					</tr>
 				</table><div></div>';
 
@@ -841,7 +839,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 		$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>' . $lang . '</td>
-                                <td>' . getPixel(20, 5) . '</td>
+                                <td>' . we_html_tools::getPixel(20, 5) . '</td>
                                 <td>' . $hreflang . '</td>
                             </tr>
 			                 </table>';
@@ -859,12 +857,12 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 		$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td class="small">' . g_l('linklistEdit', '[accesskey]') . '</td>
-			                    <td>' . getPixel(20, 5) . '</td>
+			                    <td>' . we_html_tools::getPixel(20, 5) . '</td>
 			                    <td class="small">' . g_l('linklistEdit', '[tabindex]') . '</td>
                             </tr>
                             <tr>
                                 <td>' . $accesskey . '</td>
-                                <td>' . getPixel(20, 5) . '</td>
+                                <td>' . we_html_tools::getPixel(20, 5) . '</td>
                                 <td>' . $tabindex . '</td>
                             </tr>
 			                 </table>';
@@ -877,7 +875,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 		$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>' . $relfield . '</td>
-                                <td>' . getPixel(20, 5) . '</td>
+                                <td>' . we_html_tools::getPixel(20, 5) . '</td>
                                 <td>' . $revfield . '</td>
                             </tr>
 			                 </table>';

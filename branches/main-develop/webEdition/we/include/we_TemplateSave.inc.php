@@ -23,14 +23,13 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST["we_cmd"][1])) {
 	exit();
 }
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 $_we_cmd6 = "";
 if (isset($_REQUEST["we_cmd"][6])) {
@@ -49,7 +48,7 @@ if (isset($_REQUEST["we_cmd"][6])) {
 	print $_REQUEST["we_cmd"][1];
 	?>&we_cmd[5]=<?php
 	print $_REQUEST["we_cmd"][5];
-	
+
 
 	print $_we_cmd6;
 	?>";

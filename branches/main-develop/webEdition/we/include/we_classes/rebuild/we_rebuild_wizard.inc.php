@@ -90,7 +90,7 @@ abstract class we_rebuild_wizard{
 
 		if($dc){
 			$buttons = we_button::create_button_table(array($refreshButton, $cancelButton), 10);
-			$pb = htmlDialogLayout($pb,g_l('rebuild',"[rebuild]"),$buttons);
+			$pb = we_html_tools::htmlDialogLayout($pb,g_l('rebuild',"[rebuild]"),$buttons);
 		}else{
 			$prevButton = we_button::create_button("back","javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
 			$nextButton = we_button::create_button("next","javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
@@ -436,7 +436,7 @@ abstract class we_rebuild_wizard{
 		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">'.$catAndCheck.'</td><td align="right">'.$butTable.'</td></tr></table>';
 
 		$cats = new MultiDirChooser(495,$categories,"del_cat",$upperTable,"","Icon,Path", CATEGORY_TABLE);
-		return g_l('global',"[categorys]")."<br>".getPixel(1,3)."<br>".$cats->get();
+		return g_l('global',"[categorys]")."<br>".we_html_tools::getPixel(1,3)."<br>".$cats->get();
 	}
 
 	/**
@@ -448,7 +448,7 @@ abstract class we_rebuild_wizard{
 	static function formDoctypes($doctypes){
 
 		$GLOBALS['DB_WE']->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " Order By DocType");
-		$DTselect = g_l('global',"[doctypes]")."<br>".getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
+		$DTselect = g_l('global',"[doctypes]")."<br>".we_html_tools::getPixel(1,3)."<br>".'<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">'."\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		while($GLOBALS['DB_WE']->next_record()){
@@ -474,7 +474,7 @@ abstract class we_rebuild_wizard{
 
 		$dirs = new MultiDirChooser($width,$folders,"del_folder",we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE);
 
-		return ($thumnailpage ? g_l('rebuild',"[thumbdirs]"): g_l('rebuild',"[dirs]"))."<br>".getPixel(1,3)."<br>".$dirs->get();
+		return ($thumnailpage ? g_l('rebuild',"[thumbdirs]"): g_l('rebuild',"[dirs]"))."<br>".we_html_tools::getPixel(1,3)."<br>".$dirs->get();
 
 	}
 
@@ -486,7 +486,7 @@ abstract class we_rebuild_wizard{
 	*/
 	static function formThumbs($thumbs){
 		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
-		$Thselect = g_l('rebuild',"[thumbnails]")."<br>".getPixel(1,3)."<br>".
+		$Thselect = g_l('rebuild',"[thumbnails]")."<br>".we_html_tools::getPixel(1,3)."<br>".
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">'."\n";
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
@@ -502,7 +502,7 @@ abstract class we_rebuild_wizard{
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_html = '<script type="text/javascript">document._errorMessage='.(count($metaFields) ? '""' : '"'.addslashes(g_l('rebuild',"[noFieldsChecked]")).'"').'</script>';
-		$_html .= htmlAlertAttentionBox(g_l('rebuild',"[expl_rebuild_metadata]"),2,520);
+		$_html .= we_html_tools::htmlAlertAttentionBox(g_l('rebuild',"[expl_rebuild_metadata]"),2,520);
 		$_html .= '<div class="defaultfont" style="margin:10px 0 5px 0;">'.g_l('rebuild',"[metadata]").':</div>'."\n";
 
 		$selAllBut = we_button::create_button("selectAll","javascript:we_cmd('select_all_fields');");
@@ -577,8 +577,8 @@ abstract class we_rebuild_wizard{
 			"space"		=> 0)
 		);
 
-		$filter_content = we_rebuild_wizard::formCategory($categories,$catAnd).'<br>'.getPixel(2,5)."<br>".
-						we_rebuild_wizard::formDoctypes($doctypes).'<br>'.getPixel(2,10)."<br>".
+		$filter_content = we_rebuild_wizard::formCategory($categories,$catAnd).'<br>'.we_html_tools::getPixel(2,5)."<br>".
+						we_rebuild_wizard::formDoctypes($doctypes).'<br>'.we_html_tools::getPixel(2,10)."<br>".
 						we_rebuild_wizard::formFolders($folders);
 
 		$filter_content = we_forms::radiobutton("rebuild_filter", ($btype=="rebuild_filter" && we_hasPerm("REBUILD_FILTERD") || ($btype=="rebuild_all" && (!we_hasPerm("REBUILD_ALL")) && we_hasPerm("REBUILD_FILTERD"))), "btype", g_l('rebuild',"[rebuild_filter]"), true, "defaultfont", "", (!we_hasPerm("REBUILD_FILTERD")), g_l('rebuild',"[txt_rebuild_filter]"), 0, 495,"",$filter_content);
@@ -654,7 +654,7 @@ abstract class we_rebuild_wizard{
 		$parts = array();
 
 		$content = we_rebuild_wizard::formThumbs($thumbs).
-						'<br>'.getPixel(2,15)."<br>".
+						'<br>'.we_html_tools::getPixel(2,15)."<br>".
 						we_rebuild_wizard::formFolders($thumbsFolders,true,520);
 
 
@@ -727,7 +727,7 @@ abstract class we_rebuild_wizard{
 		$parts = array();
 
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty).
-						'<br>'.getPixel(2,15)."<br>".
+						'<br>'.we_html_tools::getPixel(2,15)."<br>".
 						we_rebuild_wizard::formFolders($metaFolders,true,520);
 
 

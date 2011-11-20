@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
 
 protect();
 
@@ -52,7 +51,7 @@ if(isset($_REQUEST['tool'])) {
 	}
 }
 
-htmlTop($title);
+we_html_tools::htmlTop($title);
 
 print we_htmlElement::jsElement('
 

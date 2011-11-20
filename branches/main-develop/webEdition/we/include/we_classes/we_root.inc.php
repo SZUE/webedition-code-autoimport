@@ -351,7 +351,7 @@ abstract class we_root extends we_class{
 			"left",
 			"defaultfont",
 			$idfield,
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button);
 		}else{
 			$out = $creator;
@@ -375,7 +375,7 @@ abstract class we_root extends we_class{
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="370">';
-		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(351,2).'</td><td>'.getPixel(100,2).'</td><td>'.getPixel(26,2).'</td></tr>'."\n";
+		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(351,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr>'."\n";
 		if(sizeof($owners)){
 			for($i=0;$i<sizeof($owners);$i++){
 				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='".abs($owners[$i])."'",$this->DB_WE);
@@ -390,7 +390,7 @@ abstract class we_root extends we_class{
 		}else{
 			$content .= '<tr><td><img src="'.ICON_DIR."user.gif".'" width="16" height="18" /></td><td class="defaultfont">'.g_l('weClass',"[onlyOwner]").'</td><td></td><td></td></tr>'."\n";
 		}
-		$content .= '<tr><td>'.getPixel(20,2).'</td><td>'.getPixel(351,2).'</td><td>'.getPixel(100,2).'</td><td>'.getPixel(26,2).'</td></tr></table>'."\n";
+		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(351,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr></table>'."\n";
 
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
@@ -405,7 +405,7 @@ abstract class we_root extends we_class{
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500">
 <tr><td><div class="multichooser">'.$content.'</div></td></tr>
-'.($canChange ? '<tr><td align="right">'.getPixel(2,8).'<br>'.we_button::create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
+'.($canChange ? '<tr><td align="right">'.we_html_tools::getPixel(2,8).'<br>'.we_button::create_button_table(array($delallbut, $addbut)).'</td></tr>' : "").'</table'."\n";
 
 		return $this->htmlFormElementTable($content,
 			g_l('weClass',"[otherowners]"),
@@ -420,11 +420,11 @@ abstract class we_root extends we_class{
 
 			$out = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td class="defaultfont">'.$this->formCreator($canChange,$width).'</td></tr>
-<tr><td>'.getPixel(2,20).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(2,20).'</td></tr>
 <tr><td>'.$this->formRestrictOwners($canChange).'</td></tr>
 ';
 			if($this->RestrictOwners){
-				$out .= '<tr><td>'.getPixel(2,10).'</td></tr>
+				$out .= '<tr><td>'.we_html_tools::getPixel(2,10).'</td></tr>
 <tr><td>'.$this->formOwners($canChange).'</td></tr>
 ';
 			}
@@ -540,7 +540,7 @@ abstract class we_root extends we_class{
 			"left",
 			"defaultfont",
 			we_root::htmlHidden($idname,$userid),
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			we_button::create_button("select", "javascript:we_cmd('browse_users','".$wecmdenc1."','".$wecmdenc2."','user')")
 		);
 

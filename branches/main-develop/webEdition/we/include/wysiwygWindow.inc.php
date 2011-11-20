@@ -23,11 +23,6 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
 
 $defaultCharset = "ISO-8859-1";
 
@@ -70,7 +65,7 @@ if (preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST["we_cmd"][1])) {
 		$fieldName = ereg_replace('^.+_input\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
 	}
 
-htmlTop(
+we_html_tools::htmlTop(
 		sprintf(g_l('wysiwyg',"[window_title]"), $fieldName),
 		($_REQUEST["we_cmd"][15] ? $_REQUEST["we_cmd"][15] : "ISO-8859-1"));
 

@@ -94,13 +94,13 @@ class blaettern {
 			$nextprev .= we_button::create_button("back", "#", false, 100, 22, "", "", true);
 		}
 
-		$nextprev .= '</td><td>'.getPixel(23,1)."</td><td class='defaultfont'><b>".(($anz)?$offset+1:0)."-";
+		$nextprev .= '</td><td>'.we_html_tools::getPixel(23,1)."</td><td class='defaultfont'><b>".(($anz)?$offset+1:0)."-";
 		if ( ($anz-$offset) < $nrOfPage) {
 			$nextprev .= $anz;
 		} else {
 			$nextprev .= $offset+$nrOfPage;
 		}
-		$nextprev .= "&nbsp;&nbsp;".g_l('global',"[from]")."&nbsp;&nbsp;".$anz."</b></td><td>".getPixel(23,1).'</td><td>';
+		$nextprev .= "&nbsp;&nbsp;".g_l('global',"[from]")."&nbsp;&nbsp;".$anz."</b></td><td>".we_html_tools::getPixel(23,1).'</td><td>';
 		if (($offset+$nrOfPage) < $anz) {
 			$nextprev .= we_button::create_button("next", $url . '&actPage=' . ($actPage + 1));
 		} else {

@@ -28,7 +28,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_db_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/weModuleInfo.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
@@ -194,7 +193,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
 }
 
 function getColorInput($name, $value, $disabled=false, $width=20, $height=20){
-	return hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid gray;margin:2px 0;"><tr><td' . ($disabled ? ' class="disabled"' : '') . ' id="color_' . $name . '" ' . ($value ? (' style="background-color:' . $value . ';"') : '') . '><a style="cursor:' . ($disabled ? "default" : "pointer") . ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . getPixel($width, $height) . '</a></td></tr></table>';
+	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid gray;margin:2px 0;"><tr><td' . ($disabled ? ' class="disabled"' : '') . ' id="color_' . $name . '" ' . ($value ? (' style="background-color:' . $value . ';"') : '') . '><a style="cursor:' . ($disabled ? "default" : "pointer") . ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 }
 
 /**
@@ -3231,8 +3230,8 @@ function build_dialog($selected_setting = "ui"){
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			$charset = $GLOBALS['WE_BACKENDCHARSET'];
 			$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-			$_defaultCharset = htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
-			$_defaultCharsetChooser = htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false, "onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont", false);
+			$_defaultCharset = we_html_tools::htmlTextInput('default_charset', 8, $GLOBALS['weDefaultCharset'], 255, "", "text", 100);
+			$_defaultCharsetChooser = we_html_tools::htmlSelect("DefaultCharsetSelect", $_charsets, 1, $GLOBALS['weDefaultCharset'], false, "onChange=\"document.forms[0].elements['default_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont", false);
 			$default_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 			array_push($_settings, array(
@@ -3558,8 +3557,8 @@ function build_dialog($selected_setting = "ui"){
 				$_sidebar_show_on_startup = we_forms::checkbox(1, $_sidebar_show_on_startup, "ui_sidebar_show_on_startup", g_l('prefs', '[sidebar_show_on_startup]'), false, "defaultfont", "");
 
 				// Sidebar width
-				$_sidebar_width = htmlTextInput('ui_sidebar_width', 8, $_sidebar_width, 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", "text", 150);
-				$_sidebar_width_chooser = htmlSelect("tmp_sidebar_width", array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, "", false, "onChange=\"document.forms[0].elements['ui_sidebar_width'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
+				$_sidebar_width = we_html_tools::htmlTextInput('ui_sidebar_width', 8, $_sidebar_width, 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", "text", 150);
+				$_sidebar_width_chooser = we_html_tools::htmlSelect("tmp_sidebar_width", array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, "", false, "onChange=\"document.forms[0].elements['ui_sidebar_width'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
 
 				// Sidebar document
 				//$_sidebar_hidden = we_htmlElement::htmlHidden(array("name" => "ui_sidebar_file", "value" => $_sidebar_id, "id"=>"yuiAcResultSidebarDoc"));
@@ -3593,7 +3592,7 @@ function build_dialog($selected_setting = "ui"){
 				$_sidebar_html2->setCol(3, 0, array("colspan" => 3, "class" => "defaultfont"), g_l('prefs', '[sidebar_width]'));
 
 				$_sidebar_html2->setCol(4, 0, null, $_sidebar_width);
-				$_sidebar_html2->setCol(4, 1, null, getPixel(10, 1));
+				$_sidebar_html2->setCol(4, 1, null, we_html_tools::getPixel(10, 1));
 				$_sidebar_html2->setCol(4, 2, null, $_sidebar_width_chooser);
 
 				$_sidebar_html2->setCol(5, 0, array("colspan" => 3, "height" => 10), "");
@@ -3650,8 +3649,8 @@ function build_dialog($selected_setting = "ui"){
 			}
 
 			$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
-			array_push($_settings, array('headline' => g_l('prefs', '[use_jupload]'), 'html' => htmlSelect('use_jupload', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, $jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">(' . g_l('prefs', '[juplod_not_installed]') . ')</span>' : ""), "space" => 200));
-			array_push($_settings, array("headline" => g_l('prefs', '[tree_title]'), "html" => htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . "<br>" . $_file_tree_count->getHtmlCode(), "space" => 200));
+			array_push($_settings, array('headline' => g_l('prefs', '[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('use_jupload'), false, $jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">(' . g_l('prefs', '[juplod_not_installed]') . ')</span>' : ""), "space" => 200));
+			array_push($_settings, array("headline" => g_l('prefs', '[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), 2, 200) . "<br>" . $_file_tree_count->getHtmlCode(), "space" => 200));
 
 
 			/*			 * ***************************************************************
@@ -3681,32 +3680,32 @@ function build_dialog($selected_setting = "ui"){
 			// Create specify window dimension input
 			$_window_specify_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 4, 4);
 
-			$_window_specify_table->setCol(0, 0, null, getPixel(1, 10));
-			$_window_specify_table->setCol(1, 0, null, getPixel(50, 1));
-			$_window_specify_table->setCol(2, 0, null, getPixel(1, 5));
-			$_window_specify_table->setCol(3, 0, null, getPixel(50, 1));
+			$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
+			$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
+			$_window_specify_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
+			$_window_specify_table->setCol(3, 0, null, we_html_tools::getPixel(50, 1));
 
 			$_window_specify_table->setCol(1, 1, array("class" => "defaultfont"), g_l('prefs', '[width]') . ":");
 			$_window_specify_table->setCol(3, 1, array("class" => "defaultfont"), g_l('prefs', '[height]') . ":");
 
-			$_window_specify_table->setCol(1, 2, null, getPixel(10, 1));
-			$_window_specify_table->setCol(3, 2, null, getPixel(10, 1));
+			$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
+			$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_window_specify_table->setCol(1, 3, null, htmlTextInput("weWidth", 6, (get_value("ui_size_opt") != 0 ? get_value("ui_we_width") : ""), 4, (get_value("ui_size_opt") == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
-			$_window_specify_table->setCol(3, 3, null, htmlTextInput("weHeight", 6, (get_value("ui_size_opt") != 0 ? get_value("ui_we_height") : ""), 4, (get_value("ui_size_opt") == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput("weWidth", 6, (get_value("ui_size_opt") != 0 ? get_value("ui_we_width") : ""), 4, (get_value("ui_size_opt") == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
+			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput("weHeight", 6, (get_value("ui_size_opt") != 0 ? get_value("ui_we_height") : ""), 4, (get_value("ui_size_opt") == 0 ? "disabled=\"disabled\"" : ""), "text", 60));
 
 			// Build apply current window dimension
 			$_window_current_dimension_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 2);
 
-			$_window_current_dimension_table->setCol(0, 0, null, getPixel(50, 1));
+			$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
 			$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('weHeight')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 1);
 			$_window_html->setCol(0, 0, null, $_window_max_code);
-			$_window_html->setCol(1, 0, null, getPixel(1, 10));
+			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtmlCode());
-			$_window_html->setCol(3, 0, null, getPixel(1, 10));
+			$_window_html->setCol(3, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtmlCode());
 
 			// Build dialog
@@ -3721,7 +3720,7 @@ function build_dialog($selected_setting = "ui"){
 			$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '800';document.getElementsByName('weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1024';document.getElementsByName('weHeight')[0].value = '768';", true))));
 			$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1280';document.getElementsByName('weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:document.getElementsByName('sizeOpt')[1].checked = true;document.getElementsByName('weWidth')[0].disabled = false;document.getElementsByName('weHeight')[0].disabled = false;document.getElementsByName('weWidth')[0].value = '1600';document.getElementsByName('weHeight')[0].value = '1200';", true))));
 
-			$_window_predefined_table->setCol(1, 0, null, getPixel(1, 10));
+			$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtmlCode(), "space" => 200));
@@ -3748,7 +3747,7 @@ function build_dialog($selected_setting = "ui"){
 				 * Information
 				 * *************************************************************** */
 
-				//$_information = htmlAlertAttentionBox(g_l('prefs','[cache_information]'), 2, 450, false);
+				//$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs','[cache_information]'), 2, 450, false);
 				// Build dialog if user has permission
 				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
@@ -3766,8 +3765,8 @@ function build_dialog($selected_setting = "ui"){
 				  $cache_type->selectOption(get_value("cache_type"));
 
 				  // Cache Life Time
-				  $_lifeTime = htmlTextInput('cache_lifetime', 8, get_value("cache_lifetime"), 255, "", "text", 100);
-				  $_lifeTimeChooser = htmlSelect("tmp_cache_lifetime]", g_l('prefs','[cache_lifetimes]'), 1, get_value("cache_lifetime"), false,"onChange=\"document.forms[0].elements['cache_lifetime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['cache_lifetime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont");
+				  $_lifeTime = we_html_tools::htmlTextInput('cache_lifetime', 8, get_value("cache_lifetime"), 255, "", "text", 100);
+				  $_lifeTimeChooser = we_html_tools::htmlSelect("tmp_cache_lifetime]", g_l('prefs','[cache_lifetimes]'), 1, get_value("cache_lifetime"), false,"onChange=\"document.forms[0].elements['cache_lifetime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['cache_lifetime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"","value",100,"defaultfont");
 				  $cache_lifetime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lifeTime . '</td><td>' . $_lifeTimeChooser . '</td></tr></table>';
 				 */
 				// Build final HTML code
@@ -3785,7 +3784,7 @@ function build_dialog($selected_setting = "ui"){
 				 * Information
 				 * *************************************************************** */
 
-				$_information = htmlAlertAttentionBox(g_l('prefs', '[cache_navigation_information]'), 2, 450, false);
+				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[cache_navigation_information]'), 2, 450, false);
 
 				// Build dialog if user has permission
 				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
@@ -3804,8 +3803,8 @@ function build_dialog($selected_setting = "ui"){
 				include($configFile);
 
 				// Cache Life Time
-				$_lifeTime = htmlTextInput('CacheLifeTime', 8, $GLOBALS['weDefaultNavigationCacheLifetime'], 255, "", "text", 100);
-				$_lifeTimeChooser = htmlSelect("CacheLifeTimeSelect]", g_l('prefs', '[cache_lifetimes]'), 1, $GLOBALS['weDefaultNavigationCacheLifetime'], false, "onChange=\"document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
+				$_lifeTime = we_html_tools::htmlTextInput('CacheLifeTime', 8, $GLOBALS['weDefaultNavigationCacheLifetime'], 255, "", "text", 100);
+				$_lifeTimeChooser = we_html_tools::htmlSelect("CacheLifeTimeSelect]", g_l('prefs', '[cache_lifetimes]'), 1, $GLOBALS['weDefaultNavigationCacheLifetime'], false, "onChange=\"document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['CacheLifeTime'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;\"", "value", 100, "defaultfont");
 				$cache_lifetime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lifeTime . '</td><td>' . $_lifeTimeChooser . '</td></tr></table>';
 
 				array_push($_settings, array(
@@ -3833,10 +3832,10 @@ function build_dialog($selected_setting = "ui"){
 			break;
 		case "countries":
 			$_settings = array();
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
 
 			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0, 'noline' => 1));
-			$_countries_default = htmlTextInput("countries_default", 22, get_value("countries_default"), "", "", "text", 225);
+			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22, get_value("countries_default"), "", "", "text", 225);
 			array_push($_settings, array("headline" => $l_prefs["countries_default"], "html" => $_countries_default, "space" => 200, "noline" => 1));
 
 			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
@@ -4042,7 +4041,7 @@ EOF;
 				$_hidden_fields = we_htmlElement::htmlHidden(array("name" => "locale_default", "value" => $default, "id" => "locale_default"));
 				$_hidden_fields .= we_htmlElement::htmlHidden(array("name" => "locale_locales", "value" => implode(",", array_keys($locales)), "id" => "locale_locales"));
 
-				$_information = htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), 2, 450, false);
+				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), 2, 450, false);
 
 				// Build dialog if user has permission
 				array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
@@ -4070,12 +4069,12 @@ EOF;
 
 				$_html = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 3);
 				$_html->setCol(0, 0, array("class" => "defaultfont"), $default);
-				$_html->setCol(0, 1, null, getPixel(25, 2));
+				$_html->setCol(0, 1, null, we_html_tools::getPixel(25, 2));
 				$_html->setCol(0, 2, array("class" => "defaultfont"), $delete);
 
 				$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtmlCode());
-				$_editlist_table->setCol(0, 1, null, getPixel(10, 1));
-				$_editlist_table->setCol(0, 2, array("valign" => "top"), $default . getPixel(1, 10) . $delete);
+				$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+				$_editlist_table->setCol(0, 2, array("valign" => "top"), $default . we_html_tools::getPixel(1, 10) . $delete);
 
 				// Build dialog if user has permission
 				if(we_hasPerm("FORMMAIL")){
@@ -4142,7 +4141,7 @@ EOF;
 				array_push($_settings, array("headline" => g_l('prefs', '[locale_add]'), "html" => $_add_html, "space" => 200));
 
 
-				$_information = htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), 2, 450, false);
+				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), 2, 450, false);
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_headline]'), "html" => $_information, "space" => 0, "noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
@@ -4150,14 +4149,14 @@ EOF;
 				$_php_setting->selectOption(get_value("langlink_support"));
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support]'), "html" => $_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
 
-				$_information = htmlAlertAttentionBox(g_l('prefs', '[langlink_support_backlinks_information]'), 2, 250, false, 40);
+				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_backlinks_information]'), 2, 250, false, 40);
 				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_backlinks", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
 				$_php_setting->selectOption(get_value("langlink_support_backlinks"));
 				array_push($_settings, array("headline" => g_l('prefs', '[langlink_support_backlinks]'), "html" => $_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
-				$_information = htmlAlertAttentionBox(g_l('prefs', '[langlink_support_recursive_information]'), 2, 250, false, 40);
+				$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_support_recursive_information]'), 2, 250, false, 40);
 				array_push($_settings, array("html" => $_information, "space" => 200, "noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "langlink_support_recursive", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
@@ -4187,7 +4186,7 @@ EOF;
 			/**
 			 * Information
 			 */
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), 2, 450, false);
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
@@ -4416,7 +4415,7 @@ else {
 			/**
 			 * Information
 			 */
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), 2, 480, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), 2, 480, false);
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
@@ -4538,7 +4537,7 @@ else {
 
 
 			//Build CodeMirror info box
-			$_cm_information = htmlAlertAttentionBox(g_l('prefs', '[editor_javascript_information]'), 2, 480, false);
+			$_cm_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_javascript_information]'), 2, 480, false);
 
 			array_push($_settings, array('headline' => '', 'html' => $_cm_information, 'space' => 0));
 
@@ -4808,7 +4807,7 @@ else {
 			/**
 			 * Information
 			 */
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), 2, 450, false);
 
 			// Build dialog if user has permission
 			if(we_hasPerm("FORMMAIL")){
@@ -4837,8 +4836,8 @@ else {
 			$_editlist_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 2, 3);
 
 			$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtmlCode());
-			$_editlist_table->setCol(0, 1, null, getPixel(10, 1));
-			$_editlist_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_recipient();") . getPixel(1, 10) . we_button::create_button("edit", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
+			$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+			$_editlist_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_recipient();") . we_html_tools::getPixel(1, 10) . we_button::create_button("edit", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_tools::getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 			// Build dialog if user has permission
 			if(we_hasPerm("FORMMAIL")){
@@ -4942,7 +4941,7 @@ else {
 
 				// table is IE fix. Without table IE has a gap on the left of the input
 				$_formmail_trials = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-					htmlTextInput("formmail_trials", 24, get_value("formmail_trials"), "", "", "text", 88, 0, "", $_isDisabled) .
+					we_html_tools::htmlTextInput("formmail_trials", 24, get_value("formmail_trials"), "", "", "text", 88, 0, "", $_isDisabled) .
 					'</td></tr></table>';
 
 				array_push($_settings, array('html' => $_formmail_trials, "space" => 250, "headline" => g_l('prefs', '[formmailTrials]'), "noline" => 1));
@@ -5016,7 +5015,7 @@ else {
 			 * Information
 			 * *************************************************************** */
 
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), 2, 450, false);
 
 			// Build dialog if user has permission
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
@@ -5083,7 +5082,7 @@ else {
 			/**
 			 * Information
 			 */
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), 2, 450, false);
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
@@ -5105,7 +5104,7 @@ else {
 			/**
 			 * Address
 			 */
-			$_proxyaddr = htmlTextInput("proxyhost", 22, $_proxy_host, "", "", "text", 225, 0, "", !$_proxy);
+			$_proxyaddr = we_html_tools::htmlTextInput("proxyhost", 22, $_proxy_host, "", "", "text", 225, 0, "", !$_proxy);
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
@@ -5115,7 +5114,7 @@ else {
 			/**
 			 * Port
 			 */
-			$_proxyport = htmlTextInput("proxyport", 22, $_proxy_port, "", "", "text", 225, 0, "", !$_proxy);
+			$_proxyport = we_html_tools::htmlTextInput("proxyport", 22, $_proxy_port, "", "", "text", 225, 0, "", !$_proxy);
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
@@ -5125,7 +5124,7 @@ else {
 			/**
 			 * User name
 			 */
-			$_proxyuser = htmlTextInput("proxyuser", 22, $_proxy_user, "", "", "text", 225, 0, "", !$_proxy);
+			$_proxyuser = we_html_tools::htmlTextInput("proxyuser", 22, $_proxy_user, "", "", "text", 225, 0, "", !$_proxy);
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
@@ -5135,7 +5134,7 @@ else {
 			/**
 			 * Password
 			 */
-			$_proxypass = htmlTextInput("proxypass", 22, $_proxy_pass, "", "", "password", 225, 0, "", !$_proxy);
+			$_proxypass = we_html_tools::htmlTextInput("proxypass", 22, $_proxy_pass, "", "", "password", 225, 0, "", !$_proxy);
 
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
@@ -5317,7 +5316,7 @@ else {
 
 				$_we_max_upload_size = abs(get_value("we_max_upload_size"));
 				$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-					htmlTextInput("we_max_upload_size", 22, $_we_max_upload_size, "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
+					we_html_tools::htmlTextInput("we_max_upload_size", 22, $_we_max_upload_size, "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 					g_l('prefs', '[we_max_upload_size_hint]') .
 					'</td></tr></table>';
 				array_push($_settings, array("headline" => g_l('prefs', '[we_max_upload_size]'), "html" => $_we_max_upload_size, "space" => 200));
@@ -5336,7 +5335,7 @@ else {
 
 				$_we_new_folder_mod = get_value("we_new_folder_mod");
 				$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-					htmlTextInput("we_new_folder_mod", 22, $_we_new_folder_mod, 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
+					we_html_tools::htmlTextInput("we_new_folder_mod", 22, $_we_new_folder_mod, 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 					g_l('prefs', '[we_new_folder_mod_hint]') .
 					'</td></tr></table>';
 				array_push($_settings, array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200));
@@ -5357,8 +5356,8 @@ else {
 				array_push($_settings, array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtmlCode(), "space" => 200, "noline" => 1));
 
 				// Build db charset select box
-				$html_db_charset_information = htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), 2, 240, false, 40) . "<br/>";
-				$html_db_charset_warning = htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), 1, 240, false, 40) . "<br/>";
+				$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), 2, 240, false, 40) . "<br/>";
+				$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), 1, 240, false, 40) . "<br/>";
 
 				$_db_set_charset = new we_htmlSelect(array("name" => "db_set_charset", "class" => "weSelect"));
 
@@ -5381,7 +5380,7 @@ else {
 				array_push($_settings, array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtmlCode() . $html_db_charset_warning, "space" => 200));
 
 				//$jUploadDisabled = !file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar');
-				//array_push($_settings, array('headline' => g_l('prefs','[use_jupload]'), 'html' => htmlSelect('use_jupload',array(g_l('prefs','[no]'),g_l('prefs','[yes]')),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.g_l('prefs','[juplod_not_installed]').')</span>' : ""), "space" => 200));
+				//array_push($_settings, array('headline' => g_l('prefs','[use_jupload]'), 'html' => we_html_tools::htmlSelect('use_jupload',array(g_l('prefs','[no]'),g_l('prefs','[yes]')),1,get_value('use_jupload'),false,$jUploadDisabled ? "disabled=\"disabled\"" : "") . ($jUploadDisabled ? '<span class="small" style="margin-left:30px;">('.g_l('prefs','[juplod_not_installed]').')</span>' : ""), "space" => 200));
 				// Generate needed JS
 				$_needed_JavaScript .= "
 						<script language=\"JavaScript\" type=\"text/javascript\"><!--
@@ -5406,20 +5405,20 @@ else {
 				$_auth_pass = get_value("auth_password");
 
 				// Build dialog if user has permission
-				$_use_auth = hidden('useauth', $_auth);
+				$_use_auth = we_html_tools::hidden('useauth', $_auth);
 				$_use_auth .= we_forms::checkbox(1, $_auth, "useauthEnabler", g_l('prefs', '[useauth]'), false, "defaultfont", "set_state_auth();");
 				array_push($_settings, array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1));
 
 				/**
 				 * User name
 				 */
-				$_authuser = htmlTextInput("authuser", 22, $_auth_user, "", "", "text", 225, 0, "", !$_auth);
+				$_authuser = we_html_tools::htmlTextInput("authuser", 22, $_auth_user, "", "", "text", 225, 0, "", !$_auth);
 				array_push($_settings, array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1));
 
 				/**
 				 * Password
 				 */
-				$_authpass = htmlTextInput("authpass", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
+				$_authpass = we_html_tools::htmlTextInput("authpass", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
 				array_push($_settings, array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200));
 
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_image_edit.class.php');
@@ -5429,11 +5428,11 @@ else {
 					$wecmdenc1 = we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
 					$wecmdenc4 = '';
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
-					$_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
+					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
 				} else{																 //  gd lib ist nicht installiert
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
-					$_inp = htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125, '0', '', true);
+					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125, '0', '', true);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
 				}
 
@@ -5446,7 +5445,7 @@ else {
 				$wecmdenc1 = we_cmd_enc("document.forms[0].elements['we_tracker_dir'].value");
 				$wecmdenc4 = '';
 				$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['we_tracker_dir'].value, '')") : "";
-				$_inp = htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
+				$_inp = we_html_tools::htmlTextInput("we_tracker_dir", 12, get_value("we_tracker_dir"), "", "", "text", 125);
 				$_we_tracker_dir = we_button::create_button_table(array($_inp, $_but));
 				array_push($_settings, array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200));
 
@@ -5490,7 +5489,7 @@ else {
 					$_php_setting->selectOption(0);
 				}
 
-				$hooksHtml = htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), 2, 240, false) . "<br/>";
+				$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), 2, 240, false) . "<br/>";
 
 				$hooksHtml .= $_php_setting->getHtmlCode();
 
@@ -5512,7 +5511,7 @@ else {
 			if(we_hasPerm("ADMINISTRATOR")){
 
 				array_push($_settings, array("headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", "space" => 480, "noline" => 1));
-				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), 2, 480), "noline" => 1));
+				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), 2, 480), "noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "navigation_directoryindex_hide", "class" => "weSelect"));
 				for($i = 0; $i < 2; $i++){
@@ -5540,10 +5539,10 @@ else {
 				}
 				array_push($_settings, array("headline" => g_l('prefs', '[wysiwyglinks_directoryindex_hide]'), "html" => $_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
 
-				$_navigation_directoryindex_names = htmlTextInput("navigation_directoryindex_names", 22, get_value("navigation_directoryindex_names"), "", "", "text", 225);
+				$_navigation_directoryindex_names = we_html_tools::htmlTextInput("navigation_directoryindex_names", 22, get_value("navigation_directoryindex_names"), "", "", "text", 225);
 				array_push($_settings, array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1));
 
-				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), 2, 480), "noline" => 1));
+				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), 2, 480), "noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "taglinks_directoryindex_hide", "class" => "weSelect"));
 				for($i = 0; $i < 2; $i++){
@@ -5573,7 +5572,7 @@ else {
 				$_php_setting->selectOption(get_value("wysiwyglinks_objectseourls"));
 
 				array_push($_settings, array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200, "noline" => 1));
-				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), 2, 480), "noline" => 1));
+				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), 2, 480), "noline" => 1));
 
 				$_php_setting = new we_htmlSelect(array("name" => "taglinks_objectseourls", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
@@ -5589,7 +5588,7 @@ else {
 
 				array_push($_settings, array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => $_php_setting->getHtmlCode(), "space" => 200));
 				array_push($_settings, array("headline" => g_l('prefs', '[general_seoinside]'), "noline" => 1));
-				array_push($_settings, array("html" => htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), 2, 480), "noline" => 1));
+				array_push($_settings, array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), 2, 480), "noline" => 1));
 				$_php_setting = new we_htmlSelect(array("name" => "seoinside__hideineditmode", "class" => "weSelect"));
 				$_php_setting->addOption(0, "false");
 				$_php_setting->addOption(1, "true");
@@ -5736,14 +5735,14 @@ else {
 			$_error_handling_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_handling_errors"), "error_handling_errors", g_l('prefs', '[error_errors]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_handling_table->setCol(1, 0, null, getPixel(1, 5));
+			$_error_handling_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("error_handling_warnings"), "error_handling_warnings", g_l('prefs', '[error_warnings]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_handling_table->setCol(3, 0, null, getPixel(1, 5));
+			$_error_handling_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(4, 0, null, we_forms::checkbox(1, get_value("error_handling_notices"), "error_handling_notices", g_l('prefs', '[error_notices]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_handling_table->setCol(5, 0, null, getPixel(1, 5));
+			$_error_handling_table->setCol(5, 0, null, we_html_tools::getPixel(1, 5));
 			if(version_compare(PHP_VERSION, '5.3.0') >= 0){
 				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", g_l('prefs', '[error_deprecated]'), false, "defaultfont", "", !get_value("we_error_handler")));
-				$_error_handling_table->setCol(7, 0, null, getPixel(1, 5));
+				$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
 			}
 
 			// Build dialog if user has permission
@@ -5757,26 +5756,26 @@ else {
 
 			// Create checkboxes
 			$_error_display_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
-			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), 1, 260));
+			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), 1, 260));
 
 			$_error_display_table->setCol(1, 0, null, we_forms::checkbox(1, get_value("error_display_errors"), "error_display_errors", g_l('prefs', '[error_display]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_display_table->setCol(2, 0, null, getPixel(1, 5));
+			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_display_table->setCol(3, 0, null, we_forms::checkbox(1, get_value("error_log_errors"), "error_log_errors", g_l('prefs', '[error_log]'), false, "defaultfont", "", !get_value("we_error_handler")));
-			$_error_display_table->setCol(4, 0, null, getPixel(1, 5));
+			$_error_display_table->setCol(4, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_display_table->setCol(5, 0, null, we_forms::checkbox(1, get_value("error_mail_errors"), "error_mail_errors", g_l('prefs', '[error_mail]'), false, "defaultfont", "set_state_mail();", !get_value("we_error_handler")));
 
 			// Create specify mail address input
 			$_error_mail_specify_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 
-			$_error_mail_specify_table->setCol(0, 0, null, getPixel(50, 1));
+			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
 
 			$_error_mail_specify_table->setCol(0, 1, array("class" => "defaultfont"), g_l('prefs', '[error_mail_address]') . ":");
 
-			$_error_mail_specify_table->setCol(0, 2, null, getPixel(10, 1));
+			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(10, 1));
 
-			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), htmlTextInput("error_mail_address", 6, (get_value("error_mail_errors") != 0 ? get_value("error_mail_address") : ""), 100, ((!get_value("error_mail_errors") || !get_value("we_error_handler")) ? "disabled=\"disabled\"" : ""), "text", 105));
+			$_error_mail_specify_table->setCol(0, 3, array("align" => "left"), we_html_tools::htmlTextInput("error_mail_address", 6, (get_value("error_mail_errors") != 0 ? get_value("error_mail_address") : ""), 100, ((!get_value("error_mail_errors") || !get_value("we_error_handler")) ? "disabled=\"disabled\"" : ""), "text", 105));
 
-			$_error_display_table->setCol(6, 0, null, getPixel(1, 10));
+			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtmlCode());
 
 			// Build dialog if user has permission
@@ -5795,7 +5794,7 @@ else {
 			$_debug_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 3, 1);
 
 			$_debug_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("error_debug_normal"), "debug_normal", g_l('prefs', '[debug_normal]') . "*"));
-			$_debug_table->setCol(1, 0, null, getPixel(1, 5));
+			$_debug_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 			$_debug_table->setCol(2, 0, null, we_forms::checkbox(1, get_value("error_debug_seem"), "debug_seem", g_l('prefs', '[debug_seem]') . "*"));
 
 			// Build dialog if user has permission
@@ -5804,7 +5803,7 @@ else {
 			}
 
 			// Create notice
-			$_debug_notice = getPixel(6, 6) . "<span class=\"small\">* " . g_l('prefs', '[debug_restart]') . "</span>";
+			$_debug_notice = we_html_tools::getPixel(6, 6) . "<span class=\"small\">* " . g_l('prefs', '[debug_restart]') . "</span>";
 
 			// Build notice dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
@@ -5854,7 +5853,7 @@ else {
 			 * Information
 			 * *************************************************************** */
 
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), 2, 450, false);
 
 			// Build dialog if user has permission
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
@@ -5932,37 +5931,37 @@ else {
 				array_push($_settings, array('html' => $_php_setting->getHtmlCode(), "space" => 200));
 
 
-				array_push($_settings, array('html' => htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), 2, 450), 'space' => 0, 'noline' => 1));
+				array_push($_settings, array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), 2, 450), 'space' => 0, 'noline' => 1));
 
 				//  activate xhtml_debug
 				$_xhtml_debug = we_forms::checkbox(1, get_value("xhtml_debug"), "setXhtml_debug", g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_debug\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);');
-				$_xhtml_debug .= hidden('xhtml_debug', get_value("xhtml_debug"));
+				$_xhtml_debug .= we_html_tools::hidden('xhtml_debug', get_value("xhtml_debug"));
 				array_push($_settings, array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug, 'space' => 200, 'noline' => 1));
 
 				//  activate xhtml_remove_wrong
 				$_xhtml_remove_wrong = we_forms::checkbox(1, get_value("xhtml_remove_wrong"), "setXhtml_remove_wrong", g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('xhtml_debug'));
-				$_xhtml_remove_wrong .= hidden('xhtml_remove_wrong', get_value("xhtml_remove_wrong"));
+				$_xhtml_remove_wrong .= we_html_tools::hidden('xhtml_remove_wrong', get_value("xhtml_remove_wrong"));
 				array_push($_settings, array('html' => $_xhtml_remove_wrong, 'space' => 200));
 
 				//  activate xhtml_show_wrong
 				$_xhtml_show_wrong = we_forms::checkbox(1, get_value("xhtml_show_wrong"), "setXhtml_show_wrong", g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('xhtml_debug'));
-				$_xhtml_show_wrong .= hidden('xhtml_show_wrong', get_value("xhtml_show_wrong"));
+				$_xhtml_show_wrong .= we_html_tools::hidden('xhtml_show_wrong', get_value("xhtml_show_wrong"));
 				array_push($_settings, array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => '', 'space' => 400, 'noline' => 1));
 				array_push($_settings, array('html' => $_xhtml_show_wrong, 'space' => 200, 'noline' => 1));
 
 				//  activate xhtml_show_wrong_text
 				$_xhtml_show_wrong_text = we_forms::checkbox(1, get_value("xhtml_show_wrong_text"), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong_text\');', !get_value('xhtml_show_wrong'));
-				$_xhtml_show_wrong_text .= hidden('xhtml_show_wrong_text', get_value("xhtml_show_wrong_text"));
+				$_xhtml_show_wrong_text .= we_html_tools::hidden('xhtml_show_wrong_text', get_value("xhtml_show_wrong_text"));
 				array_push($_settings, array('html' => $_xhtml_show_wrong_text, 'space' => 220, 'noline' => 1));
 
 				//  activate xhtml_show_wrong_text
 				$_xhtml_show_wrong_js = we_forms::checkbox(1, get_value("xhtml_show_wrong_js"), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong_js\');', !get_value('xhtml_show_wrong'));
-				$_xhtml_show_wrong_js .= hidden('xhtml_show_wrong_js', get_value("xhtml_show_wrong_js"));
+				$_xhtml_show_wrong_js .= we_html_tools::hidden('xhtml_show_wrong_js', get_value("xhtml_show_wrong_js"));
 				array_push($_settings, array('html' => $_xhtml_show_wrong_js, 'space' => 220, 'noline' => 1));
 
 				//  activate xhtml_show_wrong_text
 				$_xhtml_show_wrong_error_log = we_forms::checkbox(1, get_value("xhtml_show_wrong_error_log"), "setXhtml_show_wrong_error_log", g_l('prefs', '[xhtml_show_wrong_error_log_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_show_wrong_error_log\');', !get_value('xhtml_show_wrong'));
-				$_xhtml_show_wrong_error_log .= hidden('xhtml_show_wrong_error_log', get_value("xhtml_show_wrong_error_log"));
+				$_xhtml_show_wrong_error_log .= we_html_tools::hidden('xhtml_show_wrong_error_log', get_value("xhtml_show_wrong_error_log"));
 				array_push($_settings, array('html' => $_xhtml_show_wrong_error_log, 'space' => 220, 'noline' => 1));
 			}
 
@@ -5982,7 +5981,7 @@ else {
 
 			$perf = new we_htmlTable(array("width" => "420", "border" => "0", "cellpadding" => "2", "cellspacing" => "0"), 3, 5);
 			$perf->setCol(0, 0, array("class" => "header_small"), g_l('prefs', '[backup_slow]'));
-			$perf->setCol(0, 1, array(), getPixel(5, 2));
+			$perf->setCol(0, 1, array(), we_html_tools::getPixel(5, 2));
 			$perf->setCol(0, 2, array("class" => "header_small", "align" => "right"), g_l('prefs', '[backup_fast]'));
 
 
@@ -6008,7 +6007,7 @@ else {
 
 
 			if(we_hasPerm("ADMINISTRATOR")){
-				array_push($_settings, array("headline" => htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200));
+				array_push($_settings, array("headline" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[performance]'), 2, 450), "html" => "", "space" => 200));
 				array_push($_settings, array("headline" => "", "html" => $perf->getHtmlCode(), "space" => 15));
 			}
 
@@ -6035,7 +6034,7 @@ else {
 			/**
 			 * Information
 			 */
-			$_information = htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false);
+			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), 2, 450, false);
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
@@ -6043,37 +6042,37 @@ else {
 
 
 
-				$_emailSelect = htmlSelect('mailer_type', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('mailer_type'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');
+				$_emailSelect = we_html_tools::htmlSelect('mailer_type', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('mailer_type'), false, "onchange=\"var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';\"", 'value', 300, 'defaultfont');
 
 				array_push($_settings, array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1));
 
 				$_smtp_table = new we_htmlTable(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('mailer_type') == 'php') ? 'none' : 'block') . ';'), 9, 3);
 
 				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_server]'));
-				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), getPixel(10, 5));
-				$_smtp_table->setCol(0, 2, array('align' => 'right'), htmlTextInput('smtp_server', 24, get_value('smtp_server'), 180, '', 'text', 180));
+				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5));
+				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_server', 24, get_value('smtp_server'), 180, '', 'text', 180));
 
-				$_smtp_table->setCol(1, 0, array('class' => 'defaultfont'), getPixel(10, 10));
+				$_smtp_table->setCol(1, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 
 				$_smtp_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_port]'));
-				$_smtp_table->setCol(2, 2, array('align' => 'right'), htmlTextInput('smtp_port', 24, get_value('smtp_port'), 180, '', 'text', 180));
+				$_smtp_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_port', 24, get_value('smtp_port'), 180, '', 'text', 180));
 
 
 				/* halo und timeout lassen sich nicht mehr mit Zend_mail setzen
-				  $_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), getPixel(10,10));
+				  $_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10,10));
 				  $_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), g_l('prefs','[smtp_halo]'));
-				  $_smtp_table->setCol(4, 2, array('align' => 'right'), htmlTextInput('smtp_halo', 24, get_value('smtp_halo'), 180, '', 'text', 180));
+				  $_smtp_table->setCol(4, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_halo', 24, get_value('smtp_halo'), 180, '', 'text', 180));
 
-				  $_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), getPixel(10,10));
+				  $_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10,10));
 				  $_smtp_table->setCol(6, 0, array('class' => 'defaultfont'), g_l('prefs','[smtp_timeout]'));
-				  $_smtp_table->setCol(6, 2, array('align' => 'right'), htmlTextInput('smtp_timeout', 24, get_value('smtp_timeout'), 180, '', 'text', 180));
+				  $_smtp_table->setCol(6, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_timeout', 24, get_value('smtp_timeout'), 180, '', 'text', 180));
 
 				  Tabellenzellen neu durchnummeriert
 				 */
 
-				$_encryptSelect = htmlSelect('smtp_encryption', array('0' => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('smtp_encryption'), false, "", 'value', 180, 'defaultfont');
+				$_encryptSelect = we_html_tools::htmlSelect('smtp_encryption', array('0' => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('smtp_encryption'), false, "", 'value', 180, 'defaultfont');
 
-				$_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), getPixel(10, 10));
+				$_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 				$_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_encryption]'));
 				$_smtp_table->setCol(4, 2, array('align' => 'left'), $_encryptSelect);
 
@@ -6081,21 +6080,21 @@ else {
 				$_auth_table = new we_htmlTable(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('smtp_auth') == 1) ? 'block' : 'none') . ';'), 4, 3);
 
 				$_auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
-				$_auth_table->setCol(0, 1, array('class' => 'defaultfont'), getPixel(10, 10));
-				$_auth_table->setCol(0, 2, array('align' => 'right'), htmlTextInput('smtp_username', 14, get_value('smtp_username'), 105, '', 'text', 105));
+				$_auth_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
+				$_auth_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_username', 14, get_value('smtp_username'), 105, '', 'text', 105));
 
-				$_auth_table->setCol(1, 0, array('class' => 'defaultfont'), getPixel(10, 10));
+				$_auth_table->setCol(1, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 
 				$_auth_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
-				$_auth_table->setCol(2, 2, array('align' => 'right'), htmlTextInput('smtp_password', 14, get_value('smtp_password'), 105, '', 'password', 105));
+				$_auth_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('smtp_password', 14, get_value('smtp_password'), 105, '', 'password', 105));
 
-				$_auth_table->setCol(3, 0, array('class' => 'defaultfont'), getPixel(10, 10));
+				$_auth_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 
-				$_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), getPixel(10, 20));
+				$_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 20));
 				$_smtp_table->setCol(6, 0, array('class' => 'defaultfont', 'colspan' => 3), we_forms::checkbox(1, get_value('smtp_auth'), 'smtp_auth', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';")
 				);
-				$_smtp_table->setCol(7, 0, array('class' => 'defaultfont'), getPixel(10, 10));
-				$_smtp_table->setCol(8, 0, array('align' => 'right', 'colspan' => 3), getPixel(5, 5) . $_auth_table->getHtmlCode());
+				$_smtp_table->setCol(7, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
+				$_smtp_table->setCol(8, 0, array('align' => 'right', 'colspan' => 3), we_html_tools::getPixel(5, 5) . $_auth_table->getHtmlCode());
 
 				array_push($_settings, array('headline' => '', 'html' => $_smtp_table->getHtmlCode(), 'space' => 120, 'noline' => 1));
 			}
@@ -6185,7 +6184,7 @@ else {
 			if(we_hasPerm("ADMINISTRATOR")){
 
 				array_push($_settings, array(
-					'html' => htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0)
 				);
@@ -6214,7 +6213,7 @@ else {
 				);
 
 				array_push($_settings, array(
-					'html' => htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0
 					)
@@ -6273,14 +6272,14 @@ else {
 
 
 				array_push($_settings, array(
-					'html' => htmlAlertAttentionBox(g_l('prefs', '[versioning_anzahl_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_anzahl_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0
 					)
 				);
 
 
-				$_versions_anzahl = htmlTextInput("versions_anzahl", 24, get_value("versions_anzahl"), 5, "", "text", 50, 0, "");
+				$_versions_anzahl = we_html_tools::htmlTextInput("versions_anzahl", 24, get_value("versions_anzahl"), 5, "", "text", 50, 0, "");
 
 				array_push($_settings, array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
@@ -6291,7 +6290,7 @@ else {
 
 
 				array_push($_settings, array(
-					'html' => htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), 2, 470, false),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), 2, 470, false),
 					'noline' => 1,
 					'space' => 0
 					)
@@ -6308,7 +6307,7 @@ else {
 				);
 
 				array_push($_settings, array(
-					'html' => htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), 2, 470, false),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), 2, 470, false),
 					'noline' => 0,
 					'space' => 0
 					)
@@ -6366,7 +6365,7 @@ else {
 					)
 				);
 
-				$_versions_anzahl_tmpl = htmlTextInput("versions_anzahl_tmpl", 24, get_value("versions_anzahl_tmpl"), 5, "", "text", 50, 0, "");
+				$_versions_anzahl_tmpl = we_html_tools::htmlTextInput("versions_anzahl_tmpl", 24, get_value("versions_anzahl_tmpl"), 5, "", "text", 50, 0, "");
 
 				array_push($_settings, array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
@@ -6388,7 +6387,7 @@ else {
 
 
 				array_push($_settings, array(
-					'html' => htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), 2, 470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), 2, 470),
 					'noline' => 1,
 					'space' => 0
 					)
@@ -6539,7 +6538,7 @@ function render_dialog(){
  * RENDER FILE
  * *************************************************************************** */
 
-htmlTop();
+we_html_tools::htmlTop();
 
 $doSave = false;
 $acError = false;

@@ -231,10 +231,10 @@ class we_docTypes extends we_class {
 					<td>
 						'.$this->formDocTypes2().'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
 						'.$this->formNewDocType().'
-						'.getPixel(2,10).'
+						'.we_html_tools::getPixel(2,10).'
 						'.$this->formDeleteDocType().'</td>
 				</tr>
 			</table>';
@@ -268,23 +268,23 @@ class we_docTypes extends we_class {
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(300,5).'</td>
+						'.we_html_tools::getPixel(300,5).'</td>
 					<td>
-						'.getPixel(20,5).'</td>
+						'.we_html_tools::getPixel(20,5).'</td>
 					<td>
-						'.getPixel(200,5).'</td>
+						'.we_html_tools::getPixel(200,5).'</td>
 				</tr>
 				<tr>
 					<td>
 						'.$this->formSubDir(300).'</td>
 					<td>
-						'.getPixel(20,2).'</td>
+						'.we_html_tools::getPixel(20,2).'</td>
 					<td>
 						'.$this->formExtension(200).'</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.getPixel(2,5).'</td>
+						'.we_html_tools::getPixel(2,5).'</td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -292,7 +292,7 @@ class we_docTypes extends we_class {
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.getPixel(2,5).'</td>
+						'.we_html_tools::getPixel(2,5).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -303,7 +303,7 @@ class we_docTypes extends we_class {
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.getPixel(2,5).'</td>
+						'.we_html_tools::getPixel(2,5).'</td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -311,7 +311,7 @@ class we_docTypes extends we_class {
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.getPixel(2,5).'</td>
+						'.we_html_tools::getPixel(2,5).'</td>
 				</tr>
 				<tr>
 					<td colspan="3">
@@ -355,7 +355,7 @@ class we_docTypes extends we_class {
 			$t = $this->DB_WE->f("DocType");
 			$vals[$v]=$t;
 		}
-		return htmlFormElementTable($this->htmlSelect("we_".$this->Name."_LangDocType[".$langkey."]",$vals,"1",$derDT,false,($langkey==$this->Language?' disabled="disabled" ':'').'style="width:328px" onChange=""'),
+		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_".$this->Name."_LangDocType[".$langkey."]",$vals,"1",$derDT,false,($langkey==$this->Language?' disabled="disabled" ':'').'style="width:328px" onChange=""'),
 			$headline,
 			"left",
 			"defaultfont");
@@ -391,7 +391,7 @@ class we_docTypes extends we_class {
 	function formExtension($width=100) {
 		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		$exts = $GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"];
-		return $this->htmlFormElementTable(getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),$width),g_l('weClass',"[extension]"));
+		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),$width),g_l('weClass',"[extension]"));
 	}
 
 	/* creates the Template PopupMenue */

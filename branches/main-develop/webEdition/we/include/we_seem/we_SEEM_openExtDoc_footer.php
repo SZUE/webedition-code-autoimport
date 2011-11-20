@@ -54,7 +54,7 @@
 										"border"      => 0),
 										2,
 										2);
-	$_table->setColContent(0, 0, getPixel(20,6));
+	$_table->setColContent(0, 0, we_html_tools::getPixel(20,6));
 	$_table->setColContent(1, 1, $_backbutton);
 
 

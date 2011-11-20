@@ -25,7 +25,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 protect();
 print STYLESHEET;
 
@@ -98,16 +97,16 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
  $_select.='</select>';
 
 
- $_content = htmlFormElementTable(
- 	htmlTextInput('kwd', 24, $_kwd,"","","text", 485),
+ $_content = we_html_tools::htmlFormElementTable(
+ 	we_html_tools::htmlTextInput('kwd', 24, $_kwd,"","","text", 485),
  	g_l('modules_users',"[search_for]"),
  	"left",
  	"defaultfont",
- 	getPixel(10,1),
+ 	we_html_tools::getPixel(10,1),
  	we_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
  ) . '<div style="height:20px;"></div>' .
 
- htmlFormElementTable(
+we_html_tools::htmlFormElementTable(
  	$_select,
  	g_l('modules_users',"[search_result]")
  )
@@ -118,6 +117,6 @@ $_select ='<select name="search_results" size="20" style="width:520px;height:220
 </head>
 <body class="weEditorBody" style="margin:10px 20px;">
 <form name="we_form" method="post">
-	<?php print htmlDialogLayout($_content, g_l('modules_users',"[search]"), $_buttons); ?>
+	<?php print we_html_tools::htmlDialogLayout($_content, g_l('modules_users',"[search]"), $_buttons); ?>
 </form>
 </body>

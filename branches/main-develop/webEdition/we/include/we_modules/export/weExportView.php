@@ -198,7 +198,7 @@ class weExportView {
 								if ('.$this->topFrame.'.resize.right.editor.edheader.setTab) '.$this->topFrame.'.resize.right.editor.edheader.setTab(3);
 								if ('.$this->topFrame.'.resize.right.editor.edfooter.doProgress) '.$this->topFrame.'.resize.right.editor.edfooter.doProgress(0);
 								if ('.$this->editorBodyFrame.'.clearLog) '.$this->editorBodyFrame.'.clearLog();
-								if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(getPixel(10,10)) . '<br>");
+								if ('.$this->editorBodyFrame.'.addLog) '.$this->editorBodyFrame.'.addLog("' . addslashes(we_html_tools::getPixel(10,10)) . '<br>");
 					case "save_export":
 						'.(!we_hasPerm("NEW_EXPORT")
 							? we_message_reporting::getShowMessageCall( g_l('export',"[no_perms]"), WE_MESSAGE_ERROR) . 'return;'

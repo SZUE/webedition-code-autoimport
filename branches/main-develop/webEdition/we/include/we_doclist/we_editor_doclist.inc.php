@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 protect ();
 
-htmlTop ();
+we_html_tools::htmlTop ();
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_doclist/doclistView.class.inc.php");
 

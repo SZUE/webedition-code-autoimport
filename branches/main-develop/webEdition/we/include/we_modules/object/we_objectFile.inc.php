@@ -176,7 +176,7 @@ class we_objectFile extends we_document{
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -184,7 +184,7 @@ class we_objectFile extends we_document{
 				</tr>
 				<tr>
 					<td>
-						'.getPixel(2,20).'</td>
+						'.we_html_tools::getPixel(2,20).'</td>
 				</tr>
 				<tr>
 					<td class="defaultfont" align="left">
@@ -198,7 +198,7 @@ class we_objectFile extends we_document{
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
-						'.getPixel(2,4).'</td>
+						'.we_html_tools::getPixel(2,4).'</td>
 				</tr>
 				<tr>
 					<td>
@@ -562,18 +562,18 @@ class we_objectFile extends we_document{
 		<td>'.$this->formInputField("","Text",g_l('modules_object','[objectname]'),30,388,255,'onChange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"').'</td><td></td><td></td>
 	</tr>
 	<tr>
-		<td>'.getPixel(20,4).'</td><td>'.getPixel(20,2).'</td><td>'.getPixel(100,2).'</td>
+		<td>'.we_html_tools::getPixel(20,4).'</td><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.$this->formDirChooser(388, $rootDirId).'</td>
 	</tr>
 	<tr>
 		<td>
-			'.getPixel(20,4).'</td>
+			'.we_html_tools::getPixel(20,4).'</td>
 		<td>
-			'.getPixel(20,2).'</td>
+			'.we_html_tools::getPixel(20,2).'</td>
 		<td>
-			'.getPixel(100,2).'</td>
+			'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">
@@ -590,11 +590,11 @@ class we_objectFile extends we_document{
 	</tr>
 	<tr>
 		<td>
-			'.getPixel(20,4).'</td>
+			'.we_html_tools::getPixel(20,4).'</td>
 		<td>
-			'.getPixel(20,2).'</td>
+			'.we_html_tools::getPixel(20,2).'</td>
 		<td>
-			'.getPixel(100,2).'</td>
+			'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">
@@ -608,11 +608,11 @@ class we_objectFile extends we_document{
 	</tr>
 	<tr>
 		<td>
-			'.getPixel(20,4).'</td>
+			'.we_html_tools::getPixel(20,4).'</td>
 		<td>
-			'.getPixel(20,2).'</td>
+			'.we_html_tools::getPixel(20,2).'</td>
 		<td>
-			'.getPixel(100,2).'</td>
+			'.we_html_tools::getPixel(100,2).'</td>
 	</tr>
 	<tr>
 		<td colspan="3">'.$this->formTriggerDocument().'</td>
@@ -834,7 +834,7 @@ class we_objectFile extends we_document{
 			if($asString){
 				$c2 =  $this->getFieldHTML($fields[$i]['name'],$fields[$i]['type'],$dv[$realName],$editable);
 				if($c2){
-					$c .=  $c2.'<br>'.getPixel(2,5).'<br>';
+					$c .=  $c2.'<br>'.we_html_tools::getPixel(2,5).'<br>';
 				}
 			}else{
 				$c2 =  $this->getFieldHTML($fields[$i]['name'] ,$fields[$i]['type'],$dv[$realName],$editable);
@@ -897,7 +897,7 @@ class we_objectFile extends we_document{
 
 			$uniq = uniqid('');
 			$openCloseButton = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','','')","down",g_l('global',"[openCloseBox]"));
-			$openCloseButtonDis = getPixel(21, 1);
+			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
 			$objectpreview = "<div id=\"text_".$uniq."\"></div><div id=\"table_".$uniq."\" style=\"display:block; padding: 10px 0px 20px 30px;\">";
 			$objectpreview .= $myid ? $ob->getFieldsHTML(0,true) : "";
@@ -946,7 +946,7 @@ class we_objectFile extends we_document{
 				"left",
 				"defaultfont",
 				$this->htmlHidden($idname,$myid),
-				getPixel(5,4),
+				we_html_tools::getPixel(5,4),
 				$button ).
 				$objectpreview;
 
@@ -1028,7 +1028,7 @@ class we_objectFile extends we_document{
 					$uniq = uniqid("");
 
 					$openCloseButton = we_multiIconBox::_getButton($uniq,"weToggleBox('$uniq','','')","right",g_l('global',"[openCloseBox]"));
-					$openCloseButtonDis = getPixel(21, 1);
+					$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
 					$reloadEntry = "opener.top.we_cmd('change_objectlink','".$GLOBALS['we_transaction']."','multiobject_".$name."');";
 
@@ -1078,7 +1078,7 @@ class we_objectFile extends we_document{
 					'',
 					'left',
 					'defaultfont',
-					getPixel(20,4),
+					we_html_tools::getPixel(20,4),
 					$buttontable);
 
 				if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $myid){
@@ -1453,8 +1453,8 @@ class we_objectFile extends we_document{
 	function getDateFieldHTML($name,$attribs,$editable=true){
 		if($editable){
 			$d =abs($this->getElement($name));
-			$content = getDateInput2("we_".$this->Name."_date[".$name."]",($d ? $d : time()),true);
-			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["date_".$name]["required"] ? "*" : "")."</span>" . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : '<br />' ) .getPixel(2,2) . '<br />'.$content;
+			$content = we_html_tools::getDateInput2("we_".$this->Name."_date[".$name."]",($d ? $d : time()),true);
+			return '<span class="weObjectPreviewHeadline">'.$name.($this->DefArray["date_".$name]["required"] ? "*" : "")."</span>" . ( isset($this->DefArray["date_$name"]['editdescription']) && $this->DefArray["date_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["date_$name"]['editdescription'] . '</div>' : '<br />' ) .we_html_tools::getPixel(2,2) . '<br />'.$content;
 		}else{
 			$d =abs($this->getElement($name));
 			$content = date(g_l('date','[format][default]'),$d);
@@ -1802,7 +1802,7 @@ class we_objectFile extends we_document{
 			foreach($values as $key=>$val){
 				$foo[$key]=$val;
 			}
-			$addbut = htmlSelect($textname,$foo,1,"",false,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'add_workspace\',this.options[this.selectedIndex].value);"');
+			$addbut = we_html_tools::htmlSelect($textname,$foo,1,"",false,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'add_workspace\',this.options[this.selectedIndex].value);"');
 		}
 		$obj = new MultiDirAndTemplateChooser(450,$this->Workspaces,"del_workspace",$addbut,get_ws(FILE_TABLE),$this->Templates,"we_".$this->Name."_Templates",$ts,get_ws(TEMPLATES_TABLE));
 
@@ -1913,7 +1913,7 @@ class we_objectFile extends we_document{
 			foreach($values as $key=>$val){
 				$foo[$key]=$val;
 			}
-			$addbut = htmlSelect($textname,$foo,1,"",false,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'add_extraworkspace\',this.options[this.selectedIndex].value);"');
+			$addbut = we_html_tools::htmlSelect($textname,$foo,1,"",false,'onChange="_EditorFrame.setEditorIsHot(true);we_cmd(\'add_extraworkspace\',this.options[this.selectedIndex].value);"');
 		}
 
 		$obj = new MultiDirAndTemplateChooser(450,$this->ExtraWorkspaces,"del_extraworkspace",$addbut,get_ws(FILE_TABLE),$this->ExtraTemplates,"we_".$this->Name."_ExtraTemplates",$ts,get_ws(TEMPLATES_TABLE));

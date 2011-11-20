@@ -105,7 +105,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 	}
 
 	function getTableRows(){
-		$out = '	<tr><td width="20">'.getPixel(20,2).'</td><td>'.getPixel(50,2).'</td><td width="26">'.getPixel(26,2).'</td></tr>';
+		$out = '	<tr><td width="20">'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(50,2).'</td><td width="26">'.we_html_tools::getPixel(26,2).'</td></tr>';
 		$this->nr=0;
 		$idArr = makeArrayFromCSV($this->ids);
 
@@ -124,7 +124,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 				$this->nr++;
 			}
 		}
-		$out .= '	<tr><td width="20">'.getPixel(20,sizeof($idArr) ? 2 : 12).'</td><td>'.getPixel(50,2).'</td><td width="26">'.getPixel(26,2).'</td></tr>';
+		$out .= '	<tr><td width="20">'.we_html_tools::getPixel(20,sizeof($idArr) ? 2 : 12).'</td><td>'.we_html_tools::getPixel(50,2).'</td><td width="26">'.we_html_tools::getPixel(26,2).'</td></tr>';
 		return $out;
 	}
 
@@ -139,7 +139,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 
 		return '<table border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'">
 <tr><td><div style="background-color:white;" class="multichooser">'.$out.'</div></td></tr>
-'.($this->addbut ? ('<tr><td>'.getPixel(2,5).'</td></tr>
+'.($this->addbut ? ('<tr><td>'.we_html_tools::getPixel(2,5).'</td></tr>
 <tr><td align="right">'.$this->addbut.'</td></tr>') : '').'</table>'."\n";
 
 

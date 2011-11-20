@@ -351,10 +351,10 @@ HTS;
 							print we_htmlElement::jsElement(
 								'<!--
 								if (top.frames["wizbody"] && top.frames["wizbody"].addLog){
-									top.frames["wizbody"].addLog("' . addslashes(getPixel(10,10)) . '<br>");
-									top.frames["wizbody"].addLog("' . addslashes(getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
-									top.frames["wizbody"].addLog("' . addslashes(getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[prepare]')) . '<br>");
-									top.frames["wizbody"].addLog("' . addslashes(getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[import]')) . '<br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10,10)) . '<br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[prepare]')) . '<br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[import]')) . '<br>");
 								}
 								//-->');
 							flush();
@@ -455,7 +455,7 @@ HTS;
 										.	"}\n";
 							if($v['type']=='WXMLImport') {
 								$JScript	.=	"if (top.frames['wizbody'] && top.frames['wizbody'].addLog) {\n"
-											.	"	top.frames['wizbody'].addLog(\"<br>" . addslashes(getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");\n"
+											.	"	top.frames['wizbody'].addLog(\"<br>" . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");\n"
 											.	"}\n";
 							} else {
 								$JScript	.=	we_message_reporting::getShowMessageCall(g_l('import','[finish_import]'), WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);';
@@ -514,7 +514,7 @@ HTS;
 								if($type != "first_steps_wizard") {
 									print we_htmlElement::jsElement('
 										if (top.frames["wizbody"].addLog){
-											top.frames["wizbody"].addLog("' . addslashes(getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[update_links]')) . '");
+											top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[update_links]')) . '");
 										}
 									');
 									flush();
@@ -654,7 +654,7 @@ HTS;
 									if($type != "first_steps_wizard") {
 										print we_htmlElement::jsElement('
 											if (top.frames["wizbody"].addLog){
-												top.frames["wizbody"].addLog("' . addslashes(getPixel(50,5)) . $_progress_text . '<br>");
+												top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(50,5)) . $_progress_text . '<br>");
 											}
 										');
 										flush();

@@ -28,12 +28,11 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 	exit;
 }
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -74,7 +73,7 @@ $textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST[
 $we_tabs->onResize();
 $tab_head = $we_tabs->getHeader();
 
-$tab_body = '<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ","&nbsp;",$textPost) . '</b></span></nobr></div>' .getPixel(100,3) .
+$tab_body = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ","&nbsp;",$textPost) . '</b></span></nobr></div>' .we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>';
 ?>

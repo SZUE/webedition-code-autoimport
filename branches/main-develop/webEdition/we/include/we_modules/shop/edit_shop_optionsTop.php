@@ -24,11 +24,10 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -64,5 +63,5 @@ $Bestelldaten = g_l('modules_shop','[keinedaten]');
 ?>
 </head>
 <body class="weEditorBody" onUnload="doUnload()">
-<?php print  htmlDialogLayout($Bestelldaten,g_l('modules_shop','[order_liste]')."&nbsp;".$Kundenname);?>
+<?php print  we_html_tools::htmlDialogLayout($Bestelldaten,g_l('modules_shop','[order_liste]')."&nbsp;".$Kundenname);?>
 </body></html>

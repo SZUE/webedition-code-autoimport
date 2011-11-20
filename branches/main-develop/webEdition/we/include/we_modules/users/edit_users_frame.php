@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -25,9 +25,9 @@
 
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_html_tools.class.inc.php");
 
-htmlTop();
+we_html_tools::htmlTop();
 ?>
 	</head>
 

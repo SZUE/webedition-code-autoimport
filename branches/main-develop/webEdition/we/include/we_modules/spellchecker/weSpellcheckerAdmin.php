@@ -1,10 +1,6 @@
 <?php
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']. '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
@@ -19,7 +15,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 		exit();
 	}
 
-	htmlTop();
+	we_html_tools::htmlTop();
 
 	print STYLESHEET;
 
@@ -127,7 +123,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	$tabsBody = $we_tabs->getHTML().we_htmlElement::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 	 $_tab_1 =
-	 htmlDialogLayout('
+	 we_html_tools::htmlDialogLayout('
 	 <form name="we_form" target="hiddenCmd" method="post" action="'.WE_SPELLCHECKER_MODULE_PATH.'weSpellcheckerCmd.php">
 	 <input type="hidden" name="cmd[0]" value="saveSettings" />
 	 <div id="dictTable">
@@ -148,7 +144,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 
 	 $_tab_2 =
-	 htmlDialogLayout('
+	 we_html_tools::htmlDialogLayout('
 
 
 					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">'.(file_exists(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php')>0) ? weFile::load(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php') : '') : '') .'</textarea>

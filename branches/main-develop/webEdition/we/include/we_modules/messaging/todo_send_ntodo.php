@@ -27,9 +27,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 }
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 protect();
 
@@ -90,12 +88,12 @@ if ($_REQUEST["mode"] == 'forward') {
 
     <body class="weDialogBody">
     <?php
-    
+
     $res['ok'] = array_map('htmlspecialchars', $res['ok']);
     $res['failed'] = array_map('htmlspecialchars', $res['failed']);
     $res['err'] = array_map('htmlspecialchars', $res['err']);
-    
-    
+
+
     $tbl = '<table align="center" cellpadding="7" cellspacing="3">
 		    <tr>
 		      <td class="defaultfont" valign="top">' . $s_action . ':</td>
@@ -111,7 +109,7 @@ if ($_REQUEST["mode"] == 'forward') {
 		    </tr>') . '
 	    </table>
 	';
-	echo htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
     ?>
     </body>
 </html>

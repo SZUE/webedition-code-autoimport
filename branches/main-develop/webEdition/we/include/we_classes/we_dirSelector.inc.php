@@ -188,7 +188,7 @@ function RenameFolder(id){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 function writeBody(d){
@@ -299,12 +299,12 @@ function writeBody(d){
 		d.writeln('<td class="selector">');
 		d.writeln(entries[i].modDate);
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="3"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td width="200"><?php print getPixel(200,2)?></td>');
-	d.writeln('<td><?php print getPixel(300,2)?></td>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td width="200"><?php print we_html_tools::getPixel(200,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(300,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	d.writeln('</body>');
@@ -376,14 +376,14 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
 					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('fileselector',"[filename]").'</a></b></td>
 					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, ModDate\');">'.g_l('fileselector',"[modified]").'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td>'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td>'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';
@@ -532,9 +532,9 @@ function enableNewFolderBut(){
 ';
 		$this->printHeaderTableSpaceRow();
 		print '				<tr valign="middle">
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="70" class="defaultfont"><b>'.g_l('fileselector',"[lookin]").'</b></td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 ';
@@ -545,11 +545,11 @@ function enableNewFolderBut(){
 		if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 
 			print '					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
-					<td width="10">'.getPixel(10,29).'</td>
+					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
 						'. we_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
 					</td>
@@ -557,7 +557,7 @@ function enableNewFolderBut(){
 ';
 			$this->printHeaderTableExtraCols();
 		}
-		print '				<td width="10">'.getPixel(10,29).'</td></tr>
+		print '				<td width="10">'.we_html_tools::getPixel(10,29).'</td></tr>
 ';
 		$this->printHeaderTableSpaceRow();
 
@@ -594,7 +594,7 @@ function enableNewFolderBut(){
 	}
 
 	function printHeaderTableExtraCols(){
-		print '                <td width="10">'.getPixel(10,10).'</td><td width="40">
+		print '                <td width="10">'.we_html_tools::getPixel(10,10).'</td><td width="40">
 ';
 		$makefolderState = $this->userCanMakeNewDir() ? 1 : 0;
 
@@ -605,7 +605,7 @@ function enableNewFolderBut(){
 
 	function printHeaderTableSpaceRow(){
 		print '				<tr>
-					<td colspan="11">'.getPixel(5,10).'</td>
+					<td colspan="11">'.we_html_tools::getPixel(5,10).'</td>
 				</tr>
 ';
 
@@ -767,7 +767,7 @@ top.makeNewFolder=1;
 ';
 	}
 	function printCreateFolderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 
 		print '<script>
@@ -885,7 +885,7 @@ top.we_editDirID='.$this->we_editDirID.';
 	}
 
 	function printDoRenameFolderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 
 		print '<script>

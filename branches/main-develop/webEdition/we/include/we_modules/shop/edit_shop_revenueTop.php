@@ -25,11 +25,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once(WEBEDITION_INCLUDES_DIR."we_classes/we_class.inc.php");
-include_once(WEBEDITION_INCLUDES_DIR."we_html_tools.inc.php");
-include_once(WEBEDITION_INCLUDES_DIR."we_classes/html/we_multiIconBox.class.inc.php");
 include_once(WEBEDITION_INCLUDES_DIR."we_modules/shop/we_pager_class.inc.php");
-include_once(WEBEDITION_INCLUDES_DIR."we_classes/html/we_button.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/util/Strings.php');
 
 $selectedYear = isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date("Y");
@@ -100,7 +96,7 @@ function monthSelect($select_name) {
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -180,7 +176,7 @@ $feldnamen = explode('|',f('SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' WHERE 
 		)
 	);
 
-	
+
 	 array_push($parts, array(
 		'headline' => we_button::create_button('select', "javascript:we_submitDateform();"),
 		'html' => '',
@@ -347,7 +343,7 @@ $feldnamen = explode('|',f('SELECT strFelder from '.ANZEIGE_PREFS_TABLE.' WHERE 
 		if (isset($articleVatArray)) {
 $vatTable .= '
 <tr>
-	<td>' . getPixel(1,10) . '</td>
+	<td>' . we_html_tools::getPixel(1,10) . '</td>
 <tr>
 	<td colspan="6" class="shopContentfontR">' . g_l('modules_shop','[includedVat]') . ':</td>
 </tr>
@@ -434,7 +430,7 @@ $vatTable .= '
 		}
 
 		array_push($parts, array(
-			'html' => htmlDialogBorder3(670,100,$content, $headline),
+			'html' => we_html_tools::htmlDialogBorder3(670,100,$content, $headline),
 			'space' => 0,
 			'noline' => true
 			)

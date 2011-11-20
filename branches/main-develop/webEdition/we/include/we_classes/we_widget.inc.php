@@ -100,10 +100,10 @@ class we_widget {
 		$oBox->setCol(0,0,array("colspan"=>3,"width"=>$wh_edge,"height"=>$h_tb),$oTb->getHtmlCode());
 		$oBox->setCol(1,0,array("id"=>$iId."_lbl_mgnl","align"=>"left","width"=>$wh_edge,"height"=>$h_title,"style"=>"background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h_title."px;")));
 		$oBox->setCol(1,1,array("id"=>$iId."_lbl","class"=>"label","style"=>"width:".$w."px;background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::jsElement("setLabel('".$iId."','".str_replace("'","\'",$aLabel[0])."','".str_replace("'","\'",$aLabel[1])."');"));
-		$oBox->setCol(1,2,array("id"=>$iId."_lbl_mgnr","align"=>"right","width"=>$wh_edge,"height"=>$h_title,"style"=>"background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::htmlNobr(getPixel(10,1).we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h_title."px;"))));
+		$oBox->setCol(1,2,array("id"=>$iId."_lbl_mgnr","align"=>"right","width"=>$wh_edge,"height"=>$h_title,"style"=>"background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::htmlNobr(we_html_tools::getPixel(10,1).we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h_title."px;"))));
 		$oBox->setCol(2,0,array("id"=>$iId."_vll","align"=>"left","width"=>$wh_edge,"height"=>$h,"class"=>"bgc_".$sCls),we_htmlElement::htmlImg(array("id"=>$iId."_vline_l","src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h."px;")));
 		$oBox->setCol(2,1,array("id"=>$iId."_wrapper","style"=>"text-align:left;vertical-align:top;","width"=>$w,"height"=>$h,"class"=>"bgc_".$sCls),
-			getPixel(1,$gap).we_htmlElement::htmlBr().we_htmlElement::htmlDiv(array("id"=>$iId."_content"),((isset($oContent))? $oContent->getHtmlCode() : "")).
+			we_html_tools::getPixel(1,$gap).we_htmlElement::htmlBr().we_htmlElement::htmlDiv(array("id"=>$iId."_content"),((isset($oContent))? $oContent->getHtmlCode() : "")).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_prefix","value"=>$aLabel[0])).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_postfix","value"=>$aLabel[1])).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_res","value"=>$iRes)).
@@ -111,7 +111,7 @@ class we_widget {
 			we_htmlElement::htmlHidden(array("id"=>$iId."_cls","value"=>$sCls)).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_csv","value"=>$sCsv))
 		);
-		$oBox->setCol(2,2,array("id"=>$iId."_vlr","align"=>"right","width"=>$wh_edge,"height"=>$h,"class"=>"bgc_".$sCls),we_htmlElement::htmlNobr(getPixel(10,1).we_htmlElement::htmlImg(array("id"=>$iId."_vline_r","src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h."px;"))));
+		$oBox->setCol(2,2,array("id"=>$iId."_vlr","align"=>"right","width"=>$wh_edge,"height"=>$h,"class"=>"bgc_".$sCls),we_htmlElement::htmlNobr(we_html_tools::getPixel(10,1).we_htmlElement::htmlImg(array("id"=>$iId."_vline_r","src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h."px;"))));
 		$oBox->setCol(3,0,array("width"=>$wh_edge,"height"=>$wh_edge),we_htmlElement::htmlImg(array("id"=>$iId."_img_cl","src"=>IMAGE_DIR."pd/bx_corner_left_".$sCls.".gif","width"=>$wh_edge,"height"=>$wh_edge)));
 		$oBox->setCol(3,1,array("id"=>$iId."_bottom","valign"=>"bottom","width"=>"100%","height"=>$wh_edge,"class"=>"bgc_".$sCls),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/line_h.gif","width"=>"100%","height"=>1)));
 		$oBox->setCol(3,2,array("width"=>$wh_edge,"height"=>$wh_edge),we_htmlElement::htmlImg(array("id"=>$iId."_img_cr","src"=>IMAGE_DIR."pd/bx_corner_right_".$sCls.".gif","width"=>$wh_edge,"height"=>$wh_edge)));

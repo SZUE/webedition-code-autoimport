@@ -151,7 +151,7 @@ class weBannerFrames extends weModuleFrames{
 //-->
    </script>
 	<body bgcolor="white" background="'.IMAGE_DIR.'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()" onresize="setFrameSize()">
-		<div id="main" >' . getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$text).'</b></span></nobr></div>'.getPixel(100,3).
+		<div id="main" >' . we_html_tools::getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$headline1).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$text).'</b></span></nobr></div>'.we_html_tools::getPixel(100,3).
 $we_tabs->getHTML() .
 '		</div>
 	</body>';
@@ -227,12 +227,12 @@ $we_tabs->getHTML() .
     <form name="we_form">
 	<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
-				<td valign="top" colspan="2"><?php print getPixel(1600,10) ?></td>
+				<td valign="top" colspan="2"><?php print we_html_tools::getPixel(1600,10) ?></td>
 			</tr>
 	</table>
 	<table border="0" cellpadding="0" cellspacing="0">
 						<tr valign="middle">
-							<td nowrap><?php print getPixel(15,5); ?></td>
+							<td nowrap><?php print we_html_tools::getPixel(15,5); ?></td>
 							<td><?php print we_button::create_button("save", "javascript:we_save();"); ?></td>
 						</tr>
 	</table>

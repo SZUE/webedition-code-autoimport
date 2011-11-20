@@ -54,7 +54,7 @@ class MultiDirTemplateAndDefaultChooser extends MultiDirAndTemplateChooser{
 			case 1:
 				$idArr = makeArrayFromCSV($this->ids);
 				$checkbox = we_forms::checkbox($idArr[$this->nr], (in_array($idArr[$this->nr], $this->defaultArr) ? true : false), $this->defaultName."_".$this->nr, g_l('weClass','[standard_workspace]'));
-				return '<tr><td></td><td>'.$checkbox.'</td><td>'.getPixel(50,1).'</td></tr>';
+				return '<tr><td></td><td>'.$checkbox.'</td><td>'.we_html_tools::getPixel(50,1).'</td></tr>';
 			case 2:
 				return MultiDirAndTemplateChooser::getLine(1);
 		}

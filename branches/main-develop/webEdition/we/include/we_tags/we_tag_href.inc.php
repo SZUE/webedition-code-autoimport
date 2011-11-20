@@ -159,7 +159,7 @@ function we_tag_href($attribs, $content){
 							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
 							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>
 						<td class="weEditmodeStyle">
-							' . getPixel(8, 1) . '</td>
+							' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
 							' . $but . '</td>
 						<td class="weEditmodeStyle">
@@ -175,7 +175,7 @@ function we_tag_href($attribs, $content){
 						<td class="weEditmodeStyle">
 							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
-							' . getPixel(8, 1) . '</td>
+							' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
 							' . $but2 . '</td>
 						<td class="weEditmodeStyle">
@@ -232,7 +232,7 @@ function we_tag_href($attribs, $content){
 							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
 							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>
 						<td class="weEditmodeStyle">
-							' . getPixel(8, 1) . '</td>
+							' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
 							' . $but . '</td>
 						<td class="weEditmodeStyle">
@@ -286,7 +286,7 @@ function we_tag_href($attribs, $content){
 						<td class="weEditmodeStyle">
 							<input type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
-							' . getPixel(8, 1) . '</td>
+							' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
 							' . $but2 . '</td>
 						<td class="weEditmodeStyle">

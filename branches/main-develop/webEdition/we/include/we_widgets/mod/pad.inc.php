@@ -156,14 +156,14 @@ if (!$bDisplay) {
 
 }
 // validity settings
-$sctValid = htmlSelect("sct_valid", array(
+$sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit','[always]'), g_l('cockpit','[from_date]'), g_l('cockpit','[period]')
 ), 1, g_l('cockpit','[always]'), false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
 $oTblValidity = new we_htmlTable(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => "oTblValidity"
 ), 1, 3);
 $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit','[from]'), "f_ValidFrom", "_from"));
-$oTblValidity->setCol(0, 1, null, getPixel(10, 1));
+$oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit','[until]'), "f_ValidUntil", "_until"));
 $oTblPeriod = new we_htmlTable(array(
 	"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
@@ -228,7 +228,7 @@ $oTblPrio->setCol(
 						"height" => 14,
 						"style" => "margin-left:5px"
 				)));
-$oTblPrio->setCol(0, 2, null, getPixel(15, 1));
+$oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
 $oTblPrio->setCol(
 		0,
@@ -242,7 +242,7 @@ $oTblPrio->setCol(
 						"height" => 14,
 						"style" => "margin-left:5px"
 				)));
-$oTblPrio->setCol(0, 5, null, getPixel(15, 1));
+$oTblPrio->setCol(0, 5, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
 $oTblPrio->setCol(
 		0,
@@ -273,12 +273,12 @@ $oTblProps->setCol(0, 0, array(
 $oTblProps->setCol(0, 1, array(
 	"colspan" => 2, "align" => "right"
 ), $oTblPeriod->getHTMLCode());
-$oTblProps->setCol(1, 0, null, getPixel(1, 8));
+$oTblProps->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(2, 0, array(
 	"class" => "middlefont"
 ), g_l('cockpit','[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTMLCode());
-$oTblProps->setCol(3, 0, null, getPixel(1, 8));
+$oTblProps->setCol(3, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(4, 0, array(
 	"class" => "middlefont"
 ), g_l('cockpit','[title]'));
@@ -286,7 +286,7 @@ $oTblProps->setCol(
 		4,
 		1,
 		null,
-		htmlTextInput(
+		we_html_tools::htmlTextInput(
 				$name = "props_title",
 				$size = 255,
 				$value = "",
@@ -295,7 +295,7 @@ $oTblProps->setCol(
 				$type = "text",
 				$width = "100%",
 				$height = 0));
-$oTblProps->setCol(5, 0, null, getPixel(1, 8));
+$oTblProps->setCol(5, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(6, 0, array(
 	"class" => "middlefont", "valign" => "top"
 ), g_l('cockpit','[note]'));
@@ -314,7 +314,7 @@ $oTblProps->setCol(
 						'onfocus' => 'this.className=\'wetextinputselected\''
 				),
 				""));
-$oTblProps->setCol(7, 0, null, getPixel(1, 8));
+$oTblProps->setCol(7, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(8, 0, array(
 	"colspan" => 3
 ), $buttons);

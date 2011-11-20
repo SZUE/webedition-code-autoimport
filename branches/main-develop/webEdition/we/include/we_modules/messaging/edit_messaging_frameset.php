@@ -24,11 +24,10 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 protect();
-htmlTop('Messaging System');
+we_html_tools::htmlTop('Messaging System');
 echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	we_htmlElement::jsScript(JS_DIR.'windows.js').
 	we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').

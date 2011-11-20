@@ -71,7 +71,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 ' . we_tag("textarea", array("name" => "BODY", "rows" => "15", "cols" => 80, "wrap" => "virtual", "style" => "width: 600px;")) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
-				 print htmlMessageBox(667, 650, $foo); ?>
+				 print we_html_tools::htmlMessageBox(667, 650, $foo); ?>
 			</form>
 		</body>
 	<?php }else{ ?>

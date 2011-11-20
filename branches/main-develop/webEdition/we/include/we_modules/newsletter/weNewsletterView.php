@@ -210,12 +210,12 @@ class weNewsletterView {
 		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 	  	$button =  we_button::create_button("select","javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")");
 
-		return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",' readonly',"text",$width,0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname,30,$Pathvalue,"",' readonly',"text",$width,0),
 			"",
 			"left",
 			"defaultfont",
 			$this->htmlHidden($IDName,$IDValue),
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button
 		);
 	}
@@ -225,12 +225,12 @@ class weNewsletterView {
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
 	  	$button =  we_button::create_button("select","javascript:we_cmd('browse_server','".$wecmdenc1."','$filter',document.we_form.elements['$IDName'].value);");
 
-		return htmlFormElementTable(htmlTextInput($IDName,30,$IDValue,"",'readonly',"text",$width,0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName,30,$IDValue,"",'readonly',"text",$width,0),
 			"",
 			"left",
 			"defaultfont",
 			"",
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
@@ -260,12 +260,12 @@ class weNewsletterView {
 			$yuiSuggest->setSelectButton($button);
 			return $yuiSuggest->getHTML();
 		} else {
-			return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly',"text",$width,0),
+			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly',"text",$width,0),
 				"",
 				"left",
 				"defaultfont",
 				$this->htmlHidden($IDName,$IDValue),
-				getPixel(20,4),
+				we_html_tools::getPixel(20,4),
 				$button);
 		}
 	}
@@ -294,12 +294,12 @@ class weNewsletterView {
 			$yuiSuggest->setSelectButton($button);
 			return $yuiSuggest->getHTML();
 		} else {
-			return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly',"text",$width,0),
+			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly',"text",$width,0),
 			"",
 			"left",
 			"defaultfont",
 			$this->htmlHidden($IDName,$IDValue),
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button);
 		}
 	}
@@ -332,12 +332,12 @@ class weNewsletterView {
 			return $yuiSuggest->getHTML();
 		} else {
 
-			return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly id="yuiAcInputPathGroup"',"text",$width,0),
+			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname,30,$Pathvalue,"",'top.content.hot=1; readonly id="yuiAcInputPathGroup"',"text",$width,0),
 				"",
 				"left",
 				"defaultfont",
 				$this->htmlHidden($IDName,$IDValue),
-				getPixel(20,4),
+				we_html_tools::getPixel(20,4),
 				$button
 			);
 		}

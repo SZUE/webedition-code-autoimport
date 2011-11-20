@@ -263,18 +263,18 @@ class weImageDialog extends weDialog{
 	function getDialogContentHTML(){
 		$yuiSuggest =& weSuggest::getInstance();
 		if($this->args["outsideWE"] == "1"){
-			$extSrc = htmlFormElementTable(htmlTextInput("we_dialog_args[extSrc]",30,(isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""),"","","text",410),
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]",30,(isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""),"","","text",410),
 											"src",
 											"left",
 											"defaultfont",
-											getPixel(10,2),
+											we_html_tools::getPixel(10,2),
 											"",
 											"","","",0
 										);
 			$intSrc = "";
 			$thumbnails="";
 
-			$_longdesc   = htmlFormElementTable(htmlTextInput("we_dialog_args[longdesc]",30,str_replace('"','&quot;',(isset($this->args["longdesc"]) ? $this->args["longdesc"] : "") ),"",'',"text",520),
+			$_longdesc   = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[longdesc]",30,str_replace('"','&quot;',(isset($this->args["longdesc"]) ? $this->args["longdesc"] : "") ),"",'',"text",520),
 												g_l('weClass',"[longdesc_text]"));
 
 		}else{
@@ -293,11 +293,11 @@ class weImageDialog extends weDialog{
 												g_l('wysiwyg',"[external_image]"),true,"defaultfont","imageChanged();"
 											  );
 
-			$extSrc = htmlFormElementTable(htmlTextInput("we_dialog_args[extSrc]",30,(isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""),"",' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"',"text",300),
+			$extSrc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extSrc]",30,(isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""),"",' onfocus="if(this.form.elements[\'we_dialog_args[type]\'][1].checked) { this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();}" onChange="this.form.elements[\'we_dialog_args[type]\'][0].checked=true;imageChanged();"',"text",300),
 											$radioBut,
 											"left",
 											"defaultfont",
-											getPixel(20,2),
+											we_html_tools::getPixel(20,2),
 											$but,
 											"","","",0
 										);
@@ -349,7 +349,7 @@ class weImageDialog extends weDialog{
 				}
 				$thumbnails .= '</select>';
 
-				$thumbnails = htmlFormElementTable($thumbnails,g_l('wysiwyg',"[thumbnail]"));
+				$thumbnails = we_html_tools::htmlFormElementTable($thumbnails,g_l('wysiwyg',"[thumbnail]"));
 			}else{
 				$thumbnails = "";
 			}
@@ -376,27 +376,27 @@ class weImageDialog extends weDialog{
 			$_longdesc   =  $yuiSuggest->getHTML();
 		}
 
-		$foo = htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text" , 50 );
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] :""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text" , 50 );
 
-		$width = htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
+		$width = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[width]"));
 
-		$foo = htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text" , 50 );
-		$height = htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] :""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text" , 50 );
+		$height = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[height]"));
 
-		$foo = htmlTextInput("we_dialog_args[hspace]", 5, (isset($this->args["hspace"]) ? $this->args["hspace"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
-		$hspace = htmlFormElementTable($foo,g_l('wysiwyg',"[hspace]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[hspace]", 5, (isset($this->args["hspace"]) ? $this->args["hspace"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
+		$hspace = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[hspace]"));
 
-		$foo = htmlTextInput("we_dialog_args[vspace]", 5, (isset($this->args["vspace"]) ? $this->args["vspace"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
-		$vspace = htmlFormElementTable($foo,g_l('wysiwyg',"[vspace]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[vspace]", 5, (isset($this->args["vspace"]) ? $this->args["vspace"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
+		$vspace = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[vspace]"));
 
-		$foo = htmlTextInput("we_dialog_args[border]", 5, (isset($this->args["border"]) ? $this->args["border"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
-		$border = htmlFormElementTable($foo,g_l('wysiwyg',"[border]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[border]", 5, (isset($this->args["border"]) ? $this->args["border"] :""), "", ' onkeypress="return IsDigit(event);"', "text" , 50 );
+		$border = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[border]"));
 
-		$foo = htmlTextInput("we_dialog_args[alt]", 5, (isset($this->args["alt"]) ? $this->args["alt"] :""), "", "", "text" , 200 );
-		$alt = htmlFormElementTable($foo,g_l('wysiwyg',"[altText]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[alt]", 5, (isset($this->args["alt"]) ? $this->args["alt"] :""), "", "", "text" , 200 );
+		$alt = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[altText]"));
 
-		$foo = htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] :""), "", "", "text" , 200 );
-		$title = htmlFormElementTable($foo,g_l('global',"[title]"));
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] :""), "", "", "text" , 200 );
+		$title = we_html_tools::htmlFormElementTable($foo,g_l('global',"[title]"));
 
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
@@ -411,10 +411,10 @@ class weImageDialog extends weDialog{
 							<option value="baseline"'.(($this->args["align"] == "baseline") ? "selected" : "").'>Baseline</option>
 							<option value="absbottom"'.(($this->args["align"] == "absbottom") ? "selected" : "").'>Abs Bottom</option>
 						</select>';
-		$align = htmlFormElementTable($foo,g_l('wysiwyg',"[alignment]"));
+		$align = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[alignment]"));
 
-		$foo = htmlTextInput("we_dialog_args[name]", 30, (isset($this->args["name"]) ? $this->args["name"] :""), "", '', "text" , 200 );
-		$name = htmlFormElementTable($foo,"Name");
+		$foo = we_html_tools::htmlTextInput("we_dialog_args[name]", 30, (isset($this->args["name"]) ? $this->args["name"] :""), "", '', "text" , 200 );
+		$name = we_html_tools::htmlFormElementTable($foo,"Name");
 
 		$srctable = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -423,7 +423,7 @@ class weImageDialog extends weDialog{
 ';
 		if($intSrc){
 			$srctable .= '	<tr>
-		<td>'.getPixel(100,4).'</td><td>'.getPixel(10,4).'</td>
+		<td>'.we_html_tools::getPixel(100,4).'</td><td>'.we_html_tools::getPixel(10,4).'</td>
 	</tr>
 	<tr>
 		<td></td><td>'.$intSrc.'</td>
@@ -431,7 +431,7 @@ class weImageDialog extends weDialog{
 ';
 			if($thumbnails){
 				$srctable .= '	<tr>
-		<td>'.getPixel(100,4).'</td><td>'.getPixel(10,4).'</td>
+		<td>'.we_html_tools::getPixel(100,4).'</td><td>'.we_html_tools::getPixel(10,4).'</td>
 	</tr>
 	<tr>
 		<td></td><td>'.$thumbnails.'</td>
@@ -440,13 +440,13 @@ class weImageDialog extends weDialog{
 			}
 		}
 			$srctable .= '	<tr>
-		<td>'.getPixel(100,4).'</td><td>'.getPixel(10,4).'</td>
+		<td>'.we_html_tools::getPixel(100,4).'</td><td>'.we_html_tools::getPixel(10,4).'</td>
 	</tr>
 	</table>
 ';
 
 	$foo = '<script  type="text/javascript">showclasss("we_dialog_args[class]","'.(isset($this->args["class"]) ? $this->args["class"] : "") .'","");</script>';
-	$classSelect = htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
+	$classSelect = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[css_style]"));
 
 	$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
 
@@ -468,14 +468,14 @@ class weImageDialog extends weDialog{
 
 	$table = '<div style="height:240px"><table cellpadding="0" cellspacing="0" border="0" width="380">
 <tr><td colspan="2">'.$name.'</td><td colspan="2">'.$alt.'</td></tr>
-<tr><td colspan="4">'.getPixel(150,15).'</td></tr>
+<tr><td colspan="4">'.we_html_tools::getPixel(150,15).'</td></tr>
 <tr><td colspan="2">'.$classSelect.'</td><td colspan="2">'.$title.'</td></tr>
-<tr><td>'.getPixel(160,15).'</td><td>'.getPixel(160,4).'</td><td>'.getPixel(100,4).'</td><td>'.getPixel(100,4).'</td></tr>
+<tr><td>'.we_html_tools::getPixel(160,15).'</td><td>'.we_html_tools::getPixel(160,4).'</td><td>'.we_html_tools::getPixel(100,4).'</td><td>'.we_html_tools::getPixel(100,4).'</td></tr>
 <tr><td colspan="4">'.$_longdesc.'</td></tr>
-<tr><td colspan="4">'.getPixel(150,15).'</td></tr>
+<tr><td colspan="4">'.we_html_tools::getPixel(150,15).'</td></tr>
 
 </table></div>
-'.hidden("imgChangedCmd","0").hidden("wasThumbnailChange","0");
+'.we_html_tools::hidden("imgChangedCmd","0").we_html_tools::hidden("wasThumbnailChange","0");
 	$thisPart  = $table;
 	$thisPart .= $yuiSuggest->getYuiCss();
 	$thisPart .= $yuiSuggest->getYuiJs();

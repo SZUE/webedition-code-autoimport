@@ -35,7 +35,7 @@ class weNewsletterDirSelector extends we_dirSelector{
 	}
 
 	function printCreateFolderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 
 		print '<script>
@@ -97,7 +97,7 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		htmlTop();
+		we_html_tools::htmlTop();
 		protect();
 
 		print '<script>
@@ -204,13 +204,13 @@ function addEntry(ID,icon,text,isFolder,path){
 	function printHeaderHeadlines(){
 		print '			<table border="0" cellpadding="0" cellspacing="0" width="550">
 				<tr>
-					<td>'.getPixel(25,14).'</td>
+					<td>'.we_html_tools::getPixel(25,14).'</td>
 					<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">'.g_l('fileselector',"[filename]").'</a></b></td>
 				</tr>
 				<tr>
-					<td width="25">'.getPixel(25,1).'</td>
-					<td width="200">'.getPixel(200,1).'</td>
-					<td width="300">'.getPixel(300,1).'</td>
+					<td width="25">'.we_html_tools::getPixel(25,1).'</td>
+					<td width="200">'.we_html_tools::getPixel(200,1).'</td>
+					<td width="300">'.we_html_tools::getPixel(300,1).'</td>
 				</tr>
 			</table>
 ';
@@ -218,7 +218,7 @@ function addEntry(ID,icon,text,isFolder,path){
   	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 ?>
 
@@ -321,11 +321,11 @@ function writeBody(d){
 			d.writeln(cutText(entries[i].text,24));
 		}
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="3"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(200,2)?></td>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(200,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table></form>');
 	if(makeNewFolder || top.we_editDirID){

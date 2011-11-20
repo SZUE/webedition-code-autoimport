@@ -670,35 +670,35 @@ class we_imageDocument extends we_binaryDocument {
 		$_content->setCol(0, 2, null, $this->formInputInfo2(155, "height", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"',"origheight"));
 		$_content->setCol(0, 4, null, $this->formInput2(155, "border", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
-		$_content->setCol(0, 1, null, getPixel(18, 1));
-		$_content->setCol(0, 3, null, getPixel(18, 1));
+		$_content->setCol(0, 1, null, we_html_tools::getPixel(18, 1));
+		$_content->setCol(0, 3, null, we_html_tools::getPixel(18, 1));
 
 		// Row 2
-		$_content->setCol(1, 0, array("colspan" => 5), getPixel(1, 5));
+		$_content->setCol(1, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 
 		// Row 3
 		$_content->setCol(2, 0, null, $this->formInput2(155, "align",  10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 		$_content->setCol(2, 2, null, $this->formInput2(155, "hspace", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 		$_content->setCol(2, 4, null, $this->formInput2(155, "vspace", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
-		$_content->setCol(2, 1, null, getPixel(18, 1));
-		$_content->setCol(2, 3, null, getPixel(18, 1));
+		$_content->setCol(2, 1, null, we_html_tools::getPixel(18, 1));
+		$_content->setCol(2, 3, null, we_html_tools::getPixel(18, 1));
 
 		// Row 4
-		$_content->setCol(3, 0, array("colspan" => 5), getPixel(1, 5));
+		$_content->setCol(3, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 
 		// Row 5
 		$_content->setCol(4, 0, array("colspan" => 3), $this->formInput2(328, "alt", 23, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(4, 3, null, getPixel(18, 1));
+		$_content->setCol(4, 3, null, we_html_tools::getPixel(18, 1));
 		$_content->setCol(4, 4, null, $this->formInput2(155, "name", 10, "attrib", 'onChange="_EditorFrame.setEditorIsHot(true);"'));
 
 		// Row 6
-		$_content->setCol(5, 0, array("colspan" => 5), getPixel(1, 5));
+		$_content->setCol(5, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 
 		//	Row 7
 		$_content->setCol(6, 0, array("colspan" => 3), $this->formInput2(328, "title", 23, "attrib", ($this->getElement("useMetaTitle") == 1 ? "readonly='readonly'" : "") . '" onChange="_EditorFrame.setEditorIsHot(true);"'));
 
-		$_content->setCol(6, 3, null, getPixel(18, 1));
+		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
 			$_titleField     = "we_".$this->Name."_attrib[title]";
 			$_metaTitleField = "we_".$this->Name."_txt[Title]";
 			$useMetaTitle = "we_".$this->Name."_txt[useMetaTitle]";
@@ -734,7 +734,7 @@ class we_imageDocument extends we_binaryDocument {
 
 		$yuiSuggest->setSelectButton(we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$longdesc_id_name'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition,text/plain,text/html',1)"));
 		$yuiSuggest->setTrashButton(we_button::create_button('image:btn_function_trash',"javascript:document.we_form.elements['$longdesc_id_name'].value='-1';document.we_form.elements['$longdesc_text_name'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('".$yuiSuggest->getInputId()."')"));
-		$_content->setCol(7, 0, array("colspan" => 5), getPixel(1, 5));
+		$_content->setCol(7, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
 		$_content->setCol(8, 0, array("valign" => "bottom", 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
 
 		// Return HTML
@@ -951,14 +951,14 @@ class we_imageDocument extends we_binaryDocument {
 		$_content->setCol(0, 1, null, "");
 
 		// Space
-		$_content->setCol(1, 0, null, getPixel(100, 10));
-		$_content->setCol(1, 1, null, getPixel(400, 10));
+		$_content->setCol(1, 0, null, we_html_tools::getPixel(100, 10));
+		$_content->setCol(1, 1, null, we_html_tools::getPixel(400, 10));
 
 		// External link
 		$_ext_link_table = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
 
 		$_ext_link_table->setCol(0, 0, null, $this->htmlTextInput("we_" . $this->Name . "_txt[LinkHref]", 25, $this->getElement("LinkHref"), "", 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
-		$_ext_link_table->setCol(0, 1, null, getPixel(20, 1));
+		$_ext_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_ext_link_table->setCol(0, 2, null, $butExt);
 
 		$_ext_link = "href" . we_htmlElement::htmlBr() . $_ext_link_table->getHtmlCode();
@@ -967,14 +967,14 @@ class we_imageDocument extends we_binaryDocument {
 		$_content->setCol(2, 1, array("class" => "defaultfont", "valign" => "top"), $_ext_link);
 
 		// Space
-		$_content->setCol(3, 0, null, getPixel(100, 10));
-		$_content->setCol(3, 1, null, getPixel(400, 10));
+		$_content->setCol(3, 0, null, we_html_tools::getPixel(100, 10));
+		$_content->setCol(3, 1, null, we_html_tools::getPixel(400, 10));
 
 		// Internal link
 		$_int_link_table = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
 
 		$_int_link_table->setCol(0, 0, null, $this->htmlTextInput($textname, 25, $linkPath, "", 'onkeydown="return false"', "text", 280));
-		$_int_link_table->setCol(0, 1, null, getPixel(20, 1));
+		$_int_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_int_link_table->setCol(0, 2, null, $this->htmlHidden($idname, $this->getElement("LinkID")) . $but1);
 
 		$_int_link = "href" . we_htmlElement::htmlBr() . $_int_link_table->getHtmlCode();
@@ -984,13 +984,13 @@ class we_imageDocument extends we_binaryDocument {
 
 		// Object link
 		if (defined("OBJECT_TABLE")) {
-			$_content->setCol(5, 0, null, getPixel(100, 10));
-			$_content->setCol(5, 1, null, getPixel(400, 10));
+			$_content->setCol(5, 0, null, we_html_tools::getPixel(100, 10));
+			$_content->setCol(5, 1, null, we_html_tools::getPixel(400, 10));
 
 			$_obj_link_table = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
 
 			$_obj_link_table->setCol(0, 0, null, $this->htmlTextInput($objtextname, 25, $objPath, "", 'onkeydown="return false"', "text", 280));
-			$_obj_link_table->setCol(0, 1, null, getPixel(20, 1));
+			$_obj_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 			$_obj_link_table->setCol(0, 2, null, $this->htmlHidden($objidname, $this->getElement("ObjID")) . $butObj);
 
 			$_obj_link = "href" . we_htmlElement::htmlBr() . $_obj_link_table->getHtmlCode();
@@ -1000,21 +1000,21 @@ class we_imageDocument extends we_binaryDocument {
 		}
 
 		// Space
-		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 0, null, getPixel(100, 20));
-		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 1, null, getPixel(400, 20));
+		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 0, null, we_html_tools::getPixel(100, 20));
+		$_content->setCol((defined("OBJECT_TABLE") ? 7 : 5), 1, null, we_html_tools::getPixel(400, 20));
 
 		// Target
-		$_content->setCol((defined("OBJECT_TABLE") ? 8 : 6), 0, array("colspan" => 2, "class" => "defaultfont", "valign" => "top"), g_l('weClass',"[target]") . we_htmlElement::htmlBr() . targetBox("we_" . $this->Name . "_txt[LinkTarget]", 33, 380, "", $this->getElement("LinkTarget"), "_EditorFrame.setEditorIsHot(true);", 20, 97));
+		$_content->setCol((defined("OBJECT_TABLE") ? 8 : 6), 0, array("colspan" => 2, "class" => "defaultfont", "valign" => "top"), g_l('weClass',"[target]") . we_htmlElement::htmlBr() . we_html_tools::targetBox("we_" . $this->Name . "_txt[LinkTarget]", 33, 380, "", $this->getElement("LinkTarget"), "_EditorFrame.setEditorIsHot(true);", 20, 97));
 
 		// Space
-		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 0, null, getPixel(100, 20));
-		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 1, null, getPixel(400, 20));
+		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 0, null, we_html_tools::getPixel(100, 20));
+		$_content->setCol((defined("OBJECT_TABLE") ? 9 : 7), 1, null, we_html_tools::getPixel(400, 20));
 
 		// Rollover image
 		$_rollover_table = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
 
 		$_rollover_table->setCol(0, 0, null, $this->htmlTextInput($RollOverPathname, 25, $RollOverPath, "", 'onkeydown="return false"', "text", 280));
-		$_rollover_table->setCol(0, 1, null, getPixel(20, 1));
+		$_rollover_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_rollover_table->setCol(0, 2, null, $this->htmlHidden($RollOverIDName, $RollOverID) . $but2);
 
 		$_rollover = "href" . we_htmlElement::htmlBr() . $_rollover_table->getHtmlCode();
@@ -1043,19 +1043,19 @@ class we_imageDocument extends we_binaryDocument {
 		<td colspan="2">'.$this->formInputField("txt","Title",g_l('weClass',"[Title]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(2,4).'</td>
+		<td>'.we_html_tools::getPixel(2,4).'</td>
 	</tr>
 	<tr>
 		<td colspan="2">'.$this->formInputField("txt","Description",g_l('weClass',"[Description]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(2,4).'</td>
+		<td>'.we_html_tools::getPixel(2,4).'</td>
 	</tr>
 	<tr>
 		<td colspan="2">'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td>
 	</tr>
 	<tr>
-		<td>'.getPixel(2,4).'</td>
+		<td>'.we_html_tools::getPixel(2,4).'</td>
 	</tr>
 </table>';
 

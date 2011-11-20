@@ -190,7 +190,7 @@ if(!$old){
 			$foo = $menus[$i]["code"];
 			$this->h_pOption($this->entries,$foo,$menus[$i]["id"],"");
 			$foo .= "</select>\n";
-			$out .= '<td>'.(($GLOBALS["BROWSER"]!="NN") ? (getPixel(2,3).'<br>') : '').$foo.'</td>'.(($i<(sizeof($menus)-1)) ? '<td>&nbsp;&nbsp;</td>' : '');
+			$out .= '<td>'.(($GLOBALS["BROWSER"]!="NN") ? (we_html_tools::getPixel(2,3).'<br>') : '').$foo.'</td>'.(($i<(sizeof($menus)-1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
 					</tr>

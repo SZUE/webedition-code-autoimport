@@ -24,12 +24,9 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 protect();
-htmlTop(g_l('modules_banner','[defaultbanner]'));
+we_html_tools::htmlTop(g_l('modules_banner','[defaultbanner]'));
 print STYLESHEET;
 $DefaultBannerID = 0;
 
@@ -133,7 +130,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 		$cancel_button = we_button::create_button("cancel","javascript:top.close();");
 		$buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
-		print  htmlDialogLayout($content,g_l('modules_banner','[defaultbanner]'),$buttons,"100%","30","175");
+		print  we_html_tools::htmlDialogLayout($content,g_l('modules_banner','[defaultbanner]'),$buttons,"100%","30","175");
 		?>
 	</form>
 	<?php echo $yuiSuggest->getYuiCss().$yuiSuggest->getYuiJs(); ?>

@@ -28,7 +28,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.php");
 
@@ -196,11 +195,11 @@ function build_dialog($selected_setting = "ui") {
 				$_adv_row .= '
 				<tr id="metadataRow_'.$key.'">
 					<td width="210" style="padding-right:5px;">
-						'.htmlTextInput('metadataTag['.$key.']',24,$value['tag'],255,"","text",205).'
+						'.we_html_tools::htmlTextInput('metadataTag['.$key.']',24,$value['tag'],255,"","text",205).'
 					</td>
 					<td width="200">
 						'.
-						htmlSelect('metadataType['.$key.']',$_metadata_types,1,$value['type'],false,'class="defaultfont" ')
+						we_html_tools::htmlSelect('metadataType['.$key.']',$_metadata_types,1,$value['type'],false,'class="defaultfont" ')
 						.'
 					</td>
 					<td align="right" width="30">
@@ -211,11 +210,11 @@ function build_dialog($selected_setting = "ui") {
 				</tr>
 				<tr id="metadataRow2_'.$key.'">
 					<td style="padding-bottom:10px;padding-right:5px;">
-						<div class="small">' . htmlspecialchars(g_l('metadata',"[import_from]")) . '</div>'.htmlTextInput('metadataImportFrom['.$key.']',24,$value['importFrom'],255,"","text",205).'
+						<div class="small">' . htmlspecialchars(g_l('metadata',"[import_from]")) . '</div>'.we_html_tools::htmlTextInput('metadataImportFrom['.$key.']',24,$value['importFrom'],255,"","text",205).'
 					</td>
 					<td colspan="2" style="padding-bottom:10px;">
 						<div class="small">' . htmlspecialchars(g_l('metadata',"[fields]")) . '</div>'.
-						htmlSelect('add_'.$key,$_metadata_fields,1,"",false,'class="defaultfont" style="width:100%" onchange="addFieldToInput(this,'.$key.')"')
+						we_html_tools::htmlSelect('add_'.$key,$_metadata_fields,1,"",false,'class="defaultfont" style="width:100%" onchange="addFieldToInput(this,'.$key.')"')
 						.'
 					</td>
 				</tr>
@@ -239,10 +238,10 @@ function build_dialog($selected_setting = "ui") {
 
 				function addRow() {
 
-					var tagInp = "' . addslashes(htmlTextInput('metadataTag[__we_new_id__]',24,"",255,"","text",210)) . '";
-					var importInp = "' . addslashes(htmlTextInput('metadataImportFrom[__we_new_id__]',24,"",255,"","text",210)) . '";
-					var typeSel = "' . str_replace("\n","\\n",addslashes(htmlSelect('metadataType[__we_new_id__]',$_metadata_types,1,"textfield",false,'class="defaultfont"'))) . '";
-					var fieldSel = "' . str_replace("\n","\\n",addslashes(htmlSelect('metadataType[__we_new_id__]',$_metadata_fields,1,"",false,'class="defaultfont" style="width:100%"  onchange="addFieldToInput(this,__we_new_id__)"'))) . '";
+					var tagInp = "' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]',24,"",255,"","text",210)) . '";
+					var importInp = "' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]',24,"",255,"","text",210)) . '";
+					var typeSel = "' . str_replace("\n","\\n",addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]',$_metadata_types,1,"textfield",false,'class="defaultfont"'))) . '";
+					var fieldSel = "' . str_replace("\n","\\n",addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]',$_metadata_fields,1,"",false,'class="defaultfont" style="width:100%"  onchange="addFieldToInput(this,__we_new_id__)"'))) . '";
 
 					var elem = document.getElementById("metadataTable");
 					newID = (elem.rows.length-1) / 2;
@@ -316,7 +315,7 @@ function build_dialog($selected_setting = "ui") {
 
 			');
 
-			$_hint = htmlAlertAttentionBox(g_l('metadata','[fields_hint]'), 1, 440,false);
+			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata','[fields_hint]'), 1, 440,false);
 
 
 			$_metadata = new we_htmlTable(array('border'=>'1','cellpadding'=>'0','cellspacing'=>'2','width'=>'440','height'=>'50'),4,3);
@@ -358,7 +357,7 @@ function render_dialog() {
  * RENDER FILE
  *****************************************************************************/
 
-htmlTop();
+we_html_tools::htmlTop();
 $save_javascript ="";
 // Check if we need to save settings
 if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] == "true") {

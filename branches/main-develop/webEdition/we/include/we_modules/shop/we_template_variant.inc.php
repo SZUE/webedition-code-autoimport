@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 
 //	send charset, if one is set:
@@ -32,7 +31,7 @@ if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["d
 	header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
 }
 protect();
-htmlTop();
+we_html_tools::htmlTop();
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
@@ -62,14 +61,14 @@ print STYLESHEET; ?>
 
 	$parts[]=array(
 			'headline' => '',
-			'html' => htmlAlertAttentionBox(g_l('weClass','[variant_info]'),2,620, false),
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass','[variant_info]'),2,620, false),
 			'space' => 0,
 			'noline'=>1
 	);
 
 	$parts[]=array(
 			'headline' => '',
-			'html' => htmlDialogBorder3(600,0, $content ,$headline),
+			'html' => we_html_tools::htmlDialogBorder3(600,0, $content ,$headline),
 			'space' => 0,
 			'noline'=>1
 

@@ -48,7 +48,7 @@ class weGlossarySettingFrames {
 	}
 
 	function getHTMLFrameset(){
-		return htmlTop() . '
+		return we_html_tools::htmlTop() . '
    <frameset rows="*,' . (($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0) . '" framespacing="0" border="1" frameborder="Yes">
    <frame src="' . $this->Frameset . '?pnt=content" name="content" scrolling=no>
    <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
@@ -83,7 +83,7 @@ class weGlossarySettingFrames {
 		$saveButton = we_button::create_button('save', 'javascript:document.we_form.submit();');
 		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 
-		return htmlTop() .
+		return we_html_tools::htmlTop() .
 		STYLESHEET . '
 
 ' . we_htmlElement::jsElement('', array('src' => JS_DIR . 'formFunctions.js')) . '
@@ -91,7 +91,7 @@ class weGlossarySettingFrames {
 </head>
 <body class="weDialogBody">
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
-	' . hidden('cmd', 'save_glossary_setting') . '
+	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '
 	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('modules_glossary','[menu_settings]') ) . '
 	</form>
 </body>

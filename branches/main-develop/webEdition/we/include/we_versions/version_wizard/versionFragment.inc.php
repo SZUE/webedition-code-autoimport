@@ -63,7 +63,7 @@ class versionFragment extends taskFragment
 		}
 		unset($_SESSION['versions']['logResetIds']);
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
-		htmlTop();
+		we_html_tools::htmlTop();
 		if ($_REQUEST['type'] == "delete_versions") {
 			$responseText = g_l('versions','[deleteDateVersionsOK]');
 		}

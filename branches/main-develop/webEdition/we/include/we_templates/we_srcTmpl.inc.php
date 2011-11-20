@@ -22,11 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 
@@ -37,7 +33,7 @@ if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be
 }
 
 if ($we_editmode) {
-	htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
+	we_html_tools::htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 	echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
@@ -939,7 +935,7 @@ if ($we_editmode) {
          </tr>
          <tr>
             <td align="left">';
-	$maineditor .= getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
+	$maineditor .= we_html_tools::getPixel(2, 10) . '<br><table cellpadding="0" cellspacing="0" border="0" width="100%">
 	    <tr>';
 
 	$maineditor .= ($vers==2?'
@@ -1177,7 +1173,7 @@ if ($we_editmode) {
 			<td align="right">' . $groupselect . '</td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5, 5) . '</td>
+			<td>' . we_html_tools::getPixel(5, 5) . '</td>
 		</tr>
 		<tr>
 			<td id="tagSelectCol" style="width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
@@ -1185,7 +1181,7 @@ if ($we_editmode) {
 			<td id="tagAreaCol" style="width: 100%;" align="right">' . we_htmlElement::htmlTextArea(array('name' => 'we_' . $we_doc->Name . '_TagWizardCode', 'id' => 'tag_edit_area', 'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""), 'class' => 'defaultfont'), $we_doc->TagWizardCode) . '</td>
 		</tr>
 		<tr>
-			<td>' . getPixel(5, 5) . '</td>
+			<td>' . we_html_tools::getPixel(5, 5) . '</td>
 		</tr>
 	</table>
 	<table id="wizardTableButtons" class="defaultfont" border="0" cellpadding="0" cellspacing="0">

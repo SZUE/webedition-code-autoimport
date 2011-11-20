@@ -644,7 +644,7 @@ function we_tag_userInput($attribs, $content){
 					$attsHidden['xml'] = $xml;
 					return getHtmlTag('input', $attsHidden);
 				} else {
-					return getDateInput2(
+					return we_html_tools::getDateInput2(
 							"we_ui_" . (isset($GLOBALS["WE_FORM"]) ? $GLOBALS["WE_FORM"] : "") . "[we_date_" . $name . "]",
 							($orgVal ? $orgVal : time()),
 							false,

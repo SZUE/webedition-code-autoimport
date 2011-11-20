@@ -332,13 +332,13 @@ class weShopStatusMails {
 			if ($dateSet!= $dateform){
 				$EMailhandler .= '<td class="defaultfont">'.$but.'</td>';
 			} else {
-				$EMailhandler .= '<td class="defaultfont">'.getPixel(30,15).'</td>';
+				$EMailhandler .= '<td class="defaultfont">'.we_html_tools::getPixel(30,15).'</td>';
 			}
 
 			$EMailhandler .='</tr></table>';
 
 		} else {
-			$EMailhandler = getPixel(30,15);
+			$EMailhandler = we_html_tools::getPixel(30,15);
 		}
 
 		return $EMailhandler;

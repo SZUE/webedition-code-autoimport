@@ -127,9 +127,9 @@ class we_schedpro{
 
 	function getSpacerRowHTML(){
 		return '	<tr valign="top">
-		<td>'.getPixel(80,10).'</td>
-		<td>'.getPixel(565,10).'</td>
-		<td>'.getPixel(26,10).'</td>
+		<td>'.we_html_tools::getPixel(80,10).'</td>
+		<td>'.we_html_tools::getPixel(565,10).'</td>
+		<td>'.we_html_tools::getPixel(26,10).'</td>
 	</tr>
 ';
 	}
@@ -270,7 +270,7 @@ $this->getSpacerRowHTML();
 			case SCHEDULE_TYPE_ONCE:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">'.g_l('modules_schedule',"[datetime]").':</td>
-		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true).'</td>
+		<td class="defaultfont">'.we_html_tools::getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true).'</td>
 		<td></td>
 	</tr>
 ';
@@ -278,7 +278,7 @@ $this->getSpacerRowHTML();
 			case SCHEDULE_TYPE_HOUR:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">'.g_l('modules_schedule',"[minutes]").':</td>
-		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"i").'</td>
+		<td class="defaultfont">'.we_html_tools::getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"i").'</td>
 		<td></td>
 	</tr>
 ';
@@ -286,7 +286,7 @@ $this->getSpacerRowHTML();
 			case SCHEDULE_TYPE_DAY:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">'.g_l('modules_schedule',"[time]").':</td>
-		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
+		<td class="defaultfont">'.we_html_tools::getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 ';
@@ -294,7 +294,7 @@ $this->getSpacerRowHTML();
 			case SCHEDULE_TYPE_WEEK:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">'.g_l('modules_schedule',"[time]").':</td>
-		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
+		<td class="defaultfont">'.we_html_tools::getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 '.
@@ -309,7 +309,7 @@ $this->getSpacerRowHTML().
 			case SCHEDULE_TYPE_MONTH:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">'.g_l('modules_schedule',"[time]").':</td>
-		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
+		<td class="defaultfont">'.we_html_tools::getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 '.
@@ -324,7 +324,7 @@ $this->getSpacerRowHTML().
 			case SCHEDULE_TYPE_YEAR:
 				$table .= '	<tr valign="top">
 		<td class="defaultgray">'.g_l('modules_schedule',"[time]").':</td>
-		<td class="defaultfont">'.getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
+		<td class="defaultfont">'.we_html_tools::getDateInput2("we_schedule_time%s_".$this->nr,$this->time,true,"h:i").'</td>
 		<td></td>
 	</tr>
 '.

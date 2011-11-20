@@ -25,7 +25,7 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 // print HTML head
-htmlTop($GLOBALS['lang']['Template']['title']);
+we_html_tools::htmlTop($GLOBALS['lang']['Template']['title']);
 
 // generate needed buttons
 $ButtonBack = we_button::create_button('back', 'javascript:leWizardForm.back();', true, 100, 22, "", "", true, false);

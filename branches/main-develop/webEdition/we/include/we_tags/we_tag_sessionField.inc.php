@@ -65,7 +65,7 @@ function we_tag_sessionField($attribs, $content) {
 				$orgVal = time();
 			}
 
-			return getDateInput2(
+			return we_html_tools::getDateInput2(
 					"s[we_date_" . $name . "]",
 					($orgVal ? $orgVal : time()),
 					false,

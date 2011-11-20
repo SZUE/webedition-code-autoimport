@@ -25,14 +25,11 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 	protect();
 
-	htmlTop();
+	we_html_tools::htmlTop();
 	print STYLESHEET;
 
 
@@ -366,10 +363,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				array_push($parts, array(
 				    'headline' => g_l('modules_shop','[Artikel]'),
 				    'space' => 100,
-					'html' => '<form name="we_intern_form">' . hidden('bid', $_REQUEST['bid']) . hidden("we_cmd[]", 'add_new_article') . '
+					'html' => '<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden("we_cmd[]", 'add_new_article') . '
 					<table border="0" cellpadding="0" cellspacing="0">
 					<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, (isset($_REQUEST['add_article']) ? $_REQUEST['add_article'] : ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
-					<td>' . getPixel(10,1) . '</td>
+					<td>' . we_html_tools::getPixel(10,1) . '</td>
 					<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 					</tr>
 					<tr>
@@ -395,7 +392,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				    'space' => 100,
 					'html' => '<table border="0" cellpadding="0" cellspacing="0">
 					<tr><td>' . we_class::htmlTextInput('searchArticle', 24, ( isset($_REQUEST['searchArticle']) ? $_REQUEST['searchArticle'] : '' ), '', 'id="searchArticle"', 'text', 380  ) . '</td>
-					<td>' . getPixel(10,1) . '</td>
+					<td>' . we_html_tools::getPixel(10,1) . '</td>
 					<td>' . $searchBut . '</td>
 					</tr>
 					</table>
@@ -457,9 +454,9 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				    'space' => 100,
 					'html' => '
 					<form name="we_form" target="edbody">
-					' . hidden('bid', $_REQUEST['bid']) .
-					hidden("we_cmd[]", 'add_article') .
-					hidden("add_article", $_REQUEST['add_article']) .
+					' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
+					we_html_tools::hidden("we_cmd[]", 'add_article') .
+					we_html_tools::hidden("add_article", $_REQUEST['add_article']) .
 					'
 					<b>' . $model->elements['shoptitle']['dat'] . '</b>',
 					'noline' => 1
@@ -592,7 +589,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 				$fieldHtml = $_REQUEST['cartfieldname'] . '<input type="hidden" name="cartfieldname" id="cartfieldname" value="' . $_REQUEST['cartfieldname'] . '" />';
 			} else {
-				$fieldHtml = htmlTextInput('cartfieldname', 24, '', '', 'id="cartfieldname"');
+				$fieldHtml = we_html_tools::htmlTextInput('cartfieldname', 24, '', '', 'id="cartfieldname"');
 			}
 
 			// make input field, for name or textfield
@@ -732,8 +729,8 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				</head>
 				<body class="weDialogBody">
 				<form name="we_form" target="edbody">
-				' . hidden('bid', $_REQUEST['bid']) .
-				hidden("we_cmd[]", 'save_shipping_cost');
+				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost');
 				print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,g_l('modules_shop','[edit_shipping_cost][title]'));
 				print '
 				</form>
@@ -783,7 +780,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			$parts = array();
 			array_push($parts,array(
-					'html' => htmlAlertAttentionBox(g_l('modules_shop','[preferences][explanation_customer_odercustomer]'), 2,470),
+					'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop','[preferences][explanation_customer_odercustomer]'), 2,470),
 					'space' => 0
 				)
 			);
@@ -903,8 +900,8 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				</head>
 				<body class="weDialogBody">
 				<form name="we_form" target="edbody">
-				' . hidden('bid', $_REQUEST['bid']) .
-				hidden("we_cmd[]", 'save_order_customer');
+				' . we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden("we_cmd[]", 'save_order_customer');
 				print we_multiIconBox::getHTML("","100%",$parts,30,we_button::position_yes_no_cancel($saveBut,'',$cancelBut),-1,"","",false,g_l('modules_shop','[preferences][customerdata]'),"",560);
 				print '
 				</form>
@@ -943,7 +940,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 }
 
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -957,7 +954,7 @@ if(isset($_REQUEST["deletethisorder"])){
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
-        <td colspan="2" class="defaultfont">'.htmlDialogLayout("<span class='defaultfont'>".g_l('modules_shop','[geloscht]')."</span>",g_l('modules_shop','[loscht]')).'</td>
+        <td colspan="2" class="defaultfont">'.we_html_tools::htmlDialogLayout("<span class='defaultfont'>".g_l('modules_shop','[geloscht]')."</span>",g_l('modules_shop','[loscht]')).'</td>
       </tr>
       </table></html>';
       exit;
@@ -1256,7 +1253,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
       <tr>
-        <td colspan="2" class="defaultfont">'.htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop','[orderDoesNotExist]'). "</span>",g_l('modules_shop','[loscht]')).'</td>
+        <td colspan="2" class="defaultfont">'.we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop','[orderDoesNotExist]'). "</span>",g_l('modules_shop','[loscht]')).'</td>
       </tr>
       </table></html>';
       exit;
@@ -1362,14 +1359,14 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 
 												<td class="defaultfont" width="86" valign="top" height="25">'.g_l('modules_shop','[bestellnr]').'</td>
 												<td class="defaultfont" valign="top" width="40" height="25"><b>'.$_REQUEST["bid"].'</b></td>
-												<td width="20" height="25">'.getPixel(34,15).'</td>
+												<td width="20" height="25">'.we_html_tools::getPixel(34,15).'</td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateOrder'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateOrder">' . (($_REQUEST["DateOrder"]==$dateform) ? "-" : $_REQUEST["DateOrder"]) . '</div>
 													<input type="hidden" name="DateOrder" id="hidden_Calendar_DateOrder" value="' . (($_REQUEST["DateOrder"]==$dateform) ? "-" : $_REQUEST["DateOrder"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateOrder") . '
 												</td>
@@ -1385,12 +1382,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateConfirmation'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateConfirmation">' . (($_REQUEST["DateConfirmation"]==$dateform) ? "-" : $_REQUEST["DateConfirmation"]) . '</div>
 													<input type="hidden" name="DateConfirmation" id="hidden_Calendar_DateConfirmation" value="' . (($_REQUEST["DateConfirmation"]==$dateform) ? "-" : $_REQUEST["DateConfirmation"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateConfirmation") . '
 												</td>
@@ -1406,12 +1403,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomA'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomA">' . (($_REQUEST["DateCustomA"]==$dateform) ? "-" : $_REQUEST["DateCustomA"]) . '</div>
 													<input type="hidden" name="DateCustomA" id="hidden_Calendar_DateCustomA" value="' . (($_REQUEST["DateCustomA"]==$dateform) ? "-" : $_REQUEST["DateCustomA"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomA") . '
 												</td>
@@ -1427,12 +1424,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomB'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomB">' . (($_REQUEST["DateCustomB"]==$dateform) ? "-" : $_REQUEST["DateCustomB"]) . '</div>
 													<input type="hidden" name="DateCustomB" id="hidden_Calendar_DateCustomB" value="' . (($_REQUEST["DateCustomB"]==$dateform) ? "-" : $_REQUEST["DateCustomB"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomB") . '
 												</td>
@@ -1448,12 +1445,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomC'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomC">' . (($_REQUEST["DateCustomC"]==$dateform) ? "-" : $_REQUEST["DateCustomC"]) . '</div>
 													<input type="hidden" name="DateCustomC" id="hidden_Calendar_DateCustomC" value="' . (($_REQUEST["DateCustomC"]==$dateform) ? "-" : $_REQUEST["DateCustomC"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomC") . '
 												</td>
@@ -1469,12 +1466,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateShipping'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateShipping">' . (($_REQUEST["DateShipping"]==$dateform) ? "-" : $_REQUEST["DateShipping"]) . '</div>
 													<input type="hidden" name="DateShipping" id="hidden_Calendar_DateShipping" value="' . (($_REQUEST["DateShipping"]==$dateform) ? "-" : $_REQUEST["DateShipping"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateShipping") . '
 												</td>
@@ -1490,12 +1487,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomD'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomD">' . (($_REQUEST["DateCustomD"]==$dateform) ? "-" : $_REQUEST["DateCustomD"]) . '</div>
 													<input type="hidden" name="DateCustomD" id="hidden_Calendar_DateCustomD" value="' . (($_REQUEST["DateCustomD"]==$dateform) ? "-" : $_REQUEST["DateCustomD"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomD") . '
 												</td>
@@ -1511,12 +1508,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomE'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomE">' . (($_REQUEST["DateCustomE"]==$dateform) ? "-" : $_REQUEST["DateCustomE"]) . '</div>
 													<input type="hidden" name="DateCustomE" id="hidden_Calendar_DateCustomE" value="' . (($_REQUEST["DateCustomE"]==$dateform) ? "-" : $_REQUEST["DateCustomE"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomE") . '
 												</td>
@@ -1532,11 +1529,11 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DatePayment'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DatePayment">' . (($_REQUEST["DatePayment"]==$dateform) ? "-" : $_REQUEST["DatePayment"]) . '</div>
 													<input type="hidden" name="DatePayment" id="hidden_Calendar_DatePayment" value="' . (($_REQUEST["DatePayment"]==$dateform) ? "-" : $_REQUEST["DatePayment"]) . '" />
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DatePayment") . '
 												</td>
@@ -1552,12 +1549,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomF'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomF">' . (($_REQUEST["DateCustomF"]==$dateform) ? "-" : $_REQUEST["DateCustomF"]) . '</div>
 													<input type="hidden" name="DateCustomF" id="hidden_Calendar_DateCustomF" value="' . (($_REQUEST["DateCustomF"]==$dateform) ? "-" : $_REQUEST["DateCustomF"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomF") . '
 												</td>
@@ -1573,12 +1570,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomG'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomG">' . (($_REQUEST["DateCustomG"]==$dateform) ? "-" : $_REQUEST["DateCustomG"]) . '</div>
 													<input type="hidden" name="DateCustomG" id="hidden_Calendar_DateCustomG" value="' . (($_REQUEST["DateCustomG"]==$dateform) ? "-" : $_REQUEST["DateCustomG"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomG") . '
 												</td>
@@ -1594,12 +1591,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCancellation'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCancellation">' . (($_REQUEST["DateCancellation"]==$dateform) ? "-" : $_REQUEST["DateCancellation"]) . '</div>
 													<input type="hidden" name="DateCancellation" id="hidden_Calendar_DateCancellation" value="' . (($_REQUEST["DateCancellation"]==$dateform) ? "-" : $_REQUEST["DateCancellation"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCancellation") . '
 												</td>
@@ -1615,12 +1612,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomH'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomH">' . (($_REQUEST["DateCustomH"]==$dateform) ? "-" : $_REQUEST["DateCustomH"]) . '</div>
 													<input type="hidden" name="DateCustomH" id="hidden_Calendar_DateCustomH" value="' . (($_REQUEST["DateCustomH"]==$dateform) ? "-" : $_REQUEST["DateCustomH"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomH") . '
 												</td>
@@ -1636,12 +1633,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomI'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomI">' . (($_REQUEST["DateCustomI"]==$dateform) ? "-" : $_REQUEST["DateCustomI"]) . '</div>
 													<input type="hidden" name="DateCustomI" id="hidden_Calendar_DateCustomI" value="' . (($_REQUEST["DateCustomI"]==$dateform) ? "-" : $_REQUEST["DateCustomI"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomI") . '
 												</td>
@@ -1657,12 +1654,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateCustomJ'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateCustomJ">' . (($_REQUEST["DateCustomJ"]==$dateform) ? "-" : $_REQUEST["DateCustomJ"]) . '</div>
 													<input type="hidden" name="DateCustomJ" id="hidden_Calendar_DateCustomJ" value="' . (($_REQUEST["DateCustomJ"]==$dateform) ? "-" : $_REQUEST["DateCustomJ"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateCustomJ") . '
 												</td>
@@ -1678,12 +1675,12 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td class="defaultfont" valign="top" width="40" height="25"></td>
 												<td width="20" height="25"></td>
 												<td width="98" class="defaultfont" height="25">'.$weShopStatusMails->FieldsText['DateFinished'].'</td>
-												<td height="25">'.getPixel(14,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(14,15).'</td>
 												<td width="14" class="defaultfont" align="right" height="25">
 													<div id="div_Calendar_DateFinished">' . (($_REQUEST["DateFinished"]==$dateform) ? "-" : $_REQUEST["DateFinished"]) . '</div>
 													<input type="hidden" name="DateFinished" id="hidden_Calendar_DateFinished" value="' . (($_REQUEST["DateFinished"]==$dateform) ? "-" : $_REQUEST["DateFinished"]) . '" />
 												</td>
-												<td height="25">'.getPixel(10,15).'</td>
+												<td height="25">'.we_html_tools::getPixel(10,15).'</td>
 												<td width="102" valign="top" height="25">
 													' . we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"button_Calendar_DateFinished") . '
 												</td>
@@ -1700,10 +1697,10 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
 												<td height="5"></td>
 												<td width="102" valign="top" height="5"></td>
-												<td width="30" height="5">'.getPixel(30,5).'</td>
+												<td width="30" height="5">'.we_html_tools::getPixel(30,5).'</td>
 											</tr>
 											<tr height="1">
-												<td class="defaultfont" valign="top" colspan="9" bgcolor="gray" height="1">'.getPixel(14,1).'</td>
+												<td class="defaultfont" valign="top" colspan="9" bgcolor="gray" height="1">'.we_html_tools::getPixel(14,1).'</td>
 
 											</tr>
 											<tr>
@@ -1715,7 +1712,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td width="14" class="defaultfont" align="right" valign="top"></td>
 												<td></td>
 												<td width="102" valign="top"></td>
-												<td width="30">'.getPixel(30,5).'</td>
+												<td width="30">'.we_html_tools::getPixel(30,5).'</td>
 											</tr>
 ' . $customerFieldTable . '
                                             <tr>
@@ -1737,7 +1734,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	//
 
 	// headline here - these fields are fix.
-	$pixelImg = getPixel(14,15);
+	$pixelImg = we_html_tools::getPixel(14,15);
 	$orderTable = '
 	<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
 	<tr>

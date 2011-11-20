@@ -22,10 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_html_tools.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_delete_fn.inc.php');
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
 
 include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 
@@ -63,7 +60,7 @@ if (isset($_REQUEST['do'])) {
 protect();
 
 // Ausgabe beginnen
-htmlTop();
+we_html_tools::htmlTop();
 
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 

@@ -23,10 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 
 
 if(defined("WORKFLOW_TABLE")) {
@@ -84,7 +80,7 @@ switch ($we_doc->userHasAccess()){
 
 
 //	preparations of needed vars
-htmlTop();
+we_html_tools::htmlTop();
 
 $showPubl = we_hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
 $reloadPage = (($showPubl || $we_doc->ContentType=='text/weTmpl') && (!$we_doc->ID)) ? true : false;
@@ -366,19 +362,19 @@ if(inWorkflow($we_doc)) {
 												1,
 												1);
 		$_pos = 0;
-		$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 
 		if($we_doc->ID) {
 			switch($we_doc->ContentType){
 				case "text/weTmpl":
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_button::create_button("make_new_document", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
-					$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 					break;
 				case "object":
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_button::create_button("make_new_object", "javascript:top.we_cmd('new','".OBJECT_FILES_TABLE."','','objectFile','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
-					$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 					break;
 			}
 		}
@@ -391,7 +387,7 @@ if(inWorkflow($we_doc)) {
 			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -403,7 +399,7 @@ if(inWorkflow($we_doc)) {
 			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -438,7 +434,7 @@ if(inWorkflow($we_doc)) {
 				$_normalTable->setColContent(0, $_pos++, we_button::create_button("startEditor", "javascript:editFile();"));
 			}
 
-			$_normalTable->setColContent(0, $_pos++, $_edit_source . getPixel(10,20));
+			$_normalTable->setColContent(0, $_pos++, $_edit_source . we_html_tools::getPixel(10,20));
 
 		}
 
@@ -452,14 +448,14 @@ if(inWorkflow($we_doc)) {
 				//if (defined("CUSTOMER_TABLE")) {//Bug 4716
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-					$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 
 				//}
 
 			} else {
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 
 			}
 
@@ -470,12 +466,12 @@ if(inWorkflow($we_doc)) {
 			if (defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 
 			$_normalTable->addCol(2);
 			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global','[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
-			$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 
 
 		} else if($showPubl) {
@@ -486,7 +482,7 @@ if(inWorkflow($we_doc)) {
 
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -498,7 +494,7 @@ if(inWorkflow($we_doc)) {
 
 				$_normalTable->addCol(2);
 				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block') ) , we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", g_l('global','[we_make_same]['.$we_doc->ContentType.']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ) ));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -506,13 +502,13 @@ if(inWorkflow($we_doc)) {
             if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")) {
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global',"[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
             }
 		} else if($we_doc->ContentType == "object") {
             if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")) {
 				$_normalTable->addCol(2);
 				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object','[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
-				$_normalTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
             }
 		}
 
@@ -532,7 +528,7 @@ if(inWorkflow($we_doc)) {
 											1,
 											1);
 		$_pos = 0;
-		$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 
 		//##############################	First buttons which are always needed
 		//	Always button preview
@@ -540,7 +536,7 @@ if(inWorkflow($we_doc)) {
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 		}
 
 		// shop variants
@@ -550,7 +546,7 @@ if(inWorkflow($we_doc)) {
 
 				$_seeModeTable->addCol(2);
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("shopVariants", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -560,7 +556,7 @@ if(inWorkflow($we_doc)) {
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("thumbnails", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 		}
 
 		//	Button edit !!!
@@ -569,7 +565,7 @@ if(inWorkflow($we_doc)) {
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 
 		}
 		//	Button properties
@@ -578,7 +574,7 @@ if(inWorkflow($we_doc)) {
 			if (permissionhandler::isUserAllowedForAction("switch_edit_page","WE_EDITPAGE_PROPERTIES")) {
 				$_seeModeTable->addCol(2);
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -587,7 +583,7 @@ if(inWorkflow($we_doc)) {
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("workspace_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 		}
 
 
@@ -596,7 +592,7 @@ if(inWorkflow($we_doc)) {
 			if(defined("SCHEDULE_TABLE") && we_hasPerm( "CAN_SEE_SCHEDULER" )){
 				$_seeModeTable->addCol(2);
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -609,7 +605,7 @@ if(inWorkflow($we_doc)) {
 				if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 					$_seeModeTable->addCol(2);
 					$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
-					$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+					$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 				}
 			}
 		}
@@ -625,7 +621,7 @@ if(inWorkflow($we_doc)) {
 			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 				$_seeModeTable->addCol(2);
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 		}
 
@@ -637,7 +633,7 @@ if(inWorkflow($we_doc)) {
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-			$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 		}
 
 
@@ -653,7 +649,7 @@ if(inWorkflow($we_doc)) {
 
 					$_seeModeTable->addCol(2);
 					$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-					$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+					$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 				}
 			}
 
@@ -693,7 +689,7 @@ if(inWorkflow($we_doc)) {
 
 				$_seeModeTable->addCol(2);
 				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), $showPubl_makeSamNew);
-				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 			}
 
 		//
@@ -705,7 +701,7 @@ if(inWorkflow($we_doc)) {
 			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
 				$_seeModeTable->addCol(2);
 
-				$_seeModeTable->setColContent(0, $_pos++, getPixel(10,20));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
 				$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), we_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert','[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 			}
 		}
@@ -741,9 +737,9 @@ if(inWorkflow($we_doc)) {
 															1,
 															4);
 
-						$_noPermTable->setColContent( 0, 0, getPixel(20,2));
+						$_noPermTable->setColContent( 0, 0, we_html_tools::getPixel(20,2));
 						$_noPermTable->setColContent( 0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-						$_noPermTable->setColContent( 0, 2, getPixel(10,2));
+						$_noPermTable->setColContent( 0, 2, we_html_tools::getPixel(10,2));
 						$_noPermTable->setColContent( 0, 3, g_l('SEEM',"[no_permission_to_edit_document]"));
 
 

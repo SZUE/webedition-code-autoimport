@@ -26,16 +26,13 @@
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossary.php');
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossaryCache.php');
 
 protect();
 
-htmlTop(g_l('modules_glossary','[glossary_check]'));
+we_html_tools::htmlTop(g_l('modules_glossary','[glossary_check]'));
 
 print STYLESHEET;
 
@@ -785,45 +782,45 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 	$Content = '
 	<table width="650" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
 	<tr>
-		<td>'.getPixel(150,1).'</td>
-		<td>'.getPixel(20,1).'</td>
-		<td>'.getPixel(140,1).'</td>
-		<td>'.getPixel(20,1).'</td>
-		<td>'.getPixel(200,1).'</td>
-		<td>'.getPixel(20,1).'</td>
-		<td>'.getPixel(100,1).'</td>
+		<td>'.we_html_tools::getPixel(150,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(140,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(200,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(100,1).'</td>
 	</tr>
 	<tr>
 		<td colspan="7">' . g_l('modules_glossary','[not_identified_words]') . '</td>
 	</tr>
 	<tr>
-		<td colspan="7">'.getPixel(2,5).'</td>
+		<td colspan="7">'.we_html_tools::getPixel(2,5).'</td>
 	</tr>
 	<tr>
 		<td><b>' . g_l('modules_glossary','[not_known_word]') . '</b></td>
-		<td>'.getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
 		<td><b>' . g_l('modules_glossary','[action]') . '</b></td>
-		<td>'.getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
 		<td><b>' . g_l('modules_glossary','[announced_word]') . ' / ' . g_l('modules_glossary','[suggestion]') . '</b></td>
-		<td>'.getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
 		<td><b>' . g_l('modules_glossary','[language]') . '</b></td>
-		<td>'.getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
 	</tr>
 	<tr>
-		<td colspan="7">'.getPixel(2,5).'</td>
+		<td colspan="7">'.we_html_tools::getPixel(2,5).'</td>
 	</tr>
 	</table>
 	<div style="height: 248px; width: 675px; overflow: auto;">
 	<table width="650" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
 	<tbody id="unknown">
 	<tr>
-		<td>'.getPixel(150,1).'</td>
-		<td>'.getPixel(20,1).'</td>
-		<td>'.getPixel(140,1).'</td>
-		<td>'.getPixel(20,1).'</td>
-		<td>'.getPixel(200,1).'</td>
-		<td>'.getPixel(20,1).'</td>
-		<td>'.getPixel(100,1).'</td>
+		<td>'.we_html_tools::getPixel(150,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(140,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(200,1).'</td>
+		<td>'.we_html_tools::getPixel(20,1).'</td>
+		<td>'.we_html_tools::getPixel(100,1).'</td>
 	</tr>
 	</tbody>
 	</table>';

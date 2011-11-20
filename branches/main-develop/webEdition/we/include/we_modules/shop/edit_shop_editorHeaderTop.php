@@ -28,13 +28,11 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 	exit;
 }
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 print STYLESHEET;
 
@@ -104,7 +102,7 @@ $we_tabs = new we_tabs();
    }
 $we_tabs->onResize();
 $tab_head = $we_tabs->getHeader();
-$tab_body = '<div id="main" >' . getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB($headline).'</div>' . getPixel(100,3) .
+$tab_body = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB($headline).'</div>' . we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>';
 ?>

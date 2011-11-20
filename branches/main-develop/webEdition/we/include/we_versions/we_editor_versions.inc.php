@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVer
 
 protect();
 
-htmlTop();
+we_html_tools::htmlTop();
 
 echo we_htmlElement::jsScript(JS_DIR.'windows.js').
 we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').

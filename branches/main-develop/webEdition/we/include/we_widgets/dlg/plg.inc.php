@@ -129,8 +129,8 @@ $_dns = explode("\n", $websites);
 //}
 
 
-$sctDns = htmlFormElementTable(
-		htmlSelect("sct_dns", $_dns, 1, 0, false, 'onChange="" style="width:300px;"', 'value'),
+$sctDns = we_html_tools::htmlFormElementTable(
+		we_html_tools::htmlSelect("sct_dns", $_dns, 1, 0, false, 'onChange="" style="width:300px;"', 'value'),
 		g_l('cockpit',"[domain]"));
 
 $chbxChart[0] = we_forms::checkbox(
@@ -246,7 +246,7 @@ $chart = new we_htmlTable(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 13, 1);
 $chart->setCol(0, 0, null, $sctDns);
-$chart->setCol(1, 0, null, getPixel(1, 8));
+$chart->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
 $chart->setCol(2, 0, null, $chbxChart[0]);
 $chart->setCol(3, 0, null, $chbxChart[1]);
 $chart->setCol(4, 0, null, $chbxChart[2]);
@@ -287,7 +287,7 @@ $_pLogProps = new we_htmlTable(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 2, 1);
 $_pLogProps->setCol(0, 0, null, $sMultibox);
-$_pLogProps->setCol(1, 0, null, getPixel(1, 10));
+$_pLogProps->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
 print
 		we_htmlElement::htmlHtml(

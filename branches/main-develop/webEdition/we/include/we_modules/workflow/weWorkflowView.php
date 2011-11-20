@@ -186,7 +186,7 @@ class weWorkflowView extends weWorkflowBase{
 				}
 				else{
 					$out .= $this->getHiddensFormPropertyPage();
-					$out .= htmlDialogLayout($this->getStepsHTML(),"");
+					$out .= we_html_tools::htmlDialogLayout($this->getStepsHTML(),"");
 				}
 			}
 			$out.="\r\n</form>\r\n";
@@ -203,7 +203,7 @@ class weWorkflowView extends weWorkflowBase{
 	function getWorkflowHeaderMultiboxParts($space){
 
 		return array(	"headline" => g_l('modules_workflow','[name]'),
-						"html"     => htmlTextInput($this->uid."_Text",37, stripslashes($this->workflowDef->Text),"",' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"',"text",498),
+						"html"     => we_html_tools::htmlTextInput($this->uid."_Text",37, stripslashes($this->workflowDef->Text),"",' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"',"text",498),
 						"space"    => $space
 					);
 	}
@@ -211,32 +211,32 @@ class weWorkflowView extends weWorkflowBase{
 	function getWorkflowSelectHTML(){
 		$vals = array();
         	$vals=$this->workflowDef->getAllWorkflowsInfo();
-		return htmlSelect("wid",$vals,4,$this->workflowDef->ID,false,"onclick='we_cmd(\"edit_workflow\")'","value",200);
+		return we_html_tools::htmlSelect("wid",$vals,4,$this->workflowDef->ID,false,"onclick='we_cmd(\"edit_workflow\")'","value",200);
 	}
 
 	function getWorkflowTypeHTML(){
 		$out="";
 
 		$vals   = array();
-		$vals[] = getPixel(2,10);
+		$vals[] = we_html_tools::getPixel(2,10);
 		$vals[] = $this->getFoldersHTML();
 		$out   .= $this->getTypeTableHTML(we_forms::radiobutton(WE_WORKFLOW_FOLDER, ($this->workflowDef->Type==WE_WORKFLOW_FOLDER ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_dir]'),true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
 		$vals   = array();
-		$vals[] = getPixel(2,10);
+		$vals[] = we_html_tools::getPixel(2,10);
 		$vals[] = $this->getDocTypeHTML();
-		$vals[] = getPixel(2,10);
+		$vals[] = we_html_tools::getPixel(2,10);
 		$vals[] = $this->getCategoryHTML();
 		$out   .= $this->getTypeTableHTML(we_forms::radiobutton(WE_WORKFLOW_DOCTYPE_CATEGORY, ($this->workflowDef->Type==WE_WORKFLOW_DOCTYPE_CATEGORY ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_doctype]'),true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
 
 		if(defined("OBJECT_TABLE")){
 			$vals   = array();
-			$vals[] = getPixel(2,10);
+			$vals[] = we_html_tools::getPixel(2,10);
 			$vals[] = $this->getObjectHTML();
-			$vals[] = getPixel(2,10);
+			$vals[] = we_html_tools::getPixel(2,10);
 			$vals[] = $this->getObjCategoryHTML();
-			$vals[] = getPixel(2,10);
+			$vals[] = we_html_tools::getPixel(2,10);
 			$vals[] = $this->getObjectFileFoldersHTML();
 			$out   .= $this->getTypeTableHTML(	we_forms::radiobutton(WE_WORKFLOW_OBJECT, ($this->workflowDef->Type==WE_WORKFLOW_OBJECT ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_object]'),true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
@@ -262,7 +262,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$dirs = new MultiDirChooser(495,$this->workflowDef->Folders,"del_folder",we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path",FILE_TABLE,"defaultfont","","top.content.setHot();");
 
-		return htmlFormElementTable($dirs->get(),g_l('modules_workflow','[dirs]'));
+		return we_html_tools::htmlFormElementTable($dirs->get(),g_l('modules_workflow','[dirs]'));
 
 	}
 
@@ -278,7 +278,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$cats = new MultiDirChooser(495,$this->workflowDef->Categories,"del_cat", we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path",CATEGORY_TABLE,"defaultfont","","top.content.setHot();");
 
-		return htmlFormElementTable($cats->get(),g_l('modules_workflow','[categories]'));
+		return we_html_tools::htmlFormElementTable($cats->get(),g_l('modules_workflow','[categories]'));
 
 	}
 
@@ -294,7 +294,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$cats = new MultiDirChooser(495,$this->workflowDef->ObjCategories,"del_objcat", we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path",CATEGORY_TABLE,"defaultfont","","top.content.setHot();");
 
-		return htmlFormElementTable($cats->get(),g_l('modules_workflow','[categories]'));
+		return we_html_tools::htmlFormElementTable($cats->get(),g_l('modules_workflow','[categories]'));
 
 	}
 
@@ -312,7 +312,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$cats = new MultiDirChooser(495,$this->workflowDef->Objects,"del_object", we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path",OBJECT_TABLE,"defaultfont","","top.content.setHot();");
 
-		return htmlFormElementTable($cats->get(),g_l('modules_workflow','[classes]'));
+		return we_html_tools::htmlFormElementTable($cats->get(),g_l('modules_workflow','[classes]'));
 
 	}
 
@@ -332,7 +332,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		$dirs = new MultiDirChooser(495,$this->workflowDef->ObjectFileFolders,"del_object_file_folder",we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path",OBJECT_FILES_TABLE,"defaultfont","","top.content.setHot();");
 
-		return htmlFormElementTable($dirs->get(),g_l('modules_workflow','[dirs]'));
+		return we_html_tools::htmlFormElementTable($dirs->get(),g_l('modules_workflow','[dirs]'));
 
 	}
 
@@ -376,12 +376,12 @@ class weWorkflowView extends weWorkflowBase{
 			$content[$counter][0]["align"]="center";
 
 
-			$content[$counter][1]["dat"]='<table><tr valign="top"><td>'.we_forms::radiobutton("1",$sv->stepCondition ? 1 : 0,$this->uid."_step".$counter."_and","",false,"defaultfont","top.content.setHot();").'</td><td>'.getPixel(5,5).'</td><td>'.we_forms::radiobutton("0",$sv->stepCondition ? 0 : 1,$this->uid."_step".$counter."_and","",false,"defaultfont","top.content.setHot();").'</td></tr></table>';
+			$content[$counter][1]["dat"]='<table><tr valign="top"><td>'.we_forms::radiobutton("1",$sv->stepCondition ? 1 : 0,$this->uid."_step".$counter."_and","",false,"defaultfont","top.content.setHot();").'</td><td>'.we_html_tools::getPixel(5,5).'</td><td>'.we_forms::radiobutton("0",$sv->stepCondition ? 0 : 1,$this->uid."_step".$counter."_and","",false,"defaultfont","top.content.setHot();").'</td></tr></table>';
 			$content[$counter][1]["height"]="";
 			$content[$counter][1]["align"]="";
 
-			$content[$counter][2]["dat"]='<table cellpadding="0" cellspacing="0"><tr><td>'.getPixel(5,7).'</td></tr><tr valign="middle"><td class="middlefont">'.htmlTextInput($this->uid."_step".$counter."_Worktime","15",$sv->Worktime,"",'onChange="top.content.setHot();"').'</td></tr>';
-			$content[$counter][2]["dat"].='<tr valign="middle"><td>'.getPixel(5,$_spacer_1_height).'</td><tr>';
+			$content[$counter][2]["dat"]='<table cellpadding="0" cellspacing="0"><tr><td>'.we_html_tools::getPixel(5,7).'</td></tr><tr valign="middle"><td class="middlefont">'.we_html_tools::htmlTextInput($this->uid."_step".$counter."_Worktime","15",$sv->Worktime,"",'onChange="top.content.setHot();"').'</td></tr>';
+			$content[$counter][2]["dat"].='<tr valign="middle"><td>'.we_html_tools::getPixel(5,$_spacer_1_height).'</td><tr>';
 			$content[$counter][2]["dat"].='<tr valign="top">';
 			$content[$counter][2]["dat"].='<td class="middlefont">'.we_forms::checkboxWithHidden($sv->timeAction==1,$this->uid."_step".$counter."_timeAction",g_l('modules_workflow','[go_next]'),false,"middlefont","top.content.setHot();").'</td>';
 			$content[$counter][2]["dat"].='</tr></table>';
@@ -417,17 +417,17 @@ class weWorkflowView extends weWorkflowBase{
 
 				$out="";
 				$out.='<table cellpadding="0" cellspacing="0">';
-				$out.='<tr valign="middle"><td colspan="4">'.getPixel(5,$_spacer_2_height).'</td><tr>';
+				$out.='<tr valign="middle"><td colspan="4">'.we_html_tools::getPixel(5,$_spacer_2_height).'</td><tr>';
 				$out.='<tr valign="middle"><td>'.$yuiSuggest->getHTML().'</td>';
 
 				$out.='</tr></table>';
 
 				$out.='<table cellpadding="0" cellspacing="0">';
-				$out.='<tr valign="middle"><td colspan="3">'.getPixel(5,0).'</td><tr>';
+				$out.='<tr valign="middle"><td colspan="3">'.we_html_tools::getPixel(5,0).'</td><tr>';
 				$out.='<tr valign="top">';
 
 				$out.='<td class="middlefont" align="right">'.we_forms::checkboxWithHidden($tv->Mail,$this->uid."_task_".$counter."_".$counter1."_Mail",g_l('modules_workflow','[send_mail]'),false,"middlefont","top.content.setHot();").'</td>';
-				$out.='<td>'.getPixel(20,1).'</td>';
+				$out.='<td>'.we_html_tools::getPixel(20,1).'</td>';
 				$out.='<td class="middlefont">'.we_forms::checkboxWithHidden($tv->Edit,$this->uid."_task_".$counter."_".$counter1."_Edit",g_l('modules_workflow','[edit]'),false,"middlefont","top.content.setHot();").'</td>';
 
 
@@ -452,9 +452,9 @@ class weWorkflowView extends weWorkflowBase{
 
 		$out .='	<table style="margin-right:30px;">
 				<tr valign="top">
-					<td>'.htmlDialogBorder3(400,300,$content,$headline).'</td>
+					<td>'.we_html_tools::htmlDialogBorder3(400,300,$content,$headline).'</td>
 					<td><table cellpadding="0" cellspacing="0">
-						<tr><td>'.getPixel(5,3).'</td></tr>
+						<tr><td>'.we_html_tools::getPixel(5,3).'</td></tr>
 						<tr><td>' . we_button::create_button_table(	array(we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addTask()",true,30), we_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();delTask()",true,30))) . '</td>
 						</tr>
 						</table></td>
@@ -472,7 +472,7 @@ class weWorkflowView extends weWorkflowBase{
 	function getTypeTableHTML($head,$values,$ident=0,$textalign="left",$textclass="defaultfont"){
 		$out='<table cellpadding="0" cellspacing="0" border="0">'.($head ? '<tr><td class="'.trim($textclass).'" align="'.trim($textalign).'" colspan="2">'.$head.'</td></tr>' : '');
 		foreach($values as $key=>$val){
-			$out.='<tr><td>'.getPixel($ident,5).'</td><td class="'.trim($textclass).'">'.$val.'</td></tr>';
+			$out.='<tr><td>'.we_html_tools::getPixel($ident,5).'</td><td class="'.trim($textclass).'">'.$val.'</td></tr>';
 		}
 		$out.='</table>';
 		return $out;
@@ -528,9 +528,9 @@ class weWorkflowView extends weWorkflowBase{
 			$t = $this->db->f("DocType");
 			$vals[$v]=$t;
 		}
-		$pop = htmlSelect($this->uid."_MYDocType[]",$vals,6,$this->workflowDef->DocType,true,'onChange="top.content.setHot();"',"value",$width,"defaultfont");
+		$pop = we_html_tools::htmlSelect($this->uid."_MYDocType[]",$vals,6,$this->workflowDef->DocType,true,'onChange="top.content.setHot();"',"value",$width,"defaultfont");
 
-        return htmlFormElementTable($pop,g_l('modules_workflow','[doctype]'));
+        return we_html_tools::htmlFormElementTable($pop,g_l('modules_workflow','[doctype]'));
 	}
 
 	function htmlHidden($name,$value=""){
@@ -547,12 +547,12 @@ class weWorkflowView extends weWorkflowBase{
 		$wecmdenc3= we_cmd_enc(str_replace('\\','',$cmd));
 
 		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
-		return htmlFormElementTable(htmlTextInput($Pathname,30,$Pathvalue,"",'onChange="top.content.setHot();" readonly',"text",$width,0),
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname,30,$Pathvalue,"",'onChange="top.content.setHot();" readonly',"text",$width,0),
 			"",
 			"left",
 			"defaultfont",
 			$this->htmlHidden($IDName,$IDValue),
-			getPixel(20,4),
+			we_html_tools::getPixel(20,4),
 			$button);
 	}
 
@@ -1375,9 +1375,6 @@ class weWorkflowView extends weWorkflowBase{
 
 
 	function getObjectInfo(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
-
-
 		$_parts = array();
 		$_space = 150;
 
@@ -1592,11 +1589,11 @@ class weWorkflowView extends weWorkflowBase{
 		$wfType = f("SELECT ".WORKFLOW_TABLE.".Type as Type FROM ".WORKFLOW_TABLE.",".WORKFLOW_DOC_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".ID=".abs($workflowDocument->ID),"Type",$db);
 		$out='<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
-			<td></td><td>'.htmlDialogBorder3(730,300,$content,$headline).'</td><td>'.getPixel(15,10).'</td>
+			<td></td><td>'.we_html_tools::htmlDialogBorder3(730,300,$content,$headline).'</td><td>'.we_html_tools::getPixel(15,10).'</td>
 		</tr>
-			<td></td><td>'.getPixel(10,10).'</td><td>'.getPixel(15,10).'</td>
+			<td></td><td>'.we_html_tools::getPixel(10,10).'</td><td>'.we_html_tools::getPixel(15,10).'</td>
 		<tr>
-			<td></td><td>' . we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=".$workflowDocument->document->ID."&type=".$wfType."','workflow_history',-1,-1,640,480,true,false,true);").'</td><td>'.getPixel(15,10).'</td>
+			<td></td><td>' . we_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=".$workflowDocument->document->ID."&type=".$wfType."','workflow_history',-1,-1,640,480,true,false,true);").'</td><td>'.we_html_tools::getPixel(15,10).'</td>
 		</tr>
 		</table>';
 
@@ -1655,7 +1652,7 @@ class weWorkflowView extends weWorkflowBase{
 			$nextprev .= we_button::create_button("back", "", false, 100, 22, "", "", true);
 		}
 
-		$nextprev .= getPixel(23,1)."</td><td class='defaultfont' style=\"padding: 0 10px 0 10px;\"><b>".(($anz)?$offset+1:0)."-";
+		$nextprev .= we_html_tools::getPixel(23,1)."</td><td class='defaultfont' style=\"padding: 0 10px 0 10px;\"><b>".(($anz)?$offset+1:0)."-";
 
 		if( ($anz-$offset) < $numRows){
 			$nextprev .= $anz;
@@ -1663,7 +1660,7 @@ class weWorkflowView extends weWorkflowBase{
 			$nextprev .= $offset+$numRows;
 		}
 
-		$nextprev .= getPixel(5,1)." ".g_l('global',"[from]")." ".getPixel(5,1).$anz."</b></td><td>".getPixel(23,1);
+		$nextprev .= we_html_tools::getPixel(5,1)." ".g_l('global',"[from]")." ".we_html_tools::getPixel(5,1).$anz."</b></td><td>".we_html_tools::getPixel(23,1);
 
 		if(($offset+$numRows) < $anz){
 			$nextprev .= we_button::create_button("next", WE_WORKFLOW_MODULE_PATH . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=".($offset+$numRows)."&order=$order"); //bt_back
@@ -1676,9 +1673,9 @@ class weWorkflowView extends weWorkflowBase{
 
 
 		if(count($logs)) {
-			return htmlDialogLayout(htmlDialogBorder3(580,300,$content,$headlines),"",$buttonsTable);
+			return we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580,300,$content,$headlines),"",$buttonsTable);
 		} else {
-			return htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- '.g_l('modules_workflow','[log_is_empty]').' --</center></div>', '', we_button::create_button("close", "javascript:self.close();"));
+			return we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- '.g_l('modules_workflow','[log_is_empty]').' --</center></div>', '', we_button::create_button("close", "javascript:self.close();"));
 		}
 
 	}
@@ -1713,22 +1710,22 @@ class weWorkflowView extends weWorkflowBase{
 		$out.='<td class="defaultfont">'.g_l('modules_workflow','[log_question_text]').'</td>';
 		$out.='</tr>';
 		$out.='<tr>';
-		$out.='<td>'.getPixel(10,10).'</td>';
+		$out.='<td>'.we_html_tools::getPixel(10,10).'</td>';
 		$out.='</tr>';
 
 		$out.='<tr>';
 		$vals=array();
-		$vals[]='<table cellpading="0" cellspacing="0"><tr><td>'.getPixel(22,5).'</td><td>'.getDateInput2("log_time%s",(time()-(336*3600))).'</td></tr></table>';
+		$vals[]='<table cellpading="0" cellspacing="0"><tr><td>'.we_html_tools::getPixel(22,5).'</td><td>'.we_html_tools::getDateInput2("log_time%s",(time()-(336*3600))).'</td></tr></table>';
 		$out.='<td>'.$this->getTypeTableHTML(we_forms::radiobutton("1",true,"clear_time",g_l('modules_workflow','[log_question_time]'),true,"defaultfont","javascript:document.we_form.clear_opt.value=1;"),$vals).'</td>';
 		$out.='</tr>';
 
 		$out.='<tr>';
-		$out.='<td>'.getPixel(22,10)."<br>".we_forms::radiobutton("0",false,"clear_time",g_l('modules_workflow','[log_question_all]'),true,"defaultfont","javascript:document.we_form.clear_opt.value=0;").'</td>';
+		$out.='<td>'.we_html_tools::getPixel(22,10)."<br>".we_forms::radiobutton("0",false,"clear_time",g_l('modules_workflow','[log_question_all]'),true,"defaultfont","javascript:document.we_form.clear_opt.value=0;").'</td>';
 		$out.='</tr>';
 
 		$out.='</tr>';
 		$out.='</table>';
-		$out=$js.htmlDialogLayout( $out,
+		$out=$js.we_html_tools::htmlDialogLayout( $out,
 									g_l('modules_workflow','[empty_log]'),
 									we_button::position_yes_no_cancel(	we_button::create_button("ok", "javascript:self.clear();"),
 																		"",

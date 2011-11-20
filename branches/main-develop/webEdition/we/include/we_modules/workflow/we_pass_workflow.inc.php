@@ -97,7 +97,7 @@ $content .= '<tr>
 $_buttons = we_button::position_yes_no_cancel(	$okbut,
 												"",
 												$cancelbut);
-$frame = htmlDialogLayout($content,g_l('modules_workflow','[pass_workflow]'), $_buttons);
+$frame = we_html_tools::htmlDialogLayout($content,g_l('modules_workflow','[pass_workflow]'), $_buttons);
 
 print $frame;
 

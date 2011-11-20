@@ -243,7 +243,7 @@
 
 		function Footer(&$weGlossaryFrames) {
 
-			
+
 			$_table = array(
 				'border'		=> '0',
 				'cellpadding'	=> '0',
@@ -252,7 +252,7 @@
 			);
 
 			$table1 = new we_htmlTable($_table, 1, 1);
-			$table1->setCol(0, 0, array("nowrap"=>null,"valign"=>"top"), getPixel(1600, 10));
+			$table1->setCol(0, 0, array("nowrap"=>null,"valign"=>"top"), we_html_tools::getPixel(1600, 10));
 
 
 			$_table = array(
@@ -273,16 +273,16 @@
 			$table2 = new we_htmlTable($_table, 1, 6);
 			$table2->setRow(0, array("valign"=>"middle"));
 			if($ShowUnpublish) {
-				$table2->setCol(0, $col++, array("nowrap"=>null), getPixel(10, 20));
+				$table2->setCol(0, $col++, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
 				$table2->setCol(0, $col++, array("nowrap"=>null), $UnpublishButton);
 			}
-			$table2->setCol(0, $col++, array("nowrap"=>null), getPixel(10, 20));
+			$table2->setCol(0, $col++, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
 			$table2->setCol(0, $col++, array("nowrap"=>null), $SaveButton);
 			if(!$ShowUnpublish) {
-				$table2->setCol(0, $col++, array("nowrap"=>null), getPixel(10, 20));
+				$table2->setCol(0, $col++, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
 				$table2->setCol(0, $col++, array("nowrap"=>null), $PublishWhenSaved);
 			}
-			$table2->setCol(0, $col++, array("nowrap"=>null), getPixel(10, 20));
+			$table2->setCol(0, $col++, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
 			$table2->setCol(0, $col++, array("nowrap"=>null), $NewEntry);
 
 			$js = 		"if(top.makeNewEntry==1) {\n"
@@ -333,18 +333,18 @@
 					</tr>
 					<tr>
 						<td>
-							' . htmlSelect("Language", $_languages, 1, $language, false, " onchange=\"top.content.setHot();\"", "value", 520) . '</td>
+							' . we_html_tools::htmlSelect("Language", $_languages, 1, $language, false, " onchange=\"top.content.setHot();\"", "value", 520) . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . g_l('modules_glossary','[type]') . '</td>
 					</tr>
 					<tr>
 						<td>
-							' . htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, " onchange=\"top.content.setHot();showType(this.value);\"", "value", 520) . '</td>
+							' . we_html_tools::htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, " onchange=\"top.content.setHot();showType(this.value);\"", "value", 520) . '</td>
 					</tr>
 				</table>';
 
@@ -404,22 +404,22 @@
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("abbreviation[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("abbreviation[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $title . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("abbreviation[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("abbreviation[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
@@ -459,22 +459,22 @@
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("acronym[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $title . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("acronym[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("acronym[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
@@ -510,11 +510,11 @@
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
@@ -525,7 +525,7 @@
 			return $pre . $content . $post;
 
 		}
-		
+
 		function getHTMLTextReplacement(&$weGlossaryFrames) {
 
 			$text = $GLOBALS['l_glossary']['textreplacement'];
@@ -550,18 +550,18 @@
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $GLOBALS['l_glossary']['textreplacement_Text'] . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).  '</td>
+							'.we_html_tools::htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onChange="setHot();"', "text", 520).  '</td>
 					</tr>
 				</table>';
 
@@ -599,19 +599,19 @@
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput("link[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
+							'.we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onChange="setHot();"', "text", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlSelect("link[Attributes][mode]", $_modes, 1, $_mode, false, " onchange=\"setHot();showLinkMode(this.value);\"", "value", 520).'</td>
+							'.we_html_tools::htmlSelect("link[Attributes][mode]", $_modes, 1, $_mode, false, " onchange=\"setHot();showLinkMode(this.value);\"", "value", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 				</table>';
 
@@ -629,7 +629,7 @@
 
 			$parameter = g_l('modules_glossary','[parameter]');
 
-			
+
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'".FILE_TABLE."','document.we_form.elements[\\'link[Attributes][InternLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][InternLinkPath]\\'].value','','".session_id()."','$_rootDirID')
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][InternLinkID]'].value");
@@ -649,12 +649,12 @@
 				$_internParameter = $weGlossaryFrames->View->Glossary->getAttribute('InternParameter');
 			}
 
-			$selector = htmlFormElementTable(htmlTextInput('link[Attributes][InternLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
+			$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',
 				'left',
 				'defaultfont',
 				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][InternLinkID]',"value"=>$_linkID)),
-				getPixel(20,4),
+				we_html_tools::getPixel(20,4),
 				$_button
 			);
 
@@ -664,7 +664,7 @@
 			$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
@@ -672,14 +672,14 @@
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $parameter . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][InternParameter]',58,$_internParameter,'','onchange="setHot();"','text',520,0).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][InternParameter]',58,$_internParameter,'','onchange="setHot();"','text',520,0).'</td>
 					</tr>
 				</table>';
 
@@ -706,22 +706,22 @@
 			$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][ExternUrl]',58,$_url,'','onchange="setHot();"','text',520).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][ExternUrl]',58,$_url,'','onchange="setHot();"','text',520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $parameter . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][ExternParameter]',58,$_parameter,'','onchange="setHot();"','text',520,0).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][ExternParameter]',58,$_parameter,'','onchange="setHot();"','text',520,0).'</td>
 					</tr>
 				</table>';
 
@@ -749,7 +749,7 @@
 
 			}
 
-			
+
 			$_rootDirID = 0;
 			//javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','document.we_form.elements[\\'link[Attributes][ObjectLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][ObjectLinkPath]\\'].value','opener.we_cmd(\\'populateWorkspaces\\');','".session_id()."','$_rootDirID','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1)."
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][ObjectLinkID]'].value");
@@ -758,12 +758,12 @@
 			$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'".OBJECT_FILES_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$_rootDirID','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")" : '';
 			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
-			$selector = htmlFormElementTable(htmlTextInput('link[Attributes][ObjectLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
+			$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',
 				'left',
 				'defaultfont',
 				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][ObjectLinkID]',"value"=>$_linkID)),
-				getPixel(20,4),
+				we_html_tools::getPixel(20,4),
 				$_button
 			);
 
@@ -780,7 +780,7 @@
 			$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
@@ -788,7 +788,7 @@
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					</table>
 					<div id="ObjectWorkspaceID" style="display: block;">
@@ -798,21 +798,21 @@
 					</tr>
 					<tr>
 						<td>
-							'.htmlSelect('link[Attributes][ObjectWorkspaceID]',$_wsid,0,$_workspaceID,false,'style="width: ' . 520 . 'px; border: #AAAAAA solid 1px;" onChange="setHot();"','value').'</td>
+							'.we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]',$_wsid,0,$_workspaceID,false,'style="width: ' . 520 . 'px; border: #AAAAAA solid 1px;" onChange="setHot();"','value').'</td>
 					</tr>
 					</table>
 					</div>
 					<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $parameter . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][ObjectParameter]',58,$_parameter,'','onchange="setHot();"','text',520,0).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]',58,$_parameter,'','onchange="setHot();"','text',520,0).'</td>
 					</tr>
 				</table>';
 
@@ -852,7 +852,7 @@
 
 			}
 
-			
+
 			$_rootDirID = 0;
 			//javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'".CATEGORY_TABLE."','document.we_form.elements[\\'link[Attributes][CategoryLinkID]\\'].value','document.we_form.elements[\\'link[Attributes][CategoryLinkPath]\\'].value','opener.setHot();','".session_id()."','$_rootDirID')
 			$wecmdenc1= we_cmd_enc("document.we_form.elements['link[Attributes][CategoryLinkID]'].value");
@@ -862,12 +862,12 @@
 			$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'".CATEGORY_TABLE."','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$_rootDirID')";
 			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
-			$selector1 = htmlFormElementTable(htmlTextInput('link[Attributes][CategoryLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
+			$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]',58,$_linkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',
 				'left',
 				'defaultfont',
 				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][CategoryLinkID]',"value"=>$_linkID)),
-				getPixel(20,4),
+				we_html_tools::getPixel(20,4),
 				$_button
 			);
 
@@ -879,12 +879,12 @@
 			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'".FILE_TABLE."','".$wecmdenc1."','".$wecmdenc2."','','".session_id()."','$_rootDirID')";
 			$_button = we_button::create_button('select', $_cmd,true,100,22,'','',false);
 
-			$selector2 = htmlFormElementTable(htmlTextInput('link[Attributes][CategoryInternLinkPath]',58,$_internLinkPath,'','onchange="setHot();" readonly','text',400,0),
+			$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]',58,$_internLinkPath,'','onchange="setHot();" readonly','text',400,0),
 				'',
 				'left',
 				'defaultfont',
 				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][CategoryInternLinkID]',"value"=>$_internLinkID)),
-				getPixel(20,4),
+				we_html_tools::getPixel(20,4),
 				$_button
 			);
 
@@ -894,7 +894,7 @@
 			$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>
@@ -902,18 +902,18 @@
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $mode . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlSelect("link[Attributes][modeCategory]", $_modes, 1, $_modeCategory, false, " onchange=\"setHot();showLinkModeCategory(this.value);\"", "value", 520).'</td>
+							'.we_html_tools::htmlSelect("link[Attributes][modeCategory]", $_modes, 1, $_modeCategory, false, " onchange=\"setHot();showLinkModeCategory(this.value);\"", "value", 520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					</table>
 					<div id="mode_category_intern" style="display: none;">
@@ -928,32 +928,32 @@
 					<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][CategoryUrl]',58,$_url,'','onchange="setHot();"','text',520).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][CategoryUrl]',58,$_url,'','onchange="setHot();"','text',520).'</td>
 					</tr>
 					</table>
 					</div>
 					<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $catParameter . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][CategoryCatParameter]',58,$_catParameter,'','onchange="setHot();"','text',520).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]',58,$_catParameter,'','onchange="setHot();"','text',520).'</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td class="defaultfont">' . $parameter . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.htmlTextInput('link[Attributes][CategoryParameter]',58,$_parameter,'','onchange="setHot();"','text',520,0).'</td>
+							'.we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]',58,$_parameter,'','onchange="setHot();"','text',520,0).'</td>
 					</tr>
 				</table>';
 
@@ -985,11 +985,11 @@
 			$_compare =  "value";
 			$_width = 100;
 
-			$input = htmlTextInput($name, 15, $value, "", '', "text" , ($width-$_width));
+			$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text" , ($width-$_width));
 
-			$select = htmlSelect($_name, $_options, $_size, "", $_multiple, $_attributes, $_compare, $_width);
+			$select = we_html_tools::htmlSelect($_name, $_options, $_size, "", $_multiple, $_attributes, $_compare, $_width);
 
-			return htmlFormElementTable($input, $title, "left", "defaultfont", $select);
+			return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 
 		}
 
@@ -1022,11 +1022,11 @@
 			$_compare =  "value";
 			$_width = 100;
 
-			$input = htmlTextInput($name, 15, $value, "", '', "text" , ($width-$_width));
+			$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text" , ($width-$_width));
 
-			$select = htmlSelect($_name, $_options, $_size, "", $_multiple, $_attributes, $_compare, $_width);
+			$select = we_html_tools::htmlSelect($_name, $_options, $_size, "", $_multiple, $_attributes, $_compare, $_width);
 
-			return htmlFormElementTable($input, $title, "left", "defaultfont", $select);
+			return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 
 		}
 
@@ -1043,23 +1043,23 @@
 				'noline' => 1
 			);
 
-			$_title =  htmlFormElementTable(
-				htmlTextInput('link[Title]',30,$weGlossaryFrames->View->Glossary->Title,'','onchange="setHot();"','text',520),
+			$_title =  we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput('link[Title]',30,$weGlossaryFrames->View->Glossary->Title,'','onchange="setHot();"','text',520),
 				g_l('modules_glossary','[title]')
 			);
 
-			$_anchor = htmlFormElementTable(
-				htmlTextInput('link[Attributes][anchor]',30,$weGlossaryFrames->View->Glossary->getAttribute('anchor'),'','onchange="setHot();"','text',520),
+			$_anchor = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput('link[Attributes][anchor]',30,$weGlossaryFrames->View->Glossary->getAttribute('anchor'),'','onchange="setHot();"','text',520),
 				g_l('modules_glossary','[anchor]')
 			);
 
-			$_target = htmlFormElementTable(
-				targetBox('link[Attributes][target]',30,(520-100),'',$weGlossaryFrames->View->Glossary->getAttribute('target'),'"setHot();"','text',100),
+			$_target = we_html_tools::htmlFormElementTable(
+				we_html_tools::targetBox('link[Attributes][target]',30,(520-100),'',$weGlossaryFrames->View->Glossary->getAttribute('target'),'"setHot();"','text',100),
 				g_l('modules_glossary','[target]')
 			);
 
-			$_link = htmlFormElementTable(
-				htmlTextInput('link[Attributes][attribute]',30,$weGlossaryFrames->View->Glossary->getAttribute('attribute'),'','onchange="setHot();"','text',520),
+			$_link = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput('link[Attributes][attribute]',30,$weGlossaryFrames->View->Glossary->getAttribute('attribute'),'','onchange="setHot();"','text',520),
 				g_l('modules_glossary','[link_attribute]')
 			);
 
@@ -1081,13 +1081,13 @@
 				'noline' => 1
 			);
 
-			$_accesskey = 	htmlFormElementTable(
-								htmlTextInput('link[Attributes][accesskey]',30,$weGlossaryFrames->View->Glossary->getAttribute('accesskey'),'','onchange="setHot();"','text',520),
+			$_accesskey = 	we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput('link[Attributes][accesskey]',30,$weGlossaryFrames->View->Glossary->getAttribute('accesskey'),'','onchange="setHot();"','text',520),
 								g_l('modules_glossary','[accesskey]')
 							);
 
-			$_tabindex = 	htmlFormElementTable(
-								htmlTextInput('link[Attributes][tabindex]',30,$weGlossaryFrames->View->Glossary->getAttribute('tabindex'),'','onchange="setHot();"','text',520),
+			$_tabindex = 	we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput('link[Attributes][tabindex]',30,$weGlossaryFrames->View->Glossary->getAttribute('tabindex'),'','onchange="setHot();"','text',520),
 								g_l('modules_glossary','[tabindex]')
 							);
 
@@ -1120,27 +1120,27 @@
 			);
 
 			$_popup->setCol(1,0,array(),
-				htmlFormElementTable(
-					htmlTextInput('link[Attributes][popup_xposition]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_xposition'),'','onchange="setHot();"','text',$_input_width),
+			we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlTextInput('link[Attributes][popup_xposition]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_xposition'),'','onchange="setHot();"','text',$_input_width),
 					g_l('modules_glossary','[popup_x]')
 				)
 			);
 			$_popup->setCol(1,1,array(),
-				htmlFormElementTable(
-					htmlTextInput('link[Attributes][popup_yposition]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_yposition'),'','onchange="setHot();"','text',$_input_width),
+			we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlTextInput('link[Attributes][popup_yposition]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_yposition'),'','onchange="setHot();"','text',$_input_width),
 					g_l('modules_glossary','[popup_y]')
 				)
 			);
 			$_popup->setCol(1,2,array(),
-				htmlFormElementTable(
-					htmlTextInput('link[Attributes][popup_width]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_width'),'','onchange="setHot();"','text',$_input_width),
+			we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlTextInput('link[Attributes][popup_width]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_width'),'','onchange="setHot();"','text',$_input_width),
 					g_l('modules_glossary','[popup_width]')
 				)
 			);
 
 			$_popup->setCol(1,3,array(),
-				htmlFormElementTable(
-					htmlTextInput('link[Attributes][popup_height]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_height'),'','onchange="setHot();"','text',$_input_width),
+			we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlTextInput('link[Attributes][popup_height]',5,$weGlossaryFrames->View->Glossary->getAttribute('popup_height'),'','onchange="setHot();"','text',$_input_width),
 					g_l('modules_glossary','[popup_height]')
 				)
 			);

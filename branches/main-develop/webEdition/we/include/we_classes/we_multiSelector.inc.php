@@ -125,7 +125,7 @@ function we_makeTextFromPath(path){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",getHtmlTop())));
+		$htmltop = preg_replace("/[[:cntrl:]]/","",trim(str_replace("'","\\'",we_html_tools::getHtmlTop())));
 		$htmltop = str_replace('script', "scr' + 'ipt", $htmltop);
 		$htmltop = str_replace('Script', "Scr' + 'ipt", $htmltop);
 ?>
@@ -197,11 +197,11 @@ function writeBody(d){
 		d.writeln('<td class="selector" unselectable="on" title="'+entries[i].text+'">');
 		d.writeln(cutText(entries[i].text,80));
 		d.writeln('</td>');
-		d.writeln('</tr><tr><td colspan="2"><?php print getPixel(2,1); ?></td></tr>');
+		d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2,1); ?></td></tr>');
 	}
 	d.writeln('<tr>');
-	d.writeln('<td width="25"><?php print getPixel(25,2)?></td>');
-	d.writeln('<td><?php print getPixel(150,2)?></td>');
+	d.writeln('<td width="25"><?php print we_html_tools::getPixel(25,2)?></td>');
+	d.writeln('<td><?php print we_html_tools::getPixel(150,2)?></td>');
 	d.writeln('</tr>');
 	d.writeln('</table>');
 	d.writeln('</body>');

@@ -71,7 +71,7 @@
 			);
 
 			$table1 = new we_htmlTable($_table, 1, 1);
-			$table1->setCol(0, 0, array("nowrap"=>null,"valign"=>"top"), getPixel(1600, 10));
+			$table1->setCol(0, 0, array("nowrap"=>null,"valign"=>"top"), we_html_tools::getPixel(1600, 10));
 
 
 			$_table = array(
@@ -84,7 +84,7 @@
 
 			$table2 = new we_htmlTable($_table, 1, 2);
 			$table2->setRow(0, array("valign"=>"middle"));
-			$table2->setCol(0, 0, array("nowrap"=>null), getPixel(10, 20));
+			$table2->setCol(0, 0, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
 			$table2->setCol(0, 1, array("nowrap"=>null), $_we_button);
 
 			$form = we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode());
@@ -106,11 +106,11 @@
 			$content = '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td>
-							' . htmlAlertAttentionBox(g_l('modules_glossary','[hint_dictionary]'), 2, 520, true, 0) . '</td>
+							' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary','[hint_dictionary]'), 2, 520, true, 0) . '</td>
 					</tr>
 					<tr>
 						<td>
-							'.getPixel(2,4).'</td>
+							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
 						<td>

@@ -1021,7 +1021,7 @@ class weBackupWizard{
 		$table = new we_htmlTable(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont'), 4, 1);
 
 		$table->setCol(0, 0, null, g_l('backup','[finish]'));
-		$table->setCol(1, 0, null, getPixel(5,20));
+		$table->setCol(1, 0, null, we_html_tools::getPixel(5,20));
 
 		if($_SESSION['weBackupVars']['options']['export2send']) {
 			$_down=$_SESSION['weBackupVars']['backup_file'];
@@ -1063,7 +1063,7 @@ class weBackupWizard{
 		}
 
 
-		$table->setCol(3, 0, null,getPixel(5,5));
+		$table->setCol(3, 0, null,we_html_tools::getPixel(5,5));
 
 		$content.=$table->getHtmlCode();
 
@@ -1084,7 +1084,7 @@ class weBackupWizard{
 		$body=we_htmlElement::htmlBody(array('class'=>'weDialogBody','onLoad'=>'startStep();'),
 			we_htmlElement::htmlCenter(
 				we_htmlElement::htmlForm(array('name'=>'we_form','method'=>'post'),
-					htmlDialogLayout($content,g_l('backup','[export_step2]'))
+					we_html_tools::htmlDialogLayout($content,g_l('backup','[export_step2]'))
 				)
 			)
 		);
@@ -1159,12 +1159,12 @@ class weBackupWizard{
  	}
 
 	function build_error_message() {
-		$_header = getHtmlTop() . STYLESHEET;
+		$_header = we_html_tools::getHtmlTop() . STYLESHEET;
 
 		$_error_message = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 1);
 		$_error_message->setCol(0, 0, null, g_l('backup',"[download_failed]"));
 
-		return $_header . '<body class="weDialogBody">' . we_htmlElement::htmlCenter(htmlDialogLayout($_error_message->getHtmlCode(), g_l('backup',"[export_step2]")));
+		return $_header . '<body class="weDialogBody">' . we_htmlElement::htmlCenter(we_html_tools::htmlDialogLayout($_error_message->getHtmlCode(), g_l('backup',"[export_step2]")));
 	}
 
  	function getHTMLExtern(){
@@ -1182,7 +1182,7 @@ class weBackupWizard{
 		$body=we_htmlElement::htmlBody(array("class"=>"weEditorBody","onBlur"=>"self.focus()","onload"=>"self.focus();"),
 					we_htmlElement::htmlCenter(
 						we_htmlElement::htmlForm(array("name"=>"we_form"),
-							htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd)
+							we_html_tools::htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd)
 						)
 					)
 		);
@@ -1205,7 +1205,7 @@ class weBackupWizard{
 		$body="";
 
 		$table=new we_htmlTable(array("border"=>"0","align"=>"right","cellpadding"=>"0","cellspacing"=>"0"),2,4);
-		$table->setCol(0,0,null,getPixel(15,5));
+		$table->setCol(0,0,null,we_html_tools::getPixel(15,5));
 
 		if (isset($_REQUEST["operation_mode"])) {
 				if($_REQUEST["operation_mode"]=="busy"){
@@ -1242,7 +1242,7 @@ class weBackupWizard{
 							$body.=we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."busy.gif"));
 						}
 						$table->setCol(0,1,null,$body);
-						$table->setCol(1,1,null,getPixel(250,1));
+						$table->setCol(1,1,null,we_html_tools::getPixel(250,1));
 				}
 			}
 
@@ -1265,11 +1265,11 @@ class weBackupWizard{
 									}
 								}
 						');
-						$table->setCol(0,2,null,getPixel(355,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(355,5));
 						$table->setCol(0,3,null,we_button::position_yes_no_cancel(we_button::create_button("make_backup", "javascript:doExport();"),null,we_button::create_button("cancel", "javascript:top.close();")));
 					break;
 					case 2:
-						$table->setCol(0,2,null,getPixel(265,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(265,5));
 						$table->setCol(0,3,null,we_button::create_button("cancel", "javascript:top.close();"));
 					break;
 					case 3:
@@ -1284,7 +1284,7 @@ class weBackupWizard{
 							$head.=we_htmlElement::jsElement("<!--\ntop.opener.top.afterBackup=true;\n-->");
 							$body=we_button::create_button("close", "javascript:top.close();");
 						}
-						$table->setCol(0,2,null,getPixel(495,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(495,5));
 						$table->setCol(0,3,null,$body);
 					break;
 					default:
@@ -1327,7 +1327,7 @@ class weBackupWizard{
 							we_button::create_button("no", "javascript:top.body.location='".$this->frameset."?pnt=body&step=2';"),
 							we_button::create_button("cancel", "javascript:top.close();")
 						);
-						$table->setCol(0,2,null,getPixel(290,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(290,5));
 						$table->setCol(0,3,null,$buttons);
 					break;
 					case 2:
@@ -1338,7 +1338,7 @@ class weBackupWizard{
 
 						$buttons = we_button::position_yes_no_cancel($nextbuts,null,we_button::create_button("cancel", "javascript:top.close();"));
 
-						$table->setCol(0,2,null,getPixel(290,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(290,5));
 						$table->setCol(0,3,null,$buttons);
 					break;
 					case 3:
@@ -1358,15 +1358,15 @@ class weBackupWizard{
 						$buttons = we_button::position_yes_no_cancel($nextprevbuts,null,we_button::create_button("cancel", "javascript:top.close();"));
 
 
-						$table->setCol(0,2,null,getPixel(240,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(240,5));
 						$table->setCol(0,3,null,$buttons);
 					break;
 					case 4:
-						$table->setCol(0,2,null,getPixel(260,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(260,5));
 						$table->setCol(0,3,null,we_button::create_button("cancel", "javascript:top.close();"));
 					break;
 					case 5:
-						$table->setCol(0,2,null,getPixel(490,5));
+						$table->setCol(0,2,null,we_html_tools::getPixel(490,5));
 						$table->setCol(0,3,null,we_button::create_button("close", "javascript:top.close();"));
 					break;
 					default:
@@ -1730,7 +1730,7 @@ class weBackupWizard{
 		$table = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
 		$table->setCol(0, 0, null, g_l('backup',"[finish_error]"));
 		$table->setCol(1, 0, null, we_htmlElement::htmlTextArea(array("name"=>"text_errors","cols"=>"45","rows"=>"7"),$text));
-		$table->setCol(2, 0, null, getPixel(400,5));
+		$table->setCol(2, 0, null, we_html_tools::getPixel(400,5));
 		return $table->getHtmlCode();
 
 }
@@ -1759,7 +1759,7 @@ class weBackupWizard{
 			$table = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
 			$table->setCol(0, 0, null, g_l('backup',"[finish_warning]"));
 			$table->setCol(1, 0, null, we_htmlElement::htmlTextArea(array("name"=>"text_errors","cols"=>"45","rows"=>"7"),$text));
-			$table->setCol(2, 0, null, getPixel(400,5));
+			$table->setCol(2, 0, null, we_html_tools::getPixel(400,5));
 			return $table->getHtmlCode();
 		}
 		return "";
@@ -1771,7 +1771,7 @@ class weBackupWizard{
 
 		$perf=new we_htmlTable(array("border"=>"0","cellpadding"=>"2","cellspacing"=>"0"),3,5);
 		$perf->setCol(0,0,array("class"=>"header_small"),g_l('backup',"[slow]"));
-		$perf->setCol(0,1,array(),getPixel(5,2));
+		$perf->setCol(0,1,array(),we_html_tools::getPixel(5,2));
 		$perf->setCol(0,2,array("class"=>"header_small","align"=>"right"),g_l('backup',"[fast]"));
 
 		$steps=array(1,10,20,60,100,150,200,300,400,500,600,800,1000,5000,10000);

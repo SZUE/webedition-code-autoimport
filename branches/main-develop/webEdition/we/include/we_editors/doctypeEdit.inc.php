@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_html_tools.inc.php");
 
 protect();
 $parts = array();
@@ -163,7 +162,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 		}
 }
 
-htmlTop(g_l('weClass',"[doctypes]"));
+we_html_tools::htmlTop(g_l('weClass',"[doctypes]"));
 $yuiSuggest =& weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
