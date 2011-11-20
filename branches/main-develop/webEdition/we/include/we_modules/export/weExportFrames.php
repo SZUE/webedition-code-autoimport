@@ -281,7 +281,7 @@ class weExportFrames extends weModuleFrames {
 		$parts = array();
 		array_push($parts,array(
 				"headline"=>g_l('export',"[property]"),
-				"html"=>htmlFormElementTable(we_html_tools::htmlTextInput("Text",'',$this->View->export->Text,'','style="width: '.$this->_width_size.'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export','[name]')).'<br>'.
+				"html"=>we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text",'',$this->View->export->Text,'','style="width: '.$this->_width_size.'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export','[name]')).'<br>'.
 						$this->getHTMLDirChooser(),
 				"space"=>$this->_space_size)
 		);
@@ -290,7 +290,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 							"headline"=>g_l('export',"[export_to]"),
-							"html"=>htmlFormElementTable(we_html_tools::htmlTextInput("Filename",$this->_text_size,$this->View->export->Filename,'','style="width: '.$this->_width_size.'px;" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export',"[filename]")),
+							"html"=>we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename",$this->_text_size,$this->View->export->Filename,'','style="width: '.$this->_width_size.'px;" onChange="'.$this->topFrame.'.hot=1;"'),g_l('export',"[filename]")),
 							"space"=>$this->_space_size,
 							"noline"=> 1)
 		);

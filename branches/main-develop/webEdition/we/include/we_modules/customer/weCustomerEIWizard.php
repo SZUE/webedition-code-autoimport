@@ -243,7 +243,7 @@ class weCustomerEIWizard{
 
 		//set variables in top frame
 		$js="";
-		array_push($parts,array("headline"=>g_l('modules_customer','[filename]'),"html"=>htmlTextInput("filename",$_input_size,$filename),"space"=>$_space));
+		array_push($parts,array("headline"=>g_l('modules_customer','[filename]'),"html"=>we_html_tools::htmlTextInput("filename",$_input_size,$filename),"space"=>$_space));
 
 		if ($type=="gxml") {
 			$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border" => 0), 3, 1);

@@ -759,7 +759,7 @@ top.close();
 			'.$this->footerFrame.'.location="'.$this->frameset.'?pnt=footer&step=7";
 		');
 
-		array_push($parts,array("headline"=>g_l('export',"[filename]"),"html"=>getPixel(5,5).we_html_tools::htmlTextInput("filename",$_input_size,$filename,"","","text",260),"space"=>$_space));
+		array_push($parts,array("headline"=>g_l('export',"[filename]"),"html"=>we_html_tools::getPixel(5,5).we_html_tools::htmlTextInput("filename",$_input_size,$filename,"","","text",260),"space"=>$_space));
 
 		//	Filetype
 		if ($extype=="csv"){
