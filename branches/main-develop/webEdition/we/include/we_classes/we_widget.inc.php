@@ -59,28 +59,28 @@ class we_widget {
 		$gap = 10;
 
 		$oDrag = new we_htmlTable(array("id"=>$iId."_h","style"=>"width:".($w-$w_icon)."px;height:".$h_tb."px;","cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),1,2);
-		$oDrag->setCol(0,0,array("width"=>$w_icon,"height"=>$h_tb,"style"=>"background-image:url(".IMAGE_DIR."pd/tb_pixel.gif);background-repeat:repeat-x;"),$show_seizer? we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_seizer.gif","width"=>$w_seizer,"height"=>$h_tb)) : getpixel($w_seizer,$h_tb));
+		$oDrag->setCol(0,0,array("width"=>$w_icon,"height"=>$h_tb,"style"=>"background-image:url(".IMAGE_DIR."pd/tb_pixel.gif);background-repeat:repeat-x;"),$show_seizer? we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_seizer.gif","width"=>$w_seizer,"height"=>$h_tb)) : we_html_tools::getPixel($w_seizer,$h_tb));
 		$oDrag->setCol(0,1,array("id"=>$iId."_lbl_old","align"=>"center","class"=>"label","style"=>"width:".($w-(2*$w_icon))."px;height:".$h_tb."px;background-image:url(".IMAGE_DIR."pd/tb_pixel.gif);background-repeat:repeat-x;"),"");
 
 		$oIco_prc = new we_htmlTable(array("width"=>$w_icon,"height"=>$h_tb,"cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),1,5);
 		$oIco_prc->setCol(0,0,array("width"=>$w_i0,"height"=>$h_tb,"valign"=>"middle"),
 			we_htmlElement::htmlA(array("id"=>$iId."_props","href"=>"#","onclick"=>"propsWidget('".$sType."','".$iId."',gel('".$iId."_csv').value);this.blur();"),
 				we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_props.gif","width"=>$w_i0,"height"=>$h_i0,"border"=>0,"title"=>g_l('cockpit','[properties]')))));
-		$oIco_prc->setCol(0,1,array("width"=>$w_i1,"height"=>$h_tb),getpixel($w_i1,1));
+		$oIco_prc->setCol(0,1,array("width"=>$w_i1,"height"=>$h_tb),we_html_tools::getPixel($w_i1,1));
 		$oIco_prc->setCol(0,2,array("width"=>$w_i0,"height"=>$h_tb,"valign"=>"middle"),
 			we_htmlElement::htmlA(array("id"=>$iId."_resize","href"=>"#","onclick"=>"resizeWidget('".$iId."');this.blur();"),
 				we_htmlElement::htmlImg(array("id"=>$iId."_icon_resize","src"=>IMAGE_DIR."pd/tb_resize.gif","width"=>$w_i0,"height"=>$h_i0,"border"=>0,"title"=>(($iRes==0)? g_l('cockpit','[increase_size]'):g_l('cockpit','[reduce_size]'))))));
-		$oIco_prc->setCol(0,3,array("width"=>$w_i1,"height"=>$h_tb),getpixel($w_i1,1));
+		$oIco_prc->setCol(0,3,array("width"=>$w_i1,"height"=>$h_tb),we_html_tools::getPixel($w_i1,1));
 		$oIco_prc->setCol(0,4,array("width"=>$w_i0,"height"=>$h_tb,"valign"=>"middle"),
 			we_htmlElement::htmlA(array("id"=>$iId."_remove","href"=>"#","onclick"=>"removeWidget('".$iId."');this.blur();"),
 				we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_close.gif","width"=>$w_i0,"height"=>$h_i0,"border"=>0,"title"=>g_l('cockpit','[close]')))));
 
 		$oIco_pc = new we_htmlTable(array("width"=>$w_icon,"height"=>$h_tb,"cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),1,4);
-		$oIco_pc->setCol(0,0,array("width"=>($w_i0+$w_i1),"height"=>$h_tb),getpixel(($w_i0+$w_i1),1));
+		$oIco_pc->setCol(0,0,array("width"=>($w_i0+$w_i1),"height"=>$h_tb),we_html_tools::getPixel(($w_i0+$w_i1),1));
 		$oIco_pc->setCol(0,1,array("width"=>$w_i0,"height"=>$h_tb,"valign"=>"middle"),
 			we_htmlElement::htmlA(array("id"=>$iId."_props","href"=>"#","onclick"=>"propsWidget('".$sType."','".$iId."',gel('".$iId."_csv').value);this.blur();"),
 				we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_props.gif","width"=>$w_i0,"height"=>$h_i0,"border"=>0,"title"=>g_l('cockpit','[properties]')))));
-		$oIco_pc->setCol(0,2,array("width"=>$w_i1,"height"=>$h_tb),getpixel($w_i1,1));
+		$oIco_pc->setCol(0,2,array("width"=>$w_i1,"height"=>$h_tb),we_html_tools::getPixel($w_i1,1));
 		$oIco_pc->setCol(0,3,array("width"=>$w_i0,"height"=>$h_tb,"valign"=>"middle"),
 			we_htmlElement::htmlA(array("id"=>$iId."_remove","href"=>"#","onclick"=>"removeWidget('".$iId."');this.blur();"),
 				we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_close.gif","width"=>$w_i0,"height"=>$h_i0,"border"=>0,"title"=>g_l('cockpit','[close]')))));

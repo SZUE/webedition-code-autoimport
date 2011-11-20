@@ -38,7 +38,7 @@ $oTblCont->setCol(0, 0, array(
 ), $msg_button);
 $oTblCont->setCol(0, 1, array(
 	"width" => "5"
-), getpixel(5, 1));
+), we_html_tools::getPixel(5, 1));
 $oTblCont->setCol(
 		0,
 		2,
@@ -63,7 +63,7 @@ $oTblCont->setCol(2, 0, array(
 ), $todo_button);
 $oTblCont->setCol(2, 1, array(
 	"width" => "5"
-), getpixel(5, 1));
+), we_html_tools::getPixel(5, 1));
 $oTblCont->setCol(
 		2,
 		2,

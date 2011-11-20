@@ -85,7 +85,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	} else {
 		$parts = array();
 
-		array_push($parts,array("headline"=>g_l('weClass',"[preview]"),"html"=>htmlAlertAttentionBox(g_l('weClass',"[no_preview_available]"), 1),"space"=>120));
+		array_push($parts,array("headline"=>g_l('weClass',"[preview]"),"html"=>we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[no_preview_available]"), 1),"space"=>120));
 
 		if($we_doc->ID) {
 			$_we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);

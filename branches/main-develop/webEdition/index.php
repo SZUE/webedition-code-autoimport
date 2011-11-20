@@ -207,6 +207,7 @@ if(!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_ta
  * *************************************************************************** */
 
 cleanTempFiles(true);
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 weTagWizard::cleanCache();
 
 //clean Error-Log-Table

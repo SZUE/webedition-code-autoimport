@@ -55,7 +55,7 @@ foreach($we_doc->schedArr as $i=>$sched){
 
 }
 array_push($parts, array(		"headline"=>"",
-								"html"=>htmlAlertAttentionBox(g_l('modules_schedule',"[descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
+								"html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule',"[descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
 								"space"=>0
 						)
 				);

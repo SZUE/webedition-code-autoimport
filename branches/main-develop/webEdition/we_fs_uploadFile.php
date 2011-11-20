@@ -159,7 +159,7 @@ $cancel_button = we_button::create_button("cancel", "javascript:self.close();");
 $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 if($maxsize){
-	array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(
+	array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(
 				sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),
 				1,390),"space"=>0,"noline"=>1));
 

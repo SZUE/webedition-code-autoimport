@@ -166,16 +166,16 @@ while ($j < $iMaxItems) {
 					$i++;
 					$j++;
 					$lastModified .= '<tr>';
-					$lastModified .= '<td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . getpixel(
+					$lastModified .= '<td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $_hash['Icon'] . '" />' . we_html_tools::getPixel(
 							4,
 							1) . '</td>';
 					$lastModified .= '<td valign="middle" class="middlefont">';
 					$lastModified .= '<a href="javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $_hash['ID'] . '\',\'' . $_hash['ContentType'] . '\')" title="' . $_hash['Path'] . '" style="color:#000000;text-decoration:none;">' . $_hash['Path'] . "</a></td>";
 					if ($bMfdBy)
-						$lastModified .= '<td>' . getpixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f(
+						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . $DB_WE->f(
 								"UserName") . (($bDateLastMfd) ? ',' : '') . '</td>';
 					if ($bDateLastMfd)
-						$lastModified .= '<td>' . getpixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(
+						$lastModified .= '<td>' . we_html_tools::getPixel(5, 1) . '</td><td class="middlefont" nowrap>' . date(
 								g_l('date','[format][default]'),
 								$_hash['ModDate']) . '</td>';
 					$lastModified .= "</tr>\n";

@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/navi_l
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_tabs.class.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 protect();
-htmltop();
+we_html_tools::htmlTop();
 
 $we_tabs = new we_tabs();
 

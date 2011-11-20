@@ -48,7 +48,7 @@ if(we_image_edit::gd_version() > 0){
 
 	if(!$we_doc->getDocument()){
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[no_image_uploaded]"),2,"700"),
+										"html"=>we_html_tools::htmlAlertAttentionBox(g_l('thumbnails',"[no_image_uploaded]"),2,"700"),
 										"space"=>0
 								)
 						);
@@ -107,20 +107,20 @@ if(we_image_edit::gd_version() > 0){
 
 		}
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[add_descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','".$we_transaction."');"),
+										"html"=>we_html_tools::htmlAlertAttentionBox(g_l('thumbnails',"[add_descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_thumbnail", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('add_thumbnail','".$we_transaction."');"),
 										"space"=>0
 								)
 						);
 	}else{
 		array_push($parts, array(		"headline"=>"",
-										"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[format_not_supported]"),2,"700"),
+										"html"=>we_html_tools::htmlAlertAttentionBox(g_l('thumbnails',"[format_not_supported]"),2,"700"),
 										"space"=>0
 								)
 						);
 	}
 }else{
 	array_push($parts, array(		"headline"=>"",
-									"html"=>htmlAlertAttentionBox(g_l('thumbnails',"[add_description_nogdlib]"),2,"700"),
+									"html"=>we_html_tools::htmlAlertAttentionBox(g_l('thumbnails',"[add_description_nogdlib]"),2,"700"),
 									"space"=>0
 							)
 					);

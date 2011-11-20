@@ -45,7 +45,7 @@ class usersOnline
 		while($DB_WE->next_record()){
 			$this->num_uo++;
 			$_fontWeight = ($_SESSION["user"]["ID"] == $DB_WE->f("ID"))? 'bold' : 'bold';
-			if ($_k != 0) $_row .= '<tr><td height="8">'.getpixel(1,8).'</td></tr>';
+			if ($_k != 0) $_row .= '<tr><td height="8">'.we_html_tools::getPixel(1,8).'</td></tr>';
 			$_row .= '<tr><td width="30"><img src="'.IMAGE_DIR.'pd/usr/user_'.$_color[$_i].'.gif" width="24" height="29" /></td>';
 			$_row .= '<td valign="middle" class="middlefont" style="font-weight:'.$_fontWeight.';">'.$DB_WE->f("username").'</td>';
 			if(defined("MESSAGES_TABLE")) {

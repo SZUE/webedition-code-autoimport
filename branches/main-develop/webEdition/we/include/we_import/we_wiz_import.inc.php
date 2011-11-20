@@ -1370,12 +1370,12 @@ HTS;
 
 				array_push($parts, array("html"=>$tblFrame->getHtmlCode(),"space"=>0,"noline"=>1));
 			}
-			else array_push($parts,array("html"=>htmlAlertAttentionBox((!$xmlWellFormed)?g_l('import',"[not_well_formed]"):g_l('import',"[missing_child_node]"),1,"530"),"space"=>0,"noline"=>1));
+			else array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed)?g_l('import',"[not_well_formed]"):g_l('import',"[missing_child_node]"),1,"530"),"space"=>0,"noline"=>1));
 		}
 		else {
 			$xmlWellFormed = $hasChildNode = false;
-			if (!file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER['DOCUMENT_ROOT'].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
-			else if (!is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER['DOCUMENT_ROOT'].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
+			else if (!is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
 		}
 
 		$functions = "\n".
@@ -2210,8 +2210,8 @@ HTS;
 			}
 		}
 		else {
-			if (!file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER['DOCUMENT_ROOT'].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
-			else if (!is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox(g_l('import',"[file_exists]").$_SERVER['DOCUMENT_ROOT'].$v["import_from"],1,"530"),"space"=>0,"noline"=>1));
+			else if (!is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"])) array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox(g_l('import',"[file_readable]"),1,"530"),"space"=>0,"noline"=>1));
 		}
 
 

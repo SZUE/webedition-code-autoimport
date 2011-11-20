@@ -246,7 +246,7 @@ class we_fileselector{
 
 	function printFramesetHTML(){
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
-		htmltop();
+		we_html_tools::htmlTop();
 		print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js" ));
 		print we_htmlElement::jsElement("var weSelectorWindow = true;");
 		$this->printFramesetJavaScriptIncludes();

@@ -811,7 +811,7 @@ class weCustomerEIWizard{
 
 				}
 				else {
-					array_push($parts,array("html"=>htmlAlertAttentionBox((!$xmlWellFormed)?g_l('modules_customer','[not_well_formed]'):g_l('modules_customer','[missing_child_node]'),1,"570"),"space"=>0,"noline"=>1));
+					array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed)?g_l('modules_customer','[not_well_formed]'):g_l('modules_customer','[missing_child_node]'),1,"570"),"space"=>0,"noline"=>1));
 					$js=we_htmlElement::jsElement('
 						'.$this->footerFrame.'.location="'.$this->frameset.'?pnt=eifooter&art=import&step=99";
 					');
@@ -822,7 +822,7 @@ class weCustomerEIWizard{
 			$js=we_htmlElement::jsElement('
 					'.$this->footerFrame.'.location="'.$this->frameset.'?pnt=eifooter&art=import&step=99";
 			');
-			array_push($parts,array("html"=>htmlAlertAttentionBox(g_l('modules_customer','[missing_filesource]'),1,"570"),"space"=>0,"noline"=>1));
+			array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_customer','[missing_filesource]'),1,"570"),"space"=>0,"noline"=>1));
 		}
 
 		$_REQUEST["filename"]=$filename;

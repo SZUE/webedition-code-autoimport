@@ -1038,7 +1038,7 @@
 
 			$_parts[] = array(
 				'headline'=> '',
-				'html' =>htmlAlertAttentionBox(g_l('modules_glossary','[linkprops_desc]'),2,520),
+				'html' =>we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary','[linkprops_desc]'),2,520),
 				'space' => 120,
 				'noline' => 1
 			);

@@ -52,7 +52,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 
 
 	array_push($parts,array(
-				"headline"=>htmlAlertAttentionBox($_SESSION["delete_files_info"],1,500),
+				"headline"=>we_html_tools::htmlAlertAttentionBox($_SESSION["delete_files_info"],1,500),
 				"html"=>"",
 				"space"=>10,
 				"noline"=>1)

@@ -28,7 +28,7 @@ if(!$_SESSION["user"]["Username"])
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
 protect();
-htmltop();
+we_html_tools::htmlTop();
 
 $docroot = $_SERVER['DOCUMENT_ROOT'];
 $docroot = str_replace("\\","/",(substr($docroot,-1) == "/") ? substr($docroot,0,strlen($docroot)-1) : $docroot);

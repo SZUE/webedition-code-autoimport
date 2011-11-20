@@ -356,7 +356,7 @@ class weBackupWizard{
  	function  getHTMLRecoverStep1(){
 		$parts=array();
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[save_before]"),1,600),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[save_before]"),1,600),"space"=>0,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>g_l('backup',"[save_question]"),"space"=>0,"noline"=>1));
 
 		$js=we_htmlElement::jsElement('
@@ -449,11 +449,11 @@ class weBackupWizard{
 
 		if (isset($_REQUEST["import_from"]) && $_REQUEST["import_from"]=="import_upload") {
 			if($maxsize){
-				array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[charset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
+				array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[charset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
 				if ( !(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!='') ) {
-					array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[defaultcharset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
+					array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[defaultcharset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
 				}
-				array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),1,600),"space"=>0,"noline"=>1));
+				array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile',"[max_possible_size]"),round($maxsize / (1024*1024),3)."MB"),1,600),"space"=>0,"noline"=>1));
 				array_push($parts,array("headline"=>"","html"=>we_htmlElement::htmlInput(array("name"=>"we_upload_file","type"=>"file","size"=>"35")),"space"=>0,"noline"=>1));
 				array_push($parts,array("headline"=>"","html"=>getPixel(1,1),"space"=>0,"noline"=>1));
 			}
@@ -554,11 +554,11 @@ class weBackupWizard{
 				$i++;
 			}
 
-			array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[charset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
+			array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[charset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
 			if ( !(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!='') ) {
-					array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[defaultcharset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
+					array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[defaultcharset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
 			}
-			array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[select_server_file]"), 2, 600, false),"space"=>0,"noline"=>1));
+			array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[select_server_file]"), 2, 600, false),"space"=>0,"noline"=>1));
 			array_push($parts,array("headline"=>"","html"=>$select->getHtmlCode(),"space"=>0,"noline"=>1));
 			//array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1));
 			array_push($parts,array("headline"=>"","html"=> we_button::create_button("delete_backup", "javascript:delSelected();",true,100,22,'','',false,false),"space"=>0));
@@ -566,7 +566,7 @@ class weBackupWizard{
 
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "rebuild", g_l('backup',"[rebuild]"), false),"space"=>0));
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[delold_notice]"), 3, 600, false),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[delold_notice]"), 3, 600, false),"space"=>0,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_button::create_button("delete", "javascript:delOldFiles();",true,100,22,'','',false,false),"space"=>0));
 
 		$form_properties=array(
@@ -605,7 +605,7 @@ class weBackupWizard{
 
 		ksort($form_properties);
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[import_options]"), 2, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[import_options]"), 2, 600, false),"space"=>70,"noline"=>1));
 
 		$docheck="";
 		$douncheck="";
@@ -643,7 +643,7 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1,true, "handle_temporary", g_l('backup',"[import_temporary_data]"), false, "defaultfont", "doClick(101);"),"space"=>70,"noline"=>1));
 
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[tools_import_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[tools_import_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		foreach ($_tools as $_tool) {
 			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
 /*			if(isset(${'l_' . $_tool}["import_tool_" . $_tool . "_data"])) {
@@ -660,13 +660,13 @@ class weBackupWizard{
 		}
 
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[extern_exp]"), 1, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[extern_exp]"), 1, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "handle_extern", g_l('backup',"[import_extern_data]"), false, "defaultfont", "doClick(300);"),"space"=>70,"noline"=>1));
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[convert_charset]"), 1, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[convert_charset]"), 1, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "convert_charset", g_l('backup',"[convert_charset_data]"), false, "defaultfont", "doClick(310);doUnCheck(101);doUnCheck(100);doUnCheck(70)"),"space"=>70,"noline"=>1));
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[backup_log_exp]"), 2, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[backup_log_exp]"), 2, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "backup_log", g_l('backup',"[export_backup_log]"), false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
 
 
@@ -797,7 +797,7 @@ class weBackupWizard{
 			unset($_SESSION['weBackupVars']);
 		}
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[finished_success]"),2,600),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[finished_success]"),2,600),"space"=>0,"noline"=>1));
 
 		$js=we_htmlElement::jsElement('
 			function setLocation(loc){
@@ -881,7 +881,7 @@ class weBackupWizard{
 
 		$compression = weFile::hasCompression("gzip");
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(($compression ? g_l('backup',"[filename_compression]"): g_l('backup',"[filename_info]")), 2, 600, false),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(($compression ? g_l('backup',"[filename_compression]"): g_l('backup',"[filename_info]")), 2, 600, false),"space"=>0,"noline"=>1));
 		array_push($parts,array("headline"=>g_l('backup',"[filename]").":&nbsp;&nbsp;","html"=>htmlTextInput("filename",32,"weBackup_".date( "Y_m_d__H_i_s" ,time()).".xml","","","text",260),"space"=>100,"noline"=>1));
 
 		$switchbut=7;
@@ -891,17 +891,17 @@ class weBackupWizard{
 		}
 
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[protect_txt]"), 2, 600, false),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[protect_txt]"), 2, 600, false),"space"=>0,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "protect", g_l('backup',"[protect]"), false, "defaultfont", ""),"space"=>70));
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[export_location]"), 2, 600, false),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[export_location]"), 2, 600, false),"space"=>0,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "export_server", g_l('backup',"[export_location_server]"), false, "defaultfont", "doClick(1)"),"space"=>70,"noline"=>1));
 		if (we_hasPerm("EXPORT")){
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "export_send", g_l('backup',"[export_location_send]"), false, "defaultfont", "doClick(2)"),"space"=>70));
 		} else {
 			array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "export_send", g_l('backup',"[export_location_send]"), false, "defaultfont", "doClick(2)",true),"space"=>70));
 		}
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[export_options]"), 2, 600, false),"space"=>0,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[export_options]"), 2, 600, false),"space"=>0,"noline"=>1));
 
 		$docheck="";
 		$doclick="";
@@ -930,7 +930,7 @@ class weBackupWizard{
 					$checked = true;
 				}
 				array_push($parts,array("headline"=>"",
-										"html"=>htmlAlertAttentionBox(g_l('backup',"[".str_replace("handle_","",$v)."_info]"), $boxNr, 600, false) .
+										"html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[".str_replace("handle_","",$v)."_info]"), $boxNr, 600, false) .
 												we_forms::checkbox(1, $checked, $v, g_l('backup',"[".str_replace("handle","export",$v)."_data]"), false, "defaultfont", "doClick($k);"),
 										"space"=>70,
 										"noline"=>1
@@ -943,7 +943,7 @@ class weBackupWizard{
 			}
 		}
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[tools_export_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[tools_export_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		$k = 700;
 		foreach ($_tools as $_tool) {
 			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
@@ -963,11 +963,11 @@ class weBackupWizard{
 			$k++;
 		}
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[temporary_info]"), 2, 600, false).we_forms::checkbox(1, true, "handle_temporary", g_l('backup',"[export_temporary_data]"), false, "defaultfont", "doClick(101);"),"space"=>70));
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[extern_exp]"), 1, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[temporary_info]"), 2, 600, false).we_forms::checkbox(1, true, "handle_temporary", g_l('backup',"[export_temporary_data]"), false, "defaultfont", "doClick(101);"),"space"=>70));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[extern_exp]"), 1, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "handle_extern", g_l('backup',"[export_extern_data]"), false, "defaultfont", "doClick(300);"),"space"=>70,"noline"=>1));
 
-		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox(g_l('backup',"[backup_log_exp]"), 2, 600, false),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[backup_log_exp]"), 2, 600, false),"space"=>70,"noline"=>1));
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "backup_log", g_l('backup',"[export_backup_log]"), false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
 
 

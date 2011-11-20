@@ -76,7 +76,7 @@ if (isset($_query) && $DB_WE->query($_query) && !empty($_csv)) {
 		$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_htmlElement::htmlImg(
 				array(
 					"src" => ICON_DIR . $DB_WE->f("Icon")
-				)) . getpixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
+				)) . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
 				array(
 
 						"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f(

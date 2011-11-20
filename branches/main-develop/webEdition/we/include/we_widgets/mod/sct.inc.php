@@ -123,7 +123,7 @@ foreach ($shortcuts as $sctCol) {
 									"height" => 34,
 									"border" => 0
 							))) . '</td>';
-			$sSctOut .= '<td width="5">' . getpixel(5, 1) . '</td>';
+			$sSctOut .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 			$sSctOut .= '<td valign="middle">' . we_htmlElement::htmlA(
 					array(
 
@@ -132,7 +132,7 @@ foreach ($shortcuts as $sctCol) {
 							"style" => "font-weight:bold;text-decoration:none;"
 					),
 					g_l('button','['.$_label.'][value]')) . '</td></tr>';
-			$sSctOut .= '<tr><td height="3">' . getpixel(1, 3) . '</td></tr>';
+			$sSctOut .= '<tr><td height="3">' . we_html_tools::getPixel(1, 3) . '</td></tr>';
 		}
 		$iCurrSctRow++;
 	}

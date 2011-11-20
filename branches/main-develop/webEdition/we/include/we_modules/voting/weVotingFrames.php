@@ -505,7 +505,7 @@ class weVotingFrames extends weModuleFrames {
 
 	   		array_push($parts,array(
 				"headline"=>g_l('modules_voting','[export]'),
-				"html"=>htmlAlertAttentionBox(g_l('modules_voting','[export_txt]'),2,$this->_width_size).
+				"html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[export_txt]'),2,$this->_width_size).
 						$export_box->getHtmlCode(),
 				"space"=>$this->_space_size)
 			);
@@ -661,7 +661,7 @@ class weVotingFrames extends weModuleFrames {
 
 		array_push($parts,array(
 					'headline'=>g_l('modules_voting','[headline_revote]'),
-					'html'=>htmlAlertAttentionBox(g_l('modules_voting','[time_after_voting_again_help]'), 2,$this->_width_size,false,100).
+					'html'=>we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[time_after_voting_again_help]'), 2,$this->_width_size,false,100).
 							we_htmlElement::htmlBr().
 						we_html_tools::htmlFormElementTable($selectTime->getHtmlCode(),g_l('modules_voting','[time_after_voting_again]')) .
 							we_htmlElement::htmlBr().
@@ -892,7 +892,7 @@ class weVotingFrames extends weModuleFrames {
 
 	    array_push($parts,array(
 				"headline"=>g_l('modules_voting','[export]'),
-				"html"=>htmlAlertAttentionBox(g_l('modules_voting','[export_txt]'),2,$this->_width_size).
+				"html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[export_txt]'),2,$this->_width_size).
 						$export_box->getHtmlCode(),
 				"space"=>$this->_space_size)
 		);
