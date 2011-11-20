@@ -110,7 +110,6 @@ $l_global=array(
 	'search'=>'Поиск',
 	'selected'=>'выделены',
 	'select_color'=>'Выберите цвет',
-	'shift'=>'SHIFT',
 	'showall'=>'Показать все',
 	'site_not_exist'=>'Страница не существует!',
 	'site_not_published'=>'Страница еще не опубликована!',

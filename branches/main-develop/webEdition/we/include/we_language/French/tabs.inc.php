@@ -10,7 +10,6 @@ $l_tabs=array(
 		'preview'=>'Aperç',
 		'properties'=>'Properties',
 		'scheduler'=>'Gestion de Flux',
-		'scheduler_pro'=>'Gestion de Flux PRO',
 		'search'=>'Recherche',
 		'workspace'=>'Éspace de travail',
 	),

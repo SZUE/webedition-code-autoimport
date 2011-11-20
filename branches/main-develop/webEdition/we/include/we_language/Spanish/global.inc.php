@@ -110,7 +110,6 @@ $l_global=array(
 	'search'=>'Buscar',
 	'selected'=>'Seleccionado',
 	'select_color'=>'Seleccionar color',
-	'shift'=>'SHIFT',
 	'showall'=>'Mostrar todos',
 	'site_not_exist'=>'La página no existe!',
 	'site_not_published'=>'Página aún no publicada!',

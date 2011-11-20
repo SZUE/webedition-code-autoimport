@@ -10,7 +10,6 @@ $l_tabs=array(
 		'preview'=>'Esikatselu',
 		'properties'=>'Ominaisuudet',
 		'scheduler'=>'Ajastin',
-		'scheduler_pro'=>'Ajastin PRO',
 		'search'=>'Etsi',
 		'workspace'=>'Työtila',
 	),

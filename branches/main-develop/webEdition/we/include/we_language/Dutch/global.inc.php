@@ -110,7 +110,6 @@ $l_global=array(
 	'search'=>'Zoek',
 	'selected'=>'Geselecteerde',
 	'select_color'=>'Selecteer kleur',
-	'shift'=>'SHIFT',
 	'showall'=>'Toon alles',
 	'site_not_exist'=>'Pagina bestaat niet!',
 	'site_not_published'=>'Pagina is nog niet gepubliceerd!',

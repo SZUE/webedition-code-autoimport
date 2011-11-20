@@ -110,7 +110,6 @@ $l_global=array(
 	'search'=>'Etsi',
 	'selected'=>'Valittu',
 	'select_color'=>'Valitse väri',
-	'shift'=>'SHIFT',
 	'showall'=>'Näytä kaikki',
 	'site_not_exist'=>'Sivua ei ole olemassa!',
 	'site_not_published'=>'Sivua ei ole julkaistu!',

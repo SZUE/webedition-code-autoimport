@@ -10,7 +10,6 @@ $l_tabs=array(
 		'preview'=>'Vista previa',
 		'properties'=>'Properties',
 		'scheduler'=>'Planificador',
-		'scheduler_pro'=>'Planificador PRO',
 		'search'=>'Búsqueda',
 		'workspace'=>'Área de trabajo',
 	),
