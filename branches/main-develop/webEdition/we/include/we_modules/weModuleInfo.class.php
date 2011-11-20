@@ -111,7 +111,7 @@ class weModuleInfo {
 			// - it is active
 			// - if it is in module window
 
-			if ( $_we_available_modules[$modulekey]["inModuleMenu"] && in_array($modulekey, $GLOBALS["_we_active_modules"]) ) {
+			if ( $_we_available_modules[$modulekey]["inModuleMenu"] && in_array($modulekey, $GLOBALS["_we_active_integrated_modules"]) ) {
 				return true;
 			}
 

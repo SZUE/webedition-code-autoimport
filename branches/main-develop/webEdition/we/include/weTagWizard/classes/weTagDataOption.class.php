@@ -121,6 +121,6 @@ class weTagDataOption {
 	 * @return boolean
 	 */
 	function useOption() {
-		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_modules']));
+		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_integrated_modules']));
 }
 }

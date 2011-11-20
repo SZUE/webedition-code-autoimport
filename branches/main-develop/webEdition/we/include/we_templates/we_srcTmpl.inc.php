@@ -989,7 +989,7 @@ if ($we_editmode) {
 			if ($tagGroupName == 'custom') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}
-			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_modules']) ? g_l('javaMenu_moduleInformation','['.$tagGroupName.'][text]') : g_l('weTagGroups','['.$tagGroupName.']')) . '</option>';
+			$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (in_array($tagGroupName, $GLOBALS['_we_active_integrated_modules']) ? g_l('javaMenu_moduleInformation','['.$tagGroupName.'][text]') : g_l('weTagGroups','['.$tagGroupName.']')) . '</option>';
 			if ($tagGroupName == 'alltags') {
 				$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 			}

@@ -206,7 +206,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 		$DB_WE->query("UPDATE " . CONTENT_TABLE . " SET BDID=0 WHERE BDID=".abs($id)."");
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($id)."");
 
-		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
+		if (in_array("schedule", $GLOBALS['_we_active_integrated_modules'])) { //	Delete entries from schedule as well
 			$DB_WE->query(
 					'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID="' . abs($id) . ' " AND ClassName !="we_objectFile"');
 		}
@@ -249,7 +249,7 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 				}
 			}
 		}
-		if (in_array("schedule", $GLOBALS['_we_active_modules'])) { //	Delete entries from schedule as well
+		if (in_array("schedule", $GLOBALS['_we_active_integrated_modules'])) { //	Delete entries from schedule as well
 			$DB_WE->query(
 					'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID="' . abs($id) . ' " AND ClassName="we_objectFile"');
 		}

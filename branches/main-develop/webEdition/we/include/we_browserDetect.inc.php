@@ -201,6 +201,10 @@ class we_browserDetect{
 		return self::$br=='ie';
 	}
 
+	function isOpera(){
+		return self::$br=='opera';
+	}
+
 	function isSafari(){
 		return self::$br=='safari';
 	}

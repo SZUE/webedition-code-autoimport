@@ -5039,7 +5039,7 @@ else {
 				if($_modInfo["dependson"] != ""){
 					$onclick = "if(this.checked){document.getElementById('active_integrated_modules[" . $_modInfo["dependson"] . "]').checked=true;}";
 				}
-				$_html .= we_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || in_array($_modKey, $GLOBALS["_we_active_modules"]), "active_integrated_modules[$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"active_integrated_modules[$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
+				$_html .= we_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || in_array($_modKey, $GLOBALS["_we_active_integrated_modules"]), "active_integrated_modules[$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"active_integrated_modules[$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
 			}
 
 			// Build dialog element if users has permission

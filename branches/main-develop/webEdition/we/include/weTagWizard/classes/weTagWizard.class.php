@@ -39,7 +39,7 @@ class weTagWizard{
 		$main = self::getMainTagModules();
 		foreach($main as $modulename => $tags){
 
-			if($modulename == 'basis' || $modulename == 'navigation' || in_array($modulename, $GLOBALS['_we_active_modules'])){
+			if($modulename == 'basis' || $modulename == 'navigation' || in_array($modulename, $GLOBALS['_we_active_integrated_modules'])){
 				$retTags = array_merge($retTags, $tags);
 			}
 		}
@@ -70,7 +70,7 @@ class weTagWizard{
 				$taggroups['alltags'] = $tags;
 			}
 
-			if(in_array($modulename, $GLOBALS['_we_active_modules'])){
+			if(in_array($modulename, $GLOBALS['_we_active_integrated_modules'])){
 				$taggroups[$modulename] = $tags;
 				$taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
 			}

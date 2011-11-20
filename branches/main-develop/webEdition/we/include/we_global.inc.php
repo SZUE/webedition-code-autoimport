@@ -34,10 +34,10 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php'
 
 function we_getModuleNameByContentType($ctype) {
 	$_moduleDir = '';
-	for ($i = 0; $i < sizeof($GLOBALS['_we_active_modules']); $i++) {
+	for ($i = 0; $i < sizeof($GLOBALS['_we_active_integrated_modules']); $i++) {
 
-		if (strstr($ctype, $GLOBALS['_we_active_modules'][$i])) {
-			$_moduleDir = $GLOBALS['_we_active_modules'][$i];
+		if (strstr($ctype, $GLOBALS['_we_active_integrated_modules'][$i])) {
+			$_moduleDir = $GLOBALS['_we_active_integrated_modules'][$i];
 		}
 	}
 	return $_moduleDir;
@@ -134,7 +134,7 @@ function weFileExists($id, $table = FILE_TABLE, $db = '') {
 	if ($id == 0){
 		return true;
 	}
-	return f('SELECT ID FROM $table WHERE ID=' . $id, 'ID', ($db?$db:new DB_WE()));
+	return f('SELECT ID FROM '.$table.' WHERE ID=' . $id, 'ID', ($db?$db:new DB_WE()));
 }
 
 function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {

@@ -511,7 +511,7 @@ weModuleInfo::orderModuleArray($buyableModules);
 $userHasAllModules = true;
 $moduleList = 'schedpro|';
 
-if (sizeof($GLOBALS['_we_active_modules']) > 0) {
+if (sizeof($GLOBALS['_we_active_integrated_modules']) > 0) {
 
 	foreach ($buyableModules as $m) {
 
@@ -528,7 +528,7 @@ if (sizeof($GLOBALS['_we_active_modules']) > 0) {
 			$we_menu[$menNr]['perm'] = isset($m['perm']) ? $m['perm'] : '';
 			$we_menu[$menNr]['enabled'] = '1';
 			$z++;
-		} else if (in_array($m['name'], $GLOBALS['_we_active_modules'])) {
+		} else if (in_array($m['name'], $GLOBALS['_we_active_integrated_modules'])) {
 			$moduleList .= $m['name'] . '|';
 		}
 		if (!weModuleInfo::isModuleInstalled($m['name'])) {
@@ -692,7 +692,7 @@ weModuleInfo::orderModuleArray($buyableModules);
 
 $userHasAllModules = true;
 
-if (sizeof($GLOBALS['_we_active_modules']) > 0) {
+if (sizeof($GLOBALS['_we_active_integrated_modules']) > 0) {
 
 	foreach ($buyableModules as $m) {
 
@@ -807,7 +807,7 @@ $we_menu['5100000']['enabled'] = '1';
 reset($GLOBALS['_we_available_modules']);
 while (list($key, $val) = each($GLOBALS['_we_available_modules'])) {
 
-	if (!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_modules']) )) {
+	if (!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )) {
 
 		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/java_menu/modules/we_menu_' . $val['name'] . '.inc.php')) {
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/java_menu/modules/we_menu_' . $val['name'] . '.inc.php');
