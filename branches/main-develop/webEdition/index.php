@@ -431,7 +431,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
 
-	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_htmlElement::htmlBr().we_htmlElement::htmlBr().'</noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;">
+	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_htmlElement::htmlBr().we_htmlElement::htmlBr().'</noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;text-align:left;">
 	<tr style="height:10px;">
 		<td style="width:260px;background-color:#386AAB;"></td>
 		<td rowspan="2" style="width:430px;">' . $_loginTable . '</td>
@@ -556,9 +556,9 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	}
 
 
-	$_layout = new we_htmlTable(array("width" => "100%", "height" => "100%", "style" => "width: 100%; height: 100%;"), 1, 1);
+	$_layout = new we_htmlTable(array("style" => "position:absolute;top:0px;bottom:0px;left:0px;right:0px;"), 1, 1);
 
-	$_layout->setCol(0, 0, array("align" => "center", "valign" => "middle"), we_htmlElement::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
+	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_htmlElement::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
 	printHeader($login);
 	print we_htmlElement::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtmlCode() . ((isset($_body_javascript)) ? we_htmlElement::jsElement($_body_javascript) : "")) . "</html>";
