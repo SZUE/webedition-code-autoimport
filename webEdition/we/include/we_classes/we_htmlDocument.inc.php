@@ -62,7 +62,7 @@ class we_htmlDocument extends we_textContentDocument{
 			$makeSched = false;
 			foreach($this->schedArr as $s){
 				if($s["task"] == SCHEDULE_FROM && $s["active"]){
-					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);
+					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);// nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 					$makeSched = true;
 				}else{
 					$serializedDoc = "";
@@ -72,7 +72,7 @@ class we_htmlDocument extends we_textContentDocument{
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".abs($this->ID)."','".$this->DB_WE->escape($Wann)."','".$this->DB_WE->escape($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape(serialize($serializedDoc))."','".$this->DB_WE->escape(serialize($s))."','".$this->DB_WE->escape($s["type"])."','".$this->DB_WE->escape($s["active"])."')"))
+						VALUES('".abs($this->ID)."','".$this->DB_WE->escape($Wann)."','".$this->DB_WE->escape($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape($serializedDoc)."','".$this->DB_WE->escape(serialize($s))."','".$this->DB_WE->escape($s["type"])."','".$this->DB_WE->escape($s["active"])."')"))
 								return false;
 			}
 			return $makeSched;
