@@ -2493,7 +2493,8 @@ class we_objectFile extends we_document{
 					$this->i_getPersistentSlotsFromDB(/*"Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
 					$this->i_initSerializedDat($sessDat);
 					//make sure at least TableID is set from db
-					$this->i_getPersistentSlotsFromDB("TableID");
+					//and Published as well #5742
+					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 					break;
 				}else{
@@ -2510,7 +2511,8 @@ class we_objectFile extends we_document{
 					//overwrite with new data
 					$this->i_initSerializedDat($sessDat,false);
 					//make sure at least TableID is set from db
-					$this->i_getPersistentSlotsFromDB("TableID");
+					//and Published as well #5742
+					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_MAID_DB);
@@ -2525,7 +2527,8 @@ class we_objectFile extends we_document{
 					//overwrite with new data
 					$this->i_initSerializedDat($sessDat,false);
 					//make sure at least TableID is set from db
-					$this->i_getPersistentSlotsFromDB("TableID");
+					//and Published as well #5742
+					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_TEMP_DB);
