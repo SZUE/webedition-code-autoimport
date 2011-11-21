@@ -723,7 +723,7 @@ HTS;
 				"src" => JS_DIR . "attachKeyListener.js"
 			)) : "";
 
-		return '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head>' .
+		return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>' .
 			$_title .
 			$_meta_expires .
 			$_meta_no_cache .

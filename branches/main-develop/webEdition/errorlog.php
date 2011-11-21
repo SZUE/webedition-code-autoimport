@@ -53,7 +53,7 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
   </tr>
   <tr valign="top">
     <td  style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>'.$_infoArr['Text'].'</i></font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre>'.$_infoArr['Text'].'</pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>
@@ -65,25 +65,25 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Backtrace'].'
-      </font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre>'.$_infoArr['Backtrace'].'
+      </pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Request</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Request'].'</font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre>'.$_infoArr['Request'].'</pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Server</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Server'].'</font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre>'.$_infoArr['Server'].'</pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Session</b></font></td>
-    <td style="border-bottom: 1px solid #265da6;"><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Session'].'
-      </font></pre></td>
+    <td style="border-bottom: 1px solid #265da6;"><pre>'.$_infoArr['Session'].'
+      </pre></td>
   </tr>
   <tr valign="top">
     <td nowrap="nowrap" style="border-bottom: 1px solid #265da6;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Global</b></font></td>
-    <td ><pre><font face="Verdana, Arial, Helvetica, sans-serif" size="2">'.$_infoArr['Global'].'</font></pre></td>
+    <td ><pre>'.$_infoArr['Global'].'</pre></td>
   </tr>
 
 </table>
@@ -166,13 +166,7 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 				);
 		}
 
-?>
-<html>
-<head>
-
-<title><?php print 'Errorlog';?></title>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET'];?>">
-<?php
+		we_html_tools::htmlTop('Errorlog',$GLOBALS['WE_BACKENDCHARSET']);
 echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
 	we_htmlElement::jsScript(JS_DIR.'keyListener.js');
 ?>
@@ -181,10 +175,6 @@ echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
 		return true;
 	}
 </script>
-
-<?php
-		print STYLESHEET;
-?>
 
 </head>
 
