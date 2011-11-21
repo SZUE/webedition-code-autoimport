@@ -336,11 +336,12 @@ class we_objectFile extends we_document{
 			}
 			if($this->DB_WE->f("RestrictUsers")){
 				$this->RestrictOwners = $this->DB_WE->f("RestrictUsers");
-			}*/
+			}
 
 			if($this->DB_WE->f('DefaultTriggerID')){
 				$this->TriggerID = $this->DB_WE->f('DefaultTriggerID');
 			}
+			*/
 			if($this->DB_WE->f('DefaultCategory')){
 				$this->Category = $this->DB_WE->f('DefaultCategory');
 			}
@@ -2373,7 +2374,7 @@ class we_objectFile extends we_document{
 	function we_save($resave=0,$skipHook=0){
 		$this->errMsg='';
 
-		$foo = getHash("SELECT strOrder,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
+		$foo = getHash("SELECT strOrder,DefaultValues,DefaultTriggerID FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 
 		foreach($this->elements as $n=>$elem){
@@ -2390,7 +2391,12 @@ class we_objectFile extends we_document{
 			include_once($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			weShopVariants::correctModelFields($this);
 		}
-
+		if(!$this->TriggerID){		
+			$this->TriggerID=f('SELECT TriggerID FROM '.OBJECT_FILES_TABLE. ' WHERE ID="'.$this->ParentID.'"','TriggerID',$this->DB_WE);
+			if(!$this->TriggerID){
+				$this->TriggerID=$foo["DefaultTriggerID"];
+			}
+		}
 		$_resaveWeDocumentCustomerFilter = true;
 		$this->correctWorkspaces();
 
