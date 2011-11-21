@@ -1066,7 +1066,7 @@ class we_imageDocument extends we_binaryDocument {
 	</tr>
 </table>';
 
-			if($this->ContentType == "image/*" && (isset($_REQUEST["we_cmd"][1]) && $_REQUEST["we_cmd"][1] != "1")) {
+			if($this->ContentType == "image/*" ) {
 				$content .= $this->formCharset(true);
 
 				$content .= $this->formLanguage(true);
