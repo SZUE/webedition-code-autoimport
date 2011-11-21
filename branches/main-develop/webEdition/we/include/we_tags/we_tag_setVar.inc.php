@@ -146,7 +146,7 @@ function we_tag_setVar($attribs, $content){
 
 		}
 	}
-	if($striptags){$valueFrom=strip_tags(htmlentities($valueFrom));}
+	if($striptags){$valueFrom=strip_tags($valueFrom);}
 	switch ($to) {
 		case "request" :
 			$_REQUEST[$nameTo] = $valueFrom;
