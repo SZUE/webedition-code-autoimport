@@ -223,14 +223,11 @@ abstract class we_htmlElement{
 	 * @return		string
 	 */
 	static function htmlBody($attribs=array(), $content=''){
-		if(!isset($attribs['marginwidth']))
-			$attribs['marginwidth'] = '0';
-		if(!isset($attribs['marginheight']))
-			$attribs['marginheight'] = '0';
-		if(!isset($attribs['leftmargin']))
-			$attribs['leftmargin'] = '0';
-		if(!isset($attribs['topmargin']))
-			$attribs['topmargin'] = '0';
+		if(!isset($attribs['style'])){
+			$attribs['style']='margin: 0px 0px 0px 0px;';
+		}else if(strstr($attribs['style'],'margin')===FALSE){
+			$attribs['style'].=';margin: 0px 0px 0px 0px;';
+		}
 
 		return "\n" . we_baseElement::getHtmlCode(new we_baseElement('body', true, $attribs, "\n" . $content . "\n"));
 	}

@@ -407,11 +407,11 @@ HTS;
 	}
 
 	static function getPixel($w, $h, $border = 0){
-		return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '">';
+		return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . ' alt="space">';
 	}
 
 	static function pPixel($w, $h){
-		print we_html_tools::getPixel($w, $h);
+		print self::getPixel($w, $h);
 	}
 
 	static function hidden($name, $value, $attribs = null){
