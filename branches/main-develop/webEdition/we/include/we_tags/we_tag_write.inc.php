@@ -113,7 +113,7 @@ function we_tag_write($attribs, $content){
 				if ($objname=='') {
 					$GLOBALS["we_$type"][$name]->i_correctDoublePath();
 				}
-				$_WE_DOC_SAVE = $GLOBALS["we_doc"];
+				if(isset($GLOBALS["we_doc"])){$_WE_DOC_SAVE = $GLOBALS["we_doc"];}
 				$GLOBALS["we_doc"] = &$GLOBALS["we_$type"][$name];
 				if (strlen($workspaces) > 0 && $type == "object") {
 					$wsArr = makeArrayFromCSV($workspaces);
@@ -204,8 +204,10 @@ function we_tag_write($attribs, $content){
 				}
 
 				unset($GLOBALS["we_doc"]);
-				$GLOBALS["we_doc"] = $_WE_DOC_SAVE;
-				unset($_WE_DOC_SAVE);
+				if(isset($_WE_DOC_SAVE)){
+					$GLOBALS["we_doc"] = $_WE_DOC_SAVE;
+					unset($_WE_DOC_SAVE);
+				}
 				$_REQUEST["we_returnpage"] = $GLOBALS["we_$type"][$name]->getElement("we_returnpage");
 
 				if ($doWrite && $mail) {

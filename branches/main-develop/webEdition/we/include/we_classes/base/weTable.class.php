@@ -185,6 +185,12 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 			if( !(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])) ){
 				$_SESSION['weBackupVars']['tablekeys']=array();
 			}
+			if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+				$doConvert= true;
+				$searchArray= array('CHARACTER SET latin1','COLLATE latin1_bin','COLLATE latin1_danish_ci','COLLATE latin1_general_ci','COLLATE latin1_general_cs','COLLATE latin1_german1_ci','COLLATE latin1_german2_ci','COLLATE latin1_spanish_ci','COLLATE latin1_swedish_ci');
+			} else {
+				$doConvert= false;
+			}
 			if(weDBUtil::isTabExist($this->table)){
 				$_SESSION['weBackupVars']['tablekeys'][$this->table] = weDBUtil::getTableKeyArray($this->table);
 				weDBUtil::delTable($this->table);
@@ -195,6 +201,9 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/w
 				if(substr($cur,0,6)=='CREATE'){
 					//Regex because of backups <6.2.4
 					$cur=preg_replace('/(CREATE *\w* *`?)\w*'.stripTblPrefix($this->table).'/i','\\1'.$this->table,$cur,1);
+				}
+				if($doConvert){
+					$cur=str_replace($searchArray,'',$cur);
 				}
 			}
 			// Charset and Collation

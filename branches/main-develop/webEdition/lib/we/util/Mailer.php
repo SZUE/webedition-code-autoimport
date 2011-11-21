@@ -98,9 +98,9 @@ class we_util_Mailer extends Zend_Mail {
 	 */
 	public function __construct($to = "", $subject = "", $sender = "", $reply = "", $isEmbedImages = 0)
 	{
-		
+
 		setCharSet($GLOBALS['WE_BACKENDCHARSET']);
-		
+
 		if (defined("WE_MAILER")) {
 			switch (WE_MAILER) {
 				case 'smtp' :
@@ -136,13 +136,14 @@ class we_util_Mailer extends Zend_Mail {
 
 					//this should set return-path
 					$safeMode = ini_get('safe_mode');
-					if($reply != '' && !$safeMode){
+					$suhosin = in_array('suhosin',get_loaded_extensions());
+					if($reply != '' && !$safeMode && !$suhosin){
 						$_reply = $this->parseEmailUser($reply);
 						$tr = new Zend_Mail_Transport_Sendmail('-f'.$_reply['email']);
 					}
 					else {
 						$_sender = $this->parseEmailUser($sender);
-						if (isset($_sender['email']) && $_sender['email']!='' && !$safeMode){
+						if (isset($_sender['email']) && $_sender['email']!='' && !$safeMode && !$suhosin){
 							$tr = new Zend_Mail_Transport_Sendmail('-f'.$_sender['email']);
 						} else {
 							$tr = new Zend_Mail_Transport_Sendmail();
@@ -151,7 +152,7 @@ class we_util_Mailer extends Zend_Mail {
 					Zend_Mail::setDefaultTransport($tr);
 					break;
 			}
-			;
+
 		}
 
 
@@ -261,7 +262,7 @@ class we_util_Mailer extends Zend_Mail {
 						$directory = dirname($url);
 						($directory == '.') ? $directory = '' : '';
 						$directory = str_replace("..", "", "$directory");
-						if ($pos = stripos($directory, $_SERVER['HTTP_HOST'])) {
+						if (($pos = stripos($directory, $_SERVER['HTTP_HOST']))) {
 							$directory = substr($directory, (strlen($_SERVER['HTTP_HOST']) + $pos), strlen($directory));
 						}
 
@@ -559,6 +560,7 @@ class we_util_Mailer extends Zend_Mail {
 		try {
 			$t = parent::send();
 		} catch (Zend_Exception $e) {
+			t_e('warning','Error while sending mail: ',$e);
 			return false;
 		}
 		return true;

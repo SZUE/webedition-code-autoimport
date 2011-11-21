@@ -59,7 +59,7 @@ switch ($GLOBALS['BROWSER']) {
 		$imgmargintop = 0;
 		$imgvalign = "middle";
 		$frameDefaultHeight = 22;
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "background-position:bottom";
 		break;
@@ -69,7 +69,7 @@ switch ($GLOBALS['BROWSER']) {
 		$imgmargintop = 2;
 		$imgvalign = "top";
 		$frameDefaultHeight = 22;
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr>
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr>
 		</div>' . "\n\n";
 		$tabBorder = "border: 0px; border-bottom: 1px solid #888888; border-right: 1px solid #888888;";
 		$tabBG = "";
@@ -97,16 +97,12 @@ switch ($GLOBALS['BROWSER']) {
 				}
 		}
 }
+
+we_html_tools::htmlTop();
+print we_htmlElement::jsElement($content=$_contentTypes);
 ?>
-<!DOCTYPE  HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">
-<html>
-	<head>
-		<title>Horizontale Navigationsleiste zentriert</title>
-		<script type="text/javascript">
-<?php
-print $_contentTypes;
-?>
-			function _getIcon(contentType, extension) {
+			<script type="text/javascript">
+				function _getIcon(contentType, extension) {
 				if (contentType == "application/*") {
 					switch(extension){
 						case ".pdf":

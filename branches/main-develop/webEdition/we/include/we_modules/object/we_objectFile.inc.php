@@ -326,11 +326,12 @@ class we_objectFile extends we_document{
 			}
 			if($this->DB_WE->f("RestrictUsers")){
 				$this->RestrictOwners = $this->DB_WE->f("RestrictUsers");
-			}*/
+			}
 
 			if($this->DB_WE->f('DefaultTriggerID')){
 				$this->TriggerID = $this->DB_WE->f('DefaultTriggerID');
 			}
+			*/
 			if($this->DB_WE->f('DefaultCategory')){
 				$this->Category = $this->DB_WE->f('DefaultCategory');
 			}
@@ -2343,7 +2344,7 @@ class we_objectFile extends we_document{
 	function we_save($resave=0,$skipHook=0){
 		$this->errMsg='';
 
-		$foo = getHash("SELECT strOrder,DefaultValues FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
+		$foo = getHash("SELECT strOrder,DefaultValues,DefaultTriggerID FROM " .OBJECT_TABLE . " WHERE ID='".$this->TableID."'",$this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 
 		foreach($this->elements as $n=>$elem){
@@ -2360,7 +2361,12 @@ class we_objectFile extends we_document{
 			include_once($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			weShopVariants::correctModelFields($this);
 		}
-
+		if(!$this->TriggerID){		
+			$this->TriggerID=f('SELECT TriggerID FROM '.OBJECT_FILES_TABLE. ' WHERE ID="'.$this->ParentID.'"','TriggerID',$this->DB_WE);
+			if(!$this->TriggerID){
+				$this->TriggerID=$foo["DefaultTriggerID"];
+			}
+		}
 		$_resaveWeDocumentCustomerFilter = true;
 		$this->correctWorkspaces();
 
@@ -2463,7 +2469,8 @@ class we_objectFile extends we_document{
 					$this->i_getPersistentSlotsFromDB(/*"Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
 					$this->i_initSerializedDat($sessDat);
 					//make sure at least TableID is set from db
-					$this->i_getPersistentSlotsFromDB("TableID");
+					//and Published as well #5742
+					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 					break;
 				}else{
@@ -2480,7 +2487,8 @@ class we_objectFile extends we_document{
 					//overwrite with new data
 					$this->i_initSerializedDat($sessDat,false);
 					//make sure at least TableID is set from db
-					$this->i_getPersistentSlotsFromDB("TableID");
+					//and Published as well #5742
+					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_MAID_DB);
@@ -2495,7 +2503,8 @@ class we_objectFile extends we_document{
 					//overwrite with new data
 					$this->i_initSerializedDat($sessDat,false);
 					//make sure at least TableID is set from db
-					$this->i_getPersistentSlotsFromDB("TableID");
+					//and Published as well #5742
+					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
 					$this->we_load(LOAD_TEMP_DB);
@@ -2840,7 +2849,7 @@ class we_objectFile extends we_document{
 			$makeSched = false;
 			foreach($this->schedArr as $s){
 				if($s["task"] == SCHEDULE_FROM && $s["active"]){
-					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);
+					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);// nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 					$makeSched = true;
 				}else{
 					$serializedDoc = "";
@@ -2850,7 +2859,7 @@ class we_objectFile extends we_document{
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 				" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".$this->ID."','".$Wann."','".$s["task"]."','".$this->ClassName."','".$this->DB_WE->escape(serialize($serializedDoc))."','".$this->DB_WE->escape(serialize($s))."','".$s["type"]."','".$s["active"]."')")) return false;
+						VALUES('".$this->ID."','".$Wann."','".$s["task"]."','".$this->ClassName."','".$this->DB_WE->escape($serializedDoc)."','".$this->DB_WE->escape(serialize($s))."','".$s["type"]."','".$s["active"]."')")) return false;
 			}
 			return $makeSched;
 		}
@@ -2862,14 +2871,12 @@ class we_objectFile extends we_document{
 	}
 
 	function isColExist($tab,$col){
-			global $DB_WE;
-			$DB_WE->query("SHOW COLUMNS FROM ".$tab." LIKE '$col';");
-			if($DB_WE->next_record()) return true; else return false;
+		$this->DB_WE->query("SHOW COLUMNS FROM ".$tab." LIKE '$col';");
+		if($this->DB_WE->next_record()) return true; else return false;
 	}
 
 	function addCol($tab,$col,$typ,$pos=""){
-			   global $DB_WE;
-			   $DB_WE->query("ALTER TABLE $tab ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
+		$this->DB_WE->query("ALTER TABLE $tab ADD $col $typ".(($pos!="") ? " ".$pos : "").";");
 	}
 
 	function getContentDataFromTemporaryDocs($ObjectID,$loadBinary=0){

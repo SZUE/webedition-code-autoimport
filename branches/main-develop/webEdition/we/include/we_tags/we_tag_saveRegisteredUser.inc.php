@@ -139,7 +139,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 			}else if(isset($_REQUEST['s']['ID']) && $_REQUEST['s']['ID'] == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
 
 				// existierender User (Daten werden von User geaendert)!!
-				$Username = isset($_REQUEST['s']['Username']) ?  $_REQUEST['s']['Username'] : '';
+				$Username = isset($_REQUEST['s']['Username']) ?  $_REQUEST['s']['Username'] : $_SESSION['webuser']['Username'];
 
 				$GLOBALS['DB_WE']->query('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username="'.$GLOBALS["DB_WE"]->escape($Username).'" AND ID!='.intval($_REQUEST["s"]["ID"]));
 				if(!$GLOBALS['DB_WE']->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
@@ -334,7 +334,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 
 function we_tag_saveRegisteredUser_processRequest(){
 	$set=array();
-	
+
 	foreach($_REQUEST['s'] as $name=>$val){
 		switch($name){
 			case 'Username': ### QUICKFIX !!!

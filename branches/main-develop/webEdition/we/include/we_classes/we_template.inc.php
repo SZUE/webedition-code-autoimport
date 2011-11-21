@@ -390,10 +390,10 @@ function handleShutdown($code) {
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		return false;
-		/*if(!defined('SHOP_TABLE')) return false;
+		
+		if(!defined('SHOP_TABLE')) return false;
 		$fieldnames = $this->getVariantFieldNames();
-		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);*/
+		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);
 	}
 
 	/**
@@ -426,7 +426,11 @@ function handleShutdown($code) {
 	function getVariantFieldNames(){
 		if(!defined('SHOP_TABLE')) return array();
 		$fields = $this->getAllVariantFields();
-		return array_keys($fields);
+		if (is_array($fields)){
+			return array_keys($fields);
+		} else {
+			return array();
+		}
 	}
 
 	/**

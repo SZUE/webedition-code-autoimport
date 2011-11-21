@@ -806,7 +806,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$makeSched = false;
 			foreach($this->schedArr as $s){
 				if($s["task"] == SCHEDULE_FROM && $s["active"]){
-					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);
+					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);// nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 					$makeSched = true;
 				}
 				else {
@@ -817,7 +817,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".abs($this->ID)."','".abs($Wann)."','".abs($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape(serialize($serializedDoc))."','".$this->DB_WE->escape(serialize($s))."','".abs($s["type"])."','".abs($s["active"])."')")) return false;
+						VALUES('".abs($this->ID)."','".abs($Wann)."','".abs($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape($serializedDoc)."','".$this->DB_WE->escape(serialize($s))."','".abs($s["type"])."','".abs($s["active"])."')")) return false;
 			}
 			return $makeSched;
 		}
