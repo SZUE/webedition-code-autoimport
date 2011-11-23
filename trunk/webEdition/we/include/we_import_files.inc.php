@@ -606,24 +606,14 @@ class we_import_files
 			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/weJUpload.class.php');
 
 			$_param = array(
-
-					'actionURL' => '/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
-					'maxTotalRequestSize' => getUploadMaxFilesize(false, $GLOBALS["DB_WE"]),
-					'showTabViews' => 'list,details',
-					'leftSplitpaneLocation' => '200',
-					'hideStopButton' => 'true',
-					'localeCountry' => 'DE',
-					'localeLanguage' => 'de',
-					'realTimeResponse' => 'false',
-					//'completeURL'=>'javascript:top.imgimportcontent.uploadFinished();'
-					'completeURL' => 'we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3' // original: 'completeURL' => 'we_cmd.php?we_cmd[0]=import_files&step=3' ersetzt wegen #Bug 3723 durch die L�sung von unten f�r den MAC
+				'postURL' => getServerProtocol(true) . $_SERVER["HTTP_HOST"].'/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
+				'maxFileSize' => getUploadMaxFilesize(false, $GLOBALS["DB_WE"]),
+				'afterUploadURL' => getServerProtocol(true) . $_SERVER["HTTP_HOST"].'/webEdition/we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
+				'showLogWindow'=>'onError',
+				'debugLevel'=>'99',
 			)
 			;
 
-			if (($GLOBALS["BROWSER"] == "NN6" && $GLOBALS["SYSTEM"] == 'MAC')) {
-				// in FF Mac java upload replaces location of frame
-				$_param['completeURL'] = 'we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3';
-			}
 
 			if (defined('HTTP_USERNAME')) {
 				$_ecnode = HTTP_USERNAME;
@@ -985,7 +975,7 @@ class we_import_files
 			}
 			if ($fh) {
 				if  (isset($we_doc->IsBinary) && $we_doc->IsBinary){
-					
+
 				} else {
 					$we_fileData = fread($fh, $_FILES['we_File']["size"]);
 				}
@@ -1307,8 +1297,10 @@ class we_import_files
 
 }
 
-$yuiSuggest = & weSuggest::getInstance();
+if(!isset($_REQUEST['csid'])){
+	$yuiSuggest = & weSuggest::getInstance();
 
-$import_object = new we_import_files();
+	$import_object = new we_import_files();
 
-print $import_object->getHTML();
+	print $import_object->getHTML();
+}
