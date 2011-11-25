@@ -1068,8 +1068,6 @@ class we_imageDocument extends we_binaryDocument {
 
 			if($this->ContentType == "image/*" ) {
 				$content .= $this->formCharset(true);
-
-				$content .= $this->formLanguage(true);
 			}
 
 		return $content;
