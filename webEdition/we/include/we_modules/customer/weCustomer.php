@@ -90,19 +90,8 @@ class weCustomer extends weModelBase {
 		}
 		$this->ModifyDate=time();
 		$this->ModifiedBy='backend';
-		$s = array();
-		foreach ($this->persistent_slots as $key => $val) {
-			$s[$key] = $val;
-		}
-
-		//FIXME: @deprecated!
-		// Start Schnittstelle fuer change-Funktion
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/WE_CUSTOMER_EXTERNAL_FN.php')) {
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/WE_CUSTOMER_EXTERNAL_FN.php');
-			we_customer_saveFN($s);
-		}
-		// Ende Schnittstelle fuer change-Funktion
-		$hook = new weHook('customer_preSave', '', array('customer'=>$s,'from'=>'management','type'=>($s['ID']?'existing':'new')));
+		
+		$hook = new weHook('customer_preSave', '', array('customer'=>$this,'from'=>'management','type'=>($this->ID?'existing':'new')));
 		$ret=$hook->executeHook();
 
 		weModelBase::save();
