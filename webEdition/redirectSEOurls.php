@@ -43,6 +43,10 @@ if (defined('SUPPRESS404CODE') && SUPPRESS404CODE){
 }
 if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))  ){
 	$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);
+	$keys = array_keys($dirindexarray);
+	foreach ($keys as $key) {
+		$dirindexarray[$key] = trim ($dirindexarray[$key]);
+	}
 	$hiddendirindex = true;
 } else {
 	$hiddendirindex = false;
@@ -76,6 +80,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			$searchfor = $path_parts['basename'].'/'.$searchfor;
 		} else $searchfor = $path_parts['basename'];
 		if(!$displayid && $hiddendirindex){
+			//z79 
 			foreach($dirindexarray as $dirindex){
 				$display=$path_parts['dirname'].'/'.$dirindex;
 				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
@@ -106,6 +111,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			$searchfor = $path_parts['basename'].'/'.$searchfor;
 		} else $searchfor = $path_parts['basename'];
 
+		//z109 
 		foreach($dirindexarray as $dirindex){
 			$display=$path_parts['dirname'].$dirindex;
 			$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($display) . "' LIMIT 1", "ID", $db));
