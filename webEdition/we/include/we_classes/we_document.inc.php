@@ -381,10 +381,9 @@ class we_document extends we_root {
 				</tr>';
 
 			$content .= '</table>';
-			if($this->ContentType == 'image/*' && (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != '1')) {
+			if($this->ContentType == 'image/*') {
 				$content .= $this->formCharset(true);
 
-				$content .= $this->formLanguage(true);
 			}
 		return $content;
 	}
