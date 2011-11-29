@@ -2299,8 +2299,9 @@ class we_objectFile extends we_document{
 	function i_convertElemFromRequest($type,&$v,$k){
 		if(!$type){
 			foreach($this->DefArray as $n=>$foo){
-				if(ereg('^([^_]+)_'.$k,$n,$regs)){
-					$type = $regs[1];
+				$regs=explode('_',$n);
+				if(isset($regs[0])){
+					$type = $regs[0];
 				}
 			}
 		}
