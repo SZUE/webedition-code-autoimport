@@ -352,8 +352,9 @@ class we_document extends we_root {
 				'<tr><td>'.we_html_tools::getPixel(2,4).'</td></tr>'.
 				'<tr><td colspan="2">'.$this->formInputField("txt","Keywords",g_l('weClass',"[Keywords]"),40,508,"","onChange=\"_EditorFrame.setEditorIsHot(true);\"").'</td></tr>'.
 			'</table>';
-			if($this->ContentType == 'image/*' && (isset($_REQUEST['we_cmd'][1]) && $_REQUEST['we_cmd'][1] != '1')) {
-				$content .= $this->formCharset(true).$this->formLanguage(true);
+			if($this->ContentType == 'image/*') {
+				$content .= $this->formCharset(true);
+
 			}
 		return $content;
 	}

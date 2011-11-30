@@ -79,9 +79,9 @@ function removeFiles(){
 		}
 	}
 }
-updatePrefs();
-updateLang();
-updateActiveModules();
-updateConf();
-removeFiles();
+updatePrefs();t_e('Prefs');
+updateLang();t_e('Lang');
+updateActiveModules();t_e('modules');
+updateConf();t_e('Conf');
+removeFiles();t_e('Files');
 return true;

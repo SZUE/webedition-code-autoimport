@@ -43,6 +43,10 @@ if (defined('SUPPRESS404CODE') && SUPPRESS404CODE){
 }
 if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))  ){
 	$dirindexarray = explode(',',NAVIGATION_DIRECTORYINDEX_NAMES);
+	$keys = array_keys($dirindexarray);
+	foreach ($keys as $key) {
+		$dirindexarray[$key] = trim ($dirindexarray[$key]);
+	}
 	$hiddendirindex = true;
 } else {
 	$hiddendirindex = false;
@@ -76,10 +80,16 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			$searchfor = $path_parts['basename'].'/'.$searchfor;
 		} else $searchfor = $path_parts['basename'];
 		if(!$displayid && $hiddendirindex){
+			//z79
+			$display = "";
 			foreach($dirindexarray as $dirindex){
-				$display=$path_parts['dirname'].'/'.$dirindex;
-				$displayidtest=intval(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . $db->escape($display) . "' LIMIT 1", "ID", $db));
-				if($displayidtest)$displayid = $displayidtest;
+				$displaytest=$path_parts['dirname'].'/'.$dirindex;
+				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
+				if($displayidtest){
+					$displayid = $displayidtest;
+					$display = $displaytest; //nur, wenn Datei vorhanden
+					break; //wenn gefunden, kann man sich die weiteren Schleifen sparen.
+				}
 			}
 		}
 		if($displayid){
@@ -106,10 +116,16 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			$searchfor = $path_parts['basename'].'/'.$searchfor;
 		} else $searchfor = $path_parts['basename'];
 
+		//z109
+		$display = "";
 		foreach($dirindexarray as $dirindex){
-			$display=$path_parts['dirname'].$dirindex;
-			$displayidtest=intval(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . $db->escape($display) . "' LIMIT 1", "ID", $db));
-			if($displayidtest)$displayid = $displayidtest;
+			$displaytest=$path_parts['dirname'].$dirindex;
+			$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
+			if($displayidtest){
+				$displayid = $displayidtest;
+				$display = $displaytest; //nur, wenn Datei vorhanden
+				break; //wenn gefunden, kann man sich die weiteren Schleifen sparen
+			}
 		}
 		if($displayid){
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){

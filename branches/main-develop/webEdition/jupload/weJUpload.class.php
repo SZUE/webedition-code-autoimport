@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,108 +22,103 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weJUpload{
 
-	class weJUpload {
+	var $Params = array();
+	var $Buttons = array();
 
-		var $Params = array();
+	/* avail langs
+	 * ar, 	  ar_SA, 	  bg, 	  cs, 	  da, 	  de, 	  en, 	  eo, 	  es,
+	 * fi, 	  fr, 	  hr, 	  hu, 	  il, 	  it, 	  ja, 	  nl, 	  no, 	  pl,
+	 * pt_BR, 	  pt, 	  ro, 	  ru, 	  sk, 	  sl, 	  sv, 	  tr, 	  zh, zh_TW
+	 */
+	function weJUpload($params, $language=''){
 
-		var $Buttons = array();
+		$this->Params = $params;
 
-		function weJUpload($params,$language=''){
-
-			$this->Params = $params;
-
-			if(!empty($language)) {
-				switch ($language) {
-					case 'Deutsch':
-						$this->Params['localeCountry']='DE';
-						$this->Params['localeLanguage']='de';
+		if(!empty($language)){
+			switch($language){
+				default:
+				case 'Deutsch':
+					$this->Params['land'] = 'de';
 					break;
-					case 'Dutch':
-						$this->Params['localeCountry']='DE';
-						$this->Params['localeLanguage']='de';
+				case 'Dutch':
+					$this->Params['lang'] = 'nl';
 					break;
-					case 'English':
-						$this->Params['localeCountry']='en';
-						$this->Params['localeLanguage']='GB';
+				case 'English':
+					$this->Params['lang'] = 'en';
 					break;
-					case 'Finnish':
-						$this->Params['localeCountry']='en';
-						$this->Params['localeLanguage']='GB';
+				case 'Finnish':
+					$this->Params['lang'] = 'fi';
 					break;
-					case 'French':
-						$this->Params['localeCountry']='FR';
-						$this->Params['localeLanguage']='fr';
+				case 'French':
+					$this->Params['lang'] = 'fr';
 					break;
-					case 'Polish':
-						$this->Params['localeCountry']='PL';
-						$this->Params['localeLanguage']='pl';
+				case 'Polish':
+					$this->Params['lang'] = 'pl';
 					break;
-					case 'Russian':
-						$this->Params['localeCountry']='RU';
-						$this->Params['localeLanguage']='ru';
+				case 'Russian':
+					$this->Params['lang'] = 'ru';
 					break;
-					case 'Spanish':
-						$this->Params['localeCountry']='MX';
-						$this->Params['localeLanguage']='es';
+				case 'Spanish':
+					$this->Params['lang'] = 'es';
 					break;
-				}
 			}
-
 		}
+	}
 
-		function addParam($name,$value){
-			$this->Params[$name] = $value;
-		}
+	function addParam($name, $value){
+		$this->Params[$name] = $value;
+	}
 
-		function getAppletTag($content='',$w=300,$h=300) {
+	function getAppletTag($content='', $w=300, $h=300){
 
-			$_params = '';
+		$_params = '';
 
-			foreach ($this->Params as $name=>$value) {
-				$_params .= '<param name="'.$name.'" value="'.$value.'">
+		foreach($this->Params as $name => $value){
+			$_params .= '<param name="' . $name . '" value="' . $value . '">
 				';
-			}
+		}
 
-			 return '
-			<applet	name="JUpload" code="JUpload/startup.class" archive="/webEdition/jupload/jupload.jar" width="'.$w.'" height="'.$h.'" mayscript scriptable>
-				'.$_params.'
-				'.$content.'
+		return '
+			<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="/webEdition/jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
+				' . $_params . '
+				' . $content . '
 			</applet>
 			';
-
-		}
-
-		function getJS(){
-
-			return '';
-
-		}
-
-		function getButtons($buttons,$order='h',$space=5){
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-			$_buttons = array();
-
-			foreach ($buttons as $button) {
-				switch ($button) {
-					case 'add':
-						$_buttons[] = we_button::create_button("add", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickAdd();");
-					break;
-					case 'remove':
-						$_buttons[] = we_button::create_button("delete", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickRemove();");
-					break;
-					case 'upload':
-						$_buttons[] = we_button::create_button("upload", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickUpload();");
-					break;
-				}
-			}
-
-			if($order=='h'){
-				return we_button::create_button_table($_buttons,$space);
-			} else {
-				return '<div style="margin-bottom: '.$space.'px;">' . implode('</div><div style="margin-bottom: '.$space.'px;">',$_buttons) . '</div>';
-			}
-		}
-
 	}
+
+	function getJS(){
+
+		return '';
+	}
+
+	function getButtons($buttons, $order='h', $space=5){
+
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
+		$we_button = new we_button();
+
+		$_buttons = array();
+
+		foreach($buttons as $button){
+			switch($button){
+				case 'add':
+					$_buttons[] = $we_button->create_button("add", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickAdd();");
+					break;
+				case 'remove':
+					$_buttons[] = $we_button->create_button("delete", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickRemove();");
+					break;
+				case 'upload':
+					$_buttons[] = $we_button->create_button("upload", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickUpload();");
+					break;
+			}
+		}
+
+		if($order == 'h'){
+			return $we_button->create_button_table($_buttons, $space);
+		} else{
+			return '<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>';
+		}
+	}
+
+}

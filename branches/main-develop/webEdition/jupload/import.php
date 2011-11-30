@@ -40,7 +40,7 @@ if(isset($_SESSION['_we_import_files'])){
 
 $_counter = 0;
 foreach($_FILES as $_index=>$_file) {
-	if(strpos($_index,'uploadedFiles'.$_counter)!==false) {
+	if(strpos($_index,'File')===0 && $_file['error']==0) {
 		$_FILES['we_File'] = $_file;
 
 		$error = $import_files->importFile();
@@ -59,3 +59,12 @@ foreach($_FILES as $_index=>$_file) {
 		break;
 	}
 }
+
+if(isset($_SESSION["WE_IMPORT_FILES_ERRORs"])){
+	print_r($_SESSION["WE_IMPORT_FILES_ERRORs"]);
+	echo "\n";
+}else{
+	echo "SUCCESS\n";
+}
+
+flush();
