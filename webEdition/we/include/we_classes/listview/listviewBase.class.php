@@ -420,7 +420,7 @@ class listviewBase{
 				}
 				$newdate=$year."-".$month."-".$day;
 			}
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -482,7 +482,7 @@ class listviewBase{
 			$_rest = ($this->anz_all % $this->cols);
 			$_add = $_rest ? $this->cols - $_rest : 0;
 			//$this->rows = min($this->rows, $_rows+$_add);//all dies ist obsolet mit den wegen #5361 eingeführten Änderungen
-			
+
 		}
 	}
 
