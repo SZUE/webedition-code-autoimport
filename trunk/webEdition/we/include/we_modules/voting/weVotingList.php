@@ -29,18 +29,18 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/voti
 class weVotingList{
 
 	//properties
-	var $Name;	
+	var $Name;
 	var $Version;
 	var $Offset=0;
 	var $Start=0;
-	
+
 	var $CountAll=0;
 	/**
 	* Default Constructor
 	* Can load or create new Newsletter depends of parameter
 	*/
-	
-	
+
+
 	function weVotingList($name,$groupid,$version=0,$rows=0,$offset=0,$desc=false,$order='PublishDate',$subgroup=false){
 
 			$this->Name = $name;
@@ -48,41 +48,41 @@ class weVotingList{
 			$this->Offset = $offset;
 			$this->Rows = $rows;
 			$this->Start = (isset($_REQUEST["_we_vl_start_".$this->Name]) && $_REQUEST["_we_vl_start_".$this->Name]) ? abs($_REQUEST["_we_vl_start_".$this->Name]) : 0;
-			if($this->Start == 0) $this->Start += $offset;			
+			if($this->Start == 0) $this->Start += $offset;
 
 			$childs_query = '';
 			if($groupid!=0){
 				$childs_query = '(ParentID=' . abs($groupid);
 				if($subgroup) {
-					$childs = array();		
+					$childs = array();
 					we_readChilds($groupid,$childs,VOTING_TABLE,true,'','IsFolder',1);
 					$childs_query .= ' OR ParentID=' . implode(' OR ParentID=',$childs);
 				}
 				$childs_query .= ')';
-				
+
 			}
 
 			if($rows || $this->Start) $limit = ' LIMIT ' . $this->Start . ',' . ($rows==0 ? 9999999 : $rows);
 			else $limit = '';
-			
+
 			if($order!="") {
 				$order_sql = ' ORDER BY ' . $order;
 				if($desc){
 					$order_sql .= ' DESC ';
 				} else {
 					$order_sql .= ' ASC ';
-				}				
-			}			
-			
+				}
+			}
+
 			$this->db = new DB_WE();
-			
-			
+
+
 			$this->CountAll = f('SELECT count(ID) as CountAll FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . ';', 'CountAll',$this->db);
 			$_we_voting_query = 'SELECT ID FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . $limit . ';';
-				
+
 			$this->db->query($_we_voting_query);
-		
-		
+
+
 	}
 
 	function getNext(){
@@ -93,14 +93,14 @@ class weVotingList{
 				return true;
 		}
 		return false;
-       		
+
 	}
-	
+
 	function getNextLink($attribs){
 		if($this->hasNextPage()){
 			$urlID = we_getTagAttribute("id", $attribs, "");
 			$foo = $this->Start + $this->Rows;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'),'hidedirindex'=>'false')).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
 
             return getHtmlTag("a", $attribs, "", false, true);
 
@@ -108,20 +108,20 @@ class weVotingList{
 		}else{
 			return "";
 		}
-	}	
-	
-	
+	}
+
+
 	function hasNextPage(){
 		return (($this->Start + $this->Rows) < $this->CountAll);
 	}
 
-	
+
 	function getBackLink($attribs){
 		if($this->hasPrevPage()){
 			$urlID = we_getTagAttribute("id", $attribs, "");
 			$foo = $this->Start - $this->Rows;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
-			
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'),'hidedirindex'=>'false')).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
+
 			return getHtmlTag("a", $attribs, "", false, true);
 
 		}else{
@@ -131,8 +131,8 @@ class weVotingList{
 
 	function hasPrevPage(){
 		return (abs($this->Start) != abs($this->Offset));
-	}	
-	
+	}
+
 	function we_makeQueryString($queryString="",$filter="") {
 		$usedKeys = array();
 		if($filter){
@@ -189,7 +189,7 @@ class weVotingList{
 		$url_tail = ereg_replace('(.*)&$','\1',$url_tail);
 		return $url_tail;
 	}
-	
+
 }
 
 
