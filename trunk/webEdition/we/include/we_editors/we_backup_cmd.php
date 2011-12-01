@@ -374,12 +374,8 @@
 												top.busy.setProgressText("current_description","' . $description . '");
 												top.busy.setProgress('.$percent.');
 											}
-
 											top.cmd.location="/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=import";
-											//top.cmd.setLocation("/webEdition/we/include/we_editors/we_backup_cmd.php?cmd=import");
-											//top.checker.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker";
-											top.checker.setLocation("/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker");
-
+											top.checker.location="/webEdition/we/include/we_editors/we_recover_backup.php?pnt=checker";
 								}
 
 								run();
