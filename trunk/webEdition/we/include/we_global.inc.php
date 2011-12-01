@@ -2802,6 +2802,17 @@ function getServerProtocol($slash = false) {
 	return (we_isHttps ()?'https':'http').($slash?'://':'');
 }
 
+function getServerUrl($useUserPwd=false){
+	$port = '';
+	if(isset($_SERVER['SERVER_PORT'])){
+		if((we_isHttps() && $_SERVER['SERVER_PORT'] != 443) || ($_SERVER['SERVER_PORT'] != 80)){
+			$port = ':' . $_SERVER['SERVER_PORT'];
+		}
+	}
+	$pwd = (defined('HTTP_USERNAME') ? HTTP_USERNAME : '') . ':' . (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '') . '@';
+	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
+}
+
 function we_check_email($email) {	 // Zend validates only the pure address
 	$email = html_entity_decode($email);
 	$namePart[0] = "";
