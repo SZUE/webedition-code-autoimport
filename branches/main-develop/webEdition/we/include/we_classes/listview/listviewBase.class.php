@@ -290,7 +290,7 @@ abstract class listviewBase{
 				}
 				$newdate=$year.'-'.$month.'-'.$day;
 			}
-			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
+			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -307,7 +307,7 @@ abstract class listviewBase{
 		else if($this->hasPrevPage()){
 
 			$foo = $this->start - $this->maxItemsPerPage;
-			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
+			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -422,7 +422,7 @@ abstract class listviewBase{
 				}
 				$newdate=$year."-".$month."-".$day;
 			}
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -439,7 +439,7 @@ abstract class listviewBase{
 		else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top')));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {

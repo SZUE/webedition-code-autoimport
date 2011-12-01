@@ -919,12 +919,12 @@ if ($we_editmode) {
 		$code = $we_doc->getDocumentCode();
 	}
 
-	$maineditor = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>';
+	$maineditor = '<table border="0" cellpadding="0" cellspacing="0" width="95%"><tr><td>';
 
 	if ($_useJavaEditor) {
 		$maineditor .= we_getJavaEditorCode($code);
 	} else {
-		$maineditor .= '<textarea id="editarea" style="width: ' . (($_SESSION["prefs"]["editorWidth"] != 0) ? $_SESSION["prefs"]["editorWidth"] : "700") . 'px; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
+		$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
 						. htmlspecialchars($code) . '</textarea>';
 		if ($_SESSION['prefs']['editorMode'] == 'codemirror'||$_SESSION['prefs']['editorMode'] == 'codemirror2') { //Syntax-Highlighting
 			$vers=($_SESSION['prefs']['editorMode'] == 'codemirror'?'':2);

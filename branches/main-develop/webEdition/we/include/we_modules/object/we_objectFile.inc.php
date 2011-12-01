@@ -74,13 +74,6 @@ class we_objectFile extends we_document{
 	var $TriggerID=0;
 
 
-	//######################################################################################################################################################
-	//##################################################################### FUNCTIONS ######################################################################
-	//######################################################################################################################################################
-
-
-	//##################################################################### INIT FUNCTIONS ######################################################################
-
 	/* Constructor */
 	function __construct(){
 		parent::__construct();
@@ -2362,7 +2355,7 @@ class we_objectFile extends we_document{
 			include_once($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			weShopVariants::correctModelFields($this);
 		}
-		if(!$this->TriggerID){		
+		if(!$this->TriggerID){
 			$this->TriggerID=f('SELECT TriggerID FROM '.OBJECT_FILES_TABLE. ' WHERE ID="'.$this->ParentID.'"','TriggerID',$this->DB_WE);
 			if(!$this->TriggerID){
 				$this->TriggerID=$foo["DefaultTriggerID"];

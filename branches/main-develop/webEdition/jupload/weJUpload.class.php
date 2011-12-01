@@ -81,7 +81,7 @@ class weJUpload{
 		}
 
 		return '
-			<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="/webEdition/jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
+			<applet	name="JUpload" code="wjhk.jupload2.JUploadApplet" archive="'.getServerUrl(true).'/webEdition/jupload/jupload.jar" width="' . $w . '" height="' . $h . '" mayscript scriptable>
 				' . $_params . '
 				' . $content . '
 			</applet>

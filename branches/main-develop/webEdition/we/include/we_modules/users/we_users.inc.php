@@ -218,7 +218,7 @@ class we_user {
 	 */
 
 	// Constructor
-	function we_user() {
+	function __construct(){
 		$this->ClassName="we_user";
 		$this->Name = "user_".md5(uniqid(rand()));
 		array_push($this->persistent_slots,"ID","Type","ParentID","Salutation","First","Second","Address","HouseNo","City","PLZ","State","Country","Tel_preselection","Telephone","Fax","Fax_preselection","Handy","Email","username","passwd","clearpasswd", "Text","Path","Permissions","ParentPerms","Description","Alias","Icon","IsFolder","CreatorID","CreateDate","ModifierID","ModifyDate","Ping","workSpace","workSpaceDef","workSpaceTmp","workSpaceNav","workSpaceNwl","workSpaceObj","ParentWs","ParentWst","ParentWsn","ParentWso","ParentWsnl","altID", "LoginDenied", "UseSalt");

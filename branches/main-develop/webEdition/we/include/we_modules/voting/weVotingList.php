@@ -104,7 +104,7 @@ class weVotingList{
 		if($this->hasNextPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start + $this->Rows;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'),'hidedirindex'=>'false')).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
 
             return getHtmlTag("a", $attribs, "", false, true);
 
@@ -124,7 +124,7 @@ class weVotingList{
 		if($this->hasPrevPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start - $this->Rows;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'))).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'self'),'hidedirindex'=>'false')).'?'. htmlspecialchars($this->we_makeQueryString("_we_vl_start_".$this->Name."=$foo"));
 
 			return getHtmlTag("a", $attribs, "", false, true);
 

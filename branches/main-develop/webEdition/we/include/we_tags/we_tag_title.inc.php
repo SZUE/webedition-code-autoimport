@@ -33,7 +33,7 @@ function we_tag_title($attribs, $content){
 		return '<?php	$GLOBALS["meta"]["Title"]["default"] = "' . str_replace('"', '\"', $content) . '"; ?>';
 	} else {
 		$title = ($GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : $content);
-		$title = ($prefix!=''?$prefix.($title!=''?$delimiter:''):'').$title.($suffix!=''?($title!=''?$delimiter:($prefix!=''?$delimter:'')).$suffix:'');
+		$title = ($prefix!=''?$prefix.($title!=''?$delimiter:''):'').$title.($suffix!=''?($title!=''?$delimiter:($prefix!=''?$delimiter:'')).$suffix:'');
 		return getHtmlTag('title',$attribs,$htmlspecialchars ? htmlspecialchars(strip_tags($title)) : strip_tags($title),true) . "\n";
 	}
 }
