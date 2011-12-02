@@ -2802,6 +2802,12 @@ function getServerProtocol($slash = false) {
 	return (we_isHttps ()?'https':'http').($slash?'://':'');
 }
 
+function getServerAuth(){
+		$pwd = rawurlencode(defined('HTTP_USERNAME') ? HTTP_USERNAME : (isset($_SERVER['PHP_AUTH_USER'])?$_SERVER['PHP_AUTH_USER']:'')) . ':' .
+			rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW'])?$_SERVER['PHP_AUTH_PW']:'')) . '@';
+		return (strlen($pwd)>3)?$pwd:'';
+}
+
 function getServerUrl($useUserPwd=false){
 	$port = '';
 	if(isset($_SERVER['SERVER_PORT'])){
@@ -2809,7 +2815,9 @@ function getServerUrl($useUserPwd=false){
 			$port = ':' . $_SERVER['SERVER_PORT'];
 		}
 	}
-	$pwd = (defined('HTTP_USERNAME') ? HTTP_USERNAME : '') . ':' . (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '') . '@';
+	if($useUserPwd){
+		$pwd = getServerAuth();
+	}
 	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
 }
 
