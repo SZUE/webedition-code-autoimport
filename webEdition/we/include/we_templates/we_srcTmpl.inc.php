@@ -309,9 +309,9 @@ if ($we_editmode) {
 	if ($_useJavaEditor) {
 
 		$maineditor .= '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />'.
-    '<applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="'.getServerProtocol(true). $SERVER_NAME . ((isset($SERVER_PORT) && $SERVER_PORT != 80) ? ':' . $SERVER_PORT : '') . '/webEdition/editors/template/editor">'.
-    '<param name="phpext" value=".php">';
-
+    '<applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="'.getServerUrl(true) . '/webEdition/editors/template/editor">'.
+    '<param name="phpext" value=".php">'.
+		'<param name="serverUrl" value="'.  getServerUrl(true).'"/>';
 		if ($_SESSION['prefs']['editorFont'] == 1) {
 			// translate html font names into java font names
 			switch($_SESSION['prefs']['editorFontname']){

@@ -47,10 +47,8 @@ public class Editor extends JApplet{
 
 	private String php_ext;
 
-	public URL codeBase;
-	public String SERVER_NAME;
-	public int port;
-	public String protocol;
+	public String serverUrl;
+
 	public String cmpCode = "";
 
 	protected boolean isHot = false;
@@ -67,16 +65,11 @@ public class Editor extends JApplet{
 	@Override
 	public void init() {
 
-		codeBase = getCodeBase();
-
-		SERVER_NAME = codeBase.getHost();
-
-		port=(getDocumentBase()).getPort();
-		protocol=(getDocumentBase()).getProtocol();
 		String url;
 
-		if (SERVER_NAME.length() > 0) {
-			url = codeBase.toString()+"initEditor.html";
+		serverUrl = getParameter("serverUrl");
+		if (serverUrl.length() > 0) {
+			url = serverUrl+"initEditor.html";
 			showUrl(url);
 		}
 
@@ -135,12 +128,8 @@ public class Editor extends JApplet{
 		php_ext=getParameter("phpext");
 		if(php_ext==null) php_ext=".php";
 
-		if (SERVER_NAME.length() > 0) {
-			url = codeBase.toString()+"/getAllTags" + php_ext;
-			tags = getFromServer(url, "tag");
-		} else {
-			url = "";
-		}
+		url = serverUrl+"/getAllTags" + php_ext;
+		tags = getFromServer(url, "tag");
 		editor = new EditorPanel(this);
 		getContentPane().add(editor, BorderLayout.CENTER);
 		searchAndReplace = new SearchAndReplace(new javax.swing.JFrame(), false, this);
@@ -198,12 +187,7 @@ public class Editor extends JApplet{
 
 	public Vector<String> getAttribsForTag(String tagName) {
 		if (!attribs.containsKey(tagName)) {
-			String url;
-			if (SERVER_NAME.length() > 0) {
-				url = codeBase.toString()+"/getAttribsForTag" + php_ext + "?tagName="+tagName;
-			} else {
-				url = "http://localhost/getAttribsForTag.php?tagName="+tagName;
-			}
+			String url = serverUrl +"/getAttribsForTag" + php_ext + "?tagName="+tagName;
 			Vector<String> attr = getFromServer(url, "attribute");
 			attribs.put(tagName, attr);
 		}
@@ -232,13 +216,8 @@ public class Editor extends JApplet{
 
 	public void sendCtrlS() {
 
-		if (SERVER_NAME.length() > 0) {
-			String url;
-			if(port!=-1) {
-				url = protocol + "://" + SERVER_NAME + ":" + port + "/webEdition/we_lcmd" + php_ext + "?wecmd0=trigger_save_document";
-			} else {
-				url = protocol + "://" + SERVER_NAME + "/webEdition/we_lcmd" + php_ext + "?wecmd0=trigger_save_document";
-			}
+		if (serverUrl.length() > 0) {
+			String url = serverUrl + "/webEdition/we_lcmd" + php_ext + "?wecmd0=trigger_save_document";
 			showUrl(url);
 		}
 	}
