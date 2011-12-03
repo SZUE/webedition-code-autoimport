@@ -28,7 +28,7 @@ function we_parse_tag_checkForm($attribs, $content) {
 		return $foo;
 	if (($foo = attributFehltError($arr, 'type', 'checkForm')))
 		return $foo;
-	
+
 	return '<?php printElement(' . we_tagParser::printTag('checkForm', $attribs, $content,true) . '); ?>';
 }
 
@@ -167,7 +167,7 @@ function we_tag_checkForm($attribs, $content) {
     }
             ';
 
-			$function = '<script type="text/javascript"><!-- ' . $initFunction . ' ' . $checkFunction . ' //--></script>';
+			$function = we_htmlElement::jsElement($initFunction . ' ' . $checkFunction);
 			break;
 
 		case "name" : //  name of formular is given
@@ -201,7 +201,7 @@ function we_tag_checkForm($attribs, $content) {
     }
             ';
 
-			$function = '<script type="text/javascript"><!-- ' . $initFunction . ' ' . $checkFunction . ' //--></script>';
+			$function = we_htmlElement::jsElement($initFunction . ' ' . $checkFunction);
 			break;
 	}
 
