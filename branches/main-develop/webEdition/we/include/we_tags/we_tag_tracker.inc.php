@@ -26,6 +26,14 @@ function we_tag_tracker($attribs, $content){
 	if ($GLOBALS["we_doc"]->InWebEdition) {
 		return "";
 	}
+	if (!defined("WE_TRACKER_DIR")) {
+		define("WE_TRACKER_DIR", "/pageLogger");
+	}
+	if(!is_dir($_SERVER["DOCUMENT_ROOT"].WE_TRACKER_DIR)){
+		t_e('pagelogger not installed, but we:pagelogger called');
+		return '';
+	}
+
 	$type = weTag_getAttribute("type", $attribs, "standard");
 	$ssl = weTag_getAttribute("ssl", $attribs, false, true);
 	$websitename = weTag_getAttribute("websitename", $attribs, $_SERVER['SERVER_NAME']);
@@ -41,10 +49,6 @@ function we_tag_tracker($attribs, $content){
 		if ($trackname == "WE_TITLE") {
 			$trackname = $GLOBALS["WE_MAIN_DOC"]->getElement("Title");
 		}
-
-	if (!defined("WE_TRACKER_DIR")) {
-		define("WE_TRACKER_DIR", "/pageLogger");
-	}
 
 	$trackerurl = ($ssl ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . WE_TRACKER_DIR;
 
