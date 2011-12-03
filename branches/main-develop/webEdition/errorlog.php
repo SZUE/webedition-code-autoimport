@@ -175,7 +175,9 @@ echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
 		return true;
 	}
 </script>
-
+<?php
+		print STYLESHEET;
+?>
 </head>
 
 <body class="weDialogBody" style="overflow:hidden;" onLoad="self.focus();">

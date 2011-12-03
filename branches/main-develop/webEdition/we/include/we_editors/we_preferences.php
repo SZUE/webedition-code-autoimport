@@ -3500,7 +3500,7 @@ function build_dialog($selected_setting = "ui"){
 				}
 				$_seem_weapp_chooser = '';
 				if($_start_weapp->getOptionNum()){
-					$_start_type->addOption("weapp", $GLOBALS['l_prefs']["seem_start_type_weapp"]);
+					$_start_type->addOption("weapp", g_l('prefs', '[seem_start_type_weapp]'));
 					if(isset($_seem_start_weapp) && $_seem_start_weapp != ''){
 						$_start_weapp->selectOption($_seem_start_weapp);
 					}
@@ -3834,7 +3834,7 @@ function build_dialog($selected_setting = "ui"){
 
 			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0, 'noline' => 1));
 			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22, get_value("countries_default"), "", "", "text", 225);
-			array_push($_settings, array("headline" => $l_prefs["countries_default"], "html" => $_countries_default, "space" => 200, "noline" => 1));
+			array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200, "noline" => 1));
 
 			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
@@ -5715,7 +5715,7 @@ else {
 				// Create checkboxes
 				$_template_error_handling_table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 8, 1);
 				$_template_error_handling_table->setCol(0, 0, null, we_forms::checkbox(1, get_value("disable_template_code_check"), "disable_template_code_check", g_l('prefs', '[disable_template_code_check]')));
-				array_push($_settings, array("headline" => $l_prefs["templates"], "html" => $_template_error_handling_table->getHtmlCode(), "space" => 200));
+				array_push($_settings, array("headline" => g_l('prefs', '[templates]'), "html" => $_template_error_handling_table->getHtmlCode(), "space" => 200));
 			}
 
 			// Create checkboxes
