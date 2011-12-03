@@ -2705,7 +2705,7 @@ function CheckAndConvertISObackend($utf8data) {
 
 /**internal function - do not call */
 function g_l_encodeArray($tmp){
-	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
+	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET'])? $GLOBALS['CHARSET']:$GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp)?
 					array_map('g_l_encodeArray',$tmp):
 					mb_convert_encoding($tmp, $charset, 'UTF-8'));
@@ -2721,7 +2721,7 @@ function g_l_encodeArray($tmp){
  * @param $useEntities if set, return the string as html-entities
  */
 function g_l($name, $specific, $omitErrors=false) {
-	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : $GLOBALS['CHARSET']);
+	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET'])? $GLOBALS['CHARSET']:$GLOBALS['WE_BACKENDCHARSET']) );
 	//cache last accessed lang var
 	static $cache = array();
 	//echo $name.$specific;

@@ -61,6 +61,7 @@ if(isset($_we_active_integrated_modules) && in_array('customer', $_we_active_int
 
 
 if(!defined('NO_SESS')){
+	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';//Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_session.inc.php");
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 	$_tooldefines = weToolLookup::getDefineInclude();
