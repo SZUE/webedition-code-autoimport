@@ -3150,9 +3150,8 @@ function build_dialog($selected_setting = "ui"){
 
 			while(false !== ($entry = $_language_directory->read())) {
 				if($entry != "." && $entry != ".."){
-					if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)
-						&& is_file($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry . "/translation.inc.php")){
-						include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry . "/translation.inc.php");
+					if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
+						$_language[$entry]=$entry;
 					} else{
 						// do nothing
 					}
@@ -3160,12 +3159,11 @@ function build_dialog($selected_setting = "ui"){
 					// do nothing
 				}
 			}
-
 			global $_languages;
 
-			if(sizeof($_language["translation"]) > 1){ // Build language select box
+			if(sizeof($_language) > 1){ // Build language select box
 				$_languages = new we_htmlSelect(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
-				foreach($_language["translation"] as $key => $value){
+				foreach($_language as $key => $value){
 					$_languages->addOption($key, $value);
 
 					// Set selected extension
@@ -3192,7 +3190,7 @@ function build_dialog($selected_setting = "ui"){
 				// Build dialog
 				array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtmlCode() . "<br><br>" . $langNote, "space" => 200, 'noline' => 1));
 			} else{ // Just one Language Installed, no select box needed
-				foreach($_language["translation"] as $key => $value){
+				foreach($_language as $key => $value){
 					$_languages = $value;
 				}
 				// Build dialog
