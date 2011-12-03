@@ -28,8 +28,8 @@ function we_parse_tag_checkForm($attribs, $content) {
 		return $foo;
 	if (($foo = attributFehltError($arr, 'type', 'checkForm')))
 		return $foo;
-	//TODO: check if checkform tag is parsed correctly!
-	return '<?php ' . we_tagParser::printTag('checkForm', $attribs, $content) . '; ?>';
+	
+	return '<?php printElement(' . we_tagParser::printTag('checkForm', $attribs, $content,true) . '); ?>';
 }
 
 /**
@@ -54,6 +54,11 @@ function we_tag_checkForm($attribs, $content) {
 		print $missingAttrib;
 		return "";
 	}
+
+	ob_start();
+	eval('?>'.$content);
+	$content=ob_get_contents();
+	ob_end_clean();
 
 	// get fields of $attribs
 	$match = weTag_getAttribute("match", $attribs);
