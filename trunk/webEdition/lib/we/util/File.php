@@ -760,4 +760,35 @@ class we_util_File
 			return $value;
 		}
 	}
+
+	public static function compressDirectoy($directoy, $destinationfile)
+	{
+		if(is_dir($directoy)) {
+			$DirFileObjectsArray= array();
+			$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoy));
+			foreach($DirFileObjects as $name => $object){
+				$DirFileObjectsArray[]=$name;
+			}
+			sort($DirFileObjectsArray);		
+			$tar_object = new Archive_Tar($destinationfile, true);
+			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
+			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static function decompressDirectoy($gzfile, $destination)
+	{
+		if(is_file($gzfile)) {	
+			$tar_object = new Archive_Tar($gzfile, true);
+			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
+
+			$tar_object->extractModify($destination, '');
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
