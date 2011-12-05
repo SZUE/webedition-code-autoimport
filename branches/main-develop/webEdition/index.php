@@ -55,7 +55,7 @@ function printHeader($login){
 	/*	 * ***************************************************************************
 	 * CREATE HEADER
 	 * *************************************************************************** */
-	we_html_tools::htmlTop($_SERVER['SERVER_NAME'] . ' webEdition ');
+	we_html_tools::htmlTop('webEdition ');
 	print STYLESHEET;
 
 	print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));

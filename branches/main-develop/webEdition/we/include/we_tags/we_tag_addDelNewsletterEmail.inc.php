@@ -52,7 +52,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 			$_customerFieldPrefs[$db->f('pref_name')] = $db->f('pref_value');
 		}
 	} else {
-		$_domainName = str_replace("www.","",SERVER_NAME);
+		$_domainName = str_replace("www.","",$_SERVER['SERVER_NAME']);
 		$_customerFieldPrefs = array(
 			'black_list' => '',
 			'customer_email_field' => 'Kontakt_Email',
@@ -236,7 +236,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 				$id = weTag_getAttribute("id",$attribs);
 				$subject = weTag_getAttribute("subject",$attribs,"newsletter");
-				$from = weTag_getAttribute("from",$attribs,"newsletter@".SERVER_NAME);
+				$from = weTag_getAttribute("from",$attribs,"newsletter@".$_SERVER['SERVER_NAME']);
 
 				$use_https_refer=false;
 				$db->query("SELECT pref_value FROM ".NEWSLETTER_PREFS_TABLE." WHERE pref_name='use_https_refer';");
@@ -244,13 +244,13 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$protocol=($use_https_refer ? "https://" : "http://");
 
 				$port = defined("HTTP_PORT") ? HTTP_PORT : ($use_https_refer? 443 : 80);
-				$basehref=$protocol.SERVER_NAME.":".$port;
+				$basehref=$protocol.$_SERVER['SERVER_NAME'].":".$port;
 
 				$confirmLink = $id ? id_to_path($id, FILE_TABLE) : $_SERVER["SCRIPT_NAME"];
 
 				$confirmLink .= "?confirmID=".$confirmID."&mail=".rawurlencode($f["subscribe_mail"]);
 
-				$confirmLink = $protocol.SERVER_NAME.(($port && ($port != 80)) ? ":$port" : "").$confirmLink;
+				$confirmLink = $protocol.$_SERVER['SERVER_NAME'].(($port && ($port != 80)) ? ":$port" : "").$confirmLink;
 				$GLOBALS["WE_MAIL"]=$f["subscribe_mail"];
 				$GLOBALS["WE_TITLE"]="###TITLE###";
 				$GLOBALS["WE_SALUTATION"]=$f["subscribe_salutation"];

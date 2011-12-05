@@ -1261,18 +1261,6 @@ class weVersions {
 
 							saveFile($_SERVER['DOCUMENT_ROOT'].$binaryPath,$contents);
 
-							/*
-							$editPageNr = isset($_SESSION['EditPageNr']) ? $_SESSION['EditPageNr'] : 0;
-
-							$we_transaction = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : $GLOBALS['we_transaction'];
-							$locationPath = WE_SERVER_REQUEST_URI;
-							$port = (defined("HTTP_PORT")) ? (":".HTTP_PORT) : "";
-
-							$prot = getServerProtocol();
-							$location = $prot."://".SERVER_NAME.$port.$locationPath;
-							header("Location: " . $location);
-							*/
-
 						}else {
 							if(isset($document['TemplatePath']) && $document['TemplatePath']!="" && substr($document['TemplatePath'], -18)!="/we_noTmpl.inc.php" && $document['ContentType']=="text/webedition") {
 								$includeTemplate = preg_replace('/.tmpl$/i','.php', $document['TemplatePath']);
@@ -1608,7 +1596,7 @@ class weVersions {
 
  				$path = substr($we_doc->Path, 1);
 				$location = SITE_DIR.$path;
-	    		$contents = getHTTP(SERVER_NAME, $location."?vers_we_obj=1");
+	    		$contents = getHTTP($_SERVER['SERVER_NAME'], $location."?vers_we_obj=1");
 
 				if ( ini_get("short_open_tag") == 1) {
 	                $contents = str_replace("<?xml",'<?php print "<?xml"; ?>',$contents);

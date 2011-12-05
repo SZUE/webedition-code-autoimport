@@ -348,9 +348,7 @@ function mail_error_message($type, $message, $file, $line){
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n";
 
 	// Domain
-	if(defined('SERVER_NAME')){
-		$_detailedError .= 'webEdition address: ' . SERVER_NAME . ",\n\n";
-	}
+	$_detailedError .= 'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n";
 
 	// Error type
 	$_detailedError .= 'Error type: ' . translate_error_type($type) . ",\n";

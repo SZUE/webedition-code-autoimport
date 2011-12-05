@@ -212,7 +212,7 @@ function we_tag_write($attribs, $content){
 
 				if ($doWrite && $mail) {
 					if (!$mailfrom) {
-						$mailfrom = "dontReply@" . $GLOBALS["SERVER_NAME"];
+						$mailfrom = "dontReply@" . $_SERVER['SERVER_NAME'];
 					}
 					$path = $GLOBALS["we_$type"][$name]->Path;
 					if ($type == "object") {

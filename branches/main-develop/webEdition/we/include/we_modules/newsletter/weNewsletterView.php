@@ -2347,11 +2347,11 @@ class weNewsletterView {
 					$spacer = '[\040|\n|\t|\r]*';
 					parseInternalLinks($content,0);
 
-					$content = eregi_replace('(<[^>]+src'.$spacer.'='.$spacer.'[\'"]?)(/)','\1'.$protocol.SERVER_NAME.$port.'\2',$content);
-					$content = eregi_replace('(<[^>]+href'.$spacer.'='.$spacer.'[\'"]?)(/)','\1'.$protocol.SERVER_NAME.$port.'\2',$content);
-					$content = eregi_replace('(<[^>]+background'.$spacer.'='.$spacer.'[\'"]?)(/)','\1'.$protocol.SERVER_NAME.$port.'\2',$content);
-					$content = eregi_replace('(background'.$spacer.':'.$spacer.'[^url]*url'.$spacer.'\([\'"]?)(/)','\1'.$protocol.SERVER_NAME.$port.'\2',$content);
-					$content = eregi_replace('(background-image'.$spacer.':'.$spacer.'[^url]*url'.$spacer.'\([\'"]?)(/)','\1'.$protocol.SERVER_NAME.$port.'\2',$content);
+					$content = eregi_replace('(<[^>]+src'.$spacer.'='.$spacer.'[\'"]?)(/)','\1'.$protocol.$_SERVER['SERVER_NAME'].$port.'\2',$content);
+					$content = eregi_replace('(<[^>]+href'.$spacer.'='.$spacer.'[\'"]?)(/)','\1'.$protocol.$_SERVER['SERVER_NAME'].$port.'\2',$content);
+					$content = eregi_replace('(<[^>]+background'.$spacer.'='.$spacer.'[\'"]?)(/)','\1'.$protocol.$_SERVER['SERVER_NAME'].$port.'\2',$content);
+					$content = eregi_replace('(background'.$spacer.':'.$spacer.'[^url]*url'.$spacer.'\([\'"]?)(/)','\1'.$protocol.$_SERVER['SERVER_NAME'].$port.'\2',$content);
+					$content = eregi_replace('(background-image'.$spacer.':'.$spacer.'[^url]*url'.$spacer.'\([\'"]?)(/)','\1'.$protocol.$_SERVER['SERVER_NAME'].$port.'\2',$content);
 
 				}
 			} else {
@@ -2680,7 +2680,7 @@ class weNewsletterView {
 	function getSettings() {
 		$db=new DB_WE();
 		$ret=array();
-		$_domainName = str_replace("www.","",SERVER_NAME);
+		$_domainName = str_replace("www.","",$_SERVER['SERVER_NAME']);
 		$ret = array(
 			'black_list' => '',
 			'customer_email_field' => 'Kontakt_Email',

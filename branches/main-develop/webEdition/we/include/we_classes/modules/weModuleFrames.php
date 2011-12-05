@@ -113,7 +113,7 @@ class weModuleFrames{
 
 		$port = defined("HTTP_PORT") ? HTTP_PORT : "";
 		$lang_arr="we_menu_".$this->module;
-		$jmenu = new weJavaMenu($$lang_arr,SERVER_NAME,"top.opener.top.load",getServerProtocol(),$port,350,30);
+		$jmenu = new weJavaMenu($$lang_arr,$_SERVER['SERVER_NAME'],"top.opener.top.load",getServerProtocol(),$port,350,30);
 
 		$menu = $jmenu->getCode();
 

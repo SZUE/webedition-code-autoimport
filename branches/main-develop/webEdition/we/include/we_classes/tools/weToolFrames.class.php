@@ -192,7 +192,7 @@ class weToolFrames extends weModuleFrames {
 
 		$port = defined('HTTP_PORT') ? HTTP_PORT : '';
 		$lang_arr='we_menu_' . $this->toolName;
-		$jmenu = new weJavaMenu($$lang_arr,SERVER_NAME, $this->topFrame . '.cmd' ,getServerProtocol(),$port,350,30);
+		$jmenu = new weJavaMenu($$lang_arr,$_SERVER['SERVER_NAME'], $this->topFrame . '.cmd' ,getServerProtocol(),$port,350,30);
 
 		$menu='';
 		ob_start();

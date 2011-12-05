@@ -94,7 +94,7 @@ function we_tag_include($attribs, $content) {
 
 		/* check early if there is a document - if not the rest is never needed */
 		if ($gethttp) {
-			$content = getHTTP(SERVER_NAME, $realPath, '', defined('HTTP_USERNAME') ? HTTP_USERNAME : '', defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '');
+			$content = getHTTP($_SERVER['SERVER_NAME'], $realPath, '', defined('HTTP_USERNAME') ? HTTP_USERNAME : '', defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '');
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
 			//check Customer-Filter on static documents

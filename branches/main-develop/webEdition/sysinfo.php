@@ -224,8 +224,8 @@
 		$_info = array(
 			'webEdition' => array (
 				g_l('sysinfo','[we_version]') => $weVersion,
-				g_l('sysinfo','[server_name]') => SERVER_NAME,
-				g_l('sysinfo','[port]') => defined("HTTP_PORT") ? HTTP_PORT : 80,
+				g_l('sysinfo','[server_name]') => $_SERVER['SERVER_NAME'],
+				g_l('sysinfo','[port]') => $_SERVER['SERVER_PORT'] ? $_SERVER['SERVER_PORT'] : 80,
 				g_l('sysinfo','[protocol]') => getServerProtocol(),
 				g_l('sysinfo','[installation_folder]') => $_install_dir,
 				g_l('sysinfo','[we_max_upload_size]') => getUploadMaxFilesize()

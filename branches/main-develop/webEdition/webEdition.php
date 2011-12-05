@@ -56,19 +56,19 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 protect();
 
 cleanTempFiles();
-$sn = SERVER_NAME;
+/*$sn = SERVER_NAME;
 
 if(strstr($sn, '@')) {
 	list($foo,$sn) = explode('@',$sn);
 }
-
+*/
 //	unlock everything old, when a new window is opened.
 if(!isset($_REQUEST["we_cmd"][0]) || $_REQUEST["we_cmd"][0] != "edit_include_document"){
 	$DB_WE->query('DELETE FROM '.LOCK_TABLE.'	WHERE lockTime<NOW()');
 }
 $DB_WE->query('UPDATE '.USER_TABLE.'	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-'.(PING_TIME + PING_TOLERANZ).')');
 
-we_html_tools::htmlTop("webEdition - ".$sn." - ".$_SESSION["user"]["Username"]);
+we_html_tools::htmlTop('webEdition - '.$_SESSION["user"]["Username"]);
 
 $online_help=true;
 

@@ -207,7 +207,7 @@
 		}
 
 		function isPathLocal($path){
-			if(stripos($path,SERVER_NAME)!==false){
+			if(stripos($path,$_SERVER['SERVER_NAME'])!==false){
 				$path=str_replace(getServerUrl(),'',$path);
 				//try again with password
 				$path=str_replace(getServerUrl(true),'',$path);

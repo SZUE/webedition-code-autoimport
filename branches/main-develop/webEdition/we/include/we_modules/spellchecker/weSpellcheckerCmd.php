@@ -58,7 +58,7 @@ if(isset($_REQUEST['cmd'][0])) {
 					$_username = str_replace($_replacement[$_i],'MASK'.$_i,$_username);
 				}
 
-				$_userDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@'.$SERVER_NAME . '.dict';
+				$_userDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@'.$_SERVER['SERVER_NAME'] . '.dict';
 				weFile::save($_userDict,$_REQUEST['cmd'][1] . "\n",'ab');
 			}
 		break;
@@ -79,7 +79,7 @@ if(isset($_REQUEST['cmd'][0])) {
 					$_username = str_replace($_replacement[$_i],'MASK'.$_i,$_username);
 				}
 
-				$_userDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@'.$SERVER_NAME . '.dict';
+				$_userDict = WE_SPELLCHECKER_MODULE_DIR . '/dict/' . $_username . '@'.$_SERVER['SERVER_NAME'] . '.dict';
 				weFile::save($_userDict,implode("\n",$_words) . "\n",'ab');
 			}
 		break;

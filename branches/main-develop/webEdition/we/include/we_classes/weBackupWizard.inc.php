@@ -1032,7 +1032,7 @@ class weBackupWizard{
 					include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
 					$_link = weBackupUtil::getHttpLink(
-												SERVER_NAME,
+												$_SERVER['SERVER_NAME'],
 												str_replace($_SERVER['DOCUMENT_ROOT'],'',$_down),
 												(defined('HTTP_PORT') ? HTTP_PORT : ''),
 												(defined('HTTP_USERNAME') ? HTTP_USERNAME : ''),

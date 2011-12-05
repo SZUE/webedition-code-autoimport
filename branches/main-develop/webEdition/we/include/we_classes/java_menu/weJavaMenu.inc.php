@@ -28,8 +28,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.
 class weJavaMenu {
 	var $entries;
 	var $lcmdFrame = "";
-	var $protocol = "http";
-	var $SERVER_NAME = "";
+	var $protocol = "http"; //FIXME: remove
+	var $SERVER_NAME = ""; //FIXME: remove
 	var $width = 200;
 	var $height = 30;
 	var $port = "";
@@ -71,7 +71,7 @@ class weJavaMenu {
 		return we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').'
 			<script  type="text/javascript"><!--
 				function menuaction(cmd) {
-					'.$this->lcmdFrame.'.location.replace("'.$this->protocol.'://'.$this->SERVER_NAME.$portVar.'/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
+					'.$this->lcmdFrame.'.location.replace("'.  getServerUrl().'/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
 				}
 			//-->
 			</script>';

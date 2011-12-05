@@ -48,7 +48,8 @@
 //define("HTTP_USERNAME", "myUsername");
 //define("HTTP_PASSWORD", "myPassword");
 
-if (isset($_SERVER["HTTP_HOST"])) {
+/*FIXME: remove
+ * if (isset($_SERVER["HTTP_HOST"])) {
 	preg_match('/(?P<host>\w+):(?P<port>\d+)/', $_SERVER["HTTP_HOST"], $matches);
 	if(isset($matches["port"]) && !empty($matches["port"])) {
 		$SERVER_NAME = $matches["host"];
@@ -63,6 +64,7 @@ if (isset($SERVER_PORT) && $SERVER_PORT != 80) {
 }
 
 define("SERVER_NAME", $SERVER_NAME);
+*/
 
 /*****************************************************************************
  * DATABASE SETTINGS

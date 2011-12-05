@@ -94,7 +94,7 @@ function we_tag_delete($attribs, $content){
 		$GLOBALS["we_" . $type . "_delete_ok"] = true;
 		if ($mail) {
 			if (!$mailfrom) {
-				$mailfrom = "dontReply@" . $GLOBALS["SERVER_NAME"];
+				$mailfrom = "dontReply@" . $_SERVER['SERVER_NAME'];
 			}
 			if ($type == "object") {
 				$mailtext = sprintf(g_l('global',"[std_mailtext_delObj]"), $doc->Path) . "\n";

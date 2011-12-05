@@ -698,7 +698,7 @@ HTS;
 	}
 
 	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true){
-		$_title = we_htmlElement::htmlTitle($title);
+		$_title = we_htmlElement::htmlTitle($_SERVER['SERVER_NAME'].' '.$title);
 		$_meta_expires = we_htmlElement::htmlMeta(array(
 				"http-equiv" => "expires", "content" => 0
 			));

@@ -786,6 +786,7 @@ function getCurlHttp($server, $path, $files = array(), $port = '', $protocol = '
 }
 
 //FIXME: this function assumes strict Ports
+//FIXME: this function SHOULD handle a given getServerUrl()!!! => e.g. weVersions.class.inc.php
 function getHTTP($server, $url, $port = '', $username = '', $password = '') {
 	$_opt = getHttpOption();
 

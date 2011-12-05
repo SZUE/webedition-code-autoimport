@@ -128,8 +128,8 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 
 				$this->tasks[$i]->todoID=$this->sendTodo($workflowTask->userID,g_l('modules_workflow','[todo_subject]'),$mess."<p>".$path."</p>",$deadline);
 				if($workflowTask->Mail){
-					$foo=f("SELECT Email FROM ".USER_TABLE." WHERE ID=".abs($workflowTask->userID),"Email",$this->db);
-					$this_user=getHash("SELECT First,Second,Email FROM ".USER_TABLE." WHERE ID='".$_SESSION["user"]["ID"]."'",$this->db);
+					$foo=f("SELECT Email FROM ".USER_TABLE." WHERE ID=".intval($workflowTask->userID),"Email",$this->db);
+					$this_user=getHash("SELECT First,Second,Email FROM ".USER_TABLE." WHERE ID=".intval($_SESSION["user"]["ID"]),$this->db);
 					//if($foo) we_mail($foo,correctUml(g_l('modules_workflow','[todo_next]')),$desc,(isset($this_user["Email"]) && $this_user["Email"]!="" ? "From: ".$this_user["First"]." ".$this_user["Second"]." <".$this_user["Email"].">\n":"")."Content-Type: text/html; charset=iso-8859-1");
 					if($foo) {
 						$desc = str_replace('<br />',"\n",$desc);

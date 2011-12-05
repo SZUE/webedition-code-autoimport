@@ -1198,20 +1198,5 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$template->initByID($this->TemplateID,TEMPLATES_TABLE);
 		return $template->getVariantFields();
 	}
-/*
-	function i_getWeDocFromID($id,$from=LOAD_MAID_DB) {
-
-	    if(isset($_REQUEST["we_cmd"][0]))
-		    if($_REQUEST["we_cmd"][0] == "save_document")
-			    $from = LOAD_TEMP_DB;
-		$url = WEBEDITION_DIR."we_cmd.php?we_cmd[0]=getWeDocFromID&we_cmd[1]=$id&we_cmd[2]=$from";
-		return getHTTP(SERVER_NAME,$url);
-	}
-
-	function i_getWeDocFromTransaction($we_transaction,$editmode) {
-		$url = WEBEDITION_DIR."we_cmd.php?we_cmd[0]=getWeDocFromTransaction&we_cmd[1]=$we_transaction&we_cmd[2]=$editmode&we_list_inserted=".(isset($GLOBALS["we_list_inserted"]) ? $GLOBALS["we_list_inserted"] : "" )."&we_list_insertedNr=".(isset($GLOBALS["we_list_insertedNr"])? $GLOBALS["we_list_insertedNr"] : "" )."&WE_LANGUAGE=".rawurlencode($GLOBALS["WE_LANGUAGE"])."&WE_HTTP_USER_AGENT=".rawurlencode($_SERVER["HTTP_USER_AGENT"]);
-		return getHTTP(SERVER_NAME,$url);
-	}
-	*/
 
 }
