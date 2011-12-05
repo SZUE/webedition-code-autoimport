@@ -207,11 +207,11 @@ class we_button {
 
 		// Check if the button is a text button or an image button
 		if (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) === false) { // Button is NOT an image
-			$_button_name = ($uniqid ? uniqid($name . "_") : $name);
+			$_button_name = ($uniqid ? 'we'.uniqid($name . "_") : $name);
 			$_button_name .= $suffix;
 		} else { // Button is an image - create a unique name
 			$_button_pure_name = substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY)));
-			$_button_name = ($uniqid ? uniqid(substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . "_") : substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
+			$_button_name = ($uniqid ? 'we'.uniqid(substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . "_") : substr($name, (strpos($name, WE_IMAGE_BUTTON_IDENTIFY) + strlen(WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
 		}
 		/**
 		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON
