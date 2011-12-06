@@ -1901,7 +1901,7 @@ function we_mail($recipient, $subject, $txt, $from = '') {
 	}
 
 	$phpmail = new we_util_Mailer($recipient, $subject, $from);
-	$phpmail->setCharSet(g_l('charset','[charset]'));
+	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$phpmail->addTextPart(trim($txt));
 	$phpmail->buildMessage();
 	$phpmail->Send();

@@ -354,7 +354,7 @@ $subject = strip_tags($subject);
 
 $charset = (isset($_REQUEST['charset']) && $_REQUEST['charset']) ?
 			str_replace("\n","",str_replace("\r","",$_REQUEST['charset'])) :
-			g_l('charset','[charset]');
+			$GLOBALS['WE_BACKENDCHARSET'];
 $recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ?
 			$_REQUEST['recipient'] :
 			'';

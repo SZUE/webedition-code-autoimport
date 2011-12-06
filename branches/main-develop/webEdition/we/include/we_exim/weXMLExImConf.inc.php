@@ -25,7 +25,7 @@
 
 		$GLOBALS['weXmlExImNewLine'] = "\n";
 
-		$GLOBALS['weXmlExImHeader'] = '<?xml version="1.0" encoding="'.g_l('charset','[charset]').'" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
+		$GLOBALS['weXmlExImHeader'] = '<?xml version="1.0" encoding="'.$GLOBALS['WE_BACKENDCHARSET'].'" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
 					 '<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
 
 		$GLOBALS['weXmlExImFooter'] = '</webEdition>';

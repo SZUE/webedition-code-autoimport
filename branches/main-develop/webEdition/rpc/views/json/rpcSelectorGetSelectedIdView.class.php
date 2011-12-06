@@ -24,12 +24,12 @@
 
 
 class rpcSelectorGetSelectedIdView extends rpcView {
-	
-	
+
+
 	function getResponse($response) {
 
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");		
+		$suggests = $response->getData("data");
 		$html = "";
 		if (is_array($suggests)) {
 			$html .= $suggests[0]['ID'];
@@ -37,7 +37,3 @@ class rpcSelectorGetSelectedIdView extends rpcView {
 		return $html;
 	}
 }
-
-
-
-?>

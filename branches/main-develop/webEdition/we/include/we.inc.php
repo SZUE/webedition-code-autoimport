@@ -169,7 +169,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 	}
 
 	if($header){
-		header('Content-Type: text/html; charset=' . g_l('charset', '[charset]'));
+		header('Content-Type: text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET']);
 		unset($header);
 	}
 }
