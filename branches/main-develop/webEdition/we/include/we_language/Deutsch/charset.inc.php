@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_charset=array(
-	'charset'=>'UTF-8',
 	
 	'error'=>array(
 		'no_charset_available'=>'--Ohne--',
