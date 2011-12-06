@@ -201,8 +201,8 @@ function doUnload() {
     fr.writeln("</"+"SCRIPT>");
     fr.writeln('<?php print STYLESHEET_SCRIPT;?>');
     fr.write("</HEAD>\n");
-    fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=5 topmargin=0 marginheight=0 marginwidth=5>\n");
-    fr.write("<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td class=\"tree\">\n<NOBR>\n");
+    fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">\n");
+    fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
     fr.write("<tr><td class=\"tree\">\n<NOBR>\n<a href=javascript:// onClick=\"doYearClick("+ top.yearshop +");return true;\" title=\"Ums�tze des Gesch�ftsjahres\" ><?php print g_l('modules_shop','[treeYear]');?>: <strong>" + top.yearshop + " </strong></a> <br/>\n");
 
     zeichne("0","");

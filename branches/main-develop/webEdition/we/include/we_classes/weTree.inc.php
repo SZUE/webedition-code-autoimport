@@ -313,7 +313,7 @@ class weTree{
 				if(treeData[i].checked==1) {
 					treeData[i].checked=0;
 					treeData[i].applylayout();
-					if(document.images) {			
+					if(document.images) {
 						try{
 							eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
 						} catch(e) {
@@ -691,7 +691,7 @@ function setUnCheckNode(imgName){
  				window.setTimeout("drawTree()", 500);
  				return;
  			}
-			var out="<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td class=\""+treeData.getlayout()+"\">\n<nobr>\n";
+			var out="<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\">\n<nobr>\n";
 			out+=draw(treeData.startloc,"");
 			out+="</nobr>\n</td></tr></table>\n";
 			'.$this->treeFrame.'.document.getElementById("treetable").innerHTML=out;
@@ -855,7 +855,7 @@ function setUnCheckNode(imgName){
 		$out["threedots"]='
 					row+="&nbsp;&nbsp;<img src='.$this->tree_image_dir.'"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onClick=\"'.$this->topFrame.'.setSegment(\'"+nf[ai].id+"\');return true;\">";
-					row+="<img src='.$this->tree_image_dir.'/"+nf[ai].icon+" width=100 height=7 align=absmiddle border=0 alt=\"\">";
+					row+="<img src=\"'.$this->tree_image_dir.'/"+nf[ai].icon+"\" width=\"100\" height=\"7\" align=\"absmiddle\" border=\"0\" alt=\"\">";
 						row+="</a>";
 						row+="&nbsp;&nbsp;<br>\n";
 		';

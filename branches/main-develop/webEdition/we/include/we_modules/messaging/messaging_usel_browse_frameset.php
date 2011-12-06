@@ -93,7 +93,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
     fr.writeln('<?php print STYLESHEET_SCRIPT;?>');
     fr.write("</HEAD>\n");
     fr.write("<BODY class=\"weEditorBody\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"10\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"10\" onunload=\"doUnload()\">");
-    fr.write("<table border=\"0\" cellpadding=0 cellspacing=0 width=100%><tr><td class=\"tree\">\n<NOBR>\n");
+    fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
     zeichne(top.startloc,"");
     fr.write("</NOBR>\n</td></tr></table>\n");
 	fr.writeln("  <script language=\"JavaScript\">");

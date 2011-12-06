@@ -140,7 +140,7 @@ class weExportTree extends weMainTree
 
 		return '
  		function drawTree(){
-			var out=\'<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td>' . we_html_tools::getPixel(
+			var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(
 				5,
 				7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
 			out+=draw(treeData.startloc,"");

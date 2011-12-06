@@ -72,7 +72,7 @@ abstract class we_multiIconBox{
 						:
 						 "";
 			$headline = (isset($c["headline"]) && $c["headline"]) ?
-							('<div  id="'.$uniqname.'_headline_'.$i.'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">'.$c["headline"].'</div>')
+							('<div  id="headline_'.$uniqname.'_'.$i.'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">'.$c["headline"].'</div>')
 							:
 							"";
 
@@ -85,7 +85,7 @@ abstract class we_multiIconBox{
 
 			$rightContent = '<div style="float:left;" class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>')  . '</div>';
 
-			$out .= '<div style="margin-left:'.$marginLeft.'px" id="'.$uniqname.'_div_'.$i.'">';
+			$out .= '<div style="margin-left:'.$marginLeft.'px" id="div_'.$uniqname.'_'.$i.'">';
 
 			if ($leftContent || $leftWidth) {
 				if ((!$leftContent) && $leftWidth) {
@@ -260,7 +260,7 @@ abstract class we_multiIconBox{
 				var lastNum = weGetLastMultiboxNr();
 				var i = (lastNum + 1);
 				icon = icon  ? (\'<img src="'.IMAGE_DIR . 'icons/\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;" />\') : "";
-				headline = headline ? (\'<div  id="'.$uniqname.'_headline_\'+ i + \'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">\' + headline + \'</div>\') : "";
+				headline = headline ? (\'<div  id="headline_'.$uniqname.'_\'+ i + \'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">\' + headline + \'</div>\') : "";
 
 				var mainContent = content ? content : "";
 				var leftWidth = space ? space : 0;
@@ -269,7 +269,7 @@ abstract class we_multiIconBox{
 
 				var mainDiv = document.createElement("DIV");
 				mainDiv.style.cssText = \'margin-left:'.$marginLeft.'px\';
-				mainDiv.id="'.$uniqname.'_div_" + i;
+				mainDiv.id="div_'.$uniqname.'_" + i;
 				var innerHTML = "";
 
 				if (leftContent || leftWidth) {
@@ -313,7 +313,7 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 		<td>'.we_html_tools::getPixel(2,8).'</td>
 	</tr>
 	<tr>
-		<td id="'.$uniqname.'_td">';
+		<td id="td_'.$uniqname.'">';
 	}
 
 	function _getBoxStart($w, $uniqname){
@@ -327,7 +327,7 @@ function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft="0", $ov
 		<td class="defaultfont"><b>'.we_html_tools::getPixel($w,2).'</b></td>
 	</tr>
 	<tr>
-		<td id="'.$uniqname.'_td">';
+		<td id="td_'.$uniqname.'">';
 	}
 
 

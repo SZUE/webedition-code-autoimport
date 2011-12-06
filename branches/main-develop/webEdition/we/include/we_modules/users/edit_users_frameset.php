@@ -266,7 +266,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 		fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 		fr.write("</HEAD>\n");
 		fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
-		fr.write("<table border=0 cellpadding=0 cellspacing=0 width=100%><tr><td class=\"tree\">\n<NOBR>\n");
+		fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
 		zeichne(top.content.startloc,"");
 		fr.write("</NOBR>\n</td></tr></table>\n");
 		fr.write("</BODY>\n</HTML>");

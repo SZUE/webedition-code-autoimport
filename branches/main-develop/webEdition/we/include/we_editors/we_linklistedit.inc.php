@@ -573,7 +573,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 	$ctarget = we_html_tools::targetBox("target", 30, 300, "", $target);
 	$cattribs = we_html_tools::htmlTextInput("attribs", 30, $attribs, "", "", "text", 300);
 	$jsWinProps = '
-				<table cellspacing="0" cellpadding="0" border="0" width=100%>
+				<table cellspacing="0" cellpadding="0" border="0" width="100%">
 					<tr>
 						<td class="small">
 							' . g_l('global', '[posx]') . '</td>
@@ -682,7 +682,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 
 	$intImg = $yuiSuggest->getHTML();
 	$imgProps = '
-				<table cellspacing="0" cellpadding="0" border="0" width=100%>
+				<table cellspacing="0" cellpadding="0" border="0" width="100%">
 					<tr>
 						<td class="small">
 							' . g_l('global', "[width]") . '</td>
