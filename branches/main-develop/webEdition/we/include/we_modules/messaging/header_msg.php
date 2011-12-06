@@ -31,7 +31,7 @@ protect();
 <head>
 	<?php print STYLESHEET;
 	echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js');?>
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 
 		function update(newmsg_count, newtodo_count) {
 			var msgTD = document.getElementById("msgCount");
@@ -41,7 +41,7 @@ protect();
 			msgTD.firstChild.innerHTML = newmsg_count;
 			todoTD.firstChild.innerHTML = newtodo_count;
 		}
-
+//-->
 	</script>
 </head>
 <body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
@@ -75,11 +75,12 @@ protect();
 </tr>'
 ?>
 </table>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 if( top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof(top.weEditorFrameController.getActiveDocumentReference().setMsgCount)=='function'&&typeof(top.weEditorFrameController.getActiveDocumentReference().setTaskCount)=='function'){
 	top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php print abs($newmsg_count); ?>);
 	top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php print abs($newtodo_count); ?>);
 }
+//-->
 </script>
 
 <?php } ?>

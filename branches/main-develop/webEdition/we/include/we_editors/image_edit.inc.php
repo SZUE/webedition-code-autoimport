@@ -43,7 +43,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	we_html_tools::htmlTop();
 
 	print we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').'
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 document.onkeyup = function(e) {
 	var e = (typeof(event) != "undefined") ? event : e;
@@ -68,7 +68,7 @@ document.onkeyup = function(e) {
 			break;
 	}
 
-	print "</script>\n";
+	print "//-->\n</script>\n";
 
 
 	print STYLESHEET . "</head>";

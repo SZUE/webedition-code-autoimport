@@ -62,10 +62,11 @@ $parts = array();
 	.quote_lvl_2 {color:#00ff00}
 	.quote_lvl_3 {color:#0000ff}
     </style>
-    <script type="text/javascript">
+    <script type="text/javascript"><!--
 	function todo_markdone() {
 	    top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=todo_markdone&we_transaction=<?php echo $_REQUEST['we_transaction']?>';
 	}
+	//-->
     </script>
   </head>
   <body class="weDialogBody">
@@ -87,7 +88,7 @@ if (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->sele
 							)
 				);
 
-	
+
 	$html = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">'. $messaging->selected_message['hdrs']['status'].'%</td><td>'.we_html_tools::getPixel(20,2).
 				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>'.we_button::create_button(
 								"percent100",

@@ -39,18 +39,13 @@ if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 }
 
 we_html_tools::htmlTop();
-?>
-<script type="text/javascript"><!--
-	<?php
 
 	if ($ok) {
-		print we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_ok]"), WE_MESSAGE_NOTICE);
+		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_ok]"), WE_MESSAGE_NOTICE));
 	} else {
-		print we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_notok]"), WE_MESSAGE_ERROR);
+		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_language_notok]"), WE_MESSAGE_ERROR));
 	}
 	?>
-//-->
-</script>
 </head>
 
 <body>

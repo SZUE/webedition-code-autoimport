@@ -76,7 +76,7 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
 
 echo we_htmlElement::jsScript(JS_DIR.'images.js').we_htmlElement::jsScript(JS_DIR.'windows.js');
 	?>
- <script type="text/javascript">
+ <script type="text/javascript"><!--
 
  var hot = 0;
 
@@ -417,7 +417,8 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
 
  function start(){loadData();drawEintraege();}
   self.focus();
-</script>
+//-->
+ </script>
 
 	</head>
 <?php if ($GLOBALS["BROWSER"] == "NN6")	{ ?>

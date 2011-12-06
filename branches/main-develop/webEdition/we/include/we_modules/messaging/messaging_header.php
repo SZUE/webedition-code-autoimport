@@ -38,10 +38,11 @@ $protocol=getServerProtocol();
 $jmenu = new weJavaMenu($we_menu_messaging, SERVER_NAME, 'top.opener.top.load', $protocol, $port,300);
 echo we_htmlElement::jsScript(JS_DIR.'images.js');
 ?>
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
         function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
 	    }
+			//-->
 	</script>
 
 	<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>

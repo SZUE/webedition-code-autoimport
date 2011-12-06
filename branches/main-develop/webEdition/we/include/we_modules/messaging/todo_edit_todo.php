@@ -44,7 +44,7 @@ print STYLESHEET;
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	rcpt_sel = new Array();
 
 	function update_rcpts() {
@@ -74,7 +74,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 			}
 		}
 	}
-
+//-->
 </script>
 </head>
 

@@ -107,7 +107,7 @@ if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 		return false;
 	}
 	?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 top.cockpitFrame=top.cockpitFrame=top.weEditorFrameController.getActiveDocumentReference();
 var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.initEditorFrameData(
@@ -959,7 +959,7 @@ function getUser(){
 
 	new jsWindow(url,'browse_users',-1,-1,500,300,true,false,true);
 }
-
+//-->
 </script>
 </head>
 <?php

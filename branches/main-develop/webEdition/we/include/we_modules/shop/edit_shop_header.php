@@ -44,10 +44,11 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules
 echo we_htmlElement::jsScript(JS_DIR.'images.js');
 	?>
 
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
         function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
 	    }
+			//-->
 	</script>
 	</head>
 	<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>

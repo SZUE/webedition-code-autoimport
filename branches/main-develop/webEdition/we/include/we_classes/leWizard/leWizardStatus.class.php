@@ -120,7 +120,7 @@ EOF;
 	function getJSCode() {
 
 		$JS = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function leWizardStatus() {}
 
 
@@ -210,6 +210,7 @@ leWizardStatus.update = function(wizard, step) {
 	}
 
 }
+//-->
 </script>
 
 EOF;

@@ -42,12 +42,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 if (!$messaging->check_folders()) {
 	include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 	if (!msg_create_folders($_SESSION["user"]["ID"])) {
-?>
-		<script type="text/javascript"><!--
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), WE_MESSAGE_ERROR); ?>
-		//-->
-		</script>
-<?php
+			print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), WE_MESSAGE_ERROR));
 	}
 }
 
@@ -388,7 +383,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		fr = top.content.messaging_main.messaging_tree.window.document;
 		fr.open();
 		fr.writeln('<html><head>');
-		fr.writeln('<script type="text/javascript">');
+		fr.writeln('<script type="text/javascript"><!--');
 
 		fr.writeln("clickCount=0;");
 		fr.writeln("wasdblclick=0;");
@@ -397,7 +392,7 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 		fr.writeln("top.content.we_cmd(top.content.mode,id);");
 		fr.writeln("}");
 
-		fr.writeln('top.content.loaded=1;');
+		fr.writeln('top.content.loaded=1;//-->');
 		fr.writeln('</' + 'script>');
 		fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 		fr.writeln('</head>');

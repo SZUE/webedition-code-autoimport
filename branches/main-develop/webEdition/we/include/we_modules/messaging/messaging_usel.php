@@ -44,7 +44,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 		<?php echo we_htmlElement::jsScript(JS_DIR.'windows.js').
 			we_htmlElement::jsScript(JS_DIR.'messaging_std.js').
 			we_htmlElement::jsScript(JS_DIR.'we_showMessage.js');?>
-  <script type="text/javascript">
+  <script type="text/javascript"><!--
 	<?php
 	if (!empty($_REQUEST['mode']) && ($_REQUEST['mode'] == 'save_addrbook')) {
 	    $addrbook = array();
@@ -269,7 +269,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 		    }
 	    }
 	}
-
+//-->
     </script>
       <?php print STYLESHEET; ?>
     </head>
@@ -313,9 +313,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	      echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']);
 	      echo we_html_tools::hidden('addrbook_arr', '');
 	?>
-    </form>
-    <script type="text/javascript">
-	init();
-    </script>
+    </form><?php
+		echo we_htmlElement::jsElement('init();');?>
   </body>
 </html>

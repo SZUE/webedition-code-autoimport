@@ -101,9 +101,7 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 
-print '
-<script type="text/javascript">
-
+print we_htmlElement::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
@@ -128,7 +126,7 @@ print '
 		}
 	}
 
-</script>
+').'
 <style type="text/css">
 	table.revenueTable {
 		border-collapse: collapse;

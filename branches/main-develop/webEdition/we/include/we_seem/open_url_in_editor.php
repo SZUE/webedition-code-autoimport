@@ -21,8 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?><script type="text/javascript">
-<?php
 
 	// $_REQUEST["we_cmd"][1] is the url
 
@@ -32,6 +30,5 @@
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 	protect();
-	print we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . $_REQUEST["we_cmd"][1] . "\">");
+	print we_htmlElement::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . $_REQUEST["we_cmd"][1] . "\">"));
 ?>
-</script>

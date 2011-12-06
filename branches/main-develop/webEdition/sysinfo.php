@@ -307,7 +307,7 @@
 <title><?php print g_l('sysinfo','[sysinfo]')?></title>
 <?php echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
 	we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	function closeOnEscape() {
 		return true;
 	}
@@ -322,7 +322,7 @@
 		document.getElementById("info").style.display="block";
 		document.getElementById("more").style.display="none";
 	}
-
+//-->
 </script>
 
 <?php

@@ -239,7 +239,7 @@ class  taskFragment{
 			$onload = "setTimeout('".addslashes($onload)."',".$this->pause.");";
 		}
 		if(($nextTask <= $this->numberOfTasks)){
-			print '<script type="text/javascript">'.$onload.'</script>';
+			print we_htmlElement::jsElement($onload);
 		}
 	}
 	/**

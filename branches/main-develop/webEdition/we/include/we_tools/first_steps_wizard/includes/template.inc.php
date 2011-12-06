@@ -73,48 +73,19 @@ $ButtonNextPreview = we_button::create_button(
 		false,
 		false);
 
-?>
+print we_htmlElement::cssLink(CSS_DIR.'global.php').
+we_htmlElement::cssLink(CSS_DIR.'first_steps_wizard.css.php').
+we_htmlElement::cssLink(CSS_DIR.'we_button.css').
 
-<!-- Use status styles for FirstStepsWizard -->
-<link type="text/css" rel="stylesheet"
-	href="<?php
-	echo CSS_DIR;
-	?>global.php" media="screen" />
+we_htmlElement::jsScript(JS_DIR.'weButton.js').
+we_htmlElement::jsScript(JS_DIR.'leWizard/leWizardForm.js').
+we_htmlElement::jsScript(JS_DIR.'windows.js').
 
-<!-- Use status styles for FirstStepsWizard -->
-<link type="text/css" rel="stylesheet"
-	href="<?php
-	echo CSS_DIR;
-	?>first_steps_wizard.css.php" media="screen" />
-
-<!-- Use status styles for Buttons -->
-<link type="text/css" rel="stylesheet"
-	href="<?php
-	echo CSS_DIR;
-	?>we_button.css" media="screen" />
-
-<!-- JavaScript for Buttons -->
-<script type="text/javascript" src="<?php
-echo JS_DIR;
-?>weButton.js"></script>
-
-<!-- JavaScript Status Bar -->
-<script type="text/javascript"
-	src="<?php
-	echo JS_DIR;
-	?>leWizard/leWizardForm.js"></script>
-
-<script type="text/javascript" src="<?php
-echo JS_DIR;
-?>windows.js"></script>
-
-<script type="text/JavaScript">
+we_htmlElement::jsElement('
 		var nextUrl = "";
 		var backUrl = "";
 		var repeatUrl = "";
-	</script>
-
-<?php
+	');
 
 // Status Bar
 $Status = new leWizardStatus();

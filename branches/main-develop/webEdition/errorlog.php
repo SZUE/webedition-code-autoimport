@@ -170,10 +170,11 @@ $trans=array('Error type'=>'Type','Error message'=>'Text','Script name'=>'File',
 echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
 	we_htmlElement::jsScript(JS_DIR.'keyListener.js');
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	function closeOnEscape() {
 		return true;
 	}
+	//-->
 </script>
 <?php
 		print STYLESHEET;

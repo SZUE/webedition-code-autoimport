@@ -114,7 +114,7 @@ EOF;
 	function getJSCode() {
 
 		$JS = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function leWizardContent() {}
 
 leWizardContent.appendElement = function(element) {
@@ -165,6 +165,7 @@ leWizardContent.scrollDown = function() {
 	document.getElementById("{$this->id}").scrollTop = 100000;
 
 }
+//-->
 </script>
 
 EOF;

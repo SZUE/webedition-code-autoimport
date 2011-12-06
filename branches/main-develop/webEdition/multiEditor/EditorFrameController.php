@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 protect();
 ?><html>
 <head>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function we_cmd() {
 	var args = "";
 	for(var i = 0; i < arguments.length; i++) {
@@ -1351,6 +1351,7 @@ function EditorFrame(ref, elementId) {
 		}
 	}
 }
+-->
 </script>
 </head>
 <body></body>

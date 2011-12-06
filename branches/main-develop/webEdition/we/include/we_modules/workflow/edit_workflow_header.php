@@ -38,10 +38,11 @@ print STYLESHEET;
     $jmenu = new weJavaMenu($we_menu_workflow,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30);
 echo we_htmlElement::jsScript(JS_DIR.'images.js');
 ?>
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
         function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
 	    }
+			//-->
 	</script>
 	</head>
 	<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>

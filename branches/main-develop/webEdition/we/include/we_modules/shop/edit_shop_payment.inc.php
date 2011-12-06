@@ -58,7 +58,7 @@ if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays ..
 
 
 	//	Close window when finished
-	echo '<script type="text/javascript">self.close();</script>';
+	echo we_htmlElement::jsElement('self.close();');
 	exit;
 }
 
@@ -238,7 +238,7 @@ we_button::create_button("cancel", "javascript:self.close();")
 $frame = we_multiIconBox::getHTML('','100%',$Parts,'30',$_buttons,-1,'','',false, g_l('modules_shop','[paymentP]'),'','','hidden');
 
 
-echo '<script type="text/javascript">self.focus();</script>
+echo we_htmlElement::jsElement('self.focus();').'
 </head>
 <body class="weDialogBody">
 
@@ -248,6 +248,3 @@ echo '<script type="text/javascript">self.focus();</script>
 
 
 </body></html>';
-
-
-?>

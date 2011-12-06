@@ -70,12 +70,10 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 
 		$out = '';
 
-		$out = '<script type="text/javascript"><!--
+		$out = we_htmlElement::jsElement('
 				function menuaction(cmd) {
 					weCmdController.fire({cmdName: cmd})
-				}
-			//-->
-			</script>';
+				}');
 
 		if (!$showAltMenu) {
 			$out .= '
@@ -163,8 +161,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 					</tr>
 				</table>
 			</div>
-			' . (we_ui_Client::getInstance()->getBrowser() == we_ui_Client::kBrowserGecko ? '
-			<script type="text/javascript">
+			' . (we_ui_Client::getInstance()->getBrowser() == we_ui_Client::kBrowserGecko ? we_htmlElement::jsElement('
 
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox
@@ -173,7 +170,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 			if ( !navigator.javaEnabled() ) {
 				//document.getElementById("divForSelectMenu").innerHTML = document.getElementById("divWithSelectMenu").innerHTML;
 			}
-			</script>' : '') . '
+			') : '') . '
 			</form>';
 
 		if (!$showAltMenu) {

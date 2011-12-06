@@ -38,7 +38,7 @@ if (isset($_REQUEST['SEEM_edit_include']) && $_REQUEST['SEEM_edit_include']) {
 
 we_html_tools::htmlTop();
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	function we_cmd(){
 		var args = "";
 		for(var i = 0; i < arguments.length; i++){
@@ -56,7 +56,7 @@ we_html_tools::htmlTop();
 		we_cmd('start_multi_editor'<?php print $_cmd_string; ?>);
 
 	}
-
+//-->
 </script>
 </head>
 <body>

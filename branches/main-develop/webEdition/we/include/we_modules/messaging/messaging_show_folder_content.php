@@ -38,7 +38,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 }
 echo we_htmlElement::jsScript(JS_DIR.'windows.js').we_htmlElement::jsScript(JS_DIR.'messaging_std.js');
 ?>
- <script type="text/javascript">
+ <script type="text/javascript"><!--
     NN4 = <?php echo $browser->getBrowser() == 'nn' && $browser->getBrowserVersion() < 5 ? 'true' : 'false'?>;
     check0_img = new Image();
     check1_img = new Image();
@@ -152,7 +152,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js').we_htmlElement::jsScript(JS_D
 	function newMessage(username){
 		new jsWindow('<?php echo WE_MESSAGING_MODULE_PATH; ?>messaging_newmessage.php?we_transaction=<?php echo $_SESSION["we_data"][$_REQUEST['we_transaction']]; ?>&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);
 	}
-
+//-->
  </script>
 
 </head>

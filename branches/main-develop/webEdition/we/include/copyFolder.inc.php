@@ -155,10 +155,10 @@ class copyFolderFrag extends taskFragment{
 						$pbText = (sprintf(
 								$this->data["IsFolder"] ? g_l('copyFolder', "[copyFolder]") : g_l('copyFolder', "[copyFile]"), basename($this->data["Path"])));
 					}
-					print
-						'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
+					print we_htmlElement::jsElement(
+						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
 							$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
-							$pbText) . '");</script>';
+							$pbText) . '");');
 					flush();
 				} else{
 					exit("Error importing File: " . $this->data["Path"]);
@@ -167,10 +167,10 @@ class copyFolderFrag extends taskFragment{
 				if($this->copyObjects()){
 					$pbText = (sprintf(
 							$this->data["IsFolder"] ? g_l('copyFolder', "[copyObjectFolder]") : g_l('copyFolder', "[copyObjectFile]"), basename($this->data["Path"])));
-					print
-						'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
+					print we_htmlElement::jsElement(
+						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
 							$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
-							$pbText) . '");</script>';
+							$pbText) . '");');
 					flush();
 				} else{
 					exit("Error importing Object: " . $this->data["Path"]);
@@ -758,12 +758,12 @@ class copyFolderFrag extends taskFragment{
 
 			$pbText = g_l('copyFolder', "[prepareTemplates]");
 
-			print
-				'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes(
-					$pbText) . '");</script>';
+			print we_htmlElement::jsElement(
+				'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes(
+					$pbText) . '");');
 			flush();
-			print
-				'<script type="text/javascript">setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);</script>';
+			print we_htmlElement::jsElement(
+				'setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);');
 			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		} else{
 			if(defined('OBJECT_FILES_TABLE')){
@@ -772,14 +772,14 @@ class copyFolderFrag extends taskFragment{
 				$checkTable = "1";
 			}
 			if(!isset($_SESSION["WE_COPY_OBJECTS"])){
-				print
-					'<script type="text/javascript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();</script>';
+				print we_htmlElement::jsElement(
+					'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
+						g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();');
 			} else{
 				unset($_SESSION["WE_COPY_OBJECTS"]);
-				print
-					'<script type="text/javascript">top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();</script>';
+				print we_htmlElement::jsElement(
+					'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
+						g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();');
 			}
 		}
 	}
@@ -924,10 +924,10 @@ class copyFolderFinishFrag extends copyFolderFrag{
 			$pbText = sprintf(
 				g_l('copyFolder', "[correctTemplate]"), basename(id_to_path($this->data, TEMPLATES_TABLE)));
 
-			print
-				'<script type="text/javascript">parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
+			print we_htmlElement::jsElement(
+				'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
 					$this->alldata)) * ($this->currentTask + 1))) . ');parent.setProgressText("pbar1","' . addslashes(
-					$pbText) . '");</script>';
+					$pbText) . '");');
 			flush();
 		} else{
 			exit("Error correctiing Template with id: " . $this->data);
@@ -959,9 +959,9 @@ class copyFolderFinishFrag extends copyFolderFrag{
 		if(isset($_SESSION["WE_CREATE_TEMPLATE"])){
 			unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		}
-		print
-			'<script type="text/javascript">top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-				g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();</script>';
+		print we_htmlElement::jsElement(
+			'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
+				g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();');
 	}
 
 	function printHeader(){

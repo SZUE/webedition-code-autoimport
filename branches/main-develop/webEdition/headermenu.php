@@ -80,7 +80,7 @@ if ( !isset($_REQUEST["SEEM_edit_include"]) ) { // there is only a menu when not
 echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	we_htmlElement::jsScript(JS_DIR.'weSidebar.php');
 ?>
-		<script type="text/javascript">
+		<script type="text/javascript"><!--
 			// initialize siebar in webedition.php
 			top.weSidebar = weSidebar;
 
@@ -93,7 +93,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 					changeImage(null,"busy",(foo ? "busy_icon" : "empty_icon"));
 				}
 			}
-
+//-->
 		</script>
 	</head>
 	<body>

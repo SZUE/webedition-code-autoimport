@@ -334,7 +334,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			// determine which articles should be shown >>>
 
 
-			print '<script type="text/javascript">
+			print we_htmlElement::jsElement('
 		self.focus();
 
 		function selectArticle(articleInfo) {
@@ -353,10 +353,9 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
 		}
 
-	</script>
+	').'
 </head>
-<body class="weDialogBody">
-			';
+<body class="weDialogBody">';
 
 			if ( $AMOUNT_ARTICLES > 0) {
 
@@ -948,8 +947,8 @@ print STYLESHEET;
 if(isset($_REQUEST["deletethisorder"])){
 
 	$DB_WE->query("DELETE FROM ".SHOP_TABLE." WHERE IntOrderID = ".$_REQUEST["bid"]);
-	echo '
-	<script type="text/javascript">top.content.deleteEntry('.$_REQUEST["bid"].')</script>
+	echo we_htmlElement::jsElement('
+	top.content.deleteEntry('.$_REQUEST["bid"].')').'
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
@@ -1245,10 +1244,9 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	}
 	if ( !isset( $ArticleId ) ) {
 
-		echo '
-	<script type="text/javascript">
+		echo we_htmlElement::jsElement('
 		parent.parent.frames.shop_header_icons.location.reload();
-	</script>
+	').'
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
 	<table border="0" cellpadding="0" cellspacing="2" width="300">
@@ -2200,17 +2198,16 @@ echo we_htmlElement::jsScript(JS_DIR."jscalendar/calendar.js").
 
 
 } else { // This order has no more entries
-?>
-	<script type="text/javascript">
-		top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_properties.php?deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
-		top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
-	</script>
+echo we_htmlElement::jsElement('
+		top.content.shop_properties.location="'.WE_SHOP_MODULE_PATH.'edit_shop_properties.php?deletethisorder=1&bid='.$_REQUEST["bid"].'";
+		top.content.deleteEntry('.$_REQUEST["bid"].');
+	').'
 </head>
-<body bgcolor="#ffffff">
-<?php
+<body bgcolor="#ffffff">';
+
 }
 ?>
-	<script type="text/javascript">
+	<script type="text/javascript">we_htmlElement::jsElement(
 	// init the used calendars
 
 	function CalendarChanged(calObject) {
@@ -2427,7 +2424,7 @@ if(!$weShopStatusMails->FieldsHidden['DateFinished']){ ?>
 		}
 	);
 <?php } ?>
-
+//-->
 	</script>
 </body>
 </html>

@@ -37,10 +37,9 @@ function weDoLinkCmd($args){
 	$param = ($args["param"] ? "?".str_replace("?","",$args["param"]) : "");
 	$param=trim($param,'&');
 	$href = $args["href"] . $param . ($args["anchor"] ? "#".$args["anchor"] : "");
-	return '<script type="text/javascript">
+	return we_htmlElement::jsElement('
 
 top.opener.weWysiwygObject_'.$args["editname"].'.createLink("'.$href.'","'.$args["target"].'","'.$args["class"].'","'.$args["lang"].'","'.$args["hreflang"].'","'.$args["title"].'","'.$args["accesskey"].'","'.$args["tabindex"].'","'.$args["rel"].'","'.$args["rev"].'");
 top.close();
-</script>
-';
+');
 }

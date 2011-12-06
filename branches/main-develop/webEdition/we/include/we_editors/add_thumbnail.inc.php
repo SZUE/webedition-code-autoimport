@@ -42,8 +42,7 @@ $_thumbs = array();
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	we_html_tools::htmlTop(g_l('weClass',"[thumbnails]"));
-	print '<script type="text/javascript">
-
+	print we_htmlElement::jsElement('
 	function select_thumbnails(sel){
 
 		var thumbs = "";
@@ -99,9 +98,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 		}
 	}
 
-</script>
-
-'.we_button::create_state_changer();
+').we_button::create_state_changer();
 
 	print we_htmlElement::jsScript(JS_DIR.'windows.js');
 

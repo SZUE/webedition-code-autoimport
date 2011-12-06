@@ -180,7 +180,7 @@ class ImportOptions extends leWizardStepBase
 
 
 		$Content = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 top.we_cmd=function(){
 	var args = "";
 	var url = "/webEdition/we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -197,6 +197,7 @@ top.we_cmd=function(){
 			eval('top.opener.top.we_cmd('+args+')');
 	}
 }
+		//-->
 </script>
 {$Hidden}
 <br />

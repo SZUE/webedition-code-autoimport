@@ -36,7 +36,7 @@
     print STYLESHEET;
 
     ?>
-    <script type="text/javascript">
+    <script type="text/javascript"><!--
 
         function we_cmd(){
 
@@ -82,7 +82,7 @@
 
         	f.submit();
         }
-
+//-->
     </script>
     </head>
     <body class="weDialogBody">

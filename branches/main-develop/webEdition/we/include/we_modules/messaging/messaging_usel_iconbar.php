@@ -28,11 +28,11 @@ protect();
 print STYLESHEET;
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-    <script type="text/javascript">
+    <script type="text/javascript"><!--
 	function get_selection() {
 		parent.do_selupdate();
 	}
-
+//-->
     </script>
   </head>
   <body background="/webEdition/images/edit/editfooterback.gif" style="padding:10px;">

@@ -38,7 +38,7 @@ for ($i=0;$i<MULTIEDITOR_AMOUNT;$i++) {
 ?><html>
 <head>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	function we_cmd(){
 		var args = "";
 		for(var i = 0; i < arguments.length; i++){
@@ -46,6 +46,7 @@ for ($i=0;$i<MULTIEDITOR_AMOUNT;$i++) {
 		}
 		eval('parent.we_cmd('+args+')');
 	}
+//-->
 </script>
 
 </head>

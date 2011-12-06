@@ -40,17 +40,15 @@ class rebuildFragment extends taskFragment{
 
 	function updateProgressBar() {
 		$percent = round((100/count($this->alldata))*(1+$this->currentTask));
-		print '<script type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "'.addslashes(shortenPath($this->data["path"],33)).'" : "'.g_l('rebuild',"[savingDocument]").addslashes(shortenPath($this->data["path"],60)).'") );parent.wizbusy.setProgress('.$percent.');</script>';
+		print we_htmlElement::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "'.addslashes(shortenPath($this->data["path"],33)).'" : "'.g_l('rebuild',"[savingDocument]").addslashes(shortenPath($this->data["path"],60)).'") );parent.wizbusy.setProgress('.$percent.');');
 
 	}
 
 	function finish(){
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		we_html_tools::htmlTop();
-		print '<script type="text/javascript">
-			' . we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : g_l('rebuild',"[finished]")), WE_MESSAGE_NOTICE ) . '
-			top.close();
-		</script>
+		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : g_l('rebuild',"[finished]")), WE_MESSAGE_NOTICE ) . '
+			top.close();').'
 		</head>
 		</html>';
 	}

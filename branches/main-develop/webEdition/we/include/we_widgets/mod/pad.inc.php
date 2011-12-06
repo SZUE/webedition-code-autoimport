@@ -377,7 +377,7 @@ $_notepad = $oPad->getHTMLCode() . we_htmlElement::htmlDiv(array(
 	"id" => "view"
 ), $oTblBtnProps->getHTMLCode());
 
-$_notepad .= '<script type="text/javascript">
+$_notepad .= '<script type="text/javascript"><!--
 function toggleTblValidity(){
 	var weNoteValidity = getCurrentQuery().Validity;
 	if (getCurrentQuery().Validity=="always") {
@@ -392,6 +392,7 @@ function toggleTblValidity(){
 	}
 }
 toggleTblValidity();
+//-->
 </script>';
 
 print

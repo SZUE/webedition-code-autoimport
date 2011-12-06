@@ -42,7 +42,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 print STYLESHEET;
 echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 	function new_todo() {
 	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
@@ -104,7 +104,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 	    	top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=launch&mode=message&we_transaction=<?php echo $_REQUEST['we_transaction']?>';
 		}
 	}
-
+//-->
 </script>
 </head>
 

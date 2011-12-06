@@ -30,7 +30,7 @@ we_html_tools::htmlTop();
 
 $table = isset($table) ? $table : FILE_TABLE;
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function we_cmd(){
 	var args = "";
 	for(var i = 0; i < arguments.length; i++){
@@ -38,7 +38,7 @@ function we_cmd(){
 	}
 	eval('parent.we_cmd('+args+')');
 }
-
+//-->
 </script>
 </head>
 <body>

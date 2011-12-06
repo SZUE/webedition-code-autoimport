@@ -84,10 +84,7 @@ class liveUpdateTemplates {
 	' . $header . '
 	</head>
 	<body>
-	' . liveUpdateTemplates::getContainer($headline, $content) . '
-	<script type="text/javascript">
-	' . $PushJs . '
-	</script>
+	' . liveUpdateTemplates::getContainer($headline, $content) . we_htmlElement::jsElement($PushJs) . '
 	</body>
 </html>';
 	}

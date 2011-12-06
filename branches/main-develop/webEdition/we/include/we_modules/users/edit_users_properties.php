@@ -46,7 +46,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	we_htmlElement::jsScript(JS_DIR.'windows.js').
 	we_htmlElement::jsScript(JS_DIR.'md5.js');
 ?>
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 
 	var loaded = 0;
 	function we_submitForm(target,url){
@@ -145,7 +145,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 				break;
 		}
 	}
-
+//-->
 	</script>
  </head>
  <body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1;">

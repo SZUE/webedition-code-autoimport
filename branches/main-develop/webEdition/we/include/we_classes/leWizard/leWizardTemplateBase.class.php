@@ -228,12 +228,12 @@ class leWizardTemplateBase {
 
 			if(sizeof($this->_Javascripts) > 0) {
 				$this->_Javascripts = array_reverse($this->_Javascripts);
-				$this->Javascript .= '<script type="text/javascript">';
+				$this->Javascript .= '<script type="text/javascript"><!--';
 				foreach ($this->_Javascripts as $Javascript) {
 					$this->Javascript .= $Javascript . "\n";
 
 				}
-				$this->Javascript .= '</script>';
+				$this->Javascript .= "//-->\n".'</script>';
 
 			}
 

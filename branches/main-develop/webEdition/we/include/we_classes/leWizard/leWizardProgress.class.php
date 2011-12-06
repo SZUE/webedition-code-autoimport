@@ -85,7 +85,7 @@ EOF;
 	function getJSCode() {
 
 		$JS = <<<EOF
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function leWizardProgress() {}
 
 
@@ -142,6 +142,7 @@ leWizardProgress.enable = function(status) {
 	}
 
 }
+//-->
 </script>
 
 EOF;

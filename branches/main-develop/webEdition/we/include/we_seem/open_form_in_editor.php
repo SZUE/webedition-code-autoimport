@@ -25,9 +25,7 @@
 <head>
 </head>
 <body>
-<script type="text/javascript">
 <?php
-
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 	protect();
 
@@ -39,8 +37,7 @@
     //	When pressing a link in edit-mode this functionality
     //	is needed to reopen the document (if possible) with webEdition
 
-	print we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . str_replace(" ", "+", $action) . "\">");
+	print we_htmlElement::jsElement(we_SEEM::getJavaScriptCommandForOneLink("<a href=\"" . str_replace(" ", "+", $action) . "\">"));
 ?>
-</script>
 </body>
 </html>

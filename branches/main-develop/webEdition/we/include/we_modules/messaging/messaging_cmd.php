@@ -66,13 +66,7 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 
 	if ($id != $GLOBALS['messaging']->Folder_ID) {
 		$GLOBALS['messaging']->reset_ids_selected();
-?>
-	<script type="text/javascript">
-	<!--
-		top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;
-	//-->
-	</script>
-<?php
+print we_htmlElement::jsElement('top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;');
 	}
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);

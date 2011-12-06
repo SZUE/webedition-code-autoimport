@@ -63,8 +63,8 @@ $tab_js = $we_tabs->getJS();
 print $tab_header;
 ?>
 
-</head>
-<script type="text/javascript">
+
+<script type="text/javascript"><!--
 var current = "<?php echo $_REQUEST["mod"];?>";
 function openModule(module) {
 	if(top.content.hot =="1") {
@@ -83,7 +83,9 @@ function openModule(module) {
 	}
 
 }
+//-->
 </script>
+</head>
 <body bgcolor="white" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 <div id="main" ><?php echo $we_tabs->getHTML(); ?> </div>
 </body>

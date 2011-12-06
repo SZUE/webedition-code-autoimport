@@ -131,9 +131,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-print '
-<script type="text/javascript">
-
+print we_htmlElement::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
@@ -149,7 +147,7 @@ print '
 		padding: 8px;
 		border: 1px solid #666666;
 	}
-</style>
+').'
 </head>
 <body class="weEditorBody" onload="self.focus();" onunload="">
 <form>';

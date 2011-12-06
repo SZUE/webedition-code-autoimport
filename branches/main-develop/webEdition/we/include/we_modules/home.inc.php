@@ -98,10 +98,7 @@ $title = "";
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
 
-	<?php print $we_body_insert; ?>
-	<script type="text/javascript">
-		var we_is_home = 1;
-	</script>
+	<?php print $we_body_insert.we_htmlElement::jsElement('var we_is_home = 1;');?>
 
 </body>
 

@@ -167,7 +167,7 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	}
 
 echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 
 	function applyOnEnter() {
 		top.frames.glossarycheck.checkForm();
@@ -312,7 +312,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 			window.setTimeout("fadeout(\""+id+"\","+(from-step)+","+step+","+speed+")",speed);
 		}
 	}
-
+//-->
   	</script>
 	<style type="text/css">
 		#applet {
@@ -336,7 +336,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 	}
 ?>
 
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 	function we_save_document() {
 		top.opener._showGlossaryCheck = 0;
 		top.opener.we_save_document();
@@ -345,6 +345,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 	function we_reloadEditPage() {
 		top.opener.top.we_cmd('switch_edit_page', <?php echo $we_doc->EditPageNr; ?>, '<?php echo $Transaction; ?>', 'save_document');
 	}
+	//-->
 	</script>
 <?php
 
@@ -429,7 +430,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 	</style>
 	<?php
 	echo we_htmlElement::jsScript(JS_DIR.'weCombobox.js');?>
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 
 	var table;
 	var counter = 0;
@@ -755,7 +756,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 		}
 		document.forms[0].submit();
 	}
-
+//-->
 	</script>
 
 </head>

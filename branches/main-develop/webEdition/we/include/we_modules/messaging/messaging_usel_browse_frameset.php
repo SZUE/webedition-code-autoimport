@@ -39,7 +39,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	we_htmlElement::jsScript(JS_DIR.'messaging_hl.js').
 	we_htmlElement::jsScript(JS_DIR.'messaging_std.js');
 ?>
- <script type="text/javascript">
+ <script type="text/javascript"><!--
 
  var loaded=0;
  var hot=0;
@@ -352,9 +352,9 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 
 
  self.focus();
+ //-->
 </script>
 
- </script>
  </head>
   <frameset rows="*,40" framespacing="0" border="0" frameborder="NO" onLoad=" start();">
    <frame src="<?php print HTML_DIR?>white.html" name="messaging_usel_main" scrolling="auto">

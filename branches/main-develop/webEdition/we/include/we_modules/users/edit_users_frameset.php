@@ -46,7 +46,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	we_htmlElement::jsScript(JS_DIR.'windows.js').
 	we_htmlElement::jsScript(JS_DIR.'md5.js');
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 	var loaded=0;
 	var hot=0;
 	var hloaded=0;
@@ -526,7 +526,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	var startloc=0;
 
 	self.focus();
-
+//-->
 </script>
 </head>
 
