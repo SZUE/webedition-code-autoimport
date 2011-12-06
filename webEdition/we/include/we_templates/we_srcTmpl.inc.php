@@ -310,8 +310,9 @@ if ($we_editmode) {
 
 		$maineditor .= '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />'.
     '<applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="'.getServerUrl(true) . '/webEdition/editors/template/editor">'.
-    '<param name="phpext" value=".php">'.
-		'<param name="serverUrl" value="'.  getServerUrl(true).'"/>';
+    '<param name="phpext" value=".php"/>'.
+		'<param name="serverUrl" value="'.  getServerUrl(true).'"/>'.
+		'<param name="editorPath" value="webEdition/editors/template/editor"/>';
 		if ($_SESSION['prefs']['editorFont'] == 1) {
 			// translate html font names into java font names
 			switch($_SESSION['prefs']['editorFontname']){
@@ -324,8 +325,8 @@ if ($we_editmode) {
 			default:
 				$fontname = $_SESSION['prefs']['editorFontname'];
 			}
-			$maineditor .= '<param name="fontName" value="' . $fontname . '">'.
-			'<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '">';
+			$maineditor .= '<param name="fontName" value="' . $fontname . '"/>'.
+			'<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '"/>';
 		}
 
 		if ($_SESSION["prefs"]["specify_jeditor_colors"] == 1) {

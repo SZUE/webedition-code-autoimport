@@ -48,6 +48,7 @@ public class Editor extends JApplet{
 	private String php_ext;
 
 	public String serverUrl;
+	public String editorPath;
 
 	public String cmpCode = "";
 
@@ -68,10 +69,15 @@ public class Editor extends JApplet{
 		String url;
 
 		serverUrl = getParameter("serverUrl");
+		editorPath = getParameter("editorPath");
 		if (serverUrl.length() > 0) {
-			url = serverUrl+"initEditor.html";
+			if(!serverUrl.endsWith("/")){
+				serverUrl=serverUrl+"/";
+			}
+			url = serverUrl+editorPath+"/initEditor.html";
 			showUrl(url);
 		}
+
 
 		parameter = Parameter.getInstance();
 
@@ -128,7 +134,7 @@ public class Editor extends JApplet{
 		php_ext=getParameter("phpext");
 		if(php_ext==null) php_ext=".php";
 
-		url = serverUrl+"/getAllTags" + php_ext;
+		url = serverUrl+editorPath+"/getAllTags" + php_ext;
 		tags = getFromServer(url, "tag");
 		editor = new EditorPanel(this);
 		getContentPane().add(editor, BorderLayout.CENTER);
@@ -187,7 +193,7 @@ public class Editor extends JApplet{
 
 	public Vector<String> getAttribsForTag(String tagName) {
 		if (!attribs.containsKey(tagName)) {
-			String url = serverUrl +"/getAttribsForTag" + php_ext + "?tagName="+tagName;
+			String url = serverUrl +editorPath+"/getAttribsForTag" + php_ext + "?tagName="+tagName;
 			Vector<String> attr = getFromServer(url, "attribute");
 			attribs.put(tagName, attr);
 		}
