@@ -41,7 +41,7 @@ abstract class we_multiIconBox{
 	* @param	$headline			string
 	* @return	string
  	*/
-	function getHTML($name,$width, $content, $marginLeft="0", $buttons="", $foldAtNr=-1, $foldRight="", $foldDown="", $displayAtStartup=false, $headline = "", $delegate = "", $height = "", $overflow = "auto"){
+	static function getHTML($name,$width, $content, $marginLeft="0", $buttons="", $foldAtNr=-1, $foldRight="", $foldDown="", $displayAtStartup=false, $headline = "", $delegate = "", $height = "", $overflow = "auto"){
 		$uniqname = $name ? $name : md5(uniqid(rand(), true));
 
 		if(isset($headline) && $headline != ""){
@@ -118,7 +118,8 @@ abstract class we_multiIconBox{
 
 		if($buttons){
 			$buttonsHTML = '<div style="left:0;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0;width:100%"><div style="padding: 10px 10px 0 0;">'.$buttons . '</div></div>';
-			return '<div style="overflow:'.$overflow.';position:absolute;width:100%;'.($height ? 'height:'.$height.'px;' : '').'top:0;left:0;">'. $boxHTML . '</div>' . $buttonsHTML;
+			//ignore height, replace by bottom:
+			return '<div style="overflow:'.$overflow.';position:absolute;width:100%;'.($height ? 'bottom:40px;' : '').'top:0;left:0;">'. $boxHTML . '</div>' . $buttonsHTML;
 		}else{
 			return $boxHTML;
 		}
@@ -127,8 +128,7 @@ abstract class we_multiIconBox{
 
 	function getJS(){
 		return '
-
-		<script  type="text/javascript"><!--
+			<script  type="text/javascript"><!--
 
 			function weToggleBox(name,textDown,textRight){
 				var t = document.getElementById(\'table_\'+name);
