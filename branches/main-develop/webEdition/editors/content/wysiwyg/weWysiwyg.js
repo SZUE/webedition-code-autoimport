@@ -529,13 +529,13 @@ function weWysiwyg_writeHTMLDocument(){
 	var parentRef = null;
 	var normal = false;
 	if(top.weEditorFrameController && top.weEditorFrameController.getVisibleEditorFrame()){  // inline
-		if (top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_" + this.hiddenName)) {
-			parentRef = top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_" + this.hiddenName);
+		if (top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_" + this.hiddenName)) {
+			parentRef = top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_" + this.hiddenName);
 			we_parentRef = parentRef;
 		}
 	} else if(top.opener && top.opener.top.weEditorFrameController && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){  // inline
-		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_"+this.hiddenName)){
-			parentRef = top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_"+this.hiddenName);
+		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_"+this.hiddenName)){
+			parentRef = top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_"+this.hiddenName);
 			we_parentRef = parentRef;
 		}
 	}else if(isFullScreen && top.opener && top.opener.document.getElementById(this.fullScreenRef+"_table")){ // fullscreen

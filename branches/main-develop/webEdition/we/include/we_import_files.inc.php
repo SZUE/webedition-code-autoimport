@@ -176,7 +176,7 @@ class we_import_files
 
 				function wedelRow(nr,but){
 					if(but.src.indexOf("disabled") == -1){
-						var prefix =  "uploadFiles_div_";
+						var prefix =  "div_uploadFiles_";
 						var num = -1;
 						var z = 0;
 						weDelMultiboxRow(nr);
@@ -185,7 +185,7 @@ class we_import_files
 							if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
 								num = divs[i].id.substring(prefix.length,divs[i].id.length);
 								if(parseInt(num)){
-									var sp = document.getElementById("uploadFiles_headline_"+(num-1));
+									var sp = document.getElementById("headline_uploadFiles_"+(num-1));
 									if(sp){
 										sp.innerHTML = z;
 									}
@@ -576,7 +576,7 @@ class we_import_files
 						"onchange" => "checkFileinput();"
 				)) . $but;
 
-		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles',"[file]") . '&nbsp;<span id="uploadFiles_headline_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
+		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles',"[file]") . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
 				35,
 				5) . '</td><td>' . $fileinput . '</td></tr></table>';
 

@@ -85,10 +85,10 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	?>
 <script  type="text/javascript">
 	if(top.opener && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){
-		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_<?php
+		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_<?php
 	print $_REQUEST["we_cmd"][1];
 	?>")){
-			top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("wysiwyg_div_<?php
+			top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_<?php
 	print $_REQUEST["we_cmd"][1];
 	?>").innerHTML = "<?php
 	print

@@ -1487,7 +1487,7 @@ class weVersionsView
 
 			$rightContent = '<div class="defaultfont">' . $mainContent . '</div>';
 
-			$out .= '<div style="margin-left:0px" id="' . $uniqname . '_div_' . $i . '">';
+			$out .= '<div style="margin-left:0px" id="div_' . $uniqname . '_' . $i . '">';
 
 			$out .= $rightContent;
 

@@ -105,22 +105,22 @@
 					if(type == "link") {
 						document.getElementById("btn_direction_weMultibox_table").style.display = "block";
 						document.getElementById("text_weMultibox").style.display = "block";
-						document.getElementById("weMultibox_div_2").style.display = "block";
-						document.getElementById("weMultibox_div_3").style.display = "block";
-						document.getElementById("weMultibox_div_4").style.display = "block";
-						document.getElementById("weMultibox_div_5").style.display = "block";
-						document.getElementById("weMultibox_div_6").style.display = "block";
-						document.getElementById("weMultibox_div_7").style.display = "block";
+						document.getElementById("div_weMultibox_2").style.display = "block";
+						document.getElementById("div_weMultibox_3").style.display = "block";
+						document.getElementById("div_weMultibox_4").style.display = "block";
+						document.getElementById("div_weMultibox_5").style.display = "block";
+						document.getElementById("div_weMultibox_6").style.display = "block";
+						document.getElementById("div_weMultibox_7").style.display = "block";
 						showLinkMode("intern");
 					} else {
 						document.getElementById("btn_direction_weMultibox_table").style.display = "none";
 						document.getElementById("text_weMultibox").style.display = "none";
-						document.getElementById("weMultibox_div_2").style.display = "none";
-						document.getElementById("weMultibox_div_3").style.display = "none";
-						document.getElementById("weMultibox_div_4").style.display = "none";
-						document.getElementById("weMultibox_div_5").style.display = "none";
-						document.getElementById("weMultibox_div_6").style.display = "none";
-						document.getElementById("weMultibox_div_7").style.display = "none";
+						document.getElementById("div_weMultibox_2").style.display = "none";
+						document.getElementById("div_weMultibox_3").style.display = "none";
+						document.getElementById("div_weMultibox_4").style.display = "none";
+						document.getElementById("div_weMultibox_5").style.display = "none";
+						document.getElementById("div_weMultibox_6").style.display = "none";
+						document.getElementById("div_weMultibox_7").style.display = "none";
 					}
 				}
 

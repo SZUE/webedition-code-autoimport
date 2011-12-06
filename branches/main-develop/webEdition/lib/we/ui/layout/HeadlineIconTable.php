@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,8 +27,8 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Class which creates a table to display several rows with ui elements separated by a rule
- * For each row an icon can be provided together with a headline (title) 
- * 
+ * For each row an icon can be provided together with a headline (title)
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
@@ -62,7 +62,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/*
 	 * Button Table object; will be inserted direct under the table
-	 * 
+	 *
 	 * @var we_ui_layout_ButtonTable
 	 */
 	protected $_buttonTable = NULL;
@@ -70,7 +70,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	/*
 	 * Index where to put the triangle button
 	 * for folding the rest of the table
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected $_foldAtIndex = -1;
@@ -78,7 +78,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	/*
 	 * Text which will be shown next to the triangle button
 	 * when the table is folded
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_foldedText = '';
@@ -92,7 +92,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	protected $_unfoldedText = '';
 
 	/*
-	 * Flag which controls if the table should be 
+	 * Flag which controls if the table should be
 	 * unfolded or not when it renders its HTML
 	 *
 	 * @var string
@@ -101,34 +101,34 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/*
 	 * left margin
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected $_marginLeft = 0;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
 	public function __construct($properties = null)
 	{
 		parent::__construct($properties);
-		
+
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-	
+
 	}
 
 	/**
 	 * Retrieve ButtonTable
-	 * 
+	 *
 	 * @return we_ui_layout_ButtonTable
 	 */
 	public function getButtonTable()
@@ -138,7 +138,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Retrieve foldAtIndex property
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function getFoldAtIndex()
@@ -148,7 +148,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Retrieve foldedText property
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getFoldedText()
@@ -158,7 +158,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Retrieve marginLeft property
-	 * 
+	 *
 	 * @return integer
 	 */
 	public function getMarginLeft()
@@ -168,7 +168,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Retrieve array with we_ui_layout_HeadlineIconTableRow objects
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getRows()
@@ -178,7 +178,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Retrieve unfoldedText property
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getUnfoldedText()
@@ -188,7 +188,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Retrieve unfoldWhenRenders property
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function getUnfoldWhenRenders()
@@ -198,7 +198,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * @param we_ui_layout_ButtonTable $buttonTable
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setButtonTable($buttonTable)
@@ -208,7 +208,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * @param integer $foldAtIndex
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setFoldAtIndex($foldAtIndex)
@@ -218,7 +218,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * @param string $foldedText
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setFoldedText($foldedText)
@@ -228,7 +228,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * @param integer $marginLeft
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setMarginLeft($marginLeft)
@@ -238,7 +238,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Set the rows array
-	 * 
+	 *
 	 * @param array $rows
 	 */
 	public function setRows($rows)
@@ -248,12 +248,12 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 			$this->addCSSFiles($elem->getCSSFiles());
 			$this->addJSFiles($elem->getJSFiles());
 		}
-	
+
 	}
 
 	/**
 	 * @param string $unfoldedText
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setUnfoldedText($unfoldedText)
@@ -263,7 +263,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 	/**
 	 * @param boolean $unfoldWhenRenders
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setUnfoldWhenRenders($unfoldWhenRenders)
@@ -280,10 +280,10 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	{
 		$html = $this->_getHeader();
 		$client = we_ui_Client::getInstance();
-		
+
 		foreach ($this->_rows as $i => $row) {
-			
-			$rowHTML = '<div style="margin-left:' . $this->_marginLeft . 'px" id="' . $this->_id . '_div_' . $i . '">' . $row->getHTML() . '</div>' . (($client->getBrowser() == we_ui_Client::kBrowserIE) ? '<br>' : '');
+
+			$rowHTML = '<div style="margin-left:' . $this->_marginLeft . 'px" id="div_' . $this->_id . '_' . $i . '">' . $row->getHTML() . '</div>' . (($client->getBrowser() == we_ui_Client::kBrowserIE) ? '<br>' : '');
 			$html .= $rowHTML;
 			if ($i < (count($this->_rows) - 1) && ($row->hasLine())) {
 				$html .= '<div class="we_ui_layout_HeadlineIconTable_Rule"></div>';
@@ -301,11 +301,11 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 */
 	protected function _getHeader()
 	{
-		
+
 		$tableTag = '<table' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib(array('margin-top' => '10px')) . ' border="0" cellspacing="0" cellpadding="0">';
-		
+
 		if ($this->getTitle() !== '') {
-			
+
 			return $tableTag . '
 	<tr>
 		<td style="padding-left:' . $this->_marginLeft . 'px;padding-bottom:10px;" class="' . htmlspecialchars(self::kTableTitle) . '">' . htmlspecialchars($this->getTitle()) . '</td>
@@ -314,17 +314,17 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 		<td>' . we_ui_layout_Image::getPixel(2, 8) . '</td>
 	</tr>
 	<tr>
-		<td id="' . htmlspecialchars($this->getId()) . '_td">';
-		
+		<td id="td_' . htmlspecialchars($this->getId()) . '">';
+
 		} else {
-			
+
 			return $tableTag . '
 	<tr>
 		<td class="defaultfont"><b>' . we_ui_layout_Image::getPixel($this->getWidth(), 2) . '</b></td>
 	</tr>
 	<tr>
-		<td id="' . htmlspecialchars($this->getId()) . '_td">';
-		
+		<td id="td_' . htmlspecialchars($this->getId()) . '">';
+
 		}
 	}
 
@@ -335,7 +335,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 */
 	protected function _getFooter()
 	{
-		
+
 		return '</td>
 	</tr>
 	<tr>

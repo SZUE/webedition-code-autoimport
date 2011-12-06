@@ -363,7 +363,7 @@ HTS;
 	static function html_select($name, $size, $vals, $value = "", $onchange = ""){
 		$out = '<select class="weSelect" name="' . $name . '" size="' . $size . '"' . ($onchange ? ' onChange="' . $onchange . '"' : '') . ">\n";
 		reset($vals);
-		while(list($v, $t) = each($vals)) {
+		foreach($vals as $v=>$t) {
 			$out .= '<option value="' . htmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . "$t\n";
 		}
 		return "$out</select>\n";

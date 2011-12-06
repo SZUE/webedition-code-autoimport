@@ -228,7 +228,7 @@ abstract class we_multiIconBox{
 			function weGetMultiboxLength(){
 
 				var divs = document.getElementsByTagName("DIV");
-				var prefix =  "'.$uniqname.'_div_";
+				var prefix =  "div_'.$uniqname.'_";
 				var z = 0;
 				for(var i = 0; i<divs.length; i++){
 					if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
@@ -240,7 +240,7 @@ abstract class we_multiIconBox{
 			function weGetLastMultiboxNr(){
 
 				var divs = document.getElementsByTagName("DIV");
-				var prefix =  "'.$uniqname.'_div_";
+				var prefix =  "div_'.$uniqname.'_";
 				var num = -1;
 				for(var i = 0; i<divs.length; i++){
 					if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
@@ -251,8 +251,8 @@ abstract class we_multiIconBox{
 			}
 
 			function weDelMultiboxRow(nr){
-				var div = document.getElementById("'.$uniqname.'_div_"+nr);
-				var mainTD = document.getElementById("'.$uniqname.'_td");
+				var div = document.getElementById("div_'.$uniqname.'_"+nr);
+				var mainTD = document.getElementById("td_'.$uniqname.'");
 				mainTD.removeChild(div);
 			}
 
@@ -282,7 +282,7 @@ abstract class we_multiIconBox{
 				innerHTML += \'<br style="clear:both;">\';
 				mainDiv.innerHTML = innerHTML;
 
-				var mainTD = document.getElementById("'.$uniqname.'_td");
+				var mainTD = document.getElementById("td_'.$uniqname.'");
 				mainTD.appendChild(mainDiv);
 
 ' . (($GLOBALS["BROWSER"] == "IE") ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
@@ -294,7 +294,7 @@ abstract class we_multiIconBox{
 				if(insertRuleBefore && (lastNum != -1)){
 					var rule = document.createElement("DIV");
 					rule.style.cssText = "border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;";
-					var preDIV = document.getElementById("'.$uniqname.'_div_"+lastNum);
+					var preDIV = document.getElementById("div_'.$uniqname.'_"+lastNum);
 					preDIV.appendChild(rule);
 				}
 

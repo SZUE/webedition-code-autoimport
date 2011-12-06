@@ -9,7 +9,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -22,7 +22,7 @@
 
 /**
  * Class for handling we_ui_layout_HeadlineIconTable
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
@@ -45,13 +45,13 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	 * @var object
 	 */
 	this.id = this.element.id;
-	
+
 	/**
 	 * id prefix for the main div
 	 *
 	 * @var string
 	 */
-	this.divPrefix = this.id + "_div_";
+	this.divPrefix = "div_".this.id + "_";
 
 	/**
 	 * array with main divs of the table
@@ -66,7 +66,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 			this.divs.push(divs[i]);
 		}
 	}
-	
+
 	/**
 	 * returns the number of rows
 	 *
@@ -75,7 +75,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	this.count = function() {
 		return this.divs.length;
 	}
-	
+
 	/**
 	 * returns the last index of the table
 	 *
@@ -85,7 +85,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 		var div = this.divs[this.divs.length-1];
 		return parseInt(div.id.substring(this.divPrefix.length,div.id.length));
 	}
-	
+
 	/**
 	 * deletes a row with the given index
 	 *
@@ -94,10 +94,10 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	 */
 	this.deleteRow = function(index) {
 		var div = document.getElementById(this.divPrefix + index);
-		var mainTD = document.getElementById(this.id + "_td");
+		var mainTD = document.getElementById("td_"+this.id);
 		mainTD.removeChild(div);
 	}
-	
+
 	/**
 	 * appends a row
 	 *
@@ -109,18 +109,18 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	this.appendRow = function(divInnerHTML, marginLeft, insertRuleBefore) {
 		var lastNum = this.getLastIndex();
 		var i = (lastNum + 1);
-		
+
 		divInnerHTML = divInnerHTML.replace(/__INDEX__/g, i);
-		
+
 		var mainDiv = document.createElement("DIV");
-		
+
 		mainDiv.style.cssText = "margin-left:" + marginLeft + "px";
 		mainDiv.id = this.divPrefix + i;
 		mainDiv.innerHTML = divInnerHTML;
 
-		var mainTD = document.getElementById(this.id + "_td");
+		var mainTD = document.getElementById("td_"+this.id);
 		mainTD.appendChild(mainDiv);
-		
+
 		if (navigator.userAgent.indexOf('MSIE') != -1) {
 			mainTD.appendChild(document.createElement("BR"));
 		}

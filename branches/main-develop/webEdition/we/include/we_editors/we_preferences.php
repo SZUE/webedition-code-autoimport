@@ -216,7 +216,7 @@ function get_value($settingvalue){
 			break;
 
 		case "ui_charset":
-			return $_SESSION["prefs"]["BackendCharset"];			
+			return $_SESSION["prefs"]["BackendCharset"];
 			break;
 
 		case "ui_seem_start_file":
@@ -896,8 +896,8 @@ function get_value($settingvalue){
  *
  * @return         bool
  */
-function remember_value($settingvalue, $settingname){	
-	
+function remember_value($settingvalue, $settingname){
+
 	global $save_javascript, $editor_reloaded, $email_saved, $DB_WE;
 	$_update_prefs = false;
 	if(isset($settingvalue) && ($settingvalue !== null || $settingname == '$_REQUEST["we_tracker_dir"]' || $settingname == '$_REQUEST["ui_sidebar_disable"]' || $settingname == '$_REQUEST["smtp_halo"]' || $settingname == '$_REQUEST["smtp_timeout"]')){
@@ -940,11 +940,11 @@ function remember_value($settingvalue, $settingname){
 			case '$_REQUEST["Language"]':	//Handle both
 				$_SESSION["prefs"]["Language"] = $settingvalue;
 				$_SESSION["prefs"]["BackendCharset"] = $_REQUEST["BackendCharset"];
-				
+
 
 				if($settingvalue != $GLOBALS["WE_LANGUAGE"] || $_REQUEST["BackendCharset"] != $GLOBALS['WE_BACKENDCHARSET']){
-					
-					// complete webEdition reload: anpassen nach Wegfall der Frames				
+
+					// complete webEdition reload: anpassen nach Wegfall der Frames
 					/*
 					$save_javascript .= "
 
@@ -989,7 +989,7 @@ function remember_value($settingvalue, $settingname){
 
 					";
 					*/
-					
+
 				}
 
 				$_update_prefs = true;
@@ -2363,7 +2363,7 @@ $_we_active_integrated_modules = array(
 		}
 	} else{
 		switch($settingname){
-			
+
 
 			/*			 * ***************************************************************
 			 * CACHING
@@ -2774,7 +2774,7 @@ function save_all_values(){
 	/*	 * ***********************************************************************
 	 * DEFAULT_CHARSET
 	 * *********************************************************************** */
-	 
+
 	$_update_prefs = remember_value(isset($_REQUEST["default_charset"]) ? $_REQUEST["default_charset"] : null, '$_REQUEST["default_charset"]') || $_update_prefs;
 
 
@@ -4320,78 +4320,78 @@ function setColorChooserDisabled(id, disabled) {
 function displayEditorOptions(editor) {
 	switch(editor) {
 		case "java":
-			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
-			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
+			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_3").style.display="none"; //Font
-			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_3").style.display="none"; //Font
+			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_4").style.display="block"; //Java Colors
-			document.getElementById("settings_editor_predefined_div_4").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_4").style.display="block"; //Java Colors
+			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_5").style.display="none"; //Line numbers
-			document.getElementById("settings_editor_predefined_div_5").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_5").style.display="none"; //Line numbers
+			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_6").style.display="none"; //Code Completion
-			document.getElementById("settings_editor_predefined_div_6").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_6").style.display="none"; //Code Completion
+			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_7").style.display="none"; //Tooltips
-			document.getElementById("settings_editor_predefined_div_7").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_7").style.display="none"; //Tooltips
+			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
-			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_8").style.display="none"; //Docu on dblclick
+			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="none";
 
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
 			break;
 		case "codemirror2":
 		case "codemirror":
-			document.getElementById("settings_editor_predefined_div_2").style.display="block"; //JavaScript-Editor-Notice
-			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_2").style.display="block"; //JavaScript-Editor-Notice
+			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_3").style.display="block"; //Font
-			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_3").style.display="block"; //Font
+			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_4").style.display="none"; //Java Colors
-			document.getElementById("settings_editor_predefined_div_4").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_4").style.display="none"; //Java Colors
+			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_5").style.display="block"; //Line numbers
-			document.getElementById("settings_editor_predefined_div_5").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_5").style.display="block"; //Line numbers
+			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_6").style.display="block"; //Code Completion
-			document.getElementById("settings_editor_predefined_div_6").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_6").style.display="block"; //Code Completion
+			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_7").style.display="block"; //Tooltips
-			document.getElementById("settings_editor_predefined_div_7").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_7").style.display="block"; //Tooltips
+			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_8").style.display="block"; //Docu on dblclick
-			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_8").style.display="block"; //Docu on dblclick
+			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="block";
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
 		case "textarea":
 		default:
 
-			document.getElementById("settings_editor_predefined_div_2").style.display="none"; //JavaScript-Editor-Notice
-			document.getElementById("settings_editor_predefined_div_2").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
+			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_3").style.display="block"; //Font
-			document.getElementById("settings_editor_predefined_div_3").previousSibling.style.display="block";
+			document.getElementById("div_settings_editor_predefined_3").style.display="block"; //Font
+			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="block";
 
-			document.getElementById("settings_editor_predefined_div_4").style.display="none"; //Java Colors
-			document.getElementById("settings_editor_predefined_div_4").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_4").style.display="none"; //Java Colors
+			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_5").style.display="none"; //Line numbers
-			document.getElementById("settings_editor_predefined_div_5").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_5").style.display="none"; //Line numbers
+			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_6").style.display="none"; //Code Completion
-			document.getElementById("settings_editor_predefined_div_6").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_6").style.display="none"; //Code Completion
+			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_7").style.display="none"; //Tooltips
-			document.getElementById("settings_editor_predefined_div_7").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_7").style.display="none"; //Tooltips
+			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="none";
 
-			document.getElementById("settings_editor_predefined_div_8").style.display="none"; //Docu on dblclick
-			document.getElementById("settings_editor_predefined_div_8").previousSibling.style.display="none";
+			document.getElementById("div_settings_editor_predefined_8").style.display="none"; //Docu on dblclick
+			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="none";
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
