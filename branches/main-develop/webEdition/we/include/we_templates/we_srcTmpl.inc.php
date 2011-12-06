@@ -350,24 +350,28 @@ function myReplace(text, replaceby) {
 
 function we_getJavaEditorCode($code) {
 	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
-            <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="' . getServerUrl() . '/webEdition/editors/template/editor">
-            	<param name="phpext" value=".php">';
+    <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="'.getServerUrl(true) . '/webEdition/editors/template/editor"/>
+    <param name="phpext" value=".php"/>
+	<param name="serverUrl" value="'.  getServerUrl(true).'"/>
+	<param name="editorPath" value="webEdition/editors/template/editor"/>';
+
+
 
 	if ($_SESSION["prefs"]["editorFont"] == 1) {
 		// translate html font names into java font names
 		switch ($_SESSION["prefs"]["editorFontname"]) {
 			case "mono":
-				$fontname = "monospaced";
+				$fontname = 'monospaced';
 				break;
 			case "sans-serif":
-				$fontname = "sansserif";
+				$fontname = 'sansserif';
 				break;
 			default:
-				$fontname = $_SESSION["prefs"]["editorFontname"];
+				$fontname = $_SESSION['prefs']['editorFontname'];
 				break;
 		}
-		$maineditor .= '<param name="fontName" value="' . $fontname . '">';
-		$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '">';
+		$maineditor .= '<param name="fontName" value="' . $fontname . '"/>';
+		$maineditor .= '<param name="fontSize" value="' . $_SESSION["prefs"]["editorFontsize"] . '"/>';
 	}
 
 	if ($_SESSION["prefs"]["specify_jeditor_colors"] == 1) {

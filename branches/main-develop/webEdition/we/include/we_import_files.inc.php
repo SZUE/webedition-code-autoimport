@@ -602,21 +602,16 @@ class we_import_files
 			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/weJUpload.class.php');
 
 			$_param = array(
-				'postURL' => getServerProtocol(true) . $_SERVER["HTTP_HOST"].'/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
+				'postURL' => getServerUrl(true) .'/webEdition/jupload/import.php?jupl=1&csid=' . session_id(),
 				'maxFileSize' => getUploadMaxFilesize(false, $GLOBALS["DB_WE"]),
-				'afterUploadURL' => getServerProtocol(true) . $_SERVER["HTTP_HOST"].'/webEdition/we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
+				'afterUploadURL' => getServerUrl(true) . '/webEdition/we_cmd.php?we_cmd[0]=import_files&cmd=content&step=3',
+				'serverProtocol' =>'HTTP/1.1',
 				'showLogWindow'=>'onError',
 				'debugLevel'=>'99',
-			)
-			;
-
-
-			if (defined('HTTP_USERNAME')) {
-				$_ecnode = HTTP_USERNAME;
-				if (defined('HTTP_PASSWORD')) {
-					$_ecnode .= ':' . HTTP_PASSWORD;
-				}
-				$_param['usePresetAuthentification'] = base64_encode($_ecnode);
+			);
+			$auth=getServerAuth();
+			if($auth){
+				$_param['specificHeaders']='Authorization: Basic '.base64_encode($auth);
 			}
 
 			$_weju = new weJUpload($_param, $GLOBALS['WE_LANGUAGE']);

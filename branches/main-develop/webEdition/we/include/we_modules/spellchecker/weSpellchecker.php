@@ -32,7 +32,7 @@ print STYLESHEET;
 	$_mode = 'normal';
 	$_editname = '';
 
-	$_applet_code = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="'.getServerUrl(). WE_SPELLCHECKER_MODULE_PATH . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="'.getServerUrl(). WE_SPELLCHECKER_MODULE_PATH . '/dict/"><param name="dictionary" value="'.(isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch').'"><param name="debug" value="off"><param name="user" value="'.$_username.'@'.$_SERVER['SERVER_NAME'].'"><param name="udSize" value="'.(is_file($_user_dict) ? filesize($_user_dict) : '0').'"></applet>';
+	$_applet_code = '<applet name="spellchecker" code="LeSpellchecker.class" archive="lespellchecker.jar" codebase="'.getServerUrl(true). WE_SPELLCHECKER_MODULE_PATH . '" width="20" height="20" scriptable mayscript><param name="CODE" value="LeSpellchecker.class"><param name="ARCHIVE" value="lespellchecker.jar"><param name="type" value="application/x-java-applet;version=1.1"><param name="dictBase" value="'.getServerUrl(true). WE_SPELLCHECKER_MODULE_PATH . '/dict/"><param name="dictionary" value="'.(isset($_SESSION['dictLang']) ? $_SESSION['dictLang'] : 'Deutsch').'"><param name="debug" value="off"><param name="user" value="'.$_username.'@'.$_SERVER['SERVER_NAME'].'"><param name="udSize" value="'.(is_file($_user_dict) ? filesize($_user_dict) : '0').'"></applet>';
 
 	if(isset($_REQUEST['we_dialog_args']['editname'])) {
 		$_mode = 'wysiwyg';
