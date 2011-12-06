@@ -149,8 +149,8 @@ function we_tag_date($attribs, $content){
 		$f = preg_replace('|([^\\\\])(l)|', '\1"+\2+"', $f);
 		$f = preg_replace('|([^\\\\])(M)|', '\1"+\2+"', $f);
 		$f = preg_replace('|([^\\\\])(s)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(a)', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(A)', '\1"+\2+"', $f);
+		$f = preg_replace('|([^\\\\])(a)|', '\1"+\2+"', $f);
+		$f = preg_replace('|([^\\\\])(A)|', '\1"+\2+"', $f);
 
 		$f = ereg_replace('^([SYymndjHihGgDFlMsaA])', '"+\1+"', $f);
 		$f = stripslashes($f);
