@@ -216,7 +216,7 @@ function get_value($settingvalue){
 			break;
 
 		case "ui_charset":
-			return $_SESSION["prefs"]["BackendCharset"];
+			return $_SESSION["prefs"]["BackendCharset"];			
 			break;
 
 		case "ui_seem_start_file":
@@ -896,7 +896,8 @@ function get_value($settingvalue){
  *
  * @return         bool
  */
-function remember_value($settingvalue, $settingname){
+function remember_value($settingvalue, $settingname){	
+	
 	global $save_javascript, $editor_reloaded, $email_saved, $DB_WE;
 	$_update_prefs = false;
 	if(isset($settingvalue) && ($settingvalue !== null || $settingname == '$_REQUEST["we_tracker_dir"]' || $settingname == '$_REQUEST["ui_sidebar_disable"]' || $settingname == '$_REQUEST["smtp_halo"]' || $settingname == '$_REQUEST["smtp_timeout"]')){
@@ -939,8 +940,12 @@ function remember_value($settingvalue, $settingname){
 			case '$_REQUEST["Language"]':	//Handle both
 				$_SESSION["prefs"]["Language"] = $settingvalue;
 				$_SESSION["prefs"]["BackendCharset"] = $_REQUEST["BackendCharset"];
+				
 
 				if($settingvalue != $GLOBALS["WE_LANGUAGE"] || $_REQUEST["BackendCharset"] != $GLOBALS['WE_BACKENDCHARSET']){
+					
+					// complete webEdition reload: anpassen nach Wegfall der Frames				
+					/*
 					$save_javascript .= "
 
 						// reload current document => reload all open Editors on demand
@@ -981,7 +986,10 @@ function remember_value($settingvalue, $settingname){
 						if (parent.opener.top.reload_weJsStrings) {
 							parent.opener.top.reload_weJsStrings(\"$settingvalue\");
 						}
+
 					";
+					*/
+					
 				}
 
 				$_update_prefs = true;
@@ -2355,6 +2363,7 @@ $_we_active_integrated_modules = array(
 		}
 	} else{
 		switch($settingname){
+			
 
 			/*			 * ***************************************************************
 			 * CACHING
@@ -2762,13 +2771,11 @@ function save_all_values(){
 	}
 	$_update_prefs = remember_value(isset($_REQUEST["countries_default"]) ? $_REQUEST["countries_default"] : null, '$_REQUEST["countries_default"]') || $_update_prefs;
 
-
 	/*	 * ***********************************************************************
 	 * DEFAULT_CHARSET
 	 * *********************************************************************** */
-
+	 
 	$_update_prefs = remember_value(isset($_REQUEST["default_charset"]) ? $_REQUEST["default_charset"] : null, '$_REQUEST["default_charset"]') || $_update_prefs;
-
 
 
 	/*	 * ***********************************************************************
@@ -3161,7 +3168,7 @@ function build_dialog($selected_setting = "ui"){
 			}
 			global $_languages;
 
-			if(sizeof($_language) > 1){ // Build language select box
+			if(sizeof($_language) > 0){ // Build language select box
 				$_languages = new we_htmlSelect(array("name" => "Language", "class" => "weSelect", "onChange" => "document.getElementById('langnote').style.display='block'"));
 				foreach($_language as $key => $value){
 					$_languages->addOption($key, $value);

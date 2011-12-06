@@ -2462,7 +2462,7 @@ function mapPermissions() {
 		  	}
 		}
 
-		if(sizeof($_languages["translation"]) > 1) { // Build language select box
+		if(sizeof($_languages["translation"]) > 0) { // Build language select box
 			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 			if (isset($this->Preferences['Language']) && $this->Preferences['Language']!=''){
 				$myCompLang = $this->Preferences['Language'];
@@ -2489,6 +2489,9 @@ function mapPermissions() {
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 		}
+		
+
+
 		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
 		$_charset->addOption('UTF-8', 'UTF-8');
 		$_charset->addOption('ISO-8859-1','ISO-8859-1');
@@ -2541,7 +2544,6 @@ function mapPermissions() {
 		 *****************************************************************/
 
 		$_document_path = "";
-
 		// Generate needed JS
 		$js = "
 					<script language=\"JavaScript\" type=\"text/javascript\"><!--
@@ -2657,8 +2659,9 @@ function mapPermissions() {
 		$_start_type->addOption("document", g_l('prefs','[seem_start_type_document]'));
 		if(defined("OBJECT_FILES_TABLE")) {
 			$_start_type->addOption("object", g_l('prefs','[seem_start_type_object]'));
-
 		}
+		
+		
 		//weapp
 		$_start_weapp = new we_htmlSelect(array("name" => "seem_start_weapp","class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
@@ -2669,15 +2672,16 @@ function mapPermissions() {
 			}
 		}
 
-
-		if($_start_weapp->getOptionNum()){
-			$_start_type->addOption("weapp", $GLOBALS['l_prefs']["seem_start_type_weapp"]);
+		if($_start_weapp->getOptionNum()){		
+			$_start_type->addOption("weapp", g_l('prefs','[seem_start_type_weapp]'));
 		}
+		
 		$_start_type->selectOption($_seem_start_type);
-
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 		$weAPPSelector = $_start_weapp->getHtmlCode();
-		$_seem_weapp_chooser = $we_button->create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
+
+		$_seem_weapp_chooser = we_button::create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
+
 
 		// Build SEEM select start document chooser
 		$yuiSuggest =& weSuggest::getInstance();
@@ -2720,7 +2724,7 @@ function mapPermissions() {
 
 
 
-		// Build final HTML code
+		// Build final HTML code		
 		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode() . we_html_tools::getPixel(200,1));
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser.$_seem_weapp_chooser);
