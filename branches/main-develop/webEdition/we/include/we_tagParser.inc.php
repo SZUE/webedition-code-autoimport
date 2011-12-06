@@ -167,7 +167,7 @@ class we_tagParser{
 
 	public function parseSpecificTags($tags, &$code, $postName = '', $ignore = array()){
 		$this->tags = $tags;
-		return $this->parseTags($code, $postName, $ignore);
+		return $this->parseTags($code, ($postName==''?0:$postName), $ignore);
 	}
 
 	public function parseTags(&$code,$start=0,$ende=FALSE){
