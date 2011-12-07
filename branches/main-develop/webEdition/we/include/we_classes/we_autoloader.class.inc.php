@@ -5,9 +5,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 /**
  * webEdition CMS
  *
- * $Rev: 3391 $
- * $Author: mokraemer $
- * $Date: 2011-10-24 21:10:51 +0200 (Mo, 24. Okt 2011) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify

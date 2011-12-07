@@ -9,9 +9,9 @@
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
  ********************************************
- $Revision: 185 $
- $Author: etienne_sf $
- $Date: 2008-03-12 20:26:16 +0100 (mer., 12 mars 2008) $
+ $Revision$
+ $Author$
+ $Date$
  ********************************************
  *
  * Allows easy upload to the gallery, through a java applet. 

@@ -11,8 +11,8 @@
  ********************************************
  $Source: $
  $Revision: ?
- $Author: etienne_sf $
- $Date: $
+ $Author$
+ $Date$
  ********************************************
  *
  * Allows easy upload to the gallery, through a java applet. 
