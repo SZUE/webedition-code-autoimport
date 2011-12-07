@@ -39,13 +39,10 @@ $INCLUDE = "";
 //	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $_we_active_integrated_modules
 if(isset($_we_active_integrated_modules)){
-	foreach($_we_active_integrated_modules as $mod){
-
-		if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $mod . "/we_cmd_" . $mod . ".inc.php")){
-
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $mod . "/we_cmd_" . $mod . ".inc.php");
+	foreach($_we_active_integrated_modules as $m){
+		if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $m . "/we_cmd_" . $m . ".inc.php")){
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $m . "/we_cmd_" . $m . ".inc.php");
 		}
-
 	}
 }
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
@@ -376,6 +373,7 @@ if(!$INCLUDE){
             }
 	}
 }
+
 
 if($INCLUDE){
     //  When pressing a link in edit-mode, the page is being reloaded from
