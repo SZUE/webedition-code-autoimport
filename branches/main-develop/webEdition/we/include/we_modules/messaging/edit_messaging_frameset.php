@@ -773,6 +773,6 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 	<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php" name="messaging_cmd" scrolling="yes" noresize>
 </frameset>
 
-<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0"></body>
+<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px"></body>
 
 </html>

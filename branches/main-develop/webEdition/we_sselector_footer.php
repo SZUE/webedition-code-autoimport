@@ -66,7 +66,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 //-->
 </script>
 </head>
-<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" bgcolor="#bfbfbf" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" onUnload="doUnload();">
+<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
      <form name="we_form" target="fscmd">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>

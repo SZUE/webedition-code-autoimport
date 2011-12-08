@@ -44,7 +44,7 @@ protect();
 //-->
 	</script>
 </head>
-<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 <?php
     if (defined("MESSAGING_SYSTEM")) {
         include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");

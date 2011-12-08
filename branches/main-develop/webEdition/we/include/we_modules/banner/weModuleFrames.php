@@ -224,7 +224,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
    <frame src="<?php print WEBEDITION_DIR."we/include/we_modules/"; print $this->frameset?>?pnt=cmd" name="cmd" scrolling=no noresize>
   </frameset>
 
- <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+ <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </html>
 <?php
@@ -234,7 +234,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	function getHTMLHeader(){
 ?>
 </head>
- <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+ <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 	HEADER
  </body>
 </html>
@@ -262,7 +262,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	</frameset>
 <?php } ?>
 <noframes>
- <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+ <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </noframes>
 </html>
@@ -279,7 +279,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
     <frame src="<?php print HTML_DIR?>white.html" name="tree" scrolling="auto" noresize>
    </frameset>
    <noframes>
-   <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+   <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
    </body>
    </noframes>
 </html>
@@ -327,7 +327,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 
    </frameset>
 <noframes>
- <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+ <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </noframes>
 </html>

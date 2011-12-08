@@ -77,6 +77,6 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." WHERE strDateiname 
        }
       } ?>
    </frameset>
-  <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+  <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </html>

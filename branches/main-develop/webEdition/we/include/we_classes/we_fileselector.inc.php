@@ -623,7 +623,7 @@ function clearEntries(){
 
 	</script>
 </head>
-	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" bgcolor="#bfbfbf"  LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 		<form name="we_form" method="post">
 ';
 if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
@@ -833,7 +833,7 @@ top.fsheader.selectIt();
 
 		print '</script>
 </head>
-	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" bgcolor="#bfbfbf"  LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 	<form name="we_form" target="fscmd">
 ';
 		$this->printFooterTable();

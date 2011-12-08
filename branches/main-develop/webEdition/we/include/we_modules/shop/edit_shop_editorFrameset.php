@@ -65,6 +65,6 @@ $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
     <frame src="edit_shop_properties.php?bid=<?php print $bid; ?>" name="edbody" scrolling=auto>
    <?php } ?>
    </frameset>
-  <body bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+  <body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </html>

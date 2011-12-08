@@ -98,7 +98,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 //-->
 </script>
 </head>
- <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" bgcolor="#bfbfbf"  LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" onLoad="setLookin();self.focus()">
+ <body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onLoad="setLookin();self.focus()">
 	 <form name="we_form" method="post">
  		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr valign="middle">

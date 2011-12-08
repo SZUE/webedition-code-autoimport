@@ -60,7 +60,7 @@ class weNavigationRuleFrames{
    <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
   </frameset>
 </head>
- <body background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" bgcolor="#bfbfbf" leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+ <body background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </html>';
 	}

@@ -71,7 +71,7 @@ class weSideBarFrames {
 	<frame src="<?php print $this->_frameset; ?>?pnt=footer" name="weSidebarFooter" scrolling="no" noresize>
 </frameset>
 
-<body bgcolor="#bfbfbf" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
 </body>
 
 </html>
