@@ -23,15 +23,6 @@
  */
 
 function we_tag_href($attribs, $content){
-	// Define globals
-	global $we_editmode;
-
-	if ($we_editmode) {
-		// Include files
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
-	}
-
 	$foo = attributFehltError($attribs, "name", "href");
 	if ($foo)
 		return $foo;
@@ -78,7 +69,7 @@ function we_tag_href($attribs, $content){
 	// as html_entity_decode is only available php > 4.3 we use a custom function
 	$extPath = !empty($extPath) ? htmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
-	if ($we_editmode) {
+	if ($GLOBALS['we_editmode']) {
 		$int_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintID . ']';
@@ -118,7 +109,7 @@ function we_tag_href($attribs, $content){
 
 		$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
 
-		if ($we_editmode) {
+		if ($GLOBALS['we_editmode']) {
 			if (($directory && $file) || $file) {
 				//javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value', 'document.forms[\\'we_form\\'].elements[\\'$intPath_elem_Name\\'].value', 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd(\'reload_editpage\');" : "") . "', '" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");
 				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
@@ -201,7 +192,7 @@ function we_tag_href($attribs, $content){
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 
-			if ($we_editmode) {
+			if ($GLOBALS['we_editmode']) {
 				if (($directory && $file) || $file) {
 					//javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value', 'document.forms[\\'we_form\\'].elements[\\'$intPath_elem_Name\\'].value', 'opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd(\'reload_editpage\');" : "") . "', '" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
 					$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
@@ -257,7 +248,7 @@ function we_tag_href($attribs, $content){
 			$href = $extPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 
-			if ($we_editmode) {
+			if ($GLOBALS['we_editmode']) {
 				$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
 
 				$trashbut2 = we_button::create_button(

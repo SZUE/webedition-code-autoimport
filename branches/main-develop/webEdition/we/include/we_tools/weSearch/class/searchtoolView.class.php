@@ -2804,22 +2804,16 @@ class searchtoolView extends weToolView
 
 				$content[$f][0]["dat"] = we_html_tools::getPixel(20,1).$publishCheckbox;
 				$content[$f][1]["dat"] = '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />';
-				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . shortenPath(
-						$_result[$f]["Text"],
-						17);
+				$content[$f][2]["dat"] = '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . $_result[$f]["Text"];
 				//$content[$f][2]["dat"] = '<nobr>'. g_l('contentTypes','['.$_result[$f]['ContentType'].']') .'</nobr>';
-				$content[$f][3]["dat"] = '<nobr>' . shortenPath(
-						$_result[$f]["SiteTitle"],
-						$we_PathLength) . '</nobr>';
-				$content[$f][4]["dat"] = '<nobr>' . $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
+				$content[$f][3]["dat"] = $_result[$f]["SiteTitle"];
+				$content[$f][4]["dat"] = $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
 						g_l('searchtool',"[date_format]"),
 						$_result[$f]["CreationDate"]) : "-");
-				$content[$f][5]["dat"] = '<nobr>' . ($_result[$f]["ModDate"] ? date(
+				$content[$f][5]["dat"] = ($_result[$f]["ModDate"] ? date(
 						g_l('searchtool',"[date_format]"),
-						$_result[$f]["ModDate"]) : "-") . '</nobr>';
-			} else
-
-			{
+						$_result[$f]["ModDate"]) : "-");
+			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize(
 						$_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(
@@ -3488,21 +3482,27 @@ class searchtoolView extends weToolView
 		}
 
 		$anz = sizeof($headline);
-		$out = '<table border="0" style="background-color:#fff;" cellpadding="0" cellspacing="0" width="100%">
-       <tr style="height:20px;">
-     <td style="border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(56, 10) . '</td>
-     <td style="border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(1, 10) . '</td>';
+		$out = '<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;border-bottom:1px solid #D1D1D1;" >
+<colgroup>
+<col style="width:30px;text-align:center;"/>
+<col style="width:2%;text-align:left;"/>
+<col style="width:28%;text-align:left;"/>
+<col style="width:36%;text-align:left;"/>
+<col style="width:15%;text-align:left;"/>
+<col style="width:*;text-align:left;"/>
+</colgroup>
 
-		// widths of columns in headline in %
-		$columnWidths = array(
-			31, 36, 14, 19
-		);
+<tr style="height:20px;">
+     <td style="">&nbsp;</td>
+     <td style="">&nbsp;</td>';
+
 		for ($f = 0; $f < $anz; $f++) {
-			$out .= '<td style="border-bottom:1px solid #D1D1D1;width:' . $columnWidths[$f] . '%;" class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
+			$out .= '<td  class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
 		}
 
 		$out .= '</tr></table>';
-		$out .= '<div id="scrollContent_' . $whichSearch . '" style="overflow:auto;background-color:#fff;width:100%">';
+		//FIXME: realize with tbody?
+		$out .= '<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%">';
 
 		$out .= searchtoolView::tabListContent($view, $content, $class, $whichSearch);
 
@@ -3520,7 +3520,15 @@ class searchtoolView extends weToolView
 		}
 		$x = count($content);
 		if ($view == 0) {
-			$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%">';
+			$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
+<colgroup>
+<col style="width:30px;text-align:center;"/>
+<col style="width:2%;text-align:left;"/>
+<col style="width:28%;text-align:left;"/>
+<col style="width:36%;text-align:left;"/>
+<col style="width:15%;text-align:left;"/>
+<col style="width:*;text-align:left;"/>
+</colgroup>';
 
 			for ($m = 0; $m < $x; $m++) {
 				if ($whichSearch != "doclist") {
@@ -3552,8 +3560,8 @@ class searchtoolView extends weToolView
 				$allDivs = searchtoolView::makeMouseOverDivs($x, $content, $whichSearch);
 			}
 
-			$out .= "<script type='text/javascript'>document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(
-					$allDivs) . "';</script>";
+			$out .= we_htmlElement::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(
+					$allDivs) . "';");
 		}
 		return $out;
 	}
@@ -3699,20 +3707,17 @@ class searchtoolView extends weToolView
 		}
 
 		$out = '';
-		$columnWidths = array(
-			0, 2, 28, 36, 15, 19
-		);
 		for ($f = 0; $f < $anz; $f++) {
-			if ($f == 0) {
-				$width = "width:30px;";
-				$plcholder = "";
-				$align = "center";
+			if ($f < 2) {
+				$style='';
 			} else {
-				$width = "width:" . $columnWidths[$f] . "%;";
-				$plcholder = we_html_tools::getPixel(10, 1);
-				$align = "left";
+				$style='style="font-weight:bold;height:30px;font-size:11px;
+text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+"';
 			}
-			$out .= '<td align="' . $align . '" style="font-weight:bold;height:30px;font-size:11px;' . $width . '">' . $plcholder . ((isset(
+			$out .= '<td '.$style.'>'  . ((isset(
 					$content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
 
 		}

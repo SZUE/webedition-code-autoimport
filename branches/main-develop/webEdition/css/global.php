@@ -113,6 +113,19 @@ body {
 	letter-spacing: normal ! important;
 }
 
+body.aqua {
+	background-image:url('<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif');
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	margin:0px 0px 0px 0px;
+}
+
+body.grey{
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	margin:0px 0px 0px 0px;
+}
+
 .defaultfont {
 	color: black;
 	font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
