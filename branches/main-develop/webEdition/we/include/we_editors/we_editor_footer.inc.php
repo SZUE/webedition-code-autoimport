@@ -21,59 +21,57 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
-
-if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+if(defined("WORKFLOW_TABLE")){
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
 protect();
 
 $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : $we_transaction;
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:0);
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);
 
 // init document
 $we_dt = $_SESSION["we_data"][$we_transaction];
-include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
+include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 function getControlElement($type, $name){
-	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement) ){
+	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement)){
 
 		if(isset($GLOBALS['we_doc']->controlElement[$type][$name])){
 
 			return $GLOBALS['we_doc']->controlElement[$type][$name];
-
-		} else {
+		} else{
 			return false;
 		}
-	} else {
+	} else{
 		return false;
 	}
 }
 
-switch ($we_doc->userHasAccess()){
+switch($we_doc->userHasAccess()){
 
-	case  1 : 	//	all is allowed, creator or owner
+	case 1 : //	all is allowed, creator or owner
 		break;
 
-	case -1 :	//	file is not in workspace of user
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_in_workspace_footer.inc.php");
+	case -1 : //	file is not in workspace of user
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_in_workspace_footer.inc.php");
 		exit();
 		break;
 
-	case -2 :	//	access is restricted and user has no permission
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_restricted_footer.inc.php");
+	case -2 : //	access is restricted and user has no permission
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_restricted_footer.inc.php");
 		exit;
 		break;
 
-	case -3 :	//	file is locked by another user
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_locked_footer.inc.php");
+	case -3 : //	file is locked by another user
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_locked_footer.inc.php");
 		exit;
 		break;
 
-	case -4 :	//	user has not the right to save the file.
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/file_no_save_footer.inc.php");
+	case -4 : //	user has not the right to save the file.
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_no_save_footer.inc.php");
 		exit;
 		break;
 }
@@ -83,11 +81,11 @@ switch ($we_doc->userHasAccess()){
 we_html_tools::htmlTop();
 
 $showPubl = we_hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
-$reloadPage = (($showPubl || $we_doc->ContentType=='text/weTmpl') && (!$we_doc->ID)) ? true : false;
+$reloadPage = (($showPubl || $we_doc->ContentType == 'text/weTmpl') && (!$we_doc->ID)) ? true : false;
 $haspermNew = false;
 
 //	Check permissions for buttons
-switch($we_doc->ContentType) {
+switch($we_doc->ContentType){
 	case "text/html":
 		$haspermNew = we_hasPerm("NEW_HTML");
 		break;
@@ -101,21 +99,20 @@ switch($we_doc->ContentType) {
 
 //	########################	required javascript functions
 //	########################	function we_save_document	######################################
-
 // ---> Glossary Check
 //
 // load Glossary Settings
 $showGlossaryCheck = 0;
 
-if(		isset($_SESSION['prefs']['force_glossary_check'])
-	&&	$_SESSION['prefs']['force_glossary_check']==1
+if(isset($_SESSION['prefs']['force_glossary_check'])
+	&& $_SESSION['prefs']['force_glossary_check'] == 1
 	&& (
-				$we_doc->ContentType == "text/webedition"
-			||	$we_doc->ContentType == "objectFile"
-		)
-	) {
+	$we_doc->ContentType == "text/webedition"
+	|| $we_doc->ContentType == "objectFile"
+	)
+){
 	$showGlossaryCheck = 1;
-} else {
+} else{
 	$showGlossaryCheck = 0;
 }
 
@@ -125,7 +122,7 @@ $_js_we_save_document = "
 	function saveReload(){
 		self.location='" . $we_doc->url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
 	}
-	
+
 	function we_save_document(){
 		try{
 			var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
@@ -139,7 +136,7 @@ $_js_we_save_document = "
 		}
 
 		if (  _EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-			we_cmd('check_glossary', '', '".$we_transaction."');
+			we_cmd('check_glossary', '', '" . $we_transaction . "');
 
 		} else {
 
@@ -160,14 +157,14 @@ $_js_we_save_document = "
 				}
 			}
 			if (countSaveLoop > 10) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . ";
+				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), WE_MESSAGE_ERROR) . ";
 				countSaveLoop = 0;
 			}
 			else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
 				countSaveLoop++;
 				setTimeout('we_save_document()',100);
 			} else if(invalidAcFields) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . ";
+				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), WE_MESSAGE_ERROR) . ";
 				countSaveLoop=0;
 			} else {
 				countSaveLoop=0;
@@ -179,17 +176,16 @@ if($we_doc->userCanSave()){
 
 	// publish for templates to save in version
 	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
-	if ( $we_doc->ContentType == "text/weTmpl" && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+	if($we_doc->ContentType == "text/weTmpl" && defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
 	}
 
 	$_js_we_save_document .= "
 		we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);
 	" . ($reloadPage ? "setTimeout('saveReload()',1500);" : "");
-
 }
 
-	$_js_we_save_document .= "
+$_js_we_save_document .= "
 			_showGlossaryCheck = $showGlossaryCheck;
 		}
 	}
@@ -203,12 +199,12 @@ if(defined("WORKFLOW_TABLE")){
 	function put_in_workflow() {
 
 		if( _EditorFrame.getEditorIsHot() ) {
-			if(confirm('" . g_l('alert','['.stripTblPrefix($we_doc->Table).'][in_wf_warning]') . "')) {
+			if(confirm('" . g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') . "')) {
 				we_cmd('save_document','','','','',0,0,1);
 			}
 		}
 		else {
-			top.we_cmd('in_workflow','$we_transaction'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0"  ) . ");
+			top.we_cmd('in_workflow','$we_transaction'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
 		}
 	}
 
@@ -227,7 +223,7 @@ if(defined("WORKFLOW_TABLE")){
 }
 //	########################	function variable cansave	###########################################
 $_js_weCanSave = "
-	var weCanSave=" . ($we_doc->userCanSave() ? "true" : "false") .";
+	var weCanSave=" . ($we_doc->userCanSave() ? "true" : "false") . ";
 ";
 
 //	added for we:controlElement type="button" name="save" hide="true"
@@ -242,7 +238,7 @@ if($_ctrlElem && $_ctrlElem['hide']){
 
 if(defined("WORKFLOW_TABLE")){
 	if(inWorkflow($we_doc)){
-		if(!weWorkflowUtility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"])){
+		if(!weWorkflowUtility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
 			$_js_weCanSave .= "
 	weCanSave=false;
 ";
@@ -267,31 +263,27 @@ $_js_we_cmd = "
 			url += \"&\";
 	}
 ";
-if($we_doc->Table == TEMPLATES_TABLE){	//	Its a template
+if($we_doc->Table == TEMPLATES_TABLE){ //	Its a template
 	$_js_we_cmd .= "
 		if(arguments[0] == \"save_document\") {	// its a folder
-	" . ( $we_doc->ContentType=="folder"
-			?
-		  "
-			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');"
-		: "
+	" . ( $we_doc->ContentType == "folder" ?
+			"
+			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');" : "
 			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,0,'',arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
 " ) . "
 			return;
 		}";
-
-} else {	//	Its not a template
-
+} else{ //	Its not a template
 	$_js_we_cmd .= "
 		switch(arguments[0]) {
 			case \"check_glossary\":
 				new jsWindow(url,\"check_glossary\",-1,-1,730,400,true,false,true);
 				return;
 			case \"save_document\":
-				top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ?  "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ",arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
+				top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ",arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
 				return;
 ";
-	if( isset($we_doc->IsClassFolder) ){
+	if(isset($we_doc->IsClassFolder)){
 		$_js_we_cmd .= "
 			case \"obj_search\":
 				top.we_cmd(\"obj_search\",'" . $we_transaction . "',document.we_form.obj_search.value,document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
@@ -326,7 +318,7 @@ $_js_we_submitForm = "
 //	########################	build complete JS-Source #########################################################
 $_js_code = "
 <!--
-var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(\"" . $we_transaction ."\");
+var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(\"" . $we_transaction . "\");
 
 $_js_we_save_document
 $_js_workflow_functions
@@ -341,81 +333,87 @@ $_js_we_submitForm
 print we_htmlElement::jsElement($_js_code);
 print we_htmlElement::jsElement("", array("src" => JS_DIR . "windows.js"));
 print STYLESHEET;
-
 ?>
 </head>
 
 <?php
 //	Document is in workflow
-if(inWorkflow($we_doc)) {
+if(inWorkflow($we_doc)){
 	include(WE_WORKFLOW_MODULE_DIR . "we_workflow_doc_footer.inc.php");
 	exit();
 }
 
-   /**
-	* @return void
-	* @desc Prints the footer for the normal mode
- 	*/
-	function showEditFooterForNormalMode() {
+/**
+ * @return void
+ * @desc Prints the footer for the normal mode
+ */
+function showEditFooterForNormalMode(){
 
-		global $we_doc, $we_transaction,  $haspermNew, $showPubl;
+	global $we_doc, $we_transaction, $haspermNew, $showPubl;
 
-		$_normalTable = new we_htmlTable(	array(	"cellpadding" => 0,
-													"cellspacing" => 0,
-													"border"      => 0),
-												1,
-												1);
-		$_pos = 0;
-		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
+	$_normalTable = new we_htmlTable(array("cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0),
+			1,
+			1);
+	$_pos = 0;
+	$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 
-		if($we_doc->ID) {
-			switch($we_doc->ContentType){
-				case "text/weTmpl":
-					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_button::create_button("make_new_document", "javascript:top.we_cmd('new','".FILE_TABLE."','','text/webedition','','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
-					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-					break;
-				case "object":
-					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_button::create_button("make_new_object", "javascript:top.we_cmd('new','".OBJECT_FILES_TABLE."','','objectFile','".$we_doc->ID."');_EditorFrame.setEditorMakeNewDoc(false);"));
-					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-					break;
-			}
-		}
-
-		if(defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID) {
-
-			//	Workflow button
-			$_ctrlElem = getControlElement('button', 'workflow');	//	look tag we:controlElement for details
-
-			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
+	if($we_doc->ID){
+		switch($we_doc->ContentType){
+			case "text/weTmpl":
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-		}
-
-		if($showPubl && $we_doc->ID && $we_doc->Published) {
-
-			//	Park button
-			$_ctrlElem = getControlElement('button', 'unpublish');	//	look tag we:controlElement for details
-
-			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
+				$_normalTable->setColContent(0, $_pos++, we_button::create_button("make_new_document", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+				break;
+			case "object":
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
+				$_normalTable->setColContent(0, $_pos++, we_button::create_button("make_new_object", "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+				break;
 		}
+	}
 
-		if($we_doc->ContentType != "text/webedition" && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile" && $we_doc->ContentType != "folder" && $we_doc->ContentType != "class_folder") {
+	if(defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
+
+		//	Workflow button
+		$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
+
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	if($showPubl && $we_doc->ID && $we_doc->Published){
+
+		//	Park button
+		$_ctrlElem = getControlElement('button', 'unpublish'); //	look tag we:controlElement for details
+
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	switch($we_doc->ContentType){
+		case 'text/webedition':
+		case 'object':
+		case 'objectFile':
+		case 'folder':
+		case 'class_folder':
+			break;
+		default:
 
 			$_edit_source = '<script  type="text/javascript">
 					function editSource(){
 						if(top.plugin.editSource){
-							top.plugin.editSource("'.$we_doc->Path.'","'.$we_doc->ContentType.'");
+							top.plugin.editSource("' . $we_doc->Path . '","' . $we_doc->ContentType . '");
 						}
 						else{
-							we_cmd("initPlugin","top.plugin.editSource(\''.$we_doc->Path.'\',\''.$we_doc->ContentType.'\')");
+							we_cmd("initPlugin","top.plugin.editSource(\'' . $we_doc->Path . '\',\'' . $we_doc->ContentType . '\')");
 						}
 					}
 					function editFile(){
@@ -431,336 +429,317 @@ if(inWorkflow($we_doc)) {
 
 
 			$_normalTable->addCol(2);
+			if(weModuleInfo::isActive('editor')){
+				if(stripos($we_doc->ContentType, 'text/') !== false){
+					$_normalTable->setColContent(0, $_pos++, we_button::create_button("startEditor", "javascript:editSource();"));
+				} else{
+					$_normalTable->setColContent(0, $_pos++, we_button::create_button("startEditor", "javascript:editFile();"));
+				}
 
-			if(stripos($we_doc->ContentType,'text/')!==false) {
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("startEditor", "javascript:editSource();"));
-			} else {
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("startEditor", "javascript:editFile();"));
+				$_normalTable->setColContent(0, $_pos++, $_edit_source . we_html_tools::getPixel(10, 20));
 			}
-
-			$_normalTable->setColContent(0, $_pos++, $_edit_source . we_html_tools::getPixel(10,20));
-
-		}
-
-		//	Save Button
-		$_ctrlElem = getControlElement('button', 'save');	//	look tag we:controlElement for details
-		if( !$_ctrlElem || !$_ctrlElem['hide'] ){
-
-			// show save button also for class_folder, if customer_filters are defined
-			if ( isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder ) {
-
-				//if (defined("CUSTOMER_TABLE")) {//Bug 4716
-					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-
-				//}
-
-			} else {
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-
-			}
-
-		}
-
-		if($we_doc->ContentType == "text/weTmpl") {
-
-			if (defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-
-			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global','[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
-			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-
-
-		} else if($showPubl) {
-
-			$_ctrlElem = getControlElement('button','publish');
-
-			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
-
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-		}
-
-		if($we_doc->IsTextContentDoc && $haspermNew) {
-
-			$_ctrlElem = getControlElement('checkbox','makeSameDoc');
-
-			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
-
-				$_normalTable->addCol(2);
-				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block') ) , we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", g_l('global','[we_make_same]['.$we_doc->ContentType.']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ) ));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-		}
-
-		if($we_doc->ContentType == "text/weTmpl") {
-            if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")) {
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global',"[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-            }
-		} else if($we_doc->ContentType == "object") {
-            if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")) {
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object','[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-            }
-		}
-
-		print $_normalTable->getHtmlCode();
 	}
 
-   /**
-	* @return void
-	* @desc prints the footer for the See-Mode
- 	*/
-	function showEditFooterForSEEMMode() {
-		global $we_doc, $we_transaction,  $haspermNew, $showPubl, $_we_active_integrated_modules;
+	//	Save Button
+	$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
+	if(!$_ctrlElem || !$_ctrlElem['hide']){
 
-		$_seeModeTable = new we_htmlTable(	array(	"cellpadding" => 0,
-													"cellspacing" => 0,
-													"border"      => 0),
-											1,
-											1);
-		$_pos = 0;
-		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
+		// show save button also for class_folder, if customer_filters are defined
+		if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){
 
-		//##############################	First buttons which are always needed
-		//	Always button preview
-		if ( in_array(WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PREVIEW){	// first button is always - preview, when exists
+			//if (defined("CUSTOMER_TABLE")) {//Bug 4716
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 
-			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
+			//}
+		} else{
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	if($we_doc->ContentType == "text/weTmpl"){
+
+		if(defined("VERSIONING_TEXT_WETMPL") && defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 
-		// shop variants
-		if (defined('SHOP_TABLE')) {
+		$_normalTable->addCol(2);
+		$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
+		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	} else if($showPubl){
 
-			if ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && in_array(WE_EDITPAGE_VARIANTS, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->canHaveVariants(true) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_VARIANTS){	// first button is always - preview, when exists
+		$_ctrlElem = getControlElement('button', 'publish');
 
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	if($we_doc->IsTextContentDoc && $haspermNew){
+
+		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+
+			$_normalTable->addCol(2);
+			$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block')), we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	if($we_doc->ContentType == "text/weTmpl"){
+		if(we_hasPerm("NEW_WEBEDITIONSITE") || we_hasPerm("ADMINISTRATOR")){
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	} else if($we_doc->ContentType == "object"){
+		if(we_hasPerm("NEW_OBJECTFILE") || we_hasPerm("ADMINISTRATOR")){
+			$_normalTable->addCol(2);
+			$_normalTable->setColContent(0, $_pos++, we_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	print $_normalTable->getHtmlCode();
+}
+
+/**
+ * @return void
+ * @desc prints the footer for the See-Mode
+ */
+function showEditFooterForSEEMMode(){
+	global $we_doc, $we_transaction, $haspermNew, $showPubl, $_we_active_integrated_modules;
+
+	$_seeModeTable = new we_htmlTable(array("cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0),
+			1,
+			1);
+	$_pos = 0;
+	$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+
+	//##############################	First buttons which are always needed
+	//	Always button preview
+	if(in_array(WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PREVIEW){ // first button is always - preview, when exists
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	}
+
+	// shop variants
+	if(defined('SHOP_TABLE')){
+
+		if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && in_array(WE_EDITPAGE_VARIANTS, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->canHaveVariants(true) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_VARIANTS){ // first button is always - preview, when exists
+			$_seeModeTable->addCol(2);
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("shopVariants", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+
+	//	image-documents have no preview but thumbnailview instead ...
+	if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_THUMBNAILS && in_array(WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
+
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("thumbnails", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	}
+
+	//	Button edit !!!
+	if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_CONTENT && in_array(WE_EDITPAGE_CONTENT, $GLOBALS['we_doc']->EditPageNrs)){ // then button "edit"
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	}
+	//	Button properties
+	if(in_array(WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_SCHEDULER)){
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
+		if(permissionhandler::isUserAllowedForAction("switch_edit_page", "WE_EDITPAGE_PROPERTIES")){
+			$_seeModeTable->addCol(2);
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	// Button workspace
+	if(in_array(WE_EDITPAGE_WORKSPACE, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES)){
+
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("workspace_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	}
+
+
+	//	Button scheduler
+	if(in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES)){
+		if(defined("SCHEDULE_TABLE") && we_hasPerm("CAN_SEE_SCHEDULER")){
+			$_seeModeTable->addCol(2);
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
+	//	Button put in workflow
+	if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_SCHEDULER){ // then button "workflow"
+		if(defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
+
+			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
+
+			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("shopVariants", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
+				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
+				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
+	}
 
-
-		//	image-documents have no preview but thumbnailview instead ...
-		if( $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_THUMBNAILS && in_array(WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
-
-			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("thumbnails", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-		}
-
-		//	Button edit !!!
-		if ($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_CONTENT && in_array(WE_EDITPAGE_CONTENT, $GLOBALS['we_doc']->EditPageNrs)){	// then button "edit"
-
-
-			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("edit", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-
-		}
-		//	Button properties
-		if ( in_array(WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_SCHEDULER) ){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php");
-			if (permissionhandler::isUserAllowedForAction("switch_edit_page","WE_EDITPAGE_PROPERTIES")) {
-				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-		}
-
-		// Button workspace
-		if ( in_array(WE_EDITPAGE_WORKSPACE, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES) ){
-
-			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("workspace_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
-			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-		}
-
-
-		//	Button scheduler
-		if ( in_array(WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES) ){
-			if(defined("SCHEDULE_TABLE") && we_hasPerm( "CAN_SEE_SCHEDULER" )){
-				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-		}
-
-		//	Button put in workflow
-		if ( $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_SCHEDULER){	// then button "workflow"
-			if (defined("WORKFLOW_TABLE") && $we_doc->IsTextContentDoc && $we_doc->ID){
-
-				$_ctrlElem = getControlElement('button', 'workflow');	//	look tag we:controlElement for details
-
-				if( !$_ctrlElem || !$_ctrlElem['hide'] ){
-					$_seeModeTable->addCol(2);
-					$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("in_workflow", "javascript:put_in_workflow();"));
-					$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-				}
-			}
-		}
-
-		//###########################	Special buttons for special EDITPAGE
-		//
+	//###########################	Special buttons for special EDITPAGE
+	//
 		//	1. ONLY in PROPERTY page we need the button unpublish
-		//
+	//
 		if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $showPubl && $we_doc->ID && $we_doc->Published){
 
-			//	button unpublish
-			$_ctrlElem = getControlElement('button', 'unpublish');	//	look tag we:controlElement for details
-			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
-				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
+		//	button unpublish
+		$_ctrlElem = getControlElement('button', 'unpublish'); //	look tag we:controlElement for details
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+			$_seeModeTable->addCol(2);
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
+	}
 
-		//
-		//	2. we always need the buttons -> save and publish
-		//
-		$_ctrlElem = getControlElement('button', 'save');	//	look tag we:controlElement for details
-		if( !$_ctrlElem || !$_ctrlElem['hide'] ){
+	//
+	//	2. we always need the buttons -> save and publish
+	//
+		$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
+	if(!$_ctrlElem || !$_ctrlElem['hide']){
+
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	}
+
+
+	//
+	// 3. public when save and make same doc new.
+	//
+			$showPubl_makeSamNew = '';
+	if($showPubl){
+
+		$_ctrlElem = getControlElement('button', 'publish'); //	look tag we:controlElement for details
+
+		if(!($_ctrlElem && $_ctrlElem['hide'])){
 
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
-			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
+	}
 
+	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_THUMBNAILS){
 
-		//
-		// 3. public when save and make same doc new.
-		//
-			$showPubl_makeSamNew = '';
-			if ($showPubl) {
+		if($we_doc->IsTextContentDoc && $haspermNew){
 
-				$_ctrlElem = getControlElement('button', 'publish');	//	look tag we:controlElement for details
+			//	makesamedoc only when not in edit_include-window
+			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 
-				if (!($_ctrlElem && $_ctrlElem['hide'])) {
-
-					$_seeModeTable->addCol(2);
-					$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-					$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-				}
+			if($_ctrlElem && $_ctrlElem['hide']){
+				$showPubl_makeSamNew .= '<div style="display: hidden;">';
 			}
 
-			if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_THUMBNAILS ){
-
-				if ($we_doc->IsTextContentDoc && $haspermNew) {
-
-					//	makesamedoc only when not in edit_include-window
-					$_ctrlElem = getControlElement('checkbox','makeSameDoc');
-
-					if ($_ctrlElem && $_ctrlElem['hide'] ) {
-						$showPubl_makeSamNew .= '<div style="display: hidden;">';
-					}
-
-					$showPubl_makeSamNew .= '<script  type="text/javascript">
+			$showPubl_makeSamNew .= '<script  type="text/javascript">
 								<!--
 								if(!top.opener || !top.opener.win){
 									document.writeln("<!--");
 								}
 							//-->
 							</script>' .
-							we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false ), "makeSameDoc", g_l('global','[we_make_same]['.$we_doc->ContentType.']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false ))
-							.
-						'<script  type="text/javascript">
+				we_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false))
+				.
+				'<script  type="text/javascript">
 								<!--
 								if(!top.opener || !top.opener.win){
 									document.writeln(\'-\' + \'-\' + \'>\');
 								}
 							//--></script>';
-					if ($_ctrlElem && $_ctrlElem['hide'] ) {
-						$showPubl_makeSamNew .= '</div>';
-					}
-				}
-			}
-
-			if ($showPubl_makeSamNew) {
-
-				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), $showPubl_makeSamNew);
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-			}
-
-		//
-		//	4. show delete button to delete this document, not in edit_include-window
-		//
-		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && (($we_doc->ClassName == "we_objectFile") ? we_hasPerm("DELETE_OBJECTFILE") : we_hasPerm("DELETE_DOCUMENT")));
-		if( $canDelete){
-			$_ctrlElem = getControlElement('button', 'delete');	//	look tag we:controlElement for details
-			if( !$_ctrlElem || !$_ctrlElem['hide'] ){
-				$_seeModeTable->addCol(2);
-
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10,20));
-				$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), we_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert','[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			if($_ctrlElem && $_ctrlElem['hide']){
+				$showPubl_makeSamNew .= '</div>';
 			}
 		}
-		print $_seeModeTable->getHtmlCode();
 	}
 
+	if($showPubl_makeSamNew){
+
+		$_seeModeTable->addCol(2);
+		$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), $showPubl_makeSamNew);
+		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+	}
+
+	//
+	//	4. show delete button to delete this document, not in edit_include-window
+	//
+		$canDelete = ( (!isset($_REQUEST['SEEM_edit_include']) || $_REQUEST['SEEM_edit_include'] == 'false') && (($we_doc->ClassName == "we_objectFile") ? we_hasPerm("DELETE_OBJECTFILE") : we_hasPerm("DELETE_DOCUMENT")));
+	if($canDelete){
+		$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+			$_seeModeTable->addCol(2);
+
+			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+			$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), we_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+		}
+	}
+	print $_seeModeTable->getHtmlCode();
+}
 ?>
 
-<body bgcolor="#f0f0f0"  background="<?php print EDIT_IMAGE_DIR ?>editfooterback.gif" marginwidth="0" marginheight="10" leftmargin="0" topmargin="10">
+<body style="background-color:#f0f0f0; background-image: url('<?php print EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
 	<form name="we_form"<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onSubmit="sub();return false;"<?php } ?>>
-	<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
+		<input type="hidden" name="sel" value="<?php print $we_doc->ID; ?>" />
 		<?php
 		$_SESSION['seemForOpenDelSelector']['ID'] = $we_doc->ID;
 		$_SESSION['seemForOpenDelSelector']['Table'] = $we_doc->Table;
 
-				if($we_doc->userCanSave()){
+		if($we_doc->userCanSave()){
 
-					if($_SESSION["we_mode"] == "normal"){		// open footer for NormalMode
+			if($_SESSION["we_mode"] == "normal"){ // open footer for NormalMode
+				showEditFooterForNormalMode();
+			} else if($_SESSION["we_mode"] == "seem"){ // open footer for SeeMode
+				showEditFooterForSEEMMode();
+			}
+		} else{
 
-						showEditFooterForNormalMode();
+			if($_SESSION["we_mode"] == "seem"){
 
-					} else if ($_SESSION["we_mode"] == "seem"){	// open footer for SeeMode
+				$_noPermTable = new we_htmlTable(array("cellpadding" => 0,
+						"cellspacing" => 0,
+						"border" => 0),
+						1,
+						4);
 
-						showEditFooterForSEEMMode();
-					}
-				} else {
-
-					if ($_SESSION["we_mode"] == "seem"){
-
-						$_noPermTable = new we_htmlTable(	array(	"cellpadding" => 0,
-																	"cellspacing" => 0,
-																	"border"      => 0),
-															1,
-															4);
-
-						$_noPermTable->setColContent( 0, 0, we_html_tools::getPixel(20,2));
-						$_noPermTable->setColContent( 0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-						$_noPermTable->setColContent( 0, 2, we_html_tools::getPixel(10,2));
-						$_noPermTable->setColContent( 0, 3, g_l('SEEM',"[no_permission_to_edit_document]"));
+				$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
+				$_noPermTable->setColContent(0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+				$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
+				$_noPermTable->setColContent(0, 3, g_l('SEEM', "[no_permission_to_edit_document]"));
 
 
-						print $_noPermTable->getHtmlCode();
-
-					}
-
-				}
-			?>
+				print $_noPermTable->getHtmlCode();
+			}
+		}
+		?>
 	</form>
 	<?php
-	$_js_tmpl = "";
-	$_js_publish = "";
-	$_js_permnew = "";
+	$_js_tmpl = $_js_publish = $_js_permnew = '';
 
-	if($we_doc->ContentType == "text/weTmpl"){	// a template
-
+	if($we_doc->ContentType == "text/weTmpl"){ // a template
 		$_js_tmpl = "
 		if( _EditorFrame.getEditorAutoRebuild() ) {
 			self.document.we_form.autoRebuild.checked = true;
@@ -777,20 +756,17 @@ if(inWorkflow($we_doc)) {
 		";
 	}
 
-	if($we_doc->IsTextContentDoc && $haspermNew){	//	$_js_permnew
-
-		if($_SESSION["we_mode"] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){	// not in SeeMode or in editmode
-
-			$_ctrlElem = getControlElement('checkbox','makeSameDoc');
-			if( !$_ctrlElem ){	//	changes for we:controlElement
-
+	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
+		if($_SESSION["we_mode"] != "seem" || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+			if(!$_ctrlElem){ //	changes for we:controlElement
 				if($we_doc->ID){
 					$_js_permnew = "
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = false;
 			}
 			";
-				} else {
+				} else{
 					$_js_permnew = "
 			if( _EditorFrame.getEditorMakeSameDoc() ) {
 				if(self.document.we_form && self.document.we_form.makeSameDoc){
@@ -803,7 +779,7 @@ if(inWorkflow($we_doc)) {
 			}
 			";
 				}
-			} else {	//	$_ctrlElement determines values
+			} else{ //	$_ctrlElement determines values
 				if($we_doc->ID){
 					$_js_permnew = "
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
@@ -811,7 +787,7 @@ if(inWorkflow($we_doc)) {
 				_EditorFrame.setEditorMakeSameDoc(" . $_ctrlElem["checked"] ? "true" : "false" . ");
 			}
 			";
-				} else {
+				} else{
 					$_js_permnew = "
 				if(self.document.we_form && self.document.we_form.makeSameDoc){
 					self.document.we_form.makeSameDoc.checked = " . ($_ctrlElem["checked"] ? "true" : "false") . ";
@@ -823,16 +799,9 @@ if(inWorkflow($we_doc)) {
 		}
 	}
 
-	$_js_code_bottom = "
-	<!--
-	$_js_tmpl
-	$_js_publish
-	$_js_permnew
-	//-->
-	";
+	$_js_code_bottom = $_js_tmpl.$_js_publish.$_js_permnew;
 
 	print we_htmlElement::jsElement($_js_code_bottom);
-
-?>
+	?>
 </body>
 </html>

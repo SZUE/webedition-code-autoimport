@@ -119,7 +119,7 @@ if ($_SESSION["we_mode"] != "seem"){	//	No tabs in Super-Easy-Edit_mode
 		}
 		*/
 
-		if(we_hasPerm("CAN_SEE_SCHEDULER") && weModuleInfo::isActiv("schedule") && in_array(WE_EDITPAGE_SCHEDULER,$we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
+		if(we_hasPerm("CAN_SEE_SCHEDULER") && weModuleInfo::isActive("schedule") && in_array(WE_EDITPAGE_SCHEDULER,$we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
 
 			$we_tabs->addTab(new we_tab("#", g_l('weClass',"[scheduler]"),(($we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER) ? "TAB_ACTIVE" : "TAB_NORMAL"),"we_cmd('switch_edit_page'," . WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');",array("id"=>"tab_".WE_EDITPAGE_SCHEDULER)));
 		}

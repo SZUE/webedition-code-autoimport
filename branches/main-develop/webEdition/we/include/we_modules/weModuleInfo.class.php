@@ -2,9 +2,9 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_active_integrated_modules.inc.php");
 
-class weModuleInfo {
+abstract class weModuleInfo {
 
-	function _orderModules($a, $b){
+	static function _orderModules($a, $b){
     	return (strcmp($a["text"],$b["text"]));
 
 	}
@@ -14,7 +14,7 @@ class weModuleInfo {
 	 *
 	 * @param hash $array
 	 */
-	function orderModuleArray(&$array) {
+	static function orderModuleArray(&$array) {
 		uasort($array, array("weModuleInfo","_orderModules"));
 
 	}
@@ -24,7 +24,7 @@ class weModuleInfo {
 	 *
 	 * @return hash
 	 */
-	function getAllModules() {
+	static function getAllModules() {
 		global $_we_available_modules;
 
 		$retArr = array();
@@ -42,7 +42,7 @@ class weModuleInfo {
 	 *
 	 * @return hash
 	 */
-	function getNoneIntegratedModules() {
+	static function getNoneIntegratedModules() {
 		global $_we_available_modules;
 
 		$retArr = array();
@@ -60,7 +60,7 @@ class weModuleInfo {
 	 * @param string $mKey
 	 * @return boolean
 	 */
-	function isModuleInstalled($mKey) {
+	static function isModuleInstalled($mKey) {
 
 		if (in_array($mKey, $GLOBALS['_we_active_integrated_modules']) || $mKey == "editor") {
 			return true;
@@ -73,7 +73,7 @@ class weModuleInfo {
 	 * returns hash of all integrated modules
 	 * @return hash
 	 */
-	function getIntegratedModules($active=null) {
+	static function getIntegratedModules($active=null) {
 
 		global $_we_available_modules, $_we_active_integrated_modules;
 
@@ -99,7 +99,7 @@ class weModuleInfo {
 	 * @param string $modulekey
 	 * @return boolean
 	 */
-	function showModuleInMenu($modulekey) {
+	static function showModuleInMenu($modulekey) {
 		global $_we_available_modules;
 		/*
 		if ($_we_available_modules[$modulekey]["integrated"]) {
@@ -120,7 +120,7 @@ class weModuleInfo {
 		return false;
 	}
 
-	function isActiv($modul) {
+	static function isActive($modul) {
 		global $_we_active_integrated_modules;
 		return in_array($modul,$_we_active_integrated_modules);
 	}

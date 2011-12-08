@@ -114,6 +114,9 @@ abstract class we_htmlElement{
 	static function jsElement($content='', $attribs=array()){
 		$attribs['language'] = 'JavaScript';
 		$attribs['type'] = 'text/javascript';
+		if(strpos($content,'<!--')===FALSE){
+			$content="<!--\n".$content."\n\\-->\n";
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
 	}
 
