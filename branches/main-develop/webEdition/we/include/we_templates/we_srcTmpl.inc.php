@@ -47,13 +47,19 @@ if ($we_editmode) {
 			"open" : 305,
 			"closed" : 140
 		}
+		
+		function sizeEditor() { // interim
+			var editarea = document.getElementById("editarea");
+			editarea.style.width = "900px";
+			editarea.style.height = "400px";
 
-		function sizeEditor() {
+		}
+
+		function sizeEditor_back() { // to be fixed (on 12.12.11)
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
 			var editorWidth = w - <?php echo ($_SESSION['prefs']['editorMode'] == 'codemirror2'?60:37);?>;
-
 			var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "right";
 
 			var editarea = document.getElementById("editarea");
@@ -66,20 +72,25 @@ if ($we_editmode) {
 
 			if (editarea) {
 				editarea.style.width=editorWidth;
+				
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
 					editarea.nextSibling.style.width=editorWidth;
+//editarea.nextSibling.style.width= 700;					
 			}
 
 			if (document.weEditorApplet) {
 				document.weEditorApplet.width = editorWidth;
+
 			}
 
 			if(window.editor && window.editor.frame) {
 				if(window.editor.frame.nextSibling!=undefined) {
 					editorWidth-=window.editor.frame.nextSibling.offsetWidth;
 					document.getElementById("reindentButton").style.marginRight=window.editor.frame.nextSibling.offsetWidth-3;
+					
 				}
 				window.editor.frame.style.width = editorWidth;
+				
 			}
 
 			if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
@@ -103,11 +114,12 @@ if ($we_editmode) {
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
 						document.weEditorApplet.height = editorHeight;
 						document.weEditorApplet.setSize(editorWidth,editorHeight);
+						
 					}
 
 
 					wizardTable.style.width=editorWidth+"px";
-					wizardTableButtons.style.width=editorWidth+"px";
+					//wizardTableButtons.style.width=editorWidth+"px";
 					tagAreaCol.style.width=(editorWidth-300)+"px";
 					tag_edit_area.style.width=(editorWidth-300)+"px";
 					tagSelectCol.style.width = "250px";
@@ -1188,7 +1200,7 @@ if ($we_editmode) {
 			<td>' . we_html_tools::getPixel(5, 5) . '</td>
 		</tr>
 	</table>
-	<table id="wizardTableButtons" class="defaultfont" border="0" cellpadding="0" cellspacing="0">
+	<table id="wizardTableButtons" class="defaultfont" border="0" cellpadding="0" cellspacing="0" >
 		<tr>
 			<td id="tagSelectColButtons" style="width: 250px;"></td>
 			<td id="spacerColButtons" style="width: 50px;"></td>
