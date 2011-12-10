@@ -44,6 +44,12 @@ $we_menu_toolfactory['000300']['cmd'] = 'app_' . $appName . '_checkdelete';
 $we_menu_toolfactory['000300']['perm'] = 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR';
 $we_menu_toolfactory['000300']['enabled'] = '1';
 
+$we_menu_toolfactory['000400']['text'] = $translate->_('Generate TGZ-File from App');
+$we_menu_toolfactory['000400']['parent'] = '000100';
+$we_menu_toolfactory['000400']['cmd'] = 'app_' . $appName . '_generateTGZ';
+$we_menu_toolfactory['000400']['perm'] = 'NEW_APP_TOOLFACTORY || ADMINISTRATOR';
+$we_menu_toolfactory['000400']['enabled'] = '1';
+
 $we_menu_toolfactory['000800']['parent'] = '000100'; // separator
 
 $we_menu_toolfactory['001000']['text'] = $translate->_('Close');

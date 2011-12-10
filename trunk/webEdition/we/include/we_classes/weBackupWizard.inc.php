@@ -673,7 +673,7 @@ class weBackupWizard{
 		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "convert_charset", $l_backup["convert_charset_data"], false, "defaultfont", "doClick(310);doUnCheck(101);doUnCheck(100);doUnCheck(70)"),"space"=>70,"noline"=>1));
 
 		array_push($parts,array("headline"=>"","html"=>htmlAlertAttentionBox($l_backup["backup_log_exp"], 2, 600, false),"space"=>70,"noline"=>1));
-		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "backup_log", $l_backup["export_backup_log"], false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
+		array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, true, "backup_log", $l_backup["export_backup_log"], false, "defaultfont", "doClick(320);"),"space"=>70,"noline"=>1));
 
 
 		$js=we_htmlElement::jsElement($js);

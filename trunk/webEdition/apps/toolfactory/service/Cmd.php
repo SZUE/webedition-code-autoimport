@@ -25,6 +25,7 @@
  * @package    app_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+ include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
 class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 {
 	/**
@@ -307,6 +308,61 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		);
 	}
 
+	public function localInstallFromTGZ($args)
+	{
+	
+		$utf8_decode = true;
+		$translate = we_core_Local::addTranslation('apps.xml');
+		
+		if (!isset($args[0])) {
+			throw new we_service_Exception('App data not set (first argument) at localInstallFromTGZ cmd!', we_service_ErrorCodes::kModelFormDataNotSet);
+		}
+		
+		$controller = Zend_Controller_Front::getInstance();
+		$appName = $controller->getParam('appName');
+		$session = new Zend_Session_Namespace($appName);
+		$inst = new toolfactory_service_Install();
+		$appdataArray= $inst->getApplist();
+		$appdata=$appdataArray[$args[0]];
+		we_util_File::decompressDirectoy( $appdata['source'], $_app_directory_string=$GLOBALS['__WE_APP_PATH__'].'/'.$appdata['classname']);
+
+		we_util_File::delete($appdata['source']);
+		$model = $session->model;
+		
+		$model->ID = $appdata['classname'];
+		$newBeforeSaving = 0;
+		we_app_Common::rebuildAppTOC();
+		return array(
+			'model' => $model, 'newBeforeSaving' => $newBeforeSaving
+		);
+	}
+	public function generateTGZ($args){
+		if (!isset($args[0])) {
+			throw new we_service_Exception(
+					'ID not set (first argument) at generateTGZ cmd!', 
+					we_service_ErrorCodes::kModelIdNotSet);
+		}
+		
+		$IdToTGZ = $args[0];
+		$controller = Zend_Controller_Front::getInstance();
+		$appName = $controller->getParam('appName');
+		$session = new Zend_Session_Namespace($appName);
+		if (!isset($session->model)) {
+			throw new we_service_Exception(
+					'Model is not set in session!', 
+					we_service_ErrorCodes::kModelNotSetInSession);
+		}
+		$model = $session->model;
+		if ($model->ID != $IdToTGZ) {
+			throw new we_service_Exception(
+					'Security Error: Model Ids are not the same! Id must fit the id of the model stored in the session!', 
+					we_service_ErrorCodes::kModelIdsNotTheSame);
+		}
+		we_util_File::compressDirectoy($_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/".$model->classname, $_SERVER["DOCUMENT_ROOT"] . "/webEdition/apps/".$model->classname."_".$model->appconfig->info->version.".tgz");
+
+		return true;
+	}
+	
 	
 	/**
 	 * Accessibility for services
