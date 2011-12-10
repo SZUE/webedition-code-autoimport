@@ -447,10 +447,10 @@ $this->getSpacerRowHTML().
 		$scheddyObject = array();
 		$DB_WE = new DB_WE();
 		$now = time();
-t_e('1',$now);
+
 		$DB_WE->query("SELECT * FROM ".SCHEDULE_TABLE." WHERE Wann<='".$now."' AND Schedpro != '' AND Active=1");
 		while($DB_WE->next_record()){
-			$s = unserialize($DB_WE->f("Schedpro"));t_e('s',$s);
+			$s = unserialize($DB_WE->f("Schedpro"));
 			if(is_array($s)){
 				if($DB_WE->f("ClassName") == "we_objectFile"){
 					if(!(isset($scheddyObject[$DB_WE->f("DID")]) && is_array($scheddyObject[$DB_WE->f("DID")]))){
