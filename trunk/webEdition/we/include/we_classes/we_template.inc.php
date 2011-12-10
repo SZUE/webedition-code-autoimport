@@ -755,7 +755,11 @@ print STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY; ?>
 		@eval('$att = array('.$attribs.');');
 		return $att;
 	}
-
+	
+	function setDoUpdateCode($doUpdateCode=true){
+		$this->doUpdateCode=$doUpdateCode;
+	}
+	
 	function _updateCompleteCode() {
 		if($this->doUpdateCode){
 			$code = $this->getTemplateCode(false);

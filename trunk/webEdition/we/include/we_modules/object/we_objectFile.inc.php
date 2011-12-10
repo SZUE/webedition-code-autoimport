@@ -2526,20 +2526,8 @@ class we_objectFile extends we_document{
 				}
 				$this->setTypeAndLength();
 				break;
-			case LOAD_REVERT_DB:
-				$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
-				if($sessDat){
-					//fixed: at least TableID must be fetched
-					$this->i_getPersistentSlotsFromDB(/*"TableID,Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
-					//overwrite with new data
-					$this->i_initSerializedDat($sessDat,false);
-					//make sure at least TableID is set from db
-					//and Published as well #5742
-					$this->i_getPersistentSlotsFromDB("TableID,Published");
-					$this->i_getUniqueIDsAndFixNames();
-				}else{
-					$this->we_load(LOAD_TEMP_DB);
-				}
+			case LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(LOAD_TEMP_DB);
 				$this->setTypeAndLength();
 				break;
 		}
