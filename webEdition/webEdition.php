@@ -1447,6 +1447,6 @@ var cockpitFrame;
 //	get the frameset for the actual mode.
 pWebEdition_Frameset();
 ?>
-<body bgcolor="gray">
+<body bgcolor="grey">
 </body>
 </html>

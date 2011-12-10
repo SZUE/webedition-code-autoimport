@@ -209,7 +209,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
 
 
 function getColorInput($name,$value,$disabled=false, $width=20,$height=20) {
-	return hidden($name,$value).'<table cellpadding="0" cellspacing="0" style="border:1px solid gray;margin:2px 0;"><tr><td'.($disabled ? ' class="disabled"' : '').' id="color_'.$name.'" '.($value ? (' style="background-color:'.$value.';"') : '').'><a style="cursor:'.($disabled ? "default" : "pointer").';" href="javascript:if(document.getElementById(&quot;color_'.$name.'&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\''.$name.'\',document.we_form.elements[\''.$name.'\'].value,&quot;opener.setColorField(\''.$name.'\');&quot;);}">'.getPixel($width,$height).'</a></td></tr></table>';
+	return hidden($name,$value).'<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td'.($disabled ? ' class="disabled"' : '').' id="color_'.$name.'" '.($value ? (' style="background-color:'.$value.';"') : '').'><a style="cursor:'.($disabled ? "default" : "pointer").';" href="javascript:if(document.getElementById(&quot;color_'.$name.'&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\''.$name.'\',document.we_form.elements[\''.$name.'\'].value,&quot;opener.setColorField(\''.$name.'\');&quot;);}">'.getPixel($width,$height).'</a></td></tr></table>';
 }
 
 /**
@@ -235,7 +235,7 @@ function get_value($settingvalue) {
 		case "ui_seem_start_file":
 			return $_SESSION["prefs"]["seem_start_file"];
 			break;
-			
+
 		case "ui_seem_start_weapp":
 			return $_SESSION["prefs"]["seem_start_weapp"];
 			break;
@@ -329,7 +329,7 @@ function get_value($settingvalue) {
 		case "countries_default":
 			return defined("WE_COUNTRIES_DEFAULT") ? WE_COUNTRIES_DEFAULT : "";
 			break;
-			
+
 		case "countries_top":
 			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
 			break;
@@ -605,7 +605,7 @@ function get_value($settingvalue) {
 		case "seoinside_hideineditmode":
 			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
 			break;
-		
+
 		case "langlink_support":
 			return defined("LANGLINK_SUPPORT") ? LANGLINK_SUPPORT : true;
 			break;
@@ -1008,7 +1008,7 @@ function remember_value($settingvalue, $settingname) {
 
 				$_update_prefs = true;
 				break;
-			
+
 			case '$_REQUEST["seem_start_weapp"]':
 				$_SESSION["prefs"]["seem_start_weapp"] = $settingvalue;
 
@@ -1845,7 +1845,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
-			
+
 			case '$_REQUEST["langlink_support"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1853,7 +1853,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 				break;
-				
+
 			case '$_REQUEST["langlink_support_backlinks"]':
 
 				$_file = &$GLOBALS['config_files']['conf_global']['content'];
@@ -1863,7 +1863,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 
-				
+
 				break;
 			case '$_REQUEST["langlink_support_recursive"]':
 
@@ -1874,7 +1874,7 @@ $_we_active_integrated_modules = array();
 
 				$_update_prefs = false;
 
-				
+
 				break;
 
 			/*****************************************************************
@@ -2030,7 +2030,7 @@ $_we_active_integrated_modules = array();
 
 			case '$_REQUEST["include_all_we_tags"]':
 
-				$_file = &$GLOBALS['config_files']['conf_global']['content'];		
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
 				$_file = weConfParser::changeSourceCode("define", $_file, "INCLUDE_ALL_WE_TAGS", $settingvalue);
 
 				$_update_prefs = false;
@@ -2948,7 +2948,7 @@ function save_all_values() {
 
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideinwebedition"]) ? $_REQUEST["seoinside_hideinwebedition"] : null, '$_REQUEST["seoinside_hideinwebedition"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["seoinside_hideineditmode"]) ? $_REQUEST["seoinside_hideineditmode"] : null, '$_REQUEST["seoinside_hideineditmode"]') || $_update_prefs;
-		
+
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support"]) ? $_REQUEST["langlink_support"] : null, '$_REQUEST["langlink_support"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_backlinks"]) ? $_REQUEST["langlink_support_backlinks"] : null, '$_REQUEST["langlink_support_backlinks"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["langlink_support_recursive"]) ? $_REQUEST["langlink_support_recursive"] : null, '$_REQUEST["langlink_support_recursive"]') || $_update_prefs;
@@ -3423,7 +3423,7 @@ function build_dialog($selected_setting = "ui") {
 									if(!!document.getElementById('seem_start_document')) {
 										document.getElementById('seem_start_document').style.display = 'block';
 									}
-									
+
 							";
 				if(defined("OBJECT_FILES_TABLE")) {
 					$_needed_JavaScript .= "
@@ -3597,9 +3597,9 @@ function build_dialog($selected_setting = "ui") {
 					$_seem_weapp_chooser = $we_button->create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
 					$permitedStartTypes[]="weapp";
 				}
-				
-				
-				
+
+
+
 				// Build final HTML code
 				if ($showStartType) {
 					if (in_array($_seem_start_type,$permitedStartTypes)) {
@@ -3929,7 +3929,7 @@ function build_dialog($selected_setting = "ui") {
 			array_push($_settings, array("headline" => $l_prefs["countries_headline"], "html" => $_information, "space" => 0,'noline'=>1));
 			$_countries_default = htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
     		array_push($_settings, array("headline" => $l_prefs["countries_default"], "html" => $_countries_default, "space" => 200,"noline" => 1));
-			
+
             $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
             $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
@@ -4383,7 +4383,7 @@ EOF;
 
 function setJavaEditorDisabled(disabled) {
 	document.getElementById("_specify_jeditor_colors").disabled = disabled;
-	document.getElementById("label__specify_jeditor_colors").style.color = (disabled ? "gray" : "");
+	document.getElementById("label__specify_jeditor_colors").style.color = (disabled ? "grey" : "");
 	document.getElementById("label__specify_jeditor_colors").style.cursor = (disabled ? "default" : "pointer");
 	if (document.getElementById("_specify_jeditor_colors").checked) {
 		setEditorColorsDisabled(disabled);
@@ -4406,7 +4406,7 @@ function setColorChooserDisabled(id, disabled) {
 	var td = document.getElementById("color_"+ id);
 	td.setAttribute("class", disabled ? "disabled" : "");
 	td.firstChild.style.cursor = disabled ? "default" : "pointer";
-	document.getElementById("label_"+id).style.color=disabled ? "gray" : "";
+	document.getElementById("label_"+id).style.color=disabled ? "grey" : "";
 }
 
 function displayEditorOptions(editor) {
@@ -4597,7 +4597,7 @@ else {
 			}
 
 			$_attr = ' class="defaultfont" style="width:150px;"';
-			$_attr_dis = ' class="defaultfont" style="width:150px;color:gray;"';
+			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
 			$_template_editor_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -4702,7 +4702,7 @@ else {
 				}
 			}
 			$_attr = ' class="defaultfont" style="width:150px;"';
-			$_attr_dis = ' class="defaultfont" style="width:150px;color:gray;"';
+			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 			$_template_editor_tooltip_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td'.$_attr.'>' . $l_prefs["editor_fontname"] . '</td><td>' . $_template_editor_tooltip_font_select_box->getHtmlCode() . '</td>
@@ -5880,7 +5880,7 @@ $_needed_JavaScript .= "
 				$_error_handling_table->setCol(6, 0, null, we_forms::checkbox(1, get_value("error_handling_deprecated"), "error_handling_deprecated", $l_prefs["error_deprecated"], false, "defaultfont", "", !get_value("we_error_handler")));
 				$_error_handling_table->setCol(7, 0, null, getPixel(1, 5));
 			}
-			
+
 
 			// Build dialog if user has permission
 			if (we_hasPerm("ADMINISTRATOR")) {
@@ -6042,7 +6042,7 @@ $_needed_JavaScript .= "
                         label.style.cursor = document.all ? "hand" : "pointer";
                     } else {
                         elem.disabled = true;
-                        label.style.color = "gray";
+                        label.style.color = "grey";
                         label.style.cursor = "";
                     }
                 }
@@ -6673,8 +6673,8 @@ if (isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true") {
 		if (empty($_REQUEST['seem_start_weapp'])) {
 			$acError = true;
 			$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'],$l_prefs["seem_startdocument"],$l_prefs["tab_ui"])."\\n";
-		} 
-	
+		}
+
 	} elseif ($_REQUEST['seem_start_type']=="object") {
 		if (empty($_REQUEST['seem_start_object'])) {
 			$acError = true;

@@ -1757,7 +1757,7 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 												<td width="30" height="5">'.getPixel(30,5).'</td>
 											</tr>
 											<tr height="1">
-												<td class="defaultfont" valign="top" colspan="9" bgcolor="gray" height="1">'.getPixel(14,1).'</td>
+												<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1">'.getPixel(14,1).'</td>
 
 											</tr>
 											<tr>

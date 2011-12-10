@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,7 +27,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Class to display a JavaMenu
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -67,16 +67,16 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 		$lang = we_core_Local::getComputedUILang();
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
-		
+
 		$out = '';
-		
+
 		$out = '<script language="JavaScript" type="text/javascript"><!--
 				function menuaction(cmd) {
 					weCmdController.fire({cmdName: cmd})
 				}
 			//-->
 			</script>';
-		
+
 		if (!$showAltMenu) {
 			$out .= '
 				<div id="divForSelectMenu"></div>
@@ -126,9 +126,9 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 				$i++;
 			}
 		}
-		
+
 		$menus = array();
-		
+
 		$onCh = '
 			var si=this.selectedIndex;
 			if(this.options[si].value) {
@@ -148,7 +148,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 				$i++;
 			}
 		}
-		
+
 		$out .= '
 			<div id="divWithSelectMenu">
 			<table cellpadding="2" cellspacing="0" border="0" style="margin-top:5px;">
@@ -166,26 +166,26 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 			</div>
 			' . (we_ui_Client::getInstance()->getBrowser() == we_ui_Client::kBrowserGecko ? '
 			<script type="text/javascript">
-			
+
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox
 			// Only script elements work: look at https://bugzilla.mozilla.org/show_bug.cgi?id=60724 for details
-			
+
 			if ( !navigator.javaEnabled() ) {
 				//document.getElementById("divForSelectMenu").innerHTML = document.getElementById("divWithSelectMenu").innerHTML;
 			}
 			</script>' : '') . '
 			</form>';
-		
+
 		if (!$showAltMenu) {
 			$out .= '</applet>' . "\n";
 		}
 		return $out;
-	
+
 	}
 
 	/**
-	 * 
+	 *
 	 *
 	 * @param $men
 	 * @param $opt
@@ -230,7 +230,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 					$newAst = $newAst . "&nbsp;&nbsp;";
 					self::_computeOption($men, $opt, $id, $newAst);
 				} else if ($mtext) {
-					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'gray\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext . "\n";
+					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext . "\n";
 				} else {
 					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}
@@ -239,7 +239,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 	}
 
 	/**
-	 * 
+	 *
 	 *
 	 * @param $men
 	 * @param $p

@@ -17,18 +17,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-acronym, abbr { 
-	border: 1px dotted green; 
+acronym, abbr {
+	border: 1px dotted green;
 }
 
-img, table, caption, thead, tbody, tfoot, tr, td, th { 
-	border: 1px dotted gray; 
+img, table, caption, thead, tbody, tfoot, tr, td, th {
+	border: 1px dotted grey;
 }
 
-a { 
-	border: 1px dotted blue; 
+a {
+	border: 1px dotted blue;
 }
 
 span[lang] {
-	border: 1px dotted red; 
+	border: 1px dotted red;
 }

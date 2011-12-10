@@ -96,7 +96,7 @@ print STYLESHEET;
 #suggestion {
 	width: 330px;
 	height: 100px;
-	border: 1px solid gray;
+	border: 1px solid grey;
 	z-index: 3;
 }
 
