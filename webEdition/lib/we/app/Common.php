@@ -793,7 +793,7 @@ class we_app_Common
 			return false;
 		}
 		
-		// 1. check first if the application is deactivatable
+		// 1. check first if the application is      deinstallable
 		$deactivatable = self::getManifestElement($appname, "/info/deinstallable");
 		if ($deactivatable != "true") {
 			return false;

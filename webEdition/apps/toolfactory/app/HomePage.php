@@ -42,7 +42,7 @@ class toolfactory_app_HomePage extends we_app_HomePage
 		$translate = we_core_Local::addTranslation('apps.xml');
 		
 		$appName = Zend_Controller_Front::getInstance()->getParam('appName');
-		
+		$this->_boxHeight=300;
 		$bodyDiv = new we_ui_layout_Div(array(
 			'width'=>206,
 			'height'=>$this->_boxHeight-(38+22),
@@ -66,10 +66,33 @@ class toolfactory_app_HomePage extends we_app_HomePage
 			'type'=>'onClick', 
 			'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
 			'width'=>200,
-			'top'=>'10px;'
+			'top'=>'10px;',
+			'style'=>'margin-bottom:10px;'
 		));
 		$bodyDiv->addElement($newItemButton);
 		$bodyDiv->addElement($regenerateTocButton);
+		$perm = 'NEW_APP_'.strtoupper($appName);
+		$inst = new toolfactory_service_Install();
+		$appdata= $inst->getApplist();
+		$i=0;
+		foreach($appdata as $dieApp){
+			$localInstallButton = new we_ui_controls_Button(array(
+				'text'=>$translate->_('Install'.' '.$dieApp['classname'].' '.$dieApp['version']), 
+				'onClick'=>'weCmdController.fire({cmdName: "app_'.$appName.'_localInstall'.$i.'"})', 
+				'type'=>'onClick', 
+				'disabled' => we_core_Permissions::hasPerm($perm) ? false : true,
+				'width'=>200,
+				'top'=>'10px;',
+				'style'=>'margin-top:10px;'
+			));
+			$bodyDiv->addElement($localInstallButton);
+			
+			if($i>=5){
+				break;	
+			}
+			$i++;
+		}
+		
 		
 		
 		return $bodyDiv;
