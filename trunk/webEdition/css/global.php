@@ -96,7 +96,7 @@ if(!@include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/
 
 .multichooser {
 	background-color:white;
-	border: 1px gray solid;
+	border: 1px grey solid;
 }
 
 

@@ -839,7 +839,7 @@ class weSiteImport
 				$GLOBALS["l_siteimport"]["importHtmlPages"],
 				false,
 				"defaultfont",
-				"if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='gray';}",
+				"if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}",
 				!we_hasPerm("NEW_HTML"));
 		$_createWePages = we_forms::checkboxWithHidden(
 				we_hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false,

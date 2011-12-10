@@ -441,7 +441,7 @@ class weNavigationView {
 						document.we_form.elements["_wecf_useDocumentFilter"].checked = false;
 						document.we_form.elements["wecf_useDocumentFilter"].value = 0;
 						document.we_form.elements["_wecf_useDocumentFilter"].disabled = true;
-						document.getElementById("label__wecf_useDocumentFilter").style.color = "gray";
+						document.getElementById("label__wecf_useDocumentFilter").style.color = "grey";
 						document.getElementById("MainFilterDiv").style.display = "block";
 					} else {
 						document.we_form.elements["_wecf_useDocumentFilter"].disabled = false;

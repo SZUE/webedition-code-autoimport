@@ -58,7 +58,7 @@
 			$this->setNodeLayouts($node_layouts);
 
 			$styles=array();
-		
+
 			$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; cursor: pointer;}';
 			$styles[]='.item a { text-decoration:none;}';
 
@@ -83,7 +83,7 @@
 			$styles[]='.checked_changed {color: #3366CC; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';
 			$styles[]='.checked_changed a { text-decoration:none;}';
 
-			$styles[]='.disabled {color: gray; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; cursor: pointer;}';
+			$styles[]='.disabled {color: grey; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; cursor: pointer;}';
 			$styles[]='.disabled a { text-decoration:none;}';
 
 			$styles[]='.selected_item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"]== "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.$GLOBALS["l_css"]["font_family"].'; background-color: #D4DBFA; cursor: pointer;}';

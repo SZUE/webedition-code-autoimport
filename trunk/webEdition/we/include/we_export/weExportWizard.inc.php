@@ -657,7 +657,7 @@ top.close();
 		$js=we_htmlElement::jsElement('
 
 			function setLabelState(l,disable){
-				if(disable) document.getElementById(l).style.color = "gray";
+				if(disable) document.getElementById(l).style.color = "grey";
 				else document.getElementById(l).style.color = "black";
 			}
 

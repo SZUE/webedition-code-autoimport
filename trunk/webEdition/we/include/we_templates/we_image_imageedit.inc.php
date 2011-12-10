@@ -57,7 +57,7 @@ if(isset($_REQUEST["we_cmd"][0]) && substr($_REQUEST["we_cmd"][0],0,15) == "doIm
 <option value="image_resize">'.$l_we_class["resize"].'...</option>
 <option value="image_rotate">'.$l_we_class["rotate"].'...</option>
 <option value="image_crop">'.$l_we_class["crop"].'...</option>
-<option value="" disabled="disabled" style="color:gray">'.$l_we_class["convert"].'</option>
+<option value="" disabled="disabled" style="color:grey">'.$l_we_class["convert"].'</option>
 '.((in_array("jpg", we_image_edit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;'.$l_we_class["convert_jpg"].'...</option>' : '').'
 '.(($_gdtype != "gif" && in_array("gif", we_image_edit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;'.$l_we_class["convert_gif"].'</option>' : '').'
 '.(($_gdtype != "png" && in_array("png", we_image_edit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;'.$l_we_class["convert_png"].'</option>' : '').'

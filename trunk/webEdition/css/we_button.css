@@ -90,7 +90,7 @@
 }
 .weBtnMiddleDisabled{
 	background-image: url(../images/button/btn_disabled_middle.gif);
-	color: gray ! important;
+	color: grey ! important;
 }
 .weBtnRightDisabled{
 	background-image: url(../images/button/btn_disabled_right.gif);

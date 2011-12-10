@@ -53,7 +53,7 @@ class weJavaMenu {
 	function printMenu() {
 		print $this->getCode();
 	}
-	
+
 	function getCode() {
 		$ffJavaMenu = false;
 		if (preg_match('@gecko/([^ ]+)@i',$_SERVER["HTTP_USER_AGENT"],$regs)) {
@@ -71,7 +71,7 @@ class weJavaMenu {
 
 	function getJS() {
 		$portVar = (
-			($this->port==80 && $this->protocol=="http") || 
+			($this->port==80 && $this->protocol=="http") ||
 			($this->port==443 && $this->protocol=="https") ||
 			(!$this->port)
 		) ? "" : ":".$this->port;
@@ -128,7 +128,7 @@ class weJavaMenu {
 ';
   		return $out;
 	}
-	
+
 	function getHTML() {
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
@@ -220,11 +220,11 @@ class weJavaMenu {
 			' . ($GLOBALS["BROWSER"] == "NN6"
 					? '
 			<script type="text/javascript">
-			
+
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox
 			// Only script elements work: look at https://bugzilla.mozilla.org/show_bug.cgi?id=60724 for details
-			
+
 			if ( !navigator.javaEnabled() ) {
 				//document.getElementById("divForSelectMenu").innerHTML = document.getElementById("divWithSelectMenu").innerHTML;
 			}
@@ -287,7 +287,7 @@ class weJavaMenu {
 					$this->h_pOption($men,$opt,$id,$newAst);
 				}
 				else if($mtext) {
-					$opt .=  '<option'.(($e["enabled"]==0) ? (' value="" style="{color:\'gray\'}" disabled') : (' value="'.$e["cmd"].'"')).'>&nbsp;&nbsp;'.$newAst.(($BROWSER=="NN" && $e["enabled"]==0) ? "(" : "").$mtext.(($BROWSER=="NN" && $e["enabled"]==0) ? ")" : "")."\n";
+					$opt .=  '<option'.(($e["enabled"]==0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="'.$e["cmd"].'"')).'>&nbsp;&nbsp;'.$newAst.(($BROWSER=="NN" && $e["enabled"]==0) ? "(" : "").$mtext.(($BROWSER=="NN" && $e["enabled"]==0) ? ")" : "")."\n";
 				}
 				else {
 					$opt .=  '<option value="" disabled>&nbsp;&nbsp;'.$newAst."--------\n";
