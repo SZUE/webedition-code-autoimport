@@ -2604,7 +2604,9 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-
+		if (we_temporaryDocument::isInTempDB($this->ID,$this->Table,$this->DB_WE) ){
+			we_temporaryDocument::delete($this->ID,$this->Table,$this->DB_WE);
+		}
 		return $this->insertAtIndex();
 	}
 
@@ -3007,7 +3009,9 @@ class we_objectFile extends we_document{
 	function i_saveTmp(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+		if (($this->ModDate > $this->Published) && $this->Published){
+			if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+		}
 		if($this->ID) $this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_TEXT='".$this->Text."',OF_PATH='".$this->Path."' WHERE OF_ID=".$this->ID);
 		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID");
 	}
