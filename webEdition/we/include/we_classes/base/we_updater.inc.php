@@ -293,7 +293,7 @@
 
 	function changeColName($tab,$oldcol,$newcol){
 		global $DB_WE;
-		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." CHANGE ".$oldcol." ".$newcol.";");
+		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." CHANGE `".$oldcol."` `".$newcol."` ;");
 	}
 
 	function getColTyp($tab,$col){
@@ -304,7 +304,7 @@
 
 	function delCol($tab,$col){
 		global $DB_WE;
-		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." DROP ".$col.";");
+		$DB_WE->query("ALTER TABLE ".$DB_WE->escape($tab)." DROP `".$col."` ;");
 	}
 
 	function updateUsers(){
