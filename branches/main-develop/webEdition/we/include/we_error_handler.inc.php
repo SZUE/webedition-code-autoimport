@@ -351,7 +351,8 @@ function mail_error_message($type, $message, $file, $line){
 	$_detailedError .= 'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n";
 
 	// Error type
-	$_detailedError .= 'Error type: ' . translate_error_type($type) . ",\n";
+	$ttype = translate_error_type($type);
+	$_detailedError .= 'Error type: ' . $ttype . ",\n";
 
 	// Error message
 	$_detailedError .= 'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . ",\n";
@@ -368,7 +369,7 @@ function mail_error_message($type, $message, $file, $line){
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, '[webEdition] PHP Error', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: '.$ttype.' ('.$_caller.') ['.$_SERVER['SERVER_NAME'].']', $_detailedError)){
 			die('Cannot log error! Could not send e-mail.');
 		}
 	} else{
