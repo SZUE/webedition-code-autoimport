@@ -211,13 +211,7 @@ switch($_REQUEST["we_cmd"][0]) {
 		$we_doc->convert("jpg",$_REQUEST["we_cmd"][1]);
 		break;
 	case "doImage_crop":
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/PEAR.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/Transform.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/Transform/Driver/GD.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
-
 		$filename = TMP_DIR . '/'. weFile::getUniqueId();
-
 		copy($we_doc->getElement("data"), $filename);
 
 

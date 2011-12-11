@@ -274,8 +274,10 @@ abstract class we_htmlElement{
 	 *
 	 * @return		string
 	 */
-	function htmlBr(){
-		return we_baseElement::getHtmlCode(new we_baseElement('br', false, array(), ''));
+	static function htmlBr(){
+		static $br=0;
+		$br=($br?$br:we_baseElement::getHtmlCode(new we_baseElement('br', false)));
+		return $br;
 	}
 
 	/**
@@ -303,6 +305,9 @@ abstract class we_htmlElement{
 	 */
 	static function htmlDocType($version='4Trans'){
 		switch($version){
+			case 5:
+			case '5':
+				return '< !DOCTYPE html>';
 			case '4Trans':
 			default:
 				return '<!DOCTYPE  HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">';

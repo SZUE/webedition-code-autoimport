@@ -29,7 +29,6 @@
 /**
  * Include for error handling
  */
-//require_once 'PEAR.php';
 
 /**
  * Error code for unsupported library, image format or methods

@@ -36,7 +36,6 @@
 /**
  * uses PEAR's error handling
  */
-//require_once 'PEAR.php';
 
 /**
  * resource could not be created
