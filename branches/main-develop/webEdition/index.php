@@ -140,7 +140,6 @@ if(!is_dir(TMP_DIR)){
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . ZENDCACHE_DIR)){
 	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . ZENDCACHE_DIR);
 }
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/taskFragment.class.php');
 if(!is_dir(WE_FRAGMENT_DIR)){
 	createLocalFolder(WE_FRAGMENT_DIR);
 }
@@ -502,8 +501,6 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
 			if($_REQUEST['mode'] == 'normal'){
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/permissionhandler/permissionhandler.class.php');
-
 				if(permissionhandler::isUserAllowedForAction('work_mode', 'normal')){
 					$_SESSION['we_mode'] = $_REQUEST['mode'];
 				} else{

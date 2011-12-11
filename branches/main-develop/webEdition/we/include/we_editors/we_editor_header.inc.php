@@ -39,7 +39,6 @@ $tab_js = '';
 
 if ($_SESSION["we_mode"] != "seem"){	//	No tabs in Super-Easy-Edit_mode
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 	$we_tabs = new we_tabs();
 	// user has no access to file - only preview mode.

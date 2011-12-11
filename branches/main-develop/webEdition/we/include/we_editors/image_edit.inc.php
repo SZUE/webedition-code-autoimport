@@ -256,7 +256,6 @@ function we_getImageRotateDialogJS(){
 }
 
 function we_getImageResizeDialog(){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	list($width,$height) = $GLOBALS["we_doc"]->getOrigSize();
 
 	$_content = array();
@@ -297,7 +296,6 @@ function we_getImageResizeDialog(){
 }
 
 function we_getImageConvertDialog(){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 	$_content = array();
 
 	$okbut = we_button::create_button("ok", "javascript:doOK();");
@@ -312,8 +310,6 @@ function we_getImageConvertDialog(){
 }
 
 function we_getImageRotateDialog(){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 	$_content = array();
 
 	$okbut = we_button::create_button("ok", "javascript:doOK();");

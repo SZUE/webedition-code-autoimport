@@ -24,8 +24,6 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerView.php");
 include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTree.php");
 
@@ -282,7 +280,6 @@ class weCustomerFrames extends weModuleFrames {
 
 				$imgId = abs($value);
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
 				$out = we_document::getFieldByVal($imgId, 'img');
 
 				$out = '
@@ -314,7 +311,6 @@ class weCustomerFrames extends weModuleFrames {
 	function getHTMLEditorHeader() {
 		$extraJS = "var aTabs=new Array;\n";
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_tabs.class.inc.php');
 
 		if (isset($_REQUEST['home'])) {
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF', 'background' => '/webEdition/images/backgrounds/bgGrayLineTop.gif'), ''));
@@ -451,7 +447,6 @@ class weCustomerFrames extends weModuleFrames {
 	}
 
 	function getHTMLProperties($preselect='') {
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 		$parts = array();
 
 		$out = '';

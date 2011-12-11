@@ -3230,7 +3230,6 @@ function build_dialog($selected_setting = "ui"){
 			/*			 * ***************************************************************
 			 * DEFAULT CHARSET
 			 * *************************************************************** */
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
 			$_charsetHandler = new charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 			$charset = $GLOBALS['WE_BACKENDCHARSET'];
@@ -3498,7 +3497,6 @@ function build_dialog($selected_setting = "ui"){
 					$permitedStartTypes[] = "object";
 				}
 				$_start_weapp = new we_htmlSelect(array("name" => "seem_start_weapp", "class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 				$_tools = weToolLookup::getAllTools(true, false);
 				foreach($_tools as $_k => $_tool){
 					if(!$_tool['appdisabled'] && we_hasPerm($_tool['startpermission'])){
@@ -5426,8 +5424,6 @@ else {
 				$_authpass = we_html_tools::htmlTextInput("authpass", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
 				array_push($_settings, array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200));
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_image_edit.class.php');
-
 				if(we_image_edit::gd_version() > 0){	 //  gd lib ist installiert
 					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
 					$wecmdenc1 = we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
@@ -6550,7 +6546,6 @@ $acError = false;
 $acErrorMsg = "";
 // Check if we need to save settings
 if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
 	$acQuery = new weSelectorQuery();
 
 	// check seemode start document | object

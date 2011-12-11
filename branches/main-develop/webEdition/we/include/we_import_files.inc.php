@@ -23,10 +23,7 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_import/importFunctions.class.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_image_edit.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 
 protect();
@@ -235,11 +232,6 @@ class we_import_files
 
 	function _getContent()
 	{
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 		$_funct = isset($_REQUEST['step']) ? $_REQUEST['step'] : 1;
 		$_funct = 'getStep' . $_funct;
 
@@ -252,10 +244,6 @@ class we_import_files
 		$yuiSuggest = & weSuggest::getInstance();
 		$this->loadPropsFromSession();
 		unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		// create Start Screen ##############################################################################
 
@@ -511,10 +499,6 @@ class we_import_files
 		$this->savePropsInSession();
 
 		// create Second Screen ##############################################################################
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 		$but = we_htmlElement::htmlImg(
 				array(
 
@@ -672,9 +656,6 @@ class we_import_files
 	{
 
 		// create Second Screen ##############################################################################
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		$parts = array();
 
@@ -730,8 +711,6 @@ class we_import_files
 
 	function _getButtons()
 	{
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$bodyAttribs = array(
 			"class" => "weDialogButtonsBody"
@@ -1104,7 +1083,6 @@ class we_import_files
 
 	function _getFrameset()
 	{
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$_step = isset($_REQUEST['step']) ? $_REQUEST['step'] : -1;
 

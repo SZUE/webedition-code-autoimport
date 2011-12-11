@@ -60,9 +60,6 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 	if($ClassName == "we_objectFile") {
 		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
 
-	} else {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$ClassName.".inc.php");
-
 	}
 
 	$we_doc = new $ClassName();
@@ -868,9 +865,6 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 
 	if($ClassName == "we_objectFile") {
 		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
-
-	} else {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$ClassName.".inc.php");
 
 	}
 

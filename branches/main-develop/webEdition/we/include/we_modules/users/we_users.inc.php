@@ -26,14 +26,6 @@
 
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
-if ( !( (isset($_POST['username']) && isset($_POST['md5password'])) )) { // don't include during login
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_dynamicControls.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_forms.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlTable.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
-}
-
 
 class we_user {
 
@@ -513,7 +505,6 @@ function mapPermissions() {
 		$permissions=unserialize($this->Permissions);
 
 		$entries = array();
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 		$entries = weToolLookup::getPermissionIncludes();
 
 		$d = dir(WE_USERS_MODULE_DIR."perms");
@@ -2489,7 +2480,7 @@ function mapPermissions() {
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 		}
-		
+
 
 
 		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
@@ -2660,11 +2651,10 @@ function mapPermissions() {
 		if(defined("OBJECT_FILES_TABLE")) {
 			$_start_type->addOption("object", g_l('prefs','[seem_start_type_object]'));
 		}
-		
-		
+
+
 		//weapp
 		$_start_weapp = new we_htmlSelect(array("name" => "seem_start_weapp","class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 		$_tools = weToolLookup::getAllTools(true, false);
 		foreach ($_tools as $_k => $_tool) {
 			if(!$_tool['appdisabled'] && isset($this->permissions_slots[$_tool['name']][$_tool['startpermission']]) && $this->permissions_slots[$_tool['name']][$_tool['startpermission']]){
@@ -2672,10 +2662,10 @@ function mapPermissions() {
 			}
 		}
 
-		if($_start_weapp->getOptionNum()){		
+		if($_start_weapp->getOptionNum()){
 			$_start_type->addOption("weapp", g_l('prefs','[seem_start_type_weapp]'));
 		}
-		
+
 		$_start_type->selectOption($_seem_start_type);
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 		$weAPPSelector = $_start_weapp->getHtmlCode();
@@ -2724,7 +2714,7 @@ function mapPermissions() {
 
 
 
-		// Build final HTML code		
+		// Build final HTML code
 		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode() . we_html_tools::getPixel(200,1));
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser.$_seem_weapp_chooser);
@@ -3074,9 +3064,6 @@ function mapPermissions() {
 	#--------------------------------------------------------------------------#
 
 	function formHeader($tab = 0) {
-
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
-
 		$big=false;
 		if(file_exists(WE_USERS_MODULE_DIR . "edit_users_bcmd.php")) {
 			$big=true;

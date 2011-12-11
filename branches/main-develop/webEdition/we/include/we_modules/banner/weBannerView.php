@@ -27,8 +27,6 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_BANNER_MODULE_DIR."weBanner.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/we_listview_banner.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weBannerView extends weBannerBase{
 
@@ -96,7 +94,6 @@ class weBannerView extends weBannerBase{
             $out = ob_get_contents();
             ob_end_clean();
 		}else{
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 			$out =$this->getJSProperty(). $yuiSuggest->getYuiJsFiles().'
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
@@ -215,7 +212,6 @@ class weBannerView extends weBannerBase{
 			$ct = f("SELECT ContentType FROM ".FILE_TABLE." WHERE ID='".$ID."'","ContentType",$this->db);
 			switch($ct){
 				case "image/*";
-					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 					$img = new we_imageDocument();
 					$img->initByID($ID,FILE_TABLE);
 					$content = $img->getHTML();
@@ -638,7 +634,6 @@ class weBannerView extends weBannerBase{
 					if($this->db->next_record()){
 						$double = $this->db->f("Count");
 					}
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 					$acQuery = new  weSelectorQuery();
 					if(!we_hasPerm("EDIT_BANNER") && !we_hasPerm("NEW_BANNER")){
 						print '<script type="text/javascript">';

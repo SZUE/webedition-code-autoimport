@@ -25,8 +25,6 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 protect();
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 $_margin_top = 5;
@@ -46,7 +44,7 @@ $_wrkNavi = '';
 if (!we_hasPerm('ADMINISTRATOR')) {
 	$_wrkNavi = makeArrayFromCSV(
 			f(
-					'SELECT workSpaceNav FROM ' . USER_TABLE . ' WHERE ID=' . abs($_SESSION['user']['ID']),
+					'SELECT workSpaceNav FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']),
 					'workSpaceNav',
 					new DB_WE()));
 	$_condition = array();

@@ -94,6 +94,7 @@ abstract class we_autoloader{
 		'weDBUtil' => 'base/weDBUtil.class.php',
 		'we_delSelector' => 'we_delSelector.inc.php',
 		'weDialog' => 'weDialog.class.inc.php',
+		'we_browserDetect' => 'we_classes/base/we_browserDetect.inc.php',
 		'we_dirSelector' => 'we_dirSelector.inc.php',
 		'we_docSelector' => 'we_docSelector.inc.php',
 		'we_docTypes' => 'we_docTypes.inc.php',

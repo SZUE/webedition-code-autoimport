@@ -148,7 +148,6 @@ function tinyMCEchanged(inst){
 }
 </script>';
 				case 'default':
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 					$_BROWSER=new we_browserDetect();
 
 			return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>

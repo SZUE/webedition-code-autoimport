@@ -26,12 +26,9 @@ if(!defined('NO_SESS')){define('NO_SESS',1);}
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_OBJECT_MODULE_DIR ."we_objectFile.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 if(!isset($GLOBALS["WE_IS_DYN"])){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 }
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_template.inc.php");
 
 /**
  * showContent()
@@ -273,7 +270,7 @@ if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSIO
 			if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
 				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
 				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
-	
+
 				weGlossaryReplace::start();
 			}
 

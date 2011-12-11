@@ -452,7 +452,6 @@ class weSiteImport{
 	 * @return	string
 	 */
 	function _getCreateWePageSettingsHTML(){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"]) && $_SESSION["prefs"]["siteImportPrefs"]) ? unserialize(
 				$_SESSION["prefs"]["siteImportPrefs"]) : array();
 
@@ -653,10 +652,6 @@ class weSiteImport{
 	 * @return	string
 	 */
 	function _getContentHTML(){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 		// Suorce Directory
 		//javascript:we_cmd('browse_server', 'document.we_form.elements[\\'from\\'].value', 'folder', document.we_form.elements['from'].value)
 		$wecmdenc1 = we_cmd_enc("document.we_form.elements['from'].value");
@@ -1095,8 +1090,6 @@ class weSiteImport{
 	 * @static
 	 */
 	function _formPathHTML($templateName = "neueVorlage", $myid = 0){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
-
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 		$table = TEMPLATES_TABLE;
 		$textname = 'templateDirName';
@@ -1401,7 +1394,6 @@ class weSiteImport{
 				$newTemplateFilename = $templateFilename . $z;
 				$z++;
 			}
-			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_template.inc.php");
 			$templateObject = new we_template();
 			$templateObject->we_new();
 			$templateObject->CreationDate = time();
@@ -1656,7 +1648,6 @@ class weSiteImport{
 		}
 		$destinationPath = $destinationDir . substr($path, $sizeofdocroot + $sizeofsourcePath);
 		$id = path_to_id($destinationPath);
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 		$GLOBALS["we_doc"] = new we_webEditionDocument();
 		$GLOBALS["we_doc"]->initByID($id);
 
@@ -2066,7 +2057,6 @@ class weSiteImport{
 	}
 
 	function _getFrameset(){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 
 		$frameset = new we_htmlFrameset(array(
 				"framespacing" => "0", "border" => "0", "frameborder" => "no"

@@ -24,15 +24,9 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterView.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterTree.php");
 include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterDirSelector.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weNewsletterFrames extends weModuleFrames {
 
@@ -82,8 +76,6 @@ class weNewsletterFrames extends weModuleFrames {
 	 * @return String
 	 */
 	function getHTMLEditorHeader($mode = 0) {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
-
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor"=>"#FFFFFF","background"=>"/webEdition/images/backgrounds/bgGrayLineTop.gif"),""));
 		}
@@ -2011,9 +2003,6 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 			$table->setCol(2,0,array(),we_html_tools::getPixel(5,10));
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBrowser.class.php');
-
-
 			$table->setCol(3,0,array("class"=>"defaultfont"),weBrowser::getDownloadLinkText());
 			$table->setCol(4,0,array(),we_html_tools::getPixel(5,10));
 			$table->setCol(5,0,array("class"=>"defaultfont"),
@@ -2514,8 +2503,6 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 
 	function getHTMLSendBody(){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-
 			$details="";
 
 			if(isset($_REQUEST["pro"]))  $pro=$_REQUEST["pro"];
@@ -3062,9 +3049,6 @@ function getDateSelector($_label, $_name, $_btn, $value)
 	 * @param	boolean
 	 */
 	function getHTMLCharsetTable(){
-
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/charsetHandler.class.php");
-
 		$value = (isset($this->View->newsletter->Charset) ? $this->View->newsletter->Charset : "");
 
 		$charsetHandler = new charsetHandler();

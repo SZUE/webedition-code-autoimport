@@ -28,7 +28,6 @@ if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME'
 }
 if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 }
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
@@ -503,7 +502,6 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 }
 
 function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $categories = '') {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 	//  check if a <we:sessionStart> Tag was before
 	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
@@ -1805,7 +1803,6 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 		}
 	}
 	if (preg_match_all('/src="thumbnail:([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)) {
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
 		foreach ($regs as $reg) {
 			list($imgID, $thumbID) = explode(",", $reg[1]);
 			$thumbObj = new we_thumbnail();
@@ -2155,7 +2152,6 @@ function setUserPref($name, $value) {
  * @return         string
  */
 function makePath($path, $table, &$pathids, $owner = 0) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_folder.inc.php');
 	$path = str_replace('\\', '/', $path);
 	$patharr = explode('/', $path);
 	$mkpath = '';

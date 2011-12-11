@@ -45,7 +45,7 @@ function we_include_tag_file($name){
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tags/custom_tags/' . $fn . '.inc.php');
 		return true;
 	}
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+
 	$toolinc = '';
 	if(weToolLookup::getToolTag($name, $toolinc, true)){
 		include_once ($toolinc);

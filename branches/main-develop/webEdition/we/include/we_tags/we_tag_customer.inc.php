@@ -30,7 +30,7 @@ function we_parse_tag_customer($attribs, $content) {
 	}
 
 	return '<?php global $lv;
-		if('.we_tagParser::printTag('customer', $attribs).'){?>' . $content . '<?php } 
+		if('.we_tagParser::printTag('customer', $attribs).'){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
@@ -71,7 +71,6 @@ function we_tag_customer($attribs, $content) {
 		$button = we_button::create_button("select", "javascript:we_cmd('openSelector',document.forms[0].elements['$idname'].value,'$table','document.forms[\'we_form\'].elements[\'$idname\'].value','document.forms[\'we_form\'].elements[\'$textname\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "',0,'',1)");
 
 		if ($GLOBALS["we_editmode"]) {
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 			?>
 			<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 				<tr>

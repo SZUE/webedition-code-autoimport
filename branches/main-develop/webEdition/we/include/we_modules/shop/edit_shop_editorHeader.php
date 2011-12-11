@@ -28,7 +28,6 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 	exit;
 }
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 
 protect();
 

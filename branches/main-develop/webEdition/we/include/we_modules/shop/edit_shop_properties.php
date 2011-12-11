@@ -25,7 +25,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
 
 	protect();
 
@@ -245,9 +244,6 @@ if (isset($_REQUEST['we_cmd'][0])) {
 		break;
 
 		case 'add_new_article':
-
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_class.inc.php');
-
 			$shopArticles = array();
 			$shopArticlesSelect = array();
 			$parts = array();
@@ -426,8 +422,6 @@ if (isset($_REQUEST['we_cmd'][0])) {
 					$variantData = weShopVariants::getVariantData($model, '-');
 
 				} else {
-
-					require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 
 					$model = new we_webEditionDocument();
 					$model->initByID($id);
@@ -661,8 +655,6 @@ if (isset($_REQUEST['we_cmd'][0])) {
 		break;
 
 		case 'edit_shipping_cost':
-
-			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 			require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 			$shopVats = weShopVats::getAllShopVATs();
@@ -765,9 +757,6 @@ if (isset($_REQUEST['we_cmd'][0])) {
 		break;
 
 		case 'edit_order_customer'; // edit data of the saved customer.
-
-			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
-
 			$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();self.close();");
 			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
 
@@ -1987,8 +1976,6 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 	} else {
 
 		if (isset($shippingCostsNet)) {
-
-			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 			$totalPrice += $shippingCostsNet;
 
 			$orderTable .= '

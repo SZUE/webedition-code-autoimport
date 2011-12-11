@@ -182,8 +182,6 @@ if(isset($_REQUEST['cmd'][0])) {
 		break;
 
 		case 'refresh':
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 			we_loadLanguageConfig();
 
 			$table=new we_htmlTable(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),1,6);

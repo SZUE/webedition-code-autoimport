@@ -24,11 +24,9 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_export/weExportTree.inc.php");
 include_once(WE_EXPORT_MODULE_DIR."weExportView.php");
 include_once(WE_EXPORT_MODULE_DIR."weExportTreeMain.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weExportFrames extends weModuleFrames {
 
@@ -86,7 +84,6 @@ class weExportFrames extends weModuleFrames {
 
 
 	function getHTMLEditorHeader() {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor"=>"#FFFFFF","background"=>"/webEdition/images/backgrounds/bgGrayLineTop.gif"),""));
 		}
@@ -212,8 +209,6 @@ class weExportFrames extends weModuleFrames {
 
 		');
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-
 		$text = g_l('export','[working]');
 		$progress = 0;
 
@@ -244,7 +239,6 @@ class weExportFrames extends weModuleFrames {
 	function getHTMLProperties($preselect=""){
 		$this->SelectionTree->init($this->frameset,$this->editorBodyFrame,$this->editorBodyFrame,$this->cmdFrame);
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$out="";
 		$tabNr = isset($_REQUEST["tabnr"]) ? $_REQUEST["tabnr"] : 1;
 
@@ -553,8 +547,6 @@ class weExportFrames extends weModuleFrames {
 						break;
 					}
 
-
-					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 					$_progress_update = '';
 					$exports=0;

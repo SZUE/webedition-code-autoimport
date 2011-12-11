@@ -28,9 +28,6 @@
  *****************************************************************************/
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlElement.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_image_edit.class.php');
 
 /*****************************************************************************
  * INITIALIZATION
@@ -83,9 +80,6 @@ if( we_image_edit::gd_version() > 0 ){
     print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
 
 } else {    //  gd_lib is not installed - show error
-
-    include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
-
     print STYLESHEET . '</head><body class="weDialogBody">';
 
 

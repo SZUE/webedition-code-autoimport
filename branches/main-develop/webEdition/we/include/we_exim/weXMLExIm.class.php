@@ -27,7 +27,6 @@
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLBrowser.class.php");
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weContentProvider.class.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weXMLComposer.class.php");
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weRefTable.class.php');
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weExportPreparer.class.php');

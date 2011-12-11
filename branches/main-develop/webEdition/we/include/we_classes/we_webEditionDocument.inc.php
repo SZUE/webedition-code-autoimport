@@ -24,7 +24,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_textContentDocument.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/charsetHandler.class.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browserDetect.inc.php');
 
 class we_webEditionDocument extends we_textContentDocument {
 

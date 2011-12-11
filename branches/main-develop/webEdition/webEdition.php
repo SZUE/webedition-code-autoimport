@@ -480,7 +480,6 @@ function we_cmd() {
 							break;';
 			}
 
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 			$_jsincludes = weToolLookup::getJsCmdInclude();
 			if(!empty($_jsincludes)) {
 				foreach ($_jsincludes as $_jsinclude) {

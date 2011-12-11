@@ -24,9 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/rebuild/rebuildFragment.inc.php");
 
 
@@ -55,7 +52,6 @@ abstract class we_rebuild_wizard{
 	* @return string
 	*/
 	static function getBusy(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		$dc = isset($_REQUEST["dc"]) ? $_REQUEST["dc"] : 0;
 
 		$WE_PB = new we_progressBar(0,0,true);
@@ -166,7 +162,6 @@ abstract class we_rebuild_wizard{
 			}
 		}
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 
 		$parts = array();
 		array_push($parts, array(
@@ -209,7 +204,6 @@ abstract class we_rebuild_wizard{
 			"space"		=> 0)
 		);
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_rebuildMetaDisabled = true;
@@ -498,7 +492,6 @@ abstract class we_rebuild_wizard{
 	}
 
 	static function formMetadata($metaFields, $onlyEmpty) {
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 		$metaDataFields = weMetaData::getDefinedMetaDataFields();
 
 		$_html = '<script type="text/javascript">document._errorMessage='.(count($metaFields) ? '""' : '"'.addslashes(g_l('rebuild',"[noFieldsChecked]")).'"').'</script>';
@@ -770,8 +763,6 @@ abstract class we_rebuild_wizard{
 	* @return string
 	*/
 	static function getFrameset(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-
 		$tail = "";
 		if(isset($_REQUEST["btype"])){
 			$tail .= "&amp;btype=".rawurlencode($_REQUEST["btype"]);

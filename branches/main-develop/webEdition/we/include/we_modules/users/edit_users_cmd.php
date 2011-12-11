@@ -85,7 +85,6 @@ protect();
               	break;
             case "save_user":
             	$isAcError = false;
-		    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 		    	$weAcQuery = new weSelectorQuery();
 
             	 // bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern

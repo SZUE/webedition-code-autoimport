@@ -243,9 +243,6 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 
 	$js = "";
 	if ($_SESSION["we_mode"] != "seem") {
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMainTree.inc.php");
-
 		$Tree = new weMainTree("webEdition.php", "top", "top.resize.left.tree", "top.load");
 
 		$treeItems = array();

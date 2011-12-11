@@ -24,8 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModuleFrames.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 
 class weToolFrames extends weModuleFrames {
 
@@ -186,7 +184,6 @@ class weToolFrames extends weModuleFrames {
 	 */
 	function getHTMLHeader(){
 		//	Include the menu.
-		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/java_menu/weJavaMenu.inc.php');
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
 		include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 
@@ -218,7 +215,6 @@ class weToolFrames extends weModuleFrames {
 	 * @return string
 	 */
 	function getHTMLEditorHeader() {
-		require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_tabs.class.inc.php');
 		if(isset($_REQUEST['home'])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array('bgcolor'=>'#F0EFF0','background'=>'/webEdition/images/backgrounds/bgGrayLineTop.gif'),''));
 		}
@@ -412,11 +408,7 @@ class weToolFrames extends weModuleFrames {
 
 
 	function getHTMLProperties($preselect=''){
-
-
 		$tabNr = isset($_REQUEST['tabnr']) ? ($_REQUEST['tabnr'])  : 1;
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 
 		$out = '';
 

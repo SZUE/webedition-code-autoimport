@@ -510,7 +510,6 @@ function processCommands() {
 						}
 
 					    if($this->export->ParentID>0) {
-					    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 					    	$weAcQuery = new weSelectorQuery();
 					    	$weAcResult = $weAcQuery->getItemById($this->export->ParentID,EXPORT_TABLE,array("IsFolder"));
 					    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {
@@ -521,7 +520,6 @@ function processCommands() {
 					    	}
 					    }
 					    if(isset($this->export->Folder) && !empty($this->export->Folder) && $this->export->ParentID>0) {
-					    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 					    	$weAcQuery = new weSelectorQuery();
 					    	$weAcResult = $weAcQuery->getItemById($this->export->Folder,FILE_TABLE,array("IsFolder"));
 					    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {

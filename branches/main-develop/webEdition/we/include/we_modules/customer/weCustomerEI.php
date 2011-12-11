@@ -140,7 +140,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 
 
 		function getXMLDataset($filename,$dataset){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
 			$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$filename);
 			$nodeSet = $xp->evaluate($xp->root.'/'.$dataset.'[1]/child::*');
 			$nodes = array();
@@ -293,10 +292,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 						$xml_from=$options["xml_from"];
 						$xml_to=$options["xml_to"];
 
-
-						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
-						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_splitFile.inc.php");
-
 						$parse = new XML_SplitFile($_SERVER['DOCUMENT_ROOT'].$filename);
 						$parse->splitFile("*/".$dataset, $xml_from, $xml_to);
 
@@ -379,8 +374,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 					$logfile=isset($options["logfile"]) ? $options["logfile"] : "";
 
 
-					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
-
 					$db=new DB_WE();
 
 					$customer=new weCustomer();
@@ -432,8 +425,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 		}
 
 }
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/csv.inc.php");
 
 class weCustomerCSVImport extends CSVImport{
 

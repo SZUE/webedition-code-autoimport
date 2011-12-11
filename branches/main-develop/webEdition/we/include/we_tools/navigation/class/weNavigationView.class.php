@@ -1124,7 +1124,6 @@ function processCommands() {
 				break;
 				case 'populateText':
 					if(empty($this->Model->Text) && $this->Model->Selection=='static' && $this->Model->SelectionType=='catLink'){
-						include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_category.inc.php');
 						$_cat = new we_category();
 						$_cat->load($this->Model->LinkID);
 						$_cat->Catfields = unserialize($_cat->Catfields);

@@ -26,11 +26,8 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once(WE_VOTING_MODULE_DIR."weVotingView.php");
 include_once(WE_VOTING_MODULE_DIR."weVotingTree.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 class weVotingFrames extends weModuleFrames {
 
@@ -87,7 +84,6 @@ class weVotingFrames extends weModuleFrames {
 	}
 
 	function getHTMLEditorHeader() {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
 		if(isset($_REQUEST["home"])){
 			return $this->getHTMLDocument(we_htmlElement::htmlBody(array("bgcolor"=>"#FFFFFF","background"=>"/webEdition/images/backgrounds/bgGrayLineTop.gif"),""));
 		}
@@ -467,7 +463,6 @@ class weVotingFrames extends weModuleFrames {
 			$lineend->addOption('unix', g_l('export',"[unix]"));
 			$lineend->addOption('mac', g_l('export',"[mac]"));
 
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/charsetHandler.class.php");
 				$_charsetHandler = new charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				$charset=$GLOBALS['WE_BACKENDCHARSET'];
@@ -776,7 +771,6 @@ class weVotingFrames extends weModuleFrames {
 			$table->setCol(0,0,array('colspan'=>5,'class'=>'defaultfont'),we_htmlElement::htmlB(we_htmlElement::htmlSpan(array('id'=>'question_score'), htmlspecialchars(stripslashes($this->View->voting->QASet[$version]['question'])))));
 		}
 		$i = 1;
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 		if (isset($this->View->voting->QASet[$version])){
 			foreach ($this->View->voting->QASet[$version]['answers'] as $key=>$value){
 				if(!isset($this->View->voting->Scores[$key])) $this->View->voting->Scores[$key] = 0;
@@ -923,7 +917,6 @@ class weVotingFrames extends weModuleFrames {
 
 		');
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 		$out .=	we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>($tabNr==1 ? '' : 'display: none')), we_multiIconBox::getHTML('',"100%",$this->getHTMLTab1(),30,'',-1,'','',false,$preselect)) .
 				(!$this->View->voting->IsFolder ?
 				(
@@ -1050,8 +1043,6 @@ class weVotingFrames extends weModuleFrames {
 
 			$table->setCol(2,0,array(),we_html_tools::getPixel(5,10));
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBrowser.class.php');
-
 			$table->setCol(3,0,array("class"=>"defaultfont"),weBrowser::getDownloadLinkText());
 			$table->setCol(4,0,array(),we_html_tools::getPixel(5,10));
 			$table->setCol(5,0,array("class"=>"defaultfont"),
@@ -1098,8 +1089,6 @@ class weVotingFrames extends weModuleFrames {
 			$table->setCol(1,0,array("class"=>"defaultfont"),sprintf(g_l('modules_voting','[csv_export]'),$link));
 
 			$table->setCol(2,0,array(),we_html_tools::getPixel(5,10));
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBrowser.class.php');
 
 			$table->setCol(3,0,array("class"=>"defaultfont"),weBrowser::getDownloadLinkText());
 			$table->setCol(4,0,array(),we_html_tools::getPixel(5,10));
@@ -1182,9 +1171,6 @@ class weVotingFrames extends weModuleFrames {
 	}
 
 	function getHTMLShowLogOld(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-
-
 		$close = we_button::create_button("close","javascript:self.close();");
 		$refresh = we_button::create_button("refresh","javascript:location.reload();");
 
@@ -1314,8 +1300,6 @@ class weVotingFrames extends weModuleFrames {
 
 	}
 	function getHTMLShowLogNew(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-
 		$close = we_button::create_button("close","javascript:self.close();");
 		$refresh = we_button::create_button("refresh","javascript:location.reload();");
 
@@ -1462,8 +1446,6 @@ class weVotingFrames extends weModuleFrames {
 	}
 
 	function getHTMLShowGroupLog(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-
 		$close = we_button::create_button("close","javascript:self.close();");
 		$refresh = we_button::create_button("refresh","javascript:location.reload();");
 

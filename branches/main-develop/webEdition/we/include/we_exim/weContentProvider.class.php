@@ -24,10 +24,6 @@
 
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_element.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/modules/weModelBase.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weXMLComposer.class.php");
 
 	class weContentProvider {
 
@@ -43,14 +39,12 @@
 			$we_ID = $ID;
 		switch ($we_ContentType) {
 			case "doctype":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_docTypes.inc.php");
 				$we_doc = new we_docTypes();
 				if ($ID != "") {
 					$we_doc->initByID($ID, $we_doc->Table);
 				}
 				break;
 			case "category":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_category.inc.php");
 				$we_doc = new we_category();
 				$we_doc->load($ID);
 				break;
@@ -70,24 +64,19 @@
 				$we_doc->we_load($ID);
 				break;
 			case "weTable":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weTable.class.php");
 				$we_doc = new weTable($table);
 				break;
 			case "weTableItem":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weTableItem.class.php");
-
 				$we_doc = new weTableItem($table);
 				if (!empty($ID))
 					$we_doc->load($ID);
 				break;
 
 			case "weBinary":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weBinary.class.php");
 				$we_doc = new weBinary();
 				$we_doc->load($ID, false);
 				break;
 			case "weVersion":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weVersion.class.php");
 				$we_doc = new weVersion();
 				$we_doc->load($ID, false);
 				break;

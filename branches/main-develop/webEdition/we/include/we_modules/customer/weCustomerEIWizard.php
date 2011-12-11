@@ -24,12 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
 
 include_once(WE_CUSTOMER_MODULE_DIR."weCustomerEI.php");
 
@@ -725,7 +719,6 @@ class weCustomerEIWizard{
 				$_file_encoding->addOption("mac", g_l('modules_customer','[mac]'));
 				$_file_encoding->selectOption($csv_lineend);
 
-				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/charsetHandler.class.php");
 				$_charsetHandler = new charsetHandler();
 				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 				$charset=$GLOBALS['WE_BACKENDCHARSET'];
@@ -750,9 +743,6 @@ class weCustomerEIWizard{
 				array_push($parts,array("headline" => g_l('modules_customer','[csv_params]'), "html" => $fileformattable->getHtmlCode(),"space" => 150));
 
 			}else{
-
-				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
-
 				//invoke parser
 				$xp = new XML_Parser($filesource);
 				$xmlWellFormed = ($xp->parseError == "")? true : false;
@@ -1023,7 +1013,6 @@ class weCustomerEIWizard{
 											),
 											we_button::create_button("cancel", "javascript:top.close();")
 			);
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 			$text = g_l('modules_customer','[exporting]');
 			$progress = 0;
 			$progressbar = new we_progressBar($progress);
@@ -1090,7 +1079,6 @@ class weCustomerEIWizard{
 											),
 											we_button::create_button("cancel", "javascript:top.close();")
 				);
-				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 				$text = g_l('modules_customer','[importing]');
 				$progress = 0;
 				$progressbar = new we_progressBar($progress);

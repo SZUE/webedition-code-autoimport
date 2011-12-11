@@ -24,7 +24,6 @@
 
 $we_EDITOR = true;
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 protect();

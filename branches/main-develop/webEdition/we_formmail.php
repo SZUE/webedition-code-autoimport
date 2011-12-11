@@ -216,10 +216,6 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/captcha/captchaImage.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/captcha/captchaMemory.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/captcha/captcha.class.php');
-
 	$name = $_REQUEST['captchaname'];
 
 	if(isset($_REQUEST[$name]) && !empty($_REQUEST[$name])) {

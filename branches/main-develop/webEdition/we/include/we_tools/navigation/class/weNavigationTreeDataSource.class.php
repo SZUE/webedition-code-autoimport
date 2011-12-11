@@ -23,7 +23,6 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolTreeDataSource.class.php');
 
 define('NAVIGATION_ITEMS', 1);
 define('NAVIGATION_SORT_ITEMS', 2);

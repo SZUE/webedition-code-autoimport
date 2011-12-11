@@ -27,7 +27,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_doc
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tagParser.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-//include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/cache.inc.php");
 
 /* a class for handling templates */
 class we_template extends we_document{
@@ -390,7 +389,7 @@ function handleShutdown($code) {
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		
+
 		if(!defined('SHOP_TABLE')) return false;
 		$fieldnames = $this->getVariantFieldNames();
 		return in_array('shoptitle',$fieldnames) && in_array('shopdescription',$fieldnames);

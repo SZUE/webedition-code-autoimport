@@ -808,7 +808,6 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 						$_imagepreview = "<img src='$_thumbpath' border='0' id='previewpic'><p>" .g_l('fileselector',"[image_not_uploaded]") . "</p>";
 					} else {
 						$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'].$result['Path']);
-						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_image_edit.class.php");
 						$_thumbpath = '/webEdition/thumbnail.php?id=' . $this->id . '&size=150&path=' .str_replace($_SERVER['DOCUMENT_ROOT'],'',$result['Path']) . '&extension=' . $result['Extension'] . '&size2=200';
 						$_imagepreview = "<a href='".$result['Path']."' target='_blank' align='center'><img src='$_thumbpath' border='0' id='previewpic'></a>";
 					}
@@ -908,7 +907,6 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				// only binary data have additional metadata
 				if ($result['ContentType'] == "image/*" || $result['ContentType'] == "application/x-shockwave-flash" || $result['ContentType'] == "video/quicktime" || $result['ContentType'] == "application/*") {
-					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
 					$metaDataFields = weMetaData::getDefinedMetaDataFields();
 					foreach($metaDataFields as $md) {
 						if ($md['tag'] != "Title" && $md['tag'] != "Description" && $md['tag'] != "Keywords") {

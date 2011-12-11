@@ -23,17 +23,12 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_document.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_linklist.inc.php");
 
 /*  a class for handling text-documents */
 class we_textDocument extends we_document
 {
-	######################################################################################################################################################
-	##################################################################### Variables ######################################################################
-	######################################################################################################################################################
-
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName=__CLASS__;
 
@@ -42,10 +37,6 @@ class we_textDocument extends we_document
 
 	/* defines which Tabs should be shown in editor  */
 	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_INFO,WE_EDITPAGE_CONTENT,WE_EDITPAGE_VALIDATION);
-
-	######################################################################################################################################################
-	##################################################################### FUNCTIONS ######################################################################
-	######################################################################################################################################################
 
 
 	/* Constructor */

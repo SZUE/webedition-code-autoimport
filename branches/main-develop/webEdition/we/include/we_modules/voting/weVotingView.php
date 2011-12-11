@@ -26,7 +26,6 @@
 
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 include_once(WE_VOTING_MODULE_DIR.'weVoting.php');
 
 class weVotingView {
@@ -545,7 +544,6 @@ function processCommands() {
 				    }
 
 				    if($this->voting->ParentID>0) {
-				    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 				    	$weAcQuery = new weSelectorQuery();
 				    	$weAcResult = $weAcQuery->getItemById($this->voting->ParentID,VOTING_TABLE,array("IsFolder"));
 				    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {

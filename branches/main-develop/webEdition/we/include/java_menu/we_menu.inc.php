@@ -583,7 +583,6 @@ $we_menu['4033000']['enabled'] = '1';
 
 $we_menu['4033300']['parent'] = '4000000'; // separator
 // Extras > Tools > Custom tools
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 $_tools = weToolLookup::getAllTools(true, false);
 
 foreach ($_tools as $_k => $_tool) {

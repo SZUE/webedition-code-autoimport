@@ -43,4 +43,3 @@ editorObj.editrule(width,height,color,align,noshade);
 top.close();
 ';
 }
-?>

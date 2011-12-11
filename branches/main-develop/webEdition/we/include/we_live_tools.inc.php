@@ -22,6 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//make sure to include autoloader
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+
+
 function saveFile($file_name, $sourceCode = ""){
 	createLocalFolderByPath(str_replace("\\", "/", dirname($file_name)));
 	$fh = @fopen($file_name, "wb");

@@ -23,11 +23,8 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolFrames.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolTree.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
 
 class searchtoolFrames extends weToolFrames
 {
@@ -113,8 +110,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLEditorHeader()
 	{
-
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_tabs.class.inc.php');
 
 		$we_tabs = new we_tabs();
 
@@ -407,8 +402,6 @@ class searchtoolFrames extends weToolFrames
 
 	function getHTMLProperties($preselect = '')
 	{
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php');
 
 		$out = '';
 

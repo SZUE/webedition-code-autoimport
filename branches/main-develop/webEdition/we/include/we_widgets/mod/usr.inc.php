@@ -29,5 +29,3 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_
 $UO = new usersOnline();
 
 $inline = '<div id="users_online">' . $UO->getUsers() . '</div>';
-
-?>

@@ -28,8 +28,6 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 
 class weWorkflowView extends weWorkflowBase{
 
@@ -354,7 +352,6 @@ class weWorkflowView extends weWorkflowBase{
 		$counter=0;
 		$counter1=0;
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 		$yuiSuggest =& weSuggest::getInstance();
 
 		/***** BROWSER DEPENDENCIES *****/

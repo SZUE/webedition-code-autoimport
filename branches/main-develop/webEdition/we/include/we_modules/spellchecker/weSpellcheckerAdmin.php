@@ -72,9 +72,6 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 
 
-	require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
-
-
 	$we_tabs = new we_tabs();
 
 	$we_tabs->addTab(new we_tab("#",g_l('modules_spellchecker','[dictAdmin]'),'((activ_tab==1) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('1');", array("id"=>"tab_1")));

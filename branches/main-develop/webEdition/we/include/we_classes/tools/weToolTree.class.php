@@ -197,7 +197,7 @@
 		}
 
 		function getJSAddSortFunction() {
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browserDetect.inc.php");
+			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_browserDetect.inc.php");
 			$insp=new we_browserDetect();
 			return '
 			function addSort(object){

@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/xml_parser.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
@@ -120,7 +119,7 @@ class weXMLBrowser extends XML_Parser{
 		}
 		$url = (weFile::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName=$file;
-		
+
 		switch ($url) {
 			case 'fopen':
 				if (defined("WE_PROXYHOST")) {
@@ -195,6 +194,6 @@ class weXMLBrowser extends XML_Parser{
 		fclose($file);
 
 		return $ret;
-		
+
 	}
 }

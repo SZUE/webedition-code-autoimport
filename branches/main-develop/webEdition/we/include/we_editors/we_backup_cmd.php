@@ -172,7 +172,6 @@
 						} else {
 
 							include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
-							include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
 
 							$_files = array();
 							// export spellchecker files

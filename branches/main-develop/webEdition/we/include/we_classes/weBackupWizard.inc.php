@@ -24,14 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-//include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weBackup.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 
 define("BACKUP_MODE",1);
 define("RECOVER_MODE",2);
@@ -595,7 +587,6 @@ class weBackupWizard{
 		$form_properties[12]="handle_versions";
 		$form_properties[13]="handle_versions_binarys";
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolFrames.class.php');
 		$i = 0;
 		$_tools = weToolLookup::getToolsForBackup();
 		foreach ($_tools as $_tool){
@@ -869,7 +860,6 @@ class weBackupWizard{
 		$form_properties[13]="handle_versions_binarys";
 
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolFrames.class.php');
 		$i = 0;
 		$_tools = weToolLookup::getToolsForBackup();
 		foreach ($_tools as $_tool){
@@ -1040,8 +1030,6 @@ class weBackupWizard{
 					);
 
 
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBrowser.class.php');
-
 					$table->setCol(2, 0,array('class'=>'defaultfont'),
 						weBrowser::getDownloadLinkText() . '<br><br>' .
 						we_htmlElement::htmlA(array('href'=>$_link),g_l('backup','[download_file]'))
@@ -1199,8 +1187,6 @@ class weBackupWizard{
  	}
 
  	function  getHTMLBusy(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
-
 		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET . "\n";
 		$body="";
 

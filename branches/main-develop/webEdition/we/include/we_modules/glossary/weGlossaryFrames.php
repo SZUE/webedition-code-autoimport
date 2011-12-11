@@ -25,8 +25,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModuleFrames.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryView.php");
 include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryTree.php");
 include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditor.php");

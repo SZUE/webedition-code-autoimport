@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
 protect();
 if(isset($_REQUEST["we_cmd"][5])){
     $_SESSION["prefs"]["FileFilter"] = $_REQUEST["we_cmd"][5];

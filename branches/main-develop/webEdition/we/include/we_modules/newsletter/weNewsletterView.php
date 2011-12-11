@@ -26,7 +26,6 @@
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletter.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
 
@@ -368,9 +367,7 @@ class weNewsletterView {
 	}
 
 	function getObjectFields() {
-		$ClassName = f("SELECT ClassName FROM ".FILE_TABLE." WHERE ID=" . abs($id), "ClassName", $this->db);
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $ClassName . ".inc.php");
+		$ClassName = f("SELECT ClassName FROM ".FILE_TABLE." WHERE ID=" . intval($id), "ClassName", $this->db);
 
 		eval('$doc = new ' . $ClassName . '();');
 
@@ -1457,7 +1454,6 @@ class weNewsletterView {
 
 				case "save_newsletter":
 					if (isset($_REQUEST["nid"])) {
-				    	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php');
 				    	$weAcQuery = new weSelectorQuery();
 						$newone = false;
 
@@ -2172,8 +2168,6 @@ class weNewsletterView {
 	}
 
 	function initDoc(&$we_doc, $id = 0) {
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
-
 		$we_doc = new we_webEditionDocument();
 
 		if ($id) {
