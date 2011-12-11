@@ -281,7 +281,7 @@ abstract class we_rebuild_wizard{
 		var check = document.getElementById("rebuildStaticAfterNavi");
 		var checkLabel = document.getElementById("label_rebuildStaticAfterNavi");
 		check.disabled=(!radio.checked);
-		checkLabel.style.color = radio.checked ? "" : "gray";
+		checkLabel.style.color = radio.checked ? "" : "grey";
 	}
 ';
 

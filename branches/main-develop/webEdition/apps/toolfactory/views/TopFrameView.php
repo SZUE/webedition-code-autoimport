@@ -174,6 +174,25 @@ weEventController.register("save", function(data, sender) {
 
 	
 });
+weEventController.register("localInstallFromTGZ", function(data, sender) {
+
+	self.hot = false;
+	var msg = "$saveMessage";
+	
+	//datasource: table
+	if(data.model.Path!=null) {
+		text = data.model.Path;
+	}
+	else {
+		//custom tool, no Path
+		text = data.model.Text;
+	}
+	msg = msg.replace(/%s/, data.model.Text);
+	
+	$saveEntryMessageCall	
+
+	
+});
 
 /* delete */
 weEventController.register("delete", function(data, sender) {
@@ -347,7 +366,70 @@ weCmdController.register('info_top', 'app_{$this->appName}_info', function(cmdOb
 	dialog.open();
 });
 
-
+/* InstallLocal */
+weCmdController.register('localInstall0_top', 'app_{$this->appName}_localInstall0', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"localInstallFromTGZ", 
+		0
+		);
+});
+weCmdController.register('localInstall1_top', 'app_{$this->appName}_localInstall1', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"localInstallFromTGZ", 
+		1
+		);
+});
+weCmdController.register('localInstall2_top', 'app_{$this->appName}_localInstall2', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"localInstallFromTGZ", 
+		2
+		);
+});
+weCmdController.register('localInstall3_top', 'app_{$this->appName}_localInstall3', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"localInstallFromTGZ", 
+		3
+		);
+});
+weCmdController.register('localInstall4_top', 'app_{$this->appName}_localInstall4', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"localInstallFromTGZ", 
+		4
+		);
+});
+weCmdController.register('localInstall5_top', 'app_{$this->appName}_localInstall5', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"localInstallFromTGZ", 
+		5
+		);
+});
+weCmdController.register('generateTGZ_top', 'app_{$this->appName}_generateTGZ', function(cmdObj) {
+		we_core_JsonRpc.callMethod(
+		cmdObj, 
+		"{$this->appDir}/index.php/rpc/index", 
+		"{$this->appName}.service.Cmd", 
+		"generateTGZ", 
+		{$fs}.edbody.document.we_form.ID.value
+		);
+});
 /*************************** Helper functions ******************************/
 
 function _weYesNoCancelDialog(cmdObj) {

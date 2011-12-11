@@ -402,21 +402,13 @@
 			} else {
 
 				$fh = gzopen($filename,'rb');
-				$d  = 1<<14;
-				$end = $d;
-				while ( gzseek($fh, $end) == 0 ){
-					$end += $d;
+				while(!gzeof($fh)){
+					gzread($fh,16768);
 				}
-
-				while ( $d > 1 ){
-					$d >>= 1;
-					$end += $d * (gzseek($fh, $end)? -1 : 1);
-				}
-
-				$end--;
+				$end = gztell($fh);
+				gzclose($fh);
 			}
 			return $end;
-
 		}
 
 		function hasNextTable() {

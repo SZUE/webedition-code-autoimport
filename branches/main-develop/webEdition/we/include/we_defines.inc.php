@@ -59,7 +59,7 @@ if (version_compare(phpversion(), '5.1.3', '=')) {
 
 define('LOAD_MAID_DB', 0);
 define('LOAD_TEMP_DB', 1);
-define('LOAD_REVERT_DB', 2);
+define('LOAD_REVERT_DB', 2);//we_temporaryDocument::revert gibst nicht mehr siehe #5789
 define('LOAD_SCHEDULE_DB', 3);
 
 define('WE_TREE_DEFAULT_WIDTH', 300);

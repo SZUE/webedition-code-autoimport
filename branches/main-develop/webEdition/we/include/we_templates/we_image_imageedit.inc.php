@@ -53,7 +53,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 <option value="image_resize">'.g_l('weClass',"[resize]").'...</option>
 <option value="image_rotate">'.g_l('weClass',"[rotate]").'...</option>
 <option value="image_crop">'.g_l('weClass',"[crop]").'...</option>
-<option value="" disabled="disabled" style="color:gray">'.g_l('weClass',"[convert]").'</option>
+<option value="" disabled="disabled" style="color:grey">'.g_l('weClass',"[convert]").'</option>
 '.((in_array("jpg", we_image_edit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;'.g_l('weClass',"[convert_jpg]").'...</option>' : '').'
 '.(($_gdtype != "gif" && in_array("gif", we_image_edit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;'.g_l('weClass',"[convert_gif]").'</option>' : '').'
 '.(($_gdtype != "png" && in_array("png", we_image_edit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;'.g_l('weClass',"[convert_png]").'</option>' : '').'

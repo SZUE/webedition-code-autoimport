@@ -2489,20 +2489,8 @@ class we_objectFile extends we_document{
 				}
 				$this->setTypeAndLength();
 				break;
-			case LOAD_REVERT_DB:
-				$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
-				if($sessDat){
-					//fixed: at least TableID must be fetched
-					$this->i_getPersistentSlotsFromDB(/*"TableID,Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
-					//overwrite with new data
-					$this->i_initSerializedDat($sessDat,false);
-					//make sure at least TableID is set from db
-					//and Published as well #5742
-					$this->i_getPersistentSlotsFromDB("TableID,Published");
-					$this->i_getUniqueIDsAndFixNames();
-				}else{
-					$this->we_load(LOAD_TEMP_DB);
-				}
+			case LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(LOAD_TEMP_DB);
 				$this->setTypeAndLength();
 				break;
 		}
@@ -2579,7 +2567,9 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-
+		if (we_temporaryDocument::isInTempDB($this->ID,$this->Table,$this->DB_WE) ){
+			we_temporaryDocument::delete($this->ID,$this->Table,$this->DB_WE);
+		}
 		return $this->insertAtIndex();
 	}
 
@@ -2979,7 +2969,9 @@ class we_objectFile extends we_document{
 	private function i_saveTmp(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+		if (($this->ModDate > $this->Published) && $this->Published){
+			if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+		}
 		if($this->ID) $this->DB_WE->query("UPDATE ".OBJECT_X_TABLE.$this->TableID." SET OF_TEXT='".$this->Text."',OF_PATH='".$this->Path."' WHERE OF_ID=".$this->ID);
 		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID");
 	}

@@ -1462,7 +1462,7 @@ var cockpitFrame;
 	pWebEdition_Tree();
 ?>
 </head>
-<body bgcolor="gray">
+<body bgcolor="grey">
 <?php
 //	get the frameset for the actual mode.
 pWebEdition_Frameset();

@@ -421,7 +421,7 @@ $this->getSpacerRowHTML().
 			if($s["type"] != SCHEDULE_TYPE_ONCE){
 				$nextWann = we_schedpro::getNextTimestamp($s,$now);
 				if($nextWann){
-					$DB_WE->query("UPDATE ".SCHEDULE_TABLE." SET Wann='".$nextWann."' WHERE DID='".abs($id)."' AND ClassName!='we_objectFile' AND Type='".$s["type"]."' AND Was='".$s["task"]."'");
+					$DB_WE->query("UPDATE ".SCHEDULE_TABLE." SET Wann='".$nextWann."' WHERE DID='".intval($id)."' AND ClassName!='we_objectFile' AND Type='".$s["type"]."' AND Was='".$s["task"]."'");
 				}
 			}
 
@@ -448,7 +448,7 @@ $this->getSpacerRowHTML().
 	function trigger_schedule(){
 		$scheddyFile = array();
 		$scheddyObject = array();
-		$DB_WE = NEW DB_WE();
+		$DB_WE = new DB_WE();
 		$now = time();
 
 		$DB_WE->query("SELECT * FROM ".SCHEDULE_TABLE." WHERE Wann<='".$now."' AND Schedpro != '' AND Active=1");

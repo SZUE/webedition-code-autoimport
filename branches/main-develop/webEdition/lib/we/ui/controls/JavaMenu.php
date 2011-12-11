@@ -68,8 +68,6 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
 
-		$out = '';
-
 		$out = we_htmlElement::jsElement('
 				function menuaction(cmd) {
 					weCmdController.fire({cmdName: cmd})
@@ -226,7 +224,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 					$newAst = $newAst . "&nbsp;&nbsp;";
 					self::_computeOption($men, $opt, $id, $newAst);
 				} else if ($mtext) {
-					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'gray\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext . "\n";
+					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext . "\n";
 				} else {
 					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}

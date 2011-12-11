@@ -700,7 +700,9 @@ class weSiteImport{
 				we_hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', "[importImages]"), false, "defaultfont", "", !we_hasPerm("NEW_GRAFIK"));
 
 		$_htmlPages = we_forms::checkboxWithHidden(
-				we_hasPerm("NEW_HTML") ? $this->htmlPages : ((we_hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', "[importHtmlPages]"), false, "defaultfont", "if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='gray';}", !we_hasPerm("NEW_HTML"));
+				we_hasPerm("NEW_HTML") ? $this->htmlPages : ((we_hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), 
+				"htmlPages", g_l('siteimport', "[importHtmlPages]"), false, "defaultfont",
+				"if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !we_hasPerm("NEW_HTML"));
 		$_createWePages = we_forms::checkboxWithHidden(
 				we_hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', "[createWePages]") . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !we_hasPerm("NEW_WEBEDITIONSITE"));
 		$_flashmovies = we_forms::checkboxWithHidden(

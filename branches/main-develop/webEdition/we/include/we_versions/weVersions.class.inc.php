@@ -1635,7 +1635,7 @@ class weVersions {
 			$_REQUEST['we_cmd'] = array();
 			$_REQUEST['we_cmd'][1] = $we_doc->ID;
 			$FROM_WE_SHOW_DOC = true;
-			@include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_showDocument.inc.php');
+			include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_showDocument.inc.php');
 			$contents = ob_get_contents();
     		ob_end_clean();
 		}

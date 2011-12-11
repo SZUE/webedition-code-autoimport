@@ -551,7 +551,7 @@ function we_getCodeMirrorCode($code) {
 											editor.frame.contentWindow.document.attachEvent( "onkeydown", top.dealWithKeyboardShortCut );
 										}
 										editor.focus();
-										editor.frame.style.border="1px solid gray";
+										editor.frame.style.border="1px solid grey";
 
 										var editorFrame=editor.frame.contentWindow.document.getElementsByTagName("body")[0];
 										var originalTextArea=document.getElementById("editarea");

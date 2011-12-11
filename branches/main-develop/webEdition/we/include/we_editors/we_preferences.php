@@ -193,7 +193,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = "", $
 }
 
 function getColorInput($name, $value, $disabled=false, $width=20, $height=20){
-	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid gray;margin:2px 0;"><tr><td' . ($disabled ? ' class="disabled"' : '') . ' id="color_' . $name . '" ' . ($value ? (' style="background-color:' . $value . ';"') : '') . '><a style="cursor:' . ($disabled ? "default" : "pointer") . ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
+	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' . ($disabled ? ' class="disabled"' : '') . ' id="color_' . $name . '" ' . ($value ? (' style="background-color:' . $value . ';"') : '') . '><a style="cursor:' . ($disabled ? "default" : "pointer") . ';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 }
 
 /**
@@ -3837,9 +3837,34 @@ function build_dialog($selected_setting = "ui"){
 			$_settings = array();
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
 
-			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0, 'noline' => 1));
-			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22, get_value("countries_default"), "", "", "text", 225);
-			array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200, "noline" => 1));
+			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0,'noline'=>1));
+			$_countries_default = htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
+    		array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200,"noline" => 1));
+
+            $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
+			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
+            $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
+            $zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
+            $oldLocale= setlocale(LC_ALL, NULL);
+            setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
+            asort($zendsupported,SORT_LOCALE_STRING );
+            setlocale(LC_ALL, $oldLocale);
+            $countries_top = explode(',',get_value('countries_top'));
+            $countries_shown = explode(',',get_value('countries_shown'));
+            $tabC = new we_htmlTable(array("border"=>"1", "cellpadding"=>"2", "cellspacing"=>"0"), $rows_num = 1, $cols_num = 4);
+            $i=0;
+            $tabC->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_country]'));
+            $tabC->setCol($i, 1, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_top]'));
+            $tabC->setCol($i, 2, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_show]'));
+            $tabC->setCol($i, 3, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_noshow]'));
+            foreach ($zendsupported as $countrycode => $country) {
+            	$i++;
+            	$tabC->addRow();
+                $tabC->setCol($i, 0, array("class"=>"defaultfont"), CheckAndConvertISObackend($country));
+                $tabC->setCol($i, 1, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="2" '.(in_array($countrycode,$countries_top) ? 'checked':'').' > ');
+                $tabC->setCol($i, 2, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="1" '.(in_array($countrycode,$countries_shown) ? 'checked':'').' > ');
+            	$tabC->setCol($i, 3, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="0" '.(!in_array($countrycode,$countries_top)&& !in_array($countrycode,$countries_shown)  ? 'checked':'').' > ');
+            }
 
 			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
@@ -4289,7 +4314,7 @@ EOF;
 
 function setJavaEditorDisabled(disabled) {
 	document.getElementById("_specify_jeditor_colors").disabled = disabled;
-	document.getElementById("label__specify_jeditor_colors").style.color = (disabled ? "gray" : "");
+	document.getElementById("label__specify_jeditor_colors").style.color = (disabled ? "grey" : "");
 	document.getElementById("label__specify_jeditor_colors").style.cursor = (disabled ? "default" : "pointer");
 	if (document.getElementById("_specify_jeditor_colors").checked) {
 		setEditorColorsDisabled(disabled);
@@ -4312,7 +4337,7 @@ function setColorChooserDisabled(id, disabled) {
 	var td = document.getElementById("color_"+ id);
 	td.setAttribute("class", disabled ? "disabled" : "");
 	td.firstChild.style.cursor = disabled ? "default" : "pointer";
-	document.getElementById("label_"+id).style.color=disabled ? "gray" : "";
+	document.getElementById("label_"+id).style.color=disabled ? "grey" : "";
 }
 
 function displayEditorOptions(editor) {
@@ -4499,7 +4524,7 @@ else {
 			}
 
 			$_attr = ' class="defaultfont" style="width:150px;"';
-			$_attr_dis = ' class="defaultfont" style="width:150px;color:gray;"';
+			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
 			$_template_editor_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -4599,7 +4624,7 @@ else {
 				}
 			}
 			$_attr = ' class="defaultfont" style="width:150px;"';
-			$_attr_dis = ' class="defaultfont" style="width:150px;color:gray;"';
+			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 			$_template_editor_tooltip_font_specify_table = '<table style="margin:0 0 20px 50px;" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_tooltip_font_select_box->getHtmlCode() . '</td>
@@ -5746,6 +5771,7 @@ else {
 				$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
 			}
 
+
 			// Build dialog if user has permission
 			if(we_hasPerm("ADMINISTRATOR")){
 				array_push($_settings, array("headline" => g_l('prefs', '[error_types]'), "html" => $_error_handling_table->getHtmlCode(), "space" => 200));
@@ -5904,7 +5930,7 @@ else {
                         label.style.cursor = document.all ? "hand" : "pointer";
                     } else {
                         elem.disabled = true;
-                        label.style.color = "gray";
+                        label.style.color = "grey";
                         label.style.cursor = "";
                     }
                 }
@@ -6563,10 +6589,11 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 	} elseif($_REQUEST['seem_start_type'] == "weapp"){
 		if(empty($_REQUEST['seem_start_weapp'])){
 			$acError = true;
-			$acErrorMsg = sprintf($l_alert['field_in_tab_notvalid'], $l_prefs["seem_startdocument"], $l_prefs["tab_ui"]) . "\\n";
+			$acErrorMsg = sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs', '[seem_startdocument]'),g_l('prefs', '[tab_ui]'))."\\n";
 		}
-	} elseif($_REQUEST['seem_start_type'] == "object"){
-		if(empty($_REQUEST['seem_start_object'])){
+
+	} elseif ($_REQUEST['seem_start_type']=="object") {
+		if (empty($_REQUEST['seem_start_object'])) {
 			$acError = true;
 			$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
 		} else{

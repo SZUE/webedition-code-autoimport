@@ -160,7 +160,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 		}
 		if(w>=1000){
 			w=1000;
-			self.document.getElementById("incBaum").style.backgroundColor="gray";
+			self.document.getElementById("incBaum").style.backgroundColor="grey";
 		}
 	}
 
@@ -213,8 +213,8 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 					//-->
 					</script>
 		</div>
-		<img id="incBaum" src="<?php print IMAGE_DIR ?>button/icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:gray;' : ''; ?>" onClick="incTree();">
-		<img id="decBaum" src="<?php print IMAGE_DIR ?>button/icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:gray;' : ''; ?>" onClick="decTree();">
-		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 100) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid gray;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
+		<img id="incBaum" src="<?php print IMAGE_DIR ?>button/icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="incTree();">
+		<img id="decBaum" src="<?php print IMAGE_DIR ?>button/icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php print ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onClick="decTree();">
+		<img id="arrowImg" src="<?php print IMAGE_DIR ?>button/icons/direction_<?php print ($_treewidth <= 100) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onClick="toggleTree();">
 	</body>
 </html>

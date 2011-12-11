@@ -137,7 +137,7 @@ function wecf_logic_changed(s) {
 	for (var i=0; i<l; i++) {
 		if (row.childNodes[i].nodeName.toLowerCase() == "td") {
 			row.childNodes[i].style.paddingTop = (val=="OR") ? "10px" : "0";
-			row.childNodes[i].style.borderTop = (val=="OR") ? "1px solid gray" : "0";
+			row.childNodes[i].style.borderTop = (val=="OR") ? "1px solid grey" : "0";
 		}
 	}
 }
@@ -367,31 +367,31 @@ EO_SCRIPT;
 
 				$_adv_row .= '
 				<tr id="filterRow_'.$_i.'">
-					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
+					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
 						(($_i == 0) ? we_html_tools::getPixel(64,1) : we_html_tools::htmlSelect('filterLogic_'.$_i,$_filter_logic,1,$_value['logic'],false,'onchange="wecf_logic_changed(this);" class="defaultfont" style="'.$_styleLogic.'"'))
 						.
 					'</td>
-					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
+					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
 						we_html_tools::htmlSelect('filterSelect_'.$_i,$_filter_args,1,$_value['field'],false,'onchange="wecf_hot();" class="defaultfont" style="'.$_styleLeft.'"')
 						.
 					'</td>
-					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
+					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
 						we_html_tools::htmlSelect('filterOperation_'.$_i,$_filter_op,1,$_value['operation'],false,'onchange="wecf_hot();" class="defaultfont" style="'.$_styleMiddle.'"')
 						.
 					'</td>
-					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
+					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
 						'<input name="filterValue_'.$_i.'" value="'.$_value['value'].'" type="text" onchange="wecf_hot();" class="defaultfont" style="'.$_styleRight.'"/>' .
 					'</td>
-					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
+					<td style="padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
 						we_button::create_button("image:btn_function_plus", "javascript:addRow($_i)",true, 25)
 						.
 					'</td>
-					<td style="padding-left:5px;padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid gray" : "4px;border-top:0").';padding-bottom:'.
+					<td style="padding-left:5px;padding-top: '.($_value['logic']=="OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0").';padding-bottom:'.
 						((isset($_filter[$_key+1]) && $_filter[$_key+1]['logic']== 'OR') ? '10px' : '0') .';">'.
 						(($_i == 0) ? we_html_tools::getPixel(25,1) : we_button::create_button("image:btn_function_trash", "javascript:delRow($_i)",true, 25))
 						.
@@ -556,7 +556,7 @@ EO_SCRIPT;
 							}
 							for (var n = 0; n < _row.cells.length; n++) {
 								_row.cells[n].style.paddingTop = (_logic=="OR") ? "10px" : "0";
-								_row.cells[n].style.borderTop = (_logic=="OR") ? "1px solid gray" : "0";
+								_row.cells[n].style.borderTop = (_logic=="OR") ? "1px solid grey" : "0";
 							}
 						}
 					}

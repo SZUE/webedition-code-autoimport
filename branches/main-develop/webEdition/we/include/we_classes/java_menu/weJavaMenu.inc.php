@@ -265,7 +265,7 @@ if(!$old){
 					$this->h_pOption($men,$opt,$id,$newAst);
 				}
 				else if($mtext) {
-					$opt .=  '<option'.(($e["enabled"]==0) ? (' value="" style="{color:\'gray\'}" disabled') : (' value="'.$e["cmd"].'"')).'>&nbsp;&nbsp;'.$newAst.(($GLOBALS['BROWSER']=="NN" && $e["enabled"]==0) ? "(" : "").$mtext.(($GLOBALS['BROWSER']=="NN" && $e["enabled"]==0) ? ")" : "")."\n";
+					$opt .=  '<option'.(($e["enabled"]==0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="'.$e["cmd"].'"')).'>&nbsp;&nbsp;'.$newAst.(($GLOBALS['BROWSER']=="NN" && $e["enabled"]==0) ? "(" : "").$mtext.(($GLOBALS['BROWSER']=="NN" && $e["enabled"]==0) ? ")" : "")."\n";
 				}
 				else {
 					$opt .=  '<option value="" disabled>&nbsp;&nbsp;'.$newAst."--------\n";

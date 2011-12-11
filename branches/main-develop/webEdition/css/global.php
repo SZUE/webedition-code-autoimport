@@ -105,7 +105,7 @@ if (isset($_REQUEST["WE_BACKENDCHARSET"]) && $_REQUEST["WE_BACKENDCHARSET"] != "
 
 .multichooser {
 	background-color:white;
-	border: 1px gray solid;
+	border: 1px grey solid;
 }
 
 

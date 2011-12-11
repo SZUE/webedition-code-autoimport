@@ -669,7 +669,11 @@ function handleShutdown($code) {
 		@eval('$att = array('.$attribs.');');
 		return $att;
 	}
-
+	
+	function setDoUpdateCode($doUpdateCode=true){
+		$this->doUpdateCode=$doUpdateCode;
+	}
+	
 static function getUsedTemplatesOfTemplate($id, &$arr) {
 	$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . abs($id),$GLOBALS['DB_WE']);
 	$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : '';

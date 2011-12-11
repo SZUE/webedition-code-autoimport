@@ -39,6 +39,9 @@ if ($_memlimit < 32) {
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
 
+//start autoloader!
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+
 // Activate the webEdition error handler
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 if (!defined('WE_ERROR_HANDLER_SET')){

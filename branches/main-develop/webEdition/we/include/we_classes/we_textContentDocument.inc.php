@@ -279,19 +279,11 @@ class we_textContentDocument extends we_textDocument{
 					$this->we_load(LOAD_MAID_DB);
 				}
 				break;
-			case LOAD_REVERT_DB:
-				$sessDat = we_temporaryDocument::revert($this->ID, $this->Table, $this->DB_WE);
-				if($sessDat){
-					$this->i_initSerializedDat($sessDat,false);
-					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
-					$this->OldPath = $this->Path;
-				}else{
-					$this->we_load(LOAD_TEMP_DB);
-				}
+			case LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(LOAD_TEMP_DB);
 				break;
 			case LOAD_SCHEDULE_DB :
 				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".$this->ID."' AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
-
 				if($sessDat) {
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
@@ -423,7 +415,9 @@ class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-
+		if (we_temporaryDocument::isInTempDB($this->ID,$this->Table,$this->DB_WE) ){
+			we_temporaryDocument::delete($this->ID,$this->Table,$this->DB_WE);
+		}
 		return $this->insertAtIndex();
 	}
 
@@ -482,10 +476,12 @@ class we_textContentDocument extends we_textDocument{
 	function we_resaveTemporaryTable(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-		if(!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
-			if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
-		}else{
-			if(!we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+			if (($this->ModDate > $this->Published) && $this->Published){
+			if(!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
+				if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+			}else{
+				if(!we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+			}
 		}
 		return true;
 	}

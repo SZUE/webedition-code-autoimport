@@ -1052,8 +1052,8 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 				document.getElementsByName("CreateIncludedTemplate")[0].checked=false;
 				document.getElementsByName("CreateMasterTemplate")[0].disabled=true;
 				document.getElementsByName("CreateIncludedTemplate")[0].disabled=true;
-				document.getElementById("label_CreateMasterTemplate").style.color = "gray";
-				document.getElementById("label_CreateIncludedTemplate").style.color = "gray";
+				document.getElementById("label_CreateMasterTemplate").style.color = "grey";
+				document.getElementById("label_CreateIncludedTemplate").style.color = "grey";
 			}
 		}
 		';
