@@ -28,8 +28,11 @@ function we_tag_writeVoting($attribs, $content) {
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
 
-	if($id) $pattern = '/_we_voting_answer_(' . $id . ')_?([0-9]+)?/';
-	else $pattern = '/_we_voting_answer_([0-9]+)_?([0-9]+)?/';
+	if($id) {
+		$pattern = '/_we_voting_answer_(' . $id . ')_?([0-9]+)?/';
+	} else {
+		$pattern = '/_we_voting_answer_([0-9]+)_?([0-9]+)?/';
+	}
 
 	$vars = implode(',',array_keys($_REQUEST));
 
@@ -38,8 +41,12 @@ function we_tag_writeVoting($attribs, $content) {
 	if(preg_match_all($pattern, $vars, $matches)){
 		foreach ($matches[0] as $key=>$value){
 			$id = $matches[1][$key];
-			if(!isset($_voting[$id]) || !is_array($_voting[$id])) $_voting[$id] = array();
-			$_voting[$id][]= $_REQUEST[$value];
+			if(!isset($_voting[$id]) || !is_array($_voting[$id])) {
+				$_voting[$id] = array();
+			}
+			if (!empty($_REQUEST[$value])) {
+				$_voting[$id][]= $_REQUEST[$value];
+			}
 		}
 	}
 	$additionalFieldsArray = makeArrayFromCSV($additionalFields);
