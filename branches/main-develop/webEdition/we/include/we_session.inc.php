@@ -29,6 +29,8 @@ if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME'
 if (!isset($_SESSION))
 	@session_start();
 
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
+
 if (!isset($_SESSION["user"])) {
 	$_SESSION["user"] = array(
 		"ID" => "", "Username" => "", "workSpace" => "", "isWeSession" => false
@@ -79,7 +81,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$get_wsn = 0;
 				$get_wsnl = 0;
 
-				$DB_WE->query("SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . abs($_SESSION["user"]["ID"]) . " OR Alias=" . abs($_SESSION["user"]["ID"]));
+				$DB_WE->query("SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]) . " OR Alias=" . intval($_SESSION["user"]["ID"]));
 				while ($DB_WE->next_record()) {
 					// get workspaces
 					$a = makeArrayFromCSV($DB_WE->f("workSpace"));
@@ -171,7 +173,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 								$pid = 0;
 							}
 						}
-					
+
 				}
 				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
