@@ -698,39 +698,34 @@ HTS;
 	}
 
 	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true){
-		$_title = we_htmlElement::htmlTitle($_SERVER['SERVER_NAME'].' '.$title);
-		$_meta_expires = we_htmlElement::htmlMeta(array(
+		return
+		'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>'.
+		we_htmlElement::htmlTitle($_SERVER['SERVER_NAME'].' '.$title).
+		we_htmlElement::htmlMeta(array(
 				"http-equiv" => "expires", "content" => 0
-			));
-		$_meta_no_cache = we_htmlElement::htmlMeta(array(
+			)).
+		we_htmlElement::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"
-			));
-		$_meta_content_type = we_htmlElement::htmlMeta(
+			)).
+		we_htmlElement::htmlMeta(
 				array(
 					"http-equiv" => "content-type",
 					"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
-			));
-		$_meta_imagetoolbar_type = we_htmlElement::htmlMeta(array(
+			)).
+		we_htmlElement::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
-			));
-		$_meta_generator = we_htmlElement::htmlMeta(
+			)).
+		we_htmlElement::htmlMeta(
 				array(
 					"name" => "generator", "content" => 'webEdition'
-			));
-		$_showMessage = $useMessageBox ? we_htmlElement::jsElement("", array(
+			)).
+		we_htmlElement::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')).
+		($useMessageBox ? we_htmlElement::jsElement("", array(
 				"src" => JS_DIR . "we_showMessage.js"
 			)) . we_htmlElement::jsElement("", array(
 				"src" => JS_DIR . "attachKeyListener.js"
-			)) : "";
+			)) : '');
 
-		return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>' .
-			$_title .
-			$_meta_expires .
-			$_meta_no_cache .
-			$_meta_content_type .
-			$_meta_imagetoolbar_type .
-			$_meta_generator .
-			$_showMessage;
 	}
 
 	/**
