@@ -2614,7 +2614,7 @@ class weNewsletterView {
 		@ini_set("memory_limit", "128M");
 
 		$extern=($select==0 || $select==3)?weNewsletterBase::getEmailsFromExtern($this->newsletter->groups[$group-1]->Extern,$emails_only,$group,$this->getGroupBlocks($group)):array();
-		
+
 		if ($select==3) {
 			return $extern;
 		}
@@ -2780,8 +2780,15 @@ class weNewsletterView {
 	}
 
 	function isBlack($email) {
-		$arr=explode(",",trim(strtolower($this->settings["black_list"])));
-		return in_array(trim(strtolower($email)),$arr);
+		static $black=0;
+		if(!$black){
+			//remove whitespaces
+			$black=explode(',',strtolower($this->settings['black_list']));
+			foreach($black as &$b){
+				$b=trim($b," \t\n\r\n");//intentionally duplicate \n!
+			}
+		}
+		return in_array(trim(strtolower($email)," \t\n\r\n"),$black);
 	}
 
 	/**
