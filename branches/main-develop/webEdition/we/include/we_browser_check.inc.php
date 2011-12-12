@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_browserDetect.inc.php');
 function we_browser_check() {
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");

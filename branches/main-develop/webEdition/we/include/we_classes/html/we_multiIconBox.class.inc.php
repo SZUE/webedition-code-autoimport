@@ -83,7 +83,7 @@ abstract class we_multiIconBox{
 
 			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
 
-			$rightContent = '<div style="float:left;" class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>')  . '</div>';
+			$rightContent = '<div '.($mainContent==$leftContent && $leftContent==''?'':'style="float:left;"').' class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>')  . '</div>';
 
 			$out .= '<div style="margin-left:'.$marginLeft.'px" id="div_'.$uniqname.'_'.$i.'">';
 

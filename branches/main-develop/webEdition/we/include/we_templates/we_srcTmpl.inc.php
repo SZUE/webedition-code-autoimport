@@ -47,7 +47,7 @@ if ($we_editmode) {
 			"open" : 305,
 			"closed" : 140
 		}
-		
+
 		function sizeEditor() { // interim
 			var editarea = document.getElementById("editarea");
 			editarea.style.width = "900px";
@@ -72,10 +72,10 @@ if ($we_editmode) {
 
 			if (editarea) {
 				editarea.style.width=editorWidth;
-				
+
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
 					editarea.nextSibling.style.width=editorWidth;
-//editarea.nextSibling.style.width= 700;					
+//editarea.nextSibling.style.width= 700;
 			}
 
 			if (document.weEditorApplet) {
@@ -87,10 +87,10 @@ if ($we_editmode) {
 				if(window.editor.frame.nextSibling!=undefined) {
 					editorWidth-=window.editor.frame.nextSibling.offsetWidth;
 					document.getElementById("reindentButton").style.marginRight=window.editor.frame.nextSibling.offsetWidth-3;
-					
+
 				}
 				window.editor.frame.style.width = editorWidth;
-				
+
 			}
 
 			if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
@@ -114,7 +114,7 @@ if ($we_editmode) {
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
 						document.weEditorApplet.height = editorHeight;
 						document.weEditorApplet.setSize(editorWidth,editorHeight);
-						
+
 					}
 
 

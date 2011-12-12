@@ -2731,7 +2731,9 @@ class weNewsletterView {
 		$db=new DB_WE();
 		// WORKARROUND BUG NR 7450
 		foreach ($this->settings as $key=>$value) {
-			$db->query("REPLACE ".NEWSLETTER_PREFS_TABLE." SET pref_value='".$db->escape($value)."' WHERE pref_name='$key' AND pref_name<>'black_list';");
+			if($key!='black_list'){
+				$db->query('REPLACE '.NEWSLETTER_PREFS_TABLE.' SET pref_value="'.$db->escape($value).'" WHERE pref_name="'.$key.'"');
+			}
 		}
 	}
 
@@ -2739,7 +2741,7 @@ class weNewsletterView {
 		$db=new DB_WE();
 		$name = $db->escape($name);
 		$value = $db->escape($value);
-		$db->query("REPLACE ".NEWSLETTER_PREFS_TABLE." SET pref_value='$value' WHERE pref_name='$name';");
+		$db->query('REPLACE '.NEWSLETTER_PREFS_TABLE.' SET pref_value="'.$db->escape($value).'" WHERE pref_name="'.$name.'"');
 	}
 
 	function getBlackList() {
@@ -2747,7 +2749,7 @@ class weNewsletterView {
 	}
 
 	function isBlack($email) {
-		$arr=explode(",",trim(strtolower($this->settings["black_list"])));
+		$arr=explode(",",trim(strtolower($this->settings['black_list'])));
 		return in_array(trim(strtolower($email)),$arr);
 	}
 
