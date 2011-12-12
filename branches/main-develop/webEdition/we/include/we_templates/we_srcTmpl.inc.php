@@ -66,9 +66,6 @@ if ($we_editmode) {
 
 			if (editarea) {
 				editarea.style.width=editorWidth + "px";
-				
-												console.log("editarea: " + editorWidth);
-
 
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
 					editarea.nextSibling.style.width=editorWidth + "px";
@@ -86,8 +83,6 @@ if ($we_editmode) {
 
 				}
 				window.editor.frame.style.width = editorWidth + "px";
-								console.log("frame: " + editorWidth);
-
 
 			}
 
@@ -117,7 +112,7 @@ if ($we_editmode) {
 
 
 					wizardTable.style.width=editorWidth+"px";
-					wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2 
+					//wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2 
 					tagAreaCol.style.width=(editorWidth-300)+"px";
 					tag_edit_area.style.width=(editorWidth-300)+"px";
 					tagSelectCol.style.width = "250px";
