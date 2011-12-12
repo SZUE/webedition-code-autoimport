@@ -767,9 +767,11 @@ class we_util_File
 			$DirFileObjectsArray= array();
 			$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoy));
 			foreach($DirFileObjects as $name => $object){
-				$DirFileObjectsArray[]=$name;
+				if(substr($name,-2) != '/.'  && substr($name,-3) != '/..'){
+					$DirFileObjectsArray[]=$name;
+				}
 			}
-			sort($DirFileObjectsArray);		
+			sort($DirFileObjectsArray);
 			$tar_object = new Archive_Tar($destinationfile, true);
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
