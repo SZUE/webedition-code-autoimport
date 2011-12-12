@@ -23,8 +23,8 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 
 $parts = array();
 
@@ -47,15 +47,9 @@ if ($we_editmode) {
 			"open" : 305,
 			"closed" : 140
 		}
+		
 
-		function sizeEditor() { // interim
-			var editarea = document.getElementById("editarea");
-			editarea.style.width = "900px";
-			editarea.style.height = "400px";
-
-		}
-
-		function sizeEditor_back() { // to be fixed (on 12.12.11)
+		function sizeEditor() { // to be fixed (on 12.12.11)
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 			var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 			w = Math.max(w,350);
@@ -71,11 +65,13 @@ if ($we_editmode) {
 			var tag_edit_area = document.getElementById("tag_edit_area");
 
 			if (editarea) {
-				editarea.style.width=editorWidth;
+				editarea.style.width=editorWidth + "px";
+				
+												console.log("editarea: " + editorWidth);
+
 
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-					editarea.nextSibling.style.width=editorWidth;
-//editarea.nextSibling.style.width= 700;
+					editarea.nextSibling.style.width=editorWidth + "px";
 			}
 
 			if (document.weEditorApplet) {
@@ -86,10 +82,12 @@ if ($we_editmode) {
 			if(window.editor && window.editor.frame) {
 				if(window.editor.frame.nextSibling!=undefined) {
 					editorWidth-=window.editor.frame.nextSibling.offsetWidth;
-					document.getElementById("reindentButton").style.marginRight=window.editor.frame.nextSibling.offsetWidth-3;
+					document.getElementById("reindentButton").style.marginRight= (window.editor.frame.nextSibling.offsetWidth-3) + "px";
 
 				}
-				window.editor.frame.style.width = editorWidth;
+				window.editor.frame.style.width = editorWidth + "px";
+								console.log("frame: " + editorWidth);
+
 
 			}
 
@@ -119,7 +117,7 @@ if ($we_editmode) {
 
 
 					wizardTable.style.width=editorWidth+"px";
-					//wizardTableButtons.style.width=editorWidth+"px";
+					wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2 
 					tagAreaCol.style.width=(editorWidth-300)+"px";
 					tag_edit_area.style.width=(editorWidth-300)+"px";
 					tagSelectCol.style.width = "250px";
@@ -127,13 +125,13 @@ if ($we_editmode) {
 
 				} else {
 					if (editarea) {
-						editarea.style.height = h - wizardHeight.closed;
+						editarea.style.height = (h - wizardHeight.closed) + "px";
 						if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-							editarea.nextSibling.style.height = h - wizardHeight.closed;
+							editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
 					}
 
 					if(window.editor && window.editor.frame) {
-						window.editor.frame.style.height = h - wizardHeight.closed;
+						window.editor.frame.style.height = (h - wizardHeight.closed) + "px";
 					}
 
 					if (document.weEditorApplet && typeof(document.weEditorApplet.setSize) != "undefined") {
@@ -189,12 +187,12 @@ if ($we_editmode) {
 			} else {
 
 				var editarea = document.getElementById("editarea");
-				editarea.style.height=h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
+				editarea.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
-					editarea.nextSibling.style.height=h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
+					editarea.nextSibling.style.height= (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 
 				if(window.editor && window.editor.frame) {
-					window.editor.frame.style.height = h- (wizardOpen ? wizardHeight.closed : wizardHeight.open);
+					window.editor.frame.style.height = (h- (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 				}
 			}
 
