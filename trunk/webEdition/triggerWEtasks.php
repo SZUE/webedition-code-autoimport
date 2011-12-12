@@ -19,7 +19,14 @@
  */
 
 require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
+
 if(defined("SCHEDULE_TABLE")) {
     trigger_schedule();
 
 }
+if(defined("WORKFLOW_TABLE")){
+	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
+	echo weWorkflowUtility::forceOverdueDocuments();
+}
+?>
+OK
