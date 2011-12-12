@@ -28,8 +28,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_html_tools.inc.php"); 
-//include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_db_tools.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/weModuleInfo.class.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
@@ -3839,7 +3837,7 @@ function build_dialog($selected_setting = "ui"){
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
 
 			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0,'noline'=>1));
-			$_countries_default = htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
+			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
     		array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200,"noline" => 1));
 
             $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
