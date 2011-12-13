@@ -36,8 +36,6 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/module_menu_busers.inc.php");
-
 $port = defined("HTTP_PORT") ? HTTP_PORT : "";
 $protocol=getServerProtocol();
 $jmenu = new weJavaMenu($we_menu_users,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30, "user");
