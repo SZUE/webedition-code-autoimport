@@ -26,6 +26,7 @@ define('WE_NEWSLETTER_STATUS_CONFIR_FAILED',3);
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
+
 function we_tag_addDelNewsletterEmail($attribs, $content) {
 	$useListsArray = isset($_REQUEST["we_use_lists__"]);
 
@@ -375,30 +376,40 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$__db = new DB_WE();
 				$__id=f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"','ID',$__db);
 				if($__id=='') {
+					$newfields=array();
+					
 					$GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"] = substr(md5(time()),4,8);
 					$GLOBALS["WE_NEWSUBSCRIBER_USERNAME"] = $f["subscribe_mail"];
-					$fields = "(`Username`, `Text`,`Password`, `" .
-								$_customerFieldPrefs['customer_salutation_field'] . "`, `" .
-								$_customerFieldPrefs['customer_title_field'] . "`, `" .
-								$_customerFieldPrefs['customer_firstname_field'] . "`, `" .
-								$_customerFieldPrefs['customer_lastname_field'] . "`, `" .
-								$_customerFieldPrefs['customer_email_field'] . "`, `" .
-								$_customerFieldPrefs['customer_html_field'] . "`, " .
-								" `MemberSince`, `IsFolder`, `Icon`)";
-
-					$values = "'" . $__db->escape($f["subscribe_mail"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_mail"]) . "'";
-					$values.= ", '" . $__db->escape($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_salutation"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_title"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_firstname"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_lastname"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_mail"]) . "'";
-					$values.= ", '" . $__db->escape($f["subscribe_html"]) . "'";
-					$values.= ", '" . time() . "'";
-					$values.= ", 0";
-					$values.= ", 'customer.gif'";
-					$__db->query('INSERT INTO ' . CUSTOMER_TABLE . " $fields VALUES($values)");
+					$newfields['Username']=$__db->escape($f["subscribe_mail"]);
+					$newfields['Text']=$__db->escape($f["subscribe_mail"]);
+					$newfields['Password']=$__db->escape($GLOBALS["WE_NEWSUBSCRIBER_PASSWORD"]);
+					$newfields[$_customerFieldPrefs['customer_salutation_field']]=$__db->escape($f["subscribe_salutation"]);
+					$newfields[$_customerFieldPrefs['customer_title_field']]=$__db->escape($f["subscribe_title"]);
+					$newfields[$_customerFieldPrefs['customer_firstname_field']]=$__db->escape($f["subscribe_firstname"]);
+					$newfields[$_customerFieldPrefs['customer_lastname_field']]=$__db->escape($f["subscribe_lastname"]);
+					$newfields[$_customerFieldPrefs['customer_email_field']]=$__db->escape($f["subscribe_mail"]);
+					$newfields[$_customerFieldPrefs['customer_html_field']]=$__db->escape($f["subscribe_html"]);
+					$newfields['MemberSince']=time();
+					$newfields['IsFolder']=0;
+					$newfields['LoginDenied']=0;
+					$newfields['LastLogin']=0;
+					$newfields['LastAccess']=0;
+					$newfields['ModifyDate']=$newfields['MemberSince'];
+					$newfields['ModifiedBy']='frontend';
+					$newfields['ParentID']=0;
+					$hook = new weHook('customer_preSave', '', array('customer'=>$newfields,'from'=>'addDelNL','type'=>'new','isSubscribe'=>$isSubscribe,'isUnsubscribe'=>$isUnsubscribe));
+					$ret=$hook->executeHook();
+										
+					$newfieldsKeyStr=implode(',',array_keys($newfields));
+					$valuesStr='';
+					foreach($newfields as $newfield){
+						$valuesStr.="'".$newfield."',";
+					}
+					
+					$valuesStr=rtrim($valuesStr,",");
+					
+					
+					$__db->query('INSERT INTO ' . CUSTOMER_TABLE . " ($newfieldsKeyStr) VALUES($valuesStr)");
 
 				}
 
