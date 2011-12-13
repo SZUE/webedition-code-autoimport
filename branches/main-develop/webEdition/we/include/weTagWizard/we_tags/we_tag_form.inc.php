@@ -56,5 +56,5 @@ new weTagDataOption('shopliste', false, '', array($id,$nameid,$method,$target), 
 }
 
 
-$this->Attributes=array($id,$name,$nameid,$method,$target,$recipient,$ons,$onerror,$onmailerror,$from,$subject,$charset,$order,$required,$remove,$mimetype,
+$this->Attributes=array($id,$name,$nameid,$method,$target,$recipient,$onsuccess,$onerror,$onmailerror,$from,$subject,$charset,$order,$required,$remove,$mimetype,
 $confirmmail,$forcefrom,$preconfirm,$postconfirm,$doctype,$categories,$tid,$classid,$parentid,$xml,$enctype);

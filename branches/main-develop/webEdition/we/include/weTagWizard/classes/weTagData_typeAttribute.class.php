@@ -26,6 +26,11 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cl
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
 
 class weTagData_typeAttribute extends weTagDataAttribute{
+	
+	/**
+	 * @var boolean/string
+	 */
+	var $Value;
 
 	/**
 	 * @var array

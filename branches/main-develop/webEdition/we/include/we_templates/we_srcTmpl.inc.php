@@ -38,7 +38,8 @@ if ($we_editmode) {
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
 
-	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java' && !$_SESSION['weShowAltMenu']);
+	$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
+	
 	?>
 	<script  type="text/javascript">
 
@@ -66,7 +67,6 @@ if ($we_editmode) {
 
 			if (editarea) {
 				editarea.style.width=editorWidth + "px";
-
 				if(editarea.nextSibling!=undefined && editarea.nextSibling.style)
 					editarea.nextSibling.style.width=editorWidth + "px";
 			}
@@ -76,14 +76,12 @@ if ($we_editmode) {
 
 			}
 
-			if(window.editor && window.editor.frame) {
+			if(window.editor && window.editor.frame) {				
 				if(window.editor.frame.nextSibling!=undefined) {
 					editorWidth-=window.editor.frame.nextSibling.offsetWidth;
 					document.getElementById("reindentButton").style.marginRight= (window.editor.frame.nextSibling.offsetWidth-3) + "px";
-
 				}
-				window.editor.frame.style.width = editorWidth + "px";
-
+				window.editor.frame.style.width = editorWidth + "px";					
 			}
 
 			if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
@@ -353,7 +351,8 @@ function myReplace(text, replaceby) {
 	$we_doc->pHiddenTrans();
 }
 
-function we_getJavaEditorCode($code) {
+function we_getJavaEditorCode($code) {	
+	global $we_doc;
 	$maineditor = '<input type="hidden" name="we_' . $we_doc->Name . '_txt[data]" value="' . htmlspecialchars($code) . '" />
     <applet id="weEditorApplet" style="position:relative;right:-3000px;" name="weEditorApplet" code="Editor.class" archive="editor.jar" width="3000" height="3000" MAYSCRIPT SCRIPTABLE codebase="'.getServerUrl(true) . '/webEdition/editors/template/editor"/>
     <param name="phpext" value=".php"/>
@@ -924,17 +923,19 @@ if ($we_editmode) {
 	$wrap = (isset($_SESSION["we_wrapcheck"]) && $_SESSION["we_wrapcheck"]) ? "virtual" : "off";
 
 	$code = $we_doc->getElement("data");
+
 	if ($we_doc->ClassName == "we_htmlDocument") {
 		$code = $we_doc->getDocumentCode();
 	}
 
 	$maineditor = '<table border="0" cellpadding="0" cellspacing="0" width="95%"><tr><td>';
 
+	$vers = '';
 	if ($_useJavaEditor) {
 		$maineditor .= we_getJavaEditorCode($code);
 	} else {
 		$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") . '" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' . (($GLOBALS['BROWSER'] == "NN6" && (!isset($_SESSION["we_wrapcheck"]) || !$_SESSION["we_wrapcheck"] )) ? '' : ' rows="20" cols="80"') . ' onChange="_EditorFrame.setEditorIsHot(true);" ' . (($GLOBALS["BROWSER"] == "IE") ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"') . '>'
-						. htmlspecialchars($code) . '</textarea>';
+						. htmlspecialchars($code) . '</textarea>';		
 		if ($_SESSION['prefs']['editorMode'] == 'codemirror'||$_SESSION['prefs']['editorMode'] == 'codemirror2') { //Syntax-Highlighting
 			$vers=($_SESSION['prefs']['editorMode'] == 'codemirror'?'':2);
 			$maineditor .= ($vers==2?we_getCodeMirror2Code($code):we_getCodeMirrorCode($code));

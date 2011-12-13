@@ -159,7 +159,7 @@ class weTagData{
 		return $this->Groups;
 	}
 
-	function isDeprected(){
+	function isDeprecated(){
 		return $this->Deprecated;
 	}
 
