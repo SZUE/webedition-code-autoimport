@@ -524,7 +524,7 @@ class weExportFrames extends weModuleFrames {
 
 						$js='
 							if(!'.$this->Tree->topFrame.'.treeData) {
-								' . we_message_reporting::getShowMessageCall("A fatal Error ocured", WE_MESSAGE_ERROR) . '
+								' . we_message_reporting::getShowMessageCall("A fatal Error ocured", we_message_reporting::WE_MESSAGE_ERROR) . '
 							}';
 
 						if(!$_REQUEST["pid"])
@@ -542,7 +542,7 @@ class weExportFrames extends weModuleFrames {
 				case "do_export":
 					if(!we_hasPerm("MAKE_EXPORT")) {
 						$out = we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall( g_l('export',"[no_perms]"), WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall( g_l('export',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
@@ -785,7 +785,7 @@ class weExportFrames extends weModuleFrames {
 											"topmargin" => "5",
 											"onLoad" => ($this->View->export->ExportTo == 'local'
 															? ($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';")
-															: ( we_message_reporting::getShowMessageCall( g_l('export',"[server_finished]"), WE_MESSAGE_NOTICE) )).$this->topFrame.".resize.right.editor.edfooter.hideProgress();")
+															: ( we_message_reporting::getShowMessageCall( g_l('export',"[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) )).$this->topFrame.".resize.right.editor.edfooter.hideProgress();")
 														),
 										null
 							);
@@ -836,7 +836,7 @@ class weExportFrames extends weModuleFrames {
 				break;
 				case 'upload_failed':
 					$out = we_htmlElement::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('export',"[error_download_failed]"), WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export',"[error_download_failed]"), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				break;
 			}

@@ -236,7 +236,7 @@ class weNavigationRuleFrames{
 		$saveButton = we_button::create_button('save', 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 		$acErrorMsg = we_message_reporting::getShowMessageCall(
-				g_l('alert', '[save_error_fields_value_not_valid]'), WE_MESSAGE_ERROR);
+				g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 		return we_html_tools::htmlTop() . STYLESHEET . '
 
 ' . we_htmlElement::jsElement(

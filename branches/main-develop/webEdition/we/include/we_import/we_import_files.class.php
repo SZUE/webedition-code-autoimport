@@ -192,7 +192,7 @@ class we_import_files{
 				function uploadFinished() {
 					refreshTree();
 					' . we_message_reporting::getShowMessageCall(
-				g_l('importFiles', "[finished]"), WE_MESSAGE_NOTICE) . '
+				g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
 				}
 
 				';
@@ -644,10 +644,10 @@ class we_import_files{
 			}
 			unset($_SESSION["WE_IMPORT_FILES_ERRORs"]);
 			$js .= "			" . we_message_reporting::getShowMessageCall(
-					sprintf(g_l('importFiles', "[error]"), $filelist), WE_MESSAGE_ERROR) . "\n";
+					sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
 		} else{
 			$js .= "			" . we_message_reporting::getShowMessageCall(
-					g_l('importFiles', "[finished]"), WE_MESSAGE_NOTICE) . "\n";
+					g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "\n";
 		}
 
 		$js .= "			top.opener.top.we_cmd('load','" . FILE_TABLE . "');\n" . "			top.close();\n" . "			return;\n" . "		}\n" . "		forms = top.imgimportcontent.document.forms;\n" . "		var z=0;\n" . "		var sameName=top.imgimportcontent.document.we_startform.sameName.value;\n" . "		var prefix =  'trash_';\n" . "		var imgs = top.imgimportcontent.document.getElementsByTagName('IMG');\n" . "		for(var i = 0; i<imgs.length; i++){\n" . "			if(imgs[i].id.length > prefix.length && imgs[i].id.substring(0,prefix.length) == prefix){\n" . "					imgs[i].src='" . IMAGE_DIR . "button/btn_function_trash_dis.gif';\n" . "					imgs[i].style.cursor='default';\n" . "			}\n" . "		}\n" . "		for(var i=0; i<forms.length;i++){\n" . "			if(forms[i].name.substring(0,14) == 'we_upload_form') {\n" . "				if(z == weFormNum && forms[i].we_File.value != ''){\n" . "					forms[i].importToID.value = top.imgimportcontent.document.we_startform.importToID.value;\n" . ((we_image_edit::gd_version() > 0) ? ("					forms[i].thumbs.value = top.imgimportcontent.document.we_startform.thumbs.value;\n" . "					forms[i].width.value = top.imgimportcontent.document.we_startform.width.value;\n" . "					forms[i].height.value = top.imgimportcontent.document.we_startform.height.value;\n" . "					forms[i].widthSelect.value = top.imgimportcontent.document.we_startform.widthSelect.value;\n" . "					forms[i].heightSelect.value = top.imgimportcontent.document.we_startform.heightSelect.value;\n" . "					forms[i].keepRatio.value = top.imgimportcontent.document.we_startform.keepRatio.checked ? 1 : 0;\n" . "					forms[i].quality.value = top.imgimportcontent.document.we_startform.quality.value;\n" . "					for(var n=0;n<top.imgimportcontent.document.we_startform.degrees.length;n++){\n" . "						if(top.imgimportcontent.document.we_startform.degrees[n].checked){\n" . "							forms[i].degrees.value = top.imgimportcontent.document.we_startform.degrees[n].value;\nbreak;\n" . "						}\n" . "					}\n") : "") . "					forms[i].sameName.value = sameName;\n" . "					forms[i].weFormNum.value = weFormNum + 1;\n" . "					forms[i].weFormCount.value = forms.length - 2;\n" . "					back_enabled = switch_button_state('back', 'back_enabled', 'disabled');\n" . "					next_enabled = switch_button_state('next', 'next_enabled', 'disabled');\n" . "					document.getElementById('progressbar').style.display = '';\n" . "					forms[i].submit();\n" . "					return;\n" . "				}\n" . "				z++;\n" . "			}\n" . "		}\n" . "	}\n" . "}\n\n";

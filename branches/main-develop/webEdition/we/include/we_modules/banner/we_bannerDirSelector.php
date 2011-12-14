@@ -302,7 +302,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder= new we_folder();
@@ -315,11 +315,11 @@ top.clearEntries();
 			$this->db->query("SELECT ID FROM ".$this->table." WHERE Path='".$this->db->escape($folder->Path)."'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_banner','[group_path_exists]'),$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
 					$we_responseText = g_l('modules_banner','[wrongtext]');
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 		         }else{
 					$folder->we_save();
 		         	print 'var ref;
@@ -366,7 +366,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('modules_banner','[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder= new we_folder();
@@ -377,11 +377,11 @@ top.clearEntries();
 			$this->db->query("SELECT ID,Text FROM ".$this->table." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".abs($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_banner','[group_path_exists]'),$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[%/\\"\']/',$folder->Text)){
 					$we_responseText = g_l('modules_banner','[wrongtext]');
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
 					if(f("SELECT Text FROM ".$this->table." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();

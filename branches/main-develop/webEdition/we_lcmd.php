@@ -43,7 +43,7 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
-	' . we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_save]"), WE_MESSAGE_ERROR) . '
+	' . we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_save]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 }
 ';
 			break;
@@ -53,7 +53,7 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
-	' . we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_publish]"), WE_MESSAGE_ERROR) . '
+	' . we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_publish]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 }
 ';
 			break;

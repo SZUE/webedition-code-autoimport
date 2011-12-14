@@ -60,7 +60,7 @@
 							if($_SESSION['weBackupVars']['retry']>10) {
 								$_SESSION['weBackupVars']['retry'] = 1;
 								print we_htmlElement::jsElement(
-									we_message_reporting::getShowMessageCall(g_l('backup','[error_timeout]'), WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('backup','[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 								exit();
 							}

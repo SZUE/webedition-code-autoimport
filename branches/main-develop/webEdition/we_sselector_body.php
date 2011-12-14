@@ -192,7 +192,7 @@ if($dir_obj){
 	}
 	$dir_obj->close();
 } else{
-	print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+	print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 }
 
 switch($_REQUEST["ord"]){

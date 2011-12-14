@@ -183,7 +183,7 @@ function handleTopRssFeed(sAction){
 			}else{
 				" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[prefs_saved_successfully]'),
-		WE_MESSAGE_NOTICE) . "
+		we_message_reporting::WE_MESSAGE_NOTICE) . "
 			}
 			break;
 		case 'delete':
@@ -262,7 +262,7 @@ function save(){
 	if(!isUrl(sUri)){
 		//" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[invalid_url]'),
-		WE_MESSAGE_ERROR) . "
+		we_message_reporting::WE_MESSAGE_ERROR) . "
 		//return;
 	}
 	var oSctConf=_fo.elements['sct_conf'];
@@ -285,7 +285,7 @@ function save(){
 	displayRssFeed(sUri,true);
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[prefs_saved_successfully]'),
-		WE_MESSAGE_NOTICE) . "
+		we_message_reporting::WE_MESSAGE_NOTICE) . "
 	opener.top.weNavigationHistory.navigateReload();
 	self.close();
 }
@@ -296,7 +296,7 @@ function preview(){
 	if(!isUrl(sUri)){
 		" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[invalid_url]'),
-		WE_MESSAGE_ERROR) . "
+		we_message_reporting::WE_MESSAGE_ERROR) . "
 		//return;
 	}
 	previewPrefs();

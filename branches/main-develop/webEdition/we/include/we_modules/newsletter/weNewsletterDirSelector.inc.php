@@ -44,7 +44,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder= new we_folder();
@@ -62,11 +62,11 @@ top.clearEntries();
 			$this->db->query("SELECT ID FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor',"[folder][response_path_exists]"),$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor',"[folder][we_filename_notValid]"),$folder->Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
 					$folder->we_save();
 					print 'var ref;
@@ -106,7 +106,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if($txt==""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_folder.inc.php");
 			$folder= new we_folder();
@@ -120,11 +120,11 @@ top.clearEntries();
 			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".abs($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor',"[folder][response_path_exists]"),$folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('/[^a-z0-9\._\-]/i',$folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor',"[folder][we_filename_notValid]"),$folder->Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
 					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();

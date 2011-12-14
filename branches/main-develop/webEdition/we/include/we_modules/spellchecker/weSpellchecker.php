@@ -251,7 +251,7 @@ print STYLESHEET;
 				setTimeout("spellcheck()",1000);
 				retryjava++;
 			} else {
-				<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[no_java]'), WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[no_java]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				self.close();
 			}
 		}
@@ -297,7 +297,7 @@ print STYLESHEET;
 									fadeout("spinner",80,10,10);
 								}
 								weButton.enable("check");
-								<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[finished]'), WE_MESSAGE_NOTICE); ?>
+								<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[finished]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 							}
 					}
 			} else {
@@ -312,7 +312,7 @@ print STYLESHEET;
 			hiddenCmd.dispatch("addWord",currentWord);
 			findNext();
 		} else {
-			<?php print we_message_reporting::getShowMessageCall( "A fatal error occured", WE_MESSAGE_ERROR); ?>
+			<?php print we_message_reporting::getShowMessageCall( "A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR); ?>
 		}
 	}
 

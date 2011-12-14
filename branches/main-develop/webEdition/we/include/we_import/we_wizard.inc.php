@@ -458,7 +458,7 @@ HTS;
 											.	"	top.frames['wizbody'].addLog(\"<br>" . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");\n"
 											.	"}\n";
 							} else {
-								$JScript	.=	we_message_reporting::getShowMessageCall(g_l('import','[finish_import]'), WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);';
+								$JScript	.=	we_message_reporting::getShowMessageCall(g_l('import','[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);';
 							}
 
 						}

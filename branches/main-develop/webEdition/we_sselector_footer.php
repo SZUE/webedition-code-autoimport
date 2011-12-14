@@ -48,11 +48,11 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
        new jsWindow(url,"we_fseditFile",-1,-1,600,500,true,false,true,true);
       }
       else {
-      	<?php print we_message_reporting::getShowMessageCall( g_l('fileselector',"[edit_file_nok]"), WE_MESSAGE_ERROR); ?>
+      	<?php print we_message_reporting::getShowMessageCall( g_l('fileselector',"[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
      	}
      }
      else{
-     	<?php print we_message_reporting::getShowMessageCall( g_l('fileselector',"[edit_file_is_folder]"), WE_MESSAGE_ERROR ); ?>
+     	<?php print we_message_reporting::getShowMessageCall( g_l('fileselector',"[edit_file_is_folder]"), we_message_reporting::WE_MESSAGE_ERROR ); ?>
      }
   }
 

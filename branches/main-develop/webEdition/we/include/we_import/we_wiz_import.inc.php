@@ -367,7 +367,7 @@ class we_wizard_import extends we_wizard {
 			"			var fl = f.elements['uploaded_xml_file'].value;\n" .
 			"			var ext = '';\n" .
 			"			if (f.elements['v[rdofloc]'][0].checked==true && fs!='/') {\n" .
- 			"				if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import',"[invalid_path]"), WE_MESSAGE_ERROR)) . "; break; }\n" .
+ 			"				if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import',"[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR)) . "; break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
 			"			}\n" .
@@ -376,7 +376,7 @@ class we_wizard_import extends we_wizard {
 			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			}\n" .
 			"			else if (fs=='/' || fl=='') {\n" .
-			"				" . (we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR)) . "break;\n" .
+			"				" . (we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;\n" .
 			"			}\n" .
 			"			f.step.value = 2;\n " .
 						// timing Problem with Safari
@@ -543,7 +543,7 @@ class we_wizard_import extends we_wizard {
 			$_return[1] = '
 						<script  type="text/javascript">
 							' . $functions . '
-							' . we_message_reporting::getShowMessageCall( sprintf(g_l('import','[upload_failed]'),round($maxsize / (1024*1024),3) . "MB"), WE_MESSAGE_ERROR ) . '
+							' . we_message_reporting::getShowMessageCall( sprintf(g_l('import','[upload_failed]'),round($maxsize / (1024*1024),3) . "MB"), we_message_reporting::WE_MESSAGE_ERROR ) . '
 							handle_event("previous");
 						</script>
 			';
@@ -556,7 +556,7 @@ class we_wizard_import extends we_wizard {
 			$_return[1] = '
 						<script  type="text/javascript">
 							' . $functions . '
-							' . we_message_reporting::getShowMessageCall(g_l('import','[format_unknown]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('import','[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");
 						</script>
 			';
@@ -582,7 +582,7 @@ class we_wizard_import extends we_wizard {
 					$_return[1] = '
 						<script  type="text/javascript">
 							' . $functions . '
-							' . we_message_reporting::getShowMessageCall(g_l('import','[backup_file_found]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('import','[backup_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");
 						</script>
 					';
@@ -593,7 +593,7 @@ class we_wizard_import extends we_wizard {
 					$_return[1] = '
 						<script  type="text/javascript">
 							' . $functions . '
-							' . we_message_reporting::getShowMessageCall(g_l('import','[customer_import_file_found]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('import','[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");
 						</script>
 					';
@@ -603,7 +603,7 @@ class we_wizard_import extends we_wizard {
 				$_return[1] = '
 						<script  type="text/javascript">
 							' . $functions . '
-							' . we_message_reporting::getShowMessageCall(g_l('import','[format_unknown]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('import','[format_unknown]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");
 						</script>
 				';
@@ -974,7 +974,7 @@ class we_wizard_import extends we_wizard {
 			"			var fl = f.elements['uploaded_xml_file'].value;\n" .
 			"			var ext = '';\n" .
 			"			if ( (f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
- 			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import',"[invalid_path]"), WE_MESSAGE_ERROR) . "break; }\n" .
+ 			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import',"[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
 			"			}\n" .
@@ -983,7 +983,7 @@ class we_wizard_import extends we_wizard {
 			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			}\n" .
 			"			 else if (fs=='/' || fl=='') {\n" .
-			"				" . we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR) . "break;\n" .
+			"				" . we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) . "break;\n" .
 			"			}\n".
 			"			if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements['noDocTypeTemplateId'].value;\n";
 		$functions .= (defined("OBJECT_TABLE"))?
@@ -996,8 +996,8 @@ class we_wizard_import extends we_wizard {
 			"			} else {\n";
 
 		$functions .= (defined("OBJECT_TABLE"))?
-			"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), WE_MESSAGE_ERROR) . "\n" :
-			"				" . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), WE_MESSAGE_ERROR) . "\n";
+			"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n" :
+			"				" . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
 		$functions .= "			}\n" .
 			"			break;\n" .
 			"		case 'cancel':\n" .
@@ -1404,7 +1404,7 @@ HTS;
 			"			iElements = parseInt(f.elements['we_select'].options[f.elements['we_select'].selectedIndex].value);\n" .
 			"			if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) { \n" .
 			"				msg = \"" . g_l('import',"[num_elements]") . "\" +iElements;" .
-			"				" . we_message_reporting::getShowMessageCall("msg", WE_MESSAGE_ERROR, true) . "\n" .
+			"				" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "\n" .
 			"			} else {\n" .
 			"				f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;\n" .
 			"				f.step.value = 3;\n" .
@@ -1715,7 +1715,7 @@ HTS;
 			"			var fl = f.elements['uploaded_csv_file'].value;\n" .
 			"			var ext = '';\n" .
 			"			if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {\n" .
- 			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import',"[invalid_path]"), WE_MESSAGE_ERROR) . "break; }\n" .
+ 			"				if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import',"[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . "break; }\n" .
  			"				ext = fs.substr(fs.length-4,4);\n" .
 			"				f.elements['v[import_from]'].value = fs;\n" .
 			"			}\n" .
@@ -1724,9 +1724,9 @@ HTS;
 			"				f.elements['v[import_from]'].value = fl;\n" .
 			"			}\n" .
 			"			else if (fs=='/' || fl=='') {\n" .
-			"				" . (we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR)) . "break;\n" .
+			"				" . (we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR)) . "break;\n" .
 			"			}\n" .
-			"			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import',"[select_seperator]"), WE_MESSAGE_ERROR) . "}\n" .
+			"			if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import',"[select_seperator]"), we_message_reporting::WE_MESSAGE_ERROR) . "}\n" .
 			"			if (fvalid) {\n" .
 			"				f.step.value = 2;\n" .
 			"				we_submit_form(f, 'wizbody', '".$this->path."');\n" .
@@ -1939,10 +1939,10 @@ HTS;
 			"				we_submit_form(f, 'wizbody', '".$this->path."');\n" .
 			"			}\n" .
 			"			else {\n" .
-			"				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), WE_MESSAGE_ERROR) . "\n";
+			"				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import',"[select_source_file]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
 		$functions .= (defined("OBJECT_TABLE"))?
-			"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), WE_MESSAGE_ERROR) . "\n" :
-			"				else " . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), WE_MESSAGE_ERROR) . "\n";
+			"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n" :
+			"				else " . we_message_reporting::getShowMessageCall(g_l('import',"[select_docType]"), we_message_reporting::WE_MESSAGE_ERROR) . "\n";
 		$functions .= "			}\n" .
 			"			break;\n" .
 			"		case 'cancel':\n" .

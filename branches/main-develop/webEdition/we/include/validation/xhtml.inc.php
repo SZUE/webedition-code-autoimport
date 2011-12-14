@@ -57,7 +57,7 @@
                             print '<p>' . sprintf(g_l('xhtmlDebug','[wrong_attribute][text]') . $removeText, $k, $element) . '</p>';
 				        }
 				        if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs][xhtml_show_wrong_js']){
-				        	print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(sprintf(sprintf(g_l('xhtmlDebug','[wrong_attribute][error_log]'),$k,$element) . $removeText), WE_MESSAGE_ERROR));
+				        	print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(sprintf(sprintf(g_l('xhtmlDebug','[wrong_attribute][error_log]'),$k,$element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR));
 				        }
 				        if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
 				            error_log(sprintf(g_l('xhtmlDebug','[wrong_attribute][error_log]'),$k,$element) . $removeText);
@@ -77,7 +77,7 @@
                                 print '<p>' . sprintf(g_l('xhtmlDebug','[missing_attribute][text]'),$required,$element) . '</p>';
                             }
                             if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
-                            	print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( sprintf(g_l('xhtmlDebug','[missing_attribute][error_log]'),$required,$element) , WE_MESSAGE_ERROR));
+                            	print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( sprintf(g_l('xhtmlDebug','[missing_attribute][error_log]'),$required,$element) , we_message_reporting::WE_MESSAGE_ERROR));
 
                             }
                             if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
@@ -94,7 +94,7 @@
                     print '<p>' . sprintf(g_l('xhtmlDebug','[wrong_element][text]'),$element) . '</p>';
                 }
                 if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
-                	print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( sprintf(g_l('xhtmlDebug','[wrong_element][error_log]'), $element) , WE_MESSAGE_ERROR));
+                	print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( sprintf(g_l('xhtmlDebug','[wrong_element][error_log]'), $element) , we_message_reporting::WE_MESSAGE_ERROR));
                 }
                 if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
                     error_log(sprintf(g_l('xhtmlDebug','[wrong_element][error_log]'),$element));

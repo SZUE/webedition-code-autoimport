@@ -96,12 +96,12 @@
                 $_service = new validationService($_REQUEST['id'],'custom',$_REQUEST['category'],$_REQUEST['name'],$_REQUEST['host'],$_REQUEST['path'],$_REQUEST['s_method'],$_REQUEST['varname'],$_REQUEST['checkvia'], $_REQUEST['ctype'],$_REQUEST['additionalVars'],$_REQUEST['fileEndings'],$_REQUEST['active']);
                 if($selectedService = validation::saveService($_service)){
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][saved_success]'), WE_MESSAGE_NOTICE)
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
                     );
                 } else {
                 	$selectedService = $_service;
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), WE_MESSAGE_ERROR)
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
                     );
                 }
                 break;
@@ -109,7 +109,7 @@
                 $_service = new validationService($_REQUEST['id'],'custom',$_REQUEST['category'],$_REQUEST['name'],$_REQUEST['host'],$_REQUEST['path'],$_REQUEST['s_method'],$_REQUEST['varname'],$_REQUEST['checkvia'], $_REQUEST['ctype'],$_REQUEST['additionalVars'],$_REQUEST['fileEndings'],$_REQUEST['active']);
                 if(validation::deleteService($_service)){
                     print we_htmlElement::jsElement(
-                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][delete_success]'), WE_MESSAGE_NOTICE)
+                    	we_message_reporting::getShowMessageCall(g_l('validation','[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
                     );
                 } else {
                     print we_htmlElement::jsElement(

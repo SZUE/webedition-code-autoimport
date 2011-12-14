@@ -79,7 +79,7 @@ if (isset($_FILES['we_uploadFile'])) {
 $maxsize = getUploadMaxFilesize(false);
 
 
-$yes_button = we_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector',"[edit_file_nok]"),WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
+$yes_button = we_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector',"[edit_file_nok]"),we_message_reporting::WE_MESSAGE_ERROR) . "} else document.forms['we_form'].submit();");
 $cancel_button = we_button::create_button("cancel", "javascript:self.close();");
 $buttons = we_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
@@ -103,7 +103,7 @@ self.focus();
    opener.top.fscmd.selectDir();
  self.close();
 <?php }elseif($we_alerttext){
-	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
+	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 } ?>
 //-->
 </script>

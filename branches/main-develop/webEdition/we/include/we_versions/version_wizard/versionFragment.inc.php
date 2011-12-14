@@ -74,7 +74,7 @@ class versionFragment extends taskFragment
 				'<script type="text/javascript">
 			' . we_message_reporting::getShowMessageCall(
 						addslashes($responseText ? $responseText : ""),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 

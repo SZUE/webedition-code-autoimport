@@ -56,7 +56,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 		if (f.input_pass) {
 			if (f.oldtab.value == 0) {
 				if (f.input_pass.value.length < 4 && f.input_pass.value.length != 0) {
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[password_alert]"), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_users',"[password_alert]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				} else {
 					if (f.input_pass.value != "") {

@@ -152,7 +152,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('tools','[no_perms]'),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						$this->Model = new searchtool();
 						$_REQUEST['home'] = true;
 						break;
@@ -180,7 +180,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('searchtool',"[nameTooLong]"),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if (stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')) {
@@ -188,7 +188,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('searchtool',"[no_hochkomma]"),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -197,7 +197,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('tools','[wrongtext]'),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -208,7 +208,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('tools','[name_empty]'),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					$oldpath = $this->Model->Path;
@@ -219,7 +219,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('tools','[name_exists]'),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if ($this->Model->isSelf()) {
@@ -227,7 +227,7 @@ class searchtoolView extends weToolView
 								we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
 												g_l('tools','[path_nok]'),
-												WE_MESSAGE_ERROR));
+												we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -269,7 +269,7 @@ class searchtoolView extends weToolView
        ' . $this->editorHeaderFrame . '.location.reload();
        ' . we_message_reporting::getShowMessageCall(
 										($this->Model->IsFolder == 1 ? g_l('searchtool',"[save_group_ok]") : g_l('searchtool',"[save_ok]")),
-										WE_MESSAGE_NOTICE) . '
+										we_message_reporting::WE_MESSAGE_NOTICE) . '
        ' . $this->topFrame . '.hot=0;
       ');
 
@@ -289,7 +289,7 @@ class searchtoolView extends weToolView
        ' . $this->editorHeaderFrame . '.location.reload();
        ' . we_message_reporting::getShowMessageCall(
 										($this->Model->IsFolder == 1 ? g_l('searchtool',"[save_group_failed]") : g_l('searchtool',"[save_failed]")),
-										WE_MESSAGE_ERROR) . '
+										we_message_reporting::WE_MESSAGE_ERROR) . '
        ' . $this->topFrame . '.hot=0;
       ');
 					}
@@ -323,7 +323,7 @@ class searchtoolView extends weToolView
         ' . $this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
 												($this->Model->IsFolder == 1 ? g_l('tools','[group_deleted]') : g_l('tools','[item_deleted]')),
-												WE_MESSAGE_NOTICE) . '\',500);
+												we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 
       ');
 						$this->Model = new searchtool();
@@ -350,7 +350,7 @@ class searchtoolView extends weToolView
     if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
      ' . we_message_reporting::getShowMessageCall(
 				g_l('searchtool','[predefinedSearchmodify]'),
-				WE_MESSAGE_ERROR) . '
+				we_message_reporting::WE_MESSAGE_ERROR) . '
      break;
     }
     else if (' . $this->editorBodyFrame . '.loaded) {
@@ -370,7 +370,7 @@ class searchtoolView extends weToolView
     else {
      ' . we_message_reporting::getShowMessageCall(
 				g_l('tools','[nothing_to_save]'),
-				WE_MESSAGE_ERROR) . '
+				we_message_reporting::WE_MESSAGE_ERROR) . '
     }
 
     break;
@@ -379,19 +379,19 @@ class searchtoolView extends weToolView
     if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
      ' . we_message_reporting::getShowMessageCall(
 				g_l('searchtool','[predefinedSearchdelete]'),
-				WE_MESSAGE_ERROR) . '
+				we_message_reporting::WE_MESSAGE_ERROR) . '
      return;
     }
     if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
      ' . we_message_reporting::getShowMessageCall(
 				g_l('tools','[nothing_to_delete]'),
-				WE_MESSAGE_ERROR) . '
+				we_message_reporting::WE_MESSAGE_ERROR) . '
      return;
     }
     ' . (!we_hasPerm(
 				"DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
 				g_l('tools','[no_perms]'),
-				WE_MESSAGE_ERROR)) : ('
+				we_message_reporting::WE_MESSAGE_ERROR)) : ('
         if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
          if (confirm("' . g_l('searchtool','[confirmDel]') . '")) {
@@ -407,7 +407,7 @@ class searchtoolView extends weToolView
         } else {
          ' . we_message_reporting::getShowMessageCall(
 				g_l('tools','[nothing_to_delete]'),
-				WE_MESSAGE_ERROR) . '
+				we_message_reporting::WE_MESSAGE_ERROR) . '
         }
 
       ')) . '
@@ -648,7 +648,7 @@ class searchtoolView extends weToolView
    		if(' . searchtoolsearch::checkRightTempTable() . ' && ' . searchtoolsearch::checkRightDropTable() . ') {
    			' . we_message_reporting::getShowMessageCall(
 						g_l('searchtool',"[noTempTableRightsSearch]"),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
       	}
    		else {
 		    var Checks = new Array();
@@ -667,7 +667,7 @@ class searchtoolView extends weToolView
 		      if(Checks.length==0) {
 		     ' . we_message_reporting::getShowMessageCall(
 						g_l('searchtool',"[nothingCheckedAdv]"),
-						WE_MESSAGE_ERROR) . '
+						we_message_reporting::WE_MESSAGE_ERROR) . '
 		    }
 		     }
 		     if("' . $whichSearch . '"=="DocSearch") {
@@ -684,7 +684,7 @@ class searchtoolView extends weToolView
 		       if(Checks.length==0) {
 		     ' . we_message_reporting::getShowMessageCall(
 						g_l('searchtool',"[nothingCheckedTmplDoc]"),
-						WE_MESSAGE_ERROR) . '
+						we_message_reporting::WE_MESSAGE_ERROR) . '
 		    }
 		     }
 		     if("' . $whichSearch . '"=="TmplSearch") {
@@ -701,7 +701,7 @@ class searchtoolView extends weToolView
 		       if(Checks.length==0) {
 		     ' . we_message_reporting::getShowMessageCall(
 						g_l('searchtool',"[nothingCheckedTmplDoc]"),
-						WE_MESSAGE_ERROR) . '
+						we_message_reporting::WE_MESSAGE_ERROR) . '
 		    }
 		     }
 
@@ -1423,7 +1423,7 @@ class searchtoolView extends weToolView
 			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
 			' . we_message_reporting::getShowMessageCall(
 						g_l('versions','[resetAllVersionsOK]'),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
 			// reload current document => reload all open Editors on demand
 
 			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
@@ -1476,7 +1476,7 @@ class searchtoolView extends weToolView
 		if(check==false) {
 			' . we_message_reporting::getShowMessageCall(
 						g_l('versions','[notChecked]'),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
 		}
 		else {
 			Check = confirm("' . g_l('versions','[resetVersionsSearchtool]') . '");
@@ -1537,7 +1537,7 @@ class searchtoolView extends weToolView
 		if(check==false) {
 			' . we_message_reporting::getShowMessageCall(
 						g_l('searchtool','[notChecked]'),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
 		}
 		else {
 
@@ -1574,7 +1574,7 @@ class searchtoolView extends weToolView
 	     	document.getElementById("resetBusyDocSearch").innerHTML = "";
 	     	' . we_message_reporting::getShowMessageCall(
 						g_l('searchtool','[publishOK]'),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 	    },
 	    failure: function(o) {
@@ -2339,7 +2339,7 @@ class searchtoolView extends weToolView
 						we_htmlElement::jsElement(
 								we_message_reporting::getShowMessageCall(
 										g_l('searchtool',"[noTempTableRightsSearch]"),
-										WE_MESSAGE_NOTICE));
+										we_message_reporting::WE_MESSAGE_NOTICE));
 			} else {
 				$thisObj->searchclass->createTempTable();
 

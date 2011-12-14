@@ -772,12 +772,12 @@ class copyFolderFrag extends taskFragment{
 			if(!isset($_SESSION["WE_COPY_OBJECTS"])){
 				print we_htmlElement::jsElement(
 					'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();');
+						g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			} else{
 				unset($_SESSION["WE_COPY_OBJECTS"]);
 				print we_htmlElement::jsElement(
 					'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						g_l('copyFolder', "[copy_success]"), WE_MESSAGE_NOTICE) . 'top.close();');
+						g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			}
 		}
 	}

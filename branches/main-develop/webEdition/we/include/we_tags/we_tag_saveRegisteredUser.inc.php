@@ -107,7 +107,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							echo '<a name="emos_name" title="register" rel="'.md5($_REQUEST["s"]["ID"]).'" rev="1" ></a>';
 						}
 
-						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST['s']['Username']), WE_MESSAGE_FRONTEND));
+						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 					}
 
 				}else{ // Password oder Username leer!
@@ -122,7 +122,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						if(!$userempty){
 							$userempty = g_l('customer','[username_empty]');
 						}
-                        print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($userempty, WE_MESSAGE_FRONTEND));
+                        print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($userempty, we_message_reporting::WE_MESSAGE_FRONTEND));
 
 					}else if(strlen($_REQUEST['s']['Password']) == 0){
 
@@ -132,7 +132,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 							echo '<a name="emos_name" title="register" rel="noUser" rev="1" ></a>';
 						}
-						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($passempty, WE_MESSAGE_FRONTEND));
+						print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back();' . we_message_reporting::getShowMessageCall($passempty, we_message_reporting::WE_MESSAGE_FRONTEND));
 					}
 				}
 
@@ -185,7 +185,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 							$userexists = g_l('customer','[username_exists]');
 					}
 
-					print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST['s']['Username']), WE_MESSAGE_FRONTEND) );
+					print getHtmlTag('script',array('type'=>'text/javascript'), 'history.back(); ' . we_message_reporting::getShowMessageCall(sprintf($userexists,$_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND) );
 				}
 
 				//die neuen daten in die session schreiben

@@ -593,7 +593,7 @@
                         } else {
                         	//	This is a javascript:history link, to get back to the last document.
                         	if(substr($linkArray[2][$i],0,10) == "javascript" && strpos($linkArray[2][$i],"history")){
-                       			$javascriptCode = " onclick=\"" . we_message_reporting::getShowMessageCall(g_l('SEEM',"[link_does_not_work]"), WE_MESSAGE_FRONTEND) . "\" onMouseOver=\"top.info('" . g_l('SEEM',"[info_link_does_not_work]") . "')\" onMouseOut=\"top.info('');\"";
+                       			$javascriptCode = " onclick=\"" . we_message_reporting::getShowMessageCall(g_l('SEEM',"[link_does_not_work]"), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onMouseOver=\"top.info('" . g_l('SEEM',"[info_link_does_not_work]") . "')\" onMouseOut=\"top.info('');\"";
     	                        $destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://\"" . $linkArray[4][$i] . $javascriptCode . ">", $destCode);
 
                         	} else {

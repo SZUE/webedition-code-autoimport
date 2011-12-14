@@ -64,10 +64,10 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	    }
 
 	    if ( $messaging->save_addresses($addrbook) ) {
-	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( g_l('modules_messaging','[addr_book_saved]'), WE_MESSAGE_NOTICE) . "\n}\n";
+	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( g_l('modules_messaging','[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . "\n}\n";
 
 	    } else {
-	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( g_l('modules_messaging','[error_occured]'), WE_MESSAGE_ERROR) . "\n}\n";
+	    	print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall( g_l('modules_messaging','[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR) . "\n}\n";
 
 	    }
 	 } else {

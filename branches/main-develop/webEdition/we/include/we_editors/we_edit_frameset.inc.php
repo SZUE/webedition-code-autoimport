@@ -419,7 +419,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 			<?php
 				if( isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"] ){
 
-					print we_message_reporting::getShowMessageCall(g_l('SEEM',"[alert][close_include]"), WE_MESSAGE_ERROR)
+					print we_message_reporting::getShowMessageCall(g_l('SEEM',"[alert][close_include]"), we_message_reporting::WE_MESSAGE_ERROR)
 					?>
 			top.close();
 					<?php

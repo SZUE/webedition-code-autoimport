@@ -42,7 +42,7 @@
 				new jsWindow(url,"check_glossary",-1,-1,730,400,true,false,true);
 
 			} else {
-				<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[glossary_check_not_avalaible]"), WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary',"[glossary_check_not_avalaible]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 
 			}
 			break;

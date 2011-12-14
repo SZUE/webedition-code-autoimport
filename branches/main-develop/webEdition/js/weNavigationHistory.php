@@ -79,7 +79,7 @@ function weNavigationHistory() {
 
 			} else {
 				<?php
-					print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][first_document]'), WE_MESSAGE_NOTICE);
+					print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][first_document]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				?>
 			}
 		} else {
@@ -104,7 +104,7 @@ function weNavigationHistory() {
 
 			} else {
 				<?php
-					print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][last_document]'), WE_MESSAGE_NOTICE);
+					print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][last_document]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				?>
 			}
 		} else {
@@ -122,7 +122,7 @@ function weNavigationHistory() {
 
 			} else { // reopen current Editor
 				<?php
-					print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][no_open_document]'), WE_MESSAGE_NOTICE);
+					print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][no_open_document]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				?>
 
 				// this.saveInHistory = false;
@@ -137,7 +137,7 @@ function weNavigationHistory() {
 
 	this.getNoDocumentMessage = function() {
 		<?php
-			print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][no_entry]'), WE_MESSAGE_NOTICE);
+			print we_message_reporting::getShowMessageCall(g_l('alert','[navigation][no_entry]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		?>
 	}
 }

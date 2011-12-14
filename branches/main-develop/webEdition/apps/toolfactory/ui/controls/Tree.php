@@ -25,7 +25,7 @@
 /**
  * @see we_ui_controls_Tree
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 Zend_Loader::loadClass('we_ui_controls_Tree');
 
 /**

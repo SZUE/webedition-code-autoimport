@@ -32,8 +32,7 @@ class charsetHandler{
 	* @return charsetHandler
 	* initialises with all available charsets
 	*/
-	function charsetHandler(){
-
+	function __construct(){
 		//	First ISO-8859-charsets
 		$_charsets["west_european"]["national"] = "West Europe";				//	Here is the name of the country in mother language
 		$_charsets["west_european"]["charset"] = "ISO-8859-1";

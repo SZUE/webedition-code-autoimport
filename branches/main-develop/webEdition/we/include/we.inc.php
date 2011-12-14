@@ -171,7 +171,3 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 		unset($header);
 	}
 }
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_message_reporting/we_message_reporting.class.php');
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/weModuleInfo.class.php');

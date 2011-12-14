@@ -54,7 +54,7 @@ class weNavigationRuleControl{
 					if(!preg_match(
 							'%^[äöüßa-z0-9_-]+$%i', $this->NavigationRule->NavigationName)){
 						$js = we_message_reporting::getShowMessageCall(
-								g_l('navigation', '[rules][invalid_name]'), WE_MESSAGE_ERROR);
+								g_l('navigation', '[rules][invalid_name]'), we_message_reporting::WE_MESSAGE_ERROR);
 						$save = false;
 					}
 
@@ -71,7 +71,7 @@ class weNavigationRuleControl{
 					if($db->num_rows()){
 						$js = we_message_reporting::getShowMessageCall(
 								sprintf(
-									g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), WE_MESSAGE_ERROR);
+									g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
 						$save = false;
 					}
 
@@ -94,7 +94,7 @@ class weNavigationRuleControl{
 						";
 						$js .= we_message_reporting::getShowMessageCall(
 								sprintf(
-									g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), WE_MESSAGE_NOTICE);
+									g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
 					break;
 

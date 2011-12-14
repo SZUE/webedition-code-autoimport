@@ -533,7 +533,7 @@ abstract class we_versions_wizard
 							if(' . $jsCheckboxCtIf . ') {
 								' . we_message_reporting::getShowMessageCall(
 				g_l('versions','[notCheckedContentType]'),
-				WE_MESSAGE_NOTICE) . '
+				we_message_reporting::WE_MESSAGE_NOTICE) . '
 							}
 							else {
 								selectedValue="";
@@ -858,12 +858,12 @@ abstract class we_versions_wizard
 							if(' . $jsCheckboxCtIf . ') {
 								' . we_message_reporting::getShowMessageCall(
 				g_l('versions','[notCheckedContentType]'),
-				WE_MESSAGE_NOTICE) . '
+				we_message_reporting::WE_MESSAGE_NOTICE) . '
 							}
 							else if(date=="") {
 								' . we_message_reporting::getShowMessageCall(
 				g_l('versions','[notCheckedDate]'),
-				WE_MESSAGE_NOTICE) . '
+				we_message_reporting::WE_MESSAGE_NOTICE) . '
 							}
 							else {
 								selectedValue="";
@@ -1578,7 +1578,7 @@ abstract class we_versions_wizard
 						' . we_message_reporting::getShowMessageCall(
 				addslashes(
 						g_l('versions','[deleteDateVersionsOK]') ? g_l('versions','[deleteDateVersionsOK]') : ""),
-				WE_MESSAGE_NOTICE) . '
+				we_message_reporting::WE_MESSAGE_NOTICE) . '
 						// reload current document => reload all open Editors on demand
 
 						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
@@ -1610,7 +1610,7 @@ abstract class we_versions_wizard
 						' . we_message_reporting::getShowMessageCall(
 				addslashes(
 						g_l('versions','[resetAllVersionsOK]') ? g_l('versions','[resetAllVersionsOK]') : ""),
-				WE_MESSAGE_NOTICE) . '
+				we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 						top.close();
 					}

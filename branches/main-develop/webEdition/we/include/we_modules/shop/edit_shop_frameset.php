@@ -106,7 +106,7 @@ function doUnload() {
 					top.content.shop_properties.edbody.deleteorder();
 				}
 			} else {
-				<?php print we_message_reporting::getShowMessageCall( g_l('modules_shop','[nothing_to_delete]'), WE_MESSAGE_NOTICE); ?>
+				<?php print we_message_reporting::getShowMessageCall( g_l('modules_shop','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 			}
 
 		break;
@@ -114,7 +114,7 @@ function doUnload() {
 			if ( top.content && top.content.shop_properties.edbody.hot && top.content.shop_properties.edbody.hot == 1 ) {
 				top.content.shop_properties.edbody.neuerartikel();
 			} else {
-				<?php print we_message_reporting::getShowMessageCall(g_l('modules_shop','[no_order_there]'), WE_MESSAGE_ERROR); ?>
+				<?php print we_message_reporting::getShowMessageCall(g_l('modules_shop','[no_order_there]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		break;
 

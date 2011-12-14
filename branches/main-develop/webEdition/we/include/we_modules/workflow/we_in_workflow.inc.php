@@ -36,7 +36,7 @@ if($cmd == "ok"){
 	$wf_select = $_REQUEST["wf_select"];
 	if(weWorkflowUtility::insertDocInWorkflow($we_doc->ID,$we_doc->Table,$wf_select,$_SESSION["user"]["ID"],$wf_text)){
 		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_ok]');
-		$msgType = WE_MESSAGE_NOTICE;
+		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 		if($_SESSION["we_mode"] == "seem"){
 
 			$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
@@ -58,7 +58,7 @@ if($cmd == "ok"){
 		}
 		else {
 			$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_notok]');
-			$msgType = WE_MESSAGE_ERROR;
+			$msgType = we_message_reporting::WE_MESSAGE_ERROR;
 			if($_SESSION["we_mode"] == "seem"){
 
 				$script = "opener.top.we_cmd('switch_edit_page'," .WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
@@ -151,7 +151,7 @@ if($cmd == "ok"){
 				</form>
 			<?php }else{ ?>
 				<script  type="text/javascript"><!--
-					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? g_l('modules_workflow','[no_wf_defined]') : g_l('modules_workflow','[no_wf_defined_object]') ), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall( (($we_doc->Table==FILE_TABLE) ? g_l('modules_workflow','[no_wf_defined]') : g_l('modules_workflow','[no_wf_defined_object]') ), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					top.close();
 				//-->
 				</script>

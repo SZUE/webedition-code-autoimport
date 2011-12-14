@@ -197,7 +197,7 @@ function doOK(){
 	var qual = 8;
 
 	if (f.width.value == 0 || f.height.value == 0 || f.width.value == "0%" || f.height.value == "0%") {
-		' . we_message_reporting::getShowMessageCall(g_l('weClass',"[image_edit_null_not_allowed]"), WE_MESSAGE_ERROR) . '
+		' . we_message_reporting::getShowMessageCall(g_l('weClass',"[image_edit_null_not_allowed]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 		return;
 	}
 	var newWidth = (f.widthSelect.options[f.widthSelect.selectedIndex].value == "pixel") ? f.width.value : Math.round((width/100) * f.width.value);

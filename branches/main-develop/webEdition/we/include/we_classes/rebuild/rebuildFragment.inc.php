@@ -47,7 +47,7 @@ class rebuildFragment extends taskFragment{
 	function finish(){
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		we_html_tools::htmlTop();
-		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : g_l('rebuild',"[finished]")), WE_MESSAGE_NOTICE ) . '
+		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : g_l('rebuild',"[finished]")), we_message_reporting::WE_MESSAGE_NOTICE ) . '
 			top.close();').'
 		</head>
 		</html>';

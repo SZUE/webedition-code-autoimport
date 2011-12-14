@@ -89,7 +89,7 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 			$script .= "top.toggleBusy(0);\n";
 			$script .= we_message_reporting::getShowMessageCall(
 					sprintf(g_l('alert',"[noRightsToMove]"), id_to_path($selectedItems[$i], $table)),
-					WE_MESSAGE_ERROR);
+					we_message_reporting::WE_MESSAGE_ERROR);
 
 		} else
 			if ($retVal) { //	move files !
@@ -119,23 +119,23 @@ if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_singl
 						}
 						$script .= 'new jsWindow("' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 					} else {
-						$script .= we_message_reporting::getShowMessageCall(g_l('alert',"[move_ok]"), WE_MESSAGE_NOTICE);
+						$script .= we_message_reporting::getShowMessageCall(g_l('alert',"[move_ok]"), we_message_reporting::WE_MESSAGE_NOTICE);
 
 					}
 				}
 
 			} else {
 				$script .= "top.toggleBusy(0);\n";
-				$script .= we_message_reporting::getShowMessageCall($message, WE_MESSAGE_ERROR);
+				$script .= we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 			}
 
 	} elseif (!isset($_REQUEST["we_target"]) || !$_REQUEST["we_target"]) {
 		$script .= "top.toggleBusy(0);\n";
-		$script .= we_message_reporting::getShowMessageCall(g_l('alert',"[move_no_dir]"), WE_MESSAGE_ERROR);
+		$script .= we_message_reporting::getShowMessageCall(g_l('alert',"[move_no_dir]"), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
 				g_l('alert',"[nothing_to_move]"),
-				WE_MESSAGE_ERROR) . "\n";
+				we_message_reporting::WE_MESSAGE_ERROR) . "\n";
 	}
 	print we_htmlElement::jsScript(JS_DIR.'windows.js');
 	print '<script  type="text/javascript"><!--
@@ -154,9 +154,9 @@ if ($_SESSION["we_mode"] == "seem") {
 	if ($retVal) { //	document moved -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(
 				g_l('alert','[move_single][return_to_start]'),
-				WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');";
+				we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');";
 	} else {
-		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[move_single][no_delete]'), WE_MESSAGE_ERROR);
+		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	print
 			we_htmlElement::htmlHtml(we_htmlElement::htmlHead(we_htmlElement::jsElement($_js)));
@@ -196,7 +196,7 @@ function press_ok_move() {
 	if(!sel){
 		top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall(g_l('alert','[nothing_to_move]'), WE_MESSAGE_ERROR)?>
+		print we_message_reporting::getShowMessageCall(g_l('alert','[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR)?>
 		return;
 	}
 
@@ -211,7 +211,7 @@ function press_ok_move() {
 			return;
 		} else if(!acStatus.valid) {
 			<?php
-			print we_message_reporting::getShowMessageCall(g_l('weClass',"[notValidFolder]"), WE_MESSAGE_ERROR)?>
+			print we_message_reporting::getShowMessageCall(g_l('weClass',"[notValidFolder]"), we_message_reporting::WE_MESSAGE_ERROR)?>
 			return;
 		}
 	}
@@ -294,7 +294,7 @@ function we_submitForm(target,url){
 	if(!sel){
 		top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall(g_l('alert','[nothing_to_move]'), WE_MESSAGE_ERROR)?>
+		print we_message_reporting::getShowMessageCall(g_l('alert','[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR)?>
 		return;
 	}
 

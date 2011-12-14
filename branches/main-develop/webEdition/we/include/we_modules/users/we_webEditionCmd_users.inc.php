@@ -30,7 +30,7 @@
             <?php if(we_hasPerm("NEW_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_USER")|| we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){?>
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
              <?php }else{
-             	print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR);
+             	print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
              } ?>
 	break;
         case "edit_users":
@@ -38,7 +38,7 @@
             <?php if(we_hasPerm("NEW_USER") || we_hasPerm("SAVE_USER") || we_hasPerm("NEW_GROUP") || we_hasPerm("SAVE_GROUP") || we_hasPerm("DELETE_USER") || we_hasPerm("DELETE_GROUP")){?>
                 new jsWindow(url,"edit_module",-1,-1,970,760,true,true,true,true);
             <?php }else{
-            	print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR);
+            	print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
 						}?>
 
 	break;
@@ -57,14 +57,14 @@
 	          }
 	          if(wind) wind.focus();
           <?php }else{
-			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
           }?>
         break;
         case "doctypes":
             <?php if(we_hasPerm("CAN_SEE_TEMPLATES")){?>
                 new jsWindow(url,"doctypes",-1,-1,720,670,true,true,true);
             <?php }else{
-				print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
             }?>
 	    break;
         case "unlock":

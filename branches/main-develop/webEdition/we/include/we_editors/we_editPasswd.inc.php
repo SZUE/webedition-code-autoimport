@@ -115,24 +115,24 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 
 			if (md5($oldpasswd.md5($_SESSION["user"]["Username"])) != $passwd) {
 				print
-					we_message_reporting::getShowMessageCall(g_l('global','[pass_not_match]'), WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					top.passwdcontent.document.forms[0].elements["oldpasswd"].focus();
 					top.passwdcontent.document.forms[0].elements["oldpasswd"].select();';
 			} else if (strlen($newpasswd) < 4) {
 				print
-					we_message_reporting::getShowMessageCall(g_l('global','[pass_to_short]'), WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					top.passwdcontent.document.forms[0].elements["newpasswd"].focus();
 					top.passwdcontent.document.forms[0].elements["newpasswd"].select();';
 			} else if ($newpasswd != $newpasswd2) {
 				print
-					we_message_reporting::getShowMessageCall(g_l('global','[pass_not_confirmed]'), WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					top.passwdcontent.document.forms[0].elements["newpasswd2"].focus();
 					top.passwdcontent.document.forms[0].elements["newpasswd2"].select();';
 			} else {
 
 		 		$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . md5($newpasswd . md5($_SESSION["user"]["Username"])) . "', UseSalt=1 WHERE username='" . $DB_WE->escape($_SESSION["user"]["Username"]) . "'");
 				print
-					we_message_reporting::getShowMessageCall(g_l('global','[pass_changed]'), WE_MESSAGE_NOTICE) .
+					we_message_reporting::getShowMessageCall(g_l('global','[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					'top.close();';
 			}
 		}

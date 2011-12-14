@@ -143,7 +143,7 @@ class weCustomerView {
 						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
 						'.(!we_hasPerm("DELETE_CUSTOMER") ?
 						('
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_perms]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						')
 						:
 						('
@@ -153,7 +153,7 @@ class weCustomerView {
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 									}
 								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[nothing_to_delete]'), WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 
 						')).'
@@ -163,7 +163,7 @@ class weCustomerView {
 						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
 						'.((!we_hasPerm("EDIT_CUSTOMER") && !we_hasPerm("NEW_CUSTOMER")) ?
 						('
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_perms]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						')
 						:
 						('
@@ -172,7 +172,7 @@ class weCustomerView {
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[nothing_to_save]'), WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 						')).'
 						top.content.usetHot();
@@ -371,7 +371,7 @@ class weCustomerView {
 						var field=document.we_form.fields_select.value;
 						var branch=document.we_form.branch.value;
 						if(field=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else{
 								url = "'.$this->frameset.'?pnt=field_editor&art=edit&field="+field+"&branch="+branch;
 								new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
@@ -380,7 +380,7 @@ class weCustomerView {
 					case "delete_field":
 						var field=document.we_form.fields_select.value;
 						if(field=="") {
-						 ' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), WE_MESSAGE_ERROR) . '
+						 ' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else{
 							if(confirm("'.g_l('modules_customer','[del_fild_question]').'")){
 								document.we_form.cmd.value=arguments[0];
@@ -400,7 +400,7 @@ class weCustomerView {
 						var field=document.we_form.fields_select.value;
 						var branch=document.we_form.branch.value;
 						if(field=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else{
 								document.we_form.cmd.value=arguments[0];
 								submitForm();
@@ -410,7 +410,7 @@ class weCustomerView {
 						var field=document.we_form.fields_select.value;
 						var branch=document.we_form.branch.value;
 						if(field=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else{
 								document.we_form.cmd.value=arguments[0];
 								submitForm();
@@ -419,9 +419,9 @@ class weCustomerView {
 					case "open_edit_branch":
 						var branch=document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
 						if(branch=="") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_branch]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[no_branch]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else if(branch=="'.g_l('modules_customer','[other]').'") {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[branch_no_edit]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						} else{
 								url = "'.$this->frameset.'?pnt=branch_editor&art=edit&&branch="+branch;
 								new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
@@ -431,7 +431,7 @@ class weCustomerView {
 					case "save_field":
 						var field_name=document.we_form.name.value;
 						if(field_name=="" || field_name.match(/[^a-zA-Z0-9\_]/)!=null){
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_fieldname_notValid]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						}
 						else{
 							document.we_form.cmd.value=arguments[0];
@@ -600,14 +600,14 @@ function processCommands() {
 						$js='';
 						$this->customer->Username=trim($this->customer->Username);
 						if($this->customer->Username==''){
-							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[username_empty]'), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 							print we_htmlElement::jsElement($js);
 							break;
 						}
 
 						if($this->customer->filenameNotValid()){
 							print we_htmlElement::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_filename_notValid]'), WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							break;
 						}
@@ -619,7 +619,7 @@ function processCommands() {
 
 						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.$this->db->escape($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
 						if($exists){
-							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[username_exists]'),$this->customer->Username), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[username_exists]'),$this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
 							print we_htmlElement::jsElement($js);
 							break;
 						}
@@ -654,7 +654,7 @@ function processCommands() {
 
 						print we_htmlElement::jsElement(
 							$js .
-							we_message_reporting::getShowMessageCall( sprintf(g_l('modules_customer','[customer_saved_ok]'),addslashes($this->customer->Text)), WE_MESSAGE_NOTICE )
+							we_message_reporting::getShowMessageCall( sprintf(g_l('modules_customer','[customer_saved_ok]'),addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE )
 						);
 				break;
 				case 'delete_customer':
@@ -663,7 +663,7 @@ function processCommands() {
 						$this->customer=new weCustomer();
 
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_customer','[customer_deleted]'), WE_MESSAGE_NOTICE)
+							we_message_reporting::getShowMessageCall(g_l('modules_customer','[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 							.$this->topFrame.'.deleteEntry("'.$oldid.'"); '
 							.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?home=1&pnt=edheader"; '
 							.$this->topFrame.'.resize.right.editor.edbody.location="'.$this->frameset.'?home=1&pnt=edbody"; '
@@ -694,19 +694,19 @@ function processCommands() {
 
 					switch($saveret){
 						case -10:
-							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[branch_no_edit]'), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						case -7:
-							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_fieldname_notValid]'), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						case -5:
-							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[cannot_save_property]'),$field_name), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[cannot_save_property]'),$field_name), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						case -4:
-							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[fieldname_exists]'), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						case -3:
-							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[field_not_empty]'), WE_MESSAGE_ERROR);
+							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						default:
 							$this->customer->loadPresistents();
@@ -771,7 +771,7 @@ function processCommands() {
 
 					$this->customer->loadPresistents();
 					$js =
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[field_deleted]'),$fname,$ber), WE_MESSAGE_NOTICE) .
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[field_deleted]'),$fname,$ber), we_message_reporting::WE_MESSAGE_NOTICE) .
 						'opener.refreshForm();
 					';
 					print we_htmlElement::jsElement($js);
@@ -854,7 +854,7 @@ function processCommands() {
 
 					if($branch_new==g_l('modules_customer','[common]') || $branch_new==g_l('modules_customer','[other]') || $branch_new==g_l('modules_customer','[all]')){
 						print we_htmlElement::jsElement(
-							we_message_reporting::getShowMessageCall( g_l('modules_customer','[branch_no_edit]'), WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall( g_l('modules_customer','[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
 					}
@@ -865,14 +865,14 @@ function processCommands() {
 
 						if(in_array($branch_new,$arr)){
 									print we_htmlElement::jsElement(
-										we_message_reporting::getShowMessageCall( g_l('modules_customer','[name_exists]'), WE_MESSAGE_ERROR)
+										we_message_reporting::getShowMessageCall( g_l('modules_customer','[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 									);
 									return;
 						}
 					}
 
 					if($this->saveBranch($branch_old,$branch_new)==-5)
-						we_message_reporting::getShowMessageCall( sprintf(g_l('modules_customer','[cannot_save_property]'),$field), WE_MESSAGE_ERROR);
+						we_message_reporting::getShowMessageCall( sprintf(g_l('modules_customer','[cannot_save_property]'),$field), we_message_reporting::WE_MESSAGE_ERROR);
 					else{
 						$this->customer->loadPresistents();
 						$js='
@@ -927,7 +927,7 @@ function processCommands() {
 						$_sorting .= 'opener.'.$this->topFrame.'.resize.left.treeheader.addSorting("'. $_sort .'");' . "\n";
 					}
 
-					$js =	we_message_reporting::getShowMessageCall( g_l('modules_customer','[sort_saved]'), WE_MESSAGE_NOTICE) . '
+					$js =	we_message_reporting::getShowMessageCall( g_l('modules_customer','[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							var selected = opener.'.$this->topFrame.'.resize.left.treeheader.document.we_form.sort.selectedIndex;
 							opener.'.$this->topFrame.'.resize.left.treeheader.document.we_form.sort.options.length=0;
 							'.$_sorting.'
@@ -993,11 +993,11 @@ function processCommands() {
 
 					if($this->settings->save())
 
-						$js = we_message_reporting::getShowMessageCall( g_l('modules_customer','[settings_saved]'), WE_MESSAGE_NOTICE) . '
+						$js = we_message_reporting::getShowMessageCall( g_l('modules_customer','[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							self.close();
 						';
 					else
-						$js = we_message_reporting::getShowMessageCall( g_l('modules_customer','[settings_not_saved]'), WE_MESSAGE_NOTICE);
+						$js = we_message_reporting::getShowMessageCall( g_l('modules_customer','[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 
 					print we_htmlElement::jsElement("",array("src"=>JS_DIR."we_showMessage.js"));
 					print we_htmlElement::jsElement($js);

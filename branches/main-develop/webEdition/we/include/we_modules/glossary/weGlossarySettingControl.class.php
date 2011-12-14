@@ -39,9 +39,9 @@ class weGlossarySettingControl {
 
 				case "save_glossary_setting":
 					if($this->saveSettings()) {
-						$html .= "<script type=\"text/javascript\">top.close();" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_saved]'), WE_MESSAGE_NOTICE) . "</script>";
+						$html .= "<script type=\"text/javascript\">top.close();" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . "</script>";
 					} else {
-						$html .= "<script type=\"text/javascript\">" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_not_saved]'), WE_MESSAGE_ERROR) . "</script>";
+						$html .= "<script type=\"text/javascript\">" . we_message_reporting::getShowMessageCall(g_l('modules_glossary','[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) . "</script>";
 					}
 				break;
 			}

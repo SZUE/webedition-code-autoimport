@@ -145,7 +145,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php',$_content);
 
 			print we_htmlElement::jsElement(
-				we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[save_settings]'), WE_MESSAGE_NOTICE)
+				we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
 			);
 
 		break;
@@ -154,7 +154,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			if(strpos($_REQUEST['cmd'][1],"..")===false) {
 				unlink(WE_SPELLCHECKER_MODULE_DIR.'dict/'.$_REQUEST['cmd'][1].'.zip');
 				$_mess = g_l('modules_spellchecker','[dict_removed]');
-				$_messType = WE_MESSAGE_NOTICE;
+				$_messType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 				if($GLOBALS['spellcheckerConf']['default'] == $_REQUEST['cmd'][1]) { // if the default dict has been deleted
 					if(count($GLOBALS['spellcheckerConf']['active']) && isset($GLOBALS['spellcheckerConf']['active'][0])) {
@@ -172,7 +172,7 @@ if(isset($_REQUEST['cmd'][0])) {
 
 			} else {
 				$_mess = g_l('modules_spellchecker','[name_invalid]');
-				$_messType = WE_MESSAGE_ERROR;
+				$_messType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
 
 			print we_htmlElement::jsElement(

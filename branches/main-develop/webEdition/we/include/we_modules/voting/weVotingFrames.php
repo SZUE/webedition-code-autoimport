@@ -231,7 +231,7 @@ class weVotingFrames extends weModuleFrames {
 		$variant_js = '
 
 			function callAnswerLimit() {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[answer_limit]'), WE_MESSAGE_ERROR) . '
+				' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 
 			function setMultiEdits() {
@@ -578,7 +578,7 @@ class weVotingFrames extends weModuleFrames {
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),1,3);
 		$table->setColContent(0,0,$select->getHtmlCode());
 		$table->setColContent(0,1,we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();question_edit.addVariant();answers_edit.addVariant();question_edit.showVariant(question_edit.variantCount-1);answers_edit.showVariant(answers_edit.variantCount-1);document.we_form.selectVar.options[document.we_form.selectVar.options.length] = new Option('" . g_l('modules_voting','[variant]') . " '+question_edit.variantCount,question_edit.variantCount-1,false,true);"));
-		$table->setColContent(0,2,we_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting','[variant_limit]'), WE_MESSAGE_ERROR) . "}"));
+		$table->setColContent(0,2,we_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting','[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
 		$table->setColAttributes(0,1,array("style"=>"padding:0 5px;"));
 		$selectCode = $table->getHtmlCode();
 
@@ -723,7 +723,7 @@ class weVotingFrames extends weModuleFrames {
 								var re = new RegExp("[a-zA-Z|,]");
 								var m = ip.match(re);
 								if(m != null){
-									' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 									return;
 								}
 
@@ -738,7 +738,7 @@ class weVotingFrames extends weModuleFrames {
 								      var t = p[i];
 								      t.replace("*","");
 								      if(parseInt(t)>255) {
-								      	' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), WE_MESSAGE_ERROR) . '
+								      	' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								      	return false;
 								      }
 								    }
@@ -747,7 +747,7 @@ class weVotingFrames extends weModuleFrames {
 									iptable_label.setItem(0,(iptable_label.itemCount-1),ip);
 									iptable_label.showVariant(0);
 								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 							}
 					').$table->getHtmlCode(),

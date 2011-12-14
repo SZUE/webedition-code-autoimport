@@ -600,12 +600,12 @@ class weWorkflowView extends weWorkflowBase{
 					break;
 					case "delete_workflow":
 						<?php if(!we_hasPerm("DELETE_WORKFLOW")){
-							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						}else{?>
 						if(top.content.resize.right.editor.edbody.loaded){
 							if(!confirm("<?php print g_l('modules_workflow','[delete_question]')?>")) return;
 						}
-						else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[nothing_to_delete]'), WE_MESSAGE_ERROR); ?> }
+						else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
 
 						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.submitForm();
@@ -613,7 +613,7 @@ class weWorkflowView extends weWorkflowBase{
 					break;
 					case "save_workflow":
 						<?php if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
-							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						}else{?>
 						if(top.content.resize.right.editor.edbody.loaded){
 							top.content.resize.right.editor.edbody.setStatus(top.content.resize.right.editor.edfooter.document.we_form.status_workflow.value);
@@ -623,7 +623,7 @@ class weWorkflowView extends weWorkflowBase{
 							if(num>0)
 								if(!confirm("<?php print g_l('modules_workflow','[save_question]')?>")) return;
 						}
-						else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[nothing_to_save]'), WE_MESSAGE_ERROR); ?> }
+						else { <?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR); ?> }
 						top.content.resize.right.editor.edbody.document.we_form.wcmd.value=arguments[0];
 						top.content.resize.right.editor.edbody.submitForm();
 						top.content.usetHot();
@@ -780,7 +780,7 @@ class weWorkflowView extends weWorkflowBase{
 					submitForm();
 				}
 				else{
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[del_last_step]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[del_last_step]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 			}
 
@@ -800,7 +800,7 @@ class weWorkflowView extends weWorkflowBase{
 					submitForm();
 				}
 				else{
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[del_last_task]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[del_last_task]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 			}
 
@@ -841,35 +841,35 @@ class weWorkflowView extends weWorkflowBase{
 				ret=false;
 				if(document.we_form.<?php print $this->uid?>_Text.value=="") ret=true;
 				if(ret){
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[name_empty]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				}
 
 				ret=false;
 				if(document.we_form.<?php print $this->uid?>_Folders.value=="" && document.we_form.<?php print $this->uid?>_Type.value==1) ret=true;
 				if(ret){
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[folders_empty]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[folders_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				}
 
 				ret=false;
 				if(document.we_form.<?php print $this->uid?>_ObjectFileFolders.value=="" && document.we_form.<?php print $this->uid?>_Type.value==2) ret=true;
 				if(ret){
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[folders_empty]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[folders_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				}
 
 				ret=false;
 				if((document.we_form.<?php print $this->uid?>_DocType.value==0 && document.we_form.<?php print $this->uid?>_Categories.value=="") && document.we_form.<?php print $this->uid?>_Type.value==0) ret=true;
 				if(ret){
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[doctype_empty]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[doctype_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				}
 
 				ret=false;
 				if(document.we_form.<?php print $this->uid?>_Objects.value=="" && document.we_form.<?php print $this->uid?>_Type.value==2) ret=true;
 				if(ret){
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[objects_empty]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[objects_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 				}
 
@@ -878,7 +878,7 @@ class weWorkflowView extends weWorkflowBase{
 					eval('if(document.we_form.<?php print $this->uid?>_step'+i+'_Worktime.value=="") ret=true;');
 					if(ret){
 						var _txt = "<?php print addslashes(g_l('modules_workflow','[worktime_empty]')); ?>";
-						<?php print we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", WE_MESSAGE_ERROR, true); ?>
+						<?php print we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", we_message_reporting::WE_MESSAGE_ERROR, true); ?>
 						return false;
 					}
 					userempty=true;
@@ -888,7 +888,7 @@ class weWorkflowView extends weWorkflowBase{
 					if(userempty){
 						var _txt = "<?php print addslashes(g_l('modules_workflow','[user_empty]')); ?>";
 
-						<?php print we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", WE_MESSAGE_ERROR, true); ?>
+						<?php print we_message_reporting::getShowMessageCall("_txt.replace(/%s/,i+1)", we_message_reporting::WE_MESSAGE_ERROR, true); ?>
 						return false;
 					}
 
@@ -1069,20 +1069,20 @@ class weWorkflowView extends weWorkflowBase{
 
                if(!we_hasPerm("EDIT_WORKFLOW") && !we_hasPerm("NEW_WORKFLOW")){
 						print '<script  type="text/javascript">';
-						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}
 					else if($newone && !we_hasPerm("NEW_WORKFLOW")){
 						print '<script  type="text/javascript">';
-						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}
 					else{
 						if($double){
 							print '<script  type="text/javascript">';
-							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[double_name]'), WE_MESSAGE_ERROR);
+							print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
 							print '</script>';
 							return;
 						}
@@ -1100,7 +1100,7 @@ class weWorkflowView extends weWorkflowBase{
 						else print 'top.content.updateEntry('.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'","'.$this->workflowDef->Status.'");';
 						print $childs;
 						print 'top.content.resize.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_htmlElement::htmlB(g_l('modules_workflow','[workflow]'). ': ' . htmlspecialchars($this->workflowDef->Text)).'";';
-						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[save_ok]'), WE_MESSAGE_NOTICE);
+						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 						print '</script>';
 					}
 		        	}
@@ -1121,7 +1121,7 @@ class weWorkflowView extends weWorkflowBase{
 				if(isset($_REQUEST["wid"])){
 					if(!we_hasPerm("DELETE_WORKFLOW")){
 						print '<script  type="text/javascript">';
-						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), WE_MESSAGE_ERROR);
+						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						print '</script>';
 						return;
 					}
@@ -1132,11 +1132,11 @@ class weWorkflowView extends weWorkflowBase{
 							$this->workflowDef = new weWorkflow();
 							print '<script  type="text/javascript">
 							top.content.deleteEntry('.$_REQUEST["wid"].',"folder");
-							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow','[delete_ok]'), WE_MESSAGE_NOTICE) . '
+							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow','[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							</script>';
 						}else{
 							print '<script  type="text/javascript">
-							' . we_message_reporting::getShowMessageCall(g_l('modules_workflow','[delete_nok]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_workflow','[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							</script>';
 						}
 					}
@@ -1153,7 +1153,7 @@ class weWorkflowView extends weWorkflowBase{
 				}
 				$this->Log->clearLog($stamp);
 				print '<script  type="text/javascript">
-					' . we_message_reporting::getShowMessageCall(g_l('modules_workflow','[empty_log_ok]'), WE_MESSAGE_NOTICE) . '
+					' . we_message_reporting::getShowMessageCall(g_l('modules_workflow','[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 					</script>';
 			break;
             		default:

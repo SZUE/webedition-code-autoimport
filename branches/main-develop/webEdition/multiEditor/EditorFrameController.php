@@ -254,7 +254,7 @@ function EditorFrameController() {
 
 				} else {
 					<?php
-						print we_message_reporting::getShowMessageCall( g_l('multiEditor',"[no_editor_left]"), WE_MESSAGE_ERROR );
+						print we_message_reporting::getShowMessageCall( g_l('multiEditor',"[no_editor_left]"), we_message_reporting::WE_MESSAGE_ERROR );
 					?>
 				}
 			}

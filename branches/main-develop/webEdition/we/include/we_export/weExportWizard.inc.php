@@ -1413,7 +1413,7 @@ top.close();
 										"topmargin" => "5",
 										"onLoad" => htmlspecialchars($export_local
 														? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';")
-														: (we_message_reporting::getShowMessageCall(g_l('export',"[server_finished]"), WE_MESSAGE_NOTICE) . "top.close();")))),
+														: (we_message_reporting::getShowMessageCall(g_l('export',"[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))),
 									null
 						);
 					}
@@ -1538,7 +1538,7 @@ top.close();
 										"topmargin" => "5",
 										"onLoad" => htmlspecialchars($export_local
 														? ($this->bodyFrame . ".location='" . $this->frameset . "?pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "?pnt=footer&step=10';")
-														: ( we_message_reporting::getShowMessageCall(g_l('export',"[server_finished]"), WE_MESSAGE_NOTICE) . ";top.close();")))),
+														: ( we_message_reporting::getShowMessageCall(g_l('export',"[server_finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();")))),
 									null
 						);
 					}

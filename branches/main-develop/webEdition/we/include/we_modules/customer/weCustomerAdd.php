@@ -190,7 +190,7 @@ class weCustomerAdd{
 
 					case "add_sort_field":
 						if(arguments[1]==""){
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[sortname_empty]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[sortname_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							break;
 						}
 						document.we_form.sortindex.value=arguments[1];
@@ -202,7 +202,7 @@ class weCustomerAdd{
 						document.we_form.fieldindex.value=arguments[2];
 					case "del_sort":
 						if(arguments[1]=="'.$pob->settings->getSettings('default_sort_view').'"){
-							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[default_soting_no_del]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('modules_customer','[default_soting_no_del]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						}
 						else{
 							document.we_form.cmd.value=arguments[0];

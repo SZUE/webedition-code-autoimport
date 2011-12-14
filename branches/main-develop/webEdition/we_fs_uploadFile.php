@@ -197,7 +197,7 @@ if($we_ContentType == "image/*"){
 ?>
 <script  type="text/javascript"><!--
 <?php if($we_alerttext){
-	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
+	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 }
 if(isset($_FILES['we_uploadedFile']) && (!$we_alerttext)){
  if($we_doc->ID){?>

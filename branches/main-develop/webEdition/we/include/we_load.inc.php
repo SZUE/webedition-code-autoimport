@@ -253,7 +253,7 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 	if(!' . $Tree->topFrame . '.treeData) {
 		' . we_message_reporting::getShowMessageCall(
 				"A fatal error occured",
-				WE_MESSAGE_ERROR) . '
+				we_message_reporting::WE_MESSAGE_ERROR) . '
 	}';
 
 		if (!$parentFolder)

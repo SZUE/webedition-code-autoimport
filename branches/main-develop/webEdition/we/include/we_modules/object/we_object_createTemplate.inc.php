@@ -259,7 +259,7 @@ $content .= '
 $_SESSION["content"] = $content;
 
 $buttons = we_button::position_yes_no_cancel(
-		we_button::create_button("save", "javascript:if(document.forms['we_form'].we_".$tmpl->Name."_Filename.value != ''){ document.forms['we_form'].action='".WE_OBJECT_MODULE_PATH."we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert','[input_file_name]'), WE_MESSAGE_ERROR) . " }"),
+		we_button::create_button("save", "javascript:if(document.forms['we_form'].we_".$tmpl->Name."_Filename.value != ''){ document.forms['we_form'].action='".WE_OBJECT_MODULE_PATH."we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert','[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"),
 		null,
 		we_button::create_button("cancel", "javascript:self.close();")
 											);

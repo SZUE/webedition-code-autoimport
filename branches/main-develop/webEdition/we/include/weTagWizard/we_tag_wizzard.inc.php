@@ -194,9 +194,9 @@ function we_cmd(){
 						req += "- " + weTagWizard.missingFields[i] + "\n";
 					}
 					req = "' . g_l('taged', '[fill_required_fields]') . '\n" + req;
-					' . we_message_reporting::getShowMessageCall("req", WE_MESSAGE_WARNING, true) . '
+					' . we_message_reporting::getShowMessageCall("req", we_message_reporting::WE_MESSAGE_WARNING, true) . '
 				} else {
-					' . we_message_reporting::getShowMessageCall(g_l('taged', '[no_type_selected]'), WE_MESSAGE_WARNING) . '
+					' . we_message_reporting::getShowMessageCall(g_l('taged', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 				}
 			}
 		break;

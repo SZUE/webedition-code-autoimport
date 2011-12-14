@@ -70,7 +70,7 @@ $content='<textarea name="editFile" id="editFile" style="width:540px;height:380p
 		ta.style.height=document.body.offsetHeight-118;
 	}
 <?php if(isset($we_alerttext)){
-	print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR); ?>
+	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR); ?>
 self.close();
 <?php } ?>
 self.focus();

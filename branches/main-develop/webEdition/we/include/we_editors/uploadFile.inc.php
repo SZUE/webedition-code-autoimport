@@ -125,7 +125,7 @@ $_buttons = we_button::position_yes_no_cancel(	we_button::create_button("upload"
 
 <script type="text/javascript"><!--
 	<?php if($we_alerttext){
-	 print we_message_reporting::getShowMessageCall($we_alerttext, WE_MESSAGE_ERROR);
+	 print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 		if($error){ ?>
 		top.close();
 		<?php }}

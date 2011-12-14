@@ -140,7 +140,7 @@ class doclistView {
       function search(newSearch) {
 
       	if('.searchtoolsearch::checkRightTempTable().' && '.searchtoolsearch::checkRightDropTable().') {
-   			'.we_message_reporting::getShowMessageCall ( g_l('searchtool',"[noTempTableRightsDoclist]"), WE_MESSAGE_NOTICE ).'
+   			'.we_message_reporting::getShowMessageCall ( g_l('searchtool',"[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE ).'
       	}
       	else {
 	        if(newSearch) {
@@ -687,7 +687,7 @@ class doclistView {
 		}
 
 		if(check==false) {
-			' . we_message_reporting::getShowMessageCall(g_l('searchtool','[notChecked]'), WE_MESSAGE_NOTICE) . '
+			' . we_message_reporting::getShowMessageCall(g_l('searchtool','[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 		}
 		else {
 
@@ -700,7 +700,7 @@ class doclistView {
 
 	 var ajaxCallbackPublishDocs = {
 	    success: function(o) {
-	    ' . we_message_reporting::getShowMessageCall(g_l('searchtool','[publishOK]'), WE_MESSAGE_NOTICE) . '
+	    ' . we_message_reporting::getShowMessageCall(g_l('searchtool','[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 	     	// reload current document => reload all open Editors on demand
 
@@ -1017,7 +1017,7 @@ class doclistView {
 
 		if(searchtoolsearch::checkRightTempTable()=="1" && searchtoolsearch::checkRightDropTable()=="1") {
 			print we_htmlElement::jsElement(
-   				we_message_reporting::getShowMessageCall ( g_l('searchtool',"[noTempTableRightsDoclist]"), WE_MESSAGE_NOTICE )
+   				we_message_reporting::getShowMessageCall ( g_l('searchtool',"[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE )
 			);
 		}
 		else {

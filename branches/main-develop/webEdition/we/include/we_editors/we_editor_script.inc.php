@@ -332,7 +332,7 @@ function we_cmd(){
 <?php if($we_doc->gd_support()){ ?>
 			new jsWindow(url,"we_image_resize",-1,-1,260,<?php print ($we_doc->getGDType()=="jpg") ? 250 : 190; ?>,true,false,true);
 <?php }else{
-	print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
+	print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), we_message_reporting::WE_MESSAGE_ERROR );
 
 			} ?>
 
@@ -352,11 +352,11 @@ function we_cmd(){
 				new jsWindow(url,"we_rotate",-1,-1,300,<?php print ($we_doc->getGDType()=="jpg") ? 230 : 170; ?>,true,false,true);
 		<?php
 		}else{
-			print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), WE_MESSAGE_ERROR );
+			print we_message_reporting::getShowMessageCall( sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$we_doc->getGDType().']')), we_message_reporting::WE_MESSAGE_ERROR );
 		}
 	}else{
 
-		print we_message_reporting::getShowMessageCall(g_l('weClass',"[rotate_hint]"), WE_MESSAGE_ERROR);
+		print we_message_reporting::getShowMessageCall(g_l('weClass',"[rotate_hint]"), we_message_reporting::WE_MESSAGE_ERROR);
 
 	} ?>
 	break;
@@ -367,7 +367,7 @@ function we_cmd(){
 			CropTool.crop();
 <?php } else if(defined("WE_EDIT_IMAGE")) {
 
-			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$GLOBALS["we_doc"]->getGDType().']')), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$GLOBALS["we_doc"]->getGDType().']')), we_message_reporting::WE_MESSAGE_ERROR);
 	  } ?>
 		break;
 		case "crop_cancel":
@@ -418,14 +418,14 @@ function fields_are_valid() {
 							<?php
 							//  don't change the formatting of the fields here
 							$_msg = sprintf(g_l('alert','[field_contains_incorrect_chars]'), "' + theType + '");
-							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
+							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						} else if(theVal>2147483647) {
 							<?php
 							//  don't change the formatting of the fields here
 							$_msg = sprintf(g_l('alert','[field_int_value_to_height]'));
-							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
+							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						}
@@ -435,7 +435,7 @@ function fields_are_valid() {
 							<?php
 							//  don't change the formatting of the fields here
 							$_msg = sprintf(g_l('alert','[field_contains_incorrect_chars]'), "' + theType + '");
-							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
+							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						}
@@ -445,7 +445,7 @@ function fields_are_valid() {
 							<?php
 							//  don't change the formatting of the fields here
 							$_msg = sprintf(g_l('alert','[field_input_contains_incorrect_length]'));
-							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
+							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						}
@@ -455,7 +455,7 @@ function fields_are_valid() {
 							<?php
 							//  don't change the formatting of the fields here
 							$_msg = sprintf(g_l('alert','[field_int_contains_incorrect_length]'));
-							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", WE_MESSAGE_ERROR, true ); ?>
+							print we_message_reporting::getShowMessageCall( "'" . $_msg . "'", we_message_reporting::WE_MESSAGE_ERROR, true ); ?>
 							theInputs[i].focus();
 							return false;
 						}

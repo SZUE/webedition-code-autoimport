@@ -315,7 +315,7 @@ switch($_REQUEST["mcmd"]) {
 		<!--
 		    top.content.folder_added(<?php echo $_REQUEST['parent_id']?>);
 		    top.content.menuDaten.add(new top.content.urlEntry('<?php echo ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder')?>.gif', '<?php echo $_REQUEST['id']?>', '<?php echo $_REQUEST['parent_id']?>', '<?php echo $_REQUEST['name'] . ' - (0)'?>', 'leaf_Folder', '<?php print MESSAGES_TABLE; ?>', '<?php echo ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder')?>'));
-		    <?php print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[folder_created]'), WE_MESSAGE_NOTICE ); ?>
+		    <?php print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE ); ?>
 		    top.content.drawEintraege();
 		//-->
 		</script>
@@ -381,7 +381,7 @@ switch($_REQUEST["mcmd"]) {
 		    ?>
 		    <script type="text/javascript">
     		<!--
-    			<?php print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[saved]'), WE_MESSAGE_NOTICE ); ?>
+    			<?php print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[saved]'), we_message_reporting::WE_MESSAGE_NOTICE ); ?>
 		        close_win("messaging_settings");
 		    //-->
 		    </script>

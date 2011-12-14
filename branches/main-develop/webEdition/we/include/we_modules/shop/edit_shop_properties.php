@@ -514,10 +514,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 			// update all orders with this orderId
 			if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
 				$alertMessage = g_l('modules_shop','[edit_order][js_saved_calculateVat_success]');
-				$alertType = WE_MESSAGE_NOTICE;
+				$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 			} else {
 				$alertMessage = g_l('modules_shop','[edit_order][js_saved_calculateVat_error]');
-				$alertType = WE_MESSAGE_ERROR;
+				$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
 			unset($serialOrder);
 			unset($strSerialOrder);
@@ -535,10 +535,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
 					$alertMessage = sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']);
-					$alertType = WE_MESSAGE_NOTICE;
+					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 				} else {
 					$alertMessage = sprintf(g_l('modules_shop','[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']);
-					$alertType = WE_MESSAGE_ERROR;
+					$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
 			}
 			unset($strSerialOrder);
@@ -555,7 +555,7 @@ if (isset($_REQUEST['we_cmd'][0])) {
 		if (elem && elem.value) {
 			document.we_form.submit();
 		} else {
-			' . we_message_reporting::getShowMessageCall( g_l('modules_shop','[field_empty_js_alert]'), WE_MESSAGE_ERROR) . '
+			' . we_message_reporting::getShowMessageCall( g_l('modules_shop','[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}
 
 	}
@@ -626,18 +626,18 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
 					$jsCmd = '
 					top.opener.top.content.shop_tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");
-					' . we_message_reporting::getShowMessageCall( sprintf(g_l('modules_shop','[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), WE_MESSAGE_NOTICE) . '
+					' . we_message_reporting::getShowMessageCall( sprintf(g_l('modules_shop','[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE) . '
 					window.close();
 					';
 				} else {
-					$jsCmd = we_message_reporting::getShowMessageCall( sprintf(g_l('modules_shop','[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), WE_MESSAGE_ERROR) . '
+					$jsCmd = we_message_reporting::getShowMessageCall( sprintf(g_l('modules_shop','[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR) . '
 					window.close();
 					';
 				}
 
 			} else {
 
-				$jsCmd = we_message_reporting::getShowMessageCall( g_l('modules_shop','[field_empty_js_alert]'), WE_MESSAGE_ERROR) . '
+				$jsCmd = we_message_reporting::getShowMessageCall( g_l('modules_shop','[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					window.close();
 					';
 			}
@@ -745,10 +745,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 				// update all orders with this orderId
 				if(updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))) {
 					$alertMessage = g_l('modules_shop','[edit_order][js_saved_shipping_success]');
-					$alertType = WE_MESSAGE_NOTICE;
+					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 				} else {
 					$alertMessage = g_l('modules_shop','[edit_order][js_saved_shipping_error]');
-					$alertType = WE_MESSAGE_ERROR;
+					$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
 			}
 
@@ -912,10 +912,10 @@ if (isset($_REQUEST['we_cmd'][0])) {
 
 			if (updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($_orderData))) {
 				$alertMessage = g_l('modules_shop','[edit_order][js_saved_customer_success]');
-				$alertType = WE_MESSAGE_NOTICE;
+				$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 			} else {
 				$alertMessage = g_l('modules_shop','[edit_order][js_saved_customer_error]');
-				$alertType = WE_MESSAGE_ERROR;
+				$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
 
 			unset($query);
@@ -1789,18 +1789,18 @@ if( !isset($letzerartikel) ){ // order has still articles - get them all
 		<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 	</tr>
 	<tr>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".g_l('modules_shop','[jsanz]')."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('".g_l('modules_shop','[jsanz]')."','".$Quantity[$i]."'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . numfom2($Quantity[$i]) . "</a>" . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shoptitle', 35) . '</td>
 		<td></td>
 		<td>' . getFieldFromShoparticle($shopArticleObject, 'shopdescription', 45) . '</td>
 		<td></td>
-		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".g_l('modules_shop','[jsbetrag]')."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
+		<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('".g_l('modules_shop','[jsbetrag]')."','".$Price[$i]."'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . numfom($Price[$i]) . "</a>" . $waehr . '</td>
 		<td></td>
 		<td class="shopContentfontR">' . numfom($articlePrice) . $waehr . '</td>
 		' . ($calcVat ? '
 			<td></td>
-			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[keinezahl]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
+			<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('".g_l('modules_shop','[keinezahl]')."','".$articleVat."'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop','[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . numfom($articleVat) . "</a>" . '%)</td>'
 			: '') . '
 		<td>' . $pixelImg . '</td>
 		<td>' . we_button::create_button("image:btn_function_trash", "javascript:check=confirm('".g_l('modules_shop','[jsloeschen]')."'); if (check){document.location.href='".$_SERVER['SCRIPT_NAME']."?bid=".$_REQUEST["bid"]."&deleteaartikle=".$tblOrdersId[$i]."';}", true, 100, 22, "", "", !we_hasPerm("DELETE_SHOP_ARTICLE")) . '</td>

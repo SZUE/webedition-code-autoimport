@@ -9,7 +9,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 	if(!we_hasPerm('SPELLCHECKER_ADMIN')) {
 		print we_htmlElement::jsElement(
-			we_message_reporting::getShowMessageCall( g_l('alert','[access_denied]'), WE_MESSAGE_ERROR) .
+			we_message_reporting::getShowMessageCall( g_l('alert','[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
 			'self.close();
 		');
 		exit();
@@ -277,7 +277,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 			if(document.spellchecker.uploadFinished) {
 				if(document.spellchecker.uploadFinished()) {
 					if(document.spellchecker.packingFinished()) {
-						<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[dict_saved]'), WE_MESSAGE_NOTICE); ?>
+						<?php print we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[dict_saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
 					}
 					hideDictSelector();
 					appletActiv=false;

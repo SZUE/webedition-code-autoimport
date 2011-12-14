@@ -78,10 +78,10 @@ class delFragment extends taskFragment{
 	function finish(){
 		unset($_SESSION["todel"]);
 		if(count($_SESSION["we_not_deleted_entries"])){
-			$alert = we_message_reporting::getShowMessageCall( makeAlertDelFolderNotEmpty($_SESSION["we_not_deleted_entries"]), WE_MESSAGE_ERROR );
+			$alert = we_message_reporting::getShowMessageCall( makeAlertDelFolderNotEmpty($_SESSION["we_not_deleted_entries"]), we_message_reporting::WE_MESSAGE_ERROR );
 
 		}else{
-			$alert = we_message_reporting::getShowMessageCall( g_l('alert',"[delete_ok]"), WE_MESSAGE_NOTICE );
+			$alert = we_message_reporting::getShowMessageCall( g_l('alert',"[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE );
 
 		}
 		unset($_SESSION["we_not_deleted_entries"]);

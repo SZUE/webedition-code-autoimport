@@ -78,37 +78,37 @@ document.write ("<" + "script language=\"JavaScript\" type=\"text/javascript\" s
 
 function checkForm(f){
 	if(f.tagname.value==""){
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_tagname_empty]'), WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		f.tagname.focus();
 		f.tagname.select();
 		return false;
 	}
 	if(f.page.value==""){
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_page_empty]'), WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_page_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		f.page.focus();
 		f.page.select();
 		return false;
 	}
 	if(f.width.value==""){
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_width_empty]'), WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_width_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		f.width.focus();
 		f.width.select();
 		return false;
 	}
 	if(f.height.value==""){
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_height_empty]'), WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_height_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		f.height.focus();
 		f.height.select();
 		return false;
 	}
 	if(f.getscript.value==""){
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_getscript_empty]'), WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_getscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		f.getscript.focus();
 		f.getscript.select();
 		return false;
 	}
 	if(f.clickscript.value==""){
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_clickscript_empty]'), WE_MESSAGE_ERROR); ?>
+		<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner','[error_clickscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		f.clickscript.focus();
 		f.clickscript.select();
 		return false;

@@ -34,7 +34,7 @@ if($cmd == "ok") {
 	if($ok) {
 
 		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][decline_workflow_ok]');
-		$msgType = WE_MESSAGE_NOTICE;
+		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION["we_mode"] == "seem"){
@@ -51,7 +51,7 @@ if($cmd == "ok") {
 	}
 	else {
 		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][decline_workflow_notok]');
-		$msgType = WE_MESSAGE_ERROR;
+		$msgType = we_message_reporting::WE_MESSAGE_ERROR;
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION["we_mode"] == "seem"){
 

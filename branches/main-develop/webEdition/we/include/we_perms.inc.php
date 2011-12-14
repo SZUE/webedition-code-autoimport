@@ -34,7 +34,7 @@ function protect(){
 		print
 						we_htmlElement::jsElement(
 										we_message_reporting::getShowMessageCall(
-														g_l('alert','[perms_no_permissions]'), WE_MESSAGE_ERROR) . 'top.close();');
+														g_l('alert','[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();');
 		print '</body></html>';
 		exit();
 	}
@@ -50,7 +50,7 @@ function login() {
 		print we_html_tools::htmlTop();
 		print
 						we_htmlElement::jsElement(
-										we_message_reporting::getShowMessageCall(g_l('alert','[login_failed]'), WE_MESSAGE_ERROR) . 'history.back();');
+										we_message_reporting::getShowMessageCall(g_l('alert','[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR) . 'history.back();');
 		print '</body></html>';
 		exit();
 	}

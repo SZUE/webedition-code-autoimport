@@ -522,7 +522,7 @@ class weSiteImport{
 			// check if template is selected
 			if (f.templateID.value == "0" || f.templateID.value=="") {
 				' . we_message_reporting::getShowMessageCall(
-				g_l('siteimport', "[pleaseSelectTemplateAlert]"), WE_MESSAGE_ERROR) . '
+				g_l('siteimport', "[pleaseSelectTemplateAlert]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return false;
 			}
 			// check value of fields
@@ -562,20 +562,20 @@ class weSiteImport{
 			}
 			if (filled == 0) {
 				' . we_message_reporting::getShowMessageCall(
-				g_l('siteimport', "[startEndMarkAlert]"), WE_MESSAGE_ERROR) . '
+				g_l('siteimport', "[startEndMarkAlert]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return false;
 			}
 			if (document.getElementById("ownValueInput").style.display != "none") {
 				if (f.dateformatField.value.length == 0) {
 					' . we_message_reporting::getShowMessageCall(
-				str_replace('"', '\"', g_l('siteimport', "[errorEmptyDateFormat]")), WE_MESSAGE_ERROR) . '
+				str_replace('"', '\"', g_l('siteimport', "[errorEmptyDateFormat]")), we_message_reporting::WE_MESSAGE_ERROR) . '
 					return false;
 				}
 			}
 		} else {
 			if (f.templateName.value.length==0) {
 				' . we_message_reporting::getShowMessageCall(
-				g_l('siteimport', "[nameOfTemplateAlert]"), WE_MESSAGE_ERROR) . '
+				g_l('siteimport', "[nameOfTemplateAlert]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 				f.templateName.focus();
 				f.templateName.select();
 				return false;
@@ -583,7 +583,7 @@ class weSiteImport{
 			var reg = /[^a-z0-9\._\-]/gi;
 			if (reg.test(f.templateName.value)) {
 				' . we_message_reporting::getShowMessageCall(
-				g_l('alert', "[we_filename_notValid]"), WE_MESSAGE_ERROR) . '
+				g_l('alert', "[we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR) . '
 				f.templateName.focus();
 				f.templateName.select();
 				return false;
@@ -607,7 +607,7 @@ class weSiteImport{
 	function showDateHelp() {
 		// this is a real alert, dont use showMessage yet
 		' . we_message_reporting::getShowMessageCall(
-				g_l('import', '[format_timestamp]'), WE_MESSAGE_INFO) . '
+				g_l('import', '[format_timestamp]'), we_message_reporting::WE_MESSAGE_INFO) . '
 	}
 
 </script>';

@@ -250,7 +250,7 @@ class weVersionsView
 				if(check==false) {
 					' . we_message_reporting::getShowMessageCall(
 						g_l('versions','[notChecked]'),
-						WE_MESSAGE_NOTICE) . '
+						we_message_reporting::WE_MESSAGE_NOTICE) . '
 				}
 				else {
 					Check = confirm("' . g_l('versions','[deleteVersions]') . '");

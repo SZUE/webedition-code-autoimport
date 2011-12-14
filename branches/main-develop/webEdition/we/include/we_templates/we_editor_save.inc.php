@@ -35,7 +35,7 @@ var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 <?php
 
 if ( $we_responseText ) {
-	if ($we_responseTextType == WE_MESSAGE_ERROR) {
+	if ($we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR) {
 		print "_EditorFrame.setEditorIsHot(true);";
 
 	}
@@ -167,7 +167,7 @@ if($we_responseText) {
 
 			$_jsCommand .="
 			if(isEditInclude){
-				" . we_message_reporting::getShowMessageCall( g_l('SEEM',"[alert][changed_include]"), WE_MESSAGE_NOTICE) . "
+				" . we_message_reporting::getShowMessageCall( g_l('SEEM',"[alert][changed_include]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
 		        weWindow.top.we_cmd(\"reload_editpage\");
 		        weWindow.edit_include.close();
 		        top.close();

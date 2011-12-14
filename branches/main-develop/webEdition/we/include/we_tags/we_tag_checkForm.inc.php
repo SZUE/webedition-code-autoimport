@@ -77,11 +77,11 @@ function we_tag_checkForm($attribs, $content) {
                 ' . $onError . '(formular,missingReq,wrongEmail,pwError);
             } else {
             	' . we_message_reporting::getShowMessageCall(
-										$content, WE_MESSAGE_FRONTEND) . '
+										$content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
             }
         ';
 	} else {
-		$jsOnError = we_message_reporting::getShowMessageCall($content, WE_MESSAGE_FRONTEND);
+		$jsOnError = we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND);
 	}
 
 	//  Generate mandatory array

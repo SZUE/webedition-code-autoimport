@@ -92,7 +92,7 @@ class we_object extends we_document {
 		$this->saveToDB();
 
 		$we_responseText = g_l('weClass',"[response_save_ok]");
-		$we_responseTextType = WE_MESSAGE_NOTICE;
+		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 		$db = new DB_WE();
 
@@ -609,7 +609,7 @@ class we_object extends we_document {
 			$we_JavaScript = "";
 			$this->save();
 			$we_responseText = sprintf($we_responseText,$this->Path);
-			$we_responseTextType = WE_MESSAGE_NOTICE;
+			$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 			return "we_templates/we_editor_save.inc.php";
 		}
 		switch($this->EditPageNr){
@@ -2068,7 +2068,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 		if (isset($GLOBALS['WE_DEL_WORKSPACE_ERROR']) && $GLOBALS['WE_DEL_WORKSPACE_ERROR']) {
 			unset($GLOBALS['WE_DEL_WORKSPACE_ERROR']);
-			$content .= '<script type="text/javascript">' . we_message_reporting::getShowMessageCall( addslashes(g_l('weClass','[we_del_workspace_error]')), WE_MESSAGE_ERROR ) . '</script>';
+			$content .= '<script type="text/javascript">' . we_message_reporting::getShowMessageCall( addslashes(g_l('weClass','[we_del_workspace_error]')), we_message_reporting::WE_MESSAGE_ERROR ) . '</script>';
 		}
 		return $content;
 	}

@@ -625,21 +625,21 @@ class weHyperlinkDialog extends weDialog{
 					acStatus = YAHOO.autocoml.checkACFields();
 					acStatusType = typeof acStatus;
 					if (weAcCheckLoop > 10) {
-						' . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . '
+						' . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),we_message_reporting::WE_MESSAGE_ERROR) . '
 						weAcCheckLoop = 0;
 					} else if(acStatusType.toLowerCase() == "object") {
 						if(acStatus.running) {
 							weAcCheckLoop++;
 							setTimeout("weDoCheckAcFields",100);
 						} else if(!acStatus.valid) {
-							' . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),we_message_reporting::WE_MESSAGE_ERROR) . '
 							weAcCheckLoop=0;
 						} else {
 							weAcCheckLoop=0;
 							document.forms["we_form"].submit();
 						}
 					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),WE_MESSAGE_ERROR) . '
+						' . we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),we_message_reporting::WE_MESSAGE_ERROR) . '
 					}
 				}
 

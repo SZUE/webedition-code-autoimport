@@ -31,7 +31,7 @@ if(isset($_REQUEST["ucmd"])){
     switch($_REQUEST["ucmd"]){
         case "new_group":
     	    if(!we_hasPerm("NEW_GROUP")){
-                print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR));
+                print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
                 break;
             }
 
@@ -57,7 +57,7 @@ if(isset($_REQUEST["ucmd"])){
 
         case "new_alias":
             if(!we_hasPerm("NEW_USER")){
-                print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), WE_MESSAGE_ERROR));
+                print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
                 break;
             }
 

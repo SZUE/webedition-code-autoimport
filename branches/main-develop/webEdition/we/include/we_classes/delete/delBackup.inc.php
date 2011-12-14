@@ -23,7 +23,7 @@
  */
 
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 class delBackup extends taskFragment{
 
@@ -49,7 +49,7 @@ class delBackup extends taskFragment{
 
 			if(!count($this->alldata)){
 				print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('backup',"[nothing_to_delete]"), WE_MESSAGE_WARNING)
+					we_message_reporting::getShowMessageCall(g_l('backup',"[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING)
 				);
 				$this->finish();
 			}

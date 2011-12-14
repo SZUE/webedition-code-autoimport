@@ -506,7 +506,7 @@ function get_value($settingvalue){
 		 * MESSAGE SETTINGS
 		 * ******************************************************************* */
 		case 'message_reporting':
-			return (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"]) ? $_SESSION["prefs"]["message_reporting"] : (WE_MESSAGE_ERROR + WE_MESSAGE_WARNING + WE_MESSAGE_NOTICE);
+			return (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"]) ? $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
 			break;
 
 		/*		 * *******************************************************************
@@ -3943,10 +3943,10 @@ function build_dialog($selected_setting = "ui"){
 		}
 
 		if(found == true) {
-			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_already_exists]'), WE_MESSAGE_ERROR) . "
+			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_already_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 		} else {
 			if (CountryValue == \"\") {
-				" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_country_missing]'), WE_MESSAGE_ERROR) . "
+				" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_country_missing]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 			} else {
 
 				var option = new Option(LocaleText, LocaleValue, false, false);
@@ -3982,7 +3982,7 @@ function build_dialog($selected_setting = "ui"){
 			var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
 
 			if(LocaleValue == document.getElementById('locale_default').value) {
-				" . we_message_reporting::getShowMessageCall(g_l('prefs', '[cannot_delete_default_language]'), WE_MESSAGE_ERROR) . "
+				" . we_message_reporting::getShowMessageCall(g_l('prefs', '[cannot_delete_default_language]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 			} else {
 				document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
 			}
@@ -4717,7 +4717,7 @@ else {
 								if (newRecipient != null) {
 									if (newRecipient.length > 0) {
 										if (newRecipient.length > 255 ) {
-											" . we_message_reporting::getShowMessageCall(g_l('alert', "[max_name_recipient]"), WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert', "[max_name_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 											return;
 										}
 
@@ -4727,10 +4727,10 @@ else {
 
 											set_state_edit_delete_recipient();
 										} else {
-											" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 										}
 									} else {
-										" . we_message_reporting::getShowMessageCall(g_l('alert', "[not_entered_recipient]"), WE_MESSAGE_ERROR) . "
+										" . we_message_reporting::getShowMessageCall(g_l('alert', "[not_entered_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 									}
 								}
 							}
@@ -4768,7 +4768,7 @@ else {
 										}
 
 										if (editRecipient.length > 255 ) {
-											" . we_message_reporting::getShowMessageCall(g_l('alert', "[max_name_recipient]"), WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert', "[max_name_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 											return;
 										}
 
@@ -4776,10 +4776,10 @@ else {
 											p.options[p.selectedIndex].text = editRecipient;
 											hot = true;
 										} else {
-											" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), WE_MESSAGE_ERROR) . "
+											" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 										}
 									} else {
-										" . we_message_reporting::getShowMessageCall(g_l('alert', "[not_entered_recipient]"), WE_MESSAGE_ERROR) . "
+										" . we_message_reporting::getShowMessageCall(g_l('alert', "[not_entered_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
 									}
 								}
 							}
@@ -5889,9 +5889,9 @@ else {
 			 * Settings
 			 * *************************************************************** */
 
-			$_error = "<input type=\"hidden\" id=\"message_reporting\" name=\"message_reporting\" value=\"$_val\" />" . we_forms::checkbox(WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true);
-			$_warning = we_forms::checkbox(WE_MESSAGE_WARNING, $_val & WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();");
-			$_notice = we_forms::checkbox(WE_MESSAGE_NOTICE, $_val & WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
+			$_error = "<input type=\"hidden\" id=\"message_reporting\" name=\"message_reporting\" value=\"$_val\" />" . we_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true);
+			$_warning = we_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();");
+			$_notice = we_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
 			// Build final HTML code
 			$_html = $_error . "<br />"
@@ -6638,7 +6638,7 @@ if($doSave && !$acError){
 								var _multiEditorreload = false;
 							   " . $save_javascript . "
 
-							   " . (!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), WE_MESSAGE_NOTICE)
+							   " . (!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)
 			) . "
 							   top.opener.top.frames[0].location.reload();
 							   top.close();
@@ -6689,7 +6689,7 @@ function setColorField(name) {
 	document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
 }
 
-' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), WE_MESSAGE_ERROR) : ""));
+' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 	$_we_win_js = we_htmlElement::jsScript(JS_DIR . 'windows.js');
 

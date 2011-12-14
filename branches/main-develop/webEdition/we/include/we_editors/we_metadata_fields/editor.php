@@ -363,7 +363,7 @@ $save_javascript ="";
 if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] == "true") {
 
 	if (isset($_REQUEST["metadatafields_name"]) && (strpos($_REQUEST["metadatafields_name"],"'") !== false || strpos($_REQUEST["metadatafields_name"],",") !== false)) {
-		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[metadatafields_hochkomma]"), WE_MESSAGE_ERROR).
+		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[metadatafields_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR).
 							'history.back()');
 	} else {
 		save_all_values();
@@ -372,7 +372,7 @@ if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] 
 		$save_javascript = we_htmlElement::jsElement("
 
 							   " . $save_javascript . "
-								" . we_message_reporting::getShowMessageCall(g_l('metadata',"[saved]"), WE_MESSAGE_NOTICE) . "
+								" . we_message_reporting::getShowMessageCall(g_l('metadata',"[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
 
 							   top.close();
 

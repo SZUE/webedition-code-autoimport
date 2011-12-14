@@ -715,19 +715,19 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 				case 'acronym':
 					if(title == '') {
 						document.getElementById('title_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_title]'), WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					if(lang == '') {
 						document.getElementById('lang_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_language]'), WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					break;
 				case 'foreignword':
 					if(lang == '') {
 						document.getElementById('lang_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_language]'), WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					break;
@@ -740,13 +740,13 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 					title = document.getElementById('title_' +  i).value;
 					if(title == '') {
 						document.getElementById('title_' +  i).focus();
-						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_correct_word]'), WE_MESSAGE_ERROR); ?>
+						<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_insert_correct_word]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 						return false;
 					}
 					break;
 				default:
 					document.getElementById('type_' +  i).focus();
-					<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_choose_action]'), WE_MESSAGE_ERROR); ?>
+					<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary','[please_choose_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					return false;
 					break;
 			}
@@ -970,7 +970,7 @@ top.add();
 
 	}
 
-	$Js .= we_message_reporting::getShowMessageCall($Message, WE_MESSAGE_NOTICE, false, true);
+	$Js .= we_message_reporting::getShowMessageCall($Message, we_message_reporting::WE_MESSAGE_NOTICE, false, true);
 	$Js .= "top.close();";
 
 	$Js = we_htmlElement::jsElement($Js);

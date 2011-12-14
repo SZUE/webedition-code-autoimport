@@ -436,12 +436,12 @@ top.clearEntries();
 		$txt = $this->EntryText;
 		if($txt==""){
 			if($what==1){
-				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
-				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 		}else if(strpos($txt,',')!==false){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			$txt = trim($txt);
 			$parentPath = (!abs($this->dir)) ? "" : f("SELECT Path FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);
@@ -454,12 +454,12 @@ top.clearEntries();
 				}else{
 					$we_responseText = sprintf(g_l('weEditor',"[category][response_path_exists]"),$Path);
 				}
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('|[\\\'"<>/]|',$txt)){
 
 					$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"),$Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 		         }else{
 					$this->db->query("INSERT INTO ".$this->db->escape($this->table)."
 								(Category,ParentID,Text,Path,IsFolder,Icon)
@@ -522,12 +522,12 @@ top.clearEntries();
 		$txt = $this->EntryText;
 		if($txt==""){
 			if($what==1){
-				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
-				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 		}else if(strpos($txt,',')!==false){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			$parentPath = (!intval($this->dir)) ? "" : f("SELECT Path FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);
 			$Path = $parentPath."/".$txt;
@@ -538,11 +538,11 @@ top.clearEntries();
 				}else{
 					$we_responseText = sprintf(g_l('weEditor',"[category][response_path_exists]"),$Path);
 				}
-				print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			}else{
 				if(preg_match('|[\'"<>/]|',$txt)){
 					$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"),$Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR);
+					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 		         }else{
 		         	if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editCatID),"Text",$this->db) != $txt){
 						$this->db->query("UPDATE ".$this->db->escape($this->table)."
@@ -852,7 +852,7 @@ function setDir(id){
 			if($catlistNotDeleted){
 
 				print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, WE_MESSAGE_ERROR)
+					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 				);
 			}
 			if($changeToParent){
@@ -892,7 +892,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		if($this->CatInUse($this->id,$IsDir)){
 
 			print we_htmlElement::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, WE_MESSAGE_ERROR)
+					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 				);
 		}else{
 			print '<script>
@@ -1076,8 +1076,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 			protect();
 			print '<script>'.$js.'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
 				($updateok
-					? we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_ok]"),$category), WE_MESSAGE_NOTICE)
-					: we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_notok]"),$category), WE_MESSAGE_ERROR ) )
+					? we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_ok]"),$category), we_message_reporting::WE_MESSAGE_NOTICE)
+					: we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_notok]"),$category), we_message_reporting::WE_MESSAGE_ERROR ) )
 				. '</script>';
 
 			print '</head><body></body></html>';
@@ -1169,7 +1169,7 @@ function we_checkName() {
 	if(regExp.test(document.getElementById("category").value)) {
 ';
 	$we_responseText = sprintf(g_l('weEditor',"[category][we_filename_notValid]"), $path);
-	print we_message_reporting::getShowMessageCall($we_responseText, WE_MESSAGE_ERROR) . '
+	print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}

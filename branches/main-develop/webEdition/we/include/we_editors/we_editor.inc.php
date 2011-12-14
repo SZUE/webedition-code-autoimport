@@ -383,50 +383,50 @@ else {
 				$saveTemplate = true;
 				if (strpos($we_doc->ParentPath,"..")!==false || $we_doc->ParentPath{0} != "/") {
 					$we_responseText = sprintf(g_l('weClass',"[notValidFolder]"),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_filenameEmpty()) {
 					$we_responseText = g_l('weEditor','['.$we_doc->ContentType.'][filename_empty]');
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 					$saveTemplate = false;
 				} else if(!$we_doc->i_canSaveDirinDir()) {
 					$we_responseText = g_l('weEditor',"[pfolder_notsave]");
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_sameAsParent()) {
 					$we_responseText = g_l('weEditor',"[folder_save_nok_parent_same]");
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_fileExtensionNotValid()) {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][we_filename_notValid]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_filenameNotValid()) {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][we_filename_notValid]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_descriptionMissing()) {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][we_description_missing]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_filenameNotAllowed()) {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][we_filename_notAllowed]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_filenameDouble()) {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_path_exists]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_urlDouble()) {
 					$we_responseText =  sprintf(g_l('weEditor','['.$we_doc->ContentType.'][we_objecturl_exists]'),$we_doc->Url);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if(!$we_doc->i_checkPathDiffAndCreate()) {
 					$we_responseText = sprintf(g_l('weClass',"[notValidFolder]"),$we_doc->Url);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if(($n = $we_doc->i_check_requiredFields())) {
 					$we_responseText = sprintf(g_l('weEditor',"[required_field_alert]"),$n);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if($we_doc->i_scheduleToBeforeNow()) {
 					$we_responseText = g_l('modules_schedule','[toBeforeNow]');
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if(($n = $we_doc->i_hasDoubbleFieldNames())) {
 					$we_responseText = sprintf(g_l('weEditor',"[doubble_field_alert]"),$n);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else if(!$we_doc->i_areVariantNamesValid()) {
 					$we_responseText = g_l('weEditor',"[variantNameInvalid]");
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else {
 					$we_JavaScript = "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n"; // save/ rename a document
 					if($we_doc->ContentType=="text/weTmpl") {
@@ -468,7 +468,7 @@ else {
 								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."', '" . $we_doc->Text ."', '" . $we_doc->ID . "');\n";
 								$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript().";\n";// save/ rename a document
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_ok]'),$we_doc->Path);
-								$we_responseTextType = WE_MESSAGE_NOTICE;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 								if($_REQUEST["we_cmd"][4]) {
 									// this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
 									if($somethingNeedsToBeResaved) {
@@ -480,13 +480,13 @@ else {
 								// we got an error while saving the template
 								$we_JavaScript = "";
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_notok]'),$we_doc->Path);
-								$we_responseTextType = WE_MESSAGE_ERROR;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							}
 						}
 ####TEMPLATE_SAVE_CODE2_END###
 						if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2) {
 							$we_responseText = g_l('weEditor',"[text/weTmpl][no_template_save]");
-							$we_responseTextType = WE_MESSAGE_ERROR;
+							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");exit();
 						}
 						if(isset($_REQUEST["we_cmd"][6]) && $_REQUEST["we_cmd"][6]) {
@@ -497,7 +497,7 @@ else {
 						if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType=="application/*" && in_array($we_doc->Extension, makeArrayFromCSV($GLOBALS["WE_CONTENT_TYPES"]["text/html"]["Extension"]))) {
 								$we_JavaScript = "";
 								$we_responseText = sprintf(g_l('weEditor',"[application/*][response_save_wrongExtension]"),$we_doc->Path,$we_doc->Extension);
-								$we_responseTextType = WE_MESSAGE_ERROR;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 						} else {
 
 							$wf_flag = false;
@@ -505,13 +505,13 @@ else {
 							$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
 							if (!$_SESSION["perms"]["ADMINISTRATOR"] && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile"  && !in_workspace($we_doc->ParentID,get_ws($we_doc->Table),$we_doc->Table)) {
 								$we_responseText = g_l('alert','['.FILE_TABLE.'][not_im_ws]');
-								$we_responseTextType = WE_MESSAGE_ERROR;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 								include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 								exit();
 							}
 							if(!$we_doc->userCanSave()) {
 								$we_responseText = g_l('alert',"[access_denied]");
-								$we_responseTextType = WE_MESSAGE_ERROR;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 								include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");
 								exit();
 							}
@@ -523,7 +523,7 @@ else {
 									$we_JavaScript .= "top.header.document.location.reload();\nif(top.treeData.table=='".OBJECT_FILES_TABLE."'){top.we_cmd('load', 'tblObjectFiles', 0);}\n";
 								}
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_ok]'),$we_doc->Path);
-								$we_responseTextType = WE_MESSAGE_NOTICE;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 								if($_REQUEST["we_cmd"][5]) {
 									$_REQUEST["we_cmd"][5] = "";
@@ -531,7 +531,7 @@ else {
 											$foo = $we_doc->getNextPublishDate();
 										if($foo) {
 											$we_responseText .= "\\n".sprintf(g_l('weEditor','['.$we_doc->ContentType.'][autoschedule]'),date(g_l('date','[format][default]'),$foo));
-											$we_responseTextType = WE_MESSAGE_NOTICE;
+											$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
 										}
 									}
@@ -544,7 +544,7 @@ else {
 												}
 											}
 											$we_responseText .= "\\n".sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_publish_ok]'),$we_doc->Path);
-											$we_responseTextType = WE_MESSAGE_NOTICE;
+											$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 											// SEEM, here a doc is published
 											$GLOBALS["publish_doc"] = true;
 											if( $_SESSION["we_mode"] != "seem" && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW)  && (!$_REQUEST["we_cmd"][4])) {
@@ -555,14 +555,14 @@ else {
 										}
 										else {
 											$we_responseText .= "\\n".sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_publish_notok]'),$we_doc->Path);
-											$we_responseTextType = WE_MESSAGE_ERROR;
+											$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 										}
 									}
 								}
 								else {
 									if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!$_REQUEST["we_cmd"][4])) || (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7])) {
 										$we_responseText = (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7]) ? "" : $we_responseText;
-										$we_responseTextType = (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7]) ? WE_MESSAGE_ERROR : $we_responseTextType;
+										$we_responseTextType = (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7]) ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
 										$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");';
 										if((isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7] == 1)) {
 											$we_JavaScript .= 'top.we_cmd("in_workflow","'.$we_transaction.'","'.$_REQUEST["we_cmd"][4].'");'."\n";
@@ -606,7 +606,7 @@ else {
 							else {
 								$we_JavaScript = "";
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_notok]'),$we_doc->Path);
-								$we_responseTextType = WE_MESSAGE_ERROR;
+								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							}
 						}
 						if($_REQUEST["we_cmd"][6]) {
@@ -656,7 +656,7 @@ else {
 			if($we_doc->Published) {
 				if($we_doc->we_unpublish()) {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_unpublish_ok]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_NOTICE;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 					if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO) {
 						$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef?gt
 					}
@@ -672,14 +672,14 @@ else {
 				else {
 					$we_JavaScript = "";
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_unpublish_notok]'),$we_doc->Path);
-					$we_responseTextType = WE_MESSAGE_ERROR;
+					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 			}
 			else {
 				$we_JavaScript = "";
 				$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_not_published]'),$we_doc->Path);
-				$we_responseTextType = WE_MESSAGE_ERROR;
+				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 
 			}
 			include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_publish.inc.php");

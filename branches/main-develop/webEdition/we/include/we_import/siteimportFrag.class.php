@@ -65,7 +65,7 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . html
 	function finish(){
 		print
 			"<script type=\"text/javascript\">top.siteimportbuttons.setProgress(100);</script>\n<script type=\"text/javascript\">setTimeout('" . we_message_reporting::getShowMessageCall(
-				g_l('siteimport', "[importFinished]"), WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');</script>";
+				g_l('siteimport', "[importFinished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');</script>";
 	}
 
 	function printHeader(){

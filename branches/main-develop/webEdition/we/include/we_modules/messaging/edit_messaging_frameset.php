@@ -42,7 +42,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 if (!$messaging->check_folders()) {
 	include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 	if (!msg_create_folders($_SESSION["user"]["ID"])) {
-			print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), WE_MESSAGE_ERROR));
+			print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
 	}
 }
 

@@ -42,7 +42,7 @@ $messaging->init($_SESSION["we_data"]['we_messagin_setting']);
 
 if( isset($_REQUEST['mcmd']) && $_REQUEST['mcmd'] == 'save_settings' && isset($_REQUEST['check_step'])) {
     if ($messaging->save_settings(array('check_step' => $_REQUEST['check_step']))) {
-     print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[saved]'), WE_MESSAGE_NOTICE ); ?>
+     print we_message_reporting::getShowMessageCall( g_l('modules_messaging','[saved]'), we_message_reporting::WE_MESSAGE_NOTICE ); ?>
         window.close();
     //-->
     </script>

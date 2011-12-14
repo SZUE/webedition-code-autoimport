@@ -463,7 +463,7 @@
 				} else {
 					return '
 						<script  type="text/javascript">
-							' . we_message_reporting::getShowMessageCall(g_l('backup','[import_file_found]'), WE_MESSAGE_WARNING) . '
+							' . we_message_reporting::getShowMessageCall(g_l('backup','[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 							top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 						</script>
 					';
@@ -474,7 +474,7 @@
 
 				return '
 					<script  type="text/javascript">
-						' . we_message_reporting::getShowMessageCall(g_l('backup','[customer_import_file_found]'), WE_MESSAGE_WARNING) . '
+						' . we_message_reporting::getShowMessageCall(g_l('backup','[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 					</script>
 				';
@@ -483,7 +483,7 @@
 
 				return '
 					<script  type="text/javascript">
-						' . we_message_reporting::getShowMessageCall(g_l('backup','[format_unknown]'), WE_MESSAGE_WARNING) . '
+						' . we_message_reporting::getShowMessageCall(g_l('backup','[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 						top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 					</script>
 				';
@@ -542,7 +542,7 @@
 
 			return '
 				<script  type="text/javascript">
-					' . we_message_reporting::getShowMessageCall($_mess, WE_MESSAGE_ERROR) . '
+					' . we_message_reporting::getShowMessageCall($_mess, we_message_reporting::WE_MESSAGE_ERROR) . '
 					top.body.location = "/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2";
 				</script>
 			';

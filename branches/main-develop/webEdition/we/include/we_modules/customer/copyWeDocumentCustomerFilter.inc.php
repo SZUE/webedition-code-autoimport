@@ -136,7 +136,7 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		print we_htmlElement::jsElement("
 			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter',"[apply_filter_done]") . "');
 			parent.setProgress(100);
-			" . we_message_reporting::getShowMessageCall( g_l('modules_customerFilter',"[apply_filter_done]"), WE_MESSAGE_NOTICE) . "
+			" . we_message_reporting::getShowMessageCall( g_l('modules_customerFilter',"[apply_filter_done]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
 			window.setTimeout('parent.top.close()', 2000);
 		");
 	}

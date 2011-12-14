@@ -62,7 +62,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 		    <?php
 		    exit;
 		} else {
-			print we_message_reporting::getShowMessageCall($res[0], WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall($res[0], we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	    }
 	?>

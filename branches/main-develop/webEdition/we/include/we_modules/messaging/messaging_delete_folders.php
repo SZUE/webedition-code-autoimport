@@ -54,7 +54,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 		}
 		if(!sel) {
 			top.toggleBusy(0);
-			<?php print we_message_reporting::getShowMessageCall( g_l('alert',"[nothing_to_delete]"), WE_MESSAGE_ERROR ); ?>
+			<?php print we_message_reporting::getShowMessageCall( g_l('alert',"[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR ); ?>
 			return;
 		}
 		sel = sel.substring(0,sel.length-1);
@@ -92,7 +92,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
     		    <?php
 		        exit;
 		    } else {
-    		    echo we_message_reporting::getShowMessageCall( g_l('modules_messaging','[err_delete_folders]'), WE_MESSAGE_ERROR );
+    		    echo we_message_reporting::getShowMessageCall( g_l('modules_messaging','[err_delete_folders]'), we_message_reporting::WE_MESSAGE_ERROR );
 		    }
 		}
     }

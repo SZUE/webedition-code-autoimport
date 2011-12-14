@@ -58,7 +58,7 @@ if (!$wfchk) {
 	} else {
 		$script = "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
 				g_l('alert',"[nothing_to_delete]"),
-				WE_MESSAGE_WARNING);
+				we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' . "\n";
 	$wfchk_html .= we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>" . "\n";
@@ -245,7 +245,7 @@ if (!$wfchk) {
 			if ($retVal == -6) {
 
 				$script .= "top.toggleBusy(0);\n";
-				$script .= we_message_reporting::getShowMessageCall(g_l('alert','[no_perms_action]'), WE_MESSAGE_ERROR);
+				$script .= we_message_reporting::getShowMessageCall(g_l('alert','[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
 
 			} else
 				if ($retVal == -5) { //	not allowed to delete workspace
@@ -261,7 +261,7 @@ if (!$wfchk) {
 									g_l('alert','[delete_workspace_object_r]'),
 									id_to_path($selectedItems[$i], $table),
 									$objList),
-							WE_MESSAGE_ERROR);
+							we_message_reporting::WE_MESSAGE_ERROR);
 
 				} else
 					if ($retVal == -4) { //	not allowed to delete workspace
@@ -275,7 +275,7 @@ if (!$wfchk) {
 										g_l('alert','[delete_workspace_user_r]'),
 										id_to_path($selectedItems[$i], $table),
 										$usrList),
-								WE_MESSAGE_ERROR);
+								we_message_reporting::WE_MESSAGE_ERROR);
 
 					} else
 						if ($retVal == -3) { //	not allowed to delete workspace
@@ -289,7 +289,7 @@ if (!$wfchk) {
 											g_l('alert','[delete_workspace_object]'),
 											id_to_path($selectedItems[$i], $table),
 											$objList),
-									WE_MESSAGE_ERROR);
+									we_message_reporting::WE_MESSAGE_ERROR);
 
 						} else
 							if ($retVal == -2) { //	not allowed to delete workspace
@@ -303,7 +303,7 @@ if (!$wfchk) {
 												g_l('alert','[delete_workspace_user]'),
 												id_to_path($selectedItems[$i], $table),
 												$usrList),
-										WE_MESSAGE_ERROR);
+										we_message_reporting::WE_MESSAGE_ERROR);
 
 							} else
 								if ($retVal == -1) { //	not allowed to delete document
@@ -314,7 +314,7 @@ if (!$wfchk) {
 											sprintf(
 													g_l('alert',"[noRightsToDelete]"),
 													id_to_path($selectedItems[$i], $table)),
-											WE_MESSAGE_ERROR);
+											we_message_reporting::WE_MESSAGE_ERROR);
 
 								} else
 									if ($retVal) { //	user may delete -> delete files !
@@ -442,7 +442,7 @@ if (!$wfchk) {
 
 												$script .= we_message_reporting::getShowMessageCall(
 														$delete_ok,
-														WE_MESSAGE_NOTICE);
+														we_message_reporting::WE_MESSAGE_NOTICE);
 											}
 										}
 
@@ -451,23 +451,23 @@ if (!$wfchk) {
 										if ($table == TEMPLATES_TABLE) {
 											$script .= we_message_reporting::getShowMessageCall(
 													g_l('alert',"[deleteTempl_notok_used]"),
-													WE_MESSAGE_ERROR);
+													we_message_reporting::WE_MESSAGE_ERROR);
 										} else
 											if ($table == OBJECT_TABLE) {
 												$script .= we_message_reporting::getShowMessageCall(
 														g_l('alert',"[deleteClass_notok_used]"),
-														WE_MESSAGE_ERROR);
+														we_message_reporting::WE_MESSAGE_ERROR);
 											} else {
 												$script .= we_message_reporting::getShowMessageCall(
 														g_l('alert',"[delete_notok]"),
-														WE_MESSAGE_ERROR);
+														we_message_reporting::WE_MESSAGE_ERROR);
 											}
 									}
 
 		} else {
 			$script .= "top.toggleBusy(0);\n" . we_message_reporting::getShowMessageCall(
 					g_l('alert',"[nothing_to_delete]"),
-					WE_MESSAGE_WARNING) . "\n";
+					we_message_reporting::WE_MESSAGE_WARNING) . "\n";
 		}
 		print we_htmlElement::jsScript(JS_DIR.'windows.js');
 		print '<script  type="text/javascript"><!--
@@ -486,9 +486,9 @@ if ($_SESSION["we_mode"] == "seem") {
 	if ($retVal) { //	document deleted -> go to seeMode startPage
 		$_js = we_message_reporting::getShowMessageCall(
 				g_l('alert','[delete_single][return_to_start]'),
-				WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');";
+				we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');";
 	} else {
-		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[delete_single][no_delete]'), WE_MESSAGE_ERROR);
+		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	print
 			we_htmlElement::htmlHtml(we_htmlElement::htmlHead(we_htmlElement::jsElement($_js)));
@@ -566,7 +566,7 @@ function we_submitForm(target,url){
 	if(!sel){
 		top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_delete]"), WE_MESSAGE_ERROR);
+		print we_message_reporting::getShowMessageCall(g_l('alert',"[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR);
 		?>
 		return;
 	}

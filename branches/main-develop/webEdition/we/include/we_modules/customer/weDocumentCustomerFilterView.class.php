@@ -152,7 +152,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 	 * @return string
 	 */
 	function getFolderApplyHTML() {
-		$_ok_button = we_button::create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter','[apply_filter_isHot]'), WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
+		$_ok_button = we_button::create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter','[apply_filter_isHot]'), we_message_reporting::WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
 
 		return "
 			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . g_l('modules_customerFilter','[apply_filter]') . "</div>

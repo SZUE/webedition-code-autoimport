@@ -93,7 +93,7 @@ function save(){
 	savePrefs();
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[prefs_saved_successfully]'),
-		WE_MESSAGE_NOTICE) . "
+		we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 function preview(){

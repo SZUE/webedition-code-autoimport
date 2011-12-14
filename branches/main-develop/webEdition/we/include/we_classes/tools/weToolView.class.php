@@ -137,21 +137,21 @@ class weToolView {
 							'.$this->editorBodyFrame.'.document.we_form.pnt.value="edbody";
 							'.$this->editorBodyFrame.'.submitForm();
 						} else {
-							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_save]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						}
 						break;
 					case "tool_' . $this->toolName . '_delete":
 						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=="home"){
-							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_selected]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
 						if('.$this->topFrame.'.resize.right.editor.edbody.document.we_form.newone.value==1){
-							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_delete]'), WE_MESSAGE_ERROR) . '
+							' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						}
 						'.(!we_hasPerm("DELETE_" . strtoupper($this->toolName)) ?
 						(
-							we_message_reporting::getShowMessageCall(g_l('tools','[no_perms]'), WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('tools','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						)
 						:
 						('
@@ -164,7 +164,7 @@ class weToolView {
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 									}
 								} else {
-									' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_delete]'), WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall(g_l('tools','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 
 						')).'

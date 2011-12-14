@@ -381,7 +381,7 @@ abstract class we_rebuild_wizard{
 					break;
 				case "rebuild_thumbnails":
 					if(!$thumbs){
-						return array($js.";top.frames[\"wizbusy\"].showPrevNextButton();" . we_message_reporting::getShowMessageCall(g_l('rebuild',"[no_thumbs_selected]"), WE_MESSAGE_WARNING),"");
+						return array($js.";top.frames[\"wizbusy\"].showPrevNextButton();" . we_message_reporting::getShowMessageCall(g_l('rebuild',"[no_thumbs_selected]"), we_message_reporting::WE_MESSAGE_WARNING),"");
 					}
 					$data = we_rebuild::getThumbnails($thumbs,$thumbsFolders);
 					break;
@@ -849,7 +849,7 @@ abstract class we_rebuild_wizard{
 				'			break;'."\n".
 				'		case "next":'."\n".
 				'			if (typeof(document._errorMessage) != "undefined" && document._errorMessage !== ""){'."\n" .
-				'				'.we_message_reporting::getShowMessageCall(g_l('rebuild',"[noFieldsChecked]"), WE_MESSAGE_ERROR)."\n" .
+				'				'.we_message_reporting::getShowMessageCall(g_l('rebuild',"[noFieldsChecked]"), we_message_reporting::WE_MESSAGE_ERROR)."\n" .
 				'				return;'."\n" .
 				'			} else {'."\n" .
 				'				top.frames["wizbusy"].back_enabled = top.frames["wizbusy"].switch_button_state("back", "back_enabled", "disabled");'."\n" .

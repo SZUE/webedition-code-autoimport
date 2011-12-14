@@ -123,12 +123,12 @@ function save(){
 		}
 		" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[prefs_saved_successfully]'),
-		WE_MESSAGE_NOTICE) . "
+		we_message_reporting::WE_MESSAGE_NOTICE) . "
 		self.close();
 	} else {
 		" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[no_type_selected]'),
-		WE_MESSAGE_ERROR) . "
+		we_message_reporting::WE_MESSAGE_ERROR) . "
 	}
 }
 
@@ -147,7 +147,7 @@ function preview(){
 	} else {
 		" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit','[no_type_selected]'),
-		WE_MESSAGE_ERROR) . "
+		we_message_reporting::WE_MESSAGE_ERROR) . "
 	}
 }
 

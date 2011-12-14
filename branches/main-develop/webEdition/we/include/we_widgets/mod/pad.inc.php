@@ -547,14 +547,14 @@ print
 							if(weValidFrom>weValidUntil) {
 								" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[until_befor_from]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 								return false;
 							}
 						}
 						if(q_curr['Title']=='') {
 							" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[title_empty]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 							return false;
 						}
 						var q_ID=gel(_id+'_ID').value;
@@ -562,7 +562,7 @@ print
 					}else{
 						" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[note_not_modified]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 					}
 				}else{
 					if(hot){
@@ -573,31 +573,31 @@ print
 							if(weValidFrom>weValidUntil) {
 								" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[until_befor_from]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 								return false;
 							} else if(!weValidFrom || !weValidUntil) {
 								" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[date_empty]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 								return false;
 							}
 						} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
 								" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[date_empty]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 								return false;
 						}
 						if(q_curr['Title']=='') {
 							" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[title_empty]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 							return false;
 						}
 						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
 					}else{
 						" . we_message_reporting::getShowMessageCall(
 										g_l('cockpit','[title_empty]'),
-										WE_MESSAGE_NOTICE) . "
+										we_message_reporting::WE_MESSAGE_NOTICE) . "
 					}
 				}
 			}
