@@ -31,6 +31,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
  * 3. all files of one domain reside in the same directory
  * 4. if further division is needed, create a subdomain which does not contain _ !
  * 5. domains are looked up in this class
+ * 6. NOTE that files MUST end with .class.php
  */
 
 abstract class we_autoloader{
@@ -38,7 +39,7 @@ abstract class we_autoloader{
 	private static $domains = array(
 		'database' => 'we_classes/database',
 	);
-	
+
 	private static $classes = array(
 		'we_classes' => array(
 			'Captcha' => 'captcha/captcha.class.php',
