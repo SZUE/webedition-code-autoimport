@@ -50,7 +50,6 @@ foreach($_we_active_integrated_modules as $active){
 }
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 if(isset($_we_active_integrated_modules) && in_array('shop', $_we_active_integrated_modules)){
 	$MNEMONIC_EDITPAGES['11'] = 'variants';

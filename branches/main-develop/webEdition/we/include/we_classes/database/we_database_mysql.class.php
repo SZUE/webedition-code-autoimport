@@ -27,18 +27,18 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 
 
-class DB_WE extends DB_WE_abstract {
+class DB_WE extends we_database_base {
 	private $conType='';
 	/* public: constructor */
 /*	function __construct(){
 		//call super constructor
 		parent::__construct();
 	}*/
-	
+
 protected function ping(){
 		return mysql_ping($this->Link_ID);
 	}
-	
+
 	/* public: connection management */
 
 	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD) {
@@ -74,7 +74,7 @@ protected function ping(){
         protected function _setCharset($charset){
                 @ mysql_set_charset($charset);
         }
- 
+
 
 	/* public: discard the query result */
 	protected function _free() {
@@ -97,7 +97,7 @@ protected function ping(){
 	protected function fetch_array($resultType){
 		return @mysql_fetch_array($this->Query_ID, $resultType);
 	}
-	
+
 
 	/* public: position in result set */
 	protected function _seek($pos=0) {
@@ -122,7 +122,7 @@ protected function ping(){
 		return @mysql_field_name($this->Query_ID, $no);
 	}
 
-	
+
 	public function field_type($no){
 		return @mysql_field_type($this->Query_ID, $no);
 	}
@@ -135,7 +135,7 @@ protected function ping(){
 	public function field_flags($no){
 		return @mysql_field_flags($this->Query_ID, $no);
 	}
-	
+
 	public function getInsertId() {
 		return mysql_insert_id($this->Link_ID);
 	}
@@ -147,13 +147,13 @@ protected function ping(){
 						'<br/>host: '.mysql_get_host_info().
 						'<br/>server: '.mysql_get_server_info();
 	}
-	
+
 	protected function errno() {
 		return mysql_errno();
 	}
 
 	protected function error() {
-		return mysql_error();		
+		return mysql_error();
 	}
 
 }

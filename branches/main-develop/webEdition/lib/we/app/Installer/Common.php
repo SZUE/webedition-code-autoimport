@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -31,15 +31,15 @@ include_once('Zend/Db.php');
  * class for local installation of webEdition applications (formerly known as "tools")
  * the source files need to be present as a zip file at a specified location
  * static class for common installer activities, i.e. check routines
- * 
+ *
  * @category   we
  * @package    we_app
  * @subpackage we_app_Installer
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_Installer_Common
+abstract class we_app_Installer_Common
 {
-	
+
 	public static function executeQuery($query = "")
 	{
 		if(empty($query)) {
@@ -53,9 +53,9 @@ class we_app_Installer_Common
 			return false;
 		}
 		return true;
-		
+
 	}
-	
-	
-	
+
+
+
 }

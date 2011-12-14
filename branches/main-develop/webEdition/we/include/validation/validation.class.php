@@ -22,13 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-    class validation{
-
-        function validation(){
-            die('static class do not use constructor');
-        }
-
-        function getAllCategories(){
+    abstract class validation{
+			static function getAllCategories(){
             $cats = array(
                 'xhtml'=>g_l('validation','[category_xhtml]'),
                 'links'=>g_l('validation','[category_links]'),
@@ -38,7 +33,7 @@
             return $cats;
         }
 
-        function saveService($validationService){
+        static function saveService($validationService){
             // before saving check if another validationservice has this name
 			$checkNameQuery = '
 				SELECT *
@@ -80,7 +75,7 @@
             }
         }
 
-        function deleteService($validationService){
+        static function deleteService($validationService){
             if($validationService->id != 0){
                 $query = 'DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . abs($validationService->id);
 
@@ -94,7 +89,7 @@
             return false;
         }
 
-        function getValidationServices($mode='edit'){
+        static function getValidationServices($mode='edit'){
             $_ret = array();
 
             switch($mode){

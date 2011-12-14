@@ -25,7 +25,7 @@
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 
-class DB_WE extends DB_WE_abstract {
+class DB_WE extends we_database_base {
 
 	protected function _free() {
 		if(is_object($this->Query_ID)){
@@ -68,7 +68,7 @@ class DB_WE extends DB_WE_abstract {
 	public function getAll($resultType){
 		return @$this->Query_ID->fetch_all($resultType);
 	}
-	
+
 	public function affected_rows() {
 		return $this->Link_ID->mysqli_affected_rows;
 	}

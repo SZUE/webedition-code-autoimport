@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -28,7 +28,7 @@
  * */
 
 
-class we_util_File
+abstract class we_util_File
 {
 
 	public static function load($filename, $flags = "rb", $rsize = 8192)
@@ -57,30 +57,30 @@ class we_util_File
 
 	public static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = 0)
 	{
-		
+
 		if ($filename == '')
 			return false;
 		if (self::hasURL($filename))
 			return false;
 		if (!is_readable($filename))
 			return false;
-		
+
 		if ($iscompressed == 0) {
 			$open = 'fopen';
 			$seek = 'fseek';
 			$tell = 'ftell';
 			$read = 'fgets';
 			$close = 'fclose';
-		
+
 		} else {
 			$open = 'gzopen';
 			$seek = 'gzseek';
 			$tell = 'gztell';
 			$read = 'gzgets';
 			$close = 'gzclose';
-		
+
 		}
-		
+
 		$buffer = '';
 		$fp = $open($filename, 'rb');
 		if ($fp) {
@@ -98,30 +98,30 @@ class we_util_File
 
 	public static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = 0)
 	{
-		
+
 		if ($filename == '')
 			return false;
 		if (self::hasURL($filename))
 			return false;
 		if (!is_readable($filename))
 			return false;
-		
+
 		if ($iscompressed == 0) {
 			$open = 'fopen';
 			$seek = 'fseek';
 			$tell = 'ftell';
 			$read = 'fread';
 			$close = 'fclose';
-		
+
 		} else {
 			$open = 'gzopen';
 			$seek = 'gzseek';
 			$tell = 'gztell';
 			$read = 'gzread';
 			$close = 'gzclose';
-		
+
 		}
-		
+
 		$buffer = '';
 		$fp = $open($filename, 'rb');
 		if ($fp) {
@@ -156,7 +156,7 @@ class we_util_File
 				return false;
 		}
 		$written = 0;
-		
+
 		$fp = @fopen($filename, $flags);
 		if ($fp) {
 			$written = fwrite($fp, $content);
@@ -218,7 +218,7 @@ class we_util_File
 	 */
 	public static function splitFile($filename, $path, $pattern = "", $split_size = 0, $marker = "")
 	{
-		
+
 		if ($pattern == "")
 			$pattern = basename($filename) . "%s";
 		$buff = "";
@@ -227,35 +227,35 @@ class we_util_File
 		$num = -1;
 		$open_new = true;
 		$fsize = 0;
-		
+
 		$marker_size = strlen($marker);
-		
+
 		if ($fh) {
 			while (!@feof($fh)) {
 				@set_time_limit(60);
 				$line = "";
 				$findline = false;
-				
+
 				while ($findline == false && !@feof($fh)) {
 					$line .= @fgets($fh, 4096);
 					if (substr($line, -1) == "\n") {
 						$findline = true;
 					}
 				}
-				
+
 				if ($open_new) {
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
 					$open_new = false;
 				}
-				
+
 				if ($fh_temp) {
 					$buff .= $line;
 					$write = false;
-					
+
 					//print substr($buff,(0-($marker_size+1)))."<br>\n";
-					
+
 
 					if ($marker_size) {
 						if ((substr($buff, (0 - ($marker_size + 1))) == $marker . "\n") || (substr($buff, (0 - ($marker_size + 2))) == $marker . "\r\n"))
@@ -264,7 +264,7 @@ class we_util_File
 							$write = false;
 					} else
 						$write = true;
-					
+
 					if ($write) {
 						//print "WRITE<br>\n";
 						$fsize += strlen($buff);
@@ -289,7 +289,7 @@ class we_util_File
 			@fclose($fh_temp);
 		}
 		@fclose($fh);
-		
+
 		return $num + 1;
 	}
 
@@ -359,12 +359,12 @@ class we_util_File
 				return $val;
 		}
 		return "none";
-	
+
 	}
 
 	public static function compress($file, $compression = "gzip", $destination = "", $remove = true, $writemode = "wb")
 	{
-		
+
 		if (!self::hasCompression($compression))
 			return false;
 		if ($destination == "")
@@ -373,7 +373,7 @@ class we_util_File
 		$open = $prefix . "open";
 		$write = $prefix . "write";
 		$close = $prefix . "close";
-		
+
 		$fp = @fopen($file, "rb");
 		if ($fp) {
 			$zfile = $destination . ".gz";
@@ -447,7 +447,7 @@ class we_util_File
 			fclose($fh);
 		}
 		return 0;
-	
+
 	}
 
 	public static function saveFile($file_name, $sourceCode = "")
@@ -468,47 +468,47 @@ class we_util_File
 
 	public static function createLocalFolder($RootDir, $path = "")
 	{
-		
+
 		$completeDirPath = $RootDir . $path;
-		
+
 		return createLocalFolderByPath($completeDirPath);
 	}
 
 	public static function createLocalFolderByPath($completeDirPath)
 	{
-		
+
 		$returnValue = true;
-		
+
 		if (checkAndMakeFolder($completeDirPath))
 			return $returnValue;
-		
+
 		$cf = array($completeDirPath);
-		
+
 		$parent = dirname($completeDirPath);
 		$parent = str_replace("\\", "/", $parent);
-		
+
 		while (!checkAndMakeFolder($parent)) {
 			array_push($cf, $parent);
 			$parent = dirname($parent);
 			$parent = str_replace("\\", "/", $parent);
 		}
-		
+
 		for ($i = (sizeof($cf) - 1); $i >= 0; $i--) {
 			$oldumask = @umask(0000);
-			
+
 			if (defined("WE_NEW_FOLDER_MOD")) {
 				eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
 			} else {
 				$mod = 0755;
 			}
-			
+
 			if (!@mkdir($cf[$i], $mod)) {
 				insertIntoErrorLog("Could not create local Folder at we_live_tools.inc.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
 				$returnValue = false;
 			}
 			@umask($oldumask);
 		}
-		
+
 		return $returnValue;
 	}
 
@@ -516,7 +516,7 @@ class we_util_File
 	{
 		/*
 		$DB_WE = we_io_DB::sharedAdapter();
-	
+
 		$dateQuery = $DB_WE->query("SELECT Date FROM " . CLEAN_UP_TABLE . " WHERE Path= ?", $path);
 		$date = $dateQuery->fetchColumn(0);
 		if($date!='') {
@@ -536,7 +536,7 @@ class we_util_File
 			return true;
 		if (strtolower(rtrim($_SERVER['DOCUMENT_ROOT'],'/')) == strtolower(rtrim($path,'/')))
 			return true;
-			
+
 		// if instead of the directory a file exists, we delete the file and create the directory
 		if (file_exists($path) && (!is_dir($path))) {
 			if (!deleteLocalFile($path)) {
@@ -544,15 +544,15 @@ class we_util_File
 				error_log("Could not delete File '" . $path . "'");
 			}
 		}
-		
+
 		$oldumask = @umask(0000);
-		
+
 		if (defined("WE_NEW_FOLDER_MOD")) {
 			eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
 		} else {
 			$mod = 0755;
 		}
-		
+
 		// check for directories: create it if we could no write into it:
 		if (!@mkdir($path, $mod, $recursive)) {
 			@umask($oldumask);
@@ -704,7 +704,7 @@ class we_util_File
 
 	/**
 	 * recursively deletes a directory with all its contents
-	 * 
+	 *
 	 * @param string $path path to the directory that has to be deleted
 	 * @param bool $nofiles does not delete any files but only empty subdirectories
 	 */
@@ -769,7 +769,7 @@ class we_util_File
 			foreach($DirFileObjects as $name => $object){
 				$DirFileObjectsArray[]=$name;
 			}
-			sort($DirFileObjectsArray);		
+			sort($DirFileObjectsArray);
 			$tar_object = new Archive_Tar($destinationfile, true);
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
@@ -778,10 +778,10 @@ class we_util_File
 			return false;
 		}
 	}
-	
+
 	public static function decompressDirectoy($gzfile, $destination)
 	{
-		if(is_file($gzfile)) {	
+		if(is_file($gzfile)) {
 			$tar_object = new Archive_Tar($gzfile, true);
 			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 

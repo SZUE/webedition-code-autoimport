@@ -29,7 +29,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_Image
+abstract class we_ui_layout_Image
 {
 
 	/**

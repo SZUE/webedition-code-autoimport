@@ -1,7 +1,5 @@
 <?php
 
-include_once(WEBEDITION_INCLUDES_DIR . 'weTagWizard/classes/weTagWizard.class.php');
-
 /**
  * webEdition CMS
  *
@@ -390,12 +388,6 @@ class we_tagParser{
 		}
 		return (isset($endTagNo)?($endTagNo-$ipos):1);
 	}
-
-	/* private function replaceTag($tag, $code, $str){
-	  $tagPos = strpos($code, $tag, $this->lastpos);
-	  $endeEndTagPos = $tagPos + strlen($tag);
-	  return substr($code, 0, $tagPos) . $str . substr($code, $endeEndTagPos);
-	  } */
 
 	public static function printTag($name, $attribs='', $content='', $cslash=false){
 		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
