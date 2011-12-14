@@ -587,7 +587,20 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 						$emailExists = true;
 					}
 				}
-				if($emailExists) $__db->query("UPDATE " . CUSTOMER_TABLE . " SET $__update $__where");
+				if($emailExists) {
+					$newfields=array();
+					$newfields['ModifyDate']=time();
+					$newfields['ModifiedBy']='frontend';
+					$hook = new weHook('customer_preSave', '', array('customer'=>&$newfields,'from'=>'tag','type'=>'modify','tagname'=>'addDelNewsletterEmail','isSubscribe'=>0,'isUnsubscribe'=>1));
+					$ret=$hook->executeHook();
+					$set='';
+					foreach($newfields as $fkey => $fval){
+						$set.=  " ".$fkey."='".$__db->escape($fval)."',";
+					}
+					$set=rtrim($set,",");
+					$__update .= ','.$set;
+					$__db->query("UPDATE " . CUSTOMER_TABLE . " SET $__update $__where");
+				}
 			}
 		} else {
 
