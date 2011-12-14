@@ -364,7 +364,6 @@ if (!$wfchk) {
 												}
 
 												if (defined("CUSTOMER_TABLE")) { // delete the customerfilters
-													require_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php");
 													weDocumentCustomerFilter::deleteModel(
 															$deletedItems,
 															$table);

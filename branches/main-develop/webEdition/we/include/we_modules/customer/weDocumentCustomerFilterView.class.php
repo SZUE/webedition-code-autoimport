@@ -141,7 +141,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 
 
 		return	$yuiSuggest->getYuiFiles() . "\n"  .
-			$this->getDiv($_accesControl, 'accessControlDiv',$_filter->getMode()!==WECF_OFF, 0);
+			$this->getDiv($_accesControl, 'accessControlDiv',$_filter->getMode()!==weAbstractCustomerFilter::OFF, 0);
 
 
 	}

@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -24,11 +24,11 @@
  */
 Zend_Loader::loadClass('we_core_AbstractObject');
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 /**
  * Base class for webEdition models
- * 
+ *
  * @category   we
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -66,9 +66,9 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Set table and load persistents
-	 * 
+	 *
 	 * @param string $table
 	 * @return void
 	 */
@@ -82,15 +82,15 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * load persistents
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function loadPersistents()
 	{
 		$db = we_io_DB::sharedAdapter();
-		
+
 		$this->_persistentSlots = array();
-		
+
 		// fetch all column names
 		$this->_metadata = $db->describeTable($this->_table);
 		$keys = array_keys($this->_metadata);
@@ -105,8 +105,8 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * Load entry from database
-	 * 
-	 * @param integer $id 
+	 *
+	 * @param integer $id
 	 * @return boolean returns true on success, othewise false
 	 */
 	public function load($id = 0)
@@ -125,7 +125,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * returns primary key condition
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function _getPKCondition()
@@ -135,17 +135,17 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * save entry in database
-	 * 
+	 *
 	 * @return void
 	 */
 	public function save($skipHook=0)
 	{
 		$db = we_io_DB::sharedAdapter();
-		
+
 		// check if there is another entry with the same path
-		
+
 		$stm = $db->query('SELECT ID FROM ' . $this->_table . ' WHERE Text = ? AND ParentID = ? AND IsFolder = ? AND ID != ?', array($this->Text, abs($this->ParentID), abs($this->IsFolder), abs($this->ID)));
-		
+
 		$row = $stm->fetch();
 		if ($row) {
 			throw new we_core_ModelException('Error saving model. Path already exists!', we_service_ErrorCodes::kPathExists);
@@ -156,7 +156,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 				$updateArray[$key] = $this->$key;
 			}
 		}
-		
+
 		if (!isset($this->{$this->_primaryKey}) || !$this->{$this->_primaryKey}) {
 			try {
 				$db->delete($this->_table, $this->_getPKCondition());
@@ -177,12 +177,12 @@ class we_core_AbstractModel extends we_core_AbstractObject
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
 		}
-	
+
 	}
 
 	/**
 	 * delete entry from database
-	 * 
+	 *
 	 * @return void
 	 */
 	public function delete($skipHook=0)
@@ -202,17 +202,17 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * retrieve table
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTable()
 	{
 		return $this->_table;
 	}
-	
+
 	/**
 	 * set table
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setTable($table)
@@ -222,7 +222,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * load persistent slots
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getPersistentSlots()
@@ -232,7 +232,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/**
 	 * set persistent slots
-	 * 
+	 *
 	 * @param array $persistentSlots
 	 * @return void
 	 */
@@ -243,7 +243,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 	/*
 	 * Set data fields with contents of an array
-	 * 
+	 *
 	 * @param array $fields
 	 * @return void
 	 */

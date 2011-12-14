@@ -23,11 +23,8 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/html/we_button.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 include_once(WE_OBJECT_MODULE_DIR . 'we_searchobject_class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/weSuggest.class.inc.php');
 
 $yuiSuggest =& weSuggest::getInstance();
 
@@ -1400,5 +1397,3 @@ EOF;
 	}
 
 }
-
-?>

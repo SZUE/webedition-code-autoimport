@@ -22,18 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weAbstractCustomerFilter.class.php");
-
-define("WECF_ACCESS", "f_1");
-define("WECF_CONTROLONTEMPLATE", "f_2");
-define("WECF_NO_ACCESS", "f_3");
-define("WECF_NO_LOGIN", "f_4");
-
 /**
  * Customer filter (model) for document (or object) filters
  *
  */
 class weDocumentCustomerFilter extends weAbstractCustomerFilter {
+	const ACCESS="f_1";
+	const CONTROLONTEMPLATE="f_2";
+	const NO_ACCESS="f_3";
+	const NO_LOGIN="f_4";
 
 	/**
 	 * db-id of filter
@@ -103,7 +100,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @param array $blackList
 	 * @return weDocumentCustomerFilter
 	 */
-	function weDocumentCustomerFilter ($id=0, $modelId=0, $modelType="", $modelTable="", $accessControlOnTemplate=true, $errorDocNoLogin=0, $errorDocNoAccess=0, $mode=WECF_OFF, $specificCustomers=array(), $filter=array(), $whiteList=array(), $blackList=array()) {
+	function weDocumentCustomerFilter ($id=0, $modelId=0, $modelType="", $modelTable="", $accessControlOnTemplate=true, $errorDocNoLogin=0, $errorDocNoAccess=0, $mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $filter=array(), $whiteList=array(), $blackList=array()) {
 		$this->__construct($id, $modelId, $modelType, $modelTable, $accessControlOnTemplate, $errorDocNoLogin, $errorDocNoAccess, $mode, $specificCustomers, $filter, $whiteList, $blackList);
 	}
 
@@ -124,7 +121,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @param array $blackList
 	 * @return weDocumentCustomerFilter
 	 */
-	function __construct($id=0, $modelId=0, $modelType="", $modelTable="", $accessControlOnTemplate=true, $errorDocNoLogin=0, $errorDocNoAccess=0, $mode=WECF_OFF, $specificCustomers=array(), $filter=array(), $whiteList=array(), $blackList=array()) {
+	function __construct($id=0, $modelId=0, $modelType="", $modelTable="", $accessControlOnTemplate=true, $errorDocNoLogin=0, $errorDocNoAccess=0, $mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $filter=array(), $whiteList=array(), $blackList=array()) {
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
 		$this->setId($id);
 		$this->setModelId($modelId);
@@ -169,7 +166,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 */
 	function getCustomerFilterFromRequest(&$model) {
 
-		if ($_REQUEST["wecf_mode"] == WECF_OFF ) {
+		if ($_REQUEST["wecf_mode"] == weAbstractCustomerFilter::OFF ) {
 			return weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
 		} else {
 			$_specificCustomers = weDocumentCustomerFilter::getSpecificCustomersFromRequest();
@@ -345,11 +342,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$_ret = 0;
 		switch ($errorConstant) {
 
-			case WECF_NO_LOGIN:
+			case weDocumentCustomerFilter::NO_LOGIN:
 				$_ret = ($this->_errorDocNoLogin ? $this->_errorDocNoLogin : $this->_errorDocNoAccess);
 				break;
 
-			case WECF_NO_ACCESS:
+			case weDocumentCustomerFilter::NO_ACCESS:
 				$_ret = ($this->_errorDocNoAccess ? $this->_errorDocNoAccess : $this->_errorDocNoLogin);
 				break;
 			default:
@@ -376,7 +373,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 			weDocumentCustomerFilter::deleteForModel($model);
 
-			if ($_docCustomerFilter->getMode() != WECF_OFF && $model->ID) { // only save if its is active
+			if ($_docCustomerFilter->getMode() != weAbstractCustomerFilter::OFF && $model->ID) { // only save if its is active
 
 				$_filter = $_docCustomerFilter->getFilter();
 				$_filter = !empty($_filter) ? addslashes(serialize($_filter)) : "";
@@ -488,11 +485,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$_db = new DB_WE();
 		$_cid = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 		$_filesWithRestrictionsForCustomer = array();
-		$_defaultQuery = !weDocumentCustomerFilter::customerIsLogedIn() ? "(mode=" . WECF_ALL . ") OR " : "";
+		$_defaultQuery = !weDocumentCustomerFilter::customerIsLogedIn() ? "(mode=" . weAbstractCustomerFilter::ALL . ") OR " : "";
 
-		$_blacklistQuery = " (mode=".WECF_FILTER." AND blackList LIKE '%,$_cid,%') ";
-		$_whiteLlistQuery = " (mode=".WECF_FILTER." AND whiteList NOT LIKE '%,$_cid,%') ";
-		$_specificCustomersQuery = " (mode=" . WECF_SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
+		$_blacklistQuery = " (mode=".weAbstractCustomerFilter::FILTER." AND blackList LIKE '%,$_cid,%') ";
+		$_whiteLlistQuery = " (mode=".weAbstractCustomerFilter::FILTER." AND whiteList NOT LIKE '%,$_cid,%') ";
+		$_specificCustomersQuery = " (mode=" . weAbstractCustomerFilter::SPECIFIC . " AND specificCustomers NOT LIKE '%,$_cid,%') ";
 
 		$_accessControlOnTemplateQuery = ( ($listview->customerFilterType != 'all' && $listview->customerFilterType != 'true') ? ' AND (accessControlOnTemplate = 0) '  :  '' );
 
@@ -521,7 +518,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 			}
 		}
-		// if customer is not logged in=> return WECF_NO_LOGIN
+		// if customer is not logged in=> return NO_LOGIN
 		// else return correct filter
 
 		// execute the query (get all existing filters)
@@ -555,11 +552,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 			foreach ( $_filters as $filter ) {
 				$_perm = $filter->accessForVisitor( $__tmp, array("id" => $filter->getModelId(), "contentType" => $filter->getModelType()), false, true);
 				switch ( $_perm ) {
-					case WECF_NO_ACCESS:
-					case WECF_NO_LOGIN:
+					case weDocumentCustomerFilter::NO_ACCESS:
+					case weDocumentCustomerFilter::NO_LOGIN:
 						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
 						break;
-					case WECF_CONTROLONTEMPLATE:
+					case weDocumentCustomerFilter::CONTROLONTEMPLATE:
 						if ($listview->customerFilterType == 'all' || $listview->customerFilterType == 'true') {
 							$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
 						}
@@ -591,22 +588,22 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 			if ( !$_fromListviewCheck && $this->getAccessControlOnTemplate() && !$_fromIfRegisteredUser ) {
 				// access control is on template (for we:ifregisteredUser)
-				return WECF_CONTROLONTEMPLATE;
+				return weDocumentCustomerFilter::CONTROLONTEMPLATE;
 
 			}
 
 			if ( !weDocumentCustomerFilter::customerIsLogedIn() ) { // no customer logged in
 				// visitor is NOT logged in
-				return WECF_NO_LOGIN;
+				return weDocumentCustomerFilter::NO_LOGIN;
 
 			}
 
 			if (!$this->customerHasAccess()) {
-				return WECF_NO_ACCESS;
+				return weDocumentCustomerFilter::NO_ACCESS;
 			}
 
 		}
-		return WECF_ACCESS;
+		return weDocumentCustomerFilter::ACCESS;
 
 	}
 

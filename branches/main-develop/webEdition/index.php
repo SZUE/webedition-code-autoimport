@@ -27,7 +27,6 @@
  * *************************************************************************** */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_message_reporting/we_message_reporting.class.php');
 
 /* * ***************************************************************************
  * INCLUDES

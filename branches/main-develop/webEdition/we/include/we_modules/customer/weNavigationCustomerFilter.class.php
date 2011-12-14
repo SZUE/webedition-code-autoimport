@@ -47,16 +47,16 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 
 		$_specCust = (isset($navModel->Customers) && is_array($navModel->Customers)) ? $navModel->Customers : array();
 
-		$_mode = WECF_OFF;
+		$_mode = weAbstractCustomerFilter::OFF;
 
 		if ($navModel->LimitAccess == 2) {
-			$_mode = WECF_NONE;
+			$_mode = weAbstractCustomerFilter::NONE;
 		} else if ($navModel->LimitAccess == 1 && $navModel->ApplyFilter) {
-			$_mode = WECF_FILTER;
+			$_mode = weAbstractCustomerFilter::FILTER;
 		} else if ($navModel->LimitAccess && $navModel->AllCustomers == 1) {
-			$_mode = WECF_ALL;
+			$_mode = weAbstractCustomerFilter::ALL;
 		} else if ($navModel->LimitAccess && count($_specCust) > 0) {
-			$_mode = WECF_SPECIFIC;
+			$_mode = weAbstractCustomerFilter::SPECIFIC;
 		}
 
 		// end convert data
@@ -80,13 +80,13 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 	function initByNavItem(&$navItem) {
 
 		if ($navItem->limitaccess == 0) {
-			$this->setMode(WECF_OFF);
+			$this->setMode(weAbstractCustomerFilter::OFF);
 		} else {
 			if ($navItem->limitaccess == 2) {
-				$this->setMode(WECF_NONE);
+				$this->setMode(weAbstractCustomerFilter::NONE);
 			} else {
 				if (isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])) {
-					$this->setMode(WECF_FILTER);
+					$this->setMode(weAbstractCustomerFilter::FILTER);
 					$_custFilter = $navItem->customers['filter'];
 					$this->updateCustomerFilter($_custFilter);
 					$this->setFilter($_custFilter);
@@ -98,10 +98,10 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 						$this->setWhiteList($navItem->customers['whitelist']);
 					}
 				} else if (isset($navItem->customers['id']) && is_array($navItem->customers['id']) && count($navItem->customers['id'])) {
-					$this->setMode(WECF_SPECIFIC);
+					$this->setMode(weAbstractCustomerFilter::SPECIFIC);
 					$this->setSpecificCustomers($navItem->customers['id']);
 				} else {
-					$this->setMode(WECF_ALL);
+					$this->setMode(weAbstractCustomerFilter::ALL);
 				}
 			}
 		}
@@ -150,25 +150,25 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 	function translateModeToNavModel($mode, &$model) {
 		switch ($mode) {
 
-			case WECF_FILTER:
+			case weAbstractCustomerFilter::FILTER:
 				$model->LimitAccess = 1;
 				$model->ApplyFilter = 1;
 				$model->AllCustomers = 1;
 				break;
 
-			case WECF_SPECIFIC:
+			case weAbstractCustomerFilter::SPECIFIC:
 				$model->LimitAccess = 1;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 0;
 				break;
 
-			case WECF_ALL:
+			case weAbstractCustomerFilter::ALL:
 				$model->LimitAccess = 1;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 1;
 				break;
 
-			case WECF_NONE:
+			case weAbstractCustomerFilter::NONE:
 				$model->LimitAccess = 2;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 0;
@@ -185,25 +185,25 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 		$_allCustomers = 0;
 		switch ($filterObj->getMode()) {
 
-			case WECF_FILTER:
+			case weAbstractCustomerFilter::FILTER:
 				$_limitAccess = 1;
 				$_applyFilter = 1;
 				$_allCustomers = 1;
 				break;
 
-			case WECF_SPECIFIC:
+			case weAbstractCustomerFilter::SPECIFIC:
 				$_limitAccess = 1;
 				$_applyFilter = 0;
 				$_allCustomers = 0;
 				break;
 
-			case WECF_ALL:
+			case weAbstractCustomerFilter::ALL:
 				$_limitAccess = 1;
 				$_applyFilter = 0;
 				$_allCustomers = 1;
 				break;
 
-			case WECF_NONE:
+			case weAbstractCustomerFilter::NONE:
 				$_limitAccess = 2;
 				$_applyFilter = 0;
 				$_allCustomers = 0;

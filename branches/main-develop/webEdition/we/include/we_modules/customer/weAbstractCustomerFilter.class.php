@@ -22,40 +22,40 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("WECF_OFF", 0);
-define("WECF_ALL", 1);
-define("WECF_SPECIFIC", 2);
-define("WECF_FILTER", 3);
-define("WECF_NONE", 4);
-
 /**
  * Base Class for all Customer Filters (Model)
  *
  */
 class weAbstractCustomerFilter {
+	const OFF=0;
+	const ALL=1;
+	const SPECIFIC=2;
+	const FILTER=3;
+	const NONE=4;
+
 	/**
-	 * Mode. Can be WECF_OFF, WECF_ALL, WECF_SPECIFIC, WECF_FILTER
+	 * Mode. Can be OFF, ALL, SPECIFIC, FILTER
 	 *
 	 * @var integer
 	 */
-	var $_mode = WECF_OFF;
+	var $_mode = weAbstractCustomerFilter::OFF;
 
 	/**
-	 * Array with customer ids. Only relevant when $_mode is WECF_SPECIFIC
+	 * Array with customer ids. Only relevant when $_mode is SPECIFIC
 	 *
 	 * @var array
 	 */
 	var $_specificCustomers = array();
 
 	/**
-	 * Array with customer ids. Only relevant when $_mode is WECF_FILTER
+	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
 	var $_blackList = array();
 
 	/**
-	 * Array with customer ids. Only relevant when $_mode is WECF_FILTER
+	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
@@ -80,7 +80,7 @@ class weAbstractCustomerFilter {
 	 * @param array $filter
 	 * @return weAbstractCustomerFilter
 	 */
-	function weAbstractCustomerFilter($mode=WECF_OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
+	function weAbstractCustomerFilter($mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		if(is_array($blackList)){
@@ -104,7 +104,7 @@ class weAbstractCustomerFilter {
 	 * @param array $filter
 	 * @return weAbstractCustomerFilter
 	 */
-	function __construct($mode=WECF_OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
+	function __construct($mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
 		$this->weAbstractCustomerFilter($mode, $specificCustomers, $blackList, $whiteList, $filter);
 	}
 
@@ -118,18 +118,18 @@ class weAbstractCustomerFilter {
 	 */
 	function customerHasAccess() {
 		switch ($this->_mode) {
-			case WECF_OFF:
+			case weAbstractCustomerFilter::OFF:
 				return true;
-			case WECF_ALL:
+			case weAbstractCustomerFilter::ALL:
 				return weAbstractCustomerFilter::customerIsLogedIn();
-			case WECF_NONE:
+			case weAbstractCustomerFilter::NONE:
 				return !weAbstractCustomerFilter::customerIsLogedIn();
-			case WECF_SPECIFIC:
+			case weAbstractCustomerFilter::SPECIFIC:
 				if (!weAbstractCustomerFilter::customerIsLogedIn()) {
 					return false;
 				}
 				return in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
-			case WECF_FILTER:
+			case weAbstractCustomerFilter::FILTER:
 				if (!( isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) )) {
 					return false;
 				}

@@ -178,35 +178,35 @@ function addToMultiEdit(_multEdit, paths){
 EO_SCRIPT;
 
 		/* ################# Radio buttons ###############*/
-		$_modeRadioOff = we_forms::radiobutton(WECF_OFF, $this->_filter->getMode()===WECF_OFF, 'wecf_mode', g_l('modules_customerFilter','[mode_off]'),true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioOff = we_forms::radiobutton(weAbstractCustomerFilter::OFF, $this->_filter->getMode()===weAbstractCustomerFilter::OFF, 'wecf_mode', g_l('modules_customerFilter','[mode_off]'),true, "defaultfont", "wecf_hot();updateView();");
 		if ($this->_ShowModeNone) {
-			$_modeRadioNone = we_forms::radiobutton(WECF_NONE, $this->_filter->getMode()===WECF_NONE, 'wecf_mode', g_l('modules_customerFilter','[mode_none]'),true, "defaultfont", "wecf_hot();updateView();");
+			$_modeRadioNone = we_forms::radiobutton(weAbstractCustomerFilter::NONE, $this->_filter->getMode()===weAbstractCustomerFilter::NONE, 'wecf_mode', g_l('modules_customerFilter','[mode_none]'),true, "defaultfont", "wecf_hot();updateView();");
        } else {
        	$_modeRadioNone = '';
        }
-        $_modeRadioAll = we_forms::radiobutton(WECF_ALL, $this->_filter->getMode()===WECF_ALL, 'wecf_mode', g_l('modules_customerFilter','[mode_all]'),true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioSpecific = we_forms::radiobutton(WECF_SPECIFIC, $this->_filter->getMode()===WECF_SPECIFIC, 'wecf_mode', g_l('modules_customerFilter','[mode_specific]'),true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioFilter = we_forms::radiobutton(WECF_FILTER, $this->_filter->getMode()===WECF_FILTER, 'wecf_mode', g_l('modules_customerFilter','[mode_filter]'),true, "defaultfont", "wecf_hot();updateView();");
+        $_modeRadioAll = we_forms::radiobutton(weAbstractCustomerFilter::ALL, $this->_filter->getMode()===weAbstractCustomerFilter::ALL, 'wecf_mode', g_l('modules_customerFilter','[mode_all]'),true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioSpecific = we_forms::radiobutton(weAbstractCustomerFilter::SPECIFIC, $this->_filter->getMode()===weAbstractCustomerFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter','[mode_specific]'),true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioFilter = we_forms::radiobutton(weAbstractCustomerFilter::FILTER, $this->_filter->getMode()===weAbstractCustomerFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter','[mode_filter]'),true, "defaultfont", "wecf_hot();updateView();");
 
 
 		/* ################# Selector for specific customers ###############*/
 
 		$_customers = id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE,"",false,true);
-		$_specificCustomersSelect = $this->getMultiEdit('specificCustomersEdit', $_customers, "", $this->_filter->getMode()===WECF_SPECIFIC);
+		$_specificCustomersSelect = $this->getMultiEdit('specificCustomersEdit', $_customers, "", $this->_filter->getMode()===weAbstractCustomerFilter::SPECIFIC);
 
 		/* ################# Selector blacklist ###############*/
 
 		$_blackList = id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE,"",false,true);
-		$_blackListSelect = $this->getMultiEdit('blackListEdit', $_blackList, g_l('modules_customerFilter','[black_list]'), $this->_filter->getMode()===WECF_FILTER);
+		$_blackListSelect = $this->getMultiEdit('blackListEdit', $_blackList, g_l('modules_customerFilter','[black_list]'), $this->_filter->getMode()===weAbstractCustomerFilter::FILTER);
 
 		/* ################# Selector for whitelist ###############*/
 
 		$_whiteList = id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE,"",false,true);
-		$_whiteListSelect = $this->getMultiEdit('whiteListEdit', $_whiteList, g_l('modules_customerFilter','[white_list]'), $this->_filter->getMode()===WECF_FILTER);
+		$_whiteListSelect = $this->getMultiEdit('whiteListEdit', $_whiteList, g_l('modules_customerFilter','[white_list]'), $this->_filter->getMode()===weAbstractCustomerFilter::FILTER);
 
 		/* ################# customer filter ###############*/
 
-		$_filterCustomers = weCustomerFilterView::getDiv($this->getHTMLCustomerFilter(), 'filterCustomerDiv', $this->_filter->getMode()===WECF_FILTER,25);
+		$_filterCustomers = weCustomerFilterView::getDiv($this->getHTMLCustomerFilter(), 'filterCustomerDiv', $this->_filter->getMode()===weAbstractCustomerFilter::FILTER,25);
 
 
 		/* ################# concate and output ################# */
@@ -267,7 +267,7 @@ EOS;
 	 */
 	function getMultiEdit($name, $data, $headline="", $isVisible=true) {
 
-		
+
 		$_delBut = addslashes('<img src="'.IMAGE_DIR.'button/btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;" />');
 
 		$_script = <<<EO_SCRIPT
@@ -312,7 +312,7 @@ EO_SCRIPT;
 
 	function getHTMLCustomerFilter() {
 
-		
+
 		$_filter_args = array();
 
 		$GLOBALS['DB_WE']->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);

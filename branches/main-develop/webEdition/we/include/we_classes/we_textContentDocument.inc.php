@@ -23,20 +23,9 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_textDocument.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersions.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
-
-if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-}
-
-if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-}
 class we_textContentDocument extends we_textDocument{
 
 	/* Name of the class => important for reconstructing the class from outside the class */

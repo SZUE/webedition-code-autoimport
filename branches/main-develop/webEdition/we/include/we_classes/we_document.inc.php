@@ -22,23 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_root.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 }
 if(!isset($GLOBALS['WE_IS_IMG'])){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/charsetHandler.class.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/weModuleInfo.class.php');
-	if (defined('CUSTOMER_FILTER_TABLE')) {
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
-	}
 }
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_versions/weVersions.class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/class/weHook.class.php');
 
 /* the parent class for documents */
 class we_document extends we_root {

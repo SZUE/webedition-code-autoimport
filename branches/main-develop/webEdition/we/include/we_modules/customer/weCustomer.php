@@ -21,9 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modules/weModelBase.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_hook/class/weHook.class.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 /**
  * General Definition of WebEdition Customer
@@ -94,7 +92,7 @@ class weCustomer extends weModelBase {
 		}
 		$this->ModifyDate=time();
 		$this->ModifiedBy='backend';
-		
+
 		$hook = new weHook('customer_preSave', '', array('customer'=>$this,'from'=>'management','type'=>($this->ID ? 'existing':'new')));
 		$ret=$hook->executeHook();
 

@@ -26,10 +26,7 @@
 if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
 }
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_class_folder.inc.php');
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_versions/weVersions.class.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_hook/class/weHook.class.php');
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 /* a class for handling templates */
 class we_objectFile extends we_document{

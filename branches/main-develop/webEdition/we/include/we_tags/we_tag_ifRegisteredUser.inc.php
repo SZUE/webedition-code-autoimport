@@ -81,7 +81,7 @@ function we_tag_ifRegisteredUser($attribs, $content) {
 
 		if ($ret && $cfilter && defined('CUSTOMER_TABLE')) {
 			if (isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter) {
-				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc'], array(), true) == WECF_ACCESS);
+				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc'], array(), true) == weDocumentCustomerFilter::ACCESS);
 			} else {
 				//access depends on $allowNoFilter
 				return $allowNoFilter;
