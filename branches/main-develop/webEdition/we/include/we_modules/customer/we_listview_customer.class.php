@@ -23,9 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/listview/listviewBase.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
 
 /**
 * class    we_listview_customer

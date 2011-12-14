@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db.inc.php");
-
 class weGlossarySearch {
 
 	/**
@@ -193,7 +191,7 @@ class weGlossarySearch {
 		"WHERE " . ($this->Where == "" ? "1" : $this->Where).
 		($this->GroupBy != ''?" GROUP BY " . $this->GroupBy:'').
 		($this->Having != '' ? " HAVING " . $this->Having : '');
-		
+
 		if(!$countStmt) {
 			if($this->Order != '') {
 				$stmt .= " ORDER BY " . $this->Order . " " . $this->Sort;

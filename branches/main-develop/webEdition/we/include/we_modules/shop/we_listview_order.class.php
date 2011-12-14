@@ -23,10 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/listview/listviewBase.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
-
 /**
 * class    we_listview_customer
 * @desc    class for tag <we:listview type="banner">
@@ -60,20 +56,20 @@ class we_listview_order extends listviewBase {
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
-		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");		
-		
+		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+
 		if (strpos($this->condition,'ID') !== false && strpos($this->condition,'IntID') === false ){$this->condition=str_replace('ID','IntID',$this->condition);}
 		// und nun sind alle anderen kaputt und werden repariert
 		if (strpos($this->condition,'OrderIntID') !== false ){$this->condition=str_replace('OrderIntID','OrderID',$this->condition);}
 		if (strpos($this->condition,'CustomerIntID') !== false){$this->condition=str_replace('CustomerIntID','CustomerID',$this->condition);}
 		if (strpos($this->condition,'ArticleIntID') !== false){$this->condition=str_replace('ArticleIntID','ArticleID',$this->condition);}
-		
-		if (strpos($this->condition,'OrderID') !== false && strpos($this->condition,'IntOrderID') === false ){$this->condition=str_replace('OrderID','IntOrderID',$this->condition);}	
+
+		if (strpos($this->condition,'OrderID') !== false && strpos($this->condition,'IntOrderID') === false ){$this->condition=str_replace('OrderID','IntOrderID',$this->condition);}
 		if (strpos($this->condition,'CustomerID') !== false && strpos($this->condition,'IntCustomerID') === false ){$this->condition=str_replace('CustomerID','IntCustomerID',$this->condition);}
 		if (strpos($this->condition,'ArticleID') !== false && strpos($this->condition,'IntArticleID') === false ){$this->condition=str_replace('ArticleID','IntArticleID',$this->condition);}
 		if (strpos($this->condition,'Quantity') !== false && strpos($this->condition,'IntQuantity') === false ){$this->condition=str_replace('Quantity','IntQuantity',$this->condition);}
 		if (strpos($this->condition,'Payment_Type') !== false && strpos($this->condition,'IntPayment_Type') === false ){$this->condition=str_replace('Payment_Type','Payment_Type',$this->condition);}
-		
+
 		if($this->docID){
 			$this->Path = id_to_path($this->docID,FILE_TABLE,$this->DB_WE);
 		}else{
@@ -94,11 +90,11 @@ class we_listview_order extends listviewBase {
 
  		if ($this->order != '') {
 			if (trim($this->order) =='ID' || trim($this->order) =='CustomerID' || trim($this->order) =='ArticleID' ||  trim($this->order) =='Quantity' ||  trim($this->order) =='Payment_Type') {$this->order= 'Int'.$this->order;}
-			$orderstring = " ORDER BY ".$this->order." "; 
-		} else { 
-			$orderstring = ''; 
+			$orderstring = " ORDER BY ".$this->order." ";
+		} else {
+			$orderstring = '';
 		}
-		
+
 		$where = $this->condition ? (' WHERE ' . $this->condition) .$group  : $group;
 
 		$q = 'SELECT * FROM ' . SHOP_TABLE . $where;
@@ -123,13 +119,13 @@ class we_listview_order extends listviewBase {
 					foreach ($strSerialOrder['we_sscf'] as $key => &$value){
 						$this->DB_WE->Record[$key] = $value;
 					}
-					unset($value);		
+					unset($value);
 				}
 				if(is_array($strSerialOrder['we_shopPriceShipping']) ){
 					foreach ($strSerialOrder['we_shopPriceShipping'] as $key => &$value){
 						$this->DB_WE->Record['Shipping_'.$key] = $value;
 					}
-					unset($value);		
+					unset($value);
 				}
 				if(is_array($strSerialOrder['we_shopCustomer']) ){
 					foreach ($strSerialOrder['we_shopCustomer'] as $key => &$value){
@@ -137,7 +133,7 @@ class we_listview_order extends listviewBase {
 							$this->DB_WE->Record['Customer_'.$key] = $value;
 						}
 					}
-					unset($value);		
+					unset($value);
 				}
 				if(isset($strSerialOrder['we_shopPriceIsNet'])){
 					$this->DB_WE->Record['shopPriceIsNet'] = $strSerialOrder['we_shopPriceIsNet'];

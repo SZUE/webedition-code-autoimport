@@ -23,12 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
-include_once(WE_SHOP_MODULE_DIR ."we_listview_orderitem.class.php");
-
-
-
 class we_orderitemtag{
 
 	var $DB_WE;
@@ -38,7 +32,7 @@ class we_orderitemtag{
 	var $object = "";
 	var $avail = false;
 	var $hidedirindex=false;
-	
+
 	function we_orderitemtag($id=0, $condition="",$hidedirindex=false){
 		$this->DB_WE = new DB_WE;
 		$this->id = $id;

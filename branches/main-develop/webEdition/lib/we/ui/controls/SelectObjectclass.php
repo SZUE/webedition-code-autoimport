@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -24,10 +24,11 @@
  * @see we_ui_abstract_AbstractFormElement
  */
 Zend_Loader::loadClass('we_ui_controls_Select');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 /**
  * Class to display a Select
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -46,12 +47,12 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select
 	 */
 	const kSelectClassDisabled = 'we_ui_controls_Select_disabled';
 
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
@@ -59,26 +60,25 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select
 	{
 		parent::__construct($properties);
 		include ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
-		
+
 		if(in_array('object',$_we_active_integrated_modules)){
-			
+
 			if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php")) {
 				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_modules/object/we_conf_object.inc.php");
-				include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_db.inc.php");
 				$db = new DB_WE();
 				$db->query("SELECT ID,Text FROM " .OBJECT_TABLE);
 				$this->addOption(0,'-');
 				while ($db->next_record()) {
-					$this->addOption($db->f("ID"),$db->f("Text"));					
+					$this->addOption($db->f("ID"),$db->f("Text"));
 				}
-			}		
+			}
 		}
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		
+
 	}
 
 }
