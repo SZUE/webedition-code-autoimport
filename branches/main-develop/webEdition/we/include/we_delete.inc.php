@@ -155,8 +155,7 @@ if (!$wfchk) {
 				for ($i = 0; $i < sizeof($selectedItems); $i++) {
 
 					if ($table == FILE_TABLE && defined('USER_TABLE')) {
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/users/we_users_util.php');
-						$users = getUsersForDocWorkspace($selectedItems[$i]);
+						$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i]);
 						if (count($users) > 0) {
 							$retVal = -2;
 							break;
@@ -168,7 +167,7 @@ if (!$wfchk) {
 						pushChilds($childs, $selectedItems[$i], $table, true);
 						$users = array();
 						foreach ($childs as $ch) {
-							$users = array_merge($users, getUsersForDocWorkspace($childs));
+							$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs));
 						}
 						$users = array_unique($users);
 
@@ -179,8 +178,7 @@ if (!$wfchk) {
 					}
 
 					if ($table == TEMPLATES_TABLE && defined('USER_TABLE')) {
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/users/we_users_util.php');
-						$users = getUsersForDocWorkspace($selectedItems[$i], "workSpaceTmp");
+						$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i], "workSpaceTmp");
 						if (count($users) > 0) {
 							$retVal = -2;
 							break;
@@ -192,7 +190,7 @@ if (!$wfchk) {
 						pushChilds($childs, $selectedItems[$i], $table, true);
 						$users = array();
 						foreach ($childs as $ch) {
-							$users = array_merge($users, getUsersForDocWorkspace($childs, "workSpaceTmp"));
+							$users = array_merge($users, we_users_util::getUsersForDocWorkspace($childs, "workSpaceTmp"));
 						}
 						$users = array_unique($users);
 
@@ -203,9 +201,8 @@ if (!$wfchk) {
 					}
 
 					if (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE && defined('USER_TABLE')) {
-						include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/users/we_users_util.php');
 
-						$users = getUsersForDocWorkspace($selectedItems[$i], "workSpaceObj");
+						$users = we_users_util::getUsersForDocWorkspace($selectedItems[$i], "workSpaceObj");
 						if (count($users) > 0) {
 							$retVal = -2;
 							break;
@@ -214,7 +211,7 @@ if (!$wfchk) {
 						$childs = array();
 
 						pushChilds($childs, $selectedItems[$i], $table, true);
-						$users = getUsersForDocWorkspace($childs, "workSpaceObj");
+						$users = we_users_util::getUsersForDocWorkspace($childs, "workSpaceObj");
 
 						if (count($users)) {
 							$retVal = -4;

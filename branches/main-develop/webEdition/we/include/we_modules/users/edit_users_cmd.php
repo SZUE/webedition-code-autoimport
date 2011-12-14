@@ -25,7 +25,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
 
 we_html_tools::htmlTop();
@@ -277,7 +276,7 @@ protect();
 						break;
 					}
 
-					if(isUserInGroup($_SESSION["user"]["ID"],$user_object->ID)){
+					if(we_users_util::isUserInGroup($_SESSION["user"]["ID"],$user_object->ID)){
 						print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( g_l('modules_users',"[delete_group_user_same]"), we_message_reporting::WE_MESSAGE_ERROR ));
 						break;
 					}

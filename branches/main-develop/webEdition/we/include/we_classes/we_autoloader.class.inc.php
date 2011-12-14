@@ -38,8 +38,8 @@ abstract class we_autoloader{
 
 	private static $domains = array(
 		'database' => 'we_classes/database',
+		'users' => 'we_modules/users',
 	);
-
 	private static $classes = array(
 		'we_classes' => array(
 			'Captcha' => 'captcha/captcha.class.php',

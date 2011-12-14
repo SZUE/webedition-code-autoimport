@@ -2647,7 +2647,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1) $readers[]=$key;
 		}
-      	return parent::userCanSave() && !isUserInUsers($_SESSION["user"]["ID"],$readers);
+      	return parent::userCanSave() && !we_users_util::isUserInUsers($_SESSION["user"]["ID"],$readers);
    }
 
 }

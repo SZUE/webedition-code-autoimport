@@ -22,10 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-if(!isset($GLOBALS['WE_IS_DYN'])){
-	include_once(WE_USERS_MODULE_DIR . 'we_users_util.php');
-}
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 /* a class for handling templates */
@@ -818,7 +814,7 @@ class we_objectFile extends we_document{
 
 			$realName = $fields[$i]['type'].'_'.$fields[$i]['name'];
 			$edMerk = $editable;
-			if(!((!$dv[$realName]['users']) || $_SESSION['perms']['ADMINISTRATOR'] || isUserInUsers($_SESSION['user']['ID'],$dv[$realName]['users']))){
+			if(!((!$dv[$realName]['users']) || $_SESSION['perms']['ADMINISTRATOR'] || we_users_util::isUserInUsers($_SESSION['user']['ID'],$dv[$realName]['users']))){
 				$editable=false;
 			}
 
@@ -3077,7 +3073,6 @@ class we_objectFile extends we_document{
 		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			return true;
 		}
-		include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 		if( !we_hasPerm("CAN_SEE_OBJECTFILES") ){
 			return false;
 		}
@@ -3090,7 +3085,7 @@ class we_objectFile extends we_document{
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1) $readers[]=$key;
 		}
-		return !isUserInUsers($_SESSION["user"]["ID"],$readers);
+		return !we_users_util::isUserInUsers($_SESSION["user"]["ID"],$readers);
 	}
 
 	/**

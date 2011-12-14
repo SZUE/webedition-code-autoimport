@@ -23,11 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
-if(!isset($GLOBALS["WE_IS_DYN"])){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-}
-
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
 
@@ -415,8 +411,7 @@ abstract class we_root extends we_class{
 
 	function formCreatorOwners(){
 		$width = 388;
-			include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
-			$canChange = (!$this->ID) || isUserInUsers($_SESSION["user"]["ID"],$GLOBALS["we_doc"]->CreatorID);
+			$canChange = (!$this->ID) || we_users_util::isUserInUsers($_SESSION["user"]["ID"],$GLOBALS["we_doc"]->CreatorID);
 
 			$out = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td class="defaultfont">'.$this->formCreator($canChange,$width).'</td></tr>
@@ -483,7 +478,6 @@ abstract class we_root extends we_class{
 
    function userCanSave(){
 		if($_SESSION["perms"]["ADMINISTRATOR"]) return true;
-		include_once(WE_USERS_MODULE_DIR . "we_users_util.php");
 		if(defined("OBJECT_TABLE") && ($this->Table == OBJECT_FILES_TABLE)){
 			if(!(we_hasPerm("NEW_OBJECTFILE_FOLDER") || we_hasPerm("NEW_OBJECTFILE"))) return false;
 		}else{
@@ -496,7 +490,7 @@ abstract class we_root extends we_class{
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1) $readers[]=$key;
 		}
-      return !isUserInUsers($_SESSION["user"]["ID"],$readers);
+      return !we_users_util::isUserInUsers($_SESSION["user"]["ID"],$readers);
 
    }
 

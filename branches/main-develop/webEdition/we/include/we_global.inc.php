@@ -1164,12 +1164,11 @@ function we_getAliases($id, &$ids, $db = '') {
 }
 
 function we_isOwner($csvOwners) {
-	include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 	if ($_SESSION['perms']['ADMINISTRATOR']) {
 		return true;
 	}
 	$ownersArray = makeArrayFromCSV($csvOwners);
-	return (in_array($_SESSION['user']['ID'], $ownersArray)) || isUserInUsers($_SESSION['user']['ID'], $csvOwners);
+	return (in_array($_SESSION['user']['ID'], $ownersArray)) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $csvOwners);
 }
 
 function makeArrayFromCSV($csv) {
@@ -1275,14 +1274,13 @@ function userIsOwnerCreatorOfParentDir($folderID, $tab) {
 	if ($_SESSION['perms']['ADMINISTRATOR'] || ($folderID == 0)){
 		return true;
 	}
-	include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 	$db = new DB_WE();
 	$db->query('SELECT RestrictOwners,Owners,CreatorID FROM '.$tab.' WHERE ID='.abs($folderID));
 	if ($db->next_record())
 		if ($db->f('RestrictOwners')) {
 			$ownersArr = makeArrayFromCSV($db->f('Owners'));
 			foreach ($ownersArr as $uid)
-				addAllUsersAndGroups($uid, $ownersArr);
+				we_users_util::addAllUsersAndGroups($uid, $ownersArr);
 			array_push($ownersArr, $db->f('CreatorID'));
 			$ownersArr = array_unique($ownersArr);
 			if (in_array($_SESSION['user']['ID'], $ownersArr)) {

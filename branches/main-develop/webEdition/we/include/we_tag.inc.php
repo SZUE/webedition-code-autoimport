@@ -24,7 +24,6 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
-include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;
@@ -55,7 +54,6 @@ function we_include_tag_file($name){
 	return parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 }
 
-include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_tag($name, $attribs=array(), $content = ''){
 	//keep track of editmode
@@ -98,7 +96,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 					array_push($userIds, $i);
 				}
 			}
-			if(!isUserInUsers($_SESSION['user']['ID'], $userIds) && (!$_SESSION['perms']['ADMINISTRATOR'])){
+			if(!we_users_util::isUserInUsers($_SESSION['user']['ID'], $userIds) && (!$_SESSION['perms']['ADMINISTRATOR'])){
 				$GLOBALS['we_editmode'] = false;
 			}
 		}
