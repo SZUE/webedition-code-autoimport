@@ -28,8 +28,8 @@ $show_stylesheet = true;
 
 // Activate the webEdition error handler
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
-$brDetect = new we_base_browserDetect();
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
+$brDetect = new we_base_browserDetect();
 
 if (isset($_REQUEST["WE_LANGUAGE"]) && $_REQUEST["WE_LANGUAGE"] != "") {
 	$_REQUEST["WE_LANGUAGE"] = str_replace(".", "", $_REQUEST["WE_LANGUAGE"]);
