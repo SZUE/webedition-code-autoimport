@@ -65,16 +65,16 @@ define("SERVER_NAME", $SERVER_NAME);
  *****************************************************************************/
 
 // Domain or IP address of the database server
-define("DB_HOST","localhost");
+define('DB_HOST','localhost');
 
 // Name of database being used by webEdition
-define("DB_DATABASE","webedition");
+define('DB_DATABASE','webedition');
 
 // Username to access the database
-define("DB_USER","root");
+define('DB_USER','root');
 
 // Password to access the database
-define("DB_PASSWORD","root");
+define('DB_PASSWORD','root');
 
 // Mode how to access the database
 //
@@ -91,7 +91,7 @@ define("DB_PASSWORD","root");
 define("DB_CONNECT","connect");
 
 // Prefix of tables in database for this webEdition..
-define("TBL_PREFIX","");
+define('TBL_PREFIX','');
 
 // Charset of tables in database for this webEdition.
 define("DB_CHARSET","");
