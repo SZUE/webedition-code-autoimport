@@ -29,6 +29,8 @@ if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME'
 if (!isset($_SESSION))
 	@session_start();
 
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
 
 if (!isset($_SESSION["user"])) {
@@ -195,7 +197,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				}
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
-					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION["user"]["ID"]);
 					$_SESSION["perms"] = $foo->getAllPermissions();
@@ -213,7 +214,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
 				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
-					include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/users/we_users.inc.php");
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION["user"]["ID"]);
 					$_SESSION["perms"] = $foo->getAllPermissions();
