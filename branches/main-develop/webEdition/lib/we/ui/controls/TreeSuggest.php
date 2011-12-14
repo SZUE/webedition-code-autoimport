@@ -11,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,7 +27,7 @@
  */
 include_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
 
-we_core_Permissions::we_html_tools::protect();
+we_core_Permissions::protect();
 
 /**
  * get json output
@@ -61,7 +61,7 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 	 * get the session data (open nodes) of the tree
 	 */
 	$session = new Zend_Session_Namespace($sessionName);
-	
+
 	if(isset($close)) {
 		//if id exists
 		if (FALSE !== ($key=array_search($id,$session->openNodes))) {
@@ -76,10 +76,10 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 				array_push($session->openNodes, $id);
 			}
 		}
-	
+
 		return;
 	}
-	
+
 	if(isset($table) && $table!=='' && isset($datasource) && $datasource == 'table' && is_object($tree)) {
 
 		$nodes = $tree->doSelect($table,$id);
@@ -88,19 +88,19 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 		 * write json output in $response
 		 */
 		$response = '{"ResultSet":{"Result":[';
-		
+
 		if(!empty($nodes)) {
 			$nodesCount = count($nodes);
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
 				$response .= '"'.htmlspecialchars($v['Text']).'"';
 				if($m<$nodesCount) $response .= ',';
 			}
-			
+
 			$response .= '],"Id":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
@@ -109,7 +109,7 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 			}
 			/*
 			$response .= '],"ContentType":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
@@ -118,7 +118,7 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 			}
 			*/
 			$response .= '],"LabelStyle":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
@@ -126,27 +126,27 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 				$response .= '"'.$labelType.'"';
 				if($m<$nodesCount) $response .= ',';
 			}
-			
+
 			$response .= '],"Status":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
 				$response .= '"'.$v['Status'].'"';
 				if($m<$nodesCount) $response .= ',';
 			}
-			
+
 			$response .= '],"Published":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
 				$response .= '"'.$v['Published'].'"';//we_util_Strings::p_r($v['Published']);
 				if($m<$nodesCount) $response .= ',';
 			}
-			
+
 			$response .= '],"Classes":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
@@ -162,12 +162,12 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 					$ClassesStr = trim($ClassesStr,' ');
 				} else {
 					$ClassesStr='';
-				} 
+				}
 				$response .= '"'.$ClassesStr.'"';//we_util_Strings::p_r($v['Published']);
 				if($m<$nodesCount) $response .= ',';
 			}
 			$response .= '],"open":[';
-			
+
 			$m = 0;
 			foreach ($nodes as $k => $v) {
 				$m++;
@@ -180,11 +180,11 @@ if(isset($sessionName) && $sessionName!=='' && isset($id) && $id!=='') {
 				if($m<$nodesCount) $response .= ',';
 			}
 		}
-		
+
 		$response .= ']}}';
-		
+
 		print $response;
-		
+
 	}
 	else {
 		return;

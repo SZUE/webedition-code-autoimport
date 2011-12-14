@@ -23,7 +23,7 @@
  */
 
 // alerts a message and exits when a user is not logged in or when the session is expired
-we_core_Permissions::we_html_tools::protect();
+we_core_Permissions::protect();
 
 $translate  = we_core_Local::addTranslation('default.xml');
 we_core_Local::addTranslation('econda.xml');
@@ -35,7 +35,7 @@ $htmlPage->setTitle($translate->_("Econda Settings"));
 $htmlPage->setHeadline($translate->_("Econda Settings"));
 
 $htmlPage->addInlineCSS('
-body { 
+body {
 	padding:10px !important;
 }
 ');
@@ -48,18 +48,18 @@ $htmlPage->addElement($info);
 
 if (we_core_Permissions::hasPerm("ADMINISTRATOR")) {
 	// show settings dialog only for admins
-	
-	$htmlPage->setOkAction("submitForm('we_form')"); // do on ok clicked 
-	
+
+	$htmlPage->setOkAction("submitForm('we_form')"); // do on ok clicked
+
 	// set form
-	$form = new we_ui_layout_Form(); 
-	$form->setName('we_form'); 
+	$form = new we_ui_layout_Form();
+	$form->setName('we_form');
 	$form->setEnctype("multipart/form-data");
-	$form->setOnSubmit('return false');  
-	$form->setMethod('post'); 
-	$form->setAction($GLOBALS['__WE_CMS_URL__'] . '/index.php/econdasettings/safeupload'); 
+	$form->setOnSubmit('return false');
+	$form->setMethod('post');
+	$form->setAction($GLOBALS['__WE_CMS_URL__'] . '/index.php/econdasettings/safeupload');
 	$form->setTitle("test form");
-	
+
 	// set checkbox for activate econda and add to form
 	$checkbox = new we_ui_controls_Checkbox();
 	$checkbox->setChecked($this->activateEconda == '1' ? true : false);
@@ -71,7 +71,7 @@ if (we_core_Permissions::hasPerm("ADMINISTRATOR")) {
 	$checkbox->setTitle('Title');
 	$form->addElement($checkbox);
 	$form->addHTML("<br />");
-	
+
 	// set autocompleter for parent path of the econda file
 	$label = new we_ui_controls_Label();
 	$label->setText($translate->_('Directory'));
@@ -108,9 +108,9 @@ if (we_core_Permissions::hasPerm("ADMINISTRATOR")) {
 	$form->addHTML("<input type='file' size='46' style='width:445px;' accept='text/javascript' name='emosfile'>");
 	$form->addHTML("<br />");
 	$form->addHTML("<br />");
-	
+
 	// add js for messaging, submit form and close dialog on seccess
-	$inlineJS = "";	
+	$inlineJS = "";
 	if (isset($this->msg)) {
 		switch ($this->prio){
 			case 4:
@@ -128,9 +128,9 @@ function submitForm(formName){
 }
 '.$inlineJS);
 	$htmlPage->addElement($form);
-	
+
 } else {
-	
+
 	// show info for none admins
 	$noperm = new we_ui_layout_NoteDiv();
 	$noperm->setType("alert");
