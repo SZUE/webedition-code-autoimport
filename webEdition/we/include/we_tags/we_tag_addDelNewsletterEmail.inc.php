@@ -391,19 +391,20 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					$newfields[$_customerFieldPrefs['customer_html_field']]=$__db->escape($f["subscribe_html"]);
 					$newfields['MemberSince']=time();
 					$newfields['IsFolder']=0;
+					$newfields['Icon']='customer.gif';
 					$newfields['LoginDenied']=0;
 					$newfields['LastLogin']=0;
 					$newfields['LastAccess']=0;
 					$newfields['ModifyDate']=$newfields['MemberSince'];
 					$newfields['ModifiedBy']='frontend';
 					$newfields['ParentID']=0;
-					$hook = new weHook('customer_preSave', '', array('customer'=>$newfields,'from'=>'addDelNL','type'=>'new','isSubscribe'=>$isSubscribe,'isUnsubscribe'=>$isUnsubscribe));
+					$hook = new weHook('customer_preSave', '', array('customer'=>&$newfields,'from'=>'tag','type'=>'new','tagname'=>'addDelNewsletterEmail','isSubscribe'=>$isSubscribe,'isUnsubscribe'=>$isUnsubscribe));
 					$ret=$hook->executeHook();
 										
 					$newfieldsKeyStr=implode(',',array_keys($newfields));
 					$valuesStr='';
 					foreach($newfields as $newfield){
-						$valuesStr.="'".$newfield."',";
+						$valuesStr.="'".$__db->escape($newfield)."',";
 					}
 					
 					$valuesStr=rtrim($valuesStr,",");
@@ -411,6 +412,18 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 					
 					$__db->query('INSERT INTO ' . CUSTOMER_TABLE . " ($newfieldsKeyStr) VALUES($valuesStr)");
 
+				} else {
+					$newfields=array();
+					$newfields['ModifyDate']=time();
+					$newfields['ModifiedBy']='frontend';
+					$hook = new weHook('customer_preSave', '', array('customer'=>&$newfields,'from'=>'tag','type'=>'modify','tagname'=>'addDelNewsletterEmail','isSubscribe'=>$isSubscribe,'isUnsubscribe'=>$isUnsubscribe));
+					$ret=$hook->executeHook();
+					$set='';
+					foreach($newfields as $fkey => $fval){
+						$set.=  " ".$fkey."='".$__db->escape($fval)."',";
+					}
+					$set=rtrim($set,",");
+					$__db->query('UPDATE ' . CUSTOMER_TABLE . " SET ".$set." WHERE ". $_customerFieldPrefs['customer_email_field'] . "='".$__db->escape($f["subscribe_mail"])."'");
 				}
 
 				$__set = "";

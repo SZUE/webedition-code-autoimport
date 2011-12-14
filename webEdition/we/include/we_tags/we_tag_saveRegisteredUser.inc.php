@@ -56,7 +56,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					if(!weCustomer::customerNameExist($_REQUEST['s']['Username'])){ // username existiert noch nicht!
 
 						
-						$hook = new weHook('customer_preSave', '', array('customer'=>$_REQUEST['s'],'from'=>'tag','type'=>'new'));
+						$hook = new weHook('customer_preSave', '', array('customer'=>&$_REQUEST['s'],'from'=>'tag','type'=>'new','tagname'=>'saveRegisteredUser'));
 						$ret=$hook->executeHook();
 
 						// skip protected Fields
@@ -144,7 +144,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 					if(isset($_REQUEST['s'])){
 
 						
-						$hook = new weHook('customer_preSave', '', array('customer'=>$_REQUEST['s'],'from'=>'tag','type'=>'modify'));
+						$hook = new weHook('customer_preSave', '', array('customer'=>&$_REQUEST['s'],'from'=>'tag','type'=>'modify','tagname'=>'saveRegisteredUser'));
 						$ret=$hook->executeHook();
 
 						// skip protected Fields
