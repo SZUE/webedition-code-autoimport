@@ -357,7 +357,7 @@ $this->getSpacerRowHTML().
 		}
 		$doc_save = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : NULL;
 		eval('$GLOBALS["we_doc"] = new '.$schedFile["ClassName"].'();');
-		$GLOBALS["we_doc"]->InitByID($id,$schedFile["table"],LOAD_SCHEDULE_DB);
+		$GLOBALS["we_doc"]->InitByID($id,$schedFile["table"],we_class::LOAD_SCHEDULE_DB);
 		$deleted = false;
 		$changeTmpDoc=false;
 		$_SESSION["Versions"]['fromScheduler'] = true;

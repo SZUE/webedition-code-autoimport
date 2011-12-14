@@ -61,7 +61,7 @@ class we_util{
 	 * @param mixed number
 	 */
 	static function std_numberformat($number){
-		if(strpos($number, 'E')){	 //  when number is too big, it is shown with E+xx
+		if(strpos($number, 'E')){	//  when number is too big, it is shown with E+xx
 			$number = number_format($number, 2, '.', '');
 		}
 		if(preg_match('|.*,[0-9]*$|', $number)){ // deutsche schreibweise
@@ -90,7 +90,7 @@ class we_util{
 	 * @param mixed number
 	 */
 	static function cleanNewLine($string){
-		return str_replace("\r", "\n", str_replace("\r\n", "\n", str_replace("\n\r", "\n", $string)));
+		return str_replace(array("\n\r","\r\n","\r"),"\r",$string);
 	}
 
 	/**
@@ -103,7 +103,7 @@ class we_util{
 	 * @param mixed number
 	 */
 	static function br2nl($string){
-		$string = str_replace("\n", "", str_replace("\r", "", $string));
+		$string = str_replace(array("\n","\r"), '', $string);
 		return eregi_replace("<br ?/?>", "\n", $string);
 	}
 
@@ -124,16 +124,16 @@ class we_util{
 		return $out;
 	}
 
-	static function getGlobalPath() {
-	if (isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)) {
-		return $GLOBALS['WE_MAIN_DOC']->Path;
-	} else {
-		return '';
+	static function getGlobalPath(){
+		if(isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->Path)){
+			return $GLOBALS['WE_MAIN_DOC']->Path;
+		} else{
+			return '';
+		}
 	}
-}
 
-static function html2uml($text) {
-	return corretUml(html_entity_decode($text));
-}
+	static function html2uml($text){
+		return corretUml(html_entity_decode($text));
+	}
 
 }

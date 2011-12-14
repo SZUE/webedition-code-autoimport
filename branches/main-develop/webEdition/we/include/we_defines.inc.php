@@ -57,11 +57,6 @@ if (version_compare(phpversion(), '5.1.3', '=')) {
 	}
 }
 
-define('LOAD_MAID_DB', 0);
-define('LOAD_TEMP_DB', 1);
-define('LOAD_REVERT_DB', 2);//we_temporaryDocument::revert gibst nicht mehr siehe #5789
-define('LOAD_SCHEDULE_DB', 3);
-
 define('WE_TREE_DEFAULT_WIDTH', 300);
 define('WEBEDITION_DIR', '/webEdition/');
 define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'].'/webEdition/');
@@ -103,8 +98,8 @@ define('WE_EDITPAGE_THUMBNAILS', 9);
 define('WE_EDITPAGE_VALIDATION', 10);
 define('WE_EDITPAGE_VARIANTS', 11);
 define('WE_EDITPAGE_PREVIEW_TEMPLATE', 12);
-define('WE_EDITPAGE_CFWORKSPACE', 13); // Bug Fix #6062
-define('WE_EDITPAGE_WEBUSER', 14); // Bug Fix #6062
+define('WE_EDITPAGE_CFWORKSPACE', 13);
+define('WE_EDITPAGE_WEBUSER', 14);
 define('WE_EDITPAGE_IMAGEEDIT', 15);
 define('WE_EDITPAGE_DOCLIST', 16);
 define('WE_EDITPAGE_VERSIONS', 17);
@@ -112,26 +107,12 @@ define('WE_EDITPAGE_VERSIONS', 17);
 define('FILE_ONLY', 0);
 define('FOLDER_ONLY', 1);
 
-// refresh pageExt array
-$PAGE_EXT = array(
-		'.html', '.php'
-);
-
-define('SUB_DIR_NO', 0);
-define('SUB_DIR_YEAR', 1);
-define('SUB_DIR_YEAR_MONTH', 2);
-define('SUB_DIR_YEAR_MONTH_DAY', 3);
-
 // Initialize imageType array
 $IMAGE_TYPE = array('', 'image/gif', 'image/jpeg', 'image/png');
-
-// Refresh imageExt array
-$IMAGE_EXT = array('', '.gif', '.jpg', '.png');
 
 // Initialize gdImageType arrays
 $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
 
-define('IMAGE_CONTENT_TYPES', 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png');
 
 define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
 define('CLEAN_UP_TABLE', TBL_PREFIX . 'tblCleanUp');

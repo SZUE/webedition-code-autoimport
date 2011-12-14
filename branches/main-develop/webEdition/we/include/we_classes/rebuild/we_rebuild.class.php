@@ -125,7 +125,7 @@ class we_rebuild {
 			}
 
 			eval('$GLOBALS["we_doc"] = new '.$data["cn"].'();');
-			$GLOBALS["we_doc"]->initByID($data["id"],$table,LOAD_MAID_DB);
+			$GLOBALS["we_doc"]->initByID($data["id"],$table,we_class::LOAD_MAID_DB);
 
 			if ($printIt) {
 				print ('Rebuilding: ' . $GLOBALS["we_doc"]->Path);

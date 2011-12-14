@@ -852,7 +852,7 @@ static function getUsedTemplatesOfTemplate($id, &$arr) {
 		return true;
 	}
 
-	function we_load($from=LOAD_MAID_DB) {
+	function we_load($from=we_class::LOAD_MAID_DB) {
 		we_document::we_load($from);
 		$this->Extension = $GLOBALS["WE_CONTENT_TYPES"]["text/weTmpl"]["Extension"];
 		$this->_updateCompleteCode();

@@ -97,7 +97,7 @@ class weWorkflowDocument extends weWorkflowBase{
 					eval('$this->document=new '.$this->db->f("ClassName").'();');
 					if($this->document){
 						$this->document->initByID($this->documentID,$docTable);
-						$this->document->we_load(LOAD_TEMP_DB);
+						$this->document->we_load(we_class::LOAD_TEMP_DB);
 					}
 				}
 

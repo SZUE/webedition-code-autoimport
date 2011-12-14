@@ -696,7 +696,7 @@ $content .='
 				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$DB_WE->f("ClassName").".inc.php");
 			}
 			eval('$we_doc = new '.$DB_WE->f("ClassName").'();');
-			$we_doc->initByID($DB_WE->f("ID"),$this->Table, LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
+			$we_doc->initByID($DB_WE->f("ID"),$this->Table, we_class::LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
 			$we_doc->ModifyPathInformation($this->ID);
 		}
 		@ignore_user_abort(false);

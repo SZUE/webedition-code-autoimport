@@ -60,7 +60,7 @@ class we_docTypes extends we_class {
 	var $NotifySubject = "";
 	var $NotifyOnChange="";
 	var $Templates="";
-	var $SubDir = SUB_DIR_NO;
+	var $SubDir = we_class::SUB_DIR_NO;
 	var $Category="";
 	var $Language="";
 

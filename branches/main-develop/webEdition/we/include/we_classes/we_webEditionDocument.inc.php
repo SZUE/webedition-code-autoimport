@@ -709,9 +709,9 @@ class we_webEditionDocument extends we_textContentDocument {
 		//FIXME:remove
 	}
 
-	function we_load($from=LOAD_MAID_DB) {
+	function we_load($from=we_class::LOAD_MAID_DB) {
 		switch($from) {
-			case LOAD_SCHEDULE_DB:
+			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 				if($sessDat) {
 					$this->i_initSerializedDat($sessDat);
@@ -719,7 +719,7 @@ class we_webEditionDocument extends we_textContentDocument {
 					break;
 				}
 				else {
-					$from = LOAD_TEMP_DB;
+					$from = we_class::LOAD_TEMP_DB;
 				}
 			default:
 				we_textContentDocument::we_load($from);

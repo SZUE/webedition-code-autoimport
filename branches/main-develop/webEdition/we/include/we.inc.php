@@ -162,14 +162,12 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 			default:
 				$header = true;
 		}
-	} else if((isset($show_stylesheet) && $show_stylesheet)){
-		$header = false;
 	} else{
-		$header = true;
+		$header = !((isset($show_stylesheet) && $show_stylesheet));
 	}
 
 	if($header){
 		header('Content-Type: text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET']);
-		unset($header);
 	}
+	unset($header);
 }

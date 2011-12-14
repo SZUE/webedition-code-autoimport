@@ -29,9 +29,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMeta
 /*  a class for handling binary-documents like images. */
 class we_binaryDocument extends we_document
 {
-	######################################################################################################################################################
-	##################################################################### Variables ######################################################################
-	######################################################################################################################################################
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName=__CLASS__;
@@ -50,10 +47,6 @@ class we_binaryDocument extends we_document
 	 * @var boolean
 	 */
 	var $DocChanged = false;
-
-	######################################################################################################################################################
-	##################################################################### FUNCTIONS ######################################################################
-	######################################################################################################################################################
 
 
 	/** Constructor
@@ -92,7 +85,7 @@ class we_binaryDocument extends we_document
 	* @param boolean $from
 	* @desc loads the data of the document
 	*/
-	function we_load($from=LOAD_MAID_DB){
+	function we_load($from=we_class::LOAD_MAID_DB){
 		we_document::we_load($from);
 		//$this->i_getContentData($this->LoadBinaryContent);
 	}

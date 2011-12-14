@@ -113,7 +113,7 @@ function we_tag_sessionField($attribs, $content) {
 			foreach ($topCountries as $countrykey => &$countryvalue) {
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
-			
+
 			if( !empty($topCountries) && !empty($shownCountries) ) {
 				$content.='<option value="-" disabled="disabled">----</option>';
 			}
@@ -334,7 +334,7 @@ function we_tag_sessionField($attribs, $content) {
 					</tr>
 					<tr>
 						<td class="weEditmodeStyle" colspan="2" align="left">
-							<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA['.$name.']" type="file" accept="' . IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+							<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA['.$name.']" type="file" accept="' . we_image_edit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 						</td>
 					</tr>
 					<tr>

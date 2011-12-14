@@ -30,6 +30,7 @@
  */
 
 class we_image_edit {
+	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png';
 
 	/*************************************************************************
 	 * FUNCTIONS

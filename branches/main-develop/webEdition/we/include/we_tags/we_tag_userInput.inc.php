@@ -109,7 +109,7 @@ function we_tag_userInput($attribs, $content){
 				$_imgDataId = isset($_REQUEST['WE_UI_IMG_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_IMG_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
 
-				
+
 				if ($editable) {
 
 					$foo = attributFehltError($attribs, "parentid", "userInput");
@@ -165,7 +165,7 @@ function we_tag_userInput($attribs, $content){
 						</tr>
 						<tr>
 							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_image_edit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 							</td>
 						</tr>
 						<tr>
@@ -214,7 +214,7 @@ function we_tag_userInput($attribs, $content){
 				$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
 
-				
+
 				if ($editable) {
 
 					$foo = attributFehltError($attribs, "parentid", "userInput");
@@ -324,7 +324,7 @@ function we_tag_userInput($attribs, $content){
 				$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
 
-				
+
 				if ($editable) {
 					$foo = attributFehltError($attribs, "parentid", "userInput");
 					if ($foo)
@@ -430,7 +430,7 @@ function we_tag_userInput($attribs, $content){
 
 				$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $name]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $name] : md5(
 						uniqid(rand()));
-				
+
 				if ($editable) {
 
 					$foo = attributFehltError($attribs, "parentid", "userInput");

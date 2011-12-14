@@ -33,6 +33,19 @@ if (defined('WE_TAG_GLOBALS') && !we_isLocalRequest()) {
 
 /* the parent class of storagable webEdition classes */
 abstract class we_class{
+	//constants for retrieving data from DB
+	const LOAD_MAID_DB=0;
+	const LOAD_TEMP_DB=1;
+	const LOAD_REVERT_DB=2; //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+	const LOAD_SCHEDULE_DB=3;
+
+	//constants define where to write document (guess)
+	const SUB_DIR_NO=0;
+	const SUB_DIR_YEAR=1;
+	const SUB_DIR_YEAR_MONTH=2;
+	const SUB_DIR_YEAR_MONTH_DAY=3;
+
+
 	/* Name of the class => important for reconstructing the class from outside the class */
 
 	var $ClassName = __CLASS__;
@@ -424,7 +437,7 @@ abstract class we_class{
 ##### NEWSTUFF ####
 # public ##################
 
-	function initByID($ID, $Table="", $from=LOAD_MAID_DB) {
+	function initByID($ID, $Table="", $from=we_class::LOAD_MAID_DB) {
 		if ($Table == "") {
 			$Table = FILE_TABLE;
 		}
@@ -449,7 +462,7 @@ abstract class we_class{
 	}
 
 
-	function we_load($from=LOAD_MAID_DB) {
+	function we_load($from=we_class::LOAD_MAID_DB) {
 		$this->i_getPersistentSlotsFromDB();
 	}
 

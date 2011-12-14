@@ -1993,7 +1993,7 @@ function we_getDocumentByID($id, $includepath = '', $db = '', $charset = '') {
 
 	$GLOBALS['we_doc'] = new $clNm();
 
-	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, LOAD_MAID_DB);
+	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, we_class::LOAD_MAID_DB);
 	$content = $GLOBALS['we_doc']->i_getDocument($includepath);
 	$charset = $GLOBALS['we_doc']->getElement('Charset');
 	if (!$charset) {
@@ -2008,7 +2008,7 @@ function we_getDocumentByID($id, $includepath = '', $db = '', $charset = '') {
 
 function we_getObjectFileByID($id, $includepath = '') {
 	$mydoc = new we_objectFile();
-	$mydoc->initByID($id, OBJECT_FILES_TABLE, LOAD_MAID_DB);
+	$mydoc->initByID($id, OBJECT_FILES_TABLE, we_class::LOAD_MAID_DB);
 	return $mydoc->i_getDocument($includepath);
 }
 

@@ -774,7 +774,7 @@ function formTriggerDocument($isclass=false){
 
 	}
 
-	function we_load($from=LOAD_MAID_DB){
+	function we_load($from=we_class::LOAD_MAID_DB){
 		we_class::we_load($from);
 		$this->i_getContentData($this->LoadBinaryContent);
 		$this->OldPath = $this->Path;
@@ -1111,13 +1111,13 @@ function formTriggerDocument($isclass=false){
 				$_pathFirstPart = substr($this->getParentPath(),-1) == "/" ? "" : "/";
 				$tail = '';
 				switch($doctype->SubDir){
-					case SUB_DIR_YEAR:
+					case we_class::SUB_DIR_YEAR:
 						$tail = $_pathFirstPart.date("Y");
 						break;
-					case SUB_DIR_YEAR_MONTH:
+					case we_class::SUB_DIR_YEAR_MONTH:
 						$tail = $_pathFirstPart.date("Y")."/".date("m");
 						break;
-					case SUB_DIR_YEAR_MONTH_DAY:
+					case we_class::SUB_DIR_YEAR_MONTH_DAY:
 						$tail = $_pathFirstPart.date("Y")."/".date("m")."/".date("d");
 						break;
 				}

@@ -200,7 +200,7 @@ class we_objectFile extends we_document{
 		if(!$id)return;
 
 		$doc = new we_objectFile();
-		$doc->InitByID($id,$this->Table, LOAD_TEMP_DB);
+		$doc->InitByID($id,$this->Table, we_class::LOAD_TEMP_DB);
 		$doc->setRootDirID(true);
 		if($this->ID==0){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
@@ -2447,9 +2447,9 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function we_load($from=LOAD_MAID_DB){
+	function we_load($from=we_class::LOAD_MAID_DB){
 		switch($from){
-			case LOAD_SCHEDULE_DB:
+			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 
 				if($sessDat){
@@ -2461,12 +2461,12 @@ class we_objectFile extends we_document{
 					$this->i_getUniqueIDsAndFixNames();
 					break;
 				}else{
-					$from = LOAD_MAID_DB;
+					$from = we_class::LOAD_MAID_DB;
 				}
-			case LOAD_MAID_DB:
+			case we_class::LOAD_MAID_DB:
 				we_document::we_load($from);
 				break;
-			case LOAD_TEMP_DB:
+			case we_class::LOAD_TEMP_DB:
 				$sessDat = unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
 				if($sessDat){
 					//fixed: at least TableID must be fetched
@@ -2478,12 +2478,12 @@ class we_objectFile extends we_document{
 					$this->i_getPersistentSlotsFromDB("TableID,Published");
 					$this->i_getUniqueIDsAndFixNames();
 				}else{
-					$this->we_load(LOAD_MAID_DB);
+					$this->we_load(we_class::LOAD_MAID_DB);
 				}
 				$this->setTypeAndLength();
 				break;
-			case LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
-				$this->we_load(LOAD_TEMP_DB);
+			case we_class::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(we_class::LOAD_TEMP_DB);
 				$this->setTypeAndLength();
 				break;
 		}
@@ -3130,7 +3130,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function initByID($we_ID, $we_Table=OBJECT_FILES_TABLE, $from=LOAD_MAID_DB) {
+	function initByID($we_ID, $we_Table=OBJECT_FILES_TABLE, $from=we_class::LOAD_MAID_DB) {
 		parent::initByID($we_ID, $we_Table, $from);
 
 		if (isset($this->elements['Charset'])) {

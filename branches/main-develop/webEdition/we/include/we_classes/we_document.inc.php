@@ -806,7 +806,7 @@ class we_document extends we_root {
 		}
 	}
 
-	function we_load($from=LOAD_MAID_DB) {
+	function we_load($from=we_class::LOAD_MAID_DB) {
 		we_root::we_load($from);
 		// Navigation items
 		$this->i_setExtensions();

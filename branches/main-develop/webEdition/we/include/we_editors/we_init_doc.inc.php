@@ -105,7 +105,7 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 	}
 }
 if(isset($we_ID)){
-	$we_doc->initByID($we_ID,$we_Table,( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? LOAD_MAID_DB : LOAD_TEMP_DB);
+	$we_doc->initByID($we_ID,$we_Table,( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
 
 }else if(isset($we_dt)){
 	$we_doc->we_initSessDat($we_dt);

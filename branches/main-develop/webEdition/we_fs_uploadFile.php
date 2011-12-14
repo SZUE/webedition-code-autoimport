@@ -39,7 +39,7 @@ $allowedContentTypes = "";
 
 switch ($we_ContentType) {
 	case "image/*";
-		$allowedContentTypes = IMAGE_CONTENT_TYPES;
+		$allowedContentTypes = we_image_edit::IMAGE_CONTENT_TYPES;
 		break;
 	case "application/*";
 		break;

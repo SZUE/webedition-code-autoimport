@@ -183,13 +183,13 @@ class we_textContentDocument extends we_textDocument{
 				$this->Language = $db->f("Language");
 				$_pathFirstPart = substr($this->ParentPath,-1) == "/" ? "" : "/";
 				switch($db->f("SubDir")){
-					case SUB_DIR_YEAR:
+					case we_class::SUB_DIR_YEAR:
 						$this->ParentPath .= $_pathFirstPart.date("Y");
 						break;
-					case SUB_DIR_YEAR_MONTH:
+					case we_class::SUB_DIR_YEAR_MONTH:
 						$this->ParentPath .= $_pathFirstPart.date("Y")."/".date("m");
 						break;
-					case SUB_DIR_YEAR_MONTH_DAY:
+					case we_class::SUB_DIR_YEAR_MONTH_DAY:
 						$this->ParentPath .= $_pathFirstPart.date("Y")."/".date("m")."/".date("d");
 						break;
 				}
@@ -252,12 +252,12 @@ class we_textContentDocument extends we_textDocument{
 		$this->Filename=$this->i_getDefaultFilename();
 
 	}
-	function we_load($from=LOAD_MAID_DB){
+	function we_load($from=we_class::LOAD_MAID_DB){
 		switch($from){
-			case LOAD_MAID_DB:
+			case we_class::LOAD_MAID_DB:
 				parent::we_load($from);
 				break;
-			case LOAD_TEMP_DB:
+			case we_class::LOAD_TEMP_DB:
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$sessDat=unserialize($sessDat);
@@ -265,13 +265,13 @@ class we_textContentDocument extends we_textDocument{
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
 					$this->OldPath = $this->Path;
 				}else{
-					$this->we_load(LOAD_MAID_DB);
+					$this->we_load(we_class::LOAD_MAID_DB);
 				}
 				break;
-			case LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
-				$this->we_load(LOAD_TEMP_DB);
+			case we_class::LOAD_REVERT_DB: //we_temporaryDocument::revert gibst nicht mehr siehe #5789
+				$this->we_load(we_class::LOAD_TEMP_DB);
 				break;
-			case LOAD_SCHEDULE_DB :
+			case we_class::LOAD_SCHEDULE_DB :
 				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".$this->ID."' AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 				if($sessDat) {
 					$this->i_initSerializedDat($sessDat);
@@ -279,7 +279,7 @@ class we_textContentDocument extends we_textDocument{
 					$this->OldPath = $this->Path;
 					break;
 				} else {	// take tmp db, when doc not in schedule db
-					$this->we_load(LOAD_TEMP_DB);
+					$this->we_load(we_class::LOAD_TEMP_DB);
 				}
 				break;
 		}
