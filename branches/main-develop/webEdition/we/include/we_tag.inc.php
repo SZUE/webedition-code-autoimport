@@ -22,11 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!isset($GLOBALS['WE_IS_DYN'])){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php');
-}
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
 include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 
 function we_include_tag_file($name){

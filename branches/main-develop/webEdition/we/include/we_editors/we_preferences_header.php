@@ -27,8 +27,7 @@
  * INCLUDES
  *****************************************************************************/
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_tabs.class.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
 
 /*****************************************************************************
  * INITIALIZATION

@@ -36,6 +36,3 @@ define("SCHEDULE_TYPE_DAY","2");
 define("SCHEDULE_TYPE_WEEK","3");
 define("SCHEDULE_TYPE_MONTH","4");
 define("SCHEDULE_TYPE_YEAR","5");
-
-
-?>

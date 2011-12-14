@@ -23,9 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlElement.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weFile.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
 
 class delBackup extends taskFragment{
 

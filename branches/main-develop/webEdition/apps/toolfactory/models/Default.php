@@ -22,13 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weFile.class.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_hook/class/weHook.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
 
 /**
  * Base class for app models
- * 
+ *
  * @category   app
  * @package    app_models
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -77,7 +75,7 @@ class toolfactory_models_Default extends we_app_Model
 	 * @var string
 	 */
 	public $datasource = 'table:';
-	
+
 	/**
 	 * makeTable attribute
 	 *
@@ -150,7 +148,7 @@ class toolfactory_models_Default extends we_app_Model
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string $toolfactoryID
 	 * @return void
 	 */
@@ -161,45 +159,45 @@ class toolfactory_models_Default extends we_app_Model
 			$this->{$this->_primaryKey} = $toolfactoryID;
 			$this->load($toolfactoryID);
 		}
-		
+
 		$this->setPersistentSlots(array('ID', 'Text', 'classname', 'maintable', 'datasource', 'makeTable', 'makeTags', 'makeServices', 'makePerms', 'makeBackup'));
 	}
-	
+
 	/**
 	 * set Fields
-	 * 
+	 *
 	 * @param array $fields
 	 * @return void
 	 */
 	public function setFields($fields) {
 		parent::setFields($fields);
 	}
-		
+
 	/**
 	 * converts real appname to intern appname
-	 * 
+	 *
 	 * @param string $realname
 	 * @return string
 	 */
 	function realNameToIntern($name) {
-		
+
 		$name = preg_replace('/[^a-z0-9]/','',strtolower($name));
-		
+
 		return $name;
 	}
 
 	/**
 	 * Load entry from database
-	 * 
-	 * @param integer $loadId 
+	 *
+	 * @param integer $loadId
 	 */
 	function load($loadId)
 	{
 
 		$id = $this->realNameToIntern($loadId);
-		
+
 		$_props = weToolLookup::getToolProperties($id);
-		
+
 		if(empty($_props)) {
 			$_props = weToolLookup::getToolProperties($loadId);
 			$id = $loadId;
@@ -210,33 +208,33 @@ class toolfactory_models_Default extends we_app_Model
 		}
 
 		$this->appconfig = we_app_Common::getManifest($id);
-		
+
 		$name = isset($_props['text']) ? $_props['text'] : $_props['classname'];
-				
+
 		$this->Text = htmlspecialchars_decode($name);
 
 		$this->ID = $this->Text;
-				
+
 		$this->tags = weToolLookup::getAllToolTags($id,true);
-		
+
 		$this->services = weToolLookup::getAllToolServices($id,true);
-		
+
 		$this->languages = weToolLookup::getAllToolLanguages($id,'/lang',true);
 		if(empty($this->languages)){$this->languages=array('a','b');}
-		
+
 		$this->backupTables = weToolLookup::getBackupTables($id,true);
-		
+
 		$appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
-		
+
 		$permFile = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' . $_props['name'] . '/conf/permission.conf.php';
 
 		if (file_exists($permFile)) {
 			include ($permFile);
 			$this->permissions = $perm_defaults[$perm_group_name];
 		}
-	
+
 	}
-	
+
 	/**
 	 * replace TOOLNAME and CLASSNAME in created files
 	 * @param string $name
@@ -245,23 +243,23 @@ class toolfactory_models_Default extends we_app_Model
 	 * @return string
 	 */
 	function getNewFileName($name,$TOOLNAME,$CLASSNAME) {
-		
-		$_newname = str_replace("TOOLNAME",$TOOLNAME,$name);	
+
+		$_newname = str_replace("TOOLNAME",$TOOLNAME,$name);
 		$_newname = str_replace("CLASSNAME",$CLASSNAME,$_newname);
-		
+
 		return $_newname;
 	}
-	
+
 	/**
 	 * save entry in database and create application files
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function save($skipHook=0) {
-	
+
 		$text = htmlspecialchars($this->Text, ENT_NOQUOTES);
 		include_once($GLOBALS['__WE_BASE_PATH__']. DIRECTORY_SEPARATOR .'we'. DIRECTORY_SEPARATOR .'include'. DIRECTORY_SEPARATOR.'we_version.php');
-		
+
 		$TOOLNAMELANG = $text;
 		$TOOLNAME = $this->classname;
 		$CLASSNAME = $this->classname;
@@ -278,7 +276,7 @@ class toolfactory_models_Default extends we_app_Model
 			$this->makeTable = false;
 		}
 		$ACTIVECONSTANT = 'WEAPP_'.strtoupper($this->classname) . '_ACTIVE';
-		
+
 		if($this->makePerms) {
 			$PERMISSIONCONDITION = 'USE_APP_' . strtoupper($this->classname);
 			$DELETECONDITION = 'DELETE_APP_' . strtoupper($this->classname);
@@ -289,11 +287,11 @@ class toolfactory_models_Default extends we_app_Model
 		$WEVERSION = we_util_Strings::version2number(WE_VERSION,false);
 		$SDKVERSION = we_util_Strings::version2number(WE_VERSION,false);
 		$_templateDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/toolfactory/pattern';
-		
+
 		$_toolDir = $GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/';
-		
+
 		$_files = array();
-	
+
 		weToolLookup::getFilesOfDir($_files,$_templateDir);
 
 		foreach ($_files as $_file) {
@@ -301,7 +299,7 @@ class toolfactory_models_Default extends we_app_Model
 			$_newname = str_replace($_templateDir,$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . "/". $TOOLNAME,$_file);
 			$_newname = dirname($_newname) . '/' . $this->getNewFileName(basename($_newname),$TOOLNAME,$CLASSNAME);
 			$length = strlen($_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__']);
-			$replaceString = substr($_newname, $length); 
+			$replaceString = substr($_newname, $length);
 			$_newname = str_replace($replaceString,$this->getNewFileName($replaceString,$TOOLNAME,$CLASSNAME),$_newname);
 
 
@@ -309,7 +307,7 @@ class toolfactory_models_Default extends we_app_Model
 
 				$_ext = substr($_file,-4);
 				$is_php = $_ext=='.php' ? true : false;
-				
+
 				if(!$is_php) {
 					if($_ext=='.sql') {
 						ob_start();
@@ -322,8 +320,8 @@ class toolfactory_models_Default extends we_app_Model
 						include($_file);
 						$_content = ob_get_contents();
 						ob_end_clean();
-						$_content = str_replace('{$TOOLNAME}',$TOOLNAME,$_content);	
-						$_content = str_replace('{$TOOLNAMELANG}',$TOOLNAMELANG,$_content);	
+						$_content = str_replace('{$TOOLNAME}',$TOOLNAME,$_content);
+						$_content = str_replace('{$TOOLNAMELANG}',$TOOLNAMELANG,$_content);
 					} else {
 						$_content = weFile::load($_file);
 					}
@@ -331,12 +329,12 @@ class toolfactory_models_Default extends we_app_Model
 						$_content = weFile::load($_file);
 						$start = strpos($_content, '<?xml ');
 						$end = strpos($_content, '</tmx>')+$start;
-						
-						$_content = str_replace('{$TOOLNAME}',$TOOLNAME,$_content);	
-						$_content = str_replace('{$TOOLNAMELANG}',$TOOLNAMELANG,$_content);	
 
-						$_content = str_replace('{$WEVERSION}',$WEVERSION,$_content);	
-						$_content = str_replace('{$SDKVERSION}',$SDKVERSION,$_content);	
+						$_content = str_replace('{$TOOLNAME}',$TOOLNAME,$_content);
+						$_content = str_replace('{$TOOLNAMELANG}',$TOOLNAMELANG,$_content);
+
+						$_content = str_replace('{$WEVERSION}',$WEVERSION,$_content);
+						$_content = str_replace('{$SDKVERSION}',$SDKVERSION,$_content);
 					}
 				} else {
 					$_content = '<?php'.PHP_EOL;
@@ -344,10 +342,10 @@ class toolfactory_models_Default extends we_app_Model
 					include($_file);
 					$_content .= ob_get_contents();
 					ob_end_clean();
-					
+
 					$_content .= PHP_EOL.'?>';
 				}
-									
+
 					if(!is_dir(dirname($_newname))) {
 						$path = dirname($_newname);
 						$pathteile = explode("/", $path) ;
@@ -359,7 +357,7 @@ class toolfactory_models_Default extends we_app_Model
 					         }
 						}
 					}
-				
+
 				$_dirSelectorFile = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/we_' . $TOOLNAME . 'DirSelect.php';
 				$_dirSelectorClass = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/we_' . $TOOLNAME . 'DirSelector.class.php';
 				$_sqlFile = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' . $TOOLNAME . '/' . $TOOLNAME . '.sql';
@@ -383,36 +381,36 @@ class toolfactory_models_Default extends we_app_Model
 				//print "Execute query " . $_sql . "...<br>";
 				$_sql=str_replace('###TBLPREFIX###', TBL_PREFIX, $_sql);
 				$_db->query($_sql);
-			}		
+			}
 		}
 		/* hook */
-		if ($skipHook==0){		
+		if ($skipHook==0){
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
 		}
-		
-		
+
+
 		/* generate new toc.xml */
 		we_app_Common::rebuildAppTOC();
-			
+
 		return true;
-			
+
 	}
-	
+
 	/**
 	 * checks the file include for the application
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function shouldInclude($file) {
-		
+
 		$_dn = dirname($file);
 		$_bn = basename($file);
 
 		if($_bn!=$this->Text . '.sql' && $_bn!='permission.conf.php' && $_bn!='backup.conf.php' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tagwizard' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tags' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/cmds' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/json' && $_dn!=$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/text') {
 			return true;
 		}
-		
+
 		if($this->makePerms && $_bn=='permission.conf.php') {
 			return true;
 		}
@@ -426,26 +424,26 @@ class toolfactory_models_Default extends we_app_Model
 		if($this->makeTags && ($_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/tagwizard')) {
 			return true;
 		}
-		
+
 		if($this->makeServices && ($_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/cmds' || $_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views')) {
 			return true;
 		}
-		
+
 		if($this->makeServices && ($_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/text' || $_dn==$_SERVER['DOCUMENT_ROOT'].$GLOBALS['__WE_APP_URL__'] . '/' .$this->Text . '/service/views/json')) {
 			return true;
 		}
-		
+
 		if($this->makeTable && $_bn==$this->Text . '.sql') {
 			return true;
 		}
-		
+
 		return false;
-		
+
 	}
-	
+
 	/**
 	 * checks Text for file name
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function textNotValid() {
@@ -456,10 +454,10 @@ class toolfactory_models_Default extends we_app_Model
 			return true;
 		}
 	}
-	
+
 	/**
 	 * checks classname
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function classnameNotValid() {
@@ -469,28 +467,28 @@ class toolfactory_models_Default extends we_app_Model
 		return false;
 
 	}
-		
+
 	/**
 	 * checks maintable
-	 * 
+	 *
 	 * @return boolean
 	 */
 	function maintablenameNotValid() {
 		return preg_match('/[^a-z0-9_-]/i',$this->maintable);
 	}
-	
+
 	/**
 	 * checks if model class exists
-	 * 
+	 *
 	 * @param string $classname
 	 * @return boolean
 	 */
 	function modelclassExists($classname) {
-		
+
 		$_menuItems = weToolLookup::getAllTools(true,false,true);
 
 		$_prohibit_classnames = array($_menuItems);
-		
+
 		foreach ($_menuItems as $_menuItem) {
 			$_prohibit_classnames[] = $_menuItem["classname"];
 		}
@@ -499,7 +497,7 @@ class toolfactory_models_Default extends we_app_Model
 			return true;
 		}
 		else return false;
-		
+
 	}
-	
+
 }

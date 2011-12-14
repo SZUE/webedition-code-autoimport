@@ -30,7 +30,7 @@
  *
  * Description: Provides functions for creating html tags
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
 
 abstract class we_htmlElement{
 

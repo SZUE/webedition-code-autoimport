@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_min_inc.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf_global.inc.php");
 
 /**
@@ -63,7 +63,7 @@ class weHook {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * get custom hook file
 	 *
@@ -93,9 +93,9 @@ class weHook {
 	function setErrorString($str){
 		$this->errStr=$str;
 	}
-	
+
 	function getErrorString(){
 		return $this->errStr;
 	}
-	
+
 }

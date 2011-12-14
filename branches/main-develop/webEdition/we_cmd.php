@@ -336,7 +336,6 @@ if(!$INCLUDE){
 
 		default:
 			// search tools for command
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 			$INCLUDE = weToolLookup::getPhpCmdInclude();
 			if(isset($INCLUDE)) {
 				break;
