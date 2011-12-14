@@ -234,7 +234,7 @@ class weTree{
  	}
 
  	function getJSAddSortFunction() {
-		$insp=new we_browserDetect();
+		$insp=new we_base_browserDetect();
 
  		return '
  		function addSort(object){

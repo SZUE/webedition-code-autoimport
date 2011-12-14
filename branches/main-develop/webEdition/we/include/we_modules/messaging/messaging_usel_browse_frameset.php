@@ -33,7 +33,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$browser = new we_browserDetect();
+$browser = new we_base_browserDetect();
 echo we_htmlElement::jsScript(JS_DIR.'images.js').
 	we_htmlElement::jsScript(JS_DIR.'windows.js').
 	we_htmlElement::jsScript(JS_DIR.'messaging_hl.js').

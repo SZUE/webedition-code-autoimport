@@ -35,7 +35,7 @@ function we_tag_ifClient($attribs, $content){
 		}
 	}
 
-	$br = new we_browserDetect();
+	$br = new we_base_browserDetect();
 	if ($browser) {
 		$bro = explode(',', $browser);
 		$_browserOfClient = $br->getBrowser();

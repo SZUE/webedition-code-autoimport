@@ -79,7 +79,7 @@ if (!isset($weShopVat)) {
 		0
 	);
 }
-$_BROWSER=new we_browserDetect();
+$_BROWSER=new we_base_browserDetect();
 $jsFunction = '
 
 		var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';

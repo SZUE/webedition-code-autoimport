@@ -62,7 +62,7 @@ if (isset($_REQUEST['we_cmd'])) {
 		break;
 	}
 }
-$_BROWSER=new we_browserDetect();
+$_BROWSER=new we_base_browserDetect();
 $jsFunction = '
 
 		var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';

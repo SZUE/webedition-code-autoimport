@@ -155,7 +155,7 @@ class weDialog{
 	}
 
 	function getFramesetHTML() {
-		$_BROWSER=new we_browserDetect();
+		$_BROWSER=new we_base_browserDetect();
 
 		return '
 			<script  type="text/javascript"><!--
@@ -275,7 +275,7 @@ class weDialog{
 	}
 
 	function getJs() {
-		$_BROWSER=new we_browserDetect();
+		$_BROWSER=new we_base_browserDetect();
 		$js = we_htmlElement::jsScript(JS_DIR.'windows.js').'
 			<script  type="text/javascript"><!--
 				var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';

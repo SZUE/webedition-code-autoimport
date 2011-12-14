@@ -22,28 +22,44 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_browserDetect{
+class we_base_browserDetect{
+	const UNKNOWN ='unknown';
+	const OPERA ='opera';
+	const IE = 'ie';
+	const FF = 'firefox';
+	const LYNX = 'lynx';
+	const JAVA = 'java';
+	const KONQUEROR ='konqueror';
+	const NETSCAPE = 'nn';
+	const MOZILLA = 'mozilla';
+	const APPLE = 'appleWebKit';
+	const SAFARI = 'safari';
+	const CHROME = 'chrome';
+
+	const SYS_MAC = 'mac';
+	const SYS_WIN = 'win';
+	const SYS_UNIX = 'unix';
 
 	///Browser
-	protected static $br = 'unknown';
+	protected static $br = self::UNKNOWN;
 	/// String of useragent
 	protected static $ua = '';
 	///Version
 	protected static $v = 0;
 	///Operating System
-	protected static $sys = 'unknown';
+	protected static $sys = self::UNKNOWN;
 	///determines, if browser already detected
 	private static $detected = false;
 
-	function we_browserDetect($ua = ''){
+	function __construct($ua = ''){
 		//prevent from redetecting the same strings
 		if(self::$detected && $ua == ''){
 			return;
 		}
 		if($ua != ''){
-			self::$br = 'unknown';
+			self::$br = self::UNKNOWN;
 			self::$v = 0;
-			self::$sys = 'unknown';
+			self::$sys = self::UNKNOWN;
 		}
 		self::$detected = true;
 		self::$ua = $ua ? $ua : $_SERVER['HTTP_USER_AGENT'];
@@ -61,28 +77,28 @@ class we_browserDetect{
 
 			switch($bez){
 				case 'lynx':
-					self::$br = 'lynx';
+					self::$br = self::LYNX;
 					break;
-				case 'mozilla':{
+				case 'mozilla':
 						$java = explode('/', trim($post));
 						if($java[0] == 'Java'){
-							self::$br = 'java';
+							self::$br = self::JAVA;
 							self::$v = $java[1];
 						} else
 						if(preg_match('/msie (.*)$/i', trim($brArr[1]), $regs) && (trim($post) == '' || preg_match('/\.net/i', $post))){ //if last condition matches this will produce a notice. $regs[1] won't be defined...
-							self::$br = 'ie';
+							self::$br = self::IE;
 							self::$v = $regs[1];
 						} else
 						if(preg_match('/konqueror\/(.*)$/i', trim($brArr[1]), $regs)){
-							self::$br = 'konqueror';
+							self::$br = self::KONQUEROR;
 							self::$v = $regs[1];
 						} else
 						if(preg_match('/galeon\/(.*)$/i', trim($brArr[1]), $regs)){
-							self::$br = 'unknown';
+							self::$br = self::UNKNOWN;
 							self::$v = $regs[1];
 						} else{
 							if(stristr($post, 'netscape6')){
-								self::$br = 'nn';
+								self::$br = self::NETSCAPE;
 								if(preg_match('/netscape6\/(.+)/i', $post, $regs)){
 									self::$v = trim($regs[1]);
 								} else{
@@ -90,7 +106,7 @@ class we_browserDetect{
 								}
 							} else
 							if(stristr($post, 'netscape/7')){
-								self::$br = 'nn';
+								self::$br = self::NETSCAPE;
 								if(preg_match('/netscape\/(7.+)/i', $post, $regs)){
 									self::$v = trim($regs[1]);
 								} else{
@@ -99,7 +115,7 @@ class we_browserDetect{
 							} else
 							if(preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)){
 								self::$v = $regs[1];
-								self::$br = 'appleWebKit';
+								self::$br = self::APPLE;
 
 								if(stristr($post, 'chrome')){
 									if(preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs)){
@@ -108,7 +124,7 @@ class we_browserDetect{
 										self::$v = '1';
 									}
 
-									self::$br = 'chrome';
+									self::$br = self::CHROME;
 								} else
 								if(stristr($post, 'safari')){
 									if(preg_match('/version\/([0-9]+\.[0-9]+)/i', $post, $regs)){
@@ -116,21 +132,21 @@ class we_browserDetect{
 									} else{
 										self::$v = '1';
 									}
-									self::$br = 'safari';
+									self::$br = self::SAFARI;
 								}
 							} else
 							if(preg_match('/firefox\/([0-9]+.[0-9]+)/i', $post, $regs)){
 								self::$v = $regs[1];
-								self::$br = 'firefox';
+								self::$br = self::FF;
 							} else
 							if(stristr($post, 'gecko')){
-								self::$br = 'mozilla';
+								self::$br = self::MOZILLA;
 								if(preg_match('/rv:([0-9.]*)/i', $bracket, $regs)){
 									self::$v = $regs[1];
 								}
 							} else
 							if(preg_match('/opera ([^ ]+)/i', $post, $regs)){
-								self::$br = 'opera';
+								self::$br = self::OPERA;
 								if(preg_match('/version\/([^ ]+)/i', $post, $reg)){
 									self::$v = $reg[1];
 								} else{
@@ -138,20 +154,19 @@ class we_browserDetect{
 								}
 							} else
 							if($brArr[0] == 'compatible'){
-								self::$br = 'unknown';
+								self::$br = self::UNKNOWN;
 								break;
 							} else
 							if(!stristr($bracket, 'msie')){
-								self::$br = 'nn';
+								self::$br = self::NETSCAPE;
 								self::$v = preg_replace('/[^0-9.]/', '', $prever);
 							}
 						}
 
 						$this->_getSys($bracket);
 						break;
-					}
 				case 'opera':
-					self::$br = 'opera';
+					self::$br = self::OPERA;
 					if(preg_match('/version\/([^ ]+)/i', $post, $reg)){
 						self::$v = $reg[1];
 					} else{
@@ -160,36 +175,36 @@ class we_browserDetect{
 					$this->_getSys($bracket);
 					break;
 				case 'googlebot':
-					self::$br = 'unknown';
+					self::$br = self::UNKNOWN;
 					#self::$v=$prever;
 					break;
 				case 'nokia-communicator-www-Browser':
-					self::$br = 'unknown';
+					self::$br = self::UNKNOWN;
 					break;
 			}
-			if(self::$sys == 'unknown'){
+			if(self::$sys == self::UNKNOWN){
 				if(stristr(self::$ua, 'webtv')){
 					self::$sys = 'webtv';
 				}
 			}
 		} else
 		if(preg_match('/^lynx([^a-z]+)[a-z].*/i', $ua, $regs)){
-			self::$br = 'lynx';
+			self::$br = self::LYNX;
 			self::$v = str_replace('/', '', $regs[1]);
 		} else{
-			self::$br = 'unknown';
+			self::$br = self::UNKNOWN;
 		}
 	}
 
 	private function _getSys($bracket){
 		if(stristr($bracket, 'mac')){
-			self::$sys = 'mac';
+			self::$sys = self::SYS_MAC;
 		} else
 		if(stristr($bracket, 'win')){
-			self::$sys = 'win';
+			self::$sys = self::SYS_WIN;
 		} else
 		if(stristr($bracket, 'linux') || stristr($bracket, 'x11') || stristr($bracket, 'sun')){
-			self::$sys = 'unix';
+			self::$sys = self::SYS_UNIX;
 		}
 	}
 
@@ -198,19 +213,29 @@ class we_browserDetect{
 	}
 
 	function isIE(){
-		return self::$br=='ie';
+		return self::$br==self::IE;
 	}
 
 	function isOpera(){
-		return self::$br=='opera';
+		return self::$br==self::OPERA;
 	}
 
 	function isSafari(){
-		return self::$br=='safari';
+		return self::$br==self::SAFARI;
+	}
+
+	function isNN(){
+		switch(self::$br){
+			case self::NETSCAPE:
+			case self::MOZILLA:
+			case self::FF:
+				return true;
+		}
+		return false;
 	}
 
 	function isFF(){
-		return self::$br=='firefox';
+		return self::$br==self::FF;
 	}
 
 	function getBrowserVersion(){
@@ -242,36 +267,36 @@ class we_browserDetect{
 			return true;
 		}
 		switch(self::$sys){
-			case 'win' :
+			case self::SYS_WIN :
 				switch(self::$br){
-					case 'ie':
-					case 'opera':
-					case 'safari':
+					case self::IE:
+					case self::OPERA:
+					case self::SAFARI:
 						return true;
 				}
 				break;
 
-			case 'mac':
+			case self::SYS_MAC:
 				switch(self::$br){
-					case 'opera':
-					case 'safari':
+					case self::OPERA:
+					case self::SAFARI:
 						return true;
 				}
 				break;
 
-			case 'unix':
+			case self::SYS_UNIX:
 				switch(self::$br){
-					case 'opera':
+					case self::OPERA:
 						return true;
 				}
 
 				break;
 
-			case 'unknown':
+			case self::UNKNOWN:
 				switch(self::$br){
-					case 'ie':
-					case 'opera':
-					case 'safari':
+					case self::IE:
+					case self::OPERA:
+					case self::SAFARI:
 						return true;
 				}
 

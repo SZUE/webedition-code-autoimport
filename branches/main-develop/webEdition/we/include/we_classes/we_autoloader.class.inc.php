@@ -37,6 +37,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
 abstract class we_autoloader{
 
 	private static $domains = array(
+		'base' => 'we_classes/base',
 		'database' => 'we_classes/database',
 		'html' => 'we_classes/html',
 		'users' => 'we_modules/users',
@@ -113,7 +114,6 @@ abstract class we_autoloader{
 			'weDBUtil' => 'base/weDBUtil.class.php',
 			'we_delSelector' => 'we_delSelector.inc.php',
 			'weDialog' => 'weDialog.class.inc.php',
-			'we_browserDetect' => 'base/we_browserDetect.inc.php',
 			'we_dirSelector' => 'we_dirSelector.inc.php',
 			'we_docSelector' => 'we_docSelector.inc.php',
 			'we_docTypes' => 'we_docTypes.inc.php',

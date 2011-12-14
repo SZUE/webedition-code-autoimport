@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 ?>
 <link rel="stylesheet" type="text/css" href="<?php print WEBEDITION_DIR; ?>css/menu/pro_drop_1.css" />
 <!-- IE 6 -->
-<?php $_BROWSER = new we_browserDetect();
+<?php $_BROWSER = new we_base_browserDetect();
 if($_BROWSER->getBrowser()== 'ie' && $_BROWSER->getBrowserVersion()<7){
 	echo we_htmlElement::jsScript(WEBEDITION_DIR.'css/menu/stuHover.js');
  }

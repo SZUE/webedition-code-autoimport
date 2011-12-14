@@ -57,11 +57,6 @@ if($_REQUEST["we_cmd"][1] == 'frameset') {
 
 	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
 
-	if($ClassName == "we_objectFile") {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
-
-	}
-
 	$we_doc = new $ClassName();
 	$we_doc->we_initSessDat($_SESSION['we_data'][$Transaction]);
 
@@ -862,11 +857,6 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 
 
 	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
-
-	if($ClassName == "we_objectFile") {
-		require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$ClassName.".inc.php");
-
-	}
 
 	$we_doc = new $ClassName();
 	$we_doc->we_initSessDat($_SESSION['we_data'][$Transaction]);

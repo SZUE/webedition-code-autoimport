@@ -148,7 +148,7 @@ function tinyMCEchanged(inst){
 }
 </script>';
 				case 'default':
-					$_BROWSER=new we_browserDetect();
+					$_BROWSER=new we_base_browserDetect();
 
 			return '<iframe id="we_wysiwyg_lng_frame" src="/webEdition/editors/content/wysiwyg/weWysiwygLang.php" style="display:none;"></iframe>
 				<style type="text/css">

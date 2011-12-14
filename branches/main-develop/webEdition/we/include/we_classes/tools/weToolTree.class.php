@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/weMainTree.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 
 	class weToolTree extends weMainTree{
@@ -197,8 +197,7 @@
 		}
 
 		function getJSAddSortFunction() {
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_browserDetect.inc.php");
-			$insp=new we_browserDetect();
+			$insp=new we_base_browserDetect();
 			return '
 			function addSort(object){
 				this.len++;

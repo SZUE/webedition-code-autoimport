@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_browserDetect.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/base/we_base_browserDetect.class.php');
 function we_browser_check() {
 	$_SERVER["HTTP_USER_AGENT"] = (isset($_REQUEST["WE_HTTP_USER_AGENT"]) && $_REQUEST["WE_HTTP_USER_AGENT"]) ? $_REQUEST["WE_HTTP_USER_AGENT"] : (isset(
 									$_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "");
 
-	$GLOBALS['brDetect'] = new we_browserDetect();
+	$GLOBALS['brDetect'] = new we_base_browserDetect();
 
 	$GLOBALS['SYSTEM'] = strtoupper($GLOBALS['brDetect']->getSystem());
 	//renaming
