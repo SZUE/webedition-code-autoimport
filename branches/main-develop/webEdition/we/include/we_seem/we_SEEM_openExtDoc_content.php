@@ -32,7 +32,7 @@
 	//	this file gets the output from a none webEdition-Document on the same web-server
 	//	and parses all found links to webEdition cmds
 
-	protect();
+	we_html_tools::protect();
 
 	$fh = @fopen($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"]),"rb");
 

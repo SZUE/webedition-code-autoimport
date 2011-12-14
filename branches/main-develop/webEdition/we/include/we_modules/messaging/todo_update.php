@@ -30,7 +30,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 	exit();
 }
 
-protect();
+we_html_tools::protect();
 
 $heading = 'ToDo Status-update ...';
 

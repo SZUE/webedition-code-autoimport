@@ -53,7 +53,7 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
 
 //	check session
-protect();
+we_html_tools::protect();
 
 cleanTempFiles();
 /*$sn = SERVER_NAME;

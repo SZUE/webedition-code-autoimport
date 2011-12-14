@@ -30,7 +30,7 @@ if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/liveUpdate/includes/proxys
  * Include all needed files
  */
 	require_once('includes/includes.inc.php');
-	protect();
+	we_html_tools::protect();
 
 /*
  * Deal with update_cmd

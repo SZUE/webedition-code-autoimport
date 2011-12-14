@@ -124,7 +124,7 @@ function getPagerLinkDoc() {
 
 
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

@@ -75,7 +75,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 <?php
 
-protect();
+we_html_tools::protect();
 
 print STYLESHEET;
 ?>

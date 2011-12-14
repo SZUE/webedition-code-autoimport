@@ -24,7 +24,7 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-protect();
+we_html_tools::protect();
 $aCols = explode(";", isset($aProps) ? $aProps[3] : $_REQUEST["we_cmd"][0]);
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
@@ -148,7 +148,7 @@ $sc->setCol(0, 0, array(
 ), $sSctOut);
 
 if (!isset($aProps)) {
-	protect();
+	we_html_tools::protect();
 
 	$sJsCode = "
 	var _sObjId='" . $_REQUEST["we_cmd"][5] . "';

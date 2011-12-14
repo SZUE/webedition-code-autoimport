@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossary.php');
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossaryCache.php');
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop(g_l('modules_glossary','[glossary_check]'));
 

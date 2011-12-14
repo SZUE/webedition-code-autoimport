@@ -52,7 +52,7 @@ class we_core_Permissions
 	 * 
 	 * @return string
 	 */
-	static function protect()
+	static function we_html_tools::protect()
 	{
 		
 		$translate = we_core_Local::addTranslation('permissions.xml');

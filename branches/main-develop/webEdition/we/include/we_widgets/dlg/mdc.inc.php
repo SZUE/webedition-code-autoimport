@@ -26,7 +26,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/tree.inc.php");
 
-protect();
+we_html_tools::protect();
 $yuiSuggest = new weSuggest();
 $showAC = false;
 $yuiSuggest->setAutocompleteField(

@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_import/we_wiz_
 
 $wizard = new we_wizard_import();
 
-protect();
+we_html_tools::protect();
 
 if (isset($_REQUEST["pnt"])) $what = $_REQUEST["pnt"];
 else $what = "wizframeset";

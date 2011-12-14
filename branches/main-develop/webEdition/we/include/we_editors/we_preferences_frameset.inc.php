@@ -32,7 +32,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
  * INITIALIZATION
  *****************************************************************************/
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

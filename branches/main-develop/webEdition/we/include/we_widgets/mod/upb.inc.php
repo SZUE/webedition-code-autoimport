@@ -23,7 +23,7 @@
  */
 
 // widget UNPUBLISHED
-protect();
+we_html_tools::protect();
 $bTypeDoc = (bool)$aProps[3]{0};
 $bTypeObj = (bool)$aProps[3]{1};
 $_objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";

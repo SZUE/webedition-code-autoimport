@@ -33,7 +33,7 @@
     //  There is also the possibility to check a file via url, this is only possible,
     //  when the server is accessible via web
 
-    protect();
+    we_html_tools::protect();
     we_html_tools::htmlTop();
 
     //  for predefined services include properties file, depending on content-Type

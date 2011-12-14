@@ -26,7 +26,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_live_tools.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_move_fn.inc.php");
 
-protect();
+we_html_tools::protect();
 $table = $_REQUEST["we_cmd"][2];
 
 $script = "";

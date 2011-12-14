@@ -26,7 +26,7 @@
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 	include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterFrames.php");
 
-	protect();
+	we_html_tools::protect();
 	
 	if (isset($_REQUEST["pnt"])) {
 		$what = $_REQUEST["pnt"];

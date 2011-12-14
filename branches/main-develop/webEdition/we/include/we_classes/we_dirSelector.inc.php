@@ -768,7 +768,7 @@ top.makeNewFolder=1;
 	}
 	function printCreateFolderHTML(){
 		we_html_tools::htmlTop();
-		protect();
+		we_html_tools::protect();
 
 		print '<script>
 top.clearEntries();
@@ -886,7 +886,7 @@ top.we_editDirID='.$this->we_editDirID.';
 
 	function printDoRenameFolderHTML(){
 		we_html_tools::htmlTop();
-		protect();
+		we_html_tools::protect();
 
 		print '<script>
 top.clearEntries();

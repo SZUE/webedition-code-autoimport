@@ -25,7 +25,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/glossary/weGlossarySettingFrames.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php');
 
-protect();
+we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-protect();
+we_html_tools::protect();
 ?>
 <script  type="text/javascript"><!--
 	top.opener.top.toggleBusy(0);

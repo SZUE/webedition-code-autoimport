@@ -27,7 +27,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 
-protect();
+we_html_tools::protect();
 
 $_REQUEST["we_cmd"] = isset($_REQUEST["we_cmd"]) ? $_REQUEST["we_cmd"] : "";
 $cmd = isset($_REQUEST["cmd"]) ? $_REQUEST["cmd"] : "";

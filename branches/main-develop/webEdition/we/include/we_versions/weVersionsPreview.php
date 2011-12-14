@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weV
 @include_once('Text/Diff.php');
 @include_once('Text/Diff/Renderer/inline.php');
 
-protect();
+we_html_tools::protect();
 
 $_db = new DB_WE();
 

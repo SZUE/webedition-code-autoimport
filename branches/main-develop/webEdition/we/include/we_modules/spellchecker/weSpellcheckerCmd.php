@@ -7,13 +7,13 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 if(empty($_SESSION["user"]["Username"])) {
 	if(isset($_REQUEST['scid'])) {
 		if(!file_exists(WE_SPELLCHECKER_MODULE_DIR . '/tmp/' . md5($_REQUEST['scid']))){
-			protect();
+			we_html_tools::protect();
 		}
 	} else {
-		protect();
+		we_html_tools::protect();
 	}
 } else {
-	protect();
+	we_html_tools::protect();
 }
 
 we_html_tools::htmlTop();

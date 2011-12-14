@@ -233,7 +233,7 @@ function addEntry(ID,icon,text,isFolder,path){
 
 	function printCreateFolderHTML(){
 		we_html_tools::htmlTop();
-protect();
+we_html_tools::protect();
 
 		print '<script>top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -299,7 +299,7 @@ top.selectFile(top.currentID);
 
 	function printDoRenameFolderHTML(){
 		we_html_tools::htmlTop();
-		protect();
+		we_html_tools::protect();
 
 		print '<script>
 top.clearEntries();

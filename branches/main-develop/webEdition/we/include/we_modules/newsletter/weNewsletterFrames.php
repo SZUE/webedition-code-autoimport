@@ -2293,7 +2293,7 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLClearLog(){
-		protect();
+		we_html_tools::protect();
 
 
 		if(isset($_REQUEST["ncmd"])){

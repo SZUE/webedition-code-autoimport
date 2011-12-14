@@ -23,7 +23,7 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-protect();
+we_html_tools::protect();
 
 $supportDebuggingFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we_sselector_inc.php";
 $supportDebugging = false;

@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tag.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
-protect();
+we_html_tools::protect();
 //
 //	---> Initalize the document
 //

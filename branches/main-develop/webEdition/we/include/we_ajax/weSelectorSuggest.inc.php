@@ -26,7 +26,7 @@ header('Content-type: text/plain');
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSelectorQuery.class.inc.php");
 
-protect();
+we_html_tools::protect();
 
 if (!isset($_REQUEST["we_cmd"][1]) || !isset($_REQUEST["we_cmd"][2])) exit();
 

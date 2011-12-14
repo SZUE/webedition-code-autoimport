@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_global.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_import_files.inc.php');
 
-protect();
+we_html_tools::protect();
 
 $import_files = new we_import_files();
 

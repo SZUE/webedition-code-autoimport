@@ -35,7 +35,7 @@ class rpcResetVersionCmd extends rpcCmd {
 
 		$id = $_REQUEST["id"];
 
-		protect();
+		we_html_tools::protect();
 
 		if(stristr($id, ',')) {
 			$ids = explode(",", $id);

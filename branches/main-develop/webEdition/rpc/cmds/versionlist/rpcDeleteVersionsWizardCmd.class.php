@@ -33,7 +33,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd {
 
 		$resp = new rpcResponse();
 
-		protect();
+		we_html_tools::protect();
 
 		$db = new DB_WE();
 

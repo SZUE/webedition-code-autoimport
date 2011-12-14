@@ -142,7 +142,7 @@ if (($we_include = $we_doc->editor($baseHref))) {
 			}
 		}
 	} else {
-		protect(); //	only inside webEdition !!!
+		we_html_tools::protect(); //	only inside webEdition !!!
 		include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/' . $we_include);
 	}
 }else{

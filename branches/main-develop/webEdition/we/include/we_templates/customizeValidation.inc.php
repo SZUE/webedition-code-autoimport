@@ -27,7 +27,7 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validationService.class.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/validation/validation.class.php');
 
-    protect();
+    we_html_tools::protect();
     we_html_tools::htmlTop();
 
     //  css for webSite

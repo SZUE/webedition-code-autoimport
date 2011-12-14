@@ -53,7 +53,7 @@
  * @author     Daniel Schroeder  <deemes79 at googlemail.com>
  */
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
-	protect();
+	we_html_tools::protect();
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_tag.inc.php');
 	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
 	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');

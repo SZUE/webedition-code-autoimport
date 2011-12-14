@@ -29,7 +29,7 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 }
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

@@ -24,7 +24,7 @@
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-		protect();
+		we_html_tools::protect();
 		if (we_hasPerm("administrator")) {
 
 			if (isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1) {

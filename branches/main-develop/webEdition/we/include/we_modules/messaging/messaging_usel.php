@@ -28,7 +28,7 @@ if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-protect();
+we_html_tools::protect();
 $messaging = new we_messaging($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);

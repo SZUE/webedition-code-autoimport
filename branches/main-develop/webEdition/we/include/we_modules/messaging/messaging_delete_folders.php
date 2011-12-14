@@ -28,7 +28,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

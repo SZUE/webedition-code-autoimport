@@ -33,7 +33,7 @@ class rpcPublishDocsCmd extends rpcCmd {
 
 		$db = new DB_WE();
 
-		protect();
+		we_html_tools::protect();
 
 		$docs = array();
 

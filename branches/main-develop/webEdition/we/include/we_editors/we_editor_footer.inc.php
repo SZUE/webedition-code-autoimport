@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 if(defined("WORKFLOW_TABLE")){
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
-protect();
+we_html_tools::protect();
 
 $we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : $we_transaction;
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : 0);

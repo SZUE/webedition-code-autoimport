@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/module_menu_users.inc.php");
 include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

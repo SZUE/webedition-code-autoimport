@@ -25,7 +25,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
-protect();
+we_html_tools::protect();
 /**
  * Checks if the start-document is a valid document. Content Type text/webedition or text/html
  * @return bool

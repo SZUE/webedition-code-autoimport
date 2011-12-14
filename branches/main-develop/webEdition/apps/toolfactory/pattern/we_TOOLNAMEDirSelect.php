@@ -1,7 +1,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/<?php print $TOOLNAME; ?>/we_<?php print $TOOLNAME; ?>DirSelector.class.php');
 
-protect();
+we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = '/webEdition/apps/<?php print $TOOLNAME; ?>/we_<?php print $TOOLNAME; ?>DirSelect.php';
 $fs = new we_<?php print $TOOLNAME; ?>DirSelector(isset($id) ? $id : (isset($_REQUEST['id']) ? $_REQUEST['id'] : (isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '')),
 							isset($JSIDName) ? $JSIDName : (isset($_REQUEST['JSIDName']) ? $_REQUEST['JSIDName'] : (isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '')),

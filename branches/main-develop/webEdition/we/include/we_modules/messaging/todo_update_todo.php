@@ -31,7 +31,7 @@ include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_format.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop(g_l('modules_messaging','[wintitle]').' - Update Status');
 

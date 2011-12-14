@@ -24,34 +24,8 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-###### protect #################################################################
-### protect()
-### protects a page. Guests can not see this page
-
+//FIXME: remove
 function protect(){
-	if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) ||  $_SESSION["user"]["Username"] == '') {
-		print we_html_tools::htmlTop();
-		print
-						we_htmlElement::jsElement(
-										we_message_reporting::getShowMessageCall(
-														g_l('alert','[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();');
-		print '</body></html>';
-		exit();
-	}
-}
-
-###### login ###################################################################
-### login()
-### the same as protect but with an othe error message. It is used after the login
-
-function login() {
-	if ($_SESSION['user']['Username'] == '') {
-
-		print we_html_tools::htmlTop();
-		print
-						we_htmlElement::jsElement(
-										we_message_reporting::getShowMessageCall(g_l('alert','[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR) . 'history.back();');
-		print '</body></html>';
-		exit();
-	}
+	t_e('old protect called! remove this!');
+	we_html_tools::protect();
 }

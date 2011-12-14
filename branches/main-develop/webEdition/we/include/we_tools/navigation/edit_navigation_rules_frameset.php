@@ -26,7 +26,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navig
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationRuleControl.class.php');
 
-protect();
+we_html_tools::protect();
 
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : "frameset";
 

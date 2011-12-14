@@ -29,7 +29,7 @@ if(defined("WORKFLOW_TABLE")){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
 
-protect();
+we_html_tools::protect();
 we_html_tools::htmlTop();
 
 

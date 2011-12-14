@@ -27,7 +27,7 @@
  */
 include_once (dirname(dirname(__FILE__)) . '/../../we/core/autoload.php');
 
-we_core_Permissions::protect();
+we_core_Permissions::we_html_tools::protect();
 
 /**
  * get json output

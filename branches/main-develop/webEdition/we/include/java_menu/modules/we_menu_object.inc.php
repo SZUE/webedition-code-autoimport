@@ -80,7 +80,7 @@
     // object from which class
     $ac = makeCSVFromArray(getAllowedClasses($GLOBALS['DB_WE']));
     if($ac){
-    	protect();
+    	we_html_tools::protect();
 		$GLOBALS['DB_WE']->query("SELECT ID,Text FROM " . OBJECT_TABLE . " ".($ac ? " WHERE ID IN($ac) " : "")."ORDER BY Text");
 		$nr = 801;
 		while($GLOBALS['DB_WE']->next_record()){

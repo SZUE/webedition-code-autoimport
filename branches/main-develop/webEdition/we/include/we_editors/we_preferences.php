@@ -36,7 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes
  * INITIALIZATION
  * *************************************************************************** */
 
-protect();
+we_html_tools::protect();
 
 $yuiSuggest = & weSuggest::getInstance();
 

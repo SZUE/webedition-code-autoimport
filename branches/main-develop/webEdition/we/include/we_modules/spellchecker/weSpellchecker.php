@@ -4,7 +4,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

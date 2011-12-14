@@ -24,7 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-protect();
+we_html_tools::protect();
 if(isset($_REQUEST["we_cmd"][5])){
     $_SESSION["prefs"]["FileFilter"] = $_REQUEST["we_cmd"][5];
 }
@@ -183,7 +183,7 @@ function getItems($ParentID) {
 	}
 }
 
-protect();
+we_html_tools::protect();
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_export/weExportTree.inc.php");
 

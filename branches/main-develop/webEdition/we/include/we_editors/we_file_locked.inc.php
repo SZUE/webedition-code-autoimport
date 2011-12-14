@@ -24,7 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-protect();
+we_html_tools::protect();
 $foo = getHash("SELECT * FROM " . USER_TABLE . " WHERE ID=".abs($we_user_locked)."",$DB_WE);
 ?>
 <script  type="text/javascript"><!--

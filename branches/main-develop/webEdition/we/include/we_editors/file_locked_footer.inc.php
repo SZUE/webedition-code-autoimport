@@ -23,7 +23,7 @@
  */
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-	protect();
+	we_html_tools::protect();
 
 	//	user
 	$_isUsedByUser = $we_doc->isLockedByUser();

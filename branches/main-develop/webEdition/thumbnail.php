@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 
-//protect();
+//we_html_tools::protect();
 
 if(!isset($_REQUEST['id']) || $_REQUEST['id']==''||
 				!isset($_REQUEST['path']) || $_REQUEST['path']==''||

@@ -24,7 +24,7 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weRuleDialog.class.inc.php");
-protect();
+we_html_tools::protect();
 $dialog = new weRuleDialog();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoRuleJS");

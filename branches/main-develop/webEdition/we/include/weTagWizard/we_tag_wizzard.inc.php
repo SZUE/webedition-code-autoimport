@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/cla
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
 
 if(function_exists('protect')){
-	protect();
+	we_html_tools::protect();
 } else{
 	exit();
 }

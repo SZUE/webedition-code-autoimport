@@ -30,7 +30,7 @@
 	require('rpcRoot.inc.php');
 	require('base/rpcCmdShell.class.php');
 
-	protect();
+	we_html_tools::protect();
 
 	if (!isset($_REQUEST['cmd'])) {
 

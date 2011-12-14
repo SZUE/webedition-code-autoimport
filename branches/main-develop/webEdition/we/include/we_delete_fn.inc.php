@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.ph
 $notprotect = isset($GLOBALS["NOT_PROTECT"]) && $GLOBALS["NOT_PROTECT"] && (!isset($_REQUEST["NOT_PROTECT"]));
 
 if (!$notprotect) {
-	protect();
+	we_html_tools::protect();
 }
 
 function deleteTreeEntries($dontDeleteClassFolders = false)

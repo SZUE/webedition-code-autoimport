@@ -26,7 +26,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/importFunctions.class.inc.php");
 
-protect();
+we_html_tools::protect();
 
 function we_siteimport_sort($a, $b){
 	if($a["contentType"] == "text/webedition" && $b["contentType"] != "text/webedition"){

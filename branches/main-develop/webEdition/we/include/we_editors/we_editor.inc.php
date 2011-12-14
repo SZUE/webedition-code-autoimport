@@ -26,7 +26,7 @@ $we_EDITOR = true;
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
-protect();
+we_html_tools::protect();
 // prevent persmissions overriding
 $perms=$_SESSION["perms"];
 // init document

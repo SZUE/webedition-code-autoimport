@@ -28,7 +28,7 @@
 //include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
-protect();
+we_html_tools::protect();
 
 if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 	$uniqid = $_GET['u'];

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-protect();
+we_html_tools::protect();
 
 ?><html>
 

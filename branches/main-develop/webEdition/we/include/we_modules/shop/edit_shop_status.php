@@ -28,7 +28,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
-protect();
+we_html_tools::protect();
 we_html_tools::htmlTop();
 
 print STYLESHEET;

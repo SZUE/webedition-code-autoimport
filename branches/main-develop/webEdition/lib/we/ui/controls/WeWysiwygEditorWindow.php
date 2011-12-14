@@ -24,7 +24,7 @@ $defaultCharset = "UTF-8";
 
 @header("Content-Type: text/html; charset=UTF-8");
 
-protect();
+we_html_tools::protect();
 
 
 $fieldName = $_REQUEST["we_cmd"][1];

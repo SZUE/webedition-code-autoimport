@@ -28,7 +28,7 @@ class rpcGetSearchResultCmd extends rpcCmd {
 
 		$resp = new rpcResponse();
 
-		protect();
+		we_html_tools::protect();
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_folder.inc.php');
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_doclist/doclistView.class.inc.php');

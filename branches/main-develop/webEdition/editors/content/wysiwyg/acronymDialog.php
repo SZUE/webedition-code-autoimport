@@ -30,7 +30,7 @@ if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUES
 
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossary.php");
 	include_once(WE_GLOSSARY_MODULE_DIR . "/weGlossaryCache.php");
-	protect();
+	we_html_tools::protect();
 	$Glossary = new weGlossary();
 	$Glossary->Language = $_REQUEST['language'];
 	$Glossary->Type = "acronym";

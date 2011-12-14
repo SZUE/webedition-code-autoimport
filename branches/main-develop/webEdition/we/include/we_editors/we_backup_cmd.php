@@ -25,7 +25,7 @@
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
-			protect();
+			we_html_tools::protect();
 			@set_time_limit(360);
 
 			if (isset($_REQUEST['cmd'])) {

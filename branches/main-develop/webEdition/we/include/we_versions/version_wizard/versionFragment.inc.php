@@ -102,7 +102,7 @@ class versionFragment extends taskFragment
 
 	function printHeader()
 	{
-		protect();
+		we_html_tools::protect();
 		//print "<html><head><title></title></head>";
 	}
 

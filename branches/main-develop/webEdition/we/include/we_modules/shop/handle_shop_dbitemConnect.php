@@ -26,7 +26,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
-protect();
+we_html_tools::protect();
 
 // grep the last element from the year-set, wich is the current year
 	$DB_WE->query("SELECT DATE_FORMAT(DateOrder,'%Y') AS DateOrd FROM ".SHOP_TABLE . " ORDER BY DateOrd");

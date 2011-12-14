@@ -24,7 +24,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-protect();
+we_html_tools::protect();
 $_REQUEST['we_transaction'] = (preg_match("/^([a-f0-9]){32}$/i", $_REQUEST['we_transaction']) ? $_REQUEST['we_transaction'] : 0);
 if (is_array($_SESSION["we_data"][$_REQUEST['we_transaction']])) {
 

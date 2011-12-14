@@ -53,7 +53,7 @@ if(isset($_REQUEST["we_cmd"][15])) {
 
 @header("Content-Type: text/html; charset=" . ($_REQUEST["we_cmd"][15] ? $_REQUEST["we_cmd"][15] : $defaultCharset));
 
-protect();
+we_html_tools::protect();
 
 $we_dt = isset($_SESSION["we_data"][$_REQUEST["we_cmd"][4]]) ? $_SESSION["we_data"][$_REQUEST["we_cmd"][4]] : "";
 include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");

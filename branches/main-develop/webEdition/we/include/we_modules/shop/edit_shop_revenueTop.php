@@ -94,7 +94,7 @@ function monthSelect($select_name) {
 	return we_class::htmlSelect($select_name, $opts, 1, (isset($_REQUEST[$select_name]) ? $_REQUEST[$select_name] : '' ), false, 'id="' . $select_name . '"'  );
 }
 
-protect();
+we_html_tools::protect();
 
 we_html_tools::htmlTop();
 

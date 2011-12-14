@@ -47,7 +47,7 @@ $format->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 
 we_html_tools::htmlTop();
 
-protect();
+we_html_tools::protect();
 
 print STYLESHEET;
 

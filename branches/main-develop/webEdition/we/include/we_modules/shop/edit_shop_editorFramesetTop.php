@@ -28,7 +28,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
-protect();
+we_html_tools::protect();
 
 $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;
 $mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;

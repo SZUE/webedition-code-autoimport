@@ -47,7 +47,7 @@ $controller->setParam('appPath',dirname($_SERVER['SCRIPT_FILENAME']));
 $controller->setParam('appName', 'toolfactory');
 
 // alerts a message and exits if a user is not logged in or when the session is expired
-we_core_Permissions::protect();
+we_core_Permissions::we_html_tools::protect();
 
 // run!
 $controller->dispatch();

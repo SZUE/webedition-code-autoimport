@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
 include_once(WE_OBJECT_MODULE_DIR . "we_object.inc.php");
 
-protect();
+we_html_tools::protect();
 
 $we_transaction=$_REQUEST["we_cmd"][3];
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:'');

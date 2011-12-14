@@ -276,7 +276,7 @@ function setDir(id){
 
 	function printDoDelEntryHTML(){
 		we_html_tools::htmlTop();
-		protect();
+		we_html_tools::protect();
 
 
 

@@ -58,7 +58,7 @@ if (isset($_REQUEST['do'])) {
 
 
 
-protect();
+we_html_tools::protect();
 // Ausgabe beginnen
 we_html_tools::htmlTop();
 

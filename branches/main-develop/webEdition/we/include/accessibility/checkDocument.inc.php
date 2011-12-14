@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	protect();
+	we_html_tools::protect();
 
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/http/HttpRequest.class.php');
     include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/http/HttpResponse.class.php');

@@ -28,7 +28,7 @@
     include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/define_styles.inc.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
 
-    protect();
+    we_html_tools::protect();
     //	Header for a none webEdition document opened with webEdition
 
 	$_webEditionSiteUrl = getServerUrl() . "/webEdition/site";

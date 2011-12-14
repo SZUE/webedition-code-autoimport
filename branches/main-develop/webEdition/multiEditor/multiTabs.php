@@ -25,7 +25,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_chec
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
-protect();
+we_html_tools::protect();
 
 // generate ContentType JS-String
 $_contentTypes = '

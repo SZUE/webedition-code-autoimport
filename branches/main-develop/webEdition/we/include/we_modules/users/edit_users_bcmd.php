@@ -25,7 +25,7 @@
 
 
 
-protect();
+we_html_tools::protect();
 
 if(isset($_REQUEST["ucmd"])){
     switch($_REQUEST["ucmd"]){

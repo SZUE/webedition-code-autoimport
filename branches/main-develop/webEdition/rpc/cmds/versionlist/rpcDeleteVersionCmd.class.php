@@ -33,7 +33,7 @@ class rpcDeleteVersionCmd extends rpcCmd {
 
 		$ids = array();
 
-		protect();
+		we_html_tools::protect();
 
 		if(isset($_REQUEST["we_cmd"]["deleteVersion"]) && $_REQUEST["we_cmd"]["deleteVersion"]!="") {
 

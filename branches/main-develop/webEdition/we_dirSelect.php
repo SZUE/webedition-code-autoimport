@@ -24,7 +24,7 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-protect();
+we_html_tools::protect();
 
 $_SERVER['SCRIPT_NAME'] = "/webEdition/we_dirSelect.php";
 

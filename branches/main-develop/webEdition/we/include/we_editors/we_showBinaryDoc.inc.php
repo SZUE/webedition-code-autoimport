@@ -25,7 +25,7 @@
 
 //include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-//protect();
+//we_html_tools::protect();
 switch($_REQUEST["we_cmd"][1]) {
 	case "image/*":
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");

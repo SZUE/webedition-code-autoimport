@@ -37,7 +37,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_delete_fn.inc.
  *****************************************************************************/
 
 
-protect();
+we_html_tools::protect();
 
 /*****************************************************************************
  * FUNCTIONS

@@ -31,7 +31,7 @@
 
 
 
-    protect();
+    we_html_tools::protect();
     //	footer for a none webEdition-Document opened with webEdition
     //	the back button is only activated when there are documents in
     //	the navigation history

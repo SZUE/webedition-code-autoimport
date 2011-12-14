@@ -31,7 +31,7 @@ class we_htmlDocument extends we_textContentDocument{
 	var $ClassName=__CLASS__;
 	var $ContentType="text/html";
 
-	function we_htmlDocument(){
+	function __construct(){
 		$this->we_textContentDocument();
 	}
 

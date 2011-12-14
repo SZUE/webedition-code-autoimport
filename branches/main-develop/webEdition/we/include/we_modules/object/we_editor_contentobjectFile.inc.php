@@ -26,7 +26,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tag.inc.php");
 
-protect();
+we_html_tools::protect();
 
 if(isset($GLOBALS['we_doc']->Charset)){	//	send charset which might be determined in template
 	header("Content-Type: text/html; charset=" . $GLOBALS['we_doc']->Charset);

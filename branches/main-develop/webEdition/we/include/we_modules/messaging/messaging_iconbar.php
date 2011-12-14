@@ -26,7 +26,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
-protect();
+we_html_tools::protect();
 we_html_tools::htmlTop();
 
 if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {

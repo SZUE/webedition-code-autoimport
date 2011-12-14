@@ -27,7 +27,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg
 //make sure we know which browser is used
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
 
-protect();
+we_html_tools::protect();
 we_html_tools::htmlTop();
 
 $js_load=array('windows','utils/dimension','utils/prototypes','utils/cockpit');

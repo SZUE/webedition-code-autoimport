@@ -5,7 +5,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
-	protect();
+	we_html_tools::protect();
 
 	if(!we_hasPerm('SPELLCHECKER_ADMIN')) {
 		print we_htmlElement::jsElement(

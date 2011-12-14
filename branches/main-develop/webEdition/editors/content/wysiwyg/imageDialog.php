@@ -26,7 +26,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weImageDialog.class.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
-protect();
+we_html_tools::protect();
 $dialog = new weImageDialog();
 $dialog->initByHttp();
 $dialog->registerCmdFn("weDoImgCmd");

@@ -37,7 +37,7 @@ $controller->setParam('noViewRenderer', true);
 $controller->throwExceptions(true);  
 
 // alerts a message and exits when a user is not logged in or when the session is expired
-we_core_Permissions::protect();
+we_core_Permissions::we_html_tools::protect();
 
 // run!
 $controller->dispatch();

@@ -25,7 +25,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/we_bannerSelector.php");
 
-protect();
+we_html_tools::protect();
 
 $_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/banner/we_bannerSelect.php";
 $fs = new we_bannerSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_REQUEST["id"] : ''),

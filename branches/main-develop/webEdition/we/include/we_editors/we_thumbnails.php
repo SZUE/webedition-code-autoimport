@@ -36,7 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_delete_fn.inc.
 /*****************************************************************************
  * INITIALIZATION
  *****************************************************************************/
-protect();
+we_html_tools::protect();
 // Check if we need to create a new thumbnail
 if (isset($_GET["newthumbnail"]) && $_GET["newthumbnail"] != "") {
 	if (we_hasPerm("ADMINISTRATOR")) {

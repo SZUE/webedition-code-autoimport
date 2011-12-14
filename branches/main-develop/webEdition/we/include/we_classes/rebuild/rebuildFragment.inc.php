@@ -54,7 +54,7 @@ class rebuildFragment extends taskFragment{
 	}
 
 	function printHeader(){
-		protect();
+		we_html_tools::protect();
 		//print "<html><head><title></title></head>";
 	}
 	function printBodyTag($attributes=""){

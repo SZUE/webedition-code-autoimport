@@ -510,7 +510,7 @@ top.selectFile(top.currentID);
 
 	function printDoRenameEntryHTML(){
 		we_html_tools::htmlTop();
-protect();
+we_html_tools::protect();
 		$foo = getHash("SELECT IsFolder,Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editCatID),$this->db);
 		$IsDir = $foo["IsFolder"];
 		$oldname = $foo["Text"];
@@ -818,7 +818,7 @@ function setDir(id){
 
 	function printDoDelEntryHTML(){
 		we_html_tools::htmlTop();
-		protect();
+		we_html_tools::protect();
 
 
 
@@ -1073,7 +1073,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 				$this->renameChildrenPath(abs($_POST["catid"]));
 			}
 			we_html_tools::htmlTop();
-			protect();
+			we_html_tools::protect();
 			print '<script>'.$js.'top.setDir(top.frames[\'fsheader\'].document.we_form.elements[\'lookin\'].value);' .
 				($updateok
 					? we_message_reporting::getShowMessageCall( sprintf(g_l('weEditor',"[category][response_save_ok]"),$category), we_message_reporting::WE_MESSAGE_NOTICE)
@@ -1146,7 +1146,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 
 		we_html_tools::htmlTop();
-		protect();
+		we_html_tools::protect();
 		print we_htmlElement::jsScript(JS_DIR.'we_textarea.js').we_htmlElement::jsScript(JS_DIR.'windows.js').'
 <script type="text/javascript">
 function we_cmd(){

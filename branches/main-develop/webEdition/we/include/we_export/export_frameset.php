@@ -25,7 +25,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_export/weExportWizard.inc.php");
 
 $frames = new weExportWizard("/webEdition/we/include/we_export/export_frameset.php");
-protect();
+we_html_tools::protect();
 //	Starting output .
 
 if(isset($_REQUEST["pnt"])){
