@@ -878,8 +878,9 @@ function step_installation() {
 		$we_config = preg_replace('/(define\(\'DB_USER\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_username"]).'${3}',$we_config);
 		//$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_password"]).'${3}',$we_config);
 		$we_config = preg_replace('/(define\(\'DB_PASSWORD\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_password"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\(\'TBL_PREFIX\',\')(\w*)(\'\);)/i','${1}'.str_replace('"', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('\'', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
+		//$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'TBL_PREFIX\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
+
 		
 		$we_config = preg_replace('/(define\("WE_LANGUAGE",")(\w*)(\055?)(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_language"]).'${5}',$we_config);
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_language"]);
