@@ -615,7 +615,7 @@ function we_cmd() {
 							hasPerm = 1;
 						}
 						break;
-					case "<?php echo OBJECT_TABLE; ?>":
+					case "<?php echo defined('OBJECT_TABLE')?OBJECT_TABLE:-2; ?>":
 						if(wePerms.DELETE_OBJECT) {
 							hasPerm = 1;
 						}
