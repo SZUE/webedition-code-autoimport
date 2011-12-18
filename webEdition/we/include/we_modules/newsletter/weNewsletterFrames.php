@@ -2950,6 +2950,8 @@ function getDateSelector($_label, $_name, $_btn, $value)
             $_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
 
             include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
+			
+			$not_black=!$this->View->isBlack($email);//Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = '';
 				if($title) {$emailName.= $title." ";}
@@ -2983,14 +2985,13 @@ function getDateSelector($_label, $_name, $_btn, $value)
 
 			$not_malformed=($this->View->settings["reject_malformed"])?$this->View->newsletter->check_email($email):true;
 			$verified=($this->View->settings["reject_not_verified"])?$this->View->newsletter->check_domain($email,$domain):true;
-			$not_black=!$this->View->isBlack($email);
+			
             if($verified && $not_malformed && $not_black){
 							if(!$test){
 								$phpmail->buildMessage();
                         		if($phpmail->Send()){
                         			if($this->View->settings["log_sending"]) $this->View->newsletter->addLog("mail_sent",$email);
-								}
-								else{
+								} else {
 									if($this->View->settings["log_sending"]) $this->View->newsletter->addLog("mail_failed",$email);
 									print we_htmlElement::jsElement('
 										updateText("'.addslashes(sprintf($l_newsletter["error"].": ".$l_newsletter["mail_failed"],$email)).'");
