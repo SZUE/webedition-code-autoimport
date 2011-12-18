@@ -441,7 +441,7 @@ class we_listview_multiobject extends listviewBase {
 				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 				$path_parts = pathinfo($this->Path);
 				if ($this->objectseourls && $this->DB_WE->Record['OF_Url']!='' && show_SeoLinks()){
-					if ($this->DB_WE->Record['OF_TriggerID']!=0){
+					if (!$this->triggerID && $this->DB_WE->Record['OF_TriggerID']!=0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->Record['OF_TriggerID']));
 					}
 
@@ -457,7 +457,11 @@ class we_listview_multiobject extends listviewBase {
 						$this->DB_WE->Record["we_WE_PATH"] = $this->Path."?$paramName=".$this->DB_WE->Record["OF_ID"];
 					}
 				}
-				$this->DB_WE->Record["we_WE_TRIGGERID"] = isset($this->DB_WE->Record["OF_TriggerID"]) ? $this->DB_WE->Record["OF_TriggerID"] : 0;
+				if ($this->triggerID){
+					$this->DB_WE->Record["we_WE_TRIGGERID"] = $this->triggerID;
+				} else {
+					$this->DB_WE->Record["we_WE_TRIGGERID"] = isset($this->DB_WE->Record["OF_TriggerID"]) ? $this->DB_WE->Record["OF_TriggerID"] : 0;
+				}
 				$this->DB_WE->Record["we_WE_URL"] = isset($this->DB_WE->Record["OF_Url"]) ? $this->DB_WE->Record["OF_Url"] : '';
 				$this->DB_WE->Record["we_WE_TEXT"] = $this->DB_WE->Record["OF_Text"];
 				$this->DB_WE->Record["we_WE_ID"] = $this->DB_WE->Record["OF_ID"];
