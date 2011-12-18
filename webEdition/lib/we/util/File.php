@@ -772,9 +772,15 @@ class we_util_File
 				}
 			}
 			sort($DirFileObjectsArray);
-			$tar_object = new Archive_Tar($destinationfile, true);
-			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
-			$tar_object->createModify($DirFileObjectsArray, '', $directoy);
+			if (class_exists('Archive_Tar',true)){
+				$tar_object = new Archive_Tar($destinationfile, true);
+				$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
+				$tar_object->createModify($DirFileObjectsArray, '', $directoy);
+			} else {
+				include($GLOBALS['__WE_LIB_PATH__']. DIRECTORY_SEPARATOR.'additional'. DIRECTORY_SEPARATOR.'archive'.DIRECTORY_SEPARATOR.'altArchive_Tar.class.php');
+					$tar_object = new altArchive_Tar($gzfile, true);
+					$tar_object->createModify($DirFileObjectsArray, '', $directoy);
+			}
 			return true;
 		} else {
 			return false;
@@ -783,11 +789,16 @@ class we_util_File
 	
 	public static function decompressDirectoy($gzfile, $destination)
 	{
-		if(is_file($gzfile)) {	
-			$tar_object = new Archive_Tar($gzfile, true);
-			$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
-
-			$tar_object->extractModify($destination, '');
+		if(is_file($gzfile)) {
+			if (class_exists('Archive_Tar',true)){
+				$tar_object = new Archive_Tar($gzfile, true);
+				$tar_object->setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
+				$tar_object->extractModify($destination, '');
+			} else {
+				include($GLOBALS['__WE_LIB_PATH__']. DIRECTORY_SEPARATOR.'additional'. DIRECTORY_SEPARATOR.'archive'.DIRECTORY_SEPARATOR.'altArchive_Tar.class.php');
+				$tar_object = new altArchive_Tar($gzfile, true);
+				$tar_object->extractModify($destination, '');
+			}
 			return true;
 		} else {
 			return false;
