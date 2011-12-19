@@ -31,13 +31,13 @@ we_html_tools::protect();
 
 $_db = new DB_WE();
 
-$ID = $_REQUEST["we_cmd"][1];
+$ID = $_REQUEST['we_cmd'][1];
 
 $newDoc = weVersions::loadVersion(' WHERE ID='.intval($ID));
 
 $compareID = "";
-if(isset($_REQUEST["we_cmd"][2])) {
-	$compareID = $_REQUEST["we_cmd"][2];
+if(isset($_REQUEST['we_cmd'][2])) {
+	$compareID = $_REQUEST['we_cmd'][2];
 	$oldDoc = weVersions::loadVersion(' WHERE ID='.intval($compareID));
 } else {
 	$oldDoc = weVersions::loadVersion(' WHERE version < '.intval($newDoc['version']).' AND documentTable="'.$_db->escape($newDoc['documentTable']).'" AND documentID='.intval($newDoc['documentID']).' ORDER BY version DESC limit 1');

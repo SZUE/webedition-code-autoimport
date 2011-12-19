@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 class copyWeDocumentCustomerFilterFrag extends taskFragment{
 
@@ -32,12 +32,12 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		// init the fragment
 		// REQUEST[we_cmd][1] = id of folder
 		// REQUEST[we_cmd][2] = table
-		$_id = $_REQUEST["we_cmd"][1];
-		$_table = $_REQUEST["we_cmd"][2];
+		$_id = $_REQUEST['we_cmd'][1];
+		$_table = $_REQUEST['we_cmd'][2];
 
 		// if we_cmd 3 is set, take filters of that folder as parent!!
-		if (isset($_REQUEST["we_cmd"][3])) {
-			$_idForFilter = $_REQUEST["we_cmd"][3];
+		if (isset($_REQUEST['we_cmd'][3])) {
+			$_idForFilter = $_REQUEST['we_cmd'][3];
 
 		} else {
 			$_idForFilter = $_id;
@@ -140,12 +140,12 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 
 		// REQUEST[we_cmd][1] = id of folder
 		// REQUEST[we_cmd][2] = table
-		$_id = $_REQUEST["we_cmd"][1];
-		$_table = $_REQUEST["we_cmd"][2];
+		$_id = $_REQUEST['we_cmd'][1];
+		$_table = $_REQUEST['we_cmd'][2];
 
 		// if we_cmd 3 is set, take filters of that folder as parent!!
-		if (isset($_REQUEST["we_cmd"][3])) {
-			$_idForFilter = $_REQUEST["we_cmd"][3];
+		if (isset($_REQUEST['we_cmd'][3])) {
+			$_idForFilter = $_REQUEST['we_cmd'][3];
 
 		} else {
 			$_idForFilter = $_id;
@@ -207,7 +207,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 
 	$buttonBar = we_button::create_button("cancel", "javascript:top.close();");
 
-	$_iframeLocation = "/webEdition/we_cmd.php?we_cmd[0]=" . $_REQUEST["we_cmd"][0] . "&we_cmd[1]=" . $_REQUEST["we_cmd"][1] . "&we_cmd[2]=" . $_REQUEST["we_cmd"][2] . (isset($_REQUEST["we_cmd"][3]) ? "&we_cmd[3]=" . $_REQUEST["we_cmd"][3] : "" ) ."&startCopy=1";
+	$_iframeLocation = "/webEdition/we_cmd.php?we_cmd[0]=" . $_REQUEST['we_cmd'][0] . "&we_cmd[1]=" . $_REQUEST['we_cmd'][1] . "&we_cmd[2]=" . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? "&we_cmd[3]=" . $_REQUEST['we_cmd'][3] : "" ) ."&startCopy=1";
 
 	we_html_tools::htmlTop();
 	print STYLESHEET;

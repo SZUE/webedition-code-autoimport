@@ -46,7 +46,7 @@ function we_tag_printVersion($attribs, $content){
 	$_query_string = "";
 
 	$hideQuery = array(
-		"we_objectID", "tid", "id", "pv_tid", "pv_id", "we_cmd", "responseText", "we_mode", "btype"
+		"we_objectID", "tid", "id", "pv_tid", "pv_id", 'we_cmd', "responseText", "we_mode", "btype"
 	);
 	if (isset($_SESSION)) {
 		array_push($hideQuery, session_name());

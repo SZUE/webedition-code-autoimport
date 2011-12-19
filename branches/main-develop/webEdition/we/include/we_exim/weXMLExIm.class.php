@@ -23,7 +23,7 @@
  */
 
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLBrowser.class.php");
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weContentProvider.class.php");
@@ -419,7 +419,7 @@
 				if($object->ClassName=='we_docTypes') {
 					$object->we_save_exim();
 				} else {
-					$GLOBALS["we_doc"]=$object;
+					$GLOBALS['we_doc']=$object;
 					if(in_array("we_save",get_class_methods(get_class($object)))){
 						$object->we_save();
 					}

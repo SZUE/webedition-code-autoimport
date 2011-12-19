@@ -22,16 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$bTypeDoc = (bool)$_REQUEST["we_cmd"][0]{0};
-$bTypeObj = (bool)$_REQUEST["we_cmd"][0]{1};
+$bTypeDoc = (bool)$_REQUEST['we_cmd'][0]{0};
+$bTypeObj = (bool)$_REQUEST['we_cmd'][0]{1};
 $sTb = ($bTypeDoc && $bTypeObj) ? g_l('cockpit',"[upb_docs_and_objs]") : (($bTypeDoc) ? g_l('cockpit',"[upb_docs]") : (($bTypeObj) ? g_l('cockpit',"[upb_objs]") : g_l('cockpit',"[upb_docs_and_objs]")));
 
 $jsCode = "
-var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
+var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
 var _sType='upb';
 var _sTb='" . $sTb . "';
 

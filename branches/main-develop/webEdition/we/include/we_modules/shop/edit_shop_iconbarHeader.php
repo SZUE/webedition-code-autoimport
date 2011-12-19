@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
@@ -60,9 +60,9 @@ print we_htmlElement::jsElement('
 
 ');
 
-$bid = abs(isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0);
+$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
 
-$cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
+$cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".$bid,"IntCustomerID",$DB_WE);
 $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
 
    if ($DB_WE->next_record()){

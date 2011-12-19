@@ -30,9 +30,9 @@ function we_tag_flashmovie($attribs, $content){
 	if ($foo)
 		return $foo;
 	$name = weTag_getAttribute("name", $attribs);
-	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
+	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : weTag_getAttribute("id", $attribs);
-	$fname = 'we_' . $GLOBALS["we_doc"]->Name . '_img[' . $name . '#bdid]';
+	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
 	$wmode = weTag_getAttribute("wmode", $attribs, "window");
 	$startid = weTag_getAttribute("startid", $attribs);
 	$parentid = weTag_getAttribute("parentid", $attribs, "0");
@@ -46,7 +46,7 @@ function we_tag_flashmovie($attribs, $content){
 	if ($GLOBALS['we_editmode'] && !$showflash) {
 		$out = '';
 	} else {
-		$out = $GLOBALS["we_doc"]->getField($attribs, "flashmovie");
+		$out = $GLOBALS['we_doc']->getField($attribs, "flashmovie");
 	}
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
@@ -77,7 +77,7 @@ function we_tag_flashmovie($attribs, $content){
 			<table border=\"0\" cellpadding=\"0\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 				<tr>
 					<td class=\"weEditmodeStyle\">$out
-						<input type=\"hidden\" name=\"$fname\" value=\"" . $GLOBALS["we_doc"]->getElement(
+						<input type=\"hidden\" name=\"$fname\" value=\"" . $GLOBALS['we_doc']->getElement(
 				$name,
 				"bdid") . "\" /></td>
 				</tr>

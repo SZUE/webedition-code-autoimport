@@ -281,7 +281,7 @@ class we_binaryDocument extends we_document
 	 */
 	function formUpload() {
 		$uploadButton = we_button::create_button("upload", "javascript:we_cmd('editor_uploadFile')", true,150,22,"","",false,true,"",true);
-		$fs = $GLOBALS["we_doc"]->getFilesize();
+		$fs = $GLOBALS['we_doc']->getFilesize();
 		$fs = g_l('metadata',"[filesize]").": ".round(($fs / 1024),2)."&nbsp;KB";
 		$_metaData = $this->getMetaData();
 		$_mdtypes = array();
@@ -334,7 +334,7 @@ class we_binaryDocument extends we_document
 							<td>' . we_html_tools::getPixel(2, 20) . '</td>
 					</tr>
 					<tr>';
-			if($GLOBALS["we_doc"]->getFilesize() != 0){
+			if($GLOBALS['we_doc']->getFilesize() != 0){
 					$foo .= '<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[upload_will_replace]"),1,508) . '</td>';
 			} else {
 					$foo .= '<td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass',"[upload_single_files]"),1,508) . '</td>';

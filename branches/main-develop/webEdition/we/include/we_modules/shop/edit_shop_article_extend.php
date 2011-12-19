@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/we_pager_class.inc.php");
 
 
@@ -262,13 +262,13 @@ if (isset($daten)){
                     $from_expression .= ", ";
                     $where_expression .= " AND ";
                 }
-                $count_expression .= "COUNT(DISTINCT ".OBJECT_X_TABLE.abs($clId).".OF_ID)";
+                $count_expression .= "COUNT(DISTINCT ".OBJECT_X_TABLE.intval($clId).".OF_ID)";
                 $from_expression .= OBJECT_X_TABLE.$clId;
                 $where_expression .= OBJECT_X_TABLE."$clId.OF_ID !=0";
                 $fe_count++;
             }
       	} else {
-      		$classid=abs($classid);
+      		$classid=intval($classid);
             $count_expression = "COUNT(".OBJECT_X_TABLE."$classid.OF_ID)";
             $from_expression = OBJECT_X_TABLE.$classid;
             $where_expression = OBJECT_X_TABLE."$classid.OF_ID !=0";

@@ -25,10 +25,10 @@
 
 
 we_html_tools::protect();
-		$id = $_REQUEST["we_cmd"][1];
-		$JSIDName = $_REQUEST["we_cmd"][2];
-		$JSTextName = $_REQUEST["we_cmd"][3];
-		$JSCommand = $_REQUEST["we_cmd"][4];
+		$id = $_REQUEST['we_cmd'][1];
+		$JSIDName = $_REQUEST['we_cmd'][2];
+		$JSTextName = $_REQUEST['we_cmd'][3];
+		$JSCommand = $_REQUEST['we_cmd'][4];
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/raw/we_ShopDirSelect.php");
 ?>

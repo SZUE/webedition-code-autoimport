@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 we_html_tools::protect();
 $jsCode = "
@@ -356,7 +356,7 @@ array_push($parts, array(
 	"headline" => g_l('cockpit','[default_validity]'), "html" => $oSctValid, "space" => 100
 ));
 
-list($pad_header_enc, ) = explode(',', $_REQUEST["we_cmd"][1]);
+list($pad_header_enc, ) = explode(',', $_REQUEST['we_cmd'][1]);
 $pad_header = base64_decode($pad_header_enc);
 $_sql = "SELECT	distinct(WidgetName) FROM " . NOTEPAD_TABLE . " WHERE UserID = " . abs($_SESSION['user']['ID']);
 $DB_WE = new DB_WE();

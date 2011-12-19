@@ -28,7 +28,7 @@ function we_tag_charset($attribs,$content) {
 	$defined = weTag_getAttribute("defined",$attribs);
 	$xml     = weTag_getAttribute("xml",$attribs, false, true, true);
 
-	if($GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS["we_doc"]->InWebEdition){	//	normally meta tags are edited on property page
+	if($GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){	//	normally meta tags are edited on property page
 
 		return '<?php	$GLOBALS["meta"]["Charset"]["default"] = "' . $content . '";
 						$GLOBALS["meta"]["Charset"]["defined"] = "' . $defined . '";	?>';

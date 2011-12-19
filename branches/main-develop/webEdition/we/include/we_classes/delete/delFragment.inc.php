@@ -31,7 +31,7 @@ class delFragment extends taskFragment{
 	var $db;
 	var $table;
 
-	function delFragment($name,$taskPerFragment,$pause=0,$table){
+	function __consstruct($name,$taskPerFragment,$pause=0,$table){
 		$this->db = new DB_WE();
 		$this->table = $table;
 		$this->taskFragment($name,$taskPerFragment,$pause);
@@ -42,7 +42,7 @@ class delFragment extends taskFragment{
 			$filesToDel = makeArrayFromCSV($_SESSION["todel"]);
 			$this->alldata = array();
 			foreach($filesToDel as $id){
-				if(f("SELECT IsFolder FROM ".FILE_TABLE." WHERE ID='".abs($id)."'","IsFolder",$this->db)){
+				if(f("SELECT IsFolder FROM ".FILE_TABLE." WHERE ID=".intval($id),"IsFolder",$this->db)){
 					we_readChilds($id,$this->alldata,FILE_TABLE,false);
 				}
 			}

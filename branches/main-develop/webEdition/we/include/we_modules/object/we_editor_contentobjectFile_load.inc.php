@@ -103,16 +103,16 @@ switch($cmd) {
 		$table = OBJECT_FILES_TABLE;
 
 		if($cmd == "insert_meta_at_object") {
-			$we_doc->addMetaToObject($name,$_REQUEST["we_cmd"][3]);
+			$we_doc->addMetaToObject($name,$_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "delete_meta_at_object") {
-			$we_doc->removeMetaFromObject($name,$_REQUEST["we_cmd"][3]);
+			$we_doc->removeMetaFromObject($name,$_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "down_meta_at_object") {
-			$we_doc->downMetaAtObject($name,$_REQUEST["we_cmd"][3]);
+			$we_doc->downMetaAtObject($name,$_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "up_meta_at_object") {
-			$we_doc->upMetaAtObject($name,$_REQUEST["we_cmd"][3]);
+			$we_doc->upMetaAtObject($name,$_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "change_objectlink") {
 			$we_doc->i_getLinkedObjects();

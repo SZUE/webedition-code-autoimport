@@ -269,12 +269,12 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 								"colspan" => 3), we_html_tools::getPixel($_widthTotal,15));
 
 
-}else if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "info"){
+}else if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
 	$_table->addRow();
 	$_table->setCol($_actRow++,0,array("colspan"=>"3"), we_html_tools::getPixel(2,50));
 }
 
-if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "info"){
+if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
 	print $_table->getHtmlCode();
 } else {
 	$_loginTable = $_table->getHtmlCode() . we_html_tools::getPixel(1,1);

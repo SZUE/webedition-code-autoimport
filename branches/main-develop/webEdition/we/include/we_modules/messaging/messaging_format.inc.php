@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
 
 /* message object class */
@@ -163,7 +163,7 @@ class we_format extends we_class {
 
 	function userid_to_username($id) {
 		$db2 = new DB_WE();
-		$db2->query('SELECT username FROM '.USER_TABLE.' WHERE ID=' . abs($id));
+		$db2->query('SELECT username FROM '.USER_TABLE.' WHERE ID=' . intval($id));
 		if ($db2->next_record())
 			return $db2->f('username');
 

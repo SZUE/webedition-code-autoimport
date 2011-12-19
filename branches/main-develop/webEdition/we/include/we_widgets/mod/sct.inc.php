@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$aCols = explode(";", isset($aProps) ? $aProps[3] : $_REQUEST["we_cmd"][0]);
+$aCols = explode(";", isset($aProps) ? $aProps[3] : $_REQUEST['we_cmd'][0]);
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','text/webedition');";
 if (we_hasPerm("NEW_WEBEDITIONSITE")) {
@@ -151,7 +151,7 @@ if (!isset($aProps)) {
 	we_html_tools::protect();
 
 	$sJsCode = "
-	var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
+	var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
 	var _sType='sct';
 	var _sTb='" . g_l('cockpit','[shortcuts]') . "';
 	function init(){

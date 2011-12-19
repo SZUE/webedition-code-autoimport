@@ -24,7 +24,7 @@
 
 define("NO_SESS",1);
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_BANNER_MODULE_DIR."weBanner.php");
 
 $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : 0;
@@ -48,8 +48,8 @@ if(!$id){
 if($id && is_numeric($id) && $did>0){
 	$url = weBanner::getBannerURL($id);
 	if(!$nocount){
-		$db->query("INSERT INTO ".BANNER_CLICKS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$db->escape($_SERVER["REMOTE_ADDR"])."','".($referer ? $db->escape($referer) : (isset($_SERVER["HTTP_REFERER"]) ? $db->escape($_SERVER["HTTP_REFERER"]) :  ""))."',".intval($did).",'".$db->escape($page)."')");
-		$db->query("UPDATE ".BANNER_TABLE." SET clicks=clicks+1 WHERE ID='".abs($id)."'");
+		$db->query("INSERT INTO ".BANNER_CLICKS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".intval($id).",UNIX_TIMESTAMP(),'".$db->escape($_SERVER["REMOTE_ADDR"])."','".($referer ? $db->escape($referer) : (isset($_SERVER["HTTP_REFERER"]) ? $db->escape($_SERVER["HTTP_REFERER"]) :  ""))."',".intval($did).",'".$db->escape($page)."')");
+		$db->query("UPDATE ".BANNER_TABLE." SET clicks=clicks+1 WHERE ID=".intval($id));
 	}
 	header("Location: $url");
 }

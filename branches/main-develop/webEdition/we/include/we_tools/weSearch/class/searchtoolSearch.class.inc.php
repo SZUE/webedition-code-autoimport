@@ -120,9 +120,9 @@ class searchtoolsearch extends we_search
 				$obj->searchclassFolder->search = ($_REQUEST["search"]);
 			}
 		} else {
-			if (isset($_REQUEST["we_cmd"]["setView"]) && isset($_REQUEST["id"])) {
+			if (isset($_REQUEST['we_cmd']["setView"]) && isset($_REQUEST["id"])) {
 				$this->query(
-						"UPDATE " . FILE_TABLE . " SET listview=" . abs($_REQUEST["we_cmd"]["setView"]) . " WHERE ID=" . abs($_REQUEST["id"]) . "");
+						"UPDATE " . FILE_TABLE . " SET listview=" . abs($_REQUEST['we_cmd']["setView"]) . " WHERE ID=" . abs($_REQUEST["id"]) . "");
 			}
 		}
 	}

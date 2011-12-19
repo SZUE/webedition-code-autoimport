@@ -32,12 +32,12 @@ function we_tag_formfield($attribs, $content){
 	$types = makeArrayFromCSV(weTag_getAttribute("type", $attribs, "textinput"));
 	$attrs = makeArrayFromCSV(weTag_getAttribute("attribs", $attribs));
 
-	$type_sel = $GLOBALS["we_doc"]->getElement($name, 'fftype');
-	$ffname = $GLOBALS["we_doc"]->getElement($name, 'ffname');
+	$type_sel = $GLOBALS['we_doc']->getElement($name, 'fftype');
+	$ffname = $GLOBALS['we_doc']->getElement($name, 'ffname');
 
 	$type_sel = $type_sel ? $type_sel : (sizeof($types) ? $types[0] : "textinput");
 
-	$nameprefix = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . '#';
+	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 
 	$xml = weTag_getAttribute("xml", $attribs);
 	$ff = array();
@@ -55,8 +55,8 @@ function we_tag_formfield($attribs, $content){
 	foreach ($attribs as $k => $v) {
 		if (preg_match("/^([^_]+)_([^_]+)$/", $k, $m) && ($m[1] == $type_sel)) {
 			if (in_array($k, $attrs)) {
-				if (isset($GLOBALS["we_doc"]->elements[$name]['ff_' . $type_sel . '_' . $m[2]])) {
-					$ff[$m[2]]['value'] = $GLOBALS["we_doc"]->getElement($name, 'ff_' . $type_sel . '_' . $m[2]);
+				if (isset($GLOBALS['we_doc']->elements[$name]['ff_' . $type_sel . '_' . $m[2]])) {
+					$ff[$m[2]]['value'] = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $m[2]);
 				}
 				$ff[$m[2]]['default'] = $attribs[$k];
 			} else {
@@ -82,8 +82,8 @@ function we_tag_formfield($attribs, $content){
 			//$ff[$m[2]] = array('change' => 1);
 			$ff[$m[2]]['change'] = 1;
 
-			if (isset($GLOBALS["we_doc"]->elements[$name]['ff_' . $type_sel . '_' . $m[2]])) {
-				$t = $GLOBALS["we_doc"]->getElement($name, 'ff_' . $type_sel . '_' . $m[2]);
+			if (isset($GLOBALS['we_doc']->elements[$name]['ff_' . $type_sel . '_' . $m[2]])) {
+				$t = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $m[2]);
 				if (!empty($t)) {
 					$ff[$m[2]]['value'] = $t;
 				}
@@ -138,7 +138,7 @@ function we_tag_formfield($attribs, $content){
 					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7" border="0"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
 				} else {
 					if (sizeof($default) > 1) {
-						$val = $GLOBALS["we_doc"]->getElement($name, 'ff_' . $type_sel . '_' . $f);
+						$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
 						$valselect = "";
 						if (sizeof($default) > 1) {
 							$valselect = '<select name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="1">' . "\n";
@@ -164,13 +164,13 @@ function we_tag_formfield($attribs, $content){
 		if ($type_sel == "select") {
 			$tbl .= '	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[values]") . ':</nobr></td>
-		<td class=\"weEditmodeStyle\" width="161"><textarea name="' . $nameprefix . 'ffvalues]" cols="30" rows="5">' . $GLOBALS["we_doc"]->getElement(
+		<td class=\"weEditmodeStyle\" width="161"><textarea name="' . $nameprefix . 'ffvalues]" cols="30" rows="5">' . $GLOBALS['we_doc']->getElement(
 					$name,
 					'ffvalues') . '</textarea></td>
 	</tr>
 	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[default]") . ':</nobr></td>
-		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffdefault]" size="24" value="' . $GLOBALS["we_doc"]->getElement(
+		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffdefault]" size="24" value="' . $GLOBALS['we_doc']->getElement(
 					$name,
 					'ffdefault') . '" /></td>
 	</tr>
@@ -180,7 +180,7 @@ function we_tag_formfield($attribs, $content){
 			if ($type_sel == 'file') {
 				$tbl .= '	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[max_file_size]") . ':</nobr></td>
-		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffmaxfilesize]" size="24" value="' . $GLOBALS["we_doc"]->getElement(
+		<td class=\"weEditmodeStyle\" width="161"><input type="text" name="' . $nameprefix . 'ffmaxfilesize]" size="24" value="' . $GLOBALS['we_doc']->getElement(
 						$name,
 						'ffmaxfilesize') . '" /></td>
 	</tr>
@@ -189,9 +189,9 @@ function we_tag_formfield($attribs, $content){
 				if ($type_sel == 'radio' || $type_sel == 'checkbox') {
 					$tbl .= '	<tr>
 		<td class=\"weEditmodeStyle\" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global',"[checked]") . ':</nobr></td>
-		<td class=\"weEditmodeStyle\" width="161"><select name="' . $nameprefix . 'ffchecked]" size="1"><option value="0"' . ($GLOBALS["we_doc"]->getElement(
+		<td class=\"weEditmodeStyle\" width="161"><select name="' . $nameprefix . 'ffchecked]" size="1"><option value="0"' . ($GLOBALS['we_doc']->getElement(
 							$name,
-							'ffchecked') ? "" : " selected") . '>' . g_l('global',"[no]"). '</option><option value="1"' . ($GLOBALS["we_doc"]->getElement(
+							'ffchecked') ? "" : " selected") . '>' . g_l('global',"[no]"). '</option><option value="1"' . ($GLOBALS['we_doc']->getElement(
 							$name,
 							'ffchecked') ? " selected" : "") . '>' . g_l('global',"[yes]") . '</option></select></td>
 	</tr>
@@ -207,7 +207,7 @@ function we_tag_formfield($attribs, $content){
 		$tagName = '';
 		$tagAtts = array(
 
-		'xml' => $xml, 'name' => htmlspecialchars($GLOBALS["we_doc"]->getElement($attribs["name"], 'ffname'))
+		'xml' => $xml, 'name' => htmlspecialchars($GLOBALS['we_doc']->getElement($attribs["name"], 'ffname'))
 		);
 		$tagContent = '';
 
@@ -225,7 +225,7 @@ function we_tag_formfield($attribs, $content){
 
 			if (!((($f == 'value') && ($type_sel == 'textarea')) || $f == 'type')) {
 
-				$val = $GLOBALS["we_doc"]->getElement($name, 'ff_' . $type_sel . '_' . $f);
+				$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
 				if ($val) {
 					$tagAtts[$f] = htmlspecialchars($val);
 				}
@@ -236,7 +236,7 @@ function we_tag_formfield($attribs, $content){
 			$tagAtts['type'] = 'text';
 		}
 
-		if (($type_sel == 'checkbox' || $type_sel == 'radio') && $GLOBALS["we_doc"]->getElement($name, 'ffchecked')) {
+		if (($type_sel == 'checkbox' || $type_sel == 'radio') && $GLOBALS['we_doc']->getElement($name, 'ffchecked')) {
 			$tagAtts['checked'] = 'checked';
 		}
 
@@ -254,8 +254,8 @@ function we_tag_formfield($attribs, $content){
 
 		} else
 			if ($type_sel == 'select') {
-				$selected = $GLOBALS["we_doc"]->getElement($name, 'ffdefault');
-				$foo = $GLOBALS["we_doc"]->getElement($name, 'ffvalues');
+				$selected = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
+				$foo = $GLOBALS['we_doc']->getElement($name, 'ffvalues');
 				$foo = str_replace("\r\n", "<_BR_>", $foo);
 				$foo = str_replace("\r", "<_BR_>", $foo);
 				$foo = str_replace("\n", "<_BR_>", $foo);
@@ -271,7 +271,7 @@ function we_tag_formfield($attribs, $content){
 				}
 			} else
 			if ($type_sel == 'country') {
-				$orgVal = $GLOBALS["we_doc"]->getElement($name, 'ffdefault');
+				$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
 				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
@@ -321,7 +321,7 @@ function we_tag_formfield($attribs, $content){
 				$tagName ="select";
 			} else
 			if ($type_sel == 'language') {
-				$orgVal = $GLOBALS["we_doc"]->getElement($name, 'ffdefault');
+				$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
 				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
@@ -359,7 +359,7 @@ function we_tag_formfield($attribs, $content){
 									'type' => 'hidden',
 									'name' => 'MAX_FILE_SIZE',
 									'value' => htmlspecialchars(
-											$GLOBALS["we_doc"]->getElement($name, 'ffmaxfilesize')),
+											$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
 									'xml' => $xml
 							));
 				}

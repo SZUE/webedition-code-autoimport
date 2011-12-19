@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $defaultCharset = "ISO-8859-1";
 
@@ -39,45 +39,45 @@ if(!empty($_charsets) && is_array($_charsets)) {
 	}
 }
 
-if(isset($_REQUEST["we_cmd"][15])) {
-	if($_REQUEST["we_cmd"][15]=='') {
-		$_REQUEST["we_cmd"][15] = $defaultCharset;
+if(isset($_REQUEST['we_cmd'][15])) {
+	if($_REQUEST['we_cmd'][15]=='') {
+		$_REQUEST['we_cmd'][15] = $defaultCharset;
 	}
 	else {
-		if (!in_array(strtolower($_REQUEST["we_cmd"][15]), $whiteList)) {
+		if (!in_array(strtolower($_REQUEST['we_cmd'][15]), $whiteList)) {
 			exit();
 		}
 	}
 }
 
 
-@header("Content-Type: text/html; charset=" . ($_REQUEST["we_cmd"][15] ? $_REQUEST["we_cmd"][15] : $defaultCharset));
+@header("Content-Type: text/html; charset=" . ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
 we_html_tools::protect();
 
-$we_dt = isset($_SESSION["we_data"][$_REQUEST["we_cmd"][4]]) ? $_SESSION["we_data"][$_REQUEST["we_cmd"][4]] : "";
+$we_dt = isset($_SESSION["we_data"][$_REQUEST['we_cmd'][4]]) ? $_SESSION["we_data"][$_REQUEST['we_cmd'][4]] : "";
 include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
-if (preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST["we_cmd"][1])) {
-	$fieldName = ereg_replace('^.+_te?xt\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
+if (preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST['we_cmd'][1])) {
+	$fieldName = ereg_replace('^.+_te?xt\[(.+)\]$', '\1', $_REQUEST['we_cmd'][1]);
 } else
-	if (preg_match('|^.+_input\[.+\]$|i', $_REQUEST["we_cmd"][1])) {
-		$fieldName = ereg_replace('^.+_input\[(.+)\]$', '\1', $_REQUEST["we_cmd"][1]);
+	if (preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])) {
+		$fieldName = ereg_replace('^.+_input\[(.+)\]$', '\1', $_REQUEST['we_cmd'][1]);
 	}
 
 we_html_tools::htmlTop(
 		sprintf(g_l('wysiwyg',"[window_title]"), $fieldName),
-		($_REQUEST["we_cmd"][15] ? $_REQUEST["we_cmd"][15] : "ISO-8859-1"));
+		($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : "ISO-8859-1"));
 
 if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]) {
-	if (preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST["we_cmd"][1])) {
-		$reqName = ereg_replace('^(.+_te?xt)\[.+\]$', '\1', $_REQUEST["we_cmd"][1]);
+	if (preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])) {
+		$reqName = ereg_replace('^(.+_te?xt)\[.+\]$', '\1', $_REQUEST['we_cmd'][1]);
 	} else
-		if (preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST["we_cmd"][1])) {
-			$reqName = ereg_replace('^(.+_input)\[.+\]$', '\1', $_REQUEST["we_cmd"][1]);
+		if (preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST['we_cmd'][1])) {
+			$reqName = ereg_replace('^(.+_input)\[.+\]$', '\1', $_REQUEST['we_cmd'][1]);
 		}
 	$we_doc->setElement($fieldName, $_REQUEST[$reqName][$fieldName], "input");
-	$we_doc->saveInSession($_SESSION["we_data"][$_REQUEST["we_cmd"][4]]);
+	$we_doc->saveInSession($_SESSION["we_data"][$_REQUEST['we_cmd'][4]]);
 	$newHTML = $we_doc->getField(array(
 		"name" => $fieldName
 	));
@@ -86,10 +86,10 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 <script  type="text/javascript">
 	if(top.opener && top.opener.top.weEditorFrameController.getVisibleEditorFrame()){
 		if(top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_<?php
-	print $_REQUEST["we_cmd"][1];
+	print $_REQUEST['we_cmd'][1];
 	?>")){
 			top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.getElementById("div_wysiwyg_<?php
-	print $_REQUEST["we_cmd"][1];
+	print $_REQUEST['we_cmd'][1];
 	?>").innerHTML = "<?php
 	print
 			preg_replace(
@@ -127,8 +127,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	method="post"><input type="hidden" name="we_okpressed" value="1" />
 <?php
 
-	foreach ($_REQUEST["we_cmd"] as $i => $v) {
-		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST["we_cmd"][$i] . '" />' . "\n";
+	foreach ($_REQUEST['we_cmd'] as $i => $v) {
+		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />' . "\n";
 	}
 
 	/*
@@ -153,23 +153,23 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 */
 
 	$e = new we_wysiwyg(
-			$_REQUEST["we_cmd"][1],
-			$_REQUEST["we_cmd"][2],
-			$_REQUEST["we_cmd"][3],
+			$_REQUEST['we_cmd'][1],
+			$_REQUEST['we_cmd'][2],
+			$_REQUEST['we_cmd'][3],
 			$we_doc->getElement($fieldName),
-			$_REQUEST["we_cmd"][5],
-			$_REQUEST["we_cmd"][13],
+			$_REQUEST['we_cmd'][5],
+			$_REQUEST['we_cmd'][13],
 			"",
-			$_REQUEST["we_cmd"][6],
-			$_REQUEST["we_cmd"][7],
-			$_REQUEST["we_cmd"][8],
-			$_REQUEST["we_cmd"][11],
-			$_REQUEST["we_cmd"][12],
+			$_REQUEST['we_cmd'][6],
+			$_REQUEST['we_cmd'][7],
+			$_REQUEST['we_cmd'][8],
+			$_REQUEST['we_cmd'][11],
+			$_REQUEST['we_cmd'][12],
 			true,
-			$_REQUEST["we_cmd"][14],
-			$_REQUEST["we_cmd"][15],
-			$_REQUEST["we_cmd"][16],
-			$_REQUEST["we_cmd"][17]);
+			$_REQUEST['we_cmd'][14],
+			$_REQUEST['we_cmd'][15],
+			$_REQUEST['we_cmd'][16],
+			$_REQUEST['we_cmd'][17]);
 
 	print we_wysiwyg::getHeaderHTML() . $e->getHTML();
 	print '<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);

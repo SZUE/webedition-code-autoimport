@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 
 

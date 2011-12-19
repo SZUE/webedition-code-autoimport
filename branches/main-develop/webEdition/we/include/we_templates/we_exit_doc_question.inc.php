@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -135,7 +135,7 @@ print we_htmlElement::jsScript(JS_DIR.'keyListener.js')."
 </script>
 ";
 
-// $yesCmd: $_REQUEST["we_cmd"][6] => next-EditCommand, JS-Function Call !! after save document.
+// $yesCmd: $_REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
 $yesCmd = "pressed_yes();";
 $noCmd = "pressed_no();";
 $cancelCmd = "pressed_cancel();";

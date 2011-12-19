@@ -27,7 +27,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc
 
 	//	user
 	$_isUsedByUser = $we_doc->isLockedByUser();
-	$_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=".abs($_isUsedByUser)."","username",$DB_WE);
+	$_username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=".intval($_isUsedByUser),"username",$DB_WE);
 
 
 	$_messageTbl = new we_htmlTable(	array(	"border"      => 0,

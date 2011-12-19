@@ -22,16 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$sTypeBinary = $_REQUEST["we_cmd"][0];
+$sTypeBinary = $_REQUEST['we_cmd'][0];
 $bTypeDoc = (bool)$sTypeBinary{0};
 $bTypeTpl = (bool)$sTypeBinary{1};
 $bTypeObj = (bool)$sTypeBinary{2};
 $bTypeCls = (bool)$sTypeBinary{3};
-$iDate = $_REQUEST["we_cmd"][1];
+$iDate = $_REQUEST['we_cmd'][1];
 switch ($iDate) {
 	case 1 :
 		$timestamp = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -67,7 +67,7 @@ switch ($iDate) {
 				date('Y', $iTime));
 		break;
 }
-$iNumItems = $_REQUEST["we_cmd"][2];
+$iNumItems = $_REQUEST['we_cmd'][2];
 switch ($iNumItems) {
 	case 0 :
 		$iMaxItems = 200;
@@ -87,13 +87,13 @@ switch ($iNumItems) {
 	default :
 		$iMaxItems = $iNumItems;
 }
-$sDisplayOpt = $_REQUEST["we_cmd"][3];
+$sDisplayOpt = $_REQUEST['we_cmd'][3];
 $bMfdBy = $sDisplayOpt{0};
 $bDateLastMfd = $sDisplayOpt{1};
-$aUsers = makeArrayFromCSV($_REQUEST["we_cmd"][4]);
+$aUsers = makeArrayFromCSV($_REQUEST['we_cmd'][4]);
 
 $sJsCode = "
-var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
+var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
 var _sType='mfd';
 var _sTb='" . g_l('cockpit','[last_modified]') . "';
 

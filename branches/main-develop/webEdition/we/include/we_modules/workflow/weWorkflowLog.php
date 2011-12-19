@@ -34,7 +34,7 @@ define("LOG_TYPE_DOC_INSERTED","7");
 define("LOG_TYPE_DOC_REMOVED","8");
 define("NUMBER_LOGS","8");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 class weWorkflowLog{
 

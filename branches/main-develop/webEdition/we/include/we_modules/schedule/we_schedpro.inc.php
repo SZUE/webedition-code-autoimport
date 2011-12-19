@@ -197,9 +197,9 @@ class we_schedpro{
 
 			if($GLOBALS['we_doc']->ClassName == "we_objectFile"){
 				if($path == "/"){ //	impossible for documents
-					$path = $GLOBALS["we_doc"]->RootDirPath;
+					$path = $GLOBALS['we_doc']->RootDirPath;
 				}
-				$_rootDirID = $GLOBALS["we_doc"]->rootDirID;
+				$_rootDirID = $GLOBALS['we_doc']->rootDirID;
 
 			} else {
 				$_rootDirID = 0;
@@ -355,9 +355,9 @@ $this->getSpacerRowHTML().
 		}else{
 			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$schedFile["ClassName"].".inc.php");
 		}
-		$doc_save = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : NULL;
-		eval('$GLOBALS["we_doc"] = new '.$schedFile["ClassName"].'();');
-		$GLOBALS["we_doc"]->InitByID($id,$schedFile["table"],we_class::LOAD_SCHEDULE_DB);
+		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
+		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
+		$GLOBALS['we_doc']->InitByID($id,$schedFile["table"],we_class::LOAD_SCHEDULE_DB);
 		$deleted = false;
 		$changeTmpDoc=false;
 		$_SESSION["Versions"]['fromScheduler'] = true;
@@ -374,45 +374,45 @@ $this->getSpacerRowHTML().
 			}
 
 			$_scheduleEditedDoc = false;	//	shall the in webEdition edited doc be changed.
-			if(isset($GLOBALS["we_doc"]) && $schedFile["table"] == $GLOBALS["we_doc"]->Table){	//	in webEdition bearbeitetes Dokument wird gescheduled
+			if(isset($GLOBALS['we_doc']) && $schedFile["table"] == $GLOBALS['we_doc']->Table){	//	in webEdition bearbeitetes Dokument wird gescheduled
 				$_scheduleEditedDoc = true;
 			}
 
 			switch($s["task"]){
 				case SCHEDULE_FROM:
-					$GLOBALS["we_doc"]->Published = $now;
+					$GLOBALS['we_doc']->Published = $now;
 					if($_scheduleEditedDoc){
-						$GLOBALS["we_doc"]->Published = $now;
+						$GLOBALS['we_doc']->Published = $now;
 					}
 					break;
 				case SCHEDULE_TO:
-					$GLOBALS["we_doc"]->Published = 0;
+					$GLOBALS['we_doc']->Published = 0;
 					if($_scheduleEditedDoc){
-						$GLOBALS["we_doc"]->Published = 0;
+						$GLOBALS['we_doc']->Published = 0;
 					}
 					break;
 				case SCHEDULE_DOCTYPE:
-					if($GLOBALS["we_doc"]->Published){
-						$publSave = $GLOBALS["we_doc"]->Published;
-						$GLOBALS["we_doc"]->we_unpublish();
-						$GLOBALS["we_doc"]->DocType = $s["DoctypeID"];
+					if($GLOBALS['we_doc']->Published){
+						$publSave = $GLOBALS['we_doc']->Published;
+						$GLOBALS['we_doc']->we_unpublish();
+						$GLOBALS['we_doc']->DocType = $s["DoctypeID"];
 						if($s["doctypeAll"]){
-							$GLOBALS["we_doc"]->changeDoctype($s["DoctypeID"],true);
+							$GLOBALS['we_doc']->changeDoctype($s["DoctypeID"],true);
 						}
 						$changeTmpDoc = true;
-						$GLOBALS["we_doc"]->Published = $publSave;
+						$GLOBALS['we_doc']->Published = $publSave;
 					}
 					break;
 				case SCHEDULE_CATEGORY:
-					if($GLOBALS["we_doc"]->Published){
-						$GLOBALS["we_doc"]->Category = $s["CategoryIDs"];
+					if($GLOBALS['we_doc']->Published){
+						$GLOBALS['we_doc']->Category = $s["CategoryIDs"];
 						$changeTmpDoc = true;
 					}
 					break;
 				case SCHEDULE_DIR:
-					if($GLOBALS["we_doc"]->Published){
-						$GLOBALS["we_doc"]->setParentID($s["ParentID"]);
-						$GLOBALS["we_doc"]->Path = $GLOBALS["we_doc"]->getPath();
+					if($GLOBALS['we_doc']->Published){
+						$GLOBALS['we_doc']->setParentID($s["ParentID"]);
+						$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getPath();
 						$changeTmpDoc = true;
 					}
 					break;
@@ -428,17 +428,17 @@ $this->getSpacerRowHTML().
 		}
 
 		if($changeTmpDoc){
-			$GLOBALS["we_doc"]->we_save();
+			$GLOBALS['we_doc']->we_save();
 		}
 		if(!$deleted){
-			if($GLOBALS["we_doc"]->Published){
-				$GLOBALS["we_doc"]->we_publish();
+			if($GLOBALS['we_doc']->Published){
+				$GLOBALS['we_doc']->we_publish();
 			}else{
-				$GLOBALS["we_doc"]->we_unpublish();
+				$GLOBALS['we_doc']->we_unpublish();
 			}
 		}
 
-		$GLOBALS["we_doc"] = $doc_save;
+		$GLOBALS['we_doc'] = $doc_save;
 
 		$_SESSION["Versions"]['fromScheduler'] = false;
 

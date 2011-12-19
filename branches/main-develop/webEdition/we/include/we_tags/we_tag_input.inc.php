@@ -105,7 +105,7 @@ function we_tag_input($attribs, $content) {
 				}
 
 				return getHtmlTag('select', $newAtts, $content, true);
-			//return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS["we_doc"]->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '" />';
+			//return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
 			case 'language':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
@@ -151,14 +151,14 @@ function we_tag_input($attribs, $content) {
 					if ($reload) {
 						$onChange .= 'setScrollTo();top.we_cmd(\'reload_editpage\');';
 					}
-					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>';
+					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>';
 
 					$sel.=(sizeof($vals)?'<option>'.implode("</option>\n<option>", $vals)."</option>\n":'');
 					$sel .= "</select>\n";
 				}
 				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values');
 
-				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
+				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" . (isset(
 								$sel) ? $sel : '');
 			case 'select':
 				//NOTE: this tag is for objects only
@@ -172,7 +172,7 @@ function we_tag_input($attribs, $content) {
 				if (defined('SPELLCHECKER') && $spellcheck == 'true') {
 					return '<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">
 	<tr>
-			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' /></td>
+			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' /></td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
 			<td class="weEditmodeStyle">' . we_button::create_button(
 									'image:spellcheck',
@@ -180,7 +180,7 @@ function we_tag_input($attribs, $content) {
 	</tr>
 </table>';
 				} else {
-					return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
+					return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				}
 		}
 	} else {

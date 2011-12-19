@@ -28,9 +28,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.i
 
 we_html_tools::protect();
 
-$table = $_REQUEST["we_cmd"][2];
+$table = $_REQUEST['we_cmd'][2];
 $wfchk = defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? (isset(
-		$_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : 0) : 1;
+		$_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : 0) : 1;
 $wfchk_html = "";
 $script = "";
 
@@ -50,7 +50,7 @@ if (!$wfchk) {
                      function confirmDel(){' . "\n";
 		if ($found)
 			$wfchk_html .= 'if(confirm("' . g_l('alert',"[found_in_workflow]") . '"))' . "\n";
-		$wfchk_html .= 'we_cmd("' . $_REQUEST["we_cmd"][0] . '","","' . $table . '",1);' . "\n";
+		$wfchk_html .= 'we_cmd("' . $_REQUEST['we_cmd'][0] . '","","' . $table . '",1);' . "\n";
 		if ($found)
 			$wfchk_html .= 'else top.toggleBusy(0)';
 		$wfchk_html .= '}</script>';
@@ -64,7 +64,7 @@ if (!$wfchk) {
 	$wfchk_html .= we_html_tools::hidden("sel", isset($_REQUEST["sel"]) ? $_REQUEST["sel"] : "") . "</form>" . "\n";
 
 } else
-	if ($_REQUEST["we_cmd"][0] == "do_delete" || $_REQUEST["we_cmd"][0] == "delete_single_document") {
+	if ($_REQUEST['we_cmd'][0] == "do_delete" || $_REQUEST['we_cmd'][0] == "delete_single_document") {
 		if (isset($_REQUEST["sel"]) && $_REQUEST["sel"]) {
 			//	look which documents must be deleted.
 			$selectedItems = explode(",", $_REQUEST["sel"]);
@@ -500,7 +500,7 @@ print STYLESHEET;
 //top.deleteMode=1;
 <?php
 
-if ($_REQUEST["we_cmd"][0] != "delete_single_document") { // no select mode in delete_single_document
+if ($_REQUEST['we_cmd'][0] != "delete_single_document") { // no select mode in delete_single_document
 
 
 	if ($table == FILE_TABLE . "_cache") {
@@ -585,11 +585,11 @@ function we_cmd(){
 //-->
 </script>
 <?php
-if (!$wfchk && $_REQUEST["we_cmd"][0] != "delete") {
+if (!$wfchk && $_REQUEST['we_cmd'][0] != "delete") {
 	print $wfchk_html;
 	exit();
 }
-if ($_REQUEST["we_cmd"][0] == "do_delete") {
+if ($_REQUEST['we_cmd'][0] == "do_delete") {
 	print "</head><body></body></html>";
 	exit();
 }

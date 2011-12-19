@@ -51,8 +51,8 @@ function we_tag_href($attribs, $content){
 		"rootdir"
 	));
 
-	if ($GLOBALS["we_doc"]->ClassName == "we_objectFile") {
-		$hrefArr = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();
+	if ($GLOBALS['we_doc']->ClassName == "we_objectFile") {
+		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 		if (!is_array($hrefArr)) {
 			$hrefArr = array();
 		}
@@ -63,17 +63,17 @@ function we_tag_href($attribs, $content){
 	$nint = $name . "_we_jkhdsf_int";
 	$nintID = $name . "_we_jkhdsf_intID";
 	$nintPath = $name . "_we_jkhdsf_intPath";
-	$extPath = $GLOBALS["we_doc"]->getElement($name);
+	$extPath = $GLOBALS['we_doc']->getElement($name);
 
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 	// as html_entity_decode is only available php > 4.3 we use a custom function
 	$extPath = !empty($extPath) ? htmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
 	if ($GLOBALS['we_editmode']) {
-		$int_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nint . ']';
-		$intPath_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintID . ']';
-		$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
+		$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nint . ']';
+		$intPath_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintPath . ']';
+		$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintID . ']';
+		$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 		$trashbut = we_button::create_button(
 				"image:btn_function_trash",
@@ -84,8 +84,8 @@ function we_tag_href($attribs, $content){
 
 	if (!$type || $type == "all") {
 
-		$int = ($GLOBALS["we_doc"]->getElement($nint) == "") ? 0 : $GLOBALS["we_doc"]->getElement($nint);
-		$intID = $GLOBALS["we_doc"]->getElement($nintID);
+		$int = ($GLOBALS['we_doc']->getElement($nint) == "") ? 0 : $GLOBALS['we_doc']->getElement($nint);
+		$intID = $GLOBALS['we_doc']->getElement($nintID);
 		if (!$intID && $rootdirid) {
 			$intID = $rootdirid;
 		}
@@ -102,10 +102,10 @@ function we_tag_href($attribs, $content){
 			$include_path = $href;
 		}
 
-		$int_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nint . ']';
-		$intPath_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $nintID . ']';
-		$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
+		$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nint . ']';
+		$intPath_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintPath . ']';
+		$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintID . ']';
+		$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 		$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
 
@@ -164,7 +164,7 @@ function we_tag_href($attribs, $content){
 					$int_elem_Name,
 					$span . g_l('tags',"[ext_href]") . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
-							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
+							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
 							' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">
@@ -187,7 +187,7 @@ function we_tag_href($attribs, $content){
 		}
 	} else
 		if ($type == "int") {
-			$intID = $GLOBALS["we_doc"]->getElement($nintID);
+			$intID = $GLOBALS['we_doc']->getElement($nintID);
 			$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='".abs($intID)."'", "Path", $GLOBALS['DB_WE']);
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
@@ -249,7 +249,7 @@ function we_tag_href($attribs, $content){
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 
 			if ($GLOBALS['we_editmode']) {
-				$ext_elem_Name = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
+				$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 				$trashbut2 = we_button::create_button(
 						"image:btn_function_trash",
@@ -275,7 +275,7 @@ function we_tag_href($attribs, $content){
 							<input type="hidden" name="' . $int_elem_Name . '" value="0" />
 							' . $span . g_l('tags',"[ext_href]") . ':</span></td>
 						<td class="weEditmodeStyle">
-							<input type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
+							<input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
 							' . we_html_tools::getPixel(8, 1) . '</td>
 						<td class="weEditmodeStyle">

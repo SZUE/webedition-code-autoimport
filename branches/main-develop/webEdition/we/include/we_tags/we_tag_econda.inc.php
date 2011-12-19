@@ -27,7 +27,7 @@ function we_tag_econda($attribs, $content){
 	global $we_editmode;
 
 	$type = weTag_getAttribute("type",$attribs);
-	if ($type=="exclude" && !$GLOBALS["we_doc"]->InWebEdition) {
+	if ($type=="exclude" && !$GLOBALS['we_doc']->InWebEdition) {
 			return "\n".'<script type="text/javascript">
 //<!--
 	var emosTrackClicks=false;
@@ -41,27 +41,27 @@ function we_tag_econda($attribs, $content){
 			case "input":
 				$name = "econda_content";
 				$value = weTag_getAttribute("value", $attribs);
-				$contentLabel = htmlspecialchars(isset($GLOBALS["we_doc"]->elements["econda_content"]["dat"]) ? $GLOBALS["we_doc"]->getElement("econda_content") : $value);
-				$retEdit = '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
+				$contentLabel = htmlspecialchars(isset($GLOBALS['we_doc']->elements["econda_content"]["dat"]) ? $GLOBALS['we_doc']->getElement("econda_content") : $value);
+				$retEdit = '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				$retView .= '<a name="emos_name" title="content" rel="'.$contentLabel.'" rev=""></a>';
 				break;
 			case "hidden":
 				$name = "econda_content";
 				$value = weTag_getAttribute("value", $attribs);
-				$contentLabel = htmlspecialchars(isset($GLOBALS["we_doc"]->elements["econda_content"]["dat"]) ? $GLOBALS["we_doc"]->getElement("econda_content") : $value);
-				$retEdit = '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
+				$contentLabel = htmlspecialchars(isset($GLOBALS['we_doc']->elements["econda_content"]["dat"]) ? $GLOBALS['we_doc']->getElement("econda_content") : $value);
+				$retEdit = '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
 				$retView .= '<a name="emos_name" title="content" rel="'.$contentLabel.'" rev=""></a>';
 				break;
 		}
 
 		if ($we_editmode) {
 			return $retEdit;
-		} else if(!$GLOBALS["we_doc"]->InWebEdition){
+		} else if(!$GLOBALS['we_doc']->InWebEdition){
 			return $retView;
 			//return '<a name="emos_name" title="content" rel="'.$contentLabel.'" rev=""></a>';
 		}
 	} else if($type == "orderProcess") {
-		if(!$GLOBALS["we_doc"]->InWebEdition){
+		if(!$GLOBALS['we_doc']->InWebEdition){
 			$step = weTag_getAttribute("step",$attribs);
 			$pageName = weTag_getAttribute("pageName",$attribs);
 			return '<a name="emos_name" title="orderProcess" rel="'.$step.'_'.$pageName.'" rev=""></a>';

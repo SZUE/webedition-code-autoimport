@@ -22,28 +22,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 class rpcGetRssCmd extends rpcCmd {
 
 	function execute() {
 
-		$sRssUri = $_REQUEST["we_cmd"][0];
-		$sCfgBinary = $_REQUEST["we_cmd"][1];
+		$sRssUri = $_REQUEST['we_cmd'][0];
+		$sCfgBinary = $_REQUEST['we_cmd'][1];
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
 		$bCfgContEnc = (bool) $sCfgBinary{3};
 		$bCfgPubDate = (bool) $sCfgBinary{4};
 		$bCfgCategory = (bool) $sCfgBinary{5};
-		$iNumItems = $_REQUEST["we_cmd"][2];
+		$iNumItems = $_REQUEST['we_cmd'][2];
 		switch($iNumItems){
 			case 11: $iNumItems = 15; break;
 			case 12: $iNumItems = 20; break;
 			case 13: $iNumItems = 25; break;
 			case 14: $iNumItems = 50; break;
 		}
-		$sTbBinary = $_REQUEST["we_cmd"][3];
+		$sTbBinary = $_REQUEST['we_cmd'][3];
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};
@@ -99,7 +99,7 @@ class rpcGetRssCmd extends rpcCmd {
 
 		$aTb = array();
 		if ($bTbLabel) $aTb[] = g_l('cockpit','[rss_feed]');
-		if ($bTbTitel) $aTb[] = (isset($_REQUEST["we_cmd"][4]) && $_REQUEST["we_cmd"][4] != "")? $_REQUEST["we_cmd"][4] :
+		if ($bTbTitel) $aTb[] = (isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] != "")? $_REQUEST['we_cmd'][4] :
 			((isset($oRssParser->channel["title"]))? $oRssParser->channel["title"] : "");
 		if ($bTbDesc) $aTb[] = (isset($oRssParser->channel["description"]))? ereg_replace("(\n|\r)","",$oRssParser->channel["description"]) : "";
 		if ($bTbLink) $aTb[] = (isset($oRssParser->channel["link"]))? $oRssParser->channel["link"] : "";
@@ -116,7 +116,7 @@ class rpcGetRssCmd extends rpcCmd {
 		}
 		$resp->setData("titel", $_title);
 		$resp->setData("widgetType", "rss");
-		$resp->setData("widgetId", $_REQUEST["we_cmd"][5]);
+		$resp->setData("widgetId", $_REQUEST['we_cmd'][5]);
 
 		return $resp;
 	}

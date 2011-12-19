@@ -128,7 +128,7 @@ if($we_responseText) {
 	print "var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();\n";
 
 	// enable navigation box if doc has been published
-	if(isset($GLOBALS["we_doc"]->Published) && $GLOBALS["we_doc"]->Published) {
+	if(isset($GLOBALS['we_doc']->Published) && $GLOBALS['we_doc']->Published) {
 		print "try{ if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state) contentEditor.switch_button_state('add', 'add_enabled', 'enabled'); } catch(e) {}";
 	}
 
@@ -143,14 +143,14 @@ if($we_responseText) {
 			";
 		}
 
-		if( in_array( WE_EDITPAGE_PREVIEW, $GLOBALS["we_doc"]->EditPageNrs ) && $GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_PREVIEW ){ //	alert or confirm
+		if( in_array( WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs ) && $GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_PREVIEW ){ //	alert or confirm
 
 			$_jsCommand .= "
 			if(!showAlert){
 				if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM',"[confirm][change_to_preview]") . "\")){
 					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
 				} else {
-					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS["we_doc"]->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
+					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
 				}
 			} else {
 				" . we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) . "
@@ -158,9 +158,9 @@ if($we_responseText) {
 			";
 		} else {	//	alert when in preview mode
 			$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType);
-			$_jsCommand .= "_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS["we_doc"]->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');";
+			$_jsCommand .= "_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');";
 			//	JavaScript: generated in we_editor.inc.php
-			$_jsCommand .= (isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "" );
+			$_jsCommand .= (isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : "" );
 		}
 
 		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){
@@ -178,7 +178,7 @@ if($we_responseText) {
         $_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType);
 
 		//	JavaScript: generated in we_editor.inc.php
-		$_jsCommand .= (isset($_REQUEST["we_cmd"][5]) ? $_REQUEST["we_cmd"][5] : "" );
+		$_jsCommand .= (isset($_REQUEST['we_cmd'][5]) ? $_REQUEST['we_cmd'][5] : "" );
 	}
 	print $_jsCommand;
 

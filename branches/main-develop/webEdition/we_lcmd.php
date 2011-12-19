@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 ?>
 <script  type="text/javascript">
@@ -31,13 +31,13 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 self.focus();
 <?php
 if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
-	$_REQUEST["we_cmd"][0] = $_REQUEST["wecmd0"];
+	$_REQUEST['we_cmd'][0] = $_REQUEST["wecmd0"];
 }
-foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
+foreach ($_REQUEST['we_cmd'] as $cmdkey => &$cmdvalue){
     $cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
 }
 
-	switch($_REQUEST["we_cmd"][0]){
+	switch($_REQUEST['we_cmd'][0]){
 		case "trigger_save_document":
 			print 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
@@ -139,22 +139,22 @@ foreach ($_REQUEST["we_cmd"] as $cmdkey => &$cmdvalue){
 
 		default:
 
-			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST["we_cmd"][0],$regs)){
+			if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0],$regs)){
 				$dt = $regs[1];
 				print 'top.we_cmd("new","'.FILE_TABLE.'","","text/webedition","'.$dt.'");'."\n";
 				break;
-			}else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST["we_cmd"][0], $regs)){
+			}else if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 				$clID = $regs[1];
 				print 'top.we_cmd("new","'.OBJECT_FILES_TABLE.'","","objectFile","'.$clID.'");'."\n";
 				break;
 			}
 			$str = "setTimeout(\"top.we_cmd(";
-			for($i=0;$i<sizeof($_REQUEST["we_cmd"]);$i++){
+			for($i=0;$i<sizeof($_REQUEST['we_cmd']);$i++){
 
-				$val = str_replace("'","\\'", $_REQUEST["we_cmd"][$i]);
+				$val = str_replace("'","\\'", $_REQUEST['we_cmd'][$i]);
 				$val = str_replace("\"","\\\"", $val);
 
-				$str .= "'".$val."'".(($i<(sizeof($_REQUEST["we_cmd"])-1)) ? "," : "");
+				$str .= "'".$val."'".(($i<(sizeof($_REQUEST['we_cmd'])-1)) ? "," : "");
 			}
 			$str .= ")\",50);\n";
 			print $str;

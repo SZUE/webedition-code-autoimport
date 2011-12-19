@@ -22,11 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 we_html_tools::protect();
 
-list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", $_REQUEST["we_cmd"][1]);
+list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", $_REQUEST['we_cmd'][1]);
 
 $parts = array();
 $jsCode = "
@@ -176,10 +176,10 @@ $delallbut = we_button::create_button(
 		"",
 		(count($users)) ? false : true);
 
-//javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST["we_cmd"][0] . "\\'].addUserToField()','','',1);
-$wecmdenc1= we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST["we_cmd"][0] . "'].document.forms[0].elements['UserIDTmp'].value");
-$wecmdenc2= we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST["we_cmd"][0] . "'].document.forms[0].elements['UserNameTmp'].value");
-$wecmdenc5= we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST["we_cmd"][0] . "'].addUserToField();");
+//javascript:opener.getUser('browse_users','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].document.forms[0].elements[\\'UserIDTmp\\'].value','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].document.forms[0].elements[\\'UserNameTmp\\'].value','','','opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\\'" . $_REQUEST['we_cmd'][0] . "\\'].addUserToField()','','',1);
+$wecmdenc1= we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserIDTmp'].value");
+$wecmdenc2= we_cmd_enc("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].document.forms[0].elements['UserNameTmp'].value");
+$wecmdenc5= we_cmd_enc("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $_REQUEST['we_cmd'][0] . "'].addUserToField();");
 $addbut = we_button::create_button(
 		"add",
 		"javascript:opener.getUser('browse_users','".$wecmdenc1."','".$wecmdenc2."','','','".$wecmdenc5."','','',1);");

@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $yuiSuggest = & weSuggest::getInstance();
 
-if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
+if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 
 	$js = 'self.focus();
 
@@ -145,13 +145,13 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 
 		$content .= we_htmlElement::htmlHidden(
 				array(
-					"name" => "we_cmd[0]", "value" => $_REQUEST["we_cmd"][0]
+					"name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0]
 			)) . we_htmlElement::htmlHidden(array(
-				"name" => "we_cmd[1]", "value" => $_REQUEST["we_cmd"][1]
+				"name" => "we_cmd[1]", "value" => $_REQUEST['we_cmd'][1]
 			)) . we_htmlElement::htmlHidden(array(
-				"name" => "we_cmd[2]", "value" => $_REQUEST["we_cmd"][2]
-			)) . (isset($_REQUEST["we_cmd"][4]) ? we_htmlElement::htmlHidden(array(
-					"name" => "we_cmd[4]", "value" => $_REQUEST["we_cmd"][4]
+				"name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2]
+			)) . (isset($_REQUEST['we_cmd'][4]) ? we_htmlElement::htmlHidden(array(
+					"name" => "we_cmd[4]", "value" => $_REQUEST['we_cmd'][4]
 				)) : '');
 	} else{
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_forms::checkbox(
@@ -166,13 +166,13 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
 					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_htmlElement::htmlBr() . copyFolderFrag::formCreateCategoryChooser() . we_htmlElement::htmlHidden(
 				array(
-					"name" => "we_cmd[0]", "value" => $_REQUEST["we_cmd"][0]
+					"name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0]
 			)) . we_htmlElement::htmlHidden(array(
-				"name" => "we_cmd[1]", "value" => $_REQUEST["we_cmd"][1]
+				"name" => "we_cmd[1]", "value" => $_REQUEST['we_cmd'][1]
 			)) . we_htmlElement::htmlHidden(array(
-				"name" => "we_cmd[2]", "value" => $_REQUEST["we_cmd"][2]
-			)) . (isset($_REQUEST["we_cmd"][4]) ? we_htmlElement::htmlHidden(array(
-					"name" => "we_cmd[4]", "value" => $_REQUEST["we_cmd"][4]
+				"name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2]
+			)) . (isset($_REQUEST['we_cmd'][4]) ? we_htmlElement::htmlHidden(array(
+					"name" => "we_cmd[4]", "value" => $_REQUEST['we_cmd'][4]
 				)) : '') . '</td></tr></table>';
 	}
 	copyFolderFrag::printHeader();
@@ -182,7 +182,7 @@ if(isset($_REQUEST["we_cmd"][3]) && $_REQUEST["we_cmd"][3]){
 	print
 		we_html_tools::htmlDialogLayout(
 			$content, g_l('copyFolder', "[headline]") . ": " . shortenPath(
-				id_to_path($_REQUEST["we_cmd"][1]), 46), $buttons);
+				id_to_path($_REQUEST['we_cmd'][1]), 46), $buttons);
 
 	print '</form>';
 	print '<iframe frameborder="0" src="about:blank" name="pbUpdateFrame" width="0" height="0" id="pbUpdateFrame"></iframe>';

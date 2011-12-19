@@ -23,7 +23,7 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/conf/we_conf_language.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+//include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 /*
 	This array stores listviews
@@ -136,9 +136,9 @@ abstract class listviewBase{
 
 	function getIdQuery($fieldname) {
 		if ($this->id) {
-			return " AND $fieldname IN(".$this->id.") ";
+			return ' AND $fieldname IN('.$this->id.') ';
 		}
-		return "";
+		return '';
 	}
 
 	/**
@@ -323,11 +323,7 @@ abstract class listviewBase{
 
 	function we_makeQueryString($queryString='',$filter='') {
 		$usedKeys = array();
-		if($filter){
-		    $filterArr = explode(',',$filter);
-		} else {
-		    $filterArr = array();
-		}
+		$filterArr = ($filter ? explode(',',$filter) : array());
 		array_push($filterArr,'edit_object');
 		array_push($filterArr,'edit_document');
 		array_push($filterArr,'we_editObject_ID');
@@ -344,21 +340,8 @@ abstract class listviewBase{
 			$queryString = rtrim($queryString,'&');
 		}
 		$url_tail = '';
-		if(isset($_GET)) {
-			foreach($_GET as $key => $val){
-				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (strpos($key,"we_ui_")!==0)) {
-					if (is_array($val)) {
-						foreach($val as $ikey => $ival){
-							$url_tail .= "$key"."[".$ikey."]=". rawurlencode($ival) ."&";
-						}
-					} else {
-						$url_tail .= "$key=".rawurlencode($val)."&";
-					}
-				}
-			}
-		}
-		if(isset($_POST)) {
-			foreach($_POST as $key => $val){
+		if(isset($_REQUEST)) {
+			foreach($_REQUEST as $key => $val){
 				if ((!in_array($key,$usedKeys)) && (!in_array($key,$filterArr)) && (strpos($key,"we_ui_")!==0)) {
 					if (is_array($val)) {
 						foreach($val as $ikey => $ival){
@@ -456,7 +439,6 @@ abstract class listviewBase{
 
 	function shouldPrintEndTR(){
 		if($this->cols){
-			//return ( (($this->count) % $this->cols) == 0) || ($this->count == $this->anz);
 			return (($this->count % $this->cols) == 0);
 		}
 		return false;
@@ -520,7 +502,7 @@ abstract class listviewBase{
 		}
 
 
-		return "<?php $out?>";
+		return '<?php '.$out.' ?>';
 
 	}
 

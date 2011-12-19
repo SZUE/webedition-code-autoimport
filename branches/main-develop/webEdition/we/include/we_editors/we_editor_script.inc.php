@@ -59,8 +59,8 @@ if (isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview") {
 
 echo we_htmlElement::jsScript(JS_DIR.'we_textarea.js');
 
-if (isset($GLOBALS["we_doc"])) {
-	echo we_htmlElement::jsScript(JS_DIR.'seeMode.php?EditPage='.$GLOBALS["we_doc"]->EditPageNr.'&ContentType='.$GLOBALS["we_doc"]->ContentType);
+if (isset($GLOBALS['we_doc'])) {
+	echo we_htmlElement::jsScript(JS_DIR.'seeMode.php?EditPage='.$GLOBALS['we_doc']->EditPageNr.'&ContentType='.$GLOBALS['we_doc']->ContentType);
 } ?>
 <script  type="text/javascript">
 
@@ -82,9 +82,9 @@ if (!_EditorFrame) {
 }
 
 
-<?php if (isset($GLOBALS["we_doc"])) {
-if (isset($GLOBALS["we_doc"]->ApplyWeDocumentCustomerFiltersToChilds) && $GLOBALS["we_doc"]->ApplyWeDocumentCustomerFiltersToChilds) {
-	print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS["we_doc"]->ID . "', '" . $GLOBALS["we_doc"]->Table . "', '" . $GLOBALS["we_doc"]->ParentID . "');";
+<?php if (isset($GLOBALS['we_doc'])) {
+if (isset($GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds) && $GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds) {
+	print "top.we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "', '" . $GLOBALS['we_doc']->ParentID . "');";
 }
 
 ?>
@@ -97,7 +97,7 @@ var ajaxCallback = {
 				eval( o.responseText );
 				if ( weResponse ) {
 					if (weResponse["data"] == "true") {
-						_question = "<?php print ($GLOBALS["we_doc"]->IsFolder ? g_l('alert','[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
+						_question = "<?php print ($GLOBALS['we_doc']->IsFolder ? g_l('alert','[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert','[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
 						if ( confirm(_question) ) {
 							top.we_cmd("applyWeDocumentCustomerFilterFromFolder");
 
@@ -112,12 +112,12 @@ var ajaxCallback = {
 	}
 }
 
-var _oldparentid = <?php print $GLOBALS["we_doc"]->ParentID; ?>;
+var _oldparentid = <?php print $GLOBALS['we_doc']->ParentID; ?>;
 function updateCustomerFilterIfNeeded() {
-	if (_elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_ParentID"]) {
+	if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentID"]) {
 		_parentid = _elem.value;
 		if ( _parentid != _oldparentid ) {
-			top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"])) print $_REQUEST["we_transaction"]; ?>&table=<?php print $GLOBALS["we_doc"]->Table; ?>&classname=<?php print $GLOBALS["we_doc"]->ClassName; ?>', ajaxCallback );
+			top.YAHOO.util.Connect.asyncRequest( 'GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=<?php if(isset($_REQUEST["we_transaction"])) print $_REQUEST["we_transaction"]; ?>&table=<?php print $GLOBALS['we_doc']->Table; ?>&classname=<?php print $GLOBALS['we_doc']->ClassName; ?>', ajaxCallback );
 			_oldparentid = _parentid;
 		}
 	}
@@ -132,9 +132,9 @@ function pathOfDocumentChanged() {
 	var _filepath = '';
 	var elem = false;
 
-	elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Filename"]; // documents
+	elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Filename"]; // documents
 	if (!elem) { // object
-		elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Text"]
+		elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Text"]
 	}
 
 	if (elem) {
@@ -142,12 +142,12 @@ function pathOfDocumentChanged() {
 		// text
 		_filetext = elem.value;
 		// Extension if there
-		if (document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Extension"]) {
-			_filetext += document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_Extension"].value;
+		if (document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"]) {
+			_filetext += document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_Extension"].value;
 		}
 
 		// path
-		if (_elem = document.we_form["we_<?php print $GLOBALS["we_doc"]->Name; ?>_ParentPath"]) {
+		if (_elem = document.we_form["we_<?php print $GLOBALS['we_doc']->Name; ?>_ParentPath"]) {
 			_filepath = _elem.value;
 		}
 		if (_filepath != "/") {
@@ -157,7 +157,7 @@ function pathOfDocumentChanged() {
 		_filepath += _filetext;
 		parent.frames[0].we_setPath(_filepath, _filetext, -1);
 		<?php
-			if ( defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS["we_doc"]->EditPageNrs) && isset($GLOBALS["we_doc"]->documentCustomerFilter) ) {
+			if ( defined("CUSTOMER_TABLE") && in_array(WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter) ) {
 				// only use this when customer filters are possible
 		?>
 		updateCustomerFilterIfNeeded();
@@ -363,11 +363,11 @@ function we_cmd(){
 
 <?php } ?>
 		case "image_crop":
-<?php if(defined("WE_EDIT_IMAGE") && $GLOBALS["we_doc"]->gd_support()) { ?>
+<?php if(defined("WE_EDIT_IMAGE") && $GLOBALS['we_doc']->gd_support()) { ?>
 			CropTool.crop();
 <?php } else if(defined("WE_EDIT_IMAGE")) {
 
-			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$GLOBALS["we_doc"]->getGDType().']')), we_message_reporting::WE_MESSAGE_ERROR);
+			print we_message_reporting::getShowMessageCall(sprintf(g_l('weClass',"[type_not_supported_hint]"),g_l('weClass','[convert_'.$GLOBALS['we_doc']->getGDType().']')), we_message_reporting::WE_MESSAGE_ERROR);
 	  } ?>
 		break;
 		case "crop_cancel":

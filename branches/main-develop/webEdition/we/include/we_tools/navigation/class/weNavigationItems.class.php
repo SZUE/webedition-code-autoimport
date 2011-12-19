@@ -201,8 +201,8 @@ class weNavigationItem{
 			}
 		}
 
-		if(isset($GLOBALS["we_obj"]) && $this->table == OBJECT_FILES_TABLE){
-			$id = $GLOBALS["we_obj"]->ID;
+		if(isset($GLOBALS['we_obj']) && $this->table == OBJECT_FILES_TABLE){
+			$id = $GLOBALS['we_obj']->ID;
 		} else
 		if(isset($GLOBALS["WE_MAIN_DOC"]) && (!isset($GLOBALS["WE_MAIN_DOC"]->TableID)) && $this->table == FILE_TABLE){
 			$id = $GLOBALS["WE_MAIN_DOC"]->ID;
@@ -758,7 +758,7 @@ class weNavigationItems{
 		$_curr_len = 0;
 		$_ponder = 0;
 
-		$_isObject = (isset($GLOBALS["we_obj"]) && isset($GLOBALS["WE_MAIN_DOC"]->TableID) && $GLOBALS["WE_MAIN_DOC"]->TableID);
+		$_isObject = (isset($GLOBALS['we_obj']) && isset($GLOBALS["WE_MAIN_DOC"]->TableID) && $GLOBALS["WE_MAIN_DOC"]->TableID);
 
 		if(isset($GLOBALS['WE_MAIN_DOC'])){
 

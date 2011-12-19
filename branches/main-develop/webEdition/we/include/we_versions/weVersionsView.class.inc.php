@@ -954,23 +954,23 @@ class weVersionsView
 			10 => 10, 25 => 25, 50 => 50, 100 => 100
 		);
 
-		if (isset($_REQUEST["we_cmd"]['order'])) {
-			$order = $_REQUEST["we_cmd"]['order'];
+		if (isset($_REQUEST['we_cmd']['order'])) {
+			$order = $_REQUEST['we_cmd']['order'];
 		} else {
 			$order = $this->searchclass->order;
 		}
-		if (isset($_REQUEST["we_cmd"]['mode'])) {
-			$mode = $_REQUEST["we_cmd"]['mode'];
+		if (isset($_REQUEST['we_cmd']['mode'])) {
+			$mode = $_REQUEST['we_cmd']['mode'];
 		} else {
 			$mode = $this->searchclass->mode;
 		}
-		if (isset($_REQUEST["we_cmd"]['height'])) {
-			$height = $_REQUEST["we_cmd"]['height'];
+		if (isset($_REQUEST['we_cmd']['height'])) {
+			$height = $_REQUEST['we_cmd']['height'];
 		} else {
 			$height = $this->searchclass->height;
 		}
-		if (isset($_REQUEST["we_cmd"]['anzahl'])) {
-			$_anzahl = $_REQUEST["we_cmd"]['anzahl'];
+		if (isset($_REQUEST['we_cmd']['anzahl'])) {
+			$_anzahl = $_REQUEST['we_cmd']['anzahl'];
 		} else {
 			$_anzahl = $this->searchclass->anzahl;
 		}
@@ -1070,7 +1070,7 @@ class weVersionsView
 	function getNextPrev($we_search_anzahl)
 	{
 
-		if (isset($_REQUEST["we_cmd"]['obj'])) {
+		if (isset($_REQUEST['we_cmd']['obj'])) {
 			$thisObj = new weVersionsView();
 			$anzahl = $_SESSION['Versions']['anzahl'];
 			$searchstart = $_SESSION['Versions']['searchstart'];
@@ -1145,7 +1145,7 @@ class weVersionsView
 
 		$DB_WE = new DB_WE();
 
-		if (isset($_REQUEST["we_cmd"]['obj'])) {
+		if (isset($_REQUEST['we_cmd']['obj'])) {
 			$thisObj = new weVersionsView();
 		} else {
 			$obj = $GLOBALS['we_doc'];
@@ -1162,8 +1162,8 @@ class weVersionsView
 			$table = $GLOBALS['we_doc']->Table;
 		}
 
-		if (isset($_REQUEST["we_cmd"]['order'])) {
-			$_order = $_REQUEST["we_cmd"]['order'];
+		if (isset($_REQUEST['we_cmd']['order'])) {
+			$_order = $_REQUEST['we_cmd']['order'];
 		} else {
 			$_order = $thisObj->searchclass->order;
 		}

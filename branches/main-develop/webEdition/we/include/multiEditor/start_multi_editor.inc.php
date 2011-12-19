@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 /**
@@ -68,8 +68,8 @@ $jsCommand = _buildJsCommand();
 if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] == 'SEEM_edit_include' ){ // Edit-Include-Mode
 	// in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
-	for ($i=1;$i<sizeof($_REQUEST["we_cmd"]) && $i<4; $i++) {
-		$directCmd[] = $_REQUEST["we_cmd"][$i];
+	for ($i=1;$i<sizeof($_REQUEST['we_cmd']) && $i<4; $i++) {
+		$directCmd[] = $_REQUEST['we_cmd'][$i];
 	}
 	$jsCommand = _buildJsCommand($directCmd);
 

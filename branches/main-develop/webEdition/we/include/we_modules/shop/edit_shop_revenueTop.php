@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WEBEDITION_INCLUDES_DIR."we_modules/shop/we_pager_class.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/util/Strings.php');
 

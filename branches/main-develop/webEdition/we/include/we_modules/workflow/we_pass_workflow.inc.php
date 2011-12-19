@@ -102,7 +102,7 @@ $frame = we_html_tools::htmlDialogLayout($content,g_l('modules_workflow','[pass_
 print $frame;
 
 print '	<input type="hidden" name="cmd" value="ok" />
-		<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'" />
+		<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST['we_cmd'][0].'" />
 		<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />';
 ?>
 </form>

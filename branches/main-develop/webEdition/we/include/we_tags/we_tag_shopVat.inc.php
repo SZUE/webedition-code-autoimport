@@ -60,15 +60,15 @@ function we_tag_shopVat($attribs,$content) {
 		}
 
 		$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
-		$val = htmlspecialchars(isset($GLOBALS["we_doc"]->elements[$name]["dat"]) ? $GLOBALS["we_doc"]->getElement($name) : $standardId);
+		$val = htmlspecialchars(isset($GLOBALS['we_doc']->elements[$name]["dat"]) ? $GLOBALS['we_doc']->getElement($name) : $standardId);
 
 		// use a defined name for this...
 		if ($GLOBALS['we_editmode']) {
 
 			switch ($type) {
 				default:
-					$fieldname = 'we_'.$GLOBALS["we_doc"]->Name.'_txt['.$name.']';
-					return $GLOBALS["we_doc"]->htmlSelect($fieldname, $values, 1, $val);
+					$fieldname = 'we_'.$GLOBALS['we_doc']->Name.'_txt['.$name.']';
+					return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
 				break;
 			}
 

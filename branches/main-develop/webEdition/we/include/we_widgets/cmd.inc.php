@@ -21,18 +21,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 	case "save" :
-		setUserPref("cockpit_dat", $_REQUEST["we_cmd"][1]);
+		setUserPref("cockpit_dat", $_REQUEST['we_cmd'][1]);
 		break;
 	case "add" :
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
 
 		$aProps = array();
-		$aProps[0] = $_REQUEST["we_cmd"][1];
+		$aProps[0] = $_REQUEST['we_cmd'][1];
 		$aProps[1] = $aPrefs[$aProps[0]]["cls"];
 		$aProps[2] = $aPrefs[$aProps[0]]["res"];
 		$aProps[3] = $aPrefs[$aProps[0]]["csv"];
@@ -44,7 +44,7 @@ switch ($_REQUEST["we_cmd"][0]) {
 				}
 			}
 		}
-		$iCurrId = str_replace('m_', '', $_REQUEST["we_cmd"][2]);
+		$iCurrId = str_replace('m_', '', $_REQUEST['we_cmd'][2]);
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if ($aProps[0] != 'rss' && $aProps[0] != 'pad') {
 			if ($aProps[0] == "msg")

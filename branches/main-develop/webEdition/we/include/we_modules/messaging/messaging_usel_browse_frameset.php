@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 
 
@@ -283,7 +283,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 
     function readChilds($pid){
           $db_temp=new DB_WE();
-          $db_temp->query("SELECT ID,username,ParentID,Type,Permissions FROM ".USER_TABLE." WHERE  ParentID='".abs($pid)."' ORDER BY username ASC");
+          $db_temp->query("SELECT ID,username,ParentID,Type,Permissions FROM ".USER_TABLE." WHERE  ParentID=".intval($pid)." ORDER BY username ASC");
           while($db_temp->next_record()){
               $GLOBALS['entries'][$db_temp->f("ID")]["username"]=$db_temp->f("username");
               $GLOBALS['entries'][$db_temp->f("ID")]["ParentID"]=$db_temp->f("ParentID");

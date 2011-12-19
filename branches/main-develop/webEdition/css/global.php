@@ -27,7 +27,7 @@ header("Content-Type: text/css");
 $show_stylesheet = true;
 
 // Activate the webEdition error handler
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
 $brDetect = new we_base_browserDetect();
 

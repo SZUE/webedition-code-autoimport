@@ -952,8 +952,8 @@ class doclistView {
 			}
 		}
 
-		if (isset ( $_REQUEST ["we_cmd"] ['obj'] )) {
-			$obj = $_REQUEST ["we_cmd"] ['obj'];
+		if (isset ( $_REQUEST ['we_cmd'] ['obj'] )) {
+			$obj = $_REQUEST ['we_cmd'] ['obj'];
 			$thisObj = new doclistView ( );
 		} else {
 			$obj = $GLOBALS ['we_doc'];
@@ -966,38 +966,38 @@ class doclistView {
 
 		$_table = FILE_TABLE;
 
-		if (isset ( $_REQUEST ["we_cmd"] ['searchFields'] )) {
-			$searchFields = $_REQUEST ["we_cmd"] ['searchFields'];
+		if (isset ( $_REQUEST ['we_cmd'] ['searchFields'] )) {
+			$searchFields = $_REQUEST ['we_cmd'] ['searchFields'];
 		} else {
 			$searchFields = $obj->searchclassFolder->searchFields;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['search'] )) {
-			$searchText = $_REQUEST ["we_cmd"] ['search'];
+		if (isset ( $_REQUEST ['we_cmd'] ['search'] )) {
+			$searchText = $_REQUEST ['we_cmd'] ['search'];
 		} else {
 			$searchText = $obj->searchclassFolder->search;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['location'] )) {
-			$location = $_REQUEST ["we_cmd"] ['location'];
+		if (isset ( $_REQUEST ['we_cmd'] ['location'] )) {
+			$location = $_REQUEST ['we_cmd'] ['location'];
 		} else {
 			$location = $obj->searchclassFolder->location;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['order'] )) {
-			$_order = $_REQUEST ["we_cmd"] ['order'];
+		if (isset ( $_REQUEST ['we_cmd'] ['order'] )) {
+			$_order = $_REQUEST ['we_cmd'] ['order'];
 		} else {
 			$_order = $obj->searchclassFolder->order;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['setView'] )) {
-			$_view = $_REQUEST ["we_cmd"] ['setView'];
+		if (isset ( $_REQUEST ['we_cmd'] ['setView'] )) {
+			$_view = $_REQUEST ['we_cmd'] ['setView'];
 		} else {
 			$_view = $obj->searchclassFolder->setView;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['searchstart'] )) {
-			$_searchstart = $_REQUEST ["we_cmd"] ['searchstart'];
+		if (isset ( $_REQUEST ['we_cmd'] ['searchstart'] )) {
+			$_searchstart = $_REQUEST ['we_cmd'] ['searchstart'];
 		} else {
 			$_searchstart = $obj->searchclassFolder->searchstart;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['anzahl'] )) {
-			$_anzahl = $_REQUEST ["we_cmd"] ['anzahl'];
+		if (isset ( $_REQUEST ['we_cmd'] ['anzahl'] )) {
+			$_anzahl = $_REQUEST ['we_cmd'] ['anzahl'];
 		} else {
 			$_anzahl = $obj->searchclassFolder->anzahl;
 		}
@@ -1268,7 +1268,7 @@ class doclistView {
 					}
 					$templateText = g_l('searchtool',"[no_template]");
 					if ($templateID != "") {
-						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = ".abs($templateID)."";
+						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = ".intval($templateID);
 						$DB_WE->query ( $sql );
 						while ( $DB_WE->next_record () ) {
 							$templateText = shortenPath ( $DB_WE->f ( 'Text' ), 20 ) . " (ID=" . $DB_WE->f ( 'ID' ) . ")";
@@ -1287,7 +1287,7 @@ class doclistView {
 					$_tagName = $_defined_fields [$i] ["tag"];
 
 					if (weContentProvider::IsBinary ( $_result [$f] ["docID"] )) {
-						$DB_WE->query ( "SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result [$f] ["docID"]) . "' AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'" );
+						$DB_WE->query ( "SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f] ["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'" );
 						$metafields [$_tagName] = "";
 						while ( $DB_WE->next_record () ) {
 							$metafields [$_tagName] = shortenPath ( $DB_WE->f ( 'Dat' ), 45 );
@@ -1328,29 +1328,29 @@ class doclistView {
 
 		$anzahl = array (10 => 10, 25 => 25, 50 => 50, 100 => 100 );
 
-		if (isset ( $_REQUEST ["we_cmd"] ['obj'] )) {
+		if (isset ( $_REQUEST ['we_cmd'] ['obj'] )) {
 			$thisObj = new doclistView ( );
 		} else {
 			$thisObj = $this;
 		}
 
-		if (isset ( $_REQUEST ["we_cmd"] ['order'] )) {
-			$order = $_REQUEST ["we_cmd"] ['order'];
+		if (isset ( $_REQUEST ['we_cmd'] ['order'] )) {
+			$order = $_REQUEST ['we_cmd'] ['order'];
 		} else {
 			$order = $GLOBALS ['we_doc']->searchclassFolder->order;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['mode'] )) {
-			$mode = $_REQUEST ["we_cmd"] ['mode'];
+		if (isset ( $_REQUEST ['we_cmd'] ['mode'] )) {
+			$mode = $_REQUEST ['we_cmd'] ['mode'];
 		} else {
 			$mode = $GLOBALS ['we_doc']->searchclassFolder->mode;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['setView'] )) {
-			$setView = $_REQUEST ["we_cmd"] ['setView'];
+		if (isset ( $_REQUEST ['we_cmd'] ['setView'] )) {
+			$setView = $_REQUEST ['we_cmd'] ['setView'];
 		} else {
 			$setView = $GLOBALS ['we_doc']->searchclassFolder->setView;
 		}
-		if (isset ( $_REQUEST ["we_cmd"] ['anzahl'] )) {
-			$_anzahl = $_REQUEST ["we_cmd"] ['anzahl'];
+		if (isset ( $_REQUEST ['we_cmd'] ['anzahl'] )) {
+			$_anzahl = $_REQUEST ['we_cmd'] ['anzahl'];
 		} else {
 			$_anzahl = $GLOBALS ['we_doc']->searchclassFolder->anzahl;
 		}
@@ -1399,7 +1399,7 @@ class doclistView {
 	}
 
 	function getSearchParameterBottom($foundItems) {
-		$thisObj = (isset ( $_REQUEST ["we_cmd"] ['obj'] ) ? new doclistView () : $this);
+		$thisObj = (isset ( $_REQUEST ['we_cmd'] ['obj'] ) ? new doclistView () : $this);
 
 		$publishButton = "";
          $publishButtonCheckboxAll = "";
@@ -1427,8 +1427,8 @@ class doclistView {
 	 */
 	function getNextPrev($we_search_anzahl) {
 
-		if (isset ( $_REQUEST ["we_cmd"] ['obj'] )) {
-			$obj = $_REQUEST ["we_cmd"] ['obj'];
+		if (isset ( $_REQUEST ['we_cmd'] ['obj'] )) {
+			$obj = $_REQUEST ['we_cmd'] ['obj'];
 			$anzahl = $_SESSION ['weSearch'] ['anzahl'];
 			$searchstart = $_SESSION ['weSearch'] ['searchstart'];
 		} else {

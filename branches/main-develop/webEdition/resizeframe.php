@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
@@ -87,8 +87,8 @@ function startEditIncludeMode(){
 
 	$we_cmds = "we_cmd[0]=edit_document&";
 
-    for($i=1; $i<sizeof($_REQUEST["we_cmd"]); $i++){
-    	$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST["we_cmd"][$i] . "&";
+    for($i=1; $i<sizeof($_REQUEST['we_cmd']); $i++){
+    	$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
 	}
 
 	if($GLOBALS["BROWSER"]== "NN"){

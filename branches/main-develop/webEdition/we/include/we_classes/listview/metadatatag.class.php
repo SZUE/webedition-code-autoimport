@@ -38,9 +38,9 @@ class metadatatag{
 			$unique = md5(uniqid(rand()));
 			if (!isset($GLOBALS["lv"])) {
 				// determine the id of the element
-				$_value = $GLOBALS["we_doc"]->getElement($name,"bdid");
+				$_value = $GLOBALS['we_doc']->getElement($name,"bdid");
 				if (!$_value) {
-					$_value = $GLOBALS["we_doc"]->getElement($name);
+					$_value = $GLOBALS['we_doc']->getElement($name);
 				}
 			} else {
 				$_value = $GLOBALS["lv"]->f($name);

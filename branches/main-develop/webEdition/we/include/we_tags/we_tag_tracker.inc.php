@@ -23,13 +23,13 @@
  */
 
 function we_tag_tracker($attribs, $content){
-	if ($GLOBALS["we_doc"]->InWebEdition) {
+	if ($GLOBALS['we_doc']->InWebEdition) {
 		return "";
 	}
 	if (!defined("WE_TRACKER_DIR")) {
 		define("WE_TRACKER_DIR", "/pageLogger");
 	}
-	if(!is_dir($_SERVER["DOCUMENT_ROOT"].WE_TRACKER_DIR)){
+	if(!is_dir($_SERVER['DOCUMENT_ROOT'].WE_TRACKER_DIR)){
 		t_e('pagelogger not installed, but we:pagelogger called');
 		return '';
 	}

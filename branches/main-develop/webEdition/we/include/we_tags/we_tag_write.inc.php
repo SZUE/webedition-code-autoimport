@@ -113,8 +113,8 @@ function we_tag_write($attribs, $content){
 				if ($objname=='') {
 					$GLOBALS["we_$type"][$name]->i_correctDoublePath();
 				}
-				if(isset($GLOBALS["we_doc"])){$_WE_DOC_SAVE = $GLOBALS["we_doc"];}
-				$GLOBALS["we_doc"] = &$GLOBALS["we_$type"][$name];
+				if(isset($GLOBALS['we_doc'])){$_WE_DOC_SAVE = $GLOBALS['we_doc'];}
+				$GLOBALS['we_doc'] = &$GLOBALS["we_$type"][$name];
 				if (strlen($workspaces) > 0 && $type == "object") {
 					$wsArr = makeArrayFromCSV($workspaces);
 					$tmplArray = array();
@@ -182,8 +182,8 @@ function we_tag_write($attribs, $content){
 					$GLOBALS["we_$type"][$name]->we_save();
 					if ($publish) {
 						if ($type == "document" && (!$GLOBALS["we_$type"][$name]->IsDynamic) && isset(
-								$GLOBALS["we_doc"])) { // on static HTML Documents we have to do it different
-							$GLOBALS["we_doc"]->we_publish();
+								$GLOBALS['we_doc'])) { // on static HTML Documents we have to do it different
+							$GLOBALS['we_doc']->we_publish();
 						} else {
 							$GLOBALS["we_$type"][$name]->we_publish();
 						}
@@ -193,19 +193,19 @@ function we_tag_write($attribs, $content){
 					include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 					$workflowID = weWorkflowUtility::getWorkflowID($workflowname);
 					$wf_text = "we:write ".$workflowname."  " ;
-					if($GLOBALS["we_doc"]->Table==FILE_TABLE) {
-						$wf_text .= "we_object ID: " . $GLOBALS["we_doc"]->ID;
+					if($GLOBALS['we_doc']->Table==FILE_TABLE) {
+						$wf_text .= "we_object ID: " . $GLOBALS['we_doc']->ID;
 					} else {
-						$wf_text .= "we_document ID: ".$GLOBALS["we_doc"]->ID ;
+						$wf_text .= "we_document ID: ".$GLOBALS['we_doc']->ID ;
 					}
-					if(weWorkflowUtility::insertDocInWorkflow($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table,$workflowID,$workflowuserid,$wf_text)){
+					if(weWorkflowUtility::insertDocInWorkflow($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table,$workflowID,$workflowuserid,$wf_text)){
 					}
 
 				}
 
-				unset($GLOBALS["we_doc"]);
+				unset($GLOBALS['we_doc']);
 				if(isset($_WE_DOC_SAVE)){
-					$GLOBALS["we_doc"] = $_WE_DOC_SAVE;
+					$GLOBALS['we_doc'] = $_WE_DOC_SAVE;
 					unset($_WE_DOC_SAVE);
 				}
 				$_REQUEST["we_returnpage"] = $GLOBALS["we_$type"][$name]->getElement("we_returnpage");

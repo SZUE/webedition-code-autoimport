@@ -22,12 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if(!isset($_REQUEST["we_cmd"])){
+if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
-//if($_REQUEST["we_cmd"][0] != "show" && $_REQUEST["we_cmd"][0] != "getWeDocFromID"){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+//if($_REQUEST['we_cmd'][0] != "show" && $_REQUEST['we_cmd'][0] != "getWeDocFromID"){
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 //}
 
 /*include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
@@ -47,7 +47,7 @@ if(isset($_we_active_integrated_modules)){
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 
 if(!$INCLUDE){
-	switch($_REQUEST["we_cmd"][0]){
+	switch($_REQUEST['we_cmd'][0]){
 		case "versions_preview" :
 			$INCLUDE = "we_versions/weVersionsPreview.php";
 			break;
@@ -152,7 +152,7 @@ if(!$INCLUDE){
 		    $INCLUDE = "/we_seem/we_SEEM_openExtDoc_frameset.php";
 		    break;
         case "edit_document_with_parameters":
-    	    $parastr = $_REQUEST["we_cmd"][4];
+    	    $parastr = $_REQUEST['we_cmd'][4];
 		case "edit_document":
 		case "new_document":
 		case "new_folder":
@@ -238,11 +238,11 @@ if(!$INCLUDE){
 			$INCLUDE = "we_loadInfo.inc.php";
 			break;
 		case "delete":
-			if($_REQUEST["we_cmd"][1]) $INCLUDE = "we_delete.inc.php";
+			if($_REQUEST['we_cmd'][1]) $INCLUDE = "we_delete.inc.php";
 			else $INCLUDE = "home.inc.php";
 			break;
 		case "move":
-			if($_REQUEST["we_cmd"][1]) $INCLUDE = "we_move.inc.php";
+			if($_REQUEST['we_cmd'][1]) $INCLUDE = "we_move.inc.php";
 			else $INCLUDE = "home.inc.php";
 			break;
 		case "do_delete":
@@ -345,7 +345,7 @@ if(!$INCLUDE){
 
 			$foo = false;
 			foreach($_we_available_modules as $m){
-				if(isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "edit_".$m["name"]."_ifthere" && (!in_array($m["name"],$_we_active_integrated_modules))){
+				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "edit_".$m["name"]."_ifthere" && (!in_array($m["name"],$_we_active_integrated_modules))){
 
 					$foo = true;
 					//if ($m["integrated"]) {
@@ -367,7 +367,7 @@ if(!$INCLUDE){
 	parent.openedWithWE = 1;
 //-->
 </script>';
-                exit("command '" . $_REQUEST["we_cmd"][0] . "' not known!");
+                exit("command '" . $_REQUEST['we_cmd'][0] . "' not known!");
             }
 	}
 }
@@ -387,7 +387,7 @@ if($INCLUDE){
    		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/".$INCLUDE);
     }
     //  This statement prevents the page from being reloaded
-    if(!in_array($_REQUEST["we_cmd"][0], $cmds_no_js)){
+    if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
 
         print '<script type="text/javascript">
 <!--
@@ -396,7 +396,7 @@ if($INCLUDE){
 </script>';
     }
 
-    if ( $_REQUEST["we_cmd"][0] == "edit_document" || $_REQUEST["we_cmd"][0] == "switch_edit_page"  || $_REQUEST["we_cmd"][0] == "load_editor" ) {
+    if ( $_REQUEST['we_cmd'][0] == "edit_document" || $_REQUEST['we_cmd'][0] == "switch_edit_page"  || $_REQUEST['we_cmd'][0] == "load_editor" ) {
 
     	print we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js');
 

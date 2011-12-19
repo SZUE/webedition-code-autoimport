@@ -23,7 +23,7 @@
  */
 
 
-  include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+  include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 	if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
 		exit();

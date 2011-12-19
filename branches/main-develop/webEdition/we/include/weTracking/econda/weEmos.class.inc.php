@@ -46,8 +46,8 @@ class weEmos{
 		$this->emosJsFooter = isset($GLOBALS["weEconda"]) && isset($GLOBALS["weEconda"]["JS"]) ? $GLOBALS["weEconda"]["JS"] : "";
 		$this->emosHTMLFooter = isset($GLOBALS["weEconda"]) && isset($GLOBALS["weEconda"]["HTML"]) ? $GLOBALS["weEconda"]["HTML"] : "";
 /*
-		if (isset($GLOBALS["we_doc"]) && isset($GLOBALS["we_doc"]["Language"])) {
-			$this->emosHTMLFooter .= '<a name="emos_name" title="langid" rel="'.substr($GLOBALS["we_doc"]["Language"],0,2).'" rev=""></a>'."\n";
+		if (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']["Language"])) {
+			$this->emosHTMLFooter .= '<a name="emos_name" title="langid" rel="'.substr($GLOBALS['we_doc']["Language"],0,2).'" rev=""></a>'."\n";
 		}
 */
 		if (isset($_REQUEST['emosScontact']) && $_REQUEST['emosScontact'] != "") {
@@ -59,34 +59,34 @@ class weEmos{
 		if (isset($GLOBALS["weEconda"]["content"]["from"])) {
 			switch ($GLOBALS["weEconda"]["content"]["from"]){
 				case 'path':
-					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					break;
 				case 'navigation':
-					if(isset($GLOBALS["we_doc"]->NavigationItems) && $GLOBALS["we_doc"]->NavigationItems != "") {
-						$navItems = explode(",",$GLOBALS["we_doc"]->NavigationItems);
+					if(isset($GLOBALS['we_doc']->NavigationItems) && $GLOBALS['we_doc']->NavigationItems != "") {
+						$navItems = explode(",",$GLOBALS['we_doc']->NavigationItems);
 						$contentLabel = $navItems[1];
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
-						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					}
 					break;
 				case 'category':
-					if(isset($GLOBALS["we_doc"]->Category) && $GLOBALS["we_doc"]->Category != "") {
-						$catIds = explode(",",$GLOBALS["we_doc"]->Category);
+					if(isset($GLOBALS['we_doc']->Category) && $GLOBALS['we_doc']->Category != "") {
+						$catIds = explode(",",$GLOBALS['we_doc']->Category);
 						$contentLabel = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . abs($catIds[1]), "Path", $GLOBALS['DB_WE']);
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
-						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					}
 					break;
 				case 'input':
-//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					break;
 				case 'hidden':
-//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+//					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 					break;
 				default:
-					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS["we_doc"]->Path,1).'" rev=""></a>';
+					$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
 			}
 			$this->emosHTMLFooter .= "\n";
 		}

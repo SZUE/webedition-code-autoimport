@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 if(defined("WORKFLOW_TABLE")){
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 }
@@ -46,7 +46,7 @@ var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?ph
 
 _EditorFrame.setEditorIsHot(false);
 
-<?php print $GLOBALS["we_doc"]->getUpdateTreeScript(true); ?>
+<?php print $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
 
 _EditorFrame.getDocumentReference().frames[3].location.reload();
 
@@ -64,12 +64,12 @@ $parts = array();
 		'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ?  $GLOBALS['we_doc']->ID : "-") . '</div>';
 
 	$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[content_type]").'</div>' .
-		'<div style="margin-bottom:10px;">' . g_l('weEditorInfo','['.$GLOBALS["we_doc"]->ContentType.']') .'</div>';
+		'<div style="margin-bottom:10px;">' . g_l('weEditorInfo','['.$GLOBALS['we_doc']->ContentType.']') .'</div>';
 
 
 if($GLOBALS['we_doc']->ContentType != "folder"){
 
-	$fs = $GLOBALS["we_doc"]->getFilesize();
+	$fs = $GLOBALS['we_doc']->getFilesize();
 
 	$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[file_size]").'</div>' .
 		'<div style="margin-bottom:10px;">' . round(($fs / 1024),2)."&nbsp;KB&nbsp;(".$fs."&nbsp;Byte)" .'</div>';
@@ -85,13 +85,13 @@ array_push($parts, array(	"headline"=>"",
 if($GLOBALS['we_doc']->ContentType != "folder"){
 
 	$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[creation_date]").'</div>' .
-		'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo',"[date_format]"),$GLOBALS["we_doc"]->CreationDate) .'</div>';
+		'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo',"[date_format]"),$GLOBALS['we_doc']->CreationDate) .'</div>';
 
 
 
 
-	if($GLOBALS["we_doc"]->CreatorID){
-		$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=".abs($GLOBALS["we_doc"]->CreatorID));
+	if($GLOBALS['we_doc']->CreatorID){
+		$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=".abs($GLOBALS['we_doc']->CreatorID));
 		if ($GLOBALS['DB_WE']->next_record()) {
 			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('modules_users',"[created_by]").'</div>' .
 				'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First").' '.$GLOBALS['DB_WE']->f("Second").' ('.$GLOBALS['DB_WE']->f("username").')</div>';
@@ -99,11 +99,11 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 	}
 
 	$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[changed_date]").'</div>' .
-		'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo',"[date_format]"), $GLOBALS["we_doc"]->ModDate) .'</div>';
+		'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo',"[date_format]"), $GLOBALS['we_doc']->ModDate) .'</div>';
 
 
-	if($GLOBALS["we_doc"]->ModifierID){
-		$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=".abs($GLOBALS["we_doc"]->ModifierID));
+	if($GLOBALS['we_doc']->ModifierID){
+		$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=".abs($GLOBALS['we_doc']->ModifierID));
 		if ($GLOBALS['DB_WE']->next_record()) {
 			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('modules_users',"[changed_by]").'</div>' .
 				'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First").' '.$GLOBALS['DB_WE']->f("Second").' ('.$GLOBALS['DB_WE']->f("username").')</div>';
@@ -111,11 +111,11 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 		}
 	}
 
-	if($GLOBALS["we_doc"]->ContentType == "text/html" || $GLOBALS["we_doc"]->ContentType == "text/webedition"){
+	if($GLOBALS['we_doc']->ContentType == "text/html" || $GLOBALS['we_doc']->ContentType == "text/webedition"){
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[lastLive]").'</div>' .
 			'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo',"[date_format]"),$GLOBALS['we_doc']->Published) : "-") .'</div>';
 
-		if ($GLOBALS['we_doc']->Published && $GLOBALS["we_doc"]->ModDate > $GLOBALS['we_doc']->Published) {
+		if ($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published) {
 			$_html .= '<div style="margin-bottom:10px;">' . we_button::create_button('revert_published','javascript:revertToPublished();',true,280) .'</div>';
 		}
 
@@ -154,11 +154,11 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 							)
 				);
 	}
-	if(defined("WORKFLOW_TABLE") && $GLOBALS["we_doc"]->ContentType == "text/webedition"){
-		if(weWorkflowUtility::inWorkflow($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table)){
-			$anzeige = weWorkflowUtility::getDocumentStatusInfo($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table);
+	if(defined("WORKFLOW_TABLE") && $GLOBALS['we_doc']->ContentType == "text/webedition"){
+		if(weWorkflowUtility::inWorkflow($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table)){
+			$anzeige = weWorkflowUtility::getDocumentStatusInfo($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table);
 		}else{
-			$anzeige = weWorkflowUtility::getLogButton($GLOBALS["we_doc"]->ID,$GLOBALS["we_doc"]->Table);
+			$anzeige = weWorkflowUtility::getLogButton($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table);
 		}
 		array_push($parts,array(	"headline"=>g_l('modules_workflow','[workflow]'),
 									"html"=>$anzeige,

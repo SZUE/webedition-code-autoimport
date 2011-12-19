@@ -160,7 +160,7 @@ class we_listview_multiobject extends listviewBase {
 		if($this->triggerID && show_SeoLinks()){
 			$this->Path = id_to_path($this->triggerID,FILE_TABLE,$this->DB_WE);
 		}else{
-			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
+			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
 		}
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -182,7 +182,7 @@ class we_listview_multiobject extends listviewBase {
 		$sqlParts = $this->makeSQLParts($matrix,$this->classID,$this->order,$this->condition);
 
 		if (isset($GLOBALS['we_doc'])) {
-			$pid_tail = makePIDTail($GLOBALS["we_doc"]->ParentID,$this->classID,$this->DB_WE,$GLOBALS["we_doc"]->Table);
+			$pid_tail = makePIDTail($GLOBALS['we_doc']->ParentID,$this->classID,$this->DB_WE,$GLOBALS['we_doc']->Table);
 		} else {
 			$pid_tail = '1';
 		}

@@ -189,7 +189,7 @@ class we_wizard_import extends we_wizard {
 			}
 		}
 
-		$cmd = $this->getPostGetVar("we_cmd", array("import", $defaultVal));
+		$cmd = $this->getPostGetVar('we_cmd', array("import", $defaultVal));
 		$expat = (function_exists("xml_parser_create"))? true : false;
 
 		$tblFiles = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);

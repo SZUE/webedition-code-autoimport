@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
 //make sure we know which browser is used
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_browser_check.inc.php');
@@ -58,7 +58,7 @@ print
 if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
-	$bResetProps = ($_REQUEST["we_cmd"][0] == "reset_home") ? true : false;
+	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
 
 	if (!$bResetProps && $iLayoutCols) {
 

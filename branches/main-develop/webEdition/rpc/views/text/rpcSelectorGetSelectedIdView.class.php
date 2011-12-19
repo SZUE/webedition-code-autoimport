@@ -37,8 +37,8 @@ class rpcSelectorGetSelectedIdView extends rpcView {
 			$html .= isset($suggests[0]['ContentType']) ? ', "contentType": "'.$suggests[0]['ContentType'].'"' : "";
 		} else {
 			$status = "error";
-			if(strpos($_REQUEST["we_cmd"][3],',')) {
-				switch ($_REQUEST["we_cmd"][2]) {
+			if(strpos($_REQUEST['we_cmd'][3],',')) {
+				switch ($_REQUEST['we_cmd'][2]) {
 					case FILE_TABLE:
 						$msg = g_l('weSelectorSuggest',"[no_document]");
 						break;
@@ -58,7 +58,7 @@ class rpcSelectorGetSelectedIdView extends rpcView {
 			} else  {
 				$msg = g_l('weSelectorSuggest',"[no_folder]");
 			}
-			$html .= '"msg":"'.$msg.'","nr":"'.$_REQUEST["we_cmd"][2].'"';
+			$html .= '"msg":"'.$msg.'","nr":"'.$_REQUEST['we_cmd'][2].'"';
 		}
 		return
 			'var weResponse = {

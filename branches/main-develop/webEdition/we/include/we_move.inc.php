@@ -22,12 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_live_tools.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_move_fn.inc.php");
 
 we_html_tools::protect();
-$table = $_REQUEST["we_cmd"][2];
+$table = $_REQUEST['we_cmd'][2];
 
 $script = "";
 
@@ -39,7 +39,7 @@ if (($table == TEMPLATES_TABLE && !we_hasPerm("MOVE_TEMPLATE")) || ($table == FI
 
 $yuiSuggest = & weSuggest::getInstance();
 
-if ($_REQUEST["we_cmd"][0] == "do_move" || $_REQUEST["we_cmd"][0] == "move_single_document") {
+if ($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_single_document") {
 
 	if (isset($_REQUEST["sel"]) && $_REQUEST["sel"] && isset($_REQUEST["we_target"])) {
 
@@ -318,7 +318,7 @@ function we_cmd(){
 </script>
 <?php
 
-if ($_REQUEST["we_cmd"][0] == "do_move") {
+if ($_REQUEST['we_cmd'][0] == "do_move") {
 	print "</head><body></body></html>";
 	exit();
 }

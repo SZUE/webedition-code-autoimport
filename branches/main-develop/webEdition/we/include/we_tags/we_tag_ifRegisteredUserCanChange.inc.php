@@ -44,9 +44,9 @@ function we_tag_ifRegisteredUserCanChange($attribs, $content){
 		}
 	} else {
 		if ($protected) {
-			return $GLOBALS["we_doc"]->WebUserID == $_SESSION["webuser"]["ID"];
+			return $GLOBALS['we_doc']->WebUserID == $_SESSION["webuser"]["ID"];
 		} else {
-			return $GLOBALS["we_doc"]->getElement($userid) == $_SESSION["webuser"]["ID"];
+			return $GLOBALS['we_doc']->getElement($userid) == $_SESSION["webuser"]["ID"];
 		}
 	}
 }

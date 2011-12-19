@@ -23,9 +23,9 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
-$we_transaction = $_REQUEST["we_cmd"][1] ? $_REQUEST["we_cmd"][1] : $we_transaction;
+$we_transaction = $_REQUEST['we_cmd'][1] ? $_REQUEST['we_cmd'][1] : $we_transaction;
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:'');
 
 // init document
@@ -33,16 +33,16 @@ $we_dt = $_SESSION["we_data"][$we_transaction];
 include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 include( WE_OBJECT_MODULE_DIR . "we_objectFile.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-switch($_REQUEST["we_cmd"][0]) {
+switch($_REQUEST['we_cmd'][0]) {
 	case "toggleExtraWorkspace":
-		$oid = $_REQUEST["we_cmd"][2];
-		$wsid = $_REQUEST["we_cmd"][3];
+		$oid = $_REQUEST['we_cmd'][2];
+		$wsid = $_REQUEST['we_cmd'][3];
 		$wsPath = id_to_path($wsid,FILE_TABLE,$DB_WE);
-		$tableID = $_REQUEST["we_cmd"][4];
+		$tableID = $_REQUEST['we_cmd'][4];
 		$ofID = f("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE ObjectID='$oid' AND TableID=".abs($tableID),"ID",$DB_WE);
 		$foo = f("SELECT OF_ExtraWorkspacesSelected FROM ".OBJECT_X_TABLE . abs($tableID) . " WHERE ID='".$oid."'","OF_ExtraWorkspacesSelected",$DB_WE);
 		if(strstr($foo,",".$wsid.",")) {
@@ -67,14 +67,14 @@ switch($_REQUEST["we_cmd"][0]) {
 			</script>';
 		break;
 	case "obj_search":
-		$we_doc->Search = $_REQUEST["we_cmd"][2];
-		$we_doc->SearchField = $_REQUEST["we_cmd"][3];
+		$we_doc->Search = $_REQUEST['we_cmd'][2];
+		$we_doc->SearchField = $_REQUEST['we_cmd'][3];
 		$we_doc->EditPageNr = WE_EDITPAGE_WORKSPACE;
 		$_SESSION["EditPageNr"] = WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 		print '
 			<script  type="text/javascript"><!--
-				top.we_cmd("switch_edit_page",'.WE_EDITPAGE_WORKSPACE.',"'.$_REQUEST["we_cmd"][1].'");
+				top.we_cmd("switch_edit_page",'.WE_EDITPAGE_WORKSPACE.',"'.$_REQUEST['we_cmd'][1].'");
 			//-->
 			</script>';
 		break;

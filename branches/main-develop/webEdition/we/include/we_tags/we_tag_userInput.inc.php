@@ -50,7 +50,7 @@ function we_tag_userInput($attribs, $content){
 
 	$objekt = (isset($GLOBALS["WE_FORM"]) ? (isset($GLOBALS["we_object"][$GLOBALS["WE_FORM"]]) ? $GLOBALS["we_object"][$GLOBALS["WE_FORM"]] : (isset(
 			$GLOBALS["we_document"][$GLOBALS["WE_FORM"]]) ? $GLOBALS["we_document"][$GLOBALS["WE_FORM"]] : (isset(
-			$GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : false))) :
+			$GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false))) :
 
 	"");
 
@@ -149,7 +149,7 @@ function we_tag_userInput($attribs, $content){
 					} else {
 						unset($attribs["width"]);
 						unset($attribs["height"]);
-						$imgTag = $GLOBALS["we_doc"]->getField($attribs, "img");
+						$imgTag = $GLOBALS['we_doc']->getField($attribs, "img");
 					}
 
 					if (isset($_SESSION[$_imgDataId]["doDelete"]) && $_SESSION[$_imgDataId]["doDelete"]) {
@@ -203,7 +203,7 @@ function we_tag_userInput($attribs, $content){
 							unset($attribs["width"]);
 							unset($attribs["height"]);
 							$attribs["id"] = $_SESSION[$_imgDataId]["id"];
-							return $GLOBALS["we_doc"]->getField($attribs, "img") . $hidden;
+							return $GLOBALS['we_doc']->getField($attribs, "img") . $hidden;
 
 						} else {
 							return '';
@@ -255,7 +255,7 @@ function we_tag_userInput($attribs, $content){
 
 						// Include Flash class
 						if (isset($attribs["id"]) && $attribs["id"]){
-							$flashmovieTag = $GLOBALS["we_doc"]->getField($attribs, "flashmovie");
+							$flashmovieTag = $GLOBALS['we_doc']->getField($attribs, "flashmovie");
 						} else {
 							$flashmovieTag = '<img src="/webEdition/images/icons/no_flashmovie.gif" alt="" width="64" height="64" />';
 						}
@@ -313,7 +313,7 @@ function we_tag_userInput($attribs, $content){
 							unset($attribs["width"]);
 							unset($attribs["height"]);
 							$attribs["id"] = $_SESSION[$_flashmovieDataId]["id"];
-							return $GLOBALS["we_doc"]->getField($attribs, "flashmovie") . $hidden;
+							return $GLOBALS['we_doc']->getField($attribs, "flashmovie") . $hidden;
 
 						} else {
 							return '';
@@ -362,7 +362,7 @@ function we_tag_userInput($attribs, $content){
 						unset($attribs["width"]);
 						unset($attribs["height"]);
 						if (isset($attribs["id"]) && $attribs["id"]){
-							$quicktimeTag = $GLOBALS["we_doc"]->getField($attribs, "quicktime");
+							$quicktimeTag = $GLOBALS['we_doc']->getField($attribs, "quicktime");
 						} else {
 							$quicktimeTag = '<img src="/webEdition/images/icons/no_quicktime.gif" alt="" width="64" height="64" />';
 						}
@@ -420,7 +420,7 @@ function we_tag_userInput($attribs, $content){
 							unset($attribs["width"]);
 							unset($attribs["height"]);
 							$attribs["id"] = $_SESSION[$_quicktimeDataId]["id"];
-							return $GLOBALS["we_doc"]->getField($attribs, "quicktime") . $hidden;
+							return $GLOBALS['we_doc']->getField($attribs, "quicktime") . $hidden;
 
 						} else {
 							return '';
@@ -466,8 +466,8 @@ function we_tag_userInput($attribs, $content){
 						$imgTag = 'imgTag';
 					} else {
 
-						//$imgTag = $GLOBALS["we_doc"]->getField($attribs, "img");
-						$binaryTag = $GLOBALS["we_doc"]->getField($attribs, "binary");
+						//$imgTag = $GLOBALS['we_doc']->getField($attribs, "img");
+						$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
 						$t=explode('_',$binaryTag[0]);
 						unset($t[1]);
 						unset($t[0]);
@@ -534,7 +534,7 @@ function we_tag_userInput($attribs, $content){
 
 
 							$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
-							$binaryTag = $GLOBALS["we_doc"]->getField($attribs, "binary");
+							$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
 							$t=explode('_',$binaryTag[0]);
 							unset($t[1]);
 							unset($t[0]);
@@ -591,7 +591,7 @@ function we_tag_userInput($attribs, $content){
 							$autobr,
 							"autobr",
 							$showAutobr,
-							$GLOBALS["we_doc"]->getHttpPath(),
+							$GLOBALS['we_doc']->getHttpPath(),
 							false,
 							false,
 							getXmlAttributeValueAsBoolean($xml),

@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $defaultCharset = "UTF-8";
 
@@ -27,7 +27,7 @@ $defaultCharset = "UTF-8";
 we_html_tools::protect();
 
 
-$fieldName = $_REQUEST["we_cmd"][1];
+$fieldName = $_REQUEST['we_cmd'][1];
 we_html_tools::htmlTop(
 		sprintf(g_l('wysiwyg',"[window_title]"), $fieldName), $defaultCharset);
 
@@ -35,13 +35,13 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 
 
 	$newHTML = $_REQUEST[$fieldName];
-	$_SESSION['WEAPP_' . $_REQUEST["we_cmd"][0] .'_'.$_REQUEST["we_cmd"][1]] = $newHTML;
+	$_SESSION['WEAPP_' . $_REQUEST['we_cmd'][0] .'_'.$_REQUEST['we_cmd'][1]] = $newHTML;
 
 	?>
 <script  type="text/javascript">
 
-	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>')){
-		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>').innerHTML = "<?php
+	if (opener.document.getElementById('<?php print $_REQUEST['we_cmd'][1];?>')){
+		opener.document.getElementById('<?php print $_REQUEST['we_cmd'][1];?>').innerHTML = "<?php
 	print
 			preg_replace(
 					'|script|i',
@@ -50,8 +50,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	?>";
 	}
 
-	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View')){
-		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View').innerHTML = "<?php
+	if (opener.document.getElementById('<?php print $_REQUEST['we_cmd'][1];?>_View')){
+		opener.document.getElementById('<?php print $_REQUEST['we_cmd'][1];?>_View').innerHTML = "<?php
 	print
 			preg_replace(
 					'|script|i',
@@ -88,8 +88,8 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 	method="post"><input type="hidden" name="we_okpressed" value="1" />
 <?php
 
-	foreach ($_REQUEST["we_cmd"] as $i => $v) {
-		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST["we_cmd"][$i] . '" />' . "\n";
+	foreach ($_REQUEST['we_cmd'] as $i => $v) {
+		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />' . "\n";
 	}
 
 	/*
@@ -114,25 +114,25 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 */
 
 	$e = new we_wysiwyg(
-			$_REQUEST["we_cmd"][1], //$name,
-			$_REQUEST["we_cmd"][2], //$width,
-			$_REQUEST["we_cmd"][3], //$height
-			$_SESSION['WEAPP_' . $_REQUEST["we_cmd"][0] .'_'.$_REQUEST["we_cmd"][1]], //value
-			$_REQUEST["we_cmd"][5], //$propstring
-			$_REQUEST["we_cmd"][13], //$bgcol
+			$_REQUEST['we_cmd'][1], //$name,
+			$_REQUEST['we_cmd'][2], //$width,
+			$_REQUEST['we_cmd'][3], //$height
+			$_SESSION['WEAPP_' . $_REQUEST['we_cmd'][0] .'_'.$_REQUEST['we_cmd'][1]], //value
+			$_REQUEST['we_cmd'][5], //$propstring
+			$_REQUEST['we_cmd'][13], //$bgcol
 			"", //$fullscreen
-			$_REQUEST["we_cmd"][6], //$className
-			'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings',//$_REQUEST["we_cmd"][7], fontnames ,
-			$_REQUEST["we_cmd"][8], //$outsideWE=false
+			$_REQUEST['we_cmd'][6], //$className
+			'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings',//$_REQUEST['we_cmd'][7], fontnames ,
+			$_REQUEST['we_cmd'][8], //$outsideWE=false
 			'',
 			'',
-			true,//$_REQUEST["we_cmd"][11], //$xml=false
+			true,//$_REQUEST['we_cmd'][11], //$xml=false
 			false, //$removeFirstParagraph=true
 			true, //$inlineedit=true
-			$_REQUEST["we_cmd"][14], //$baseHref=
-			'UTF-8',// $_REQUEST["we_cmd"][15],
-			$_REQUEST["we_cmd"][16], //$cssClasses
-			$_REQUEST["we_cmd"][17]); //$Language=""
+			$_REQUEST['we_cmd'][14], //$baseHref=
+			'UTF-8',// $_REQUEST['we_cmd'][15],
+			$_REQUEST['we_cmd'][16], //$cssClasses
+			$_REQUEST['we_cmd'][17]); //$Language=""
 
 	print we_wysiwyg::getHeaderHTML() . $e->getHTML();
 	print '<div style="height:8px"></div>' . we_button::position_yes_no_cancel($okBut, $cancelBut);

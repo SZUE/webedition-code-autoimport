@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 function getLangField($name, $value, $title, $width) {
@@ -217,8 +217,8 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	$ln["img_title"] = $_REQUEST["img_title"];
 	$link = serialize($ln);
 } else {
-	$name = $_REQUEST["we_cmd"][1];
-	$nr = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
+	$name = $_REQUEST['we_cmd'][1];
+	$nr = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "";
 	if ($nr != "") {
 		$ll = new we_linklist($we_doc->getElement($name));
 		$href = $ll->getHref($nr);
@@ -431,7 +431,7 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 <?php
 $_REQUEST["we_transaction"] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 0);
 
-if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST["we_cmd"][0] == "edit_link_at_class") {
+if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_class") {
 	$_SESSION["WE_LINK"] = $link;
 	//FIXME: we_field XSS
 	?>
@@ -439,7 +439,7 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST["we_cmd"][0] == "edit
 			opener.we_cmd("change_link_at_class", "<?php print $_REQUEST["we_transaction"]; ?>", "<?php print $_REQUEST["we_field"]; ?>", "<?php print $_REQUEST["name"]; ?>");
 			top.close();
 	<?php
-} else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST["we_cmd"][0] == "edit_link_at_object") {
+} else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_object") {
 	$_SESSION["WE_LINK"] = $link;
 	?>
 			opener.setScrollTo();
@@ -898,7 +898,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 			'space' => '150');
 	?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
-			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>" />
+			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
 		<?php
 		if (isset($ll) && $ll) {
 			?>

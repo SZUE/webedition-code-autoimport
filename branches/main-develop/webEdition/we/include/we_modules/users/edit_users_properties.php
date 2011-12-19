@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
 
 we_html_tools::protect();
@@ -150,8 +150,8 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
  <body class="weEditorBody" onUnload="doUnload()" onLoad="loaded=1;">
    <form name="we_form" method="post" onSubmit="return false">
 	<input type="hidden" name="ucmd" value="" />
-	<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? abs($_REQUEST["tab"]) : ""); ?>" />
-	<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? abs($_REQUEST["tab"]) : ""); ?>" />
+	<input type="hidden" name="tab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
+	<input type="hidden" name="oldtab" value="<?php print (isset($_REQUEST["tab"]) ? intval($_REQUEST["tab"]) : ""); ?>" />
 	<input type="hidden" name="perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
 	<input type="hidden" name="old_perm_branch" value="<?php print ( (isset($_REQUEST["perm_branch"]) && $_REQUEST["perm_branch"]) ? htmlspecialchars($_REQUEST["perm_branch"]) : 0); ?>" />
 	<input type="hidden" name="obj_name" value="<?php print $user_object->Name ?>" />

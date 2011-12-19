@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -33,7 +33,7 @@ print STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" )?"%d.%m.%y":"%m/%d/%y";
 if(isset($_REQUEST["cid"])){
-$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID=" . abs($_REQUEST["cid"]) . "'",$DB_WE);
+$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID=" . intval($_REQUEST["cid"]) . "'",$DB_WE);
 $Kundenname = $foo["Forename"]." ".$foo["Surname"];
 
 //$DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ".SHOP_TABLE." WHERE IntCustomerID=$cid GROUP BY IntOrderID ORDER BY IntOrderID");
@@ -44,7 +44,7 @@ $Bestelldaten = '<table border="0" cellpadding="2" cellspacing="6" width="300">
 				</tr>
 				<tr><td colspan=3></tr>';
 
-$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." WHERE IntCustomerID=" . abs($_REQUEST["cid"]) . " GROUP BY IntOrderID ORDER BY IntID DESC");
+$DB_WE->query("SELECT IntOrderID,DateShipping, DATE_FORMAT(DateOrder,'".$da."') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM ".SHOP_TABLE." WHERE IntCustomerID=" . intval($_REQUEST["cid"]) . " GROUP BY IntOrderID ORDER BY IntID DESC");
 while($DB_WE->next_record()){
 //echo "<br>".$DB_WE->f("Price");
  $Bestelldaten .= "<tr><td class='defaultfont'><a href='" . WE_SHOP_MODULE_PATH . "edit_shop_properties.php?bid=".$DB_WE->f("IntOrderID")."' class=\"defaultfont\"><b>".$DB_WE->f("IntOrderID").".</b></a></td>";

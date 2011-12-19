@@ -25,7 +25,7 @@
 
 
 
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 //	case "edit_object_ifthere":
 //	case "edit_object":
 //		$mod="object";

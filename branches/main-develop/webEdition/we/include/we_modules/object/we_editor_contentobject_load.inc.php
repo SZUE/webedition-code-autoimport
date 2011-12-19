@@ -152,40 +152,40 @@ switch($cmd) {
 		$uniqid 	= "entry_".$identifier;
 
 		if($cmd == "insert_meta_at_class") {
-			$we_doc->addMetaToClass($_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+			$we_doc->addMetaToClass($_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 
 		} elseif($cmd == "delete_meta_class") {
-			$we_doc->removeMetaFromClass($_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+			$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 
 		} elseif($cmd == "down_meta_at_class") {
-			$we_doc->downMetaAtClass($_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+			$we_doc->downMetaAtClass($_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 
 		} elseif($cmd == "up_meta_at_class") {
-			$we_doc->upMetaAtClass($_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+			$we_doc->upMetaAtClass($_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 
 		} elseif($cmd == "del_all_users") {
-			$we_doc->del_all_users($_REQUEST["we_cmd"][3]);
+			$we_doc->del_all_users($_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "add_user_to_field") {
-			$we_doc->add_user_to_field($_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+			$we_doc->add_user_to_field($_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 
 		} elseif($cmd == "del_user_from_field") {
-			$we_doc->del_user_from_field($_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+			$we_doc->del_user_from_field($_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 
 		} elseif($cmd == "remove_image_at_class") {
-			$we_doc->remove_image($_REQUEST["we_cmd"][3]);
+			$we_doc->remove_image($_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "delete_link_at_class") {
-			if(isset($we_doc->elements[$_REQUEST["we_cmd"][3]])) unset($we_doc->elements[$_REQUEST["we_cmd"][3]]);
+			if(isset($we_doc->elements[$_REQUEST['we_cmd'][3]])) unset($we_doc->elements[$_REQUEST['we_cmd'][3]]);
 
 		} elseif($cmd == "change_link_at_class") {
-			$we_doc->changeLink($_REQUEST["we_cmd"][3]);
+			$we_doc->changeLink($_REQUEST['we_cmd'][3]);
 
 		} elseif($cmd == "change_multiobject_at_class") {
-			while($we_doc->elements[$_REQUEST["we_cmd"][3]."count"]["dat"] > 0) {
-				$we_doc->removeMetaFromClass($_REQUEST["we_cmd"][3], 0);
+			while($we_doc->elements[$_REQUEST['we_cmd'][3]."count"]["dat"] > 0) {
+				$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 			}
-			$we_doc->removeMetaFromClass($_REQUEST["we_cmd"][3], 0);
+			$we_doc->removeMetaFromClass($_REQUEST['we_cmd'][3], 0);
 
 		}
 

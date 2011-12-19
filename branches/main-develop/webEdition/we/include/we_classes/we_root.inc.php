@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
 
@@ -411,7 +411,7 @@ abstract class we_root extends we_class{
 
 	function formCreatorOwners(){
 		$width = 388;
-			$canChange = (!$this->ID) || we_users_util::isUserInUsers($_SESSION["user"]["ID"],$GLOBALS["we_doc"]->CreatorID);
+			$canChange = (!$this->ID) || we_users_util::isUserInUsers($_SESSION["user"]["ID"],$GLOBALS['we_doc']->CreatorID);
 
 			$out = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td class="defaultfont">'.$this->formCreator($canChange,$width).'</td></tr>
@@ -1205,7 +1205,7 @@ function formTriggerDocument($isclass=false){
 	*/
 	function userHasAccess(){
 
-		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS["we_doc"]->ID){				// file is locked
+		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){				// file is locked
 			return -3;
 		}
 
@@ -1226,10 +1226,10 @@ function formTriggerDocument($isclass=false){
 		}
 
 		if($this->userHasPerms()) {									//	access to doc is not restricted, check workspaces of user
-			if($GLOBALS["we_doc"]->ID) {		//	userModule installed
-				$ws = get_ws($GLOBALS["we_doc"]->Table);
+			if($GLOBALS['we_doc']->ID) {		//	userModule installed
+				$ws = get_ws($GLOBALS['we_doc']->Table);
 				if($ws) {		//	doc has workspaces
-					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS['DB_WE']))) {
+					if(!(in_workspace($GLOBALS['we_doc']->ID,$ws,$GLOBALS['we_doc']->Table,$GLOBALS['DB_WE']))) {
 						return -1;
 					}
 				}

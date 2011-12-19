@@ -45,7 +45,7 @@ if($cmd == "ok"){
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
 
-		if($_REQUEST["we_cmd"][2]){ // make same new
+		if($_REQUEST['we_cmd'][2]){ // make same new
 			$we_doc->makeSameNew();
 			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 			$script .= 'opener.top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef�gt
@@ -144,9 +144,9 @@ if($cmd == "ok"){
 						print $frame;
 						print '
 							<input type="hidden" name="cmd" value="ok" />
-							<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST["we_cmd"][0].'" />
+							<input type="hidden" name="we_cmd[0]" value="'.$_REQUEST['we_cmd'][0].'" />
 							<input type="hidden" name="we_cmd[1]" value="'.$we_transaction.'" />
-							<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
+							<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST['we_cmd'][2].'" />';
 					?>
 				</form>
 			<?php }else{ ?>

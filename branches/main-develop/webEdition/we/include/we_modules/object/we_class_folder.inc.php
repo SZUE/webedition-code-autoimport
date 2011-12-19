@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 include_once(WE_OBJECT_MODULE_DIR . 'we_searchobject_class.inc.php');
 
 $yuiSuggest =& weSuggest::getInstance();

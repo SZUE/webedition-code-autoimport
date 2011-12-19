@@ -37,8 +37,8 @@ function we_tag_img($attribs, $content){
 	$showimage = weTag_getAttribute("showimage", $attribs, true, true);
 	$showinputs = weTag_getAttribute("showinputs",$attribs,	(defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true),true );
 
-	$id = $GLOBALS["we_doc"]->getElement($name, "bdid");
-	$id = $id ? $id : $GLOBALS["we_doc"]->getElement($name);
+	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
+	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
 	$id = $id ? $id : weTag_getAttribute("id", $attribs);
 
 	//look if image exists in tblfile
@@ -54,10 +54,10 @@ function we_tag_img($attribs, $content){
 	$titleField = $name . '_img_custom_title';
 	$thumbField = $name . '_img_custom_thumb';
 
-	$fname = 'we_' . $GLOBALS["we_doc"]->Name . '_img[' . $name . '#bdid]';
-	$altname = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $altField . ']';
-	$titlename = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $titleField . ']';
-	$thumbname = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $thumbField . ']';
+	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
+	$altname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $altField . ']';
+	$titlename = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $titleField . ']';
+	$thumbname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $thumbField . ']';
 
 	if ($id) {
 		$img = new we_imageDocument();
@@ -97,7 +97,7 @@ function we_tag_img($attribs, $content){
 	} elseif (!$id) {
 		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition == 1) {$out = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" border="0" alt="" />';} else {$out ='';} //no_image war noch in der Vorscha sichtbar
 	} else {
-		$out = $GLOBALS["we_doc"]->getField($attribs, "img");
+		$out = $GLOBALS['we_doc']->getField($attribs, "img");
 	}
 
 	if (!$id && (!$GLOBALS['we_editmode'])) {

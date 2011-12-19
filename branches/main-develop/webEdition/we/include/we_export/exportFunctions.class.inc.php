@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
@@ -147,9 +147,9 @@ abstract class exportFunctions {
 
 				// Get a matching doctype or classname
 				if (($doctype != null) && ($doctype != "") && ($doctype != 0)) {
-					$_doctype = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '".abs($doctype)."'", "DocType", new DB_WE());
+					$_doctype = f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = ".intval($doctype), "DocType", new DB_WE());
 				} else if (($tableid != null) && ($tableid != "") && ($tableid != 0)) {
-					$_tableid = f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID = '".abs($tableid)."'", "Text", new DB_WE());
+					$_tableid = f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID = ".intval($tableid), "Text", new DB_WE());
 				}
 
 				if ($doctype != null) {
@@ -171,7 +171,7 @@ abstract class exportFunctions {
 
 				// Get a matching classname
 				if (($tableid != null) && ($tableid != "") && ($tableid != 0)) {
-					$_tableid = f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID = '".abs($tableid)."'", "Text", new DB_WE());
+					$_tableid = f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID = ".intval($tableid), "Text", new DB_WE());
 				}
 
 				if ($tableid != null) {
@@ -552,7 +552,7 @@ abstract class exportFunctions {
 			$DB_WE = new DB_WE();
 
 			$_sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND ".
-							LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . abs($we_doc->TemplateID) . "' AND " . LINK_TABLE . ".Name='completeData'";
+							LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($we_doc->TemplateID) . " AND " . LINK_TABLE . ".Name='completeData'";
 
 			$_template_code = f($_sql_select, "Dat", $DB_WE);
 			$_tag_parser = new we_tagParser($_template_code);
@@ -714,7 +714,7 @@ abstract class exportFunctions {
 
 		$DB_WE = new DB_WE();
 
-		$foo = getHash("SELECT strOrder, DefaultValues FROM " . OBJECT_TABLE . " WHERE ID='" . abs($we_obj->TableID) . "'", $DB_WE);
+		$foo = getHash("SELECT strOrder, DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($we_obj->TableID), $DB_WE);
 
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 
@@ -813,7 +813,7 @@ abstract class exportFunctions {
 
 		$DB_WE = new DB_WE();
 
-		$foo = getHash("SELECT strOrder, DefaultValues FROM " . OBJECT_TABLE . " WHERE ID='" . abs($we_obj->TableID) . "'", $DB_WE);
+		$foo = getHash("SELECT strOrder, DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($we_obj->TableID), $DB_WE);
 
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 

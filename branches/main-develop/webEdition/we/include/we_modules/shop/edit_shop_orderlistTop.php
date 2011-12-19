@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -33,7 +33,7 @@ print STYLESHEET;
 
 $da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" )?"%d.%m.%y":"%m/%d/%y";
 if(isset($_REQUEST["cid"])){
-$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID='" . abs($_REQUEST["cid"]) . "'",$DB_WE);
+$foo = getHash("SELECT Forename,Surname FROM ".CUSTOMER_TABLE." WHERE ID=" . intval($_REQUEST["cid"]),$DB_WE);
 $Kundenname = $foo["Forename"]." ".$foo["Surname"];
 
 //$DB_WE->query("SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ".SHOP_TABLE." WHERE IntCustomerID=$cid GROUP BY IntOrderID ORDER BY IntOrderID");

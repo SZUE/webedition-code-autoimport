@@ -25,7 +25,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_import/importFunctions.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 
 class we_wizard {
@@ -38,7 +38,7 @@ class we_wizard {
 
 	function getWizFrameset() {
 		$args = "pnt=wizbody";
-		if (isset($_REQUEST["we_cmd"][1])) $args .= "&we_cmd[1]=".$_REQUEST["we_cmd"][1];
+		if (isset($_REQUEST['we_cmd'][1])) $args .= "&we_cmd[1]=".$_REQUEST['we_cmd'][1];
 
 		$fst = new we_htmlFrameset(array(
 			"rows" => (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,60" : "*,40,0" ,

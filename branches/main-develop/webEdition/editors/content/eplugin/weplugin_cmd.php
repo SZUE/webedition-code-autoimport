@@ -22,29 +22,29 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 	we_html_tools::protect();
 
-	if(isset($_REQUEST["we_cmd"][0])){
+	if(isset($_REQUEST['we_cmd'][0])){
 
 		$out = '';
 
-		switch($_REQUEST["we_cmd"][0]){
+		switch($_REQUEST['we_cmd'][0]){
 
 			case "editSource" :
 
 				$_session = session_id();
-				$_we_transaction = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : '';
+				$_we_transaction = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : '';
 
 				if(isset($_SESSION['we_data'][$_we_transaction][0]['Path']) && !empty($_SESSION['we_data'][$_we_transaction][0]['Path'])) {
 					$_filename = $_SESSION['we_data'][$_we_transaction][0]['Path'];
 				} else {
-					$_filename = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : '';
+					$_filename = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 				}
 
-				$_ct = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : '';
-				$_source = isset($_REQUEST["we_cmd"][4]) ? $_REQUEST["we_cmd"][4] : '###EDITORPLUGIN:EMPTYSTRING###';
+				$_ct = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : '';
+				$_source = isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '###EDITORPLUGIN:EMPTYSTRING###';
 
 				if($_source=='###EDITORPLUGIN:EMPTYSTRING###') {
 					$_source=$_SESSION["we_data"][$_we_transaction][0]['elements']['data']['dat'];
@@ -73,7 +73,7 @@
 			case "editFile":
 
 					$_session = session_id();
-					$_we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : '';
+					$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
 					$we_dt = isset($_SESSION["we_data"][$_we_transaction]) ? $_SESSION["we_data"][$_we_transaction] : "";
 					include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
@@ -104,17 +104,17 @@
 				break;
 			case "setSource":
 
-				if(isset($_SESSION["we_data"][$_REQUEST["we_cmd"][1]][0]["elements"]["data"]["dat"])){
+				if(isset($_SESSION["we_data"][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"])){
 
-					$_SESSION["we_data"][$_REQUEST["we_cmd"][1]][0]["elements"]["data"]["dat"]=$_REQUEST["we_cmd"][2];
-					$_SESSION["we_data"][$_REQUEST["we_cmd"][1]][1]["data"]["dat"]=$_REQUEST["we_cmd"][2];
+					$_SESSION["we_data"][$_REQUEST['we_cmd'][1]][0]["elements"]["data"]["dat"]=$_REQUEST['we_cmd'][2];
+					$_SESSION["we_data"][$_REQUEST['we_cmd'][1]][1]["data"]["dat"]=$_REQUEST['we_cmd'][2];
 
 				}
 
 			break;
 			case "reloadContentFrame":
 
-				$_we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : '';
+				$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
 				$out = we_htmlElement::jsElement('
 					var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("'.$_we_transaction.'");
@@ -166,7 +166,7 @@
 			break;
 
 			default:
-				exit("command '" . $_REQUEST["we_cmd"][0] . "' not known!");
+				exit("command '" . $_REQUEST['we_cmd'][0] . "' not known!");
 		}
 
 

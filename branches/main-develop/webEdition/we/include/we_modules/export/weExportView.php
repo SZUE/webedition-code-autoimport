@@ -23,7 +23,7 @@
  */
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_EXPORT_MODULE_DIR."weExport.php");
 
 class weExportView {

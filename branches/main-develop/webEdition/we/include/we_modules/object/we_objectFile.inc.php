@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 /* a class for handling templates */
 class we_objectFile extends we_document{
@@ -532,7 +532,7 @@ class we_objectFile extends we_document{
 	function unpublishFromInsideDocument(){
 		$this->unpublish();
 		if($this->EditPageNr == WE_EDITPAGE_PROPERTIES || $this->EditPageNr == WE_EDITPAGE_INFO){
-			$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page",'.$this->EditPageNr.',"'.$GLOBALS["we_transaction"].'");';
+			$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page",'.$this->EditPageNr.',"'.$GLOBALS["we_transaction"].'");';
 		}
 		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(".$this->ID.");\n".$this->getUpdateTreeScript();
 	}

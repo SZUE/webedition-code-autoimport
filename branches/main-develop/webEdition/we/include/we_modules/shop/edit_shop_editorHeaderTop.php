@@ -27,7 +27,7 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 	print '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 	exit;
 }
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
 we_html_tools::protect();
@@ -38,7 +38,7 @@ print STYLESHEET;
 
 $yid = isset($_REQUEST["ViewYear"]) ? abs($_REQUEST["ViewYear"]) : date("Y");
 $bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
-$cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".abs($bid),"IntCustomerID",$DB_WE);
+$cid = f("SELECT IntCustomerID FROM ".SHOP_TABLE." WHERE IntOrderID = ".intval($bid),"IntCustomerID",$DB_WE);
   $DB_WE->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'".g_l('date','[format][mysqlDate]')."') as orddate FROM ".SHOP_TABLE." GROUP BY IntOrderID ORDER BY IntID DESC");
     if ($DB_WE->next_record()) {
 	  $headline =g_l('modules_shop','[lastOrd]')." ".g_l('modules_shop','[lastNo]')." ". $DB_WE->f("IntOrderID")."&nbsp;&raquo; ".g_l('modules_shop','[bestellung]')." ".$DB_WE->f("orddate");

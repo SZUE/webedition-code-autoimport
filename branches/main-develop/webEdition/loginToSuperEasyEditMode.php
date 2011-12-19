@@ -43,7 +43,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 	$_POST["password"] = $_SESSION["webuser"]["Password"];
 
 	//	Login
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 	if(isset($_SESSION["user"]["Username"])){	//	login ok!
 

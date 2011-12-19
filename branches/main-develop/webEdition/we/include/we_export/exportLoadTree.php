@@ -23,15 +23,15 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-if(isset($_REQUEST["we_cmd"][5])){
-    $_SESSION["prefs"]["FileFilter"] = $_REQUEST["we_cmd"][5];
+if(isset($_REQUEST['we_cmd'][5])){
+    $_SESSION["prefs"]["FileFilter"] = $_REQUEST['we_cmd'][5];
 }
 
-$topFrame=(isset($_REQUEST["we_cmd"][4])?$_REQUEST["we_cmd"][4]:"top");
+$topFrame=(isset($_REQUEST['we_cmd'][4])?$_REQUEST['we_cmd'][4]:"top");
 
-$table = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
+$table = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : FILE_TABLE;
 
 if($table==FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS")){
 	if(we_hasPerm("CAN_SEE_TEMPLATES")) $table=TEMPLATES_TABLE;
@@ -39,7 +39,7 @@ if($table==FILE_TABLE && !we_hasPerm("CAN_SEE_DOCUMENTS")){
 	else if(defined('OBJECT_TABLE') && we_hasPerm("CAN_SEE_OBJECTS")) $table=OBJECT_TABLE;
 }
 
-$parentFolder = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
+$parentFolder = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 0;
 
 $GLOBALS["OBJECT_FILES_TREE_COUNT"] = 20;
 $counts=array();
@@ -76,8 +76,8 @@ if($wsQuery){
 
 $openFolders = array();
 
-if(isset($_REQUEST["we_cmd"][3])) {
-	$openFolders = explode(",",$_REQUEST["we_cmd"][3]);
+if(isset($_REQUEST['we_cmd'][3])) {
+	$openFolders = explode(",",$_REQUEST['we_cmd'][3]);
 }
 
 
@@ -94,7 +94,7 @@ function getQueryParents($path){
 
 function getItems($ParentID) {
 	if($GLOBALS['table'] == ""){
-		$GLOBALS['table'] = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : FILE_TABLE;
+		$GLOBALS['table'] = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : FILE_TABLE;
 	}
 
 	switch($GLOBALS['table']){

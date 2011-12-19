@@ -37,7 +37,7 @@ function we_tag_categorySelect($attribs, $content){
 	if ($isuserinput && $GLOBALS["WE_FORM"]) {
 		$objekt = isset($GLOBALS["we_object"][$GLOBALS["WE_FORM"]]) ? $GLOBALS["we_object"][$GLOBALS["WE_FORM"]] : (isset(
 				$GLOBALS["we_document"][$GLOBALS["WE_FORM"]]) ? $GLOBALS["we_document"][$GLOBALS["WE_FORM"]] : (isset(
-				$GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : false));
+				$GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false));
 		if ($objekt) {
 			$values = $objekt->Category;
 		}

@@ -36,7 +36,7 @@ class ImportFiles extends leWizardStepBase
 	function execute(&$Template)
 	{
 
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tagParser.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/we_wizard.inc.php");
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/we_wiz_import.inc.php");

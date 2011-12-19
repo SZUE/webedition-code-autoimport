@@ -23,13 +23,13 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
 we_html_tools::htmlTop(g_l('global','[changePass]'));
 
-if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
+if (isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "content")) {
 	print STYLESHEET;
 ?>
 	<script  type="text/javascript"><!--
@@ -97,13 +97,13 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 					$frame = we_html_tools::htmlDialogLayout($content, g_l('global','[changePass]'), $_buttons);
 					print $frame;
 					print '	<input type="hidden" name="cmd" value="ok" />
-							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST["we_cmd"][0] . '" />
+							<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
 							<input type="hidden" name="we_cmd[1]" value="load" />';
 				?>
 			</form>
 		</center>
 <?php
-} else if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "load")) {
+} else if (isset($_REQUEST['we_cmd'][1]) && ($_REQUEST['we_cmd'][1] == "load")) {
 	$oldpasswd = isset($_REQUEST["oldpasswd"]) ? $_REQUEST["oldpasswd"] : "";
 	$newpasswd = isset($_REQUEST["newpasswd"]) ? $_REQUEST["newpasswd"] : "";
 	$newpasswd2 = isset($_REQUEST["newpasswd2"]) ? $_REQUEST["newpasswd2"] : "";
@@ -161,8 +161,8 @@ if (isset($_REQUEST["we_cmd"][1]) && ($_REQUEST["we_cmd"][1] == "content")) {
 	</head>
 
 	<frameset rows="*,0" framespacing="0" border="0" frameborder="NO">
-		<frame src="<?php print WEBEDITION_DIR ?>we_cmd.php?we_cmd[0]=<?php print isset($_REQUEST["we_cmd"][0]) ? $_REQUEST["we_cmd"][0] : ""; ?>&we_cmd[1]=content" name="passwdcontent" noresize>
-		<frame src="<?php print WEBEDITION_DIR ?>we_cmd.php?we_cmd[0]=<?php print isset($_REQUEST["we_cmd"][0]) ? $_REQUEST["we_cmd"][0] : ""; ?>&we_cmd[1]=load" name="passwdload" noresize>
+		<frame src="<?php print WEBEDITION_DIR ?>we_cmd.php?we_cmd[0]=<?php print isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : ""; ?>&we_cmd[1]=content" name="passwdcontent" noresize>
+		<frame src="<?php print WEBEDITION_DIR ?>we_cmd.php?we_cmd[0]=<?php print isset($_REQUEST['we_cmd'][0]) ? $_REQUEST['we_cmd'][0] : ""; ?>&we_cmd[1]=load" name="passwdload" noresize>
 	</frameset>
 
 	<body>

@@ -27,9 +27,9 @@ function we_tag_docType($attribs, $content){
 	$doctype = "";
 	switch ($docAttr) {
 		case "self" :
-			if ($GLOBALS["we_doc"]->DocType) {
+			if ($GLOBALS['we_doc']->DocType) {
 				$doctype = f(
-						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS["we_doc"]->DocType),
+						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->DocType),
 						"DocType",
 						new DB_WE());
 			}
@@ -43,9 +43,9 @@ function we_tag_docType($attribs, $content){
 							"DocType",
 							new DB_WE());
 				}
-			} elseif ($GLOBALS["we_doc"]->DocType) { // if we_doc is the "top-document"
+			} elseif ($GLOBALS['we_doc']->DocType) { // if we_doc is the "top-document"
 				$doctype = f(
-						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS["we_doc"]->DocType),
+						"SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->DocType),
 						"DocType",
 						new DB_WE());
 			}

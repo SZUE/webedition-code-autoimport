@@ -1625,7 +1625,7 @@ class searchtoolView extends weToolView
 		$anzahl = 1;
 		$searchstart = 0;
 
-		if (isset($_REQUEST["we_cmd"]['obj'])) {
+		if (isset($_REQUEST['we_cmd']['obj'])) {
 			$anzahl = $_SESSION['weSearch']['anzahl' . $whichSearch . ''];
 			$searchstart = $_SESSION['weSearch']['searchstart' . $whichSearch . ''];
 		} else {
@@ -2125,9 +2125,9 @@ class searchtoolView extends weToolView
 		$searchText = array();
 		$_SESSION['weSearch']['foundItems' . $whichSearch . ''] = 0;
 
-		if (isset($_REQUEST["we_cmd"]['obj'])) {
+		if (isset($_REQUEST['we_cmd']['obj'])) {
 			$thisObj = new searchtoolView();
-			$obj = $_REQUEST["we_cmd"]['obj'];
+			$obj = $_REQUEST['we_cmd']['obj'];
 
 			$searchFields = array();
 			$location = array();
@@ -2146,7 +2146,7 @@ class searchtoolView extends weToolView
 
 			if ($whichSearch == "DocSearch") {
 				$_tables[0] = FILE_TABLE;
-				$folderID = $_REQUEST["we_cmd"]['folderIDDoc'];
+				$folderID = $_REQUEST['we_cmd']['folderIDDoc'];
 				foreach ($_REQUEST['we_cmd'] as $k => $v) {
 					if (stristr($k, 'searchForTextDocSearch') && $k{0} != "_") {
 						if ($v == 1) {
@@ -2166,7 +2166,7 @@ class searchtoolView extends weToolView
 				}
 			} elseif ($whichSearch == "TmplSearch") {
 				$_tables[0] = TEMPLATES_TABLE;
-				$folderID = $_REQUEST["we_cmd"]['folderIDTmpl'];
+				$folderID = $_REQUEST['we_cmd']['folderIDTmpl'];
 				foreach ($_REQUEST['we_cmd'] as $k => $v) {
 					if (stristr($k, 'searchForTextTmplSearch') && $k{0} != "_") {
 						if ($v == 1) {
@@ -2208,21 +2208,21 @@ class searchtoolView extends weToolView
 				}
 			}
 
-			if (isset($_REQUEST["we_cmd"]['searchFields' . $whichSearch . ''])) {
-				$searchFields = $_REQUEST["we_cmd"]['searchFields' . $whichSearch . ''];
+			if (isset($_REQUEST['we_cmd']['searchFields' . $whichSearch . ''])) {
+				$searchFields = $_REQUEST['we_cmd']['searchFields' . $whichSearch . ''];
 			}
-			if (isset($_REQUEST["we_cmd"]['location' . $whichSearch . ''])) {
-				$location = $_REQUEST["we_cmd"]['location' . $whichSearch . ''];
+			if (isset($_REQUEST['we_cmd']['location' . $whichSearch . ''])) {
+				$location = $_REQUEST['we_cmd']['location' . $whichSearch . ''];
 			}
-			if (isset($_REQUEST["we_cmd"]['search' . $whichSearch . ''])) {
-				$searchText = $_REQUEST["we_cmd"]['search' . $whichSearch . ''];
+			if (isset($_REQUEST['we_cmd']['search' . $whichSearch . ''])) {
+				$searchText = $_REQUEST['we_cmd']['search' . $whichSearch . ''];
 			}
 
-			$_order = $_REQUEST["we_cmd"]['Order' . $whichSearch . ''];
-			$_view = $_REQUEST["we_cmd"]['setView' . $whichSearch . ''];
+			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch . ''];
+			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch . ''];
 
-			$_searchstart = $_REQUEST["we_cmd"]['searchstart' . $whichSearch . ''];
-			$_anzahl = $_REQUEST["we_cmd"]['anzahl' . $whichSearch . ''];
+			$_searchstart = $_REQUEST['we_cmd']['searchstart' . $whichSearch . ''];
+			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch . ''];
 		} else {
 			$obj = $this->Model;
 			$thisObj = $this;
@@ -2519,9 +2519,9 @@ class searchtoolView extends weToolView
 								$whereQuery .= " AND ((" . escape_sql_query($_table) . ".RestrictUsers='0' OR " . escape_sql_query($_table) . ".RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
 								break;
 						case VERSIONS_TABLE:
-							if (isset($_REQUEST["we_cmd"]['obj'])) {
-								$isCheckedFileTable = $_REQUEST["we_cmd"]['search_tables_advSearch[' . FILE_TABLE . ''];
-								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST["we_cmd"]['search_tables_advSearch[' . OBJECT_FILES_TABLE . ''] : 1;
+							if (isset($_REQUEST['we_cmd']['obj'])) {
+								$isCheckedFileTable = $_REQUEST['we_cmd']['search_tables_advSearch[' . FILE_TABLE . ''];
+								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $_REQUEST['we_cmd']['search_tables_advSearch[' . OBJECT_FILES_TABLE . ''] : 1;
 							} else {
 								$isCheckedFileTable = $thisObj->Model->search_tables_advSearch[FILE_TABLE];
 								$isCheckedObjFileTable = (defined("OBJECT_FILES_TABLE")) ? $thisObj->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
@@ -2930,7 +2930,7 @@ class searchtoolView extends weToolView
 	function getSearchParameterTop($foundItems, $whichSearch)
 	{
 
-		if (isset($_REQUEST["we_cmd"]['obj'])) {
+		if (isset($_REQUEST['we_cmd']['obj'])) {
 			$thisObj = new searchtoolView();
 
 			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch . ''];
@@ -3035,7 +3035,7 @@ class searchtoolView extends weToolView
 
 	function getSearchParameterBottom($foundItems, $whichSearch)
 	{
-		if (isset($_REQUEST["we_cmd"]['obj'])) {
+		if (isset($_REQUEST['we_cmd']['obj'])) {
 			$thisObj = new searchtoolView();
 		} else {
 			$thisObj = $this;
@@ -3510,7 +3510,7 @@ class searchtoolView extends weToolView
 
 	function tabListContent($view = "", $content = "", $class = "", $whichSearch = "")
 	{
-		if (isset($_REQUEST["we_cmd"]['obj']) || $whichSearch == "doclist") {
+		if (isset($_REQUEST['we_cmd']['obj']) || $whichSearch == "doclist") {
 			$thisObj = new searchtoolView();
 		} else {
 			$thisObj = $this;

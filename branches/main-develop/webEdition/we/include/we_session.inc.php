@@ -29,7 +29,7 @@ if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME'
 if (!isset($_SESSION))
 	@session_start();
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
 

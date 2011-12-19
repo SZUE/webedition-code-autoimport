@@ -25,7 +25,7 @@
 /**
  * Global include file
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 /**
  * The notepad widtget functions
  */
@@ -37,18 +37,18 @@ we_html_tools::protect();
  * @var string
  */
 $_table = NOTEPAD_TABLE;
-$_sInitProps = substr($_REQUEST["we_cmd"][0], -5);
+$_sInitProps = substr($_REQUEST['we_cmd'][0], -5);
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
-$q_Csv = $_REQUEST["we_cmd"][1];
-$_title = base64_decode($_REQUEST["we_cmd"][4]);
-$_sObjId = $_REQUEST["we_cmd"][5];
+$q_Csv = $_REQUEST['we_cmd'][1];
+$_title = base64_decode($_REQUEST['we_cmd'][4]);
+$_sObjId = $_REQUEST['we_cmd'][5];
 
 
-switch ($_REQUEST["we_cmd"][2]) {
+switch ($_REQUEST['we_cmd'][2]) {
 	case 'delete' :
 		$_sql = "DELETE FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE ID = " . abs($q_Csv);
 		break;
@@ -414,7 +414,7 @@ print
 								array(
 									"src" => JS_DIR . "jscalendar/calendar-setup.js"
 								)) . we_htmlElement::jsElement(we_button::create_state_changer(false)) . we_htmlElement::jsElement(
-								(($_REQUEST["we_cmd"][6] == "pad/pad") ? "
+								(($_REQUEST['we_cmd'][6] == "pad/pad") ? "
 			var _sObjId='" . $_sObjId . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;
 			var _sType='pad';
@@ -715,7 +715,7 @@ print
 								"marginheight" => "0",
 								"leftmargin" => "0",
 								"topmargin" => "0",
-								"onload" => (($_REQUEST["we_cmd"][6] == "pad/pad") ? "if(parent!=self)init();" : "")
+								"onload" => (($_REQUEST['we_cmd'][6] == "pad/pad") ? "if(parent!=self)init();" : "")
 						),
 						we_htmlElement::htmlForm(
 								array(

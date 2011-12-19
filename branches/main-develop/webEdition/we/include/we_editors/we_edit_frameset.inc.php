@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 we_html_tools::protect();
 
@@ -74,19 +74,19 @@ function getTabs($classname,$predefined=0) {
 	// Check which tab the user can see
 	if(in_array($classname,$documentClasses)) {
 
-        $ret = getFirstValidEditPageNr($GLOBALS["we_doc"], $predefined);
+        $ret = getFirstValidEditPageNr($GLOBALS['we_doc'], $predefined);
 	}
 	return $ret;
 }
 
-$we_Table=$_REQUEST["we_cmd"][1];
+$we_Table=$_REQUEST['we_cmd'][1];
 
-if($_REQUEST["we_cmd"][2]) {
-	$we_ID=$_REQUEST["we_cmd"][2];
+if($_REQUEST['we_cmd'][2]) {
+	$we_ID=$_REQUEST['we_cmd'][2];
 }
 
-if(isset($_REQUEST["we_cmd"][3])) {
-	$we_ContentType=$_REQUEST["we_cmd"][3];
+if(isset($_REQUEST['we_cmd'][3])) {
+	$we_ContentType=$_REQUEST['we_cmd'][3];
 }
 
 // init document
@@ -148,26 +148,26 @@ if(!isset($we_ID)) {
 
 }
 ;
-if( (isset($_REQUEST["we_cmd"][10])) && ($we_Table==FILE_TABLE) && ($we_ContentType=="text/webedition")) {
-	$we_doc->setTemplateID($_REQUEST["we_cmd"][10]);
+if( (isset($_REQUEST['we_cmd'][10])) && ($we_Table==FILE_TABLE) && ($we_ContentType=="text/webedition")) {
+	$we_doc->setTemplateID($_REQUEST['we_cmd'][10]);
 	$_SESSION["EditPageNr"] = getTabs($we_doc->ClassName, 1);
 }
 
 //predefine ParentPath
-if(isset($_REQUEST["we_cmd"][0]) && isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5]!="" && $_REQUEST["we_cmd"][0]=="new_document" && $we_doc->ParentID==0) {
+if(isset($_REQUEST['we_cmd'][0]) && isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5]!="" && $_REQUEST['we_cmd'][0]=="new_document" && $we_doc->ParentID==0) {
 	if($we_doc->ContentType=="folder") {
-		$we_doc->setParentID($_REQUEST["we_cmd"][5]);
+		$we_doc->setParentID($_REQUEST['we_cmd'][5]);
 	}
 
 }
 
 
-if( (isset($_REQUEST["we_cmd"][8])) && ($we_Table==FILE_TABLE) && ($we_ContentType=="text/webedition")) {
-	$we_doc->changeDoctype($_REQUEST["we_cmd"][8]);
+if( (isset($_REQUEST['we_cmd'][8])) && ($we_Table==FILE_TABLE) && ($we_ContentType=="text/webedition")) {
+	$we_doc->changeDoctype($_REQUEST['we_cmd'][8]);
 	$_SESSION["EditPageNr"] = getTabs($we_doc->ClassName, 1);
 }
-else if( isset($_REQUEST["we_cmd"][8]) && (defined("OBJECT_FILES_TABLE") && $we_Table==OBJECT_FILES_TABLE) && ($we_ContentType=="objectFile")) {
-	$we_doc->TableID = $_REQUEST["we_cmd"][8];
+else if( isset($_REQUEST['we_cmd'][8]) && (defined("OBJECT_FILES_TABLE") && $we_Table==OBJECT_FILES_TABLE) && ($we_ContentType=="objectFile")) {
+	$we_doc->TableID = $_REQUEST['we_cmd'][8];
 	$we_doc->restoreDefaults();
 	$_SESSION["EditPageNr"] = getTabs($we_doc->ClassName, WE_EDITPAGE_CONTENT);
 }
@@ -378,7 +378,7 @@ if(!isset($we_doc->elements['data']['dat'])){
     var openedWithWE = 1;
 
     <?php
-    	if(isset($_REQUEST["we_cmd"][0]) && isset($parastr) && ($_REQUEST["we_cmd"][0] == "edit_document_with_parameters")){
+    	if(isset($_REQUEST['we_cmd'][0]) && isset($parastr) && ($_REQUEST['we_cmd'][0] == "edit_document_with_parameters")){
     ?>
     	var parameters = "<?php print $parastr; ?>";
 	<?php

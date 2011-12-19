@@ -37,25 +37,25 @@ function we_tag_textarea($attribs, $content){
 	$autobrAttr = weTag_getAttribute("autobr", $attribs, false, true);
 	$spellcheck = weTag_getAttribute('spellcheck', $attribs, 'true');
 
-	$autobr = $GLOBALS["we_doc"]->getElement($name, "autobr");
+	$autobr = $GLOBALS['we_doc']->getElement($name, "autobr");
 	if (strlen($autobr) == 0) {
 		$autobr = $autobrAttr ? "on" : "off";
 	}
 	$showAutobr = isset($attribs["autobr"]);
 	if (!$showAutobr && $GLOBALS['we_editmode']) {
 		$autobr = "off";
-		$GLOBALS["we_doc"]->elements[$name]["autobr"] = "off";
-		$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
+		$GLOBALS['we_doc']->elements[$name]["autobr"] = "off";
+		$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
 	}
 
-	$autobrName = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . '#autobr]';
-	$fieldname = 'we_' . $GLOBALS["we_doc"]->Name . '_txt[' . $name . ']';
-	$value = $GLOBALS["we_doc"]->getElement($name) ? $GLOBALS["we_doc"]->getElement($name) : $content;
+	$autobrName = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]';
+	$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
+	$value = $GLOBALS['we_doc']->getElement($name) ? $GLOBALS['we_doc']->getElement($name) : $content;
 
 	if ($GLOBALS['we_editmode']) {
-		if((!$GLOBALS["we_doc"]->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
-			$GLOBALS["we_doc"]->setElement($name, $value);
-			$GLOBALS["we_doc"]->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
+		if((!$GLOBALS['we_doc']->getElement($name)) && $value) { // when not inlineedit, we need to save the content in the object, if the field is empty
+			$GLOBALS['we_doc']->setElement($name, $value);
+			$GLOBALS['we_doc']->saveInSession($_SESSION["we_data"][$GLOBALS['we_transaction']]);
 		}
 		return we_forms::weTextarea(
 				$fieldname,
@@ -64,7 +64,7 @@ function we_tag_textarea($attribs, $content){
 				$autobr,
 				$autobrName,
 				$showAutobr,
-				$GLOBALS["we_doc"]->getHttpPath(),
+				$GLOBALS['we_doc']->getHttpPath(),
 				false,
 				false,
 				getXmlAttributeValueAsBoolean($xml),
@@ -72,6 +72,6 @@ function we_tag_textarea($attribs, $content){
 				'',
 				($spellcheck == 'true'));
 	} else {
-		return $GLOBALS["we_doc"]->getField($attribs);
+		return $GLOBALS['we_doc']->getField($attribs);
 	}
 }

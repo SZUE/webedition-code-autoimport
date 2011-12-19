@@ -23,7 +23,7 @@
  */
 
 
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 	case "edit_newsletter":
 	case "edit_newsletter_ifthere":
 		$mod="newsletter";

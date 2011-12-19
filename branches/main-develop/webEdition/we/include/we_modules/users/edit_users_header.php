@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 //	Include the menu.
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/module_menu_users.inc.php");

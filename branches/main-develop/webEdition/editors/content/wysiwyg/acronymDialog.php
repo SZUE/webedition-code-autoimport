@@ -78,4 +78,3 @@ editorObj.editAcronym(title,lang);
 top.close();
 ';
 }
-?>

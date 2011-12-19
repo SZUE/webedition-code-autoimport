@@ -24,9 +24,9 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletter.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 
 class weNewsletterView {
@@ -2197,7 +2197,7 @@ class weNewsletterView {
 	function getContent($pblk = 0, $gview = 0, $hm = 0, $salutation = "", $title = "", $firstname = "", $lastname = "",$customerid=0) {
 
 		$content = "";
-		$GLOBALS["we_doc"]="";
+		$GLOBALS['we_doc']="";
 
 		$GLOBALS["WE_MAIL"]="###EMAIL###";
 		$GLOBALS["WE_HTMLMAIL"]=$hm;

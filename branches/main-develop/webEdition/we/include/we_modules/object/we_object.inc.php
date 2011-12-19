@@ -604,7 +604,7 @@ class we_object extends we_document {
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor()	{
 		global $we_responseText,$we_JavaScript, $we_responseTextType;
-		if($_REQUEST["we_cmd"][0] == "save_document"){
+		if($_REQUEST['we_cmd'][0] == "save_document"){
 			$we_responseText = g_l('weClass',"[response_save_ok]");
 			$we_JavaScript = "";
 			$this->save();
@@ -1028,7 +1028,7 @@ class we_object extends we_document {
 
 		// default
 		/*
-		if($_REQUEST["we_cmd"][0] == "reload_editpage" && $_REQUEST["we_cmd"][2] == $identifier){
+		if($_REQUEST['we_cmd'][0] == "reload_editpage" && $_REQUEST['we_cmd'][2] == $identifier){
 			$this->setElement($name."default","");
 		}
 		*/
@@ -2608,7 +2608,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 	function userHasAccess(){
 
-		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS["we_doc"]->ID){				// file is locked
+		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){				// file is locked
 			return -3;
 		}
 
@@ -2625,10 +2625,10 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		}
 
 		if($this->userHasPerms()) {									//	access to doc is not restricted, check workspaces of user
-			if($GLOBALS["we_doc"]->ID) {		//	userModule installed
-				$ws = get_ws($GLOBALS["we_doc"]->Table);
+			if($GLOBALS['we_doc']->ID) {		//	userModule installed
+				$ws = get_ws($GLOBALS['we_doc']->Table);
 				if($ws) {		//	doc has workspaces
-					if(!(in_workspace($GLOBALS["we_doc"]->ID,$ws,$GLOBALS["we_doc"]->Table,$GLOBALS['DB_WE']))) {
+					if(!(in_workspace($GLOBALS['we_doc']->ID,$ws,$GLOBALS['we_doc']->Table,$GLOBALS['DB_WE']))) {
 						return -1;
 					}
 				}

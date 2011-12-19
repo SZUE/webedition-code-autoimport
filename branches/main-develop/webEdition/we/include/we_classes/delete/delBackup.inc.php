@@ -29,7 +29,7 @@ class delBackup extends taskFragment{
 
 	var $db;
 
-	function delBackup($name,$taskPerFragment,$pause=0){
+	function __construct($name,$taskPerFragment,$pause=0){
 		$this->db = new DB_WE();
 		$this->taskFragment($name,$taskPerFragment,$pause);
 	}

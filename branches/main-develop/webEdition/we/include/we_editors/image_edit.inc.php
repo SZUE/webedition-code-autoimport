@@ -23,14 +23,14 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
 
 we_html_tools::protect();
 
 $uniqid = md5(uniqid(time()));
 
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST["we_cmd"][1])?$_REQUEST["we_cmd"][1]:0);
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_cmd'][1])?$_REQUEST['we_cmd'][1]:0);
 
 // init document
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
@@ -55,7 +55,7 @@ document.onkeyup = function(e) {
 
 '."\nself.focus();\n";
 
-	switch($_REQUEST["we_cmd"][0]){
+	switch($_REQUEST['we_cmd'][0]){
 		case "image_resize":
 			print we_getImageResizeDialogJS();
 			break;
@@ -73,7 +73,7 @@ document.onkeyup = function(e) {
 	print STYLESHEET . "</head>";
 
 
-	switch($_REQUEST["we_cmd"][0]){
+	switch($_REQUEST['we_cmd'][0]){
 		case "image_resize":
 			$_dialog = we_getImageResizeDialog();
 			break;
@@ -98,7 +98,7 @@ document.onkeyup = function(e) {
 
 
 function we_getImageResizeDialogJS(){
-	list($width,$height) = $GLOBALS["we_doc"]->getOrigSize();
+	list($width,$height) = $GLOBALS['we_doc']->getOrigSize();
 
 	return 'var width = '.$width.';
 var height = '.$height.';
@@ -201,7 +201,7 @@ function doOK(){
 	}
 	var newWidth = (f.widthSelect.options[f.widthSelect.selectedIndex].value == "pixel") ? f.width.value : Math.round((width/100) * f.width.value);
 	var newHeight = (f.heightSelect.options[f.heightSelect.selectedIndex].value == "pixel") ? f.height.value : Math.round((height/100) * f.height.value);
-	'.(($GLOBALS["we_doc"]->getGDType() == "jpg") ? "\nqual = f.quality.options[f.quality.selectedIndex].value;\n" : '').'
+	'.(($GLOBALS['we_doc']->getGDType() == "jpg") ? "\nqual = f.quality.options[f.quality.selectedIndex].value;\n" : '').'
 	top.opener._EditorFrame.setEditorIsHot(true);
 	top.opener.we_cmd("resizeImage",newWidth,newHeight,qual);
 	top.close();
@@ -223,7 +223,7 @@ function we_getImageConvertDialogJS(){
 
 function we_getImageRotateDialogJS(){
 
-	$imageSize = $GLOBALS["we_doc"]->getOrigSize();
+	$imageSize = $GLOBALS['we_doc']->getOrigSize();
 
 	return 'function doOK(){
 	var f = document.we_form;
@@ -246,7 +246,7 @@ function we_getImageRotateDialogJS(){
 			h= "'.$imageSize[0].'";
 			break;
 	}
-	'.(($GLOBALS["we_doc"]->getGDType() == "jpg") ? "\nqual = f.quality.options[f.quality.selectedIndex].value;\n" : '').'
+	'.(($GLOBALS['we_doc']->getGDType() == "jpg") ? "\nqual = f.quality.options[f.quality.selectedIndex].value;\n" : '').'
 	top.opener._EditorFrame.setEditorIsHot(true);
 	top.opener.top.we_cmd("rotateImage", w, h, degrees, qual);
 	top.close();
@@ -255,7 +255,7 @@ function we_getImageRotateDialogJS(){
 }
 
 function we_getImageResizeDialog(){
-	list($width,$height) = $GLOBALS["we_doc"]->getOrigSize();
+	list($width,$height) = $GLOBALS['we_doc']->getOrigSize();
 
 	$_content = array();
 
@@ -287,7 +287,7 @@ function we_getImageResizeDialog(){
 		<td colspan="3">'.$ratio_checkbox.'</td>
 	</tr>
 </table>' .
-	(($GLOBALS["we_doc"]->getGDType() == "jpg") ?
+	(($GLOBALS['we_doc']->getGDType() == "jpg") ?
 		'<br><div class="defaultfont">'.g_l('weClass',"[quality]").'</div>'.we_image_edit::qualitySelect("quality") :
 		'');
 	array_push($_content, array("headline" => "", "html" => $_table, "space" => 0));
@@ -322,7 +322,7 @@ function we_getImageRotateDialog(){
 
 	$_dialog = $_radio180.$_radio90l.$_radio90r.
 
-	(($GLOBALS["we_doc"]->getGDType() == "jpg") ?
+	(($GLOBALS['we_doc']->getGDType() == "jpg") ?
 		'<br><div class="defaultfont">'.g_l('weClass',"[quality]").'</div>'.we_image_edit::qualitySelect("quality") :
 		'');
 

@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 define("PROGRESS_H_IMAGE", IMAGE_DIR . 'balken.gif');
 define("PROGRESS_H_IMAGE_BG", IMAGE_DIR . 'balken_bg.gif');
 

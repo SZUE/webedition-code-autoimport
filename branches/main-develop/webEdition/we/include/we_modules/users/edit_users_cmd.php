@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_USERS_MODULE_DIR . "we_users.inc.php");
 
 we_html_tools::htmlTop();
@@ -183,7 +183,7 @@ we_html_tools::protect();
 	                    break;
 	                }
 	                if(isset($_REQUEST["oldtab"]))
-	                	$user_object->preserveState(abs($_REQUEST["oldtab"]),$_REQUEST["old_perm_branch"]);
+	                	$user_object->preserveState(intval($_REQUEST["oldtab"]),$_REQUEST["old_perm_branch"]);
 
 	                $id = $user_object->ID;
 	                if($user_object->username=="" && $user_object->Type!=2){
@@ -207,7 +207,7 @@ we_html_tools::protect();
 
 	    	        $foo = array();
 	    	        if($user_object->ID){
-	                    $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($user_object->ID),$user_object->DB_WE);
+	                    $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".intval($user_object->ID),$user_object->DB_WE);
 	                } else {
 	                    $foo["ParentID"]=0;
 	                }
@@ -229,7 +229,7 @@ we_html_tools::protect();
 	                			//	Speichere seem_start_file aus SESSION
 	                			$seem_start_file = $_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]];
 	                		}
-	                		$tmp->query("UPDATE ".PREFS_TABLE." SET seem_start_file='" . $tmp->escape($seem_start_file) . "' WHERE userID=". abs($_REQUEST["uid"]));
+	                		$tmp->query("UPDATE ".PREFS_TABLE." SET seem_start_file='" . $tmp->escape($seem_start_file) . "' WHERE userID=". intval($_REQUEST["uid"]));
 	   						unset($tmp);
 	   						unset($seem_start_file);
 	   						if (isset($_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]])) {
@@ -348,11 +348,11 @@ we_html_tools::protect();
 
             case "check_user_display":
                 if($_REQUEST["uid"]){
-                    $foo=getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($_SESSION["user"]["ID"]),$DB_WE);
+                    $foo=getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".intval($_SESSION["user"]["ID"]),$DB_WE);
 
                     $mpid = $foo["ParentID"];
 
-                    $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($_REQUEST["uid"]),$DB_WE);
+                    $foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".intval($_REQUEST["uid"]),$DB_WE);
 
                     $pid = $foo["ParentID"];
                     $search = true;
@@ -370,7 +370,7 @@ we_html_tools::protect();
                         if($pid == 0){
                             $search = false;
                         }
-												$foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".abs($pid),$DB_WE);
+												$foo = getHash("SELECT ParentID FROM ".USER_TABLE." WHERE ID=".intval($pid),$DB_WE);
 												if(empty($foo)) {
 													$foo["ParentID"] = 0;
 												}

@@ -23,8 +23,8 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_live_tools.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 include_once(WE_OBJECT_MODULE_DIR."we_object.inc.php");
 include_once(WE_OBJECT_MODULE_DIR."we_objectFile.inc.php");
 
@@ -72,14 +72,14 @@ function getObjectTags($id,$isField=false){
 }
 
 function getMultiObjectTags($name){
-	if(isset($_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["multiobject_".$name."class"]["dat"])) {
-		$id = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["multiobject_".$name."class"]["dat"];
+	if(isset($_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_".$name."class"]["dat"])) {
+		$id = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["multiobject_".$name."class"]["dat"];
 	} else {
 		return "";
-		$newfields = explode(",", $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["neuefelder"]["dat"]);
+		$newfields = explode(",", $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
 		foreach ($newfields as $tempname) {
 			if($tempname != "") {
-				if($_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"][$tempname]["dat"] == $name) {
+				if($_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"][$tempname]["dat"] == $name) {
 					$temp = $tempname;
 					break;
 				}
@@ -88,7 +88,7 @@ function getMultiObjectTags($name){
 		if(!isset($temp)) {
 			return "";
 		}
-		$id = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"][$temp."class"]["dat"];
+		$id = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"][$temp."class"]["dat"];
 	}
 
 	$tableInfo = we_objectFile::getSortedTableInfo($id,true);
@@ -184,11 +184,11 @@ $tmpl->setParentID( isset($pid)? $pid : "" );
 $tmpl->Path = $tmpl->ParentPath. (isset($filename) ? $filename : "") .".tmpl";
 
 $usedIDs = array();
-array_push($usedIDs,$_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["ID"]);
+array_push($usedIDs,$_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["ID"]);
 
-$sort = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["we_sort"]["dat"];
+$sort = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["we_sort"]["dat"];
 
-$count = (count($sort)) ? $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
+$count = (count($sort)) ? $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
 
 $content= '<html>
 	<head>
@@ -202,8 +202,8 @@ $content= '<html>
 
 if(!empty($sort)) {
 	foreach($sort as $key => $val) {
-		$name = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["wholename".$key]["dat"]]["dat"];
-		$type = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["wholename".$key]["dat"]."dtype"]["dat"];
+		$name = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename".$key]["dat"]]["dat"];
+		$type = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename".$key]["dat"]."dtype"]["dat"];
 
 		$content .= getTmplTableRow($type,$name);
 	}
@@ -211,10 +211,10 @@ if(!empty($sort)) {
 
 $content .= '		</table>
 ';
-if($_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["ID"]){
+if($_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["ID"]){
 	$content .= '
 		<p>
-		<we:listview type="object" classid="'.$_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["ID"].'" rows="10">
+		<we:listview type="object" classid="'.$_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["ID"].'" rows="10">
 			<we:repeat>
 		<p><table cellpadding="2" cellspacing="0" border="1" width="400">
 ';
@@ -222,8 +222,8 @@ if($_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["ID"]){
 
 if(!empty($sort)) {
 	foreach($sort as $key => $val) {
-		$name = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["wholename".$key]["dat"]]["dat"];
-		$type = $_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST["we_cmd"][3]][0]["elements"]["wholename".$key]["dat"]."dtype"]["dat"];
+		$name = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename".$key]["dat"]]["dat"];
+		$type = $_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION["we_data"][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename".$key]["dat"]."dtype"]["dat"];
 
 	$content .= getTmplTableRow($type,$name,true);
 	}
@@ -267,7 +267,7 @@ $buttons = we_button::position_yes_no_cancel(
 
 echo we_html_tools::htmlDialogLayout($tmpl->formPath(),g_l('weClass','[generateTemplate]'),$buttons);
 echo '<input type="hidden" name="SID" value="'.$tmpl->Name.'" />';
-echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST["we_cmd"][3].'" />';
-echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST["we_cmd"][2].'" />';
+echo '<input type="hidden" name="we_cmd[3]" value="'.$_REQUEST['we_cmd'][3].'" />';
+echo '<input type="hidden" name="we_cmd[2]" value="'.$_REQUEST['we_cmd'][2].'" />';
 echo "</form>";
 echo "</body></html>";

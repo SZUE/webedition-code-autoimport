@@ -155,8 +155,8 @@ abstract class we_forms {
 	*/
 	static function weTextarea($name,$value,$attribs,$autobr,$autobrName,$showAutobr=true,$path="",$hidestylemenu=false,$forceinwebedition=false,$xml=false,$removeFirstParagraph=true,$charset="",$showSpell=true, $isFrontendEdit=false){
 		if($charset == ""){
-			if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->getElement("Charset")){
-				$charset = $GLOBALS["we_doc"]->getElement("Charset");
+			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement("Charset")){
+				$charset = $GLOBALS['we_doc']->getElement("Charset");
 			}
 		}
 
@@ -220,8 +220,8 @@ abstract class we_forms {
 			}
 		}
 		$importrtf = weTag_getAttribute("importrtf",$attribs,false,true);
-		if (isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"] !="" && $GLOBALS["we_doc"]->ClassName == "we_objectFile") {
-			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition);
+		if (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] !="" && $GLOBALS['we_doc']->ClassName == "we_objectFile") {
+			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition);
 		} else {
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["WE_MAIN_DOC"]->InWebEdition) && $GLOBALS["WE_MAIN_DOC"]->InWebEdition);
 		}
@@ -261,8 +261,8 @@ abstract class we_forms {
 				$fieldName = preg_replace('#^.+_txt\[(.+)\]$#','\1',$name);
 
 				// Bugfix => Workarround Bug # 7445
-				if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->ClassName != "we_objectFile" && $GLOBALS["we_doc"]->ClassName != "we_object"){
-					$value = $GLOBALS["we_doc"]->getField($attribs);
+				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != "we_objectFile" && $GLOBALS['we_doc']->ClassName != "we_object"){
+					$value = $GLOBALS['we_doc']->getField($attribs);
 				} else {
 					$value = parseInternalLinks($value,0);
 				}

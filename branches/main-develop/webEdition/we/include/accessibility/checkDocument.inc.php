@@ -85,7 +85,7 @@
         } else {    //  submit via onlinecheck - site must be available online
 
             // when it is a dynamic document, remove <?xml when short_open_tags are allowed.
-            if ( ini_get("short_open_tag") == 1 && $GLOBALS["we_doc"]->IsDynamic && $contentType =="text/html" ) {
+            if ( ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType =="text/html" ) {
                 $content = str_replace("<?xml",'<?php print "<?xml"; ?>',$content);
             }
 

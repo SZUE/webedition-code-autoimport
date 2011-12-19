@@ -24,7 +24,7 @@
  */
 Zend_Loader::loadClass('we_core_AbstractObject');
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 /**
  * Base class for webEdition models
@@ -144,7 +144,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 
 		// check if there is another entry with the same path
 
-		$stm = $db->query('SELECT ID FROM ' . $this->_table . ' WHERE Text = ? AND ParentID = ? AND IsFolder = ? AND ID != ?', array($this->Text, abs($this->ParentID), abs($this->IsFolder), abs($this->ID)));
+		$stm = $db->query('SELECT ID FROM ' . $this->_table . ' WHERE Text = ? AND ParentID = ? AND IsFolder = ? AND ID != ?', array($this->Text, intval($this->ParentID), intval($this->IsFolder), intval($this->ID)));
 
 		$row = $stm->fetch();
 		if ($row) {

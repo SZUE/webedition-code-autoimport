@@ -124,29 +124,29 @@ class we_rebuild {
 
 			}
 
-			eval('$GLOBALS["we_doc"] = new '.$data["cn"].'();');
-			$GLOBALS["we_doc"]->initByID($data["id"],$table,we_class::LOAD_MAID_DB);
+			$GLOBALS['we_doc'] = new $data['cn']();
+			$GLOBALS['we_doc']->initByID($data['id'],$table,we_class::LOAD_MAID_DB);
 
 			if ($printIt) {
-				print ('Rebuilding: ' . $GLOBALS["we_doc"]->Path);
+				print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
 				flush();
 			}
 
 			if (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) {
-				print "Debug: Rebuilding: " . $GLOBALS["we_doc"]->Path;
+				print "Debug: Rebuilding: " . $GLOBALS['we_doc']->Path;
 			}
 
 			if($data["mt"] || $data["tt"]){
-				$GLOBALS["we_doc"]->correctFields();
+				$GLOBALS['we_doc']->correctFields();
 			}
 
 			if($data["tt"]){
-				$GLOBALS["we_doc"]->we_resaveTemporaryTable();
+				$GLOBALS['we_doc']->we_resaveTemporaryTable();
 			}
 			if($data["mt"] || ($table==TEMPLATES_TABLE)){
-				$tmpPath= $GLOBALS["we_doc"]->constructPath();
+				$tmpPath= $GLOBALS['we_doc']->constructPath();
 				if($tmpPath){
-					$GLOBALS["we_doc"]->Path = $tmpPath;
+					$GLOBALS['we_doc']->Path = $tmpPath;
 				}
 
 				if($table==TEMPLATES_TABLE) {
@@ -158,10 +158,10 @@ class we_rebuild {
 
 			}
 			if($data["it"]){
-				$GLOBALS["we_doc"]->insertAtIndex();
+				$GLOBALS['we_doc']->insertAtIndex();
 			}else{
-				$GLOBALS["we_doc"]->we_rewrite();
-				$GLOBALS["we_doc"]->we_republish($data["mt"]);
+				$GLOBALS['we_doc']->we_rewrite();
+				$GLOBALS['we_doc']->we_republish($data["mt"]);
 			}
 			if ($printIt) {
 				print ("   done$_newLine");

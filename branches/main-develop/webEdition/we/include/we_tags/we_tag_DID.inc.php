@@ -31,6 +31,6 @@ function we_tag_DID($attribs, $content){
 			return $GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1];
 		case "self" :
 		default :
-			return $GLOBALS["we_doc"]->ID;
+			return $GLOBALS['we_doc']->ID;
 	}
 }

@@ -39,14 +39,14 @@ function we_tag_linklist($attribs, $content){
 			}
 			$isInListview = isset($GLOBALS["lv"]);
 
-			$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->getElement($name) : ''));
+			$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getElement($name) : ''));
 
-			$ll = new we_linklist($linklist, $hidedirindex, $objectseourls,$GLOBALS["we_doc"]->Name,$attribs);
+			$ll = new we_linklist($linklist, $hidedirindex, $objectseourls,$GLOBALS['we_doc']->Name,$attribs);
 			$ll->setName($name);
 			return $ll;
 		case 'stop':
 			/* $out = $ll->getHTML(
-			  (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!$isInListview)), $attribs, $content, $GLOBALS["we_doc"]->Name);
+			  (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!$isInListview)), $attribs, $content, $GLOBALS['we_doc']->Name);
 			 */
 			return '';
 	}

@@ -39,7 +39,7 @@ function we_tag_ifEqual($attribs, $content){
 			print($foo);
 			return "";
 		}
-		return ($GLOBALS["we_doc"]->getElement($name) == $value);
+		return ($GLOBALS['we_doc']->getElement($name) == $value);
 	}
 
 	$foo = attributFehltError($attribs, "eqname", "ifEqual");
@@ -47,11 +47,11 @@ function we_tag_ifEqual($attribs, $content){
 		print($foo);
 		return "";
 	}
-	if ($GLOBALS["we_doc"]->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($eqname)) {
-		return ($GLOBALS["we_doc"]->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
+	if ($GLOBALS['we_doc']->getElement($name) && $GLOBALS["WE_MAIN_DOC"]->getElement($eqname)) {
+		return ($GLOBALS['we_doc']->getElement($name) == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
 	} else {
 		if (isset($GLOBALS[$eqname])) {
-			return $GLOBALS[$eqname] == $GLOBALS["we_doc"]->getElement($name);
+			return $GLOBALS[$eqname] == $GLOBALS['we_doc']->getElement($name);
 		} else {
 			return false;
 		}

@@ -24,7 +24,7 @@
  */
 
 
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 	case "edit_users":
 	case "edit_users_ifthere":
 		$mod="users";

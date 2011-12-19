@@ -24,7 +24,7 @@
  */
 
 
-		switch($_REQUEST["we_cmd"][0]){
+		switch($_REQUEST['we_cmd'][0]){
 				case "edit_voting_ifthere":
 		        case "edit_voting":
 		        	$mod="voting";

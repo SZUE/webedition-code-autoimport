@@ -24,7 +24,7 @@
  */
 
 
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 	case "finish_workflow":
 		$INCLUDE = "we_modules/workflow/we_finish_workflow.inc.php";
 		break;

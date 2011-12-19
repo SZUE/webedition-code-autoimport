@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 $parts = array();
@@ -33,7 +33,7 @@ $we_doc = new we_docTypes();
 // Initialize variables
 $we_show_response = 0;
 
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 	case "save_docType":
 		if (!we_hasPerm("EDIT_DOCTYPE")) {
 			$we_responseText = g_l('weClass',"[no_perms]");
@@ -72,8 +72,8 @@ switch ($_REQUEST["we_cmd"][0]) {
 		}
 		break;
 	case "newDocType":
-		if ($_REQUEST["we_cmd"][1]) {
-			$we_doc->DocType= urldecode($_REQUEST["we_cmd"][1]);
+		if ($_REQUEST['we_cmd'][1]) {
+			$we_doc->DocType= urldecode($_REQUEST['we_cmd'][1]);
 			$we_doc->we_save();
 		}
 		break;
@@ -83,17 +83,17 @@ switch ($_REQUEST["we_cmd"][0]) {
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			break;
 		}
-		$DB_WE->query("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
+		$DB_WE->query("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID=".intval($_REQUEST['we_cmd'][1]));
 		$del=false;
 		if ($DB_WE->next_record()) {
 			$name=$DB_WE->f("DocType");
-			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".abs($_REQUEST["we_cmd"][1])." OR temp_doc_type=".$DB_WE->escape($_REQUEST["we_cmd"][1]));
+			$DB_WE->query("SELECT ID FROM " . FILE_TABLE . " WHERE DocType=".intval($_REQUEST['we_cmd'][1])." OR temp_doc_type=".$DB_WE->escape($_REQUEST['we_cmd'][1]));
 			if (!$DB_WE->next_record()) {
-				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".abs($_REQUEST["we_cmd"][1]));
+				$DB_WE->query("DELETE FROM " . DOC_TYPES_TABLE . " WHERE ID=".intval($_REQUEST['we_cmd'][1]));
 				$we_responseText = g_l('weClass',"[doctype_delete_ok]");
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_responseText = sprintf($we_responseText,$name);
-				unset($_REQUEST["we_cmd"][1]);
+				unset($_REQUEST['we_cmd'][1]);
 				$del=true;
 			} else {
 				$we_responseText = g_l('weClass',"[doctype_delete_nok]");
@@ -105,14 +105,14 @@ switch ($_REQUEST["we_cmd"][0]) {
 				if($DB_WE->next_record())
 					$we_doc->initByID($DB_WE->f("ID"),DOC_TYPES_TABLE);
 			} else {
-				$we_doc->initByID($_REQUEST["we_cmd"][1],DOC_TYPES_TABLE);
+				$we_doc->initByID($_REQUEST['we_cmd'][1],DOC_TYPES_TABLE);
 			}
 		}
 		break;
 	case "add_dt_template":
 		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
-		$ids = makeArrayFromCSV($_REQUEST["we_cmd"][1]);
+		$ids = makeArrayFromCSV($_REQUEST['we_cmd'][1]);
 		foreach($ids as $id){
 			if (!in_array($id,$foo)) {
 				array_push($foo,$id);
@@ -123,13 +123,13 @@ switch ($_REQUEST["we_cmd"][0]) {
 	case "delete_dt_template":
 		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
-		if ($_REQUEST["we_cmd"][1] && (in_array($_REQUEST["we_cmd"][1],$foo))) {
-			$pos = getArrayKey($_REQUEST["we_cmd"][1],$foo);
+		if ($_REQUEST['we_cmd'][1] && (in_array($_REQUEST['we_cmd'][1],$foo))) {
+			$pos = getArrayKey($_REQUEST['we_cmd'][1],$foo);
 			if ($pos != "" || $pos == "0") {
 				array_splice($foo,$pos,1);
 			}
 		}
-		if ($we_doc->TemplateID == $_REQUEST["we_cmd"][1]) {
+		if ($we_doc->TemplateID == $_REQUEST['we_cmd'][1]) {
 			if (count($foo)) {
 				$we_doc->TemplateID = $foo[0];
 			} else {
@@ -140,18 +140,18 @@ switch ($_REQUEST["we_cmd"][0]) {
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
-		if ($_REQUEST["we_cmd"][1])
-			$we_doc->addCat($_REQUEST["we_cmd"][1]);
+		if ($_REQUEST['we_cmd'][1])
+			$we_doc->addCat($_REQUEST['we_cmd'][1]);
 		break;
 	case "dt_delete_cat":
 		$we_doc->we_initSessDat($_SESSION["we_data"][$we_transaction]);
-		if ($_REQUEST["we_cmd"][1]) {
-			$we_doc->delCat($_REQUEST["we_cmd"][1]);
+		if ($_REQUEST['we_cmd'][1]) {
+			$we_doc->delCat($_REQUEST['we_cmd'][1]);
 		}
 		break;
 	default:
-		if (isset($_REQUEST["we_cmd"][1])) {
-			$id = $_REQUEST["we_cmd"][1];
+		if (isset($_REQUEST['we_cmd'][1])) {
+			$id = $_REQUEST['we_cmd'][1];
 		} else {
 			$q=getDoctypeQuery($DB_WE);
 			$q = "SELECT ID FROM " . DOC_TYPES_TABLE . " $q";
@@ -178,15 +178,15 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 			<?php print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
 
 	 }}
-	 if($_REQUEST["we_cmd"][0] == "deleteDocType"){
+	 if($_REQUEST['we_cmd'][0] == "deleteDocType"){
 		if(!we_hasPerm("EDIT_DOCTYPE")){
 			print we_message_reporting::getShowMessageCall(g_l('alert',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{?>
 			if(confirm("<?php printf(g_l('weClass',"[doctype_delete_prompt]"),$we_doc->DocType); ?>")) {
-				we_cmd("deleteDocTypeok","<?php print $_REQUEST["we_cmd"][1]; ?>");
+				we_cmd("deleteDocTypeok","<?php print $_REQUEST['we_cmd'][1]; ?>");
 			}
 	<?php }}
-	if($_REQUEST["we_cmd"][0] == "deleteDocTypeok"){ ?>
+	if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){ ?>
 		opener.top.makefocus = self;
 		opener.top.header.document.location.reload();
 		<?php print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
@@ -350,32 +350,32 @@ echo we_htmlElement::jsScript(JS_DIR.'windows.js');
 if($we_doc->ID){
 
 	array_push($parts, array(	"headline"=>g_l('weClass',"[doctypes]"),
-								"html"=>$GLOBALS["we_doc"]->formDocTypeHeader(),
+								"html"=>$GLOBALS['we_doc']->formDocTypeHeader(),
 								"space"=>120
 							)
 				);
 
 	array_push($parts, array(	"headline"=>g_l('weClass',"[name]"),
-								"html"=>$GLOBALS["we_doc"]->formName(),
+								"html"=>$GLOBALS['we_doc']->formName(),
 								"space"=>120
 							)
 				);
 
 	array_push($parts, array(	"headline"=>g_l('global',"[templates]"),
-								"html"=>$GLOBALS["we_doc"]->formDocTypeTemplates(),
+								"html"=>$GLOBALS['we_doc']->formDocTypeTemplates(),
 								"space"=>120
 							)
 				);
 
 	array_push($parts, array(	"headline"=>g_l('weClass',"[defaults]"),
-								"html"=>$GLOBALS["we_doc"]->formDocTypeDefaults(),
+								"html"=>$GLOBALS['we_doc']->formDocTypeDefaults(),
 								"space"=>120
 							)
 				);
 
 }else{
 	array_push($parts, array(	"headline"=>"",
-								"html"=>$GLOBALS["we_doc"]->formNewDocType(),
+								"html"=>$GLOBALS['we_doc']->formNewDocType(),
 								"space"=>0
 							)
 				);

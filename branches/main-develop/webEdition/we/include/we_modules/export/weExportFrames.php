@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_export/weExportTree.inc.php");
 include_once(WE_EXPORT_MODULE_DIR."weExportView.php");
 include_once(WE_EXPORT_MODULE_DIR."weExportTreeMain.php");

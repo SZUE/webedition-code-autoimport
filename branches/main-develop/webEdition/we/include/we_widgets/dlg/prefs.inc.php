@@ -23,7 +23,7 @@
  */
 
 $jsPrefs = "
-var _sObjId='" . $_REQUEST["we_cmd"][0] . "';
+var _sObjId='" . $_REQUEST['we_cmd'][0] . "';
 var _sCls_=opener.gel(_sObjId+'_cls').value;
 var _fo,_sInitCls,_oSctCls;
 var _iInitCls=0;

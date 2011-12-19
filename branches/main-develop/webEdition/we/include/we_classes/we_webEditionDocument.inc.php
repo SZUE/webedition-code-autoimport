@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 class we_webEditionDocument extends we_textContentDocument {
 
@@ -366,7 +366,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		for($j = 0; $j < sizeof($_tags); $j++){	//	now parse these tags for property-page.
 			if($_tags[$j][1]){
 				$_tp->parseSpecificTags($_tags[$j][0], $_tags[$j][1]);
-				eval("?>" . $_tags[$j][1]);
+				eval('?>' . $_tags[$j][1]);
 			}
 		}
 

@@ -32,11 +32,11 @@ class we_image_crop
 {
 
 	function getJS(){
-		if (!isset($GLOBALS["we_doc"]->elements["origwidth"])) {
-			$GLOBALS["we_doc"]->setElement("origwidth", $GLOBALS["we_doc"]->getElement("width"));
+		if (!isset($GLOBALS['we_doc']->elements["origwidth"])) {
+			$GLOBALS['we_doc']->setElement("origwidth", $GLOBALS['we_doc']->getElement("width"));
 		}
-		if (!isset($GLOBALS["we_doc"]->elements["origheight"])) {
-			$GLOBALS["we_doc"]->setElement("origheight", $GLOBALS["we_doc"]->getElement("height"));
+		if (!isset($GLOBALS['we_doc']->elements["origheight"])) {
+			$GLOBALS['we_doc']->setElement("origheight", $GLOBALS['we_doc']->getElement("height"));
 		}
 
 		return we_htmlElement::jsElement('
@@ -47,8 +47,8 @@ var CropTool = {
 	imgH : 0,
 	defW : 0,
 	defH : 0,
-	origW : '.((isset($GLOBALS["we_doc"]->elements["origwidth"]["dat"]))? $GLOBALS["we_doc"]->elements["origwidth"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0').',
-	origH : '.((isset($GLOBALS["we_doc"]->elements["origheight"]["dat"]))? $GLOBALS["we_doc"]->elements["origheight"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0').',
+	origW : '.((isset($GLOBALS['we_doc']->elements["origwidth"]["dat"]))? $GLOBALS['we_doc']->elements["origwidth"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0').',
+	origH : '.((isset($GLOBALS['we_doc']->elements["origheight"]["dat"]))? $GLOBALS['we_doc']->elements["origheight"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0').',
 	imgDiv : "weImgDiv",
 	imgBorder : "weImagePanelBorder",
 	imgPanel : "weImagePanel",

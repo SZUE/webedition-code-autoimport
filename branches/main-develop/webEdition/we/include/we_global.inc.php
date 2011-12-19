@@ -1783,7 +1783,7 @@ function parseInternalLinks(&$text, $pid, $path = '') {
 
 		foreach ($regs as $reg) {
 
-			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]).(isset($GLOBALS["we_doc"]->InWebEdition) && $GLOBALS["we_doc"]->InWebEdition ? '':' AND Published > 0'), 'Path',$DB_WE);
+			$_path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]).(isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '':' AND Published > 0'), 'Path',$DB_WE);
 
 			if ($_path) {
 				$path_parts = pathinfo($_path);

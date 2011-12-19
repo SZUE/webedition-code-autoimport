@@ -261,9 +261,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				if($f["subscribe_html"]){
 					$GLOBALS["WE_HTMLMAIL"]=1;
 
-					if(isset($GLOBALS["we_doc"])){
-						$mywedoc=$GLOBALS["we_doc"];
-						unset($GLOBALS["we_doc"]);
+					if(isset($GLOBALS['we_doc'])){
+						$mywedoc=$GLOBALS['we_doc'];
+						unset($GLOBALS['we_doc']);
 					}
 					$mailtextHTML = we_getDocumentByID($mailid);
 					if($f["subscribe_title"]){
@@ -274,11 +274,11 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 
 				$GLOBALS["WE_HTMLMAIL"]=0;
 
-				if(isset($GLOBALS["we_doc"])){
+				if(isset($GLOBALS['we_doc'])){
 					if(!isset($mywedoc)){
-						$mywedoc=$GLOBALS["we_doc"];
+						$mywedoc=$GLOBALS['we_doc'];
 					}
-					unset($GLOBALS["we_doc"]);
+					unset($GLOBALS['we_doc']);
 				}
 
 
@@ -361,7 +361,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content) {
 				$phpmail->Send();
 				$GLOBALS["WE_DOUBLEOPTIN"]=1;
 
-				if(isset($mywedoc)) $GLOBALS["we_doc"]=$mywedoc;
+				if(isset($mywedoc)) $GLOBALS['we_doc']=$mywedoc;
 
 			}else{
 				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;

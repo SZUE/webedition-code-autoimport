@@ -152,8 +152,8 @@ class we_flashDocument extends we_binaryDocument{
 			$alt = $this->getElement("alt");
 			$altContent = '';
 			if($alt){
-				if(isset($GLOBALS["we_doc"]->elements[$alt]) && isset($GLOBALS["we_doc"]->elements[$alt]["type"])){
-					$altContent = $GLOBALS["we_doc"]->getField(array('name' => $alt, 'xml' => $xml), $GLOBALS["we_doc"]->elements[$alt]["type"]);
+				if(isset($GLOBALS['we_doc']->elements[$alt]) && isset($GLOBALS['we_doc']->elements[$alt]["type"])){
+					$altContent = $GLOBALS['we_doc']->getField(array('name' => $alt, 'xml' => $xml), $GLOBALS['we_doc']->elements[$alt]["type"]);
 				}
 			}
 

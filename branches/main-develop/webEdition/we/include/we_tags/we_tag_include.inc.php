@@ -63,8 +63,8 @@ function we_tag_include($attribs, $content) {
 			$db = new DB_WE();
 			$path = we_tag('href', array('name' => $name, 'rootdir' => $rootdir));
 			$nint = $name . "_we_jkhdsf_int";
-			$int = ($GLOBALS["we_doc"]->getElement($nint) == "") ? 0 : $GLOBALS["we_doc"]->getElement($nint);
-			$intID = $GLOBALS["we_doc"]->getElement($nint.'ID');
+			$int = ($GLOBALS['we_doc']->getElement($nint) == "") ? 0 : $GLOBALS['we_doc']->getElement($nint);
+			$intID = $GLOBALS['we_doc']->getElement($nint.'ID');
 			if($int && $intID){
 				list($isDynamic,$ct) = getHash('SELECT IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID).' AND Published>0',$db);
 			}

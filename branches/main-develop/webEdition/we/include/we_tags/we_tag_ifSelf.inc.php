@@ -27,8 +27,8 @@ function we_tag_ifSelf($attribs, $content){
 	$id = weTag_getAttribute("id", $attribs);
 
 	if (!$id) {
-		if (isset($GLOBALS["we_obj"])) {
-			$id = $GLOBALS["we_obj"]->ID;
+		if (isset($GLOBALS['we_obj'])) {
+			$id = $GLOBALS['we_obj']->ID;
 		} else {
 			$id = $GLOBALS["WE_MAIN_DOC"]->ID;
 		}
@@ -64,7 +64,7 @@ function we_tag_ifSelf($attribs, $content){
 						return in_array($GLOBALS["lv"]->IDs[$GLOBALS["lv"]->count - 1], $ids);
 					}
 		case "self" :
-			return in_array($GLOBALS["we_doc"]->ID, $ids);
+			return in_array($GLOBALS['we_doc']->ID, $ids);
 		default :
 			return in_array($GLOBALS["WE_MAIN_DOC"]->ID, $ids);
 	}

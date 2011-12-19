@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/tree.inc.php");
 
@@ -44,7 +44,7 @@ $yuiSuggest->setAutocompleteField(
 		1,
 		"296px");
 
-list($sTitle, $selBinary, $sCsv) = explode(";", $_REQUEST["we_cmd"][1]);
+list($sTitle, $selBinary, $sCsv) = explode(";", $_REQUEST['we_cmd'][1]);
 $_title = base64_decode($sTitle);
 $_selection = (bool)$selBinary{0};
 $_selType = (bool)$selBinary{1};

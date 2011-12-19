@@ -33,10 +33,10 @@ if(isset($GLOBALS['we_doc']->Charset)){	//	send charset which might be determine
 }
 
 $_editMode = (isset($_previewMode) && $_previewMode == 1 ? 0 : 1);
-$parts = $GLOBALS["we_doc"]->getFieldsHTML($_editMode);
+$parts = $GLOBALS['we_doc']->getFieldsHTML($_editMode);
 
-if (is_array($GLOBALS["we_doc"]->DefArray)){
-	foreach($GLOBALS["we_doc"]->DefArray as $n=>$v) {
+if (is_array($GLOBALS['we_doc']->DefArray)){
+	foreach($GLOBALS['we_doc']->DefArray as $n=>$v) {
 		if(is_array($v)){
 			if(isset($v["required"]) && $v["required"] && $_editMode) {
 				array_push($parts,
@@ -89,7 +89,7 @@ print STYLESHEET; ?>
 </head>
 
 <body class="weEditorBody" onUnload="doUnload()">
-	<form name="we_form" method="post"><?php $GLOBALS["we_doc"]->pHiddenTrans();
+	<form name="we_form" method="post"><?php $GLOBALS['we_doc']->pHiddenTrans();
 
 if($_editMode){
 

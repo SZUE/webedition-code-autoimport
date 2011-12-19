@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 ?>
 		<div style="position:absolute;top:0;left:0;right:0;bottom:0;border:0;">
 			<div style="position:absolute;top:0;bottom:0;left:0;right:60px;"><?php

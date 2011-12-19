@@ -61,7 +61,7 @@ class we_listview_customer extends listviewBase {
 		if($this->docID){
 			$this->Path = id_to_path($this->docID,FILE_TABLE,$this->DB_WE);
 		}else{
-			$this->Path = (isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : '');
+			$this->Path = (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
 		}
 		$this->hidedirindex=$hidedirindex;
 

@@ -31,7 +31,7 @@
  * Description: Provides functions for creating html tags
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 class we_baseCollection extends we_baseElement{
 

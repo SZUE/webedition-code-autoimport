@@ -694,7 +694,7 @@ class we_linklist{
 		$realNr = $this->listArray[$nr]["nr"];
 		$namesArray = $names ? explode(",", $names) : array();
 		foreach($namesArray as $n){
-			unset($GLOBALS["we_doc"]->elements[$n . $name . "_TAGS_" . $realNr]);
+			unset($GLOBALS['we_doc']->elements[$n . $name . "_TAGS_" . $realNr]);
 		}
 		array_splice($this->listArray, $nr, 1);
 	}

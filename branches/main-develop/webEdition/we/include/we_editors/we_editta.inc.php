@@ -24,15 +24,15 @@
 
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 we_html_tools::protect();
 
 
-$nr = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : "";
-$name = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : "";
-$we_transaction = isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : "";
+$nr = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : "";
+$name = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "";
+$we_transaction = isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : "";
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:'');
 
 $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we_transaction] : "";
@@ -71,7 +71,7 @@ print "<html>\n".we_htmlElement::htmlHead(WE_DEFAULT_HEAD.$js.STYLESHEET);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="'.$_SERVER['SCRIPT_NAME'].'"><input type="hidden" name="ok" value="1" />';
 
-foreach($_REQUEST["we_cmd"] as $k=>$v){
+foreach($_REQUEST['we_cmd'] as $k=>$v){
 	$out .= '<input type="hidden" name="we_cmd['.$k.']" value="'.$v.'" />';
 }
 

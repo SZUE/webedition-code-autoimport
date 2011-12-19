@@ -1006,7 +1006,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	}
 
 	function getFrameset(){
-		$isMainChooser = isset($_REQUEST["we_cmd"]) && $_REQUEST["we_cmd"][0] == "openCatselector" && !($_REQUEST["we_cmd"][3] || $_REQUEST["we_cmd"][5]);
+		$isMainChooser = isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == "openCatselector" && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="'.$this->getFsQueryString(FS_HEADER).'" name="fsheader" noresize scrolling="no">
 ' .($isMainChooser ? '

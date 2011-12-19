@@ -23,13 +23,13 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop(g_l('global','[question]'));
 
 $_we_cmd6 = "";
-if (isset($_REQUEST["we_cmd"][6])) {
-	$_we_cmd6 = $_REQUEST["we_cmd"][6];
+if (isset($_REQUEST['we_cmd'][6])) {
+	$_we_cmd6 = $_REQUEST['we_cmd'][6];
 
 }
 
@@ -55,14 +55,14 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');
 	}
 
 function pressed_yes_button() {
-	opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,1,'<?php print str_replace("'","\\'",$_REQUEST["we_cmd"][5]); ?>',"<?php print $_we_cmd6; ?>");
+	opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,1,'<?php print str_replace("'","\\'",$_REQUEST['we_cmd'][5]); ?>',"<?php print $_we_cmd6; ?>");
 	opener.top.toggleBusy(1);
 	self.close();
 
 }
 
 function pressed_no_button() {
-	opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,0,'<?php print str_replace("'","\\'",$_REQUEST["we_cmd"][5]) ?>',"<?php print $_we_cmd6; ?>");
+	opener.top.we_cmd('save_document','<?php print $we_transaction; ?>',0,1,0,'<?php print str_replace("'","\\'",$_REQUEST['we_cmd'][5]) ?>',"<?php print $_we_cmd6; ?>");
 	opener.top.toggleBusy(1);
 	self.close();
 

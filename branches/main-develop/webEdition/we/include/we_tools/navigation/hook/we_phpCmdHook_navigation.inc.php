@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch($_REQUEST["we_cmd"][0]){
+switch($_REQUEST['we_cmd'][0]){
 	case 'tool_navigation_rules':
 		$toolInclude = 'navigation/edit_navigation_rules_frameset.php';
 		break;

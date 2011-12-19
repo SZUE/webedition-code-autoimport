@@ -25,7 +25,7 @@
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossary.php');
 require_once(WE_GLOSSARY_MODULE_DIR . 'weGlossaryCache.php');
@@ -43,17 +43,17 @@ if(!isset($_REQUEST['we_cmd'][1]) || $_REQUEST['we_cmd'][1] == "") {
 }
 
 // Transaction
-if(!isset($_REQUEST["we_cmd"][2])) {
+if(!isset($_REQUEST['we_cmd'][2])) {
 	die('No Transaction');
 
 }
-$Transaction = $_REQUEST["we_cmd"][2];
+$Transaction = $_REQUEST['we_cmd'][2];
 
 //
 // ---> Main Frame
 //
 
-if($_REQUEST["we_cmd"][1] == 'frameset') {
+if($_REQUEST['we_cmd'][1] == 'frameset') {
 
 	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];
 
@@ -348,7 +348,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 // ---> Form with all unidentified words
 //
 
-} else if($_REQUEST["we_cmd"][1] == 'prepare') {
+} else if($_REQUEST['we_cmd'][1] == 'prepare') {
 
 	$configFile = WE_GLOSSARY_MODULE_DIR . "/we_conf_glossary_settings.inc.php";
 	if(!file_exists($configFile) || !is_file($configFile)) {
@@ -763,12 +763,12 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 
 	<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck">
 	<input type="hidden" name="ItemsToPublish" id="ItemsToPublish" value="" />
-	<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST["we_cmd"][0]; ?>" />
+	<input type="hidden" name="we_cmd[0]" value="<?php echo $_REQUEST['we_cmd'][0]; ?>" />
 	<input type="hidden" name="we_cmd[1]" value="finish" />
 	<input type="hidden" name="we_cmd[2]" value="<?php echo $Transaction; ?>" />
 <?php
 	if(isset($_REQUEST['we_cmd'][3])) {
-		echo "	<input type=\"hidden\" name=\"we_cmd[3]\" value=\"" . $_REQUEST["we_cmd"][3] . "\" />";
+		echo "	<input type=\"hidden\" name=\"we_cmd[3]\" value=\"" . $_REQUEST['we_cmd'][3] . "\" />";
 	}
 
 
@@ -853,7 +853,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 // --> Finish Step
 //
 
-} else if($_REQUEST["we_cmd"][1] == 'finish') {
+} else if($_REQUEST['we_cmd'][1] == 'finish') {
 
 
 	$ClassName = $_SESSION['we_data'][$Transaction][0]['ClassName'];

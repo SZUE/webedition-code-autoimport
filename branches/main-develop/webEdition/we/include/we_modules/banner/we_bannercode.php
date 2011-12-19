@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
 we_html_tools::protect();
 we_html_tools::htmlTop(g_l('modules_banner','[bannercode]'));
@@ -120,7 +120,7 @@ function checkForm(f){
 
 	</head>
 	<body class="weDialogBody"<?php if($ok){ ?> onLoad="document.we_form.code.focus();document.we_form.code.select();"<?php } ?>>
-	<form onSubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST["we_cmd"][0]; ?>" />
+	<form onSubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
 <?php
 
 

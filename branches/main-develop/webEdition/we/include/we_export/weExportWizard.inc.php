@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_export/weExportTree.inc.php");
 
 
@@ -132,7 +132,7 @@ class weExportWizard{
  	function  getHTMLFrameset(){
  		$args = "";
  		$_SESSION["exportVars"]=array();
-		if (isset($_REQUEST["we_cmd"][1])) $args .= "&we_cmd[1]=".$_REQUEST["we_cmd"][1];
+		if (isset($_REQUEST['we_cmd'][1])) $args .= "&we_cmd[1]=".$_REQUEST['we_cmd'][1];
 		$this->Tree=new weExportTree("/webEdition/we/include/we_export/export_frameset.php",$this->topFrame,$this->bodyFrame,$this->loadFrame);
 
 		$js=$this->getJSTop();

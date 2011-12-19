@@ -38,75 +38,75 @@ include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc
 
 $_insertReloadFooter = "";
 
-switch($_REQUEST["we_cmd"][0]) {
+switch($_REQUEST['we_cmd'][0]) {
 	case "load_editor":
 		// set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == "image/*" && $we_doc->ID == "0") {
 			$_SESSION["EditPageNr"] = WE_EDITPAGE_CONTENT;
 			$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
-			$_REQUEST["we_cmd"][1] = WE_EDITPAGE_CONTENT;
+			$_REQUEST['we_cmd'][1] = WE_EDITPAGE_CONTENT;
 		}
 		break;
 	case "resizeImage":
-		$we_doc->resizeImage($_REQUEST["we_cmd"][1], $_REQUEST["we_cmd"][2], $_REQUEST["we_cmd"][3]);
+		$we_doc->resizeImage($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3]);
 		break;
 	case "rotateImage":
-		$we_doc->rotateImage($_REQUEST["we_cmd"][1], $_REQUEST["we_cmd"][2], $_REQUEST["we_cmd"][3], $_REQUEST["we_cmd"][4]);
+		$we_doc->rotateImage($_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $_REQUEST['we_cmd'][4]);
 		break;
 	case "del_thumb":
-		$we_doc->del_thumbnails($_REQUEST["we_cmd"][1]);
+		$we_doc->del_thumbnails($_REQUEST['we_cmd'][1]);
 		break;
 	case "do_add_thumbnails":
-		$we_doc->add_thumbnails($_REQUEST["we_cmd"][1]);
+		$we_doc->add_thumbnails($_REQUEST['we_cmd'][1]);
 		break;
 	case "copyDocument":
-		$we_doc->copyDoc($_REQUEST["we_cmd"][1]);
+		$we_doc->copyDoc($_REQUEST['we_cmd'][1]);
 		$we_doc->InWebEdition=1;
 		break;
 	case "new_alias":
 		$we_doc->newAlias();
 		break;
 	case "delete_alias":
-		$we_doc->deleteAlias($_REQUEST["we_cmd"][1]);
+		$we_doc->deleteAlias($_REQUEST['we_cmd'][1]);
 		break;
 	case "delete_list":
-		$we_doc->removeEntryFromList($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2],$_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+		$we_doc->removeEntryFromList($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 		break;
 	case "insert_entry_at_list":
-		$we_doc->insertEntryAtList($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2],isset($_REQUEST["we_cmd"][3]) ? $_REQUEST["we_cmd"][3] : 1);
+		$we_doc->insertEntryAtList($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2],isset($_REQUEST['we_cmd'][3]) ? $_REQUEST['we_cmd'][3] : 1);
 		break;
 	case "up_entry_at_list":
-		$we_doc->upEntryAtList($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->upEntryAtList($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "down_entry_at_list":
-		$we_doc->downEntryAtList($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->downEntryAtList($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "up_link_at_list":
-		$we_doc->upEntryAtLinklist($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->upEntryAtLinklist($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "down_link_at_list":
-		$we_doc->downEntryAtLinklist($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->downEntryAtLinklist($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "add_entry_to_list":
-		$we_doc->addEntryToList($_REQUEST["we_cmd"][1],isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 1);
+		$we_doc->addEntryToList($_REQUEST['we_cmd'][1],isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 1);
 		break;
 	case "add_link_to_linklist":
-		$GLOBALS["we_list_inserted"]=$_REQUEST["we_cmd"][1];
-		$we_doc->addLinkToLinklist($_REQUEST["we_cmd"][1]);
+		$GLOBALS["we_list_inserted"]=$_REQUEST['we_cmd'][1];
+		$we_doc->addLinkToLinklist($_REQUEST['we_cmd'][1]);
 		break;
 	case "delete_linklist":
-		$we_doc->removeLinkFromLinklist($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2],$_REQUEST["we_cmd"][3]);
+		$we_doc->removeLinkFromLinklist($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][3]);
 		break;
 	case "insert_link_at_linklist":
-		$GLOBALS["we_list_insertedNr"]=$_REQUEST["we_cmd"][2];
-		$GLOBALS["we_list_inserted"]=$_REQUEST["we_cmd"][1];
-		$we_doc->insertLinkAtLinklist($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$GLOBALS["we_list_insertedNr"]=$_REQUEST['we_cmd'][2];
+		$GLOBALS["we_list_inserted"]=$_REQUEST['we_cmd'][1];
+		$we_doc->insertLinkAtLinklist($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "change_linklist":
-		$we_doc->changeLinklist($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->changeLinklist($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "change_link":
-		$we_doc->changeLink($_REQUEST["we_cmd"][1]);
+		$we_doc->changeLink($_REQUEST['we_cmd'][1]);
 		break;
 	case "doctype_changed":
 		$we_doc->changeDoctype("", true);
@@ -117,24 +117,24 @@ switch($_REQUEST["we_cmd"][0]) {
         $_insertReloadFooter = "<script language=\"JavaScript\">try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};</script>";
         break;
 	case "remove_image":
-		$we_doc->remove_image($_REQUEST["we_cmd"][1]);
+		$we_doc->remove_image($_REQUEST['we_cmd'][1]);
 		break;
 	case "wrap_on_off":
-		$_SESSION["we_wrapcheck"] = ($_REQUEST["we_cmd"][1] == "true") ? 1 : 0;
+		$_SESSION["we_wrapcheck"] = ($_REQUEST['we_cmd'][1] == "true") ? 1 : 0;
 		$we_doc->EditPageNr = WE_EDITPAGE_CONTENT;
 		$_SESSION["EditPageNr"] = WE_EDITPAGE_CONTENT;
 		break;
 	case "add_owner":
-		$we_doc->add_owner($_REQUEST["we_cmd"][1]);
+		$we_doc->add_owner($_REQUEST['we_cmd'][1]);
 		break;
 	case "del_owner":
-		$we_doc->del_owner($_REQUEST["we_cmd"][1]);
+		$we_doc->del_owner($_REQUEST['we_cmd'][1]);
 		break;
 	case "add_user":
-		$we_doc->add_user($_REQUEST["we_cmd"][1]);
+		$we_doc->add_user($_REQUEST['we_cmd'][1]);
 		break;
 	case "del_user":
-		$we_doc->del_user($_REQUEST["we_cmd"][1]);
+		$we_doc->del_user($_REQUEST['we_cmd'][1]);
 		break;
 	case "del_all_owners":
 		$we_doc->del_all_owners();
@@ -149,38 +149,38 @@ switch($_REQUEST["we_cmd"][0]) {
 		break;
 
 	case "add_workspace":
-		$we_doc->add_workspace($_REQUEST["we_cmd"][1]);
+		$we_doc->add_workspace($_REQUEST['we_cmd'][1]);
 		break;
 	case "del_workspace":
-		$we_doc->del_workspace($_REQUEST["we_cmd"][1]);
+		$we_doc->del_workspace($_REQUEST['we_cmd'][1]);
 		break;
 	case "add_extraworkspace":
-		$we_doc->add_extraWorkspace($_REQUEST["we_cmd"][1]);
+		$we_doc->add_extraWorkspace($_REQUEST['we_cmd'][1]);
 		break;
 	case "del_extraworkspace":
-		$we_doc->del_extraWorkspace($_REQUEST["we_cmd"][1]);
+		$we_doc->del_extraWorkspace($_REQUEST['we_cmd'][1]);
 		break;
 	case "ws_from_class":
 		$we_doc->ws_from_class();
 		break;
 	case "switch_edit_page":
-		$_SESSION["EditPageNr"] = $_REQUEST["we_cmd"][1];
-		$we_doc->EditPageNr = $_REQUEST["we_cmd"][1];
+		$_SESSION["EditPageNr"] = $_REQUEST['we_cmd'][1];
+		$we_doc->EditPageNr = $_REQUEST['we_cmd'][1];
 		if($_SESSION["we_mode"] == "seem"){
 			$_insertReloadFooter =	"<script language=\"javascript\">\n<!--\ntry{parent.editFooter.location.reload();}catch(exception){};\n//-->\n</script>" .  SCRIPT_BUTTONS_ONLY . STYLESHEET_BUTTONS_ONLY;
 		}
 		break;
 	case "delete_link":
-		if(isset($we_doc->elements[$_REQUEST["we_cmd"][1]])) unset($we_doc->elements[$_REQUEST["we_cmd"][1]]);
+		if(isset($we_doc->elements[$_REQUEST['we_cmd'][1]])) unset($we_doc->elements[$_REQUEST['we_cmd'][1]]);
 		break;
 	case "add_cat":
-		$we_doc->addCat($_REQUEST["we_cmd"][1]);
+		$we_doc->addCat($_REQUEST['we_cmd'][1]);
 		break;
 	case "delete_cat":
-		$we_doc->delCat($_REQUEST["we_cmd"][1]);
+		$we_doc->delCat($_REQUEST['we_cmd'][1]);
 		break;
 	case "changeTempl_ob":
-		$we_doc->changeTempl_ob($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->changeTempl_ob($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "delete_all_cats":
 		$we_doc->Category = "";
@@ -189,16 +189,16 @@ switch($_REQUEST["we_cmd"][0]) {
 		$we_doc->add_schedule();
 		break;
 	case "del_schedule":
-		$we_doc->del_schedule($_REQUEST["we_cmd"][1]);
+		$we_doc->del_schedule($_REQUEST['we_cmd'][1]);
 		break;
 	case "delete_schedcat":
-		$we_doc->delete_schedcat($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->delete_schedcat($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "delete_all_schedcats":
-		$we_doc->schedArr[$_REQUEST["we_cmd"][1]]["CategoryIDs"] = "";
+		$we_doc->schedArr[$_REQUEST['we_cmd'][1]]["CategoryIDs"] = "";
 		break;
 	case "add_schedcat":
-		$we_doc->add_schedcat($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2]);
+		$we_doc->add_schedcat($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2]);
 		break;
 	case "doImage_convertGIF":
 		$we_doc->convert("gif");
@@ -207,7 +207,7 @@ switch($_REQUEST["we_cmd"][0]) {
 		$we_doc->convert("png");
 		break;
 	case "doImage_convertJPEG":
-		$we_doc->convert("jpg",$_REQUEST["we_cmd"][1]);
+		$we_doc->convert("jpg",$_REQUEST['we_cmd'][1]);
 		break;
 	case "doImage_crop":
 		$filename = TMP_DIR . '/'. weFile::getUniqueId();
@@ -216,10 +216,10 @@ switch($_REQUEST["we_cmd"][0]) {
 
 		//$filename = weFile::saveTemp($we_doc->getElement("data"));
 
-		$x = $_REQUEST["we_cmd"][1];
-		$y = $_REQUEST["we_cmd"][2];
-		$width = $_REQUEST["we_cmd"][3];
-		$height = $_REQUEST["we_cmd"][4];
+		$x = $_REQUEST['we_cmd'][1];
+		$y = $_REQUEST['we_cmd'][2];
+		$width = $_REQUEST['we_cmd'][3];
+		$height = $_REQUEST['we_cmd'][4];
 
 		$img = Image_Transform::factory('GD');
 		if (PEAR::isError($stat = $img->load($filename))) {
@@ -240,16 +240,16 @@ switch($_REQUEST["we_cmd"][0]) {
 		$we_doc->DocChanged = true;
 		break;
 	case "add_css":
-		$we_doc->add_css($_REQUEST["we_cmd"][1]);
+		$we_doc->add_css($_REQUEST['we_cmd'][1]);
 		break;
 	case "del_css":
-		$we_doc->del_css($_REQUEST["we_cmd"][1]);
+		$we_doc->del_css($_REQUEST['we_cmd'][1]);
 		break;
 	case "add_navi":
-		$we_doc->addNavi($_REQUEST["we_cmd"][1],$_REQUEST["we_cmd"][2],$_REQUEST["we_cmd"][3],$_REQUEST["we_cmd"][4]);
+		$we_doc->addNavi($_REQUEST['we_cmd'][1],$_REQUEST['we_cmd'][2],$_REQUEST['we_cmd'][3],$_REQUEST['we_cmd'][4]);
 		break;
 	case "delete_navi":
-		$we_doc->delNavi($_REQUEST["we_cmd"][1]);
+		$we_doc->delNavi($_REQUEST['we_cmd'][1]);
 		break;
 	case "delete_all_navi":
 		$we_doc->delAllNavi();
@@ -286,7 +286,7 @@ if( $_userID != 0 && $_userID != $_SESSION["user"]["ID"] && $we_doc->ID){	// doc
  * We need to do this, because, when the pages has for example jsp. content, it will be parsed right!
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
-if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "publish" && $_REQUEST["we_cmd"][0] != "unpublish") && (($we_doc->ContentType=="text/webedition") && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType=="text/html" && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST["we_cmd"][0] != "save_document")) && (!$we_doc->IsDynamic)) {
+if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "publish" && $_REQUEST['we_cmd'][0] != "unpublish") && (($we_doc->ContentType=="text/webedition") && ($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW || $we_doc->EditPageNr == WE_EDITPAGE_CONTENT )) || ($we_doc->ContentType=="text/html" && $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW && $_REQUEST['we_cmd'][0] != "save_document")) && (!$we_doc->IsDynamic)) {
 
 	$we_include = $we_doc->editor();
 	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
@@ -343,7 +343,7 @@ if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "pub
 	$contents = str_replace("<?xml",'<?php print "<?xml"; ?>',$contents);
 
 	ob_start();
-	eval("?>" . $contents);
+	eval('?>' . $contents);
     $contents = ob_get_contents();
     ob_end_clean();
 
@@ -366,7 +366,7 @@ if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "pub
     //  we_cmds are deleted.
     //  in which case??
     //	parastr isn't greater than 255 letters.
-    $parastr = we_SEEM::arrayToParameters($_REQUEST, "", array("we_cmd") );
+    $parastr = we_SEEM::arrayToParameters($_REQUEST, "", array('we_cmd') );
 
     // When the url is too long, this will not work anymore - therefore we cut the string.
     // we don't need this anymore? check seeMode
@@ -377,7 +377,7 @@ if((($_REQUEST["we_cmd"][0] != "save_document" && $_REQUEST["we_cmd"][0] != "pub
 }
 else {
 	$we_JavaScript="";
-	switch($_REQUEST["we_cmd"][0]) {
+	switch($_REQUEST['we_cmd'][0]) {
 		case "save_document":
 			if($we_doc->ContentType) {
 				$saveTemplate = true;
@@ -430,14 +430,14 @@ else {
 				} else {
 					$we_JavaScript = "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n"; // save/ rename a document
 					if($we_doc->ContentType=="text/weTmpl") {
-						if(isset($_REQUEST["we_cmd"][8]) && $_REQUEST["we_cmd"][8]) {
+						if(isset($_REQUEST['we_cmd'][8]) && $_REQUEST['we_cmd'][8]) {
 							// if  we_cmd[8] is set, it means that "automatic rebuild" was clicked
 							// so we need to check we_cmd[3] (means save immediately) and we_cmd[4] (means rebuild immediately)
-							$_REQUEST["we_cmd"][3] = 1;
-							$_REQUEST["we_cmd"][4] = 1;
+							$_REQUEST['we_cmd'][3] = 1;
+							$_REQUEST['we_cmd'][4] = 1;
 						}
-						if($_REQUEST["we_cmd"][5]) { //Save in version
-							$_REQUEST["we_cmd"][5] = "";
+						if($_REQUEST['we_cmd'][5]) { //Save in version
+							$_REQUEST['we_cmd'][5] = "";
 							$we_doc->we_publish();
 
 						}
@@ -450,12 +450,12 @@ else {
 						$nrTemplatesUsedByThisTemplate = count($arr["templateIDs"]);
 						$somethingNeedsToBeResaved = ($nrDocsUsedByThisTemplate+$nrTemplatesUsedByThisTemplate) > 0;
 
-						if($_REQUEST["we_cmd"][2]) {
+						if($_REQUEST['we_cmd'][2]) {
 							//this is the second call to save_document (see next else command)
 							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_template_save_question.inc.php"); // this includes the gui for the save question dialog
 							$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 							exit();
-						} else if(!$_REQUEST["we_cmd"][3] && $somethingNeedsToBeResaved) {
+						} else if(!$_REQUEST['we_cmd'][3] && $somethingNeedsToBeResaved) {
 							// this happens when the template is saved and there are documents which use the template and "automatic rebuild" is not checked!
 							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_TemplateSave.inc.php"); // this calls again we_cmd with save_document and sets we_cmd[2]
 							$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
@@ -469,7 +469,7 @@ else {
 								$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript().";\n";// save/ rename a document
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_ok]'),$we_doc->Path);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-								if($_REQUEST["we_cmd"][4]) {
+								if($_REQUEST['we_cmd'][4]) {
 									// this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
 									if($somethingNeedsToBeResaved) {
 										$we_JavaScript .= '_EditorFrame.setEditorIsHot(false);top.toggleBusy(0);top.openWindow(\''.WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID='.$we_doc->ID.'&responseText='.rawurlencode(sprintf($we_responseText,$we_doc->Path)).'\',\'resave\',-1,-1,600,130,0,true);';
@@ -489,8 +489,8 @@ else {
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");exit();
 						}
-						if(isset($_REQUEST["we_cmd"][6]) && $_REQUEST["we_cmd"][6]) {
-							$we_JavaScript .= "\n".$_REQUEST["we_cmd"][6]."\n";
+						if(isset($_REQUEST['we_cmd'][6]) && $_REQUEST['we_cmd'][6]) {
+							$we_JavaScript .= "\n".$_REQUEST['we_cmd'][6]."\n";
 						}
 					} else {
  						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
@@ -525,8 +525,8 @@ else {
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_ok]'),$we_doc->Path);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
-								if($_REQUEST["we_cmd"][5]) {
-									$_REQUEST["we_cmd"][5] = "";
+								if($_REQUEST['we_cmd'][5]) {
+									$_REQUEST['we_cmd'][5] = "";
 									if($we_doc->i_publInScheduleTable()) {
 											$foo = $we_doc->getNextPublishDate();
 										if($foo) {
@@ -547,8 +547,8 @@ else {
 											$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 											// SEEM, here a doc is published
 											$GLOBALS["publish_doc"] = true;
-											if( $_SESSION["we_mode"] != "seem" && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW)  && (!$_REQUEST["we_cmd"][4])) {
-												$_REQUEST["we_cmd"][5] = '
+											if( $_SESSION["we_mode"] != "seem" && ($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO || $we_doc->EditPageNr == WE_EDITPAGE_PREVIEW)  && (!$_REQUEST['we_cmd'][4])) {
+												$_REQUEST['we_cmd'][5] = '
 													top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");
 													_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
 											}
@@ -560,19 +560,19 @@ else {
 									}
 								}
 								else {
-									if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!$_REQUEST["we_cmd"][4])) || (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7])) {
-										$we_responseText = (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7]) ? "" : $we_responseText;
-										$we_responseTextType = (isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7]) ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
-										$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");';
-										if((isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7] == 1)) {
-											$we_JavaScript .= 'top.we_cmd("in_workflow","'.$we_transaction.'","'.$_REQUEST["we_cmd"][4].'");'."\n";
+									if(($we_doc->EditPageNr == WE_EDITPAGE_INFO && (!$_REQUEST['we_cmd'][4])) || (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7])) {
+										$we_responseText = (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7]) ? "" : $we_responseText;
+										$we_responseTextType = (isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7]) ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
+										$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");';
+										if((isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 1)) {
+											$we_JavaScript .= 'top.we_cmd("in_workflow","'.$we_transaction.'","'.$_REQUEST['we_cmd'][4].'");'."\n";
 											$wf_flag = true;
 										}
-										else if((isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7] == 2)) {
+										else if((isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 2)) {
 											$we_JavaScript .= 'top.we_cmd("pass","'.$we_transaction.'");'."\n";
 											$wf_flag = true;
 										}
-										else if((isset($_REQUEST["we_cmd"][7]) && $_REQUEST["we_cmd"][7] == 3)) {
+										else if((isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] == 3)) {
 											$we_JavaScript .= 'top.we_cmd("decline","'.$we_transaction.'");'."\n";
 											$wf_flag = true;
 										}
@@ -583,7 +583,7 @@ else {
 									}
 								}
 
-								$we_JavaScript .= "\n".$we_doc->getUpdateTreeScript(!$_REQUEST["we_cmd"][4])."\n";
+								$we_JavaScript .= "\n".$we_doc->getUpdateTreeScript(!$_REQUEST['we_cmd'][4])."\n";
 
 								if($wasNew || (!$wasPubl)) {
 									if($we_doc->ContentType == "folder"){
@@ -609,10 +609,10 @@ else {
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							}
 						}
-						if($_REQUEST["we_cmd"][6]) {
-							$we_JavaScript .= "\n".$_REQUEST["we_cmd"][6]."\n";
+						if($_REQUEST['we_cmd'][6]) {
+							$we_JavaScript .= "\n".$_REQUEST['we_cmd'][6]."\n";
 						}
-						else if($_REQUEST["we_cmd"][4] && (!$wf_flag)) {
+						else if($_REQUEST['we_cmd'][4] && (!$wf_flag)) {
 
 							$we_doc->makeSameNew();
 							if (isset($we_doc->NavigationItems)) $we_doc->NavigationItems = "";
@@ -622,14 +622,14 @@ else {
 
 								$_showAlert = true;	//	don't show confirm box in editor_save.inc
 								if (we_hasPerm('CAN_SEE_PROPERTIES')) {
-									$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","' . WE_EDITPAGE_PROPERTIES . '","'.$we_transaction.'");';
+									$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . WE_EDITPAGE_PROPERTIES . '","'.$we_transaction.'");';
 								} else {
-									$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","'.$we_transaction.'");';
+									$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","'.$we_transaction.'");';
 								}
 
 							} else if ($_SESSION["we_mode"] == "normal"){
 
-								$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","'.$we_transaction.'");';
+								$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","'.$we_transaction.'");';
 							}
 						}
 					}
@@ -658,14 +658,14 @@ else {
 					$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_unpublish_ok]'),$we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 					if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_INFO) {
-						$_REQUEST["we_cmd"][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef?gt
+						$_REQUEST['we_cmd'][5] = 'top.we_cmd("switch_edit_page","'.$we_doc->EditPageNr.'","'.$we_transaction.'");'; // wird in Templ eingef?gt
 					}
-					if(!isset($_REQUEST["we_cmd"][5])){
-					    $_REQUEST["we_cmd"][5] = "";
+					if(!isset($_REQUEST['we_cmd'][5])){
+					    $_REQUEST['we_cmd'][5] = "";
 					}
 					//	When unpublishing a document stay where u are.
 					//	uncomment the following line to switch to preview page.
-					$_REQUEST["we_cmd"][5] .= '_EditorFrame.getDocumentReference().frames[3].location.reload();';
+					$_REQUEST['we_cmd'][5] .= '_EditorFrame.getDocumentReference().frames[3].location.reload();';
 
 					$we_JavaScript = "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript().";\n";// save/ rename a document
 				}
@@ -716,7 +716,7 @@ else {
 						// --> Start Glossary Replacement
 						//
 
-						if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])  && !$GLOBALS["we_editmode"]) {
+						if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS['we_doc'])  && !$GLOBALS["we_editmode"]) {
 							if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
 								include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
 								include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
@@ -736,9 +736,9 @@ else {
 						// --> Finish Glossary Replacement
 						//
 
-						if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS["we_doc"])  && !$GLOBALS["we_editmode"]) {
+						if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS['we_doc'])  && !$GLOBALS["we_editmode"]) {
 							if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-								weGlossaryReplace::end($GLOBALS["we_doc"]->Language);
+								weGlossaryReplace::end($GLOBALS['we_doc']->Language);
 							}
 
 						}

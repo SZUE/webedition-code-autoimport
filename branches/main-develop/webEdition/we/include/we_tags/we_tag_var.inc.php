@@ -63,8 +63,8 @@ function we_tag_var($attribs, $content){
 			return $out;
 
 		case "property" :
-			if (isset($GLOBALS["we_obj"])) {
-				return $GLOBALS["we_obj"]->$name;
+			if (isset($GLOBALS['we_obj'])) {
+				return $GLOBALS['we_obj']->$name;
 			} else {
 				return $doc->$name;
 			}
@@ -92,8 +92,8 @@ function we_tag_var($attribs, $content){
 									$type,
 									$attribs,
 									false,
-									$GLOBALS["we_doc"]->ParentID,
-									$GLOBALS["we_doc"]->Path,
+									$GLOBALS['we_doc']->ParentID,
+									$GLOBALS['we_doc']->Path,
 									$GLOBALS['DB_WE'],
 									substr($_glob_key, 7));
 						}
@@ -112,8 +112,8 @@ function we_tag_var($attribs, $content){
 										$type,
 										$attribs,
 										false,
-										$GLOBALS["we_doc"]->ParentID,
-										$GLOBALS["we_doc"]->Path,
+										$GLOBALS['we_doc']->ParentID,
+										$GLOBALS['we_doc']->Path,
 										$GLOBALS['DB_WE'],
 										substr($_glob_key, 10));
 							}

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_MESSAGING_MODULE_DIR."messaging_defs.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 // exit if script called directly
@@ -97,7 +97,7 @@ function msg_done_todo($id, &$errs) {
     $i_headers = array('_ID' => $id);
 
     $db = new DB_WE();
-    $db->query('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . abs($id));
+    $db->query('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . intval($id));
     $db->next_record();
     $userid = $db->f('UserID');
 
@@ -141,7 +141,7 @@ function msg_create_folders($userid) {
     $pfolders = array(1 => -1,
 		      2 => -1);
 
-    $db->query('SELECT ID, msg_type, obj_type FROM '.MSG_FOLDERS_TABLE.' WHERE (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13) AND UserID=' . abs($userid));
+    $db->query('SELECT ID, msg_type, obj_type FROM '.MSG_FOLDERS_TABLE.' WHERE (obj_type=3 OR obj_type=5 OR obj_type=9 OR obj_type=11 OR obj_type=13) AND UserID=' . intval($userid));
     while ($db->next_record()) {
     	if (isset($default_folders[$db->f('msg_type')][$db->f('obj_type')])) {
     	    if ($db->f('obj_type') == 3)
@@ -155,7 +155,7 @@ function msg_create_folders($userid) {
     	if ($pfolders[$mt] != -1)
     	    $pf_id = $pfolders[$mt];
     	else {
-    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, " . abs($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
+    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, 0, " . intval($userid) . ", $mt, 3, 1, '" . $default_folders[$mt]['3'] . '\')');
     	    $db->query('SELECT LAST_INSERT_ID() as pf_id');
     	    $db->next_record();
     	    $pf_id = $db->f('pf_id');
@@ -163,7 +163,7 @@ function msg_create_folders($userid) {
     	}
 
     	foreach ($farr as $df => $fname) {
-    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . abs($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
+    	    $db->query("INSERT INTO ".MSG_FOLDERS_TABLE." (ID, ParentID, UserID, msg_type, obj_type, Properties, Name) VALUES (NULL, $pf_id, " . intval($userid) . ", $mt, " . $df . ', 1, "' . $fname . '")');
     	}
     }
 
@@ -181,7 +181,7 @@ function msg_reject_todo($id) {
 
     $db = new DB_WE();
 
-    $userid = f('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . abs($id),'UserID',$db);
+    $userid = f('SELECT UserID FROM '.MSG_TODO_TABLE.' WHERE ID=' . intval($id),'UserID',$db);
 
     $m->set_login_data($userid, isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
     $m->init();

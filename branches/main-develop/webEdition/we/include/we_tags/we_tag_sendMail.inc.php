@@ -30,7 +30,7 @@ function we_tag_sendMail($attribs, $content){
 	if ($foo)
 		return $foo;
 
-	if (!$GLOBALS["we_doc"]->InWebEdition) {
+	if (!$GLOBALS['we_doc']->InWebEdition) {
 
 		$GLOBALS['DB_WE'] = !isset($GLOBALS['DB_WE']) ? new DB_WE() : $GLOBALS['DB_WE'];
 		$id = weTag_getAttribute("id",$attribs, ( isset($_REQUEST["ID"])? $_REQUEST["ID"] : '' ) );

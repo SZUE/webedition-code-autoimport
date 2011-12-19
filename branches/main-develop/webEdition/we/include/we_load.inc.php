@@ -22,24 +22,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if (isset($_REQUEST["we_cmd"][5])) {
-	$_SESSION["prefs"]["FileFilter"] = $_REQUEST["we_cmd"][5];
+if (isset($_REQUEST['we_cmd'][5])) {
+	$_SESSION["prefs"]["FileFilter"] = $_REQUEST['we_cmd'][5];
 }
 
-$table = $_REQUEST["we_cmd"][1];
-$parentFolder = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
-$offset = isset($_REQUEST["we_cmd"][6]) ? $_REQUEST["we_cmd"][6] : 0;
+$table = $_REQUEST['we_cmd'][1];
+$parentFolder = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 0;
+$offset = isset($_REQUEST['we_cmd'][6]) ? $_REQUEST['we_cmd'][6] : 0;
 
 //p_r($_REQUEST);
 
 
-if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
-	$table = $_REQUEST["we_cmd"][1];
-	$parentFolder = isset($_REQUEST["we_cmd"][2]) ? $_REQUEST["we_cmd"][2] : 0;
+if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
+	$table = $_REQUEST['we_cmd'][1];
+	$parentFolder = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : 0;
 	$openDirs = makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]);
 	$openDirs = array_flip($openDirs);
 	new_array_splice($openDirs, $parentFolder, 1);
@@ -223,9 +223,9 @@ if (isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0] == "closeFolder") {
 		$wsQuery = " AND ($wsQuery) ";
 	}
 
-	if (isset($_REQUEST["we_cmd"][3])) {
-		$openFolders = explode(",", $_REQUEST["we_cmd"][3]);
-		$_SESSION["prefs"]["openFolders_" . stripTblPrefix($_REQUEST["we_cmd"][4])] = $_REQUEST["we_cmd"][3];
+	if (isset($_REQUEST['we_cmd'][3])) {
+		$openFolders = explode(",", $_REQUEST['we_cmd'][3]);
+		$_SESSION["prefs"]["openFolders_" . stripTblPrefix($_REQUEST['we_cmd'][4])] = $_REQUEST['we_cmd'][3];
 	}
 
 	if (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)])) {

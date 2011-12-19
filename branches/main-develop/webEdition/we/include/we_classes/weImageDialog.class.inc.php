@@ -248,8 +248,8 @@ class weImageDialog extends weDialog{
 ##################################################################################################
 	function getFormHTML() {
 		$hiddens = "";
-		if(isset($_REQUEST["we_cmd"]) && is_array($_REQUEST["we_cmd"])){
-			foreach($_REQUEST["we_cmd"] as $k=>$v){
+		if(isset($_REQUEST['we_cmd']) && is_array($_REQUEST['we_cmd'])){
+			foreach($_REQUEST['we_cmd'] as $k=>$v){
 				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"".rawurlencode($v)."\" />";
 			}
 		}

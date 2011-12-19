@@ -169,7 +169,7 @@
 			@set_time_limit(0);
 			foreach($replacements as $k => $rep) {
 				//forbid self-reference links
-				if(stripos($rep,'"\2"=="\1"?"\1":"\3<a href=\"'.$GLOBALS["we_doc"]->Path)!==FALSE) {
+				if(stripos($rep,'"\2"=="\1"?"\1":"\3<a href=\"'.$GLOBALS['we_doc']->Path)!==FALSE) {
 					unset($replacements[$k]);
 				}
 			}

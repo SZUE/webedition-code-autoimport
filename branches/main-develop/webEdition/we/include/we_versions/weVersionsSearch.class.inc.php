@@ -99,7 +99,7 @@ class weVersionsSearch {
 		$where = "";
 		$modConst = array();
 
-		if(($this->mode!=0) || (isset($_REQUEST["we_cmd"]["mode"]) && $_REQUEST["we_cmd"]["mode"]!=0)) {
+		if(($this->mode!=0) || (isset($_REQUEST['we_cmd']["mode"]) && $_REQUEST['we_cmd']["mode"]!=0)) {
 
 			foreach ($_REQUEST['we_cmd'] as $k => $v) {
 				if (stristr($k, 'searchFields[')) {

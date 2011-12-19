@@ -22,21 +22,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$_binary = $_REQUEST["we_cmd"][0];
+$_binary = $_REQUEST['we_cmd'][0];
 $bSort = $_binary{0};
 $bDisplay = $_binary{1};
 $bDate = $_binary{2};
 $bPrio = $_binary{3};
 $bValid = $_binary{4};
 
-$_title = $_REQUEST["we_cmd"][4];
+$_title = $_REQUEST['we_cmd'][4];
 
 $js = "
-var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
+var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
 var _sType='pad';
 var _sTb='" . $_title . "';
 

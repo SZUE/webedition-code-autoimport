@@ -930,12 +930,12 @@ class weVersions {
 					}
 				}
 			}
-			elseif(isset($_REQUEST["we_cmd"][0]) && ($_REQUEST["we_cmd"][0]=="siteImport" || $_REQUEST["we_cmd"][0]=="import_files")){
+			elseif(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0]=="siteImport" || $_REQUEST['we_cmd'][0]=="import_files")){
 				$_SESSION["Versions"]['fromImport'] = 1;
 				$this->saveVersion($docObj);
 			}
 			else {
-				if((isset($_SESSION["Versions"]['fromScheduler']) && $_SESSION["Versions"]['fromScheduler']) || (isset($_REQUEST["we_cmd"][0]) && ($_REQUEST["we_cmd"][0]=="save_document" || $_REQUEST["we_cmd"][0]=="unpublish" || $_REQUEST["we_cmd"][0]=="revert_published"))
+				if((isset($_SESSION["Versions"]['fromScheduler']) && $_SESSION["Versions"]['fromScheduler']) || (isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0]=="save_document" || $_REQUEST['we_cmd'][0]=="unpublish" || $_REQUEST['we_cmd'][0]=="revert_published"))
 					|| (isset($_REQUEST["cmd"]) && ($_REQUEST["cmd"]=="ResetVersion" || $_REQUEST["cmd"]=="PublishDocs" || $_REQUEST["cmd"]=="ResetVersionsWizard"))
 					|| (isset($_REQUEST["type"]) && $_REQUEST["type"]=="reset_versions")
 					|| (isset($_SESSION['versions']['initialVersions']) && $_SESSION['versions']['initialVersions'])){
@@ -1098,8 +1098,8 @@ class weVersions {
 				$writeVersion = false;
 			}
 
-			if((isset($_REQUEST["we_cmd"][0]) && $_REQUEST["we_cmd"][0]=="save_document") &&
-							isset($_REQUEST["we_cmd"][5]) && $_REQUEST["we_cmd"][5]) {
+			if((isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0]=="save_document") &&
+							isset($_REQUEST['we_cmd'][5]) && $_REQUEST['we_cmd'][5]) {
 				$status = "published";
 			}
 
@@ -1116,10 +1116,10 @@ class weVersions {
 			}
 
 			if($document["ContentType"]=="objectFile" || $document["ContentType"]=="text/webedition" || $document["ContentType"]=="text/html" || ($document["ContentType"]=="text/weTmpl" && defined("VERSIONS_CREATE_TMPL") &&  VERSIONS_CREATE_TMPL) ) {
-				if(  $document["ContentType"]!="text/weTmpl" && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST["we_cmd"][5]) && !$_REQUEST["we_cmd"][5]) {
+				if(  $document["ContentType"]!="text/weTmpl" && (defined("VERSIONS_CREATE") && VERSIONS_CREATE) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]) {
 					$writeVersion = false;
 				}
-				if( $document["ContentType"]=="text/weTmpl" && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && isset($_REQUEST["we_cmd"][5]) && !$_REQUEST["we_cmd"][5]) {
+				if( $document["ContentType"]=="text/weTmpl" && (defined("VERSIONS_CREATE_TMPL") && VERSIONS_CREATE_TMPL) && $status != "published" && isset($_REQUEST['we_cmd'][5]) && !$_REQUEST['we_cmd'][5]) {
 					$writeVersion = false;
 				}
 			}
@@ -1572,13 +1572,13 @@ class weVersions {
 		$contents = "";
 		set_time_limit(0);
 		$requestBackup = $_REQUEST;
-		$docBackup = $GLOBALS["we_doc"];
+		$docBackup = $GLOBALS['we_doc'];
 
 		$GLOBALS["getDocContentVersioning"] = true;
 
 		$glob = "";
 		foreach($GLOBALS as $k=>$v){
-			if((!preg_match('|^[0-9]|',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "FROM_WE_SHOW_DOC" && $k != "we_doc" && $k != "we_transaction" && $k != "GLOBALS" && $k != "HTTP_ENV_VARS" && $k != "HTTP_POST_VARS" && $k != "HTTP_GET_VARS" && $k != "HTTP_COOKIE_VARS" && $k != "HTTP_SERVER_VARS" && $k != "HTTP_POST_FILES" && $k != "HTTP_SESSION_VARS" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE" && $k!="") $glob .= '$'.$k.",";
+			if((!preg_match('|^[0-9]|',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "FROM_WE_SHOW_DOC" && $k != 'we_doc' && $k != "we_transaction" && $k != "GLOBALS" && $k != "HTTP_ENV_VARS" && $k != "HTTP_POST_VARS" && $k != "HTTP_GET_VARS" && $k != "HTTP_COOKIE_VARS" && $k != "HTTP_SERVER_VARS" && $k != "HTTP_POST_FILES" && $k != "HTTP_SESSION_VARS" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE" && $k!="") $glob .= '$'.$k.",";
 		}
 		$glob = rtrim($glob,',');
 		eval('global '.$glob.';');
@@ -1613,7 +1613,7 @@ class weVersions {
 
 		    	$glob = "";
 				foreach($GLOBALS as $k=>$v){
-					if((!preg_match('|^[0-9]|',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "FROM_WE_SHOW_DOC" && $k != "we_doc" && $k != "we_transaction" && $k != "GLOBALS" && $k != "HTTP_ENV_VARS" && $k != "HTTP_POST_VARS" && $k != "HTTP_GET_VARS" && $k != "HTTP_COOKIE_VARS" && $k != "HTTP_SERVER_VARS" && $k != "HTTP_POST_FILES" && $k != "HTTP_SESSION_VARS" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE" && $k!="") $glob .= '$'.$k.",";
+					if((!preg_match('|^[0-9]|',$k)) && (!preg_match('|[^a-z0-9_]|i',$k)) && $k != "FROM_WE_SHOW_DOC" && $k != 'we_doc' && $k != "we_transaction" && $k != "GLOBALS" && $k != "HTTP_ENV_VARS" && $k != "HTTP_POST_VARS" && $k != "HTTP_GET_VARS" && $k != "HTTP_COOKIE_VARS" && $k != "HTTP_SERVER_VARS" && $k != "HTTP_POST_FILES" && $k != "HTTP_SESSION_VARS" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE" && $k!="") $glob .= '$'.$k.",";
 				}
 				$glob = rtrim($glob,',');
 				eval('global '.$glob.';');
@@ -1640,7 +1640,7 @@ class weVersions {
     		ob_end_clean();
 		}
 
-		$GLOBALS["we_doc"] = $docBackup;
+		$GLOBALS['we_doc'] = $docBackup;
 		$_REQUEST = $requestBackup;
 
 		if($isdyn=='notSet') {

@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
  
-include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 class toolfactory_service_Install extends we_app_service_AbstractCmd
 {

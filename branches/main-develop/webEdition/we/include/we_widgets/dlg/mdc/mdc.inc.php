@@ -22,20 +22,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
 $mdc = "";
 $ct["image"] = true;
-$_binary = $_REQUEST["we_cmd"][0];
+$_binary = $_REQUEST['we_cmd'][0];
 $_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
-$_csv = $_REQUEST["we_cmd"][1];
+$_csv = $_REQUEST['we_cmd'][1];
 
 $js = "
-var _sObjId='" . $_REQUEST["we_cmd"][5] . "';
+var _sObjId='" . $_REQUEST['we_cmd'][5] . "';
 var _sType='mdc';
-var _sTb='" . ($_REQUEST["we_cmd"][4] == "" ? (($_binary{1}) ? g_l('cockpit','[my_objects]') : g_l('cockpit','[my_documents]')) : $_REQUEST["we_cmd"][4]) . "';
+var _sTb='" . ($_REQUEST['we_cmd'][4] == "" ? (($_binary{1}) ? g_l('cockpit','[my_objects]') : g_l('cockpit','[my_documents]')) : $_REQUEST['we_cmd'][4]) . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
@@ -64,7 +64,7 @@ if ($_binary{0} && !empty($_csv)) {
 						'SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($_myCat)) . '";',
 						'ID',
 						$DB_WE);
-				$_categories[] = 'Category LIKE ",' . abs($_id) . ',"';
+				$_categories[] = 'Category LIKE ",' . intval($_id) . ',"';
 			}
 		}
 		$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(

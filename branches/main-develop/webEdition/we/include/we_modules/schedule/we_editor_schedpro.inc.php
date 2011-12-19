@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 include_once(WE_SCHEDULE_MODULE_DIR."we_schedpro.inc.php");
 
 if(defined("SCHEDULE_TABLE")){
@@ -48,7 +48,7 @@ foreach($we_doc->schedArr as $i=>$sched){
 	$ofT = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
 
 	array_push($parts, array(	"headline"=>"",
-								"html"=>$schedObj->getHTML($GLOBALS["we_doc"]->Table==$ofT),
+								"html"=>$schedObj->getHTML($GLOBALS['we_doc']->Table==$ofT),
 								"space"=>0
 							)
 				);

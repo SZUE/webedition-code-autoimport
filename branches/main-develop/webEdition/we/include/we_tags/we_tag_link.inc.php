@@ -42,9 +42,9 @@ function we_tag_link($attribs, $content){
 
 	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid','to','nameto'));
 
-	$link = $GLOBALS["we_doc"]->getElement($name) ? unserialize($GLOBALS["we_doc"]->getElement($name)) : array();
+	$link = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 	if (!$GLOBALS['we_editmode']) {
-		return $GLOBALS["we_doc"]->getField($attribs, "link");
+		return $GLOBALS['we_doc']->getField($attribs, "link");
 	} 
 	
 		if (is_array($link)) {
@@ -80,13 +80,13 @@ function we_tag_link($attribs, $content){
 			$img = new we_imageDocument();
 			$content = we_document::getLinkContent(
 					$link,
-					$GLOBALS["we_doc"]->ParentID,
-					$GLOBALS["we_doc"]->Path,
+					$GLOBALS['we_doc']->ParentID,
+					$GLOBALS['we_doc']->Path,
 					$GLOBALS['DB_WE'],
 					$img,
 					$xml);
 
-			$startTag = $GLOBALS["we_doc"]->getLinkStartTag(
+			$startTag = $GLOBALS['we_doc']->getLinkStartTag(
 					$link,
 					$attribs,
 					$GLOBALS["WE_MAIN_DOC"]->ParentID,

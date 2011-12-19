@@ -45,7 +45,7 @@ $xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
 $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 
 if($type && $type != "pixel"){
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/weBanner.php");
 	$code = weBanner::getBannerCode($did,$paths,$target,$width,$height,$dt,$cats,$bannername,$link,$referer,$bannerclick,getServerUrl().$_SERVER['SCRIPT_NAME'],$type, $page, $nocount, $xml);
 }
@@ -66,7 +66,7 @@ if($type=="js"){
 	print $code;
 }else{
 	if(!$id){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/banner/weBanner.php");
 		$bannerData = weBanner::getBannerData($did,$paths,$dt,$cats,$bannername);
 		$id = $bannerData["ID"];
@@ -80,16 +80,16 @@ if($type=="js"){
 	}
 	if(!$bid){
 		$id=f("SELECT pref_value FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'","pref_value",$DB_WE);
-		$bid=f("SELECT bannerID FROM ".BANNER_TABLE." WHERE ID=".abs($id),"bannerID",$DB_WE);
+		$bid=f("SELECT bannerID FROM ".BANNER_TABLE." WHERE ID=".intval($id),"bannerID",$DB_WE);
 
 	}
 
-	$bannerpath = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($bid),"Path",$DB_WE);
+	$bannerpath = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".intval($bid),"Path",$DB_WE);
 
 	if(($type=="pixel" || (!$nocount) && $id && $c)){
-		$DB_WE->query("INSERT INTO ".BANNER_VIEWS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$DB_WE->escape($_SERVER["REMOTE_ADDR"])."','".$DB_WE->escape($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] :  ""))."',".abs($did).",'".$DB_WE->escape($page)."')");
-		$DB_WE->query("UPDATE ".BANNER_TABLE." SET views=views+1 WHERE ID=".abs($id));
-		setcookie("webid_$bannername",abs($id));
+		$DB_WE->query("INSERT INTO ".BANNER_VIEWS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".intval($id).",".time().",'".$DB_WE->escape($_SERVER["REMOTE_ADDR"])."','".$DB_WE->escape($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] :  ""))."',".intval($did).",'".$DB_WE->escape($page)."')");
+		$DB_WE->query("UPDATE ".BANNER_TABLE." SET views=views+1 WHERE ID=".intval($id));
+		setcookie("webid_$bannername",intval($id));
 	}
 
 	if($bannerpath){

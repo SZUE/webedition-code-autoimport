@@ -25,7 +25,7 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
 
@@ -1272,7 +1272,7 @@ class weWorkflowView extends weWorkflowBase{
 								)
 					);
 		if($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=WE_WORKFLOW_OBJECT){
-			$GLOBALS["we_doc"]=$this->documentDef->document;
+			$GLOBALS['we_doc']=$this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
 			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[file_size]"),
 										"html"     => round(($fs / 1024),2)."&nbsp;KB&nbsp;(".number_format ($fs,0,",",".")."&nbsp;Byte)",

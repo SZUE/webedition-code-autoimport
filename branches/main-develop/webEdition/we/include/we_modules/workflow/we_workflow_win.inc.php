@@ -24,14 +24,14 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 
 we_html_tools::protect();
 
-$_REQUEST["we_cmd"] = isset($_REQUEST["we_cmd"]) ? $_REQUEST["we_cmd"] : "";
+$_REQUEST['we_cmd'] = isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : "";
 $cmd = isset($_REQUEST["cmd"]) ? $_REQUEST["cmd"] : "";
-$we_transaction = isset($_REQUEST["we_cmd"][1]) ? $_REQUEST["we_cmd"][1] : (isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : "");
+$we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : (isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : "");
 $we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:0);
 
 $wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
@@ -44,7 +44,7 @@ include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc
 
 we_html_tools::htmlTop();
 
-switch($_REQUEST["we_cmd"][0]){
+switch($_REQUEST['we_cmd'][0]){
 
 	case "in_workflow":
 		include(WE_WORKFLOW_MODULE_DIR."we_in_workflow.inc.php");

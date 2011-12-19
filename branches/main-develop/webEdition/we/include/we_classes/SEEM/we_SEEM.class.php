@@ -23,7 +23,7 @@
  */
 
 
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
     class we_SEEM{
 
@@ -105,13 +105,13 @@
             //  All these informations are needed to replace the old link with a new one
             $linkArray = we_SEEM::getAllHrefs($code);
 
-            if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")) {
+            if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")) {
 
                 //  The edit-mode only changes SEEM-links
                 $code = we_SEEM::parseLinksForEditMode($code, $linkArray);
             }
 
-            if(!isset($GLOBALS["we_doc"]) || $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE || defined("WE_SIDEBAR")){
+            if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW_TEMPLATE || defined("WE_SIDEBAR")){
 
                 //  in the preview mode all found links in the document shall be changed
                 $code = we_SEEM::parseLinksForPreviewMode($code, $linkArray);
@@ -129,12 +129,12 @@
             $allForms = we_SEEM::getAllForms($code);
 
             //  if in editMode, remove all forms but the "we_form"
-            if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
+            if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT && !defined("WE_SIDEBAR")){
 
                 $code = we_SEEM::parseFormsForEditMode($code, $allForms);
             }
             //  we are in preview mode or open an extern document - parse all found forms
-            if(!isset($GLOBALS["we_doc"]) || $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PREVIEW || defined("WE_SIDEBAR")){
+            if(!isset($GLOBALS['we_doc']) || $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW || defined("WE_SIDEBAR")){
 
                 $code = we_SEEM::parseFormsForPreviewMode($code, $allForms);
             }
@@ -383,7 +383,7 @@
          * @return   code           string the new code, where all seem_links are replaced with new functionality
          */
         function replaceSEEM_Links($code, $SEEM_LinkArray){
-        	if(isset($GLOBALS["we_doc"]) && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT){
+        	if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){
         		$mode = "edit";
         	} else{
         		$mode = "preview";
@@ -391,7 +391,7 @@
 						$_REQUEST['we_transaction'] = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
             for($i = 0; $i < sizeof($SEEM_LinkArray[0]); $i++){
 
-            	if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_CONTENT){	//	in Super-Easy-Edit-Mode only in Editmode !!!
+            	if(isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_CONTENT){	//	in Super-Easy-Edit-Mode only in Editmode !!!
 
 	                switch ($SEEM_LinkArray[2][$i]){
 
@@ -495,14 +495,14 @@
 
                     if($linkArray[3][$i] != ""){	//  we have several parameters, deal with them
 
-                        $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], "we_cmd");
+                        $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
                         if(array_key_exists ("we_objectID", $theParameterArray)){	//	target is a object
 
                         	$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcObjs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" ";
 
                         } else {	//	target is a normal file.
-                        	$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array("we_cmd") );
+                        	$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd') );
                         	$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcDocs") . "top.weSidebar.load('" . $linkArray[2][$i] . "');\"  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ".$linkArray[4][$i]." ";
                         }
 
@@ -541,14 +541,14 @@
 
                     if($linkArray[3][$i] != ""){	//  we have several parameters, deal with them
 
-                        $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], "we_cmd");
+                        $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
                         if(array_key_exists ("we_objectID", $theParameterArray)){	//	target is a object
 
                         	$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onMouseOver=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\" onMouseOut=\"top.info(' ')\" ";
 
                         } else {	//	target is a normal file.
-                        	$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array("we_cmd") );
+                        	$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd') );
                         	$javascriptCode = " onclick=\"" . we_SEEM::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');\"  onMouseOver=\"top.info('ID: " . $linkArray[6][$i] . "');\" onMouseOut=\"top.info(' ')\" ";
                         }
 
@@ -575,8 +575,8 @@
                             $theParameters = "";
 
                             if($linkArray[3][$i] != ""){
-                                $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i],"we_cmd");
-                                $theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array("we_cmd") );
+                                $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i],'we_cmd');
+                                $theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd') );
                             }
 
                             if(array_key_exists ("we_objectID", $theParameterArray)){	//	target is a object
@@ -585,7 +585,7 @@
 
                         	} else {
 
-                        		$javascriptCode = " onclick=\"top.doClickWithParameters('" . $GLOBALS["we_doc"]->ID . "','text/webedition','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onMouseOver=\"top.info('" . g_l('SEEM',"[info_doc_with_parameter]") . "');\" onMouseOut=\"top.info(' ');\"";
+                        		$javascriptCode = " onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','text/webedition','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onMouseOver=\"top.info('" . g_l('SEEM',"[info_doc_with_parameter]") . "');\" onMouseOut=\"top.info(' ');\"";
                         	}
 
                             $destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "javascript://\"" . $javascriptCode . $linkArray[4][$i] . " >", $destCode);
@@ -668,7 +668,7 @@
         	//	Take the path of the doc to find out, if the same doc is target
         	//	or from the url of the document (only when extern)
         	//	or none, when the full path is known (getJavaScriptCommandForOneLink)
-            $tmpPath = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : (isset($_REQUEST["url"]) ? str_replace( getServerUrl(), "", $_REQUEST["url"]) : "");
+            $tmpPath = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : (isset($_REQUEST["url"]) ? str_replace( getServerUrl(), "", $_REQUEST["url"]) : "");
 
             //  extern or as absolut recognized paths shall not be changed.
             if(substr($path,0,1) != "/" && substr($path,0,7) != "http://" && substr($path,0,8) != "https://" ){
@@ -840,7 +840,7 @@
                     $thePaths[$i] = $theAttribs["action"];
                 } else {
 
-                    $thePaths[$i] = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"]->Path : $_REQUEST["filepath"];
+                    $thePaths[$i] = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : $_REQUEST["filepath"];
                 }
             }
             return $thePaths;
@@ -1056,14 +1056,14 @@
 
 	        	if($linkArray[3][$i] != ""){	//  we have several parameters, deal with them
 
-	                $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], "we_cmd");
+	                $theParameterArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 
 	                if(array_key_exists ("we_objectID", $theParameterArray)){	//	target is a object
 
 	                	$code = "" . we_SEEM::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
 
 	                } else {	//	target is a normal file.
-	                	$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array("we_cmd") );
+	                	$theParameters = we_SEEM::arrayToParameters($theParameterArray, "", array('we_cmd') );
 	                	$code = "" . we_SEEM::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
 	                }
 
@@ -1091,12 +1091,12 @@
 	                    $theParameters = "";
 
 	                    if($linkArray[3][$i] != ""){
-	                        $theParametersArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], "we_cmd");
-	                        $theParameters = we_SEEM::arrayToParameters($theParametersArray, "", array("we_cmd") );
+	                        $theParametersArray = we_SEEM::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+	                        $theParameters = we_SEEM::arrayToParameters($theParametersArray, "", array('we_cmd') );
 	                    }
 
-	                    if(!isset($GLOBALS["we_doc"])){
-                            $GLOBALS["we_doc"]->ID = $_SESSION["we_data"][$theParametersArray["we_transaction"]][0]["ID"];
+	                    if(!isset($GLOBALS['we_doc'])){
+                            $GLOBALS['we_doc']->ID = $_SESSION["we_data"][$theParametersArray["we_transaction"]][0]["ID"];
 	                    }
 
 	                    if(isset($theParameterArray) && is_array($theParameterArray) && array_key_exists ("we_objectID", $theParameterArray)){	//	target is a object
@@ -1105,7 +1105,7 @@
 
                         } else {
 
-                        	$code = "top.doClickWithParameters('" . $GLOBALS["we_doc"]->ID . "','text/webedition','" . FILE_TABLE . "', '" . $theParameters . "')";
+                        	$code = "top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','text/webedition','" . FILE_TABLE . "', '" . $theParameters . "')";
                         }
 
 	                } else {
@@ -1184,7 +1184,7 @@
          */
         function addEditButtonToTag($which = "edit"){
 
-        	if($GLOBALS["we_transaction"] != "" && $GLOBALS["we_doc"]->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
+        	if($GLOBALS["we_transaction"] != "" && $GLOBALS['we_doc']->EditPageNr == WE_EDITPAGE_PREVIEW && isset($_SESSION["we_mode"]) && $_SESSION["we_mode"] == "seem"){
 
         		return "";
 			} else {

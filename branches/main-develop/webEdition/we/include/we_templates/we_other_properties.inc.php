@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 $parts = array();
 
 array_push($parts,array("icon"=>"path.gif", "headline"=>g_l('weClass',"[path]"),"html"=>$GLOBALS['we_doc']->formPath(),"space"=>140));

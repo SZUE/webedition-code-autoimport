@@ -23,10 +23,10 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 $we_doc=new we_imageDocument();
-$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][1]]);
+$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST['we_cmd'][1]]);
 
 header("Content-Type: ".$we_doc->getElement("type"));
 $dataPath = $we_doc->getElement("data");

@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$bid = isset($_REQUEST["bid"]) ? abs($_REQUEST["bid"]) : 0;
+$bid = isset($_REQUEST["bid"]) ? intval($_REQUEST["bid"]) : 0;
 $mid = isset($_REQUEST["mid"]) ? $_REQUEST["mid"] : 0;
 $yearView = isset($_REQUEST["ViewYear"]) ? $_REQUEST["ViewYear"] : 0;
 $home = isset($_REQUEST["home"]) ? $_REQUEST["home"] : 0;

@@ -75,7 +75,7 @@ if( we_image_edit::gd_version() > 0 ){
 
     $frameset = new we_htmlFrameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1",  "frameborder" => "no"), 0);
     $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php", "name" => "we_thumbnails", "scrolling" => "auto", "noresize" => "noresize"));
-    $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails_footer.php?closecmd=".(isset($_REQUEST["we_cmd"][1]) ? rawurlencode($_REQUEST["we_cmd"][1]) : ""), "name" => "we_thumbnails_footer", "scrolling" => "no", "noresize" => "noresize"));
+    $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails_footer.php?closecmd=".(isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_thumbnails_footer", "scrolling" => "no", "noresize" => "noresize"));
 
     print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
 

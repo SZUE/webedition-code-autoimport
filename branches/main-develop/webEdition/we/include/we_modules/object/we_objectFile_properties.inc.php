@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 $wepos = "";
 $parts = array();
 
-if($GLOBALS["we_doc"]->EditPageNr != WE_EDITPAGE_WORKSPACE){
+if($GLOBALS['we_doc']->EditPageNr != WE_EDITPAGE_WORKSPACE){
 	array_push($parts,array(
 						"headline"=>g_l('weClass',"[path]"),
 						"html"=>$GLOBALS['we_doc']->formPath(),

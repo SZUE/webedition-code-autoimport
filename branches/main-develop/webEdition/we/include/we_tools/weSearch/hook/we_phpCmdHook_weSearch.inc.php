@@ -24,7 +24,7 @@
 
 include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/meta.conf.php');
 
-switch ($_REQUEST["we_cmd"][0]) {
+switch ($_REQUEST['we_cmd'][0]) {
 	case 'tool_weSearch_edit' :
 		$toolInclude = 'tools_frameset.php';
 		break;

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	switch($_REQUEST["we_cmd"][0]) {
+	switch($_REQUEST['we_cmd'][0]) {
 		case 'messaging_start':
 		case 'edit_messaging_ifthere':
 			$mod="messaging";

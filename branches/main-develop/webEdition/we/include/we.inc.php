@@ -120,7 +120,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly
-	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_perms.inc.php");
+	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_perms.inc.php");
 	//	At last we set the charset, as determined from the choosen language
 	define('WE_DEFAULT_TITLE', 'webEdition::');
 	define('WE_DEFAULT_HEAD', '<title>' . WE_DEFAULT_TITLE . '</title>' .
