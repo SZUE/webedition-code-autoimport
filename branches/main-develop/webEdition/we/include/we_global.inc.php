@@ -2790,7 +2790,7 @@ function we_templateInit(){
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
 		list($__lang) = explode('_',$GLOBALS['we_doc']->Language);
 		if ($__lang) {
-			$__parts = split('_', $GLOBALS['WE_LANGUAGE']);
+			$__parts = explode('_', $GLOBALS['WE_LANGUAGE']);
 			$__last = array_pop($__parts);
 			// Charset of page is not UTF-8 but languge files of page are UTF-8
 			// Then change language files to non UTF-8 pedant if available

@@ -45,8 +45,8 @@ if(isset($_REQUEST['tool'])) {
 		break;
 	default:
 		$translate = we_core_Local::addTranslation('apps.xml');
-		we_core_Local::addTranslation('default.xml', $tool);
-		$title .= $translate->_('Applications'). ' - '.$translate->_($tool);
+		we_core_Local::addTranslation('default.xml', $_REQUEST['tool']);
+		$title .= $translate->_('Applications'). ' - '.$translate->_($_REQUEST['tool']);
 		break;
 	}
 }
@@ -74,7 +74,7 @@ print we_htmlElement::jsElement('
 
 ');
 
-if($tool=="weSearch") {
+if($_REQUEST['tool']=="weSearch") {
 	if(isset($_REQUEST['we_cmd'][1])) {
 		$_SESSION["weSearch"]["keyword"] = $_REQUEST['we_cmd'][1];
 	}

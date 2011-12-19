@@ -731,11 +731,6 @@ function we_cmd() {
 		case "rebuild":
 			new jsWindow(url,"rebuild",-1,-1,609,645,true,false,true);
 			break;
-		/*FIXME: remove case "clear_cache":
-			if(confirm("<?php echo $l_we_cache["delete_cache"]; ?>")) {
-				we_repl(top.load,url,arguments[0]);
-			}
-			break;*/
 		case "openPreferences":
 			new jsWindow(url,"preferences", -1, -1, 540, 670, true, true, true, true);
 			break;

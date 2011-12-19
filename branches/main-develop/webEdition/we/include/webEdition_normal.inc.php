@@ -130,11 +130,6 @@ var widthBeforeDeleteModeSidebar = 0;
 			//toggleBusy(1);
 			we_repl(self.load,url,arguments[0]);
 			break;
-		/*FIXME: remove case "clear_cache":
-			if(confirm("<?php echo $GLOBALS['l_we_cache']["delete_cache"]; ?>")) {
-				we_repl(top.load,url,arguments[0]);
-			}
-			break;*/
 		case "exit_delete":
 		case "exit_move":
 			deleteMode = false;

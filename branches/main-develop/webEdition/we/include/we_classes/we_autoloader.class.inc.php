@@ -470,7 +470,7 @@ abstract class we_autoloader{
 		//no we-class
 		//FIXME: this should be expected in future
 		if(substr($class_name, 0, 3) === 'we_'){
-			list(, $domain, $class) = explode('_', $class_name);
+			@list(, $domain, $class) = explode('_', $class_name);
 			if(!isset(self::$domains[$domain])){
 				//				t_e('Error class domain not set in autoloader!');
 			} else{

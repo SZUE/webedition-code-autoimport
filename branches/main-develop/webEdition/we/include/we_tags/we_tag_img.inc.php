@@ -129,7 +129,7 @@ function we_tag_img($attribs, $content){
 						<td class=\"weEditmodeStyle\"></td>
 					</tr>
 				    <tr>
-		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css','[font_family]') . ";\">" . g_l('weClass',"[title]") . ":&nbsp;</td>
+		                <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css','[font_family]') . ";\">" . g_l('weClass',"[Title]") . ":&nbsp;</td>
 		                <td class=\"weEditmodeStyle\">" . we_html_tools::htmlTextInput($titlename, 16, $title,'','onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 		            </table>

@@ -23,12 +23,12 @@ function updatePrefs(){
 			if (strpos($userprefs['Language'],'UTF-8')===false){
 				$q="UPDATE ".PREFS_TABLE." SET BackendCharset='ISO-8859-1' WHERE userID=".$userprefs['userID'];
 			} else {
-				$q="UPDATE ".PREFS_TABLE." SET BackendCharset='UTF-8', Language='".str_replace('_UTF-8','',$userprefs['Language'])."' WHERE userID=".$userprefs['userID'];                                                                                    
+				$q="UPDATE ".PREFS_TABLE." SET BackendCharset='UTF-8', Language='".str_replace('_UTF-8','',$userprefs['Language'])."' WHERE userID=".$userprefs['userID'];
 			}
 			$db2->query($q);
 		}
 	}
-	return true;  
+	return true;
 }
 function updateLang(){
 	we_loadLanguageConfig();
@@ -38,14 +38,14 @@ function updateLang(){
 			we_writeLanguageConfig($GLOBALS['weDefaultFrontendLanguage'],$FLkeys);
 		}
 	} else {
-		
+
 	}
 	/*if(!we_writeLanguageConfig($GLOBALS['weFrontendLanguages'],$GLOBALS['weDefaultFrontendLanguage'])){
 	$GLOBALS['errorDetail']='Error at updating global language.';
 	return false;
 	}*/
 	return true;
-	
+
 }
 function updateActiveModules(){
 	$dir=$_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/';
@@ -53,7 +53,7 @@ function updateActiveModules(){
 	if(file_exists($dir.$file) && !file_exists($dir.'conf/'.$file) ){
 		return rename($dir.$file,$dir.'conf/'.$file);
 	} else {
-		return true;	
+		return true;
 	}
 }
 function updateConf(){
@@ -65,18 +65,21 @@ function updateConf(){
 	} else {
 		$settingvalue='ISO-8859-1';
 	}
-	
+
 	$conf = weConfParser::changeSourceCode("define", $conf, "WE_BACKENDCHARSET", $settingvalue);
 	$conf=str_replace('include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."db_mysql.inc.php")','',$conf);
-	
+
 	return file_put_contents($filename,$conf);
 }
-function removeFiles(){	
+function removeFiles(){
 	$toRemove = array('Deutsch_UTF-8','Dutch_UTF-8','English_UTF-8','Finnish_UTF-8','French_UTF-8','Polish_UTF-8','Russian_UTF-8','Spanish_UTF-8');
 	foreach ($toRemove as $datei){
 		if(file_exists($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$datei) ){
 			we_util_File::rmdirr($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_language/'.$datei);
 		}
+	}
+	if(file_exists($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php')){
+		we_util_File::delete($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php');
 	}
 }
 updatePrefs();t_e('Update Prefs OK');

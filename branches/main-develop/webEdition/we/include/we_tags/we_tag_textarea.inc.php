@@ -27,10 +27,10 @@ function we_tag_textarea($attribs, $content){
 	if (($foo = attributFehltError($attribs, "name", "textarea"))){
 		return $foo;
 	}
-	
+
 	$name = weTag_getAttribute("name", $attribs);
 	$xml = weTag_getAttribute("xml", $attribs);
-	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, tue);
+	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 
 	$html = weTag_getAttribute("html", $attribs, true, true);
