@@ -73,7 +73,7 @@ class weEmos{
 				case 'category':
 					if(isset($GLOBALS['we_doc']->Category) && $GLOBALS['we_doc']->Category != "") {
 						$catIds = explode(",",$GLOBALS['we_doc']->Category);
-						$contentLabel = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . abs($catIds[1]), "Path", $GLOBALS['DB_WE']);
+						$contentLabel = f("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=" . intval($catIds[1]), "Path", $GLOBALS['DB_WE']);
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($contentLabel,1).'" rev=""></a>';
 					} else {
 						$this->emosHTMLFooter .= '<a name="emos_name" title="content" rel="'.substr($GLOBALS['we_doc']->Path,1).'" rev=""></a>';
@@ -159,7 +159,7 @@ emosECPageArray['var3']		= 'NULL';
 		$this->emosJsFooter .= "
 if(typeof emosECPageArray == 'undefined') var emosECPageArray = new Array();
 emosECPageArray['event'] 	= '" . $emosEvent . "';
-emosECPageArray['id']		= 'd_" . abs($_REQUEST["shop_artikelid"]) . "';
+emosECPageArray['id']		= 'd_" . intval($_REQUEST["shop_artikelid"]) . "';
 emosECPageArray['name']		= '" . rawurlencode($emosName) . "';
 emosECPageArray['preis']	= '" . $emosPreis . "';
 emosECPageArray['group']	= '" . rawurlencode(isset($_REQUEST['catId']) ? id_to_path($_REQUEST['catId'],CATEGORY_TABLE) :  $article->ParentPath ) . "';

@@ -87,7 +87,7 @@ class weWorkflowDocument extends weWorkflowBase{
 			$this->workflow = new weWorkflow($this->workflowID);
 
 			$docTable=$this->workflow->Type==WE_WORKFLOW_OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
-			$this->db->query("SELECT * FROM $docTable WHERE ID=".abs($this->documentID));
+			$this->db->query("SELECT * FROM $docTable WHERE ID=".intval($this->documentID));
 			if($this->db->next_record())
 				if($this->db->f("ClassName")){
 					if($this->workflow->Type==WE_WORKFLOW_OBJECT)
@@ -264,7 +264,7 @@ class weWorkflowDocument extends weWorkflowBase{
 	function find($documentID,$type="0,1",$status=WORKFLOWDOC_STATUS_UNKNOWN){
 
 		$db = new DB_WE();
-		$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".documentID=".abs($documentID)." AND ".WORKFLOW_DOC_TABLE.".Status IN (".$db->escape($status).")".($type!="" ? " AND ".WORKFLOW_TABLE.".Type IN (".$db->escape($type).")" : "")." ORDER BY ".WORKFLOW_DOC_TABLE.".ID DESC");
+		$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".documentID=".intval($documentID)." AND ".WORKFLOW_DOC_TABLE.".Status IN (".$db->escape($status).")".($type!="" ? " AND ".WORKFLOW_TABLE.".Type IN (".$db->escape($type).")" : "")." ORDER BY ".WORKFLOW_DOC_TABLE.".ID DESC");
 		if ($db->next_record())
 		{
 			return new weWorkflowDocument($db->f("ID"));

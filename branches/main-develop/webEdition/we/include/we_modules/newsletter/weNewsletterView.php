@@ -201,7 +201,7 @@ class weNewsletterView {
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formDocChooser($width = "", $rootDirID = 0, $Pathname = "ParentPath", $Pathvalue = "/", $IDName = "ParentID", $IDValue = "0", $cmd = "") {
-		$Pathvalue = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=" . abs($IDValue), "Path", $this->db);
+		$Pathvalue = f("SELECT Path FROM ".FILE_TABLE." WHERE ID=" . intval($IDValue), "Path", $this->db);
 
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'".FILE_TABLE."','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
@@ -236,7 +236,7 @@ class weNewsletterView {
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "", $open_doc="",$acObject=null,$contentType="") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . intval($IDValue), "Path", $this->db);
 		}
 
 			//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','','$open_doc')
@@ -270,7 +270,7 @@ class weNewsletterView {
 	}
 
 	function formWeDocChooser($table=FILE_TABLE,$width="",$rootDirID=0,$IDName="ID",$IDValue="0",$Pathname="Path",$Pathvalue="/",$cmd="",$filter="text/webedition",$acObject=null){
-      if($Pathvalue=="") $Pathvalue=f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=".abs($IDValue),"Path",$this->db);
+      if($Pathvalue=="") $Pathvalue=f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=".intval($IDValue),"Path",$this->db);
 
 	 	//javascript:we_cmd('openDocselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID','$filter',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).")"
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$IDName'].value");
@@ -306,7 +306,7 @@ class weNewsletterView {
 	function formNewsletterDirChooser( $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "", $acObject=null) {
 		$table = NEWSLETTER_TABLE;
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue), "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . intval($IDValue), "Path", $this->db);
 		}
 
 		//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")
@@ -343,7 +343,7 @@ class weNewsletterView {
 	}
 
 	function getFields($id, $table) {
-		$ClassName = f("SELECT ClassName FROM ".$this->db->escape($table)." WHERE ID=" . abs($id), "ClassName", $this->db);
+		$ClassName = f("SELECT ClassName FROM ".$this->db->escape($table)." WHERE ID=" . intval($id), "ClassName", $this->db);
 		$include_path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/";
 
 		if ($table == OBJECT_FILES_TABLE) {
@@ -1555,7 +1555,7 @@ class weNewsletterView {
 						if ($newone) {
 							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".$this->db->escape($this->newsletter->Path)."'");
 						} else {
-							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".$this->db->escape($this->newsletter->Path)."' AND ID<>".$this->newsletter->ID."");
+							$this->db->query("SELECT COUNT(*) AS Count FROM ".NEWSLETTER_TABLE." WHERE Path='".$this->db->escape($this->newsletter->Path)."' AND ID<>".$this->newsletter->ID);
 						}
 
 						if ($this->db->next_record()) {

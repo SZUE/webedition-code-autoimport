@@ -54,7 +54,7 @@ class we_catListview extends listviewBase{
 
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, "", $cols);
-		$this->parentID = isset($_REQUEST[$parentidname]) ? abs($_REQUEST[$parentidname]) : abs($parentID);
+		$this->parentID = isset($_REQUEST[$parentidname]) ? intval($_REQUEST[$parentidname]) : intval($parentID);
 		$this->catID = trim($catID);
 
 		$this->variant = $variant;

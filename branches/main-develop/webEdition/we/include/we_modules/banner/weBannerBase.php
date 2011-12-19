@@ -50,7 +50,7 @@ class weBannerBase{
 
 	function load(){
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query("SELECT * FROM ".$this->table." WHERE ID=".abs($this->ID));
+		$this->db->query("SELECT * FROM ".$this->table." WHERE ID=".intval($this->ID));
 		if($this->db->next_record())
 		for($i=0;$i<sizeof($tableInfo);$i++){
 				$fieldName = $tableInfo[$i]["name"];
@@ -89,7 +89,7 @@ class weBannerBase{
 
 	function delete(){
 		if ($this->ID){
-			$this->db->query('DELETE FROM '.$this->table.' WHERE ID=' . abs($this->ID) );
+			$this->db->query('DELETE FROM '.$this->table.' WHERE ID=' . intval($this->ID) );
 			return true;
 		}
 		else return false;

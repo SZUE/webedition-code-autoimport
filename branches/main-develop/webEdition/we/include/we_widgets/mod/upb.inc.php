@@ -105,7 +105,7 @@ foreach ($tbls as $table) {
 
 	$DB_WE->query($q);
 	$anz = $DB_WE->num_rows();
-	$DB_WE->query($q . " LIMIT ".intval($offset).",".intval($numRows)."");
+	$DB_WE->query($q . " LIMIT ".intval($offset).",".intval($numRows));
 	$db2 = new DB_WE();
 	$content = array();
 
@@ -121,7 +121,7 @@ foreach ($tbls as $table) {
 		$usern = f("
 				SELECT username
 				FROM " . USER_TABLE . "
-				WHERE ID='" . abs($DB_WE->f("CreatorID")) . "'", "username", $db2);
+				WHERE ID=" . intval($DB_WE->f("CreatorID")), "username", $db2);
 		$usern = $usern ? $usern : "-";
 		array_push($row, array(
 			"dat" => $usern
@@ -134,7 +134,7 @@ foreach ($tbls as $table) {
 		$usern = f("
 				SELECT username
 				FROM " . USER_TABLE . "
-				WHERE ID='" . abs($DB_WE->f("ModifierID")) . "'", "username", $db2);
+				WHERE ID=" . intval($DB_WE->f("ModifierID")), "username", $db2);
 		$usern = $usern ? $usern : "-";
 		array_push($row, array(
 			"dat" => $usern

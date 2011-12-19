@@ -96,7 +96,7 @@ class we_docSelector extends we_dirSelector {
 		$q = "
 			SELECT ".$this->fields." FROM ".
 			$this->db->escape($this->table).
-			" WHERE ParentID='".abs($this->dir)."'".
+			" WHERE ParentID=".intval($this->dir).' '.
 			makeOwnersSql().
 			$wsQuery .
 			$filterQuery . //$publ_q.
@@ -105,7 +105,7 @@ class we_docSelector extends we_dirSelector {
 		$this->db->query($q);
 		if ($this->table==FILE_TABLE) {
 			$titleQuery = new DB_WE();
-			$titleQuery->query("SELECT a.ID, c.Dat FROM (".FILE_TABLE." a LEFT JOIN ".LINK_TABLE." b ON (a.ID=b.DID)) LEFT JOIN ".CONTENT_TABLE." c ON (b.CID=c.ID) WHERE a.ParentID='".abs($this->dir)."' AND b.Name='Title'");
+			$titleQuery->query("SELECT a.ID, c.Dat FROM (".FILE_TABLE." a LEFT JOIN ".LINK_TABLE." b ON (a.ID=b.DID)) LEFT JOIN ".CONTENT_TABLE." c ON (b.CID=c.ID) WHERE a.ParentID=".intval($this->dir)." AND b.Name='Title'");
 			while ($titleQuery->next_record()) {
 				$this->titles[$titleQuery->f('ID')] = $titleQuery->f('Dat');
 			}
@@ -118,7 +118,7 @@ class we_docSelector extends we_dirSelector {
 			$_cid = f("SELECT ID FROM " . OBJECT_TABLE . " WHERE PATH='".$_db->escape($_path)."'", "ID", $_db);
 			$this->titleName = f("SELECT DefaultTitle FROM " .OBJECT_TABLE . " WHERE ID=".intval($_cid),"DefaultTitle", $_db);
 			if($this->titleName && strpos($this->titleName, '_')) {
-				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".abs($this->dir));
+				$_db->query("SELECT OF_ID, $this->titleName FROM " . OBJECT_X_TABLE . $_cid . " WHERE OF_ParentID=".intval($this->dir));
 				while ($_db->next_record()) {
 					$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
 				}
@@ -163,7 +163,7 @@ class we_docSelector extends we_dirSelector {
 
 	function setDefaultDirAndID($setLastDir) {
 		if ( $setLastDir ) {
-			$this->dir = isset($_SESSION["we_fs_lastDir"][$this->table]) ? abs($_SESSION["we_fs_lastDir"][$this->table]) : 0;
+			$this->dir = isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0;
 		} else {
 			$this->dir = 0;
 		}
@@ -566,7 +566,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-		if(abs($this->dir)==0) {
+		if(intval($this->dir)==0) {
 			print 'top.fsheader.disableRootDirButs();';
 		}
 		else {
@@ -747,12 +747,12 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					';
 			if(isset($result['ContentType']) && !empty($result['ContentType'])) {
 				if ($this->table == FILE_TABLE && $result['ContentType'] != "folder") {
-					$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=".abs($this->id)." AND NOT a.DocumentTable='tblTemplates'");
+					$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=".intval($this->id)." AND NOT a.DocumentTable='tblTemplates'");
 					while ($this->db->next_record()) {
 						$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
 					}
 				} else if (defined("OBJECT_FILES_TABLE") && $this->table == OBJECT_FILES_TABLE && $result['ContentType'] != "folder") {
-					$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID='".abs($result["TableID"])."'",$this->db);
+					$_fieldnames = getHash("SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM " .OBJECT_TABLE . " WHERE ID=".intval($result["TableID"]),$this->db);
 					$_selFields = "";
 					foreach($_fieldnames as $_key => $_val) {
 						if(empty($_val) || $_val=='_') // bug #4657
@@ -772,11 +772,11 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					}
 					if ($_selFields) {
 						$_selFields = substr($_selFields, 0, strlen($_selFields)-1);
-						$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . abs($result["ID"]), $this->db);
+						$metainfos = getHash("SELECT " . $_selFields . " FROM " . OBJECT_X_TABLE . $result["TableID"] . " WHERE OF_ID=" . intval($result["ID"]), $this->db);
 					}
 
 				} elseif ($result['ContentType'] == "folder") {
-					$this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=".abs($this->id));
+					$this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=".intval($this->id));
 					$folderFolders = array();
 					$folderFiles = array();
 					while ($this->db->next_record()) {
@@ -966,7 +966,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 
 				if ($result['ContentType'] == "text/weTmpl") {
 					if (isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])) {
-						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
+						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=".intval($result['MasterTemplateID']),"Path",$this->db);
 						$_previewFields["masterTemplate"]["data"][] = array(
 							"caption" => "ID",
 							"content" => $result['MasterTemplateID']

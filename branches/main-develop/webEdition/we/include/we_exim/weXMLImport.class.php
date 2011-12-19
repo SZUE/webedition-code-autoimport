@@ -196,7 +196,7 @@
 								// insert new created folders in ref table
 								foreach($pathids as $pid){
 
-									$h=getHash("SELECT ParentID,Path FROM ".escape_sql_query($object->Table)." WHERE ID='".abs($pid)."';",new DB_WE());
+									$h=getHash("SELECT ParentID,Path FROM ".escape_sql_query($object->Table)." WHERE ID=".intval($pid),new DB_WE());
 									if(!$this->RefTable->exists(array("ID"=>$pid,"ContentType"=>"folder"))){
 										$this->RefTable->add2(
 											array_merge(array(

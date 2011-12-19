@@ -117,7 +117,7 @@ top.clearEntries();
 			$folder->Published=time();
 			$folder->Path=$folder->getPath();
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".abs($this->we_editDirID));
+			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor',"[folder][response_path_exists]"),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -126,7 +126,7 @@ top.clearEntries();
 					$we_responseText = sprintf(g_l('weEditor',"[folder][we_filename_notValid]"),$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
@@ -164,7 +164,7 @@ top.selectFile(top.currentID);
 
 		$_query = "	SELECT ".$this->db->escape($this->fields)."
 					FROM ".$this->db->escape($this->table)."
-					WHERE IsFolder=1 AND ParentID=".abs($this->dir).
+					WHERE IsFolder=1 AND ParentID=".intval($this->dir).
 					$ws_query .
 					($this->order ? (' ORDER BY '.$this->order) : '');
 

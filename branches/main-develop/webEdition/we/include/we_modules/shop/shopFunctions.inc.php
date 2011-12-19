@@ -39,7 +39,7 @@ function getCustomersOrderList($customerId, $sameModul=true) {
 	$query = '
 		SELECT IntOrderID, DateOrder, DATE_FORMAT(DateOrder,"' . $da . '") AS formatDateOrder, DateConfirmation, DATE_FORMAT(DateConfirmation,"' . $da . '") AS formatDateConfirmation, DateCustomA, DATE_FORMAT(DateCustomA,"' . $da . '") AS formatDateCustomA, DateCustomB, DATE_FORMAT(DateCustomB,"' . $da . '") AS formatDateCustomB,DateCustomC, DATE_FORMAT(DateCustomC,"' . $da . '") AS formatDateCustomC,DateShipping, DATE_FORMAT(DateShipping,"' . $da . '") AS formatDateShipping, DateCustomD, DATE_FORMAT(DateCustomD,"' . $da . '") AS formatDateCustomD,DateCustomE, DATE_FORMAT(DateCustomE,"' . $da . '") AS formatDateCustomE, DatePayment, DATE_FORMAT(DatePayment,"' . $da . '") AS formatDatePayment,DateCustomF, DATE_FORMAT(DateCustomF,"' . $da . '") AS formatDateCustomF,DateCustomG, DATE_FORMAT(DateCustomG,"' . $da . '") AS formatDateCustomG,DateCancellation, DATE_FORMAT(DateCancellation,"' . $da . '") AS formatDateCancellation,DateCustomH, DATE_FORMAT(DateCustomH,"' . $da . '") AS formatDateCustomH,DateCustomI, DATE_FORMAT(DateCustomI,"' . $da . '") AS formatDateCustomI,DateCustomJ, DATE_FORMAT(DateCustomJ,"' . $da . '") AS formatDateCustomJ,DateFinished, DATE_FORMAT(DateFinished,"' . $da . '") AS formatDateFinished
 		FROM ' . SHOP_TABLE . '
-		WHERE IntCustomerID=' . abs($customerId) . '
+		WHERE IntCustomerID=' . intval($customerId) . '
 		GROUP BY IntOrderId
 		ORDER BY IntID DESC
 	';

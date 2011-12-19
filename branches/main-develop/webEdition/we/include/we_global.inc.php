@@ -72,10 +72,10 @@ function getAllowedClasses($db = '') {
 		$ofWs = get_ws(OBJECT_FILES_TABLE);
 		$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
 
-		if (abs($ofWs) == 0) {
+		if (intval($ofWs) == 0) {
 			$ofWs = 0;
 		}
-		if (abs($ws) == 0) {
+		if (intval($ws) == 0) {
 			$ws = 0;
 		}
 		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
@@ -112,7 +112,7 @@ function getObjectRootPathOfObjectWorkspace($classDir, $classId, $db = '') {
 	$rootId = $classId;
 	if (defined('OBJECT_TABLE')) {
 		$ws = get_ws(OBJECT_FILES_TABLE);
-		if (abs($ws) == 0) {
+		if (intval($ws) == 0) {
 			$ws = 0;
 		}
 		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND Path LIKE "' . $db->escape($classDir) . '%"');
@@ -1000,7 +1000,7 @@ function getTemplAndDocIDsOfTemplate($id, $staticOnly = true, $publishedOnly = f
 	getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
 
 	// first we need to check if template is included within other templates
-	//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".abs($id)." OR IncludedTemplates LIKE '%,".abs($id).",%'");
+	//$GLOBALS['DB_WE']->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE MasterTemplateID=".intval($id)." OR IncludedTemplates LIKE '%,".intval($id).",%'");
 	//while ($GLOBALS['DB_WE']->next_record()) {
 	//	array_push($returnIDs["templateIDs"], $GLOBALS['DB_WE']->f("ID"));
 	//}
@@ -1031,7 +1031,7 @@ function ObjectUsedByObjectFile($id) {
 	if (!$id){
 		return false;
 	}
-	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . abs($id).' LIMIT 0,1','cnt',$GLOBALS['DB_WE'])==1;
+	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id).' LIMIT 0,1','cnt',$GLOBALS['DB_WE'])==1;
 }
 
 function deleteLocalFile($filename) {
@@ -1131,7 +1131,7 @@ function makeOwnersSql($useCreatorID = true) {
 		we_getAliases($_SESSION['user']['ID'], $aliases, $GLOBALS['DB_WE']);
 		$q = $useCreatorID ? 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\') OR ' : '';
 		foreach ($aliases as $id)
-			$q .= 'Owners like "%,' . abs($id) . ',%\' OR ';
+			$q .= 'Owners like "%,' . intval($id) . ',%\' OR ';
 		$groups = array(
 				$_SESSION['user']['ID']
 		);
@@ -1139,7 +1139,7 @@ function makeOwnersSql($useCreatorID = true) {
 		foreach ($aliases as $id)
 			we_getParentIDs(USER_TABLE, $id, $groups, $GLOBALS['DB_WE']);
 		foreach ($groups as $id)
-			$q .= "Owners like '%," . abs($id) . ",%' OR ";
+			$q .= "Owners like '%," . intval($id) . ",%' OR ";
 		$q = preg_replace('#^(.*) OR $#', '\1', $q);
 		return ' AND ( RestrictOwners=0 OR (' . $q . ')) ';
 	} else
@@ -1221,14 +1221,14 @@ function shortenPathSpace($path, $len) {
 }
 
 function in_parentID($id, $pid, $table = FILE_TABLE, $db = '') {
-	if (abs($pid) != 0 && abs($id) == 0)
+	if (intval($pid) != 0 && intval($id) == 0)
 		return false;
-	if (abs($pid) == 0 || $id == $pid || ($id == '' && $id != '0'))
+	if (intval($pid) == 0 || $id == $pid || ($id == '' && $id != '0'))
 		return true;
 	if (!$db)
 		$db = new DB_WE();
 	$found = array();
-	$p = abs($id);
+	$p = intval($id);
 	do {
 		if ($p == $pid) {
 			return true;
@@ -1237,7 +1237,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, $db = '') {
 			return false;
 		}
 		array_push($found, $p);
-		$p = f('SELECT ParentID FROM '.$table.' WHERE ID=' . abs($p), 'ParentID', $db);
+		$p = f('SELECT ParentID FROM '.$table.' WHERE ID=' . intval($p), 'ParentID', $db);
 	} while ($p);
 	return false;
 }
@@ -1275,7 +1275,7 @@ function userIsOwnerCreatorOfParentDir($folderID, $tab) {
 		return true;
 	}
 	$db = new DB_WE();
-	$db->query('SELECT RestrictOwners,Owners,CreatorID FROM '.$tab.' WHERE ID='.abs($folderID));
+	$db->query('SELECT RestrictOwners,Owners,CreatorID FROM '.$tab.' WHERE ID='.intval($folderID));
 	if ($db->next_record())
 		if ($db->f('RestrictOwners')) {
 			$ownersArr = makeArrayFromCSV($db->f('Owners'));
@@ -1300,7 +1300,7 @@ function path_to_id($path, $table = FILE_TABLE) {
 	if ($path == '/') {
 		return 0;
 	}
-	return abs(f("SELECT DISTINCT ID FROM $table WHERE Path='" . $db->escape($path) . "' LIMIT 1", "ID", $db));
+	return intval(f("SELECT DISTINCT ID FROM $table WHERE Path='" . $db->escape($path) . "' LIMIT 1", "ID", $db));
 }
 
 function weConvertToIds($paths, $table) {
@@ -1322,7 +1322,7 @@ function path_to_id_ct($path, $table, &$contentType) {
 	$res = getHash("SELECT ID,ContentType FROM $table WHERE Path='" . $db->escape($path) . "'", $db);
 	$contentType = isset($res['ContentType']) ? $res['ContentType'] : null;
 
-	return abs(isset($res['ID']) ? $res['ID'] : 0);
+	return intval(isset($res['ID']) ? $res['ID'] : 0);
 }
 
 function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, $asArray = false, $endslash = false) {
@@ -1340,7 +1340,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 		if ($id == 0) {
 			array_push($foo, '/');
 		} else {
-			$foo2 = getHash("SELECT Path,IsFolder FROM $table WHERE ID=" . abs($id), $db);
+			$foo2 = getHash("SELECT Path,IsFolder FROM $table WHERE ID=" . intval($id), $db);
 			if (isset($foo2['Path'])) {
 				if ($endslash && $foo2['IsFolder']) {
 					$foo2['Path'] .= '/';
@@ -1431,7 +1431,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = '') {
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '') {
 	$db = new DB_WE();
 	$arr[]= $id;
-	$db->query('SELECT ID FROM '.$table.' WHERE ParentID=' . abs($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
+	$db->query('SELECT ID FROM '.$table.' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == '0') ? (' AND IsFolder="' . $db->escape($isFolder) . '"') : ''));
 	while ($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
@@ -1483,7 +1483,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder') {
 	$db_temp = new DB_WE();
 	$db_temp1 = new DB_WE();
-	$db_temp->query('SELECT ParentID FROM '.$tab.' WHERE ID=' . abs($id));
+	$db_temp->query('SELECT ParentID FROM '.$tab.' WHERE ID=' . intval($id));
 	while ($db_temp->next_record())
 		if ($db_temp->f('ParentID') == 0) {
 			array_push($parentlist, $db_temp->f('ParentID'));
@@ -1593,7 +1593,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false) {
 		return '';
 	$ws = '';
 
-	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . abs($_SESSION['user']['ID']),'workSpaceDef',new DB_WE());
+	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']),'workSpaceDef',new DB_WE());
 	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
 
 	if ($ws == '') {
@@ -1970,12 +1970,12 @@ function getMaxAllowedPacket($db = '') {
 
 function we_convertIniSizes($in) {
 	if (preg_match('#^([0-9]+)M$#i', $in, $regs)) {
-		return 1024 * 1024 * abs($regs[1]);
+		return 1024 * 1024 * intval($regs[1]);
 	} else
 	if (preg_match('#^([0-9]+)K$#i', $in, $regs)) {
-		return 1024 * abs($regs[1]);
+		return 1024 * intval($regs[1]);
 	} else {
-		return abs($in);
+		return intval($in);
 	}
 }
 
@@ -2134,7 +2134,7 @@ function setUserPref($name, $value) {
 	if (isset($_SESSION['prefs'][$name]) && isset($_SESSION['prefs']['userID']) && $_SESSION['prefs']['userID']) {
 		$_SESSION['prefs'][$name] = $value;
 		$_db = new DB_WE();
-		$_db->query('UPDATE ' . PREFS_TABLE . ' SET ' . $name . '="' . $_db->escape($value) . '" WHERE userId=' . abs($_SESSION['prefs']['userID']));
+		$_db->query('UPDATE ' . PREFS_TABLE . ' SET ' . $name . '="' . $_db->escape($value) . '" WHERE userId=' . intval($_SESSION['prefs']['userID']));
 		return true;
 	}
 	return false;
@@ -2412,7 +2412,7 @@ function getDoctypeQuery($db = '') {
 		$b = makeArrayFromCSV($ws);
 		if ((!defined('WE_DOCTYPE_WORKSPACE_BEHAVIOR')) || WE_DOCTYPE_WORKSPACE_BEHAVIOR == 0) {
 			foreach ($b as $k => $v) {
-				$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . abs($v));
+				$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
 				while ($db->next_record()) {
 					array_push(
 									$paths,

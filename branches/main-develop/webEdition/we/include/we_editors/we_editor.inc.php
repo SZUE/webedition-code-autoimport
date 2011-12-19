@@ -464,7 +464,7 @@ else {
 							//this happens when we_cmd[3] is set and not we_cmd[2]
 							if($we_doc->we_save()) {
 								$wasSaved = true;
-								$wasNew = (abs($we_doc->ID) == 0) ? true : false;
+								$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 								$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".$we_doc->Path."', '" . $we_doc->Text ."', '" . $we_doc->ID . "');\n";
 								$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n".$we_doc->getUpdateTreeScript().";\n";// save/ rename a document
 								$we_responseText = sprintf(g_l('weEditor','['.$we_doc->ContentType.'][response_save_ok]'),$we_doc->Path);
@@ -501,7 +501,7 @@ else {
 						} else {
 
 							$wf_flag = false;
-							$wasNew = (abs($we_doc->ID) == 0) ? true : false;
+							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 							$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
 							if (!$_SESSION["perms"]["ADMINISTRATOR"] && $we_doc->ContentType != "object" && $we_doc->ContentType != "objectFile"  && !in_workspace($we_doc->ParentID,get_ws($we_doc->Table),$we_doc->Table)) {
 								$we_responseText = g_l('alert','['.FILE_TABLE.'][not_im_ws]');

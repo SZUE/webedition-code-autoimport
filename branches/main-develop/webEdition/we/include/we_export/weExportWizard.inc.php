@@ -1634,7 +1634,7 @@ top.close();
 
 		$select->selectOption($doctype);
 
-		$path=$dir ? f("SELECT Path FROM ".FILE_TABLE." WHERE ID='".abs($dir)."'","Path",$this->db) : "/";
+		$path=$dir ? f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".intval($dir),"Path",$this->db) : "/";
 		$dir=we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE,$width,0,"dir",$dir,"Path",$path),g_l('export',"[dir]"));
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),3,2);
@@ -1742,7 +1742,7 @@ top.close();
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		$yuiSuggest =& weSuggest::getInstance();
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID='" . abs($IDValue)."';", "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . intval($IDValue), "Path", $this->db);
 		}
 
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID')

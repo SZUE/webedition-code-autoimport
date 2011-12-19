@@ -176,14 +176,14 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 
 			return new weDocumentCustomerFilter(
-				abs($_REQUEST["weDocumentCustomerFilter_id"]),
-				abs($model->ID),
+				intval($_REQUEST["weDocumentCustomerFilter_id"]),
+				intval($model->ID),
 				$model->ContentType,
 				$model->Table,
 				($_REQUEST["wecf_accessControlOnTemplate"] == "onTemplate") ? 1 : 0,
-				abs($_REQUEST["wecf_noLoginId"]),
-				abs($_REQUEST["wecf_noAccessId"]),
-				abs($_REQUEST["wecf_mode"]),
+				intval($_REQUEST["wecf_noLoginId"]),
+				intval($_REQUEST["wecf_noAccessId"]),
+				intval($_REQUEST["wecf_mode"]),
 				$_specificCustomers,
 				$_filter,
 				$_whiteList,

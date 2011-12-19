@@ -121,7 +121,7 @@
 						if(is_numeric($value)) {
 							$_path = '';
 							if($value) {
-								$_path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . abs($value) . ';','Path',$_db);
+								$_path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value) . ';','Path',$_db);
 							}
 
 							$this->addToDepArray($level,$value,'weNavigation',NAVIGATION_TABLE);
@@ -142,7 +142,7 @@
 
 		function getNavigationRule($naviid,$level){
 			$_db = new DB_WE();
-			$_db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID=' . abs($naviid) . ';');
+			$_db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID=' . intval($naviid) . ';');
 			while($_db->next_record()) {
 				$this->addToDepArray($level,$_db->f('ID'),'weNavigationRule',NAVIGATION_RULE_TABLE);
 			}
@@ -220,7 +220,7 @@
 		function addToDepArray($level,$id,$ct="",$table=""){
 				if($ct==""){
 					if($table=="") $table = FILE_TABLE;
-					$ct=f('SELECT ContentType FROM '.escape_sql_query($table).' WHERE ID="'.abs($id).'";','ContentType',new DB_WE());
+					$ct=f('SELECT ContentType FROM '.escape_sql_query($table).' WHERE ID='.intval($id),'ContentType',new DB_WE());
 				}
 				if($ct!=""){
 					$new=array(

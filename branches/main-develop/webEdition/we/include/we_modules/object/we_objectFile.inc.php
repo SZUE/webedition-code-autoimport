@@ -333,7 +333,7 @@ class we_objectFile extends we_document{
 					$text = preg_replace('/%unique[^%]*%/',$unique,$text);
 				}
 				if(strpos($text,'%ID%')!==false){
-					$id = 1 + abs(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE ,'ID',new DB_WE()));
+					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE ,'ID',new DB_WE()));
 					$text = str_replace('%ID%',''.$id,$text);
 				}
 				if(strpos($text,'%d%')!==false){
@@ -856,7 +856,7 @@ class we_objectFile extends we_document{
 
 	function getObjectFieldHTML($ObjectID,$attribs,$editable=true){
 		$db = new DB_WE();
-		$foo = getHash('SELECT Text,Path FROM ' .OBJECT_TABLE . ' WHERE ID='.abs($ObjectID),$db) ;
+		$foo = getHash('SELECT Text,Path FROM ' .OBJECT_TABLE . ' WHERE ID='.intval($ObjectID),$db) ;
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
 		$classPath = isset($foo['Path']) ? $foo['Path'] : '';
 		$pid = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="'.$classPath.'"','ID',$db);
@@ -1033,7 +1033,7 @@ class we_objectFile extends we_document{
 				//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) ."opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';;};".$reloadEntry."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")"
 				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");
-				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) ."opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';;};".$reloadEntry."");
+				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);if(currentID==". $this->ID."){".we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) ."opener.document.we_form.elements['$idname'].value='';opener.document.we_form.elements['$textname'].value='';;};".$reloadEntry);
 
 				$selectObject = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDir','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).")");
 
@@ -1543,7 +1543,7 @@ class we_objectFile extends we_document{
 			if ($variant) {
 				return $content;
 			}
-			return '<span class="weObjectPreviewHeadline"><b>'.$name.($this->DefArray["img_".$name]["required"] ? "*" : "")."</b></span>" . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : '<br />' ) . "".$content;
+			return '<span class="weObjectPreviewHeadline"><b>'.$name.($this->DefArray["img_".$name]["required"] ? "*" : "")."</b></span>" . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["img_$name"]['editdescription'] . '</div>' : '<br />' ) .$content;
 		}else{
 			$content .= $img->getHtml();
 			return $this->getPreviewView($name,$content);

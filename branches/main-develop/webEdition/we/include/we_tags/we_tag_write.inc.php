@@ -217,7 +217,7 @@ function we_tag_write($attribs, $content){
 					$path = $GLOBALS["we_$type"][$name]->Path;
 					if ($type == "object") {
 						$classname = f(
-								"SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . abs($classid) . "'",
+								"SELECT Text FROM " . OBJECT_TABLE . " WHERE ID=" . intval($classid),
 								"Text",
 								$GLOBALS['DB_WE']);
 						if ($triggerid) {

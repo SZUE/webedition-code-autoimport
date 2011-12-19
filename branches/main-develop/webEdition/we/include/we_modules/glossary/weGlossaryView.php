@@ -663,7 +663,7 @@ class weGlossaryView {
 
 
 					if($this->Glossary->ID != 0) {
-						$StateBefore = f("SELECT Published FROM " . GLOSSARY_TABLE . " WHERE ID = " . abs($this->Glossary->ID), "Published", new DB_WE());
+						$StateBefore = f("SELECT Published FROM " . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID), "Published", new DB_WE());
 
 					} else {
 						$StateBefore = 0;

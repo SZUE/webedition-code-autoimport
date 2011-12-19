@@ -322,7 +322,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM ".WORKFLOW_DOC_STEP_TABLE." WHERE workflowDocID=".abs($workflowDocumentID)." ORDER BY ID");
+		$db->query("SELECT ID FROM ".WORKFLOW_DOC_STEP_TABLE." WHERE workflowDocID=".intval($workflowDocumentID)." ORDER BY ID");
 		$docSteps = array();
 		while ($db->next_record()){
 			$docSteps[] = new weWorkflowDocumentStep($db->f("ID"));
@@ -337,7 +337,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	function __createAllSteps($workflowID){
 
 		$db = new DB_WE();
-		$db->query("SELECT ID FROM ".WORKFLOW_STEP_TABLE." WHERE workflowID =".abs($workflowID)." ORDER BY ID");
+		$db->query("SELECT ID FROM ".WORKFLOW_STEP_TABLE." WHERE workflowID =".intval($workflowID)." ORDER BY ID");
 		$docSteps = array();
 		while ($db->next_record()){
 			$docSteps[] = weWorkflowDocumentStep::__createStep($db->f("ID"));
@@ -355,7 +355,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		if (is_array($WorkflowStep)) return weWorkflowDocumentStep::__createStepFromHash($WorkflowStep);
 
 		$db = new DB_WE();
-		$db->query("SELECT * FROM ".WORKFLOW_STEP_TABLE." WHERE ID=".abs($WorkflowStep)." ORDER BY ID");
+		$db->query("SELECT * FROM ".WORKFLOW_STEP_TABLE." WHERE ID=".intval($WorkflowStep)." ORDER BY ID");
 		if (!$db->next_record()){
 			return false;
 		}

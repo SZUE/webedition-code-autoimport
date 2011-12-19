@@ -31,7 +31,7 @@ function we_tag_author($attribs, $content){
 	$doc = we_getDocForTag($docAttr, true);
 
 	$foo = getHash(
-			"SELECT Username,First,Second FROM " . USER_TABLE . " WHERE ID='" . abs($creator ? $doc->CreatorID : $doc->ModifierID) . "'",
+			"SELECT Username,First,Second FROM " . USER_TABLE . " WHERE ID=" . intval($creator ? $doc->CreatorID : $doc->ModifierID),
 			new DB_WE());
 
 	switch ($type) {

@@ -65,7 +65,7 @@ class weNavigationRuleControl{
 						SELECT *
 						FROM ' . NAVIGATION_RULE_TABLE . '
 						WHERE NavigationName = "' . $db->escape($this->NavigationRule->NavigationName) . '"
-							AND ID != ' . abs($this->NavigationRule->ID);
+							AND ID != ' . intval($this->NavigationRule->ID);
 
 					$db->query($query);
 					if($db->num_rows()){

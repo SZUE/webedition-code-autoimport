@@ -68,7 +68,7 @@ class weVotingTreeLoader{
 
 
 
-		$where=" WHERE ParentID=".abs($ParentID) . " " .$addWhere .$owners_sql;
+		$where=" WHERE ParentID=".intval($ParentID) . " " .$addWhere .$owners_sql;
 
 		$db->query("SELECT ".$db->escape($elem).", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".$db->escape($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
 		$now = time();

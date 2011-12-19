@@ -358,7 +358,7 @@ array_push($parts, array(
 
 list($pad_header_enc, ) = explode(',', $_REQUEST['we_cmd'][1]);
 $pad_header = base64_decode($pad_header_enc);
-$_sql = "SELECT	distinct(WidgetName) FROM " . NOTEPAD_TABLE . " WHERE UserID = " . abs($_SESSION['user']['ID']);
+$_sql = "SELECT	distinct(WidgetName) FROM " . NOTEPAD_TABLE . " WHERE UserID = " . intval($_SESSION['user']['ID']);
 $DB_WE = new DB_WE();
 $DB_WE->query($_sql);
 $_options = array(

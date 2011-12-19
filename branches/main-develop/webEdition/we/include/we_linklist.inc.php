@@ -329,17 +329,17 @@ class we_linklist{
 
 	function getHrefInt($nr){
 		$id = $this->getID($nr);
-		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", "Path", $this->db) : "";
+		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id) , "Path", $this->db) : "";
 	}
 
 	function getHrefObj($nr){
 		$id = $this->getObjID($nr);
-		return $id ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id) . "", "Path", $this->db) : "";
+		return $id ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id) , "Path", $this->db) : "";
 	}
 
 	function getImageSrcInt($nr){
 		$id = $this->getImageID($nr);
-		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "", "Path", $this->db) : "";
+		return $id ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id) , "Path", $this->db) : "";
 	}
 
 	function getString(){
@@ -538,7 +538,7 @@ class we_linklist{
 				break;
 			}
 
-			if(abs($i) || $i == "0"){
+			if(intval($i) || $i == "0"){
 				$foo = $content;
 
 				$link = $this->getLink();

@@ -360,7 +360,7 @@ top.selectFile(top.currentID);
 	function query(){
 		$this->db->query("SELECT ".$this->db->escape($this->fields)." FROM ".
 		$this->db->escape($this->table).
-		" WHERE IsFolder=1 AND ParentID=".abs($this->dir)." " . $this->getUserExtraQuery($this->table));
+		" WHERE IsFolder=1 AND ParentID=".intval($this->dir)." " . $this->getUserExtraQuery($this->table));
 	}
 
 	function getUserExtraQuery($table, $useCreatorID=true){
@@ -412,7 +412,7 @@ top.clearEntries();
 					$we_responseText = g_l('modules_voting','[wrongtext]');
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else{
-					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->we_editDirID),"Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.content.updateEntry){

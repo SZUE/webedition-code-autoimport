@@ -330,7 +330,7 @@ class weBackup extends we_backup{
 						//$this->backup_db->query("SELECT ".FILE_TABLE.".ID AS ID,".FILE_TABLE.".TemplateID AS TemplateID,".TEMPLATES_TABLE.".Path AS TemplatePath FROM ".FILE_TABLE.",".TEMPLATES_TABLE." WHERE ".FILE_TABLE.".TemplateID=".TEMPLATES_TABLE.".ID;");
 						$this->backup_db->query("SELECT ID FROM ".TEMPLATES_TABLE." WHERE Path=".$this->backup_db->escape($path).";");
 						if($this->backup_db->next_record()){
-							if($this->backup_db->f("ID")!=$id) $db2->query("UPDATE ".FILE_TABLE." SET TemplateID=".abs($this->backup_db->f("ID"))." WHERE TemplateID=".abs($id));
+							if($this->backup_db->f("ID")!=$id) $db2->query("UPDATE ".FILE_TABLE." SET TemplateID=".intval($this->backup_db->f("ID"))." WHERE TemplateID=".intval($id));
 						}
 					}
 				}
@@ -439,7 +439,7 @@ class weBackup extends we_backup{
 							$this->backup_step=0;
 							$this->table_end=0;
 
-							$this->table_end = f("SELECT COUNT(*) AS Count FROM ".$this->backup_db->escape($table)."","Count",$this->backup_db);
+							$this->table_end = f("SELECT COUNT(*) AS Count FROM ".$this->backup_db->escape($table),"Count",$this->backup_db);
 							/*$this->backup_db->query("SELECT COUNT(*) AS Count FROM $table");
 							if($this->backup_db->next_record()) $this->table_end=$this->backup_db->f("Count");*/
 

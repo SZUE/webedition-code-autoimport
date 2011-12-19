@@ -63,7 +63,7 @@ function we_tag_path($attribs, $content){
 	}
 	while ($pID) {
 		$db->query(
-				"SELECT ID,Path FROM " . FILE_TABLE . " WHERE ParentID='".abs($pID)."' AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)");
+				"SELECT ID,Path FROM " . FILE_TABLE . " WHERE ParentID=".intval($pID)." AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)");
 		$db->next_record();
 		$fileID = $db->f("ID");
 		$filePath = $db->f("Path");
@@ -78,7 +78,7 @@ function we_tag_path($attribs, $content){
 					"Dat",
 					$db);
 			if (!$show)
-				$show = f("SELECT Text FROM " . FILE_TABLE . " WHERE ID='".abs($pID)."'", "Text", $db);
+				$show = f("SELECT Text FROM " . FILE_TABLE . " WHERE ID=".intval($pID), "Text", $db);
 
 			if ($fileID != $doc->ID) {
 				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
@@ -90,9 +90,9 @@ function we_tag_path($attribs, $content){
 		} else {
 			$link_pre = '';
 			$link_post = '';
-			$show = f("SELECT Text FROM " . FILE_TABLE . " WHERE ID='".abs($pID)."'", "Text", $db);
+			$show = f("SELECT Text FROM " . FILE_TABLE . " WHERE ID=".intval($pID), "Text", $db);
 		}
-		$pID = f("SELECT ParentID from " . FILE_TABLE . " WHERE ID='".abs($pID)."'", "ParentID", $db);
+		$pID = f("SELECT ParentID from " . FILE_TABLE . " WHERE ID=".intval($pID), "ParentID", $db);
 		if (!$pID && $hidehome) {
 			$path = $link_pre . ($htmlspecialchars ? htmlspecialchars($show) : $show) . $link_post . $path;
 		} else {

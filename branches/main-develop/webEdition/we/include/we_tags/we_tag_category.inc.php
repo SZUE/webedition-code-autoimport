@@ -34,7 +34,7 @@ function we_tag_category($attribs, $content){
 	$showpath = weTag_getAttribute("showpath", $attribs, false, true);
 	$docAttr = weTag_getAttribute("doc", $attribs);
 	$field = weTag_getAttribute("field", $attribs);
-	$id = abs(weTag_getAttribute("id", $attribs));
+	$id = intval(weTag_getAttribute("id", $attribs));
 	$separator = weTag_getAttribute("separator", $attribs, "/");
 	$onlyindir = weTag_getAttribute("onlyindir", $attribs);
 

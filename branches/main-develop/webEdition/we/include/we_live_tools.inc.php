@@ -139,7 +139,7 @@ function insertIntoErrorLog($text){
 function getContentDirectFromDB($id, $name, $db = ""){
 	$db = $db ? $db : new DB_WE();
 	return f(
-			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . abs($id) . " AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='" . $db->escape($name) . "'", "Dat", $db);
+			"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($id) . " AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name='" . $db->escape($name) . "'", "Dat", $db);
 }
 
 function renameFile($old, $new){

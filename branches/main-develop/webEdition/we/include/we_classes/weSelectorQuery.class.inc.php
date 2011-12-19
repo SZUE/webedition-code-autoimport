@@ -221,7 +221,7 @@ class weSelectorQuery {
 			SELECT " . implode(", ", $this->fields) . "
 			FROM ".$this->db->escape($table)."
 			WHERE
-				ParentID = ".abs($id)."
+				ParentID = ".intval($id)."
 				AND ( IsFolder = 1
 					  $ctntQuery ) " .
 			(empty($userExtraSQL) ? "" : " " . $userExtraSQL) . "
@@ -261,7 +261,7 @@ class weSelectorQuery {
 			SELECT " . implode(", ", $this->fields) . "
 			FROM ".$this->db->escape($table)."
 			WHERE
-				ID = ".abs($id)."
+				ID = ".intval($id)."
 				" .	(empty($userExtraSQL) ? "" : " " . $userExtraSQL);
 		$this->db->query($query);
 		return $this->getResult();

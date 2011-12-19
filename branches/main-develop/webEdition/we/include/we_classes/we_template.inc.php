@@ -553,7 +553,7 @@ function handleShutdown($code) {
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_'.$this->Name.'_MasterTemplateID';
 		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
-		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID=".intval($myid),"Path",$this->DB_WE);
 		$alerttext=str_replace("'","\\\\\\'",g_l('weClass',"[same_master_template]"));
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements[\\'$idname\\'].value=\'\';opener.document.we_form.elements[\\'$textname\\'].value=\\'\\';}','".session_id()."','','text/weTmpl',1)"
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
@@ -585,7 +585,7 @@ function handleShutdown($code) {
 		if ($this->ID == 0) {
 			return $paths;
 		}
-		$this->DB_WE->query("SELECT ID, Path FROM ".FILE_TABLE." WHERE temp_template_id=".abs($this->ID)." OR (temp_template_id = 0 AND TemplateID = ".abs($this->ID).") ORDER BY Path");
+		$this->DB_WE->query("SELECT ID, Path FROM ".FILE_TABLE." WHERE temp_template_id=".intval($this->ID)." OR (temp_template_id = 0 AND TemplateID = ".intval($this->ID).") ORDER BY Path");
 		while($this->DB_WE->next_record()) {
 			$paths[$this->DB_WE->f('ID')] = $this->DB_WE->f('Path');
 
@@ -675,7 +675,7 @@ function handleShutdown($code) {
 	}
 
 static function getUsedTemplatesOfTemplate($id, &$arr) {
-	$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . abs($id),$GLOBALS['DB_WE']);
+	$_hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id),$GLOBALS['DB_WE']);
 	$_tmplCSV = isset($_hash['IncludedTemplates']) ? $_hash['IncludedTemplates'] : '';
 	$_masterTemplateID = isset($_hash['MasterTemplateID']) ? $_hash['MasterTemplateID'] : 0;
 

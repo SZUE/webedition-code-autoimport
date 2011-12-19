@@ -161,8 +161,8 @@ class weNewsletter extends weNewsletterBase{
 		parent::save();
 
 
-		$this->db->query("DELETE FROM ".NEWSLETTER_GROUP_TABLE." WHERE NewsletterID=".abs($this->ID));
-		$this->db->query("DELETE FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".abs($this->ID));
+		$this->db->query("DELETE FROM ".NEWSLETTER_GROUP_TABLE." WHERE NewsletterID=".intval($this->ID));
+		$this->db->query("DELETE FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".intval($this->ID));
 
 		foreach($this->groups as $group){
 			$group->NewsletterID = $this->ID;
@@ -212,7 +212,7 @@ class weNewsletter extends weNewsletterBase{
 	 *
 	 */
 	function deleteChilds(){
-		$this->db->query("SELECT ID FROM ".NEWSLETTER_TABLE . " WHERE ParentID='".abs($this->ID)."'");
+		$this->db->query("SELECT ID FROM ".NEWSLETTER_TABLE . " WHERE ParentID=".intval($this->ID));
 		while($this->db->next_record()){
 			$child=new weNewsletter($this->db->f("ID"));
 			$child->delete();
@@ -338,7 +338,7 @@ class weNewsletter extends weNewsletterBase{
 	 * @param string $param
 	 */
 	function addLog($log,$param=""){
-		$this->db->query("INSERT INTO ".NEWSLETTER_LOG_TABLE."(NewsletterID,LogTime,Log,Param) VALUES('".abs($this->ID)."','".time()."','".$this->db->escape($log)."','".$this->db->escape($param)."');");
+		$this->db->query("INSERT INTO ".NEWSLETTER_LOG_TABLE."(NewsletterID,LogTime,Log,Param) VALUES(".intval($this->ID).",UNIX_TIMESTAMP(),'".$this->db->escape($log)."','".$this->db->escape($param)."');");
 	}
 
 	/**
@@ -346,7 +346,7 @@ class weNewsletter extends weNewsletterBase{
 	 *
 	 */
 	function clearLog(){
-		$this->db->query("DELETE FROM ".NEWSLETTER_LOG_TABLE." WHERE NewsletterID='".abs($this->ID)."';");
+		$this->db->query("DELETE FROM ".NEWSLETTER_LOG_TABLE." WHERE NewsletterID=".intval($this->ID));
 	}
 
 	/**
@@ -375,7 +375,7 @@ class weNewsletter extends weNewsletterBase{
 	function fixChildsPaths(){
 
 		$dbtmp=new DB_WE;
-		$oldpath=f("SELECT Path FROM ".NEWSLETTER_TABLE." WHERE ID=".abs($this->ID),"Path",$this->db);
+		$oldpath=f("SELECT Path FROM ".NEWSLETTER_TABLE." WHERE ID=".intval($this->ID),"Path",$this->db);
 
 		if(trim($oldpath)!="" && trim($oldpath)!="/"){
 			$this->db->query("SELECT ID,Path FROM ".NEWSLETTER_TABLE." WHERE Path LIKE '".$oldpath."%'");

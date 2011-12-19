@@ -106,7 +106,7 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 		$DB_WE = new DB_WE();
 		$where = " WHERE ";
 
-		$where .= " ParentID=".abs($ParentID)." ";
+		$where .= " ParentID=".intval($ParentID)." ";
 		$where .= makeOwnersSql();
 		$where .= $wsQuery;
 

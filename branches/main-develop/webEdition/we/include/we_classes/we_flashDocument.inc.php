@@ -476,7 +476,7 @@ class we_flashDocument extends we_binaryDocument{
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
 							if ($ct == "application/x-shockwave-flash") {
-								$flashId = abs($GLOBALS[$key][$formname]->getElement($flashName));
+								$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
 
 								// move document from upload location to tmp dir
 								$_SESSION[$_flashmovieDataId]["serverPath"] = TMP_DIR . "/" . md5(

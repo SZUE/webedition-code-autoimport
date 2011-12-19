@@ -127,7 +127,7 @@ class weNewsletterBlock extends weNewsletterBase{
 
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".abs($newsletterID)." ORDER BY ID");
+		$db->query("SELECT ID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".intval($newsletterID)." ORDER BY ID");
 		$ret = array();
 		while ($db->next_record()){
 			$ret[] = new weNewsletterBlock($db->f("ID"));

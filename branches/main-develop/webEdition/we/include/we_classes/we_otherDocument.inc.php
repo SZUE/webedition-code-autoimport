@@ -117,9 +117,9 @@ class we_otherDocument extends we_binaryDocument{
 		}
 		$text = addslashes($text);
 
-		$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . abs($this->ID));
+		$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES('" . abs($this->ID) . "','" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($this->ParentPath) . "','" . abs($this->ParentID) . "','" . $this->DB_WE->escape($this->Category) . "','','" . $this->DB_WE->escape($this->getElement("Title")) . "','" . $this->DB_WE->escape($this->getElement("Description")) . "','" . $this->DB_WE->escape($this->Path) . "')");
+			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES(" . intval($this->ID) . ",'" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($this->ParentPath) . "'," . intval($this->ParentID) . ",'" . $this->DB_WE->escape($this->Category) . "','','" . $this->DB_WE->escape($this->getElement("Title")) . "','" . $this->DB_WE->escape($this->getElement("Description")) . "','" . $this->DB_WE->escape($this->Path) . "')");
 		}
 		return true;
 	}
@@ -191,7 +191,7 @@ class we_otherDocument extends we_binaryDocument{
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
 							if ($ct == "application/*") {
-								$binaryId = abs($GLOBALS[$key][$formname]->getElement($binaryName));
+								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
 								$_SESSION[$_binaryDataId]["serverPath"] = TMP_DIR . "/" . md5(

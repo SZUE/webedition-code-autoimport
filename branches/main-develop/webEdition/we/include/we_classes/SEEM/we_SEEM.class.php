@@ -513,7 +513,7 @@
 
                     }
 
-                    $destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i] . "" . $linkArray[2][$i] . "\""  . $javascriptCode . ">", $destCode);
+                    $destCode = str_replace($linkArray[0][$i], "<" . $linkArray[1][$i]  . $linkArray[2][$i] . "\""  . $javascriptCode . ">", $destCode);
 
                 }
 
@@ -1158,8 +1158,7 @@
             $query = "
                 SELECT ContentType
                 FROM " . FILE_TABLE . "
-                WHERE ID='" . abs($id) . "'
-            ";
+                WHERE ID=" . intval($id);
             $db->query($query);
 
             if ($db->num_rows() == 1){

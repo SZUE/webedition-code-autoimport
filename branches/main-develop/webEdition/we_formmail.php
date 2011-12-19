@@ -40,9 +40,9 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 	$_now = time();
 
 	// insert into log
-	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("'.$GLOBALS['DB_WE']->escape($_ip).'", ' . abs($_now) . ')' );
+	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' (ip, unixTime) VALUES("'.$GLOBALS['DB_WE']->escape($_ip).'", UNIX_TIMESTAMP())' );
 	if (defined('FORMMAIL_EMPTYLOG') && (FORMMAIL_EMPTYLOG > -1)) {
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . abs($_now - FORMMAIL_EMPTYLOG));
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime < ' . intval($_now - FORMMAIL_EMPTYLOG));
 	}
 
 	if (defined('FORMMAIL_BLOCK') && FORMMAIL_BLOCK) {
@@ -52,7 +52,7 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 		$_blocktime = (defined('FORMMAIL_BLOCKTIME') ? FORMMAIL_BLOCKTIME : 86400);
 
 		// first delete all entries from blocktable which are older then now - blocktime
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < ' . abs($_now));
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil != -1 AND blockedUntil < UNIX_TIMESTAMP()');
 
 		// check if ip is allready blocked
 		if (f('SELECT id FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"','id',$GLOBALS['DB_WE'])) {
@@ -60,7 +60,7 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 		} else {
 
 			// ip is not blocked, so see if we need to block it
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . abs($_now - FORMMAIL_SPAN) . ' AND ip="'. $GLOBALS['DB_WE']->escape($_ip) . '"');
+			$GLOBALS['DB_WE']->query('SELECT * FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime > ' . intval($_now - FORMMAIL_SPAN) . ' AND ip="'. $GLOBALS['DB_WE']->escape($_ip) . '"');
 			if ($GLOBALS['DB_WE']->next_record()) {
 				$_num = $GLOBALS['DB_WE']->num_rows();
 				if ($_num > $_trials) {
@@ -68,7 +68,7 @@ if (defined('FORMMAIL_LOG') && FORMMAIL_LOG) {
 					// cleanup
 					$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_ip) . '"' );
 					// insert in block table
-					$blockedUntil = ($_blocktime == -1) ? -1 : abs($_now + $_blocktime);
+					$blockedUntil = ($_blocktime == -1) ? -1 : intval($_now + $_blocktime);
 					$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('".$GLOBALS['DB_WE']->escape($_ip)."', " . $blockedUntil . ")" );
 				}
 			}
@@ -401,7 +401,7 @@ if($recipient){
 	foreach($recipients as $recipientID){
 
 		if (is_numeric($recipientID)) {
-			$recipient = f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . abs($recipientID), 'Email', $GLOBALS['DB_WE']);
+			$recipient = f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']);
 		} else {
 			// backward compatible
 			$recipient = $recipientID;

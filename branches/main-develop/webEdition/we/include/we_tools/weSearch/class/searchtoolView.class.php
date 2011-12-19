@@ -1691,9 +1691,9 @@ class searchtoolView extends weToolView
 				false,
 				"onChange=\"this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);\"");
 		if (!isset($_REQUEST['we_cmd']['setInputSearchstart'])) {
-			if (!defined("searchstart" . $whichSearch . "")) {
-				define("searchstart" . $whichSearch . "", true);
-				$out .= we_html_tools::hidden("searchstart" . $whichSearch . "", $searchstart);
+			if (!defined("searchstart" . $whichSearch )) {
+				define("searchstart" . $whichSearch , true);
+				$out .= we_html_tools::hidden("searchstart" . $whichSearch , $searchstart);
 			}
 		}
 		$out .= $select;
@@ -2501,10 +2501,10 @@ class searchtoolView extends weToolView
 									$_table);
 						}
 
-						$whereQuery = "1 " . $where . "";
+						$whereQuery = "1 " . $where ;
 
 						//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
-						$restrictUserQuery = " AND ((" . escape_sql_query($_table) . ".RestrictOwners='0' OR " . escape_sql_query($_table) . ".RestrictOwners= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Owners LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%'))";
+						$restrictUserQuery = " AND ((" . escape_sql_query($_table) . ".RestrictOwners='0' OR " . escape_sql_query($_table) . ".RestrictOwners= " . intval($_SESSION["user"]["ID"]) . ") OR (" . escape_sql_query($_table) . ".Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
 
 						switch($_table){
 							case FILE_TABLE:
@@ -2516,7 +2516,7 @@ class searchtoolView extends weToolView
 								break;
 
 							case (defined("OBJECT_TABLE")?OBJECT_TABLE:-2):
-								$whereQuery .= " AND ((" . escape_sql_query($_table) . ".RestrictUsers='0' OR " . escape_sql_query($_table) . ".RestrictUsers= '" . abs($_SESSION["user"]["ID"]) . "') OR (" . escape_sql_query($_table) . ".Users LIKE '%," . abs($_SESSION["user"]["ID"]) . ",%')) ";
+								$whereQuery .= " AND ((" . escape_sql_query($_table) . ".RestrictUsers='0' OR " . escape_sql_query($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . escape_sql_query($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
 								break;
 						case VERSIONS_TABLE:
 							if (isset($_REQUEST['we_cmd']['obj'])) {
@@ -2631,12 +2631,12 @@ class searchtoolView extends weToolView
 				$_result[$k]["Description"] = "";
 				if ($_result[$k]["docTable"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0) {
 					$DB_WE->query(
-							"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ID='" . abs($_result[$k]["docID"]) . "' AND b.Name='Description' AND b.DocumentTable='" . FILE_TABLE . "'");
+							"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE a.ID=" . intval($_result[$k]["docID"]) . " AND b.Name='Description' AND b.DocumentTable='" . FILE_TABLE . "'");
 					while ($DB_WE->next_record()) {
 						$_result[$k]["Description"] = $DB_WE->f('Dat');
 					}
 				} elseif ($_result[$k]["docTable"] == FILE_TABLE) {
-					$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = '" . abs($_result[$k]["docID"]) . "' AND DocTable = 'tblFile' AND Active = 1";
+					$query2 = "SELECT DocumentObject  FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID =" . intval($_result[$k]["docID"]) . " AND DocTable = 'tblFile' AND Active = 1";
 					$_db2->query($query2);
 					while ($_db2->next_record()) {
 						$tempDoc = unserialize($_db2->f('DocumentObject'));
@@ -2718,7 +2718,7 @@ class searchtoolView extends weToolView
 							$resetDisabled = true;
 						}
 
-						$query = "SELECT ID,timestamp, version, active FROM " . VERSIONS_TABLE . " WHERE ID='" . abs($k) . "'";
+						$query = "SELECT ID,timestamp, version, active FROM " . VERSIONS_TABLE . " WHERE ID=" . intval($k);
 
 						$DB_WE->query($query);
 						while ($DB_WE->next_record()) {
@@ -2731,10 +2731,7 @@ class searchtoolView extends weToolView
 								"preview",
 								"javascript:previewVersion('" . $ID . "');");
 
-						$fileExists = f(
-								"SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID= '" . abs($_result[$f]["docID"]) . "' ",
-								"ID",
-								$DB_WE);
+						$fileExists = f("SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]),"ID",$DB_WE);
 
 						if ($active && $fileExists != "") {
 							$resetDisabled = true;
@@ -2745,7 +2742,7 @@ class searchtoolView extends weToolView
 						if ($_result[$f]['ContentType'] == "objectFile") {
 
 							$classExists = f(
-									"SELECT ID FROM " . OBJECT_TABLE . " WHERE ID= '" . abs($_result[$f]["TableID"]) . "' ",
+									"SELECT ID FROM " . OBJECT_TABLE . " WHERE ID= " . intval($_result[$f]["TableID"]),
 									"ID",
 									$DB_WE);
 							if ($classExists == "") {
@@ -2781,7 +2778,7 @@ class searchtoolView extends weToolView
 					}
 				}
 				$docExists = f(
-						"SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID= '" . abs($_result[$f]["docID"]) . "' ",
+						"SELECT ID FROM " . escape_sql_query($_result[$f]["docTable"]) . " WHERE ID=" . intval($_result[$f]["docID"]),
 						"ID",
 						$DB_WE);
 
@@ -2869,7 +2866,7 @@ class searchtoolView extends weToolView
 					}
 					$templateText = g_l('searchtool',"[no_template]");
 					if ($templateID != "") {
-						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = ".abs($templateID)."";
+						$sql = "SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = ".intval($templateID);
 						$DB_WE->query($sql);
 						while ($DB_WE->next_record()) {
 							$templateText = shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
@@ -2889,7 +2886,7 @@ class searchtoolView extends weToolView
 
 					if (weContentProvider::IsBinary($_result[$f]["docID"])) {
 						$DB_WE->query(
-								"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID='" . abs($_result[$f]["docID"]) . "' AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+								"SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
 						while ($DB_WE->next_record()) {
 							$metafields[$_tagName] = shortenPath($DB_WE->f('Dat'), 45);
@@ -2934,12 +2931,12 @@ class searchtoolView extends weToolView
 			$thisObj = new searchtoolView();
 
 			$_view = $_REQUEST['we_cmd']['setView' . $whichSearch . ''];
-			$view = "setView" . $whichSearch . "";
+			$view = "setView" . $whichSearch ;
 			$_order = $_REQUEST['we_cmd']['Order' . $whichSearch . ''];
-			$order = "Order" . $whichSearch . "";
+			$order = "Order" . $whichSearch ;
 			$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch . ''];
-			$anzahl = "anzahl" . $whichSearch . "";
-			$searchstart = "searchstart" . $whichSearch . "";
+			$anzahl = "anzahl" . $whichSearch ;
+			$searchstart = "searchstart" . $whichSearch ;
 		} else {
 			$thisObj = $this;
 

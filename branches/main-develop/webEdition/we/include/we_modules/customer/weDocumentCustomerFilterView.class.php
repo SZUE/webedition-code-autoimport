@@ -97,7 +97,7 @@ class weDocumentCustomerFilterView extends weCustomerFilterView {
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'$selectorNoAccessId\\'].value','document.we_form.elements[\\'$selectorNoAccessText\\'].value','opener.". $this->getHotScript() ."','".session_id()."','','text/webedition',1)
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$selectorNoAccessId'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$selectorNoAccessText'].value");
-		$wecmdenc3= we_cmd_enc("opener.". $this->getHotScript() ."");
+		$wecmdenc3= we_cmd_enc("opener.". $this->getHotScript() );
 		$selectorNoAccessButton = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['$selectorNoAccessId'].value,'" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','','text/webedition',1)");
 
 		$yuiSuggest->setAcId("NoAccess");

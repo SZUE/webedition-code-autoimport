@@ -84,7 +84,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			$display = "";
 			foreach($dirindexarray as $dirindex){
 				$displaytest=$path_parts['dirname'].'/'.$dirindex;
-				$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
+				$displayidtest=intval(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
 				if($displayidtest){
 					$displayid = $displayidtest;
 					$display = $displaytest; //nur, wenn Datei vorhanden
@@ -120,7 +120,7 @@ if(! (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 		$display = "";
 		foreach($dirindexarray as $dirindex){
 			$displaytest=$path_parts['dirname'].$dirindex;
-			$displayidtest=abs(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
+			$displayidtest=intval(f("SELECT DISTINCT ID FROM ".FILE_TABLE." WHERE Path='" . escape_sql_query($displaytest) . "' LIMIT 1", "ID", $db));
 			if($displayidtest){
 				$displayid = $displayidtest;
 				$display = $displaytest; //nur, wenn Datei vorhanden

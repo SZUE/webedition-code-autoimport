@@ -220,7 +220,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 					$mtext = (isset($e["text"]) ? $e["text"] : "");
 				}
 				if ((!isset($e["cmd"])) && $mtext) {
-					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "" . $mtext . "&nbsp;&gt;\n";
+					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst  . $mtext . "&nbsp;&gt;\n";
 					$newAst = $newAst . "&nbsp;&nbsp;";
 					self::_computeOption($men, $opt, $id, $newAst);
 				} else if ($mtext) {

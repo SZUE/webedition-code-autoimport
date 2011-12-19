@@ -203,21 +203,21 @@ class XML_Import extends XML_Parser {
 			$ids = implode(",", $val);
 			if ($key == FILE_TABLE || $key == TEMPLATES_TABLE) {
 				$store = $key == FILE_TABLE ?  $this->store_docs : $this->store_templ;
-				if ($ids!="") $this->db->query("UPDATE $key SET ParentID=".abs($store)." WHERE ID IN($ids);");
+				if ($ids!="") $this->db->query("UPDATE $key SET ParentID=".intval($store)." WHERE ID IN($ids);");
 
 				if ($key==FILE_TABLE || $key == TEMPLATES_TABLE) {
 					foreach($val as $k=>$v) {
 						if ($key == TEMPLATES_TABLE) {
-							$this->db->query("SELECT ID FROM ".FILE_TABLE." WHERE TemplateID=".abs($k));
+							$this->db->query("SELECT ID FROM ".FILE_TABLE." WHERE TemplateID=".intval($k));
 							while($this->db->next_record()) {
-								$DB_WE->query("UPDATE ".FILE_TABLE." SET TemplateID='".abs($v)."' WHERE ID='".abs($this->db->f("ID"))."';");
+								$DB_WE->query("UPDATE ".FILE_TABLE." SET TemplateID=".intval($v)." WHERE ID=".intval($this->db->f("ID")));
 							}
 						}
 
-                        $new_path = f("SELECT Path FROM $key WHERE ID=".abs($store),"Path",$this->db);
-                        $text = f("SELECT Text FROM $key WHERE ID=".abs($v),"Text",$this->db);
+                        $new_path = f("SELECT Path FROM $key WHERE ID=".intval($store),"Path",$this->db);
+                        $text = f("SELECT Text FROM $key WHERE ID=".intval($v),"Text",$this->db);
 
-                        $this->db->query("UPDATE $key SET Path='".$this->db->escape(($new_path!="" ? $new_path : "/").$text)."' WHERE ID=".abs($v).";");
+                        $this->db->query("UPDATE $key SET Path='".$this->db->escape(($new_path!="" ? $new_path : "/").$text)."' WHERE ID=".intval($v).";");
 					}
 				}
 

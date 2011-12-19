@@ -235,7 +235,7 @@ class we_webEditionDocument extends we_textContentDocument {
 			$styleTemplateLabelLink = "display:none";
 		}
 		$myid = $this->TemplateID ? $this->TemplateID : "";
-		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID=".intval($myid),"Path",$this->DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);;opener.top.we_cmd(\'reload_editpage\');','".session_id()."','','text/weTmpl',1)");
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
@@ -275,7 +275,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		}
 
 		if($this->DocType) {
-			$sql = "SELECT Templates FROM ".DOC_TYPES_TABLE." WHERE ID = ".abs($this->DocType)."";
+			$sql = "SELECT Templates FROM ".DOC_TYPES_TABLE." WHERE ID = ".intval($this->DocType);
 			$this->DB_WE->query($sql);
 			$templateFromDoctype = false;
 			while($this->DB_WE->next_record()) {
@@ -300,7 +300,7 @@ class we_webEditionDocument extends we_textContentDocument {
 		$fieldname = 'we_'.$this->Name.'_TemplateID';
 
 		$Templates="";
-		$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID ='".abs($this->DocType)."'",$this->DB_WE);
+		$foo = getHash("SELECT TemplateID,Templates FROM " . DOC_TYPES_TABLE . " WHERE ID =".intval($this->DocType),$this->DB_WE);
 		$TID=$foo["TemplateID"];
 		$Templates=$foo["Templates"];
 		$tlist="";
@@ -490,7 +490,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	// for internal use
 	function setTemplatePath() {
 		if($this->TemplateID)
-			$this->TemplatePath= TEMPLATE_DIR.f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"Path",$this->DB_WE);
+			$this->TemplatePath= TEMPLATE_DIR.f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($this->TemplateID),"Path",$this->DB_WE);
 		else
 			$this->TemplatePath = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_noTmpl.inc.php";
 	}
@@ -502,9 +502,9 @@ class we_webEditionDocument extends we_textContentDocument {
 
 /*	function setCache() {
 		if($this->TemplateID) {
-			$this->CacheLifeTime = f("SELECT CacheLifeTime FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"CacheLifeTime",$this->DB_WE);
+			$this->CacheLifeTime = f("SELECT CacheLifeTime FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($this->TemplateID),"CacheLifeTime",$this->DB_WE);
 			if($this->CacheLifeTime > 0) {
-				$this->CacheType = f("SELECT CacheType FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($this->TemplateID),"CacheType",$this->DB_WE);
+				$this->CacheType = f("SELECT CacheType FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($this->TemplateID),"CacheType",$this->DB_WE);
 			} else {
 				$this->CacheType = "none";
 			}
@@ -712,7 +712,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	function we_load($from=we_class::LOAD_MAID_DB) {
 		switch($from) {
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
+				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID=".intval($this->ID)." AND ClassName='".$this->DB_WE->escape($this->ClassName)."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 				if($sessDat) {
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners");
@@ -786,9 +786,9 @@ class we_webEditionDocument extends we_textContentDocument {
 			if (sizeof($variationFields)) {
 
 				$i=0;
-				while (isset($this->elements[WE_SHOP_VARIANTS_PREFIX . "" . $i])) {
+				while (isset($this->elements[WE_SHOP_VARIANTS_PREFIX  . $i])) {
 
-					if (!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . "" . $i++]["dat"])) {
+					if (!trim($this->elements[WE_SHOP_VARIANTS_PREFIX  . $i++]["dat"])) {
 						return false;
 					}
 				}
@@ -799,7 +799,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 	function i_publInScheduleTable() {
 		if(defined("SCHEDULE_TABLE")) {
-			$this->DB_WE->query("DELETE FROM ".SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
+			$this->DB_WE->query("DELETE FROM ".SCHEDULE_TABLE." WHERE DID=".intval($this->ID)." AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			$ok = true;
 			$makeSched = false;
 			foreach($this->schedArr as $s){
@@ -815,7 +815,7 @@ class we_webEditionDocument extends we_textContentDocument {
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
 						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES('".abs($this->ID)."','".abs($Wann)."','".abs($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape($serializedDoc)."','".$this->DB_WE->escape(serialize($s))."','".abs($s["type"])."','".abs($s["active"])."')")) return false;
+						VALUES(".intval($this->ID).",".intval($Wann).",'".abs($s["task"])."','".$this->DB_WE->escape($this->ClassName)."','".$this->DB_WE->escape($serializedDoc)."','".$this->DB_WE->escape(serialize($s))."','".abs($s["type"])."','".abs($s["active"])."')")) return false;
 			}
 			return $makeSched;
 		}
@@ -1125,7 +1125,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
  		}
 
  		if($this->InWebEdition){
- 			$_has_variants = f('SELECT COUNT(CID) as CCID FROM ' . LINK_TABLE . ' WHERE DID='.abs($this->TemplateID).' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%");','CCID',$this->DB_WE);
+ 			$_has_variants = f('SELECT COUNT(CID) as CCID FROM ' . LINK_TABLE . ' WHERE DID='.intval($this->TemplateID).' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%");','CCID',$this->DB_WE);
  			$this->hasVariants = !empty($_has_variants) && $_has_variants>0;
  		} else {
  			if (isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {

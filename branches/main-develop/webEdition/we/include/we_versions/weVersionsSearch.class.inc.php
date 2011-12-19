@@ -137,19 +137,19 @@ class weVersionsSearch {
 
                                   switch ($_REQUEST['location'][$k]) {
 										case "IS":
-											$where .= " AND ".$v." BETWEEN '" . abs($timestampStart) . "' AND '" . abs($timestampEnd)."'";
+											$where .= " AND ".$v." BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
 										break;
 										case "<":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampStart) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
 										break;
 										case "<=":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampEnd) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
 										break;
 										case ">":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampEnd) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampEnd);
 										break;
 										case ">=":
-											$where .= " AND ".$v."" . $_REQUEST['location'][$k] . " '" . abs($timestampStart) . "'";
+											$where .= " AND ".$v . $_REQUEST['location'][$k] . ' ' . intval($timestampStart);
 										break;
 									}
                              }
@@ -298,7 +298,7 @@ class weVersionsSearch {
 		$_db = new DB_WE();
 		$vals = array();
 
-		$_db->query("SELECT ID, Text FROM " . USER_TABLE . "");
+		$_db->query("SELECT ID, Text FROM " . USER_TABLE );
 		while ($_db->next_record()) {
 			$v = $_db->f("ID");
 			$t = $_db->f("Text");

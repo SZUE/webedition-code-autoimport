@@ -49,7 +49,7 @@ class rpcPublishDocsCmd extends rpcCmd {
 			foreach($docs as $k=>$v) {
 				if(!empty($v)) {
 					foreach($v as $key=>$val) {
-						$ContentType = f("SELECT ContentType FROM `".$db->escape($k)."` WHERE ID='".abs($val)."'","ContentType",$db);
+						$ContentType = f("SELECT ContentType FROM `".$db->escape($k)."` WHERE ID=".intval($val),"ContentType",$db);
 						$object=weContentProvider::getInstance($ContentType, $val, $k);
 						we_temporaryDocument::delete($object->ID);
 						$object->initByID($object->ID);

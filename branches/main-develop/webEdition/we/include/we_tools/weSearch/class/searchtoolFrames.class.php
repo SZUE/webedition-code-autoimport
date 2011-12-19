@@ -718,7 +718,7 @@ class searchtoolFrames extends weToolFrames
 			}
 		}
 
-		$boxHTML = $out . "";
+		$boxHTML = $out ;
 
 		return $boxHTML;
 	}

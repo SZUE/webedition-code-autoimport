@@ -364,7 +364,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 					// file is selected, check to see if it is an image
 					$ct = getContentTypeFromFile($filename);
 					if ($ct == "video/quicktime") {
-						$quicktimeId = abs($GLOBALS[$key][$formname]->getElement($quicktimeName));
+						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
 						$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(

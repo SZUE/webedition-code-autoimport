@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -26,7 +26,7 @@ Zend_Loader::loadClass('we_core_AbstractModel');
 
 /**
  * Base class for app models
- * 
+ *
  * @category   we
  * @package    we_app
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -75,7 +75,7 @@ class we_app_Model extends we_core_AbstractModel
 	 * @var boolean
 	 */
 	public $IsFolder;
-	
+
 	/**
 	 * Published attribute
 	 *
@@ -99,9 +99,9 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Set table and load persistents
-	 * 
+	 *
 	 * @param string $table
 	 * @return void
 	 */
@@ -112,7 +112,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * validates the Text
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function textNotValid()
@@ -126,7 +126,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * check if field is required
-	 * 
+	 *
 	 * @param string $fieldname
 	 * @return boolean
 	 */
@@ -137,7 +137,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * check if required fields are available
-	 * 
+	 *
 	 * @param string (reference) $failed
 	 * @return boolean
 	 */
@@ -153,7 +153,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * set path
-	 * 
+	 *
 	 * @param string $path
 	 * @return void
 	 */
@@ -167,7 +167,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * check if path exists
-	 * 
+	 *
 	 * @param string $path
 	 * @return boolean
 	 */
@@ -178,13 +178,13 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * check if ParentId is equal to Id
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isSelf()
 	{
 		$db = we_io_DB::sharedAdapter();
-		
+
 		if ($this->ID) {
 			$count = 0;
 			$parentid = $this->ParentID;
@@ -206,7 +206,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * check permissions of user
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isAllowedForUser()
@@ -216,7 +216,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * returns the path of given id
-	 * 
+	 *
 	 * @param integer $id
 	 * @return string
 	 */
@@ -228,21 +228,21 @@ class we_app_Model extends we_core_AbstractModel
 			$id = $this->ParentID;
 			$path = $this->Text;
 		}
-		
+
 		$result = $db->fetchAssoc('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $id);
 		$path = '/' . (isset($result[0]['Text']) ? $result[0]['Text'] : '') . $path;
-		$pid = isset($result[0]['ParentID']) ? abs($result[0]['ParentID']) : 0;
+		$pid = isset($result[0]['ParentID']) ? intval($result[0]['ParentID']) : 0;
 		while ($pid > 0) {
 			$result = $db->fetchAssoc('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $pid);
 			$path = '/' . $result[0]['Text'] . $path;
-			$pid = abs($result[0]['ParentID']);
+			$pid = intval($result[0]['ParentID']);
 		}
 		return $path;
 	}
 
 	/**
 	 * update the child paths
-	 * 
+	 *
 	 * @param string $oldpath
 	 * @return void
 	 */
@@ -251,19 +251,19 @@ class we_app_Model extends we_core_AbstractModel
 		$db = we_io_DB::sharedAdapter();
 		if ($this->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->Path) {
 			$result = $db->fetchAssoc('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . '  WHERE Path like ? AND ' . $this->_primaryKey . ' <> ?', array($oldpath . '%', $this->{$this->_primaryKey}));
-			
+
 			foreach ($result as $row) {
 				$updateFields = array('Path' => $this->_evalPath($row[$this->_primaryKey]));
-				$cond = $this->_primaryKey . '=' . abs($row[$this->_primaryKey]);
+				$cond = $this->_primaryKey . '=' . intval($row[$this->_primaryKey]);
 				$db->update($this->_table, $updateFields, $cond);
 			}
-		
+
 		}
 	}
 
 	/**
 	 * set IsFolder
-	 * 
+	 *
 	 * @param boolean $value
 	 * @return void
 	 */
@@ -274,7 +274,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * delete childs
-	 * 
+	 *
 	 * @return void
 	 */
 	public function deleteChilds()
@@ -292,7 +292,7 @@ class we_app_Model extends we_core_AbstractModel
 
 	/**
 	 * deletes entry
-	 * 
+	 *
 	 * @return void
 	 */
 	public function delete()
@@ -303,17 +303,17 @@ class we_app_Model extends we_core_AbstractModel
 		if (!$this->{$this->_primaryKey}) {
 			throw new we_core_ModelException($message, we_service_ErrorCodes::kModelNoPrimaryKeySet);
 		}
-		
+
 		if ($this->IsFolder) {
 			$this->deleteChilds();
 		}
-		
+
 		parent::delete();
 	}
 
 	/**
 	 * set Fields
-	 * 
+	 *
 	 * @param array $fields
 	 * @return void
 	 */

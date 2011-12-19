@@ -1226,9 +1226,9 @@ class weVersionsView
 			if (!we_hasPerm("ADMINISTRATOR") && !we_hasPerm("RESET_VERSIONS")) {
 				$disabledReset = true;
 			}
-			$fromScheduler = ($_versions[$f]["fromScheduler"]) ? g_l('versions','[fromScheduler]') . "" : "";
-			$fromImport = ($_versions[$f]["fromImport"]) ? g_l('versions','[fromImport]') . "" : "";
-			$resetFromVersion = ($_versions[$f]["resetFromVersion"]) ? "--" . g_l('versions','[resetFromVersion]') . "" . $_versions[$f]["resetFromVersion"] . "--" : "";
+			$fromScheduler = ($_versions[$f]["fromScheduler"]) ? g_l('versions','[fromScheduler]')  : "";
+			$fromImport = ($_versions[$f]["fromImport"]) ? g_l('versions','[fromImport]')  : "";
+			$resetFromVersion = ($_versions[$f]["resetFromVersion"]) ? "--" . g_l('versions','[resetFromVersion]')  . $_versions[$f]["resetFromVersion"] . "--" : "";
 
 			$content[$f][0]["dat"] = '<nobr>' . $vers . '</nobr>';
 			$content[$f][1]["dat"] = '<nobr>' . shortenPath($user, 15) . '</nobr>';

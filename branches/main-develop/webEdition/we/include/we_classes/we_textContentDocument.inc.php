@@ -131,7 +131,7 @@ class we_textContentDocument extends we_textDocument{
 
 		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID='.intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES('".abs($this->ID)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."','".abs($this->ParentID)."','".$this->DB_WE->escape($this->Category)."','".$this->DB_WE->escape($this->DocType)."','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."','".$this->DB_WE->escape($this->Language)."')");
+			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES(".intval($this->ID).",'".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."',".intval($this->ParentID).",'".$this->DB_WE->escape($this->Category)."','".$this->DB_WE->escape($this->DocType)."','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."','".$this->DB_WE->escape($this->Language)."')");
 		}
 		return true;
 
@@ -162,7 +162,7 @@ class we_textContentDocument extends we_textDocument{
 				$this->DocType=$dt;
 			}
 			$db = new DB_WE();
-			$db->query("SELECT * FROM " . DOC_TYPES_TABLE . " WHERE ID ='".abs($this->DocType)."'");
+			$db->query("SELECT * FROM " . DOC_TYPES_TABLE . " WHERE ID =".intval($this->DocType));
 			if($db->next_record()){
 				$this->Extension = $db->f("Extension");
 				if($db->f("ParentPath") != ""){
@@ -383,7 +383,7 @@ class we_textContentDocument extends we_textDocument{
 		}
 
 		if($DoNotMark==false){
-			if(!$this->DB_WE->query('UPDATE '.$this->DB_WE->escape($this->Table)." SET Published='".intval($this->Published)."' WHERE ID='".abs($this->ID)."'")) return false; // mark the document as published;
+			if(!$this->DB_WE->query('UPDATE '.$this->DB_WE->escape($this->Table)." SET Published='".intval($this->Published)."' WHERE ID=".intval($this->ID))) return false; // mark the document as published;
 		}
 
 		//Bug #5505
@@ -421,7 +421,7 @@ class we_textContentDocument extends we_textDocument{
 				return false;
 			}
 		}
-		if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='0' WHERE ID='".abs($this->ID)."'")) {
+		if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='0' WHERE ID=".intval($this->ID))) {
 			return false;
 		}
 		$this->Published=0;
@@ -444,9 +444,9 @@ class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		$this->DB_WE->query('SELECT DID FROM ' . INDEX_TABLE . ' WHERE DID=' . abs($this->ID));
+		$this->DB_WE->query('SELECT DID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->DB_WE->next_record()) {
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($this->ID));
+			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".intval($this->ID));
 		}
 
 
@@ -457,7 +457,7 @@ class we_textContentDocument extends we_textDocument{
 		if($this->Published){
 			return $this->we_publish(true,$rebuildMain);
 		}else{
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($this->ID));
+			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".intval($this->ID));
 		}
 	}
 

@@ -72,12 +72,12 @@ class weToolModel extends weModelBase {
 	}
 
 	function setPath(){
-		$ppath = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . abs($this->ParentID) . ';','Path',$this->db);
+		$ppath = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ParentID) . ';','Path',$this->db);
 		$this->Path=$ppath."/".$this->Text;
 	}
 
 	function pathExists($path){
-		$this->db->query('SELECT * FROM '.$this->db->escape($this->table).' WHERE Path = \''.$this->db->escape($path).'\' AND ID <> \''.abs($this->ID).'\';');
+		$this->db->query('SELECT * FROM '.$this->db->escape($this->table).' WHERE Path = \''.$this->db->escape($path).'\' AND ID != '.intval($this->ID));
 		if($this->db->next_record()) return true;
 		else return false;
 	}
@@ -88,7 +88,7 @@ class weToolModel extends weModelBase {
 			$_parentid = $this->ParentID;
 			while($_parentid!=0) {
 				if($_parentid==$this->ID) return true;
-				$_parentid = f('SELECT ParentID FROM ' . $this->db->escape($this->table) .' WHERE ID=' . abs($_parentid),'ParentID',$this->db);
+				$_parentid = f('SELECT ParentID FROM ' . $this->db->escape($this->table) .' WHERE ID=' . intval($_parentid),'ParentID',$this->db);
 				$_count++;
 				if($_count==9999) {
 					return false;
@@ -112,12 +112,12 @@ class weToolModel extends weModelBase {
 			$path=$this->Text;
 		}
 
-		$foo=getHash("SELECT Text,ParentID FROM ".$db_tmp->escape($this->table)." WHERE ID='".abs($id)."';",$db_tmp);
+		$foo=getHash("SELECT Text,ParentID FROM ".$db_tmp->escape($this->table)." WHERE ID=".intval($id),$db_tmp);
 		$path='/'. (isset($foo['Text']) ? $foo['Text'] : '') .$path;
 
 		$pid=isset($foo['ParentID']) ? $foo['ParentID'] : '';
 		while($pid > 0) {
-				$db_tmp->query("SELECT Text,ParentID FROM ".$db_tmp->escape($this->table)." WHERE ID='".abs($pid)."'");
+				$db_tmp->query("SELECT Text,ParentID FROM ".$db_tmp->escape($this->table)." WHERE ID='".intval($pid));
 				while($db_tmp->next_record()) {
 					$path = '/' . $db_tmp->f('Text') . $path;
 					$pid = $db_tmp->f('ParentID');
@@ -129,9 +129,9 @@ class weToolModel extends weModelBase {
 	function updateChildPaths($oldpath) {
 		if($this->IsFolder && $oldpath!='' && $oldpath!='/' && $oldpath!=$this->Path) {
 			$db_tmp = new DB_WE();
-			$this->db->query('SELECT ID FROM ' . $db_tmp->escape($this->table) . ' WHERE Path LIKE \'' . $db_tmp->escape($oldpath) . '%\' AND ID<>\''.abs($this->ID).'\';');
+			$this->db->query('SELECT ID FROM ' . $db_tmp->escape($this->table) . ' WHERE Path LIKE \'' . $db_tmp->escape($oldpath) . '%\' AND ID!='.intval($this->ID));
 			while($this->db->next_record()) {
-				$db_tmp->query('UPDATE ' . $db_tmp->escape($this->table) . ' SET Path=\'' . $db_tmp->escape($this->evalPath($this->db->f("ID"))) . '\' WHERE ID=\'' . abs($this->db->f("ID")) . '\';');
+				$db_tmp->query('UPDATE ' . $db_tmp->escape($this->table) . ' SET Path=\'' . $db_tmp->escape($this->evalPath($this->db->f("ID"))) . '\' WHERE ID=' . intval($this->db->f("ID")));
 			}
 		}
 	}
@@ -146,7 +146,7 @@ class weToolModel extends weModelBase {
 	}
 
 	function deleteChilds(){
-		$this->db->query('SELECT ID FROM '. $this->db->escape($this->table) . ' WHERE ParentID="'.abs($this->ID).'"');
+		$this->db->query('SELECT ID FROM '. $this->db->escape($this->table) . ' WHERE ParentID='.intval($this->ID));
 		while($this->db->next_record()){
 			$child=new $this->ModelClassName($this->db->f("ID"));
 			$child->delete();

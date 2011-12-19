@@ -212,7 +212,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
-		if(abs($userDefaultWsID) != 0){
+		if(intval($userDefaultWsID) != 0){
 			$userDefaultWsPath = id_to_path($userDefaultWsID,FILE_TABLE,$GLOBALS['DB_WE']);
 		}else{
 			$userDefaultWsPath = '/';
@@ -289,7 +289,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
-		if(abs($userDefaultWsID) != 0){
+		if(intval($userDefaultWsID) != 0){
 			$userDefaultWsPath = id_to_path($userDefaultWsID,FILE_TABLE,$DB_WE);
 		}else{
 			$userDefaultWsPath = '/';
@@ -329,7 +329,7 @@ class we_class_folder extends we_folder{
 
 
 		$content=array();
-		$foo = unserialize(f("SELECT DefaultValues FROM "  . OBJECT_TABLE . " WHERE ID='".abs($classArray["ID"])."'","DefaultValues",$DB_WE));
+		$foo = unserialize(f("SELECT DefaultValues FROM "  . OBJECT_TABLE . " WHERE ID=".intval($classArray["ID"]),"DefaultValues",$DB_WE));
 
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
@@ -442,16 +442,16 @@ class we_class_folder extends we_folder{
 			foreach(array_keys($_REQUEST) as $f){
 				if(substr($f,0,3)=="weg"){
 					//$this->query("");
-					$DB_WE->query("SELECT OF_ID FROM ". OBJECT_X_TABLE . abs($classArray["ID"])." where ID=".abs(substr($f,3)));
+					$DB_WE->query("SELECT OF_ID FROM ". OBJECT_X_TABLE . intval($classArray["ID"])." where ID=".intval(substr($f,3)));
 					$DB_WE->next_record();
 					$ofid = $DB_WE->f("OF_ID");
 
 					if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
 						include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
-						$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . abs($classArray["ID"])." where ID=".abs(substr($f,3)));
+						$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE . intval($classArray["ID"])." where ID=".intval(substr($f,3)));
 
-						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=".abs($ofid));
-						$DB_WE->query("DELETE FROM ".OBJECT_FILES_TABLE." where ID=".abs($ofid));
+						$DB_WE->query("DELETE FROM " . INDEX_TABLE . " where OID=".intval($ofid));
+						$DB_WE->query("DELETE FROM ".OBJECT_FILES_TABLE." where ID=".intval($ofid));
 						we_temporaryDocument::delete($ofid,OBJECT_FILES_TABLE);
 					}
 				}
@@ -461,7 +461,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = makeArrayFromCSV(get_ws());
 
 		$userDefaultWsID = sizeof($userWSArray) ? $userWSArray[0] : 0;
-		if(abs($userDefaultWsID) != 0){
+		if(intval($userDefaultWsID) != 0){
 			$userDefaultWsPath = id_to_path($userDefaultWsID,FILE_TABLE,$DB_WE);
 		} else {
 			$userDefaultWsPath = "/";
@@ -493,12 +493,12 @@ class we_class_folder extends we_folder{
 		//$this->searchclass->searchquery($where." AND OF_ID !=0 ",$fields); #4076 orig
 		$this->searchclass->searchquery($where." AND OF_PATH LIKE '".$this->Path."/%' AND OF_ID !=0 ",$fields);
 
-		$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a,".OBJECT_FILES_TABLE." c WHERE a.Text=c.Text AND c.ID=".abs($this->ID));
+		$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a,".OBJECT_FILES_TABLE." c WHERE a.Text=c.Text AND c.ID=".intval($this->ID));
 		$DB_WE->next_record();
 		$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
 
 		$content=array();
-		$foo = unserialize(f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=".abs($classArray["ID"]),"DefaultValues",$DB_WE));
+		$foo = unserialize(f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=".intval($classArray["ID"]),"DefaultValues",$DB_WE));
 
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
@@ -662,8 +662,8 @@ class we_class_folder extends we_folder{
 			}
 
 			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i],0,4)=="meta" || substr($this->searchclass->objsearchField[$i],0,8)=="checkbox")) {
-				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ID)); #4076 orig
-				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ClassID));
+				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".intval($this->ID)); #4076 orig
+				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".intval($this->ClassID));
 
 				$DB_WE->next_record();
 				$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
@@ -692,8 +692,8 @@ class we_class_folder extends we_folder{
 				</tr>';
 
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i],0,4)=="date") {
-				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ID)); #4976 orig
-				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".abs($this->ClassID));
+				//$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".intval($this->ID)); #4976 orig
+				$DB_WE->query("SELECT DefaultValues FROM " . OBJECT_TABLE . " a," . OBJECT_FILES_TABLE . " c WHERE a.Text=c.Text AND c.ID=".intval($this->ClassID));
 				$DB_WE->next_record();
 				$DefaultValues = unserialize($DB_WE->f("DefaultValues"));
 
@@ -859,7 +859,7 @@ class we_class_folder extends we_folder{
 			<td>'.we_html_tools::getPixel(460,12).'</td>
 		</tr>
 		<tr>
-			<td>'.we_html_tools::getPixel(5,1).(we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("selectAll", "javascript: ".$javascriptAll."") : "").'</td>
+			<td>'.we_html_tools::getPixel(5,1).(we_hasPerm("DELETE_OBJECTFILE") || we_hasPerm("NEW_OBJECTFILE") ? we_button::create_button("selectAll", "javascript: ".$javascriptAll) : "").'</td>
 			<td align="right">'.$this->searchclass->getNextPrev($foundItems).'</td>
 		</tr>
 		<tr>
@@ -1145,15 +1145,15 @@ EOF;
 		foreach(array_keys($_REQUEST) as $f){
 			if(substr($f,0,3)=="weg"){
 				//$this->query("");
-				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.abs($classArray["ID"])." WHERE ID=".abs(substr($f,3)));
+				$DB_WE->query("SELECT OF_ID FROM " . OBJECT_X_TABLE.intval($classArray["ID"])." WHERE ID=".intval(substr($f,3)));
 				$DB_WE->next_record();
 				$ofid = $DB_WE->f("OF_ID");
 				if(checkIfRestrictUserIsAllowed($ofid,OBJECT_FILES_TABLE)){
 					include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 
-					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE.abs($classArray["ID"])." WHERE ID=".abs(substr($f,3)));
-					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".abs($ofid));
-					$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " WHERE ID=".abs($ofid));
+					$DB_WE->query("DELETE FROM " . OBJECT_X_TABLE.intval($classArray["ID"])." WHERE ID=".intval(substr($f,3)));
+					$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=".intval($ofid));
+					$DB_WE->query("DELETE FROM " . OBJECT_FILES_TABLE . " WHERE ID=".intval($ofid));
 
 					$obj = new we_objectFile();
 					$obj->initByID($ofid, OBJECT_FILES_TABLE);

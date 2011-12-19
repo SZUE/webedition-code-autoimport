@@ -502,8 +502,8 @@ function we_tag_field($attribs, $content){
 							if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 						}
 						$pidstr='';
-						if ($GLOBALS['lv']->f('WorkspaceID')){$pidstr='?pid='.abs($GLOBALS['lv']->f('WorkspaceID'));}
-						$pidstr='?pid='.abs($GLOBALS['lv']->f('WorkspaceID'));
+						if ($GLOBALS['lv']->f('WorkspaceID')){$pidstr='?pid='.intval($GLOBALS['lv']->f('WorkspaceID'));}
+						$pidstr='?pid='.intval($GLOBALS['lv']->f('WorkspaceID'));
 						if (show_SeoLinks() && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 							if($GLOBALS['lv']->objectseourls && $objecturl!=''){
 

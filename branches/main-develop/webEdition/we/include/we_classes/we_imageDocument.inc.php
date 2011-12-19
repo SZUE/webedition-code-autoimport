@@ -287,7 +287,7 @@ class we_imageDocument extends we_binaryDocument {
 			}
 
 			if (!$src_over) {
-				$src_over = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = '" . abs($this->getElement("RollOverID")) . "'", "Path", $this->DB_WE);
+				$src_over = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = " . intval($this->getElement("RollOverID")), "Path", $this->DB_WE);
 			}
 
 			if (!$this->getElement("name")) {
@@ -424,7 +424,7 @@ class we_imageDocument extends we_binaryDocument {
 		$_data = $this->getElement("data");
 		if ($this->ID || ($_data && !is_dir($_data) && is_readable($_data))) {
 			if ($this->getElement("LinkType") == "int") {
-				$href = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = '" . abs($this->getElement("LinkID")) . "'", "Path", $this->DB_WE);
+				$href = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID = " . intval($this->getElement("LinkID")), "Path", $this->DB_WE);
 			} else if ($this->getElement("LinkType") == "ext") {
 				$href = $this->getElement("LinkHref");
 			} else if ($this->getElement("LinkType") == "obj") {
@@ -433,7 +433,7 @@ class we_imageDocument extends we_binaryDocument {
 				if (isset($GLOBALS["WE_MAIN_DOC"])) {
 					$pid = $GLOBALS["WE_MAIN_DOC"]->ParentID;
 				} else {
-					$pidCvs = f("SELECT Workspaces FROM " . OBJECT_FILES_TABLE . " WHERE ID = '" . abs($id) . "'", "Workspaces", $this->DB_WE);
+					$pidCvs = f("SELECT Workspaces FROM " . OBJECT_FILES_TABLE . " WHERE ID = " . intval($id), "Workspaces", $this->DB_WE);
 					$foo = makeArrayFromCSV($pidCvs);
 
 					if (sizeof($foo)) {
@@ -467,7 +467,7 @@ class we_imageDocument extends we_binaryDocument {
 
 						if((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'].$img_path)){
 							// open a file
-							if(abs(filectime($_SERVER['DOCUMENT_ROOT'].$img_path)) > abs($thumbObj->date)){
+							if(intval(filectime($_SERVER['DOCUMENT_ROOT'].$img_path)) > intval($thumbObj->date)){
 								$create = false;
 							}
 						}
@@ -923,7 +923,7 @@ class we_imageDocument extends we_binaryDocument {
 		if(defined("OBJECT_TABLE")) {
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
-			$objPath = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID = '".abs($this->getElement("ObjID"))."'", "Path", $this->DB_WE);
+			$objPath = f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID = ".intval($this->getElement("ObjID")), "Path", $this->DB_WE);
 			//javascript:we_cmd('openDocselector',document.forms['we_form'].elements['$objidname'].value,'" . OBJECT_FILES_TABLE . "','document.forms[\'we_form\'].elements[\'$objidname\'].value','document.forms[\'we_form\'].elements[\'$objtextname\'].value','opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements[\\'we_".$this->Name."_txt[LinkType]\\'][3].checked=true;','','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");
 			$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$objidname'].value");
 			$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$objtextname'].value");
@@ -1077,7 +1077,7 @@ class we_imageDocument extends we_binaryDocument {
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
 							if ($ct == 'image/*') {
-								$imgId = abs($GLOBALS[$key][$formname]->getElement($imgName));
+								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 								// move document from upload location to tmp dir
 								$_SESSION[$_imgDataId]['serverPath'] = TMP_DIR . '/' . md5(

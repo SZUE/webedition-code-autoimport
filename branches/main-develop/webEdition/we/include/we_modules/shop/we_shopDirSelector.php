@@ -109,7 +109,7 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-if(abs($this->dir)==0){
+if(intval($this->dir)==0){
 	print 'top.fsheader.disableRootDirButs();
 ';
 }else{

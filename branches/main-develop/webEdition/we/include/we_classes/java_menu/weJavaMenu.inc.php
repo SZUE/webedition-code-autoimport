@@ -261,7 +261,7 @@ if(!$old){
 					$mtext = ( isset($e["text"]) ? $e["text"] : "");
 				}
 				if((!isset($e["cmd"])) && $mtext) {
-					$opt .=  '<option value="" disabled>&nbsp;&nbsp;'.$newAst."".$mtext."&nbsp;&gt;\n";
+					$opt .=  '<option value="" disabled>&nbsp;&nbsp;'.$newAst.$mtext."&nbsp;&gt;\n";
 					$newAst = $newAst . "&nbsp;&nbsp;";
 					$this->h_pOption($men,$opt,$id,$newAst);
 				}

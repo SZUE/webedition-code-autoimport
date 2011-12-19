@@ -167,7 +167,7 @@ class we_binaryDocument extends we_document
 	}
 
 	function insertAtIndex(){
-		$this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".abs($this->ID));
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID='.intval($this->ID));
 		if(isset($this->IsSearchable) && $this->IsSearchable && $this->Published){
 			$text = "";
 			$this->resetElements();
@@ -179,7 +179,7 @@ class we_binaryDocument extends we_document
 						}
 					}
 			}
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES('".abs($this->ID)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."','".abs($this->ParentID)."','".$this->DB_WE->escape($this->Category)."','','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."')");
+			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES(".intval($this->ID).",'".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."',".intval($this->ParentID).",'".$this->DB_WE->escape($this->Category)."','','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."')");
 		}
 		return true;
 

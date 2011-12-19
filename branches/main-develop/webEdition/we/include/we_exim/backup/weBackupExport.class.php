@@ -140,7 +140,7 @@
 
 				}
 
-				$_table_end = f("SELECT COUNT(*) AS Count FROM ".$_db->escape($_table)."",'Count',$_db);
+				$_table_end = f("SELECT COUNT(*) AS Count FROM ".$_db->escape($_table),'Count',$_db);
 				if($offset>=$_table_end) {
 					$offset = 0;
 				}

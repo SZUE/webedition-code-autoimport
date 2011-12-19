@@ -42,7 +42,7 @@ class we_ordertag{
 		$unique = md5(uniqid(rand()));
 
 		if($this->id){
-			$this->object = new we_listview_order($unique, 1, 0, "", 0, "(IntOrderID='".abs($this->id)."')" .  ($condition ? " AND $condition" : ""),"",0,$hidedirindex);
+			$this->object = new we_listview_order($unique, 1, 0, "", 0, "(IntOrderID=".intval($this->id).")" .  ($condition ? " AND $condition" : ""),"",0,$hidedirindex);
 			if($this->object->next_record()){
 				$this->avail = true;
 			}

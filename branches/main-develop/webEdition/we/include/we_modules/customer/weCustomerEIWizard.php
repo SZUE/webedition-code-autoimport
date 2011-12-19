@@ -1606,13 +1606,13 @@ class weCustomerEIWizard{
 		$tmp=array();
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder=f("SELECT IsFolder FROM ".$this->db->escape($table)." WHERE ID=".abs($v),"IsFolder",$this->db);
+				$isfolder=f("SELECT IsFolder FROM ".$this->db->escape($table)." WHERE ID=".intval($v),"IsFolder",$this->db);
 				if($isfolder) we_readChilds($v,$tmp,$table,false);
 				else	$tmp[]=$v;
 			}
 		}
 		foreach($tmp as $v){
-			$isfolder=f("SELECT IsFolder FROM ".$table." WHERE ID=".abs($v),"IsFolder",$this->db);
+			$isfolder=f("SELECT IsFolder FROM ".$table." WHERE ID=".intval($v),"IsFolder",$this->db);
 			if(!$isfolder) $ret[]=$v;
 		}
 		return $ret;
@@ -1757,7 +1757,7 @@ class weCustomerEIWizard{
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue).";", "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . intval($IDValue).";", "Path", $this->db);
 		}
 
 

@@ -335,7 +335,7 @@ class weExportFrames extends weModuleFrames {
 			}
 		}
 
-		$FolderPath = $this->View->export->Folder ? f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".abs($this->View->export->Folder),"Path",$this->db) : "/";
+		$FolderPath = $this->View->export->Folder ? f("SELECT Path FROM ".FILE_TABLE." WHERE ID=".intval($this->View->export->Folder),"Path",$this->db) : "/";
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),5,1);
 
@@ -689,7 +689,7 @@ class weExportFrames extends weModuleFrames {
 
 							$table = $this->db->escape($ref->Table);
 
-							$exists = f('SELECT ID FROM ' . $table . ' WHERE ID=' . abs($ref->ID),'ID',$this->db) || ($ref->ContentType == "weBinary");
+							$exists = f('SELECT ID FROM ' . $table . ' WHERE ID=' . intval($ref->ID),'ID',$this->db) || ($ref->ContentType == "weBinary");
 
 							if($exists){
 								$xmlExIm->export($ref->ID,$ref->ContentType,$this->View->export->ExportFilename);
@@ -702,11 +702,11 @@ class weExportFrames extends weModuleFrames {
 										')."\n";
 								} else {
 									if($ref->ContentType == 'doctype') {
-										$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID = ' . abs($ref->ID),'DocType',$this->db);
+										$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID = ' . intval($ref->ID),'DocType',$this->db);
 									} else if($ref->ContentType == 'weNavigationRule'){
-										$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID = ' . abs($ref->ID),'NavigationName',$this->db);
+										$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID = ' . intval($ref->ID),'NavigationName',$this->db);
 									} else if($ref->ContentType == 'weThumbnail'){
-										$_path = f('SELECT Name FROM ' . $table . ' WHERE ID = ' . abs($ref->ID),'Name',$this->db);
+										$_path = f('SELECT Name FROM ' . $table . ' WHERE ID = ' . intval($ref->ID),'Name',$this->db);
 									} else {
 										$_path = id_to_path($ref->ID,$table);
 									}
@@ -876,7 +876,7 @@ class weExportFrames extends weModuleFrames {
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0",$Pathname="Path", $Pathvalue = "/", $cmd = "") {
 		if ($Pathvalue == "") {
-			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . abs($IDValue).";", "Path", $this->db);
+			$Pathvalue = f("SELECT Path FROM ".$this->db->escape($table)." WHERE ID=" . intval($IDValue).";", "Path", $this->db);
 		}
 
 		//javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['$IDName'].value,'$table','document.we_form.elements[\\'$IDName\\'].value','document.we_form.elements[\\'$Pathname\\'].value','".$cmd."','".session_id()."','$rootDirID'))

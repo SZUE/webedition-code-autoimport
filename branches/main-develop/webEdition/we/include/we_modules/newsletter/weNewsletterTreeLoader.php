@@ -88,7 +88,7 @@ class weNewsletterTreeLoader{
 				);
 		}
 
-		$where=" WHERE $wsQuery ParentID=".abs($ParentID). " ".$addWhere;
+		$where=" WHERE $wsQuery ParentID=".intval($ParentID). " ".$addWhere;
 
 		$db->query("SELECT ".$db->escape($elem).", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT $offset,$segment;" : ";" ));
 		$now = time();

@@ -666,7 +666,7 @@ class liveUpdateFunctions {
 						if (isset($_SESSION["DatabaseAction"]) && $_SESSION["DatabaseAction"] == "Install") {
 
 							// 1st drop table,
-							$dropQuery = "DROP TABLE IF EXISTS ".mysql_real_escape_string($tableName)."";
+							$dropQuery = "DROP TABLE IF EXISTS ".mysql_real_escape_string($tableName);
 							$db->query($dropQuery);
 
 							// 2nd reinstall table

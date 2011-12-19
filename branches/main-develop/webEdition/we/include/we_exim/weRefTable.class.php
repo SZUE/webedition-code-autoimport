@@ -110,7 +110,7 @@
 				$allowed = true;
 				if($rd->Table != DOC_TYPES_TABLE && $rd->Table != CATEGORY_TABLE){
 					$q = weXMLExIm::queryForAllowed($rd->Table);
-					$id = f('SELECT ID FROM '.escape_sql_query($rd->Table).' WHERE ID=\''.abs($rd->ID).'\' '.$q,'ID',new DB_WE());
+					$id = f('SELECT ID FROM '.escape_sql_query($rd->Table).' WHERE ID='.intval($rd->ID).' '.$q,'ID',new DB_WE());
 					$allowed = $id ? true : false;
 				}
 				if($rd->Table == FILE_TABLE) return $allowed && we_hasPerm('CAN_SEE_DOCUMENTS');

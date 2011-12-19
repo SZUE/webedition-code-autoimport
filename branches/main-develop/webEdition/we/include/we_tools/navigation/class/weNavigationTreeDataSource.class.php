@@ -79,7 +79,7 @@ class weNavigationTreeDataSource extends weToolTreeDataSource
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=".abs($ParentID)." " . $addWhere;
+		$where = " WHERE $wsQuery ParentID=".intval($ParentID)." " . $addWhere;
 
 		$db->query(
 				"SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));

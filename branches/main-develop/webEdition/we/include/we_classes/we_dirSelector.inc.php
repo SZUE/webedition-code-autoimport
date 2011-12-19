@@ -101,7 +101,7 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-		if(abs($this->dir)==abs($this->rootDirID)){
+		if(intval($this->dir)==intval($this->rootDirID)){
 			print 'top.fsheader.disableRootDirButs();
 ';
 		}else{
@@ -119,7 +119,7 @@ top.parentID = "'.$this->values["ParentID"].'";
 
 		$_query = "	SELECT ".$this->fields."
 					FROM ".$this->db->escape($this->table)."
-					WHERE IsFolder=1 AND ParentID='".abs($this->dir)."'".makeOwnersSql().
+					WHERE IsFolder=1 AND ParentID=".intval($this->dir).' '.makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 
 		$this->db->query($_query);
@@ -127,7 +127,7 @@ top.parentID = "'.$this->values["ParentID"].'";
 	}
 
 	function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? (isset($_SESSION["we_fs_lastDir"][$this->table]) ? abs($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
+		$this->dir = $setLastDir ? (isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
 		$ws = get_ws($this->table,true);
 		if($ws && strpos($ws,(",".$this->dir.",")) !== true){
 			$this->dir = "";
@@ -415,7 +415,7 @@ function enableNewFolderBut(){
 	function userCanSeeDir($showAll=false){
 		if($_SESSION["perms"]["ADMINISTRATOR"]) return true;
 		if(!$showAll){
-			if(!in_workspace(abs($this->dir),get_ws($this->table),$this->table,$this->db)){
+			if(!in_workspace(intval($this->dir),get_ws($this->table),$this->table,$this->db)){
 				return false;
 			}
 		}
@@ -492,7 +492,7 @@ function enableNewFolderBut(){
 
 	function printFramesetRootDirFn(){
 		print 'function setRootDir(){
-	setDir('.abs($this->rootDirID).');
+	setDir('.intval($this->rootDirID).');
 }
 ';
 	}
@@ -507,7 +507,7 @@ function enableNewFolderBut(){
 		$c=0;
 		while( $pid != 0 ) {
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".intval($pid));
 			if( $this->db->next_record() ) {
 				$out = 'top.fsheader.addOption("' . $this->db->f( "Text" ) . '",' . $this->db->f( "ID" ) . ');' . $out;
 			}
@@ -547,11 +547,11 @@ function enableNewFolderBut(){
 			print '					</td>
 					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
-						'. we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '
 					</td>
 					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
-						'. we_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '
 					</td>
 
 ';
@@ -572,7 +572,7 @@ function enableNewFolderBut(){
 		$z = 0;
 		while( $pid != 0 ) {
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".intval($pid));
 			if( $this->db->next_record() ) {
 				$out='<option value="'.$this->db->f("ID").'"'.(($z==0) ? ' selected' : '').'>'.$this->db->f("Text").'</options>'."\n".$out;
 				$z++;
@@ -701,14 +701,14 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-		if(abs($this->dir)==abs($this->rootDirID)){
+		if(intval($this->dir)==intval($this->rootDirID)){
 			print 'top.fsheader.disableRootDirButs();
 ';
 		}else{
 			print 'top.fsheader.enableRootDirButs();
 ';
 		}
-		if(in_workspace(abs($this->dir),get_ws($this->table),$this->table,$this->db)){
+		if(in_workspace(intval($this->dir),get_ws($this->table),$this->table,$this->db)){
 			if($this->id==0) $this->path="/";
 			print 'top.unselectAllFiles();top.currentPath = "'.$this->path.'";
 top.currentID = "'.$this->id.'";
@@ -911,7 +911,7 @@ top.clearEntries();
 			$folder->Published=time();
 			$folder->Path=$folder->getPath();
 			$folder->ModifierID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != '".abs($this->we_editDirID)."'");
+			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($folder->Path)."' AND ID != ".intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor',"[folder][response_path_exists]"),$folder->Path);
 				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -920,7 +920,7 @@ top.clearEntries();
 					$we_responseText = sprintf(g_l('weEditor',"[folder][we_filename_notValid]"),$folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}else if(in_workspace($this->we_editDirID,get_ws($this->table),$this->table,$this->db)){
-					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID='".abs($this->we_editDirID)."'","Text",$this->db) != $txt){
+					if(f("SELECT Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editDirID),"Text",$this->db) != $txt){
 						$folder->we_save();
 						print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
@@ -953,7 +953,7 @@ top.selectFile(top.currentID);
 
 	function printPreviewHTML() {
 		if( $this->id) {
-			$query = $this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($this->id)."'");
+			$query = $this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID=".intval($this->id));
 			while ($this->db->next_record()) {
 				$result['Text'] = $this->db->f('Text');
 				$result['Path'] = $this->db->f('Path');
@@ -968,7 +968,7 @@ top.selectFile(top.currentID);
 				$result['ClassName'] = $this->db->f('ClassName');
 				$result['Templates'] = $this->db->f('Templates');
 			}
-			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($this->id)."'","Path",$this->db);
+			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=".intval($this->id),"Path",$this->db);
 			$out = '<html>
 <head>
 ' . STYLESHEET . '
@@ -1036,12 +1036,12 @@ top.selectFile(top.currentID);
 					';
 			if(isset($result['ContentType']) && !empty($result['ContentType'])) {
 				if ($this->table == FILE_TABLE && $result['ContentType'] != "folder") {
-					$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=".abs($this->id)." AND NOT a.DocumentTable='tblTemplates'");
+					$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=".intval($this->id)." AND NOT a.DocumentTable='tblTemplates'");
 					while ($this->db->next_record()) {
 						$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
 					}
 				} elseif ($this->table == FILE_TABLE && $result['ContentType'] = "folder") {
-					$query = $this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=".abs($this->id));
+					$query = $this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=".intval($this->id));
 					$folderFolders = array();
 					$folderFiles = array();
 					while ($this->db->next_record()) {
@@ -1145,7 +1145,7 @@ top.selectFile(top.currentID);
 					case "text/weTmpl":
 						$out .= $previewDefauts;
 						if (isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])) {
-							$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID='".abs($result['MasterTemplateID'])."'","Path",$this->db);
+							$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=".intval($result['MasterTemplateID']),"Path",$this->db);
 							$out .= "<tr><td colspan='2' class='headline'>".g_l('weClass',"[master_template]")."</td></tr>";
 							$nextrowclass = "odd";
 							$out .= "<tr class='$nextrowclass'><td>ID:</td><td>".$result['MasterTemplateID']."</td></tr>";

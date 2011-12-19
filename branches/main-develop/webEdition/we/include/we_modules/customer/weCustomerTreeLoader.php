@@ -69,7 +69,7 @@ class weCustomerTreeLoader{
 		$settings->load();
 
 
-		$where=" WHERE ParentID=".abs($ParentID)." ".$addWhere;
+		$where=" WHERE ParentID=".intval($ParentID)." ".$addWhere;
 
 		$_formatFields=implode(',',$settings->formatFields);
 		if($_formatFields!=''){

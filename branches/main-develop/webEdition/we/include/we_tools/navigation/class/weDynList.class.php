@@ -230,7 +230,7 @@ class weDynList
 	{
 
 		$_ids = array();
-		$_query = 'SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . abs($dirid) . ' AND IsFolder=0  LIMIT 0,' . $count . ';';
+		$_query = 'SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' AND IsFolder=0  LIMIT 0,' . $count . ';';
 		$_fieldset = new DB_WE();
 		$_fieldset->query($_query);
 
@@ -304,7 +304,7 @@ class weDynList
 	{
 		$_db = new DB_WE();
 		$_id = f(
-				'SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . abs($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published<>0;',
+				'SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published<>0;',
 				'ID',
 				$_db);
 		if (!$_id) {
@@ -320,7 +320,7 @@ class weDynList
 	function getWorkspaceFlag($id)
 	{
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
-		$_clsid = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($id) . ';', 'TableID', new DB_WE());
+		$_clsid = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ';', 'TableID', new DB_WE());
 		$_cls = new we_object();
 		$_cls->initByID($_clsid, OBJECT_TABLE);
 

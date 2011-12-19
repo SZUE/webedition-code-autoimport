@@ -40,7 +40,7 @@ class we_orderitemtag{
 		$unique = md5(uniqid(rand()));
 
 		if($this->id){
-			$this->object = new we_listview_orderitem(0, 1, 0, "", 0, "(IntID='".abs($this->id)."')" .  ($condition ? " AND $condition" : ""),"", 0,0,$hidedirindex);
+			$this->object = new we_listview_orderitem(0, 1, 0, "", 0, "(IntID=".intval($this->id).")" .  ($condition ? " AND $condition" : ""),"", 0,0,$hidedirindex);
 			if($this->object->next_record()){
 				$this->avail = true;
 			}

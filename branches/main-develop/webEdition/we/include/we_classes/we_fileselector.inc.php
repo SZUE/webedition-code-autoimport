@@ -76,12 +76,12 @@ class we_fileselector{
 		if($order) $this->order = $order;
 		$this->db = new DB_WE();
 		$this->id = $id;
-		$this->lastDir = isset($_SESSION["we_fs_lastDir"][$table]) ? abs($_SESSION["we_fs_lastDir"][$table]) : 0;
+		$this->lastDir = isset($_SESSION["we_fs_lastDir"][$table]) ? intval($_SESSION["we_fs_lastDir"][$table]) : 0;
 		$this->table = $table;
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;
 		$this->JSCommand = $JSCommand;
-		$this->rootDirID = abs($rootDirID);
+		$this->rootDirID = intval($rootDirID);
 		$this->sessionID = $sessionID;
 		$this->filter = $filter;
 		//if($this->sessionID) session_id($this->sessionID);
@@ -101,7 +101,7 @@ class we_fileselector{
 			// get default Directory
 			$this->db->query("SELECT ".$this->fields. "
 								FROM ".$this->db->escape($this->table)."
-								WHERE ID='".abs($id)."'");
+								WHERE ID=".intval($id));
 
 			// getValues of selected Dir
 			if($this->db->next_record()){
@@ -125,7 +125,7 @@ class we_fileselector{
 
 	function setDefaultDirAndID($setLastDir){
 
-		$this->dir = $setLastDir ? ( isset($_SESSION["we_fs_lastDir"][$this->table]) ? abs($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
+		$this->dir = $setLastDir ? ( isset($_SESSION["we_fs_lastDir"][$this->table]) ? intval($_SESSION["we_fs_lastDir"][$this->table]) : 0 ) : 0;
 		$this->id = $this->dir;
 
 		$this->path = "";
@@ -141,7 +141,7 @@ class we_fileselector{
 	function isIDInFolder($ID,$folderID,$db=""){
 		if($folderID==$ID) return true;
 		if(!$db) $db = new DB_WE();
-		$pid = f("SELECT ParentID FROM ".$db->escape($this->table)." WHERE ID='".abs($ID)."'","ParentID",$db);
+		$pid = f("SELECT ParentID FROM ".$db->escape($this->table)." WHERE ID=".intval($ID),"ParentID",$db);
 		if($pid == $folderID){
 			return true;
 		}else if($pid != 0){
@@ -155,7 +155,7 @@ class we_fileselector{
 		$this->db->query(
 			"SELECT ".$this->fields."
 			FROM ". $this->db->escape($this->table) ."
-			WHERE ParentID='".abs($this->dir)."' " .
+			WHERE ParentID=".intval($this->dir).' ' .
 			( ($this->filter != "" ? ($this->table == CATEGORY_TABLE ? "AND IsFolder = '".$this->db->escape($this->filter)."' " : "AND ContentType = '".$this->db->escape($this->filter)."' ") : '' ) ).
 			($this->order ? (' ORDER BY '.$this->order) : ''));
 		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
@@ -343,7 +343,7 @@ function selectFile(id){
 
 	function getFramesetJavaScriptDef(){
 		$startPathQuery = new DB_WE();
-		$startPathQuery->query("SELECT Path FROM ".$startPathQuery->escape($this->table)." WHERE ID='".abs($this->dir)."'");
+		$startPathQuery->query("SELECT Path FROM ".$startPathQuery->escape($this->table)." WHERE ID=".intval($this->dir));
 		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : "/";
 
 		return '<script  type="text/javascript">
@@ -656,7 +656,7 @@ if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 		$z = 0;
 		while($pid!=0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".intval($pid));
 			if($this->db->next_record()){
 				$out='<option value="'.$this->db->f("ID").'"'.(($z==0) ? ' selected' : '').'>'.$this->db->f("Text").'</options>'."\n".$out;
 				$z++;
@@ -769,7 +769,7 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-		if(abs($this->dir)==0){
+		if(intval($this->dir)==0){
 			print 'top.fsheader.disableRootDirButs();
 ';
 		}else{
@@ -797,7 +797,7 @@ top.fsheader.clearOptions();
 		$c=0;
 		while($pid!=0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".abs($pid)."");
+			$this->db->query("SELECT ID,Text,ParentID FROM ".$this->db->escape($this->table)." WHERE ID=".intval($pid));
 
 			if($this->db->next_record()){
 				$out = 'top.fsheader.addOption("'.$this->db->f("Text").'",'.$this->db->f("ID").');

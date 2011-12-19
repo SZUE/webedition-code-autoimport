@@ -45,7 +45,7 @@ class we_customertag{
 		$unique = md5(uniqid(rand()));
 
 		if($this->id){
-			$this->object = new we_listview_customer($unique, 1, 0, "", 0, "(ID='".abs($this->id)."')" .  ($condition ? " AND $condition" : ""),"", 0,$hidedirindex);
+			$this->object = new we_listview_customer($unique, 1, 0, "", 0, "(ID='".intval($this->id)."')" .  ($condition ? " AND $condition" : ""),"", 0,$hidedirindex);
 			if($this->object->next_record()){
 				$this->avail = true;
 			}

@@ -32,8 +32,8 @@ class rpcPingCmd extends rpcCmd {
 		$resp = new rpcResponse();
 
 		if ($_SESSION["user"]["ID"]) {
-			$GLOBALS['DB_WE']->query('UPDATE '.USER_TABLE.' SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID='.abs($_SESSION["user"]["ID"]));
-			$GLOBALS['DB_WE']->query('UPDATE '.LOCK_TABLE .' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID='.abs($_SESSION["user"]["ID"]).' AND sessionID="'.session_id().'"');
+			$GLOBALS['DB_WE']->query('UPDATE '.USER_TABLE.' SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID='.intval($_SESSION["user"]["ID"]));
+			$GLOBALS['DB_WE']->query('UPDATE '.LOCK_TABLE .' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID='.intval($_SESSION["user"]["ID"]).' AND sessionID="'.session_id().'"');
 		}
 
     	if (defined("MESSAGING_SYSTEM")) {

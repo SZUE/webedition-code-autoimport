@@ -257,7 +257,7 @@ class weShopStatusMails {
 
 
 		if ($docID){
-			
+
 
 			$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
 
@@ -271,7 +271,7 @@ class weShopStatusMails {
 				}
 				$phpmail = new we_util_Mailer('',$subject,$from);
 				$phpmail->setIsEmbedImages(true);
-				
+
 				$phpmail->addHTMLPart($codes);
 				$phpmail->addTextPart(strip_tags(str_replace("&nbsp;"," ",str_replace("<br />","\n",str_replace("<br>","\n",$codes)))));
 				$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField']!='' && isset( $cdata[$this->EMailData['titleField']]) &&  $cdata[$this->EMailData['titleField']] !='' ) ? $cdata[$this->EMailData['titleField']].' ': '').  $cdata['Forename'].' '.$cdata['Surname'] );
@@ -301,7 +301,7 @@ class weShopStatusMails {
 				$phpmail->buildMessage();
 				if ($phpmail->Send()){
 					$dasDatum = date('Y-m-d H:i:s');
-					$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".$DB_WE->escape($was)."='". $DB_WE->escape($dasDatum) . "' WHERE IntOrderID = ".abs($order));
+					$DB_WE->query("UPDATE ".SHOP_TABLE." SET Mail".$DB_WE->escape($was)."='". $DB_WE->escape($dasDatum) . "' WHERE IntOrderID = ".intval($order));
 
 					return true;
 				}

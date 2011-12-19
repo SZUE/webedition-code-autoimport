@@ -393,7 +393,7 @@ class we_backup{
 	function tableDefinition($table, $nl, $noprefix){
 		$foo = "DROP TABLE IF EXISTS " . $this->backup_db->escape($noprefix) . ";$nl";
 		$foo .= "CREATE TABLE " . $this->backup_db->escape($noprefix) . " ($nl";
-		$this->backup_db->query("SHOW FIELDS FROM " . $this->backup_db->escape($table) . "");
+		$this->backup_db->query("SHOW FIELDS FROM " . $this->backup_db->escape($table) );
 		while($this->backup_db->next_record()) {
 			$row = $this->backup_db->Record;
 			$foo .= "   $row[Field] $row[Type]";
@@ -409,7 +409,7 @@ class we_backup{
 			$foo .= ",$nl";
 		}
 		$foo = ereg_replace("," . $nl . "$", "", $foo);
-		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table) . "");
+		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table) );
 		while($this->backup_db->next_record()) {
 			$row = $this->backup_db->Record;
 			$key = $row['Key_name'];
@@ -589,7 +589,7 @@ class we_backup{
 							@fwrite($fh, $nl);
 							$this->backup_step = 0;
 							$this->table_end = 0;
-							$this->backup_db->query("SELECT COUNT(*) AS Count FROM " . $this->backup_db->escape($table) . "");
+							$this->backup_db->query("SELECT COUNT(*) AS Count FROM " . $this->backup_db->escape($table) );
 							if($this->backup_db->next_record())
 								$this->table_end = $this->backup_db->f("Count");
 							$fieldnames = "(";
@@ -611,7 +611,7 @@ class we_backup{
 						while($this->backup_db->next_record()) {
 							if(strtolower($table) == strtolower(CONTENT_TABLE)){
 								$db = new DB_WE;
-								$siz = f("SELECT LENGTH(Dat) as Dat FROM " . CONTENT_TABLE . " WHERE ID=" . abs($this->backup_db->f("ID")), "Dat", $db);
+								$siz = f("SELECT LENGTH(Dat) as Dat FROM " . CONTENT_TABLE . " WHERE ID=" . intval($this->backup_db->f("ID")), "Dat", $db);
 							} else{
 								$siz = 0;
 							}

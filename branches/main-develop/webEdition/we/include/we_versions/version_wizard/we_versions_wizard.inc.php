@@ -201,8 +201,8 @@ abstract class we_versions_wizard
 		$version_reset = array();
 
 		foreach ($version->contentTypes as $k) {
-			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k . ""]) ? 1 : 0;
-			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k . ""]) ? 1 : 0;
+			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k ]) ? 1 : 0;
+			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k ]) ? 1 : 0;
 		}
 
 		$version_delete['delete_date'] = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
@@ -995,8 +995,8 @@ abstract class we_versions_wizard
 		$version_reset = array();
 
 		foreach ($version->contentTypes as $k) {
-			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k . ""]) ? 1 : 0;
-			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k . ""]) ? 1 : 0;
+			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k ]) ? 1 : 0;
+			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k ]) ? 1 : 0;
 		}
 
 		$version_delete['delete_date'] = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
@@ -1067,7 +1067,7 @@ abstract class we_versions_wizard
 		$version_delete = array();
 
 		foreach ($version->contentTypes as $k) {
-			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k . ""]) ? 1 : 0;
+			$version_delete[$k] = isset($_REQUEST["version_delete_" . $k ]) ? 1 : 0;
 		}
 
 		$version_delete['delete_date'] = isset($_REQUEST["delete_date"]) ? $_REQUEST["delete_date"] : "";
@@ -1241,7 +1241,7 @@ abstract class we_versions_wizard
 		$version_reset = array();
 
 		foreach ($version->contentTypes as $k) {
-			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k . ""]) ? 1 : 0;
+			$version_reset[$k] = isset($_REQUEST["version_reset_" . $k ]) ? 1 : 0;
 		}
 
 		$version_reset['reset_date'] = isset($_REQUEST["reset_date"]) ? $_REQUEST["reset_date"] : "";
@@ -1267,7 +1267,7 @@ abstract class we_versions_wizard
 			$seconds = $version_reset['reset_seconds'];
 			$timestamp = mktime($hour, $minutes, $seconds, $month, $day, $year);
 
-			$timestampWhere = " timestamp< '" . abs($timestamp) . "' ";
+			$timestampWhere = " timestamp< '" . intval($timestamp) . "' ";
 		}
 
 		$parts = array();
@@ -1295,7 +1295,7 @@ abstract class we_versions_wizard
 
 		$cont = array();
 		$docIds = array();
-		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM " . VERSIONS_TABLE . " WHERE timestamp<='" . abs($timestamp) . "'  ";
+		$query = "SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM " . VERSIONS_TABLE . " WHERE timestamp<=" . intval($timestamp) . "  ";
 		$query .= " AND " . $w . " ";
 		$query .= " GROUP BY  documentTable,documentID ";
 		$query .= " ORDER BY version DESC ";

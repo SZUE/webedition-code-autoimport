@@ -39,7 +39,7 @@
 				SELECT *
 				FROM ' . VALIDATION_SERVICES_TABLE . '
 				WHERE name="' . $DB_WE->escape($validationService->name) . '"
-					AND PK_tblvalidationservices != ' . abs($validationService->id) . '
+					AND PK_tblvalidationservices != ' . intval($validationService->id) . '
 				';
 
 			$GLOBALS['DB_WE']->query($checkNameQuery);
@@ -54,7 +54,7 @@
                 $query = '
                     UPDATE ' . VALIDATION_SERVICES_TABLE . '
                         SET category="' . $DB_WE->escape($validationService->category). '",name="' . $DB_WE->escape($validationService->name) . '",host="' . $DB_WE->escape($validationService->host) . '",path="' . $DB_WE->escape($validationService->path) . '",method="' . $DB_WE->escape($validationService->method) . '",varname="' . $DB_WE->escape($validationService->varname) . '",checkvia="' . $DB_WE->escape($validationService->checkvia) . '",additionalVars="' . $DB_WE->escape($validationService->additionalVars) . '",ctype="' . $DB_WE->escape($validationService->ctype) . '",fileEndings="' . $DB_WE->escape($validationService->fileEndings) . '",active="' . $DB_WE->escape($validationService->active) . '"
-                        WHERE PK_tblvalidationservices = ' . abs($validationService->id);
+                        WHERE PK_tblvalidationservices = ' . intval($validationService->id);
             } else {
 
                 $query = '
@@ -77,7 +77,7 @@
 
         static function deleteService($validationService){
             if($validationService->id != 0){
-                $query = 'DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . abs($validationService->id);
+                $query = 'DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . intval($validationService->id);
 
                 if($GLOBALS['DB_WE']->query($query)){
                     return true;

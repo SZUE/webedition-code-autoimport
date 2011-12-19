@@ -207,8 +207,8 @@ class weBanner extends weBannerBase{
 		}
 
 		weBannerBase::delete();
-		$this->db->query("DELETE FROM ".BANNER_VIEWS_TABLE." WHERE ID=".abs($this->ID));
-		$this->db->query("DELETE FROM ".BANNER_CLICKS_TABLE." WHERE ID=".abs($this->ID));
+		$this->db->query("DELETE FROM ".BANNER_VIEWS_TABLE." WHERE ID=".intval($this->ID));
+		$this->db->query("DELETE FROM ".BANNER_CLICKS_TABLE." WHERE ID=".intval($this->ID));
 		if($this->IsFolder){
 			$db2 = new DB_WE();
 			$path = (substr($this->Path,-1) == "/") ? $this->Path : $this->Path."/";
@@ -219,9 +219,9 @@ class weBanner extends weBannerBase{
 			}
 			foreach($ids as $id){
 				if($id){
-					$db2->query("DELETE FROM ".BANNER_VIEWS_TABLE." WHERE ID=".abs($id));
-					$db2->query("DELETE FROM ".BANNER_CLICKS_TABLE." WHERE ID=".abs($id));
-					$db2->query("DELETE FROM ".BANNER_TABLE." WHERE ID=".abs($id));
+					$db2->query("DELETE FROM ".BANNER_VIEWS_TABLE." WHERE ID=".intval($id));
+					$db2->query("DELETE FROM ".BANNER_CLICKS_TABLE." WHERE ID=".intval($id));
+					$db2->query("DELETE FROM ".BANNER_TABLE." WHERE ID=".intval($id));
 				}
 			}
 		}
@@ -237,10 +237,10 @@ class weBanner extends weBannerBase{
 
 		we_readParents($did,$parents,FILE_TABLE);
 
-		$where = "IsActive=1 AND IsFolder=0 AND ( FileIDs LIKE '%,".abs($did).",%' OR FileIDs='' )";
+		$where = "IsActive=1 AND IsFolder=0 AND ( FileIDs LIKE '%,".intval($did).",%' OR FileIDs='' )";
 		$foo = "";
 		foreach($parents as $p){
-			$foo .= " FolderIDs LIKE '%,".abs($p).",%' OR ";
+			$foo .= " FolderIDs LIKE '%,".intval($p).",%' OR ";
 		}
 		$where = " $where AND (  $foo  FolderIDs='' ) ";
 
@@ -248,7 +248,7 @@ class weBanner extends weBannerBase{
 
 		$foo = "";
 		foreach($dtArr as $d){
-			$foo .= " DoctypeIDs LIKE '%,".abs($d).",%' OR ";
+			$foo .= " DoctypeIDs LIKE '%,".intval($d).",%' OR ";
 		}
 		$where = " $where AND (  $foo  DoctypeIDs='' ) ";
 
@@ -304,9 +304,9 @@ class weBanner extends weBannerBase{
 		$imgAttr = array();
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT CID, Name FROM " . LINK_TABLE . " WHERE Type='attrib' AND DID=" . abs($fileID));
+		$db->query("SELECT CID, Name FROM " . LINK_TABLE . " WHERE Type='attrib' AND DID=" . intval($fileID));
 		while ($db->next_record(MYSQL_ASSOC)){
-			$imgAttr[$db->f('Name')] = f("SELECT Dat FROM " . CONTENT_TABLE . " WHERE ID=" . abs($db->f("CID")),"Dat",$db2);
+			$imgAttr[$db->f('Name')] = f("SELECT Dat FROM " . CONTENT_TABLE . " WHERE ID=" . intval($db->f("CID")),"Dat",$db2);
 		}
 		$db->free();
 		$db2->free();
@@ -335,7 +335,7 @@ class weBanner extends weBannerBase{
 		}else{
 			$id=f("SELECT pref_value FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'","pref_value",$db);
 
-			$bannerID=f("SELECT bannerID FROM ".BANNER_TABLE." WHERE ID=".abs($id),"bannerID",$db);
+			$bannerID=f("SELECT bannerID FROM ".BANNER_TABLE." WHERE ID=".intval($id),"bannerID",$db);
 			if($bannerID){
 				$bannersrc = getServerUrl().id_to_path($bannerID);
 				$attsImage = array_merge($attsImage,weBanner::getImageInfos($bannerID));
@@ -347,8 +347,8 @@ class weBanner extends weBannerBase{
 			$bannerlink = $bannerclick."?".($nocount ? 'nocount='.$nocount.'&amp;' : '')."u=$uniq&amp;bannername=".rawurlencode($bannername)."&amp;id=".$id."&amp;did=".$did."&amp;page=".rawurlencode($page);
 		}
 		if(!$nocount){
-			$db->query("INSERT INTO ".BANNER_VIEWS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".abs($id).",".time().",'".$db->escape($_SERVER["REMOTE_ADDR"])."','".addslashes($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] :  ""))."',".abs($did).",'".addslashes($page)."')");
-			$db->query("UPDATE ".BANNER_TABLE." SET views=views+1 WHERE ID='".abs($id)."'");
+			$db->query("INSERT INTO ".BANNER_VIEWS_TABLE." (ID,Timestamp,IP,Referer,DID,Page) VALUES(".intval($id).",".time().",'".$db->escape($_SERVER["REMOTE_ADDR"])."','".addslashes($referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] :  ""))."',".intval($did).",'".addslashes($page)."')");
+			$db->query("UPDATE ".BANNER_TABLE." SET views=views+1 WHERE ID='".intval($id)."'");
 		}
 
 		$attsImage['xml'] = $xml ? "true" : "false";
@@ -381,7 +381,7 @@ class weBanner extends weBannerBase{
 	}
 
 	function getBannerURL($bid){
-		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM ".BANNER_TABLE." WHERE ID=".abs($bid),$GLOBALS['DB_WE']);
+		$h = getHash("SELECT IntHref,bannerIntID,bannerURL FROM ".BANNER_TABLE." WHERE ID=".intval($bid),$GLOBALS['DB_WE']);
 		$prot = getServerProtocol(true);
 		$url = $h["IntHref"] ? getServerUrl().id_to_path($h["bannerIntID"],FILE_TABLE) : $h["bannerURL"];
 		return $url;
@@ -391,7 +391,7 @@ class weBanner extends weBannerBase{
 	//static function
 	function customerOwnsBanner($customerID,$bannerID){
 		$db = new DB_WE;
-		$res = getHash("SELECT Customers,ParentID FROM ".BANNER_TABLE." WHERE ID=".abs($bannerID),$db);
+		$res = getHash("SELECT Customers,ParentID FROM ".BANNER_TABLE." WHERE ID=".intval($bannerID),$db);
 		if(strstr($res["Customers"],",".$customerID.",") != false){
 			return true;
 		}else{

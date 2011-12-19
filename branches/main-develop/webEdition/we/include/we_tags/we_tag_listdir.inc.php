@@ -41,13 +41,13 @@ function we_tag_listdir($attribs, $content){
 	$db = new DB_WE();
 	$db2 = new DB_WE();
 
-	$db->query("SELECT ID,Text,IsFolder,Path FROM " . FILE_TABLE . " WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID=".abs($dirID));
+	$db->query("SELECT ID,Text,IsFolder,Path FROM " . FILE_TABLE . " WHERE ((Published > 0 AND IsSearchable = 1) OR (IsFolder = 1)) AND ParentID=".intval($dirID));
 
 	while ($db->next_record()) {
 		$sortfield = $namefield = '';
 
 		if ($db->f("IsFolder")) {
-			$id=f("SELECT ID FROM " . FILE_TABLE . " WHERE ParentID='" . abs($db->f("ID")) . "' AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)",'ID',$db2);
+			$id=f("SELECT ID FROM " . FILE_TABLE . " WHERE ParentID=" . intval($db->f("ID")) . " AND IsFolder = 0 AND ($q) AND (Published > 0 AND IsSearchable = 1)",'ID',$db2);
 			if ($id) {
 				if ($sort) {
 					$dat=f(
@@ -75,16 +75,16 @@ function we_tag_listdir($attribs, $content){
 		} else {
 			if ($sort) {
 				$dat=f(
-						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
-								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
+						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($db->f(
+								"ID")) . " AND " . LINK_TABLE . ".Name='".$db2->escape($sort)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
 					$sortfield = $dat ? $dat:$db->f("Text");
 			} else {
 				$sortfield = $db->f("Text");
 			}
 			if ($name) {
 				$dat=f(
-						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID='" . abs($db->f(
-								"ID")) . "' AND " . LINK_TABLE . ".Name='".$db2->escape($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
+						"SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . LINK_TABLE . "," . CONTENT_TABLE . " WHERE " . LINK_TABLE . ".DID=" . intval($db->f(
+								"ID")) . " AND " . LINK_TABLE . ".Name='".$db2->escape($name)."' AND " . CONTENT_TABLE . ".ID = " . LINK_TABLE . ".CID",'Dat',$db2);
 					$namefield = $dat ? $dat : $db->f("Text");
 			} else {
 				$namefield = $db->f("Text");

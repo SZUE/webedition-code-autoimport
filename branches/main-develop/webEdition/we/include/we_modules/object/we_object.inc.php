@@ -98,7 +98,7 @@ class we_object extends we_document {
 
 		if($this->OldPath && ($this->OldPath != $this->Path)){
 			$fID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".$db->escape($this->OldPath)."'","ID",$this->DB_WE);
-			$pID = abs(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".str_replace("\\","/",dirname($this->Path))."'","ID",$this->DB_WE));
+			$pID = intval(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".str_replace("\\","/",dirname($this->Path))."'","ID",$this->DB_WE));
 			$cf = new we_class_folder();
 			$cf->initByID($fID,OBJECT_FILES_TABLE);
 			$cf->Text=$this->Text;
@@ -2190,7 +2190,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 
 	function del_workspace($id){
 
-		$this->DB_WE->query("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE TableID=".$this->ID." AND (Workspaces like ',".abs($id).",' OR ExtraWorkspaces like ',".abs($id).",') LIMIT 0,1");
+		$this->DB_WE->query("SELECT ID FROM ".OBJECT_FILES_TABLE." WHERE TableID=".$this->ID." AND (Workspaces like ',".intval($id).",' OR ExtraWorkspaces like ',".intval($id).",') LIMIT 0,1");
 
 		if($this->DB_WE->next_record()){
 			$GLOBALS['WE_DEL_WORKSPACE_ERROR'] = true;
@@ -2594,7 +2594,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
-		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".str_replace('\\','',$cmd)."");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);opener.pathOfDocumentChanged();".str_replace('\\','',$cmd));
 		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 		return $this->htmlFormElementTable($this->htmlTextInput($textname,30,$path,"",' readonly',"text",$width,0),
 			"",

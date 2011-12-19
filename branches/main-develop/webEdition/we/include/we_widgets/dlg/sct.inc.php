@@ -37,7 +37,7 @@ if (we_hasPerm("NEW_WEBEDITIONSITE")) {
 		if ($ws) {
 			$b = makeArrayFromCSV($ws);
 			foreach ($b as $k => $v) {
-				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID='" . abs($v) . "'");
+				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID=" . intval($v));
 				while ($DB_WE->next_record())
 					array_push(
 							$paths,

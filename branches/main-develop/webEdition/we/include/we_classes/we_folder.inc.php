@@ -149,7 +149,7 @@ class we_folder extends we_root
 				}
 
 			} else {
-				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . abs($ParentID);
+				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
@@ -256,7 +256,7 @@ class we_folder extends we_root
 				if($this->ID==$pid){
 					return true;
 				}
-				$pid = f("SELECT ParentID FROM ".$this->Table."  WHERE ID='".abs($pid)."'", "ParentID",$db);
+				$pid = f("SELECT ParentID FROM ".$this->Table."  WHERE ID=".intval($pid), "ParentID",$db);
 			}
 		}
 		return false;
@@ -321,7 +321,7 @@ class we_folder extends we_root
 			return false;
 		}
 		while($DB_WE->next_record()) {
-			/*$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
+			/*$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -330,7 +330,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".intval($DB_WE->f("ID"))."' AND Active = 0";
 				if(!$DB_WE2->query($query)) {
 					return false;
 
@@ -344,7 +344,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID=".intval($DB_WE->f("ID"))." AND Active = 1";
 				if(!$DB_WE2->query($query)) {
 					return false;
 				}
@@ -392,7 +392,7 @@ class we_folder extends we_root
 			return false;
 		}
 		while($DB_WE->next_record()) {
-/*			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . abs($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
+/*			$query = "SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID = " . intval($DB_WE->f('ID')) . " AND DocTable = '".$this->Table."' AND Active = 0";
 			$DocumentObject = f($query, 'DocumentObject', $DB_WE2);
 			if ($DocumentObject!=''){
 				$DocumentObject = unserialize($DocumentObject);
@@ -401,7 +401,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 0";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".intval($DB_WE->f("ID"))."' AND Active = 0";
 				if(!$DB_WE2->query($query)) {
 					return false;
 
@@ -447,7 +447,7 @@ class we_folder extends we_root
 		$this->Text = ($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 	function i_filenameDouble(){
-		return f("SELECT ID FROM ".escape_sql_query($this->Table)." WHERE Path='".escape_sql_query($this->Path)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
+		return f("SELECT ID FROM ".escape_sql_query($this->Table)." WHERE Path='".escape_sql_query($this->Path)."' AND ID != ".intval($this->ID),"ID",new DB_WE());
 	}
 	function i_filenameEmpty(){
 		$fn = ($this->Table==FILE_TABLE || $this->Table==TEMPLATES_TABLE) ? $this->Filename : $this->Text;
@@ -482,7 +482,7 @@ class we_folder extends we_root
 
 	function formPath(){
 		$ws = get_ws($this->Table);
-		if(abs($this->ParentID)==0 && $ws){
+		if(intval($this->ParentID)==0 && $ws){
 			$wsa = makeArrayFromCSV($ws);
 			$this->ParentID = $wsa[0];
 			$this->ParentPath = id_to_path($this->ParentID,$this->Table,$this->DB_WE);
@@ -552,7 +552,7 @@ $content .='
 				$isobject=0;
 			}
 			foreach ($_languages as $langkey => $lang){
-			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject='".abs($isobject)."' AND DID='".abs($this->ID)."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND IsObject=".intval($isobject)." AND DID=".intval($this->ID)." AND Locale='".$langkey."'",'LDID',$this->DB_WE);
 			  	if(!$LDID){$LDID=0;}
 				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
 				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';
@@ -686,7 +686,7 @@ $content .='
 		@ignore_user_abort(true);
 		$DB_WE = new DB_WE;
 		// Update Paths also in Doctype Table
-		$DB_WE->query("UPDATE " . DOC_TYPES_TABLE . " SET ParentPath='".$DB_WE->escape($this->Path)."' WHERE ParentID='".abs($this->ID)."'");
+		$DB_WE->query("UPDATE " . DOC_TYPES_TABLE . " SET ParentPath='".$DB_WE->escape($this->Path)."' WHERE ParentID=".intval($this->ID));
 		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($this->Table)." WHERE ParentID='".intval($this->ID)."'");
 		while($DB_WE->next_record()){
 			@set_time_limit(30);

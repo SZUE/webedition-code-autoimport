@@ -839,7 +839,7 @@ class weVersions {
 	*/
 	public function countVersions($id, $contentType) {
 
-		$countVersions = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = '".abs($id)."' AND ContentType = '".escape_sql_query($contentType)."'","Count", new DB_WE());
+		$countVersions = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($id)." AND ContentType = '".escape_sql_query($contentType)."'","Count", new DB_WE());
 		return $countVersions;
 	}
 
@@ -864,11 +864,11 @@ class weVersions {
 		$db = new DB_WE();
 		$tblFields = weVersions::getFieldsFromTable(VERSIONS_TABLE);
 
-		$query = "SELECT * FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($id)."' AND documentTable='".$db->escape($table)."' ".$where." ORDER BY version ASC";
+		$query = "SELECT * FROM " . VERSIONS_TABLE . " WHERE documentID=".intval($id)." AND documentTable='".$db->escape($table)."' ".$where." ORDER BY version ASC";
 		$db->query($query);
 		while($db->next_record()){
 			foreach($tblFields as $k => $v) {
-				$versionArray[$v] = $db->f("".$v."");
+				$versionArray[$v] = $db->f("".$v);
 			}
 
 			$versionArr[] = $versionArray;
@@ -892,7 +892,7 @@ class weVersions {
 		$db->query($query);
 		while($db->next_record()){
 			foreach($tblFields as $k => $v) {
-				$versionArray[$v] = $db->f("".$v."");
+				$versionArray[$v] = $db->f("".$v);
 			}
 		}
 
@@ -1058,11 +1058,11 @@ class weVersions {
 		} else {
 			$prefAnzahl = (defined("VERSIONS_ANZAHL") && VERSIONS_ANZAHL!="") ? VERSIONS_ANZAHL : "";
 		}
-		$anzahl = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = '".abs($docID)."' AND documentTable = '".$db->escape($docTable)."'","Count",$db);
+		$anzahl = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."'","Count",$db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl!="") {
 			$toDelete = $anzahl - $prefAnzahl;
-			$query = "SELECT ID, version FROM ".VERSIONS_TABLE." WHERE documentId = '".abs($docID)."' AND documentTable = '".$db->escape($docTable)."' ORDER BY version ASC LIMIT ".intval($toDelete);
+			$query = "SELECT ID, version FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."' ORDER BY version ASC LIMIT ".intval($toDelete);
 			$m = 0;
 			$db->query($query);
 			while ($db->next_record()) {
@@ -1228,7 +1228,7 @@ class weVersions {
 			case "binaryPath":
 				$binaryPath =  "";
 
-					//$binaryPath = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($this->version)."' AND documentTable='".$db->escape($document['Table'])."' AND documentID='".abs($document['ID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$db);
+					//$binaryPath = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".intval($this->version)."' AND documentTable='".$db->escape($document['Table'])."' AND documentID='".abs($document['ID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$db);
 
 					//if($document["ContentType"]=="objectFile") { vor #4120
 					if($document["ContentType"]=="objectFile" || $document["ContentType"]=="text/weTmpl") {
@@ -1292,10 +1292,10 @@ class weVersions {
 				foreach($fields as $key => $val) {
 					if(isset($this->modFields[$val])) {
 
-						$query = "SELECT ".$val." FROM " . VERSIONS_TABLE . " WHERE version <'".abs($this->version)."' AND status != 'deleted' AND documentID='".abs($document["ID"])."' AND documentTable='".$db->escape($document["Table"])."' ORDER BY version DESC LIMIT 1";
+						$query = "SELECT ".$val." FROM " . VERSIONS_TABLE . " WHERE version <".intval($this->version)." AND status != 'deleted' AND documentID=".intval($document["ID"])." AND documentTable='".$db->escape($document["Table"])."' ORDER BY version DESC LIMIT 1";
 						$db->query($query);
 						if($db->next_record()){
-							$lastEntryField = $db->f("".$val."");
+							$lastEntryField = $db->f("".$val);
 						}
 
 						if(isset($lastEntryField)) {
@@ -1704,11 +1704,11 @@ class weVersions {
 				$theKeys = "(". makeCSVFromArray($keys) .")";
 				$theValues = "VALUES(". makeCSVFromArray($vals) .")";
 
-				$q = "INSERT INTO ".VERSIONS_TABLE." ".$theKeys ." ". $theValues."";
+				$q = "INSERT INTO ".VERSIONS_TABLE." ".$theKeys ." ". $theValues;
 				$db = new DB_WE();
 				$db->query($q);
 
-				$q2 = "UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = '".abs($docID)."' AND documentTable = '".$db->escape($docTable)."' AND version != '".abs($lastEntry['version'])."'";
+				$q2 = "UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."' AND version != ".intval($lastEntry['version']);
 
 				$db->query($q2);
 			}
@@ -1728,7 +1728,7 @@ class weVersions {
 
 
 			if($ID!="") {
-				$w = "ID = '" . abs($ID) . "'";
+				$w = "ID = " . intval($ID);
 			}
 			elseif($where!="") {
 				$w = $where;
@@ -1748,7 +1748,7 @@ class weVersions {
 			}
 
 			$filePath = $_SERVER['DOCUMENT_ROOT'].$binaryPath;
-			$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE ID!='".abs($ID)."' AND binaryPath='".$db->escape($binaryPath)."' LIMIT 1","binaryPath",$db);
+			$binaryPathUsed = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE ID!=".intval($ID)." AND binaryPath='".$db->escape($binaryPath)."' LIMIT 1","binaryPath",$db);
 
 			if(file_exists($filePath) && $binaryPathUsed=="") {
 				@unlink($filePath);
@@ -1786,13 +1786,11 @@ class weVersions {
 			}
 
 
-			$query = "SELECT * FROM " . VERSIONS_TABLE . " WHERE ID='".abs($ID)."'  ";
-
-			$db->query($query);
+			$db->query("SELECT * FROM " . VERSIONS_TABLE . " WHERE ID=".intval($ID));
 
 			if($db->next_record()) {
 				foreach($tblFields as $k => $v) {
-					$resetArray[$v] = $db->f("".$v."");
+					$resetArray[$v] = $db->f("".$v);
 				}
 			}
 
@@ -1860,7 +1858,7 @@ class weVersions {
 
 				$resetDoc->EditPageNr = $_SESSION['EditPageNr'];
 
-				$existsInFileTable = f("SELECT ID FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID='".abs($resetDoc->ID)."' ","ID",$db);
+				$existsInFileTable = f("SELECT ID FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID=".intval($resetDoc->ID),"ID",$db);
 				//if document was deleted
 
 				if(empty($existsInFileTable)) {
@@ -1868,13 +1866,13 @@ class weVersions {
 					$oldId = $resetDoc->ID;
 					$oldCt = $resetDoc->ContentType;
 					$resetDoc->ID = 0;
-					$lastEntryVersion = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($resetArray["documentID"])."' AND documentTable='".$db->escape($resetArray["documentTable"])."' ORDER BY version DESC LIMIT 1","version",$db);
+					$lastEntryVersion = f("SELECT version FROM " . VERSIONS_TABLE . " WHERE documentID=".intval($resetArray["documentID"])." AND documentTable='".$db->escape($resetArray["documentTable"])."' ORDER BY version DESC LIMIT 1","version",$db);
 					$resetDoc->version = $lastEntryVersion + 1;
 				}
 
 				if($resetArray["ParentID"]!=0) {
 					//if folder was deleted
-					$existsPath = f("SELECT Path FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID='".abs($resetArray["ParentID"])."' AND IsFolder='1' ","Path",$db);
+					$existsPath = f("SELECT Path FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID=".intval($resetArray["ParentID"])." AND IsFolder='1' ","Path",$db);
 
 					if(empty($existsPath)) {
 						// create old folder if it does not exists
@@ -1920,7 +1918,7 @@ class weVersions {
 					}
 				}
 
-				$existsFile = f("SELECT COUNT(*) as Count FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID!= '".abs($resetArray["documentID"])."' AND Path= '".$db->escape($resetDoc->Path)."' ","Count",$db);
+				$existsFile = f("SELECT COUNT(*) as Count FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID!= ".intval($resetArray["documentID"])." AND Path= '".$db->escape($resetDoc->Path)."' ","Count",$db);
 
 				$doPark = false;
 				if(!empty($existsFile)) {
@@ -1955,7 +1953,7 @@ class weVersions {
 				$resetDoc->ModDate = time();
 				$resetDoc->Published = $resetArray["timestamp"];
 
-				$wasPublished = f("SELECT status FROM ".VERSIONS_TABLE." WHERE documentID= '".abs($resetArray["documentID"])."' AND documentTable= '".$db->escape($resetArray["documentTable"])."' and status='published' ORDER BY version DESC LIMIT 1 ","status",$db);
+				$wasPublished = f("SELECT status FROM ".VERSIONS_TABLE." WHERE documentID=".intval($resetArray["documentID"])." AND documentTable= '".$db->escape($resetArray["documentTable"])."' and status='published' ORDER BY version DESC LIMIT 1 ","status",$db);
 				$publishedDoc = $_SERVER['DOCUMENT_ROOT'].$resetDoc->Path;
 				$publishedDocExists = true;
 				if($resetArray["ContentType"]!="objectFile") {
@@ -1987,7 +1985,7 @@ class weVersions {
 
 				//update versions if id or path were changed
 				if(empty($existsInFileTable)) {
-					$q = "UPDATE ".VERSIONS_TABLE." SET documentID = '".abs($resetDoc->ID)."',ParentID = '".abs($resetDoc->ParentID)."',active = '0' WHERE documentID = '".abs($oldId)."' AND ContentType = '".$db->escape($oldCt)."'";
+					$q = "UPDATE ".VERSIONS_TABLE." SET documentID = ".intval($resetDoc->ID).",ParentID = ".intval($resetDoc->ParentID).",active = 0 WHERE documentID = ".intval($oldId)." AND ContentType = '".$db->escape($oldCt)."'";
 					$db->query($q);
 				}
 			}
@@ -2221,7 +2219,7 @@ public static function showValue($k, $v, $table=''){
 			case 'doctypeAll':
 				return ($v == 1) ? $GLOBALS['l_versions']['yes'] : '';
 			case 'DoctypeID':
-				return f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '" . abs($v) . "'", "DocType", $db);
+				return f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . intval($v), "DocType", $db);
 			case 'CategoryIDs':
 				$fieldValueText = "";
 				$v = makeArrayFromCSV($v);
@@ -2354,10 +2352,10 @@ public static function showValue($k, $v, $table=''){
 		$db = new DB_WE();
 		$tblFields = $this->getFieldsFromTable(VERSIONS_TABLE);
 
-		$db->query("SELECT * FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($docID)."' AND documentTable='".$db->escape($docTable)."' AND status IN ('saved','published','unpublished','deleted') ORDER BY version DESC LIMIT 1");
+		$db->query("SELECT * FROM " . VERSIONS_TABLE . " WHERE documentID=".intval($docID)." AND documentTable='".$db->escape($docTable)."' AND status IN ('saved','published','unpublished','deleted') ORDER BY version DESC LIMIT 1");
 		if($db->next_record()) {
 			foreach($tblFields as $k => $v) {
-				$modArray[$v] = $db->f("".$v."");
+				$modArray[$v] = $db->f("".$v);
 			}
 		}
 

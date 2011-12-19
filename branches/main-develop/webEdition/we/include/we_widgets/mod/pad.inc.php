@@ -50,7 +50,7 @@ $_sObjId = $_REQUEST['we_cmd'][5];
 
 switch ($_REQUEST['we_cmd'][2]) {
 	case 'delete' :
-		$_sql = "DELETE FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE ID = " . abs($q_Csv);
+		$_sql = "DELETE FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE ID = " . intval($q_Csv);
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', $q_Csv);
@@ -99,7 +99,7 @@ switch ($_REQUEST['we_cmd'][2]) {
 			ValidUntil
 		) VALUES (
 			'" . ($_title) . "',
-			" . abs($_SESSION['user']['ID']) . ",
+			" . intval($_SESSION['user']['ID']) . ",
 			DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
 			'" . $GLOBALS['DB_WE']->escape($entTitle) . "',
 			'" . $GLOBALS['DB_WE']->escape($entText) . "',
@@ -135,12 +135,12 @@ switch ($bSort) {
 if (!$bDisplay) {
 	$_sql = "SELECT * FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
-		UserID = " . abs($_SESSION['user']['ID']) . "
+		UserID = " . intval($_SESSION['user']['ID']) . "
 		ORDER BY " . $q_sort;
 } else {
 	$_sql = "SELECT * FROM " . $GLOBALS['DB_WE']->escape($_table) . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($_title) . "' AND
-		UserID = " . abs($_SESSION['user']['ID']) . " AND (
+		UserID = " . intval($_SESSION['user']['ID']) . " AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			) OR (

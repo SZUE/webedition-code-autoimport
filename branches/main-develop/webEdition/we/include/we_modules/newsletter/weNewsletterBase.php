@@ -54,7 +54,7 @@ class weNewsletterBase{
 	 */
 	function load($id=0)
 	{
-		if($id) $this->ID=abs($id);
+		if($id) $this->ID=intval($id);
 		if ($this->ID){
 			$tableInfo = $this->db->metadata($this->table);
 			$this->db->query("SELECT * FROM ".$this->db->escape($this->table)." WHERE ID='".$this->ID."'");
@@ -292,7 +292,7 @@ class weNewsletterBase{
 
 	function htmlSelectEmailList($name,$values,$size=1,$selectedIndex="",$multiple=false,$attribs="",$compare="value",$width="",$cls="defaultfont"){
 		reset($values);
-		$ret = '<select class="'.$cls.'" name="'.trim($name).'" size="'.abs($size).'"'.($multiple ? " multiple" : "").($attribs ? " $attribs" : "").($width ? ' style="width: '.$width.'px"' : '').'>'."\n";
+		$ret = '<select class="'.$cls.'" name="'.trim($name).'" size='.abs($size).' '.($multiple ? " multiple" : "").($attribs ? " $attribs" : "").($width ? ' style="width: '.$width.'px"' : '').'>'."\n";
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		while(list($value,$text) = each($values)){
 			$ret .= '<option value="'.htmlspecialchars($value).'"'.(in_array((($compare == "value") ? $value : $text),$selIndex) ? " selected" : "").(we_check_email($text)?' class="markValid"':' class="markNotValid"').'>'.$text."</option>\n";

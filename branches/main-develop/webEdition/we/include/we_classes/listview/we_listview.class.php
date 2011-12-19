@@ -178,7 +178,7 @@ class we_listview extends listviewBase{
 
 			foreach($custArr as $cid){
 
-				$customerData = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID=" . abs($cid), $this->DB_WE);
+				$customerData = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID=" . intval($cid), $this->DB_WE);
 				$this->customerArray["cid_" . $customerData["ID"]] = $customerData;
 			}
 
@@ -285,7 +285,7 @@ class we_listview extends listviewBase{
 			if($calendar != ""){
 				$this->calendar_struct["storage"][$this->DB_WE->f("ID")] = (int) $this->DB_WE->f("Calendar");
 			}
-			if($this->customers === "*" && abs($this->DB_WE->f("WebUserID")) > 0){
+			if($this->customers === "*" && intval($this->DB_WE->f("WebUserID")) > 0){
 				$_idListArray[] = $this->DB_WE->f("WebUserID");
 			}
 		}

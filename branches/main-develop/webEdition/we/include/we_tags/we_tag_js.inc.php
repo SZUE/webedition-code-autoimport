@@ -28,7 +28,7 @@ function we_tag_js($attribs, $content){
 	if ($foo)
 		return $foo;
 	$id = weTag_getAttribute("id", $attribs);
-	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($id)."", new DB_WE());
+	$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".intval($id), new DB_WE());
 
 	if (count($row)) {
 

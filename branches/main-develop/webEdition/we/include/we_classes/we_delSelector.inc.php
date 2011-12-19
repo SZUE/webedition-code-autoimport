@@ -180,7 +180,7 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-if(abs($this->dir)==0){
+if(intval($this->dir)==0){
 	print 'top.fsheader.disableRootDirButs();
 top.fsfooter.disableDelBut();
 ';
@@ -262,10 +262,10 @@ function setDir(id){
 	function renameChildrenPath($id){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT ID,IsFolder,Text FROM ".$db->escape($this->table)." WHERE ParentID='".abs($id)."'");
+		$db->query("SELECT ID,IsFolder,Text FROM ".$db->escape($this->table)." WHERE ParentID=".intval($id));
 		while($db->next_record()){
-			$newPath = f("SELECT Path FROM ".$db->escape($this->table). " WHERE ID='".abs($id)."'","Path",$db2)."/".$db->f("Text");
-			$db2->query("UPDATE ".$db->escape($this->table)." SET Path='".$db->escape($newPath)."' WHERE ID='".abs($db->f("ID"))."'");
+			$newPath = f("SELECT Path FROM ".$db->escape($this->table). " WHERE ID=".intval($id),"Path",$db2)."/".$db->f("Text");
+			$db2->query("UPDATE ".$db->escape($this->table)." SET Path='".$db->escape($newPath)."' WHERE ID=".intval($db->f("ID")));
 			if($db->f("IsFolder")){
 				$this->renameChildrenPath($db->f("ID"));
 			}
@@ -346,7 +346,7 @@ function setDir(id){
 
 		$_query = "	SELECT ".$this->fields."
 					FROM ".$this->db->escape($this->table)."
-					WHERE ParentID='".abs($this->dir)."'".makeOwnersSql().
+					WHERE ParentID=".intval($this->dir).' '.makeOwnersSql().
 					$wsQuery . ($this->order ? (' ORDER BY '.$this->order) : '');
 
 		$this->db->query($_query);

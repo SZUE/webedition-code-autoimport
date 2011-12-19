@@ -96,7 +96,7 @@ class weWorkflowStep extends weWorkflowBase{
 	function getAllSteps($workflowID){
 		$db = new DB_WE;
 
-		$db->query("SELECT ID FROM ".WORKFLOW_STEP_TABLE." WHERE workflowID =".abs($workflowID)." ORDER BY ID");
+		$db->query("SELECT ID FROM ".WORKFLOW_STEP_TABLE." WHERE workflowID =".intval($workflowID)." ORDER BY ID");
 
 		$steps = array();
 
@@ -137,7 +137,7 @@ class weWorkflowStep extends weWorkflowBase{
 		$tasksList = array();
 		for ($i=0; $i<count($this->tasks); $i++)
 		{
-			$this->tasks[$i]->stepID = abs($this->ID);
+			$this->tasks[$i]->stepID = intval($this->ID);
 			$this->tasks[$i]->save();
 
 			$tasksList[] = $this->tasks[$i]->ID;
@@ -145,7 +145,7 @@ class weWorkflowStep extends weWorkflowBase{
 
 		// !!! here we have to delete all other tasks in database except this in array
 		if ( count($tasksList) >0 ){
-			$deletequery = 'DELETE FROM '.WORKFLOW_TASK_TABLE.' WHERE stepID=' . abs($this->ID) . ' AND ID NOT IN (' . join(",",$tasksList) . ')';
+			$deletequery = 'DELETE FROM '.WORKFLOW_TASK_TABLE.' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",",$tasksList) . ')';
 			$afectedRows = $db->query($deletequery);
 		}
 	}

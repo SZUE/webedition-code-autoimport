@@ -55,13 +55,13 @@ if(! ($isObj OR $isTempl) ) {
 	//get path of preview-file
 	$binaryPathNew = $newDoc['binaryPath'];
 	if($binaryPathNew == "") {
-		$binaryPathNew = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($newDoc['version'])."' AND documentTable='".$_db->escape($newDoc['documentTable'])."' AND documentID='".abs($newDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
+		$binaryPathNew = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<".intval($newDoc['version'])." AND documentTable='".$_db->escape($newDoc['documentTable'])."' AND documentID=".intval($newDoc['documentID'])."  ORDER BY version DESC limit 1 ","binaryPath",$_db);
 	}
 
 	if(!empty($oldDoc)) {
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if($binaryPathOld == "") {
-			$binaryPathOld = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<'".abs($oldDoc['version'])."' AND documentTable='".$_db->escape($oldDoc['documentTable'])."' AND documentID='".abs($oldDoc['documentID'])."'  ORDER BY version DESC limit 1 ","binaryPath",$_db);
+			$binaryPathOld = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<".intval($oldDoc['version'])." AND documentTable='".$_db->escape($oldDoc['documentTable'])."' AND documentID=".intval($oldDoc['documentID'])." ORDER BY version DESC limit 1 ","binaryPath",$_db);
 		}
 	}
 
@@ -204,10 +204,10 @@ $_versions_time_days = new we_htmlSelect(array(
 
 $versionOld = "";
 if(!empty($oldDoc)) {
-	$versionOld = " AND version!='".abs($oldDoc['version'])."'";
+	$versionOld = " AND version!=".intval($oldDoc['version']);
 }
 $versions = array();
-$query = "SELECT ID,version, timestamp FROM " . VERSIONS_TABLE . " WHERE documentID='".abs($newDoc['documentID'])."' AND documentTable='".$_db->escape($newDoc['documentTable'])."' AND version!='".abs($newDoc['version'])."' ".$versionOld."  ORDER BY version ASC";
+$query = "SELECT ID,version, timestamp FROM " . VERSIONS_TABLE . " WHERE documentID=".intval($newDoc['documentID'])." AND documentTable='".$_db->escape($newDoc['documentTable'])."' AND version!=".intval($newDoc['version']).' '.$versionOld."  ORDER BY version ASC";
 $_db->query($query);
 while($_db->next_record()){
 	$versions[$_db->f("ID")]['version'] = $_db->f("version");

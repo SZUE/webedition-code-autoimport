@@ -273,7 +273,7 @@ class we_user {
 	function initFromDB($id) {
 		$ret=false;
 		if($id) {
-			$this->DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE ID=".abs($id));
+			$this->DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE ID=".intval($id));
 			if($this->DB_WE->next_record()) {
 				$this->ID=$id;
 				$this->getPersistentSlotsFromDB();
@@ -318,7 +318,7 @@ class we_user {
 			}
 			//remove last ,
 			$updt = substr($updt, 0, -1);
-			$q = "UPDATE ".$this->DB_WE->escape($this->Table)." SET $updt WHERE ID=".abs($this->ID);
+			$q = "UPDATE ".$this->DB_WE->escape($this->Table)." SET $updt WHERE ID=".intval($this->ID);
 			$this->DB_WE->query($q);
 		}
 		else {
@@ -367,7 +367,7 @@ class we_user {
 
 	function getPersistentSlotsFromDB() {
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$this->DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE ID=".abs($this->ID));
+		$this->DB_WE->query("SELECT * FROM ".USER_TABLE." WHERE ID=".intval($this->ID));
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			$fieldName = $tableInfo[$i]["name"];
 			if(in_array($fieldName,$this->persistent_slots)) {
@@ -392,14 +392,14 @@ class we_user {
 				return -5;
 		}
 		if($this->Type==2) {
-			$foo=getHash("SELECT ID,username FROM ".USER_TABLE." WHERE ID=".abs($this->Alias),$this->DB_WE);
+			$foo=getHash("SELECT ID,username FROM ".USER_TABLE." WHERE ID=".intval($this->Alias),$this->DB_WE);
 			$uorginal=$foo["ID"];
 			$search=true;
 			$ount=0;
 			$try_name="@".$foo["username"];
 			$try_text=$foo["username"];
 			while($search) {
-				$this->DB_WE->query("SELECT username FROM ".USER_TABLE." WHERE ID<>".abs($this->ID)."' AND ID<>".abs($uorginal)." AND username='".$this->DB_WE->escape($try_name)."'");
+				$this->DB_WE->query("SELECT username FROM ".USER_TABLE." WHERE ID!=".intval($this->ID)."' AND ID!=".intval($uorginal)." AND username='".$this->DB_WE->escape($try_name)."'");
 				if(!$this->DB_WE->next_record()) {
 					$search=false;
 				}
@@ -693,7 +693,7 @@ function mapPermissions() {
 
 	function getPreferenceSlotsFromDB() {
 		$tableInfo = $this->DB_WE->metadata(PREFS_TABLE);
-		$this->DB_WE->query("SELECT * FROM ".PREFS_TABLE." WHERE userID=".abs($this->ID));
+		$this->DB_WE->query("SELECT * FROM ".PREFS_TABLE." WHERE userID=".intval($this->ID));
 		$this->DB_WE->next_record();
 		for($i=0;$i<sizeof($tableInfo);$i++) {
 			$fieldName = $tableInfo[$i]["name"];
@@ -737,7 +737,7 @@ function mapPermissions() {
 			}
 			//remove last ,
 			$updt = substr($updt, 0, -1);
-			$q = 'UPDATE '.PREFS_TABLE.' SET '.$updt.' WHERE userID='.abs($this->ID);
+			$q = 'UPDATE '.PREFS_TABLE.' SET '.$updt.' WHERE userID='.intval($this->ID);
 			$this->DB_WE->query($q);
 		} else {
 			$q = 		"INSERT INTO ".PREFS_TABLE." ("
@@ -772,7 +772,7 @@ function mapPermissions() {
 					.	"use_jupload,"
 					.	"editorMode"
 					.	") VALUES ("
-					.	abs($this->ID).", "
+					.	intval($this->ID).", "
 					.	"'0', "
 					.	"'', "
 					.	"'', "
@@ -1317,8 +1317,8 @@ function mapPermissions() {
 	#--------------------------------------------------------------------------#
 
 	function resetOwnersCreatorModifier() {
-		$newID = abs($_SESSION["user"]["ID"]);
-		$this->ID = abs($this->ID);
+		$newID = intval($_SESSION["user"]["ID"]);
+		$this->ID = intval($this->ID);
 		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
 		$this->DB_WE->query("UPDATE ".FILE_TABLE." SET Owners='' WHERE Owners=','");
 		$this->DB_WE->query("UPDATE ".TEMPLATES_TABLE." SET Owners=REPLACE(Owners,',".$this->ID.",',',')");
@@ -1346,7 +1346,7 @@ function mapPermissions() {
 		foreach($this->extensions_slots as $k=>$v) {
 			$this->extensions_slots[$k]->delete();
 		}
-		$this->ID = abs($this->ID);
+		$this->ID = intval($this->ID);
 		if($this->Type==0) {
 			$this->DB_WE->query("DELETE FROM ".USER_TABLE." WHERE ID=".$this->ID);
 			$this->DB_WE->query("DELETE FROM ".PREFS_TABLE." WHERE userID=".$this->ID);
@@ -1375,7 +1375,7 @@ function mapPermissions() {
 	#--------------------------------------------------------------------------'
 
 	function isLastAdmin() {
-		$this->ID = abs($this->ID);
+		$this->ID = intval($this->ID);
 		$this->DB_WE->query("SELECT ID FROM ".USER_TABLE." WHERE Permissions LIKE ('%\"ADMINISTRATOR\";i:1;%') AND ID<>".$this->ID);
 		if($this->DB_WE->next_record()) {
 			return false;
@@ -1399,7 +1399,7 @@ function mapPermissions() {
 		$db_tmp=new DB_WE();
 		$path = "";
 		if($id==0) {
-			$id=abs($this->ParentID);
+			$id=intval($this->ParentID);
 			$path=$db_tmp->escape($this->username);
 		}
 		$foo=getHash("SELECT username,ParentID FROM ".USER_TABLE." WHERE ID='".$id."';",$db_tmp);
@@ -1425,7 +1425,7 @@ function mapPermissions() {
 			}
 		}
 		$db_tmp=new DB_WE;
-		$this->DB_WE->query("SELECT ParentID,ParentPerms,Permissions,Alias FROM ".USER_TABLE." WHERE ID=".abs($this->ID)." OR Alias=".abs($this->ID));
+		$this->DB_WE->query("SELECT ParentID,ParentPerms,Permissions,Alias FROM ".USER_TABLE." WHERE ID=".intval($this->ID)." OR Alias=".intval($this->ID));
 		$group_permissions=array();
 		while($this->DB_WE->next_record()) {
 			if($this->DB_WE->f("Alias")!=$this->ID) {
@@ -1724,7 +1724,7 @@ function mapPermissions() {
 				$startDocid = $_SESSION["save_user_seem_start_file"][$userID];
 			} else {
 
-				$startDocid = f("SELECT seem_start_file FROM ".PREFS_TABLE." WHERE userID = " . abs($userID) ,"seem_start_file",$this->DB_WE);
+				$startDocid = f("SELECT seem_start_file FROM ".PREFS_TABLE." WHERE userID = " . intval($userID) ,"seem_start_file",$this->DB_WE);
 			}
 
 			$startDocPath = "";
@@ -1774,7 +1774,7 @@ function mapPermissions() {
 
 		$_username = ($this->ID) ? we_html_tools::htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b><input type="hidden" id="yuiAcInputPathName" value="'.($this->username).'">',g_l('modules_users',"[group_name]")) : $this->getUserfield("username","group_name","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="'.$this->Name.'_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onChange="top.content.setHot();">'.$this->Description.'</textarea>';
-		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($this->ParentID));
+		$this->DB_WE->query("SELECT Path FROM ".USER_TABLE." WHERE ID=".intval($this->ParentID));
 
 		if ($this->DB_WE->next_record()) {
 			$parent_name=$this->DB_WE->f("Path");
@@ -1814,7 +1814,7 @@ function mapPermissions() {
 
 		$content='<select name="'.$this->Name.'_Users" size="8" style="width:560px" onChange="if(this.selectedIndex > -1){edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.'.$this->Name.'_Users.value)">';
 		if($this->ID) {
-			$this->DB_WE->query("SELECT ID,username,Text,Type FROM ".USER_TABLE." WHERE Type IN (0,2) AND ParentID=".abs($this->ID));
+			$this->DB_WE->query("SELECT ID,username,Text,Type FROM ".USER_TABLE." WHERE Type IN (0,2) AND ParentID=".intval($this->ID));
 			while($this->DB_WE->next_record()) {
 				$content.='<option value="'.$this->DB_WE->f("ID").'">'.(($this->DB_WE->f("Type")==2) ? "[" : "").$this->DB_WE->f("Text").(($this->DB_WE->f("Type")==2) ? "]" : "");
 			}
@@ -2948,18 +2948,18 @@ function mapPermissions() {
 		$alias_text="";
 		$parent_text="/";
 		if($this->ID) {
-			$foo=getHash("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($this->Alias),$this->DB_WE);
+			$foo=getHash("SELECT Path FROM ".USER_TABLE." WHERE ID=".intval($this->Alias),$this->DB_WE);
 			$alias_text=$foo["Path"];
 			if($this->ParentID==0) {
 				$parent_text="/";
 			}
 			else {
-				$foo=getHash("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($this->ParentID),$this->DB_WE);
+				$foo=getHash("SELECT Path FROM ".USER_TABLE." WHERE ID=".intval($this->ParentID),$this->DB_WE);
 				$parent_text=$foo["Path"];
 			}
 		}
 		if($this->ParentID != 0){
-            $foo=getHash("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($this->ParentID),$this->DB_WE);
+            $foo=getHash("SELECT Path FROM ".USER_TABLE." WHERE ID=".intval($this->ParentID),$this->DB_WE);
             $parent_text=$foo["Path"];
 		}
 

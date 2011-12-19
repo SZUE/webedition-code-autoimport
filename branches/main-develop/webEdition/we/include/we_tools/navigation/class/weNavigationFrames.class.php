@@ -289,7 +289,7 @@ class weNavigationFrames extends weToolFrames
 
 		if (isset($this->Model->Text) && $this->Model->Text != '' && isset($this->Model->ID) && $this->Model->ID != '') {
 			$_parentid = f(
-					'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . abs($this->Model->ID) . ';',
+					'SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID),
 					'ParentID',
 					$this->db);
 		} elseif (isset($_REQUEST['presetFolder']) && $_REQUEST['presetFolder']) {
@@ -299,7 +299,7 @@ class weNavigationFrames extends weToolFrames
 		}
 
 		$_num = $_parentid ? f(
-				'SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . abs($_parentid) . ';',
+				'SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid),
 				'OrdCount',
 				new DB_WE()) : 0;
 
@@ -804,9 +804,9 @@ class weNavigationFrames extends weToolFrames
 						$_firstClass = $this->db->f('ID');
 					}
 					$classNames[$this->db->f('ID')] = $this->db->f('Text');
-					$objectDirs[] = $this->db->f('ID') . ':' . abs($this->db->f('ParentID'));
+					$objectDirs[] = $this->db->f('ID') . ':' . intval($this->db->f('ParentID'));
 					$objectPaths[] = $this->db->f('ID') . ':"' . f(
-							'SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . abs($this->db->f('ParentID')),
+							'SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->db->f('ParentID')),
 							'Path',
 							new DB_WE()) . '"';
 				}
@@ -1080,7 +1080,7 @@ class weNavigationFrames extends weToolFrames
 
 			if (!empty($this->Model->DocTypeID)) {
 				$_dt = f(
-						'SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . abs($this->Model->DocTypeID),
+						'SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->Model->DocTypeID),
 						'DocType',
 						new DB_WE());
 				$_table->setCol(1, 0, array(
@@ -1100,7 +1100,7 @@ class weNavigationFrames extends weToolFrames
 					'style' => 'font-weight: bold;'
 				), g_l('navigation','[objects]'));
 				$_cn = f(
-						'SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . abs($this->Model->ClassID),
+						'SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->Model->ClassID),
 						'Text',
 						new DB_WE());
 				$_table->setCol(1, 0, array(
@@ -1743,7 +1743,7 @@ function onFolderSelectionChangeJS(elem) {
 			$_db = new DB_WE();
 			$_fields = array();
 			$_templates = f(
-					'SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . abs($_selection),
+					'SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection),
 					'Templates',
 					$_db);
 			$_ids = makeArrayFromCSV($_templates);

@@ -393,7 +393,7 @@ class weWorkflowView extends weWorkflowBase{
 				$ids.=$this->htmlHidden($this->uid."_task".$counter."_".$counter1."_tid",$tv->ID);
 				$headline[$counter1+3]["dat"]=g_l('modules_workflow','[user]').(string )($counter1+1);
 
-				$foo=f("SELECT Path FROM ".USER_TABLE." WHERE ID=".abs($tv->userID),"Path",$this->db);
+				$foo=f("SELECT Path FROM ".USER_TABLE." WHERE ID=".intval($tv->userID),"Path",$this->db);
 				//javascript:top.content.setHot();we_cmd('browse_users','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value','document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value','',document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value);
 				$wecmdenc1= we_cmd_enc("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_userid.value");
 				$wecmdenc2= we_cmd_enc("document.we_form.".$this->uid."_task_".$counter."_".$counter1."_usertext.value");
@@ -1061,7 +1061,7 @@ class weWorkflowView extends weWorkflowBase{
 					if($newone)
 						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."'");
 					else
-						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."' AND ID<>".abs($this->workflowDef->ID)."");
+						$this->db->query("SELECT COUNT(*) AS Count FROM ".WORKFLOW_TABLE." WHERE Text='".$this->db->escape($this->workflowDef->Text)."' AND ID!=".intval($this->workflowDef->ID));
 
 					if($this->db->next_record()){
 						$double = $this->db->f("Count");
@@ -1530,7 +1530,7 @@ class weWorkflowView extends weWorkflowBase{
 
 				$workflowTask=new weWorkflowTask($tv->workflowTaskID);
 
-				$foo=f("SELECT username FROM ".USER_TABLE." WHERE ID=".abs($workflowTask->userID),"username",$db);
+				$foo=f("SELECT username FROM ".USER_TABLE." WHERE ID=".intval($workflowTask->userID),"username",$db);
 
 				if($sk==$current)
 					$out=($tv->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$foo."</div>";
@@ -1583,7 +1583,7 @@ class weWorkflowView extends weWorkflowBase{
 			$counter++;
 		}
 
-		$wfType = f("SELECT ".WORKFLOW_TABLE.".Type as Type FROM ".WORKFLOW_TABLE.",".WORKFLOW_DOC_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".ID=".abs($workflowDocument->ID),"Type",$db);
+		$wfType = f("SELECT ".WORKFLOW_TABLE.".Type as Type FROM ".WORKFLOW_TABLE.",".WORKFLOW_DOC_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".ID=".intval($workflowDocument->ID),"Type",$db);
 		$out='<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td></td><td>'.we_html_tools::htmlDialogBorder3(730,300,$content,$headline).'</td><td>'.we_html_tools::getPixel(15,10).'</td>

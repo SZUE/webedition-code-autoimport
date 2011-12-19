@@ -73,10 +73,10 @@ if (!$wfchk) {
 				'IsFolder' => 0, 'Path' => '', 'hasFiles' => 0
 			);
 			if (sizeof($selectedItems) > 0 && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)) {
-				$idInfos = getHash("SELECT IsFolder, Path FROM ".$DB_WE->escape($table)." WHERE ID=" . abs($selectedItems[0]), $DB_WE);
+				$idInfos = getHash("SELECT IsFolder, Path FROM ".$DB_WE->escape($table)." WHERE ID=" . intval($selectedItems[0]), $DB_WE);
 				if ($idInfos['IsFolder']) {
 					$idInfos['hasFiles'] = f(
-							"SELECT ID FROM ".$DB_WE->escape($table)." WHERE ParentID=" . abs($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'",
+							"SELECT ID FROM ".$DB_WE->escape($table)." WHERE ParentID=" . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $DB_WE->escape($idInfos['Path']) . "%'",
 							"ID",
 							$DB_WE) > 0 ? 1 : 0;
 				}

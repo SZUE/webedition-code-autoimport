@@ -247,7 +247,7 @@ class versionsLogView {
 			$out .= g_l('logging','[user]').":";
 			$out .= '</td>';
 			$out .= '<td width="auto">';
-			$out .= f("SELECT Text FROM `".USER_TABLE."` WHERE ID='".abs($content[$i]['userID'])."'","Text", new DB_WE());
+			$out .= f("SELECT Text FROM `".USER_TABLE."` WHERE ID=".intval($content[$i]['userID']),"Text", new DB_WE());
 			$out .= '</td>';
 			$out .= '</tr>';
 			$out .= '<tr>';
@@ -316,7 +316,7 @@ class versionsLogView {
 
 		$db = new DB_WE();
 
-		$db->query("SELECT data,action FROM `".VERSIONS_TABLE_LOG."` WHERE ID='".abs($logId)."'");
+		$db->query("SELECT data,action FROM `".VERSIONS_TABLE_LOG."` WHERE ID=".intval($logId));
 		while($db->next_record()){
 			$data = $db->f("data");
 			$action = $db->f("action");
@@ -335,10 +335,10 @@ class versionsLogView {
 			$out .= we_html_tools::getPixel(1,1);
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= g_l('logging','[ID]')."";
+			$out .= g_l('logging','[ID]');
 			$out .= '</td>';
 			$out .= '<td>';
-			$out .= g_l('logging','[name]')."";
+			$out .= g_l('logging','[name]');
 			$out .= '</td>';
 			$out .= '<td>';
 			$out .= g_l('logging','[path]');

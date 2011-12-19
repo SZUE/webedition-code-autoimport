@@ -127,7 +127,7 @@ function we_tag_writeShopData($attribs,$content) {
 			}
 
 			$sql = "INSERT INTO " . SHOP_TABLE . " (intOrderID, IntArticleID, IntQuantity, Price, IntCustomerID, DateOrder, DateShipping, DatePayment, strSerial) ";
-			$sql .= "VALUES (" . $orderID . ", " . abs($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".$DB_WE->escape($preis)."' , " . abs($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
+			$sql .= "VALUES (" . $orderID . ", " . intval($shoppingItem['id']) . ", '" . abs($shoppingItem['quantity']) . "', '".$DB_WE->escape($preis)."' , " . intval($_SESSION["webuser"]["ID"]) . ", now(), '00000000000000', '00000000000000', '" . $DB_WE->escape(serialize($shoppingItem['serial'])) . "')";
 
 			if (!$DB_WE->query($sql)) {
 				echo "Data Insert Failed";

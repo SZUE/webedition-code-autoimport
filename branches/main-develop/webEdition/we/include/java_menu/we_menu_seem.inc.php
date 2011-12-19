@@ -634,7 +634,7 @@ if(we_hasPerm("ADMINISTRATOR")) {
 			if($modInfo['hasSettings']) {
 				$we_menu["4184$z"]["text"] = $modInfo["text"] . "...";
 				$we_menu["4184$z"]["parent"] = "4180000";
-				$we_menu["4184$z"]["cmd"] = "edit_settings_".$modInfo["name"]."";
+				$we_menu["4184$z"]["cmd"] = "edit_settings_".$modInfo["name"];
 				$we_menu["4184$z"]["perm"] = isset($modInfo["perm"]) ? $modInfo["perm"] : "";
 				$we_menu["4184$z"]["enabled"] = "1";
 				$z++;

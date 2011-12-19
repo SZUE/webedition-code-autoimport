@@ -86,11 +86,11 @@ class searchtoolsearch extends we_search
 			}
 			if (isset($_REQUEST["setView"])) {
 				$this->query(
-						"UPDATE " . FILE_TABLE . " SET listview=" . abs($_REQUEST['setView']) . " WHERE ID=" . abs($obj->ID) . "");
+						"UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['setView']) . " WHERE ID=" . intval($obj->ID) );
 				$obj->searchclassFolder->setView = ($_REQUEST["setView"]);
 			} else {
 				$obj->searchclassFolder->setView = f(
-						"SELECT listview FROM " . FILE_TABLE . " WHERE ID='" . abs($obj->ID) . "'",
+						"SELECT listview FROM " . FILE_TABLE . " WHERE ID=" . intval($obj->ID),
 						"listview",
 						$GLOBALS['DB_WE']);
 			}
@@ -122,7 +122,7 @@ class searchtoolsearch extends we_search
 		} else {
 			if (isset($_REQUEST['we_cmd']["setView"]) && isset($_REQUEST["id"])) {
 				$this->query(
-						"UPDATE " . FILE_TABLE . " SET listview=" . abs($_REQUEST['we_cmd']["setView"]) . " WHERE ID=" . abs($_REQUEST["id"]) . "");
+						"UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['we_cmd']["setView"]) . " WHERE ID=" . intval($_REQUEST["id"]) );
 			}
 		}
 	}
@@ -148,7 +148,7 @@ class searchtoolsearch extends we_search
 		$_db = new DB_WE();
 		$vals = array();
 
-		$_db->query("SELECT ID, Text FROM " . USER_TABLE . "");
+		$_db->query("SELECT ID, Text FROM " . USER_TABLE );
 		while ($_db->next_record()) {
 			$v = $_db->f("ID");
 			$t = $_db->f("Text");
@@ -406,7 +406,7 @@ class searchtoolsearch extends we_search
 							} else {
 								$where .= " AND (";
 							}
-							$where .= " " . $_db->escape($table) . ".ID = " . abs($k) . "";
+							$where .= " " . $_db->escape($table) . ".ID = " . intval($k) ;
 							$i++;
 						}
 					}
@@ -480,7 +480,7 @@ class searchtoolsearch extends we_search
 					$where .= " (";
 				}
 
-				$where .= $fieldFileTable . " = '" . abs($id) . "' ";
+				$where .= $fieldFileTable . " = " . intval($id) . ' ';
 
 				$i++;
 			}
@@ -703,7 +703,7 @@ class searchtoolsearch extends we_search
 			$Ids = array();
 			$regs = array();
 
-			$_db->query("SELECT ID FROM " . OBJECT_TABLE . "");
+			$_db->query("SELECT ID FROM " . OBJECT_TABLE );
 			while ($_db->next_record()) {
 				$_classes[] = $_db->f('ID');
 			}
@@ -839,7 +839,7 @@ class searchtoolsearch extends we_search
 				if (is_array($titles) && !empty($titles)) {
 					foreach ($titles as $k => $v) {
 						if ($v != "") {
-							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . $this->escape($v) . "' WHERE docID = '" . abs($k) . "' AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
+							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . $this->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
 							$this->query($query3);
 						}
 					}
@@ -1148,7 +1148,7 @@ class searchtoolsearch extends we_search
 	{
 		$DB_WE = new DB_WE();
 
-		$query = "SELECT ID FROM `" . escape_sql_query($table) . "` WHERE ParentID='" . abs($folderID) . "' AND IsFolder='1' ";
+		$query = "SELECT ID FROM `" . escape_sql_query($table) . "` WHERE ParentID=" . intval($folderID) . " AND IsFolder=1 ";
 		$DB_WE->query($query);
 		while ($DB_WE->next_record()) {
 			$_SESSION["weSearch"]["countChilds"][] = $DB_WE->f("ID");
@@ -1165,7 +1165,7 @@ class searchtoolsearch extends we_search
 
 	function ofFolderOnly($folderID)
 	{
-		return ' AND ParentID = ' . abs($folderID);
+		return ' AND ParentID = ' . intval($folderID);
 
 	}
 

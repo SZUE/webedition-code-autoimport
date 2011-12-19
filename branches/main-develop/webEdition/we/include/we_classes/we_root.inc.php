@@ -275,7 +275,7 @@ abstract class we_root extends we_class{
 		//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .$cmd."','".session_id()."','$rootDirID')
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
-		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .str_replace('\\','',$cmd)."");
+		$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged .str_replace('\\','',$cmd));
 		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'$table','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','".session_id()."','$rootDirID')");
 
 		$yuiSuggest->setAcId("Path",id_to_path(array($rootDirID),$table));
@@ -374,7 +374,7 @@ abstract class we_root extends we_class{
 		$content .= '<tr><td>'.we_html_tools::getPixel(20,2).'</td><td>'.we_html_tools::getPixel(351,2).'</td><td>'.we_html_tools::getPixel(100,2).'</td><td>'.we_html_tools::getPixel(26,2).'</td></tr>'."\n";
 		if(sizeof($owners)){
 			for($i=0;$i<sizeof($owners);$i++){
-				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID='".abs($owners[$i])."'",$this->DB_WE);
+				$foo = getHash("SELECT ID,Path,Icon from " . USER_TABLE . " WHERE ID=".intval($owners[$i]),$this->DB_WE);
 				$icon = isset($foo["Icon"]) ? ICON_DIR.$foo["Icon"] : ICON_DIR."user.gif";
 				$_path = isset($foo["Path"]) ? $foo["Path"] : "";
 				$content .= '<tr><td><img src="'.$icon.'" width="16" height="18" /></td><td class="defaultfont">'.$_path.'</td><td>'.
@@ -520,7 +520,7 @@ abstract class we_root extends we_class{
 
 		if ((int)$userid >0)
 		{
-			$username = f("SELECT username FROM " . USER_TABLE . " WHERE ID='".abs($userid)."'","username",$this->DB_WE);
+			$username = f("SELECT username FROM " . USER_TABLE . " WHERE ID=".intval($userid),"username",$this->DB_WE);
 		}
 
 		//javascript:we_cmd('browse_users','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','user')
@@ -553,7 +553,7 @@ function formTriggerDocument($isclass=false){
 			$idname = 'we_'.$this->Name.'_TriggerID';
 			$myid = $this->TriggerID ? $this->TriggerID : "";
 		}
-		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID=".intval($myid),"Path",$this->DB_WE);
 		//javascript:we_cmd('openDocselector',document.we_form.elements['$idname'].value,'$table','','document.we_form.elements[\\'$textname\\'].value','opener._EditorFrame.setEditorIsHot(true);','".session_id()."','','text/webedition',1)"
 		$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
@@ -588,9 +588,9 @@ function formTriggerDocument($isclass=false){
 		//$idname = 'we_'.$this->Name.'_LanguageDocID-'.$langkey;
 		//$myid = $this->TriggerID ? $this->TriggerID : "";
 		$myid = $LDID ? $LDID:'';
-		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($myid)."'","Path",$this->DB_WE);
+		$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID=".intval($myid),"Path",$this->DB_WE);
 		if($rootDirID && $path==''){
-			$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID='".abs($rootDirID)."'","Path",$this->DB_WE);
+			$path = f("SELECT Path FROM ".$this->DB_WE->escape($table)." WHERE ID=".intval($rootDirID),"Path",$this->DB_WE);
 		}
 		$yuiSuggest->setAcId($ackeyshort,$path);
 		if ($table == FILE_TABLE){
@@ -698,7 +698,7 @@ function formTriggerDocument($isclass=false){
 
 	/* get the Path of the Parent-Object */
 	function getParentPath(){
-		return (!$this->ParentID) ? "/" : f("SELECT Path FROM ".$this->DB_WE->escape($this->Table)." WHERE ID=".abs($this->ParentID),"Path",$this->DB_WE);
+		return (!$this->ParentID) ? "/" : f("SELECT Path FROM ".$this->DB_WE->escape($this->Table)." WHERE ID=".intval($this->ParentID),"Path",$this->DB_WE);
 	}
 
 	function constructPath(){
@@ -707,7 +707,7 @@ function formTriggerDocument($isclass=false){
 			$p = "/".$this->Text;
 			$z=0;
 			while($pid && $z < 50){
-				$h = getHash("SELECT ParentID,Text FROM ".$this->DB_WE->escape($this->Table)." WHERE ID='".abs($pid)."'",$this->DB_WE);
+				$h = getHash("SELECT ParentID,Text FROM ".$this->DB_WE->escape($this->Table)." WHERE ID=".intval($pid),$this->DB_WE);
 				$p = "/".$h["Text"].$p;
 				$pid = $h["ParentID"];
 				$z++;
@@ -750,7 +750,7 @@ function formTriggerDocument($isclass=false){
 
 	function makeHrefByID($id,$db=""){
 		$db = $db ? $db : new DB_WE;
-		return f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=".abs($id),"Path",$this->DB_WE);
+		return f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=".intval($id),"Path",$this->DB_WE);
 	}
 
 
@@ -951,8 +951,8 @@ function formTriggerDocument($isclass=false){
 
 	function i_getContentData($loadBinary=0){
 
-		$this->DB_WE->query("SELECT * FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DID='".abs($this->ID).
-				"' AND " . LINK_TABLE . ".DocumentTable='".$this->DB_WE->escape(stripTblPrefix($this->Table)).
+		$this->DB_WE->query("SELECT * FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DID=".intval($this->ID).
+				" AND " . LINK_TABLE . ".DocumentTable='".$this->DB_WE->escape(stripTblPrefix($this->Table)).
 				"' AND " . CONTENT_TABLE . ".ID=" . LINK_TABLE . ".CID ".
 				($loadBinary ? "" : " AND " . CONTENT_TABLE . ".IsBinary=0"));
 		$filter = array("Name","DID","Ord");
@@ -1137,10 +1137,10 @@ function formTriggerDocument($isclass=false){
 
 	function  i_correctDoublePath(){
 		if($this->Filename){
-				if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($this->Filename.(isset($this->Extension)  ?  $this->Extension  : ""))."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
+				if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!=".intval($this->ID)." AND Text='".$this->DB_WE->escape($this->Filename.(isset($this->Extension)  ?  $this->Extension  : ""))."' AND ParentID=".intval($this->ParentID),"ID",$this->DB_WE)){
 					$z=0;
 					$footext = $this->Filename."_".$z.(isset($this->Extension)  ?  $this->Extension  : "");
-					while(f("SELECT ID FROM ".$this->DB_WE->escape($this->Table)." WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($footext)."' AND ParentID='".$this->DB_WE->escape($this->ParentID)."'","ID",$this->DB_WE)){
+					while(f("SELECT ID FROM ".$this->DB_WE->escape($this->Table)." WHERE ID!=".intval($this->ID)." AND Text='".$this->DB_WE->escape($footext)."' AND ParentID='".$this->DB_WE->escape($this->ParentID)."'","ID",$this->DB_WE)){
 						$z++;
 						$footext = $this->Filename."_".$z.(isset($this->Extension)  ?  $this->Extension  : "");
 					}
@@ -1150,10 +1150,10 @@ function formTriggerDocument($isclass=false){
 
 				}
 		}else{
-				if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($this->Text)."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
+				if(f("SELECT ID  FROM  " . $this->DB_WE->escape($this->Table) . "  WHERE ID!=".intval($this->ID)." AND Text='".$this->DB_WE->escape($this->Text)."' AND ParentID=".intval($this->ParentID),"ID",$this->DB_WE)){
 					$z=0;
 					$footext = $this->Text."_".$z;
-					while(f("SELECT ID FROM ".$this->DB_WE->escape($this->Table)." WHERE ID!='".abs($this->ID)."' AND Text='".$this->DB_WE->escape($footext)."' AND ParentID='".abs($this->ParentID)."'","ID",$this->DB_WE)){
+					while(f("SELECT ID FROM ".$this->DB_WE->escape($this->Table)." WHERE ID!=".intval($this->ID)." AND Text='".$this->DB_WE->escape($footext)."' AND ParentID=".intval($this->ParentID),"ID",$this->DB_WE)){
 						$z++;
 						$footext = $this->Text."_".$z;
 					}
@@ -1247,7 +1247,7 @@ function formTriggerDocument($isclass=false){
 
 		$DB_WE = new DB_WE();
 		//select only own ID if not in same session
-		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID="'.abs($this->ID).'" AND tbl="'.$DB_WE->escape($this->Table).'" AND sessionID!="'.session_id().'" AND lockTime>NOW()');
+		$DB_WE->query('SELECT UserID FROM '.LOCK_TABLE.' WHERE ID='.intval($this->ID).' AND tbl="'.$DB_WE->escape($this->Table).'" AND sessionID!="'.session_id().'" AND lockTime>NOW()');
 		$_userId = 0;
 		while($DB_WE->next_record()) {
 			$_userId = $DB_WE->f("UserID");
@@ -1261,15 +1261,15 @@ function formTriggerDocument($isclass=false){
 
 			$DB_WE = new DB_WE();
 			//if lock is used by other user and time is up, update table
-			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID="'.abs($this->ID).'",UserID="'.abs($_SESSION["user"]["ID"]).'",tbl="'.$DB_WE->escape($this->Table).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
-				ON DUPLICATE KEY UPDATE UserID="'.abs($_SESSION["user"]["ID"]).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
+			$DB_WE->query('INSERT INTO '.LOCK_TABLE.' SET ID='.intval($this->ID).',UserID='.intval($_SESSION["user"]["ID"]).',tbl="'.$DB_WE->escape($this->Table).'",sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)
+				ON DUPLICATE KEY UPDATE UserID='.intval($_SESSION["user"]["ID"]).',sessionID="'.session_id().'",lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND)');
 		}
 	}
 
 	function i_loadNavigationItems() {
 		if($this->Table==FILE_TABLE  && $this->ID && $this->InWebEdition) {
 			$_items = array();
-			$this->DB_WE->query('SELECT Path FROM '.NAVIGATION_TABLE.' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1)) AND LinkID="'.abs($this->ID).'";');
+			$this->DB_WE->query('SELECT Path FROM '.NAVIGATION_TABLE.' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1)) AND LinkID='.intval($this->ID));
 			while($this->DB_WE->next_record()) {
 				$_items[] = $this->DB_WE->f('Path');
 			}
@@ -1285,8 +1285,8 @@ function formTriggerDocument($isclass=false){
 	function getNavigationFoldersForDoc() {
 		if($this->Table==FILE_TABLE) {
 			if(isset($this->DocType)) {
-				$where = '((Selection="dynamic") AND (DocTypeID="'.$this->DB_WE->escape($this->DocType).'" OR FolderID="'.abs($this->ParentID).'")) OR ';
-				$where .= '(((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID="'.abs($this->ID).'");';
+				$where = '((Selection="dynamic") AND (DocTypeID="'.$this->DB_WE->escape($this->DocType).'" OR FolderID='.intval($this->ParentID).')) OR ';
+				$where .= '(((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID='.intval($this->ID).')';
 				$query = 'SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE '.$where;
 				$this->DB_WE->query($query);
 				$return = array();
@@ -1295,7 +1295,7 @@ function formTriggerDocument($isclass=false){
 				}
 				return $return;
 			} else {
-				$query = 'SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID="'.abs($this->ID).'";';
+				$query = 'SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE ((Selection="static" AND SelectionType="docLink") OR (IsFolder=1 AND FolderSelection="docLink")) AND LinkID='.intval($this->ID);
 				$this->DB_WE->query($query);
 				$return = array();
 				while ($this->DB_WE->next_record()) {

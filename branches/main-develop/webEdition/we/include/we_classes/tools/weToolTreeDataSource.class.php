@@ -109,7 +109,7 @@ class weToolTreeDataSource {
 				);
 		}
 
-		$where=" WHERE $wsQuery ParentID=".abs($ParentID)." ".$addWhere;
+		$where=" WHERE $wsQuery ParentID=".intval($ParentID)." ".$addWhere;
 
 		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from ".$db->escape($table)." $where ORDER BY isNr DESC,Nr,Text " . ($segment ?  "LIMIT ".abs($offset).",".abs($segment).";" : ";" ));
 		$now = time();

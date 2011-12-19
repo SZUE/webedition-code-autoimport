@@ -39,7 +39,7 @@ function we_tag_ifTemplate($attribs, $content){
 			} else { // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
-			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".abs($workspaceID)." LIMIT 1", new DB_WE());
+			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($workspaceID)." LIMIT 1", new DB_WE());
 			if (isset($row['Path']) && strpos($curTempPath,$row['Path']) !== false && strpos($curTempPath,$row['Path'])==0) { return true; } else {return false;}
 		} else {
 			if ($path === "") {

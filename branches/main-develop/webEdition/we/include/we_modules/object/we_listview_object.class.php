@@ -144,7 +144,7 @@ class we_listview_object extends listviewBase {
 			$_wsql = " ". $_obxTable . ".OF_WebUserID IN(".$this->customers.") ";
 
 			foreach ($custArr as $cid) {
-				$customerData = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID=".abs($cid), $this->DB_WE);
+				$customerData = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE ID=".intval($cid), $this->DB_WE);
 				$this->customerArray["cid_".$customerData["ID"]] = $customerData;
 			}
 			$webUserID_tail = " AND (" . $_wsql. ") ";
@@ -192,7 +192,7 @@ class we_listview_object extends listviewBase {
 				if ($this->customers === "*") {
 					$_idListArray = array();
 					while($this->DB_WE->next_record()) {
-						if (abs($this->DB_WE->f("OF_WebUserID")) > 0) {
+						if (intval($this->DB_WE->f("OF_WebUserID")) > 0) {
 							$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
 						}
 					}

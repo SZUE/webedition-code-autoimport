@@ -49,9 +49,9 @@ class we_objecttag{
 		$unique = md5(uniqid(rand()));
 
 		if($this->id){
-			$foo = getHash("SELECT TableID,ObjectID FROM ".OBJECT_FILES_TABLE." WHERE ID='".abs($this->id)."'",$this->DB_WE);
+			$foo = getHash("SELECT TableID,ObjectID FROM ".OBJECT_FILES_TABLE." WHERE ID=".intval($this->id),$this->DB_WE);
 			if(count($foo) > 0 ){
-				$this->object = new we_listview_object($unique,1,0,"",0,$foo["TableID"],"","","(" . OBJECT_X_TABLE.$foo["TableID"].".ID='".abs($foo["ObjectID"])."')" .  ($condition ? " AND $condition" : ""),$this->triggerID,"","",$searchable,"", "", "", "", '', '', '', 0,"", "", "",'',$hidedirindex,$objectseourls);
+				$this->object = new we_listview_object($unique,1,0,"",0,$foo["TableID"],"","","(" . OBJECT_X_TABLE.$foo["TableID"].".ID=".intval($foo["ObjectID"]).")" .  ($condition ? " AND $condition" : ""),$this->triggerID,"","",$searchable,"", "", "", "", '', '', '', 0,"", "", "",'',$hidedirindex,$objectseourls);
 				if($this->object->next_record()){
 					$this->avail = true;
 				}

@@ -627,13 +627,13 @@ HTS;
 										$_path_info = $ref->Path;
 										break;
 									case 'doctype':
-										$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'DocType',new DB_WE());
+										$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID),'DocType',new DB_WE());
 										break;
 									case 'weNavigationRule':
-										$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'NavigationName',new DB_WE());
+										$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID),'NavigationName',new DB_WE());
 										break;
 									case 'weThumbnail':
-										$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . abs($ref->ID),'Name',new DB_WE());
+										$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID),'Name',new DB_WE());
 										break;
 									default:
 										$_path_info = id_to_path($ref->ID,$ref->Table);
@@ -762,7 +762,7 @@ HTS;
 
 						$rcd_name = ($v["pfx_fn"] == 1)? $v["rcd_pfx"] : $v["asoc_prefix"];
 						if ($v["import_type"] == "documents") {
-    					    $_isSelectable = f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID = ' . abs($v["docType"]) ,'IsSearchable',new DB_WE());
+    					    $_isSelectable = f('SELECT IsSearchable FROM ' . DOC_TYPES_TABLE . ' WHERE ID = ' . intval($v["docType"]) ,'IsSearchable',new DB_WE());
 							importFunctions::importDocument($v["store_to_id"], $v["we_TemplateID"], $fields, $v["docType"], $v["docCategories"],
     						$rcd_name, $v["is_dynamic"], $v["we_Extension"],true,$_isSelectable,$v['collision']);
 						}

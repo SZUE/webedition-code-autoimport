@@ -96,7 +96,7 @@ class weToolFrames extends weModuleFrames {
 		$frameset->setAttributes(array("rows"=>((isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "32,*,100" : "32,*,0" ),"onLoad"=>"start();"));
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=header","name"=>"header","scrolling"=>"no","noresize"=>null));
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=resize" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : ''). (isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''),"name"=>"resize","scrolling"=>"no"));
-		$frameset->addFrame(array("src"=>$this->frameset."?pnt=cmd".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '')."","name"=>"cmd","scrolling"=>"no","noresize"=>null));
+		$frameset->addFrame(array("src"=>$this->frameset."?pnt=cmd".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''),"name"=>"cmd","scrolling"=>"no","noresize"=>null));
 
 		// set and return html code
 		$head=$js;
@@ -115,9 +115,9 @@ class weToolFrames extends weModuleFrames {
 			$frameset=new we_htmlFrameset(array("cols"=>"200,*", "border"=>"0", "frameborder"=>"0", "framespacing"=>"0", "id"=>"resizeframeid"));
 		}
 		if($GLOBALS["BROWSER"] == "IE") {
-			$frameset->addFrame(array("src"=>$this->frameset."?pnt=left".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '')."","name"=>"left","scrolling"=>"no","frameborder"=>"no"));
+			$frameset->addFrame(array("src"=>$this->frameset."?pnt=left".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''),"name"=>"left","scrolling"=>"no","frameborder"=>"no"));
 		} else {
-			$frameset->addFrame(array("src"=>$this->frameset."?pnt=left".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '')."","name"=>"left","scrolling"=>"no"));
+			$frameset->addFrame(array("src"=>$this->frameset."?pnt=left".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''),"name"=>"left","scrolling"=>"no"));
 		}
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=right" . (isset($_REQUEST['tab']) ? '&tab=' . $_REQUEST['tab'] : '') . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''),"name"=>"right"));
 
@@ -435,7 +435,7 @@ class weToolFrames extends weModuleFrames {
    		$frameset->setAttributes(array("rows"=>"1,*,40"));
     	$frameset->addFrame(array("src"=>HTML_DIR."frameheader.html","name"=>"treeheader","noresize"=>null,"scrolling"=>"no"));
 
-		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treeconst".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : '')."","name"=>"tree","noresize"=>null,"scrolling"=>"auto"));
+		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treeconst".(isset($_REQUEST['modelid']) ? '&modelid=' . $_REQUEST['modelid'] : ''),"name"=>"tree","noresize"=>null,"scrolling"=>"auto"));
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treefooter","name"=>"treefooter","noresize"=>null,"scrolling"=>"no"));
 
 		// set and return html code

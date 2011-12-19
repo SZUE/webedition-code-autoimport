@@ -238,11 +238,11 @@ class we_search_listview extends listviewBase {
 			if ($this->DB_WE->Record["OID"] && $this->objectseourls && show_SeoLinks()){
 				$db = new DB_WE();
 				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
-				$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID='" . abs($this->DB_WE->Record["OID"]) . "' LIMIT 1", $db);
+				$objectdaten=getHash("SELECT  Url,TriggerID FROM ".OBJECT_FILES_TABLE." WHERE ID=" . intval($this->DB_WE->Record["OID"]) . " LIMIT 1", $db);
 				$objecturl=$objectdaten['Url'];$objecttriggerid= $objectdaten['TriggerID'];
 				if ($objecttriggerid){$path_parts = pathinfo(id_to_path($objecttriggerid));}
 				$pidstr='';
-				if ($this->DB_WE->Record["WorkspaceID"]){$pidstr='?pid='.abs($this->DB_WE->Record["WorkspaceID"]);}
+				if ($this->DB_WE->Record["WorkspaceID"]){$pidstr='?pid='.intval($this->DB_WE->Record["WorkspaceID"]);}
 				if (defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && $this->hidedirindex && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 					if($objecturl!=''){
 						$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/'.$objecturl . $pidstr;

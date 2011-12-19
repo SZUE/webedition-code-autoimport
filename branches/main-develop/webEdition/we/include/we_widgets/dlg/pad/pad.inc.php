@@ -183,7 +183,7 @@ $_sql = "INSERT INTO
 	ValidUntil
 ) VALUES (
 	'" . $DB_WE->escape($_title) . "',
-	" . abs($_SESSION['user']['ID']) . ",
+	" . intval($_SESSION['user']['ID']) . ",
 	DATE_FORMAT(NOW(), \"%Y-%m-%d\"),
 	'" . $DB_WE->escape($_get_title) . "',
 	'" . $DB_WE->escape($_get_text) . "',
@@ -198,12 +198,12 @@ $_sql = "INSERT INTO
 if ($bDisplay) {
 	$_sql = "SELECT * FROM " . $DB_WE->escape($_table) . " WHERE
 	WidgetName = '" . $DB_WE->escape($_title) . "' AND
-	UserID = " . abs($_SESSION['user']['ID']) . "
+	UserID = " . intval($_SESSION['user']['ID']) . "
 	ORDER BY " . $q_sort;
 } else {
 	$_sql = "SELECT * FROM " . $DB_WE->escape($_table) . " WHERE
 	WidgetName = '" . $DB_WE->escape($_title) . "' AND
-	UserID = " . abs($_SESSION['user']['ID']) . " AND
+	UserID = " . intval($_SESSION['user']['ID']) . " AND
 	(
 		Valid = 'always' OR
 		(

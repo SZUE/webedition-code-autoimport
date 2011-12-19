@@ -140,7 +140,7 @@ class we_docTypes extends we_class {
 				}
 
 			} else {
-				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . abs($ParentID);
+				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {

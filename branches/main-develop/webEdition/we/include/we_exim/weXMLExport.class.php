@@ -170,7 +170,7 @@
 
 					$ids=array();
 					foreach($selDocs as $k=>$v){
-						$ct=f("Select ContentType FROM ".FILE_TABLE." WHERE ID=".abs($v).";","ContentType",$this->db);
+						$ct=f("Select ContentType FROM ".FILE_TABLE." WHERE ID=".intval($v).";","ContentType",$this->db);
 						$this->RefTable->add2(array(
 								"ID"=>$v,
 								"ContentType"=>$ct,
@@ -252,7 +252,7 @@
 			$allow = $this->queryForAllowed($table);
 			foreach($selIDs as $v){
 				if ($v){
-					$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID='".abs($v)."'","IsFolder",$db);
+					$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID=".intval($v),"IsFolder",$db);
 					if ($isfolder){
 						we_readChilds($v,$tmp,$table,false,$allow);
 						if($with_dirs) $tmp[]=$v;
@@ -262,7 +262,7 @@
 			}
 			if($with_dirs) return $tmp;
 			foreach($tmp as $v){
-				$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID='".abs($v)."'","IsFolder",new DB_WE());
+				$isfolder=f("SELECT IsFolder FROM ".$db->escape($table)." WHERE ID=".intval($v),"IsFolder",new DB_WE());
 				if (!$isfolder) $ret[]=$v;
 			}
 			return $ret;

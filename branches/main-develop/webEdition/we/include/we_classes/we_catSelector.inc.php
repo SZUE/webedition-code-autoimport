@@ -45,7 +45,7 @@ class we_catSelector extends we_multiSelector{
 	var $EntryText = "";
 	var $noChoose = "";
 
-	function we_catSelector($id,
+	function __construct($id,
 								$table=FILE_TABLE,
 								$JSIDName="",
 								$JSTextName="",
@@ -140,11 +140,11 @@ class we_catSelector extends we_multiSelector{
 					</td>
 					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
-						'. we_button::create_button("root_dir", "javascript:top.setRootDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("root_dir", "javascript:top.setRootDir();", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '
 					</td>
 					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
-						'. we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, -1, 22, "", "", $this->dir == abs($this->rootDirID), false) . '
+						'. we_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '
 					</td>
 					<td width="10">'.we_html_tools::getPixel(10,29).'</td>
 					<td width="40">
@@ -444,7 +444,7 @@ top.clearEntries();
 			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
 			$txt = trim($txt);
-			$parentPath = (!abs($this->dir)) ? "" : f("SELECT Path FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);
+			$parentPath = (!intval($this->dir)) ? "" : f('SELECT Path FROM '.$this->db->escape($this->table).' WHERE ID='.intval($this->dir),'Path',$this->db);
 			$Path = $parentPath."/".$txt;
 
 			$this->db->query("SELECT ID FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($Path)."'");
@@ -464,7 +464,7 @@ top.clearEntries();
 					$this->db->query("INSERT INTO ".$this->db->escape($this->table)."
 								(Category,ParentID,Text,Path,IsFolder,Icon)
 								VALUES('".$this->db->escape($txt)."',
-									".abs($this->dir).",
+									".intval($this->dir).",
 									'".$this->db->escape($txt)."',
 									'".$this->db->escape($Path)."',".$what.",'".(($what==1) ? 'folder.gif' : 'cat.gif')."')");
     				$folderID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->db->escape($this->table),"LastID",$this->db);
@@ -514,7 +514,7 @@ we_html_tools::protect();
 		$foo = getHash("SELECT IsFolder,Text FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->we_editCatID),$this->db);
 		$IsDir = $foo["IsFolder"];
 		$oldname = $foo["Text"];
-		$what = f("SELECT IsFolder FROM " . CATEGORY_TABLE . " WHERE ID='".abs($this->we_editCatID)."'","IsFolder",$this->db);
+		$what = f("SELECT IsFolder FROM " . CATEGORY_TABLE . " WHERE ID=".intval($this->we_editCatID),'IsFolder',$this->db);
 		print '<script>
 top.clearEntries();
 ';
@@ -529,7 +529,7 @@ top.clearEntries();
 		}else if(strpos($txt,',')!==false){
 			print we_message_reporting::getShowMessageCall(g_l('weEditor',"[category][name_komma]"), we_message_reporting::WE_MESSAGE_ERROR);
 		}else{
-			$parentPath = (!intval($this->dir)) ? "" : f("SELECT Path FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->dir),"Path",$this->db);
+			$parentPath = (!intval($this->dir)) ? "" : f("SELECT Path FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->dir),'Path',$this->db);
 			$Path = $parentPath."/".$txt;
 			$this->db->query("SELECT ID,Text FROM ".$this->db->escape($this->table)." WHERE Path='".$this->db->escape($Path)."' AND ID != ".intval($this->we_editCatID));
 			if($this->db->next_record()){
@@ -655,7 +655,7 @@ top.clearEntries();
 		$this->printCmdAddEntriesHTML();
 		$this->printCMDWriteAndFillSelectorHTML();
 
-if(abs($this->dir)==0){
+if(intval($this->dir)==0){
 	print 'top.fsheader.disableRootDirButs();
 top.fsheader.disableDelBut();
 ';
@@ -780,10 +780,10 @@ function setDir(id){
 	function renameChildrenPath($id){
 		$db = new DB_WE();
 		$db2 = new DB_WE();
-		$db->query("SELECT ID,IsFolder,Text FROM ".CATEGORY_TABLE." WHERE ParentID='".abs($id)."'");
+		$db->query("SELECT ID,IsFolder,Text FROM ".CATEGORY_TABLE.' WHERE ParentID='.intval($id));
 		while($db->next_record()){
-			$newPath = f("SELECT Path FROM ".CATEGORY_TABLE. " WHERE ID='".abs($id)."'","Path",$db2)."/".$db->f("Text");
-			$db2->query("UPDATE ".CATEGORY_TABLE." SET Path='".$db2->escape($newPath)."' WHERE ID='".abs($db->f("ID"))."'");
+			$newPath = f("SELECT Path FROM ".CATEGORY_TABLE. " WHERE ID=".intval($id),'Path',$db2)."/".$db->f("Text");
+			$db2->query("UPDATE ".CATEGORY_TABLE." SET Path='".$db2->escape($newPath)."' WHERE ID=".intval($db->f("ID")));
 			if($db->f("IsFolder")){
 				$this->renameChildrenPath($db->f("ID"));
 			}
@@ -795,10 +795,10 @@ function setDir(id){
 		if($IsDir){
 			return $this->DirInUse($id);
 		}else{
-			$ret = f("SELECT ID FROM " . FILE_TABLE . " WHERE Category like '%,".abs($id).",%' OR temp_category like '%,".abs($id).",%'","ID",$db);
+			$ret = f("SELECT ID FROM " . FILE_TABLE . " WHERE Category LIKE '%,".intval($id).",%' OR temp_category like '%,".intval($id).",%'","ID",$db);
 			if($ret) return true;
 			if(defined("OBJECT_TABLE")){
-				$ret = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Category like '%,".abs($id).",%'","ID",$db);
+				$ret = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Category LIKE '%,".intval($id).",%'","ID",$db);
 				if($ret) return true;
 			}
 		}
@@ -809,7 +809,7 @@ function setDir(id){
 		$db=new DB_WE();
 		if($this->CatInUse($id,0)) return true;
 
-		$db->query("SELECT ID,IsFolder FROM ".$db->escape($this->table)." WHERE ParentID='".abs($id)."'");
+		$db->query("SELECT ID,IsFolder FROM ".$db->escape($this->table)." WHERE ParentID=".intval($id));
 		while($db->next_record()){
 			if($this->CatInUse($db->f("ID"),$db->f("IsFolder"))) return true;
 		}
@@ -830,7 +830,7 @@ function setDir(id){
 			$catlistNotDeleted = "";
 			$changeToParent=false;
 			foreach ($catsToDel as $id) {
-				$IsDir = f("SELECT IsFolder FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->id),"IsFolder",$this->db);
+				$IsDir = f("SELECT IsFolder FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->id),"IsFolder",$this->db);
 				if ($this->CatInUse($id,$IsDir)) {
 					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE)."\\n";
 				} else {
@@ -860,7 +860,7 @@ function setDir(id){
 			}
 			$this->id = $this->dir;
 			if($this->id){
-				$foo = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID='".abs($this->id)."'",$this->db);
+				$foo = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID=".intval($this->id),$this->db);
 				$Path = $foo["Path"];
 				$Text = $foo["Text"];
 			}else{
@@ -888,7 +888,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 		return;
 
-		$IsDir = f("SELECT IsFolder FROM ".$this->db->escape($this->table)." WHERE ID=".abs($this->id),"IsFolder",$this->db);
+		$IsDir = f("SELECT IsFolder FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->id),"IsFolder",$this->db);
 		if($this->CatInUse($this->id,$IsDir)){
 
 			print we_htmlElement::jsElement(
@@ -909,7 +909,7 @@ top.clearEntries();
 			$this->id = $this->dir;
 
 			if($this->id){
-				$foo = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID='".abs($this->id)."'",$this->db);
+				$foo = getHash("SELECT Path,Text FROM " . CATEGORY_TABLE . " WHERE ID=".intval($this->id),$this->db);
 				$Path = $foo["Path"];
 				$Text = $foo["Text"];
 			}else{
@@ -1029,7 +1029,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	function printChangeCatHTML() {
 		if (isset($_POST["catid"])) {
 			$db = new DB_WE();
-			$result = getHash("SELECT Category,Catfields,ParentID,Path FROM " . CATEGORY_TABLE . " WHERE ID='".abs($_POST["catid"])."'",$db);
+			$result = getHash("SELECT Category,Catfields,ParentID,Path FROM " . CATEGORY_TABLE . ' WHERE ID='.intval($_POST["catid"]),$db);
 			$fields =  isset($result["Catfields"]) ? $result["Catfields"] : "";
 			if ($fields) {
 				$fields = unserialize($fields);
@@ -1068,9 +1068,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 					$path = $targetPath."/".$category;
 				}
 			}
-			$updateok = $db->query("UPDATE " . CATEGORY_TABLE . " SET Category='".$db->escape($category)."', Text='".$db->escape($category)."', Path='".$db->escape($path)."', ParentID='".abs($parentid)."', Catfields='".$db->escape(serialize($fields))."' WHERE ID='".abs($_POST["catid"])."'");
+			$updateok = $db->query("UPDATE " . CATEGORY_TABLE . " SET Category='".$db->escape($category)."', Text='".$db->escape($category)."', Path='".$db->escape($path)."', ParentID=".intval($parentid).", Catfields='".$db->escape(serialize($fields))."' WHERE ID=".intval($_POST["catid"]));
 			if($updateok) {
-				$this->renameChildrenPath(abs($_POST["catid"]));
+				$this->renameChildrenPath(intval($_POST["catid"]));
 			}
 			we_html_tools::htmlTop();
 			we_html_tools::protect();
@@ -1095,7 +1095,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		$_SESSION["we_catVariant"] = $variant;
 		$description="";
 		if ($showPrefs) {
-			$result = getHash("SELECT ID,Category,Catfields,Path,ParentID FROM " . CATEGORY_TABLE . " WHERE id='".abs($_REQUEST["catid"])."'", new DB_WE());
+			$result = getHash("SELECT ID,Category,Catfields,Path,ParentID FROM " . CATEGORY_TABLE . " WHERE id=".intval($_REQUEST["catid"]), new DB_WE());
 			if(isset($result["Catfields"]) && $result["Catfields"]) {
 				$fields = unserialize($result["Catfields"]);
 			} else {
@@ -1104,14 +1104,14 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 				);
 			}
 			if($result["ParentID"] != 0) {
-				$result2 = getHash("SELECT Path FROM " . CATEGORY_TABLE . " WHERE id='".abs($result["ParentID"])."'", new DB_WE());
+				$result2 = getHash("SELECT Path FROM " . CATEGORY_TABLE . " WHERE ID=".intval($result["ParentID"]), new DB_WE());
 				$path = isset($result2["Path"]) ? $result2["Path"] : '/';
 			} else {
 				$path = "/";
 			}
 			$parentId = isset($result["ParentID"]) ? $result["ParentID"] : '0';
 			$category = isset($result["Category"]) ? $result["Category"] : '';
-			$catID = isset($result["ID"]) ? abs($result["ID"]) : 0;
+			$catID = isset($result["ID"]) ? intval($result["ID"]) : 0;
 			$title = $fields[$_SESSION["we_catVariant"]]["Title"];
 			$description = $fields[$_SESSION["we_catVariant"]]["Description"];
 			unset($result);

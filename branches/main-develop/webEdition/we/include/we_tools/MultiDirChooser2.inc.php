@@ -111,7 +111,7 @@ class MultiDirChooser2 extends MultiDirChooser{
 
 		if(sizeof($idArr)){
 			foreach($idArr as $id){
-				$this->db->query("SELECT ID,".$this->fields." FROM ".$this->db->escape($this->table)." WHERE ID ='".abs($id)."'");
+				$this->db->query("SELECT ID,".$this->fields." FROM ".$this->db->escape($this->table)." WHERE ID =".intval($id));
 				if($this->db->next_record()){
 					for($i=0;$i<$this->lines;$i++){
 						$out .= $this->getLine($i);

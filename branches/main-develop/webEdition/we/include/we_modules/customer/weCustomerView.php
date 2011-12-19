@@ -625,12 +625,12 @@ function processCommands() {
 						}
 						$c = unserialize($_SESSION['customer_session']);
 						if ($c->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied ){//bei Password�nderungen die persistentlogins l�schen
-							$this->db->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID='".abs($this->customer->ID)."'");
+							$this->db->query("DELETE FROM ".CUSTOMER_AUTOLOGIN_TABLE." WHERE WebUserID=".intval($this->customer->ID));
 						}
 						$this->customer->save();
 
 						$tt='';
-						$ttrow=getHash('SELECT * FROM '.CUSTOMER_TABLE.' WHERE ID='.abs($this->customer->ID).';',$this->db);
+						$ttrow=getHash('SELECT * FROM '.CUSTOMER_TABLE.' WHERE ID='.intval($this->customer->ID).';',$this->db);
 						eval('$tt="'.$this->settings->treeTextFormat.'";');
 						$tt=addslashes($tt!='' ? $tt : $this->customer->Text);
 						if ($newone) {

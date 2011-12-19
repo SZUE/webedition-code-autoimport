@@ -50,7 +50,7 @@ function we_tag_url($attribs, $content){
 			$doc = we_getDocForTag($id, true); // check if we should use the top document or the  included document
 			$testid = $doc->ID;
 			if ($id=='top'){//check for object
-			
+
 				if(isset($GLOBALS['WE_MAIN_DOC']->TableID)){//ein object
 					if (!$triggerid){
 							$triggerid=$GLOBALS['WE_MAIN_DOC']->ID;
@@ -77,20 +77,20 @@ function we_tag_url($attribs, $content){
 		}
 		if($urlNotSet){
 			if ($type=='document'){
-				$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".abs($testid)."", new DB_WE());
+				$row = getHash("SELECT Path,IsFolder,IsDynamic FROM " . FILE_TABLE . " WHERE ID=".intval($testid), new DB_WE());
 				$url = isset($row["Path"]) ? ($row["Path"] . ($row["IsFolder"] ? "/" : "")) : "";
 				$path_parts = pathinfo($url);
 				if (show_SeoLinks() && $hidedirindex && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES !='' && defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE  && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
 					$url = ($path_parts['dirname']!='/' ? $path_parts['dirname']:'').'/';
-				} 
+				}
 			} else {
-				$row = getHash("SELECT ID,Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=".abs($testid)."", new DB_WE());
+				$row = getHash("SELECT ID,Url,TriggerID FROM " . OBJECT_FILES_TABLE . " WHERE ID=".intval($testid), new DB_WE());
 				if (!$triggerid){
 					if ($row['TriggerID']){
 						$triggerid=$row['TriggerID'];
 					} else {
 						$triggerid=$GLOBALS['WE_MAIN_DOC']->ID;
-					}	 
+					}
 				}
 				$path_parts = pathinfo(id_to_path($triggerid));
 				if ($objectseourls && $row['Url']!='' && show_SeoLinks() ){

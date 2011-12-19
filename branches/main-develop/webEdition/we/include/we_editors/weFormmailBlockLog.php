@@ -30,7 +30,7 @@
 			if (isset($_REQUEST['clearlog']) && $_REQUEST['clearlog'] == 1) {
 				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE);
 			} else if (isset($_REQUEST['clearEntry'])) {
-				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE id=" . abs($_REQUEST['clearEntry']));
+				$GLOBALS['DB_WE']->query("DELETE FROM " . FORMMAIL_BLOCK_TABLE . " WHERE id=" . intval($_REQUEST['clearEntry']));
 			}
 
 			$close = we_button::create_button("close","javascript:self.close();");

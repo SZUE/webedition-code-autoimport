@@ -34,7 +34,7 @@ we_html_tools::protect();
 function checkIfValidStartdocument( $id , $type = "document"){
 
 	if($type == "object") {
-		$ctype = f("SELECT ContentType FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS['DB_WE']);
+		$ctype = f("SELECT ContentType FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($id),"ContentType",$GLOBALS['DB_WE']);
 
 		if($ctype == "objectFile"){
 			return true;
@@ -43,7 +43,7 @@ function checkIfValidStartdocument( $id , $type = "document"){
 		}
 
 	} else {
-		$ctype = f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . abs($id) . "","ContentType",$GLOBALS['DB_WE']);
+		$ctype = f("SELECT ContentType FROM " . FILE_TABLE . " WHERE ID=" . intval($id),"ContentType",$GLOBALS['DB_WE']);
 
 		if($ctype == "text/webedition"){
 			return true;
@@ -120,11 +120,11 @@ if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we
 
 			$directCmd = array(
 				'','','','tool_' . $_SESSION["prefs"]["seem_start_weapp"] . '_edit'
-				
+
 			);
 			$jsCommand = _buildJsCommand();
 			$jsCommand .= _buildJsCommand($directCmd);
-				
+
 		} else if (($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
 			$_SESSION["prefs"]["seem_start_type"] = "cockpit";
 			$jsCommand = _buildJsCommand();

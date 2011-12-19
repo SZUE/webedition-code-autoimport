@@ -514,7 +514,7 @@ $this->getSpacerRowHTML().
 		}
 
 		foreach($scheddy as $s){
-			$DB_WE->query("UPDATE " . SCHEDULE_TABLE . " SET Schedpro='" . addslashes(serialize($s)) . "', Active=1, SerializedData='s:0:\"\";' WHERE DID=" . abs($s["did"])  ." AND Was=".abs($s["task"])." AND Wann=".abs($s["time"]));
+			$DB_WE->query("UPDATE " . SCHEDULE_TABLE . " SET Schedpro='" . addslashes(serialize($s)) . "', Active=1, SerializedData='s:0:\"\";' WHERE DID=" . intval($s["did"])  ." AND Was=".intval($s["task"])." AND Wann=".intval($s["time"]));
 		}
 	}
 
@@ -544,7 +544,7 @@ $this->getSpacerRowHTML().
 				break;
 			case SCHEDULE_TYPE_WEEK:
 				$wdayNow = date("w",$now);
-				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
+				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
 				if($s["weekdays"][$wdayNow] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}else{
@@ -569,14 +569,14 @@ $this->getSpacerRowHTML().
 					}
 					if($found){
 						$nextdaystamp = $now + ($nextday * 86400);
-						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$nextdaystamp)), date("j",$nextdaystamp), date("Y",$nextdaystamp));
+						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$nextdaystamp)), date("j",$nextdaystamp), date("Y",$nextdaystamp));
 						return $timeSched;
 					}
 				}
 				break;
 			case SCHEDULE_TYPE_MONTH:
 				$dayNow = date("j",$now);
-				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$now)), date("j",$now), date("Y",$now)) ; // zeit fuer heutigen tag
+				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$now)), date("j",$now), date("Y",$now)) ; // zeit fuer heutigen tag
 				if($s["days"][$dayNow-1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}else{
@@ -591,32 +591,32 @@ $this->getSpacerRowHTML().
 						$trys++;
 					}
 					if($trys <= 365){
-						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$tomorrow)), date("j",$tomorrow), date("Y",$tomorrow));
+						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$tomorrow)), date("j",$tomorrow), date("Y",$tomorrow));
 						return $timeSched;
 					}
 				}
 				break;
 			case SCHEDULE_TYPE_YEAR:
 				$dayNow = date("j",$now);
-				$monthNow = abs(date("m",$now));
-				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
+				$monthNow = intval(date("m",$now));
+				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
 				if($s["days"][$dayNow-1] && $s["months"][$monthNow-1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}else{
 
 					$tomorrow = $now + 86400;
 					$dayTomorrow = date("j",$tomorrow);
-					$monthTomorrow = abs(date("m",$tomorrow));
+					$monthTomorrow = intval(date("m",$tomorrow));
 
 					$trys = 0;
 					while(($s["days"][$dayTomorrow-1] == 0 || $s["months"][$monthTomorrow-1] == 0) && $trys <= 365){
 						$tomorrow += 86400;
 						$dayTomorrow = date("j",$tomorrow);
-						$monthTomorrow = abs(date("m",$tomorrow));
+						$monthTomorrow = intval(date("m",$tomorrow));
 						$trys++;
 					}
 					if($trys <= 365){
-						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$tomorrow)), date("j",$tomorrow), date("Y",$tomorrow));
+						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$tomorrow)), date("j",$tomorrow), date("Y",$tomorrow));
 						return $timeSched;
 					}
 				}
@@ -651,7 +651,7 @@ $this->getSpacerRowHTML().
 				break;
 			case SCHEDULE_TYPE_WEEK:
 				$wdayNow = date("w",$now);
-				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
+				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
 				if($s["weekdays"][$wdayNow] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}else{
@@ -676,14 +676,14 @@ $this->getSpacerRowHTML().
 					}
 					if($found){
 						$lasttimestamp = $now - ($lastday * 86400);
-						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$lasttimestamp)), date("j",$lasttimestamp), date("Y",$lasttimestamp));
+						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$lasttimestamp)), date("j",$lasttimestamp), date("Y",$lasttimestamp));
 						return $timeSched;
 					}
 				}
 				break;
 			case SCHEDULE_TYPE_MONTH:
 				$dayNow = date("j",$now);
-				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$now)), date("j",$now), date("Y",$now)) ; // zeit fuer heutigen tag
+				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$now)), date("j",$now), date("Y",$now)) ; // zeit fuer heutigen tag
 				if($s["days"][$dayNow-1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}else{
@@ -698,32 +698,32 @@ $this->getSpacerRowHTML().
 						$trys++;
 					}
 					if($trys <= 365){
-						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$yesterday)), date("j",$yesterday), date("Y",$yesterday));
+						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$yesterday)), date("j",$yesterday), date("Y",$yesterday));
 						return $timeSched;
 					}
 				}
 				break;
 			case SCHEDULE_TYPE_YEAR:
 				$dayNow = date("j",$now);
-				$monthNow = abs(date("m",$now));
-				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
+				$monthNow = intval(date("m",$now));
+				$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$now)), date("j",$now), date("Y",$now)); // zeit fuer heutigen tag
 				if($s["days"][$dayNow-1] && $s["months"][$monthNow-1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
 				}else{
 
 					$yesterday = $now - 86400;
 					$dayYesterday = date("j",$yesterday);
-					$monthYesterday = abs(date("m",$yesterday));
+					$monthYesterday = intval(date("m",$yesterday));
 
 					$trys = 0;
 					while(($s["days"][$dayYesterday-1] == 0 || $s["months"][$monthYesterday-1] == 0) && $trys <= 365){
 						$yesterday -= 86400;
 						$dayYesterday = date("j",$yesterday);
-						$monthYesterday = abs(date("m",$yesterday));
+						$monthYesterday = intval(date("m",$yesterday));
 						$trys++;
 					}
 					if($trys <= 365){
-						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,abs(date("m",$yesterday)), date("j",$yesterday), date("Y",$yesterday));
+						$timeSched = mktime(date("G",$s["time"]),date("i",$s["time"]),0,intval(date("m",$yesterday)), date("j",$yesterday), date("Y",$yesterday));
 						return $timeSched;
 					}
 				}

@@ -133,7 +133,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 							array_push($_userGroups, $pid);
 
 							$db_tmp->query(
-									"SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . abs($pid));
+									"SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
 							if ($db_tmp->next_record()) {
 								if ($get_ws) {
 									$a = makeArrayFromCSV($db_tmp->f("workSpace"));
@@ -187,7 +187,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				//FIXME: this makes absolutely no sense!!!
 				$_SESSION["prefs"] = getHash("SELECT * FROM " . PREFS_TABLE.' LIMIT 1', $DB_WE);
 
-				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . abs($_userdata["ID"]), $DB_WE);
+				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_userdata["ID"]), $DB_WE);
 				if (is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0) {
 					$_SESSION["prefs"] = $exprefs;
 

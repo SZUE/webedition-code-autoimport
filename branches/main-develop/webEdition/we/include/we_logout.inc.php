@@ -26,15 +26,15 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) =
 }
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID="' . abs($_SESSION["user"]["ID"]) . '" AND sessionID="' . session_id() . '"');
+$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
-$DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID='" . abs($_SESSION["user"]["ID"]) . "'");
+$DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID=" . intval($_SESSION["user"]["ID"]));
 
 cleanTempFiles(true);
 
 if (isset($_SESSION["prefs"]["userID"])) { //	bugfix 2585, only update prefs, when userId is available
-	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], " WHERE userID=" . abs($_SESSION["prefs"]["userID"]));
+	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], " WHERE userID=" . intval($_SESSION["prefs"]["userID"]));
 }
 
 //	getJSCommand

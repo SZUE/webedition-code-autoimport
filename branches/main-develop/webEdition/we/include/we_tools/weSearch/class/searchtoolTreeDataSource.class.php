@@ -45,13 +45,13 @@ class searchtoolTreeDataSource extends weToolTreeDataSource
 			$pid = f("
         SELECT ParentID
         FROM " . $db->escape($table) . "
-        WHERE ID='".abs($id)."'", "ParentID", $db);
+        WHERE ID=".intval($id), "ParentID", $db);
 			$openFolders[] = $pid;
 			while ($pid > 0) {
 				$pid = f("
           SELECT ParentID
           FROM ".$db->escape($table)."
-          WHERE ID='" . abs($pid) . "'", "ParentID", $db);
+          WHERE ID=" . intval($pid), "ParentID", $db);
 				$openFolders[] = $pid;
 			}
 		}
@@ -77,7 +77,7 @@ class searchtoolTreeDataSource extends weToolTreeDataSource
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=".abs($ParentID)." " . $addWhere;
+		$where = " WHERE $wsQuery ParentID=".intval($ParentID)." " . $addWhere;
 
 		$db->query(
 				"SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr from ".$db->escape($table)." $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT ".abs($offset).",".abs($segment).";" : ";"));

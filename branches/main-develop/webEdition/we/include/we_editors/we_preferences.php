@@ -1311,7 +1311,7 @@ function remember_value($settingvalue, $settingname){
 								}
 							} else{
 								if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
-									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . $DB_WE->escape($_single_recipient[1]) . "' WHERE ID=" . abs($_single_recipient[0]));
+									$DB_WE->query("UPDATE " . RECIPIENTS_TABLE . " SET Email='" . $DB_WE->escape($_single_recipient[1]) . "' WHERE ID=" . intval($_single_recipient[0]));
 								}
 							}
 						}
@@ -2126,7 +2126,7 @@ $_we_active_integrated_modules = array(
 			 * *************************************************************** */
 			case '$_REQUEST["use_jupload"]':
 				$_SESSION['prefs']['use_jupload'] = $settingvalue;
-				$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET use_jupload="' . abs($settingvalue) . '";');
+				$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET use_jupload=' . intval($settingvalue));
 				$_update_prefs = true;
 				break;
 
@@ -3034,7 +3034,7 @@ function save_all_values(){
 	}
 
 	if($_update_prefs){
-		doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], (" WHERE userID=" . abs($_SESSION["prefs"]["userID"])));
+		doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], (" WHERE userID=" . intval($_SESSION["prefs"]["userID"])));
 	}
 }
 

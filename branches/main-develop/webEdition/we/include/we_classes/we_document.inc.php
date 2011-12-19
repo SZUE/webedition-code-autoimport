@@ -137,7 +137,7 @@ class we_document extends we_root {
 					$this->Language = 'de_DE';
 				}
 			} else {
-				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . abs($ParentID);
+				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . intval($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
@@ -735,7 +735,7 @@ class we_document extends we_root {
 			if(($ws = get_ws($this->Table))) {
 				$foo = makeArrayFromCSV($ws);
 				if(sizeof($foo)) {
-					$this->setParentID(abs($foo[0]));
+					$this->setParentID(intval($foo[0]));
 				}
 			}
 		}
@@ -960,7 +960,7 @@ class we_document extends we_root {
 	}
 
 	function i_filenameDouble() {
-		return f('SELECT ID FROM '.escape_sql_query($this->Table)." WHERE ParentID='".abs($this->ParentID)."' AND Filename='".escape_sql_query($this->Filename)."' AND Extension='".escape_sql_query($this->Extension)."' AND ID != '".abs($this->ID)."'","ID",new DB_WE());
+		return f('SELECT ID FROM '.escape_sql_query($this->Table)." WHERE ParentID=".intval($this->ParentID)." AND Filename='".escape_sql_query($this->Filename)."' AND Extension='".escape_sql_query($this->Extension)."' AND ID != ".intval($this->ID),"ID",new DB_WE());
 	}
 
 	function getFieldByVal(
@@ -1151,7 +1151,7 @@ class we_document extends we_root {
 					if(strlen($val) == 0)
 						return '';
 					if($classID) {
-						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID='".abs($classID)."'",'DefaultValues',$db);
+						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=".intval($classID),'DefaultValues',$db);
 						if($defVals) {
 							$arr = unserialize($defVals);
 							return isset($arr['meta_'.$attribs['name']]['meta'][$val]) ? $arr['meta_'.$attribs['name']]['meta'][$val] : '';
@@ -1285,7 +1285,7 @@ class we_document extends we_root {
 		if($int) {
 			$nintID = $n.'_we_jkhdsf_intID';
 			eval('$intID = '.$fn.'($nintID);');
-			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID='".abs($intID)."'",'Path',$db);
+			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=".intval($intID),'Path',$db);
 		}
 		else {
 			eval('$extPath = '.$fn.'($n);');
@@ -1319,11 +1319,11 @@ class we_document extends we_root {
 			if($id=='') {
 				return '';
 			}else{
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Path',$db);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.intval($id).'','Path',$db);
 				if (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition) {
 					return $path;
 				} else {
-					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.abs($id).'','Published',$db);
+					$published = f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID='.intval($id).'','Published',$db);
 					if ($published) {
 						$path_parts = pathinfo($path);
 						if($hidedirindex && show_SeoLinks() && defined("NAVIGATION_DIRECTORYINDEX_NAMES") && NAVIGATION_DIRECTORYINDEX_NAMES !='' && in_array($path_parts['basename'],explode(',',NAVIGATION_DIRECTORYINDEX_NAMES)) ){
@@ -1698,7 +1698,7 @@ class we_document extends we_root {
 
 	function loadSchedule() {
 		if(defined('SCHEDULE_TABLE')) {
-			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID='".abs($this->ID)."' AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
+			$this->DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE." WHERE DID=".intval($this->ID)." AND ClassName='".$this->DB_WE->escape($this->ClassName)."'");
 			if($this->DB_WE->num_rows()){
 				$this->schedArr = array();
 			}

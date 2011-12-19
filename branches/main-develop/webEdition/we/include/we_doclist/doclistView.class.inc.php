@@ -1089,7 +1089,7 @@ class doclistView {
 				$where .= $obj->searchclassFolder->ofFolderOnly ( $obj->ID );
 
 				if ($where != "") {
-					$whereQuery = "1 " . $where . "";
+					$whereQuery = "1 " . $where ;
 
 					if($_table==FILE_TABLE) {
 						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '".abs($_SESSION["user"]["ID"])."') OR (Owners LIKE '%,".abs($_SESSION["user"]["ID"]).",%'))";
