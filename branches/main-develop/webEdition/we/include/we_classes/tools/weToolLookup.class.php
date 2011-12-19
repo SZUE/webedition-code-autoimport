@@ -182,7 +182,7 @@ abstract class weToolLookup{
 
 		return $_inc;
 		}
-		
+
 		function getExternTriggeredTasks() {
 
 			if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'])) {
@@ -201,10 +201,6 @@ abstract class weToolLookup{
 			}
 
 			return $_inc;
-		}
-
-		function isActiveTag($filepath){
-			return in_array(dirname($filepath), weToolLookup::getTagDirs());
 		}
 
 	static function getTagDirs(){
