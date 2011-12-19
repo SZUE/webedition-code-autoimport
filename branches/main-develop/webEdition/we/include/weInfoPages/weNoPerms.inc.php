@@ -30,7 +30,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$content = "<p class=\"defaultfont\">" . g_l('alert',"[no_perms_action]") . "</p>";
+$content = '<p class="defaultfont">' . g_l('alert','[no_perms_action]') . '</p>';
 
 ?>
 <script  type="text/javascript">
@@ -40,8 +40,7 @@ _EditorFrame.setEditorIsLoading(false);
 </script>
 </head>
 
-<body class="weDialogBody">
-<?php
+<body class="weDialogBody"><?php
 print we_html_tools::htmlDialogLayout($content, g_l('alert',"[no_perms_title]"));
 ?>
     </body>

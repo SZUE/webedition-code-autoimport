@@ -18,6 +18,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/*NOTE!! This file DOES NOT START a SESSION */
+
 //	This is the new absolute minimum include for any we-file, reduces memory consumption for special usages about 20 MB.
 
 // exit if script called directly
