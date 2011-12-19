@@ -89,7 +89,7 @@ class we_listview extends listviewBase {
 		$this->defaultCondition=$condition;
 		$this->condition = $condition;
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-
+		
 		$cond_where = ""; // #3763
 		if($this->condition!=""){
 			$condition_sql=$this->makeConditionSql($this->condition);
@@ -399,12 +399,14 @@ class we_listview extends listviewBase {
 	}
 
 	function makeConditionSql($cond){
+		
 			$cond = str_replace('&gt;','>',$cond);
 			$cond = str_replace('&lt;','<',$cond);
 
 			$exparr=array();
 
 			$arr = explode(" ",$cond);
+			
 			$logic=array();
 			$logic["and"]=array();
 			$logic["or"]=array();
@@ -424,15 +426,26 @@ class we_listview extends listviewBase {
 				}
   			}
 
-			$sqlarr="";
+			$sqlarr="";			
 			foreach ($logic as $oper=>$arr){
 				foreach($arr as $key=>$exp){
+					
 					$match=array();
 					$patterns=array('<>','<=','>=','=','<','>','LIKE','IN');
+				    $patterns=array('<>','<=','>=','!=','=','<','>','LIKE','IN');
+					
+					
+
 					foreach($patterns as $pattern){
+						
+						
 						$match=preg_split('/'.$pattern.'/', $exp, -1, PREG_SPLIT_NO_EMPTY);
 						if(count($match)>1){
-							$sqlarr = (($sqlarr!="") ? $sqlarr.' '.strtoupper($oper). ' ' : '').$this->makeFieldCondition($match[0],$pattern,$match[1]);//"(".LINK_TABLE.".Name='".$match[0]."' AND ".CONTENT_TABLE.".Dat ".$pattern." ".$match[1].")";
+
+							$match[0] = str_replace(array('(',')',' '),'',$match[0]); // #5719: einfache und OR-verknuepfte Conditions gefixt
+							$match[1] = str_replace(array('(',')',' '),'',$match[1]); // #5719
+							$sqlarr = (($sqlarr!="") ? $sqlarr.' '.strtoupper($oper). ' ' : '').$this->makeFieldCondition($match[0],$pattern,$match[1]);
+
 							break;
 						}
 					}
@@ -442,6 +455,7 @@ class we_listview extends listviewBase {
 	}
 
 	function makeFieldCondition($name,$operation,$value){
+				
 		return '('.LINK_TABLE.'.Name="'.$this->DB_WE->escape($name).'" AND '.CONTENT_TABLE.'.Dat '.$operation.' '.$value.')';
 	}
 
