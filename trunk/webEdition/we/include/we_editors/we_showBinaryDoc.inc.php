@@ -19,30 +19,29 @@
  */
 
 
-//include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 //protect();
 switch($_REQUEST["we_cmd"][1]) {
 	case "image/*":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_imageDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$we_doc=new we_imageDocument();
 		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
 		$contenttype = $we_doc->getElement("type");
 		break;
 	case "application/x-shockwave-flash":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_flashDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 		$we_doc=new we_flashDocument();
 		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
 		$contenttype = $_REQUEST["we_cmd"][1];
 		break;
 	case "video/quicktime":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_quicktimeDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 		$we_doc=new we_quicktimeDocument();
 		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
 		$contenttype = $_REQUEST["we_cmd"][1];
 		break;
 	case "application/*":
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_classes/we_otherDocument.inc.php");
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 		$we_doc=new we_otherDocument();
 		$we_doc->we_initSessDat($_SESSION["we_data"][$_REQUEST["we_cmd"][2]]);
 		switch($we_doc->Extension) {

@@ -207,15 +207,15 @@ if ( isset($GLOBALS["we_obj"]) && $GLOBALS["we_obj"]->documentCustomerFilter && 
 }
 
 if (!isset($pid) || !($pid) ) {
-	$pid = f("SELECT ParentID FROM " .FILE_TABLE. " WHERE Path='".$_SERVER["SCRIPT_NAME"]."'","ParentID",$DB_WE);
+	$pid = f('SELECT ParentID FROM ' .FILE_TABLE. ' WHERE Path="'.$DB_WE->escape($_SERVER["SCRIPT_NAME"]).'"','ParentID',$DB_WE);
 }
 
 if (!isset($tid) || !($tid) ) {
-	$tid = $GLOBALS["we_obj"]->getTemplateID($pid);
+	$tid = $GLOBALS['we_obj']->getTemplateID($pid);
 }
 
 if (!$tid) {
-	$tids = makeArrayFromCSV(f("Select Templates FROM ".OBJECT_TABLE." WHERE ID='".$GLOBALS["we_obj"]->TableID."'","Templates",$DB_WE));
+	$tids = makeArrayFromCSV(f('SELECT Templates FROM '.OBJECT_TABLE.' WHERE ID='.intval($GLOBALS["we_obj"]->TableID),'Templates',$DB_WE));
 	if (sizeof($tids)) {
 		$tid = $tids[0];
 	}
@@ -300,7 +300,7 @@ if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSIO
 			if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
 				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
 				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
-	
+
 				weGlossaryReplace::start();
 			}
 
@@ -334,7 +334,7 @@ if(isset($_SESSION["we_data"][$we_transaction]["0"]["InWebEdition"]) && $_SESSIO
 			if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
 				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
 				include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
-	
+
 				weGlossaryReplace::start();
 			}
 
