@@ -327,7 +327,16 @@ global $l_we_class,$we_JavaScript,$we_responseText, $we_responseTextType;
 							}else if ((strpos($info["name"],'object_')!==0) && (strpos($nam, 'object_')===0) && (strpos($info["flags"],'multiple_key')===false)){
 								$q.=', ADD INDEX ('.$info["name"].') ';
 							}
-							$arrt[$nam]["default"] = $this->elements[$info["name"]."default"]["dat"];
+							if((strpos($info["name"],'date_')===0)){
+								
+								if ($this->elements[$info["name"]."defaultThumb"]["dat"]){
+									$arrt[$nam]["default"] ='';
+								} else {
+									$arrt[$nam]["default"] = $this->elements[$info["name"]."default"]["dat"];
+								}
+							} else {
+								$arrt[$nam]["default"] = $this->elements[$info["name"]."default"]["dat"];
+							}
 							$arrt[$nam]["defaultThumb"] = $this->elements[$info["name"]."defaultThumb"]["dat"];
 							$arrt[$nam]["autobr"] = $this->elements[$info["name"]."autobr"]["dat"];
 							$arrt[$nam]["defaultdir"] = $this->elements[$info["name"]."defaultdir"]["dat"];
@@ -1115,8 +1124,11 @@ global $l_we_class,$we_JavaScript,$we_responseText, $we_responseTextType;
 		case 'date':
 			
 			$d = abs($this->getElement($name."default","dat"));
+			$dd = abs($this->getElement($name."defaultThumb","dat"));
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>';
 			$content .= '<td width="170" class="defaultfont">';
+			//$content .= we_forms::checkbox("1", $this->getElement($name."default","dat"), "we_".$this->Name."_date[".$name."defaultThumb]", $GLOBALS["l_object"]["checked"], true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=0;}");
+			$content .= we_forms::checkboxWithHidden(($dd =='1' ? true : false), "we_".$this->Name."_xdate[".$name."defaultThumb]", 'Creation Date',false,'defaultfont','_EditorFrame.setEditorIsHot(true);');
 			$content .= getDateInput2("we_".$this->Name."_date[".$name."default]",($d ? $d : time()),true);
 			$content .= '</td></tr>';
 			

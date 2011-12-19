@@ -168,7 +168,7 @@
 				}
 
 			}
-
+			
 			unset($this->elements);
 			$this->i_getContentData();
 
@@ -234,4 +234,168 @@
 			}
 			return '';
 		}
+		
+		function isFieldExists($name,$type=''){
+			$this->SerializedArray = unserialize($this->DefaultValues);
+			$noFields = array('WorkspaceFlag','elements','WE_CSS_FOR_CLASS');
+			foreach($this->SerializedArray as $fieldname=>$value){
+				$arr = explode('_',$fieldname);
+				if(!isset($arr[0])) continue;
+				$fieldtype = $arr[0];
+				unset($arr[0]);
+				$fieldname=implode('_',$arr);
+				if($type==''){
+					if($fieldname==$name){
+						return true;	
+					}
+				} else {
+					if($fieldname==$name && $fieldtype==$type){
+						return true;	
+					}
+				}
+			}
+			return false;
+		}
+		
+		function getFieldPrefix($name){
+			$this->SerializedArray = unserialize($this->DefaultValues);
+			$noFields = array('WorkspaceFlag','elements','WE_CSS_FOR_CLASS');
+			foreach($this->SerializedArray as $fieldname=>$value){
+				$arr = explode('_',$fieldname);
+				if(!isset($arr[0])) continue;
+				$fieldtype = $arr[0];
+				unset($arr[0]);
+				$fieldname=implode('_',$arr);
+				if($fieldname==$name){
+					return $fieldtype;	
+				}
+			}
+			return false;
+		}
+		function addField($name,$type='',$default=''){
+			
+			$defaultArr=array();
+			$defaultArr['default'] ='';
+			$defaultArr['defaultThumb'] = '';
+			$defaultArr['defaultdir'] = '';
+			$defaultArr['rootdir'] = '';
+			$defaultArr['autobr'] = '';
+			$defaultArr['dhtmledit'] = '';
+			$defaultArr['commands'] = '';
+			$defaultArr['height'] = '200';
+			$defaultArr['width'] = '618';
+			$defaultArr['class'] = '';
+			$defaultArr['max'] = '';
+			$defaultArr['cssClasses'] = '';
+			$defaultArr['xml'] = '';
+			$defaultArr['removefirstparagraph'] = '';
+			$defaultArr['showmenus'] = '';
+			$defaultArr['forbidhtml'] = '';
+			$defaultArr['forbidphp'] = '';
+			$defaultArr['inlineedit'] = '';
+			$defaultArr['users'] = '';
+			$defaultArr['required'] = '';
+			$defaultArr['editdescription'] = '';
+			$defaultArr['int'] = '';
+			$defaultArr['intID'] = '';
+			$defaultArr['intPath'] = '';
+			$defaultArr['hreftype'] = '';
+			$defaultArr['hrefdirectory'] = '';
+			$defaultArr['hreffile'] = '';
+			$defaultArr['uniqueID'] = md5(uniqid(rand(),1));
+			switch ($type){
+				case 'text':
+				case 'input':
+				case 'int':
+					$defaultArr['meta']=array( $type.'_'.$name.'defaultkey0' =>'');
+					break;
+				case 'multiobject':	
+					$defaultArr['meta']=array('');
+					break;
+			}
+				
+			if($default!='' && is_array($default)){
+				foreach($default as $k => $v){
+					$defaultArr[$k]=$v; 
+				}	
+			}
+			$this->SerializedArray = unserialize($this->DefaultValues);
+			$this->SerializedArray[$type.'_'.$name]=$defaultArr;
+			$this->DefaultValues=serialize($this->SerializedArray);
+			$arrOrder=explode(',',$this->strOrder);
+			$arrOrder[]=max($arrOrder)+1;
+			$this->strOrder=implode(',',$arrOrder);
+			return $this->saveToDB(true);
+			
+		}
+		function dropField($name,$type=''){
+			$this->SerializedArray = unserialize($this->DefaultValues);
+			$isfound=false;
+			foreach($this->SerializedArray as $field=>$value){
+				$arr = explode('_',$field);
+				if(!isset($arr[0])) continue;
+				$fieldtype = $arr[0];
+				unset($arr[0]);
+				$fieldname=implode('_',$arr);
+				if($type==''){
+					if($fieldname==$name){
+						unset($this->SerializedArray[$field]);
+						$isfound=true;
+						break;
+					}
+				} else {p_r($fieldname);
+					if($fieldname==$name && $fieldtype==$type){
+						unset($this->SerializedArray[$field])	;
+						$isfound=true;
+						break;
+					}
+				}
+			}
+			if($isfound){
+				$this->DefaultValues=serialize($this->SerializedArray);
+				$arrOrder=explode(',',$this->strOrder);
+				
+				unset($arrOrder[array_search(max($arrOrder),$arrOrder)]);
+				
+				$this->strOrder=implode(',',$arrOrder);
+				return $this->saveToDB(true);
+				
+			}
+			
+			return false;
+		}
+		function modifyField($name,$newtype,$type,$default='',$delete=''){
+			$this->SerializedArray = unserialize($this->DefaultValues);
+			$defaultArr = $this->SerializedArray[$type.'_'.$name];
+			if($newtype==$type){
+				if($default!='' && is_array($default)){
+					foreach($default as $k => $v){
+						$defaultArr[$k]=$v; 
+					}
+					if($delete!='' && is_array($delete)){
+						foreach($delete as $delkey){
+							unset($defaultArr[$delkey]);
+						}
+					}
+					$this->SerializedArray[$type.'_'.$name]	= $defaultArr; 
+				}
+			} else {
+				unset($this->SerializedArray[$type.'_'.$name]);
+				if($default!='' && is_array($default)){
+					foreach($default as $k => $v){
+						$defaultArr[$k]=$v; 
+					}
+					if($delete!='' && is_array($delete)){
+						foreach($delete as $delkey){
+							unset($defaultArr[$delkey]);
+						}
+					}
+					$this->SerializedArray[$newtype.'_'.$name]	= $defaultArr; 
+				}
+			}
+			$this->DefaultValues=serialize($this->SerializedArray);
+			return $this->saveToDB(true);
+			
+		}
+		
 	}
