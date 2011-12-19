@@ -354,7 +354,7 @@ class we_rebuild {
 				foreach($_foo as $folderID){
 					$_foldersList .= makeCSVFromArray(we_rebuild::getFoldersInFolder($folderID)) . ",";
 				}
-				$_foldersList = ereg_replace('^(.+),$','\1',$_foldersList);
+				$_foldersList = rtrim($_foldersList,',');
 				$_folders_query = "( ParentID IN($_foldersList) )";
 			}
 
@@ -538,7 +538,7 @@ class we_rebuild {
 				foreach($_foo as $folderID){
 					$_foldersList .= makeCSVFromArray(we_rebuild::getFoldersInFolder($folderID)) . ",";
 				}
-				$_foldersList = ereg_replace('^(.+),$','\1',$_foldersList);
+				$_foldersList = rtrim($_foldersList,',');
 				$_folders_query = "( ParentID IN($_foldersList) )";
 			}
 			$GLOBALS['DB_WE']->query("SELECT ID,ClassName,Path,Extension FROM ". FILE_TABLE . " WHERE ContentType='image/*'".($_folders_query ? " AND $_folders_query " : "")." ORDER BY ID");

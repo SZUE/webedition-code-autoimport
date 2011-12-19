@@ -185,7 +185,7 @@ class we_search extends DB_WE{
 				$this->limit = (empty($limit))?((empty($this->limit))?"":" LIMIT ".($this->limit)):" LIMIT ".($limit);
 
 				//echo "SELECT ".$this->get." FROM ".$this->table." ".$this->where." ".$order." ".$this->limit;
-				$this->query("SELECT ".ereg_replace('^(.+),$','\1',$this->get)." FROM ".$this->escape($this->table)." ".$this->where." ".$order." ".$this->limit);
+				$this->query("SELECT ".rtrim($this->get,',')." FROM ".$this->escape($this->table)." ".$this->where." ".$order." ".$this->limit);
 			}else{
 				return -1;
 			}

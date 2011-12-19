@@ -264,7 +264,7 @@ class we_version
 				foreach ($_foo as $folderID) {
 					$_foldersList .= makeCSVFromArray(we_version::getFoldersInFolder($folderID)) . ",";
 				}
-				$_foldersList = ereg_replace('^(.+),$', '\1', $_foldersList);
+				$_foldersList = rtrim($_foldersList,',');
 				$_folders_query = "( ParentID IN($_foldersList) )";
 			}
 

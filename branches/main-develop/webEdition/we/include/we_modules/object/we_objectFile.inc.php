@@ -2916,8 +2916,8 @@ class we_objectFile extends we_document{
 					}
 				}
 			}
-			$keys = ereg_replace('^(.+),$','\1',$keys) . ")";
-			$values = ereg_replace('^(.+),$','\1',$values) . ")";
+			$keys = rtrim($keys,',') . ")";
+			$values = rtrim($values,',') . ")";
 			if($this->DB_WE->query("INSERT INTO $ctable $keys $values")){
 				$this->ObjectID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM $ctable","LastID",$this->DB_WE);
 				return true;
@@ -2953,7 +2953,7 @@ class we_objectFile extends we_document{
 					}
 				}
 			}
-			$q = ereg_replace('^(.+),$','\1',$q);
+			$q = rtrim($q,',');
 			return $this->DB_WE->query("UPDATE $ctable SET $q WHERE ID='".$this->ObjectID."'");
 		}
 		return false;

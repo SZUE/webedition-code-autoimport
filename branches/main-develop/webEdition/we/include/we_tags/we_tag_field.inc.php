@@ -417,7 +417,7 @@ function we_tag_field($attribs, $content){
 						$newWinProps .= $k.'='.$v.',';
 					}
 				}
-				$newWinProps = ereg_replace('^(.+),$', '\1', $newWinProps);
+				$newWinProps = rtrim($newWinProps,',');
 
 				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . $newWinProps . '\');';
 				$_linkAttribs['target'] = 'win_' . $name;

@@ -52,28 +52,28 @@ function we_tag_date($attribs, $content){
 		foreach (g_l('date','[day][short]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = preg_replace('/^(.+),$/', '\1', $js);
+		$js = rtrim($js,',');
 		$js .= ');' . "\n";
 
 		$js .= '	var l_monthLong = new Array(';
 		foreach (g_l('date','[month][long]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = preg_replace('/^(.+),$/', '\1', $js);
+		$js = rtrim($js,',');
 		$js .= ');' . "\n";
 
 		$js .= '	var l_dayLong = new Array(';
 		foreach (g_l('date','[day][long]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = preg_replace('/^(.+),$/', '\1', $js);
+		$js = rtrim($js,',');
 		$js .= ');' . "\n";
 
 		$js .= '	var l_monthShort = new Array(';
 		foreach (g_l('date','[month][short]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = preg_replace('/^(.+),$/', '\1', $js);
+		$js = rtrim($js,',');
 		$js .= ');' . "\n";
 
 		$js .= '	switch(f){' . "\n";

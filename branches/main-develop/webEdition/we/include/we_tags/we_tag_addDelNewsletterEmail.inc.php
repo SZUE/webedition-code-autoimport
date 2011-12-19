@@ -221,7 +221,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				return;
 			}
 
-			$lists = ereg_replace('^(.*),$', '\1', $lists);
+			$lists = rtrim($lists,',');
 
 			$db = new DB_WE();
 			$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) = LOWER('" . $db->escape($f["subscribe_mail"]) . "')");

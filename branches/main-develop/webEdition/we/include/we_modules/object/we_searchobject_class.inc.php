@@ -89,7 +89,7 @@ class objectsearch extends we_search {
 				$all .= $tableInfo[$i]["name"].",";
 			}
 		}
-		$all = ereg_replace('^(.*),$','\1',$all);
+		$all = rtrim($all,',');
 		$opts = '<option value="'.$all.'">'.g_l('modules_object','[allFields]').'</option>'."\n".$opts;
 		$onchange = (substr($select,0,4)!="meta"&&substr($select,0,4)!="date"&&substr($select,0,8)!="checkbox"?'onChange="changeit(this.value);"':'onChange="changeitanyway(this.value);"');
 		return '<select name="'.$name.'" class="weSelect" size="'.$size.'" '.$multi.' '.$onchange.'>'.$opts.'</select>';

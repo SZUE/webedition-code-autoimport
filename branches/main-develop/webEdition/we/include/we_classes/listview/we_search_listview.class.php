@@ -120,7 +120,7 @@ class we_search_listview extends listviewBase {
 					}
 
 				}
-				$this->order = ereg_replace('^(.*),$','\1',$this->order);
+				$this->order = rtrim($this->order,',');
 			}
 		}
 

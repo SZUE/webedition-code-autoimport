@@ -363,7 +363,7 @@ class we_listview_object extends listviewBase {
 			array_push($tb,$val);
 		}
 
-		$out["fields"] = ereg_replace('^(.*),$','\1',$f);
+		$out["fields"] = rtrim($f,',');
 		if($order==" ORDER BY RANDOM "){
 			$out["fields"] .= ", RAND() as RANDOM ";
 		}
@@ -376,7 +376,7 @@ class we_listview_object extends listviewBase {
 		foreach($tb as $t){
 			$out["publ_cond"] .= " ( $t.OF_Published > 0 OR $t.OF_ID = 0) AND ";
 		}
-		$out["publ_cond"] = ereg_replace('^(.*)AND $','\1',$out["publ_cond"]);
+		$out["publ_cond"] = preg_replace('/^(.*)AND $/','\1',$out["publ_cond"]);
 		if($out["publ_cond"]){
 			$out["publ_cond"]  = " ( ".$out["publ_cond"] ." ) ";
 		}

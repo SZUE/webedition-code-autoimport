@@ -75,18 +75,18 @@ class we_listview_multiobject extends listviewBase {
 	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0,$languages='',$hidedirindex=false,$objectseourls=false){
 
 		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
-		
+
 		$data=0;
 		if(isset($GLOBALS['we_lv_array']) && sizeof($GLOBALS['we_lv_array']) > 1) {
 			$parent_lv = $GLOBALS['we_lv_array'][(sizeof($GLOBALS['we_lv_array'])-1)];
 			if (isset($parent_lv->DB_WE->Record['we_'.$name]) && $parent_lv->DB_WE->Record['we_'.$name]){
 				$data = unserialize($parent_lv->DB_WE->Record['we_'.$name]);
-			} 
+			}
 		} elseif(isset($GLOBALS["lv"])) {
 			if(isset($GLOBALS["lv"]->object)) {
 				if (isset($GLOBALS['lv']->object->DB_WE->Record['we_'.$name]) && $GLOBALS['lv']->object->DB_WE->Record['we_'.$name] ){
 					$data = unserialize($GLOBALS['lv']->object->DB_WE->Record['we_'.$name]);
-				} 
+				}
 			} else {
 				if ($GLOBALS["lv"]->ClassName == 'we_listview_shoppingCart') {
 					if (isset($GLOBALS['lv']->Record[$name]) && $GLOBALS['lv']->Record[$name]){
@@ -122,7 +122,7 @@ class we_listview_multiobject extends listviewBase {
 		$this->DB_WE2    = new DB_WE();
 		$this->classID   = $data['class'];
 		$this->objects   = $objects;
-		
+
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
 		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
@@ -400,7 +400,7 @@ class we_listview_multiobject extends listviewBase {
 			array_push($tb,$val);
 		}
 
-		$out["fields"] = ereg_replace('^(.*),$','\1',$f);
+		$out["fields"] = rtrim($f,',');
 		if($order==" ORDER BY RANDOM "){
 			$out["fields"] .= ", RAND() as RANDOM ";
 		}
