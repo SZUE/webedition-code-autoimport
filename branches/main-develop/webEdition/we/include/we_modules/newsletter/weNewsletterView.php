@@ -2679,10 +2679,10 @@ class weNewsletterView {
 			'black_list' => '',
 			'customer_email_field' => 'Kontakt_Email',
 			'customer_firstname_field' => 'Forename',
-			'customer_html_field' => 'htmlMailYesNo',
+			'customer_html_field' => 'Newsletter_HTMLNewsletter',
 			'customer_lastname_field' => 'Surname',
-			'customer_salutation_field' => 'Anrede_Salutation',
-			'customer_title_field' => 'Anrede_Title',
+			'customer_salutation_field' => 'Anrede_Anrede',
+			'customer_title_field' => 'Anrede_Titel',
 			'default_htmlmail' => '0',
 			'isEmbedImages' => '0',
 			'default_reply' => 'replay@'.$_domainName,
@@ -2749,8 +2749,15 @@ class weNewsletterView {
 	}
 
 	function isBlack($email) {
-		$arr=explode(",",trim(strtolower($this->settings['black_list'])));
-		return in_array(trim(strtolower($email)),$arr);
+		static $black=0;
+		if(!$black){
+			//remove whitespaces
+			$black=explode(',',strtolower($this->settings['black_list']));
+			foreach($black as &$b){
+				$b=trim($b," \t\n\r\n");//intentionally duplicate \n!
+			}
+		}
+		return in_array(trim(strtolower($email)," \t\n\r\n"),$black);
 	}
 
 	/**

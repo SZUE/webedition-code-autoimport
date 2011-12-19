@@ -181,7 +181,31 @@ abstract class weToolLookup{
 		}
 
 		return $_inc;
-	}
+		}
+		
+		function getExternTriggeredTasks() {
+
+			if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'])) {
+				//return $_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'];
+			}
+
+			$_inc = array();
+			$_tools = weToolLookup::getAllTools();
+			foreach($_tools as $_tool){
+				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($_tool['name']) ){
+					$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php';
+				}
+			}
+			if(!defined('NO_SESS')) {
+				$_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
+			}
+
+			return $_inc;
+		}
+
+		function isActiveTag($filepath){
+			return in_array(dirname($filepath), weToolLookup::getTagDirs());
+		}
 
 	static function getTagDirs(){
 

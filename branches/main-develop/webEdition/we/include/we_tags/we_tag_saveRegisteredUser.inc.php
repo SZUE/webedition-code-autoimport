@@ -50,14 +50,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 				if($_REQUEST['s']['Password']!='' && $_REQUEST['s']['Username']!=''){ // wenn password und Username nicht leer
 					if(!weCustomer::customerNameExist($_REQUEST['s']['Username'])){ // username existiert noch nicht!
 
-						// Start Schnittstelle fuer save-Funktion
-						//FIXME: @deprecated!
-						if(file_exists($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php')){
-							include_once($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php');
-							we_customer_saveFN($_REQUEST['s']);
-						}
-						// Ende Schnittstelle fuer save-Funktion
-						$hook = new weHook('customer_preSave', '', array('customer'=>$_REQUEST['s'],'from'=>'tag','type'=>'new'));
+						
+						$hook = new weHook('customer_preSave', '', array('customer'=>&$_REQUEST['s'],'from'=>'tag','type'=>'new','tagname'=>'saveRegisteredUser'));
 						$ret=$hook->executeHook();
 
 						// skip protected Fields
@@ -144,15 +138,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 				if(!$GLOBALS['DB_WE']->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 					if(isset($_REQUEST['s'])){
 
-
-						// Start Schnittstelle fuer change-Funktion
-						//FIXME: @deprecated!
-						if(file_exists($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php')){
-							include_once($_SERVER['DOCUMENT_ROOT'].'/WE_CUSTOMER_EXTERNAL_FN.php');
-							we_customer_saveFN($_REQUEST['s']);
-						}
-						// Ende Schnittstelle fuer change-Funktion
-						$hook = new weHook('customer_preSave', '', array('customer'=>$_REQUEST['s'],'from'=>'tag','type'=>'modify'));
+						
+						$hook = new weHook('customer_preSave', '', array('customer'=>&$_REQUEST['s'],'from'=>'tag','type'=>'modify','tagname'=>'saveRegisteredUser'));
 						$ret=$hook->executeHook();
 
 						// skip protected Fields

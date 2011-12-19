@@ -32,6 +32,17 @@
 	 * When using the WE-APP WE:Hookmanagement, this is done automatically by the WE-APP
 	 *
 	 * @param array $param
+	 * contents of $param depends on 'from'
+	 * if from='management' hook is called from object method save, 
+	 * in this case customer ist the customer object
+	 * and type is either 'new' or 'existing'
+	 * if from='tag', it is called from a we-tag
+	 * in this case, customer is NOT the customer object but an array,
+	 * the arraykey is the fieldname, the arrayvalue gives the value
+	 * the array is passed by reference
+	 * 'tagname holds the name of the tag ('saveRegisteredUser' or addDelNewsletterEmail)
+	 * in this case, type is either 'new' or 'modify'
+	 * for addDelNewsletterEmail additional parameters are isSubscribe' and 'isUnsubscribe'
 	 */
 	function weCustomHook_customer_preSave($param) {
 		$hookHandler=$param['hookHandler'];

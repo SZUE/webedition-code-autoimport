@@ -2760,6 +2760,8 @@ class weNewsletterFrames extends weModuleFrames{
 			$_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
 
 			include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
+			
+			$not_black=!$this->View->isBlack($email);//Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = '';
 				if($title){
@@ -2798,7 +2800,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$domain = '';
 			$not_malformed = ($this->View->settings["reject_malformed"]) ? $this->View->newsletter->check_email($email) : true;
 			$verified = ($this->View->settings["reject_not_verified"]) ? $this->View->newsletter->check_domain($email, $domain) : true;
-			$not_black = !$this->View->isBlack($email);
+
 			if($verified && $not_malformed && $not_black){
 				if(!$test){
 					$phpmail->buildMessage();

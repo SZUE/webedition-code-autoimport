@@ -884,16 +884,18 @@ function step_installation() {
 
 		//$we_config_global = preg_replace('/(define\("DEFAULT_CHARSET",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global); Das klappt irgendwie nicht, ersatz:
 		$we_config_global = str_replace('define("DEFAULT_CHARSET","UTF-8")','define("DEFAULT_CHARSET","'.str_replace('"', '\\"', $_SESSION["we_charset"]).'")',$we_config_global);
+		
+		//$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_host"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_HOST\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'','\\\'',$_SESSION["db_host"]).'${3}',$we_config);
+		//$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_database"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_DATABASE\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_database"]).'${3}',$we_config);
+		//$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_username"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_USER\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_username"]).'${3}',$we_config);
+		//$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_password"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'DB_PASSWORD\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_password"]).'${3}',$we_config);
+		//$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
+		$we_config = preg_replace('/(define\(\'TBL_PREFIX\',\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
 
-		$we_config = preg_replace('/(define\("DB_HOST",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_host"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\(\'DB_HOST\',\')(\w*)(\'\);)/i','${1}'.str_replace('"','\\\'',$_SESSION["db_host"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\("DB_DATABASE",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_database"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\(\'DB_DATABASE\',\')(\w*)(\'\);)/i','${1}'.str_replace('"', '\\\'', $_SESSION["db_database"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\("DB_USER",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_username"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\(\'DB_USER\',\')(\w*)(\'\);)/i','${1}'.str_replace('"', '\\\'', $_SESSION["db_username"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\("DB_PASSWORD",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_password"]).'${3}',$we_config);
-		//$we_config = preg_replace('/(define\(\'DB_PASSWORD\',\')(\w*)(\'\);)/i','${1}'.str_replace('"', '\\\'', $_SESSION["db_password"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\("TBL_PREFIX",")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["db_tableprefix"]).'${3}',$we_config);
 		//$we_config = preg_replace('/(define\(\'TBL_PREFIX\',\')(\w*)(\'\);)/i','${1}'.str_replace('"', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
 		
 		

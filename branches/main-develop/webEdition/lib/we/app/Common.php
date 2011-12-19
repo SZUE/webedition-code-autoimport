@@ -21,6 +21,7 @@
 
 //include_once ('Zend/Config/Xml.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 /**
  * class for administrating webEdition applications (formerly known as "tools")
  * 
@@ -381,7 +382,7 @@ class we_app_Common
 		//error_log("checking if $appname is installed.");
 		$config = self::readConfig();
 		$apps = self::readAppTOC(true);
-		//error_log(print_r($apps,true));
+		
 		$path = $config->applicationpath . $appname . "/";
 		if (is_dir($path)) {
 			//error_log("directory $path found.");

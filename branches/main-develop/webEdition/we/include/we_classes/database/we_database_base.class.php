@@ -408,6 +408,18 @@ abstract class we_database_base {
 		return $ret;
 	}
 
+	/**
+	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
+	 * @param type $arr
+	 */
+	static function arraySetter($arr){
+		$ret = array();
+		foreach($arr as $key => $val){
+			$ret[] = '`' . $key . '`="' . escape_sql_query($val) . '"';
+		}
+		return implode(',', $ret);
+	}
+
 	/* public: return table metadata */
 	public function metadata($table = '', $full = false) {
 		$res = array();

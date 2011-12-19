@@ -171,9 +171,15 @@ function getBacktrace($skip){
 
 	$_backtrace = debug_backtrace();
 	$cnt = 0;
+	//error handler called directly caused by an error
+	if(!in_array($arr['function'],'t_e')){
+		$pos=array_search('error_handler', $skip);
+		unset($skip[$pos]);
+	}
 
 	foreach($_backtrace AS $no => $arr){
-		if(in_array($arr['function'], $skip)){
+		//NOTE: error_handler holds line no & filename of the callee if not called by t_e
+		if(in_array($arr['function'],$skip)){
 			continue;
 		} else if($cnt == 0){ //this is the caller
 			$_caller = $arr['function'];

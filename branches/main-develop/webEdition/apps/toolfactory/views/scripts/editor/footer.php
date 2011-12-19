@@ -21,7 +21,7 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+require_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");
 $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 $translate = we_core_Local::addTranslation('apps.xml');
 we_core_Local::addTranslation('default.xml', 'toolfactory');
