@@ -388,7 +388,7 @@ class we_user {
 			else
 				$ppath=$this->getPath($this->ParentID);
 			$dpath=$this->getPath($this->ID);
-			if(ereg($dpath,$ppath))
+			if(preg_match('|'.$dpath.'|',$ppath))
 				return -5;
 		}
 		if($this->Type==2) {

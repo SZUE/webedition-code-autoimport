@@ -220,7 +220,7 @@ abstract class importFunctions{
 			}
 		}
 
-		$eregformat = ereg_replace("([$eregchars])","([0-9]+)",str_replace("/","\\/",preg_quote($format)));
+		$eregformat = preg_replace("/([$eregchars])/","([0-9]+)",str_replace("/","\\/",preg_quote($format)));
 
 		foreach($formatchars as $char){
 			$eregformat = str_replace("###we###".ord($char)."###we###","\\".$char,$eregformat);
@@ -235,7 +235,7 @@ abstract class importFunctions{
 							"year" => 1970
 						);
 
-		if(preg_match_all("/".$eregformat."/",$datestring,$matches,PREG_SET_ORDER)){
+		if(preg_match_all('/'.$eregformat.'/',$datestring,$matches,PREG_SET_ORDER)){
 
 			if(isset($matches[0]) && is_array($matches[0])){
 				for($i=1;$i<sizeof($matches[0]);$i++){

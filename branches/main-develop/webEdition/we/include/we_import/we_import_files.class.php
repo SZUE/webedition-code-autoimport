@@ -721,12 +721,11 @@ class we_import_files{
 			// setting Filename, Path ...
 			$_fn = importFunctions::correctFilename($_FILES['we_File']["name"]);
 
-			$we_doc->Filename = ereg_replace('^(.+)\..+$', "\\1", $_fn);
+			$we_doc->Filename = preg_replace('/^(.+)\..+$/', "\\1", $_fn);
 			if(stristr($_fn, ".")){
-				//$we_doc->Extension = ereg_replace('^.+(\..+)$', "\\1", $_fn);
-				$we_doc->Extension = strtolower(ereg_replace('^.+(\..+)$', "\\1", $_fn)); // Feature 3764
+				$we_doc->Extension = strtolower(preg_replace('/^.+(\..+)$/', "\\1", $_fn)); // Feature 3764
 			} else{
-				$we_doc->Extension = "";
+				$we_doc->Extension = '';
 			}
 			$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 			$we_doc->setParentID($this->importToID);

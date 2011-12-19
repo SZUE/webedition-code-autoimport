@@ -408,7 +408,7 @@ class we_backup{
 			}
 			$foo .= ",$nl";
 		}
-		$foo = ereg_replace("," . $nl . "$", "", $foo);
+		$foo = preg_replace('/,' . $nl . '$/', '', $foo);
 		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table) );
 		while($this->backup_db->next_record()) {
 			$row = $this->backup_db->Record;

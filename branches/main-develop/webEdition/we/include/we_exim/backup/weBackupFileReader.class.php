@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,50 +22,46 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLFileReader.class.php');
 
 class weBackupFileReader extends weXMLFileReader{
 
-	function preParse(&$content) {
+	function preParse(&$content){
 
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
 		$match = array();
 
-		if(eregi('<we:table(item)?([^>]*)',$content,$match)) {
+		if(eregi('<we:table(item)?([^>]*)', $content, $match)){
 
-			$attributes = explode('=',$match[2]);
+			$attributes = explode('=', $match[2]);
 			$attributes[0] = trim($attributes[0]);
 
-			if($attributes[0]=='name' || $attributes[0]=='table') {
-				$attributes[1] = trim(str_replace(array('"','\''),'',$attributes[1]));
+			if($attributes[0] == 'name' || $attributes[0] == 'table'){
+				$attributes[1] = trim(str_replace(array('"', '\''), '', $attributes[1]));
 
 				// if the table should't be imported
-				if(weBackupUtil::getRealTableName($attributes[1])===false){
+				if(weBackupUtil::getRealTableName($attributes[1]) === false){
 
 					return true;
 				}
 			}
-
 		}
 
-		if(eregi('<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>',$content,$match)){
+		if(eregi('<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>', $content, $match)){
 
-			if(!weBackupUtil::canImportBinary($match[1],$match[3])){
+			if(!weBackupUtil::canImportBinary($match[1], $match[3])){
 
 				return true;
 			}
-
 		}
 
-		if(eregi('<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>',$content,$match)){
+		if(eregi('<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>', $content, $match)){
 
-			if(!weBackupUtil::canImportVersion($match[1],$match[3])){
+			if(!weBackupUtil::canImportVersion($match[1], $match[3])){
 
 				return true;
 			}
-
 		}
 
 		return false;

@@ -189,7 +189,7 @@ class copyFolderFrag extends taskFragment{
 	function copyObjects(){
 		$GLOBALS['we_doc'] = $this->getObjectFile();
 		$this->copyToPath = id_to_path($this->data["CopyToId"], OBJECT_FILES_TABLE);
-		$path = ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $this->data["Path"]);
+		$path = preg_replace('|^' . $this->data["CopyFromPath"] . "/|", $this->copyToPath . '/', $this->data["Path"]);
 		if($this->data["IsFolder"]){
 			$GLOBALS['we_doc']->initByPath($path, OBJECT_FILES_TABLE, 1, 0);
 			if(!$GLOBALS['we_doc']->we_save()){
@@ -259,7 +259,7 @@ class copyFolderFrag extends taskFragment{
 
 		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data["CopyToId"]);
-		$path = ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $this->data["Path"]);
+		$path = preg_replace('|^' . $this->data["CopyFromPath"] . '/|', $this->copyToPath . '/', $this->data["Path"]);
 		//include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $this->data["ClassName"] . ".inc.php");
 		$GLOBALS['we_doc'] = new $this->data["ClassName"]();
 		if($this->data["IsFolder"]){
@@ -574,8 +574,8 @@ class copyFolderFrag extends taskFragment{
 								$pathTo = $this->getNewPath($path);
 								$idTo = $this->getID($pathTo, $GLOBALS['DB_WE']);
 								$idTo = $idTo ? $idTo : "##WEPATH##" . $pathTo . " ###WEPATH###";
-								$destTag = ereg_replace(
-									$attribname . '="[0-9]+"', $attribname . '="' . $idTo . '"', $destTag);
+								$destTag = preg_replace('/'.
+									$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
 							}
 						}
 					}
@@ -696,7 +696,7 @@ class copyFolderFrag extends taskFragment{
 			return $this->copyToPath;
 		}
 		// :TODO: check for ="/Path ='Path and =Path
-		return ereg_replace('^' . $this->data["CopyFromPath"] . "/", $this->copyToPath . "/", $oldPath);
+		return preg_replace('|^' . $this->data["CopyFromPath"] . '/|', $this->copyToPath . '/', $oldPath);
 	}
 
 	function mustChange($path){

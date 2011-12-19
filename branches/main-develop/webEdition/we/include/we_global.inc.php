@@ -160,7 +160,7 @@ function makePIDTail($pid, $cid, $db = '', $table = FILE_TABLE) {
 	foreach ($parentIDs as $pid){
 		$pid_tail .= ' ' . OBJECT_X_TABLE . $cid . '.OF_Workspaces like "%,' . $pid . ',%" OR ' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected like "%,' . $pid . ',%" OR ';
 	}
-	$pid_tail = trim(ereg_replace('^(.*)OR ', '\1', $pid_tail));
+	$pid_tail = trim(preg_replace('/^(.*)OR /', '\1', $pid_tail));
 	if ($pid_tail == ''){
 		return '1';
 	}
@@ -1849,7 +1849,7 @@ function removeHTML($val) {
 	$val = preg_replace('%<br ?/?>%i', '###BR###',
 					str_replace(array('<?','?>'),
 						array('###?###','###/?###'),$val));
-	$val=eregi_replace('<[^><]+>', '',$val);
+	$val=preg_replace('/<[^><]+>/', '',$val);
 	return str_replace(array('###BR###','###?###','###/?###'),
 		array('<br/>','<?','?>'), $val);
 }

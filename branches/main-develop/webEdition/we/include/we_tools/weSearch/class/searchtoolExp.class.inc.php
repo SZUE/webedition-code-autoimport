@@ -102,7 +102,7 @@ class searchtoolExp extends we_search{
 
 	function normalize($keyword){
 		foreach($this->Operators as $_operator){
-			$keyword = eregi_replace("[ ]*" . $_operator . "[ ]*", $_operator, $keyword);
+			$keyword = preg_replace('/[ ]*' . $_operator . '[ ]*/i', $_operator, $keyword);
 		}
 		return $keyword;
 	}

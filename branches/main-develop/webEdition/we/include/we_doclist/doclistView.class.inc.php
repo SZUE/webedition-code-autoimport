@@ -51,7 +51,7 @@ class doclistView {
 		//workaround for z-index ans selects in ie6
 		if (($GLOBALS ['BROWSER'] == "IE")) {
 			$foo = explode ( ";", $_SERVER["HTTP_USER_AGENT"] );
-			$version = abs ( eregi_replace ( "[^0-9\\.]", "", $foo [1] ) );
+			$version = abs ( preg_replace ( '/[^0-9\\.]/', '', $foo [1] ) );
 			if ($version < 7) {
 				$IE6 = true;
 			}

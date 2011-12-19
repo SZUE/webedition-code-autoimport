@@ -96,7 +96,7 @@ if($type=="js"){
 		//header("Location: $bannerpath");exit();
 
 		if($c){
-			$ext = ereg_replace('.*\.(.+)$','\1',$bannerpath);
+			$ext = preg_replace('/.*\.(.+)$/','\1',$bannerpath);
 			switch($ext){
 				case "jpg":
 				case "jpeg":

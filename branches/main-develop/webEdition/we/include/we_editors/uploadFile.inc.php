@@ -64,7 +64,7 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 		if((!$we_doc->Filename) || (!$we_doc->ID)) {
 			// Bug Fix #6284
 			$we_doc->Filename = preg_replace("/[^A-Za-z0-9._-]/", "", $_FILES["we_File"]["name"]);
-			$we_doc->Filename = eregi_replace('^(.+)\..+$',"\\1",$we_doc->Filename);
+			$we_doc->Filename = preg_replace('/^(.+)\..+$/',"\\1",$we_doc->Filename);
 		}
 
 		$foo = explode("/",$_FILES["we_File"]["type"]);
@@ -83,7 +83,7 @@ if(!isset($_SESSION["we_data"][$we_transaction])){
 			$we_doc->setElement("origwidth",$we_size[0]);
 			$we_doc->setElement("origheight",$we_size[1]);
 		}
-		$we_doc->Extension = strtolower((strpos($_FILES["we_File"]["name"],".") > 0) ? eregi_replace('^.+(\..+)$',"\\1",$_FILES["we_File"]["name"]) : "");//strtolower for feature 3764
+		$we_doc->Extension = strtolower((strpos($_FILES["we_File"]["name"],".") > 0) ? preg_replace('/^.+(\..+)$/',"\\1",$_FILES["we_File"]["name"]) : "");//strtolower for feature 3764
 		$we_doc->Text = $we_doc->Filename.$we_doc->Extension;
 		$we_doc->Path = $we_doc->getPath();
 		$we_doc->DocChanged = true;

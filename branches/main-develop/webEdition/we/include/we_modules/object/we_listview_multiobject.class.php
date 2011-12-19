@@ -276,7 +276,7 @@ class we_listview_multiobject extends listviewBase {
 	function fillMatrix(&$matrix,$classID,$db=""){
 		if(!$db) $db = new DB_WE();
 		$table = OBJECT_X_TABLE.$classID;
-		$joinWhere = "";
+		$joinWhere = array();
 		$tableInfo = we_objectFile::getSortedTableInfo($classID,true,$db);
 		foreach($tableInfo as $fieldInfo){
 			if(preg_match('/(.+?)_(.*)/',$fieldInfo["name"],$regs)){
@@ -288,7 +288,10 @@ class we_listview_multiobject extends listviewBase {
 						$matrix["we_object_".$name]["table"] = $table;
 						$matrix["we_object_".$name]["classID"] = $classID;
 						$foo = $this->fillMatrix($matrix,$name,$db);
-						$joinWhere .= " ".OBJECT_X_TABLE.$classID.".object_".$name."=". OBJECT_X_TABLE.$name.".OF_ID AND ".($foo ? "$foo AND " : "");
+						$joinWhere []= OBJECT_X_TABLE.$classID.".object_".$name."=". OBJECT_X_TABLE.$name.".OF_ID";
+						if($foo){
+							$joinWhere []=$foo;
+						}
 					}
 				}else{
 					$matrix[$name]["type"] = $type;
@@ -297,7 +300,7 @@ class we_listview_multiobject extends listviewBase {
 				}
 			}
 		}
-		return ereg_replace('^(.*)AND $','\1',$joinWhere);
+		return ' '.implode(' AND ',$joinWhere);
 	}
 
 
@@ -411,11 +414,11 @@ class we_listview_multiobject extends listviewBase {
 		} else {
 			$out["groupBy"] = "";
 		}
-		$out["publ_cond"] = "";
+		$out["publ_cond"] = array();
 		foreach($tb as $t){
-			$out["publ_cond"] .= " ( $t.OF_Published > 0 OR $t.OF_ID = 0) AND ";
+			$out["publ_cond"] []= "( $t.OF_Published > 0 OR $t.OF_ID = 0)";
 		}
-		$out["publ_cond"] = ereg_replace('^(.*)AND $','\1',$out["publ_cond"]);
+		$out["publ_cond"] = implode(' AND ',$out["publ_cond"]);
 		if($out["publ_cond"]){
 			$out["publ_cond"]  = " ( ".$out["publ_cond"] ." ) ";
 		}

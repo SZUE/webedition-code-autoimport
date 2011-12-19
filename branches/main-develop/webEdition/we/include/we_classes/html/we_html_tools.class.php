@@ -535,7 +535,7 @@ HTS;
 		$_showHour = true;
 		$_showMinute = true;
 
-		$name = ereg_replace('^(.+)]$', '\1%s]', $name);
+		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
 		if(($format == "") || $_dayPos > -1){
 			$days = '';
 			for($i = 1; $i <= 31; $i++){
