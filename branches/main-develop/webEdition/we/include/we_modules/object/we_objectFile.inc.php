@@ -1693,7 +1693,7 @@ class we_objectFile extends we_document{
 						}
 					}
 				}
-				$where = ereg_replace("(.*) OR $",'\1',$where);
+				$where = preg_replace('/(.*) OR $/','\1',$where);
 				if($where){
 					$where = "($where)";
 				}
@@ -3009,8 +3009,8 @@ class we_objectFile extends we_document{
 			$hrefFields = false;
 
 			foreach($_REQUEST as $n=>$v){
-				if(ereg('^we_'.$this->Name.'_([^\[]+)$',$n,$regs)){
-					if($regs[1]=="href"){
+				if(preg_match('/^we_'.$this->Name.'_([^\[]+)$/',$n,$regs)){
+					if($regs[1]=='href'){
 						$hrefFields = true;
 						break;
 					}
@@ -3034,7 +3034,7 @@ class we_objectFile extends we_document{
 			$multiobjectFields = false;
 
 			foreach($_REQUEST as $n=>$v){
-				if(ereg('^we_'.$this->Name.'_([^\[]+)$',$n,$regs)){
+				if(preg_match('/^we_'.$this->Name.'_([^\[]+)$/',$n,$regs)){
 					if($regs[1]=="multiobject"){
 						$multiobjectFields = true;
 						break;
@@ -3046,8 +3046,8 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while(list($k,$v) = $this->nextElement("multiobject")){
-					$realName = ereg_replace("^(.+)_default.+$",'\1',$k);
-					$key = ereg_replace("^.+_default(.+)$",'\1',$k);
+					$realName = preg_replace('/^(.+)_default.+$/','\1',$k);
+					$key = preg_replace('/^.+_default(.+)$/','\1',$k);
 					if(!isset($multiobjects[$realName])) $multiobjects[$realName] = array();
 					if(isset($_REQUEST['we_'.$this->Name.'_multiobject'][$k])) {
 						$multiobjects[$realName][$key] = $_REQUEST['we_'.$this->Name.'_multiobject'][$k];

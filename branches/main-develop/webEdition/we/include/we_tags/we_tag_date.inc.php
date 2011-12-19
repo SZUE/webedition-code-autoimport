@@ -52,28 +52,28 @@ function we_tag_date($attribs, $content){
 		foreach (g_l('date','[day][short]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = ereg_replace('^(.+),$', '\1', $js);
+		$js = preg_replace('/^(.+),$/', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	var l_monthLong = new Array(';
 		foreach (g_l('date','[month][long]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = ereg_replace('^(.+),$', '\1', $js);
+		$js = preg_replace('/^(.+),$/', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	var l_dayLong = new Array(';
 		foreach (g_l('date','[day][long]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = ereg_replace('^(.+),$', '\1', $js);
+		$js = preg_replace('/^(.+),$/', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	var l_monthShort = new Array(';
 		foreach (g_l('date','[month][short]') as $d) {
 			$js .= '"' . $d . '",';
 		}
-		$js = ereg_replace('^(.+),$', '\1', $js);
+		$js = preg_replace('/^(.+),$/', '\1', $js);
 		$js .= ');' . "\n";
 
 		$js .= '	switch(f){' . "\n";
@@ -152,7 +152,7 @@ function we_tag_date($attribs, $content){
 		$f = preg_replace('|([^\\\\])(a)|', '\1"+\2+"', $f);
 		$f = preg_replace('|([^\\\\])(A)|', '\1"+\2+"', $f);
 
-		$f = ereg_replace('^([SYymndjHihGgDFlMsaA])', '"+\1+"', $f);
+		$f = preg_replace('/^([SYymndjHihGgDFlMsaA])/', '"+\1+"', $f);
 		$f = stripslashes($f);
 
 		$js .= 'document.write("' . $f . '");' . "\n";
@@ -199,16 +199,16 @@ function correctDateFormat($format, $t = ''){
 	$format = str_replace('M', '%%%3%%%', $format);
 
 	$foo = g_l('date','[day][short]['.date('w', $t).']');
-	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
+	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%0%%%', $foo, $format);
 	$foo = g_l('date','[month][long]['.(date('n', $t) - 1).']');
-	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
+	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%1%%%', $foo, $format);
 	$foo = g_l('date','[day][long]['.date('w', $t).']');
-	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
+	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%2%%%', $foo, $format);
 	$foo = g_l('date','[month][short]['.(date('n', $t) - 1).']');
-	$foo = ereg_replace('([a-zA-Z])', '\\\1', $foo);
+	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%3%%%', $foo, $format);
 	return $format;
 }
