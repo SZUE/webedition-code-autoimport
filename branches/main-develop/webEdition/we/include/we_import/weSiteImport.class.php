@@ -963,7 +963,7 @@ class weSiteImport{
 		if($this->step == 1){
 			$this->_fillFiles();
 			if(count($this->_files) == 0){
-				$importDirectory = ereg_replace("^(.*)/$", '\1', ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT']) . $this->from);
+				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'],'/') . $this->from,'/');
 				if(count(scandir($importDirectory)) <= 2){
 					return '<script type="text/javascript>alert(\'' . addslashes(
 							g_l('importFiles', "[emptyDir]")) . '\');top.close()</script>';
@@ -1634,8 +1634,8 @@ class weSiteImport{
 		// preparing Paths
 		$path = str_replace("\\", "/", $path); // change windoof backslashes to slashes
 		$sourcePath = str_replace("\\", "/", $sourcePath); // change windoof backslashes to slashes
-		$sizeofdocroot = strlen(ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT'])); // make sure that no ending slash is there
-		$sizeofsourcePath = strlen(ereg_replace("^(.*)/$", '\1', $sourcePath)); // make sure that no ending slash is there
+		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'],'/')); // make sure that no ending slash is there
+		$sizeofsourcePath = strlen(rtrim($sourcePath,'/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
 		if($destinationDir == "/"){
 			$destinationDir = "";
@@ -1702,8 +1702,8 @@ class weSiteImport{
 		// preparing Paths
 		$path = str_replace("\\", "/", $path); // change windoof backslashes to slashes
 		$sourcePath = str_replace("\\", "/", $sourcePath); // change windoof backslashes to slashes
-		$sizeofdocroot = strlen(ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT'])); // make sure that no ending slash is there
-		$sizeofsourcePath = strlen(ereg_replace("^(.*)/$", '\1', $sourcePath)); // make sure that no ending slash is there
+		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'],'/')); // make sure that no ending slash is there
+		$sizeofsourcePath = strlen(rtrim($sourcePath,'/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
 		if($destinationDir == "/"){
 			$destinationDir = "";
@@ -1862,8 +1862,7 @@ class weSiteImport{
 	 */
 	function _fillFiles(){
 		// directory from which we import (real path)
-		$importDirectory = ereg_replace(
-			"^(.*)/$", '\1', ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT']) . $this->from);
+		$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'],'/') . $this->from,'/');
 
 		// when running on windows we have to change slashes to backslashes
 		if(runAtWin()){
@@ -1908,7 +1907,7 @@ class weSiteImport{
 
 		@set_time_limit(60);
 
-		$weDirectory = ereg_replace("^(.*)/$", '\1', $_SERVER['DOCUMENT_ROOT']) . "/webEdition";
+		$weDirectory = rtrim($_SERVER['DOCUMENT_ROOT'],'/') . "/webEdition";
 
 		if($importDirectory == $weDirectory){ // we do not import stuff from the webEdition home dir
 			return;
