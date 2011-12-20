@@ -580,5 +580,5 @@ function base64_encode(str){
 }
 
 function base64_decode(str){
-	return Base64.decode;
+	return Base64.decode(str);
 }
