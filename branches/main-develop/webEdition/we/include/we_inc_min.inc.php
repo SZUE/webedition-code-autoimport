@@ -41,6 +41,9 @@ if ($_memlimit < 32) {
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
 
+//prepare space for we-variables:
+$GLOBALS['we']=array();
+
 //start autoloader!
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
