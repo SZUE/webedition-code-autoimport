@@ -213,7 +213,7 @@ function display_error_message($type, $message, $file, $line, $skipBT=false){
 	if(!$skipBT){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_handler', 'getBacktrace', 'display_error_message')));
 	}else{
-		$detailedError = $_caller = '';
+		$detailedError = $_caller = '-';
 	}
 
 	// Build the error table
@@ -307,7 +307,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 	if(!$skipBT){
 		list($_detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
 	}else{
-		$_detailedError = $_caller = '';
+		$_detailedError = $_caller = '-';
 	}
 
 	// Error type
@@ -366,7 +366,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT=false){
 	if(!$skipBT){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_handler', 'getBacktrace', 'mail_error_message')));
 	}else{
-		$detailedError = $_caller = '';
+		$detailedError = $_caller = '-';
 	}
 
 	// Build the error table
