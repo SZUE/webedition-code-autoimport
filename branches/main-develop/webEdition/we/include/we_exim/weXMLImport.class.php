@@ -577,7 +577,7 @@
 				@fclose ($fh);
 			}
 
-			$encoding = XML_Parser::getEncoding('',$head);
+			$encoding = we_xml_parser::getEncoding('',$head);
 			$_SESSION['weXMLimportCharset']=$encoding;
 			$header=weXMLExIm::getHeader($encoding);
 			$footer=weXMLExIm::getFooter();

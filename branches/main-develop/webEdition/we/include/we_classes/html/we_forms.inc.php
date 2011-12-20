@@ -269,7 +269,7 @@ abstract class we_forms {
 				// Ende Bugfix
 
 				$value = str_replace("##|r##","\r",str_replace("##|n##","\n",$value));
-				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25;border-bottom:0px;background-image: url('.IMAGE_DIR . 'backgrounds/aquaBackground.gif);">'.$e->getHTML().'</div>' : '').'<div class="tbButtonWysiwygBorder" id="div_wysiwyg_'.$name.'">'.$value.'</div>'.($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25;border-top:0px;background-image: url('.IMAGE_DIR . 'backgrounds/aquaBackground.gif);">'.$e->getHTML().'</div>' : '');
+				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url('.IMAGE_DIR . 'backgrounds/aquaBackground.gif);">'.$e->getHTML().'</div>' : '').'<div class="tbButtonWysiwygBorder" id="div_wysiwyg_'.$name.'">'.$value.'</div>'.($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url('.IMAGE_DIR . 'backgrounds/aquaBackground.gif);">'.$e->getHTML().'</div>' : '');
 			}
 		} else {
 			if($style && substr($style,-1) != ";"){

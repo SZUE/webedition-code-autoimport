@@ -171,15 +171,22 @@ function getBacktrace($skip){
 
 	$_backtrace = debug_backtrace();
 	$cnt = 0;
+	$found = false;
 	//error handler called directly caused by an error
-	if(!in_array($arr['function'],'t_e')){
-		$pos=array_search('error_handler', $skip);
+	foreach($_backtrace AS $no => $arr){
+		if($arr['function'] == 't_e'){
+			$found = true;
+			break;
+		}
+	}
+	if(!$found){
+		$pos = array_search('error_handler', $skip);
 		unset($skip[$pos]);
 	}
 
 	foreach($_backtrace AS $no => $arr){
 		//NOTE: error_handler holds line no & filename of the callee if not called by t_e
-		if(in_array($arr['function'],$skip)){
+		if(in_array($arr['function'], $skip)){
 			continue;
 		} else if($cnt == 0){ //this is the caller
 			$_caller = $arr['function'];
@@ -258,7 +265,7 @@ function getVariableMax($var){
 		if(isset($GLOBALS['DB_WE']) && $GLOBALS['DB_WE']->isConnected()){
 			$max = f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $GLOBALS['DB_WE']) - 2048;
 			if($max > 12884901888){ //12MB
-				$max=12884901888 - 2048;
+				$max = 12884901888 - 2048;
 			}
 		} else{
 			$max = 1073741824 - 2048; //1MB
@@ -266,25 +273,25 @@ function getVariableMax($var){
 	}
 	switch($var){
 		case 'Request':
-			$ret=(isset($_REQUEST) ? print_r($_REQUEST, true) :' - ');
+			$ret = (isset($_REQUEST) ? print_r($_REQUEST, true) : ' - ');
 			break;
 		case 'Session':
-			$ret=(isset($_SESSION) ? print_r($_SESSION, true) :' - ');
+			$ret = (isset($_SESSION) ? print_r($_SESSION, true) : ' - ');
 			break;
 		case 'Global':
-			$ret=(isset($GLOBALS) ? print_r($GLOBALS, true) :' - ');
+			$ret = (isset($GLOBALS) ? print_r($GLOBALS, true) : ' - ');
 			break;
 		case 'Server':
-			$ret=(isset($_SERVER) ? print_r($_SERVER, true) :' - ');
+			$ret = (isset($_SERVER) ? print_r($_SERVER, true) : ' - ');
 			break;
 		default:
 			$ret = '';
 	}
 
-	if(strlen($ret)>$max){
-		$ret=substr($ret,0,$max);
+	if(strlen($ret) > $max){
+		$ret = substr($ret, 0, $max);
 	}
-	return $var.'="'.escape_sql_query($ret).'"';
+	return $var . '="' . escape_sql_query($ret) . '"';
 }
 
 function log_error_message($type, $message, $file, $_line){
@@ -308,7 +315,7 @@ function log_error_message($type, $message, $file, $_line){
 //FIXME: mysql_ => should this be handled by DB_WE?
 	// Log the error
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
-		$logVars=array('Request','Session','Server');
+		$logVars = array('Request', 'Session', 'Server');
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
 		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
 			`Function`="' . escape_sql_query($_caller) . '",
@@ -322,7 +329,7 @@ function log_error_message($type, $message, $file, $_line){
 			} else{
 				$id = $GLOBALS['DB_WE']->getInsertId();
 				foreach($logVars as $var){
-					$GLOBALS['DB_WE']->query('UPDATE '.$tbl.' SET '.getVariableMax($var).' WHERE ID='.$id);
+					$GLOBALS['DB_WE']->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
 		} else{
@@ -334,7 +341,7 @@ function log_error_message($type, $message, $file, $_line){
 			} else{
 				$id = mysql_insert_id();
 				foreach($logVars as $var){
-					mysql_query('UPDATE '.$tbl.' SET '.getVariableMax($var).' WHERE ID='.$id);
+					mysql_query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
 			mysql_close();
@@ -375,7 +382,7 @@ function mail_error_message($type, $message, $file, $line){
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: '.$ttype.' ('.$_caller.') ['.$_SERVER['SERVER_NAME'].']', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
 			die('Cannot log error! Could not send e-mail.');
 		}
 	} else{

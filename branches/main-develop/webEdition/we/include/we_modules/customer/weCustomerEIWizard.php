@@ -744,7 +744,7 @@ class weCustomerEIWizard{
 
 			}else{
 				//invoke parser
-				$xp = new XML_Parser($filesource);
+				$xp = new we_xml_parser($filesource);
 				$xmlWellFormed = ($xp->parseError == "")? true : false;
 
 				if ($xmlWellFormed) {

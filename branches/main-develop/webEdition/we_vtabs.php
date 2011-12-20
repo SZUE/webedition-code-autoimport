@@ -185,7 +185,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 
 </script>
 	</head>
-	<body bgcolor="#ffffff" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">
+	<body bgcolor="#ffffff" style="background-image: url(<?php print IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px;">
 		<div style="position:absolute;top:8px;left:5px;z-index:10;border-top:1px solid black;">
 					<script  type="text/javascript"><!--
 						for (var i=0; i<we_tabs.length;i++) {

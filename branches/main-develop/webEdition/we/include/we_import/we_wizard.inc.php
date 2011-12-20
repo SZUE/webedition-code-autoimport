@@ -691,7 +691,7 @@ HTS;
 					}
 					else if ($v["type"]== "GXMLImport") {
 						$hiddens = $this->getHdns("v",$v).$this->getHdns("records",$records).$this->getHdns("we_flds",$we_flds).$this->getHdns("attributes",$attributes);
-						$xp = new XML_Parser($v["uniquePath"]."/temp_".$v["cid"].".xml");
+						$xp = new we_xml_parser($v["uniquePath"]."/temp_".$v["cid"].".xml");
 
 						for($c = 0; $c < sizeOf($records); $c++) {
 							$nodeSet = $xp->evaluate($xp->root."/".$we_flds[$records[$c]]);

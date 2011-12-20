@@ -23,7 +23,7 @@
  */
 
 
-class XML_Validate extends XML_Parser {
+class XML_Validate extends we_xml_parser {
 	/**
 	 * This array contains all child elements of the "we:document" node.
 	 * @var array

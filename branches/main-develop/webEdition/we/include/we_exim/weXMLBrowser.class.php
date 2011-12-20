@@ -27,12 +27,12 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 
-class weXMLBrowser extends XML_Parser{
+class weXMLBrowser extends we_xml_parser{
 
 	var $cache;
 
 	function weXMLBrowser($filename="",$mode="backup"){
-		parent::XML_Parser();
+		parent::we_xml_parser();
 		$this->mode=$mode;
 		$this->xmlExt = FALSE;
 		if(!empty($filename)) $this->getFile($filename);

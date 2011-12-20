@@ -25,7 +25,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
-class XML_Import extends XML_Parser {
+class XML_Import extends we_xml_parser {
 
 	var $current_table = "";
 	var $attribs = array();

@@ -140,7 +140,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc
 
 
 		function getXMLDataset($filename,$dataset){
-			$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$filename);
+			$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'].$filename);
 			$nodeSet = $xp->evaluate($xp->root.'/'.$dataset.'[1]/child::*');
 			$nodes = array();
 			$attrs = array();
@@ -377,7 +377,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc
 					$db=new DB_WE();
 
 					$customer=new weCustomer();
-					$xp = new XML_Parser($xmlfile);
+					$xp = new we_xml_parser($xmlfile);
 
 					$fields = array_flip($field_mappings);
 					$nodeSet = $xp->evaluate($xp->root.'/*');

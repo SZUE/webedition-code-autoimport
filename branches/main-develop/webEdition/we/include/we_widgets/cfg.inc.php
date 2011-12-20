@@ -199,6 +199,7 @@ $aCfgProps = array(
 		)
 );
 
+$aTopRssFeeds=g_l('topFeeds','');
 for ($i = 0; $i < count($aTopRssFeeds); $i++) {
 	foreach ($aTopRssFeeds[$i] as $k => $v) {
 		$aTopRssFeeds[$i][$k] = base64_encode($v);

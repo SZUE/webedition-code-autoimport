@@ -31,7 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc
 * This class offers methods to split a XML document using the XPath language.
 * The xml document will be split into self-contained XML files.
 */
-class XML_SplitFile extends XML_Parser {
+class XML_SplitFile extends we_xml_parser {
 
 	/**
 	 * Number of exported XML files.
@@ -67,7 +67,7 @@ class XML_SplitFile extends XML_Parser {
 	 * load and parse a file.
 	 *
 	 * @param      string $file
-	 * @see        XML_Parser::getFile()
+	 * @see        we_xml_parser::getFile()
 	 */
 	function XML_SplitFile($file = "") {
 		if (!empty($file)) {

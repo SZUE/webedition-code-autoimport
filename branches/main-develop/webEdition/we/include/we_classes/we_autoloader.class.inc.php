@@ -41,6 +41,7 @@ abstract class we_autoloader{
 		'database' => 'we_classes/database',
 		'html' => 'we_classes/html',
 		'users' => 'we_modules/users',
+		'xml' => 'we_classes/xml',
 	);
 	private static $classes = array(
 		'we_classes' => array(
@@ -203,7 +204,6 @@ abstract class we_autoloader{
 			'XML_Import' => 'xml_import.inc.php',
 			'XML_Parser_Error' => 'Parser.php',
 			'XML_Parser' => 'Parser.php',
-			'XML_Parser' => 'xml_parser.inc.php',
 			'XML_RSS' => 'RSS.php',
 			'XML_SplitFile' => 'xml_splitFile.inc.php',
 			'XML_Validate' => 'xml_validate.inc.php',

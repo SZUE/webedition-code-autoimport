@@ -73,7 +73,7 @@ if ( window.addEventListener ) { // moz
 }
 
 </script>
-<div class=\"rssDiv\" id=\"m_" . $iCurrId . "_inline\" style=\"width: " . $iWidth . ";height:287 ! important; overflow: auto;\"></div>
+<div class=\"rssDiv\" id=\"m_" . $iCurrId . "_inline\" style=\"width: " . $iWidth . "px;height:287px ! important; overflow: auto;\"></div>
 ";
 
 $oTblCont = new we_htmlTable(array(

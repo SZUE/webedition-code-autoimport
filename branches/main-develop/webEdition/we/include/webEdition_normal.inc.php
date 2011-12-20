@@ -205,22 +205,22 @@ var widthBeforeDeleteModeSidebar = 0;
 	* @desc the frameset for the SeeMode
 	*/
 	function pWebEdition_Frameset(){?>
-	<div style="position:fixed;top:0;left:0;right:0;bottom:0;border:0;">
-		<div style="position:absolute;top:0;left:0;right:0;height:32px;border-bottom: 1px solid black;">
+	<div style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px;">
+		<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
 			<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/header.php");?>
 		</div>
-		<div style="position:absolute;top:32px;left:0;right:0;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
+		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
 			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 		</div>
-		<div style="position:absolute;left:0;right:0;bottom:0;height:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 1px solid;">
-			<div style="position:absolute;top:0;bottom:0;width:25%;border:0;">"
+		<div style="position:absolute;left:0px;right:0px;bottom:0px;height:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 1px solid;">
+			<div style="position:absolute;top:0px;bottom:0px;width:25%;border:0px;">"
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
 			</div>
-			<div style="position:absolute;top:0;bottom:0;width:25%;border:0;">"
+			<div style="position:absolute;top:0px;bottom:0px;width:25%;border:0px;">"
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
 			</div>
 			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
+			<div style="position:absolute;top:0px;bottom:0px;width:10%;border:0px;">"
 			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 			</div>
 			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"

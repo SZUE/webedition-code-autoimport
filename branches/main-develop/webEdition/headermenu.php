@@ -97,7 +97,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 		</script>
 	</head>
 	<body>
-		<div style="position:absolute;top:0;left:0;right:0;bottom:0;border:0;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
+		<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
 			<div style="position:relative;border:0;float:left;" >
 <?php
 if ($jmenu) {

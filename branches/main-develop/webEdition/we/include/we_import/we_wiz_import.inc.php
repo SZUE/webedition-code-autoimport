@@ -760,7 +760,7 @@ class we_wizard_import extends we_wizard {
 			);
 
 
-			$xml_encoding = XML_Parser::getEncoding($_import_file);
+			$xml_encoding = we_xml_parser::getEncoding($_import_file);
 			if(defined ('DEFAULT_CHARSET') && DEFAULT_CHARSET!='' && (DEFAULT_CHARSET=='ISO-8859-1' || DEFAULT_CHARSET=='UTF-8' ) && ($xml_encoding=='ISO-8859-1' || $xml_encoding=='UTF-8' ) ) {
 
 				array_push($parts, array(
@@ -1319,7 +1319,7 @@ HTS;
 		$hdns.= we_htmlElement::htmlHidden(array("name"=>"v[mode]","value"=>0))."\n".we_htmlElement::htmlHidden(array("name"=>"v[cid]","value"=>-2))."\n";
 
 		if ((file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"]))) {
-			$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
+			$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 			$xmlWellFormed = ($xp->parseError == "")? true : false;
 
 			if ($xmlWellFormed) {
@@ -1519,7 +1519,7 @@ HTS;
 				}
 			}
 		}
-		$xp = new XML_Parser($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
+		$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'].$v["import_from"]);
 		$nodeSet = $xp->evaluate($xp->root.'/'.$v["rcd"].'[1]/child::*');
 		$val_nodes = array();
 		$val_attrs = array();

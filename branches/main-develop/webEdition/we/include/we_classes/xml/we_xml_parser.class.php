@@ -29,7 +29,7 @@
 * This class offers methods to read and parse a XML document and to access the
 * XML data by the XPath language.
 */
-class XML_Parser {
+class we_xml_parser {
 
 	/**
 	 * Name of the file to read and parse, used by the error handler.
@@ -123,7 +123,7 @@ class XML_Parser {
 	 * @param      string $file
 	 * @see        getFile()
 	 */
-	function XML_Parser($file = '') {
+	function __construct($file = '') {
 		if(!empty($file)) {
 			// Read and try to parse the given file.
 			$this->getFile($file);
@@ -147,7 +147,7 @@ class XML_Parser {
 			return FALSE;
 		}
 		// Only permit files with the extension 'xml'.
-		if ($this->xmlExt && strtolower($f['extension']) != 'xml') {
+		if ($this->xmlExt && (!isset($f['extension']) || strtolower($f['extension']) != 'xml')) {
 			//$this->addWarning(ERROR_FILE_EXTENSION, __LINE__, $this->fileName, $f['extension']);
 			return FALSE;
 		}
