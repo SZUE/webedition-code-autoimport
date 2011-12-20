@@ -50,7 +50,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 				if($_REQUEST['s']['Password']!='' && $_REQUEST['s']['Username']!=''){ // wenn password und Username nicht leer
 					if(!weCustomer::customerNameExist($_REQUEST['s']['Username'])){ // username existiert noch nicht!
 
-						
+
 						$hook = new weHook('customer_preSave', '', array('customer'=>&$_REQUEST['s'],'from'=>'tag','type'=>'new','tagname'=>'saveRegisteredUser'));
 						$ret=$hook->executeHook();
 
@@ -75,11 +75,8 @@ function we_tag_saveRegisteredUser($attribs,$content){
 								$_SESSION['webuser']=getHash('SELECT * FROM '.CUSTOMER_TABLE.' WHERE ID='.$uID,$GLOBALS['DB_WE']);
 								$_SESSION['webuser']['registered'] = true;
 
-								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET MemberSince=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
-								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET LastAccess=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
-								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET LastLogin=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
-								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifyDate=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
-								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifiedBy=\'frontend\' WHERE ID='.$_SESSION['webuser']['ID']);
+								$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET MemberSince=UNIX_TIMESTAMP(),LastAccess=UNIX_TIMESTAMP(),LastLogin=UNIX_TIMESTAMP(),
+									ModifyDate=UNIX_TIMESTAMP(),ModifiedBy=\'frontend\' WHERE ID='.$_SESSION['webuser']['ID']);
 								if(defined('WE_ECONDA_STAT') && WE_ECONDA_STAT) {//Bug 3808, this prevents invalid code if econda is not active, but if active ...
 									echo '<a name="emos_name" title="register" rel="'.md5($_SESSION["webuser"]['ID']).'" rev="0" ></a>';
 								}
@@ -138,7 +135,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 				if(!$GLOBALS['DB_WE']->next_record()){ // es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 					if(isset($_REQUEST['s'])){
 
-						
+
 						$hook = new weHook('customer_preSave', '', array('customer'=>&$_REQUEST['s'],'from'=>'tag','type'=>'modify','tagname'=>'saveRegisteredUser'));
 						$ret=$hook->executeHook();
 
@@ -160,9 +157,7 @@ function we_tag_saveRegisteredUser($attribs,$content){
 						}
 						if(sizeof($set_a)){
 							$set=implode(',',$set_a);
-							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET '.$set.' WHERE ID='.intval($_REQUEST['s']['ID']));
-							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifyDate=UNIX_TIMESTAMP() WHERE ID='.$_SESSION['webuser']['ID']);
-							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET ModifiedBy=\'frontend\' WHERE ID='.$_SESSION['webuser']['ID']);
+							$GLOBALS['DB_WE']->query('UPDATE '.CUSTOMER_TABLE.' SET '.$set.',ModifyDate=UNIX_TIMESTAMP(),ModifiedBy=\'frontend\' WHERE ID='.intval($_REQUEST['s']['ID']));
 						}
 					}
 				}else{

@@ -56,7 +56,11 @@ ini_set('include_path', $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS[
 require_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR .'we_classes'.DIRECTORY_SEPARATOR.'we_autoloader.class.inc.php');
 
 //make we_autoloader the first autoloader
-spl_autoload_register('we_autoloader::autoload', false, true);
+$ret = spl_autoload_register('we_autoloader::autoload', false, true);
+//workaround php 5.2
+if($ret!=true){
+	spl_autoload_register('we_autoloader::autoload',true);
+}
 
 // include Zend_Autoloader  #3815
 require_once('Zend/Loader/Autoloader.php');
