@@ -319,6 +319,10 @@ $l_buttons_global=array(
 		'value'=>'Vie',
 		'width'=>'100',
 	),
+	'first'=>array(
+		'alt'=>'First',
+		'value'=>'First',
+	),
 	'go'=>array(
 		'alt'=>'',
 		'value'=>'Suorita nyt',
@@ -338,6 +342,10 @@ $l_buttons_global=array(
 		'alt'=>'Tuo valitut tiedostot',
 		'value'=>'Tuo',
 		'width'=>'100',
+	),
+	'last'=>array(
+		'alt'=>'Last',
+		'value'=>'Last',
 	),
 	'listview'=>array(
 		'alt'=>'Listview',

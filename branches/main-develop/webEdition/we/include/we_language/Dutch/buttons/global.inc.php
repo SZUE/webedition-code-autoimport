@@ -319,6 +319,10 @@ $l_buttons_global=array(
 		'value'=>'Export',
 		'width'=>'100',
 	),
+	'first'=>array(
+		'alt'=>'First',
+		'value'=>'First',
+	),
 	'go'=>array(
 		'alt'=>'',
 		'value'=>'Execute now',
@@ -338,6 +342,10 @@ $l_buttons_global=array(
 		'alt'=>'Importeer geselecteerd bestand',
 		'value'=>'Import',
 		'width'=>'100',
+	),
+	'last'=>array(
+		'alt'=>'Last',
+		'value'=>'Last',
 	),
 	'listview'=>array(
 		'alt'=>'',

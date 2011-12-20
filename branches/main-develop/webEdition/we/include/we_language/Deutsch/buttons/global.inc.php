@@ -319,6 +319,10 @@ $l_buttons_global=array(
 		'value'=>'Exportieren',
 		'width'=>'100',
 	),
+	'first'=>array(
+		'alt'=>'Anfang',
+		'value'=>'Anfang',
+	),
 	'go'=>array(
 		'alt'=>'Jetzt ausführen',
 		'value'=>'Jetzt ausführen',
@@ -338,6 +342,10 @@ $l_buttons_global=array(
 		'alt'=>'Ausgewählte Datei importieren',
 		'value'=>'Importieren',
 		'width'=>'100',
+	),
+	'last'=>array(
+		'alt'=>'Ende',
+		'value'=>'Ende',
 	),
 	'listview'=>array(
 		'alt'=>'Listenansicht',
