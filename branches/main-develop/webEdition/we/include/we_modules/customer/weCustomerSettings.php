@@ -131,8 +131,8 @@ class weCustomerSettings {
 		);
 
 		$this->PropertyTitle = array(
-				'Username' => g_l('modules_customer','[Username]'),
-				'Password' => g_l('modules_customer','[Password]'),
+				'Username' => g_l('modules_customer','[username]'),
+				'Password' => g_l('modules_customer','[password]'),
 				'Forename' => g_l('modules_customer','[Forname]'),
 				'Surname' => g_l('modules_customer','[Surname]'),
 				'LoginDenied' => g_l('modules_customer','[login]'),
