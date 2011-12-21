@@ -26,13 +26,7 @@ if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
-//if($_REQUEST['we_cmd'][0] != "show" && $_REQUEST['we_cmd'][0] != "getWeDocFromID"){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-//}
-
-/*include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.php");
-*/
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 $INCLUDE = "";
 //	In we.inc.php all names of the active modules have already been searched

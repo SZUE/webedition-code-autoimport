@@ -23,10 +23,7 @@
  */
 
 
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.php");
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/define_styles.inc.php");
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlTable.inc.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 
     we_html_tools::protect();
     //	Header for a none webEdition document opened with webEdition

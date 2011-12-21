@@ -24,8 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 
 abstract class exportFunctions {
 

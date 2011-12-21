@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/newsletter/weNewsletterDirSelector.inc.php");
 	we_html_tools::protect();
 
@@ -42,6 +42,6 @@
 		isset( $we_FolderText ) ? $we_FolderText : ( isset( $_REQUEST["we_FolderText"] ) ? $_REQUEST["we_FolderText"] : '' ),
 		isset( $rootDirID ) ? $rootDirID : ( isset( $_REQUEST["rootDirID"] ) ? $_REQUEST["rootDirID"] : '' ),
 		isset( $multiple ) ? $multiple : ( isset( $_REQUEST["multiple"] ) ? $_REQUEST["multiple"] : '' )
-	);		
-		
+	);
+
 	$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);

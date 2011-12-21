@@ -23,13 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == '/we_global.inc.php') {
+if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(__DIR__, '', __FILE__)) {
 	exit();
 }
 if (!isset($GLOBALS['WE_IS_DYN'])) {
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 }
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
 function we_getModuleNameByContentType($ctype) {
 	$_moduleDir = '';
@@ -2772,6 +2771,7 @@ function we_templateInit(){
 	if(!isset($GLOBALS['DB_WE'])){
 		$GLOBALS['DB_WE'] = new DB_WE;
 	}
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 	if($GLOBALS['we_doc']){
 		$GLOBALS['WE_DOC_ID'] = $GLOBALS['we_doc']->ID;
 		if(!isset($GLOBALS['WE_MAIN_ID'])) $GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;

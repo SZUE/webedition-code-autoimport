@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
+	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 	$id = $_REQUEST['we_cmd'][1];
 

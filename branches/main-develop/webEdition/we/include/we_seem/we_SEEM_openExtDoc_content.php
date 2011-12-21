@@ -21,65 +21,59 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_global.inc.php");
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_defines.inc.php");
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/define_styles.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+//	this file gets the output from a none webEdition-Document on the same web-server
+//	and parses all found links to webEdition cmds
 
+we_html_tools::protect();
 
-	//	this file gets the output from a none webEdition-Document on the same web-server
-	//	and parses all found links to webEdition cmds
+$fh = @fopen($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"]), "rb");
 
-	we_html_tools::protect();
+if($fh){
 
-	$fh = @fopen($_REQUEST["filepath"] . $seperator . urldecode($_REQUEST["paras"]),"rb");
+	$content = "";
 
-	if($fh) {
+	while(!feof($fh)) {
+		$content .= fgets($fh, 1024);
+	}
+	fclose($fh);
+}
 
-		$content = "";
+if(isset($content)){
 
-		while(!feof($fh)) {
-			$content .= fgets($fh, 1024);
-		}
-		fclose($fh);
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
+	print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
+} else{
+
+	if(!session_id()){
+		session_start();
 	}
 
-    if(isset($content)){
 
-        include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
-        print we_SEEM::parseDocument($content, $_REQUEST["filepath"]);
+	$_head = we_htmlElement::htmlHead(STYLESHEET);
 
-    } else {
+	$_table = new we_htmlTable(array("cellpadding" => 0,
+			"cellspacing" => 0,
+			"border" => 0),
+			4,
+			2);
+	$_table->setColContent(0, 0, we_html_tools::getPixel(20, 20));
+	$_table->setCol(1, 1, array("class" => "defaultfont"), sprintf(g_l('SEEM', "[ext_doc_not_found]"), $_REQUEST["filepath"]) . "<br>");
+	$_table->setColContent(2, 0, we_html_tools::getPixel(20, 6));
 
-		if(!session_id()){
-			session_start();
-		}
+	//	there must be a navigation-history - so use it
+	$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
+	$_body = $_table->getHtmlCode();
+	$_body = we_htmlElement::htmlBody(array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);
 
-        $_head = we_htmlElement::htmlHead(STYLESHEET);
-
-		$_table = new we_htmlTable(	array(	"cellpadding" => 0,
-											"cellspacing" => 0,
-											"border"      => 0),
-													4,
-													2);
-		$_table->setColContent(0, 0, we_html_tools::getPixel(20,20));
-		$_table->setCol(1, 1, array("class" => "defaultfont"),  sprintf(g_l('SEEM',"[ext_doc_not_found]"), $_REQUEST["filepath"]) . "<br>");
-		$_table->setColContent(2, 0, we_html_tools::getPixel(20,6));
-
-		//	there must be a navigation-history - so use it
-		$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
-
-		$_body = $_table->getHtmlCode();
-		$_body = we_htmlElement::htmlBody(	array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);
-
-		print we_htmlElement::htmlHtml($_head . "\n" . $_body);
-    }
+	print we_htmlElement::htmlHtml($_head . "\n" . $_body);
+}
 ?>
 <script type="text/javascript">
-<!--
+	<!--
   parent.openedWithWE = 1;
-//-->
+	//-->
 </script>

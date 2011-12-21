@@ -23,7 +23,7 @@
  */
 
 // exit if script called directly
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])=='/we_init_doc.inc.php') {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(__DIR__, '', __FILE__)) {
 	exit();
 }
 
@@ -33,35 +33,27 @@ if( (!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$
 if(isset($we_ContentType) && $we_ContentType!=''){
 	switch($we_ContentType){
 		case 'application/x-shockwave-flash':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_flashDocument.inc.php');
 			$we_doc = new we_flashDocument();
 			break;
 		case 'video/quicktime':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php');
 			$we_doc = new we_quicktimeDocument();
 			break;
 		case 'image/*':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 			$we_doc = new we_imageDocument();
 			break;
 		case 'folder':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_folder.inc.php');
 			$we_doc = new we_folder();
 			break;
 		case 'class_folder':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/we_class_folder.inc.php');
 			$we_doc = new we_class_folder();
 			break;
 		case 'text/weTmpl':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_template.inc.php');
 			$we_doc = new we_template();
 			break;
 		case 'text/webedition':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 			$we_doc = new we_webEditionDocument();
 			break;
 		case 'text/html':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_htmlDocument.inc.php');
 			$we_doc = new we_htmlDocument();
 			break;
 		case 'text/xml':
@@ -69,11 +61,9 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 		case 'text/css':
 		case 'text/plain':
 		case 'text/htaccess':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_textDocument.inc.php');
 			$we_doc = new we_textDocument();
 			break;
 		case 'application/*':
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_otherDocument.inc.php');
 			$we_doc = new we_otherDocument();
 			break;
 		default:
@@ -83,7 +73,6 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 			}
 
 			if(file_exists($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php')){
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php');
 				eval('$we_doc = new we_'.$we_ContentType.'();');
 			}else{
 				exit('Can NOT initialize document of type -'.$we_ContentType.'- '.$_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php');
