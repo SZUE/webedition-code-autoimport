@@ -188,7 +188,7 @@ class we_button{
 		 */
 		// Check if the button will a text button or a image button
 		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button will NOT be an image
-			$tmp = g_l('button', '[' . $name . '][width]');
+			$tmp = g_l('button', '[' . $name . '][width]',true);
 			if(($tmp != "") && ($width == self::WIDTH)){
 				$width = $tmp;
 			}
