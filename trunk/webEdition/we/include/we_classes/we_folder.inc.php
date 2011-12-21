@@ -351,7 +351,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID='".abs($DB_WE->f("ID"))."' AND Active = 1";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID=".abs($DB_WE->f("ID")). " AND DocTable = '".stripTblPrefix($this->Table) ."' AND Active = 1";
 				if(!$DB_WE2->query($query)) {
 					return false;
 				}
@@ -422,7 +422,7 @@ class we_folder extends we_root
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID=".intval($DB_WE->f("ID"))." AND Active = 1";
+				$query = "UPDATE " . TEMPORARY_DOC_TABLE . " SET DocumentObject='".$DB_WE->escape($DocumentObject)."' WHERE DocumentID=".intval($DB_WE->f("ID")). " AND DocTable = '".stripTblPrefix($this->Table)."' AND Active = 1";
 				if(!$DB_WE2->query($query)) {
 					return false;
 				}
