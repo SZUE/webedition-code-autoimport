@@ -115,25 +115,31 @@ if($size > 0){
 	$next = $start + $count;
 	$next = $next > $size ? $size : $next;
 
+	$div=intval($size/10);
+	$nextDiv=$start+$div;
+	$prevDiv=$start-$div;
+
 	$ind = 0;
 	$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-		we_button::create_button("next", '/webEdition/errorlog.php?start=' . $back, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .
+		we_button::create_button("first", '/webEdition/errorlog.php?start=' . $size, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .'</td><td>'.
+		we_button::getButton("-".$div,'btn', "window.location.href='/webEdition/errorlog.php?start=" . $nextDiv."';", we_button::WIDTH,'',($nextDiv >= $size)) .'</td><td>'.
+		we_button::create_button("back", '/webEdition/errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
 		we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start) .
 		"&nbsp;" . g_l('global', '[from]') . " " . ($size) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
-		we_button::create_button("back", '/webEdition/errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
-		"</td></tr></table>";
+		we_button::create_button("next", '/webEdition/errorlog.php?start=' . $back, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .'</td><td>'.
+		we_button::getButton("+".$div,'btn2', "window.location.href='/webEdition/errorlog.php?start=" . $prevDiv."';", we_button::WIDTH, '', ($prevDiv <=0)) .'</td><td>'.
+we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_button::WIDTH, we_button::HEIGHT, "", "", ($start <= 0)) .
+				"</td></tr></table>";
 
 	$_parts[] = array(
 		'html' => $nextprev,
 		'space' => $_space_size
 	);
-	$db->query('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By Date DESC LIMIT ' . $start . ',' . $count);
-	while($db->next_record()) {
+	$record=getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By Date DESC LIMIT ' . $start . ',1',$db);
 		$_parts[] = array(
-			'html' => getInfoTable($db->Record),
+			'html' => getInfoTable($record),
 			'space' => $_space_size
 		);
-	}
 } else{
 	$_parts[] = array(
 		'html' => 'No entries found',
