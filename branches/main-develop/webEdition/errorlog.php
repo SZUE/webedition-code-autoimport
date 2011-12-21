@@ -116,6 +116,9 @@ if($size > 0){
 	$next = $next > $size ? $size : $next;
 
 	$div=intval($size/10);
+	if($div==0){
+		$div=1;
+	}
 	$nextDiv=$start+$div;
 	$prevDiv=$start-$div;
 
