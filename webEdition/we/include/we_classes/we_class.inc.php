@@ -484,9 +484,17 @@ class we_class
 	function we_delete(){
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
 			$deltype='';
-			if ($this->ClassName=='we_objectFile') $deltype='tblObjectFile';
-			if ($this->ClassName=='we_webEditionDocument') $deltype='tblFile';
-			if ($this->ClassName=='we_docTypes') $deltype='tblDocTypes';
+			switch($this->ClassName){
+			case 'we_objectFile':
+				$deltype='tblObjectFile';
+				break;
+			case 'we_webEditionDocument':
+				$deltype='tblFile';
+				break;
+			case 'we_docTypes':
+				$deltype='tblDocTypes';
+				break;
+			}
 			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND DID='".abs($this->ID)."'");
 			$this->DB_WE->query("DELETE FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$deltype."' AND LDID='".abs($this->ID)."'");
 		}
@@ -617,7 +625,7 @@ class we_class
 	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
 		$db = new DB_WE;
 		if(is_array($LangLinkArray) ){
-			$q="SELECT * FROM ".LANGLINK_TABLE." WHERE  DID='".abs($this->ID)."'";
+			$q="SELECT * FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."'";
 			$orig=array();
 			$this->DB_WE->query($q);
 			while($this->DB_WE->next_record()){
@@ -625,7 +633,7 @@ class we_class
 			}
 			$max= count($orig);
 			for($j=0;$j<$max;$j++){
-				$q="SELECT * FROM ".LANGLINK_TABLE." WHERE  DID='".abs($orig[$j]['LDID'])."'";
+				$q="SELECT * FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($orig[$j]['LDID'])."'";
 				$this->DB_WE->query($q);
 				while($this->DB_WE->next_record()){
 					$orig[]=$this->DB_WE->Record;
@@ -633,11 +641,7 @@ class we_class
 			}
 			foreach ($LangLinkArray as $locale => $LDID){
 				if($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID='".abs($this->ID)."' AND Locale='".$locale."' AND IsObject='".abs($isobject)."'",'ID',$this->DB_WE)){
-					if ($LDID>0){
-						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
-					} else {
-						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='0',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
-					}
+					$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID='".abs($ID)."'";
 					$this->DB_WE->query($q);
 				} else {
 					if($locale!=$this->Language){
