@@ -320,8 +320,9 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'first'=>array(
-		'alt'=>'First',
-		'value'=>'First',
+		'alt'=>'Pierwszy',
+		'value'=>'Pierwszy',
+		'width'=>'100',
 	),
 	'go'=>array(
 		'alt'=>'',
@@ -344,8 +345,9 @@ $l_buttons_global=array(
 		'width'=>'100',
 	),
 	'last'=>array(
-		'alt'=>'Last',
-		'value'=>'Last',
+		'alt'=>'Ostatny',
+		'value'=>'Ostatny',
+		'width'=>'100',
 	),
 	'listview'=>array(
 		'alt'=>'',

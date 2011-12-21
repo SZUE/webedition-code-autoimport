@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /** Generated language file of webEdition CMS */
 $l_buttons_global=array(
 	
@@ -322,6 +322,7 @@ $l_buttons_global=array(
 	'first'=>array(
 		'alt'=>'First',
 		'value'=>'First',
+		'width'=>'100',
 	),
 	'go'=>array(
 		'alt'=>'',
@@ -346,6 +347,7 @@ $l_buttons_global=array(
 	'last'=>array(
 		'alt'=>'Last',
 		'value'=>'Last',
+		'width'=>'100',
 	),
 	'listview'=>array(
 		'alt'=>'',

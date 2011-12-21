@@ -322,6 +322,8 @@ $l_buttons_global=array(
 	'first'=>array(
 		'alt'=>'Anfang',
 		'value'=>'Anfang',
+		'width'=>'100',
+
 	),
 	'go'=>array(
 		'alt'=>'Jetzt ausführen',
@@ -346,6 +348,7 @@ $l_buttons_global=array(
 	'last'=>array(
 		'alt'=>'Ende',
 		'value'=>'Ende',
+		'width'=>'100',
 	),
 	'listview'=>array(
 		'alt'=>'Listenansicht',
