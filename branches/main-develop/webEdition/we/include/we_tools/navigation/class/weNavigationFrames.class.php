@@ -408,7 +408,7 @@ class weNavigationFrames extends weToolFrames
 								$wepos,
 								g_l('global',"[openCloseBox]")) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 								g_l('navigation','[icon_properties_out]')) . '\',\'' . addslashes(
-								g_l('navigation','[icon_properties]')) . '\');" unselectable="on">' . ($wepos == 'down' ? g_l('navigation','[icon_properties_out]') : g_l('navigation','[icon_properties]')) . '</span></td></tr></table>',
+								g_l('navigation','[icon_properties]')) . '\');" >' . ($wepos == 'down' ? g_l('navigation','[icon_properties_out]') : g_l('navigation','[icon_properties]')) . '</span></td></tr></table>',
 
 						'space' => $this->_space_size,
 						'noline' => 1

@@ -425,7 +425,6 @@ class we_import_files{
 					"onMouseDown" => "we_trashButDown(this)",
 					"onMouseUp" => "we_trashButUp(this)",
 					"onMouseOut" => "we_trashButUp(this)",
-					"unselectable" => "on",
 					"style" => "display: none;cursor:pointer;",
 					"id" => "trash_WEFORMNUM",
 					"onclick" => "wedelRow(WEFORMNUM + 1,this)"

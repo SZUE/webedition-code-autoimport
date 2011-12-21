@@ -63,7 +63,7 @@ class we_button{
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . htmlspecialchars($cmd) . ';}">' .
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '"></td>' .
 			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . ($width ? ('" style="width:' .
-				($width - (self::LEFT_WIDTH + self::RIGHT_WIDTH)) . 'px;') : '') . '" unselectable="on">' . $value . '</td>' .
+				($width - (self::LEFT_WIDTH + self::RIGHT_WIDTH)) . 'px;') : '') . '" >' . $value . '</td>' .
 			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? '<input border="0" type="image" src="' . IMAGE_DIR . 'pixel.gif" />' : '') . '</td>' .
 			'</tr></table>';
 	}

@@ -947,7 +947,7 @@ class we_objectFile extends we_document{
 			$content .= we_button::create_button_table(
 										array(
 											$but,
-												'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
+												'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');">'.$txt.'</span>'.($npubl ? '':' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object','[not_published]') .'</span>')
 											)
 										);
 
@@ -1112,7 +1112,7 @@ class we_objectFile extends we_document{
 						$content .= we_button::create_button_table(
 													array(
 														$but,
-															'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" unselectable="on">'.$txt.'</span>'
+															'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_'.$uniq.'" onClick="weToggleBox(\''.$uniq.'\',\''.$txt.'\',\''.$txt.'\');" >'.$txt.'</span>'
 														)
 
 													);

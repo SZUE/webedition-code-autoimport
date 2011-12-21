@@ -1185,22 +1185,22 @@ tinyMCE.init({
 
 		$min_w = 0;
 		$row_w = 0;
-		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" unselectable="on" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  unselectable="on" /></td></tr>';
-		$linerow = '<tr><td unselectable="on"><div class="tbButtonsHR" unselectable="on" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
-		$out = '<script  type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" unselectable="on" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
+		$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground"><img src="/webEdition/images/pixel.gif" width="'.$this->width.'" height="2"  /></td></tr>';
+		$linerow = '<tr><td ><div class="tbButtonsHR" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
+		$out = '<script  type="text/javascript">var weLastPopupMenu = null; var wefoo = "'.$this->ref.'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="'.$this->ref.'edit_table" border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 		for($r=0;$r<sizeof($rows);$r++){
-			$out .= '<table border="0" cellpadding="0" cellspacing="0" unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr>';
+			$out .= '<table border="0" cellpadding="0" cellspacing="0" class="tbButtonWysiwygDefaultStyle"><tr>';
 			for($s=0;$s<sizeof($rows[$r]);$s++){
-				$out .= '<td unselectable="on" class="tbButtonWysiwygDefaultStyle">'.$rows[$r][$s]->getHTML().'</td>';
+				$out .= '<td class="tbButtonWysiwygDefaultStyle">'.$rows[$r][$s]->getHTML().'</td>';
 				$row_w += $rows[$r][$s]->width;
 			}
 			$min_w = max($min_w,$row_w);
 			$row_w = 0;
-			$out .= '</tr></table></td></tr>'.(($r < sizeof($rows)-1) ? $linerow : $pixelrow).'<tr><td unselectable="on"'.(($r<(sizeof($rows)-1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '').' class="tbButtonWysiwygDefaultStyle'.(($r<(sizeof($rows)-1)) ? ' tbButtonWysiwygBackground' : '').'">';
+			$out .= '</tr></table></td></tr>'.(($r < sizeof($rows)-1) ? $linerow : $pixelrow).'<tr><td '.(($r<(sizeof($rows)-1)) ? (' bgcolor="white"  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif"') : '').' class="tbButtonWysiwygDefaultStyle'.(($r<(sizeof($rows)-1)) ? ' tbButtonWysiwygBackground' : '').'">';
 		}
 
 		$realWidth = max($min_w,$this->width);
-		$out .= '<table border="0" cellpadding="0" cellspacing="0"  unselectable="on" class="tbButtonWysiwygDefaultStyle"><tr><td unselectable="on" class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe contenteditable unselectable="off"  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true" ';
+		$out .= '<table border="0" cellpadding="0" cellspacing="0"  class="tbButtonWysiwygDefaultStyle"><tr><td class="tbButtonWysiwygDefaultStyle"><textarea wrap="off" style="color:black; display: none;font-family: courier; font-size: 10pt; width:'.$realWidth.'px; height:'.$this->height.'px;" id="'.$this->ref.'edit_src" name="'.$this->ref.'edit_src"></textarea><iframe contenteditable  width="'.$realWidth.'" height="'.$this->height.'" name="'.$this->ref.'edit" id="'.$this->ref.'edit" allowTransparency="true" ';
 if ($GLOBALS['brDetect']->isSafari()) {
 $out.='style="display: block;color: black;border: 1px solid #A5ACB2;-khtml-user-select:none;"  src="/webEdition/editors/content/wysiwyg/empty.html"';
 } else {
@@ -1275,7 +1275,7 @@ class we_wysiwygToolbarSeparator extends we_wysiwygToolbarElement{
 	}
 
 	function getHTML(){
-		return '<div unselectable="on" style="border-right: #999999 solid 1px; font-size: 0px; height: '.$this->height.'px ! important; width: '.($this->width-1).'px;position: relative;" class="tbButtonWysiwygDefaultStyle"></div>';
+		return '<div style="border-right: #999999 solid 1px; font-size: 0px; height: '.$this->height.'px ! important; width: '.($this->width-1).'px;position: relative;" class="tbButtonWysiwygDefaultStyle"></div>';
 	}
 	function hasProp(){
 		return true;
@@ -1298,15 +1298,15 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 	function getHTML(){
 
 		if($GLOBALS['brDetect']->isSafari()){
-			return '<div unselectable="on" id="'.$this->editor->ref.'edit_'.$this->cmd.'Div" class="tbButton">
-<img unselectable="on" width="'.($this->width-2).'" height="'.$this->height.'" id="'.$this->editor->ref.'edit_'.$this->cmd.'" src="'.$this->imgSrc.'" alt="'.$this->tooltiptext.'" title="'.$this->tooltiptext.'"
+			return '<div id="'.$this->editor->ref.'edit_'.$this->cmd.'Div" class="tbButton">
+<img  width="'.($this->width-2).'" height="'.$this->height.'" id="'.$this->editor->ref.'edit_'.$this->cmd.'" src="'.$this->imgSrc.'" alt="'.$this->tooltiptext.'" title="'.$this->tooltiptext.'"
 onmouseover="'.$this->editor->ref.'Obj.over(\''.$this->cmd.'\');"
 onmouseout="'.$this->editor->ref.'Obj.out(\''.$this->cmd.'\');"
 onmousedown="'.$this->editor->ref.'Obj.click(event,\''.$this->cmd.'\');" /></div>';
 		} else {
 
-			return '<div unselectable="on" id="'.$this->editor->ref.'edit_'.$this->cmd.'Div" class="tbButton">
-<img unselectable="on" width="'.($this->width-2).'" height="'.$this->height.'" id="'.$this->editor->ref.'edit_'.$this->cmd.'" src="'.$this->imgSrc.'" alt="'.$this->tooltiptext.'" title="'.$this->tooltiptext.'"
+			return '<div id="'.$this->editor->ref.'edit_'.$this->cmd.'Div" class="tbButton">
+<img  width="'.($this->width-2).'" height="'.$this->height.'" id="'.$this->editor->ref.'edit_'.$this->cmd.'" src="'.$this->imgSrc.'" alt="'.$this->tooltiptext.'" title="'.$this->tooltiptext.'"
 onmouseover="'.$this->editor->ref.'Obj.over(\''.$this->cmd.'\');"
 onmouseout="'.$this->editor->ref.'Obj.out(\''.$this->cmd.'\');"
 onmousedown="'.$this->editor->ref.'Obj.check(\''.$this->cmd.'\');"
@@ -1402,12 +1402,12 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 			}
 			$out .= '</select>';
 		} else {
-			$out = '<table id="'.$this->editor->ref.'_sel_'.$this->cmd.'" unselectable="on" onclick="if('.$this->editor->ref.'Obj.menus[\''.$this->cmd.'\'].disabled==false){'.$this->editor->ref.'Obj.showPopupmenu(\''.$this->cmd.'\');}" class="tbButtonWysiwygDefaultStyle" width="'.$this->width.'" height="'.$this->height.'" cellpadding="0" cellspacing="0" border="0" title="'.($this->title).'" style="cursor:pointer;position: relative;">
+			$out = '<table id="'.$this->editor->ref.'_sel_'.$this->cmd.'"  onclick="if('.$this->editor->ref.'Obj.menus[\''.$this->cmd.'\'].disabled==false){'.$this->editor->ref.'Obj.showPopupmenu(\''.$this->cmd.'\');}" class="tbButtonWysiwygDefaultStyle" width="'.$this->width.'" height="'.$this->height.'" cellpadding="0" cellspacing="0" border="0" title="'.($this->title).'" style="cursor:pointer;position: relative;">
 	<tr>
-		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);" unselectable="on" class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" unselectable="on" /></td>
+		<td width="'.($this->width-20).'" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);"  class="tbButtonWysiwygDefaultStyle"><input value="'.htmlspecialchars($this->title).'" type="text" name="'.$this->editor->ref.'_seli_'.$this->cmd.'" id="'.$this->editor->ref.'_seli_'.$this->cmd.'" readonly="readonly" style="cursor:pointer;height:16px;width:'.($this->width-30).'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" /></td>
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="'.IMAGE_DIR.'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
-</table><iframe src="/webEdition/html/blank.html" unselectable="on" width="280" height="160" id="'.$this->editor->ref.'edit_'.$this->cmd.'" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
+</table><iframe src="/webEdition/html/blank.html" width="280" height="160" id="'.$this->editor->ref.'edit_'.$this->cmd.'" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
 			$out .= '<script  type="text/javascript">wePopupMenuArray[wefoo]["'.$this->cmd.'"] = new Array();';
  			foreach($this->vals as $val=>$txt){
 				$out .= 'wePopupMenuArray[wefoo]["'.$this->cmd.'"]["'.$val.'"]="'.$txt.'";	'."\n";

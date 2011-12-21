@@ -330,7 +330,7 @@ function writeBody(d){
 	for(i=0;i < entries.length; i++){
 		var onclick = ' onClick="weonclick(<?php echo ($GLOBALS["BROWSER"]=="IE"?"this":"event")?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick('+entries[i].ID+',0);}else{top.wasdblclick=0;}\',300);return true;"';
 		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick('+entries[i].ID+',1);return true;"';
-		d.writeln('<tr id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editCatID != entries[i].ID) ? '' : '' )+'"'+((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' unselectable="on">');
+		d.writeln('<tr id="line_'+entries[i].ID+'" style="cursor:pointer;'+((we_editCatID != entries[i].ID) ? '' : '' )+'"'+((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick)+ (entries[i].isFolder ? ondblclick : '') + ' >');
 		d.writeln('<td class="selector" width="25" align="center">');
 		if(we_editCatID == entries[i].ID){
 			d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
@@ -340,7 +340,7 @@ function writeBody(d){
 		}else{
 			d.writeln('<img src="<?php print ICON_DIR; ?>'+entries[i].icon+'" width="16" height="18" border="0" />');
 			d.writeln('</td>');
-			d.writeln('<td class="selector"' + (we_editCatID ? '' : ' unselectable="on"') + ' title="'+entries[i].text+'">');
+			d.writeln('<td class="selector"' + (we_editCatID ? '' : '') + ' title="'+entries[i].text+'">');
 			d.writeln(cutText(entries[i].text,80));
 		}
 		d.writeln('</td>');

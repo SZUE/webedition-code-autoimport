@@ -10,7 +10,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -27,7 +27,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
 
 /**
  * Class to display a button
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
@@ -531,26 +531,26 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
 	public function __construct($properties = null)
 	{
 		parent::__construct($properties);
-		
+
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
 	}
 
 	/**
 	 * Retrieve text of button
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getText()
@@ -560,7 +560,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set text of button
-	 * 
+	 *
 	 * @param string $_text
 	 */
 	public function setText($_text)
@@ -570,7 +570,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve href link of button
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getHref()
@@ -580,7 +580,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set href of button
-	 * 
+	 *
 	 * @param string $_href
 	 */
 	public function setHref($_href)
@@ -590,7 +590,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve target of button = href
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTarget()
@@ -600,7 +600,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set target of button
-	 * 
+	 *
 	 * @param string $_target
 	 */
 	public function setTarget($_target)
@@ -610,7 +610,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve type of button
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getType()
@@ -620,7 +620,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set type of button
-	 * 
+	 *
 	 * @param string $_type
 	 */
 	public function setType($_type)
@@ -630,7 +630,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve onMouseOut attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOnMouseOut()
@@ -640,7 +640,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set onMouseOut attribute
-	 * 
+	 *
 	 * @param string $_onMouseOut
 	 */
 	public function setOnMouseOut($_onMouseOut)
@@ -650,7 +650,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve onMouseDown attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOnMouseDown()
@@ -660,7 +660,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set onMouseDown attribute
-	 * 
+	 *
 	 * @param string $_onMouseDown
 	 */
 	public function setOnMouseDown($_onMouseDown)
@@ -670,7 +670,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve onMouseUp attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOnMouseUp()
@@ -680,7 +680,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set onMouseUp attribute
-	 * 
+	 *
 	 * @param string $_onMouseUp
 	 */
 	public function setOnMouseUp($_onMouseUp)
@@ -690,7 +690,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve onClick attribute
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOnClick()
@@ -700,7 +700,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set onClick attribute
-	 * 
+	 *
 	 * @param string $_onClick
 	 */
 	public function setOnClick($_onClick)
@@ -710,7 +710,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve icon of internal button
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getIcon()
@@ -720,7 +720,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set icon of internal button
-	 * 
+	 *
 	 * @param string $_icon
 	 */
 	public function setIcon($_icon)
@@ -730,7 +730,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve imagePath of external button
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getImagePath()
@@ -740,7 +740,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set imagePath of external button
-	 * 
+	 *
 	 * @param string $_imagePath
 	 */
 	public function setImagePath($_imagePath)
@@ -750,7 +750,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Retrieve textPosition of text
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTextPosition()
@@ -760,7 +760,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Set textPosition of text
-	 * 
+	 *
 	 * @param string $_textPosition
 	 */
 	public function setTextPosition($_textPosition)
@@ -769,14 +769,14 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	}
 
 	/**
-	 * Retrieve start tag <a> if button is type = href or <div> if button is type = submit 
+	 * Retrieve start tag <a> if button is type = href or <div> if button is type = submit
 	 *
 	 * @return string
 	 */
 	public function _getWrapperStart()
 	{
 		if ($this->getType() == "href") {
-			
+
 			if ($this->getDisabled()) {
 				$onClick = "return false;";
 			} else {
@@ -788,17 +788,17 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 		if ($this->getType() == "submit") {
 			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;
 				height:' . $this->getHeight() . 'px;">
-				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . ' 
+				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . '
 				style="position:absolute;z-index:2;width:' . $this->getWidth() . 'px;
-				height:' . $this->getHeight() . 'px;" 
+				height:' . $this->getHeight() . 'px;"
 				type="image" src="/webEdition/images/pixel.gif" title="' . $this->getTitle() . '">';
 		}
-		
+
 		return "";
 	}
 
 	/**
-	 * Returns end tag </a> if button is type = href or </div> if button is type = submit 
+	 * Returns end tag </a> if button is type = href or </div> if button is type = submit
 	 *
 	 * @return string
 	 */
@@ -810,19 +810,19 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 		if ($this->getType() == "submit") {
 			return '</div>';
 		}
-		
+
 		return "";
 	}
 
 	/**
-	 * Returns button content, image or text or both 
+	 * Returns button content, image or text or both
 	 *
 	 * @return string
 	 */
 	public function _getButtonContent()
 	{
 		$buttonHTML = '';
-		
+
 		if ($this->getDisabled()) {
 			$classLeft = self::kButtonClassDisabledLeft;
 			$classMiddle = self::kButtonClassDisabledMiddle;
@@ -835,10 +835,10 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 			$tblClass = self::kButtonClassInnerTable;
 		}
 		if ($this->getImagePath() === "") {
-			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div><div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . ' unselectable="on">';
+			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div><div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . '>';
 		}
 		$buttonHTML .= '<table border="0" id="table_' . $this->getId() . '" cellpadding="0" cellspacing="0" class="' . $tblClass . '"><tr>';
-		
+
 		if ($this->getIcon() !== '' || $this->getImagePath() !== '') {
 			$image = '';
 			if ($this->getImagePath() !== '') {
@@ -862,7 +862,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 				} else {
 					$buttonHTML .= '<td>' . $button . '</td>';
 				}
-			
+
 			}
 		} else {
 			$buttonHTML .= '<td>' . $this->getText() . '</td>';
@@ -871,7 +871,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 		if ($this->getImagePath() === "") {
 			$buttonHTML .= '</div><div' . $this->_getComputedClassAttrib($classRight) . ' style="height:' . $this->_height . 'px"></div>';
 		}
-		
+
 		return $buttonHTML;
 	}
 
@@ -914,17 +914,17 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement
 	 */
 	public function _renderHTML()
 	{
-		
+
 		if ($this->getDisabled()) {
 			$classNormal = self::kButtonClassDisabledNormal;
 		} else {
 			$classNormal = self::kButtonClassNormal;
 		}
-		
+
 		if ($this->getHidden()) {
 			$this->_style .= 'display:none;';
 		}
-		
+
 		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onClick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
 	}
 }

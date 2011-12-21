@@ -310,7 +310,7 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 				}
 
 				if($show){
-					print '<tr id="' . htmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : 'unselectable="on"') . '>
+					print '<tr id="' . htmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
 	<td class="selector" align="center" width="25"><img src="' . ICON_DIR . $icon . '" width="16" height="18" border="0"></td>
 	<td class="selector" width="200">' . $_text_to_show . '</td>
 	<td class="selector" width="150">' . $_type . '</td>

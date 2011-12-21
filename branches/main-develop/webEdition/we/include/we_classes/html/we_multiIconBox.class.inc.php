@@ -57,7 +57,7 @@ abstract class we_multiIconBox{
 				$out .= we_button::create_button_table(
 						array(
 						$but,
-						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');" unselectable="on">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
+						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onClick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 				);
 				$out .= '<br><table id="table_' . $uniqname . '" width="100%" cellpadding="0" cellspacing="0" border="0" style="display:' . ($displayAtStartup ? "" : "none") . '"><tr><td>';
