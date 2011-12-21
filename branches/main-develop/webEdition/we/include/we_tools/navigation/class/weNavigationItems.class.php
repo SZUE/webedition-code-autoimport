@@ -938,11 +938,10 @@ class weNavigationItems{
 		//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
 		//			$rootTemplate = '<we:navigationEntries />';
 
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 
-		$folderTemplate = '<li><a href="<?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>';
-		$itemTemplate = '<li><a href="<?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>';
-		$rootTemplate = '<?php printElement( ' . we_tagParser::printTag('navigationEntries') . '); ?>';
+		$folderTemplate = '<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>';
+		$itemTemplate = '<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>';
+		$rootTemplate = '<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>';
 
 		$this->setTemplate($folderTemplate, 'folder', 'defaultLevel', 'defaultCurrent', 'defaultPosition');
 		$this->setTemplate($itemTemplate, 'item', 'defaultLevel', 'defaultCurrent', 'defaultPosition');

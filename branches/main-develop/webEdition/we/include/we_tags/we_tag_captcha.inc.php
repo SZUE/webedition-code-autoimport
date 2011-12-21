@@ -27,7 +27,7 @@ function we_parse_tag_captcha($attribs, $content) {
 	eval('$attribs = ' . $attribs . ';');
 	if (($foo = attributFehltError($arr, 'name', 'block')))
 		return $foo;
-	
+
 		$width = weTag_getParserAttribute('width', $attribs, 100);
 		$height = weTag_getParserAttribute('height', $attribs, 25);
 		$path = weTag_getParserAttribute('path', $attribs, '/');
@@ -101,7 +101,7 @@ function we_parse_tag_captcha($attribs, $content) {
 				));
 
 		$attribs['src'] = $file;
-	return '<?php if('.we_tagParser::printTag('captcha',$attribs) . '){?>' . $content . '<?php } ?>';
+	return '<?php if('.we_tag_tagParser::printTag('captcha',$attribs) . '){?>' . $content . '<?php } ?>';
 }
 
 function we_tag_captcha($attribs, $content) {

@@ -42,6 +42,7 @@ abstract class we_autoloader{
 		'html' => 'we_classes/html',
 		'users' => 'we_modules/users',
 		'xml' => 'we_classes/xml',
+		'tag' => 'we_classes/tag',
 	);
 	private static $classes = array(
 		'we_classes' => array(
@@ -504,5 +505,4 @@ abstract class we_autoloader{
 /* todo:
 'DB_WE_abstract' => 'we_db.inc.php',
  'we_linklist' => 'we_linklist.inc.php',
- 'we_tagParser' => 'we_tagParser.inc.php',
 */

@@ -1483,7 +1483,7 @@ HTS;
 				LINK_TABLE.".DocumentTable='".stripTblPrefix(TEMPLATES_TABLE)."' AND ".LINK_TABLE.".DID=".intval($v["we_TemplateID"])." AND ".LINK_TABLE.".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
-			$tp = new we_tagParser($templateCode);
+			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
 
 			foreach ($tags as $tag) {
@@ -2289,7 +2289,7 @@ HTS;
 				LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=".intval($v["we_TemplateID"])." AND " . LINK_TABLE . ".Name='completeData'";
 
 			$templateCode = f($sql_select, "Dat", $db);
-			$tp = new we_tagParser($templateCode);
+			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();
 

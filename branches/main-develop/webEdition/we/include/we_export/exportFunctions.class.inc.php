@@ -553,7 +553,7 @@ abstract class exportFunctions {
 							LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID=" . intval($we_doc->TemplateID) . " AND " . LINK_TABLE . ".Name='completeData'";
 
 			$_template_code = f($_sql_select, "Dat", $DB_WE);
-			$_tag_parser = new we_tagParser($_template_code);
+			$_tag_parser = new we_tag_tagParser($_template_code);
 			$_tags = $_tag_parser->getAllTags();
 			$_records = array();
 

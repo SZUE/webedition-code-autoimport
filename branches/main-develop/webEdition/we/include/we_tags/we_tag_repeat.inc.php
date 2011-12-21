@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_repeat($attribs, $content) {
-	return '<?php while('.we_tagParser::printTag('repeat',$attribs).'){?>' . $content . '<?php }?>';
+	return '<?php while('.we_tag_tagParser::printTag('repeat',$attribs).'){?>' . $content . '<?php }?>';
 }
 
 function we_tag_repeat($attribs, $content) {

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_linklist($attribs, $content){
-	return '<?php $GLOBALS[\'we_ll\']=' . we_tagParser::printTag('linklist', $attribs) . '; while($ll->next()){?>' . $content . '<?php } unset($GLOBALS[\'we_ll\']);' . we_tagParser::printTag('linklist', array('_type' => 'stop')) . ';?>';
+	return '<?php $GLOBALS[\'we_ll\']=' . we_tag_tagParser::printTag('linklist', $attribs) . '; while($ll->next()){?>' . $content . '<?php } unset($GLOBALS[\'we_ll\']);' . we_tag_tagParser::printTag('linklist', array('_type' => 'stop')) . ';?>';
 }
 
 function we_tag_linklist($attribs, $content){

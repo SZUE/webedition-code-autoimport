@@ -30,7 +30,7 @@ function we_parse_tag_customer($attribs, $content) {
 	}
 
 	return '<?php global $lv;
-		if('.we_tagParser::printTag('customer', $attribs).'){?>' . $content . '<?php }
+		if('.we_tag_tagParser::printTag('customer', $attribs).'){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 

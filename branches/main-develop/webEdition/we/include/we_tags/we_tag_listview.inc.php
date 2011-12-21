@@ -65,7 +65,7 @@ function we_parse_tag_listview($attribs, $content) {
 			return parseError(sprintf(g_l('parser', '[wrong_type]'), 'listview'));
 	}
 	//setting global $lv is for backward compatibility
-	return '<?php global $lv;'.we_tagParser::printTag('listview',$attribs).';?>' . $content . '<?php we_post_tag_listview();?>';
+	return '<?php global $lv;'.we_tag_tagParser::printTag('listview',$attribs).';?>' . $content . '<?php we_post_tag_listview();?>';
 }
 
 function we_tag_listview($attribs, $content) {

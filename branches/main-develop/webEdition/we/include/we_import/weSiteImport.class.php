@@ -206,11 +206,10 @@ class weSiteImport{
 	 * @return	array
 	 */
 	function _getFieldsFromTemplate($tid){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tagParser.inc.php");
 		$sql_select = "SELECT " . CONTENT_TABLE . ".Dat as Dat FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".DID='" . abs($tid) . "' AND " . LINK_TABLE . ".Name='completeData'";
 
 		$templateCode = f($sql_select, "Dat", $GLOBALS['DB_WE']);
-		$tp = new we_tagParser($templateCode);
+		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 		$records = array();
 		foreach($tags as $tag){

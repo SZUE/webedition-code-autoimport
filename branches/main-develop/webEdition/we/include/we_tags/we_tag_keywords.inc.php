@@ -23,7 +23,7 @@
  */
 
 function we_parse_tag_keywords($attribs, $content){
-	return '<?php printElement('.we_tagParser::printTag('keywords',$attribs,$content,true).');?>';
+	return '<?php printElement('.we_tag_tagParser::printTag('keywords',$attribs,$content,true).');?>';
 }
 
 function we_tag_keywords($attribs, $content){

@@ -18,7 +18,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_a($attribs, $content){
-	return '<?php printElement('.we_tagParser::printTag('a',$attribs,$content,true).');?>';
+	return '<?php printElement('.we_tag_tagParser::printTag('a',$attribs,$content,true).');?>';
 }
 
 function we_tag_a($attribs, $content){

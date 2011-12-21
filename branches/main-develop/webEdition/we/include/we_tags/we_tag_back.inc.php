@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_back($attribs, $content) {
-	return '<?php printElement('.we_tagParser::printTag('back',$attribs).');?>' . $content . '<?php printElement('.we_tagParser::printTag('back',array('_type'=>'stop')).');?>';
+	return '<?php printElement('.we_tag_tagParser::printTag('back',$attribs).');?>' . $content . '<?php printElement('.we_tag_tagParser::printTag('back',array('_type'=>'stop')).');?>';
 }
 
 function we_tag_back($attribs, $content) {

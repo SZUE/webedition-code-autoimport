@@ -25,7 +25,7 @@
 
 function we_parse_tag_xmlnode($attribs, $content) {
 $unq = '$_xmlnode'.uniqid(rand());
-	return $unq.'='.we_tagParser::printTag('xmlnode',$attribs).';
+	return $unq.'='.we_tag_tagParser::printTag('xmlnode',$attribs).';
 		while('.$unq.'->next()){
 			if('.$unq.'->hasChild()){
 			$GLOBALS[\'xsuperparent\']='.$unq.'->getNode();
@@ -147,7 +147,7 @@ class _we_tag_xmlnode_struct {
 		$this->nodes_name = $nodes_name;
 		$this->feed_name = $feed_name;
 	}
-	
+
 	function next(){
 		if($this->init){
 			return next($this->nodes_name)!==FALSE;
@@ -156,17 +156,17 @@ class _we_tag_xmlnode_struct {
 			return reset($this->nodes_name)!==FALSE;
 		}
 	}
-	
+
 	function hasChild(){
 		return $this->feed_name->hasChildNodes(current($this->nodes_name));
 	}
-	
+
 	function getFeedData(){
 		return $this->feed_name->getData(current($this->nodes_name));
 	}
-	
+
 	function getNode(){
 		return current($this->nodes_name);
 	}
-	
+
 }

@@ -24,7 +24,7 @@
  */
 function we_parse_tag_onlinemonitor($attribs, $content) {
 	return '<?php global $lv;
-		if('.we_tagParser::printTag('onlinemonitor', $attribs).'){?>' . $content . '<?php } 
+		if('.we_tag_tagParser::printTag('onlinemonitor', $attribs).'){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 

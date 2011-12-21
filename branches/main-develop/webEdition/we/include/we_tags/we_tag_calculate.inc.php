@@ -28,7 +28,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/util/Strings.php')
 function we_parse_tag_calculate($attribs, $content) {
 	eval('$attribs = ' . $attribs . ';');
 	$attribs['_type'] = 'stop';
-	return '<?php ' . we_tagParser::printTag('calculate', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tagParser::printTag('calculate', $attribs) . ');?>';
+	return '<?php ' . we_tag_tagParser::printTag('calculate', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('calculate', $attribs) . ');?>';
 }
 
 function we_tag_calculate($attribs, $content) {

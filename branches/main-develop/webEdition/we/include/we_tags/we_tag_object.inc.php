@@ -30,7 +30,7 @@ function we_parse_tag_object($attribs, $content) {
 	}
 
 	return '<?php global $lv;
-		if('.we_tagParser::printTag('object', $attribs).'){?>' . $content . '<?php } 
+		if('.we_tag_tagParser::printTag('object', $attribs).'){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 

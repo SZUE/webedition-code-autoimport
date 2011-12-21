@@ -29,7 +29,7 @@ function we_parse_tag_checkForm($attribs, $content) {
 	if (($foo = attributFehltError($arr, 'type', 'checkForm')))
 		return $foo;
 
-	return '<?php printElement(' . we_tagParser::printTag('checkForm', $attribs, $content,true) . '); ?>';
+	return '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, $content,true) . '); ?>';
 }
 
 /**

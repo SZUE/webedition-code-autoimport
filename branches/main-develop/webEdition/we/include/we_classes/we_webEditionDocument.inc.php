@@ -359,9 +359,9 @@ class we_webEditionDocument extends we_textContentDocument {
 		//debug2($this);
 
         $_code = $this->getTemplateCode();
-		$_tp = new we_tagParser();
+		$_tp = new we_tag_tagParser();
 
-		$_tags = we_tagParser::getMetaTags($_code);
+		$_tags = we_tag_tagParser::getMetaTags($_code);
 
 		for($j = 0; $j < sizeof($_tags); $j++){	//	now parse these tags for property-page.
 			if($_tags[$j][1]){
@@ -572,7 +572,7 @@ class we_webEditionDocument extends we_textContentDocument {
 	}
 
 	function getFieldTypes($templateCode) {
-		$tp = new we_tagParser($templateCode);
+		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 		$blocks = array();
 		$fieldTypes = array();
@@ -949,7 +949,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 		if( strpos($templatecode, '<we:controlElement') !== false ){	// tag we:control exists
 
-			$_tags = we_tagParser::itemize_we_tag('we:controlElement', $templatecode);
+			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
 			//	we need all given tags ...
 
 			$_size = sizeof($_tags[0]);
@@ -1014,7 +1014,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 			if( strpos($templatecode, '<we:hidePages') !== false ){	//	tag hidePages exists
 
-				$_tags = we_tagParser::itemize_we_tag('we:hidePages', $templatecode);
+				$_tags = we_tag_tagParser::itemize_we_tag('we:hidePages', $templatecode);
 
 				// here we only take the FIRST tag
 				$_tagAttribs = makeArrayFromAttribs($_tags[2][0]);

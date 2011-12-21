@@ -22,10 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_document.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tagParser.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
 
 /* a class for handling templates */
 
@@ -241,7 +238,7 @@ class we_template extends we_document{
 
 		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $code);
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
-		$tp = new we_tagParser($code);
+		$tp = new we_tag_tagParser($code);
 		$tags = $tp->getAllTags();
 		if(($foo = $this->checkElsetags($tags))){
 			$this->errMsg = $foo;
@@ -458,7 +455,7 @@ class we_template extends we_document{
 
 		$variant_tags = array('input', 'link', 'textarea', 'img', 'select');
 		$templateCode = $this->getTemplateCode();
-		$tp = new we_tagParser($templateCode);
+		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 
 		$blocks = array();
@@ -758,7 +755,7 @@ class we_template extends we_document{
 		}
 		$this->IncludedTemplates = "";
 		// look for included templates (<we:include type="template" id="99">)
-		$tp = new we_tagParser($code);
+		$tp = new we_tag_tagParser($code);
 		$tags = $tp->getAllTags();
 		// go through all tags
 		foreach($tags as $tag){

@@ -25,7 +25,7 @@
 function we_parse_tag_condition($attribs, $content){
 	eval('$attribs = ' . $attribs . ';');
 	$attribs['_type'] = 'start';
-	return '<?php ' . we_tagParser::printTag('condition', $attribs) . ';?>' . $content . '<?php ' . we_tagParser::printTag('condition', array('_type' => 'stop')) . ';?>';
+	return '<?php ' . we_tag_tagParser::printTag('condition', $attribs) . ';?>' . $content . '<?php ' . we_tag_tagParser::printTag('condition', array('_type' => 'stop')) . ';?>';
 }
 
 function we_tag_condition($attribs, $content){

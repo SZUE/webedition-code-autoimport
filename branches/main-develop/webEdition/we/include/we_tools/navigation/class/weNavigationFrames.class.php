@@ -24,8 +24,6 @@
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationView.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationTree.class.php');
 
 class weNavigationFrames extends weToolFrames
 {
@@ -1268,7 +1266,6 @@ class weNavigationFrames extends weToolFrames
 	function getHTMLEditorPreviewIframe()
 	{
 
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tagParser.inc.php');
 		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
 		$templateCode = $this->Model->previewCode;
@@ -1287,7 +1284,7 @@ class weNavigationFrames extends weToolFrames
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
 		$GLOBALS['weNoCache'] = true;
 
-		$tp = new we_tagParser($templateCode);
+		$tp = new we_tag_tagParser($templateCode);
 
 		$tp->parseTags($templateCode);
 

@@ -28,7 +28,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/util/Strings.php')
 function we_parse_tag_addPercent($attribs, $content) {
 	eval('$attribs = ' . $attribs . ';');
 	$attribs['_type'] = 'stop';
-	return '<?php ' . we_tagParser::printTag('addPercent', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tagParser::printTag('addPercent', $attribs) . ');?>';
+	return '<?php ' . we_tag_tagParser::printTag('addPercent', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('addPercent', $attribs) . ');?>';
 }
 
 function we_tag_addPercent($attribs, $content) {

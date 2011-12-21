@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_include($attribs, $content) {
-	return '<?php eval('.we_tagParser::printTag('include',$attribs).');?>';
+	return '<?php eval('.we_tag_tagParser::printTag('include',$attribs).');?>';
 }
 
 function we_tag_include($attribs, $content) {

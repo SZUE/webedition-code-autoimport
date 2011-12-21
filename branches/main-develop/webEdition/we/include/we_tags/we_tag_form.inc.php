@@ -21,7 +21,7 @@
 //TODO
 function we_parse_tag_form($attribs, $content) {
 	return '<?php if(!isset($GLOBALS["we_editmode"]) || !$GLOBALS["we_editmode"]){
-		printElement(' . we_tagParser::printTag('form', $attribs) . ');}?>' .
+		printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');}?>' .
 	$content .
 	'<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){ echo \'</form>\';unset($GLOBALS[\'WE_FORM\']); if (isset($GLOBALS[\'we_form_action\'])) {unset($GLOBALS[\'we_form_action\']);}}?>';
 }
