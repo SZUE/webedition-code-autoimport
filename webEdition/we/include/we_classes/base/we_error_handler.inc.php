@@ -172,8 +172,15 @@ function getBacktrace($skip){
 
 	$_backtrace=debug_backtrace();
 	$cnt=0;
+	$found=false;
 	//error handler called directly caused by an error
-	if(!in_array($arr['function'],'t_e')){
+	foreach($_backtrace AS $no=>$arr){
+		if($arr['function']=='t_e'){
+			$found=true;
+			break;
+		}
+	}
+	if(!$found){
 		$pos=array_search('error_handler', $skip);
 		unset($skip[$pos]);
 	}
