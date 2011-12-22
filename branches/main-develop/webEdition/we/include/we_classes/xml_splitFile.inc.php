@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
 
 /**
 * Class XML_SplitFile()
@@ -95,7 +93,7 @@ class XML_SplitFile extends we_xml_parser {
 		$this->path .= "/".$this->getUniqueId();
 
 		// Make the current directory.
-		createLocalFolder($this->path);
+		we_util_File::createLocalFolder($this->path);
 
 		// Node-set with paths of the descendant nodes.
 		$nodeSet = $this->evaluate($absoluteXPath);

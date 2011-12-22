@@ -24,9 +24,7 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletter.php");
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 
 class weNewsletterView {
@@ -2943,7 +2941,7 @@ class weNewsletterView {
 
 	function saveToCache($content,$filename) {
 		if(!is_dir(WE_NEWSLETTER_CACHE_DIR)) {
-			createLocalFolder(WE_NEWSLETTER_CACHE_DIR);
+			we_util_File::createLocalFolder(WE_NEWSLETTER_CACHE_DIR);
 		}
 
 		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);

@@ -85,7 +85,7 @@
 				$path=$_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))) {
-					createLocalFolderByPath(dirname($path));
+					we_util_File::createLocalFolderByPath(dirname($path));
 				}
 				weFile::save($_SERVER['DOCUMENT_ROOT'].SITE_DIR.$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
 			}
@@ -93,7 +93,7 @@
 				$path=$_SERVER['DOCUMENT_ROOT'].$this->Path;
 				if(file_exists($path) && !$force) return false;
 				if(!is_dir(dirname($path))){
-					createLocalFolderByPath(dirname($path));
+					we_util_File::createLocalFolderByPath(dirname($path));
 				}
 				weFile::save($_SERVER['DOCUMENT_ROOT'].$this->Path,$this->Data,($this->SeqN==0 ? 'wb' : 'ab'));
 			}

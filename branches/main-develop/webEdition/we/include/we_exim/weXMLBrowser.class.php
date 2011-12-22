@@ -23,9 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
 
 class weXMLBrowser extends we_xml_parser{
 
@@ -65,10 +62,10 @@ class weXMLBrowser extends we_xml_parser{
 		}
 
 		if(!is_dir(dirname($cache))) {
-			createLocalFolder(dirname($cache));
+			we_util_File::createLocalFolder(dirname($cache));
 		}
 		if(weFile::save($cache,serialize($this->nodes))){
-			insertIntoCleanUp($cache,$expire);
+			we_util_File::insertIntoCleanUp($cache,$expire);
 		}
 	}
 

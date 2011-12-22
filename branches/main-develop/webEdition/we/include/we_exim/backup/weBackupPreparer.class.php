@@ -150,7 +150,7 @@
 			$_SESSION['weBackupVars']['options']['compress'] = weFile::isCompressed($_SESSION['weBackupVars']['backup_file'],$_SESSION['weBackupVars']['offset']) ? 1 : 0;
 			if($_SESSION['weBackupVars']['options']['compress']) {
 				$_SESSION['weBackupVars']['backup_file'] = weBackupPreparer::makeCleanGzip($_SESSION['weBackupVars']['backup_file'],$_SESSION['weBackupVars']['offset']);
-				insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'],time()+(8*3600)); //valid for 8 hours
+				we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'],time()+(8*3600)); //valid for 8 hours
 				$_SESSION['weBackupVars']['offset'] = 0;
 			}
 
@@ -291,7 +291,7 @@
 				$filename = $_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'tmp/'.$_FILES['we_upload_file']['name'];
 
 				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'],$_SERVER['DOCUMENT_ROOT'].BACKUP_DIR.'tmp/'.$_FILES['we_upload_file']['name'])){
-					insertIntoCleanUp($filename, time());
+					we_util_File::insertIntoCleanUp($filename, time());
 					return $filename;
 
 				}

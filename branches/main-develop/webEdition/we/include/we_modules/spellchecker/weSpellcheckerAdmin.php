@@ -1,7 +1,6 @@
 <?php
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
@@ -52,12 +51,12 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 		$l_param['scid'] = session_id();
 		$_tmp_dir = WE_SPELLCHECKER_MODULE_DIR . '/tmp';
 		if(!is_dir($_tmp_dir)) {
-			createLocalFolder($_tmp_dir);
+			we_util_File::createLocalFolder($_tmp_dir);
 		}
 		$_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
 		if(!file_exists($_scid_file)) {
 			weFile::save($_scid_file,'');
-			insertIntoCleanUp($_scid_file,time() + (24*3600));
+			we_util_File::insertIntoCleanUp($_scid_file,time() + (24*3600));
 		}
 	} else {
 		$l_param['scid'] = '';

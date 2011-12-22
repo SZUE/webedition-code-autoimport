@@ -91,8 +91,8 @@
 
             //  save file - submit URL to service
             $tmpFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
-            saveFile($tmpFile, $content);
-            insertIntoCleanUp($tmpFile,time());
+            we_util_File::saveFile($tmpFile, $content);
+            we_util_File::insertIntoCleanUp($tmpFile,time());
 
             $url = getServerUrl() . $filename;
             $http_request->addVar($varname, $url);

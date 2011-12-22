@@ -22,9 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
-
 class CSV {
 	var $CSVFile;
 	var $CSVData;
@@ -298,7 +295,7 @@ class CSVImport extends CSV {
 			$num_rows = $this->CSVNumRows();
 			$num_fields = $this->CSVNumFields();
 
-			createLocalFolder($path);
+			we_util_File::createLocalFolder($path);
 
 			for ($i = 0; $i < $num_rows + $fieldnames; $i++) {
 				$data = "";

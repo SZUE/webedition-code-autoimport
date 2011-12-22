@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 class we_textContentDocument extends we_textDocument{
 
@@ -413,11 +412,11 @@ class we_textContentDocument extends we_textDocument{
 	function we_unpublish($skipHook=0){
 		if(!$this->ID) return false;
 		if($this->i_isMoved()) {
-			if(!deleteLocalFile($this->getRealPath())) {
+			if(!we_util_File::deleteLocalFile($this->getRealPath())) {
 				return false;
 			}
 		} else {
-			if(!deleteLocalFile($this->getRealPath(true))) {
+			if(!we_util_File::deleteLocalFile($this->getRealPath(true))) {
 				return false;
 			}
 		}
@@ -511,13 +510,13 @@ class we_textContentDocument extends we_textDocument{
 		$parent = dirname($realPath);
         $parent = str_replace("\\","/",$parent);
 		$cf = array();
-		while( !checkAndMakeFolder($parent) ){
+		while( !we_util_File::checkAndMakeFolder($parent) ){
 			array_push($cf,$parent);
 			$parent = dirname($parent);
         	$parent = str_replace("\\","/",$parent);
 		}
 		for($i=(sizeof($cf)-1);$i>=0;$i--){
-			createLocalFolder($cf[$i]);
+			we_util_File::createLocalFolder($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();
 		if(!we_document::i_writeMainDir($doc)) return false;

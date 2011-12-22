@@ -24,9 +24,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
-if(!isset($GLOBALS['WE_IS_DYN'])){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-}
 if(!isset($GLOBALS['WE_IS_IMG'])){
 	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
 }
@@ -912,24 +909,24 @@ class we_document extends we_root {
 
 	protected function i_writeSiteDir($doc) {
 		if($this->i_isMoved()) {
-			deleteLocalFile($this->getSitePath(1));
+			we_util_File::deleteLocalFile($this->getSitePath(1));
 		}
-		return saveFile($this->getSitePath(),$doc);
+		return we_util_File::saveFile($this->getSitePath(),$doc);
 	}
 
 	protected function i_writeMainDir($doc) {
 		if($this->i_isMoved()) {
-			deleteLocalFile($this->getRealPath(1));
+			we_util_File::deleteLocalFile($this->getRealPath(1));
 		}
-		return saveFile($this->getRealPath(),$doc);
+		return we_util_File::saveFile($this->getRealPath(),$doc);
 	}
 
 	private function i_deleteSiteDir() {
-		return deleteLocalFile($this->getSitePath());
+		return we_util_File::deleteLocalFile($this->getSitePath());
 	}
 
 	private function i_deleteMainDir() {
-		return deleteLocalFile($this->getRealPath());
+		return we_util_File::deleteLocalFile($this->getRealPath());
 	}
 
 	protected function i_writeDocument() {

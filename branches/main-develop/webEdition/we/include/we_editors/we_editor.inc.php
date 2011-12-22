@@ -316,7 +316,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	//FIXME: php temporary file?
 	$tempName = dirname($we_doc->getSitePath())."/".session_id().$we_ext;
 	$tempName = str_replace("\\","/",$tempName);
-	insertIntoCleanUp($tempName,time());
+	we_util_File::insertIntoCleanUp($tempName,time());
 /*
 	$str = session_encode(); //serialize($arr);
 	$fp = fopen(TMP_DIR."/$we_transaction.tmp","wb");
@@ -360,7 +360,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	}
 
 
-	saveFile($tempName,$contents);
+	we_util_File::saveFile($tempName,$contents);
 
     //  we need to add the parameters at the urls
     //  we_cmds are deleted.
@@ -759,7 +759,7 @@ else {
 				}
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 				if(isset($we_file_to_delete_after_include)){
-                    deleteLocalFile($we_file_to_delete_after_include);
+                    we_util_File::deleteLocalFile($we_file_to_delete_after_include);
 				}
                 if($we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == WE_EDITPAGE_THUMBNAILS) {
                     print '<script  type="text/javascript">setTimeout("doScrollTo();",100);</script>';

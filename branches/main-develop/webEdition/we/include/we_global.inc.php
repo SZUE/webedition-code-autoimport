@@ -26,9 +26,6 @@
 if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(__DIR__, '', __FILE__)) {
 	exit();
 }
-if (!isset($GLOBALS['WE_IS_DYN'])) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
-}
 
 function we_getModuleNameByContentType($ctype) {
 	$_moduleDir = '';
@@ -905,7 +902,7 @@ function cleanTempFiles($cleanSessFiles = false) {
 	while ($GLOBALS['DB_WE']->next_record()) {
 		$p = $GLOBALS['DB_WE']->f('Path');
 		if (file_exists($p)){
-			deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+			we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 		}
 		$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
 	}
@@ -915,7 +912,7 @@ function cleanTempFiles($cleanSessFiles = false) {
 		while ($GLOBALS['DB_WE']->next_record()) {
 			$p = $GLOBALS['DB_WE']->f('Path');
 			if (file_exists($p)){
-				deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
 			$db2->query('DELETE LOW_PRIORITY FROM ' . CLEAN_UP_TABLE . " WHERE Path like '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 		}
@@ -926,10 +923,10 @@ function cleanTempFiles($cleanSessFiles = false) {
 			$foo = TMP_DIR . '/' . $entry;
 			if (filemtime($foo) <= (time() - 300)) {
 				if (is_dir($foo))
-					deleteLocalFolder($foo, 1);
+					we_util_File::deleteLocalFolder($foo, 1);
 				else
 				if (file_exists($foo))
-					deleteLocalFile($foo);
+					we_util_File::deleteLocalFile($foo);
 			}
 		}
 	}
@@ -941,10 +938,10 @@ function cleanTempFiles($cleanSessFiles = false) {
 			$foo = $dstr . $entry;
 			if (filemtime($foo) <= (time() - 300)) {
 				if (is_dir($foo)){
-					deleteLocalFolder($foo, 1);
+					we_util_File::deleteLocalFolder($foo, 1);
 				}else
 				if (file_exists($foo) && is_writable($foo)){
-					deleteLocalFile($foo);
+					we_util_File::deleteLocalFile($foo);
 				}
 			}
 		}
@@ -958,10 +955,10 @@ function cleanTempFiles($cleanSessFiles = false) {
 			$foo = WE_FRAGMENT_DIR . '/' . $entry;
 			if (filemtime($foo) <= (time() - 3600 * 24)) {
 				if (is_dir($foo))
-					deleteLocalFolder($foo, 1);
+					we_util_File::deleteLocalFolder($foo, 1);
 				else
 				if (file_exists($foo))
-					deleteLocalFile($foo);
+					we_util_File::deleteLocalFile($foo);
 			}
 		}
 	}
@@ -1031,10 +1028,6 @@ function ObjectUsedByObjectFile($id) {
 		return false;
 	}
 	return f('SELECT 1 AS cnt FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=' . intval($id).' LIMIT 0,1','cnt',$GLOBALS['DB_WE'])==1;
-}
-
-function deleteLocalFile($filename) {
-	return (file_exists($filename)?unlink($filename):false);
 }
 
 function dbDateToTimeStamp($date, $time = '') {

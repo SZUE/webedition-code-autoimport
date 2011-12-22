@@ -23,9 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
-
 define("WE_THUMB_OK",0);
 define("WE_THUMB_USE_ORIGINAL",1);
 define("WE_THUMB_BUILDERROR",2);
@@ -384,7 +381,7 @@ class we_thumbnail {
 
 		$_thumbdir = self::getThumbDirectory(true);
 		if (!file_exists($_thumbdir)) {
-			createLocalFolder($_thumbdir);
+			we_util_File::createLocalFolder($_thumbdir);
 		}
 		$quality = $this->thumbQuality<1?10:($this->thumbQuality>10?100:$this->thumbQuality*10);
 		$outarr = we_image_edit::edit_image(	$this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath,

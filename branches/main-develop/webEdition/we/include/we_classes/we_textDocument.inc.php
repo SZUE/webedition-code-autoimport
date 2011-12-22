@@ -69,7 +69,7 @@ class we_textDocument extends we_document
 			case WE_EDITPAGE_PREVIEW:
 				if($GLOBALS["we_EDITOR"]){
 					$GLOBALS["we_file_to_delete_after_include"] = TMP_DIR."/".md5(uniqid(rand())).$this->Extension;
-					saveFile($GLOBALS["we_file_to_delete_after_include"],$this->i_getDocument());
+					we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"],$this->i_getDocument());
 					return $GLOBALS["we_file_to_delete_after_include"];
 				}else{
 					$GLOBALS["we_editmode"] = false;

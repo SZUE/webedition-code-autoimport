@@ -23,11 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_CUSTOMER_MODULE_DIR."weCustomer.php");
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
-
 	class weCustomerEI{
 
 		//var $customer;
@@ -319,7 +314,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc
 							$unique=weCustomerEI::getUniqueId();
 							$path=TMP_DIR."/".$unique;
 
-							createLocalFolder($path);
+							we_util_File::createLocalFolder($path);
 							$path.="/";
 
 							$fcount=0;

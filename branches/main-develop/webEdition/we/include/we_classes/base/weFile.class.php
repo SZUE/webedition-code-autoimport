@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
 class weFile{
 
 	function load($filename,$flags="rb",$rsize=8192){
@@ -269,7 +267,7 @@ class weFile{
 		$path=str_replace("\\","/",$path);
 		if(weFile::hasURL($path)) return false;
 		if($path!=""){
-			return createLocalFolderByPath($path);
+			return we_util_File::createLocalFolderByPath($path);
 		}
 		return false;
 	}

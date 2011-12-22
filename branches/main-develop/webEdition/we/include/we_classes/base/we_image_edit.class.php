@@ -603,7 +603,7 @@ class we_image_edit {
 		if ($imagesize[0] > $width || $imagesize[1] > $height) {
 			$_previewDir = $_SERVER['DOCUMENT_ROOT'].'/webEdition/preview/';
 			if (!file_exists($_previewDir) || !is_dir($_previewDir)) {
-				createLocalFolder($_SERVER['DOCUMENT_ROOT'], '/webEdition/preview/');
+				we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'], '/webEdition/preview/');
 			}
 			if ($imgID) {
 				$_thumbSrc = '/webEdition/preview/' . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);

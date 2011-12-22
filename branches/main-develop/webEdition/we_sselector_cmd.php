@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 we_html_tools::protect();
 
@@ -201,7 +200,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 						$mod = 0755;
 					}
 
-					if(!createLocalFolder($path)) {
+					if(!we_util_File::createLocalFolder($path)) {
 						print we_message_reporting::getShowMessageCall(g_l('alert',"[create_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
 					}else{
 						print 'selectFile("'.$_REQUEST["txt"].'");top.currentID="'.$path.'";';

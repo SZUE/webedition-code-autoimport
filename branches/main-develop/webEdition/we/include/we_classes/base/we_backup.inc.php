@@ -28,7 +28,6 @@
  * Provides functions for exporting and importing backups.
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 
 define("BACKUP_TABLE", TBL_PREFIX . "tblbackup");
 
@@ -835,12 +834,12 @@ class we_backup{
 					$sdir = dirname($dir);
 					$sdir = str_replace("\\", "/", $sdir);
 					while((!file_exists($sdir)) && ($sdir != "/")) {
-						createLocalFolder($sdir);
+						we_util_File::createLocalFolder($sdir);
 						$sdir = dirname($sdir);
 						$sdir = str_replace("\\", "/", $sdir);
 					}
 					if(!file_exists($dir)){
-						createLocalFolder($dir);
+						we_util_File::createLocalFolder($dir);
 					}
 				} else{
 					$sdir = dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]);

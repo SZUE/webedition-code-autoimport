@@ -22,9 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossary.php");
-
 /**
  * this class implements the cache functionality for the glossary
  *
@@ -399,7 +396,7 @@ class weGlossaryCache {
 		$Abbreviation =		'$abbreviation = array(';
 
 		$ForeignWord =  	'$foreignword = array(';
-		
+
 		$TextReplacement  =  	'$textreplacement = array(';
 
 		foreach($Items as $Text => $Value) {
@@ -468,7 +465,7 @@ class weGlossaryCache {
 
 		// Create Cache Directory if it not exists
 		if(!is_dir(dirname($cacheFilename))) {
-			if(!createLocalFolder(dirname($cacheFilename))) {
+			if(!we_util_File::createLocalFolder(dirname($cacheFilename))) {
 				return false;
 
 			}

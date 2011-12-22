@@ -23,11 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_import/importFunctions.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
-
 class we_wizard {
 
 	var $path = "";
@@ -361,7 +356,7 @@ HTS;
 						}
 
 						$path=TMP_DIR."/".weFile::getUniqueId()."/";
-						createLocalFolder($path);
+						we_util_File::createLocalFolder($path);
 
 						if(is_dir($path)){
 							include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLImport.class.php');
@@ -389,7 +384,7 @@ HTS;
 						$unique_id = md5(uniqid(microtime()));
 
 						$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/".$unique_id;
-						createLocalFolder($path);
+						we_util_File::createLocalFolder($path);
 
 						if ($cp->isOK()) {
 							$fieldnames = ($v["csv_fieldnames"])? 0 : 1;

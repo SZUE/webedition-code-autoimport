@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
 
 /* a class for handling directories */
 class we_folder extends we_root
@@ -730,11 +729,11 @@ $content .='
 			$path = $this->getPath();
 
 			// creates the folder on the local machine in the root-dir
-			if(!createLocalFolder(($isTemplFolder ? TEMPLATE_DIR : $_SERVER['DOCUMENT_ROOT']),$path)) return false;
+			if(!we_util_File::createLocalFolder(($isTemplFolder ? TEMPLATE_DIR : $_SERVER['DOCUMENT_ROOT']),$path)) return false;
 
 			// creates the folder on the local machine in the root-dir+site-dir
 			if(!$isTemplFolder){
-				if(!createLocalFolder($_SERVER['DOCUMENT_ROOT'].SITE_DIR,$path)) return false;
+				if(!we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'].SITE_DIR,$path)) return false;
 			}
 		}
 		return true;

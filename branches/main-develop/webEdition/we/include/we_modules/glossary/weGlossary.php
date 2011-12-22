@@ -23,10 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-
-
-
 /**
 * General Definition of WebEdition Glossary
 *
@@ -510,7 +506,7 @@ class weGlossary extends weModelBase {
 
 	function getExceptionFilename($language) {
 		$fileDir = WE_GLOSSARY_MODULE_DIR . 'dict/';
-		if(!is_dir($fileDir) && !createLocalFolder($fileDir)) {
+		if(!is_dir($fileDir) && !we_util_File::createLocalFolder($fileDir)) {
 				return false;
 		}
 

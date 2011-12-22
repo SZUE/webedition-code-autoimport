@@ -74,7 +74,7 @@ if (isset($_FILES['we_uploadFile'])) {
 	if(!$we_alerttext){
 		copy($tempName,str_replace("\\","/",str_replace("//","/",$cpat."/".$_FILES['we_uploadFile']["name"])));
 	}
-	deleteLocalFile($tempName);
+	we_util_File::deleteLocalFile($tempName);
 }
 $maxsize = getUploadMaxFilesize(false);
 

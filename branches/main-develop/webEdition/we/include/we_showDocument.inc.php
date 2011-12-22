@@ -30,7 +30,6 @@ if (isset($noSess) && $noSess && !defined('NO_SESS')) {
 	define('NO_SESS', 1);
 }
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 
 
 //  Diese we_cmds werden auf den Seiten gespeichert und nicht �bergeben!!!!!

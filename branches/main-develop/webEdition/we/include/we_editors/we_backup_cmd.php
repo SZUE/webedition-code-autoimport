@@ -258,7 +258,7 @@
 							}
 
 							if($_SESSION['weBackupVars']['options']['export2send']==1) {
-								insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'],time()+300);
+								we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'],time()+300);
 							}
 
 							print '

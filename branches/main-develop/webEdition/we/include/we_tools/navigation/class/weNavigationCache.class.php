@@ -22,15 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
 class weNavigationCache {
 
 	static function createCacheDir() {
 		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/';
 		if (!is_dir($_cacheDir)) {
-			createLocalFolder($_cacheDir);
+			we_util_File::createLocalFolder($_cacheDir);
 		}
 		return $_cacheDir;
 	}

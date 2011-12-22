@@ -26,9 +26,6 @@ if(!defined('NO_SESS')){define('NO_SESS',1);}
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_OBJECT_MODULE_DIR .'we_objectFile.inc.php');
-if(!isset($GLOBALS['WE_IS_DYN'])){
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_live_tools.inc.php');
-}
 
 /**
  * showContent()

@@ -544,7 +544,7 @@ class weBackup extends we_backup{
 
 	function removeDumpFile() {
 		if($this->export2send && !$this->export2server){
-			insertIntoCleanUp($this->dumpfilename, time());
+			we_util_File::insertIntoCleanUp($this->dumpfilename, time());
 		}
 		else if(is_file($this->dumpfilename)){
 			@unlink($this->dumpfilename);

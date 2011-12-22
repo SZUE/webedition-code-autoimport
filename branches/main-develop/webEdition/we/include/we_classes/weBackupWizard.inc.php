@@ -1132,7 +1132,7 @@ class weBackupWizard{
 		if(	isset($_SESSION['weBackupVars']['backup_file']) && isset($_SESSION['weBackupVars']['options']['export2server']) &&
 			is_file($_SESSION['weBackupVars']['backup_file']) && $_SESSION['weBackupVars']['options']['export2server']!=1) {
 
-				insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'],time());
+				we_util_File::insertIntoCleanUp($_SESSION['weBackupVars']['backup_file'],time());
 
 		}
 
@@ -1537,7 +1537,7 @@ class weBackupWizard{
 									');
 									return "";
 								}
-								insertIntoCleanUp($we_backup_obj->filename, time());
+								we_util_File::insertIntoCleanUp($we_backup_obj->filename, time());
 								$ok = true;
 							} else {
 								$we_alerttext = sprintf(g_l('alert',"[we_backup_import_upload_err]"), ini_get("upload_max_filesize"));

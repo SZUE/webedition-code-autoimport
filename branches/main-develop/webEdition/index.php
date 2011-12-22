@@ -134,40 +134,40 @@ function showMessage(message, prio, win){
  * CREATE EMPTY FOLDERS
  * *************************************************************************** */
 if(!is_dir(TMP_DIR)){
-	createLocalFolder(TMP_DIR);
+	we_util_File::createLocalFolder(TMP_DIR);
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . ZENDCACHE_DIR)){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . ZENDCACHE_DIR);
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . ZENDCACHE_DIR);
 }
 if(!is_dir(WE_FRAGMENT_DIR)){
-	createLocalFolder(WE_FRAGMENT_DIR);
+	we_util_File::createLocalFolder(WE_FRAGMENT_DIR);
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR)){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR);
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR);
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . SITE_DIR)){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR);
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR);
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_hook/custom_hooks/')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_hook/custom_hooks/');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_hook/custom_hooks/');
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_tools/navigation/cache')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_tools/navigation/cache');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_tools/navigation/cache');
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache');
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache');
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR)){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/');
 }
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
 	$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
@@ -198,7 +198,7 @@ if(!file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '.htaccess')){
 	}
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/')){
-	createLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/');
+	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/we_tags/custom_tags/');
 }
 /* * ***************************************************************************
  * CLEAN Temporary Data left over from last logout  bug #4240

@@ -151,7 +151,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 	}
 	$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATE_DIR) . $path;
 	if ($table == TEMPLATES_TABLE || $table == FILE_TABLE) {
-		if (!deleteLocalFolder($file)) {
+		if (!we_util_File::deleteLocalFolder($file)) {
 			if (is_array($GLOBALS["we_folder_not_del"])) {
 				array_push($GLOBALS["we_folder_not_del"], $file);
 			}
@@ -159,7 +159,7 @@ function deleteFolder($id, $table, $path = "", $delR = true)
 	}
 	if ($table == FILE_TABLE) {
 		$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
-		deleteLocalFolder($file, 1);
+		we_util_File::deleteLocalFolder($file, 1);
 	}
 	if (defined("OBJECT_TABLE") && defined("OBJECT_FILES_TABLE") && $table == OBJECT_TABLE) {
 		$ofID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='".$DB_WE->escape($path)."'", "ID", $DB_WE);
@@ -191,10 +191,10 @@ function deleteFile($id, $table, $path = "", $contentType = "")
 	}
 
 	if ($table == TEMPLATES_TABLE || $table == FILE_TABLE)
-		deleteLocalFile($file);
+		we_util_File::deleteLocalFile($file);
 	if ($table == FILE_TABLE) {
 		$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
-		deleteLocalFile($file);
+		we_util_File::deleteLocalFile($file);
 
 	}
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
@@ -291,7 +291,7 @@ function deleteThumbsByImageID($id)
 		}
 	}
 	foreach ($filestodelete as $p) {
-		deleteLocalFile($p);
+		we_util_File::deleteLocalFile($p);
 	}
 }
 
@@ -307,7 +307,7 @@ function deleteThumbsByThumbID($id)
 			}
 		}
 		foreach ($filestodelete as $p) {
-			deleteLocalFile($p);
+			we_util_File::deleteLocalFile($p);
 		}
 	}
 }

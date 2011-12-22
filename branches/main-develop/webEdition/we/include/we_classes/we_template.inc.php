@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_live_tools.inc.php');
 
 /* a class for handling templates */
 
@@ -101,13 +100,13 @@ class we_template extends we_document{
 			case WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
 				$GLOBALS["we_file_to_delete_after_include"] = TMP_DIR . "/" . md5(uniqid(rand()));
-				saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
+				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 				break;
 			case WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
 				$GLOBALS["we_file_to_delete_after_include"] = TMP_DIR . "/" . md5(uniqid(rand()));
-				saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
+				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
 				break;
 			case WE_EDITPAGE_VARIANTS:
@@ -364,9 +363,9 @@ class we_template extends we_document{
 
 	protected function i_writeMainDir($doc){
 		if($this->i_isMoved()){
-			deleteLocalFile($this->getRealPath(1));
+			we_util_File::deleteLocalFile($this->getRealPath(1));
 		}
-		return saveFile($this->getRealPath(), $doc);
+		return we_util_File::saveFile($this->getRealPath(), $doc);
 	}
 
 	function i_filenameNotAllowed(){
