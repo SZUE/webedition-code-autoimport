@@ -272,6 +272,7 @@ class we_object extends we_document {
 			$this->DefaultCategory = $this->Category;
 			$this->i_savePersistentSlotsToDB();
 
+			//FIXME: this sounds NOT good! is this really true on every transaction? Why is  this value not set by i_savePersistentSlotsToDB?
 			$this->ID = (f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->DB_WE->escape($this->Table),"LastID",$this->DB_WE));
 			$ctable = OBJECT_X_TABLE.($this->ID);
 
@@ -321,7 +322,7 @@ class we_object extends we_document {
 								$q.=', ADD INDEX ('.$info["name"].') ';
 							}
 							if((strpos($info["name"],'date_')===0)){
-								
+
 								if ($this->elements[$info["name"]."defaultThumb"]["dat"]){
 									$arrt[$nam]["default"] ='';
 								} else {

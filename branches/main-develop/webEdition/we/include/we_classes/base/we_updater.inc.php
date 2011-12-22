@@ -550,8 +550,7 @@
 				$this->addCol($_table,'WebUserID','BIGINT(20) NOT NULL',' AFTER Language ');
 			}
 
-			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';','MaxTID',$_db);
-			$_maxid++;
+			$_maxid = f('SELECT MAX(ID) as MaxTID FROM ' . OBJECT_TABLE . ';','MaxTID',$_db)+1;
 			for($i=1;$i<$_maxid;$i++) {
 				$_table = OBJECT_X_TABLE . $i;
 				if ($this->isTabExist($_table)) {

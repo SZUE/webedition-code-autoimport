@@ -113,7 +113,7 @@ class XML_Import extends we_xml_parser {
 
 		$this->db->query($insert);
 		if ($this->current_table == FILE_TABLE || $this->current_table == TEMPLATES_TABLE  || $this->current_table == CONTENT_TABLE)
-			$retID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->current_table,"LastID",$this->db);
+			$retID = $this->db->getInsertId();
 
 		$this->idTable[$this->current_table][(isset($oldid))?$oldid:0] = $retID;
 		$this->attribs = array();

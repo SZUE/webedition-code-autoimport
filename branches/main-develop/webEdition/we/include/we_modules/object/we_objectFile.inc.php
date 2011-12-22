@@ -333,6 +333,7 @@ class we_objectFile extends we_document{
 					$text = preg_replace('/%unique[^%]*%/',$unique,$text);
 				}
 				if(strpos($text,'%ID%')!==false){
+					//FIXME: this is NOT safe!!! Insert entry, and update afterwards
 					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE ,'ID',new DB_WE()));
 					$text = str_replace('%ID%',''.$id,$text);
 				}
@@ -2919,7 +2920,7 @@ class we_objectFile extends we_document{
 			$keys = rtrim($keys,',') . ")";
 			$values = rtrim($values,',') . ")";
 			if($this->DB_WE->query("INSERT INTO $ctable $keys $values")){
-				$this->ObjectID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM $ctable","LastID",$this->DB_WE);
+				$this->ObjectID = $this->DB_WE->getInsertId();
 				return true;
 			}else{
 				return false;

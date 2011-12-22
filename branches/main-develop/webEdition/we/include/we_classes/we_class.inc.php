@@ -588,7 +588,7 @@ abstract class we_class{
 				$vals = "VALUES(".substr($vals,0,strlen($vals)-1).")";
 				$q = "INSERT INTO ".$this->DB_WE->escape($this->Table)." $keys $vals";
 				if($this->DB_WE->query($q)){
-    				$this->ID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->DB_WE->escape($this->Table),"LastID",$this->DB_WE);
+    				$this->ID = $this->DB_WE->getInsertId();
 					return true;
 				}
 				return false;

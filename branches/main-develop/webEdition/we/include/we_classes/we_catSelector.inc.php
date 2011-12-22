@@ -467,7 +467,7 @@ top.clearEntries();
 									".intval($this->dir).",
 									'".$this->db->escape($txt)."',
 									'".$this->db->escape($Path)."',".$what.",'".(($what==1) ? 'folder.gif' : 'cat.gif')."')");
-    				$folderID = f("SELECT MAX(LAST_INSERT_ID()) as LastID FROM ".$this->db->escape($this->table),"LastID",$this->db);
+    				$folderID = $this->db->getInsertId();
 					print 'top.currentPath = "'.$Path.'";
 top.currentID = "'.$folderID.'";
 top.hot = 1; // this is hot for category edit!!

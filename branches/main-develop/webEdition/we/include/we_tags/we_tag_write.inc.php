@@ -131,7 +131,7 @@ function we_tag_write($attribs, $content){
 					$db = new DB_WE();
 					if ($GLOBALS["we_$type"][$name]->Text == ""){
 						if ($objname=='') {
-							$objname = 1 + abs(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
+							$objname = 1 + intval(f("SELECT max(ID) as ID FROM " . OBJECT_FILES_TABLE, "ID", $db));
 						}
 					} else {
 						if ($onpredefinedname=='appendto') {
