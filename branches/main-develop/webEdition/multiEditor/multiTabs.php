@@ -23,7 +23,6 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 we_html_tools::protect();
 
@@ -31,12 +30,13 @@ we_html_tools::protect();
 $_contentTypes = '
 var _Contentypes = new Object();
 	_Contentypes["cockpit"] = "icon_cockpit.gif";';
-foreach ($WE_CONTENT_TYPES as $ct => $ctData) {
+$ct=new we_base_ContentTypes();
+foreach ($ct->getContentTypes() as $ctype) {
 
 	$_contentTypes .= '
-	_Contentypes["' . $ct . '"] = "' . $ctData["Icon"] . '";';
+	_Contentypes["' . $ctype . '"] = "' . $ct->getIcon($ctype) . '";';
 }
-
+unset($ct);
 
 /*
  * Browser dependences

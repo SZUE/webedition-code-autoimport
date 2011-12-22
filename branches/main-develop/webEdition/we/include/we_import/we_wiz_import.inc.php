@@ -23,10 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlSelect.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 class we_wizard_import extends we_wizard {
 	var $TemplateID=0;
@@ -1248,10 +1245,11 @@ HTS;
 		$objects->setCol(2, 1, array(), $objClass->getHTMLCode());
 		$objects->setCol(3, 1, array(), $objCats->getHTMLCode());
 
+		$ct=new we_base_ContentTypes();
 		$specifyDoc = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import',"[isDynamic]"),true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20,1));
-		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]",(isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"),explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),"100"),g_l('import',"[extension]")));
+		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]",(isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"),explode(",",$ct->getExtension("text/webedition")),"100"),g_l('import',"[extension]")));
 
 		$parts = array();
 		array_push($parts, array(
@@ -2178,10 +2176,11 @@ HTS;
 		$objects->setCol(2, 1, array(), $objClass->getHTMLCode());
 		$objects->setCol(3, 1, array(), $objCats->getHTMLCode());
 
+		$ct=new we_base_ContentTypes();
 		$specifyDoc = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$specifyDoc->setCol(0, 2, array("valign" => "bottom"), we_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import',"[isDynamic]"), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
 		$specifyDoc->setCol(0, 1, array("width" => 20), we_html_tools::getPixel(20,1));
-		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]",(isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"),explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),"100"),g_l('import',"[extension]")));
+		$specifyDoc->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]",(isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"),explode(",",$ct->getExtension("text/webedition")),"100"),g_l('import',"[extension]")));
 
 		$parts = array();
 		if ((file_exists($_SERVER['DOCUMENT_ROOT'].$v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'].$v["import_from"]))) {

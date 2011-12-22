@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 we_html_tools::protect();
 
@@ -98,10 +97,9 @@ if($_REQUEST["ret"]==1){
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
                       <option value="<?php print str_replace(' ','%20',g_l('contentTypes','[all_Types]')); ?>"><?php print g_l('contentTypes','[all_Types]'); ?></option>
                       <?php
-                        foreach($GLOBALS["WE_CONTENT_TYPES"] as $key=>$value){
-                        	if($value["IsRealFile"]){
+											$ct=new we_base_ContentTypes();
+                        foreach($ct->getFiles() as $key){
 								print '<option value="'.rawurlencode(g_l('contentTypes','['.$key.']')).'">'.g_l('contentTypes','['.$key.']').'</option>'."\n";
-                        	}
                         }
              ?>
  					</select></td>

@@ -23,17 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
-
-define("WE_FORM_PARENT_FOLDER",3);
-define("WE_FORM_PARENT_ID",4);
-define("WE_FORM_TEMPLATE_ID",8);
-define("WE_FORM_EXTENSION",2);
-define("WE_FORM_IS_DYNAMIC",9);
-define("WE_FORM_IS_DYNAMIC_HIDDEN",9);
 
 class we_docTypes extends we_class {
 
@@ -389,9 +379,9 @@ class we_docTypes extends we_class {
 	}
 
 	function formExtension($width=100) {
-		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-		$exts = $GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"];
-		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]),$width),g_l('weClass',"[extension]"));
+		$ct=new we_base_ContentTypes();
+		$exts = $ct->getExtension('text/webedition');
+		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$exts),$width),g_l('weClass',"[extension]"));
 	}
 
 	/* creates the Template PopupMenue */

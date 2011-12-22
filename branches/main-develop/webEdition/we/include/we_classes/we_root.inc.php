@@ -765,10 +765,10 @@ function formTriggerDocument($isclass=false){
 
 	function we_new(){
 		we_class::we_new();
-		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 		$this->CreatorID=isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		if(isset($this->ContentType) && $this->ContentType){
-			$this->Icon = $GLOBALS["WE_CONTENT_TYPES"][$this->ContentType]["Icon"];
+			$ct=new we_base_ContentTypes();
+			$this->Icon = $ct->getIcon($this->ContentType);
 		}
 		$this->ParentPath = $this->getParentPath();
 

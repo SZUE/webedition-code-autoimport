@@ -28,8 +28,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/weModuleInfo.class.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 
 /* * ***************************************************************************
@@ -4217,15 +4215,13 @@ EOF;
 
 			array_push($_settings, array("headline" => "", "html" => $_information, "space" => 0));
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 			/**
 			 * webEdition extensions
 			 */
 			// Get webEdition extensions
-			$_we_extensions = array();
-
-			$_we_extensions = explode(",", $GLOBALS["WE_CONTENT_TYPES"]["text/webedition"]["Extension"]);
+			$ct=new we_base_ContentTypes();
+			$_we_extensions = explode(",",$ct->getExtension('text/webedition'));
 
 			// Build static webEdition extensions select box
 			$_static_we_extensions = new we_htmlSelect(array("name" => "DefaultStaticExt", "class" => "weSelect"));
@@ -4262,9 +4258,8 @@ EOF;
 			 * HTML extensions
 			 */
 			// Get extensions
-			$_html_extensions = array();
-
-			$_html_extensions = explode(",", $GLOBALS["WE_CONTENT_TYPES"]["text/html"]["Extension"]);
+			$ct=new we_base_ContentTypes();
+			$_html_extensions = explode(",",$ct->getExtension('text/html'));
 
 			// Build static webEdition extensions select box
 			$_static_html_extensions = new we_htmlSelect(array("name" => "DefaultHTMLExt", "class" => "weSelect"));

@@ -74,7 +74,6 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 	function getItems($ParentID, $offset = 0, $segment = 0)
 	{
 		global $prefs, $table, $openFolders, $parentpaths, $wsQuery, $treeItems, $Tree;
-		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 		if ($table == TEMPLATES_TABLE && !we_hasPerm("CAN_SEE_TEMPLATES"))
 			return 0;
@@ -126,6 +125,7 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 		$query = "SELECT $elem, LOWER(Text) AS lowtext, ABS(REPLACE(Text,'info','')) AS Nr, (Text REGEXP '^[0-9]') AS isNr FROM $table $where ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext" . ($segment != 0 ? " LIMIT $offset,$segment;" : ";");
 		$DB_WE->query($query);
 
+			$ct=new we_base_ContentTypes();
 		while ($DB_WE->next_record()) {
 			$tree_count++;
 			$ID = $DB_WE->f("ID");
@@ -134,9 +134,7 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 			$Path = $DB_WE->f("Path");
 			$IsFolder = $DB_WE->f("IsFolder");
 			$ContentType = $DB_WE->f("ContentType");
-			$Icon = isset($GLOBALS["WE_CONTENT_TYPES"][$ContentType]) ? we_getIcon(
-					$ContentType,
-					$DB_WE->f("Extension")) : "link.gif";
+			$Icon = $ct->getIcon($ContentType, 'link.gif', $DB_WE->f("Extension"));
 			$published = ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && ($table == OBJECT_FILES_TABLE))) ? ((($DB_WE->f(
 					"Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f(
 					"Published")) : 1;

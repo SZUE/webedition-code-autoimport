@@ -809,8 +809,8 @@ class weVersions {
 
 		$contentTypes = array();
 		$contentTypes[] = 'all';
-		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-		foreach($GLOBALS["WE_CONTENT_TYPES"] as $k => $v) {
+		$ct=new we_base_ContentTypes();
+		foreach($ct->getContentTypes() as $k) {
 			//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
 			if($k != "object"  && $k != "folder" && $k != "class_folder") {
 				$contentTypes[] = $k;
@@ -1576,7 +1576,7 @@ class weVersions {
 		$glob = rtrim($glob,',');
 		eval('global '.$glob.';');
 
-		$isdyn = !isset($GLOBALS["WE_IS_DYN"]) ? 'notSet' : $GLOBALS["WE_IS_DYN"];
+		$isdyn = !isset($GLOBALS['WE_IS_DYN']) ? 'notSet' : $GLOBALS['WE_IS_DYN'];
 
 		//usually the site file always exists
 		if($includepath!='' && file_exists($includepath)) {
@@ -1637,12 +1637,12 @@ class weVersions {
 		$_REQUEST = $requestBackup;
 
 		if($isdyn=='notSet') {
-			if(isset($GLOBALS["WE_IS_DYN"])) {
-				unset($GLOBALS["WE_IS_DYN"]);
+			if(isset($GLOBALS['WE_IS_DYN'])) {
+				unset($GLOBALS['WE_IS_DYN']);
 			}
 		}
 		else {
-			$GLOBALS["WE_IS_DYN"] = $isdyn;
+			$GLOBALS['WE_IS_DYN'] = $isdyn;
 		}
 
 		unset($GLOBALS["getDocContentVersioning"]);

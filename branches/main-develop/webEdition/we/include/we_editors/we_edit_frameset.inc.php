@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 we_html_tools::protect();
 
 define("EDITFRAMESET",1);
@@ -278,8 +277,8 @@ if(!isset($we_doc->elements['data']['dat'])){
 	if(isset($_REQUEST['we_cmd'][10]) && $we_doc->ContentType=='text/weTmpl') {
 		$we_doc->elements['data']['dat'] = base64_decode($_REQUEST['we_cmd'][10]);
 	}else {
-		$defaultCode = isset($GLOBALS['WE_CONTENT_TYPES'][$we_doc->ContentType]['DefaultCode']) ? $GLOBALS['WE_CONTENT_TYPES'][$we_doc->ContentType]['DefaultCode'] : '';
-		$we_doc->elements['data']['dat'] = $defaultCode;
+		$ct=new we_base_ContentTypes();
+		$we_doc->elements['data']['dat'] = $ct->getDefaultCode($we_doc->ContentType);
 	}
 }
 ?>

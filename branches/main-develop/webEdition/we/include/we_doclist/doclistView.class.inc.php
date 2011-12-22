@@ -27,8 +27,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
-
 
 class doclistView {
 	/**
@@ -1207,7 +1205,9 @@ class doclistView {
 				}
 			}
 			$ext = isset ( $_result [$f] ["Extension"] ) ? $_result [$f] ["Extension"] : "";
-			$Icon = isset ( $GLOBALS ["WE_CONTENT_TYPES"] [$_result [$f] ["ContentType"]] ) ? we_getIcon ( $_result [$f] ["ContentType"], $ext ) : "link.gif";
+			$ct=new we_base_ContentTypes();
+			$Icon = $ct->getIcon($_result [$f] ["ContentType"], 'link.gif', $ext);
+			unset($ct);
 
 			if ($view == 0) {
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"]=="text/webedition" || $_result[$f]["ContentType"]=="text/html" || $_result[$f]["ContentType"]=="objectFile") && we_hasPerm('PUBLISH')) ? we_forms::checkbox($_result[$f]["docID"]."_".$_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20,10) : '';

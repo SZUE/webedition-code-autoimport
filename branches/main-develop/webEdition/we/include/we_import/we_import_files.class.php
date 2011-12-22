@@ -699,10 +699,9 @@ class we_import_files{
 	}
 
 	function importFile(){
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
-			$ct = getContentTypeFromFile($_FILES['we_File']["name"]);
-			if(!we_hasPerm($GLOBALS["WE_CONTENT_TYPES"][$ct]["Permission"])){
+			$ct=new we_base_ContentTypes();
+			if(!we_hasPerm($ct->getPermission(getContentTypeFromFile($_FILES['we_File']["name"])))){
 				return array(
 					"filename" => $_FILES['we_File']["name"], "error" => "no_perms"
 				);

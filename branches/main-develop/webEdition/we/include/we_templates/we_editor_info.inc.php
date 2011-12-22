@@ -74,11 +74,11 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 	$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">'.g_l('weEditorInfo',"[file_size]").'</div>' .
 		'<div style="margin-bottom:10px;">' . round(($fs / 1024),2)."&nbsp;KB&nbsp;(".$fs."&nbsp;Byte)" .'</div>';
 }
-
+$ct=new we_base_ContentTypes();
 array_push($parts, array(	"headline"=>"",
 							"html"=>$_html,
 							"space"=>140,
-							"icon" => "doclist/" . we_getIcon($GLOBALS['we_doc']->ContentType, isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : "")
+							"icon" => "doclist/" . $ct->getIcon($GLOBALS['we_doc']->ContentType,'',(isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : "")),
 						)
 			);
 

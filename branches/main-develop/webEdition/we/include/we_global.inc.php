@@ -1917,19 +1917,15 @@ function weGetCookieVariable($name) {
 }
 
 function getContentTypeFromFile($dat) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_ContentTypes.inc.php');
-
 	if (is_dir($dat)) {
 		return 'folder';
 	} else {
 		$ext = strtolower(preg_replace('#^.*(\..+)$#', '\1', $dat));
 		if ($ext) {
-			$extensions = array();
-			foreach ($GLOBALS['WE_CONTENT_TYPES'] as $ct => $fields) {
-				$extensions = explode(',', $fields['Extension']);
-				if (in_array($ext, $extensions)) {
-					return $ct;
-				}
+			$ct= new we_base_ContentTypes();
+			$type=$ct->getTypeForExtension($ext);
+			if($type){
+				return $type;
 			}
 		}
 	}
@@ -2589,31 +2585,6 @@ function we_filenameNotValid($filename) {
 		return true;
 	}
 	return preg_match('#[^a-z0-9._-]#i', $filename);
-}
-
-function we_getIcon($contentType, $extension) {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
-	if ($contentType == 'application/*') {
-		switch ($extension) {
-			case '.pdf' :
-				return 'pdf.gif';
-			case '.zip' :
-			case '.sit' :
-			case '.hqx' :
-			case '.bin' :
-				return 'zip.gif';
-			case '.doc' :
-				return 'word.gif';
-			case '.xls' :
-				return 'excel.gif';
-			case '.ppt' :
-				return 'powerpoint.gif';
-		}
-		return 'prog.gif';
-	} else {
-		include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_ContentTypes.inc.php');
-		return $GLOBALS['WE_CONTENT_TYPES'][$contentType]['Icon'];
-	}
 }
 
 function we_isHttps() {

@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 
 class we_docSelector extends we_dirSelector {
@@ -199,9 +198,10 @@ var contentTypes = new Array();
 
 <?php
 
-foreach($GLOBALS["WE_CONTENT_TYPES"] as $ct=>$foo ){
-	if(g_l('contentTypes','['.$ct.']')!==false){
-		print  'contentTypes["'.$ct.'"]  = "'.g_l('contentTypes','['.$ct.']').'";'."\n";
+$ct=new we_base_ContentTypes();
+foreach($ct->getContentTypes() as $ctypes ){
+	if(g_l('contentTypes','['.$ctypes.']')!==false){
+		print  'contentTypes["'.$ctypes.'"]  = "'.g_l('contentTypes','['.$ctypes.']').'";'."\n";
 	}
 }
 
@@ -600,10 +600,9 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 							<option value="">'.g_l('fileselector',"[all_Types]").'</option>';
-			foreach($GLOBALS["WE_CONTENT_TYPES"] as $ct => $val){
-				if (isset($val["IsWebEditionFile"]) && $val["IsWebEditionFile"]) {
-					print '<option value="'.htmlspecialchars($ct).'">'.g_l('contentTypes','['.$ct.']').'</option>'."\n";
-				}
+			$ct=new we_base_ContentTypes();
+			foreach($ct->getWETypes() as $ctype){
+					print '<option value="'.htmlspecialchars($ctype).'">'.g_l('contentTypes','['.$ctype.']').'</option>'."\n";
 			}
 			print '
 						</select></td>

@@ -396,7 +396,6 @@ class we_flashDocument extends we_binaryDocument{
 	 * @param boolean $resave
 	 */
 	function we_save($resave = 0){
-		include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement("origwidth");
@@ -410,7 +409,8 @@ class we_flashDocument extends we_binaryDocument{
 			$this->setElement("height", $this->getElement("origheight"));
 		}
 		if($this->Icon == ''){
-			$this->Icon = $GLOBALS["WE_CONTENT_TYPES"][$this->ContentType]["Icon"];
+			$ct=new we_base_ContentTypes();
+			$this->Icon = $ct->getIcon($this->ContentType);
 		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()

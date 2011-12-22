@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
 
 we_html_tools::protect();
 
@@ -50,8 +49,8 @@ switch ($we_ContentType) {
 $we_alerttext = "";
 
 if (isset($_FILES['we_uploadedFile'])){
-	$ct = getContentTypeFromFile($_FILES['we_uploadedFile']["name"]);
-	if(!we_hasPerm($GLOBALS["WE_CONTENT_TYPES"][$ct]["Permission"])){
+	$ct=new we_base_ContentTypes();
+	if(!we_hasPerm($ct->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']["name"])))){
 		$we_alerttext=g_l('alert',"[upload_notallowed]");
 	}
 }

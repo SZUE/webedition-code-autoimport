@@ -23,7 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 //we_html_tools::protect();
 
@@ -44,7 +43,8 @@ if (isset($_REQUEST['size2'])){
 }
 
 $whiteList = array();
-$exts = isset($GLOBALS["WE_CONTENT_TYPES"]["image/*"]["Extension"]) ? $GLOBALS["WE_CONTENT_TYPES"]["image/*"]["Extension"] : "";
+$ct=new we_base_ContentTypes();
+$exts = $ct->getExtension('image/*');
 if(!empty($exts)){
 	$whiteList = makeArrayFromCSV($exts);
 }

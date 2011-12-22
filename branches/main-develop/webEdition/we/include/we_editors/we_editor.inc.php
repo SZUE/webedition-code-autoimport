@@ -24,7 +24,6 @@
 
 $we_EDITOR = true;
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_ContentTypes.inc.php");
 
 we_html_tools::protect();
 // prevent persmissions overriding
@@ -493,8 +492,8 @@ else {
 							$we_JavaScript .= "\n".$_REQUEST['we_cmd'][6]."\n";
 						}
 					} else {
- 						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_ContentTypes.inc.php");
-						if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType=="application/*" && in_array($we_doc->Extension, makeArrayFromCSV($GLOBALS["WE_CONTENT_TYPES"]["text/html"]["Extension"]))) {
+ 						$ct=new we_base_ContentTypes();
+						if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType=="application/*" && in_array($we_doc->Extension, makeArrayFromCSV($ct->getExtension("text/html")))) {
 								$we_JavaScript = "";
 								$we_responseText = sprintf(g_l('weEditor',"[application/*][response_save_wrongExtension]"),$we_doc->Path,$we_doc->Extension);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
