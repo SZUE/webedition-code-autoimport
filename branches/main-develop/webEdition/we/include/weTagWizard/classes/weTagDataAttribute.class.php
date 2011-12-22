@@ -131,7 +131,6 @@ class weTagDataAttribute{
 	 * @return boolean
 	 */
 	static function getUseOptions($options){
-
 		$useOptions = array();
 		foreach($options as $option){
 			if($option->useOption()){

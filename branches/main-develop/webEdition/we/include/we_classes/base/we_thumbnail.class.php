@@ -564,7 +564,7 @@ class we_thumbnail {
 		// If width has been specified set it and compute new height based on source area aspect ratio
 		if ($this->thumbWidth) {
 			$this->outputWidth = $this->thumbWidth;
-			$this->outputHeight = round($this->imageHeight * $this->thumbWidth / $this->imageWidth);
+			$this->outputHeight = $this->imageWidth ? round($this->imageHeight * $this->thumbWidth / $this->imageWidth):0;
 		}
 
 		// If height has been specified set it.
@@ -572,7 +572,7 @@ class we_thumbnail {
 		// on aspect ratio - otherwise, use height and compute new width
 		if ($this->thumbHeight) {
 			if ($this->outputHeight > $this->thumbHeight || $this->outputHeight == 0) {
-				$this->outputWidth  = round($this->imageWidth * $this->thumbHeight / $this->imageHeight);
+				$this->outputWidth  = $this->imageHeight ? round($this->imageWidth * $this->thumbHeight / $this->imageHeight):0;
 				$this->outputHeight = $this->thumbHeight;
 			}
 		}

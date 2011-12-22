@@ -619,7 +619,7 @@ abstract class we_class{
 	function setLanguageLink($LangLinkArray,$type,$isfolder=false,$isobject=false){
 		$db = new DB_WE;
 		if(is_array($LangLinkArray) ){
-			$q='SELECT * FROM '.LANGLINK_TABLE.' WHERE  DID='.intval($this->ID);
+			$q='SELECT * FROM '.LANGLINK_TABLE.' WHERE DocumentTable="'.$type.'" AND DID='.intval($this->ID);
 			$orig=array();
 			$this->DB_WE->query($q);
 			while($this->DB_WE->next_record()){
@@ -627,7 +627,7 @@ abstract class we_class{
 			}
 			$max= count($orig);
 			for($j=0;$j<$max;$j++){
-				$q='SELECT * FROM '.LANGLINK_TABLE.' WHERE  DID='.intval($orig[$j]['LDID']);
+				$q='SELECT * FROM '.LANGLINK_TABLE.' WHERE DocumentTable="'.$type.'" AND DID='.intval($orig[$j]['LDID']);
 				$this->DB_WE->query($q);
 				while($this->DB_WE->next_record()){
 					$orig[]=$this->DB_WE->Record;
@@ -635,11 +635,7 @@ abstract class we_class{
 			}
 			foreach ($LangLinkArray as $locale => $LDID){
 				if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID=".intval($this->ID)." AND Locale='".$locale."' AND IsObject=".intval($isobject),'ID',$this->DB_WE))){
-					if ($LDID>0){
-						$q = "UPDATE ".LANGLINK_TABLE." SET LDID=".intval($LDID).",DLocale='".$this->Language."' WHERE ID=".intval($ID);
-					} else {
-						$q = "UPDATE ".LANGLINK_TABLE." SET LDID='0',DLocale='".$this->Language."' WHERE ID=".intval($ID);
-					}
+					$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID=".intval($ID);
 					$this->DB_WE->query($q);
 				} else {
 					if($locale!=$this->Language){
