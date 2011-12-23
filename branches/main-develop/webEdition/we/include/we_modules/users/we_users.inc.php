@@ -326,7 +326,7 @@ class we_user {
 			$vals = "";
 			for($i=0;$i<sizeof($tableInfo);$i++) {
 				$fieldName = $tableInfo[$i]["name"];
-				eval('$val = isset($this->'.$fieldName.') ? $this->'.$fieldName.' : "" ;');
+				$val = isset($this->$fieldName) ? $this->$fieldName: '' ;
 				if($fieldName != "ID") {
 					if ($fieldName !== 'passwd' || $val !== "") {
 						$keys .= $fieldName.",";
@@ -372,7 +372,7 @@ class we_user {
 			$fieldName = $tableInfo[$i]["name"];
 			if(in_array($fieldName,$this->persistent_slots)) {
 				$foo = $this->DB_WE->f($fieldName);
-				eval('$this->'.$fieldName.'=$foo;');
+				$this->$fieldName=$foo;
 			}
 		}
 	}
@@ -1478,7 +1478,7 @@ function mapPermissions() {
 		$state.='$this->Table="'.$this->Table.'";';
 
 		foreach($this->persistent_slots as $k=>$v) {
-			eval('$attrib=isset($this->'.$v.') ? $this->'.$v.' : null;');
+			$attrib=isset($this->$v) ? $this->$v : null;
 			$state.='$this->'.$v.'="'.addslashes($attrib).'";';
 		}
 
@@ -1838,7 +1838,7 @@ function mapPermissions() {
 	#--------------------------------------------------------------------------#
 
 	function getUserfield($name,$lngkey,$type="text",$maxlen="255",$noNull=false, $attribs=""){
-		eval('$val = $this->'.$name.';');
+		$val = $this->$name;
 		if($noNull){
 			if(!$val){
 				$val = "";

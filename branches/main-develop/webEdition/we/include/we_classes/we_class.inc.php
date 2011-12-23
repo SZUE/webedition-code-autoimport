@@ -67,10 +67,6 @@ abstract class we_class{
 	var $fileExists = 1;
 	protected $errMsg='';
 
-	######################################################################################################################################################
-	##################################################################### FUNCTIONS ######################################################################
-	######################################################################################################################################################
-
 	//Overwrite
 	function we_new(){
 	}
@@ -220,12 +216,14 @@ abstract class we_class{
 
 	function formTextInput($elementtype, $name, $text, $size=24, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
 		if (!$elementtype)
-			eval('$ps=$this->' . $name . ";");
+			$ps=$this->$name;
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
 	function formInputField($elementtype, $name, $text, $size=24, $width, $maxlength="", $attribs="", $textalign="left", $textclass="defaultfont") {
-		if(!$elementtype) eval('$ps=$this->'.$name.";");
+		if(!$elementtype){
+			$ps=$this->$name;
+		}
 		return $this->htmlFormElementTable($this->htmlTextInput(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $size, ($elementtype && $this->getElement($name) != "" ? $this->getElement($name) : (isset($GLOBALS["meta"][$name]) ? $GLOBALS["meta"][$name]["default"] : (isset($ps) ? $ps : "") )), $maxlength, $attribs, "text", $width), $text, $textalign, $textclass);
 	}
 
@@ -235,7 +233,7 @@ abstract class we_class{
 
 	function formTextArea($elementtype, $name, $text, $rows=10, $cols=30, $attribs="", $textalign="left", $textclass="defaultfont") {
 		if (!$elementtype)
-			eval('$ps=$this->' . $name . ";");
+			$ps=$this->$name;
 		return $this->htmlFormElementTable($this->htmlTextArea(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $rows, $cols, ($elementtype ? $this->getElement($name) : $ps), $attribs), $text, $textalign, $textclass);
 	}
 
@@ -251,7 +249,7 @@ abstract class we_class{
 		}
 
 		if (!$elementtype)
-			eval('$ps=$this->' . $name . ";");
+			$ps=$this->$name;
 		$pop = $this->htmlSelect(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
 		return $this->htmlFormElementTable(($precode ? $precode : "") . $pop . ($postcode ? $postcode : ""), $text, $textalign, $textclass);
 	}
@@ -259,7 +257,7 @@ abstract class we_class{
 	function formSelectFromArray($elementtype, $name, $vals, $text, $size=1, $selectedIndex="", $multiple=false, $attribs="", $textalign="left", $textclass="defaultfont", $precode="", $postcode="", $firstEntry="") {
 
 		if (!$elementtype)
-			eval('$ps=$this->' . $name . ";");
+			$ps=$this->$name;
 		$pop = $this->htmlSelect2(($elementtype ? ("we_" . $this->Name . "_" . $elementtype . "[$name]") : ("we_" . $this->Name . "_" . $name)), $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, $attribs);
 		return $this->htmlFormElementTable(($precode ? $precode : "") . $pop . ($postcode ? $postcode : ""), $text, $textalign, $textclass);
 	}
@@ -391,7 +389,7 @@ abstract class we_class{
 		if ($multiple) {
 			$onChange.= ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;";
 			if (!$elementtype)
-				eval('$ps=$this->' . $name . ";");
+				$ps=$this->$name;
 			$pop = $this->htmlSelect($myname . "Tmp", $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 
 			if ($precode || $postcode) {
@@ -401,7 +399,7 @@ abstract class we_class{
 			return $this->htmlHidden($myname, $selectedIndex) . $this->htmlFormElementTable($pop, $text, $textalign, $textclass);
 		} else {
 			if (!$elementtype)
-				eval('$ps=$this->' . $name . ";");
+				$ps=$this->$name;
 			$pop = $this->htmlSelect($myname, $vals, $size, ($elementtype ? $this->getElement($name) : $ps), $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 			if ($precode || $postcode) {
 				$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ("<td>$precode</td><td>" . we_html_tools::getPixel($gap, 2) . "</td>") : "") . '<td>' . $pop . '</td>' . ($postcode ? ("<td>" . we_html_tools::getPixel($gap, 2) . "</td><td>$postcode</td>") : "") . '</tr></table>';
@@ -424,7 +422,7 @@ abstract class we_class{
 
 
 		if (!$elementtype)
-			eval('$ps=$this->' . $name . ";");
+			$ps=$this->$name;
 		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, "onChange=\"$onChange\" " . $attribs, "value", $width);
 		return $this->htmlFormElementTable(($precode ? $precode : "") . $pop . ($postcode ? $postcode : ""), $text, $textalign, $textclass);
 	}
@@ -512,7 +510,7 @@ abstract class we_class{
 			foreach ($_REQUEST as $n => $v) {
 				if (preg_match('#^we_' . $this->Name . '_([^\[]+)$#', $n, $regs)) {
 					if (in_array($regs[1], $this->persistent_slots)) {
-						eval('$this->' . $regs[1] . '=$v;');
+						$this->$regs[1]=$v;
 					}
 				}
 			}
@@ -524,7 +522,7 @@ abstract class we_class{
 		if($this->DB_WE->next_record()){
 			foreach($this->DB_WE->Record as $k=>$v){
 				if($k && in_array($k,$this->persistent_slots)){
-					eval('$this->'.$k.'=$v;');
+					$this->$k=$v;
 				}
 			}
 		} else {
@@ -552,7 +550,9 @@ abstract class we_class{
 			foreach($tableInfo as $info){
 				$fieldName = $info["name"];
 				if (in_array($fieldName, $feldArr)) {
-					eval('if(isset($this->' . $fieldName . ')) $val = $this->' . $fieldName . ';');
+					if(isset($this->$fieldName)){
+						$val = $this->$fieldName;
+					}
 					if ($fieldName == "Category") { // Category-Fix!
 						$val = $this->i_fixCSVPrePost($val);
 					}
@@ -573,13 +573,13 @@ abstract class we_class{
 			foreach($tableInfo as $info){
 				$fieldName = $info['name'];
 				if (in_array($fieldName, $feldArr)) {
-					eval('$val = $this->' . $fieldName . ';');
+					$val = $this->$fieldName;
 					if ($fieldName == "Category") { // Category-Fix!
 						$val = $this->i_fixCSVPrePost($val);
 					}
 					if ($fieldName != "ID") {
 						$keys .= $fieldName . ",";
-						$vals .= "'" . addslashes($val) . "',";
+						$vals .= "'" . $this->DB_WE->escape($val) . "',";
 					}
 				}
 			}

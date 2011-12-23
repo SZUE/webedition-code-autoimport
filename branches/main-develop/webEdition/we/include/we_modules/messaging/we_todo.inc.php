@@ -126,7 +126,7 @@ class we_todo extends we_msg_proto {
 		    /* move sizeof out of loop */
 		    for ($i = 0; $i < sizeof($this->persistent_slots); $i++) {
 			    if (isset($sessDat[0][$this->persistent_slots[$i]])) {
-				    eval('$this->' . $this->persistent_slots[$i] . '=$sessDat[0][$this->persistent_slots[$i]];');
+				    $this->$this->persistent_slots[$i]=$sessDat[0][$this->persistent_slots[$i]];
 			    }
 		    }
 
@@ -140,7 +140,7 @@ class we_todo extends we_msg_proto {
 	    $save = array();
 	    $save[0] = array();
 	    for($i=0;$i<sizeof($this->persistent_slots);$i++){
-		    eval('$save[0]["'.$this->persistent_slots[$i].'"]=$this->'.$this->persistent_slots[$i].';');
+		    $save[0][$this->persistent_slots[$i]]=$this->$this->persistent_slots[$i];
 	    }
 	    $save[1] = isset($this->elements) ? $this->elements : "";
 

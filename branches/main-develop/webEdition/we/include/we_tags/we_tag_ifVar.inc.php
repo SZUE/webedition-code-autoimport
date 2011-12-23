@@ -141,7 +141,7 @@ function we_tag_ifVar($attribs, $content){
 		case "property" :
 			$docAttr = weTag_getAttribute("doc", $attribs);
 			$doc = we_getDocForTag($docAttr, true);
-			eval('$var = $doc->' . $name . ';');
+			$var = $doc->$name;
 			if ($_size==1 && $operator!='' && isset($var) ){
 				switch ($operator) {
 					case "equal": return $var == $match; break;

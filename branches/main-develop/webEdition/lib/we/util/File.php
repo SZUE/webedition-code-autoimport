@@ -462,7 +462,7 @@ abstract class we_util_File{
 			$oldumask = @umask(0000);
 
 			if(defined("WE_NEW_FOLDER_MOD")){
-				eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) . ';');
+				$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 			} else{
 				$mod = 0755;
 			}

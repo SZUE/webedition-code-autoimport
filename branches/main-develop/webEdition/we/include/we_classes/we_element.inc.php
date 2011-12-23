@@ -84,10 +84,14 @@
 			if(is_array($options)){
 				foreach($options as $k=>$v){
 					foreach($this->link_attribs as $k=>$v){
-						eval('if(isset($options["'.$k.'"]) && isset($this->Link->'.$k.')) $this->Link->'.$k.'=$options["'.$k.'"];');
+						if(isset($options[$k]) && isset($this->Link->$k)){
+							$this->Link->$k=$options[$k];
+						}
 					}
 					foreach($this->content_attribs as $k=>$v){
-						eval('if(isset($options["'.$k.'"]) && isset($this->Content->'.$k.')) $this->Content->'.$k.'=$options["'.$k.'"];');
+						if(isset($options[$k]) && isset($this->Content->$k)){
+							$this->Content->$k=$options[$k];
+						}
 					}
 
 				}

@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
 /* a class for handling templates */
 class we_objectFile extends we_document{
 	/* Name of the class => important for reconstructing the class from outside the class */
@@ -204,7 +202,7 @@ class we_objectFile extends we_document{
 		$doc->setRootDirID(true);
 		if($this->ID==0){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
-				eval('$this->'.$this->persistent_slots[$i].'= isset($doc->'.$this->persistent_slots[$i].') ? $doc->'.$this->persistent_slots[$i].' : "";');
+				$this->$this->persistent_slots[$i]= isset($doc->$this->persistent_slots[$i]) ? $doc->$this->persistent_slots[$i] : '';
 			}
 			$this->ObjectID=0;
 			$this->CreationDate=time();
@@ -2683,7 +2681,7 @@ class we_objectFile extends we_document{
 
 	protected function i_set_PersistentSlot($name,$value){
 		if(in_array($name,$this->persistent_slots)){
-			eval('$this->'.$name.'=$value;');
+			$this->$name=$value;
 		}else{
 			if($name == "Templates_0"){
 
@@ -2908,7 +2906,7 @@ class we_objectFile extends we_document{
 					$name = $regs[2];
 					if($regs[1] == "OF"){
 						$keys .= $tableInfo[$i]["name"] . ",";
-						eval('$values .= "\'".(isset($this->'.$name.') ? addslashes($this->'.$name.') : "")."\',";');
+						$values .= "'".(isset($this->$name) ? addslashes($this->$name) : '')."',";
 					}else{
 						$name = ($regs[1] == "object") ? ("object_".$name) : $name;
 						$keys .= $tableInfo[$i]["name"] . ",";
@@ -2943,7 +2941,7 @@ class we_objectFile extends we_document{
 					$name = $regs[2];
 					if($regs[1] == "OF"){
 						$q .= $tableInfo[$i]["name"] . "=";
-						eval('$q .= "\'".addslashes($this->'.$name.')."\',";');
+						$q .= "'".addslashes($this->$name)."',";
 					}else{
 						if($regs[1] == "object") {
 							$name = "we_object_".$name;
@@ -2979,7 +2977,6 @@ class we_objectFile extends we_document{
 		$glob = ereg_replace('(.*),$','\1',$glob);
 		eval('global '.$glob.';');  // globalen Namensraum herstellen.
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_webEditionDocument.inc.php");
 		$we_doc = new we_webEditionDocument();
 		$we_doc->elements = $this->elements;
 		$we_doc->Templates = $this->Templates;

@@ -393,9 +393,11 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
        while($DB_WE->next_record()){
          print "  menuDaten.add(new urlEntry('link.gif','".$DB_WE->f("IntOrderID")."',".$DB_WE->f("mdate").",'".$DB_WE->f("IntOrderID").". ".g_l('modules_shop','[bestellung]')." ".$DB_WE->f("orddate")."','shop','".SHOP_TABLE."','".(($DB_WE->f("DateShipping")>0)?0:1)."'));\n";
        	 if($DB_WE->f("DateShipping")<=0){
+					 //FIXME: remove eval
        	    eval('if(isset($l' . $DB_WE->f("mdate") . ')) {$l'. $DB_WE->f("mdate") .'++;} else { $l'. $DB_WE->f("mdate") .' = 1;}');
        	 	//eval('$l'.$DB_WE->f("mdate")."++;");
        	 }
+					 //FIXME: remove eval
          eval('if(isset($v' . $DB_WE->f("mdate") . ')) {$v'. $DB_WE->f("mdate") .'++;} else { $v'. $DB_WE->f("mdate") .' = 1;}');
        	 //eval('$v'.$DB_WE->f("mdate")."++;");
        }
@@ -403,8 +405,10 @@ if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
     $year=(empty($_REQUEST["year"]))?date("Y"):$_REQUEST["year"];
 //        unset($_SESSION["year"]);
     for($f=12;$f>0;$f--){
+					 //FIXME: remove eval
         eval('$r = (isset($v' . $f . $year . ') ? $v' . $f . $year .' : ""); ');
     	//eval('$r = $v'.$f.$year.";");
+					 //FIXME: remove eval
     	eval('$k = (isset($l' . $f . $year . ') ? $l' . $f . $year .' : ""); ');
     	//eval('$k = $l'.$f.$year.";");
     	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '".(($f<10)?"0".$f:$f).' '.g_l('modules_shop','[sl]')." ".g_l('date','[month][long]['.($f-1).']'). " (".(($k>0)?"<b>".$k."</b>":0)."/".(($r>0)?$r:0).")',0,'','',".(($k>0)?1:0)."));";

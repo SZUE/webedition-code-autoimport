@@ -81,6 +81,7 @@ if ((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploade
     // if file exists we have to see if we should create a new one or overwrite it!
     if($file_id = f("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($we_doc->Path)."'","ID",$DB_WE)){
 		if($overwrite=="yes"){
+		 //FIXME: remove eval
 			eval('$we_doc=new '.$we_doc->ClassName.'();');
 			$we_doc->initByID($file_id,FILE_TABLE);
 		}else{

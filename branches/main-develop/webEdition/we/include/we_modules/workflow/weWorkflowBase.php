@@ -63,7 +63,7 @@ class weWorkflowBase{
 				$fieldName = $tableInfo[$i]["name"];
 				if(in_array($fieldName,$this->persistents)){
 					$foo = $this->db->f($fieldName);
-					eval('$this->'.$fieldName.'=$foo;');
+					$this->$fieldName=$foo;
 				}
 		}
 	}
@@ -72,6 +72,7 @@ class weWorkflowBase{
 		$sets=array();
 		$wheres=array();
 		foreach($this->persistents as $key=>$val){
+			//FIXME: remove eval
 			if($val=="ID") eval('$wheres[]="'.$val.'=\'".$this->'.$val.'."\'";');
 			eval('$sets[]="'.$val.'=\'".$this->'.$val.'."\'";');
 		}

@@ -50,7 +50,7 @@ class we_search extends DB_WE{
 			if(isset($GLOBALS["we_".$this->Name."_".$sessDat[$i]])){
 				 $v=$GLOBALS["we_".$this->Name."_".$sessDat[$i]];
 				 $v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
-				 eval('$this->'.$sessDat[$i].'=$v;');
+				 $this->$sessDat[$i]=$v;
 			}
 		}
 	}

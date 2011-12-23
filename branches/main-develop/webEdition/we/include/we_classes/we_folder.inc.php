@@ -689,12 +689,8 @@ $content .='
 		$DB_WE->query("SELECT * FROM ".$DB_WE->escape($this->Table)." WHERE ParentID='".intval($this->ID)."'");
 		while($DB_WE->next_record()){
 			@set_time_limit(30);
-			if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php")){
-				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$DB_WE->f("ClassName").".inc.php");
-			}else{
-				include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$DB_WE->f("ClassName").".inc.php");
-			}
-			eval('$we_doc = new '.$DB_WE->f("ClassName").'();');
+			$we_doc = $DB_WE->f("ClassName");
+			$we_doc = new $we_doc();
 			$we_doc->initByID($DB_WE->f("ID"),$this->Table, we_class::LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
 			$we_doc->ModifyPathInformation($this->ID);
 		}

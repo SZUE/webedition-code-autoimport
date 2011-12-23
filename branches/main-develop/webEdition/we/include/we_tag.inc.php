@@ -170,6 +170,7 @@ function mta($hash, $key){
 }
 
 function printElement($code){
+//FIXME: remove eval
 	if(isset($code)){
 		eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
 	}

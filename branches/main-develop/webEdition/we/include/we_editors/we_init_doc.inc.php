@@ -73,7 +73,8 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 			}
 
 			if(file_exists($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php')){
-				eval('$we_doc = new we_'.$we_ContentType.'();');
+				$we_doc='we_'.$we_ContentType;
+				$we_doc = new we_doc();
 			}else{
 				exit('Can NOT initialize document of type -'.$we_ContentType.'- '.$_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php');
 			}
@@ -81,15 +82,9 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 	}
 }else{
 	if(isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName']){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/'.$we_dt[0]['ClassName'].'.inc.php')){
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/'.$we_dt[0]['ClassName'].'.inc.php');
-		}else if(file_exists($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/'.$we_dt[0]['ClassName'].'.inc.php')){
-			////	Here only object-Files??
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/object/'.$we_dt[0]['ClassName'].'.inc.php');
-		}
-		eval('$we_doc =new '.$we_dt[0]['ClassName'].'();');
+		$we_doc=$we_dt[0]['ClassName'];
+		$we_doc =new $we_doc();
 	}else{
-		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
 		$we_doc = new we_webEditionDocument();
 	}
 }
@@ -113,7 +108,6 @@ $GLOBALS['we_doc'] = clone($we_doc);
 
 //if document opens get initial object for versioning if no versions exist
 if(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0]=='load_edit_footer' || $_REQUEST['we_cmd'][0]=='switch_edit_page')) {
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_versions/weVersions.class.inc.php');
 	$version = new weVersions();
 	$version->setInitialDocObject($GLOBALS['we_doc']);
 }

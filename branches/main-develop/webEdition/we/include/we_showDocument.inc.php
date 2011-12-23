@@ -84,11 +84,9 @@ if (isset($_REQUEST['vers_we_obj'])) {
 				if (($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))) { // use given document instead !
 					if($_errorDocId){
 					unset($_errorDocId);
-//					header('Location: ' . getServerUrl() . $_errorDocPath);
 					@include($_SERVER['DOCUMENT_ROOT'].$_errorDocPath);
 					unset($_errorDocPath);
 					}
-					//exit();
 					return;
 
 				} else {

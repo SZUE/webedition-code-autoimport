@@ -40,7 +40,7 @@ class objectsearch extends we_search {
     			if(isset($sessDat[$i])) {
 				    $v=$sessDat[$i];
 				    $v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
-				    eval('$this->'.$sessDat[$i].'=$v;');
+				    $this->$sessDat[$i]=$v;
 			    }
 		    }
 		}
@@ -51,7 +51,7 @@ class objectsearch extends we_search {
 			if(isset($sessDat[$i])) {
 				$v=$sessDat[$i];
 				$v = (get_magic_quotes_gpc() == 1) ? stripslashes($v) : $v;
-				eval('$this->'.$sessDat[$i].'=$v;');
+				$this->$sessDat[$i]=$v;
 			}
 		}
 	}

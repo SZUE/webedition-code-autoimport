@@ -90,11 +90,8 @@ class weWorkflowDocument extends weWorkflowBase{
 			$this->db->query("SELECT * FROM $docTable WHERE ID=".intval($this->documentID));
 			if($this->db->next_record())
 				if($this->db->f("ClassName")){
-					if($this->workflow->Type==WE_WORKFLOW_OBJECT)
-						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/".$this->db->f("ClassName").".inc.php");
-					else
-						include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/".$this->db->f("ClassName").".inc.php");
-					eval('$this->document=new '.$this->db->f("ClassName").'();');
+					$tmp=$this->db->f("ClassName");
+					$this->document=new $tmp();
 					if($this->document){
 						$this->document->initByID($this->documentID,$docTable);
 						$this->document->we_load(we_class::LOAD_TEMP_DB);

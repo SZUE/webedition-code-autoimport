@@ -43,8 +43,14 @@
 			var $slots=array("ID","ParentID","Path","Table","ContentType","TemplateID","DocType","Category");
 
 			function init($object,$extra=array()){
-				foreach($this->slots as $slot) eval('if(isset($object->'.$slot.')) $this->'.$slot.'=$object->'.$slot.';');
-				foreach($extra as $ek=>$ev) eval('$this->'.$ek.'="'.$ev.'";');
+				foreach($this->slots as $slot){
+					if(isset($object->$slot)){
+						$this->$slot=$object->$slot;
+					}
+				}
+				foreach($extra as $ek=>$ev){
+					$this->$ek=$ev;
+				}
 			}
 
 			function match($param){
@@ -171,7 +177,7 @@
 		function setProp($id,$name,$value){
 			foreach($this->Storage as $ref){
 				if($ref->match($id)){
-					eval('$this->'.$name.'="'.addslashes($value).'";');
+					$this->$name=$value;
 					return true;
 				}
 			}

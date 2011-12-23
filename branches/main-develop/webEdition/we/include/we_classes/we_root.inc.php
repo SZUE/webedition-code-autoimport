@@ -109,11 +109,11 @@ abstract class we_root extends we_class{
 		$ParentID = $this->ParentID;
 		$ParentPath = $this->ParentPath;
 		$EditPageNr = $this->EditPageNr;
-
- 		eval('$tempDoc = new '.$this->ClassName.'();');
+		$tempDoc = $this->ClassName;
+ 		$tempDoc = new $tempDoc();
 		$tempDoc->we_new();
 		for($i=0;$i<sizeof($tempDoc->persistent_slots);$i++){
-			eval('$this->'.$tempDoc->persistent_slots[$i].'= isset($tempDoc->'.$tempDoc->persistent_slots[$i].') ? $tempDoc->'.$tempDoc->persistent_slots[$i].' : "" ;');
+			$this->$tempDoc->persistent_slots[$i]= isset($tempDoc->$tempDoc->persistent_slots[$i]) ? $tempDoc->$tempDoc->persistent_slots[$i] : '' ;
 		}
 		$this->InWebEdition = true;
 		$this->ParentID = $ParentID;
@@ -124,8 +124,8 @@ abstract class we_root extends we_class{
 	function equals($obj){
 		for($i=0;$i<sizeof($this->persistent_slots);$i++){
 			if($this->persistent_slots[$i] != "Name" && $this->persistent_slots[$i] != "elements" && $this->persistent_slots[$i] != "EditPageNr" && $this->persistent_slots[$i] != "wasUpdate"){
-				eval('$foo1 = $this->'.$this->persistent_slots[$i].";");
-				eval('$foo2 = $obj->'.$this->persistent_slots[$i].";");
+				$foo1 = $this->$this->persistent_slots[$i];
+				$foo2 = $obj->$this->persistent_slots[$i];
 				if($foo1 != $foo2) {
                 	return false;
 				}
@@ -178,14 +178,11 @@ abstract class we_root extends we_class{
 		$save = array();
 		$save[0] = array();
 		for($i=0;$i<sizeof($this->persistent_slots);$i++){
-			eval('$bb= isset($this->'.$this->persistent_slots[$i].') ? $this->'.$this->persistent_slots[$i].' : "";');
+			$bb=isset($this->$this->persistent_slots[$i]) ? $this->$this->persistent_slots[$i] : '';
 			if(!is_object($bb)){
-				eval('$save[0]["'.$this->persistent_slots[$i].'"]=$bb;');
-				//eval('$save[0]["'.$this->persistent_slots[$i].'"]=$this->'.$this->persistent_slots[$i].';');
+				$save[0][$this->persistent_slots[$i]]=$bb;
 			}else{
-				eval('$save[0]["'.$this->persistent_slots[$i].'_class"]=serialize($bb);');
-				//print_r($bb);
-				//echo serialize($bb);print_r(unserialize(serialize($bb)));
+				$save[0][$this->persistent_slots[$i].'_class']=serialize($bb);
 			}
 		}
 		$save[1] = $this->elements;
@@ -220,7 +217,7 @@ abstract class we_root extends we_class{
 			$arr = unserialize($str);
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($arr[0][$this->persistent_slots[$i]])){
-					eval('$this->'.$this->persistent_slots[$i].'=$arr[0][$this->persistent_slots[$i]];');
+					$this->$this->persistent_slots[$i]=$arr[0][$this->persistent_slots[$i]];
 				}
 			}
 			if(isset($arr[1])){
@@ -257,8 +254,8 @@ abstract class we_root extends we_class{
 		if(!$table) $table = $this->Table;
 		$textname = 'we_'.$this->Name.'_'.$Pathname;
 		$idname = 'we_'.$this->Name.'_'.$IDName;
-		eval('$path = $this->'.$Pathname.';');
-		eval('$myid = $this->'.$IDName.';');
+		$path = $this->$Pathname;
+		$myid = $this->$IDName;
 
 		$_parentPathChanged = '';
 		$_parentPathChangedBlur = '';
@@ -829,7 +826,7 @@ function formTriggerDocument($isclass=false){
 		if(is_array($sessDat)){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					eval('$this->'.$this->persistent_slots[$i].'=$sessDat[0][$this->persistent_slots[$i]];');
+					$this->$this->persistent_slots[$i]=$sessDat[0][$this->persistent_slots[$i]];
 				}
 			}
 			if(isset($sessDat[1])){
@@ -843,7 +840,7 @@ function formTriggerDocument($isclass=false){
 		if(is_array($sessDat)){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					eval('$this->'.$this->persistent_slots[$i].'=$sessDat[0][$this->persistent_slots[$i]];');
+					$this->$this->persistent_slots[$i]=$sessDat[0][$this->persistent_slots[$i]];
 				}
 			}
 			if(isset($sessDat[1])){
@@ -882,7 +879,7 @@ function formTriggerDocument($isclass=false){
 
 	protected function i_set_PersistentSlot($name,$value){
 		if(in_array($name,$this->persistent_slots)){
-			eval('$this->'.$name.'=$value;');
+			$this->$name=$value;
 		}
 	}
 

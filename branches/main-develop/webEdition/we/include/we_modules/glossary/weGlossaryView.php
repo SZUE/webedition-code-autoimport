@@ -794,9 +794,9 @@ class weGlossaryView {
 						}
 
 					} else if(is_array($_REQUEST[$val])) {
-						eval('$this->Glossary->'.$val.'=$_REQUEST[$val]; ?>');
+						$this->Glossary->$val=$_REQUEST[$val];
 					} else {
-						eval('$this->Glossary->'.$val.'="'.addslashes($_REQUEST[$val]).'";');
+						$this->Glossary->$val=$_REQUEST[$val];
 					}
 
 				}

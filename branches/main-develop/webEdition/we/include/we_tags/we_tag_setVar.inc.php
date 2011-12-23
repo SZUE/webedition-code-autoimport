@@ -61,8 +61,7 @@ function we_tag_setVar($attribs, $content){
 				break;
 			case "top" :
 				if($propertyFrom){
-					eval(
-						'$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->' . $nameFrom . ') ? $GLOBALS["WE_MAIN_DOC"]->' . $nameFrom . ' : "";');
+					$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->$nameFrom) ? $GLOBALS["WE_MAIN_DOC"]->$nameFrom : '';
 				} else{
 					if($typeFrom == "href"){
 						$valueFrom = isset($GLOBALS["WE_MAIN_DOC"]->elements[$nameFrom . '_we_jkhdsf_int']) ? $GLOBALS["WE_MAIN_DOC"]->getField(
@@ -97,8 +96,7 @@ function we_tag_setVar($attribs, $content){
 			case "object" :
 			case "document" :
 				if($propertyFrom){
-					eval(
-						'$valueFrom = isset($GLOBALS["we_' . $from . '"][$formnameFrom]->' . $nameFrom . ') ? $GLOBALS["we_' . $from . '"][$formnameFrom]->' . $nameFrom . ' : "";');
+					$valueFrom = isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom: '';
 				} else{
 					$valueFrom = isset($GLOBALS["we_" . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS["we_" . $from][$formnameFrom]->getElement(
 							$nameFrom) : "";
@@ -157,7 +155,7 @@ function we_tag_setVar($attribs, $content){
 			break;
 		case "top" :
 			if($propertyTo){
-				eval('$GLOBALS["WE_MAIN_DOC_REF"]->' . $nameTo . ' = $valueFrom;');
+				$GLOBALS["WE_MAIN_DOC_REF"]->$nameTo = $valueFrom;
 			} else{
 				$GLOBALS["WE_MAIN_DOC_REF"]->setElement($nameTo, $valueFrom);
 			}

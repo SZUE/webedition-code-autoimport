@@ -60,7 +60,7 @@ function we_tag_conditionAdd($attribs, $content){
 			if ($var) {
 				$doc = we_getDocForTag($docAttr, false);
 				if ($property) {
-					eval('$value = $doc->' . $var . ';');
+					$value = $doc->$var;
 				} else {
 					$value = $doc->getElement($var);
 				}

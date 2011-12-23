@@ -125,7 +125,7 @@ class weNewsletterView {
 
 			foreach ($group->persistents as $per) {
 				$varname = "group" . $counter . "_" . $per;
-				eval('$val = $group->' . $per . ';');
+				$val = $group->$per;
 				$out .= $this->htmlHidden("group" . $counter . "_" . $per, $val);
 			}
 
@@ -342,17 +342,10 @@ class weNewsletterView {
 
 	function getFields($id, $table) {
 		$ClassName = f("SELECT ClassName FROM ".$this->db->escape($table)." WHERE ID=" . intval($id), "ClassName", $this->db);
-		$include_path = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/";
-
-		if ($table == OBJECT_FILES_TABLE) {
-			$include_path=$_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/";
-		}
-
 		$foo = array();
 
 		if ($ClassName) {
-			include_once($include_path . $ClassName . ".inc.php");
-			eval('$ent = new ' . $ClassName . '();');
+			$ent = new $ClassName();
 			$ent->initByID($id, $table);
 			$tmp = array_keys($ent->elements);
 
@@ -367,7 +360,7 @@ class weNewsletterView {
 	function getObjectFields() {
 		$ClassName = f("SELECT ClassName FROM ".FILE_TABLE." WHERE ID=" . intval($id), "ClassName", $this->db);
 
-		eval('$doc = new ' . $ClassName . '();');
+		$doc = new $ClassName();
 
 		$doc->initByID($id);
 		$tmp = array_keys($doc->elements);
@@ -2069,7 +2062,7 @@ class weNewsletterView {
 				$varname="group".$gkey."_".$per;
 
 				if (isset($_REQUEST[$varname])) {
-					eval('$this->newsletter->groups['.$gkey.']->'.$per.'=$_REQUEST["'.$varname.'"];');
+					$this->newsletter->groups[$gkey]->$per=$_REQUEST[$varname];
 				}
 			}
 
@@ -2091,7 +2084,7 @@ class weNewsletterView {
 					$varname="filter_".$field."_".$gkey."_".$i;
 
 					if (isset($_REQUEST[$varname])) {
-						eval('$new["'.$field.'"]=$_REQUEST["'.$varname.'"];');
+						$new[$field]=$_REQUEST[$varname];
 					}
 				}
 
@@ -2124,7 +2117,7 @@ class weNewsletterView {
 				$varname="block".$skey."_".$per;
 
 				if (isset($_REQUEST[$varname])) {
-					eval('$this->newsletter->blocks['.$skey.']->'.$per.'=$_REQUEST["'.$varname.'"];');
+					$this->newsletter->blocks[$skey]->$per=$_REQUEST[$varname];
 				}
 
 			}

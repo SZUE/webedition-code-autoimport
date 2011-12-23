@@ -195,7 +195,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save_last") {
 					$oldumask = @umask(0000);
 
 					if (defined("WE_NEW_FOLDER_MOD")){
-						eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) .';');
+						$mod = octdec(WE_NEW_FOLDER_MOD);
 					} else {
 						$mod = 0755;
 					}

@@ -65,7 +65,7 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', 
 			}
 			if ($doc) {
 				if ($property) {
-					eval('$retval = isset($doc->' . $name . ');');
+					$retval = isset($doc->$name);
 					return $retval;
 				} else {
 					if ($type == 'href') {

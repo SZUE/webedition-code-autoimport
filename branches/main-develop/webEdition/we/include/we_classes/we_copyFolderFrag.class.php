@@ -680,12 +680,15 @@ class copyFolderFrag extends taskFragment{
 		}
 		$n = $attribs["name"];
 		$nint = $n . "_we_jkhdsf_int";
+		 //FIXME: remove eval
 		eval('$int = (' . $fn . '($nint) == "") ? 0 : ' . $fn . '($nint);');
 		if($int){
 			$nintID = $n . "_we_jkhdsf_intID";
+		 //FIXME: remove eval
 			eval('$intID = ' . $fn . '($nintID);');
 			return f("SELECT Path FROM " . FILE_TABLE . " WHERE ID='" . abs($intID) . "'", "Path", $db);
 		} else{
+		 //FIXME: remove eval
 			eval('$extPath = ' . $fn . '($n);');
 			return $extPath;
 		}

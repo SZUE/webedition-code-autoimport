@@ -66,7 +66,7 @@ class we_document extends we_root {
 	*/
 
 	// Constructor
-	function we_document() {
+	function __construct() {
 		parent::__construct();
 		array_push($this->persistent_slots,'Extension','IsDynamic','Published','Category','IsSearchable','InGlossar','Language');
 		array_push($this->persistent_slots,'schedArr');
@@ -74,6 +74,7 @@ class we_document extends we_root {
 
 	function copyDoc($id) {
 		if($id) {
+					 //FIXME: remove eval => new self(); => inheritance??
 			eval('$doc = new '.$this->ClassName.'();');
 			$doc->InitByID($id,$this->Table);
 			$parentIDMerk=$doc->ParentID;
@@ -81,7 +82,7 @@ class we_document extends we_root {
 				for($i=0;$i<sizeof($this->persistent_slots);$i++) {
 					if($this->persistent_slots[$i] != 'elements') {
 						if(in_array($this->persistent_slots[$i], array_keys(get_object_vars($doc)))) {
-							eval('$this->'.$this->persistent_slots[$i].'=$doc->'.$this->persistent_slots[$i].';');
+							$this->$this->persistent_slots[$i]=$doc->$this->persistent_slots[$i];
 						}
 					}
 				}
@@ -1278,13 +1279,16 @@ class we_document extends we_root {
 			$db = new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n.'_we_jkhdsf_int';
+		 //FIXME: remove eval
 		eval('$int = ('.$fn.'($nint) == "") ? 0 : '.$fn.'($nint);');
 		if($int) {
 			$nintID = $n.'_we_jkhdsf_intID';
+		 //FIXME: remove eval
 			eval('$intID = '.$fn.'($nintID);');
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=".intval($intID),'Path',$db);
 		}
 		else {
+		 //FIXME: remove eval
 			eval('$extPath = '.$fn.'($n);');
 			return $extPath;
 		}

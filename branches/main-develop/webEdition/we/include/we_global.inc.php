@@ -482,7 +482,7 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 	}
 	foreach ($GLOBALS["we_object"][$formname]->persistent_slots as $slotname) {
 		if ($slotname != "categories" && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])) {
-			eval('$GLOBALS["we_object"][$formname]->' . $slotname . '  =  $_REQUEST["we_ui_".$formname."_".$slotname];');
+			$GLOBALS["we_object"][$formname]->$slotname=  $_REQUEST["we_ui_".$formname."_".$slotname];
 		}
 	}
 
@@ -584,7 +584,7 @@ function initDocument($formname = 'we_global_form', $tid = '', $doctype = '', $c
 	}
 	foreach ($GLOBALS['we_document'][$formname]->persistent_slots as $slotname) {
 		if ($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])) {
-			eval('$GLOBALS["we_document"][$formname]->' . $slotname . '  =  $_REQUEST["we_ui_".$formname."_".$slotname];');
+			$GLOBALS["we_document"][$formname]->$slotname =  $_REQUEST["we_ui_".$formname."_".$slotname];
 		}
 	}
 
@@ -1109,6 +1109,7 @@ function we_userCanEditModule($modName) {
 			}
 			$set_str = implode(' || ', $set);
 			$condition_str = implode(' || ', $or);
+		 //FIXME: remove eval
 			eval('if (' . $set_str . '){ if (' . $condition_str . ') { $enable=1; } else { $enable=0; } }');
 			return $enable;
 		}

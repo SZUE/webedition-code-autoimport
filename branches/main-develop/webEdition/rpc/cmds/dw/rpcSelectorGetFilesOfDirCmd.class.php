@@ -32,7 +32,7 @@ class rpcSelectorGetFilesOfDirCmd extends rpcCmd {
 		$resp = new rpcResponse();
 
 		$queryClass = new weSelectorQuery();
-		eval('$table = ' . $_REQUEST["table"] . ';');
+		$table = $_REQUEST["table"];
 
 		// if a value is already inserted in a selector, we get an i, not a parentID
 		if (isset($_REQUEST["id"])) {

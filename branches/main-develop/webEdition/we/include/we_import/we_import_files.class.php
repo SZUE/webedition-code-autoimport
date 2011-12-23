@@ -732,6 +732,7 @@ class we_import_files{
 			// if file exists we have to see if we should create a new one or overwrite it!
 			if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"', 'ID', $GLOBALS['DB_WE']))){
 				if($this->sameName == "overwrite"){
+		 //FIXME: remove eval
 					eval('$we_doc=new ' . $we_doc->ClassName . '();');
 					$we_doc->initByID($file_id, FILE_TABLE);
 				} else

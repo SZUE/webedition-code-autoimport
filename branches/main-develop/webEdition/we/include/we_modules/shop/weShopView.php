@@ -356,6 +356,7 @@ function processCommands() {
 			foreach ($this->raw->persistent_slots as $key=>$val) {
 				$varname=$val;
 				if (isset($_REQUEST[$varname])) {
+					//FIXME: remove eval
 					eval('$this->raw->'.$val.'="'.addslashes($_REQUEST[$varname]).'";');
 				}
 			}

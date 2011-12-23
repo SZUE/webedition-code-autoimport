@@ -67,7 +67,7 @@ class we_template extends we_document{
 		if($this->ID == 0){
 			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
 				if($this->persistent_slots[$i] != "elements")
-					eval('$this->' . $this->persistent_slots[$i] . '=$temp->' . $this->persistent_slots[$i] . ';');
+					$this->$this->persistent_slots[$i]=$temp->$this->persistent_slots[$i];
 			}
 			$this->CreationDate = time();
 			$this->ID = 0;

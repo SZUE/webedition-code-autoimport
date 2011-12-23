@@ -56,6 +56,7 @@ function we_tag_userInput($attribs, $content){
 
 	if ($objekt) {
 		if ($property) {
+					//FIXME: remove eval
 			eval('$isset = isset($objekt->' . $name . ');');
 			eval('$orgVal = $isset ? $objekt->' . $name . ' : $value;');
 		} else {

@@ -71,7 +71,7 @@ function we_isVarNotEmpty($attribs){
 			}
 			if ($doc) {
 				if ($property) {
-					eval('$retVal = isset($doc->' . $match . ') ? $doc->' . $match . ' : "";');
+					$retVal = isset($doc->$match) ? $doc->$match:'';
 					return $retVal;
 				} else {
 					$name = $match;

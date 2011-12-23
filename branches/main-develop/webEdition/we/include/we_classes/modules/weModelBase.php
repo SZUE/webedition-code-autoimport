@@ -61,7 +61,7 @@ class weModelBase {
 	function load($id="0") {
 		$ids = explode(",", $id);
 		foreach ($ids as $k => $v) {
-			eval('$this->' . $this->keys[$k] . '="' . $this->db->escape($v) . '";');
+			$this->$this->keys[$k]='"' . $this->db->escape($v) . '"';
 		}
 
 		if ($this->isKeyDefined()) {
@@ -72,7 +72,7 @@ class weModelBase {
 					$fieldName = $info["name"];
 					if (in_array($fieldName, $this->persistent_slots)) {
 						$foo = $this->db->f($fieldName);
-						eval('$this->' . $fieldName . '=$foo;');
+						$this->$fieldName=$foo;
 					}
 				}
 				$this->isnew = false;
@@ -94,6 +94,7 @@ class weModelBase {
 			$this->isnew = true;
 		foreach ($this->persistent_slots as $key => $val) {
 			//if(!in_array($val,$this->keys))
+					//FIXME: remove eval
 			eval('if(isset($this->' . $val . ')) $sets[]="' . $val . '=\'".escape_sql_query($this->' . $val . ')."\'";');
 		}
 		$where = $this->getKeyWhere();
@@ -131,6 +132,7 @@ class weModelBase {
 	function getKeyWhere() {
 		$wheres = array();
 		foreach ($this->keys as $f) {
+					//FIXME: remove eval
 			eval('$wheres[]="' . $f . '=\'".escape_sql_query($this->' . $f . ')."\'";');
 		}
 		return implode(" AND ", $wheres);
@@ -139,7 +141,7 @@ class weModelBase {
 	function isKeyDefined() {
 		$defined = true;
 		foreach ($this->keys as $prim)
-			eval('if(!isset($this->' . $prim . ')) $defined=false;');
+			if(!isset($this->$prim)) $defined=false;
 		return $defined;
 	}
 

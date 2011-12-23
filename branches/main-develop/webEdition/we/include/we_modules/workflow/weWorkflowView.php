@@ -130,8 +130,8 @@ class weWorkflowView extends weWorkflowBase{
 		$out="";
 		foreach($this->hiddens as $key=>$val){
 			$attval="";
-			if(in_array($val,$this->workflowDef->persistents)) eval('$attval=$this->workflowDef->'.$val.';');
-			else eval('$attval=$this->'.$val.';');
+			if(in_array($val,$this->workflowDef->persistents)) $attval=$this->workflowDef->$val;
+			else $attval=$this->$val;
 			$out.=$this->htmlHidden($this->uid."_".$val,$attval);
 		}
 		return $out;
@@ -1166,7 +1166,7 @@ class weWorkflowView extends weWorkflowBase{
 			$varname=$this->uid."_".$val;
 			if(isset($_REQUEST[$varname])){
 				$_REQUEST[$varname] = escape_sql_query($_REQUEST[$varname]);
-				eval('$this->workflowDef->'.$val.'=\''.$_REQUEST[$varname].'\';');
+				$this->workflowDef->$val=$_REQUEST[$varname];
 			}
 		}
 

@@ -34,8 +34,8 @@ class we_makenewtemplate extends we_template
 		if(!$table) $table = $this->Table;
 		$textname = 'we_'.$this->Name.'_'.$Pathname;
 		$idname = 'we_'.$this->Name.'_'.$IDName;
-		eval('$path = $this->'.$Pathname.';');
-		eval('$myid = $this->'.$IDName.';');
+		$path = $this->$Pathname;
+		$myid = $this->$IDName;
 		//javascript:we_cmd('openDirselector',document.forms['we_form'].elements['$idname'].value,'$table','document.forms[\\'we_form\\'].elements[\\'$idname\\'].value','document.forms[\\'we_form\\'].elements[\\'$textname\\'].value','','".session_id()."')
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$idname'].value");
 		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$textname'].value");

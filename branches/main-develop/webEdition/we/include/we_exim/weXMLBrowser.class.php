@@ -56,7 +56,7 @@ class weXMLBrowser extends we_xml_parser{
 		}
 
 		if (defined("WE_NEW_FOLDER_MOD")){
-			eval('$mod = 0' . abs(WE_NEW_FOLDER_MOD) .';');
+			$mod = octdec(WE_NEW_FOLDER_MOD);
 		} else {
 			$mod = 0755;
 		}
