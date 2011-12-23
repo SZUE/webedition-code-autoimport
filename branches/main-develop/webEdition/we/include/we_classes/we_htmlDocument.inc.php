@@ -32,7 +32,7 @@ class we_htmlDocument extends we_textContentDocument{
 	var $ContentType="text/html";
 
 	function __construct(){
-		$this->we_textContentDocument();
+		parent::__construct();
 	}
 
 	function i_saveContentDataInDB(){

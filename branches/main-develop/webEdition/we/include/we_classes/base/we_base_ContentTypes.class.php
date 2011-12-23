@@ -30,7 +30,7 @@ class we_base_ContentTypes{
 		$this->ct = array(
 // Content Type for Images
 			'image/*' => array(
-				'Extension' => '.gif,.jpg,.jpeg,.png',
+				'Extension' => array('.gif','.jpg','.jpeg','.png'),
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -38,7 +38,7 @@ class we_base_ContentTypes{
 				'Icon' => 'image.gif',
 			),
 			'text/html' => array(
-				'Extension' => '.html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml,.xsl',
+				'Extension' => array('.html','.htm','.shtm','.shtml','.stm','.php','.jsp','.asp','.pl','.cgi','.xml','.xsl'),
 				'Permission' => 'NEW_HTML',
 				'DefaultCode' => '<html>' . "\n\t" .
 				'<head>' . "\n\t\t" .
@@ -53,7 +53,7 @@ class we_base_ContentTypes{
 				'Icon' => 'html.gif',
 			),
 			'text/webedition' => array(
-				'Extension' => '.html,.htm,.shtm,.shtml,.stm,.php,.jsp,.asp,.pl,.cgi,.xml',
+				'Extension' => array('.html','.htm','.shtm','.shtml','.stm','.php','.jsp','.asp','.pl','.cgi','.xml'),
 				'Permission' => 'NEW_WEBEDITIONSITE',
 				'DefaultCode' => '',
 				'IsWebEditionFile' => true,
@@ -149,7 +149,7 @@ class we_base_ContentTypes{
 				'Icon' => 'flashmovie.gif',
 			),
 			'video/quicktime' => array(
-				'Extension' => '.mov,.moov,.qt',
+				'Extension' => array('.mov','.moov','.qt'),
 				'Permission' => 'NEW_QUICKTIME',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -157,7 +157,7 @@ class we_base_ContentTypes{
 				'Icon' => 'quicktime.gif',
 			),
 			'application/*' => array(
-				'Extension' => '.doc,.xls,.ppt,.zip,.sit,.bin,.hqx,.exe',
+				'Extension' => array('.doc','.xls','.ppt','.zip','.sit','.bin','.hqx','.exe'),
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
@@ -223,7 +223,7 @@ class we_base_ContentTypes{
 	}
 
 	public function getExtension($name){
-		return isset($this->ct[$name])?$this->ct[$name]['Extension']:'';
+		return isset($this->ct[$name])?implode(',',$this->ct[$name]['Extension']):'';
 	}
 
 	public function isWEFile($name){
@@ -250,8 +250,8 @@ class we_base_ContentTypes{
 
 	public function getTypeForExtension($extension){
 		foreach($this->ct as $type=>$val){
-			$ext=explode(',',$val['Extension']);
-			if(in_array($extension, $ext)){
+			$ext=$val['Extension'];
+			if((is_array($ext)&&in_array($extension, $ext))||$ext==$extension){
 				return $type;
 			}
 		}

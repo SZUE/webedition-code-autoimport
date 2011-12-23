@@ -53,7 +53,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 	var $documentCustomerFilter = ""; // DON'T SET TO NULL !!!!
 
-	function we_webEditionDocument(){
+	function __construct(){
 		if(defined("SHOP_TABLE")){
 			array_push($this->EditPageNrs, WE_EDITPAGE_VARIANTS);
 		}
@@ -62,7 +62,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			array_push($this->EditPageNrs, WE_EDITPAGE_WEBUSER);
 		}
 
-		$this->we_textContentDocument();
+		parent::__construct();
 		if(isset($_SESSION["prefs"]["DefaultTemplateID"])){
 			$this->TemplateID = $_SESSION["prefs"]["DefaultTemplateID"];
 		}
