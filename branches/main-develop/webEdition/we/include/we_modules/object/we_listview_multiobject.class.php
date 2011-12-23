@@ -72,9 +72,9 @@ class we_listview_multiobject extends listviewBase {
 	 * @param	string        $categoryids
 	 *
 	 */
-	function we_listview_multiobject($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0,$languages='',$hidedirindex=false,$objectseourls=false){
+	function __construct($name="0", $rows=9999999, $offset=0, $order="", $desc=false, $cats="", $catOr="", $condition="", $triggerID="",$cols="", $seeMode=true, $searchable=true, $calendar="", $datefield="", $date="", $weekstart="", $categoryids='', $customerFilterType='off',$docID=0,$languages='',$hidedirindex=false,$objectseourls=false){
 
-		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
+		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
 		$data=0;
 		if(isset($GLOBALS['we_lv_array']) && sizeof($GLOBALS['we_lv_array']) > 1) {

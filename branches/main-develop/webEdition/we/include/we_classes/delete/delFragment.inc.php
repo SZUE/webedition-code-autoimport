@@ -31,10 +31,10 @@ class delFragment extends taskFragment{
 	var $db;
 	var $table;
 
-	function __consstruct($name,$taskPerFragment,$pause=0,$table){
+	function __construct($name,$taskPerFragment,$pause,$table){
 		$this->db = new DB_WE();
 		$this->table = $table;
-		$this->taskFragment($name,$taskPerFragment,$pause);
+		parent::__construct($name,$taskPerFragment,$pause);
 	}
 
 	function init(){

@@ -50,7 +50,7 @@
 
 		var $linked=false;
 
-		function we_element($link_props=true,$options=array()){
+		function __construct($link_props=true,$options=array()){
 			$this->DID=0;
 			$this->Link=new weModelBase(LINK_TABLE);
 			$this->Link->setKeys(array("DID","CID"));

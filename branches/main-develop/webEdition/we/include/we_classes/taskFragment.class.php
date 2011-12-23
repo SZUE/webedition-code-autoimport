@@ -85,7 +85,7 @@ class  taskFragment{
 	 * @param      int $pause
 	 * @param      array $initdata
 	 */
-	function taskFragment($name,$taskPerFragment,$pause=1,$bodyAttributes="",$initdata=""){
+	function __construct($name,$taskPerFragment,$pause=1,$bodyAttributes="",$initdata=""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;

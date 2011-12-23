@@ -24,22 +24,17 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
-
-define("FS_SETDIR",5);
-
-
 class we_shopDirSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function we_shopDirSelector($id,
+	function __construct($id,
 								$JSIDName="",
 								$JSTextName="",
 								$JSCommand="",
 								$order=""){
 
-		$this->we_multiSelector($id,
+		parent::__construct($id,
 								BANNER_TABLE,
 								$JSIDName,
 								$JSTextName,
@@ -94,7 +89,7 @@ function doClick(id,ct){
 	function printFramesetJSsetDir(){
 ?>
 function setDir(id){
-	top.fscmd.location.replace(top.queryString(<?php print FS_SETDIR; ?>,id));
+	top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
 }
 
 
@@ -123,24 +118,24 @@ top.parentID = "'.$this->values["ParentID"].'";
 		$GLOBALS["we_fs_lastDir"][$this->table] = $this->dir;
 	}
 
-	function printHTML($what=FS_FRAMESET){
+	function printHTML($what=we_fileselector::FRAMESET){
 		switch($what){
-			case FS_HEADER:
+			case we_fileselector::HEADER:
 			$this->printHeaderHTML();
 			break;
-			case FS_FOOTER:
+			case we_fileselector::FOOTER:
 			$this->printFooterHTML();
 			break;
-			case FS_BODY:
+			case we_fileselector::BODY:
 			$this->printBodyHTML();
 			break;
-			case FS_CMD:
+			case we_fileselector::CMD:
 			$this->printCmdHTML();
 			break;
-			case FS_SETDIR:
+			case we_multiSelector::SETDIR:
 			$this->printSetDirHTML();
 			break;
-			case FS_FRAMESET:
+			case we_fileselector::FRAMESET:
 			default:
 			$this->printFramesetHTML();
 		}

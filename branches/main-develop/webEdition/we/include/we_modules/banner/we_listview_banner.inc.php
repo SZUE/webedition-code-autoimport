@@ -52,9 +52,9 @@ class we_listview_banner extends listviewBase {
 	 *
 	 */
 
-	function we_listview_banner($name="0", $rows=999999, $order="views DESC",$bannerID="",$UseFilter=false,$FilterDate=0,$FilterDateEnd=0){
+	function __construct($name="0", $rows=999999, $order="views DESC",$bannerID="",$UseFilter=false,$FilterDate=0,$FilterDateEnd=0){
 
-		listviewBase::listviewBase($name, $rows, 0, $order);
+		parent::__construct($name, $rows, 0, $order);
 
 		$this->bannerID = $bannerID;
 		$this->UseFilter = $UseFilter;

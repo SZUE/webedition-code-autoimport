@@ -28,8 +28,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/rebuil
 
 class rebuildFragment extends taskFragment{
 
-	function rebuildFragment($name,$taskPerFragment,$pause=0,$bodyAttributes="",$initdata="") {
-		parent::taskFragment($name,$taskPerFragment,$pause,$bodyAttributes,$initdata);
+	function __construct($name,$taskPerFragment,$pause=0,$bodyAttributes="",$initdata="") {
+		parent::__construct($name,$taskPerFragment,$pause,$bodyAttributes,$initdata);
 
 	}
 

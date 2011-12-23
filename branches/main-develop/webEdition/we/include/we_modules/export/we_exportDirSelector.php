@@ -30,7 +30,7 @@ class we_exportDirSelector extends we_dirSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
-	function we_exportDirSelector($id,
+	function __construct($id,
 								$JSIDName="",
 								$JSTextName="",
 								$JSCommand="",
@@ -38,7 +38,7 @@ class we_exportDirSelector extends we_dirSelector{
 								$we_editDirID="",
 								$FolderText=""){
 
-		$this->we_dirSelector($id,
+		parent::__construct($id,
 								EXPORT_TABLE,
 								$JSIDName,
 								$JSTextName,
@@ -191,10 +191,10 @@ function writeBody(d){
 	d.writeln('<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">');
 	d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>">');
 	if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
 		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
 	}
 	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
 	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');

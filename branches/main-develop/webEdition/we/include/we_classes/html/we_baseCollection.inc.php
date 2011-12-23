@@ -47,8 +47,8 @@ class we_baseCollection extends we_baseElement{
 	*
 	* @return		we_baseCollection
 	*/
-	function we_baseCollection($tagname="",$need_end_tag=true,$attribs=array(),$childs_num=0){
-		$this->we_baseElement($tagname,$need_end_tag,$attribs);
+	function __construct($tagname="",$need_end_tag=true,$attribs=array(),$childs_num=0){
+		parent::__construct($tagname,$need_end_tag,$attribs);
 
 		for($i=0;$i<$childs_num;$i++) $this->addChild(new we_baseElement());
 	}

@@ -51,9 +51,9 @@ class we_listview_order extends listviewBase {
 	 *
 	 */
 
-	function we_listview_order($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$hidedirindex=false){
+	function __construct($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$hidedirindex=false){
 
-		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
+		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");

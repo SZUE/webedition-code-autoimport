@@ -42,5 +42,5 @@ $fs = new we_catSelector(
 			isset($rootDirID) ? $rootDirID : ( isset( $_REQUEST["rootDirID"] ) ? $_REQUEST["rootDirID"] : "" ),
 			isset($noChoose) ? $noChoose : ( isset( $_REQUEST["noChoose"] ) ? $_REQUEST["noChoose"] : "" ) );
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
 

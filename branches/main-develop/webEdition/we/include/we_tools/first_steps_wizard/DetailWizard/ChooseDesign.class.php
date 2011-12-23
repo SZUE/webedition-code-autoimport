@@ -22,42 +22,34 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class ChooseDesign extends leWizardStepBase
-{
+class ChooseDesign extends leWizardStepBase{
 
 	var $EnabledButtons = array(
 		'next', 'back'
 	);
 
-	function execute(&$Template)
-	{
-		
+	function execute(&$Template){
+
 		// start the session on server
-		if (!isset($_REQUEST["liveUpdateSession"]) || $_REQUEST["liveUpdateSession"] == "") {
-			
+		if(!isset($_REQUEST["liveUpdateSession"]) || $_REQUEST["liveUpdateSession"] == ""){
+
 			// use other template
 			$Template->UseOnlineInstallerTemplate = false;
-			
+
 			$_REQUEST["update_cmd"] = $_REQUEST["leWizard"];
 			$_REQUEST["detail"] = $_REQUEST["leStep"];
-			
+
 			$SessionForm = liveUpdateHttpWizard::getServerSessionForm();
 			$Template->Output = $SessionForm;
-		
-		} else {
+		} else{
 			$_REQUEST["ImportType"] = "detail";
 			return $this->executeOnline($Template, "snippet", "overview");
-		
 		}
-	
 	}
 
-	function check(&$Template)
-	{
-		
+	function check(&$Template){
+
 		return $this->executeOnline($Template, "snippet", "registerImport");
-	
 	}
 
 }

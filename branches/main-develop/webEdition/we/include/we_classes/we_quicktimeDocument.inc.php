@@ -41,7 +41,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 	/* Constructor */
 
-	function we_quicktimeDocument(){
+	function __construct(){
 		parent::__construct();
 		array_push($this->EditPageNrs, WE_EDITPAGE_PREVIEW);
 	}
@@ -143,7 +143,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				$this->Path;
 
 			$filter = array("filesize", "type", "xml");
-			$noAtts = array("scale", "volume");			//  no atts for xml
+			$noAtts = array("scale", "volume");	 //  no atts for xml
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
 			if(isset($this->elements["bgcolor"])){
 				$this->elements["bgcolor"]["type"] = "attrib";
@@ -168,7 +168,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			//  <params>
 			$_params = "\n" . getHtmlTag('param', array('name' => 'src', 'value' => $src, 'xml' => $_xml)) . "\n";
 
-			if($_xml == "true"){	//  only object tag
+			if($_xml == "true"){ //  only object tag
 				$_objectAtts['type'] = 'video/quicktime';
 				$_objectAtts['data'] = $src;
 
@@ -176,7 +176,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				while(list($k, $v) = $this->nextElement("attrib")) {
 					if(!in_array($k, $filter) && !in_array($k, $this->ObjectParamNames)){
 
-						if($v["dat"] != ""){		//  dont use empty params
+						if($v["dat"] != ""){	//  dont use empty params
 							if(!in_array($k, $noAtts)){
 								$_objectAtts[$k] = $v["dat"];
 							}
@@ -184,7 +184,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						}
 					}
 				}
-			} else{																 //  object tag and embed
+			} else{								 //  object tag and embed
 				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
 				$_objectAtts['codebase'] = $codebase;
 				//   we need embed as well
@@ -198,7 +198,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				while(list($k, $v) = $this->nextElement("attrib")) {
 					if(!in_array($k, $filter) && $v["dat"] != ""){
 
-						if($v["dat"] != ""){		//  dont use empty params
+						if($v["dat"] != ""){	//  dont use empty params
 							$_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
 						}
 
@@ -343,54 +343,48 @@ class we_quicktimeDocument extends we_binaryDocument{
 		return $html;
 	}
 
-	static function checkAndPrepare($formname, $key = "we_document") {
+	static function checkAndPrepare($formname, $key = "we_document"){
 		// check to see if there is an image to create or to change
-		if (!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )) {
+		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )){
 			return;
 		}
 		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-		foreach ($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename) {
+		foreach($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename){
 
 			$_quicktimeDataId = isset($_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName]) ? $_REQUEST['WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName] : false;
 
-			if ($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])) {
+			if($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])){
 
 				$_SESSION[$_quicktimeDataId]['doDelete'] = false;
 
-				if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1) {
+				if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $quicktimeName] == 1){
 					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
 				} else
-				if ($filename) {
+				if($filename){
 					// file is selected, check to see if it is an image
 					$ct = getContentTypeFromFile($filename);
-					if ($ct == "video/quicktime") {
+					if($ct == "video/quicktime"){
 						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
 						$_SESSION[$_quicktimeDataId]["serverPath"] = TMP_DIR . "/" . md5(
-														uniqid(rand(), 1));
+								uniqid(rand(), 1));
 						move_uploaded_file(
-										$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName],
-										$_SESSION[$_quicktimeDataId]["serverPath"]);
+							$_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
 
 
 
 						$tmp_Filename = $quicktimeName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-														"/[^A-Za-z0-9._-]/","",
-														$_FILES["we_ui_$formname"]["name"][$quicktimeName]);
+								"/[^A-Za-z0-9._-]/", "", $_FILES["we_ui_$formname"]["name"][$quicktimeName]);
 
-						if ($quicktimeId) {
+						if($quicktimeId){
 							$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
 						}
 
 						$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace(
-														'#^(.+)\..+$#',
-														"\\1",
-														$tmp_Filename);
+							'#^(.+)\..+$#', "\\1", $tmp_Filename);
 						$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-														'#^.+(\..+)$#',
-														"\\1",
-														$tmp_Filename) : "";
+								'#^.+(\..+)$#', "\\1", $tmp_Filename) : "";
 						$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
 
 

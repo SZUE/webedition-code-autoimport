@@ -29,9 +29,9 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_logging/ver
 class versionFragment extends taskFragment
 {
 
-	function versionFragment($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = "")
+	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = "")
 	{
-		parent::taskFragment($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
+		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 
 	}
 

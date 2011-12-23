@@ -41,5 +41,5 @@ $fs = new we_docSelector(isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST
 							isset($multiple) ? $multiple : ( isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : "" ),
 							isset($canSelectDir) ? $canSelectDir : ( isset($_REQUEST["canSelectDir"]) ? $_REQUEST["canSelectDir"] : "" ));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
 

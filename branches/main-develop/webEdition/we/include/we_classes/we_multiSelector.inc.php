@@ -23,15 +23,15 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_fileselector.inc.php");
-
 class we_multiSelector extends we_fileselector {
+const SETDIR=5;
+const CREATEFOLDER=8;
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
 	var $multiple = true;
 
-	function we_multiSelector($id,
+	function __construct($id,
 								$table=FILE_TABLE,
 								$JSIDName="",
 								$JSTextName="",
@@ -42,7 +42,7 @@ class we_multiSelector extends we_fileselector {
 								$multiple=true,
 								$filter=""){
 
-		$this->we_fileselector($id,
+		parent::__construct($id,
 								$table,
 								$JSIDName,
 								$JSTextName,

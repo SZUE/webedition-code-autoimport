@@ -52,9 +52,9 @@ class we_listview_orderitem extends listviewBase {
 	 *
 	 */
 
-	function we_listview_orderitem($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$orderID=0,$hidedirindex=false){
+	function __construct($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$orderID=0,$hidedirindex=false){
 
-		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
+		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
 		$this->orderID = $orderID;

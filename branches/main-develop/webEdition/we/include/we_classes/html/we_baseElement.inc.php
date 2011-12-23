@@ -50,7 +50,7 @@ class we_baseElement {
 	*
 	* @return		we_baseElement
 	*/
-	function we_baseElement($tagname="",$need_end_tag=true,$attribs=array(),$content='') {
+	function __construct($tagname="",$need_end_tag=true,$attribs=array(),$content='') {
 		$this->setTagName($tagname);
 		$this->setNeedEndTag($need_end_tag);
 

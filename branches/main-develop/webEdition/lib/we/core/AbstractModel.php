@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -18,13 +19,12 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_core_AbstractObject
  */
 Zend_Loader::loadClass('we_core_AbstractObject');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 /**
  * Base class for webEdition models
@@ -33,8 +33,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.ph
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_core_AbstractModel extends we_core_AbstractObject
-{
+class we_core_AbstractModel extends we_core_AbstractObject{
 
 	/**
 	 * primaryKey attribute
@@ -72,9 +71,8 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 * @param string $table
 	 * @return void
 	 */
-	function __construct($table)
-	{
-		if ($table !== '') {
+	function __construct($table){
+		if($table !== ''){
 			$this->_table = $table;
 			$this->loadPersistents();
 		}
@@ -85,8 +83,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return void
 	 */
-	protected function loadPersistents()
-	{
+	protected function loadPersistents(){
 		$db = we_io_DB::sharedAdapter();
 
 		$this->_persistentSlots = array();
@@ -94,9 +91,9 @@ class we_core_AbstractModel extends we_core_AbstractObject
 		// fetch all column names
 		$this->_metadata = $db->describeTable($this->_table);
 		$keys = array_keys($this->_metadata);
-		foreach ($keys as $columnName) {
+		foreach($keys as $columnName){
 			$this->_persistentSlots[] = $columnName;
-			if (!isset($this->$columnName)) {
+			if(!isset($this->$columnName)){
 				// create public properties
 				$this->$columnName = "";
 			}
@@ -109,13 +106,12 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 * @param integer $id
 	 * @return boolean returns true on success, othewise false
 	 */
-	public function load($id = 0)
-	{
+	public function load($id = 0){
 		$db = we_io_DB::sharedAdapter();
 		$stm = $db->query('SELECT * FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $id);
 		$row = $stm->fetch();
-		if ($row) {
-			foreach ($row as $key => $value) {
+		if($row){
+			foreach($row as $key => $value){
 				$this->$key = $value;
 			}
 			return true;
@@ -128,8 +124,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return string
 	 */
-	protected function _getPKCondition()
-	{
+	protected function _getPKCondition(){
 		return $this->_primaryKey . ' = ' . abs($this->{$this->_primaryKey});
 	}
 
@@ -138,8 +133,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return void
 	 */
-	public function save($skipHook=0)
-	{
+	public function save($skipHook=0){
 		$db = we_io_DB::sharedAdapter();
 
 		// check if there is another entry with the same path
@@ -147,37 +141,36 @@ class we_core_AbstractModel extends we_core_AbstractObject
 		$stm = $db->query('SELECT ID FROM ' . $this->_table . ' WHERE Text = ? AND ParentID = ? AND IsFolder = ? AND ID != ?', array($this->Text, intval($this->ParentID), intval($this->IsFolder), intval($this->ID)));
 
 		$row = $stm->fetch();
-		if ($row) {
+		if($row){
 			throw new we_core_ModelException('Error saving model. Path already exists!', we_service_ErrorCodes::kPathExists);
 		}
 		$updateArray = array();
-		foreach ($this->_persistentSlots as $key) {
-			if ($key !== $this->_primaryKey) {
+		foreach($this->_persistentSlots as $key){
+			if($key !== $this->_primaryKey){
 				$updateArray[$key] = $this->$key;
 			}
 		}
 
-		if (!isset($this->{$this->_primaryKey}) || !$this->{$this->_primaryKey}) {
-			try {
+		if(!isset($this->{$this->_primaryKey}) || !$this->{$this->_primaryKey}){
+			try{
 				$db->delete($this->_table, $this->_getPKCondition());
 				$db->insert($this->_table, $updateArray);
-			} catch (Exception $e) {
+			} catch (Exception $e){
 				throw new we_core_ModelException('Error inserting model to database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 			}
 			$this->{$this->_primaryKey} = $db->lastInsertId();
-		} else {
-			try {
+		} else{
+			try{
 				$db->update($this->_table, $updateArray, $this->_getPKCondition());
-			} catch (Exception $e) {
+			} catch (Exception $e){
 				throw new we_core_ModelException('Error updating model in database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 			}
 		}
 		/* hook */
-		if ($skipHook==0){
+		if($skipHook == 0){
 			$hook = new weHook('save', $this->_appName, array($this));
 			$hook->executeHook();
 		}
-
 	}
 
 	/**
@@ -185,17 +178,16 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return void
 	 */
-	public function delete($skipHook=0)
-	{
+	public function delete($skipHook=0){
 		$db = we_io_DB::sharedAdapter();
-		try {
+		try{
 			$db->delete($this->_table, $this->_getPKCondition());
 			/* hook */
-			if ($skipHook==0){
+			if($skipHook == 0){
 				$hook = new weHook('delete', $this->_appName, array($this));
 				$hook->executeHook();
 			}
-		} catch (Exception $e) {
+		} catch (Exception $e){
 			throw new we_core_ModelException('Error updating model in database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 		}
 	}
@@ -205,8 +197,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return string
 	 */
-	public function getTable()
-	{
+	public function getTable(){
 		return $this->_table;
 	}
 
@@ -215,8 +206,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return void
 	 */
-	public function setTable($table)
-	{
+	public function setTable($table){
 		$this->_table = $table;
 	}
 
@@ -225,8 +215,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 *
 	 * @return array
 	 */
-	public function getPersistentSlots()
-	{
+	public function getPersistentSlots(){
 		return $this->_persistentSlots;
 	}
 
@@ -236,8 +225,7 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 * @param array $persistentSlots
 	 * @return void
 	 */
-	public function setPersistentSlots($persistentSlots)
-	{
+	public function setPersistentSlots($persistentSlots){
 		$this->_persistentSlots = $persistentSlots;
 	}
 
@@ -247,13 +235,14 @@ class we_core_AbstractModel extends we_core_AbstractObject
 	 * @param array $fields
 	 * @return void
 	 */
-	public function setFields($fields)
-	{
+
+	public function setFields($fields){
 		$slots = $this->_persistentSlots;
-		foreach ($slots as $slot) {
-			if (isset($fields[$slot]) && isset($this->$slot)) {
+		foreach($slots as $slot){
+			if(isset($fields[$slot]) && isset($this->$slot)){
 				$this->$slot = trim($fields[$slot]);
 			}
 		}
 	}
+
 }

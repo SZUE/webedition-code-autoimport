@@ -76,15 +76,6 @@ class weMetaData {
 	var $_valid = true;
 
 	/**
-	 * @abstract constructor method for PHP5
-	 * @param string filetype filetype of the file whose metadata has to be read  (i.e. "mp3")
-	 * @return bool returns false if no spezialisation for the given filetype is available
-	 */
-	function __construct($source = "") {
-		$this->weMetaData($source);
-	}
-
-	/**
 	 * @abstract constructor for PHP4
 	 * @param string filetype filetype of the file whose metadata has to be read  (i.e. "mp3")
 	 * @return bool returns false if no spezialisation for the given filetype is available

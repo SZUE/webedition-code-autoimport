@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 class MultiDirChooser{
 
 	var $width = "388";
@@ -46,7 +44,7 @@ class MultiDirChooser{
 	var $extraDelFn = "";
 	var $thirdDelPar = "";
 
-	function MultiDirChooser($width,$ids,$cmd_del,$addbut,$ws="",$fields="Icon,Path",$table=FILE_TABLE,$css="defaultfont",$thirdDelPar="",$extraDelFn=""){
+	function __construct($width,$ids,$cmd_del,$addbut,$ws="",$fields="Icon,Path",$table=FILE_TABLE,$css="defaultfont",$thirdDelPar="",$extraDelFn=""){
 		$this->db = new DB_WE();
 		$this->db2 = new DB_WE();
 		$this->width = $width;

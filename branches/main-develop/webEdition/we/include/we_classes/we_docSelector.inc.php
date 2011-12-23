@@ -38,7 +38,7 @@ class we_docSelector extends we_dirSelector {
 	var $ctp = array("image/*"=>"NEW_GRAFIK","video/quicktime"=>"NEW_QUICKTIME","application/x-shockwave-flash"=>"NEW_FLASH");
 	var $ctb = array(""=>"btn_add_file","image/*"=>"btn_add_image","video/quicktime"=>"btn_add_quicktime","application/x-shockwave-flash"=>"btn_add_flash");
 
-	function we_docSelector($id,$table="",$JSIDName="",$JSTextName="",
+	function __construct($id,$table="",$JSIDName="",$JSTextName="",
 			$JSCommand="",$order="",$sessionID="",$we_editDirID="",
 			$FolderText="",$filter="",$rootDirID=0,$open_doc=0,$multiple=0,$canSelectDir=0) {
 
@@ -47,7 +47,7 @@ class we_docSelector extends we_dirSelector {
 		}
 		if($table==FILE_TABLE||(defined("OBJECT_FILES_TABLE") && $table==OBJECT_FILES_TABLE)) $this->fields .= ",Published";
 		$this->canSelectDir = $canSelectDir;
-		$this->we_dirSelector($id,$table,$JSIDName,$JSTextName,$JSCommand,$order,$sessionID,$we_editDirID,$FolderText,$rootDirID,$multiple);
+		parent::__construct($id,$table,$JSIDName,$JSTextName,$JSCommand,$order,$sessionID,$we_editDirID,$FolderText,$rootDirID,$multiple);
 		$this->filter=$filter;
 		$this->userCanMakeNewFile = $this->_userCanMakeNewFile();
 		$this->open_doc = $open_doc;
@@ -125,9 +125,9 @@ class we_docSelector extends we_dirSelector {
 		}
 	}
 
-	function printHTML($what=FS_FRAMESET) {
+	function printHTML($what=we_fileselector::FRAMESET) {
 		switch($what) {
-			case FS_PREVIEW:
+			case self::PREVIEW:
 				$this->printPreviewHTML();
 				break;
 			default:
@@ -208,12 +208,12 @@ foreach($ct->getContentTypes() as $ctypes ){
 ?>
 
 function setFilter(ct) {
-	top.fscmd.location.replace(top.queryString(<?php print FS_CMD; ?>,top.currentDir,'','',ct));
+	top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,top.currentDir,'','',ct));
 }
 
 function showPreview(id) {
 	if(top.fspreview) {
-		top.fspreview.location.replace(top.queryString(<?php print FS_PREVIEW; ?>,id));
+		top.fspreview.location.replace(top.queryString(<?php print self::PREVIEW; ?>,id));
 	}
 }
 
@@ -223,7 +223,7 @@ function newFile() {
 }
 
 function reloadDir() {
-	top.fscmd.location.replace(top.queryString(<?php print FS_CMD; ?>,top.currentDir));
+	top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,top.currentDir));
 }
 
 <?php
@@ -307,10 +307,10 @@ function writeBody(d){
 
 	if(we_editDirID){
 	//if(top.we_editDirID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
 		d.writeln('<input type="hidden" name="we_editDirID" value="'+top.we_editDirID+'" />');
 	}else{
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
 	}
 	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
 	d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
@@ -647,20 +647,20 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 	function getFrameset() {
 		$out = '
 			<frameset rows="'.(((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE) ? '67' : '16').',*,'.(!$this->filter ? 90 : 65).',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
-				<frame src="'.$this->getFsQueryString(FS_HEADER).'" name="fsheader" noresize scrolling="no">';
+				<frame src="'.$this->getFsQueryString(we_fileselector::HEADER).'" name="fsheader" noresize scrolling="no">';
 		// task *1: set preview for all selectors
 		//if($this->filter == "image/*") {
 			$out .= '
 				<frameset cols="605,*" border="1">
-					<frame src="'.$this->getFsQueryString(FS_BODY).'" name="fsbody" noresize scrolling="auto">
-					<frame src="'.$this->getFsQueryString(FS_PREVIEW).'" name="fspreview" noresize scrolling="no"'.(($GLOBALS['BROWSER'] != "NN6") ?' style="border-left:1px solid black"' : '').'>
+					<frame src="'.$this->getFsQueryString(we_fileselector::BODY).'" name="fsbody" noresize scrolling="auto">
+					<frame src="'.$this->getFsQueryString(self::PREVIEW).'" name="fspreview" noresize scrolling="no"'.(($GLOBALS['BROWSER'] != "NN6") ?' style="border-left:1px solid black"' : '').'>
 				</frameset>';
 		// *1 //}
 		// *1 //else {
-		// *1 //	$out .= '<frame src="'.$this->getFsQueryString(FS_BODY).'" name="fsbody" noresize scrolling="auto">';
+		// *1 //	$out .= '<frame src="'.$this->getFsQueryString(we_fileselector::BODY).'" name="fsbody" noresize scrolling="auto">';
 		// *1 //}
 		$out .= '
-				<frame src="'.$this->getFsQueryString(FS_FOOTER).'"  name="fsfooter" noresize scrolling="no">
+				<frame src="'.$this->getFsQueryString(we_fileselector::FOOTER).'"  name="fsfooter" noresize scrolling="no">
 				<frame src="'.HTML_DIR.'gray2.html"  name="fspath" noresize scrolling="no">
 				<frame src="'.HTML_DIR.'white.html"  name="fscmd" noresize scrolling="no">
 			</frameset>
@@ -1006,7 +1006,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 			function setDir(id) {
 				showPreview(id);
 				top.fspreview.document.body.innerHTML = "";
-				top.fscmd.location.replace(top.queryString(<?php print FS_SETDIR; ?>,id));
+				top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
 				e = getEntry(id);
 				fspath.document.body.innerHTML = e.path;
 			}

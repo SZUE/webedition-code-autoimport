@@ -47,7 +47,7 @@
 
 		var $linkData=true;
 
-		function weBinary($id=0){
+		function __construct($id=0){
 			$this->Pseudo="weBinary";
 			$this->persistent_slots=array("ID","ClassName","Path","Data","SeqN");
 			foreach($this->persistent_slots as $slot) $this->$slot="";

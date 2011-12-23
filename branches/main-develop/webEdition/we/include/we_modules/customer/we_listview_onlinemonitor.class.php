@@ -52,9 +52,9 @@ class we_listview_onlinemonitor extends listviewBase {
 	 *
 	 */
 
-	function we_listview_onlinemonitor($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$lastaccesslimit='',$lastloginlimit='',$hidedirindex=false){
+	function __construct($name="0", $rows=100000000, $offset=0, $order="", $desc=false , $condition="", $cols="", $docID=0,$lastaccesslimit='',$lastloginlimit='',$hidedirindex=false){
 
-		listviewBase::listviewBase($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
+		parent::__construct($name, $rows, $offset, $order, $desc, "", false, 0, $cols);
 
 		$this->docID = $docID;
 		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");

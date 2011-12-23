@@ -26,9 +26,9 @@ class siteimportFrag extends taskFragment{
 
 	var $_obj = null;
 
-	function siteimportFrag($obj){
+	function __construct($obj){
 		$this->_obj = $obj;
-		parent::taskFragment(
+		parent::__construct(
 			"siteImport", 1, 0, array(
 			"marginwidth" => 15, "marginheight" => 10, "leftmargin" => 15, "topmargin" => 10
 		));

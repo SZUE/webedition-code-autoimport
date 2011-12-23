@@ -23,7 +23,7 @@
  */
 
 
-class Captcha {
+abstract class Captcha {
 
 
 	/**
@@ -31,7 +31,7 @@ class Captcha {
 	 *
 	 * @return void
 	 */
-	function display($image, $type = "gif") {
+	static function display($image, $type = "gif") {
 
 		$code = "";
 		$im = $image->get($code);
@@ -70,7 +70,7 @@ class Captcha {
 	 *
 	 * @return boolean
 	 */
-	function check($captcha) {
+	static function check($captcha) {
 
 		return CaptchaMemory::isValid($captcha, Captcha::getStorage());
 
@@ -82,7 +82,7 @@ class Captcha {
 	 *
 	 * @return boolean
 	 */
-	function getStorage() {
+	static function getStorage() {
 		return $_SERVER['DOCUMENT_ROOT']."/webEdition/we/tmp/captchacodes.tmp";
 	} /* end: check */
 

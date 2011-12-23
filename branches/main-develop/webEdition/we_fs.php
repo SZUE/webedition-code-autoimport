@@ -39,5 +39,5 @@ $fs = new we_multiSelector(
 			isset($multiple) ? $multiple : (isset($_REQUEST["multiple"]) ? $_REQUEST["multiple"] : ""),
 			isset($filter) ? $filter : (isset($_REQUEST["filter"]) ? $_REQUEST["filter"] : ""));
 
-$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : FS_FRAMESET);
+$fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
 

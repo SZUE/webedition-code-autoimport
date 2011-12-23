@@ -41,7 +41,7 @@ class we_otherDocument extends we_binaryDocument{
 
 	/* Constructor */
 
-	function we_otherDocument(){
+	function __construct(){
 		/* Begin: Do we use this? */
 		switch($this->Extension){
 			case ".pdf":

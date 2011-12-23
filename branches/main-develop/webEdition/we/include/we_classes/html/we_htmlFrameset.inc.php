@@ -44,8 +44,8 @@ class we_htmlFrameset extends we_baseCollection {
 	 * @return		we_htmlFrameset
 	 */
 
-	function we_htmlFrameset($attribs=array(),$frames_num=0) {
-		$this->we_baseCollection("frameset",true,$attribs);
+	function __construct($attribs=array(),$frames_num=0) {
+		parent::__construct("frameset",true,$attribs);
 		for($i=0;$i<$frames_num;$i++) $this->addFrame();
 	}
 

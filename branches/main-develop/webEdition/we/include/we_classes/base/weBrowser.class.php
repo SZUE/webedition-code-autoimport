@@ -26,9 +26,6 @@
 
 class weBrowser {
 
-	function weBrowser() {}
-
-
 	function getDownloadLinkText() {
 
 		$map = array(

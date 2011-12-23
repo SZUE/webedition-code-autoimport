@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-
 /**
  * Class we_htmlTable
  *
  * Provides functions for creating html tags used in forms.
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-class we_htmlTable extends we_baseCollection {
-
+class we_htmlTable extends we_baseCollection{
 
 	/**
 	 * Constructor of class we_htmlTable
@@ -44,9 +40,8 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     we_htmlTable
 	 */
-
-	function we_htmlTable($attribs=array(), $rows_num = 0, $cols_num = 0) {
-		$this->we_baseCollection("table", true, $attribs);
+	function __construct($attribs=array(), $rows_num = 0, $cols_num = 0){
+		parent::__construct("table", true, $attribs);
 		$this->addRow($rows_num);
 		$this->addCol($cols_num);
 	}
@@ -60,19 +55,19 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function addRow($rows_num = 1) {
-		$cols_num=0;
+	function addRow($rows_num = 1){
+		$cols_num = 0;
 		if(isset($this->childs)){
-			if(array_key_exists(0,$this->childs)){
+			if(array_key_exists(0, $this->childs)){
 				if(is_array($this->childs[0]->childs)){
-					$cols_num=count($this->childs[0]->childs);
+					$cols_num = count($this->childs[0]->childs);
 				}
 			}
 		}
-		for ($i = 0; $i < $rows_num; $i++) {
+		for($i = 0; $i < $rows_num; $i++){
 			$this->childs[] = new we_baseCollection("tr");
-			for($j=0;$j<$cols_num;$j++) $this->childs[count($this->childs)-1]->childs[]=new we_baseElement("td");
+			for($j = 0; $j < $cols_num; $j++)
+				$this->childs[count($this->childs) - 1]->childs[] = new we_baseElement("td");
 		}
 	}
 
@@ -85,11 +80,10 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function addCol($cols_num = 1) {
-		for($i = 0; $i < $cols_num; $i++) {
-			foreach($this->childs as $k => $v) {
-				$this->childs[$k]->childs[]=new we_baseElement("td");
+	function addCol($cols_num = 1){
+		for($i = 0; $i < $cols_num; $i++){
+			foreach($this->childs as $k => $v){
+				$this->childs[$k]->childs[] = new we_baseElement("td");
 			}
 		}
 	}
@@ -103,16 +97,15 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function setRow($rowid, $attribs = array(), $cols_num = 0) {
-		$row=& $this->getChild($rowid);
+	function setRow($rowid, $attribs = array(), $cols_num = 0){
+		$row = & $this->getChild($rowid);
 		$row->setAttributes($attribs);
 
-		if($cols_num) {
-			if($cols_num>count($row->childs)) {
+		if($cols_num){
+			if($cols_num > count($row->childs)){
 				$row->addChild(new we_baseElement("td"));
-			} else if($cols_num < count($row->childs)) {
-				$row->childs=array_splice($row->childs, ($cols_num - 1));
+			} else if($cols_num < count($row->childs)){
+				$row->childs = array_splice($row->childs, ($cols_num - 1));
 			}
 		}
 	}
@@ -127,10 +120,9 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function setCol($rowid, $colid, $attribs = array(), $content = "") {
-		$row=& $this->getChild($rowid);
-		$col=& $row->getChild($colid);
+	function setCol($rowid, $colid, $attribs = array(), $content = ""){
+		$row = & $this->getChild($rowid);
+		$col = & $row->getChild($colid);
 		$col->setAttributes($attribs);
 		$col->setContent($content);
 	}
@@ -144,9 +136,8 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function setRowAttributes($rowid, $attribs = array()) {
-		$row=& $this->getChild($rowid);
+	function setRowAttributes($rowid, $attribs = array()){
+		$row = & $this->getChild($rowid);
 		$row->setAttributes($attribs);
 	}
 
@@ -159,10 +150,9 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function setColAttributes($rowid, $colid, $attribs = array()) {
-		$row=& $this->getChild($rowid);
-		$col=& $row->getChild($colid);
+	function setColAttributes($rowid, $colid, $attribs = array()){
+		$row = & $this->getChild($rowid);
+		$col = & $row->getChild($colid);
 		$col->setAttributes($attribs);
 	}
 
@@ -175,38 +165,36 @@ class we_htmlTable extends we_baseCollection {
 	 *
 	 * @return     void
 	 */
-
-	function setColContent($rowid, $colid, $content = "") {
-		$row=& $this->getChild($rowid);
-		$col=& $row->getChild($colid);
+	function setColContent($rowid, $colid, $content = ""){
+		$row = & $this->getChild($rowid);
+		$col = & $row->getChild($colid);
 		$col->setContent($content);
 	}
 
 	/**
-	* Returns the rendered HTML code
-	*
-	* @return     string
-	*/
-	function getHtmlCode() {
+	 * Returns the rendered HTML code
+	 *
+	 * @return     string
+	 */
+	function getHtmlCode(){
 
-		$copy=$this->copy();
-	 	$rows_num=count($copy->childs);
+		$copy = $this->copy();
+		$rows_num = count($copy->childs);
 
-		for($i=0;$i<$rows_num;$i++){
-			$row=& $copy->getChild($i);
-			$cols_num=count($row->childs);
-			$colspan=0;
-			for($j=0;$j<$cols_num;$j++){
+		for($i = 0; $i < $rows_num; $i++){
+			$row = & $copy->getChild($i);
+			$cols_num = count($row->childs);
+			$colspan = 0;
+			for($j = 0; $j < $cols_num; $j++){
 				if($colspan){
 					$row->delChild($j);
 					$j--;
-					$cols_num=count($row->childs);
+					$cols_num = count($row->childs);
 					$colspan--;
-				}
-				else{
-					$col=$row->getChild($j);
-					if(in_array("colspan",array_keys($col->attribs))){
-						$colspan=$col->getAttribute("colspan");
+				} else{
+					$col = $row->getChild($j);
+					if(in_array("colspan", array_keys($col->attribs))){
+						$colspan = $col->getAttribute("colspan");
 						$colspan--;
 					}
 				}

@@ -23,12 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_forms.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-define("FS_SETDIR",5);
-define("FS_CREATEFOLDER",8);
 define("FS_DORENAMEENTRY",10);
 define("FS_CREATECAT",7);
 define("FS_DORENAMECAT",9);
@@ -57,7 +51,7 @@ class we_catSelector extends we_multiSelector{
 								$rootDirID=0,
 								$noChoose=""){
 
-		$this->we_multiSelector($id,
+		parent::__construct($id,
 								$table,
 								$JSIDName,
 								$JSTextName,
@@ -74,21 +68,21 @@ class we_catSelector extends we_multiSelector{
 		$this->noChoose 	= $noChoose;
 	}
 
-	function printHTML($what=FS_FRAMESET){
+	function printHTML($what=we_fileselector::FRAMESET){
 		switch($what){
-			case FS_HEADER:
+			case we_fileselector::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case FS_FOOTER:
+			case we_fileselector::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case FS_BODY:
+			case we_fileselector::BODY:
 				$this->printBodyHTML();
 				break;
-			case FS_CMD:
+			case we_fileselector::CMD:
 				$this->printCmdHTML();
 				break;
-			case FS_CREATEFOLDER:
+			case self::CREATEFOLDER:
 				$this->printCreateEntryHTML(1);
 				break;
 			case FS_DORENAMEENTRY:
@@ -109,7 +103,7 @@ class we_catSelector extends we_multiSelector{
 			case FS_CHANGE_CAT:
 				$this->printchangeCatHTML();
 				break;
-			case FS_FRAMESET:
+			case we_fileselector::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
@@ -306,7 +300,7 @@ function writeBody(d){
 		d.writeln('<input type="hidden" name="we_editCatID" value="'+top.we_editCatID+'" />');
 	}else{
 		if(makeNewFolder){
-			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATEFOLDER; ?>" />');
+			d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
 		}else{
 			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATECAT; ?>" />');
 		}
@@ -770,7 +764,7 @@ function setDir(id){
 	currentPath = e.path;
 	top.fsfooter.document.we_form.fname.value = e.text;
 	if(id) top.fsheader.enableDelBut();
-	top.fscmd.location.replace(top.queryString(<?php print FS_CMD; ?>,id));
+	top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,id));
 }
 
 
@@ -1008,16 +1002,16 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 	function getFrameset(){
 		$isMainChooser = isset($_REQUEST['we_cmd']) && $_REQUEST['we_cmd'][0] == "openCatselector" && !($_REQUEST['we_cmd'][3] || $_REQUEST['we_cmd'][5]);
 		return '<frameset rows="67,*,65,0" border="0">
-	<frame src="'.$this->getFsQueryString(FS_HEADER).'" name="fsheader" noresize scrolling="no">
+	<frame src="'.$this->getFsQueryString(we_fileselector::HEADER).'" name="fsheader" noresize scrolling="no">
 ' .($isMainChooser ? '
 	<frameset cols="35%,65%" border="0">
 ' : '') . '
-    	<frame src="'.$this->getFsQueryString(FS_BODY).'" name="fsbody" scrolling="auto">
+    	<frame src="'.$this->getFsQueryString(we_fileselector::BODY).'" name="fsbody" scrolling="auto">
 ' .($isMainChooser ? '
     	<frame src="'.$this->getFsQueryString(FS_PROPERTIES).'" name="fsvalues"  scrolling="auto">
     </frameset>
 ' : '') .'
-    <frame src="'.$this->getFsQueryString(FS_FOOTER).'"  name="fsfooter" noresize scrolling="no">
+    <frame src="'.$this->getFsQueryString(we_fileselector::FOOTER).'"  name="fsfooter" noresize scrolling="no">
     <frame src="'.HTML_DIR.'white.html"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>

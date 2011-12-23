@@ -24,15 +24,12 @@
  */
 
 
-define("FS_SETDIR",5);
-
-
 class we_usersSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 	var $filter="";
 
-	function we_usersSelector($id,
+	function __construct($id,
 	$table=FILE_TABLE,
 	$JSIDName="",
 	$JSTextName="",
@@ -43,7 +40,7 @@ class we_usersSelector extends we_multiSelector{
 	$filter="",
 	$multiple=true){
 
-		$this->we_multiSelector($id,
+		parent::__construct($id,
 		$table,
 		$JSIDName,
 		$JSTextName,
@@ -79,24 +76,24 @@ class we_usersSelector extends we_multiSelector{
 		}
 	}
 
-	function printHTML($what=FS_FRAMESET){
+	function printHTML($what=we_fileselector::FRAMESET){
 		switch($what){
-			case FS_HEADER:
+			case we_fileselector::HEADER:
 			$this->printHeaderHTML();
 			break;
-			case FS_FOOTER:
+			case we_fileselector::FOOTER:
 			$this->printFooterHTML();
 			break;
-			case FS_BODY:
+			case we_fileselector::BODY:
 			$this->printBodyHTML();
 			break;
-			case FS_SETDIR:
+			case we_multiSelector::SETDIR:
 			$this->printSetDirHTML();
 			break;
-			case FS_CMD:
+			case we_fileselector::CMD:
 			$this->printCmdHTML();
 			break;
-			case FS_FRAMESET:
+			case we_fileselector::FRAMESET:
 			default:
 			$this->printFramesetHTML();
 		}
@@ -150,7 +147,7 @@ function queryString(what,id,o){
 ?>
 function setDir(id){
 	currentDir = id;
-	top.fscmd.location.replace(top.queryString(<?php print FS_CMD; ?>,id));
+	top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,id));
 }
 <?php
 
@@ -159,7 +156,7 @@ function setDir(id){
 		?>
 
 	function setDir(id){
-		top.fscmd.location.replace(top.queryString(<?php print FS_SETDIR; ?>,id));
+		top.fscmd.location.replace(top.queryString(<?php print we_multiSelector::SETDIR; ?>,id));
 	}
 
 <?php

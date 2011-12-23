@@ -30,7 +30,7 @@ class weMetaData_PDF extends weMetaData {
 	var $accesstypes = array("read","write");
 
 	function __construct($filetype) {
-		$this->weMetaData_PDF($filetype);
+		parent::__construct($filetype);
 	}
 
 	function weMetaData_PDF($filetype) {

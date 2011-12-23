@@ -32,33 +32,33 @@ class we_delSelector extends we_multiSelector{
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
 
-	function we_delSelector($id,
+	function __construct($id,
 								$table=FILE_TABLE){
 
-		$this->we_multiSelector($id,
+		parent::__construct($id,
 								$table);
 
 
 	}
 
-	function printHTML($what=FS_FRAMESET){
+	function printHTML($what=we_fileselector::FRAMESET){
 		switch($what){
-			case FS_HEADER:
+			case we_fileselector::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case FS_FOOTER:
+			case we_fileselector::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case FS_BODY:
+			case we_fileselector::BODY:
 				$this->printBodyHTML();
 				break;
-			case FS_CMD:
+			case we_fileselector::CMD:
 				$this->printCmdHTML();
 				break;
 			case FS_DEL:
 				$this->printDoDelEntryHTML();
 				break;
-			case FS_FRAMESET:
+			case we_fileselector::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
@@ -252,7 +252,7 @@ function setDir(id){
 	currentPath = e.path;
 	top.fsfooter.document.we_form.fname.value = e.text;
 	if(id) top.fsfooter.enableDelBut();
-	top.fscmd.location.replace(top.queryString(<?php print FS_CMD; ?>,id));
+	top.fscmd.location.replace(top.queryString(<?php print we_fileselector::CMD; ?>,id));
 }
 
 

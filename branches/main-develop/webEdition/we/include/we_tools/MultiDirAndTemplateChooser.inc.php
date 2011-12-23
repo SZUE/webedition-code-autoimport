@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
 class MultiDirAndTemplateChooser extends MultiDirChooser{
 
 	var $lines = 2;
@@ -38,8 +36,8 @@ class MultiDirAndTemplateChooser extends MultiDirChooser{
 	var $mustPaths;
 	var $create = 0;
 
-	function MultiDirAndTemplateChooser($width,$ids,$cmd_del,$addbut,$ws="",$tmplcsv="",$tmplSelectName="",$mustTemplateIDs="",$tmplWs="",$fields="Icon,Path",$table=FILE_TABLE,$css="defaultfont"){
-		$this->MultiDirChooser($width,$ids,$cmd_del,$addbut,$ws,$fields,$table,$css);
+	function __construct($width,$ids,$cmd_del,$addbut,$ws="",$tmplcsv="",$tmplSelectName="",$mustTemplateIDs="",$tmplWs="",$fields="Icon,Path",$table=FILE_TABLE,$css="defaultfont"){
+		parent::__construct($width,$ids,$cmd_del,$addbut,$ws,$fields,$table,$css);
 		$this->tmplcsv = $tmplcsv;
 		$this->tmplSelectName = $tmplSelectName;
 		$this->mustTemplateIDs = $mustTemplateIDs;

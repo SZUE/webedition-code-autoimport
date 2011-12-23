@@ -35,10 +35,7 @@ print STYLESHEET;
 $cpat=str_replace('//','/',$_SERVER['DOCUMENT_ROOT'].$_REQUEST["pat"]);
 
 function weFile($f){
-    global $DB_WE;
-    $DB_WE->query("SELECT ID FROM ".FILE_TABLE." WHERE Path='".$DB_WE->escape($f)."'");
-    if($DB_WE->next_record()) return true;
-    return false;
+		return f("SELECT 1 AS a FROM ".FILE_TABLE." WHERE Path='".$GLOBALS['DB_WE']->escape($f)."'",'a',$GLOBALS['DB_WE'])==='1';
 }
 
 $we_alerttext = "";

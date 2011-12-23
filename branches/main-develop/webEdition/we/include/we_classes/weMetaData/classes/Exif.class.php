@@ -67,10 +67,6 @@ class weMetaData_Exif extends weMetaData {
 	var $accesstypes = array("read");
 
 	function __construct($filetype) {
-		$this->weMetaData_Exif($filetype);
-	}
-
-	function weMetaData_Exif($filetype) {
 		$this->filetype = $filetype;
 	}
 
