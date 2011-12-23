@@ -149,20 +149,6 @@ class weGlossary extends weModelBase {
 	 */
 	var $_Serialized = array();
 
-
-
-	/**
-	 * PHP 5 Constructor
-	 *
-	 * @param integer $GlossaryId
-	 * @desc Could load a glossary item if $GlossaryId is not 0
-	 */
-	function __construct($GlossaryId = 0) {
-
-		$this->weGlossary($GlossaryId);
-
-	}
-
 	/**
 	 * PHP 4 Constructor
 	 *
@@ -170,13 +156,13 @@ class weGlossary extends weModelBase {
 	 * @return weGlossary
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
-	function weGlossary($GlossaryId = 0) {
+	function __construct($GlossaryId = 0) {
 
 		$this->table = GLOSSARY_TABLE;
 
 		$this->_Serialized = array('Attributes');
 
-		weModelBase::weModelBase(GLOSSARY_TABLE);
+		parent::__construct(GLOSSARY_TABLE);
 
 		if($GlossaryId) {
 			$this->ID = $GlossaryId;

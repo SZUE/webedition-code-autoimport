@@ -26,8 +26,8 @@
 
 	class we_objectEx extends we_object{
 
-		function we_objectEx() {
-			$this->we_object();
+		function __construct() {
+			parent::__construct();
 		}
 
 		function saveToDB(){
@@ -172,7 +172,7 @@
 				}
 
 			}
-			
+
 			unset($this->elements);
 			$this->i_getContentData();
 
@@ -238,7 +238,7 @@
 			}
 			return '';
 		}
-		
+
 		function isFieldExists($name,$type=''){
 			$this->SerializedArray = unserialize($this->DefaultValues);
 			$noFields = array('WorkspaceFlag','elements','WE_CSS_FOR_CLASS');
@@ -250,17 +250,17 @@
 				$fieldname=implode('_',$arr);
 				if($type==''){
 					if($fieldname==$name){
-						return true;	
+						return true;
 					}
 				} else {
 					if($fieldname==$name && $fieldtype==$type){
-						return true;	
+						return true;
 					}
 				}
 			}
 			return false;
 		}
-		
+
 		function getFieldPrefix($name){
 			$this->SerializedArray = unserialize($this->DefaultValues);
 			$noFields = array('WorkspaceFlag','elements','WE_CSS_FOR_CLASS');
@@ -271,13 +271,13 @@
 				unset($arr[0]);
 				$fieldname=implode('_',$arr);
 				if($fieldname==$name){
-					return $fieldtype;	
+					return $fieldtype;
 				}
 			}
 			return false;
 		}
 		function addField($name,$type='',$default=''){
-			
+
 			$defaultArr=array();
 			$defaultArr['default'] ='';
 			$defaultArr['defaultThumb'] = '';
@@ -313,15 +313,15 @@
 				case 'int':
 					$defaultArr['meta']=array( $type.'_'.$name.'defaultkey0' =>'');
 					break;
-				case 'multiobject':	
+				case 'multiobject':
 					$defaultArr['meta']=array('');
 					break;
 			}
-				
+
 			if($default!='' && is_array($default)){
 				foreach($default as $k => $v){
-					$defaultArr[$k]=$v; 
-				}	
+					$defaultArr[$k]=$v;
+				}
 			}
 			$this->SerializedArray = unserialize($this->DefaultValues);
 			$this->SerializedArray[$type.'_'.$name]=$defaultArr;
@@ -330,7 +330,7 @@
 			$arrOrder[]=max($arrOrder)+1;
 			$this->strOrder=implode(',',$arrOrder);
 			return $this->saveToDB(true);
-			
+
 		}
 		function dropField($name,$type=''){
 			$this->SerializedArray = unserialize($this->DefaultValues);
@@ -358,14 +358,14 @@
 			if($isfound){
 				$this->DefaultValues=serialize($this->SerializedArray);
 				$arrOrder=explode(',',$this->strOrder);
-				
+
 				unset($arrOrder[array_search(max($arrOrder),$arrOrder)]);
-				
+
 				$this->strOrder=implode(',',$arrOrder);
 				return $this->saveToDB(true);
-				
+
 			}
-			
+
 			return false;
 		}
 		function modifyField($name,$newtype,$type,$default='',$delete=''){
@@ -374,32 +374,32 @@
 			if($newtype==$type){
 				if($default!='' && is_array($default)){
 					foreach($default as $k => $v){
-						$defaultArr[$k]=$v; 
+						$defaultArr[$k]=$v;
 					}
 					if($delete!='' && is_array($delete)){
 						foreach($delete as $delkey){
 							unset($defaultArr[$delkey]);
 						}
 					}
-					$this->SerializedArray[$type.'_'.$name]	= $defaultArr; 
+					$this->SerializedArray[$type.'_'.$name]	= $defaultArr;
 				}
 			} else {
 				unset($this->SerializedArray[$type.'_'.$name]);
 				if($default!='' && is_array($default)){
 					foreach($default as $k => $v){
-						$defaultArr[$k]=$v; 
+						$defaultArr[$k]=$v;
 					}
 					if($delete!='' && is_array($delete)){
 						foreach($delete as $delkey){
 							unset($defaultArr[$delkey]);
 						}
 					}
-					$this->SerializedArray[$newtype.'_'.$name]	= $defaultArr; 
+					$this->SerializedArray[$newtype.'_'.$name]	= $defaultArr;
 				}
 			}
 			$this->DefaultValues=serialize($this->SerializedArray);
 			return $this->saveToDB(true);
-			
+
 		}
-		
+
 	}

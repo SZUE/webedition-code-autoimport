@@ -46,8 +46,8 @@ class we_template extends we_document{
 
 	/* Constructor */
 
-	function we_template(){
-		$this->we_document();
+	function __construct(){
+		parent::__construct();
 		/* $this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
 		  $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0; */
 		array_push($this->persistent_slots, "MasterTemplateID", "IncludedTemplates", /* "CacheType","CacheLifeTime", */ "TagWizardCode", "TagWizardSelection");

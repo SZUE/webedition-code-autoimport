@@ -33,8 +33,8 @@ class weNewsletterFrames extends weModuleFrames{
 	var $def_width = 450;
 	var $weAutoColpleter;
 
-	function weNewsletterFrames(){
-		weModuleFrames::weModuleFrames(WE_NEWSLETTER_MODULE_PATH . "edit_newsletter_frameset.php");
+	function __construct(){
+		parent::__construct(WE_NEWSLETTER_MODULE_PATH . "edit_newsletter_frameset.php");
 		$this->View = new weNewsletterView();
 		$this->View->setFrames("top.content", "top.content.resize.left.tree", "top.content.cmd");
 
@@ -2760,7 +2760,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
 
 			include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
-			
+
 			$not_black=!$this->View->isBlack($email);//Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = '';

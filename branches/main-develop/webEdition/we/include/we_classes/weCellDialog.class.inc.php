@@ -49,8 +49,8 @@ class weCellDialog extends weDialog{
 
 ##################################################################################################
 
-	function weCellDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[edit_cell]");
 		$this->defaultInit();
 	}

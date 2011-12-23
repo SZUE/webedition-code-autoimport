@@ -38,7 +38,7 @@ class weModelBase {
 	/**
 	 * Default Constructor
 	 */
-	function weModelBase($table) {
+	function __construct($table) {
 		$this->db = new DB_WE();
 		$this->table = $table;
 		$this->loadPresistents();

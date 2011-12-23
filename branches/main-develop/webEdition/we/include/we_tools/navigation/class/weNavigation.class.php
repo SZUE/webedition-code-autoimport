@@ -93,7 +93,7 @@ class weNavigation extends weModelBase {
 	 */
 	function __construct($navigationID = 0) {
 
-		weModelBase::weModelBase(NAVIGATION_TABLE);
+		parent::__construct(NAVIGATION_TABLE);
 
 		if ($_ws = get_ws(NAVIGATION_TABLE)) {
 			$_wsa = makeArrayFromCSV($_ws);

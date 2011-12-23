@@ -40,8 +40,8 @@ class weAcronymDialog extends weDialog{
 
 ##################################################################################################
 
-	function weAcronymDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[acronym_title]");
 		$this->defaultInit();
 	}

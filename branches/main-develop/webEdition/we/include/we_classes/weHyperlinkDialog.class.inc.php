@@ -55,8 +55,8 @@ class weHyperlinkDialog extends weDialog{
 
 	##################################################################################################
 
-	function weHyperlinkDialog($href="",$target="",$fileID=0,$objID=0){
-		$this->weDialog();
+	function __construct($href="",$target="",$fileID=0,$objID=0){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[edit_hyperlink]");
 	}
 

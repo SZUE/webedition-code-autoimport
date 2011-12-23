@@ -40,8 +40,8 @@ class weAbbrDialog extends weDialog{
 
 ##################################################################################################
 
-	function weAbbrDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[abbr_title]");
 		$this->defaultInit();
 	}

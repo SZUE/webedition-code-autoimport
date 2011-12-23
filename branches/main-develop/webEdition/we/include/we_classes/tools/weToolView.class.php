@@ -48,7 +48,7 @@ class weToolView {
 	var $group_pattern = '';
 	var $page=1;
 
-	function weToolView($frameset='',$topframe='top') {
+	function __construct($frameset='',$topframe='top') {
 
 
 	}

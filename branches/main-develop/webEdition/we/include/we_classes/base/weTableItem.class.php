@@ -35,8 +35,8 @@
 
 		var $Pseudo="weTableItem";
 		var $attribute_slots=array();
-		function weTableItem($table){
-			if(weDBUtil::isTabExist($table)) weModelBase::weModelBase($table);
+		function __construct($table){
+			if(weDBUtil::isTabExist($table)) parent::__construct($table);
 			else{
 				$this->db=new DB_WE();
 				$this->table=$table;

@@ -37,8 +37,8 @@ class weVotingFrames extends weModuleFrames {
 	var $_text_size = 75;
 	var $_width_size = 535;
 
-	function weVotingFrames() {
-		$this->weModuleFrames(WE_VOTING_MODULE_PATH."edit_voting_frameset.php");
+	function __construct() {
+		parent::__construct(WE_VOTING_MODULE_PATH."edit_voting_frameset.php");
 		$this->Tree=new weVotingTree();
 		$this->View = new weVotingView(WE_VOTING_MODULE_PATH."edit_voting_frameset.php","top.content");
 		$this->setupTree(VOTING_TABLE,"top.content","top.content.resize.left.tree","top.content.cmd");

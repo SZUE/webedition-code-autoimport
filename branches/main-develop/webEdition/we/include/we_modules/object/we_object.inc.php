@@ -65,8 +65,8 @@ class we_object extends we_document {
 	//##################################################################### INIT FUNCTIONS ######################################################################
 
 	/* Constructor */
-	function we_object(){
-		$this->we_document();
+	function __construct(){
+		parent::__construct();
         /*$this->CacheType = defined("WE_CACHE_TYPE") ? WE_CACHE_TYPE : "none";
         $this->CacheLifeTime = defined("WE_CACHE_LIFETIME") ? WE_CACHE_LIFETIME : 0;*/
 		array_push($this->persistent_slots,"WorkspaceFlag","RestrictUsers","UsersReadOnly","Text","SerializedArray","Templates","Workspaces","DefaultWorkspaces","ID","Users","strOrder","Category","DefaultCategory","DefaultText","DefaultValues","DefaultTitle","DefaultKeywords","DefaultUrl","DefaultUrlfield0","DefaultUrlfield1","DefaultUrlfield2","DefaultUrlfield3","DefaultTriggerID","DefaultDesc","CSS"/*,"CacheType","CacheLifeTime"*/);

@@ -30,8 +30,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/modu
 
 
 
-		function we_thumbnailEx() {
-			parent::weModelBase(THUMBNAILS_TABLE);
+		function __construct() {
+			parent::__construct(THUMBNAILS_TABLE);
 		}
 
 		function we_load($id) {

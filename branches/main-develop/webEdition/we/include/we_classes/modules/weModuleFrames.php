@@ -36,7 +36,7 @@ class weModuleFrames{
 	var $treeFrame;
 	var $cmdFrame;
 
-	function weModuleFrames($frameset){
+	function __construct($frameset){
 		$this->db=new DB_WE();
 		$this->frameset=$frameset;
 		$this->Tree=new weTree();

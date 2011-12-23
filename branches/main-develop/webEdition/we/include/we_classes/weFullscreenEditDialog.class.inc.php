@@ -37,8 +37,8 @@ class weFullscreenEditDialog extends weDialog{
 
 ##################################################################################################
 
-	function weFullscreenEditDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[fullscreen_editor]");
 		$this->args["src"] = "";
 	}

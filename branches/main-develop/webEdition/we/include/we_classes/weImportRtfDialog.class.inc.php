@@ -44,8 +44,8 @@ class weImportRtfDialog extends weDialog{
 
 ##################################################################################################
 
-	function weImportRtfDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('importrtf',"[import_rtf]");
 		$this->args["htmltxt"] = "";
 		$this->args["applyFontName"]=false;

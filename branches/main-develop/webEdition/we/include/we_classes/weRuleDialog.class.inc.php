@@ -41,8 +41,8 @@ class weRuleDialog extends weDialog{
 
 ##################################################################################################
 
-	function weRuleDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[edit_hr]");
 		$this->defaultInit();
 	}

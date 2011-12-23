@@ -65,7 +65,7 @@ class weNavigationItem{
 	var $items = array();
 	var $Storage = array();
 
-	function weNavigationItem($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "", $CurrentOnUrlPar='0', $CurrentOnAnker ='0'){
+	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "", $CurrentOnUrlPar='0', $CurrentOnAnker ='0'){
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;

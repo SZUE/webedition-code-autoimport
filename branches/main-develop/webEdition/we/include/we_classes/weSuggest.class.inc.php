@@ -106,10 +106,6 @@ class weSuggest {
 	var $doOnItemSelect       = "";
 	var $doOnTextfieldBlur    = "";
 
-	function weSuggest() {
-
-	}
-
 	function &getInstance() {
 		if (! isset($GLOBALS['__weSuggest__'])) {
 			$GLOBALS['__weSuggest__'] = new weSuggest();

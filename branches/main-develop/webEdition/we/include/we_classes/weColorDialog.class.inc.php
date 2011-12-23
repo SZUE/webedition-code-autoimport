@@ -36,8 +36,8 @@ class weColorDialog extends weDialog{
 
 ##################################################################################################
 
-	function weColorDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[choosecolor]");
 		$this->args["color"] = "";
 	}

@@ -28,14 +28,14 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 class weNavigationFrames extends weToolFrames
 {
 
-	function weNavigationFrames()
+	function __construct()
 	{
 		$this->toolName = 'navigation';
 		$this->toolClassName = 'weNavigation';
 		$this->toolUrl = '/webEdition/we/include/we_tools/' . $this->toolName . '/';
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
-		$this->weModuleFrames($_frameset);
+		parent::__construct($_frameset);
 
 		$this->Table = NAVIGATION_TABLE;
 		$this->TreeSource = 'table:' . $this->Table;

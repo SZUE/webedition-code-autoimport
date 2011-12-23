@@ -55,7 +55,7 @@ class weDialog{
 	 * @return     weDialog
 	 */
 
-	function weDialog() {
+	function __construct() {
 		$this->db = new DB_WE();
 	}
 

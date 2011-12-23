@@ -38,8 +38,8 @@ class weSpecialCharDialog extends weDialog{
 
 ##################################################################################################
 
-	function weSpecialCharDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[insertspecialchar]");
 		$this->defaultInit();
 	}

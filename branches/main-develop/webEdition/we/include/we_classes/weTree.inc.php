@@ -71,7 +71,7 @@ class weTree{
 
 //Initialization
 
-	function weTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
+	function __construct($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
 		$this->db=new DB_WE();
 		$this->setTreeImageDir(TREE_IMAGE_DIR);
 		$this->setTreeIconDir(ICON_DIR);

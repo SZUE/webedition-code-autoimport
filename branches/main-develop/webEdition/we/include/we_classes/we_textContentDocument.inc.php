@@ -45,8 +45,8 @@ class we_textContentDocument extends we_textDocument{
 
 	var $schedArr = array();
 
-	function we_textContentDocument(){
-		$this->we_textDocument();
+	function __construct(){
+		parent::__construct();
 		array_push($this->persistent_slots,"DocType");
 		if(defined("SCHEDULE_TABLE")){
 			array_push($this->persistent_slots,"FromOk","ToOk","From","To");

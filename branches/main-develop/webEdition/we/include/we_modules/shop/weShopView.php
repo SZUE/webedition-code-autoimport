@@ -37,7 +37,7 @@ class weShopView {
 	var $raw;
 
 
-	function weShopView($frameset="",$topframe="top.content") {
+	function __construct($frameset="",$topframe="top.content") {
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);

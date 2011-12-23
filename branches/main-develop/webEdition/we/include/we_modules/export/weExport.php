@@ -80,11 +80,11 @@ class weExport extends weModelBase{
 	* Can load or create new Newsletter depends of parameter
 	*/
 
-	function weExport($exportID = 0){
+	function __construct($exportID = 0){
 
 		$this->table=EXPORT_TABLE;
 
-		weModelBase::weModelBase(EXPORT_TABLE);
+		parent::__construct(EXPORT_TABLE);
 		$this->setDefaults();
 		if ($exportID){
 			$this->ID=$exportID;

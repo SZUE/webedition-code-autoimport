@@ -54,11 +54,11 @@ class weCustomer extends weModelBase {
 	 * Default Constructor
 	 * Can load or create new Customer depends of parameter
 	 */
-	function weCustomer($customerID = 0) {
+	function __construct($customerID = 0) {
 
 		$this->table = CUSTOMER_TABLE;
 
-		weModelBase::weModelBase(CUSTOMER_TABLE);
+		parent::__construct(CUSTOMER_TABLE);
 
 		$this->MemberSince = time();
 		$this->LastLogin = 0;

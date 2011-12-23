@@ -41,10 +41,6 @@ class we_search extends DB_WE{
 	var $anzahl = 10;
 	var $searchstart = 0;
 
-	function we_search(){
-
-	}
-
 	function init($sessDat=""){
 		for($i=0;$i<=sizeof($sessDat);$i++){
 			if(isset($GLOBALS["we_".$this->Name."_".$sessDat[$i]])){

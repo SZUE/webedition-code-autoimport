@@ -31,7 +31,7 @@ class weModuleFrames{
 	var $db;
 	var $View;
 
-	function weModuleFrames(){
+	function __construct(){
 		$this->db=new DB_WE();
 	}
 

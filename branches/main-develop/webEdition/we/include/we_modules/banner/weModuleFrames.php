@@ -32,7 +32,7 @@ class weModuleFrames{
 	var $frameset;
 	var $edit_cmd="edit_newsletter";
 
-	function weModuleFrames($frameset){
+	function __construct($frameset){
 		$this->db=new DB_WE();
 		$this->frameset=$frameset;
 	}

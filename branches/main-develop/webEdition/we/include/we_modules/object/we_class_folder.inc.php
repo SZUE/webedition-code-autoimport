@@ -56,7 +56,7 @@ class we_class_folder extends we_folder{
 	var $SearchStart = 0;
 	var $TriggerID = 0;
 	/* Constructor */
-	function we_class_folder(){
+	function __construct(){
 		$this->we_folder();
 		array_push($this->persistent_slots,'searchclass','searchclass_class','TriggerID');
 		$this->ContentType= 'folder';

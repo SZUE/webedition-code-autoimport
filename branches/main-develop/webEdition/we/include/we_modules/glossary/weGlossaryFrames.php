@@ -45,9 +45,9 @@ class weGlossaryFrames extends weModuleFrames {
 	var $_width_size = 535;
 
 
-	function weGlossaryFrames() {
+	function __construct() {
 
-		$this->weModuleFrames(WE_GLOSSARY_MODULE_PATH."edit_glossary_frameset.php");
+		parent::__construct(WE_GLOSSARY_MODULE_PATH."edit_glossary_frameset.php");
 
 		$this->Tree = new weGlossaryTree();
 		$this->View = new weGlossaryView(WE_GLOSSARY_MODULE_PATH."edit_glossary_frameset.php","top.content");

@@ -38,9 +38,9 @@ class weToolModel extends weModelBase {
 
 	var $requiredFields = array();
 
-	function weToolModel($table){
+	function __construct($table){
 
-		weModelBase::weModelBase($table);
+		parent::__construct($table);
 
 	}
 

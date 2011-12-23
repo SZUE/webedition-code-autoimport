@@ -32,8 +32,8 @@ class weCustomerFrames extends weModuleFrames {
 	var $View;
 	var $jsOut_fieldTypesByName;
 
-	function weCustomerFrames() {
-		weModuleFrames::weModuleFrames(WE_CUSTOMER_MODULE_PATH . "edit_customer_frameset.php");
+	function __construct() {
+		parent::__construct(WE_CUSTOMER_MODULE_PATH . "edit_customer_frameset.php");
 		$this->Tree = new weCustomerTree();
 		$this->View = new weCustomerView(WE_CUSTOMER_MODULE_PATH . "edit_customer_frameset.php", "top.content");
 		$this->setupTree(CUSTOMER_TABLE, "top.content", "top.content.resize.left.tree", "top.content.cmd");

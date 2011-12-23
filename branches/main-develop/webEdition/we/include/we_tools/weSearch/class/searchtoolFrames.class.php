@@ -29,7 +29,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSea
 class searchtoolFrames extends weToolFrames
 {
 
-	function searchtoolFrames()
+	function __construct()
 	{
 		$this->toolName = 'weSearch';
 		$this->toolClassName = 'searchtool';
@@ -37,7 +37,7 @@ class searchtoolFrames extends weToolFrames
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
-		$this->weModuleFrames($_frameset);
+		parent::__construct($_frameset);
 		$this->Table = SUCHE_TABLE;
 
 		$this->TreeSource = 'table:' . $this->Table;

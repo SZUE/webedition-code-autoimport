@@ -161,10 +161,10 @@ class searchtool extends weToolModel
 	 * Can load or create new searchtool object depends of parameter
 	 */
 
-	function searchtool($weSearchID = 0)
+	function __construct($weSearchID = 0)
 	{
 
-		parent::weToolModel(SUCHE_TABLE);
+		parent::__construct(SUCHE_TABLE);
 
 		if ($weSearchID) {
 			$this->ID = $weSearchID;

@@ -37,8 +37,8 @@ class weLangDialog extends weDialog{
 
 ##################################################################################################
 
-	function weLangDialog(){
-		$this->weDialog();
+	function __construct(){
+		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[language_title]");
 		$this->defaultInit();
 	}

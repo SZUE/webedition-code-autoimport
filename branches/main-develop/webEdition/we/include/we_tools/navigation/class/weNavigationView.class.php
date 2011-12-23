@@ -44,7 +44,7 @@ class weNavigationView {
 	var $group_pattern = '';
 	var $page=1;
 
-	function weNavigationView($frameset='',$topframe='top') {
+	function __construct($frameset='',$topframe='top') {
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);

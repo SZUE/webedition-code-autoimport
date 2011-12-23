@@ -26,12 +26,11 @@
 
 include_once(WE_WORKFLOW_MODULE_DIR."weModuleFrames.php");
 include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowView.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 class weWorkflowFrames extends weModuleFrames{
 
-	function weWorkflowFrames(){
-		weModuleFrames::weModuleFrames();
+	function __construct(){
+		parent::__construct();
 		$this->View=new weWorkflowView();
 	}
 

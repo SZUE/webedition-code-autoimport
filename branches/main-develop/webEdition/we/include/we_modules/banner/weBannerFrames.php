@@ -31,8 +31,8 @@ class weBannerFrames extends weModuleFrames{
 
 	var $edit_cmd="edit_banner";
 
-	function weBannerFrames(){
-		$this->weModuleFrames("banner/edit_banner_frameset.php");
+	function __construct(){
+		parent::__construct("banner/edit_banner_frameset.php");
 		$this->View=new weBannerView();
 	}
 

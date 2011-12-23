@@ -52,7 +52,7 @@ class weNewsletterView {
 	var $treeFrame;
 	var $cmdFrame;
 
-	function weNewsletterView() {
+	function __construct() {
 		$this->db = new DB_WE();
 		$this->newsletter = new weNewsletter();
 

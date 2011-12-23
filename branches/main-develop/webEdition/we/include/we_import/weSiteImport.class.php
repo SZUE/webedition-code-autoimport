@@ -61,7 +61,7 @@ class weSiteImport{
 	 *
 	 * @return weSiteImport
 	 */
-	function weSiteImport(){
+	function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
 		if(sizeof($wsa)){
 			$ws = $wsa[0];

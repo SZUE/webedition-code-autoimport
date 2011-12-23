@@ -40,8 +40,8 @@ class we_textDocument extends we_document
 
 
 	/* Constructor */
-	function we_textDocument(){
-		$this->we_document();
+	function __construct(){
+		parent::__construct();
 		array_push($this->EditPageNrs, WE_EDITPAGE_VERSIONS);
 		if(defined('DEFAULT_CHARSET')) {
 			$this->elements["Charset"]["dat"] = DEFAULT_CHARSET;

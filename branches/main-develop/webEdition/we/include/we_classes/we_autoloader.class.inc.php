@@ -34,6 +34,8 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
  * 6. NOTE that files MUST end with .class.php
  */
 
+//FIXME: weModuleFrames more than once defined
+
 abstract class we_autoloader{
 
 	private static $domains = array(

@@ -54,7 +54,7 @@ class we_binaryDocument extends we_document
 	* @desc Constructor for we_binaryDocument
 	*/
 	function __construct(){
-		$this->we_document();
+		parent::__construct();
 		array_push($this->persistent_slots,"html","DocChanged");
 	}
 

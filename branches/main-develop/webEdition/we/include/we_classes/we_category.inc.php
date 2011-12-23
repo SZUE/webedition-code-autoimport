@@ -36,8 +36,8 @@
 		var $ClassName=__CLASS__;
 		var $ContentType="category";
 
-		function we_category(){
-			weModelBase::weModelBase(CATEGORY_TABLE);
+		function __construct(){
+			parent::__construct(CATEGORY_TABLE);
 		}
 
 		function we_save(){
