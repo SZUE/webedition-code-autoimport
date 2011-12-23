@@ -23,26 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
-* Workflow Task Type OR Flag
-* only one task from current step has to be done
-*
-*/
-define("WE_WORKFLOW_TASK_OR",0);
-
-/**
-* Workflow Task Type AND Flag
-* all tasks from current step has to be done
-*
-* @see weWorkflowStep::$taskType
-* @access public
-*/
-define("WE_WORKFLOW_TASK_AND",1);
-
-/**
-* General Definition of WebEdition Workflow Step
-*/
+ * General Definition of WebEdition Workflow Step
+ */
 class weWorkflowStep extends weWorkflowBase{
 
 	var $ID;
@@ -50,24 +33,24 @@ class weWorkflowStep extends weWorkflowBase{
 	var $Worktime;
 	var $timeAction;
 	var $stepCondition;
-	var $tasks = array();	# array of weWorkflowTask objects
-
+	var $tasks = array(); # array of weWorkflowTask objects
 
 	/**
-	* Default Constructor
-	*
-	* Can load or create new Workflow Step Definition depends of parameter
-	*/
+	 * Default Constructor
+	 *
+	 * Can load or create new Workflow Step Definition depends of parameter
+	 */
+
 	function __construct($stepID = 0){
 		parent::__construct();
-		$this->table=WORKFLOW_STEP_TABLE;
+		$this->table = WORKFLOW_STEP_TABLE;
 
-		$this->persistents[]="ID";
-		$this->persistents[]="Worktime";
-		$this->persistents[]="timeAction";
-		$this->persistents[]="stepCondition";
+		$this->persistents[] = "ID";
+		$this->persistents[] = "Worktime";
+		$this->persistents[] = "timeAction";
+		$this->persistents[] = "stepCondition";
 
-		$this->persistents[]="workflowID";
+		$this->persistents[] = "workflowID";
 
 		$this->ID = 0;
 		$this->workflowID = 0;
@@ -77,53 +60,47 @@ class weWorkflowStep extends weWorkflowBase{
 
 		$this->tasks = array();
 
-		if ($stepID>0)
-		{
-			$this->ID=$stepID;
+		if($stepID > 0){
+			$this->ID = $stepID;
 			$this->load();
 		}
-
 	}
 
-
-
 	/**
-	* get all workflow steps from database (STATIC)
-	*/
+	 * get all workflow steps from database (STATIC)
+	 */
 	function getAllSteps($workflowID){
 		$db = new DB_WE;
 
-		$db->query("SELECT ID FROM ".WORKFLOW_STEP_TABLE." WHERE workflowID =".intval($workflowID)." ORDER BY ID");
+		$db->query("SELECT ID FROM " . WORKFLOW_STEP_TABLE . " WHERE workflowID =" . intval($workflowID) . " ORDER BY ID");
 
 		$steps = array();
 
-		while ($db->next_record())
-		{
+		while($db->next_record()) {
 			$steps[] = new weWorkflowStep($db->f("ID"));
 		}
 		return $steps;
 	}
 
 	/**
-	* Load step from database
-	*/
+	 * Load step from database
+	 */
 	function load($id=0){
-		if($id) $this->ID=$id;
-		if ($this->ID){
+		if($id)
+			$this->ID = $id;
+		if($this->ID){
 			parent::load();
 			## get tasks for step
 			$this->tasks = weWorkflowTask::getAllTasks($this->ID);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
 
-
 	/**
-	* save complete workflow step definition in database
-	*/
+	 * save complete workflow step definition in database
+	 */
 	function save(){
 		$db = new DB_WE();
 
@@ -132,8 +109,7 @@ class weWorkflowStep extends weWorkflowBase{
 		## save all steps also ##
 
 		$tasksList = array();
-		for ($i=0; $i<count($this->tasks); $i++)
-		{
+		for($i = 0; $i < count($this->tasks); $i++){
 			$this->tasks[$i]->stepID = intval($this->ID);
 			$this->tasks[$i]->save();
 
@@ -141,29 +117,27 @@ class weWorkflowStep extends weWorkflowBase{
 		}
 
 		// !!! here we have to delete all other tasks in database except this in array
-		if ( count($tasksList) >0 ){
-			$deletequery = 'DELETE FROM '.WORKFLOW_TASK_TABLE.' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",",$tasksList) . ')';
+		if(count($tasksList) > 0){
+			$deletequery = 'DELETE FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($this->ID) . ' AND ID NOT IN (' . join(",", $tasksList) . ')';
 			$afectedRows = $db->query($deletequery);
 		}
 	}
 
 	/**
-	* delete workflow step from database
-	*/
+	 * delete workflow step from database
+	 */
 	function delete(){
-		if ($this->ID){
-			foreach($this->tasks as $key=>$val){
+		if($this->ID){
+			foreach($this->tasks as $key => $val){
 				$this->tasks[$key]->delete();
 			}
 			parent::delete();
 			return true;
 		}
-		else return false;
+		else
+			return false;
 	}
 
 }
-
-
-
 
 ?>

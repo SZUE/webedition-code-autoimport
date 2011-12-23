@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,10 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-class weModuleFrames{
+class weModuleWorkflowFrames{
 
 	var $db;
 	var $View;
@@ -60,8 +56,8 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
  function drawEintraege(){
     fr = top.content.resize.left.tree.document;
     fr.open();
-    fr.writeln("<HTML><HEAD>");
-    fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
+    fr.writeln("<html><head>");
+    fr.writeln("<script language=\"JavaScript\" type=\"text/javascript\">");
     fr.writeln("clickCount=0;");
     fr.writeln("wasdblclick=0;");
     fr.writeln("tout=null");
@@ -69,14 +65,14 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
     fr.writeln("if(ct=='folder') top.content.we_cmd('edit_workflow',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
     fr.writeln("}");
     fr.writeln("top.content.loaded=1;");
-    fr.writeln("</"+"SCRIPT>");
+    fr.writeln("</"+"script>");
     fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
-    fr.write("</HEAD>\n");
-    fr.write("<BODY BGCOLOR=\"#F3F7FF\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
-    fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
+    fr.write("</head>\n");
+    fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
+    fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");
     zeichne(top.content.startloc,"");
-    fr.write("</NOBR>\n</td></tr></table>\n");
-    fr.write("</BODY>\n</HTML>");
+    fr.write("</nobr>\n</td></tr></table>\n");
+    fr.write("</body>\n</html>");
     fr.close();
    }
 

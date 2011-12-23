@@ -24,10 +24,7 @@
  */
 
 
-include_once(WE_WORKFLOW_MODULE_DIR."weModuleFrames.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowView.php");
-
-class weWorkflowFrames extends weModuleFrames{
+class weWorkflowFrames extends weModuleWorkflowFrames{
 
 	function __construct(){
 		parent::__construct();
@@ -55,7 +52,7 @@ class weWorkflowFrames extends weModuleFrames{
 	function getJSTreeCode(){
 		$db_tmp=new DB_WE();
 		$db_tmp1=new DB_WE();
-		$out=weModuleFrames::getJSTreeCode();
+		$out=weModuleWorkflowFrames::getJSTreeCode();
 
 		$out.='
 		 <script  type="text/javascript">

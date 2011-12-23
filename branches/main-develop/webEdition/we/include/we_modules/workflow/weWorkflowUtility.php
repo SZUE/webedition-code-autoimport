@@ -162,7 +162,7 @@
 			}
 		}
 
-		function getAllWorkflows($status=WE_WORKFLOW_STATE_ACTIVE,$table=FILE_TABLE){ // returns hash array with ID as key and Name as value
+		function getAllWorkflows($status=weWorkflow::STATE_ACTIVE,$table=FILE_TABLE){ // returns hash array with ID as key and Name as value
 			$type=weWorkflowUtility::getTypeForTable($table);
 			return weWorkflow::getAllWorkflowsInfo($status,$type);
 

@@ -92,7 +92,7 @@ if($cmd == "ok"){
 				<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 					<?php
 						$wf_select = '<select name="wf_select" size="1">';
-						$wfs = weWorkflowUtility::getAllWorkflows(WE_WORKFLOW_STATE_ACTIVE,$we_doc->Table);
+						$wfs = weWorkflowUtility::getAllWorkflows(self::STATE_ACTIVE,$we_doc->Table);
 						foreach($wfs as $wID=>$wfname) {
 							$wf_select .= '<option value="'.$wID.'"'.(($wID == $wfID) ? ' selected' : '').'>'.htmlspecialchars($wfname)."</option>\n";
 						}

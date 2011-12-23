@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class weModuleFrames{
+class weModuleBannerFrames{
 
 	var $db;
 	var $View;
@@ -330,6 +330,5 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js').
 </html>
 <?php
 	}
-
 
 }

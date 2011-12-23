@@ -79,7 +79,7 @@ class weWorkflowDocument extends weWorkflowBase{
 			parent::load();
 			$this->workflow = new weWorkflow($this->workflowID);
 
-			$docTable = $this->workflow->Type == WE_WORKFLOW_OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
+			$docTable = $this->workflow->Type == weWorkflow::OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
 			$this->db->query("SELECT * FROM $docTable WHERE ID=" . intval($this->documentID));
 			if($this->db->next_record())
 				if($this->db->f("ClassName")){

@@ -34,8 +34,6 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc
  * 6. NOTE that files MUST end with .class.php
  */
 
-//FIXME: weModuleFrames more than once defined
-
 abstract class we_autoloader{
 
 	private static $domains = array(
@@ -216,7 +214,7 @@ abstract class we_autoloader{
 			'weBannerBase' => 'banner/weBannerBase.php',
 			'weBannerFrames' => 'banner/weBannerFrames.php',
 			'weBannerView' => 'banner/weBannerView.php',
-			'weModuleFrames' => 'banner/weModuleFrames.php',
+			'weModuleBannerFrames' => 'banner/weModuleBannerFrames.class.php',
 			'we_bannerDirSelector' => 'banner/we_bannerDirSelector.php',
 			'we_bannerSelector' => 'banner/we_bannerSelector.php',
 			'we_listview_banner' => 'banner/we_listview_banner.inc.php',
@@ -317,7 +315,7 @@ abstract class we_autoloader{
 			'weVotingView' => 'voting/weVotingView.php',
 			'we_votingDirSelector' => 'voting/we_votingDirSelector.php',
 			'weModuleInfo' => 'weModuleInfo.class.php',
-			'weModuleFrames' => 'workflow/weModuleFrames.php',
+			'weModuleFrames' => 'workflow/weModuleWorkflowFrames.class.php',
 			'weWorkflow' => 'workflow/weWorkflow.php',
 			'weWorkflowBase' => 'workflow/weWorkflowBase.php',
 			'weWorkflowDocument' => 'workflow/weWorkflowDocument.php',

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class weBannerFrames extends weModuleFrames{
+class weBannerFrames extends weModuleBannerFrames{
 
 	var $edit_cmd="edit_banner";
 

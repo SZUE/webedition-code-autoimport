@@ -214,14 +214,14 @@ class weWorkflowView extends weWorkflowBase{
 		$vals   = array();
 		$vals[] = we_html_tools::getPixel(2,10);
 		$vals[] = $this->getFoldersHTML();
-		$out   .= $this->getTypeTableHTML(we_forms::radiobutton(WE_WORKFLOW_FOLDER, ($this->workflowDef->Type==WE_WORKFLOW_FOLDER ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_dir]'),true,"defaultfont",'onclick=top.content.setHot();'),
+		$out   .= $this->getTypeTableHTML(we_forms::radiobutton(weWorkflow::FOLDER, ($this->workflowDef->Type==weWorkflow::FOLDER ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_dir]'),true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
 		$vals   = array();
 		$vals[] = we_html_tools::getPixel(2,10);
 		$vals[] = $this->getDocTypeHTML();
 		$vals[] = we_html_tools::getPixel(2,10);
 		$vals[] = $this->getCategoryHTML();
-		$out   .= $this->getTypeTableHTML(we_forms::radiobutton(WE_WORKFLOW_DOCTYPE_CATEGORY, ($this->workflowDef->Type==WE_WORKFLOW_DOCTYPE_CATEGORY ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_doctype]'),true,"defaultfont",'onclick=top.content.setHot();'),
+		$out   .= $this->getTypeTableHTML(we_forms::radiobutton(weWorkflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type==weWorkflow::DOCTYPE_CATEGORY ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_doctype]'),true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
 
 		if(defined("OBJECT_TABLE")){
@@ -232,7 +232,7 @@ class weWorkflowView extends weWorkflowBase{
 			$vals[] = $this->getObjCategoryHTML();
 			$vals[] = we_html_tools::getPixel(2,10);
 			$vals[] = $this->getObjectFileFoldersHTML();
-			$out   .= $this->getTypeTableHTML(	we_forms::radiobutton(WE_WORKFLOW_OBJECT, ($this->workflowDef->Type==WE_WORKFLOW_OBJECT ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_object]'),true,"defaultfont",'onclick=top.content.setHot();'),
+			$out   .= $this->getTypeTableHTML(	we_forms::radiobutton(weWorkflow::OBJECT, ($this->workflowDef->Type==weWorkflow::OBJECT ? "1" : "0"), $this->uid."_Type", g_l('modules_workflow','[type_object]'),true,"defaultfont",'onclick=top.content.setHot();'),
 											$vals,25);
 		}
 
@@ -1244,7 +1244,7 @@ class weWorkflowView extends weWorkflowBase{
 
 
 	function getDocumentInfo(){
-		if($this->documentDef->workflow->Type==WE_WORKFLOW_OBJECT)return $this->getObjectInfo();
+		if($this->documentDef->workflow->Type==weWorkflow::OBJECT)return $this->getObjectInfo();
 
 		$_space = 100;
 		$_parts = array();
@@ -1264,10 +1264,10 @@ class weWorkflowView extends weWorkflowBase{
 		array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[content_type]"),
 									"html"     => g_l('weEditorInfo','['.$this->documentDef->document->ContentType.']'),
 									"space"    => $_space,
-									"noline"   => (($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=WE_WORKFLOW_OBJECT) ? 1 : 0)
+									"noline"   => (($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=weWorkflow::OBJECT) ? 1 : 0)
 								)
 					);
-		if($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=WE_WORKFLOW_OBJECT){
+		if($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type!=weWorkflow::OBJECT){
 			$GLOBALS['we_doc']=$this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
 			array_push(	$_parts, array(	"headline" => g_l('weEditorInfo',"[file_size]"),
@@ -1326,7 +1326,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		//	Part - Path-information
 
-		if($this->documentDef->document->Table != TEMPLATES_TABLE && $this->documentDef->workflow->Type!=WE_WORKFLOW_OBJECT){
+		if($this->documentDef->document->Table != TEMPLATES_TABLE && $this->documentDef->workflow->Type!=weWorkflow::OBJECT){
 			$rp = $this->documentDef->document->getRealPath();
 			$http = $this->documentDef->document->getHttpPath();
 			$showlink = ($this->documentDef->document->ContentType=="text/html" ||
