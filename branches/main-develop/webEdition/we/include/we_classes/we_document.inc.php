@@ -82,7 +82,7 @@ class we_document extends we_root {
 				for($i=0;$i<sizeof($this->persistent_slots);$i++) {
 					if($this->persistent_slots[$i] != 'elements') {
 						if(in_array($this->persistent_slots[$i], array_keys(get_object_vars($doc)))) {
-							$this->$this->persistent_slots[$i]=$doc->$this->persistent_slots[$i];
+							$this->{$this->persistent_slots[$i]}=$doc->{$this->persistent_slots[$i]};
 						}
 					}
 				}
@@ -739,7 +739,7 @@ class we_document extends we_root {
 	    if($this->ContentType) {
 				$ct=new we_base_ContentTypes();
 			$exts = $ct->getExtension($this->ContentType);
-			$this->Extensions = makeArrayFromCSV($exts);
+			$this->Extensions = is_array($exts)?$exts:array($exts);
 		}
 	}
 

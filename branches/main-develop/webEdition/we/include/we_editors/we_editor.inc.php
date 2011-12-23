@@ -491,7 +491,7 @@ else {
 						}
 					} else {
  						$ct=new we_base_ContentTypes();
-						if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType=="application/*" && in_array($we_doc->Extension, makeArrayFromCSV($ct->getExtension("text/html")))) {
+						if((!we_hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType=="application/*" && in_array($we_doc->Extension, $ct->getExtension("text/html"))) {
 								$we_JavaScript = "";
 								$we_responseText = sprintf(g_l('weEditor',"[application/*][response_save_wrongExtension]"),$we_doc->Path,$we_doc->Extension);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;

@@ -140,7 +140,7 @@ class we_format extends we_class {
 		if ($sessDat) {
 			for ($i = 0; $i < sizeof($this->persistent_slots); $i++) {
 				if (isset($sessDat[0][$this->persistent_slots[$i]])) {
-					$this->$this->persistent_slots[$i]=$sessDat[0][$this->persistent_slots[$i]];
+					$this->{$this->persistent_slots[$i]}=$sessDat[0][$this->persistent_slots[$i]];
 				}
 			}
 
@@ -154,7 +154,7 @@ class we_format extends we_class {
 		$save = array();
 		$save[0] = array();
 		for($i=0;$i<sizeof($this->persistent_slots);$i++){
-			$save[0][$this->persistent_slots[$i]]=$this->$this->persistent_slots[$i];
+			$save[0][$this->persistent_slots[$i]]=$this->{$this->persistent_slots[$i]};
 		}
 		$save[1] = $this->elements;
 

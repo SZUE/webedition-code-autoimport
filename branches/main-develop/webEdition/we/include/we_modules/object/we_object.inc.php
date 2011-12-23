@@ -2147,7 +2147,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 			$doc->InitByID($id,$this->Table, we_class::LOAD_TEMP_DB);
 			if($this->ID==0){
 				for($i=0;$i<sizeof($this->persistent_slots);$i++){
-					$this->$this->persistent_slots[$i]= isset($doc->$this->persistent_slots[$i]) ? $doc->$this->persistent_slots[$i] : '';
+					$this->{$this->persistent_slots[$i]}= isset($doc->{$this->persistent_slots[$i]}) ? $doc->{$this->persistent_slots[$i]} : '';
 				}
 				$this->ObjectID=0;
 				$this->CreationDate=time();

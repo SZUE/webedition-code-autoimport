@@ -92,9 +92,9 @@ abstract class we_root extends we_class{
     var $DefaultInit = false;  // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 	var $DocStream = "";
 
-	
-	
-	
+
+
+
 
 	/* Constructor */
 	function __construct() {
@@ -123,8 +123,8 @@ abstract class we_root extends we_class{
 	function equals($obj){
 		for($i=0;$i<sizeof($this->persistent_slots);$i++){
 			if($this->persistent_slots[$i] != "Name" && $this->persistent_slots[$i] != "elements" && $this->persistent_slots[$i] != "EditPageNr" && $this->persistent_slots[$i] != "wasUpdate"){
-				$foo1 = $this->$this->persistent_slots[$i];
-				$foo2 = $obj->$this->persistent_slots[$i];
+				$foo1 = $this->{$this->persistent_slots[$i]};
+				$foo2 = $obj->{$this->persistent_slots[$i]};
 				if($foo1 != $foo2) {
                 	return false;
 				}
@@ -177,7 +177,7 @@ abstract class we_root extends we_class{
 		$save = array();
 		$save[0] = array();
 		for($i=0;$i<sizeof($this->persistent_slots);$i++){
-			$bb=isset($this->$this->persistent_slots[$i]) ? $this->$this->persistent_slots[$i] : '';
+			$bb=isset($this->{$this->persistent_slots[$i]}) ? $this->{$this->persistent_slots[$i]} : '';
 			if(!is_object($bb)){
 				$save[0][$this->persistent_slots[$i]]=$bb;
 			}else{
@@ -216,7 +216,7 @@ abstract class we_root extends we_class{
 			$arr = unserialize($str);
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($arr[0][$this->persistent_slots[$i]])){
-					$this->$this->persistent_slots[$i]=$arr[0][$this->persistent_slots[$i]];
+					$this->{$this->persistent_slots[$i]}=$arr[0][$this->persistent_slots[$i]];
 				}
 			}
 			if(isset($arr[1])){
@@ -825,7 +825,7 @@ function formTriggerDocument($isclass=false){
 		if(is_array($sessDat)){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->$this->persistent_slots[$i]=$sessDat[0][$this->persistent_slots[$i]];
+					$this->{$this->persistent_slots[$i]}=$sessDat[0][$this->persistent_slots[$i]];
 				}
 			}
 			if(isset($sessDat[1])){
@@ -839,7 +839,7 @@ function formTriggerDocument($isclass=false){
 		if(is_array($sessDat)){
 			for($i=0;$i<sizeof($this->persistent_slots);$i++){
 				if(isset($sessDat[0][$this->persistent_slots[$i]])){
-					$this->$this->persistent_slots[$i]=$sessDat[0][$this->persistent_slots[$i]];
+					$this->{$this->persistent_slots[$i]}=$sessDat[0][$this->persistent_slots[$i]];
 				}
 			}
 			if(isset($sessDat[1])){

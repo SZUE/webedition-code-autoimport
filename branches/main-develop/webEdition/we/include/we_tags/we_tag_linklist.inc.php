@@ -29,7 +29,6 @@ function we_parse_tag_linklist($attribs, $content){
 function we_tag_linklist($attribs, $content){
 	switch(weTag_getAttribute('_type', $attribs)){
 		default:
-			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
 			$name = weTag_getAttribute("name", $attribs);
 			$foo = attributFehltError($attribs, "name", "linklist");
 			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE), true);

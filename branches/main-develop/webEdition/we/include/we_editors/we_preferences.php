@@ -4221,7 +4221,7 @@ EOF;
 			 */
 			// Get webEdition extensions
 			$ct=new we_base_ContentTypes();
-			$_we_extensions = explode(",",$ct->getExtension('text/webedition'));
+			$_we_extensions = $ct->getExtension('text/webedition');
 
 			// Build static webEdition extensions select box
 			$_static_we_extensions = new we_htmlSelect(array("name" => "DefaultStaticExt", "class" => "weSelect"));
@@ -4259,7 +4259,7 @@ EOF;
 			 */
 			// Get extensions
 			$ct=new we_base_ContentTypes();
-			$_html_extensions = explode(",",$ct->getExtension('text/html'));
+			$_html_extensions =$ct->getExtension('text/html');
 
 			// Build static webEdition extensions select box
 			$_static_html_extensions = new we_htmlSelect(array("name" => "DefaultHTMLExt", "class" => "weSelect"));

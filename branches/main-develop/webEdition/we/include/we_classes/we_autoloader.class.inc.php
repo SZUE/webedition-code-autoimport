@@ -461,6 +461,9 @@ abstract class we_autoloader{
 		'we_widgets/dlg' => array(
 			'weExportTree' => 'tree.inc.php',
 		),
+		''=>array(
+			'we_linklist'=>'we_linklist.inc.php',
+		),
 	);
 
 	/**
@@ -504,5 +507,4 @@ abstract class we_autoloader{
 
 /* todo:
 'DB_WE_abstract' => 'we_db.inc.php',
- 'we_linklist' => 'we_linklist.inc.php',
 */

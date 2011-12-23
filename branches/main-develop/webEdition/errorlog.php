@@ -124,7 +124,7 @@ if($size > 0){
 
 	$ind = 0;
 	$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-		we_button::create_button("first", '/webEdition/errorlog.php?start=' . $size, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .'</td><td>'.
+		we_button::create_button("first", '/webEdition/errorlog.php?start=' . ($size-1), true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .'</td><td>'.
 		we_button::getButton("-".$div,'btn', "window.location.href='/webEdition/errorlog.php?start=" . $nextDiv."';", we_button::WIDTH,'',($nextDiv >= $size)) .'</td><td>'.
 		we_button::create_button("back", '/webEdition/errorlog.php?start=' . $next, true, we_button::WIDTH, we_button::HEIGHT, "", "", ($next >= $size)) .
 		we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start) .

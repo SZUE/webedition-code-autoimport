@@ -650,7 +650,6 @@ class copyFolderFrag extends taskFragment{
 						}
 						break;
 					case "linklist" :
-						include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_linklist.inc.php");
 						$ll = new we_linklist($we_doc->elements[$k]["dat"]);
 						$changed = false;
 						for($i = 0; $i < sizeof($ll->listArray); $i++){

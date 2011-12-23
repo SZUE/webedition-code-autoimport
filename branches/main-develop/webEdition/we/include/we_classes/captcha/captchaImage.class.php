@@ -98,19 +98,6 @@ class CaptchaImage {
 
 
 	/**
-	 * PHP4 Constuctor
-	 *
-	 * @param integer $width
-	 * @param integer $height
-	 * @param integer $textlength
-	 * @return void
-	 */
-	function CaptchaImage($width, $height, $textlength = 6) {
-		$this->__construct($width, $height, $textlength);
-	} /* end: CaptchaImage */
-
-
-	/**
 	 * PHP5 Constructor
 	 *
 	 * @param integer $width
