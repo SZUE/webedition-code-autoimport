@@ -349,8 +349,6 @@ class we_document extends we_root {
 	}
 
 	function formCategory() {
-		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/MultiDirChooser.inc.php');
-
 		$delallbut = we_button::create_button('delete_all',"javascript:we_cmd('delete_all_cats')",true,-1,-1,'','',$this->Category ? false : true);
 		$addbut    = we_button::create_button('add', "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new MultiDirChooser(508,$this->Category,"delete_cat", we_button::create_button_table(array($delallbut, $addbut)),"","Icon,Path", CATEGORY_TABLE);
@@ -362,8 +360,6 @@ class we_document extends we_root {
 	}
 
 	function formNavigation() {
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/MultiFileChooser.inc.php');
-
 		$delallbut = we_button::create_button('delete_all',"javascript:if(confirm('".g_l('navigation','[dellall_question]')."')) we_cmd('delete_all_navi')",true,-1,-1,"","",(we_hasPerm('EDIT_NAVIGATION') && $this->NavigationItems) ? false : true);
 
 		$addbut    = we_button::create_button('add', "javascript:we_cmd('tool_navigation_edit_navi',0)",true,100,22,'','',(we_hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true,false);
@@ -979,7 +975,6 @@ class we_document extends we_root {
 			$attribs = array();
 		switch($type) {
 			case 'img':
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 				$img = new we_imageDocument();
 
 				if(isset($attribs['name'])) {
@@ -1033,7 +1028,6 @@ class we_document extends we_root {
 				}
 				return $pathOnly ? $img->Path : $img->getHtml();
 			case 'binary':
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_otherDocument.inc.php');
 				$bin = new we_otherDocument();
 				if(isset($attribs['name'])) {
 					$bin->Name = $attribs['name'];
@@ -1044,7 +1038,6 @@ class we_document extends we_root {
 				$bin->initByID($val,FILE_TABLE);
 				return array($bin->Text,$bin->Path,$bin->ParentPath,$bin->Filename,$bin->Extension,(isset($bin->elements['filesize'])? $bin->elements['filesize']['dat']:''));
 			case 'flashmovie':
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_flashDocument.inc.php');
 				$fl = new we_flashDocument();
 				if(isset($attribs['name'])) {
 					$fl->Name = $attribs['name'];
@@ -1058,7 +1051,6 @@ class we_document extends we_root {
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
 			case 'quicktime':
-				include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php');
 				$fl = new we_quicktimeDocument();
 				if(isset($attribs['name'])) {
 					$fl->Name = $attribs['name'];
@@ -1093,7 +1085,6 @@ class we_document extends we_root {
 				}
 
 				if(is_array($link)) {
-					include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 					$img = new we_imageDocument();
 					//	set name of image for rollover ...
 					$_useName = '';
@@ -1365,7 +1356,6 @@ class we_document extends we_root {
 		}
 
 		if(isset($link['ctype']) && $link['ctype']== 'int') {
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 			if(!$img)
 				$img = new we_imageDocument();
 			$img->initByID($link['img_id']);
@@ -1419,9 +1409,6 @@ class we_document extends we_root {
 
 	function getLinkStartTag($link,$attribs,$parentID=0,$path='',$db='',$img='',$_useName='',$hidedirindex=false,$objectseourls=false) {
 		if (($l_href = we_document::getLinkHref($link, $parentID, $path, $db,$hidedirindex,$objectseourls))) {
-
-		    include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_imageDocument.inc.php');
-
 		    //    define some arrays to order the attribs to image, link or js-window ...
 		    $_popUpAtts  = array('jswin','jscenter','jswidth','jsheight','jsposx','jsposy','jsstatus','jsscrollbars','jsmenubar','jstoolbar','jsresizable','jslocation');
 

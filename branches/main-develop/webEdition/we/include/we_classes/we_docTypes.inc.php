@@ -180,8 +180,6 @@ class we_docTypes extends we_class {
 	}
 
 	function formCategory() {
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new MultiDirChooser(521,$this->Category,"dt_delete_cat",$addbut,"","Icon,Path", CATEGORY_TABLE);
@@ -236,8 +234,6 @@ class we_docTypes extends we_class {
 	}
 
 	function formDocTypeTemplates() {
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tools/MultiDirChooser.inc.php");
-
 		//javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)
 		$wecmdenc1= '';
 		$wecmdenc2= '';

@@ -352,8 +352,6 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 
 	if(defined("GLOSSARY_TABLE") && ((isset($GLOBALS["we_editmode"]) && !$GLOBALS["we_editmode"]) || !isset($GLOBALS["we_editmode"]))) {
 		if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-			include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
-			include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
 			$contents = weGlossaryReplace::replace($contents, $we_doc->Language);
 		}
 	}
@@ -537,7 +535,6 @@ else {
 									else {
 										if($we_doc->we_publish()==true) {
 											if(defined("WORKFLOW_TABLE")) {
-												include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 												if(weWorkflowUtility::inWorkflow($we_doc->ID,$we_doc->Table)){
 													weWorkflowUtility::removeDocFromWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],"");
 												}
@@ -598,7 +595,6 @@ else {
 								}
 
 								if (($we_doc->ContentType=="text/webedition" || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)) {
-									include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 									weShopVariants::setVariantDataForModel($we_doc, true);
 								}
 							}
@@ -717,9 +713,6 @@ else {
 
 						if(defined("GLOSSARY_TABLE") && (!isset($GLOBALS["WE_MAIN_DOC"]) || $GLOBALS["WE_MAIN_DOC"] == $GLOBALS['we_doc'])  && !$GLOBALS["we_editmode"]) {
 							if(isset($we_doc->InGlossar) && $we_doc->InGlossar==0) {
-								include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
-								include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryReplace.php");
-
 								weGlossaryReplace::start();
 							}
 

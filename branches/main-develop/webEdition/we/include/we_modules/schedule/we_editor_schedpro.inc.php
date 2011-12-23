@@ -25,7 +25,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-include_once(WE_SCHEDULE_MODULE_DIR."we_schedpro.inc.php");
 
 if(defined("SCHEDULE_TABLE")){
 	trigger_schedule();
