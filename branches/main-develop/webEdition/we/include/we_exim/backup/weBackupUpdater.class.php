@@ -19,8 +19,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_updater.inc.php");
-
 class weBackupUpdater extends we_updater {
 
 

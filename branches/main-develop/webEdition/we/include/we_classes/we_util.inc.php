@@ -32,7 +32,7 @@
  *
  * @static
  */
-class we_util{
+abstract class we_util{
 
 	/**
 	 * Formates a number with a country specific format into computer readable format.

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 define("PROGRESS_H_IMAGE", IMAGE_DIR . 'balken.gif');
 define("PROGRESS_H_IMAGE_BG", IMAGE_DIR . 'balken_bg.gif');
 
@@ -45,7 +44,7 @@ class we_progressBar{
 	var $callback_timeout = "";
 	var $name = "";
 
-	function we_progressBar($progress=0, $orientation=0, $showProgressText=true){
+	function __construct($progress=0, $orientation=0, $showProgressText=true){
 		$this->setProgress($progress);
 		$this->setOrientation($orientation);
 		$this->showProgressText = $showProgressText;

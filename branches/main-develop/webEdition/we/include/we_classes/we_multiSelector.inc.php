@@ -26,6 +26,7 @@
 class we_multiSelector extends we_fileselector {
 const SETDIR=5;
 const CREATEFOLDER=8;
+const DEL=11;
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 

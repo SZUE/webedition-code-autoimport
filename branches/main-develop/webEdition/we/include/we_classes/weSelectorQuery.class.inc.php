@@ -30,7 +30,7 @@ class weSelectorQuery {
 	/*************************************************************************
 	 * VARIABLES
 	 *************************************************************************/
-	var $db = "";
+	private $db;
 	var $result = array();
 	var $fields;
 	var $condition = array();

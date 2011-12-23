@@ -25,7 +25,7 @@
 class we_tab {
 	var $tab;
 
-	function we_tab($href='#', $text, $status='TAB_NORMAL', $jscmd='', $attribs=array()) {
+	function __construct($href='#', $text, $status='TAB_NORMAL', $jscmd='', $attribs=array()) {
 		$class = $status == 'TAB_ACTIVE' ? "tabActive":"tabNormal";
 		$att = "";
 		if (isset($attribs) && is_array($attribs)) {

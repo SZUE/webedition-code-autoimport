@@ -22,9 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_document.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/weMetaData.class.php");
-
 /*  a class for handling binary-documents like images. */
 
 class we_binaryDocument extends we_document{

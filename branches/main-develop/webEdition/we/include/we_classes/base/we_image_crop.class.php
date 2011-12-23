@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,15 +28,13 @@
  *
  * Provides image cropping functions.
  */
+abstract class we_image_crop{
 
-class we_image_crop
-{
-
-	function getJS(){
-		if (!isset($GLOBALS['we_doc']->elements["origwidth"])) {
+	static function getJS(){
+		if(!isset($GLOBALS['we_doc']->elements["origwidth"])){
 			$GLOBALS['we_doc']->setElement("origwidth", $GLOBALS['we_doc']->getElement("width"));
 		}
-		if (!isset($GLOBALS['we_doc']->elements["origheight"])) {
+		if(!isset($GLOBALS['we_doc']->elements["origheight"])){
 			$GLOBALS['we_doc']->setElement("origheight", $GLOBALS['we_doc']->getElement("height"));
 		}
 
@@ -47,8 +46,8 @@ var CropTool = {
 	imgH : 0,
 	defW : 0,
 	defH : 0,
-	origW : '.((isset($GLOBALS['we_doc']->elements["origwidth"]["dat"]))? $GLOBALS['we_doc']->elements["origwidth"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0').',
-	origH : '.((isset($GLOBALS['we_doc']->elements["origheight"]["dat"]))? $GLOBALS['we_doc']->elements["origheight"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0').',
+	origW : ' . ((isset($GLOBALS['we_doc']->elements["origwidth"]["dat"])) ? $GLOBALS['we_doc']->elements["origwidth"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',
+	origH : ' . ((isset($GLOBALS['we_doc']->elements["origheight"]["dat"])) ? $GLOBALS['we_doc']->elements["origheight"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . ',
 	imgDiv : "weImgDiv",
 	imgBorder : "weImagePanelBorder",
 	imgPanel : "weImagePanel",
@@ -909,30 +908,30 @@ if(!Function.prototype.apply){
 		');
 	}
 
-	function getCSS(){
+	static function getCSS(){
 		return we_htmlElement::cssElement('
 			#weImgDiv {border: 0px solid #CECECE;}
 			#weImagePanelBorder {border: 0px solid #808080;}
 			#weControl img {border:none;}
-			#weSizeDiv {float:left;width:60px;height:15px;padding:0px;margin-right:4px;background-image:url('.IMAGE_DIR.'crop/size_wh.gif);background-repeat:no-repeat;}
+			#weSizeDiv {float:left;width:60px;height:15px;padding:0px;margin-right:4px;background-image:url(' . IMAGE_DIR . 'crop/size_wh.gif);background-repeat:no-repeat;}
 			#weSizeDiv input {display:block;width:24px;height:13px;text-align:center;border:none;font-family:Arial,Verdana,sans-serif;font-size:10px;color:#000000;background-color:transparent;}
 			#CropWidth {float:left;}
 			#CropHeight {float:right;}
-			.clHorLine {position:absolute;left:0;top:0;width:1px;height:1px;font:1px/1px verdana,sans-serif;background-image:url('.IMAGE_DIR.'crop/horizontal.gif);background-repeat: repeat-x;z-index:10;cursor:n-resize;visibility:hidden;background-color:#000000;}
-			.clVerLine {position: absolute;left:0;top:0;width:1px;height:1px;font: 1px/1px verdana,sans-serif;background-image:url('.IMAGE_DIR.'crop/vertical.gif);background-repeat:repeat-y;z-index:10;cursor:e-resize;visibility:hidden;background-color:#000000;}
+			.clHorLine {position:absolute;left:0;top:0;width:1px;height:1px;font:1px/1px verdana,sans-serif;background-image:url(' . IMAGE_DIR . 'crop/horizontal.gif);background-repeat: repeat-x;z-index:10;cursor:n-resize;visibility:hidden;background-color:#000000;}
+			.clVerLine {position: absolute;left:0;top:0;width:1px;height:1px;font: 1px/1px verdana,sans-serif;background-image:url(' . IMAGE_DIR . 'crop/vertical.gif);background-repeat:repeat-y;z-index:10;cursor:e-resize;visibility:hidden;background-color:#000000;}
 			#weImage {display:block;position:relative;left:0;top:0;z-index:3;}
 			#weImagePanel {position:relative;left:0;top:0;z-index:1;background:#CECECE;}
 			#weCoverPanel {position:absolute;left:0;top:0;background:#000000;z-index:4;cursor:default;visibility:hidden;filter:alpha(opacity=60);opacity:0.6;-moz-opacity:0.6;}
 			#weCropPanel {position:absolute;left:0px;top:0px;display:block;overflow:hidden;z-index:9;visibility:hidden;}
 			#cropButtonZoomIn, #cropButtonZoomOut {cursor:pointer;display:block;float:left;width:18px;height:18px;background-repeat:no-repeat;}
-			#cropButtonZoomIn {background-image: url('.IMAGE_DIR.'crop/zoom_in1.gif);}
-			#cropButtonZoomIn:hover {background-image: url('.IMAGE_DIR.'crop/zoom_in2.gif);}
-			#cropButtonZoomOut {background-image: url('.IMAGE_DIR.'crop/zoom_out1.gif);}
-			#cropButtonZoomOut:hover {background-image: url('.IMAGE_DIR.'crop/zoom_out2.gif);}
+			#cropButtonZoomIn {background-image: url(' . IMAGE_DIR . 'crop/zoom_in1.gif);}
+			#cropButtonZoomIn:hover {background-image: url(' . IMAGE_DIR . 'crop/zoom_in2.gif);}
+			#cropButtonZoomOut {background-image: url(' . IMAGE_DIR . 'crop/zoom_out1.gif);}
+			#cropButtonZoomOut:hover {background-image: url(' . IMAGE_DIR . 'crop/zoom_out2.gif);}
 		');
 	}
 
-	function getCrop($attribs){
+	static function getCrop($attribs){
 		$cancelbut = we_button::create_button("cancel", "javascript:we_cmd('crop_cancel')");
 		$okbut = we_button::create_button("save", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('doImage_crop',document.forms['we_form'].cropCoordX.value,document.forms['we_form'].cropCoordY.value,document.forms['we_form'].CropWidth.value,document.forms['we_form'].CropHeight.value);", true, -1, -1, "", "", true, false);
 
@@ -944,7 +943,7 @@ if(!Function.prototype.apply){
     <td>
       <div id="weImgDiv">
         <div id="weImagePanelBorder"><div id="weImagePanel">
-          <img id="weImage" src="'.$attribs["src"].'"'.(isset($attribs["width"])? ' width="'.$attribs["width"].'"' : '' ).(isset($attribs["height"])? ' height="'.$attribs["height"].'"' : '').(isset($attribs["alt"])? ' alt="'.$attribs["alt"].'"' : '').' /></div>
+          <img id="weImage" src="' . $attribs["src"] . '"' . (isset($attribs["width"]) ? ' width="' . $attribs["width"] . '"' : '' ) . (isset($attribs["height"]) ? ' height="' . $attribs["height"] . '"' : '') . (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' /></div>
         </div>
       </div>
       <div id="weControl" style="display:none;height:24px;background:#CECECE;border-top:solid 1px #fff;padding:3px;">
@@ -956,11 +955,11 @@ if(!Function.prototype.apply){
          	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="CropTool.setCropWidth(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
                 <input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
               </div>
-              <a id="cropButtonZoomIn" title="'.g_l('crop','[enlarge_crop_area]').'" onmousedown="CropTool.zoom(1);">&nbsp;</a>
-              <a id="cropButtonZoomOut" title="'.g_l('crop','[reduce_crop_area]').'" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
+              <a id="cropButtonZoomIn" title="' . g_l('crop', '[enlarge_crop_area]') . '" onmousedown="CropTool.zoom(1);">&nbsp;</a>
+              <a id="cropButtonZoomOut" title="' . g_l('crop', '[reduce_crop_area]') . '" onmousedown="CropTool.zoom(-1);">&nbsp;</a>
               </div>
             </td>
-            <td>'.we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2).'</td>
+            <td>' . we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2) . '</td>
           </tr>
         </table>
       </div>

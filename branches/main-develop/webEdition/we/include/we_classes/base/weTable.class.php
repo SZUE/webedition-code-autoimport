@@ -41,7 +41,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 		var $persistent_slots=array();
 		var $attribute_slots=array();
 
-		function weTable($table,$force_columns=false){
+		function __construct($table,$force_columns=false){
 			$this->db=new DB_WE();
 			$this->table=$table;
 			$this->elements=array();

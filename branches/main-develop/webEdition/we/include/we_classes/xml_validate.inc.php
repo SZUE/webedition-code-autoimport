@@ -108,7 +108,7 @@ class XML_Validate extends we_xml_parser {
 	* @param string $file
 	* @desc Parses the given XML file.
 	*/
-	function XML_Validate($file = "") {
+	function __construct($file = "") {
 		if (!empty($file)) {
 			// Read and try to parse the given file.
 			$this->getFile($file);

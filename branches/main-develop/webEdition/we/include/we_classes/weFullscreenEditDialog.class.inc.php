@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,50 +22,35 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
-
-
 class weFullscreenEditDialog extends weDialog{
-
-##################################################################################################
 
 	var $JsOnly = true;
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array("src");
 
-##################################################################################################
-
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg',"[fullscreen_editor]");
+		$this->dialogTitle = g_l('wysiwyg', "[fullscreen_editor]");
 		$this->args["src"] = "";
 	}
 
-##################################################################################################
-
 	function getDialogContentHTML(){
 		$js = '<script  type="text/javascript">isFullScreen = true;</script>';
-		$e = new we_wysiwyg("we_dialog_args[src]",$this->args["screenWidth"]-90,$this->args["screenHeight"]-200,'',$this->args["propString"],$this->args["bgcolor"],$this->args["editname"],$this->args["className"],"",$this->args["outsideWE"],$this->args["xml"],$this->args["removeFirstParagraph"],true,$this->args["baseHref"],$this->args["charset"],$this->args["cssClasses"],$this->args['language']);
-		return we_wysiwyg::getHeaderHTML().$js.$e->getHTML();
+		$e = new we_wysiwyg("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], $this->args["editname"], $this->args["className"], "", $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language']);
+		return we_wysiwyg::getHeaderHTML() . $js . $e->getHTML();
 	}
-
-
-##################################################################################################
 
 	function getBodyTagHTML(){
 		return '<body class="weDialogBody" onUnload="doUnload()"">
 ';
 	}
 
-	function getJs() {
-		$_BROWSER=new we_base_browserDetect();
+	function getJs(){
+		$_BROWSER = new we_base_browserDetect();
 
-		$js = we_htmlElement::jsScript(JS_DIR.'windows.js').'
+		$js = we_htmlElement::jsScript(JS_DIR . 'windows.js') . '
 			<script  type="text/javascript"><!--
-				var isGecko = '.($_BROWSER->isGecko()?'true':'false') .';
+				var isGecko = ' . ($_BROWSER->isGecko() ? 'true' : 'false') . ';
 				var textareaFocus = false;
 
 				if (isGecko) {
@@ -91,12 +77,12 @@ class weFullscreenEditDialog extends weDialog{
 				}
 
 				function weDoOk() {';
-					if ($this->pageNr == $this->numPages && $this->JsOnly) {
-						$js .= '
+		if($this->pageNr == $this->numPages && $this->JsOnly){
+			$js .= '
 							if (!textareaFocus) {
 								' . $this->getOkJs() . '
 							}';
-					}
+		}
 		$js .= '
 				}
 				';
@@ -145,6 +131,4 @@ class weFullscreenEditDialog extends weDialog{
 		return $js;
 	}
 
-
-##################################################################################################
 }

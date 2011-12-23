@@ -23,12 +23,9 @@
  */
 
 
-	class we_codeConvertor{
+	abstract class we_codeConvertor{
 
-		function we_codeConvertor(){
-		}
-
-		function toUnicode($cp,$code){
+		static function toUnicode($cp,$code){
 			switch($cp){
 				case "1251": return we_codeConvertor::cp1251_to_unicode($code); break;
 				case "1252": return we_codeConvertor::cp1252_to_unicode($code); break;
@@ -37,7 +34,7 @@
 			}
 		}
 
-		function cp10029_to_unicode($code){
+		static function cp10029_to_unicode($code){
 
 			switch($code){
 
@@ -305,7 +302,7 @@
 
 
 		#    Name:     cp1251 to Unicode table
-		function cp1251_to_unicode($code){
+		static function cp1251_to_unicode($code){
 
 			switch($code){
 				case "00" : return "0000";break;	#NULL
@@ -567,7 +564,7 @@
 		}
 	}
 
-		function cp1252_to_unicode($code){
+		static function cp1252_to_unicode($code){
 			switch($code){
 				case "00": return "0000"; break; #NULL
 				case "01": return "0001"; break; #START OF HEADING

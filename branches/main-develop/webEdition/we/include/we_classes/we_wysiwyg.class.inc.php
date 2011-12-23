@@ -56,7 +56,7 @@ class we_wysiwyg{
 	var $showSpell = true;
 	var $isFrontendEdit = false;
 
-	function we_wysiwyg($name,$width,$height,$value="",$propstring="",$bgcol="",$fullscreen="",$className="",$fontnames="",$outsideWE=false,$xml=false,$removeFirstParagraph=true,$inlineedit=true,$baseHref="",$charset="",$cssClasses="", $Language="", $test="",$spell=true, $isFrontendEdit=false){
+	function __construct($name,$width,$height,$value="",$propstring="",$bgcol="",$fullscreen="",$className="",$fontnames="",$outsideWE=false,$xml=false,$removeFirstParagraph=true,$inlineedit=true,$baseHref="",$charset="",$cssClasses="", $Language="", $test="",$spell=true, $isFrontendEdit=false){
 
 		$this->propstring = $propstring ? ",".$propstring."," : "";
 		$this->name = $name;

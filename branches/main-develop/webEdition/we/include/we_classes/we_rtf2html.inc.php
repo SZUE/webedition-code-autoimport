@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_codeConvertor.inc.php");
-
 define("EOF",-999999);
 
 class we_rtf2html{
@@ -64,7 +62,7 @@ class we_rtf2html{
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 
-    function we_rtf2html($fileName,$applyFontNames=true,$applyFontSize=true,$applyFontColor=true){
+    function __construct($fileName,$applyFontNames=true,$applyFontSize=true,$applyFontColor=true){
 	  $tempName = TMP_DIR."/".md5(uniqid(rand(),1));
 	  move_uploaded_file($fileName,$tempName);
 	  $fileName = $tempName;

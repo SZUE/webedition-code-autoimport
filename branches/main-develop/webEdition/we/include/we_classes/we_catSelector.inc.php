@@ -22,15 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-define("FS_DORENAMEENTRY",10);
-define("FS_CREATECAT",7);
-define("FS_DORENAMECAT",9);
-define("FS_DEL",11);
-define("FS_PROPERTIES",12);
-define("FS_CHANGE_CAT",13);
-
 class we_catSelector extends we_multiSelector{
+	const CREATECAT=7;
+	const DORENAMECAT=9;
+	const DORENAMEENTRY=10;
+	const PROPERTIES=12;
+	const CHANGE_CAT=13;
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
@@ -70,40 +67,40 @@ class we_catSelector extends we_multiSelector{
 
 	function printHTML($what=we_fileselector::FRAMESET){
 		switch($what){
-			case we_fileselector::HEADER:
+			case self::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_fileselector::FOOTER:
+			case self::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_fileselector::BODY:
+			case self::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_fileselector::CMD:
+			case self::CMD:
 				$this->printCmdHTML();
 				break;
 			case self::CREATEFOLDER:
 				$this->printCreateEntryHTML(1);
 				break;
-			case FS_DORENAMEENTRY:
+			case self::DORENAMEENTRY:
 				$this->printDoRenameEntryHTML();
 				break;
-			case FS_CREATECAT:
+			case self::CREATECAT:
 				$this->printCreateEntryHTML(0);
 				break;
-			case FS_DORENAMECAT:
+			case self::DORENAMECAT:
 				$this->printDoRenameEntryHTML();
 				break;
-			case FS_DEL:
+			case self::DEL:
 				$this->printDoDelEntryHTML();
 				break;
-			case FS_PROPERTIES:
+			case self::PROPERTIES:
 				$this->printPropertiesHTML();
 				break;
-			case FS_CHANGE_CAT:
+			case self::CHANGE_CAT:
 				$this->printchangeCatHTML();
 				break;
-			case we_fileselector::FRAMESET:
+			case self::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
@@ -296,13 +293,13 @@ function writeBody(d){
 
 <?php } ?>
 	if(top.we_editCatID){
-		d.writeln('<input type="hidden" name="what" value="<?php print FS_DORENAMEENTRY; ?>" />');
+		d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEENTRY; ?>" />');
 		d.writeln('<input type="hidden" name="we_editCatID" value="'+top.we_editCatID+'" />');
 	}else{
 		if(makeNewFolder){
 			d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
 		}else{
-			d.writeln('<input type="hidden" name="what" value="<?php print FS_CREATECAT; ?>" />');
+			d.writeln('<input type="hidden" name="what" value="<?php print self::CREATECAT; ?>" />');
 		}
 	}
 	d.writeln('<input type="hidden" name="order" value="'+top.order+'" />');
@@ -393,8 +390,8 @@ function deleteEntry(){
 		if (todel) {
 			todel = "," + todel;
 		}
-		top.fscmd.location.replace(top.queryString(<?php print FS_DEL; ?>,top.currentID)+"&todel="+escape(todel));
-		if(top.fsvalues) top.fsvalues.location.replace(top.queryString(<?php print FS_PROPERTIES; ?>,0));
+		top.fscmd.location.replace(top.queryString(<?php print self::DEL; ?>,top.currentID)+"&todel="+escape(todel));
+		if(top.fsvalues) top.fsvalues.location.replace(top.queryString(<?php print self::PROPERTIES; ?>,0));
 		top.fsheader.disableDelBut();
 	}
 
@@ -632,11 +629,11 @@ function doClick(id,ct){
 }
 
 function showPref(id) {
-	if(self.fsvalues) self.fsvalues.location = '<?php print $this->getFsQueryString(FS_PROPERTIES); ?>&catid='+id;
+	if(self.fsvalues) self.fsvalues.location = '<?php print $this->getFsQueryString(self::PROPERTIES); ?>&catid='+id;
 }
 
 function hidePref() {
-	if(self.fsvalues) self.fsvalues.location = '<?php print $this->getFsQueryString(FS_PROPERTIES); ?>';
+	if(self.fsvalues) self.fsvalues.location = '<?php print $this->getFsQueryString(self::PROPERTIES); ?>';
 }
 
 <?php
@@ -1008,7 +1005,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 ' : '') . '
     	<frame src="'.$this->getFsQueryString(we_fileselector::BODY).'" name="fsbody" scrolling="auto">
 ' .($isMainChooser ? '
-    	<frame src="'.$this->getFsQueryString(FS_PROPERTIES).'" name="fsvalues"  scrolling="auto">
+    	<frame src="'.$this->getFsQueryString(self::PROPERTIES).'" name="fsvalues"  scrolling="auto">
     </frameset>
 ' : '') .'
     <frame src="'.$this->getFsQueryString(we_fileselector::FOOTER).'"  name="fsfooter" noresize scrolling="no">

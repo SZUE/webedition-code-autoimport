@@ -37,7 +37,7 @@ class XML_Import extends we_xml_parser {
 	var $store_docs = 0;
 	var $store_templ = 0;
 
-	function XML_Import($file) {
+	function __construct($file) {
 		$this->getFile($file);
 		$this->db = new DB_WE();
 

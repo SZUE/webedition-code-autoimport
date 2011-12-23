@@ -22,19 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-define("BACKUP_MODE",1);
-define("RECOVER_MODE",2);
-
 class weBackupWizard{
+const BACKUP=1;
+const RECOVER=2;
 
 	var $mode; //1-backup;2-recover
 	var $frameset;
 	var $db;
 
-	function weBackupWizard($frameset="",$mode=BACKUP_MODE){
+	function __construct($frameset="",$mode=self::BACKUP){
 		$this->setFrameset($frameset);
 		$this->setMode($mode);
 		$this->db=new DB_WE();
@@ -331,12 +327,12 @@ class weBackupWizard{
 
  	function getHTMLStep($step){
 
- 		if($this->mode==BACKUP_MODE){
+ 		if($this->mode==self::BACKUP){
  			if($step==1) return $this->getHTMLBackupStep1();
  			else if($step==2) return $this->getHTMLBackupStep2();
  			else if($step==3) return $this->getHTMLBackupStep3();
  		}
- 	 	if($this->mode==RECOVER_MODE){
+ 	 	if($this->mode==self::RECOVER){
  			if($step==1) return $this->getHTMLRecoverStep1();
  			else if($step==2) return $this->getHTMLRecoverStep2();
  			else if($step==3) return $this->getHTMLRecoverStep3();
@@ -1797,7 +1793,7 @@ class weBackupWizard{
  		}
  		$_execute = $_execute * 1500;
 
- 		if($this->mode==RECOVER_MODE) {
+ 		if($this->mode==self::RECOVER) {
  			$cmd = 'import';
  		} else {
  			$cmd = 'export';

@@ -40,7 +40,7 @@ class we_tabs {
 	var $bodyAttribs;
 	var $JSonResize;
 
-	function we_tabs() {
+	function __construct() {
 		$this->containerStart = '<div id="tabContainer" name="tabContainer">';
 		$this->containerEnd   = "</div>\n";
 

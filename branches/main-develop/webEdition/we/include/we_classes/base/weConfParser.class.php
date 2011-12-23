@@ -30,7 +30,7 @@ class weConfParser {
 
 
 
-	function weConfParser($content) {
+	function __construct($content) {
 		$this->_content = $content;
 		$this->_parse();
 	}

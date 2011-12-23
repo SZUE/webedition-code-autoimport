@@ -23,7 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
 
@@ -93,9 +92,9 @@ abstract class we_root extends we_class{
     var $DefaultInit = false;  // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 	var $DocStream = "";
 
-	######################################################################################################################################################
-	##################################################################### FUNCTIONS ######################################################################
-	######################################################################################################################################################
+	
+	
+	
 
 	/* Constructor */
 	function __construct() {

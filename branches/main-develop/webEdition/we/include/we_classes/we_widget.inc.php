@@ -28,7 +28,7 @@
 *
 * Use this class to add a widget to the Cockpit.
 */
-class we_widget {
+abstract class we_widget {
 
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),
@@ -46,7 +46,7 @@ class we_widget {
 	 * @param      bool $resize
 	 * @return     object Returns the we_htmlTable object
 	 */
-	function create($iId,$sType,$oContent,$aLabel=array("",""),$sCls="white",$iRes=0,$sCsv="",$w=0,$h=0,$resize=true){
+	static function create($iId,$sType,$oContent,$aLabel=array("",""),$sCls="white",$iRes=0,$sCsv="",$w=0,$h=0,$resize=true){
 		$w_i0 = 10;
 		$w_i1 = 5;
 		$w_icon = (3*$w_i0)+(2*$w_i1);

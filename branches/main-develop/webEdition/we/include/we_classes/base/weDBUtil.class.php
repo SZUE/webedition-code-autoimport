@@ -29,8 +29,7 @@
  * Implements db operations
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
+//FIXME: integrate into DB-class!
 	class weDBUtil {
 
 		function isColExist($tab,$col){

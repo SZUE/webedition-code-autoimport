@@ -23,8 +23,6 @@
  */
 
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 	class we_element{
 
 		var $ClassName=__CLASS__;

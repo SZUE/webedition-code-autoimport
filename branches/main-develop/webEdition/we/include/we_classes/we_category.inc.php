@@ -29,8 +29,6 @@
  * Provides functions for handling webEdition category.
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 	class we_category extends weModelBase{
 
 		var $ClassName=__CLASS__;

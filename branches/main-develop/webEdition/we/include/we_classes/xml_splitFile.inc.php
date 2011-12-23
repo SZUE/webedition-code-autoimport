@@ -67,7 +67,7 @@ class XML_SplitFile extends we_xml_parser {
 	 * @param      string $file
 	 * @see        we_xml_parser::getFile()
 	 */
-	function XML_SplitFile($file = "") {
+	function __construct($file = "") {
 		if (!empty($file)) {
 			// Read and try to parse the given file.
 			$this->getFile($file);

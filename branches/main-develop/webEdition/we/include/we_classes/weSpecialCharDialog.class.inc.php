@@ -22,12 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-
 class weSpecialCharDialog extends weDialog{
 
-##################################################################################################
+
 
 	var $dialogWidth = 270;
 	var $JsOnly = true;
@@ -36,7 +33,7 @@ class weSpecialCharDialog extends weDialog{
 
 	var $charset = "iso-88591";
 
-##################################################################################################
+
 
 	function __construct(){
 		parent::__construct();
@@ -44,14 +41,14 @@ class weSpecialCharDialog extends weDialog{
 		$this->defaultInit();
 	}
 
-##################################################################################################
+
 
 	function defaultInit(){
 		$this->args["char"] = "";
 	}
 
 
-##################################################################################################
+
 
 	function getDialogContentHTML(){
 
@@ -211,6 +208,6 @@ class weSpecialCharDialog extends weDialog{
 	}
 
 
-##################################################################################################
+
 
 }

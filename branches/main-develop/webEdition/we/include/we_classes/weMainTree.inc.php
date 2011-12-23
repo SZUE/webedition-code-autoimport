@@ -28,11 +28,11 @@
 
 	class weMainTree extends weTree{
 
-		function weMainTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
+		function __construct($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
 			if(!isset($GLOBALS["l_css"])){
 				$GLOBALS["l_css"]['font_family']='arial';
 			}
-			weTree::weTree($frameset,$topFrame,$treeFrame,$cmdFrame);
+			parent::__construct($frameset,$topFrame,$treeFrame,$cmdFrame);
 
 
 			$node_layouts=array(

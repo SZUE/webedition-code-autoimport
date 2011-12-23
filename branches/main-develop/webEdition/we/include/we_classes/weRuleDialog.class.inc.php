@@ -23,11 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-
 class weRuleDialog extends weDialog{
-
-##################################################################################################
 
 	var $dialogWidth = 270;
 	var $JsOnly = true;
@@ -39,15 +35,13 @@ class weRuleDialog extends weDialog{
 									"align"
 								);
 
-##################################################################################################
-
 	function __construct(){
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg',"[edit_hr]");
 		$this->defaultInit();
 	}
 
-##################################################################################################
+
 
 	function defaultInit(){
 		$this->args["width"] = "";
@@ -58,7 +52,7 @@ class weRuleDialog extends weDialog{
 	}
 
 
-##################################################################################################
+
 
 	function getDialogContentHTML(){
 		$foo = $this->formColor(7,"we_dialog_args[color]",(isset($this->args["color"]) ? $this->args["color"] : ""),50);
@@ -96,6 +90,6 @@ class weRuleDialog extends weDialog{
 	}
 
 
-##################################################################################################
+
 
 }

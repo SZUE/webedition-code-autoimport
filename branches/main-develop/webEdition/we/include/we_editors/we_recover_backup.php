@@ -33,7 +33,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	if(isset($_REQUEST["step"])) $step=$_REQUEST["step"];
 	else $step=1;
 
-	$weBackupWizard=new weBackupWizard("/webEdition/we/include/we_editors/we_recover_backup.php",RECOVER_MODE);
+	$weBackupWizard=new weBackupWizard("/webEdition/we/include/we_editors/we_recover_backup.php",weBackupWizard::RECOVER);
 
 	switch($what){
 		case "frameset": print $weBackupWizard->getHTMLFrameset();break;

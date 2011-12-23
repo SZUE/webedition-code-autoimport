@@ -23,10 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_multiSelector.inc.php");
-
-if(!defined("FS_DEL")) define("FS_DEL",11);
-
 class we_delSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
@@ -55,7 +51,7 @@ class we_delSelector extends we_multiSelector{
 			case we_fileselector::CMD:
 				$this->printCmdHTML();
 				break;
-			case FS_DEL:
+			case self::DEL:
 				$this->printDoDelEntryHTML();
 				break;
 			case we_fileselector::FRAMESET:
@@ -103,7 +99,7 @@ function deleteEntry(){
 			todel = "," + todel;
 		}
 
-		top.fscmd.location.replace(top.queryString(<?php print FS_DEL; ?>,top.currentID)+"&todel="+escape(todel));
+		top.fscmd.location.replace(top.queryString(<?php print self::DEL; ?>,top.currentID)+"&todel="+escape(todel));
 		top.fsfooter.disableDelBut();
 
 		if(docIsOpen) {

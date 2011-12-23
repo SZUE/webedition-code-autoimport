@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_dirSelector.inc.php");
-
 
 class we_docSelector extends we_dirSelector {
 	var $fields = "ID,ParentID,Text,Path,IsFolder,ContentType,Icon,ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID";

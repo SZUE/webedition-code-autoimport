@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,32 +22,20 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-
 class weColorDialog extends weDialog{
-
-##################################################################################################
 
 	var $changeableArgs = array("color");
 	var $JsOnly = true;
 
-##################################################################################################
-
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg',"[choosecolor]");
+		$this->dialogTitle = g_l('wysiwyg', "[choosecolor]");
 		$this->args["color"] = "";
 	}
 
-##################################################################################################
-
 	function getDialogContentHTML(){
 
-$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
+		$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
 <script  type="text/javascript">
 var z=0;
 for ( col in we_color2 ){
@@ -54,7 +43,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="'.IMAGE_DIR.'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'" /></a></td>\');
+document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="' . IMAGE_DIR . 'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'" /></a></td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');
@@ -72,32 +61,29 @@ if(z != 0){
 </script>
 		</table>
 	';
-	$trash = we_button::create_button("image:btn_function_trash", "javascript:selectColor('')");
+		$trash = we_button::create_button("image:btn_function_trash", "javascript:selectColor('')");
 
-	$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;'.($this->args["color"] ? ('background-color:'.$this->args["color"].';') : '').'" value="'.$this->args["color"].'" /></td><td>'.we_html_tools::getPixel(10,2).'</td><td>'.$trash.'</td></tr></table>';
-	$color = we_html_tools::htmlFormElementTable($foo,g_l('wysiwyg',"[color]"));
+		$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;' . ($this->args["color"] ? ('background-color:' . $this->args["color"] . ';') : '') . '" value="' . $this->args["color"] . '" /></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $trash . '</td></tr></table>';
+		$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
 
 
-	$table = '<table border="0" cellpadding="0" cellspacing="0">
+		$table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>'.$colortable.'</td>
+		<td>' . $colortable . '</td>
 	</tr>
 	<tr>
-		<td>'.we_html_tools::getPixel(2,10).'</td>
+		<td>' . we_html_tools::getPixel(2, 10) . '</td>
 	</tr>
 	<tr>
-		<td>'.$color.'</td>
+		<td>' . $color . '</td>
 	</tr>
 </table>
 ';
-	return $table;
-
+		return $table;
 	}
 
-##################################################################################################
-
 	function getJs(){
-		return weDialog::getJs(). we_htmlElement::jsScript(JS_DIR.'we_colors2.js').'
+		return weDialog::getJs() . we_htmlElement::jsScript(JS_DIR . 'we_colors2.js') . '
 <script  type="text/javascript">
 
 function selectColor(c){
@@ -109,7 +95,5 @@ function selectColor(c){
 </script>
 ';
 	}
-
-##################################################################################################
 
 }

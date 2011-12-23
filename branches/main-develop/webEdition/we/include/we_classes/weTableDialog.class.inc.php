@@ -23,11 +23,9 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weDialog.class.inc.php");
-
 class weTableDialog extends weDialog{
 
-##################################################################################################
+
 	var $ClassName = __CLASS__;
 
 	var $JsOnly = true;
@@ -46,7 +44,7 @@ class weTableDialog extends weDialog{
 									"summary"
 								);
 
-##################################################################################################
+
 
 	function __construct(){
 		parent::__construct();
@@ -54,7 +52,7 @@ class weTableDialog extends weDialog{
 		$this->defaultInit();
 	}
 
-##################################################################################################
+
 
 	function defaultInit(){
 		$this->args["border"] = "";
@@ -71,7 +69,7 @@ class weTableDialog extends weDialog{
 		$this->args["summary"] = "";
 	}
 
-##################################################################################################
+
 
 	function getDialogContentHTML(){
 
@@ -142,7 +140,7 @@ class weTableDialog extends weDialog{
 	}
 
 
-##################################################################################################
+
 
 	function getJs(){
 		$js = weDialog::getJs().'	<script language=javascript>
@@ -171,6 +169,6 @@ class weTableDialog extends weDialog{
 		return $js;
 	}
 
-##################################################################################################
+
 
 }

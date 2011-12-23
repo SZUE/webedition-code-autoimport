@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,39 +29,35 @@
  * Provides functions determined to handle a list of last modified files required by
  * the 'personalized desktop'.
  */
+abstract class we_history{
 
-class we_history
-{
-
-	function userHasPerms($creatorid,$owners,$restricted){
+	static function userHasPerms($creatorid, $owners, $restricted){
 		if($_SESSION['perms']['ADMINISTRATOR']){
 			return true;
 		}
 		if(!$restricted){
 			return true;
 		}
-		if(we_isOwner($owners) || we_isOwner($creatorid)) {
+		if(we_isOwner($owners) || we_isOwner($creatorid)){
 			return true;
 		}
 		return false;
 	}
 
-
 	static function insertIntoHistory(&$object){
 		$_db = new DB_WE();
 		//print $object->Table;
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
-		$_query = "SELECT * FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".DID=".intval($object->ID).
-							" AND " . HISTORY_TABLE . ".DocumentTable='".$_db->escape(str_replace(TBL_PREFIX,'',$object->Table))."';";
+		$_query = "SELECT * FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".DID=" . intval($object->ID) .
+			" AND " . HISTORY_TABLE . ".DocumentTable='" . $_db->escape(str_replace(TBL_PREFIX, '', $object->Table)) . "';";
 		$object->DB_WE->query($_query);
-		while($object->DB_WE->next_record()){
+		while($object->DB_WE->next_record()) {
 			$_row = "DELETE FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".ID = '" . $_db->escape($object->DB_WE->f("ID")) . "';";
 			$_db->query($_row);
 		}
 
-		$_query = 'INSERT INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,Act,UserName) VALUES('.intval($object->ID).',"'.$_db->escape(str_replace(TBL_PREFIX,'',$object->Table)).'","'.$_db->escape($object->ContentType).'","'.$_db->escape($object->ModDate).'","save","'.$_db->escape($_username).'");';
+		$_query = 'INSERT INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,Act,UserName) VALUES(' . intval($object->ID) . ',"' . $_db->escape(str_replace(TBL_PREFIX, '', $object->Table)) . '","' . $_db->escape($object->ContentType) . '","' . $_db->escape($object->ModDate) . '","save","' . $_db->escape($_username) . '");';
 		$object->DB_WE->query($_query);
-
 	}
 
 	/**
@@ -69,13 +66,12 @@ class we_history
 	 * @param array $modelIds
 	 * @param string $table
 	 */
-	function deleteFromHistory( $modelIds, $table ) {
+	static function deleteFromHistory($modelIds, $table){
 
 		$_db = new DB_WE();
 
 		$query = "DELETE FROM " . HISTORY_TABLE . " WHERE DID in (" . implode(", ", $modelIds) . ") AND DocumentTable = \"" . stripTblPrefix($table) . "\"";
-		$_db->query( $query );
-
+		$_db->query($query);
 	}
 
 }

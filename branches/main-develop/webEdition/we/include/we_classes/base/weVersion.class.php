@@ -29,8 +29,6 @@
  * Provides functions for exporting and importing backups.
  */
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 	class weVersion{
 
 		var $db;
@@ -47,7 +45,7 @@
 
 		var $linkData=true;
 
-		function weVersion($id=0){
+		function __construct($id=0){
 			$this->Pseudo="weVersion";
 			$this->persistent_slots=array("ID", "ClassName","Path","Data","SeqN");
 			foreach($this->persistent_slots as $slot) $this->$slot="";

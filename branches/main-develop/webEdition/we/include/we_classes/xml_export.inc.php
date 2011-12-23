@@ -31,7 +31,7 @@ class XML_Export {
 	var $docs_exported = array();
 	var $temps_exported = array();
 
-	function XML_Export() {print "init";}
+	function __construct() {print "init";}
 
 	function parse_we_tag($we_tag, $document_id) {
 		global $DB_WE;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,49 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove this class
+class weBrowser{
 
+	function getDownloadLinkText(){
+		$browser = new we_base_browserDetect();
 
-
-class weBrowser {
-
-	function getDownloadLinkText() {
-
-		$map = array(
-			"de" => "Deutsch",
-			"nl" => "Dutch",
-			"fi" => "Finnish",
-			"fr" => "French",
-			"pl" => "Polish",
-			"ru" => "Russian",
-			"es" => "Spanish"
-		);
-
-		$tmp = explode("_",$_SERVER["HTTP_ACCEPT_LANGUAGE"]);
-		$lang = (isset ($map[$tmp[0]]) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $map[$tmp[0]]))
-						  ?  $map[$tmp[0]]  :  $GLOBALS["WE_LANGUAGE"];
-
-
-		if (isset($_SERVER['HTTP_USER_AGENT'])) {
-
-			$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-			if (strpos($ua,"safari") !== false) {
-				$out = g_l('browser','[save_link_as_SAFARI]');
-			} else if (strpos($ua,"msie") !== false) {
-				$out = g_l('browser','[save_link_as_IE]');
-			} else if (strpos($ua,"firefox") !== false) {
-				$out = g_l('browser','[save_link_as_FF]');
-			} else if (strpos($ua,"seamonkey") !== false) {
-				$out = g_l('browser','[save_link_as_SM]');
-			} else if (strpos($ua,"gecko") !== false) {
-				$out = g_l('browser','[save_link_as_SM]');
-			} else {
-				$out = g_l('browser','[save_link_as_DEFAULT]');
-			}
-
-			return nl2br(htmlspecialchars(preg_replace('#<br\s*/?\s*>#i',"\n",$out)));
+		switch($browser->getBrowser()){
+			case we_base_browserDetect::SAFARI:
+			case we_base_browserDetect::APPLE:
+				$out = g_l('browser', '[save_link_as_SAFARI]');
+				break;
+			case we_base_browserDetect::IE:
+				$out = g_l('browser', '[save_link_as_IE]');
+				break;
+			case we_base_browserDetect::FF:
+				$out = g_l('browser', '[save_link_as_FF]');
+				break;
+			case we_base_browserDetect::OPERA:
+			default:
+				$out = g_l('browser', '[save_link_as_DEFAULT]');
 		}
 
-
+		return nl2br(htmlspecialchars(preg_replace('#<br\s*/?\s*>#i', "\n", $out)));
 	}
 
 }
