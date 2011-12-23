@@ -22,10 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerView.php");
-include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerTree.php");
 
 class weCustomerFrames extends weModuleFrames {
 

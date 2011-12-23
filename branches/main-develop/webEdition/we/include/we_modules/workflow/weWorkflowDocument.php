@@ -23,266 +23,249 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-define ("WORKFLOWDOC_STATUS_UNKNOWN", 0);
-define ("WORKFLOWDOC_STATUS_FINISHED", 1);
-define ("WORKFLOWDOC_STATUS_CANCELED", 2);
-
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocumentStep.php");
-
 class weWorkflowDocument extends weWorkflowBase{
+	const STATUS_UNKNOWN=0;
+	const STATUS_FINISHED=1;
+	const STATUS_CANCELED=2;
+
 	//properties
 	var $ID;
 	var $workflowID;
 	var $documentID;
 	var $userID;
 	var $Status;
-
 	//accossiations
 	var $workflow;
 	var $document;
 	var $steps = array();
 
 	/**
-	* Default Constructor
-	*
-	*/
-	function weWorkflowDocument($wfDocument=0){
-		weWorkflowBase::weWorkflowBase();
-		$this->table=WORKFLOW_DOC_TABLE;
-		$this->ClassName="weWorkflowDocument";
-		$this->persistents[]="ID";
-		$this->persistents[]="workflowID";
-		$this->persistents[]="documentID";
-		$this->persistents[]="userID";
-		$this->persistents[]="Status";
+	 * Default Constructor
+	 *
+	 */
+	function __construct($wfDocument=0){
+		parent::__construct();
+		$this->table = WORKFLOW_DOC_TABLE;
+		$this->ClassName = "weWorkflowDocument";
+		$this->persistents[] = "ID";
+		$this->persistents[] = "workflowID";
+		$this->persistents[] = "documentID";
+		$this->persistents[] = "userID";
+		$this->persistents[] = "Status";
 
 		$this->ID = 0;
 		$this->workflowID = 0;
 		$this->documentID = 0;
 		$this->userID = 0;
-		$this->Status=0;
+		$this->Status = 0;
 		$this->steps = array();
 		$this->document = false;
 		$this->workflow = false;
 
 		if($wfDocument){
-			$this->ID=$wfDocument;
+			$this->ID = $wfDocument;
 			$this->load($wfDocument);
 		}
-
-
 	}
 
 	/**
-	* Load data from database
-	*/
+	 * Load data from database
+	 */
 	function load($id=0){
-		if ($id) $this->ID=$id;
+		if($id)
+			$this->ID = $id;
 
-		if($this->ID)
-		{
+		if($this->ID){
 			parent::load();
 			$this->workflow = new weWorkflow($this->workflowID);
 
-			$docTable=$this->workflow->Type==WE_WORKFLOW_OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
-			$this->db->query("SELECT * FROM $docTable WHERE ID=".intval($this->documentID));
+			$docTable = $this->workflow->Type == WE_WORKFLOW_OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
+			$this->db->query("SELECT * FROM $docTable WHERE ID=" . intval($this->documentID));
 			if($this->db->next_record())
 				if($this->db->f("ClassName")){
-					$tmp=$this->db->f("ClassName");
-					$this->document=new $tmp();
+					$tmp = $this->db->f("ClassName");
+					$this->document = new $tmp();
 					if($this->document){
-						$this->document->initByID($this->documentID,$docTable);
+						$this->document->initByID($this->documentID, $docTable);
 						$this->document->we_load(we_class::LOAD_TEMP_DB);
 					}
 				}
 
 			$this->steps = weWorkflowDocumentStep::__getAllSteps($this->ID);
-
 		}
-
 	}
 
-	function approve($uID,$desc,$force=false){
-		$i=$this->findLastActiveStep();
-		if($i<0 && !$force){
+	function approve($uID, $desc, $force=false){
+		$i = $this->findLastActiveStep();
+		if($i < 0 && !$force){
 			return false;
 		}
-		$ret=$this->steps[$i]->approve($uID,$desc,$force);
-		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_APPROVED){
-			$this->nextStep($i,$desc,$uID);
+		$ret = $this->steps[$i]->approve($uID, $desc, $force);
+		if($this->steps[$i]->Status == weWorkflowDocumentStep::STATUS_APPROVED){
+			$this->nextStep($i, $desc, $uID);
 		}
 		return $ret;
 	}
 
-	function autopublish($uID,$desc,$force=false){
-		$i=$this->findLastActiveStep();
-		if($i<0 && !$force){
+	function autopublish($uID, $desc, $force=false){
+		$i = $this->findLastActiveStep();
+		if($i < 0 && !$force){
 			return false;
 		}
-		$ret=$this->steps[$i]->approve($uID,$desc,$force);
-		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_APPROVED){
-			$this->finishWorkflow(1,$uID);
+		$ret = $this->steps[$i]->approve($uID, $desc, $force);
+		if($this->steps[$i]->Status == weWorkflowDocumentStep::STATUS_APPROVED){
+			$this->finishWorkflow(1, $uID);
 			$this->document->save();
-			if ($this->document->i_publInScheduleTable()){
+			if($this->document->i_publInScheduleTable()){
 				$foo = $this->document->getNextPublishDate();
-			} else {
+			} else{
 				$this->document->we_publish();
 			}
-			$path = "<b>".g_l('modules_workflow','['.stripTblPrefix($this->workflow->Type==2 ? OBJECT_FILES_TABLE : FILE_TABLE).'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
-			$mess="<p><b>".g_l('modules_workflow','[auto_published]')."</b></p><p>".$desc."</p><p>".$path."</p>";
-			$deadline=time();
-			$this->sendTodo($this->userID,g_l('modules_workflow','[auto_published]'),$mess,$deadline,1);
-			$desc = str_replace('<br />',"\n",$desc);
-			$mess = g_l('modules_workflow','[auto_published]')."\n\n".$desc."\n\n".$this->document->Path;
-			$this->sendMail($this->userID,g_l('modules_workflow','[auto_published]').($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
-
+			$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
+			$mess = "<p><b>" . g_l('modules_workflow', '[auto_published]') . "</b></p><p>" . $desc . "</p><p>" . $path . "</p>";
+			$deadline = time();
+			$this->sendTodo($this->userID, g_l('modules_workflow', '[auto_published]'), $mess, $deadline, 1);
+			$desc = str_replace('<br />', "\n", $desc);
+			$mess = g_l('modules_workflow', '[auto_published]') . "\n\n" . $desc . "\n\n" . $this->document->Path;
+			$this->sendMail($this->userID, g_l('modules_workflow', '[auto_published]') . ($this->workflow->EmailPath ? ' ' . $this->document->Path : ''), $mess);
 		}
 		return $ret;
 	}
 
-	function decline($uID,$desc,$force=false){
-		$i=$this->findLastActiveStep();
-		if($i<0 && !$force) return false;
-		$ret=$this->steps[$i]->decline($uID,$desc,$force);
-		if($this->steps[$i]->Status==WORKFLOWDOC_STEP_STATUS_CANCELED){
-			$this->finishWorkflow(1,$uID);
+	function decline($uID, $desc, $force=false){
+		$i = $this->findLastActiveStep();
+		if($i < 0 && !$force)
+			return false;
+		$ret = $this->steps[$i]->decline($uID, $desc, $force);
+		if($this->steps[$i]->Status == weWorkflowDocumentStep::STATUS_CANCELED){
+			$this->finishWorkflow(1, $uID);
 
-			$path = "<b>".g_l('modules_workflow','['.stripTblPrefix($this->workflow->Type==2 ? OBJECT_FILES_TABLE : FILE_TABLE).'][messagePath]').':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\''.$this->document->Table.'\',\''.$this->document->ID.'\',\''.$this->document->ContentType.'\');");" >'.$this->document->Path.'</a>';
-			$mess="<p><b>".g_l('modules_workflow','[todo_returned]')."</b></p><p>".$desc."</p><p>".$path."</p>";
-			$deadline=time()+3600;
-			$this->sendTodo($this->userID,g_l('modules_workflow','[todo_returned]'),$mess,$deadline,1);
-			$desc = str_replace('<br />',"\n",$desc);
-			$mess = g_l('modules_workflow','[todo_returned]')."\n\n".$desc."\n\n".$this->document->Path;
-			$this->sendMail($this->userID,g_l('modules_workflow','[todo_returned]').($this->workflow->EmailPath ? ' '.$this->document->Path :''),$mess);
+			$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
+			$mess = "<p><b>" . g_l('modules_workflow', '[todo_returned]') . "</b></p><p>" . $desc . "</p><p>" . $path . "</p>";
+			$deadline = time() + 3600;
+			$this->sendTodo($this->userID, g_l('modules_workflow', '[todo_returned]'), $mess, $deadline, 1);
+			$desc = str_replace('<br />', "\n", $desc);
+			$mess = g_l('modules_workflow', '[todo_returned]') . "\n\n" . $desc . "\n\n" . $this->document->Path;
+			$this->sendMail($this->userID, g_l('modules_workflow', '[todo_returned]') . ($this->workflow->EmailPath ? ' ' . $this->document->Path : ''), $mess);
 		}
 		return $ret;
 	}
 
 	function restartWorkflow($desc){
-		foreach($this->steps as $k=>$v) $this->steps[$k]->delete();
-		$this->steps=weWorkflowDocumentStep::__createAllSteps($this->workflowID);
+		foreach($this->steps as $k => $v)
+			$this->steps[$k]->delete();
+		$this->steps = weWorkflowDocumentStep::__createAllSteps($this->workflowID);
 		$this->steps[0]->start($desc);
 	}
 
-
-	function nextStep($index=-1,$desc="",$uid=0){
-		if($index>-1){
-			if($index<count($this->steps)-1) $this->steps[$index+1]->start($desc);
-			else $this->finishWorkflow(0,$uid);
-
+	function nextStep($index=-1, $desc="", $uid=0){
+		if($index > -1){
+			if($index < count($this->steps) - 1)
+				$this->steps[$index + 1]->start($desc);
+			else
+				$this->finishWorkflow(0, $uid);
 		}
 	}
 
-	function finishWorkflow($force=0,$uID=0){
+	function finishWorkflow($force=0, $uID=0){
 		if($force){
-			$this->Status = WORKFLOWDOC_STATUS_CANCELED;
-			foreach($this->steps as $sk=>$sv){
-				if($this->steps[$sk]->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN) $this->steps[$sk]->Status=WORKFLOWDOC_STEP_STATUS_CANCELED;
-				foreach($this->steps[$sk]->tasks as $tk=>$tv){
-					if($this->steps[$sk]->tasks[$tk]->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN) $this->steps[$sk]->tasks[$tk]->Status=WORKFLOWDOC_TASK_STATUS_CANCELED;
+			$this->Status = self::STATUS_CANCELED;
+			foreach($this->steps as $sk => $sv){
+				if($this->steps[$sk]->Status == weWorkflowDocumentStep::STATUS_UNKNOWN)
+					$this->steps[$sk]->Status = weWorkflowDocumentStep::STATUS_CANCELED;
+				foreach($this->steps[$sk]->tasks as $tk => $tv){
+					if($this->steps[$sk]->tasks[$tk]->Status == weWorkflowDocumentTask::STATUS_UNKNOWN)
+						$this->steps[$sk]->tasks[$tk]->Status = weWorkflowDocumentTask::STATUS_CANCELED;
 				}
-
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->ID,$uID,LOG_TYPE_DOC_FINISHED_FORCE,"");
+			$this->Log->logDocumentEvent($this->ID, $uID, LOG_TYPE_DOC_FINISHED_FORCE, "");
 		}
 		else{
-			$this->Status = WORKFLOWDOC_STATUS_FINISHED;
-			$this->Log->logDocumentEvent($this->ID,$uID,LOG_TYPE_DOC_FINISHED,"");
+			$this->Status = self::STATUS_FINISHED;
+			$this->Log->logDocumentEvent($this->ID, $uID, LOG_TYPE_DOC_FINISHED, "");
 		}
 		return true;
-
 	}
 
 	/**
-	* Create next step or finish workflow document if last step is done
-	*
-	*/
-	function createNextStep($stepKey,$uid=0){
-		if ($stepKey >= count($this->steps)){
+	 * Create next step or finish workflow document if last step is done
+	 *
+	 */
+	function createNextStep($stepKey, $uid=0){
+		if($stepKey >= count($this->steps)){
 			// no more steps, finish workflow
-			return $this->finishWorkflow(0,$uid);
+			return $this->finishWorkflow(0, $uid);
 		}
 		$step = &$this->steps[$stepKey];
 		$step->start();
 		return true;
 	}
 
-
 	/**
-	* Find last document Status step
-	*
-	*/
+	 * Find last document Status step
+	 *
+	 */
 	function findLastActiveStep(){
-		for ($i = count($this->steps)-1 ; $i>=0; $i--){
-			if ($this->steps[$i]->startDate>0){
+		for($i = count($this->steps) - 1; $i >= 0; $i--){
+			if($this->steps[$i]->startDate > 0){
 				return $i;
 			}
 		}
 		return -1;
 	}
 
-
 	/**
-	* save workflow document in database
-	*
-	*/
+	 * save workflow document in database
+	 *
+	 */
 	function save(){
-		if(!$this->documentID) return false;
+		if(!$this->documentID)
+			return false;
 		parent::save();
-		for ($i=0; $i<count($this->steps); $i++){
+		for($i = 0; $i < count($this->steps); $i++){
 			$this->steps[$i]->workflowDocID = $this->ID;
 			$this->steps[$i]->save();
 		}
 		return true;
 	}
 
-
 	function delete(){
-		if (!$this->ID){
+		if(!$this->ID){
 			return false;
 		}
 
-		foreach($this->steps as $k=>$v) $v->delete();
+		foreach($this->steps as $k => $v)
+			$v->delete();
 		parent::delete();
 		return true;
 	}
 
+	/*	 * ***************** STATIC FUNCTIONS**************************
+	  /**
+	 * return workflowDocument for document
+	 *    return false if no workflow
+	 */
 
-
-	/******************* STATIC FUNCTIONS**************************
-	/**
-	* return workflowDocument for document
-	*    return false if no workflow
-	*/
-
-	function find($documentID,$type="0,1",$status=WORKFLOWDOC_STATUS_UNKNOWN){
+	function find($documentID, $type="0,1", $status=self::STATUS_UNKNOWN){
 
 		$db = new DB_WE();
-		$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".documentID=".intval($documentID)." AND ".WORKFLOW_DOC_TABLE.".Status IN (".$db->escape($status).")".($type!="" ? " AND ".WORKFLOW_TABLE.".Type IN (".$db->escape($type).")" : "")." ORDER BY ".WORKFLOW_DOC_TABLE.".ID DESC");
-		if ($db->next_record())
-		{
+		$db->query("SELECT " . WORKFLOW_DOC_TABLE . ".ID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type != "" ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC");
+		if($db->next_record()){
 			return new weWorkflowDocument($db->f("ID"));
-		}
-		else
-		{
+		} else{
 			return false;
 		}
 	}
 
 	/**
-	* Create new workflow document
-	*    if workflow for that document exists, function will return it
-	*/
+	 * Create new workflow document
+	 *    if workflow for that document exists, function will return it
+	 */
+	function createNew($documentID, $type, $workflowID, $userID, $desc){
+		$newWfDoc = weWorkflowDocument::find($documentID, $type);
 
-	function createNew($documentID, $type, $workflowID, $userID, $desc)
-	{
-		$newWfDoc = weWorkflowDocument::find($documentID,$type);
-
-		if (isset($newWfDoc->ID))
-		{
+		if(isset($newWfDoc->ID)){
 			return $newWfDoc;
 		}
 

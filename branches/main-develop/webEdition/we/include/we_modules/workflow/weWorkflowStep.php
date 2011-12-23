@@ -24,9 +24,6 @@
  */
 
 
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowBase.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowTask.php");
-
 /**
 * Workflow Task Type OR Flag
 * only one task from current step has to be done
@@ -61,8 +58,8 @@ class weWorkflowStep extends weWorkflowBase{
 	*
 	* Can load or create new Workflow Step Definition depends of parameter
 	*/
-	function weWorkflowStep($stepID = 0){
-		parent::weWorkflowBase();
+	function __construct($stepID = 0){
+		parent::__construct();
 		$this->table=WORKFLOW_STEP_TABLE;
 
 		$this->persistents[]="ID";

@@ -24,12 +24,6 @@
  */
 
 
-define ("WORKFLOWDOC_TASK_STATUS_UNKNOWN", 0);
-define ("WORKFLOWDOC_TASK_STATUS_APPROVED", 1);
-define ("WORKFLOWDOC_TASK_STATUS_CANCELED", 2);
-
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowBase.php");
-
 /**
 * WorkfFlow Document Task definition
 *
@@ -37,6 +31,9 @@ include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowBase.php");
 *
 */
 class weWorkflowDocumentTask extends weWorkflowBase{
+const STATUS_UNKNOWN=0;
+const STATUS_APPROVED=1;
+const STATUS_CANCELED=2;
 
 	// workflow document task ID
 	var $ID;
@@ -54,8 +51,8 @@ class weWorkflowDocumentTask extends weWorkflowBase{
 	/**
 	* Default Constructor
 	*/
-	function weWorkflowDocumentTask($wfDocumentTask=0){
-		parent::weWorkflowBase();
+	function __construct($wfDocumentTask=0){
+		parent::__construct();
 		$this->table=WORKFLOW_DOC_TASK_TABLE;
 		$this->ClassName="weWorkflowDocumentTask";
 
@@ -71,7 +68,7 @@ class weWorkflowDocumentTask extends weWorkflowBase{
 		$this->workflowTaskID = 0;
 		$this->Date = 0;
 		$this->todoID = 0;
-		$this->Status = WORKFLOWDOC_TASK_STATUS_UNKNOWN;
+		$this->Status = self::STATUS_UNKNOWN;
 
 		if($wfDocumentTask){
 			$this->ID = $wfDocumentTask;
@@ -81,13 +78,13 @@ class weWorkflowDocumentTask extends weWorkflowBase{
 
 
 	function approve(){
-		$this->Status=WORKFLOWDOC_TASK_STATUS_APPROVED;
+		$this->Status=self::STATUS_APPROVED;
 		$this->Date=time();
 		$this->doneTodo();
 	}
 
 	function decline(){
-		$this->Status=WORKFLOWDOC_TASK_STATUS_CANCELED;
+		$this->Status=self::STATUS_CANCELED;
 		$this->Date=time();
 		$this->rejectTodo();
 	}

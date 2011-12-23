@@ -24,19 +24,15 @@
  */
 
 
-define ("WORKFLOWDOC_STEP_STATUS_UNKNOWN", 0);
-define ("WORKFLOWDOC_STEP_STATUS_APPROVED", 1);
-define ("WORKFLOWDOC_STEP_STATUS_CANCELED", 2);
-define ("WORKFLOWDOC_STEP_STATUS_AUTOPUBLISHED", 3);
-
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowBase.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocumentTask.php");
-
 /**
 * WorkfFlow Document Step definition
 * This class describe document step in workflow process
 */
 class weWorkflowDocumentStep extends weWorkflowBase{
+const STATUS_UNKNOWN=0;
+const STATUS_APPROVED=1;
+const STATUS_CANCELED=2;
+const STATUS_AUTOPUBLISHED=3;
 
 
 	var $ID;
@@ -56,9 +52,9 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	*
 	* Can load or create new Workflow Step Definition depends of parameter
 	*/
-	function weWorkflowDocumentStep($wfDocumentStep=0)
+	function __construct($wfDocumentStep=0)
 	{
-		parent::weWorkflowBase();
+		parent::__construct();
 		$this->table=WORKFLOW_DOC_STEP_TABLE;
 		$this->ClassName="weWorkflowDocumentStep";
 
@@ -189,7 +185,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			foreach($this->tasks as $tk=>$tv){
 				$this->tasks[$tk]->approve();
 			}
-			$this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+			$this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 			$this->finishDate=time();
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE_FORCE,$desc);
@@ -200,24 +196,24 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			$this->tasks[$i]->approve();
 
 			$workflowStep = new weWorkflowStep($this->workflowStepID);
-			if($workflowStep->stepCondition==0) $this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+			if($workflowStep->stepCondition==0) $this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 			else{
 				$num=$this->findNumOfFinishedTasks();
 				if($num==count($this->tasks)){
 					$status=true;
 					foreach($this->tasks as $k=>$v){
-						$status=$status && ($v->Status==WORKFLOWDOC_TASK_STATUS_APPROVED ? true : false);
+						$status=$status && ($v->Status==weWorkflowDocumentTask::STATUS_APPROVED ? true : false);
 					}
 
-					if($status) $this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+					if($status) $this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 
 
 				}
 			}
-			if($this->Status==WORKFLOWDOC_STEP_STATUS_APPROVED || $this->Status==WORKFLOWDOC_STEP_STATUS_CANCELED){
+			if($this->Status==weWorkflowDocumentStep::STATUS_APPROVED || $this->Status==weWorkflowDocumentStep::STATUS_CANCELED){
 				$this->finishDate=time();
 				foreach($this->tasks as $tk=>$tv){
-					if($tv->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN) $this->tasks[$tk]->removeTodo();
+					if($tv->Status==weWorkflowDocumentTask::STATUS_UNKNOWN) $this->tasks[$tk]->removeTodo();
 				}
 
 			}
@@ -234,7 +230,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			foreach($this->tasks as $tk=>$tv){
 				$this->tasks[$tk]->approve();
 			}
-			$this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+			$this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 			$this->finishDate=time();
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE_FORCE,$desc);
@@ -245,24 +241,24 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			$this->tasks[$i]->approve();
 
 			$workflowStep = new weWorkflowStep($this->workflowStepID);
-			if($workflowStep->stepCondition==0) $this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+			if($workflowStep->stepCondition==0) $this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 			else{
 				$num=$this->findNumOfFinishedTasks();
 				if($num==count($this->tasks)){
 					$status=true;
 					foreach($this->tasks as $k=>$v){
-						$status=$status && ($v->Status==WORKFLOWDOC_TASK_STATUS_APPROVED ? true : false);
+						$status=$status && ($v->Status==weWorkflowDocumentTask::STATUS_APPROVED ? true : false);
 					}
 
-					if($status) $this->Status=WORKFLOWDOC_STEP_STATUS_APPROVED;
+					if($status) $this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 
 
 				}
 			}
-			if($this->Status==WORKFLOWDOC_STEP_STATUS_APPROVED || $this->Status==WORKFLOWDOC_STEP_STATUS_CANCELED){
+			if($this->Status==weWorkflowDocumentStep::STATUS_APPROVED || $this->Status==weWorkflowDocumentStep::STATUS_CANCELED){
 				$this->finishDate=time();
 				foreach($this->tasks as $tk=>$tv){
-					if($tv->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN) $this->tasks[$tk]->removeTodo();
+					if($tv->Status==weWorkflowDocumentTask::STATUS_UNKNOWN) $this->tasks[$tk]->removeTodo();
 				}
 
 			}
@@ -277,7 +273,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	function decline($uID,$desc,$force=false){
 		if($force){
 			foreach($this->tasks as $tk=>$tv) $this->tasks[$tk]->decline();;
-			$this->Status=WORKFLOWDOC_STEP_STATUS_CANCELED;
+			$this->Status=weWorkflowDocumentStep::STATUS_CANCELED;
 			$this->finishDate=time();
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_DECLINE,$desc);
@@ -287,8 +283,8 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		if($i>-1){
 			$this->tasks[$i]->decline();
 			$workflowStep = new weWorkflowStep($this->workflowStepID);
-			$this->Status=WORKFLOWDOC_STEP_STATUS_CANCELED;
-			if($this->Status==WORKFLOWDOC_STEP_STATUS_APPROVED || $this->Status==WORKFLOWDOC_STEP_STATUS_CANCELED) $this->finishDate=time();
+			$this->Status=weWorkflowDocumentStep::STATUS_CANCELED;
+			if($this->Status==weWorkflowDocumentStep::STATUS_APPROVED || $this->Status==weWorkflowDocumentStep::STATUS_CANCELED) $this->finishDate=time();
 			//insert into document Log
 			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_DECLINE,$desc);
 			return true;
@@ -373,7 +369,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		$docStep->workflowStepID = $WorkflowStepArray["ID"];
 		$docStep->startDate = 0;
 		$docStep->finishDate = 0;
-		$docStep->Status =WORKFLOWDOC_STEP_STATUS_UNKNOWN;
+		$docStep->Status =weWorkflowDocumentStep::STATUS_UNKNOWN;
 		$docStep->tasks=weWorkflowDocumentTask::__createAllTasks($docStep->workflowStepID);
 		return $docStep;
 	}

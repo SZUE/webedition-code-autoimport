@@ -22,12 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossary.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryCache.php");
-
-
 class weGlossaryView {
 
 	/**

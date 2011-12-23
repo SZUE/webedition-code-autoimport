@@ -24,9 +24,6 @@
  */
 
 
-/* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 class we_user {
 
 	/*

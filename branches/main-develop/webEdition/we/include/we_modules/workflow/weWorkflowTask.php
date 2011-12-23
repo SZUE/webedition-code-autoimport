@@ -45,9 +45,9 @@ class weWorkflowTask extends weWorkflowBase{
 	*
 	* Can load or create new Workflow Task Definition depends of parameter
 	*/
-	function weWorkflowTask($taskID = 0)
+	function __construct($taskID = 0)
 	{
-		parent::weWorkflowBase();
+		parent::__construct();
 		$this->table=WORKFLOW_TASK_TABLE;
 
 		$this->persistents[]="ID";

@@ -74,9 +74,9 @@ class weWorkflow extends weWorkflowBase{
 	* Can load or create new Workflow Definition depends of parameter
 	*/
 
-	function weWorkflow($workflowID = 0)
+	function __construct($workflowID = 0)
 	{
-        parent::weWorkflowBase();
+        parent::__construct();
         $this->table=WORKFLOW_TABLE;
 
 		$this->persistents[]='ID';

@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-
 class weXMLBrowser extends we_xml_parser{
 
 	var $cache;

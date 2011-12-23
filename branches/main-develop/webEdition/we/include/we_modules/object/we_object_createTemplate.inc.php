@@ -23,10 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_OBJECT_MODULE_DIR."we_object.inc.php");
-include_once(WE_OBJECT_MODULE_DIR."we_objectFile.inc.php");
-
 class we_makenewtemplate extends we_template
 {
 

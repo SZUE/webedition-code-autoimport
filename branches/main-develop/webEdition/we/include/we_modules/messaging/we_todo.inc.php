@@ -25,7 +25,6 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
-include_once(WE_MESSAGING_MODULE_DIR . "we_msg_proto.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_defs.inc.php");
 

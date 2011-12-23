@@ -24,9 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowLog.php");
 
 /**
 * Document Definition base class
@@ -45,7 +43,7 @@ class weWorkflowBase{
 
 	var $Log;
 
-	function weWorkflowBase()
+	function __construct()
 	{
 		$this->uid = "wf_".md5(uniqid(rand()));
 		$this->db = new DB_WE();

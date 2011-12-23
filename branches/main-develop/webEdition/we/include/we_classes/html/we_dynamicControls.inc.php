@@ -29,8 +29,6 @@
  * Provides functions for creating layers that can hide and unhide.
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 class we_dynamicControls {
 
 	/*************************************************************************

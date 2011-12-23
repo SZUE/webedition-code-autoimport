@@ -23,18 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryView.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryTree.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditor.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditorHome.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditorFolder.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditorType.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditorException.php");
-include_once(WE_GLOSSARY_MODULE_DIR."weGlossaryFrameEditorItem.php");
-
-
 class weGlossaryFrames extends weModuleFrames {
 
 	var $View;

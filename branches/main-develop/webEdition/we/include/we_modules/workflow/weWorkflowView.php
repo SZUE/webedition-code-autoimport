@@ -25,10 +25,6 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflow.php");
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
-
 class weWorkflowView extends weWorkflowBase{
 
 	// workflow array; format workflow[workflowID]=workflow_name
@@ -46,8 +42,8 @@ class weWorkflowView extends weWorkflowBase{
 
 	var $hiddens=array();
 
-	function weWorkflowView(){
-		weWorkflowBase::weWorkflowBase();
+	function __construct(){
+		parent::__construct();
 		$this->workflowDef=new weWorkflow();
 		$this->documentDef=new weWorkflowDocument();
         	$this->hiddens[]="ID";
@@ -1519,7 +1515,7 @@ class weWorkflowView extends weWorkflowBase{
 
 			$end=date(g_l('weEditorInfo',"[date_format]"),$sv->startDate+ round($workflowStep->Worktime*3600));
 
-			$content[$counter][0]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').($counter+1)."</div>";
+			$content[$counter][0]["dat"]=($sv->Status==weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').($counter+1)."</div>";
 			$content[$counter][0]["height"]="";
 			$content[$counter][0]["align"]="center";
 
@@ -1533,7 +1529,7 @@ class weWorkflowView extends weWorkflowBase{
 				$foo=f("SELECT username FROM ".USER_TABLE." WHERE ID=".intval($workflowTask->userID),"username",$db);
 
 				if($sk==$current)
-					$out=($tv->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$foo."</div>";
+					$out=($tv->Status==weWorkflowDocumentTask::STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$foo."</div>";
 				else if($sk<$current)
 					$out='<div class="'.$finished_font.'">'.$foo.'</div>';
 				else
@@ -1548,7 +1544,7 @@ class weWorkflowView extends weWorkflowBase{
 
 			$headline[$counter1+1]["dat"]=g_l('modules_workflow','[worktime]');
 
-         $content[$counter][$counter1+1]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$workflowStep->Worktime.'</div>';
+         $content[$counter][$counter1+1]["dat"]=($sv->Status==weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$workflowStep->Worktime.'</div>';
 			$content[$counter][$counter1+1]["height"]="";
 			$content[$counter][$counter1+1]["align"]="right";
 
@@ -1557,14 +1553,14 @@ class weWorkflowView extends weWorkflowBase{
 				$headline[$counter1+1]["dat"]=g_l('modules_workflow','[time_elapsed]');
 
 
-				$content[$counter][$counter1+1]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$elapsed["hour"].":".$elapsed["min"].":".$elapsed["sec"]."</div>";
+				$content[$counter][$counter1+1]["dat"]=($sv->Status==weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$elapsed["hour"].":".$elapsed["min"].":".$elapsed["sec"]."</div>";
 				$content[$counter][$counter1+1]["height"]="";
 				$content[$counter][$counter1+1]["align"]="right";
 
 				$counter1++;
 				$headline[$counter1+1]["dat"]=g_l('modules_workflow','[time_remained]');
 
-				$content[$counter][$counter1+1]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$remained["hour"].":".$remained["min"].":".$remained["sec"]."</div>";
+				$content[$counter][$counter1+1]["dat"]=($sv->Status==weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$remained["hour"].":".$remained["min"].":".$remained["sec"]."</div>";
 				$content[$counter][$counter1+1]["height"]="";
 				$content[$counter][$counter1+1]["align"]="right";
 
@@ -1572,7 +1568,7 @@ class weWorkflowView extends weWorkflowBase{
 
 				$headline[$counter1+1]["dat"]=g_l('modules_workflow','[step_plan]');
 
-				$content[$counter][$counter1+1]["dat"]=($sv->Status==WORKFLOWDOC_STEP_STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$end."</div>";
+				$content[$counter][$counter1+1]["dat"]=($sv->Status==weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="'.$notfinished_font.'">':'<div class="'.$finished_font.'">').$end."</div>";
 				$content[$counter][$counter1+1]["height"]="";
 				$content[$counter][$counter1+1]["align"]="right";
 			}

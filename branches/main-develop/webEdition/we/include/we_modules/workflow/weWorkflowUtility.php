@@ -26,7 +26,6 @@
 
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/conf/we_conf.inc.php");
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/we_conf_workflow.inc.php");
-	include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowDocument.php");
 
 	class weWorkflowUtility{
 
@@ -108,7 +107,7 @@
 			If workflow documnet is not defined for that document false
 			will be returned
 		*/
-		function getWorkflowDocument($docID,$table,$status=WORKFLOWDOC_STATUS_UNKNOWN){
+		function getWorkflowDocument($docID,$table,$status=weWorkflowDocument::STATUS_UNKNOWN){
 			$type=weWorkflowUtility::getTypeForTable($table);
 			return weWorkflowDocument::find($docID,$type,$status);
 		}
@@ -116,7 +115,7 @@
 			Same like getWorkflowDocument but returns
 			workflow document id (not object)
 		*/
-		function getWorkflowDocumentID($docID,$table,$status=WORKFLOWDOC_STATUS_UNKNOWN){
+		function getWorkflowDocumentID($docID,$table,$status=weWorkflowDocument::STATUS_UNKNOWN){
 			$doc=weWorkflowUtility::getWorkflowDocument($docID,$table,$status);
 			if(isset($doc->ID)){
 				if($doc->ID) return $doc->ID;
@@ -198,7 +197,7 @@
 				if($i<0) return false;
 				$j=$doc->steps[$i]->findTaskByUser($userID);
 				if($j>-1){
-					if($doc->steps[$i]->tasks[$j]->Status==WORKFLOWDOC_TASK_STATUS_UNKNOWN) return true;
+					if($doc->steps[$i]->tasks[$j]->Status==weWorkflowDocumentTask::STATUS_UNKNOWN) return true;
 					else return false;
 				}
 				else return false;
@@ -254,7 +253,7 @@
 			$type=weWorkflowUtility::getTypeForTable($table);
 			$db=new DB_WE();
 			$ids=array();
-			$db->query("SELECT DISTINCT ".WORKFLOW_DOC_TABLE.".documentID as ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".Status = ".WORKFLOWDOC_STATUS_UNKNOWN." AND ".WORKFLOW_TABLE.".Type IN(".$type.")");
+			$db->query("SELECT DISTINCT ".WORKFLOW_DOC_TABLE.".documentID as ID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".workflowID=".WORKFLOW_TABLE.".ID AND ".WORKFLOW_DOC_TABLE.".Status = ".weWorkflowDocument::STATUS_UNKNOWN." AND ".WORKFLOW_TABLE.".Type IN(".$type.")");
 			while($db->next_record()){
 				if(!in_array($db->f("ID"),$ids)){
 					array_push($ids,$db->f("ID"));
@@ -311,7 +310,7 @@
 
 			$db=new DB_WE();
 			$ret="";
-			$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID AS docID,".WORKFLOW_DOC_STEP_TABLE.".ID AS docstepID,".WORKFLOW_STEP_TABLE.".ID AS stepID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_DOC_STEP_TABLE.",".WORKFLOW_STEP_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".ID=".WORKFLOW_DOC_STEP_TABLE.".workflowDocID AND ".WORKFLOW_DOC_STEP_TABLE.".workflowStepID=".WORKFLOW_STEP_TABLE.".ID AND ".WORKFLOW_DOC_STEP_TABLE.".startDate<>0 AND (".WORKFLOW_DOC_STEP_TABLE.".startDate+ ROUND(".WORKFLOW_STEP_TABLE.".Worktime*3600))<".time()." AND ".WORKFLOW_DOC_STEP_TABLE.".finishDate=0 AND ".WORKFLOW_DOC_STEP_TABLE.".Status=".WORKFLOWDOC_STEP_STATUS_UNKNOWN." AND ".WORKFLOW_DOC_TABLE.".Status=".WORKFLOWDOC_STATUS_UNKNOWN);
+			$db->query("SELECT ".WORKFLOW_DOC_TABLE.".ID AS docID,".WORKFLOW_DOC_STEP_TABLE.".ID AS docstepID,".WORKFLOW_STEP_TABLE.".ID AS stepID FROM ".WORKFLOW_DOC_TABLE.",".WORKFLOW_DOC_STEP_TABLE.",".WORKFLOW_STEP_TABLE." WHERE ".WORKFLOW_DOC_TABLE.".ID=".WORKFLOW_DOC_STEP_TABLE.".workflowDocID AND ".WORKFLOW_DOC_STEP_TABLE.".workflowStepID=".WORKFLOW_STEP_TABLE.".ID AND ".WORKFLOW_DOC_STEP_TABLE.".startDate<>0 AND (".WORKFLOW_DOC_STEP_TABLE.".startDate+ ROUND(".WORKFLOW_STEP_TABLE.".Worktime*3600))<".time()." AND ".WORKFLOW_DOC_STEP_TABLE.".finishDate=0 AND ".WORKFLOW_DOC_STEP_TABLE.".Status=".weWorkflowDocumentStep::STATUS_UNKNOWN." AND ".WORKFLOW_DOC_TABLE.".Status=".weWorkflowDocument::STATUS_UNKNOWN);
 			while($db->next_record()){
 				@set_time_limit(50);
 				$workflowDocument=new weWorkflowDocument($db->f("docID"));

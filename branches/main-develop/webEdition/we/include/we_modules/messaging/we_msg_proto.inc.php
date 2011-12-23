@@ -23,9 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_class.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR."messaging_defs.inc.php");
-include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 
 /* message protocol root class */
 class we_msg_proto extends we_class {
