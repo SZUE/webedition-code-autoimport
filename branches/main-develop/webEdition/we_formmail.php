@@ -24,7 +24,6 @@
 
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once $_SERVER['DOCUMENT_ROOT'].'/webEdition/lib/we/core/autoload.php';
 
 define('WE_DEFAULT_EMAIL','mailserver@'.$_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT','webEdition mailform');

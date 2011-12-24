@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/delete/deleteProgressDialog.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 $frame = isset($_REQUEST["frame"]) ? $_REQUEST["frame"] : "";
 

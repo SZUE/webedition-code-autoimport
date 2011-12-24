@@ -23,7 +23,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_docSelector.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $_SERVER['SCRIPT_NAME'] = "/webEdition/we_docSelect.php";
 $fs = new we_docSelector(isset($id) ? $id : ( isset($_REQUEST["id"]) ? $_REQUEST["id"] : '' ),

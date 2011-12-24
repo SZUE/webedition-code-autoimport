@@ -23,9 +23,6 @@
  */
 
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weTree.inc.php");
-
-
 	class weMainTree extends weTree{
 
 		function __construct($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){

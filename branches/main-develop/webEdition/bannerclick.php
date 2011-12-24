@@ -25,7 +25,6 @@
 define("NO_SESS",1);
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_BANNER_MODULE_DIR."weBanner.php");
 
 $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : 0;
 $did = isset($_REQUEST["did"]) ? $_REQUEST["did"] : 0;

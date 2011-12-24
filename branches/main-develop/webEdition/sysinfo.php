@@ -25,8 +25,6 @@
 		require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 		we_html_tools::protect();
-		include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/lib/we/core/autoload.php");
 
 
 		function getInfoTable($_infoArr,$name) {
