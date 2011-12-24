@@ -212,8 +212,8 @@ class we_textContentDocument extends we_textDocument{
 		$q = getDoctypeQuery($this->DB_WE);
 
 		if($disable){
-			$name=($this->DocType?f('SELECT DocType FROM '.DOC_TYPES_TABLE.' WHERE ID='.intval($this->DocType),'DocType',$this->DB_WE):$l_we_class["nodoctype"]);
-			return $l_we_class["doctype"].'<br>'.$name;
+			$name=($this->DocType?f('SELECT DocType FROM '.DOC_TYPES_TABLE.' WHERE ID='.intval($this->DocType),'DocType',$this->DB_WE):g_l('weClass',"[nodoctype]"));
+			return g_l('weClass',"[doctype]").'<br>'.$name;
 		}
 		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", g_l('weClass',"[doctype]"), $q, 1, $this->DocType, false,
 								  (($this->DocType !== "") ?
@@ -271,7 +271,7 @@ class we_textContentDocument extends we_textDocument{
 				$this->we_load(we_class::LOAD_TEMP_DB);
 				break;
 			case we_class::LOAD_SCHEDULE_DB :
-				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".$this->ID."' AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
+				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".$this->ID."' AND ClassName='".$this->ClassName."' AND Was='".we_schedpro::SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 				if($sessDat) {
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");

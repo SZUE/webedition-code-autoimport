@@ -560,7 +560,7 @@ class we_updater{
 			if(!$this->isColExist(SCHEDULE_TABLE, "Active"))
 				$this->addCol(SCHEDULE_TABLE, "Active", "TINYINT(1) DEFAULT '1'");
 
-			check_and_convert_to_sched_pro();
+			we_schedpro::check_and_convert_to_sched_pro();
 		}
 		return true;
 	}

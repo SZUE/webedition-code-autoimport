@@ -80,7 +80,6 @@ class weGlossarySettingControl {
 
 \$GLOBALS['weGlossaryAutomaticReplacement'] = {$GlossaryAutomaticReplacement};
 
-?>
 EOF;
 
 		$configFile = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";

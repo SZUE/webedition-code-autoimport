@@ -27,7 +27,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
 if(defined("SCHEDULE_TABLE")){
-	trigger_schedule();
+	we_schedpro::trigger_schedule();
 }
 
 we_html_tools::htmlTop();

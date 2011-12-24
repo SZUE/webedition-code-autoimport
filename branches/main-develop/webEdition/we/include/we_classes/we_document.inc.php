@@ -1673,7 +1673,7 @@ class we_document extends we_root {
 	function getNextPublishDate() {
 		$times = array();
 		foreach($this->schedArr as $s) {
-			if($s['task'] == SCHEDULE_FROM && $s['active']) {
+			if($s['task'] == we_schedpro::SCHEDULE_FROM && $s['active']) {
 				array_push($times,we_schedpro::getNextTimestamp($s,time()));
 			}
 		}

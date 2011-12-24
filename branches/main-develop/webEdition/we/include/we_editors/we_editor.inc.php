@@ -638,7 +638,7 @@ else {
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 
 				if(defined("SCHEDULE_TABLE")){
-					trigger_schedule();
+					we_schedpro::trigger_schedule();
 					$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".$we_doc->ID.");\n";// save/ rename a document
 				}
 				include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_templates/we_editor_save.inc.php");

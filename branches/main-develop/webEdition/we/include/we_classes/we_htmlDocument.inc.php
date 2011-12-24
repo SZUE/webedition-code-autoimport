@@ -65,13 +65,12 @@ class we_htmlDocument extends we_textContentDocument{
 			$ok = true;
 			$makeSched = false;
 			foreach($this->schedArr as $s){
-				if($s["task"] == SCHEDULE_FROM && $s["active"]){
+				if($s["task"] == we_schedpro::SCHEDULE_FROM && $s["active"]){
 					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);// nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 					$makeSched = true;
 				}else{
 					$serializedDoc = "";
 				}
-				include_once(WE_SCHEDULE_MODULE_DIR."we_schedpro.inc.php");
 				$Wann = we_schedpro::getNextTimestamp($s,time());
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.

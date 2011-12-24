@@ -43,6 +43,8 @@ abstract class we_autoloader{
 		'users' => 'we_modules/users',
 		'xml' => 'we_classes/xml',
 		'tag' => 'we_classes/tag',
+		'shop'=> 'we_modules/shop',
+		
 	);
 	private static $classes = array(
 		'we_classes' => array(

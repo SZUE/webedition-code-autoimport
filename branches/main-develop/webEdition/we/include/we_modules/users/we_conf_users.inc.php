@@ -27,7 +27,6 @@
 define("USER_TABLE",TBL_PREFIX .  "tblUser");
 define("LOCK_TABLE",TBL_PREFIX . "tblLock");
 
-define("WE_LANGUAGE_ID","0");
 define("PING_TIME","30"); // 30 sec
 define("PING_TOLERANZ","40"); // 40 sec - allows 1 Ping missing
 

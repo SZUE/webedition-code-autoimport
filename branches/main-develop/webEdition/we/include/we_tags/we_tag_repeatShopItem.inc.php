@@ -53,7 +53,7 @@ function we_tag_repeatShopItem($attribs, $content) {
 			if (!isset($GLOBALS[$shopname]) || empty($GLOBALS[$shopname])) {
 				echo parseError(sprintf(g_l('parser', '[missing_createShop]'), 'repeatShopItem'));
 			}
-			$GLOBALS["lv"] = new shop($GLOBALS[$shopname]);
+			$GLOBALS["lv"] = new we_shop_shop($GLOBALS[$shopname]);
 			break;
 		case 'stop':
 			unset($GLOBALS["lv"]);

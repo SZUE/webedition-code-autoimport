@@ -2449,7 +2449,7 @@ class we_objectFile extends we_document{
 	function we_load($from=we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
+				$sessDat = unserialize(f("SELECT SerializedData FROM ".SCHEDULE_TABLE." WHERE DID=".$this->ID." AND ClassName='".$this->ClassName."' AND Was='".we_schedpro::SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
 
 				if($sessDat){
 					$this->i_getPersistentSlotsFromDB(/*"Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID"*/);
@@ -2824,13 +2824,12 @@ class we_objectFile extends we_document{
 			$ok = true;
 			$makeSched = false;
 			foreach($this->schedArr as $s){
-				if($s["task"] == SCHEDULE_FROM && $s["active"]){
+				if($s["task"] == we_schedpro::SCHEDULE_FROM && $s["active"]){
 					$serializedDoc = we_temporaryDocument::load($this->ID,$this->Table,$this->DB_WE);// nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 					$makeSched = true;
 				}else{
 					$serializedDoc = "";
 				}
-				include_once(WE_SCHEDULE_MODULE_DIR."we_schedpro.inc.php");
 				$Wann = we_schedpro::getNextTimestamp($s,time());
 
 				if(!$this->DB_WE->query("INSERT INTO ".SCHEDULE_TABLE.
