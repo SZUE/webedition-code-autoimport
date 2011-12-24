@@ -29,7 +29,8 @@
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-abstract class we_button{
+//fIXME: this should be abstract - but liveupdate currently fails with this
+class we_button{
 	const LEFT_WIDTH=5;
 	const RIGHT_WIDTH=7;
 	const HEIGHT=22;
