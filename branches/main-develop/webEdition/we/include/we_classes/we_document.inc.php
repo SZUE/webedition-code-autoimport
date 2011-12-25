@@ -210,7 +210,7 @@ class we_document extends we_root {
 		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 			$htmlzw='';
 			foreach ($_languages as $langkey => $lang){
-			  	$LDID = f("SELECT LDID FROM ".LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND DID='".$this->ID."' AND Locale='".$langkey."'",'LDID',$this->DB_WE);
+			  	$LDID = f('SELECT LDID FROM '.LANGLINK_TABLE." WHERE DocumentTable='tblFile' AND DID=".$this->ID." AND Locale='".$langkey."'",'LDID',$this->DB_WE);
 			  	if(!$LDID){$LDID=0;}
 				$divname = 'we_'.$this->Name.'_LanguageDocDiv['.$langkey.']';
 				$htmlzw.= '<div id="'.$divname.'" '.($this->Language == $langkey ? ' style="display:none" ':'').'>'.$this->formLanguageDocument($lang,$langkey,$LDID).'</div>';

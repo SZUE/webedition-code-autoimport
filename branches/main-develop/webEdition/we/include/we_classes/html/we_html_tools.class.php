@@ -440,7 +440,8 @@ HTS;
 	}
 
 	static function getPixel($w, $h, $border = 0){
-		return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '" />';
+		return '<div style="width:'.$w.'px;height:'.$h.'px;'.($border?'border:'.$border.'px solid black;':'').'"></div>';
+		//return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '" />';
 	}
 
 	static function pPixel($w, $h){

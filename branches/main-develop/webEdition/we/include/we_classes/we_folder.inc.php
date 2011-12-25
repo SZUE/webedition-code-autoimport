@@ -529,7 +529,7 @@ class we_folder extends we_root{
 				$isobject = 0;
 			}
 			foreach($_languages as $langkey => $lang){
-				$LDID = f("SELECT LDID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND IsObject=" . intval($isobject) . " AND DID=" . intval($this->ID) . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
+				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND IsObject=" . intval($isobject) . " AND DID=" . intval($this->ID) . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
 				if(!$LDID){
 					$LDID = 0;
 				}

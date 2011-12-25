@@ -38,7 +38,7 @@ echo we_htmlElement::jsScript(JS_DIR.'images.js');
 				<td colspan="2" valign="top"><img align="absmiddle" height="10" width="1600" src="<?php print IMAGE_DIR ?>pixel.gif" /></td>
 			</tr>
 			<tr>
-				<td><img width="5" src="<?php print IMAGE_DIR ?>pixel.gif" /></td>
+				<td><?php we_html_tools::pPixel(1,5);?></td>
 				<td><?php print
 				we_button::create_button_table(array(we_html_tools::htmlTextInput("keyword",14,"","","","text",120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
 				?></td>

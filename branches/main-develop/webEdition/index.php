@@ -437,7 +437,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	</tr>
 	<tr>
-		<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;"><img src="/webEdition/images/pixel.gif" width="260" height="296" /></td>
+		<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;">'.we_html_tools::getPixel(260,296).'</td>
 
 		<td valign="bottom" style="width:260px;height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;"><img src="/webEdition/images/login/bottom_r.jpg" width="260" height="296" /></td>
 

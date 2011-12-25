@@ -89,7 +89,7 @@ class we_langlink_listview extends listviewBase {
 
 		$this->order = trim($this->order);
 
-		$orderstring = $this->order ? (" ORDER BY " . LANGLINK_TABLE.".".$this->order . ($this->desc ? " DESC" : "")) : '' ;
+		$orderstring = $this->order ? (' ORDER BY ' . LANGLINK_TABLE.'.'.$this->order . ($this->desc ? ' DESC' : '')) : '' ;
 		if($this->order=='Locale'){
 			if ($this->desc){krsort($_languages);}else{ksort($_languages);}
 		}
@@ -97,10 +97,10 @@ class we_langlink_listview extends listviewBase {
 		if($this->id && ($this->linkType=='tblFile' || $this->linkType=='tblObjectFile') ){
 			foreach ($_languages as $langkey => $lang){
 				if ($this->linkType=='tblFile'){
-					$q= "SELECT ".LANGLINK_TABLE.".DID as DID, ".LANGLINK_TABLE.".DLocale as DLocale, ".LANGLINK_TABLE.".LDID as LDID, ".LANGLINK_TABLE.".Locale as Locale, ".LANGLINK_TABLE.".IsFolder as IsFolder, ".LANGLINK_TABLE.".IsObject as IsObject, ".LANGLINK_TABLE.".DocumentTable as DocumentTable, ".FILE_TABLE.".Path as Path, ".FILE_TABLE.".ParentID as ParentID  FROM ". LANGLINK_TABLE . "," . FILE_TABLE ." WHERE ".LANGLINK_TABLE.".Locale='".$langkey."' AND ".LANGLINK_TABLE.".LDID = ".FILE_TABLE.".ID AND ".FILE_TABLE.".Published >0 AND ".LANGLINK_TABLE.".DocumentTable='".$this->linkType."' AND ".LANGLINK_TABLE.".DID='".$this->id."'";
+					$q= 'SELECT '.LANGLINK_TABLE.'.DID as DID, '.LANGLINK_TABLE.'.DLocale as DLocale, '.LANGLINK_TABLE.'.LDID as LDID, '.LANGLINK_TABLE.'.Locale as Locale, '.LANGLINK_TABLE.'.IsFolder as IsFolder, '.LANGLINK_TABLE.".IsObject as IsObject, ".LANGLINK_TABLE.".DocumentTable as DocumentTable, ".FILE_TABLE.".Path as Path, ".FILE_TABLE.".ParentID as ParentID  FROM ". LANGLINK_TABLE . "," . FILE_TABLE ." WHERE ".LANGLINK_TABLE.".Locale='".$langkey."' AND ".LANGLINK_TABLE.".LDID = ".FILE_TABLE.'.ID AND '.FILE_TABLE.".Published >0 AND ".LANGLINK_TABLE.".DocumentTable='".$this->linkType."' AND ".LANGLINK_TABLE.'.DID='.$this->id;
 					$this->dirsearchtable =FILE_TABLE;
 				} else {
-					$q= "SELECT ".LANGLINK_TABLE.".DID as DID, ".LANGLINK_TABLE.".DLocale as DLocale, ".LANGLINK_TABLE.".LDID as LDID, ".LANGLINK_TABLE.".Locale as Locale, ".LANGLINK_TABLE.".IsFolder as IsFolder, ".LANGLINK_TABLE.".IsObject as IsObject, ".LANGLINK_TABLE.".DocumentTable as DocumentTable, ".OBJECT_FILES_TABLE.".Path as Path, ".OBJECT_FILES_TABLE.".Url as Url, ". OBJECT_FILES_TABLE.".TriggerID as TriggerID  FROM ". LANGLINK_TABLE . "," . OBJECT_FILES_TABLE ." WHERE ".LANGLINK_TABLE.".Locale='".$langkey."' AND ".LANGLINK_TABLE.".LDID = ".OBJECT_FILES_TABLE.".ID AND ".OBJECT_FILES_TABLE.".Published >0 AND ".LANGLINK_TABLE.".DocumentTable='".$this->linkType."' AND ".LANGLINK_TABLE.".DID='".$this->id."'";
+					$q= "SELECT ".LANGLINK_TABLE.".DID as DID, ".LANGLINK_TABLE.".DLocale as DLocale, ".LANGLINK_TABLE.".LDID as LDID, ".LANGLINK_TABLE.".Locale as Locale, ".LANGLINK_TABLE.".IsFolder as IsFolder, ".LANGLINK_TABLE.".IsObject as IsObject, ".LANGLINK_TABLE.".DocumentTable as DocumentTable, ".OBJECT_FILES_TABLE.".Path as Path, ".OBJECT_FILES_TABLE.".Url as Url, ". OBJECT_FILES_TABLE.".TriggerID as TriggerID  FROM ". LANGLINK_TABLE . "," . OBJECT_FILES_TABLE ." WHERE ".LANGLINK_TABLE.".Locale='".$langkey."' AND ".LANGLINK_TABLE.".LDID = ".OBJECT_FILES_TABLE.".ID AND ".OBJECT_FILES_TABLE.".Published >0 AND ".LANGLINK_TABLE.".DocumentTable='".$this->linkType."' AND ".LANGLINK_TABLE.'.DID='.$this->id;
 					$this->dirsearchtable =OBJECT_FILES_TABLE;
 				}
 

@@ -635,7 +635,7 @@ abstract class we_class{
 			}
 			foreach ($LangLinkArray as $locale => $LDID){
 				if(($ID = f("SELECT ID FROM ".LANGLINK_TABLE." WHERE DocumentTable='".$type."' AND DID=".intval($this->ID)." AND Locale='".$locale."' AND IsObject=".intval($isobject),'ID',$this->DB_WE))){
-					$q = "UPDATE ".LANGLINK_TABLE." SET LDID='".abs($LDID)."',DLocale='".$this->Language."' WHERE ID=".intval($ID);
+					$q = "UPDATE ".LANGLINK_TABLE." SET LDID=".intval($LDID).",DLocale='".$this->Language."' WHERE ID=".intval($ID);
 					$this->DB_WE->query($q);
 				} else {
 					if($locale!=$this->Language){

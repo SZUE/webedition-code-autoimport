@@ -65,7 +65,7 @@ class we_button{
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '"></td>' .
 			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . ($width ? ('" style="width:' .
 				($width - (self::LEFT_WIDTH + self::RIGHT_WIDTH)) . 'px;') : '') . '" >' . $value . '</td>' .
-			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? '<input border="0" type="image" src="' . IMAGE_DIR . 'pixel.gif" />' : '') . '</td>' .
+			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1,1) : '') . '</td>' .
 			'</tr></table>';
 	}
 

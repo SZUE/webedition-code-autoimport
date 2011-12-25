@@ -69,7 +69,7 @@ we_html_tools::protect();
 			}
 ?>
 	<tr>
-		<td colspan="2"><img src="/webEdition/images/pixel.gif" width="1" height="5" /></td>
+		<td colspan="2"><?php we_html_tools::pPixel(1,5);?></td>
 	</tr>
 	<tr>
 <?php
@@ -77,7 +77,8 @@ we_html_tools::protect();
 ?>
 		<td class="defaultfont" valign="top" colspan="2">
 			<strong><?php echo $headline; ?></strong><br />
-			<img src="/webEdition/images/pixel.gif" width="1" height="4" /><br />
+			<?php we_html_tools::pPixel(1,4);?>
+			<br />
 			<?php echo $text['text']; ?>
 		</td>
 <?php
@@ -86,7 +87,7 @@ we_html_tools::protect();
 		<td class="defaultfont" valign="top" width="52"><?php echo $icon; ?></td>
 		<td class="defaultfont" valign="top">
 			<strong><?php echo $headline; ?></strong><br />
-			<img src="/webEdition/images/pixel.gif" width="1" height="4" /><br />
+			<?php we_html_tools::pPixel(1,4);?><br />
 			<?php echo $text['text']; ?>
 		</td>
 <?php
