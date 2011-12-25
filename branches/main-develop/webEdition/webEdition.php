@@ -255,7 +255,7 @@ function doExtClick(url){
 if (defined('MESSAGING_SYSTEM')) {
 ?>
 	function update_msg_quick_view() {
-		header.header_msg.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php?r=<?php srand ((double) microtime() * 1000000);echo rand();?>";
+		top.header_msg.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php?r=<?php srand ((double) microtime() * 1000000);echo rand();?>";
 	}
 
 	function msg_update() {
