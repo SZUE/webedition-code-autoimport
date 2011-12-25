@@ -23,10 +23,33 @@
  */
 
 
-include_once(WE_MESSAGING_MODULE_DIR."messaging_defs.inc.php");
-
 /* message protocol root class */
 class we_msg_proto extends we_class {
+const FOLDER_DONE=13;
+const FOLDER_REJECT=11;
+const FOLDER_TRASH=9;
+const FOLDER_SENT=5;
+const FOLDER_INBOX=3;
+
+const FOLDER_NR=1;
+const MESSAGE_NR=2;
+const TODO_NR=4;
+
+const STATUS_SEEN=1;
+const STATUS_READ=2;
+
+const CLIPBOARD_COPY=0;
+const CLIPBOARD_CUT=1;
+
+/* History action codes */
+const ACTION_COMMENT=1;
+const ACTION_FORWARD=2;
+const ACTION_REJECT=3;
+const ACTION_DONE=4;
+
+/* ToDO properties */
+const TODO_PROP_NONE=0;
+const TODO_PROP_IMMOVABLE=1;
 
     /*****************************************************************/
     /* Class Properties **********************************************/
@@ -238,7 +261,7 @@ class we_msg_proto extends we_class {
     }
 
     function create_folder($name, $parent) {
-		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . MSG_FOLDER_NR . ', "' . $this->DB->escape($name) . '")');
+		$this->DB->query('INSERT INTO ' . $this->DB->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . we_msg_proto::FOLDER_NR . ', "' . $this->DB->escape($name) . '")');
 		$this->DB->query('SELECT LAST_INSERT_ID() as l');
 		$this->DB->next_record();
 
@@ -294,7 +317,7 @@ class we_msg_proto extends we_class {
 	}
 	$cond = substr($cond, 0, -4);
 
-	$query = 'SELECT ID, Name, (Properties & ' . MSG_FOLDER_NR . ') as norm FROM ' . $this->DB->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
+	$query = 'SELECT ID, Name, (Properties & ' . we_msg_proto::FOLDER_NR . ') as norm FROM ' . $this->DB->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
 	$this->DB->query($query);
 	while($this->DB->next_record()) {
 	    if ($this->DB->f('norm') == 1) {

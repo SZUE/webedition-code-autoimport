@@ -506,7 +506,7 @@ class we_messaging extends we_class {
 		if (!isset($this->used_msgobjs[$classname]))
 			return NULL;
 
-		while (($c = array_ksearch('obj_type', MSG_FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname)
+		while (($c = array_ksearch('obj_type', we_msg_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname)
 			$c++;
 		$r = isset($this->available_folders[$c]) ? $this->available_folders[$c] : NULL;
 		return $r;

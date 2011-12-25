@@ -196,7 +196,7 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 				<td id="td_' . $val['ID'] . '_0" width="200" align="left" class="defaultfont">' . htmlspecialchars($val['hdrs']['Subject']) . '</td>
 				<td id="td_' . $val['ID'] . '_1" width="170" align="left" class="defaultfont">' . date(g_l('date','[format][default]'), $val['hdrs']['Date']) . '</td>
 				<td id="td_' . $val['ID'] . '_2" width="140" align="left" class="defaultfont">' . $val['hdrs']['From'] . '</td>
-				<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & MSG_STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
+				<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & we_msg_proto::STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
 			</tr>';
 	    }
 

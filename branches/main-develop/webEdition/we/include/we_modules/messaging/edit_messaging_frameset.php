@@ -727,19 +727,19 @@ foreach($GLOBALS["_we_available_modules"] as $modData){
 			print "menuDaten.add(new self.rootEntry('0','root','root'));\n";
 			foreach ($messaging->available_folders as $folder) {
 				switch ($folder['obj_type']) {
-					case MSG_FOLDER_INBOX:
+					case we_msg_proto::FOLDER_INBOX:
 						$iconbasename = $folder['ClassName'] == 'we_todo' ? 'todo_in_folder' : 'msg_in_folder';
 						$folder['Name'] = $folder['ClassName'] == 'we_todo' ? g_l('modules_messaging','[ToDo]') : g_l('modules_messaging','[Mitteilungen]');
 						break;
-					case MSG_FOLDER_SENT:
+					case we_msg_proto::FOLDER_SENT:
 						$iconbasename = 'msg_sent_folder';
 						$folder['Name'] = g_l('modules_messaging','[Gesendet]');
 						break;
-					case MSG_FOLDER_DONE:
+					case we_msg_proto::FOLDER_DONE:
 						$iconbasename = 'todo_done_folder';
 						$folder['Name'] = g_l('modules_messaging','[Erledigt]');
 						break;
-					case MSG_FOLDER_REJECT:
+					case we_msg_proto::FOLDER_REJECT:
 						$iconbasename = 'todo_reject_folder';
 						$folder['Name'] = g_l('modules_messaging','[Zurueckgewiesen]');
 						break;
