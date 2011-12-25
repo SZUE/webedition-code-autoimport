@@ -28,8 +28,8 @@
 Zend_Loader::loadClass('we_app_TopFrameView');
 
 /**
- * Base class for TopFrameView 
- * 
+ * Base class for TopFrameView
+ *
  * @category   app
  * @package    app_views
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -38,54 +38,54 @@ class toolfactory_views_TopFrameView extends we_app_TopFrameView {
 
 	/**
 	 * return the javascript code of the top frame
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getJSTop()
 	{
-		
+
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addJSFile('/webEdition/lib/we/ui/layout/Dialog.js');
-		
+
 		$translate = we_core_Local::addTranslation('apps.xml');
 		we_core_Local::addTranslation('default.xml', 'toolfactory');
-		
-		$fs = self::kEditorFrameset;		
-		
+
+		$fs = self::kEditorFrameset;
+
 		// predefined message for JS output
 
 		$saveMessage = we_util_Strings::quoteForJSString($translate->_('The application \'%s\' has been succesfully saved. Please restart webEdition!'), false);
-		
+
 		$saveEntryMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
-		
+
 		$statusChangeMessage = we_util_Strings::quoteForJSString($translate->_('The status of the application \'%s\' has been succesfully changed. Please restart webEdition!'), false);
-		
+
 		$statusChangeMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
-		
+
 		$nothingToSaveMessage = we_util_Strings::quoteForJSString($translate->_('There is nothing to save!'), false);
-		
+
 		$nothingToSaveMessageCall = we_core_MessageReporting::getShowMessageCall($nothingToSaveMessage, we_core_MessageReporting::kMessageNotice);
-		
+
 		$nothingToDeleteMessage = we_util_Strings::quoteForJSString($translate->_('There is nothing to delete!'), false);
-		
+
 		$nothingToDeleteMessageCall = we_core_MessageReporting::getShowMessageCall($nothingToDeleteMessage, we_core_MessageReporting::kMessageNotice);
-		
+
 		$deleteMessage = we_util_Strings::quoteForJSString($translate->_('The entry/folder \'%s\' has been succesfully deleted.'), false);
-		
+
 		$deleteMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
-		
+
 		$gentocMessage = we_util_Strings::quoteForJSString($translate->_('The application toc.xml was succesfully rebuild.'), false);
-		
+
 		$gentocMessageCall = we_core_MessageReporting::getShowMessageCall('msg', we_core_MessageReporting::kMessageWarning, true);
-		
+
 		$errorMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageError, true);
 		$noticeMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageNotice, true);
 		$warningMessageCall = we_core_MessageReporting::getShowMessageCall('err', we_core_MessageReporting::kMessageWarning, true);
-		
+
 		$loadingWheelFrame = $fs.".edbody.";
 		$loadingWheelContainer = "document.getElementById('containerDivBody')";
 		$loadingWheelImg = we_ui_layout_Image::kLoading;
-		
+
 		$js = <<<EOS
 
 
@@ -110,7 +110,7 @@ weEventController.register("cmdError", function(data, sender) {
 		err = "Unknown Error";
 	}
 	$errorMessageCall
-	__removeLoadingWheel__(data, sender);	
+	__removeLoadingWheel__(data, sender);
 });
 
 /* cmdNotice */
@@ -120,7 +120,7 @@ weEventController.register("cmdNotice", function(data, sender) {
 	} else {
 		err = "Unknown Error";
 	}
-	$noticeMessageCall	
+	$noticeMessageCall
 	__removeLoadingWheel__(data, sender);
 });
 
@@ -131,7 +131,7 @@ weEventController.register("cmdWarning", function(data, sender) {
 	} else {
 		err = "Unknown Error";
 	}
-	$warningMessageCall	
+	$warningMessageCall
 	__removeLoadingWheel__(data, sender);
 });
 
@@ -148,7 +148,7 @@ weEventController.register("docChanged", function(data, sender) {
 function __removeLoadingWheel__(data, sender) {
 	var loadingWheel = {$loadingWheelFrame}document.getElementById('loadingWheelDiv');
 	if (typeof({$loadingWheelFrame}{$loadingWheelContainer}) != "undefined") {
-		{$loadingWheelFrame}{$loadingWheelContainer}.removeChild(loadingWheel);	
+		{$loadingWheelFrame}{$loadingWheelContainer}.removeChild(loadingWheel);
 	}
 }
 weEventController.register("save", __removeLoadingWheel__);
@@ -159,7 +159,7 @@ weEventController.register("save", function(data, sender) {
 
 	self.hot = false;
 	var msg = "$saveMessage";
-	
+
 	//datasource: table
 	if(data.model.Path!=null) {
 		text = data.model.Path;
@@ -169,16 +169,16 @@ weEventController.register("save", function(data, sender) {
 		text = data.model.Text;
 	}
 	msg = msg.replace(/%s/, data.model.Text);
-	
-	$saveEntryMessageCall	
 
-	
+	$saveEntryMessageCall
+
+
 });
 weEventController.register("localInstallFromTGZ", function(data, sender) {
 
 	self.hot = false;
 	var msg = "$saveMessage";
-	
+
 	//datasource: table
 	if(data.model.Path!=null) {
 		text = data.model.Path;
@@ -188,10 +188,10 @@ weEventController.register("localInstallFromTGZ", function(data, sender) {
 		text = data.model.Text;
 	}
 	msg = msg.replace(/%s/, data.model.Text);
-	
-	$saveEntryMessageCall	
 
-	
+	$saveEntryMessageCall
+
+
 });
 
 /* delete */
@@ -201,8 +201,8 @@ weEventController.register("delete", function(data, sender) {
 	self.hot = false;  // reset hot
 	var msg = "$deleteMessage";
 	msg = msg.replace(/%s/, data.model.Path);
-	$deleteMessageCall	
-	
+	$deleteMessageCall
+
 });
 
 /* gentoc */
@@ -212,8 +212,8 @@ weEventController.register("gentoc", function(data, sender) {
 	self.hot = false;  // reset hot
 	var msg = "$gentocMessage";
 	msg = msg.replace(/%s/, data.model.Path);
-	$gentocMessageCall	
-	
+	$gentocMessageCall
+
 });
 
 /*******************************************
@@ -260,10 +260,10 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 	} else {
 		addLoadingWheel();
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			"{$this->appDir}/index.php/rpc/index", 
-			"{$this->appName}.service.Cmd", 
-			"save", 
+			cmdObj,
+			"{$this->appDir}/index.php/rpc/index",
+			"{$this->appName}.service.Cmd",
+			"save",
 			{$fs}.edbody.document.we_form
 		);
 	}
@@ -281,10 +281,10 @@ weCmdController.register('checkdelete_top', 'app_{$this->appName}_checkdelete', 
 weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
 
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			"{$this->appDir}/index.php/rpc/index", 
-			"{$this->appName}.service.Cmd", 
-			"delete", 
+			cmdObj,
+			"{$this->appDir}/index.php/rpc/index",
+			"{$this->appName}.service.Cmd",
+			"delete",
 			{$fs}.edbody.document.we_form.ID.value
 		);
 });
@@ -295,15 +295,15 @@ weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', func
 	if (typeof({$fs}.edbody) == 'undefined') {
 		$nothingToSaveMessageCall;
 	} else {
-		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.classname.value); 
+		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.classname.value);
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			'{$this->appDir}/index.php/rpc/index', 
-			'{$this->appName}.service.Cmd', 
-			'unpublish', 
+			cmdObj,
+			'{$this->appDir}/index.php/rpc/index',
+			'{$this->appName}.service.Cmd',
+			'unpublish',
 			{$fs}.edbody.document.we_form
 		);
-	} 
+	}
 	weCmdController.cmdOk(cmdObj);
 });
 
@@ -313,12 +313,12 @@ weCmdController.register('publish_top', 'app_{$this->appName}_publish', function
 	if (typeof({$fs}.edbody) == 'undefined') {
 		$nothingToSaveMessageCall;
 	} else {
-		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.classname.value);  
+		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.classname.value);
 		we_core_JsonRpc.callMethod(
-			cmdObj, 
-			'{$this->appDir}/index.php/rpc/index', 
-			'{$this->appName}.service.Cmd', 
-			'publish', 
+			cmdObj,
+			'{$this->appDir}/index.php/rpc/index',
+			'{$this->appName}.service.Cmd',
+			'publish',
 			{$fs}.edbody.document.we_form
 		);
 	}
@@ -335,14 +335,14 @@ weCmdController.register('home_top', 'app_{$this->appName}_home', function(cmdOb
 /* generate new toc */
 weCmdController.register('gentoc_top', 'app_{$this->appName}_gentoc', function(cmdObj) {
 	we_core_JsonRpc.callMethod(
-		cmdObj, 
-		'{$this->appDir}/index.php/rpc/index', 
-		'{$this->appName}.service.Cmd', 
+		cmdObj,
+		'{$this->appDir}/index.php/rpc/index',
+		'{$this->appName}.service.Cmd',
 		'regeneratetoc'
-		
+
 	);
 	weCmdController.cmdOk(cmdObj);
-	
+
 });
 
 /* exit */
@@ -362,71 +362,71 @@ weCmdController.register('help_top', 'app_{$this->appName}_help', function(cmdOb
 
 /* info */
 weCmdController.register('info_top', 'app_{$this->appName}_info', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/we_cmd.php?we_cmd[0]=info", 432, 350, null);
+	var dialog = new we_ui_layout_Dialog("/webEdition/we_cmd.php?we_cmd[0]=info", 432, 330, null);
 	dialog.open();
 });
 
 /* InstallLocal */
 weCmdController.register('localInstall0_top', 'app_{$this->appName}_localInstall0', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"localInstallFromTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"localInstallFromTGZ",
 		0
 		);
 });
 weCmdController.register('localInstall1_top', 'app_{$this->appName}_localInstall1', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"localInstallFromTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"localInstallFromTGZ",
 		1
 		);
 });
 weCmdController.register('localInstall2_top', 'app_{$this->appName}_localInstall2', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"localInstallFromTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"localInstallFromTGZ",
 		2
 		);
 });
 weCmdController.register('localInstall3_top', 'app_{$this->appName}_localInstall3', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"localInstallFromTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"localInstallFromTGZ",
 		3
 		);
 });
 weCmdController.register('localInstall4_top', 'app_{$this->appName}_localInstall4', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"localInstallFromTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"localInstallFromTGZ",
 		4
 		);
 });
 weCmdController.register('localInstall5_top', 'app_{$this->appName}_localInstall5', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"localInstallFromTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"localInstallFromTGZ",
 		5
 		);
 });
 weCmdController.register('generateTGZ_top', 'app_{$this->appName}_generateTGZ', function(cmdObj) {
 		we_core_JsonRpc.callMethod(
-		cmdObj, 
-		"{$this->appDir}/index.php/rpc/index", 
-		"{$this->appName}.service.Cmd", 
-		"generateTGZ", 
+		cmdObj,
+		"{$this->appDir}/index.php/rpc/index",
+		"{$this->appName}.service.Cmd",
+		"generateTGZ",
 		{$fs}.edbody.document.we_form.ID.value
 		);
 });
@@ -455,8 +455,8 @@ function addLoadingWheel() {
 	var loadingImg = {$loadingWheelFrame}document.createElement('img');
 	loadingImg.src = "{$loadingWheelImg}";
 	loadingImg.className = 'weLoadingWheel';
-	loadingImgDiv.appendChild(loadingImg);	
-	{$loadingWheelFrame}{$loadingWheelContainer}.appendChild(loadingImgDiv);	
+	loadingImgDiv.appendChild(loadingImg);
+	{$loadingWheelFrame}{$loadingWheelContainer}.appendChild(loadingImgDiv);
 }
 
 EOS;
