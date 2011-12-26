@@ -22,8 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('CSS_DIR', '/webEdition/css/');
-define('SCRIPT_BUTTONS_ONLY', we_htmlElement::jsScript(JS_DIR . 'weButton.js'));
-define('STYLESHEET_BUTTONS_ONLY', we_htmlElement::cssLink(CSS_DIR . 'we_button.css'));
-define('STYLESHEET', we_htmlElement::cssLink(CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"]). STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY);
-define('STYLESHEET_SCRIPT', we_htmlElement::cssLink(CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"]) . STYLESHEET_BUTTONS_ONLY);
+define(CSS_DIR, '/webEdition/css/');
+define(SCRIPT_BUTTONS_ONLY, '<script type="text/javascript" src="'.JS_DIR . 'weButton.js"></script>');
+define(STYLESHEET_BUTTONS_ONLY, '<link rel="styleSheet" type="text/css"  href="'.CSS_DIR . 'we_button.css"/>');
+define(STYLESHEET, '<link rel="styleSheet" type="text/css"  href="'.CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"].'"/>'.STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY);
+define(STYLESHEET_SCRIPT, '<link rel="styleSheet" type="text/css"  href="'.CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"].'"/>'.STYLESHEET_BUTTONS_ONLY);
