@@ -48,7 +48,7 @@ class rpcDeleteVersionCmd extends rpcCmd {
 			}
 			if(!empty($_SESSION['versions']['logDeleteIds'])) {
 				$versionslog = new versionsLog();
-				$versionslog->saveVersionsLog($_SESSION['versions']['logDeleteIds'],WE_LOGGING_VERSIONS_DELETE);
+				$versionslog->saveVersionsLog($_SESSION['versions']['logDeleteIds'],versionsLog::VERSIONS_DELETE);
 			}
 			unset($_SESSION['versions']['logDeleteIds']);
 		}

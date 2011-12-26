@@ -24,15 +24,15 @@
  */
 
 
-class weVotingTreeLoader{
+abstract class weVotingTreeLoader{
 
-	function getItems($pid,$offset=0,$segment=500,$sort=""){
+	static function getItems($pid,$offset=0,$segment=500,$sort=""){
 		return weVotingTreeLoader::getItemsFromDB($pid,$offset,$segment);
 
 	}
 
 
-	function getItemsFromDB($ParentID=0,$offset=0,$segment=500,$elem="ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid",$addWhere="",$addOrderBy=""){
+	static function getItemsFromDB($ParentID=0,$offset=0,$segment=500,$elem="ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid",$addWhere="",$addOrderBy=""){
 		$db=new DB_WE();
 		$table=VOTING_TABLE;
 
@@ -114,6 +114,3 @@ class weVotingTreeLoader{
 
 
 }
-
-
-?>

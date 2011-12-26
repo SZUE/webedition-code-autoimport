@@ -22,14 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-define("WE_LOGGING_VERSIONS_DELETE", 1);
-define("WE_LOGGING_VERSIONS_RESET", 2);
-define("WE_LOGGING_VERSIONS_PREFS", 3);
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_logging/logging.class.php");
-
-
 class versionsLog extends logging{
+const VERSIONS_DELETE= 1;
+const VERSIONS_RESET= 2;
+const VERSIONS_PREFS=3;
 
 
 	public $action;

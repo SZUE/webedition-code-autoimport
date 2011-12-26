@@ -74,8 +74,6 @@ if(!defined('NO_SESS')){
 	$_tooltagdirs = weToolLookup::getTagDirs();
 }
 
-define('MULTIEDITOR_AMOUNT', (isset($_SESSION) && isset($_SESSION['we_mode']) && $_SESSION['we_mode'] == 'seem') ? 1 : 16);
-
 if(defined('WE_WEBUSER_LANGUAGE')){
 	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
 } else{

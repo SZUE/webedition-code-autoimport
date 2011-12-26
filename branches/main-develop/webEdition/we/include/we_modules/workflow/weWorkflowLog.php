@@ -96,5 +96,3 @@ const NUMBER_LOGS=8;
 		$db->query("DELETE FROM ".WORKFLOW_LOG_TABLE." ".($stamp ? "WHERE logDate<".intval($stamp) : "").";");
 	}
 }
-
-?>

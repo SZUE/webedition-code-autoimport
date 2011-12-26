@@ -74,7 +74,7 @@ class rpcResetVersionCmd extends rpcCmd {
 
 		if(!empty($_SESSION['versions']['logResetIds'])) {
 			$versionslog = new versionsLog();
-			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'],WE_LOGGING_VERSIONS_RESET);
+			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'],versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['versions']['logResetIds']);
 

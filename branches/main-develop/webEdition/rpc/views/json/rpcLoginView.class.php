@@ -27,7 +27,7 @@ class rpcLoginView extends rpcView {
 
 	function getResponse($response) {
 
-		if($response->getStatus()==RPC_STATUS_OK) {
+		if($response->getStatus()== rpcCmd::STATUS_OK) {
 
 			$html = 'LOGIN OK<br>';
 

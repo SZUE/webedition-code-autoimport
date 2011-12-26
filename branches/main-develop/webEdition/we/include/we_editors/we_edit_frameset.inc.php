@@ -26,9 +26,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-define("EDITFRAMESET",1);
-
-
 /**
  * Searches for the first Page in the editor, which the user is allowed to see.
  * If he can see the given Nr, then that page will be shown.

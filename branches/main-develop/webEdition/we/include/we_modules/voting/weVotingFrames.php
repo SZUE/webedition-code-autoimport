@@ -999,8 +999,6 @@ class weVotingFrames extends weModuleFrames {
 		}
 		else $offset=0;
 
-		include_once(WE_VOTING_MODULE_DIR."weVotingTreeLoader.php");
-
 		$rootjs="";
 		if(!$pid)
 		$rootjs.='
