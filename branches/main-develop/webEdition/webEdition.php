@@ -842,11 +842,11 @@ function we_cmd() {
 			break;
 		case "help_changelog":
 			<?php
-			if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
-				echo 'new jsWindow("http://documentation.webedition.org/de/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
-			}  else {
+			//if($GLOBALS["WE_LANGUAGE"] == "Deutsch" || $GLOBALS["WE_LANGUAGE"] == "Deutsch_UTF-8") {
+				echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/","help_changelog",-1,-1,960,700,true,true,true,true);';
+			/*}  else {
 				echo 'new jsWindow("http://documentation.webedition.org/en/webedition/change-log/version-6/start","help_changelog",-1,-1,960,700,true,true,true,true);';
-			}
+			}*/
 			?>
 			break;
 		case "openSelector":

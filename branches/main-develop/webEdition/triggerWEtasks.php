@@ -25,10 +25,8 @@ if(defined("SCHEDULE_TABLE")) {
 
 }
 if(defined("WORKFLOW_TABLE")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 	echo weWorkflowUtility::forceOverdueDocuments();
 }
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolLookup.class.php');
 $_tooltasks = weToolLookup::getExternTriggeredTasks();
 foreach($_tooltasks as $task){
 	include($task);
