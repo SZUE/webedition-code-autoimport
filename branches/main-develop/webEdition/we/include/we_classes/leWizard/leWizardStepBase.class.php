@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-class leWizardStepBase {
+class leWizardStepBase{
 
 	/**
 	 * The name of the step
@@ -116,106 +115,86 @@ class leWizardStepBase {
 	 */
 	var $liveUpdateHttpResponse = null;
 
-
 	/**
 	 * PHP4 Constructor
 	 *
 	 */
-	function leWizardStepBase($Name, $WizardObj, $Language = array()) {
+	function leWizardStepBase($Name, $WizardObj, $Language = array()){
 		$this->__construct($Name, $WizardObj, $Language);
-
 	}
-
 
 	/**
 	 * PHP5 Constructor
 	 *
 	 */
-	function __construct($Name, $WizardObj, $Language = array()) {
+	function __construct($Name, $WizardObj, $Language = array()){
 		$this->Name = $Name;
 		$this->Wizard = $WizardObj;
 		$this->Language = $Language;
-
 	}
-
 
 	/**
 	 * set the headline
 	 *
 	 * @param string $Headline
 	 */
-	function setHeadline($Headline) {
+	function setHeadline($Headline){
 		$this->Headline = $Headline;
-
 	}
-
 
 	/**
 	 * set the content
 	 *
 	 * @param string $Content
 	 */
-	function setContent($Content) {
+	function setContent($Content){
 		$this->Content = $Content;
-
 	}
-
 
 	/**
 	 * return the name of the step
 	 *
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
-
 	}
-
 
 	/**
 	 * return the name of the wizard
 	 *
 	 * @return string
 	 */
-	function getWizardName() {
+	function getWizardName(){
 		return $this->Wizard->getName();
-
 	}
-
 
 	/**
 	 * get the url for this step
 	 *
 	 * @return string
 	 */
-	function getUrl() {
+	function getUrl(){
 
 		$debug = "";
-		if(isset($_REQUEST['debug'])) {
+		if(isset($_REQUEST['debug'])){
 			$debug = "&debug=" . $_REQUEST['debug'];
-
 		}
-		return  WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . $_REQUEST['we_cmd'][0] . "&leWizard=" . $this->getWizardName() . "&leStep=" . $this->Name . $debug;
-
+		return WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . $_REQUEST['we_cmd'][0] . "&leWizard=" . $this->getWizardName() . "&leStep=" . $this->Name . $debug;
 	}
-
 
 	/**
 	 * Execute the preparation of the step, liek setting cookies for example
 	 *
 	 * @return booelan
 	 */
-	function prepare() {
+	function prepare(){
 		return true;
-
 	}
 
-
-	function execute(&$Template) {
+	function execute(&$Template){
 		return LE_WIZARDSTEP_NEXT;
-
 	}
-
 
 	/**
 	 * executes a step at the live update / online installation server
@@ -225,63 +204,54 @@ class leWizardStepBase {
 	 * @param string $UpdateCmdDetail
 	 * @return integer
 	 */
-	function executeOnline(&$Template, $UpdateCmd = "", $UpdateCmdDetail = "") {
+	function executeOnline(&$Template, $UpdateCmd = "", $UpdateCmdDetail = ""){
 
-		if($UpdateCmd != "") {
+		if($UpdateCmd != ""){
 			$_REQUEST['update_cmd'] = $UpdateCmd;
-
-		} else {
+		} else{
 			$_REQUEST['update_cmd'] = $this->Wizard->Name;
-
 		}
 
-		if($UpdateCmdDetail != "") {
+		if($UpdateCmdDetail != ""){
 			$_REQUEST['detail'] = $UpdateCmdDetail;
-
-		} else {
+		} else{
 			$_REQUEST['detail'] = $this->Name;
-
 		}
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
-		if($this->liveUpdateHttpResponse) {
+		if($this->liveUpdateHttpResponse){
 
-			if($this->liveUpdateHttpResponse->Type == "executeOnline") {
+			if($this->liveUpdateHttpResponse->Type == "executeOnline"){
 
 				$code = $this->liveUpdateHttpResponse->Code;
 				$this->liveUpdateHttpResponse = null;
 
 				return eval('?>' . $code);
-
 			}
-
 		}
 
 		return LE_WIZARDSTEP_NEXT;
-
 	}
-
 
 	/**
 	 * Do some validation
 	 *
 	 * @return boolean
 	 */
-	function check(&$Template) {
+	function check(&$Template){
 		return true;
-
 	}
 
 	/**
 	 * @return liveUpdateResponse
 	 */
-	function getLiveUpdateHttpResponse() {
+	function getLiveUpdateHttpResponse(){
 		$parameters = array();
 
-		foreach ($GLOBALS['LU_ParameterNames'] as $parameterName) {
+		foreach($GLOBALS['LU_ParameterNames'] as $parameterName){
 
-			if (isset($_REQUEST[$parameterName])) {
+			if(isset($_REQUEST[$parameterName])){
 				$parameters[$parameterName] = $_REQUEST[$parameterName];
 			}
 		}
@@ -294,8 +264,8 @@ class leWizardStepBase {
 
 		// add all other request parameters to the request
 		$reqVars = array();
-		foreach ($_REQUEST as $key => $value) {
-			if (!isset($parameters[$key]) && !in_array($key, $GLOBALS['LU_IgnoreRequestParameters'])) {
+		foreach($_REQUEST as $key => $value){
+			if(!isset($parameters[$key]) && !in_array($key, $GLOBALS['LU_IgnoreRequestParameters'])){
 				$reqVars[$key] = $value;
 			}
 		}

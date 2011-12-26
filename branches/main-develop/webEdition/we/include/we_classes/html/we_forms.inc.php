@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 /**
  * Class we_forms
  *
  * Provides functions for creating html tags used in forms.
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
-
-abstract class we_forms {
+abstract class we_forms{
 
 	/**
 	 * @param      $value                                  string
@@ -45,28 +43,27 @@ abstract class we_forms {
 	 *
 	 * @return     string
 	 */
-
-	static function checkbox($value,$checked,$name,$text,$uniqid=false,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$html="") {
+	static function checkbox($value, $checked, $name, $text, $uniqid=false, $class="defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0, $html=""){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid?uniqid($name . "_"):$name);
+		$_id = ($uniqid ? uniqid($name . "_") : $name);
 
 		$labelonclick = "";
-/*		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
+		/* 		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
 
-			if($onClick){
-				$labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
-			}
-		}*/
+		  if($onClick){
+		  $labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
+		  }
+		  } */
 
 		// Create HTML tags
 		$foo = '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
-					<td'.($description ? ' valign="top"' : '').'>
-						<input type="checkbox" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer; outline: 0;" '.($checked ? " checked=\"checked\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
+					<td' . ($description ? ' valign="top"' : '') . '>
+						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0;" ' . ($checked ? " checked=\"checked\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
 					<td>
-						'.we_html_tools::getPixel(4,2).'</td>
-					<td class="'.$class.'" nowrap="nowrap"><label'./*(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : '').*/' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: grey; ' : 'cursor: pointer;').'outline: 0;">'.$text.'</label>'.($description ? "<br>".we_html_tools::getPixel(1,3)."<br>".we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "").($html ? $html : "").'</td>
+						' . we_html_tools::getPixel(4, 2) . '</td>
+					<td class="' . $class . '" nowrap="nowrap"><label' . /* (($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=(document.getElementById(\''.$_id.'\').checked ? false : true);'.$labelonclick.'}"' : ''). */' id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0;">' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
 				</tr>
 			</table>';
 
@@ -85,10 +82,9 @@ abstract class we_forms {
 	 *
 	 * @return     string
 	 */
-
-	 static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="",$type=0,$width=0){
-		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;".$onClick;
-		return '<input type="hidden" name="'.$name.'" value="'.($checked ? 1 : 0).'" />'.we_forms::checkbox(1, $checked, "_".$name, $text, $uniqid, $class, $onClick, $disabled, $description,$type, $width);
+	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0){
+		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
+		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . we_forms::checkbox(1, $checked, "_" . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
 
 	/**
@@ -103,32 +99,31 @@ abstract class we_forms {
 	 *
 	 * @return     string
 	 */
-
-	static function radiobutton($value,$checked,$name,$text,$uniqid=true,$class="defaultfont",$onClick="",$disabled=false,$description="",$type=0,$width=0,$onMouseUp="",$extra_content="") {
+	static function radiobutton($value, $checked, $name, $text, $uniqid=true, $class="defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0, $onMouseUp="", $extra_content=""){
 		// Check if we have to create a uniqe id
-		if ($uniqid) {
+		if($uniqid){
 			$_id = $name . "_" . uniqid(rand());
-		} else {
+		} else{
 			$_id = $name;
 		}
-/*		$labelonclick = "";
-		if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
+		/* 		$labelonclick = "";
+		  if($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']){
 
-			if($onClick){
-				$labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
-			}
-		}
-*/
+		  if($onClick){
+		  $labelonclick = str_replace("this.",'document.getElementById(\''.$_id.'\').',$onClick).";";
+		  }
+		  }
+		 */
 		// Create HTML tags
 		$foo = '
 			<table cellpadding="0" border="0" cellspacing="0">
 				<tr>
-					<td class="weEditmodeStyle"'.($description ? ' valign="top"' : '').'>
-						<input type="radio" name="'.$name.'" id="'.$_id.'" value="'.$value.'" style="cursor: pointer;outline: 0;" '.($checked ? " checked=\"checked\"" : "").($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "").($onClick ? " onclick=\"$onClick\"" : "").($disabled ? " disabled=\"disabled\"" : "").' /></td>
+					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '>
+						<input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0;" ' . ($checked ? " checked=\"checked\"" : "") . ($onMouseUp ? " onmouseup=\"$onMouseUp\"" : "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
 					<td class="weEditmodeStyle">
-						'.we_html_tools::getPixel(4,2).'</td>
-					<td class="weEditmodeStyle '.$class.'" nowrap="nowrap"><label'./*(($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : '').*/' id="label_'.$_id.'" for="'.$_id.'" style="'.($disabled ? 'color: grey; ' : 'cursor: pointer;').'outline: 0;" '.($onMouseUp ? " onmouseup=\"".str_replace("this.","document.getElementById('".$_id."').",$onMouseUp)."\"" : "").'>'.$text.'</label>'.($description ? "<br>".we_html_tools::getPixel(1,3)."<br>".we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "").
-				($extra_content ? ("<br>".we_html_tools::getPixel(1,3)."<br>". $extra_content) : "").'</td>
+						' . we_html_tools::getPixel(4, 2) . '</td>
+					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label' . /* (($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : ''). */' id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
+			($extra_content ? ("<br>" . we_html_tools::getPixel(1, 3) . "<br>" . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
 		// Return generated tags
@@ -136,24 +131,24 @@ abstract class we_forms {
 	}
 
 	/**
-	* returns the HTML Code for a webEdition Textarea (we:textarea we:sessionfield ...)
-	*
-	* @return string
-	* @param string $name
-	* @param string $value
-	* @param array $attribs
-	* @param string $autobr
-	* @param string $autobrName
-	* @param boolean $showAutobr
-	* @param string $path
-	* @param boolean $hidestylemenu
-	* @param boolean $forceinwebedition
-	* @param boolean $xml
-	* @param boolean $removeFirstParagraph
-	* @param string $charset
-	*
-	*/
-	static function weTextarea($name,$value,$attribs,$autobr,$autobrName,$showAutobr=true,$path="",$hidestylemenu=false,$forceinwebedition=false,$xml=false,$removeFirstParagraph=true,$charset="",$showSpell=true, $isFrontendEdit=false){
+	 * returns the HTML Code for a webEdition Textarea (we:textarea we:sessionfield ...)
+	 *
+	 * @return string
+	 * @param string $name
+	 * @param string $value
+	 * @param array $attribs
+	 * @param string $autobr
+	 * @param string $autobrName
+	 * @param boolean $showAutobr
+	 * @param string $path
+	 * @param boolean $hidestylemenu
+	 * @param boolean $forceinwebedition
+	 * @param boolean $xml
+	 * @param boolean $removeFirstParagraph
+	 * @param string $charset
+	 *
+	 */
+	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr=true, $path="", $hidestylemenu=false, $forceinwebedition=false, $xml=false, $removeFirstParagraph=true, $charset="", $showSpell=true, $isFrontendEdit=false){
 		if($charset == ""){
 			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement("Charset")){
 				$charset = $GLOBALS['we_doc']->getElement("Charset");
@@ -161,27 +156,27 @@ abstract class we_forms {
 		}
 
 		$out = "";
-		$dhtmledit = weTag_getAttribute("dhtmledit",$attribs,false,true); //4614
-		$wysiwyg = weTag_getAttribute("wysiwyg",$attribs,false,true);
+		$dhtmledit = weTag_getAttribute("dhtmledit", $attribs, false, true); //4614
+		$wysiwyg = weTag_getAttribute("wysiwyg", $attribs, false, true);
 
 		$wysiwyg = ($dhtmledit || $wysiwyg) && ($GLOBALS['brDetect']->isIE() || $GLOBALS['brDetect']->isGecko() || $GLOBALS['brDetect']->isOpera() || (defined("SAFARI_WYSIWYG") && $GLOBALS['brDetect']->isSafari()));
-		$cols = weTag_getAttribute("cols",$attribs);
-		$rows = weTag_getAttribute("rows",$attribs);
-		$width = weTag_getAttribute("width",$attribs);
-		$height = weTag_getAttribute("height",$attribs);
-		$commands = weTag_getAttribute("commands",$attribs);
-		$bgcolor = weTag_getAttribute("bgcolor",$attribs);
-		$wrap = weTag_getAttribute("wrap",$attribs);
-		$hideautobr = weTag_getAttribute("hideautobr",$attribs,false,true);
-		$class = weTag_getAttribute("class",$attribs);
-		$style = weTag_getAttribute("style",$attribs);
-		$id = weTag_getAttribute("id",$attribs);
-		$inlineedit = weTag_getAttribute("inlineedit",$attribs,defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true, true);
-		$tabindex = weTag_getAttribute("tabindex",$attribs);
+		$cols = weTag_getAttribute("cols", $attribs);
+		$rows = weTag_getAttribute("rows", $attribs);
+		$width = weTag_getAttribute("width", $attribs);
+		$height = weTag_getAttribute("height", $attribs);
+		$commands = weTag_getAttribute("commands", $attribs);
+		$bgcolor = weTag_getAttribute("bgcolor", $attribs);
+		$wrap = weTag_getAttribute("wrap", $attribs);
+		$hideautobr = weTag_getAttribute("hideautobr", $attribs, false, true);
+		$class = weTag_getAttribute("class", $attribs);
+		$style = weTag_getAttribute("style", $attribs);
+		$id = weTag_getAttribute("id", $attribs);
+		$inlineedit = weTag_getAttribute("inlineedit", $attribs, defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true, true);
+		$tabindex = weTag_getAttribute("tabindex", $attribs);
 
-		$buttonpos = weTag_getAttribute("buttonpos",$attribs);
+		$buttonpos = weTag_getAttribute("buttonpos", $attribs);
 
-		$cssClasses = weTag_getAttribute("classes",$attribs);
+		$cssClasses = weTag_getAttribute("classes", $attribs);
 
 		$buttonTop = false;
 		$buttonBottom = false;
@@ -204,46 +199,46 @@ abstract class we_forms {
 		}
 
 		if($style){
-			$style = eregi_replace('width:[^;"]+[;"]?','',$style);
-			$style = eregi_replace('height:[^;"]+[;"]?','',$style);
+			$style = eregi_replace('width:[^;"]+[;"]?', '', $style);
+			$style = eregi_replace('height:[^;"]+[;"]?', '', $style);
 			$style = trim($style);
 		}
-		$fontnames = weTag_getAttribute("fontnames",$attribs);
-		$showmenues = weTag_getAttribute("showmenus",$attribs,true,true);
+		$fontnames = weTag_getAttribute("fontnames", $attribs);
+		$showmenues = weTag_getAttribute("showmenus", $attribs, true, true);
 		if(isset($attribs["showMenues"])){ // old style compatibility
 			if($attribs["showMenues"] == "off" || $attribs["showMenues"] == "false"){
 				$showmenues = false;
 			}
-		}else if(isset($attribs["showmenues"])){ // old style compatibility
+		} else if(isset($attribs["showmenues"])){ // old style compatibility
 			if($attribs["showmenues"] == "off" || $attribs["showmenues"] == "false"){
 				$showmenues = false;
 			}
 		}
-		$importrtf = weTag_getAttribute("importrtf",$attribs,false,true);
-		if (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] !="" && $GLOBALS['we_doc']->ClassName == "we_objectFile") {
+		$importrtf = weTag_getAttribute("importrtf", $attribs, false, true);
+		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != "" && $GLOBALS['we_doc']->ClassName == "we_objectFile"){
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition);
-		} else {
+		} else{
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["WE_MAIN_DOC"]->InWebEdition) && $GLOBALS["WE_MAIN_DOC"]->InWebEdition);
 		}
 
 		$value = we_forms::removeBrokenInternalLinksAndImages($value);
 
-		if($wysiwyg) {
+		if($wysiwyg){
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : "520");
 			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : "200");
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
-			if(!$showmenues && (strlen($commands)==0)){
-				$commands = implode(",",we_wysiwyg::getAllCmds());
-				$commands = str_replace('formatblock,','',$commands);
-				$commands = str_replace('fontname,','',$commands);
-				$commands = str_replace('fontsize,','',$commands);
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
+			if(!$showmenues && (strlen($commands) == 0)){
+				$commands = implode(",", we_wysiwyg::getAllCmds());
+				$commands = str_replace('formatblock,', '', $commands);
+				$commands = str_replace('fontname,', '', $commands);
+				$commands = str_replace('fontsize,', '', $commands);
 				if($hidestylemenu){
-					$commands = str_replace('applystyle,','',$commands);
+					$commands = str_replace('applystyle,', '', $commands);
 				}
 			}
-			if($hidestylemenu && (strlen($commands)==0)){
-				$commands = implode(",",we_wysiwyg::getAllCmds());
-				$commands = str_replace('applystyle,','',$commands);
+			if($hidestylemenu && (strlen($commands) == 0)){
+				$commands = implode(",", we_wysiwyg::getAllCmds());
+				$commands = str_replace('applystyle,', '', $commands);
 			}
 
 
@@ -253,26 +248,26 @@ abstract class we_forms {
 
 			if($inlineedit){
 
-				$e = new we_wysiwyg($name,$width,$height,$value,$commands,$bgcolor,"",$class,$fontnames,(!$inwebedition),$xml,$removeFirstParagraph,$inlineedit,"",$charset,$cssClasses,$_lang,'',$showSpell,$isFrontendEdit);
+				$e = new we_wysiwyg($name, $width, $height, $value, $commands, $bgcolor, "", $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, "", $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
 				$out .= $e->getHTML();
-			}else{
-				$e = new we_wysiwyg($name,$width,$height,"",$commands,$bgcolor,"",$class,$fontnames,(!$inwebedition),$xml,$removeFirstParagraph,$inlineedit,"",$charset,$cssClasses,$_lang,'',$showSpell,$isFrontendEdit);
+			} else{
+				$e = new we_wysiwyg($name, $width, $height, "", $commands, $bgcolor, "", $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, "", $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit);
 
-				$fieldName = preg_replace('#^.+_txt\[(.+)\]$#','\1',$name);
+				$fieldName = preg_replace('#^.+_txt\[(.+)\]$#', '\1', $name);
 
 				// Bugfix => Workarround Bug # 7445
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != "we_objectFile" && $GLOBALS['we_doc']->ClassName != "we_object"){
 					$value = $GLOBALS['we_doc']->getField($attribs);
-				} else {
-					$value = parseInternalLinks($value,0);
+				} else{
+					$value = parseInternalLinks($value, 0);
 				}
 				// Ende Bugfix
 
-				$value = str_replace("##|r##","\r",str_replace("##|n##","\n",$value));
-				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url('.IMAGE_DIR . 'backgrounds/aquaBackground.gif);">'.$e->getHTML().'</div>' : '').'<div class="tbButtonWysiwygBorder" id="div_wysiwyg_'.$name.'">'.$value.'</div>'.($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url('.IMAGE_DIR . 'backgrounds/aquaBackground.gif);">'.$e->getHTML().'</div>' : '');
+				$value = str_replace("##|r##", "\r", str_replace("##|n##", "\n", $value));
+				$out .= ($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder" id="div_wysiwyg_' . $name . '">' . $value . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 			}
-		} else {
-			if($style && substr($style,-1) != ";"){
+		} else{
+			if($style && substr($style, -1) != ";"){
 				$style .= ";";
 			}
 			if($width){
@@ -284,51 +279,50 @@ abstract class we_forms {
 
 			if($showAutobr || $showSpell){
 				$clearval = $value;
-				$value = str_replace("<?","##|lt;?##",$value);
-				$value = str_replace("<script","<##scr#ipt##",$value);
-				$value = str_replace("</script","</##scr#ipt##",$value);
-				$value = str_replace("\\","\\\\",$value);
-				$value = str_replace("\n","\\n",$value);
-				$value = str_replace("\r","\\r",$value);
-				$value = str_replace('"',"\\\"",$value);
+				$value = str_replace("<?", "##|lt;?##", $value);
+				$value = str_replace("<script", "<##scr#ipt##", $value);
+				$value = str_replace("</script", "</##scr#ipt##", $value);
+				$value = str_replace("\\", "\\\\", $value);
+				$value = str_replace("\n", "\\n", $value);
+				$value = str_replace("\r", "\\r", $value);
+				$value = str_replace('"', "\\\"", $value);
 				$out .= '<script  type="text/javascript">
-	new we_textarea("'.$name.'","'.$value.'","'.$cols.'","'.$rows.'","'.$width.'","'.$height.'","'.$autobr.'","'.$autobrName.'",'.($showAutobr ? ($hideautobr ? "false" : "true") : "false").','.($importrtf ? "true" : "false").',"'.$GLOBALS["WE_LANGUAGE"].'","'.$class.'","'.$style.'","'.$wrap.'","'.(($GLOBALS["BROWSER"]=="SAFARI") ? "onkeydown" : "onchange").'","'.($xml ? "true" : "false").'","'.$id.'",'.((defined('SPELLCHECKER') && $showSpell) ? "true" : "false").');</script>'.
-	'<noscript><textarea name="'.$name.'"'.($tabindex ? ' tabindex="'.$tabindex.'"' : '').($cols ? ' cols="'.$cols.'"' : '').($rows ? ' rows="'.$rows.'"' : '').($style ? ' style="'.$style.'"' : '').($class ? ' class="'.$class.'"' : '').($id ? ' id="' . $id . '"' : '').'>'.htmlspecialchars($clearval).'</textarea></noscript>';
-			}else{
-				$out .= '<textarea name="'.$name.'"'.($tabindex ? ' tabindex="'.$tabindex.'"' : '').($cols ? ' cols="'.$cols.'"' : '').($rows ? ' rows="'.$rows.'"' : '').($style ? ' style="'.$style.'"' : '').($class ? ' class="'.$class.'"' : '').($id ? ' id="'.$id.'"' : '').'>'.htmlspecialchars($value).'</textarea>';
+	new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . $style . '","' . $wrap . '","' . (($GLOBALS["BROWSER"] == "SAFARI") ? "onkeydown" : "onchange") . '","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');</script>' .
+					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($clearval) . '</textarea></noscript>';
+			} else{
+				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($value) . '</textarea>';
 			}
 		}
 		return $out;
 	}
 
-
-	static function removeBrokenInternalLinksAndImages(&$text) {
+	static function removeBrokenInternalLinksAndImages(&$text){
 		$DB_WE = new DB_WE();
-		if(preg_match_all('/(href|src)="document:([^" \?#]+)/i',$text,$regs,PREG_SET_ORDER)){
-			foreach($regs as $reg) {
-				if(!f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID='.intval($reg[2]),'Path',$DB_WE)){
-					$text = eregi_replace('<a [^>]*href="document:'.$reg[2].'"[^>]*>([^<]+)</a>','\1',$text);
-					$text = eregi_replace('<a [^>]*href="document:'.$reg[2].'"[^>]*>','',$text);
-					$text = eregi_replace('<img [^>]*src="document:'.$reg[2].'"[^>]*>','',$text);
+		if(preg_match_all('/(href|src)="document:([^" \?#]+)/i', $text, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				if(!f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), 'Path', $DB_WE)){
+					$text = eregi_replace('<a [^>]*href="document:' . $reg[2] . '"[^>]*>([^<]+)</a>', '\1', $text);
+					$text = eregi_replace('<a [^>]*href="document:' . $reg[2] . '"[^>]*>', '', $text);
+					$text = eregi_replace('<img [^>]*src="document:' . $reg[2] . '"[^>]*>', '', $text);
 				}
 			}
 		}
-		if(preg_match_all('/src="thumbnail:([^" ]+)/i',$text,$regs,PREG_SET_ORDER)){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
-			foreach($regs as $reg) {
-				list($imgID,$thumbID) = explode(",",$reg[1]);
+		if(preg_match_all('/src="thumbnail:([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_thumbnail.class.php");
+			foreach($regs as $reg){
+				list($imgID, $thumbID) = explode(",", $reg[1]);
 				$thumbObj = new we_thumbnail();
-				if(!$thumbObj->initByImageIDAndThumbID($imgID,$thumbID)){
-					$text = eregi_replace('<img[^>]+src="thumbnail:'.$reg[1].'[^>]+>','',$text);
+				if(!$thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
+					$text = eregi_replace('<img[^>]+src="thumbnail:' . $reg[1] . '[^>]+>', '', $text);
 				}
 			}
 		}
 		if(defined("OBJECT_TABLE")){
-			if(preg_match_all('/href="object:([^" \?#]+)(\??)/i',$text,$regs,PREG_SET_ORDER)){
-				foreach($regs as $reg) {
-					if(!id_to_path($reg[1],OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
-						$text = eregi_replace('<a [^>]*href="object:'.$reg[1].'"[^>]*>([^<]+)</a>','\1',$text);
-						$text = eregi_replace('<a [^>]*href="object:'.$reg[1].'"[^>]*>','',$text);
+			if(preg_match_all('/href="object:([^" \?#]+)(\??)/i', $text, $regs, PREG_SET_ORDER)){
+				foreach($regs as $reg){
+					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
+						$text = eregi_replace('<a [^>]*href="object:' . $reg[1] . '"[^>]*>([^<]+)</a>', '\1', $text);
+						$text = eregi_replace('<a [^>]*href="object:' . $reg[1] . '"[^>]*>', '', $text);
 					}
 				}
 			}
@@ -336,4 +330,5 @@ abstract class we_forms {
 
 		return $text;
 	}
+
 }

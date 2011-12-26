@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class liveUpdateTemplates {
+abstract class liveUpdateTemplates {
 
 	/**
 	 * returns standard html container for output

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,39 +22,38 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 // make accessable for others too, but use weMetaData_Exif::getUsedFields();
 $GLOBALS['____weMetaData_Exif_usedFields'] = array(
-		"Artist",
-		"ColorSpace",
-		"Copyright",
-		"DateTime",
-		"DateTimeOriginal",
-		"ExifImageLength",
-		"ExifImageWidth",
-		"ExifVersion",
-		"ExposureBiasValue",
-		"ExposureTime",
-		"FileDateTime",
-		"FileSize",
-		"FileType",
-		"Flash",
-		"FNumber",
-		"FocalLength",
-		"HostComputer",
-		"ImageDescription",
-		"Make",
-		"MeteringMode",
-		"MimeType",
-		"Model",
-		"Orientation",
-		"ResolutionUnit",
-		"Software",
-		"UserComment",
-		"XResolution",
-		"YResolution",
-		"YCbCrPositioning"
-	);
+	"Artist",
+	"ColorSpace",
+	"Copyright",
+	"DateTime",
+	"DateTimeOriginal",
+	"ExifImageLength",
+	"ExifImageWidth",
+	"ExifVersion",
+	"ExposureBiasValue",
+	"ExposureTime",
+	"FileDateTime",
+	"FileSize",
+	"FileType",
+	"Flash",
+	"FNumber",
+	"FocalLength",
+	"HostComputer",
+	"ImageDescription",
+	"Make",
+	"MeteringMode",
+	"MimeType",
+	"Model",
+	"Orientation",
+	"ResolutionUnit",
+	"Software",
+	"UserComment",
+	"XResolution",
+	"YResolution",
+	"YCbCrPositioning"
+);
 
 /**
  * @abstract implementation class of metadata reader for Exif data
@@ -62,42 +62,39 @@ $GLOBALS['____weMetaData_Exif_usedFields'] = array(
  * @uses exif php exif functions, see link below for more information
  * @link http://de.php.net/manual/de/ref.exif.php reference manual for php exif functions
  */
-class weMetaData_Exif extends weMetaData {
+class weMetaData_Exif extends weMetaData{
 
 	var $accesstypes = array("read");
 
-	function __construct($filetype) {
+	function __construct($filetype){
 		$this->filetype = $filetype;
 	}
 
-	function getUsedFields() {
+	function getUsedFields(){
 		return $GLOBALS['____weMetaData_Exif_usedFields'];
 	}
 
-	function _checkDependencies() {
-		if(is_callable("exif_read_data")) {
-			return true;
-		} else {
-			return false;
-		}
+	function _checkDependencies(){
+		return (is_callable("exif_read_data"));
 	}
 
-	function _getMetaData($selection = "") {
-		if(!$this->_valid) return false;
-		if(is_array($selection)) {
+	function _getMetaData($selection = ""){
+		if(!$this->_valid)
+			return false;
+		if(is_array($selection)){
 			// fetch some
-		} else {
+		} else{
 			// fetch all
-			if(@exif_imagetype($this->datasource)) {
+			if(@exif_imagetype($this->datasource)){
 				$_metadata = @exif_read_data($this->datasource);
-			} else {
+			} else{
 				$this->_valid = false;
 				return false;
 			}
 		}
 
-		foreach($GLOBALS['____weMetaData_Exif_usedFields'] as $value) {
-			if(isset($_metadata[$value])) {
+		foreach($GLOBALS['____weMetaData_Exif_usedFields'] as $value){
+			if(isset($_metadata[$value])){
 				$this->metadata[$value] = $_metadata[$value];
 			}
 		}

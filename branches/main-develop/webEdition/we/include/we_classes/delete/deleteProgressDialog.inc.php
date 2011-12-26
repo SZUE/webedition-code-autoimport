@@ -22,14 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 class deleteProgressDialog{
 
 	function main(){
-
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_progressBar.inc.php");
 
 		$WE_PB = new we_progressBar(0,0,true);
 		$WE_PB->setStudLen(490);

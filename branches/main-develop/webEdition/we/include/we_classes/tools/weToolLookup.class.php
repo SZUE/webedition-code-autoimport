@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class weToolLookup{
-const REGISTRY_NAME='weToolsRegistry';
-
+	const REGISTRY_NAME='weToolsRegistry';
 
 	static function getAllTools($force=false, $addInternTools=false, $includeDisabled=false){
 
@@ -181,27 +180,27 @@ const REGISTRY_NAME='weToolsRegistry';
 		}
 
 		return $_inc;
+	}
+
+	function getExternTriggeredTasks(){
+
+		if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'])){
+			//return $_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'];
 		}
 
-		function getExternTriggeredTasks() {
-
-			if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'])) {
-				//return $_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'];
+		$_inc = array();
+		$_tools = weToolLookup::getAllTools();
+		foreach($_tools as $_tool){
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($_tool['name'])){
+				$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php';
 			}
-
-			$_inc = array();
-			$_tools = weToolLookup::getAllTools();
-			foreach($_tools as $_tool){
-				if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($_tool['name']) ){
-					$_inc[] = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_tool['name'] . '/externtriggered/tasks.php';
-				}
-			}
-			if(!defined('NO_SESS')) {
-				$_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
-			}
-
-			return $_inc;
 		}
+		if(!defined('NO_SESS')){
+			$_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
+		}
+
+		return $_inc;
+	}
 
 	static function getTagDirs(){
 

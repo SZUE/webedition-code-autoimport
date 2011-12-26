@@ -50,7 +50,7 @@ class HttpRequest{
     var $errstr = 0;
 
 
-    function HttpRequest($path, $host, $method='POST', $protocol='HTTP/1.0'){
+    function __construct($path, $host, $method='POST', $protocol='HTTP/1.0'){
 
         $this->http_path     = $path;
         $this->http_host     = $host;

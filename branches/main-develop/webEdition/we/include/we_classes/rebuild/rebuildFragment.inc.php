@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/rebuild/we_rebuild.class.php");
-
 class rebuildFragment extends taskFragment{
 
-	function __construct($name,$taskPerFragment,$pause=0,$bodyAttributes="",$initdata="") {
-		parent::__construct($name,$taskPerFragment,$pause,$bodyAttributes,$initdata);
-
+	function __construct($name, $taskPerFragment, $pause=0, $bodyAttributes="", $initdata=""){
+		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 	}
 
 	function doTask(){
@@ -38,17 +33,16 @@ class rebuildFragment extends taskFragment{
 		$this->updateProgressBar();
 	}
 
-	function updateProgressBar() {
-		$percent = round((100/count($this->alldata))*(1+$this->currentTask));
-		print we_htmlElement::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "'.addslashes(shortenPath($this->data["path"],33)).'" : "'.g_l('rebuild',"[savingDocument]").addslashes(shortenPath($this->data["path"],60)).'") );parent.wizbusy.setProgress('.$percent.');');
-
+	function updateProgressBar(){
+		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
+		print we_htmlElement::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', "[savingDocument]") . addslashes(shortenPath($this->data["path"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
 	}
 
 	function finish(){
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		we_html_tools::htmlTop();
-		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall( addslashes($responseText ? $responseText : g_l('rebuild',"[finished]")), we_message_reporting::WE_MESSAGE_NOTICE ) . '
-			top.close();').'
+		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(addslashes($responseText ? $responseText : g_l('rebuild', "[finished]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
+			top.close();') . '
 		</head>
 		</html>';
 	}
@@ -57,10 +51,13 @@ class rebuildFragment extends taskFragment{
 		we_html_tools::protect();
 		//print "<html><head><title></title></head>";
 	}
+
 	function printBodyTag($attributes=""){
 
 	}
+
 	function printFooter(){
 		$this->printJSReload();
 	}
+
 }

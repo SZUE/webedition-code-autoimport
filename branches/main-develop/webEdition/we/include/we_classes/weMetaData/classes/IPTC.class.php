@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $GLOBALS['____weMetaData_IPTC_usedFields'] = array(
 	'byline_title',
 	'byline',
@@ -56,8 +56,6 @@ $GLOBALS['____weMetaData_IPTC_usedFields'] = array(
 	'supplementary_category'
 );
 
-
-
 /**
  * @abstract implementation class of metadata reader for IPTC data
  * @author Alexander Lindenstruth
@@ -65,48 +63,41 @@ $GLOBALS['____weMetaData_IPTC_usedFields'] = array(
  * @uses IPTC PEAR_IPTC Package for reading IPTC data. See link below for more information
  * @link http://pear.php.net/package/Image_IPTC/ PEAR IPTC Package
  */
-class weMetaData_IPTC extends weMetaData {
+class weMetaData_IPTC extends weMetaData{
 
 	var $accesstypes = array("read");
 
-	function __construct($filetype) {
-		$this->weMetaData_IPTC($filetype);
-	}
-
-	function weMetaData_IPTC($filetype) {
+	function __construct($filetype){
 		$this->filetype = $filetype;
 	}
 
-	function _checkDependencies() {
-		if(is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php")) {
-			return true;
-		} else {
-			return false;
-		}
+	function _checkDependencies(){
+		return(is_readable($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMetaData/lib/PEAR_IPTC.php"));
 	}
 
-	function getUsedFields() {
+	function getUsedFields(){
 		return $GLOBALS['____weMetaData_IPTC_usedFields'];
 	}
 
-	function _getMetaData($selection = "") {
-		if(!$this->_valid) return false;
+	function _getMetaData($selection = ""){
+		if(!$this->_valid)
+			return false;
 
 		// seems not to work correctly so only an empty array is returned to caller:
 		$this->metadata = array();
 		//$this->metadata = array("Copyright" => "/me","Make" => "Fuji");
 
 		$_iptcData = new Image_IPTC($this->datasource);
-		if($_iptcData->isValid()) {
-			if(is_array($selection)) {
+		if($_iptcData->isValid()){
+			if(is_array($selection)){
 				// fetch some tags
-				foreach($selection as $value) {
+				foreach($selection as $value){
 					$this->metadata[] = $_iptcData->getTag($value);
 				}
-			} else {
-				foreach ($GLOBALS['____weMetaData_IPTC_usedFields'] as $fieldName) {
+			} else{
+				foreach($GLOBALS['____weMetaData_IPTC_usedFields'] as $fieldName){
 					$_data = $_iptcData->getTag($fieldName);
-					if (!is_null($_data)) {
+					if(!is_null($_data)){
 						$this->metadata[$fieldName] = $_data;
 					}
 				}

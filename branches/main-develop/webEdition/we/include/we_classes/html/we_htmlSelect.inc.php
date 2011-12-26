@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Filename:    we_htmlSelect.inc.php
  * Directory:   /webEdition/we/include/we_classes/html
@@ -30,8 +31,6 @@
  *
  * Description: Provides functions for creating html tags
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 class we_htmlSelect extends we_baseCollection{
 
 	/**

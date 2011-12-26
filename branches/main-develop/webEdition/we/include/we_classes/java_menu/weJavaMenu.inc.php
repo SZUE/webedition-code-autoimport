@@ -35,7 +35,7 @@ class weJavaMenu {
 	var $port = "";
 	var $prename = "";
 
-	function weJavaMenu($entries, $SERVER_NAME, $lcmdFrame="top.load", $protocol="http", $port="", $width=200, $height=30, $prename="") {
+	function __construct($entries, $SERVER_NAME, $lcmdFrame="top.load", $protocol="http", $port="", $width=200, $height=30, $prename="") {
 		$this->prename = $prename;
 		if($entries){
 			$this->entries = $entries;

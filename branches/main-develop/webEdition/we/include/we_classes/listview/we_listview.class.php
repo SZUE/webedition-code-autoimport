@@ -231,11 +231,11 @@ class we_listview extends listviewBase{
 			}
 
 			if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-				$bedingung_sql1 = " ( " . implode(' AND ',$bedingungen_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode(' AND ',$bedingungen3_sql)) : "") . " ) ";
+				$bedingung_sql1 = " ( " . implode(' AND ', $bedingungen_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode(' AND ', $bedingungen3_sql)) : "") . " ) ";
 			} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-				$bedingung_sql2 = " ( ( " . implode(' OR ',$bedingungen2_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode(' AND ',$bedingungen3_sql)) : " ) ") . " ) ";
+				$bedingung_sql2 = " ( ( " . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode(' AND ', $bedingungen3_sql)) : " ) ") . " ) ";
 			} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
-				$bedingung_sql2 = implode(' AND ',$bedingungen3_sql);
+				$bedingung_sql2 = implode(' AND ', $bedingungen3_sql);
 			}
 
 			if(isset($bedingung_sql1) && isset($bedingung_sql2)){

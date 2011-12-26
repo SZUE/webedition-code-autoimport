@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -30,10 +31,7 @@
  *
  * Description: Provides functions for creating html tags used in forms.
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-class we_htmlFrameset extends we_baseCollection {
+class we_htmlFrameset extends we_baseCollection{
 
 	/**
 	 * Constructor
@@ -43,10 +41,11 @@ class we_htmlFrameset extends we_baseCollection {
 	 *
 	 * @return		we_htmlFrameset
 	 */
-
-	function __construct($attribs=array(),$frames_num=0) {
-		parent::__construct("frameset",true,$attribs);
-		for($i=0;$i<$frames_num;$i++) $this->addFrame();
+	function __construct($attribs=array(), $frames_num=0){
+		parent::__construct("frameset", true, $attribs);
+		for($i = 0; $i < $frames_num; $i++){
+			$this->addFrame();
+		}
 	}
 
 	/**
@@ -59,7 +58,7 @@ class we_htmlFrameset extends we_baseCollection {
 	 * @return		void
 	 */
 	function addFrame($attribs=array()){
-		$this->childs[]=new we_baseElement("frame",false,$attribs);
+		$this->childs[] = new we_baseElement("frame", false, $attribs);
 	}
 
 	/**
@@ -70,7 +69,7 @@ class we_htmlFrameset extends we_baseCollection {
 	 * @return		void
 	 */
 	function addFrameset($attribs=array()){
-		$this->childs[]=new we_htmlFrameset($attribs);
+		$this->childs[] = new we_htmlFrameset($attribs);
 	}
 
 	/**
@@ -80,11 +79,10 @@ class we_htmlFrameset extends we_baseCollection {
 	 *
 	 * @return		void
 	 */
-	function setFrameAttributes($childid,$attribs=array()){
+	function setFrameAttributes($childid, $attribs=array()){
 
-		$frame=& $this->getChild($childid);
+		$frame = & $this->getChild($childid);
 		$frame->setAttributes($attribs);
-
 	}
 
 	/**

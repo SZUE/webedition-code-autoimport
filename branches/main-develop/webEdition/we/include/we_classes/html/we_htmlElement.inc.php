@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Filename:    we_htmlElement.inc.php
  * Directory:   /webEdition/we/include/we_classes/html
@@ -30,8 +31,6 @@
  *
  * Description: Provides functions for creating html tags
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-
 abstract class we_htmlElement{
 
 	/**
@@ -112,15 +111,15 @@ abstract class we_htmlElement{
 	 */
 	static function jsElement($content='', $attribs=array()){
 		$attribs['type'] = 'text/javascript';
-		if(strpos($content,'<!--')===FALSE){
-			$content="<!--\n".$content."\n//-->\n";
+		if(strpos($content, '<!--') === FALSE){
+			$content = "<!--\n" . $content . "\n//-->\n";
 		}
 		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs, $content));
 	}
 
 	static function cssLink($url){
 		return we_baseElement::getHtmlCode(new we_baseElement('link', false,
-			array('href'=>$url,'rel'=>'styleSheet','type'=>'text/css')
+					array('href' => $url, 'rel' => 'styleSheet', 'type' => 'text/css')
 			));
 	}
 
@@ -225,8 +224,8 @@ abstract class we_htmlElement{
 	 */
 	static function htmlBody($attribs=array(), $content=''){
 		if(!isset($attribs['style'])){
-			$attribs['style']='margin: 0px 0px 0px 0px;';
-		}else if(strstr($attribs['style'],'margin')===FALSE){
+			$attribs['style'] = 'margin: 0px 0px 0px 0px;';
+		} else if(strstr($attribs['style'], 'margin') === FALSE){
 			$attribs['style'].=';margin: 0px 0px 0px 0px;';
 		}
 
@@ -275,8 +274,8 @@ abstract class we_htmlElement{
 	 * @return		string
 	 */
 	static function htmlBr(){
-		static $br=0;
-		$br=($br?$br:we_baseElement::getHtmlCode(new we_baseElement('br', false)));
+		static $br = 0;
+		$br = ($br ? $br : we_baseElement::getHtmlCode(new we_baseElement('br', false)));
 		return $br;
 	}
 

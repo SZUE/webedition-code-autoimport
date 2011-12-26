@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,44 +22,36 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-class leWizardContent {
+class leWizardContent{
 
 	var $id = "";
 	var $headlineId = "";
 	var $descriptionId = "";
 
-	function __construct($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription") {
+	function __construct($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription"){
 
 		$this->leWizardContent($id, $headlineId, $descriptionId);
-
 	}
 
-
-	function leWizardContent($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription") {
+	function leWizardContent($id = "leWizardContent", $headlineId = "leWizardHeadline", $descriptionId = "leWizardDescription"){
 
 		$this->id = $id;
 		$this->headlineId = $headlineId;
 		$this->descriptionId = $descriptionId;
-
 	}
 
-	function getCSS() {
+	function getCSS(){
 
 
-		if(stripos($_SERVER["HTTP_USER_AGENT"],"X11")!==false) {
+		if(stripos($_SERVER["HTTP_USER_AGENT"], "X11") !== false){
 
 			$System = "X11";
-		} else if(stripos($_SERVER["HTTP_USER_AGENT"],"Win")!==false) {
+		} else if(stripos($_SERVER["HTTP_USER_AGENT"], "Win") !== false){
 			$System = "WIN";
-
-		} else if(stripos($_SERVER["HTTP_USER_AGENT"],"Mac")!==false) {
+		} else if(stripos($_SERVER["HTTP_USER_AGENT"], "Mac") !== false){
 			$System = "MAC";
-
-		} else {
+		} else{
 			$System = "UNKNOWN";
-
 		}
 
 		$FontSizeH1 = ($System == "MAC") ? "11px" : (($System == "X11") ? "13px" : "12px");
@@ -107,11 +100,9 @@ class leWizardContent {
 EOF;
 
 		return $CSS;
-
 	}
 
-
-	function getJSCode() {
+	function getJSCode(){
 
 		$JS = <<<EOF
 <script type="text/javascript"><!--
@@ -171,11 +162,9 @@ leWizardContent.scrollDown = function() {
 EOF;
 
 		return $JS;
-
 	}
 
-
-	function get() {
+	function get(){
 
 		$Html = <<<EOF
 <div id="{$this->id}">
@@ -184,11 +173,9 @@ EOF;
 EOF;
 
 		return $Html;
-
 	}
 
-
-	function getDescription() {
+	function getDescription(){
 
 		$Html = <<<EOF
 <div id="{$this->descriptionId}">
@@ -197,6 +184,6 @@ EOF;
 EOF;
 
 		return $Html;
-
 	}
+
 }

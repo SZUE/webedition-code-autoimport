@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -25,27 +26,28 @@
 /**
  * @abstract implementation class of metadata reader for PDF metadata
  */
-class weMetaData_PDF extends weMetaData {
+class weMetaData_PDF extends weMetaData{
 
-	var $accesstypes = array("read","write");
+	var $accesstypes = array("read", "write");
 
-	function __construct($filetype) {
+	function __construct($filetype){
 		parent::__construct($filetype);
 	}
 
-	function weMetaData_PDF($filetype) {
+	function weMetaData_PDF($filetype){
 		$this->filetype = $filetype;
 	}
 
-	function _checkDependencies() {
+	function _checkDependencies(){
 		return false;
 	}
 
-	function _getMetaData($selection = "") {
-		if(!$this->_valid) return false;
-		if(is_array($selection)) {
+	function _getMetaData($selection = ""){
+		if(!$this->_valid)
+			return false;
+		if(is_array($selection)){
 			// fetch some
-		} else {
+		} else{
 			// fetch all
 		}
 		return $this->metadata;

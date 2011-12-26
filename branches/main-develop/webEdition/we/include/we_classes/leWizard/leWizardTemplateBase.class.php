@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-class leWizardTemplateBase {
+class leWizardTemplateBase{
 
 	/**
 	 * occurd errors
@@ -67,66 +66,49 @@ class leWizardTemplateBase {
 	 */
 	var $UseOnlineInstallerTemplate = true;
 
-
-	function leWizardTemplateBase() {
+	function leWizardTemplateBase(){
 		$this->__construct();
+	}
+
+	function __construct(){
 
 	}
 
-
-	function __construct() {
-
-	}
-
-
-	function addError($ErrorMessage) {
+	function addError($ErrorMessage){
 		$this->_Errors[] = $ErrorMessage;
-
 	}
 
-
-	function addErrors($Errors = array()) {
+	function addErrors($Errors = array()){
 		$this->_Errors = array_merge($this->Errors, $Errors);
-
 	}
 
-
-	function addJavascript($Javascript) {
+	function addJavascript($Javascript){
 		$this->_Javascripts[] = $Javascript;
-
 	}
 
+	function setButtons(&$nextStep, &$backStep){
 
-	function setButtons(&$nextStep, &$backStep) {
-
-		if ($nextStep) {
+		if($nextStep){
 			$this->addJavascript('parent.leWizardForm.setInputField("leWizard", "' . $nextStep->getWizardName() . '");');
 			$this->addJavascript('parent.leWizardForm.setInputField("leStep", "' . $nextStep->getName() . '");');
 
-			if(isset($_REQUEST['liveUpdateSession']) && $_REQUEST['liveUpdateSession'] != "") {
+			if(isset($_REQUEST['liveUpdateSession']) && $_REQUEST['liveUpdateSession'] != ""){
 				$this->addJavascript('parent.leWizardForm.setInputField("liveUpdateSession", "' . $_REQUEST['liveUpdateSession'] . '");');
-
 			}
-
 		}
 
-		if ($backStep) {
+		if($backStep){
 			$this->addJavascript('parent.backUrl = "' . $backStep->getUrl() . (isset($_REQUEST['liveUpdateSession']) && $_REQUEST['liveUpdateSession'] != "" ? "&liveUpdateSession=" . $_REQUEST['liveUpdateSession'] : "") . '&backStep=true";');
-
 		}
-
 	}
 
-
-	function getProgressBarJs(&$CurrentStep) {
+	function getProgressBarJs(&$CurrentStep){
 
 		// enable/disable the progress bar
 		return 'parent.leWizardProgress.enable(' . ($CurrentStep->ProgressBarVisible ? "true" : "false") . ');';
-
 	}
 
-
-	function getButtonJs(&$CurrentStep) {
+	function getButtonJs(&$CurrentStep){
 
 		// enable/disable buttons
 		$ButtonNames = array(
@@ -137,71 +119,59 @@ class leWizardTemplateBase {
 
 		$ReturnValue = "";
 
-		foreach ($ButtonNames as $Button) {
-			if(in_array($Button, $CurrentStep->EnabledButtons)) {
+		foreach($ButtonNames as $Button){
+			if(in_array($Button, $CurrentStep->EnabledButtons)){
 				$ReturnValue .= 'parent.weButton.enable("' . $Button . '");';
-
-			} else {
+			} else{
 				$ReturnValue .= 'parent.weButton.disable("' . $Button . '");';
-
 			}
-
 		}
 
 		return $ReturnValue;
-
 	}
 
+	function getOutput(&$CurrentStep){
 
-	function getOutput(&$CurrentStep) {
 
+		if($CurrentStep->liveUpdateHttpResponse){
+			$Output = "<script type=\"text/javascript\">"
+				. $this->getButtonJs($CurrentStep)
+				. $this->getProgressBarJs($CurrentStep);
 
-		if($CurrentStep->liveUpdateHttpResponse) {
-			$Output	=	"<script type=\"text/javascript\">"
-					.	$this->getButtonJs($CurrentStep)
-					.	$this->getProgressBarJs($CurrentStep);
-
-			if(sizeof($this->_Javascripts) > 0) {
+			if(sizeof($this->_Javascripts) > 0){
 				$this->_Javascripts = array_reverse($this->_Javascripts);
-				foreach ($this->_Javascripts as $Javascript) {
-					$Output	.=	$Javascript . "\n";
-
+				foreach($this->_Javascripts as $Javascript){
+					$Output .= $Javascript . "\n";
 				}
-
 			}
 
-			$Output	.=	"</script>"
-					.	$CurrentStep->liveUpdateHttpResponse->getOutput();
+			$Output .= "</script>"
+				. $CurrentStep->liveUpdateHttpResponse->getOutput();
 
 			return $Output;
-
 		}
 
-		if($this->UseOnlineInstallerTemplate) {
+		if($this->UseOnlineInstallerTemplate){
 
 			$this->addJavascript($this->getButtonJs($CurrentStep));
 
 			$this->addJavascript($this->getProgressBarJs($CurrentStep));
 
 			// update the status
-			if($CurrentStep->ShowInStatusBar) {
+			if($CurrentStep->ShowInStatusBar){
 				$this->addJavascript('parent.leWizardStatus.update("' . $CurrentStep->getWizardName() . '", "' . $CurrentStep->getName() . '");');
-
 			}
 
-			if (sizeof($this->_Errors) > 0) {
-				for ($i = 0; $i < sizeof($this->_Errors); $i++) {
+			if(sizeof($this->_Errors) > 0){
+				for($i = 0; $i < sizeof($this->_Errors); $i++){
 					$this->Errors .= "<h1 class=\"error\">{$this->_Errors[$i]}</h1>\n";
-
 				}
-
-			} else {
-				if ($CurrentStep->AutoContinue >= 0) {
-					$CurrentStep->Content .= "<br /><br /><div class=\"defaultfont\">" .  sprintf($GLOBALS["lang"]["Template"]["autocontinue"], "<span id=\"secondTimer\">" . $CurrentStep->AutoContinue . "</span>") . "</div>";
+			} else{
+				if($CurrentStep->AutoContinue >= 0){
+					$CurrentStep->Content .= "<br /><br /><div class=\"defaultfont\">" . sprintf($GLOBALS["lang"]["Template"]["autocontinue"], "<span id=\"secondTimer\">" . $CurrentStep->AutoContinue . "</span>") . "</div>";
 
 					$this->addJavascript("parent.leWizardForm.forward();");
 				}
-
 			}
 
 			// set focus
@@ -210,31 +180,25 @@ class leWizardTemplateBase {
 			// replace content
 			$this->addJavascript('parent.leWizardContent.replaceElement(document.getElementById("leWizardContent"));');
 
-			if(isset($CurrentStep->Language['headline']) && $CurrentStep->Language['headline'] != "") {
+			if(isset($CurrentStep->Language['headline']) && $CurrentStep->Language['headline'] != ""){
 				$this->addJavascript('parent.leWizardContent.replaceHeadline("' . $CurrentStep->Language['headline'] . '");');
-
-			} else {
+			} else{
 				$this->addJavascript('parent.leWizardContent.replaceHeadline("");');
-
 			}
 
-			if(isset($CurrentStep->Language['description']) && $CurrentStep->Language['description'] != "") {
+			if(isset($CurrentStep->Language['description']) && $CurrentStep->Language['description'] != ""){
 				$this->addJavascript('parent.leWizardContent.replaceDescription("' . $CurrentStep->Language['description'] . '");');
-
-			} else {
+			} else{
 				$this->addJavascript('parent.leWizardContent.replaceDescription("");');
-
 			}
 
-			if(sizeof($this->_Javascripts) > 0) {
+			if(sizeof($this->_Javascripts) > 0){
 				$this->_Javascripts = array_reverse($this->_Javascripts);
 				$this->Javascript .= '<script type="text/javascript"><!--';
-				foreach ($this->_Javascripts as $Javascript) {
+				foreach($this->_Javascripts as $Javascript){
 					$this->Javascript .= $Javascript . "\n";
-
 				}
-				$this->Javascript .= "//-->\n".'</script>';
-
+				$this->Javascript .= "//-->\n" . '</script>';
 			}
 
 			$Content = (isset($CurrentStep->Language['content']) && trim($CurrentStep->Language['content']) != "") ? trim($CurrentStep->Language['content']) . "<br />" : "";
@@ -257,12 +221,9 @@ class leWizardTemplateBase {
 EOF;
 
 			return $Output;
-
-		} else {
+		} else{
 			return $this->Output;
-
 		}
-
 	}
 
 }

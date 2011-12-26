@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_modules
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**
  * Definition of webEdition Base Model
  *
  */
-class weModelBase {
+class weModelBase{
 
 	var $db;
 	var $table = '';
@@ -38,19 +38,19 @@ class weModelBase {
 	/**
 	 * Default Constructor
 	 */
-	function __construct($table) {
+	function __construct($table){
 		$this->db = new DB_WE();
 		$this->table = $table;
 		$this->loadPresistents();
 	}
 
-	function loadPresistents() {
+	function loadPresistents(){
 		$this->persistent_slots = array();
 		$tableInfo = $this->db->metadata($this->table);
-		foreach($tableInfo as $info) {
+		foreach($tableInfo as $info){
 			$fname = $info["name"];
 			$this->persistent_slots[] = $fname;
-			if (!isset($this->$fname))
+			if(!isset($this->$fname))
 				$this->$fname = "";
 		}
 	}
@@ -58,28 +58,28 @@ class weModelBase {
 	/**
 	 * Load entry from database
 	 */
-	function load($id="0") {
+	function load($id="0"){
 		$ids = explode(",", $id);
-		foreach ($ids as $k => $v) {
-			$this->{$this->keys[$k]}='"' . $this->db->escape($v) . '"';
+		foreach($ids as $k => $v){
+			$this->{$this->keys[$k]} = '"' . $this->db->escape($v) . '"';
 		}
 
-		if ($this->isKeyDefined()) {
+		if($this->isKeyDefined()){
 			$tableInfo = $this->db->metadata($this->table);
 			$this->db->query("SELECT * FROM " . $this->table . " WHERE " . $this->getKeyWhere() . ";");
-			if ($this->db->next_record()) {
-				foreach($tableInfo as $info) {
+			if($this->db->next_record()){
+				foreach($tableInfo as $info){
 					$fieldName = $info["name"];
-					if (in_array($fieldName, $this->persistent_slots)) {
+					if(in_array($fieldName, $this->persistent_slots)){
 						$foo = $this->db->f($fieldName);
-						$this->$fieldName=$foo;
+						$this->$fieldName = $foo;
 					}
 				}
 				$this->isnew = false;
 				return true;
 			}else
 				return false;
-		}else {
+		}else{
 			return false;
 		}
 	}
@@ -87,20 +87,20 @@ class weModelBase {
 	/**
 	 * save entry in database
 	 */
-	function save($force_new=false) {
+	function save($force_new=false){
 		$sets = array();
 		$wheres = array();
-		if ($force_new)
+		if($force_new)
 			$this->isnew = true;
-		foreach ($this->persistent_slots as $key => $val) {
+		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
-					//FIXME: remove eval
+			//FIXME: remove eval
 			eval('if(isset($this->' . $val . ')) $sets[]="' . $val . '=\'".escape_sql_query($this->' . $val . ')."\'";');
 		}
 		$where = $this->getKeyWhere();
 		$set = implode(",", $sets);
 
-		if ($this->isKeyDefined() && $this->isnew) {
+		if($this->isKeyDefined() && $this->isnew){
 			$query = 'REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
 
 			$this->db->query($query);
@@ -108,8 +108,7 @@ class weModelBase {
 			$this->ID = $this->db->getInsertId();
 			$this->isnew = false;
 			return true;
-		}
-		else if ($this->isKeyDefined()) {
+		} else if($this->isKeyDefined()){
 			$query = 'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where;
 			$this->db->query($query);
 			return true;
@@ -121,31 +120,32 @@ class weModelBase {
 	/**
 	 * delete entry from database
 	 */
-	function delete() {
-		if (!$this->isKeyDefined()) {
+	function delete(){
+		if(!$this->isKeyDefined()){
 			return false;
 		}
 		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere() . ';');
 		return true;
 	}
 
-	function getKeyWhere() {
+	function getKeyWhere(){
 		$wheres = array();
-		foreach ($this->keys as $f) {
-					//FIXME: remove eval
+		foreach($this->keys as $f){
+			//FIXME: remove eval
 			eval('$wheres[]="' . $f . '=\'".escape_sql_query($this->' . $f . ')."\'";');
 		}
 		return implode(" AND ", $wheres);
 	}
 
-	function isKeyDefined() {
+	function isKeyDefined(){
 		$defined = true;
-		foreach ($this->keys as $prim)
-			if(!isset($this->$prim)) $defined=false;
+		foreach($this->keys as $prim)
+			if(!isset($this->$prim))
+				$defined = false;
 		return $defined;
 	}
 
-	function setKeys($keys) {
+	function setKeys($keys){
 		$this->keys = $keys;
 	}
 

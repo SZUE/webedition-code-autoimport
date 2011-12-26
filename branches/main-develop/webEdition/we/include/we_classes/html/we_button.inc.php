@@ -22,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Class we_button
  *
  * Provides functions for creating webEdition buttons.
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 //fIXME: this should be abstract - but liveupdate currently fails with this
 class we_button{
 	const LEFT_WIDTH=5;
@@ -65,7 +64,7 @@ class we_button{
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '"></td>' .
 			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . ($width ? ('" style="width:' .
 				($width - (self::LEFT_WIDTH + self::RIGHT_WIDTH)) . 'px;') : '') . '" >' . $value . '</td>' .
-			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1,1) : '') . '</td>' .
+			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
 			'</tr></table>';
 	}
 
@@ -189,7 +188,7 @@ class we_button{
 		 */
 		// Check if the button will a text button or a image button
 		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button will NOT be an image
-			$tmp = g_l('button', '[' . $name . '][width]',true);
+			$tmp = g_l('button', '[' . $name . '][width]', true);
 			if(($tmp != "") && ($width == self::WIDTH)){
 				$width = $tmp;
 			}

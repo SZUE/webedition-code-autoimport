@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-
-class leWizardCollection {
+class leWizardCollection{
 
 	/**
 	 * @var array
@@ -49,53 +47,45 @@ class leWizardCollection {
 	/**
 	 * @var leWizardStep
 	 */
-	var $CurrentStep   = null;
+	var $CurrentStep = null;
 
 	/**
 	 * @var leWizardStep
 	 */
-	var $BackStep   = null;
+	var $BackStep = null;
 
 	/**
 	 * @var leWizardStep
 	 */
-	var $NextStep   = null;
+	var $NextStep = null;
 
-
-	function leWizardCollection($WizardsFile) {
+	function leWizardCollection($WizardsFile){
 		$this->__construct($WizardsFile);
-
 	}
 
-	function __construct($WizardsFile) {
+	function __construct($WizardsFile){
 
 		unset($leInstallerWizards);
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile)) {
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile)){
 			require($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile);
 
 			$WizardPath = dirname($_SERVER['DOCUMENT_ROOT'] . "/webEdition" . $WizardsFile) . '/';
 
-			for ($i = 0; $i<sizeof($leInstallerWizards); $i++) {
+			for($i = 0; $i < sizeof($leInstallerWizards); $i++){
 				$temp = new leWizard($leInstallerWizards[$i], $WizardPath);
 
 				// array with all steps
-				foreach ($temp->WizardSteps as $Step) {
+				foreach($temp->WizardSteps as $Step){
 					$this->WizardStepNames[][$leInstallerWizards[$i]] = $Step->Name;
-
 				}
 				$this->Wizards[] = $temp;
-
 			}
-
-		} else {
+		} else{
 			die("Cannot load Wizard File '" . $WizardsFile . "'!");
-
 		}
 
 		$this->initialize();
-
 	}
-
 
 	/**
 	 * returns index (position) of wizard by name
@@ -103,46 +93,38 @@ class leWizardCollection {
 	 * @param string $name
 	 * @return integer
 	 */
-	function getWizardIndexByName($name) {
-		for ($i=0; $i<sizeof($this->Wizards); $i++) {
-			if ($this->Wizards[$i]->Name == $name) {
+	function getWizardIndexByName($name){
+		for($i = 0; $i < sizeof($this->Wizards); $i++){
+			if($this->Wizards[$i]->Name == $name){
 				return $i;
-
 			}
-
 		}
 		return null;
 	}
-
 
 	/**
 	 * @param string $name
 	 * @return leWizard
 	 */
-	function getWizardByName($name) {
+	function getWizardByName($name){
 		return $this->Wizards[$this->getWizardIndexByName($name)];
-
 	}
 
+	function initialize(){
 
-	function initialize() {
+		if(isset($_REQUEST["leWizard"])){
 
-		if (isset($_REQUEST["leWizard"])) {
-
-			if ( is_int($index = $this->getWizardIndexByName($_REQUEST["leWizard"])) ) {
+			if(is_int($index = $this->getWizardIndexByName($_REQUEST["leWizard"]))){
 				$this->CurrentWizard = & $this->Wizards[$index];
-
 			}
-
 		}
 
-		if (!$this->CurrentWizard) {
+		if(!$this->CurrentWizard){
 			$this->CurrentWizard = & $this->Wizards[0];
-
 		}
 
 		// now set a wizard as current
-		if ($this->CurrentWizard) {
+		if($this->CurrentWizard){
 
 			$this->CurrentWizard->setCurrent();
 			$this->CurrentStep = $this->CurrentWizard->CurrentStep;
@@ -152,42 +134,36 @@ class leWizardCollection {
 
 			// init last Step
 			$this->NextStep = $this->getNextWizardStep();
-
 		}
-
 	}
 
-	function getFirstStepUrl() {
+	function getFirstStepUrl(){
 
 		$debug = "";
-		if(isset($_REQUEST['debug'])) {
+		if(isset($_REQUEST['debug'])){
 			$debug = "&debug=1";
 		}
 
-		if ( isset($_REQUEST["binaryInstaller"]) ) {
+		if(isset($_REQUEST["binaryInstaller"])){
 			return WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . $_REQUEST['we_cmd'][0] . "&leWizard=Welcome&leStep=ConnectionHint" . $debug;
-
-		} else {
+		} else{
 			$WizardName = $this->Wizards[0]->Name;
 			$StepName = $this->Wizards[0]->WizardSteps[0]->Name;
 			return WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . $_REQUEST['we_cmd'][0] . "&leWizard=" . $WizardName . "&leStep=" . $StepName . $debug;
-
 		}
-
 	}
-
 
 	/**
 	 * @return leStep
 	 */
-	function getNextWizardStep() {
+	function getNextWizardStep(){
 
 		$wizardStepInformation = $this->_getCurrentWizardStepInformation();
 		$currentPosition = $wizardStepInformation["position"];
 
 		$nextPosition = ($currentPosition + 1);
 
-		if (isset($this->WizardStepNames[$nextPosition])) {
+		if(isset($this->WizardStepNames[$nextPosition])){
 
 			$nextStep = $this->WizardStepNames[$nextPosition];
 
@@ -196,23 +172,21 @@ class leWizardCollection {
 			$nextWizard = $this->getWizardByName($wizardName);
 			$nextWizardStep = $nextWizard->getWizardStepByName($wizardStepName);
 			return $nextWizardStep;
-
 		}
 		return null;
 	}
 
-
 	/**
 	 * @return leWizardStep
 	 */
-	function getLastWizardStep() {
+	function getLastWizardStep(){
 
 		$wizardStepInformation = $this->_getCurrentWizardStepInformation();
 		$currentPosition = $wizardStepInformation["position"];
 
 		$lastPosition = ($currentPosition - 1);
 
-		if (isset($this->WizardStepNames[$lastPosition])) {
+		if(isset($this->WizardStepNames[$lastPosition])){
 
 			$nextStep = $this->WizardStepNames[$lastPosition];
 
@@ -226,21 +200,20 @@ class leWizardCollection {
 		return null;
 	}
 
-
 	/**
 	 * @access private
 	 * @return array
 	 */
-	function _getCurrentWizardStepInformation() {
+	function _getCurrentWizardStepInformation(){
 
-		$i=0;
+		$i = 0;
 
 		$current = null;
 
-		foreach ($this->WizardStepNames as $wizStep) {
-			foreach ($wizStep as $wizard => $wizardStep) {
+		foreach($this->WizardStepNames as $wizStep){
+			foreach($wizStep as $wizard => $wizardStep){
 
-				if ($this->CurrentWizard->Name == "$wizard" && $this->CurrentStep->Name == "$wizardStep") {
+				if($this->CurrentWizard->Name == "$wizard" && $this->CurrentStep->Name == "$wizardStep"){
 
 					$current = array(
 						"position" => $i,
@@ -255,15 +228,14 @@ class leWizardCollection {
 		return null;
 	}
 
-
 	/**
 	 * @return string
 	 */
-	function executeStep() {
+	function executeStep(){
 
 		$Template = new leWizardTemplateBase();
 
-		if ( $this->BackStep && !isset($_REQUEST["backStep"]) && !$this->BackStep->check($Template) ) {
+		if($this->BackStep && !isset($_REQUEST["backStep"]) && !$this->BackStep->check($Template)){
 
 
 			$this->BackStep->CheckFailed = true;
@@ -275,16 +247,13 @@ class leWizardCollection {
 
 			$this->BackStep = $this->getLastWizardStep();
 			$this->NextStep = $this->getNextWizardStep();
-
-		} else { // excute current step
-
-			switch ($this->CurrentStep->execute($Template)) {
+		} else{ // excute current step
+			switch($this->CurrentStep->execute($Template)){
 
 				// all was fine, open next step
 				case LE_WIZARDSTEP_NEXT:
-					if ($this->NextStep) {
+					if($this->NextStep){
 						$this->NextStep->prepare();
-
 					}
 					break;
 
@@ -300,18 +269,13 @@ class leWizardCollection {
 				case LE_WIZARDSTEP_FATAL_ERROR:
 					$this->CurrentStep->EnabledButtons = array('back');
 					break;
-
 			}
-
 		}
 
 
 		$Template->setButtons($this->NextStep, $this->BackStep);
 
 		print $Template->getOutput($this->CurrentStep);
-
-
 	}
-
 
 }

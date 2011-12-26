@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,23 +22,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class liveUpdateHttpWizard extends liveUpdateHttp {
+class liveUpdateHttpWizard extends liveUpdateHttp{
 
 	/**
 	 * returns html page with formular to init session on the server
 	 *
 	 * @return unknown
 	 */
-	function getServerSessionForm() {
+	function getServerSessionForm(){
 
 		$params = '';
-		foreach ($GLOBALS['LU_Variables'] as $LU_name => $LU_value) {
+		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
 
-			if (is_array($LU_value)) {
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode( serialize($LU_value) ) . "\" />\n";
-			} else {
-				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode( $LU_value ) . "\" />\n";
+			if(is_array($LU_value)){
+				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode(serialize($LU_value)) . "\" />\n";
+			} else{
+				$params .= "\t<input type=\"hidden\" name=\"$LU_name\" value=\"" . urlencode($LU_value) . "\" />\n";
 			}
 		}
 
@@ -57,4 +57,5 @@ class liveUpdateHttpWizard extends liveUpdateHttp {
 </html>';
 		return $html;
 	}
+
 }
