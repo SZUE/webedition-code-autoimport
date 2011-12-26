@@ -22,10 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterView.php");
-include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterTree.php");
-include_once(WE_NEWSLETTER_MODULE_DIR . "weNewsletterDirSelector.inc.php");
 
 class weNewsletterFrames extends weModuleFrames{
 
@@ -646,20 +642,20 @@ class weNewsletterFrames extends weModuleFrames{
 		$out = "";
 
 		$values = array();
-		$values[WENBLOCK_DOCUMENT] = g_l('modules_newsletter', '[newsletter_type_0]');
-		$values[WENBLOCK_DOCUMENT_FIELD] = g_l('modules_newsletter', '[newsletter_type_1]');
+		$values[weNewsletterBlock::DOCUMENT] = g_l('modules_newsletter', '[newsletter_type_0]');
+		$values[weNewsletterBlock::DOCUMENT_FIELD] = g_l('modules_newsletter', '[newsletter_type_1]');
 
 		if(defined("OBJECT_TABLE")){
-			$values[WENBLOCK_OBJECT] = g_l('modules_newsletter', '[newsletter_type_2]');
-			$values[WENBLOCK_OBJECT_FIELD] = g_l('modules_newsletter', '[newsletter_type_3]');
+			$values[weNewsletterBlock::OBJECT] = g_l('modules_newsletter', '[newsletter_type_2]');
+			$values[weNewsletterBlock::OBJECT_FIELD] = g_l('modules_newsletter', '[newsletter_type_3]');
 		}
 
 		if(we_hasPerm("NEWSLETTER_FILES")){
-			$values[WENBLOCK_FILE] = g_l('modules_newsletter', '[newsletter_type_4]');
+			$values[weNewsletterBlock::FILE] = g_l('modules_newsletter', '[newsletter_type_4]');
 		}
-		$values[WENBLOCK_TEXT] = g_l('modules_newsletter', '[newsletter_type_5]');
-		$values[WENBLOCK_ATTACHMENT] = g_l('modules_newsletter', '[newsletter_type_6]');
-		$values[WENBLOCK_URL] = g_l('modules_newsletter', '[newsletter_type_7]');
+		$values[weNewsletterBlock::TEXT] = g_l('modules_newsletter', '[newsletter_type_5]');
+		$values[weNewsletterBlock::ATTACHMENT] = g_l('modules_newsletter', '[newsletter_type_6]');
+		$values[weNewsletterBlock::URL] = g_l('modules_newsletter', '[newsletter_type_7]');
 
 		return we_html_tools::htmlSelect($name, $values, 1, $selected, false, 'style="width:440;" onChange="we_cmd(\'switchPage\',2);"', "value", "315", "defaultfont");
 	}
@@ -1038,13 +1034,13 @@ class weNewsletterFrames extends weModuleFrames{
 
 			$content.=we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 5, $selected, true, "style='width:440' onChange='PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=1'"), g_l('modules_newsletter', '[block_lists]'));
 
-			if($block->Type == WENBLOCK_DOCUMENT){
+			if($block->Type == weNewsletterBlock::DOCUMENT){
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(FILE_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", "text/webedition", $this->weAutoColpleter), g_l('modules_newsletter', '[block_document]'));
 				$content.=we_html_tools::htmlFormElementTable(we_forms::checkbox((($block->Field) ? "0" : "1"), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;");
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, "320", 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
 			}
 
-			if($block->Type == WENBLOCK_DOCUMENT_FIELD){
+			if($block->Type == weNewsletterBlock::DOCUMENT_FIELD){
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/webedition"), g_l('modules_newsletter', '[block_document]'));
 
 				if($block->LinkID){
@@ -1058,12 +1054,12 @@ class weNewsletterFrames extends weModuleFrames{
 				}
 			}
 
-			if($block->Type == WENBLOCK_OBJECT){
+			if($block->Type == weNewsletterBlock::OBJECT){
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoColpleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, "320", 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoColpleter, "folder,text/weTmpl"), g_l('modules_newsletter', '[block_template]'));
 			}
 
-			if($block->Type == WENBLOCK_OBJECT_FIELD){
+			if($block->Type == weNewsletterBlock::OBJECT_FIELD){
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoColpleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 
 				if($block->LinkID){
@@ -1077,11 +1073,11 @@ class weNewsletterFrames extends weModuleFrames{
 				}
 			}
 
-			if($block->Type == WENBLOCK_FILE){
+			if($block->Type == weNewsletterBlock::FILE){
 				$content.=we_html_tools::htmlFormElementTable($this->View->formFileChooser("320", "block" . $counter . "_Field", (is_numeric($block->Field) ? "" : ((substr($block->Field, 0, 1) != "/") ? "" : $block->Field))), g_l('modules_newsletter', '[block_file]'));
 			}
 
-			if($block->Type == WENBLOCK_TEXT){
+			if($block->Type == weNewsletterBlock::TEXT){
 				$attribs = array();
 				$attribs["wysiwyg"] = "on";
 				$attribs["width"] = 430;
@@ -1108,11 +1104,11 @@ class weNewsletterFrames extends weModuleFrames{
 				');
 			}
 
-			if($block->Type == WENBLOCK_ATTACHMENT){
+			if($block->Type == weNewsletterBlock::ATTACHMENT){
 				$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, "320", 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoColpleter, "folder,text/xml,text/webedition,image/*,text/html,application/*,application/x-shockwave-flash,video/quicktime"), g_l('modules_newsletter', '[block_attachment]'));
 			}
 
-			if($block->Type == WENBLOCK_URL){
+			if($block->Type == weNewsletterBlock::URL){
 				$content.=we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("block" . $counter . "_Field", 49, (is_numeric($block->Field) ? "" : $block->Field), "", "style='width:440'", "text", "0", "0", "top.content"), g_l('modules_newsletter', '[block_url]'));
 			}
 

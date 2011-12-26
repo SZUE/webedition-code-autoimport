@@ -23,19 +23,16 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_BANNER_MODULE_DIR."weBannerBase.php");
-
-define("BANNER_PAGE_PROPERTY",0);
-define("BANNER_PAGE_PLACEMENT",1);
-define("BANNER_PAGE_STATISTICS",2);
-
 /**
 * General Definition of WebEdition Banner
 *
 */
 class weBanner extends weBannerBase{
-	//properties
+const PAGE_PROPERTY=0;
+const PAGE_PLACEMENT=1;
+const PAGE_STATISTICS=2;
+
+//properties
 	var $ID;
 	var $Text;
 	var $ParentID;

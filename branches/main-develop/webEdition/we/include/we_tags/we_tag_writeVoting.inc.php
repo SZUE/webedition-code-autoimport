@@ -70,28 +70,28 @@ function we_tag_writeVoting($attribs, $content) {
 			$voting = new weVoting($id);
 			if ($voting->IsRequired && implode('',$value) =='') {
 
-				$GLOBALS['_we_voting_status'] = VOTING_ERROR;
+				$GLOBALS['_we_voting_status'] = weVoting::ERROR;
 				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
-				if($voting->Log) $voting->logVoting(VOTING_ERROR,$votingsession,'','','');
+				if($voting->Log) $voting->logVoting(weVoting::ERROR,$votingsession,'','','');
 				break;
 			}
 
 			$GLOBALS['_we_voting_status'] = $voting->vote($value,$addFields);
-			if($GLOBALS['_we_voting_status'] != VOTING_SUCCESS) {
+			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS) {
 				break;
 			}
 		} else {
 			$voting = new weVoting($id);
 			if ($voting->IsRequired && implode('',$value) =='') {
 
-				$GLOBALS['_we_voting_status'] = VOTING_ERROR;
+				$GLOBALS['_we_voting_status'] = weVoting::ERROR;
 				if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
-				if($voting->Log) $voting->logVoting(VOTING_ERROR,$votingsession,'','','');
+				if($voting->Log) $voting->logVoting(weVoting::ERROR,$votingsession,'','','');
 				break;
 			}
 
 			$GLOBALS['_we_voting_status'] = $voting->setSuccessor($value);
-			if($GLOBALS['_we_voting_status'] != VOTING_SUCCESS) {
+			if($GLOBALS['_we_voting_status'] != weVoting::SUCCESS) {
 				break;
 			}
 			$_SESSION['_we_voting_sessionData'][$id] = array ('value' => $value,'addFields' => $addFields );

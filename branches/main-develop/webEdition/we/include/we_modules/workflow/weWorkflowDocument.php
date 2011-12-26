@@ -179,11 +179,11 @@ class weWorkflowDocument extends weWorkflowBase{
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->ID, $uID, LOG_TYPE_DOC_FINISHED_FORCE, "");
+			$this->Log->logDocumentEvent($this->ID, $uID, weWorkflowLog::TYPE_DOC_FINISHED_FORCE, "");
 		}
 		else{
 			$this->Status = self::STATUS_FINISHED;
-			$this->Log->logDocumentEvent($this->ID, $uID, LOG_TYPE_DOC_FINISHED, "");
+			$this->Log->logDocumentEvent($this->ID, $uID, weWorkflowLog::TYPE_DOC_FINISHED, "");
 		}
 		return true;
 	}

@@ -24,10 +24,10 @@
 
 
 function we_tag_ifEmailInvalid($attribs, $content){
-	if(isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])){
-		return ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"]==2);
-	}else if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
-		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==2);
+	if(isset($GLOBALS['WE_REMOVENEWSLETTER_STATUS'])){
+		return ($GLOBALS['WE_REMOVENEWSLETTER_STATUS']==weNewsletterBase::STATUS_EMAIL_INVALID);
+	}else if(isset($GLOBALS['WE_WRITENEWSLETTER_STATUS'])){
+		return ($GLOBALS['WE_WRITENEWSLETTER_STATUS']==weNewsletterBase::STATUS_EMAIL_INVALID);
 	}else{
 		return false;
 	}

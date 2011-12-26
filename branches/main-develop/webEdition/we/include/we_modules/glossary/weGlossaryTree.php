@@ -25,9 +25,9 @@
 class weGlossaryTree extends weMainTree{
 
 
-	function weGlossaryTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
+	function __construct($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
 
-			weMainTree::weMainTree($frameset,$topFrame,$treeFrame,$cmdFrame);
+			parent::__construct($frameset,$topFrame,$treeFrame,$cmdFrame);
 
 			$styles=array();
 			$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';

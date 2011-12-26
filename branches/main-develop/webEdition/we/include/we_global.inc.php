@@ -2533,30 +2533,6 @@ $GLOBALS["weDefaultFrontendLanguage"] = "' . $default . '";
 	return fclose($fh);
 }
 
-function setSupportDebugging($duration = 60) {
-	if ($_SESSION['perms']['ADMINISTRATOR']) {
-		$supportfile = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_sselector_inc.php';
-		$duration = ($duration > 180 ? 180 : $duration) * 60;
-		$supportStart = time();
-		$supportIP = $_SERVER['REMOTE_ADDR'];
-		$phpstr = "<?php
-		define('SUPPORT_IP', '$supportIP');
-		define('SUPPORT_DURATION', $duration);
-		define('SUPPORT_START', $supportStart);
-		?>";
-		$fp = fopen($supportfile, 'wb');
-		fwrite($fp, $phpstr);
-		fclose($fp);
-	}
-}
-
-function unsetSupportDebugging() {
-	$supportfile = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_sselector_inc.php';
-	if (file_exists($supportfile)) {
-		unlink($supportfile);
-	}
-}
-
 function getObjectsForDocWorkspace($id) {
 	$ids = (is_array($id))? $id : array($id);
 	$db = new DB_WE();

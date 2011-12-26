@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_CUSTOMER_MODULE_DIR . 'weCustomer.php');
 
 /**
  * General Definition of Customer's Prefers

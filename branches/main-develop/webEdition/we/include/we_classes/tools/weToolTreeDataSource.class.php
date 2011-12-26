@@ -22,15 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-
 class weToolTreeDataSource {
 
 	var $SourceType;
 	var $SourceName;
 
-	function weToolTreeDataSource($ds) {
+	function __construct($ds) {
 
 		$_dsd = explode(':',$ds);
 		if(isset($_dsd[0]) && isset($_dsd[1])) {

@@ -1123,7 +1123,7 @@ class weVersionsView
 
 		if (!isset($_REQUEST['we_cmd']['setInputSearchstart'])) {
 			if (!defined("searchstart")) {
-				define("searchstart", true);
+				define('searchstart', true);
 				$out .= we_html_tools::hidden("searchstart", $searchstart);
 			}
 		}

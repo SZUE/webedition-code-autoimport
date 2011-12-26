@@ -25,9 +25,6 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_VOTING_MODULE_DIR.'weVoting.php');
-
 class weVotingView {
 
 	var $db;
@@ -43,7 +40,7 @@ class weVotingView {
 	var $item_pattern = "";
 	var $group_pattern = "";
 
-	function weVotingView($frameset="",$topframe="top.content") {
+	function __construct($frameset="",$topframe="top.content") {
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -691,18 +688,18 @@ function processCommands() {
 						$fallback = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
 						$myline .= $enclose . iconv(DEFAULT_CHARSET,$CSV_Charset.'//TRANSLIT',trim($fallback)) . $enclose . $delimiter;
 						$mess = g_l('modules_voting','[log_success]');
-						if($data['status']!=VOTING_SUCCESS){
+						if($data['status']!=  weVoting::SUCCESS){
 							switch ($data['status']) {
-								case VOTING_ERROR :
+								case weVoting::ERROR :
 									$mess = g_l('modules_voting','[log_error]');
 									break;
-								case VOTING_ERROR_ACTIVE :
+								case weVoting::ERROR_ACTIVE :
 									$mess = g_l('modules_voting','[log_error_active]');
 								break;
-								case VOTING_ERROR_REVOTE :
+								case weVoting::ERROR_REVOTE :
 									$mess = g_l('modules_voting','[log_error_revote]');
 								break;
-								case VOTING_ERROR_BLACKIP :
+								case weVoting::ERROR_BLACKIP :
 									$mess = g_l('modules_voting','[log_error_blackip]');
 								break;
 								default:

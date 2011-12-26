@@ -23,10 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-include_once(WE_CUSTOMER_MODULE_DIR."weCustomerEI.php");
-
 define("CSV_DELIMITER",";");
 define("CSV_ENCLOSE","");
 define("CSV_LINEEND","windows");
@@ -45,7 +41,7 @@ class weCustomerEIWizard{
 
 	var $exim_number=5;
 
-	function weCustomerEIWizard(){
+	function __construct(){
 		$this->setFrameset(WE_CUSTOMER_MODULE_PATH."edit_customer_frameset.php");
 		$this->db=new DB_WE();
 	}

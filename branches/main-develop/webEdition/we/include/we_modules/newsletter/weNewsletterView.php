@@ -24,8 +24,6 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletter.php");
-
 
 class weNewsletterView {
 
@@ -2203,7 +2201,7 @@ class weNewsletterView {
 				$groups=makeArrayFromCSV($block->Groups);
 				if(in_array($gview,$groups) || $gview==0){
 					switch($block->Type){
-						case WENBLOCK_DOCUMENT:
+						case weNewsletterBlock::DOCUMENT:
 							$path = "";
 							if($block->Field!="" && $block->Field!=0){
 								$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($block->Field,TEMPLATES_TABLE));
@@ -2215,13 +2213,13 @@ class weNewsletterView {
 							if($block->LinkID && $path)
 								$content .= we_getDocumentByID($block->LinkID,$path);
 							break;
-						case WENBLOCK_DOCUMENT_FIELD:
+						case weNewsletterBlock::DOCUMENT_FIELD:
 							if($block->LinkID){
 								$this->initDoc($we_doc,$block->LinkID);
 								$content .= $we_doc->getElement($block->Field);
 							}
 							break;
-						case WENBLOCK_OBJECT:
+						case weNewsletterBlock::OBJECT:
 							$path = "";
 							if($block->Field!="" && $block->Field!=0){
 								$path = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates" . preg_replace('/\.tmpl$/i','.php',id_to_path($block->Field,TEMPLATES_TABLE));
@@ -2230,13 +2228,13 @@ class weNewsletterView {
 								$content = we_getObjectFileByID($block->LinkID,$path);
 
 							break;
-						case WENBLOCK_OBJECT_FIELD:
+						case weNewsletterBlock::OBJECT_FIELD:
 							if($block->LinkID){
 								$this->initDocByObject($we_doc,$block->LinkID);
 								$content .= $we_doc->getElement($block->Field);
 							}
 							break;
-						case WENBLOCK_TEXT:
+						case weNewsletterBlock::TEXT:
 							if($hm){
 								if($block->Html!=""){
 									$content .=  $block->Html;
@@ -2268,12 +2266,12 @@ class weNewsletterView {
 								}
 							}
 							break;
-						case WENBLOCK_FILE:
+						case weNewsletterBlock::FILE:
 							$content = weFile::load($_SERVER['DOCUMENT_ROOT'].$block->Field);
 							if(!$content)
 								print g_l('modules_newsletter','[cannot_open]').": ".$_SERVER['DOCUMENT_ROOT'].$block->Field;
 							break;
-						case WENBLOCK_URL:
+						case weNewsletterBlock::URL:
 							if($block->Field){
 								if(substr(trim($block->Field),0,4)!="http"){
 									$block->Field="http://".$block->Field;
@@ -2310,7 +2308,7 @@ class weNewsletterView {
 
 							}
 						break;
-						case WENBLOCK_ATTACHMENT:
+						case weNewsletterBlock::ATTACHMENT:
 								$content .= "";
 						break;
 					}
@@ -2328,7 +2326,7 @@ class weNewsletterView {
 			$protocol=(isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"] ? "https://":"http://");
 
 			if ($hm) {
-				if($block->Type!=WENBLOCK_URL){
+				if($block->Type!=weNewsletterBlock::URL){
 					$spacer = '[\040|\n|\t|\r]*';
 					parseInternalLinks($content,0);
 
@@ -2342,7 +2340,7 @@ class weNewsletterView {
 			} else {
 				$newplain = str_ireplace("<br>","\n",$content);
 				$newplain = eregi_replace("<title>(.)*</title>","\n",$newplain);
-				if ($block->Type!=WENBLOCK_TEXT) {
+				if ($block->Type!=weNewsletterBlock::TEXT) {
 					$newplain = strip_tags($newplain);
 				}
 				$newplain = eregi_replace("&nbsp;(&nbsp;)+","\t",$newplain);
@@ -2440,9 +2438,9 @@ class weNewsletterView {
 		$atts=array();
 		$dbtmp=new DB_WE();
 		if($group)
-			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".WENBLOCK_ATTACHMENT." AND Groups LIKE '%,".$this->db->escape($group).",%'");
+			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".weNewsletterBlock::ATTACHMENT." AND Groups LIKE '%,".$this->db->escape($group).",%'");
 		else
-			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".WENBLOCK_ATTACHMENT.";");
+			$this->db->query("SELECT LinkID FROM ".NEWSLETTER_BLOCK_TABLE." WHERE NewsletterID=".$this->newsletter->ID." AND Type=".weNewsletterBlock::ATTACHMENT.";");
 
 		while ($this->db->next_record()) {
 

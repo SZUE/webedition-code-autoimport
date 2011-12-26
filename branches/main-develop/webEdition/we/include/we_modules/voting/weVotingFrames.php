@@ -24,11 +24,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-include_once(WE_VOTING_MODULE_DIR."weVotingView.php");
-include_once(WE_VOTING_MODULE_DIR."weVotingTree.php");
-
 class weVotingFrames extends weModuleFrames {
 
 	var $View;
@@ -213,7 +208,7 @@ class weVotingFrames extends weModuleFrames {
 			$result = 0;
 		}
 
-		return weVoting::formatNumber($result,strtolower($GLOBALS['WE_LANGUAGE']),VOTING_PRECISION);
+		return weVoting::formatNumber($result,strtolower($GLOBALS['WE_LANGUAGE']),weVoting::PRECISION);
 	}
 
 	function getHTMLVariant() {
@@ -1225,18 +1220,18 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][4]['dat'] = $data['fallback'] ? g_l('global','[yes]'): g_l('global','[no]');
 
 				$mess = g_l('modules_voting','[log_success]');
-				if($data['status']!=VOTING_SUCCESS){
+				if($data['status']!=weVoting::SUCCESS){
 					switch ($data['status']) {
-						case VOTING_ERROR :
+						case weVoting::ERROR :
 							$mess = g_l('modules_voting','[log_error]');
 						break;
-						case VOTING_ERROR_ACTIVE :
+						case weVoting::ERROR_ACTIVE :
 							$mess = g_l('modules_voting','[log_error_active]');
 						break;
-						case VOTING_ERROR_REVOTE :
+						case weVoting::ERROR_REVOTE :
 							$mess = g_l('modules_voting','[log_error_revote]');
 						break;
-						case VOTING_ERROR_BLACKIP :
+						case weVoting::ERROR_BLACKIP :
 							$mess = g_l('modules_voting','[log_error_blackip]');
 						break;
 						default:
@@ -1357,18 +1352,18 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][6]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
 
 				$mess = g_l('modules_voting','[log_success]');
-				if($data['status']!=VOTING_SUCCESS){
+				if($data['status']!=weVoting::SUCCESS){
 					switch ($data['status']) {
-						case VOTING_ERROR :
+						case weVoting::ERROR :
 							$mess = g_l('modules_voting','[log_error]');
 						break;
-						case VOTING_ERROR_ACTIVE :
+						case weVoting::ERROR_ACTIVE :
 							$mess = g_l('modules_voting','[log_error_active]');
 						break;
-						case VOTING_ERROR_REVOTE :
+						case weVoting::ERROR_REVOTE :
 							$mess = g_l('modules_voting','[log_error_revote]');
 						break;
-						case VOTING_ERROR_BLACKIP :
+						case weVoting::ERROR_BLACKIP :
 							$mess = g_l('modules_voting','[log_error_blackip]');
 						break;
 						default:
@@ -1497,18 +1492,18 @@ class weVotingFrames extends weModuleFrames {
 				$content[$ind][4]['dat'] = $data['fallback'] ? g_l('global','[yes]') : g_l('global','[no]');
 
 				$mess = g_l('modules_voting','[log_success]');
-				if($data['status']!=VOTING_SUCCESS){
+				if($data['status']!=weVoting::SUCCESS){
 					switch ($data['status']) {
-						case VOTING_ERROR :
+						case weVoting::ERROR :
 							$mess = g_l('modules_voting','[log_error]');
 						break;
-						case VOTING_ERROR_ACTIVE :
+						case weVoting::ERROR_ACTIVE :
 							$mess = g_l('modules_voting','[log_error_active]');
 						break;
-						case VOTING_ERROR_REVOTE :
+						case weVoting::ERROR_REVOTE :
 							$mess = g_l('modules_voting','[log_error_revote]');
 						break;
-						case VOTING_ERROR_BLACKIP :
+						case weVoting::ERROR_BLACKIP :
 							$mess = g_l('modules_voting','[log_error_blackip]');
 						break;
 						default:

@@ -23,10 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_export/weExportTree.inc.php");
-
-
 define("EXPORT_PATH","/webEdition/we/include/we_export/");
 
 define("CSV_DELIMITER",";");

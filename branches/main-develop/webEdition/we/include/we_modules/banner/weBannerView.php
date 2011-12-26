@@ -50,9 +50,9 @@ class weBannerView extends weBannerBase{
 		$this->banner=new weBanner();
 		$this->page=0;
 		$this->settings=$this->getSettings();
-		$this->pageFields[BANNER_PAGE_PROPERTY] = array("Text","ParentID","bannerID","bannerUrl","bannerIntID","IntHref","IsDefault","IsActive","StartOk","EndOk","StartDate","EndDate");
-		$this->pageFields[BANNER_PAGE_PLACEMENT] = array("DoctypeIDs","TagName");
-		$this->pageFields[BANNER_PAGE_STATISTICS] = array();
+		$this->pageFields[weBanner::PAGE_PROPERTY] = array("Text","ParentID","bannerID","bannerUrl","bannerIntID","IntHref","IsDefault","IsActive","StartOk","EndOk","StartDate","EndDate");
+		$this->pageFields[weBanner::PAGE_PLACEMENT] = array("DoctypeIDs","TagName");
+		$this->pageFields[weBanner::PAGE_STATISTICS] = array();
 		$yuiSuggest =& weSuggest::getInstance();
 	}
 
@@ -107,7 +107,7 @@ class weBannerView extends weBannerBase{
 			$wepos = "";
 			$itsname="";
 			switch($this->page){
-				case BANNER_PAGE_PROPERTY:
+				case weBanner::PAGE_PROPERTY:
 					$out .= $this->htmlHidden("UseFilter",$this->UseFilter);
 					$out .= $this->htmlHidden("FilterDate",$this->FilterDate);
 					$out .= $this->htmlHidden("FilterDateEnd",$this->FilterDateEnd);
@@ -143,7 +143,7 @@ class weBannerView extends weBannerBase{
 					$closeText=g_l('weClass',"[lessProps]");
 					$wepos = weGetCookieVariable("but_weBannerProp");
 					break;
-				case BANNER_PAGE_PLACEMENT:
+				case weBanner::PAGE_PLACEMENT:
 					$out .= $this->htmlHidden("UseFilter",$this->UseFilter);
 					$out .= $this->htmlHidden("FilterDate",$this->FilterDate);
 					$out .= $this->htmlHidden("FilterDateEnd",$this->FilterDateEnd);
@@ -183,7 +183,7 @@ class weBannerView extends weBannerBase{
 					$closeText=g_l('weClass',"[lessProps]");
 					$wepos = weGetCookieVariable("but_$itsname");
 					break;
-				case BANNER_PAGE_STATISTICS:
+				case weBanner::PAGE_STATISTICS:
 					$headline = g_l('tabs',"[module][statistics]");
 					array_push($parts,array(
 								"headline"=>"",

@@ -48,7 +48,7 @@
 				$doc->save();
 				if(isset($doc->steps[0])) $doc->steps[0]->start($desc);
 				//insert into document history
-				$doc->Log->logDocumentEvent($doc->ID,$userID,LOG_TYPE_DOC_INSERTED,$desc);
+				$doc->Log->logDocumentEvent($doc->ID,$userID,weWorkflowLog::TYPE_DOC_INSERTED,$desc);
 				$doc->save();
 				return true;
 			}
@@ -95,7 +95,7 @@
 			if($doc->finishWorkflow(1,$userID)){
 				$doc->save();
 				//insert into document history
-				$doc->Log->logDocumentEvent($doc->ID,$userID,LOG_TYPE_DOC_REMOVED,$desc);
+				$doc->Log->logDocumentEvent($doc->ID,$userID,weWorkflowLog::TYPE_DOC_REMOVED,$desc);
 				return true;
 			}
 			return false;

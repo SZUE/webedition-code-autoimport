@@ -188,7 +188,7 @@ const STATUS_AUTOPUBLISHED=3;
 			$this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 			$this->finishDate=time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE_FORCE,$desc);
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,weWorkflowLog::TYPE_APPROVE_FORCE,$desc);
 			return true;
 		}
 		$i=$this->findTaskByUser($uID);
@@ -218,7 +218,7 @@ const STATUS_AUTOPUBLISHED=3;
 
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE,$desc);
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,weWorkflowLog::TYPE_APPROVE,$desc);
 			return true;
 		}
 		return false;
@@ -233,7 +233,7 @@ const STATUS_AUTOPUBLISHED=3;
 			$this->Status=weWorkflowDocumentStep::STATUS_APPROVED;
 			$this->finishDate=time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE_FORCE,$desc);
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,weWorkflowLog::TYPE_APPROVE_FORCE,$desc);
 			return true;
 		}
 		$i=$this->findTaskByUser($uID);
@@ -263,7 +263,7 @@ const STATUS_AUTOPUBLISHED=3;
 
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_APPROVE,$desc);
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,weWorkflowLog::TYPE_APPROVE,$desc);
 			return true;
 		}
 		return false;
@@ -276,7 +276,7 @@ const STATUS_AUTOPUBLISHED=3;
 			$this->Status=weWorkflowDocumentStep::STATUS_CANCELED;
 			$this->finishDate=time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_DECLINE,$desc);
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,weWorkflowLog::TYPE_DECLINE,$desc);
 			return true;
 		}
 		$i=$this->findTaskByUser($uID);
@@ -286,7 +286,7 @@ const STATUS_AUTOPUBLISHED=3;
 			$this->Status=weWorkflowDocumentStep::STATUS_CANCELED;
 			if($this->Status==weWorkflowDocumentStep::STATUS_APPROVED || $this->Status==weWorkflowDocumentStep::STATUS_CANCELED) $this->finishDate=time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID,$uID,LOG_TYPE_DECLINE,$desc);
+			$this->Log->logDocumentEvent($this->workflowDocID,$uID,weWorkflowLog::TYPE_DECLINE,$desc);
 			return true;
 		}
 		return false;

@@ -24,19 +24,16 @@
  */
 
 
-define("LOG_TYPE_APPROVE","1");
-define("LOG_TYPE_APPROVE_FORCE","2");
-define("LOG_TYPE_DECLINE","3");
-define("LOG_TYPE_DECLINE_FORCE","4");
-define("LOG_TYPE_DOC_FINISHED","5");
-define("LOG_TYPE_DOC_FINISHED_FORCE","6");
-define("LOG_TYPE_DOC_INSERTED","7");
-define("LOG_TYPE_DOC_REMOVED","8");
-define("NUMBER_LOGS","8");
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 class weWorkflowLog{
+const TYPE_APPROVE=1;
+const TYPE_APPROVE_FORCE=2;
+const TYPE_DECLINE=3;
+const TYPE_DECLINE_FORCE=4;
+const TYPE_DOC_FINISHED=5;
+const TYPE_DOC_FINISHED_FORCE=6;
+const TYPE_DOC_INSERTED=7;
+const TYPE_DOC_REMOVED=8;
+const NUMBER_LOGS=8;
 
 
 	function logDocumentEvent($workflowDocID,$userID,$type,$description){
@@ -60,28 +57,28 @@ class weWorkflowLog{
 
 		$GLOBALS["ANZ_LOGS"] = $db->num_rows();
 
-		$q .= " LIMIT $offset,".NUMBER_LOGS;
+		$q .= " LIMIT $offset,".self::NUMBER_LOGS;
 		$db->query($q);
 
 		$hash=array();
 		while($db->next_record()) $hash[]=$db->Record;
 		foreach($hash as $k=>$v){
 			switch($hash[$k]["Type"]){
-				case LOG_TYPE_APPROVE: $hash[$k]["Type"]=g_l('modules_workflow','[log_approve]');
+				case weWorkflowLog::TYPE_APPROVE: $hash[$k]["Type"]=g_l('modules_workflow','[log_approve]');
 				break;
-				case LOG_TYPE_APPROVE_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_approve_force]');
+				case weWorkflowLog::TYPE_APPROVE_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_approve_force]');
 				break;
-				case LOG_TYPE_DECLINE: $hash[$k]["Type"]=g_l('modules_workflow','[log_decline]');
+				case weWorkflowLog::TYPE_DECLINE: $hash[$k]["Type"]=g_l('modules_workflow','[log_decline]');
 				break;
-				case LOG_TYPE_DECLINE_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_decline_force]');
+				case weWorkflowLog::TYPE_DECLINE_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_decline_force]');
 				break;
-				case LOG_TYPE_DOC_FINISHED: $hash[$k]["Type"]=g_l('modules_workflow','[log_doc_finished]');
+				case weWorkflowLog::TYPE_DOC_FINISHED: $hash[$k]["Type"]=g_l('modules_workflow','[log_doc_finished]');
 				break;
-				case LOG_TYPE_DOC_FINISHED_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_doc_finished_force]');
+				case weWorkflowLog::TYPE_DOC_FINISHED_FORCE: $hash[$k]["Type"]=g_l('modules_workflow','[log_doc_finished_force]');
 				break;
-				case LOG_TYPE_DOC_INSERTED: $hash[$k]["Type"]=g_l('modules_workflow','[log_insert_doc]');
+				case weWorkflowLog::TYPE_DOC_INSERTED: $hash[$k]["Type"]=g_l('modules_workflow','[log_insert_doc]');
 				break;
-				case LOG_TYPE_DOC_REMOVED: $hash[$k]["Type"]=g_l('modules_workflow','[log_remove_doc]');
+				case weWorkflowLog::TYPE_DOC_REMOVED: $hash[$k]["Type"]=g_l('modules_workflow','[log_remove_doc]');
 				break;
 			}
 		}

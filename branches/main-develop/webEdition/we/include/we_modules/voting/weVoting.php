@@ -23,24 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/modules/weModelBase.php");
-
-//voting status codes
-define('VOTING_SUCCESS',1);
-define('VOTING_ERROR',2);
-define('VOTING_ERROR_REVOTE',3);
-define('VOTING_ERROR_ACTIVE',4);
-define('VOTING_ERROR_BLACKIP',5);
-define('VOTING_ERROR_REQUIRED',6);
-//number precision
-define('VOTING_PRECISION',2);
-
-
 /**
 * General Definition of WebEdition Voting
 *
 */
 class weVoting extends weModelBase{
+//voting status codes
+const SUCCESS=1;
+const ERROR=2;
+const ERROR_REVOTE=3;
+const ERROR_ACTIVE=4;
+const ERROR_BLACKIP=5;
+const ERROR_REQUIRED=6;
+//number precision
+const PRECISION=2;
 
 	//properties
 	var $ID;
@@ -317,7 +313,7 @@ class weVoting extends weModelBase{
 		return $this->QASet[$this->defVersion]['answers'][$this->answerCount];
 	}
 
-	function getResult($type='count',$num_format='',$precision=VOTING_PRECISION){
+	function getResult($type='count',$num_format='',$precision=weVoting::PRECISION){
 		switch ($type){
 			case 'percent':
 				$total = $this->getResult('total');
@@ -341,7 +337,7 @@ class weVoting extends weModelBase{
 		return $result;
 	}
 
-	function formatNumber($number,$format,$precision=VOTING_PRECISION){
+	function formatNumber($number,$format,$precision=weVoting::PRECISION){
 			switch ($format) {
 				case 'german':
 				case 'deutsch':
@@ -432,7 +428,7 @@ class weVoting extends weModelBase{
 			$mySuccessorID = $this->Successor;
 			if (is_numeric($mySuccessorID) && $mySuccessorID > 0 ) { $GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;}
 		}
-		return VOTING_SUCCESS;
+		return weVoting::SUCCESS;
 	}
 	function vote($answers,$addfields=NULL){
 		if (isset($_SESSION['_we_voting_sessionID'])){$votingsession= $_SESSION['_we_voting_sessionID'];} else {$votingsession=0;}
@@ -440,17 +436,17 @@ class weVoting extends weModelBase{
 		$answertext='';
 		$successor=0;
 		if(!is_array($answers)){
-			if($this->Log) $this->logVoting(VOTING_ERROR,$votingsession,$answerID,$answertext,$successor);
-			return VOTING_ERROR;
+			if($this->Log) $this->logVoting(weVoting::ERROR,$votingsession,$answerID,$answertext,$successor);
+			return weVoting::ERROR;
 		}
 		if(!(count($answers)>0)){
-			if($this->Log) $this->logVoting(VOTING_ERROR,$votingsession,$answerID,$answertext,$successor);
-			return VOTING_ERROR;
+			if($this->Log) $this->logVoting(weVoting::ERROR,$votingsession,$answerID,$answertext,$successor);
+			return weVoting::ERROR;
 		}
 
 		$ret = $this->canVote();
 
-		if($ret!=VOTING_SUCCESS) {
+		if($ret!=weVoting::SUCCESS) {
 			if($this->Log) $this->logVoting($ret,$votingsession,$answerID,$answertext,$successor);
 			return $ret;
 		}
@@ -504,9 +500,9 @@ class weVoting extends weModelBase{
 	}
 
 	function canVote() {
-		if(!$this->isActive()) return VOTING_ERROR_ACTIVE;
-		if($this->isBlackIP()) return VOTING_ERROR_BLACKIP;
-		if($this->RevoteTime==0) return VOTING_SUCCESS;
+		if(!$this->isActive()) return weVoting::ERROR_ACTIVE;
+		if($this->isBlackIP()) return weVoting::ERROR_BLACKIP;
+		if($this->RevoteTime==0) return weVoting::SUCCESS;
 
 		if ($this->RevoteControl==2) {
 			return $this->canVoteUserID();
@@ -518,7 +514,7 @@ class weVoting extends weModelBase{
 				return $this->canVoteIP();
 			}
 		}
-		return VOTING_SUCCESS;
+		return weVoting::SUCCESS;
 
 	}
 
@@ -530,11 +526,11 @@ class weVoting extends weModelBase{
 		}
 
 		if(isset($_COOKIE[md5('_we_voting_'.$this->ID)])){
-			return VOTING_ERROR_REVOTE;
+			return weVoting::ERROR_REVOTE;
 		} else {
 			if ($this->FallbackUserID) {
 				return $this->canVoteUserID();
-			} else return VOTING_SUCCESS;
+			} else return weVoting::SUCCESS;
 		}
 
 	}
@@ -552,31 +548,31 @@ class weVoting extends weModelBase{
 				$revoteua = unserialize($this->RevoteUserAgent);
 				if($this->UserAgent){
 					if(!is_array($revoteua)){
-						return VOTING_ERROR_REVOTE;
+						return weVoting::ERROR_REVOTE;
 					}
 					if(isset($revoteua[$_SERVER['REMOTE_ADDR']]) && is_array($revoteua[$_SERVER['REMOTE_ADDR']])){
 						if(in_array($_SERVER['HTTP_USER_AGENT'],$revoteua[$_SERVER['REMOTE_ADDR']])){
-							return VOTING_ERROR_REVOTE;
+							return weVoting::ERROR_REVOTE;
 						} else {
 							if ($this->FallbackUserID) {
 								return $this->canVoteUserID();
-							} else return VOTING_SUCCESS;
+							} else return weVoting::SUCCESS;
 						}
 					}
 				}
 
-				return VOTING_ERROR_REVOTE;
+				return weVoting::ERROR_REVOTE;
 			}
 			else {
 				if ($this->FallbackUserID) {
 					return $this->canVoteUserID();
-				} else return VOTING_SUCCESS;
+				} else return weVoting::SUCCESS;
 			}
 
 		} else {
 			if ($this->FallbackUserID) {
 				return $this->canVoteUserID();
-			} else return VOTING_SUCCESS;
+			} else return weVoting::SUCCESS;
 		}
 
 
@@ -588,7 +584,7 @@ class weVoting extends weModelBase{
 			$userid = -1;
 		}
 		if (!$this->LogDB || ($userid <= 0) ){
-			return VOTING_SUCCESS;
+			return weVoting::SUCCESS;
 		} else {
 			if($this->RevoteTime<0) $testtime = 0;
 			else $testtime = time() - $this->RevoteTime;
@@ -597,9 +593,9 @@ class weVoting extends weModelBase{
 
 			$logEntries = $this->db->query($logQuery);
 			while ($this->db->next_record()){
-				return VOTING_ERROR_REVOTE;
+				return weVoting::ERROR_REVOTE;
 			}
-			return VOTING_SUCCESS;
+			return weVoting::SUCCESS;
 		}
 
 

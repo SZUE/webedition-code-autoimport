@@ -132,9 +132,9 @@ class weBannerFrames extends weModuleBannerFrames{
 	<!--
 	function setTab(tab){
 		switch(tab){
-			case ' . BANNER_PAGE_PROPERTY . ':
-			case ' . BANNER_PAGE_PLACEMENT . ':
-			case ' . BANNER_PAGE_STATISTICS . ':
+			case ' . weBanner::PAGE_PROPERTY . ':
+			case ' . weBanner::PAGE_PLACEMENT . ':
+			case ' . weBanner::PAGE_STATISTICS . ':
 				top.content.resize.right.editor.edbody.we_cmd("switchPage",tab);
 				break;
 		}

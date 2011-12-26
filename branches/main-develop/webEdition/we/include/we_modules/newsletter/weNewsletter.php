@@ -22,10 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletterBase.php");
-include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletterBlock.php");
-include_once(WE_NEWSLETTER_MODULE_DIR."weNewsletterGroup.php");
-
 /**
  * General Definition of WebEdition Newsletter
  *

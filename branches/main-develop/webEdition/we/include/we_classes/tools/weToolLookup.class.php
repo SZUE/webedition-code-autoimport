@@ -22,17 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('TOOL_REGISTRY_NAME', 'weToolsRegistry');
-
 abstract class weToolLookup{
+const REGISTRY_NAME='weToolsRegistry';
+
 
 	static function getAllTools($force=false, $addInternTools=false, $includeDisabled=false){
 
-		if(!$force && !$includeDisabled && !defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['meta'])){
-			return $_SESSION[TOOL_REGISTRY_NAME]['meta'];
+		if(!$force && !$includeDisabled && !defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['meta'])){
+			return $_SESSION[self::REGISTRY_NAME]['meta'];
 		}
-		if(!$force && $includeDisabled && !defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'])){
-			return $_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'];
+		if(!$force && $includeDisabled && !defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['metaIncDis'])){
+			return $_SESSION[self::REGISTRY_NAME]['metaIncDis'];
 		}
 
 		$_tools = array();
@@ -106,10 +106,10 @@ abstract class weToolLookup{
 		}
 
 		if(!defined('NO_SESS') && !$includeDisabled){
-			$_SESSION[TOOL_REGISTRY_NAME]['meta'] = $_tools;
+			$_SESSION[self::REGISTRY_NAME]['meta'] = $_tools;
 		}
 		if(!defined('NO_SESS') && $includeDisabled){
-			$_SESSION[TOOL_REGISTRY_NAME]['metaIncDis'] = $_tools;
+			$_SESSION[self::REGISTRY_NAME]['metaIncDis'] = $_tools;
 		}
 
 		return $_tools;
@@ -165,8 +165,8 @@ abstract class weToolLookup{
 
 	static function getDefineInclude(){
 
-		if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['defineinclude'])){
-			return $_SESSION[TOOL_REGISTRY_NAME]['defineinclude'];
+		if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['defineinclude'])){
+			return $_SESSION[self::REGISTRY_NAME]['defineinclude'];
 		}
 
 		$_inc = array();
@@ -177,7 +177,7 @@ abstract class weToolLookup{
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION[TOOL_REGISTRY_NAME]['defineinclude'] = $_inc;
+			$_SESSION[self::REGISTRY_NAME]['defineinclude'] = $_inc;
 		}
 
 		return $_inc;
@@ -185,8 +185,8 @@ abstract class weToolLookup{
 
 		function getExternTriggeredTasks() {
 
-			if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'])) {
-				//return $_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'];
+			if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'])) {
+				//return $_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'];
 			}
 
 			$_inc = array();
@@ -197,7 +197,7 @@ abstract class weToolLookup{
 				}
 			}
 			if(!defined('NO_SESS')) {
-				$_SESSION[TOOL_REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
+				$_SESSION[self::REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
 			}
 
 			return $_inc;
@@ -205,8 +205,8 @@ abstract class weToolLookup{
 
 	static function getTagDirs(){
 
-		if(!defined('NO_SESS') && isset($_SESSION[TOOL_REGISTRY_NAME]['tagdirs'])){
-			return $_SESSION[TOOL_REGISTRY_NAME]['tagdirs'];
+		if(!defined('NO_SESS') && isset($_SESSION[self::REGISTRY_NAME]['tagdirs'])){
+			return $_SESSION[self::REGISTRY_NAME]['tagdirs'];
 		}
 
 		$_inc = array();
@@ -217,7 +217,7 @@ abstract class weToolLookup{
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION[TOOL_REGISTRY_NAME]['tagdirs'] = $_inc;
+			$_SESSION[self::REGISTRY_NAME]['tagdirs'] = $_inc;
 		}
 
 		return $_inc;

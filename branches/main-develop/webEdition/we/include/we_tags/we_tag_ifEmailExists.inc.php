@@ -23,9 +23,5 @@
  */
 
 function we_tag_ifEmailExists($attribs, $content){
-	if(isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])){
-		return ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==1);
-	}else{
-		return false;
-	}
+		return (isset($GLOBALS["WE_WRITENEWSLETTER_STATUS"])) && ($GLOBALS["WE_WRITENEWSLETTER_STATUS"]==weNewsletterBase::STATUS_EMAIL_EXISTS);
 }

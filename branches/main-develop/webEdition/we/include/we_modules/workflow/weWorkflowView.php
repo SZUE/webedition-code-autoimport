@@ -1613,7 +1613,7 @@ class weWorkflowView extends weWorkflowBase{
 		$offset = isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0;
 		$art = isset($_REQUEST["art"]) ? $_REQUEST["art"] : "";
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
-		$numRows = NUMBER_LOGS;
+		$numRows = weWorkflowLog::NUMBER_LOGS;
 		$anz = $GLOBALS["ANZ_LOGS"];
 
 		foreach($logs as $v){

@@ -29,7 +29,6 @@ define("PROGRESS_V_IMAGE", IMAGE_DIR . 'balken_v.gif');
 define("PROGRESS_V_IMAGE_BG", IMAGE_DIR . 'balken_bg_v.gif');
 
 class we_progressBar{
-
 	var $progress = 0;
 	var $texts = array();
 	var $orientation = 0;

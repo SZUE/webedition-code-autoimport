@@ -22,11 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('WE_NEWSLETTER_STATUS_ERROR', -1);
-define('WE_NEWSLETTER_STATUS_SUCCESS', 0);
-define('WE_NEWSLETTER_STATUS_EMAIL_EXISTS', 1);
-define('WE_NEWSLETTER_STATUS_EMAIL_INVALID', 2);
-define('WE_NEWSLETTER_STATUS_CONFIR_FAILED', 3);
 
 include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
 
@@ -117,20 +112,20 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 			if(sizeof($abos) == 0 && sizeof($paths) == 0){
 				$GLOBALS["WE_MAILING_LIST_EMPTY"] = 1;
 				if($isSubscribe){
-					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;
+					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 				}
 				if($isUnsubscribe){
-					$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;
+					$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 				}
 				return;
 			}
 		} else{
 			$GLOBALS["WE_MAILING_LIST_EMPTY"] = 1;
 			if($isSubscribe){
-				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;
+				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 			}
 			if($isUnsubscribe){
-				$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;
+				$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 			}
 			return;
 		}
@@ -142,7 +137,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 	/*	 * *                          NEWSLETTER SUBSCTIPTION                           ** */
 	/*	 * ******************************************************************************* */
 	if($isSubscribe){
-		$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
+		$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_SUCCESS;
 		$err = 0;
 		$f = getNewsletterFields($_REQUEST, isset($_REQUEST["confirmID"]) ? $_REQUEST["confirmID"] : "", $err, isset($_REQUEST["mail"]) ? $_REQUEST["mail"] : "");
 		// Setting Globals FOR WE-Tags
@@ -160,12 +155,12 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 			}
 		}
 
-		if($err != WE_NEWSLETTER_STATUS_SUCCESS){
+		if($err != weNewsletterBase::STATUS_SUCCESS){
 			$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = $err;
 			return;
 		}
 		if(sizeof($f) == 0){
-			$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;
+			$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 			return;
 		}
 
@@ -204,8 +199,8 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 										$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
 									}
 								} else{
-									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;	// FATAL ERROR
-									$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;	// FATAL ERROR
+									$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 									return;
 								}
 							} else{
@@ -217,7 +212,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				}
 			}
 			if($emailExistsInOneOfTheLists){
-				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
+				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 				return;
 			}
 
@@ -371,7 +366,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				if(isset($mywedoc))
 					$GLOBALS['we_doc'] = $mywedoc;
 			}else{
-				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;
+				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;
 				return;
 			}
 		} else{ //confirmID wurde �bermittelt, eine Best�tigung liegt also vor
@@ -467,8 +462,8 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 						$path = (substr($path, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
 
 						if(!@file_exists(dirname($path))){
-							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;	// FATAL ERROR
-							$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;	// FATAL ERROR
+							$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							return;
 						}
 
@@ -493,20 +488,20 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 								$row = $f["subscribe_mail"] . "," . $f["subscribe_html"] . "," . $f["subscribe_salutation"] . "," . $f["subscribe_title"] . "," . $f["subscribe_firstname"] . "," . $f["subscribe_lastname"] . "\n";
 								if(!@fwrite($fh, $row)){
 									fclose($fh);
-									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 									return;
 								}
 								fclose($fh);
 								$emailwritten++;
 							} else{
-								$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+								$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 								return;
 							}
 						}
 						@chmod($path);
 					}
 					if($emailwritten == 0){
-						$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
+						$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 					}
 					$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
 				} else{ //nicht in eine Liste eintragen sondern adminmail versenden
@@ -531,7 +526,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 					}
 					$phpmail->buildMessage();
 					$phpmail->Send();
-					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
+					$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_SUCCESS;
 				}
 			}
 		}
@@ -557,11 +552,11 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 }
 
 function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
-	$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_SUCCESS;
+	$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_SUCCESS;
 	$unsubscribe_mail = preg_replace("|[\r\n,]|", "", trim($_REQUEST["we_unsubscribe_email__"]));
 	$GLOBALS["WE_NEWSLETTER_EMAIL"] = $unsubscribe_mail;
 	if(!we_check_email($unsubscribe_mail)){
-		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_INVALID; // E-Mail ungueltig
+		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_INVALID; // E-Mail ungueltig
 		return false;
 	}
 
@@ -612,8 +607,8 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			$path = (substr($path, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
 
 			if(!@file_exists(dirname($path))){
-				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR;	// FATAL ERROR
-				$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;	// FATAL ERROR
+				$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 				return false;
 			}
 
@@ -634,7 +629,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			if($fileChanged){
 				$success = file_put_contents($path, implode("\n", array_map('trim', $file)) . "\n");
 				if(!$success){
-					$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_ERROR; // FATAL ERROR
+					$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 				}
 			}
 			//
@@ -642,7 +637,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 	}
 
 	if(!$emailExists){
-		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = WE_NEWSLETTER_STATUS_EMAIL_EXISTS;
+		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 		return false;
 	}
 	return true;
@@ -654,7 +649,7 @@ function getNewsletterFields($request, $confirmid, &$errorcode, $mail=""){
 	if($confirmid){
 		$_h = getHash("SELECT * FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE confirmID = '" . escape_sql_query($confirmid) . "' AND subscribe_mail='" . escape_sql_query($mail) . "'", new DB_WE());
 		if(empty($_h)){
-			$errorcode = WE_NEWSLETTER_STATUS_CONFIR_FAILED;
+			$errorcode = weNewsletterBase::STATUS_CONFIR_FAILED;
 		}
 		return $_h;
 	} else{

@@ -24,5 +24,5 @@
 
 function we_tag_ifVote($attribs, $content){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVoting.php');
-	return (isset($GLOBALS["_we_voting_status"]) && $GLOBALS["_we_voting_status"]==VOTING_SUCCESS);
+	return (isset($GLOBALS["_we_voting_status"]) && $GLOBALS["_we_voting_status"]==weVoting::SUCCESS);
 }

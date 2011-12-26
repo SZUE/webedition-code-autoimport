@@ -23,12 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-define("CUSTOMER_ITEMS",1);
-define("CUSTOMER_SORT_ITEMS",2);
-define("ADMIN_ITEMS",3);
-
 class weCustomerTreeLoader{
 
 	function getItems($pid,$offset=0,$segment=500,$sort=""){

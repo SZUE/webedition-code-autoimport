@@ -31,16 +31,16 @@ function we_tag_ifNotVote($attribs, $content){
 	if(isset($GLOBALS["_we_voting_status"])){
 		switch ($type) {
 			case "error":
-				return ($GLOBALS["_we_voting_status"]==VOTING_ERROR);
+				return ($GLOBALS["_we_voting_status"]==weVoting::ERROR);
 			break;
 			case "revote":
-				return ($GLOBALS["_we_voting_status"]==VOTING_ERROR_REVOTE);
+				return ($GLOBALS["_we_voting_status"]==weVoting::ERROR_REVOTE);
 			break;
 			case "active":
-				return ($GLOBALS["_we_voting_status"]==VOTING_ERROR_ACTIVE);
+				return ($GLOBALS["_we_voting_status"]==weVoting::ERROR_ACTIVE);
 			break;
 			case "forbidden":
-				return ($GLOBALS["_we_voting_status"]==VOTING_ERROR_BLACKIP);
+				return ($GLOBALS["_we_voting_status"]==weVoting::ERROR_BLACKIP);
 			break;
 			default: return ($GLOBALS["_we_voting_status"]>0);
 

@@ -24,9 +24,5 @@
 
 
 function we_tag_ifUnsubscribe($attribs, $content) {
-	if (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) {
-		return (($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] == 0) ? true : false);
-	} else {
-		return false;
-	}
+		return (isset($GLOBALS["WE_REMOVENEWSLETTER_STATUS"])) && ($GLOBALS["WE_REMOVENEWSLETTER_STATUS"] == weNewsletterBase::STATUS_SUCCESS);
 }
