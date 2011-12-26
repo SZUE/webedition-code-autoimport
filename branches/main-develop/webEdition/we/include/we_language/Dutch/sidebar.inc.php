@@ -42,7 +42,7 @@ $l_sidebar=array(
 		'5'=>array(
 			'headline'=>'Version history',
 			'icon'=>'demopages.gif',
-			'link'=>'http://documentation.webedition.org/wiki/en/webedition/change-log/start',
+			'link'=>'http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/',
 			'text'=>'A complete changelog of all webEdition bugfixes and improvements',
 	),),
 	'headline'=>'Zijbalk',
