@@ -102,7 +102,7 @@ function we_tag_linkToSeeMode($attribs, $content){
 
 										'type' => 'hidden',
 										'name' => 'path',
-										'value' => WE_SERVER_REQUEST_URI,
+										'value' => $_SERVER['HTTP_REQUEST_URI'],
 										'xml' => $xml
 								))) . getHtmlTag(
 						'a',

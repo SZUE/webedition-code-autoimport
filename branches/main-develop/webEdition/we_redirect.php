@@ -24,12 +24,12 @@
  */
 include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$row = getHash("SELECT Path,Published FROM " . FILE_TABLE . " WHERE ID=" . intval($_REQUEST["id"]), $DB_WE);
+$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval($_REQUEST["id"]), 'Path', $DB_WE);
 srand((double) microtime() * 1000000);
 $randval = rand();
 
-if($row["Published"]){
-	header("Location: " . WE_SERVER_URL . $row["Path"] . "?r=$randval");
+if($path){
+	header('Location: ' . getServerUrl() . $path . '?r='.$randval);
 	exit;
 }
-header("Location: " . WE_SERVER_URL . WEBEDITION_DIR . "notPublished.php");
+header('Location: ' . getServerUrl() . WEBEDITION_DIR . 'notPublished.php');
