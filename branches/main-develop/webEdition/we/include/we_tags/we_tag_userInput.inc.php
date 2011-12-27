@@ -38,7 +38,7 @@ function we_tag_userInput($attribs, $content){
 	$hidden = weTag_getAttribute("hidden", $attribs, false, true);
 	$size = weTag_getAttribute("size", $attribs);
 	$values = weTag_getAttribute("values", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 
 	if ($hidden && ($type != "date")) {
@@ -595,7 +595,7 @@ function we_tag_userInput($attribs, $content){
 							$GLOBALS['we_doc']->getHttpPath(),
 							false,
 							false,
-							getXmlAttributeValueAsBoolean($xml),
+							$xml,
 							$removeFirstParagraph,
 							$charset,
 							false,

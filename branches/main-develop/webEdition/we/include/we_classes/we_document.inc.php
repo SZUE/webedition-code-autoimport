@@ -1057,7 +1057,7 @@ class we_document extends we_root{
 						$img->setElement('name', $_useName, 'dat');
 					}
 
-					$xml = getXmlAttributeValueAsBoolean(weTag_getAttribute('xml', $attribs));
+					$xml = weTag_getAttribute('xml', $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true, false);
 					$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
 						if($only == 'content'){
@@ -1337,9 +1337,7 @@ class we_document extends we_root{
 			return getHtmlTag('img', $img_attribs);
 		} else if(isset($link['ctype']) && $link['ctype'] == 'text'){
 			// Workarround => We have to find another solution
-			if(getXmlAttributeValueAsBoolean($xml)){
-				// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
-				// as html_entity_decode is only available php > 4.3 we use a custom function
+			if($xml){
 				return htmlspecialchars(html_entity_decode($link['text']));
 			} else{
 				return $htmlspecialchars ? htmlspecialchars($link['text']) : $link['text'];

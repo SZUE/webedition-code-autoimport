@@ -2248,28 +2248,6 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 }
 
 /**
- * converts xml String Attribute to boolean attribute
- *
- * @return bool
- * @param string $xml
- *
- */
-function getXmlAttributeValueAsBoolean($xml) {
-	switch ($xml){
-		case 'true':
-		case 'xml':
-		case 'on':
-		case 1:
-			return true;
-		case 'false':
-		case 'off':
-			return false;
-		default:
-			return (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false;
-	}
-}
-
-/**
  * @return array
  * @param array $attribs
  * @param array $remove

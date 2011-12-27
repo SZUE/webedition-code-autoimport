@@ -78,7 +78,7 @@ abstract class we_class{
 
 	/* Constructor */
 	function __construct(){
-		$this->Name = md5(uniqid(rand()));
+		$this->Name = uniqid();
 		array_push($this->persistent_slots, "ClassName", "Name", "ID", "Table", "wasUpdate", "InWebEdition");
 		$this->DB_WE = new DB_WE;
 	}
@@ -437,7 +437,7 @@ abstract class we_class{
 		$this->ID = intval($ID);
 		$this->Table = $Table;
 		$this->we_load($from);
-		$GLOBALS["we_ID"] = $ID;	// look if we need this !!
+		$GLOBALS["we_ID"] = $ID;	//FIXME: look if we need this !!
 		$GLOBALS["we_Table"] = $Table;
 		// init Customer Filter !!!!
 		if (isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')) {

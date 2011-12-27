@@ -24,7 +24,7 @@
 
 function we_tag_link($attribs, $content){
 	$name = weTag_getAttribute("name", $attribs);
-	$xml = getXmlAttributeValueAsBoolean(weTag_getAttribute("xml", $attribs));
+	$xml = weTag_getAttribute("xml", $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true);
 	$text = weTag_getAttribute("text", $attribs);
 	$imageid = weTag_getAttribute("imageid", $attribs, 0);
 	$id = weTag_getAttribute("id", $attribs);
@@ -45,8 +45,8 @@ function we_tag_link($attribs, $content){
 	$link = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 	if (!$GLOBALS['we_editmode']) {
 		return $GLOBALS['we_doc']->getField($attribs, "link");
-	} 
-	
+	}
+
 		if (is_array($link)) {
 			if (!sizeof($link)) {
 				$link = array(

@@ -143,7 +143,7 @@ class we_flashDocument extends we_binaryDocument{
 			  /* take all attribs and seperate them in attribs, params and embeds
 			  /***************************************************************************** */
 
-			$xml = getXmlAttributeValueAsBoolean($this->getElement("xml"));
+			$xml = (boolean)$this->getElement("xml");
 
 			//   first we deal with alt-content
 			$alt = $this->getElement("alt");

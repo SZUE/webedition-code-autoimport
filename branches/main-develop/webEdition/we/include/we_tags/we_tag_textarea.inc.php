@@ -23,13 +23,12 @@
  */
 
 function we_tag_textarea($attribs, $content){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 	if (($foo = attributFehltError($attribs, "name", "textarea"))){
 		return $foo;
 	}
 
 	$name = weTag_getAttribute("name", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true);
 	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
 	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 
@@ -67,7 +66,7 @@ function we_tag_textarea($attribs, $content){
 				$GLOBALS['we_doc']->getHttpPath(),
 				false,
 				false,
-				getXmlAttributeValueAsBoolean($xml),
+				$xml,
 				$removeFirstParagraph,
 				'',
 				($spellcheck == 'true'));

@@ -39,14 +39,14 @@ function we_tag_formfield($attribs, $content){
 
 	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 
-	$xml = weTag_getAttribute("xml", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true);
 	$ff = array();
 
 	$ret = "";
 
 	// here add some mandatory fields
 	$mandatoryFields = array();
-	if (getXmlAttributeValueAsBoolean($xml)) {
+	if ($xml) {
 		$mandatoryFields = array(
 			'textarea_cols', 'textarea_rows'
 		);

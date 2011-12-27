@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_returnPage($attribs, $content){
 
-	$xml = weTag_getAttribute("xml", $attribs);
+	$xml = weTag_getAttribute("xml", $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true);
 
-	return isset($_REQUEST["we_returnpage"]) ? (getXmlAttributeValueAsBoolean($xml) ? htmlspecialchars(
-			$_REQUEST["we_returnpage"]) : $_REQUEST["we_returnpage"]) : "";
+	return isset($_REQUEST["we_returnpage"]) ? ($xml ? htmlspecialchars(
+				$_REQUEST["we_returnpage"]) : $_REQUEST["we_returnpage"]) : "";
 }

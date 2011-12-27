@@ -607,7 +607,7 @@ class we_linklist{
 
 							$attrArr = makeArrayFromAttribs(trim($reg[1]));
 
-							$xml = getXmlAttributeValueAsBoolean(weTag_getAttribute("xml", $attrArr));
+							$xml = weTag_getAttribute("xml", $attrArr,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true);
 							$_content = $linkcontent;
 
 							if(isset($attrArr['only'])){

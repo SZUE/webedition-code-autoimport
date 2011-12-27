@@ -50,12 +50,8 @@ include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_editors/we_init_
 
 if (isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != 'ResetVersion' && $_REQUEST['cmd'] != 'PublishDocs') {
 	if (isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC) { // when called showDoc.php
-		$publ = $we_doc->Published;
-		$prot = getServerProtocol();
-		$preurl = (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']) ? '$prot://' . $_SERVER['HTTP_HOST'] : '';
-
 		if ((!$we_doc->IsDynamic) && (!$tmplID)) { // if the document is not a dynamic php-doc and is published we make a redirect to the static page
-			header('Location: ' . $preurl . ($publ ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
+			header('Location: ' . getServerUrl() . ($we_doc->Published ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
 			exit();
 		}
 	}
