@@ -70,7 +70,7 @@ class weCustomerEIWizard{
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=eiload&step=1","name"=>"load","scrolling"=>"no","noresize"=>null));
 
 		$head=str_replace(WE_DEFAULT_TITLE, g_l('modules_customer','[export_title]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . $js ."\n";
-		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
 
 		return we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead($head).
@@ -152,7 +152,7 @@ class weCustomerEIWizard{
 		$generic->setColContent(0, 0, we_html_tools::getPixel(5, 10));
 		$generic->setColContent(1, 0, we_forms::radiobutton("filter",($selection=="filter"), "selection", g_l('modules_customer','[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) ".$this->topFrame.".selection='filter';"));
 		$generic->setColContent(2, 0, we_html_tools::getPixel(5, 10));
-		$generic->setColContent(3, 0, $table->getHtmlCode());
+		$generic->setColContent(3, 0, $table->getHtml());
 		$generic->setColContent(4, 0, we_html_tools::getPixel(5, 10));
 
 		$table->setColContent(0, 1,
@@ -163,7 +163,7 @@ class weCustomerEIWizard{
         );
 		$generic->setColContent(5, 0, we_forms::radiobutton("manual", ($selection=="manual"), "selection", g_l('modules_customer','[manual_selection]'), true, "defaultfont", "if(document.we_form.selection[1].checked) ".$this->topFrame.".selection='manual';"));
 		$generic->setColContent(6, 0, we_html_tools::getPixel(5, 10));
-		$generic->setColContent(7, 0, $table->getHtmlCode());
+		$generic->setColContent(7, 0, $table->getHtml());
 
 		$parts = array();
 
@@ -242,7 +242,7 @@ class weCustomerEIWizard{
 			$table->setColContent(0, 0, we_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer','[export_xml_cdata]'), true, "defaultfont", ""));
 			$table->setColContent(2, 0, we_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer','[export_xml_entities]'), true, "defaultfont", ""));
 
-			array_push($parts,array("headline" => g_l('modules_customer','[cdata]'), "html" => $table->getHtmlCode(), "space" => $_space));
+			array_push($parts,array("headline" => g_l('modules_customer','[cdata]'), "html" => $table->getHtml(), "space" => $_space));
 		}
 
 		if ($type=="csv"){
@@ -256,13 +256,13 @@ class weCustomerEIWizard{
 			$_file_encoding->selectOption($csv_lineend);
 
 			$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10,10));
-			$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer','[csv_lineend]') . "<br>" . $_file_encoding->getHtmlCode());
+			$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer','[csv_lineend]') . "<br>" . $_file_encoding->getHtml());
 			$fileformattable->setColContent(2,0,$this->getHTMLChooser("csv_delimiter",$csv_delimiter,array(","=>g_l('modules_customer','[comma]'),";"=>g_l('modules_customer','[semicolon]'),":"=>g_l('modules_customer','[colon]'),"\\t"=>g_l('modules_customer','[tab]')," "=>g_l('modules_customer','[space]')),g_l('modules_customer','[csv_delimiter]')));
 			$fileformattable->setColContent(3,0,$this->getHTMLChooser("csv_enclose",$csv_enclose,array("\""=>g_l('modules_customer','[double_quote]'),"'"=>g_l('modules_customer','[single_quote]')),g_l('modules_customer','[csv_enclose]')));
 
 			$fileformattable->setColContent(4,0,we_forms::checkbox(0,$csv_fieldnames,"csv_fieldnames",g_l('modules_customer','[csv_fieldnames]')));
 
-			array_push($parts,array("headline" => g_l('modules_customer','[csv_params]'), "html" => $fileformattable->getHtmlCode(),"space" => $_space));
+			array_push($parts,array("headline" => g_l('modules_customer','[csv_params]'), "html" => $fileformattable->getHtml(),"space" => $_space));
 		}
 
 		array_push($parts,array("headline"=>g_l('modules_customer','[export_to]'),"html" => "","space" => 0,"noline" =>1));
@@ -271,7 +271,7 @@ class weCustomerEIWizard{
 		$table->setColContent(0,0,we_html_tools::getPixel(20,2));
 		$table->setColContent(0,1,we_forms::radiobutton("server", ($export_to=="server" ? true : false), "export_to", g_l('modules_customer','[export_to_server]'),true,"defaultfont",$this->topFrame.".export_to='server'"));
 		array_push($parts,array("space" => $_space,"noline" => 1,
-										"headline" =>$table->getHtmlCode(),
+										"headline" =>$table->getHtml(),
 										"html" =>
 													we_htmlElement::htmlBr().
 												we_html_tools::htmlFormElementTable($this->formFileChooser(200,"path",$path,"","folder"),g_l('modules_customer','[path]'))
@@ -279,7 +279,7 @@ class weCustomerEIWizard{
 		));
 
 		$table->setColContent(0,1,we_forms::radiobutton("local", ($export_to=="local" ? true : false), "export_to", g_l('modules_customer','[export_to_local]'),true,"defaultfont",$this->topFrame.".export_to='local'"));
-		array_push($parts,array("headline"=>$table->getHtmlCode(),"space" => $_space,"noline" => 1,"html" =>""));
+		array_push($parts,array("headline"=>$table->getHtml(),"space" => $_space,"noline" => 1,"html" =>""));
 
 		$body = we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
 						we_htmlElement::htmlCenter(
@@ -622,11 +622,11 @@ class weCustomerEIWizard{
 		$table = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
 		$table->setCol(0, 0,array("colspan"=>"2"),we_forms::radiobutton("server",($import_from=="server"), "import_from", g_l('modules_customer','[server_import]'), true, "defaultfont", ""));
 		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(2, 1,$tmptable->getHtmlCode());
+		$table->setColContent(2, 1,$tmptable->getHtml());
 
 		array_push($parts, array(
 			"headline"	=> g_l('modules_customer','[source_file]'),
-			"html"		=> $table->getHtmlCode(),
+			"html"		=> $table->getHtml(),
 			"space"		=> 120,
 			"noline"	=> 1)
 		);
@@ -648,7 +648,7 @@ class weCustomerEIWizard{
 		$table = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 2);
 		$table->setCol(0, 0,array("colspan"=>"2"),we_forms::radiobutton("local",($import_from=="local"), "import_from", g_l('modules_customer','[upload_import]'), true, "defaultfont", ""));
 		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(2, 1,$tmptable->getHtmlCode());
+		$table->setColContent(2, 1,$tmptable->getHtml());
 
 		array_push($parts, array(
 			"headline"	=> "",
@@ -727,7 +727,7 @@ class weCustomerEIWizard{
 
 
 				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10,10));
-				$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer','[csv_lineend]') . we_htmlElement::htmlBr() . $_file_encoding->getHtmlCode());
+				$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer','[csv_lineend]') . we_htmlElement::htmlBr() . $_file_encoding->getHtml());
 				$fileformattable->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer','[import_charset]') . we_htmlElement::htmlBr() . $import_Charset);
 				//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
 
@@ -736,7 +736,7 @@ class weCustomerEIWizard{
 
 				$fileformattable->setColContent(5,0,we_forms::checkbox($csv_fieldnames,($csv_fieldnames==1),"csv_fieldnames",g_l('modules_customer','[csv_fieldnames]')));
 
-				array_push($parts,array("headline" => g_l('modules_customer','[csv_params]'), "html" => $fileformattable->getHtmlCode(),"space" => 150));
+				array_push($parts,array("headline" => g_l('modules_customer','[csv_params]'), "html" => $fileformattable->getHtml(),"space" => 150));
 
 			}else{
 				//invoke parser
@@ -778,7 +778,7 @@ class weCustomerEIWizard{
 					}
 
 					$tblSelect = new we_htmlTable(array(), 1, 7);
-					$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtmlCode());
+					$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
 					$tblSelect->setCol(0, 2, array("width" => 20));
 					$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer','[num_data_sets]'));
 					$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "",($isSingleNode&&($firstOptVal==1))?1:0));
@@ -790,10 +790,10 @@ class weCustomerEIWizard{
 						($isSingleNode)? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer','[well_formed]')." ".g_l('modules_customer','[select_elements]'),2,"570") :
 							we_html_tools::htmlAlertAttentionBox(g_l('modules_customer','[xml_valid_1]')." $optid ".g_l('modules_customer','[xml_valid_m2]'),2,"570"));
 					$tblFrame->setCol(1, 0, array("colspan" => "2"));
-					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtmlCode());
+					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 					$_REQUEST["dataset"]=$firstItem;
-					array_push($parts, array("html"=>$tblFrame->getHtmlCode(),"space"=>0,"noline"=>1));
+					array_push($parts, array("html"=>$tblFrame->getHtml(),"space"=>0,"noline"=>1));
 
 				}
 				else {
@@ -922,7 +922,7 @@ class weCustomerEIWizard{
 
 		array_push($parts,array(
 								"headline" => g_l('modules_customer','[same_names]'),
-								"html" => $table->getHtmlCode(),
+								"html" => $table->getHtml(),
 								"space" => 150
 						)
 		);
@@ -963,7 +963,7 @@ class weCustomerEIWizard{
 				$parts=array();
 				array_push($parts,array(
 								"headline" => "",
-								"html" => $table->getHtmlCode(),
+								"html" => $table->getHtml(),
 								"space" => 20
 						)
 				);
@@ -1047,7 +1047,7 @@ class weCustomerEIWizard{
 								"target"  => "load",
 								"action"  => $this->frameset
 								),
-								$content->getHtmlCode()
+								$content->getHtml()
 						)
 					)
 		);
@@ -1119,7 +1119,7 @@ class weCustomerEIWizard{
 								"target"  => "load",
 								"action"  => $this->frameset
 								),
-								$content->getHtmlCode()
+								$content->getHtml()
 						)
 					)
 		);
@@ -1784,9 +1784,9 @@ class weCustomerEIWizard{
 
 		$table->setColContent(0,0,we_html_tools::htmlTextInput($name,$input_size,$value));
 		$table->setColContent(0,1,we_html_tools::getPixel(10,10));
-		$table->setColContent(0,2,$select->getHtmlCode());
+		$table->setColContent(0,2,$select->getHtml());
 
-		 return we_html_tools::htmlFormElementTable($table->getHtmlCode(),$title);
+		 return we_html_tools::htmlFormElementTable($table->getHtml(),$title);
 
  	}
 
@@ -1881,7 +1881,7 @@ class weCustomerEIWizard{
 		return $js.
 					//we_htmlElement::htmlHidden(array("name"=>"filter_count","value"=>$count)).
 					we_htmlElement::htmlHidden(array("name"=>"fcmd","value"=>"")).
-					$table->getHtmlCode();
+					$table->getHtml();
 	}
 
 	function getOperator($num) {

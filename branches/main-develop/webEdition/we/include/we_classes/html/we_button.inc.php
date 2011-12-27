@@ -275,7 +275,7 @@ class we_button{
 	 * @see        create_button()
 	 * @see        we_htmlTable::we_htmlTable()
 	 * @see        we_htmlTable::setCol()
-	 * @see        we_htmlTable::getHtmlCode()
+	 * @see        we_htmlTable::getHtml()
 	 *
 	 * @return     string
 	 */
@@ -310,7 +310,7 @@ class we_button{
 		}
 
 		// Get created HTML
-		return $_button_table->getHtmlCode();
+		return $_button_table->getHtml();
 	}
 
 	/**
@@ -330,7 +330,7 @@ class we_button{
 	 *
 	 * @see        we_htmlTable::we_htmlTable()
 	 * @see        we_htmlTable::setCol()
-	 * @see        we_htmlTable::getHtmlCode()
+	 * @see        we_htmlTable::getHtml()
 	 *
 	 * @return     string
 	 */
@@ -390,7 +390,7 @@ class we_button{
 		}
 
 		// Return created HTML
-		return $_button_table->getHtmlCode();
+		return $_button_table->getHtml();
 	}
 
 }

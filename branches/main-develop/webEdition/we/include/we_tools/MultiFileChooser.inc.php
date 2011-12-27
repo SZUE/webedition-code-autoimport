@@ -103,7 +103,7 @@ class MultiFileChooser extends MultiDirChooser{
 
 		$table2 = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => $this->width), 1, 1);
 
-		$table2->setCol(0, 0, array(), we_htmlElement::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtmlCode())
+		$table2->setCol(0, 0, array(), we_htmlElement::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml())
 		);
 		if($this->addbut){
 			$table2->addRow(2);
@@ -111,7 +111,7 @@ class MultiFileChooser extends MultiDirChooser{
 			$table2->setCol(2, 0, array("align" => "right"), $this->addbut);
 		}
 
-		return $table2->getHtmlCode();
+		return $table2->getHtml();
 	}
 
 }

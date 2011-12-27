@@ -393,7 +393,7 @@ class searchtoolFrames extends weToolFrames
 								"leftmargin" => "0",
 								"topmargin" => "0"
 						),
-						we_htmlElement::htmlForm(array(), $table1->getHtmlCode() . $_but_table)));
+						we_htmlElement::htmlForm(array(), $table1->getHtml() . $_but_table)));
 	}
 
 	function getHTMLProperties($preselect = '')

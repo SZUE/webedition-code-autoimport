@@ -693,7 +693,7 @@ class we_import_files{
 					), we_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 		}
 
-		$content = $table->getHtmlCode();
+		$content = $table->getHtml();
 		$body = we_htmlElement::htmlBody($bodyAttribs, $content);
 		return $this->_getHtmlPage($body, $js);
 	}
@@ -921,7 +921,6 @@ class we_import_files{
 		$frameset = new we_htmlFrameset(array(
 				"framespacing" => "0", "border" => "0", "frameborder" => "no"
 			));
-		$noframeset = new we_baseElement("noframes");
 
 		$frameset->setAttributes(array(
 			"rows" => "*,40"
@@ -941,7 +940,7 @@ class we_import_files{
 		));
 
 		// set and return html code
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode(new we_baseElement("noframes"));
 
 		return $this->_getHtmlPage($body);
 	}
@@ -1022,7 +1021,7 @@ class we_import_files{
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 			)));
 
-		return $table->getHtmlCode() . $js . we_htmlElement::jsElement(
+		return $table->getHtml() . $js . we_htmlElement::jsElement(
 				'
 
 							function removeAllCats(){

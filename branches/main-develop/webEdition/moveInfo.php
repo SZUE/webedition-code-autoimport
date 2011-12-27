@@ -58,7 +58,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	);
 	array_push($parts,array(
 				"headline"=>"",
-				"html"=>we_htmlElement::htmlDiv(array("class"=>"blockwrapper","style"=>"width: 475px; height: 350px; border:1px #dce6f2 solid;"),$table->getHtmlCode()),
+				"html"=>we_htmlElement::htmlDiv(array("class"=>"blockwrapper","style"=>"width: 475px; height: 350px; border:1px #dce6f2 solid;"),$table->getHtml()),
 				"space"=>10)
 	);
 
@@ -72,7 +72,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 			STYLESHEET.
 			we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
 					we_htmlElement::htmlCenter(
-						we_multiIconBox::getHTML("","100%",$parts,30,$buttons->getHtmlCode())
+						we_multiIconBox::getHTML("","100%",$parts,30,$buttons->getHtml())
 
 					)
 			)

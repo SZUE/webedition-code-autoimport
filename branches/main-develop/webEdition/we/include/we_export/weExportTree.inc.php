@@ -254,7 +254,7 @@ class weExportTree extends weMainTree{
 		$header->setColContent(1,0,we_html_tools::htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));
 		$header->setColContent(2,0,we_html_tools::getPixel(5,5));
 
-		return $js.$header->getHtmlCode().we_htmlElement::htmlDiv(array('id'=>'treetable','class'=>'blockwrapper','style'=>'width: '.$width.'px; height: '.$height.'px; border:1px #dce6f2 solid;'),'');
+		return $js.$header->getHtml().we_htmlElement::htmlDiv(array('id'=>'treetable','class'=>'blockwrapper','style'=>'width: '.$width.'px; height: '.$height.'px; border:1px #dce6f2 solid;'),'');
 
  	}
 

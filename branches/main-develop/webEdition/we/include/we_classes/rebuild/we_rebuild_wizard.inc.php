@@ -95,7 +95,7 @@ abstract class we_rebuild_wizard{
 
 			$content = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none", "align" => "left"), $pb);
-			$content->setCol(0, 1, array("align" => "right"), $content2->getHtmlCode());
+			$content->setCol(0, 1, array("align" => "right"), $content2->getHtml());
 		}
 
 
@@ -103,7 +103,7 @@ abstract class we_rebuild_wizard{
 				we_htmlElement::htmlHead(
 					STYLESHEET .
 					($dc ? "" : we_htmlElement::jsElement(we_button::create_state_changer(false))) . $js) .
-				we_htmlElement::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtmlCode())
+				we_htmlElement::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -811,7 +811,7 @@ abstract class we_rebuild_wizard{
 		return we_htmlElement::htmlHtml(
 				we_htmlElement::htmlHead(
 					we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
-					we_htmlElement::htmlTitle(g_l('rebuild', "[rebuild]"))) . $fst->getHtmlCode());
+					we_htmlElement::htmlTitle(g_l('rebuild', "[rebuild]"))) . $fst->getHtml());
 	}
 
 	/**

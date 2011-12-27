@@ -54,7 +54,7 @@
 	$_table->setColContent(1, 1, $_backbutton);
 
 
-    $_body = $_table->getHtmlCode();
+    $_body = $_table->getHtml();
     $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 
 

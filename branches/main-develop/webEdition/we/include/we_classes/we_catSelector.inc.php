@@ -1170,7 +1170,7 @@ function we_checkName() {
 		print STYLESHEET.'</head><body class="defaultfont" style="margin:0;padding: 15px 0 0 10px;background-image:url(/webEdition/images/backgrounds/aquaBackgroundLineLeft.gif);">
 ' . ($showPrefs ? '
 	<form onsubmit="weWysiwygSetHiddenText();"; action="'.$_SERVER["SCRIPT_NAME"].'" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="'.FS_CHANGE_CAT.'" /><input type="hidden" name="catid" value="'.$_REQUEST["catid"].'" />
-		'.$table->getHtmlCode()."<br />".$ta."<br />".$saveBut.'
+		'.$table->getHtml()."<br />".$ta."<br />".$saveBut.'
 	</div>		' : '' ) .'
 </body></html>';
 	}

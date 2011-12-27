@@ -72,40 +72,40 @@ if (!defined('WE_ERROR_HANDLER_SET')){
 
 include_once (WEBEDITION_INCLUDES_DIR . 'we_version.php');
 
-define(SITE_DIR, WEBEDITION_DIR . 'site/');
-define(IMAGE_DIR, WEBEDITION_DIR . 'images/');
-define(HTML_DIR, WEBEDITION_DIR . 'html/');
-define(JS_DIR, WEBEDITION_DIR . 'js/');
-define(TREE_IMAGE_DIR, IMAGE_DIR . 'tree/');
-define(ICON_DIR, TREE_IMAGE_DIR . 'icons/');
-define(EDIT_IMAGE_DIR, IMAGE_DIR . 'edit/');
-define(BACKUP_DIR, WEBEDITION_DIR . 'we_backup/');
-define(VERSION_DIR, WEBEDITION_DIR . 'we/versions/');
-define(ZENDCACHE_DIR, WEBEDITION_DIR . 'we/zendcache/');
+define('SITE_DIR', WEBEDITION_DIR . 'site/');
+define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
+define('HTML_DIR', WEBEDITION_DIR . 'html/');
+define('JS_DIR', WEBEDITION_DIR . 'js/');
+define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
+define('ICON_DIR', TREE_IMAGE_DIR . 'icons/');
+define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
+define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
+define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
+define('ZENDCACHE_DIR', WEBEDITION_DIR . 'we/zendcache/');
 
-define(BUTTONS_DIR, IMAGE_DIR . 'button/');
+define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 
-define(WE_EDITPAGE_PROPERTIES, 0);
-define(WE_EDITPAGE_CONTENT, 1);
-define(WE_EDITPAGE_INFO, 2);
-define(WE_EDITPAGE_PREVIEW, 3);
-define(WE_EDITPAGE_WORKSPACE, 4);
-define(WE_EDITPAGE_METAINFO, 5);
-define(WE_EDITPAGE_FIELDS, 6);
-define(WE_EDITPAGE_SEARCH, 7);
-define(WE_EDITPAGE_SCHEDULER, 8);
-define(WE_EDITPAGE_THUMBNAILS, 9);
-define(WE_EDITPAGE_VALIDATION, 10);
-define(WE_EDITPAGE_VARIANTS, 11);
-define(WE_EDITPAGE_PREVIEW_TEMPLATE, 12);
-define(WE_EDITPAGE_CFWORKSPACE, 13);
-define(WE_EDITPAGE_WEBUSER, 14);
-define(WE_EDITPAGE_IMAGEEDIT, 15);
-define(WE_EDITPAGE_DOCLIST, 16);
-define(WE_EDITPAGE_VERSIONS, 17);
+define('WE_EDITPAGE_PROPERTIES', 0);
+define('WE_EDITPAGE_CONTENT', 1);
+define('WE_EDITPAGE_INFO', 2);
+define('WE_EDITPAGE_PREVIEW', 3);
+define('WE_EDITPAGE_WORKSPACE', 4);
+define('WE_EDITPAGE_METAINFO', 5);
+define('WE_EDITPAGE_FIELDS', 6);
+define('WE_EDITPAGE_SEARCH', 7);
+define('WE_EDITPAGE_SCHEDULER', 8);
+define('WE_EDITPAGE_THUMBNAILS', 9);
+define('WE_EDITPAGE_VALIDATION', 10);
+define('WE_EDITPAGE_VARIANTS', 11);
+define('WE_EDITPAGE_PREVIEW_TEMPLATE', 12);
+define('WE_EDITPAGE_CFWORKSPACE', 13);
+define('WE_EDITPAGE_WEBUSER', 14);
+define('WE_EDITPAGE_IMAGEEDIT', 15);
+define('WE_EDITPAGE_DOCLIST', 16);
+define('WE_EDITPAGE_VERSIONS', 17);
 
-define(FILE_ONLY, 0);
-define(FOLDER_ONLY, 1);
+define('FILE_ONLY', 0);
+define('FOLDER_ONLY', 1);
 
 // Initialize imageType array
 $IMAGE_TYPE = array('', 'image/gif', 'image/jpeg', 'image/png');
@@ -114,40 +114,40 @@ $IMAGE_TYPE = array('', 'image/gif', 'image/jpeg', 'image/png');
 $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
 
 
-define(CATEGORY_TABLE, TBL_PREFIX . 'tblCategorys');
-define(CLEAN_UP_TABLE, TBL_PREFIX . 'tblCleanUp');
-define(CONTENT_TABLE, TBL_PREFIX . 'tblContent');
-define(DOC_TYPES_TABLE, TBL_PREFIX . 'tblDocTypes');
-define(ERROR_LOG_TABLE, TBL_PREFIX . 'tblErrorLog');
-define(FAILED_LOGINS_TABLE, TBL_PREFIX . 'tblFailedLogins');
-define(FILE_TABLE, TBL_PREFIX . 'tblFile');
-define(INDEX_TABLE, TBL_PREFIX . 'tblIndex');
-define(LINK_TABLE, TBL_PREFIX . 'tblLink');
-define(LANGLINK_TABLE, TBL_PREFIX . 'tblLangLink');
-define(PREFS_TABLE, TBL_PREFIX . 'tblPrefs');
-define(RECIPIENTS_TABLE, TBL_PREFIX . 'tblRecipients');
-define(TEMPLATES_TABLE, TBL_PREFIX . 'tblTemplates');
-define(TEMPORARY_DOC_TABLE, TBL_PREFIX . 'tblTemporaryDoc');
-define(UPDATE_LOG_TABLE, TBL_PREFIX . 'tblUpdateLog');
-define(THUMBNAILS_TABLE, TBL_PREFIX . 'tblthumbnails');
-define(VALIDATION_SERVICES_TABLE, TBL_PREFIX . 'tblvalidationservices');
-define(HISTORY_TABLE, TBL_PREFIX . 'tblhistory');
-define(FORMMAIL_LOG_TABLE, TBL_PREFIX . 'tblformmaillog');
-define(FORMMAIL_BLOCK_TABLE, TBL_PREFIX . 'tblformmailblock');
-define(METADATA_TABLE, TBL_PREFIX . 'tblMetadata');
-define(NOTEPAD_TABLE, TBL_PREFIX . 'tblwidgetnotepad');
-define(VERSIONS_TABLE, TBL_PREFIX . 'tblversions');
-define(VERSIONS_TABLE_LOG, TBL_PREFIX . 'tblversionslog');
+define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
+define('CLEAN_UP_TABLE', TBL_PREFIX . 'tblCleanUp');
+define('CONTENT_TABLE', TBL_PREFIX . 'tblContent');
+define('DOC_TYPES_TABLE', TBL_PREFIX . 'tblDocTypes');
+define('ERROR_LOG_TABLE', TBL_PREFIX . 'tblErrorLog');
+define('FAILED_LOGINS_TABLE', TBL_PREFIX . 'tblFailedLogins');
+define('FILE_TABLE', TBL_PREFIX . 'tblFile');
+define('INDEX_TABLE', TBL_PREFIX . 'tblIndex');
+define('LINK_TABLE', TBL_PREFIX . 'tblLink');
+define('LANGLINK_TABLE', TBL_PREFIX . 'tblLangLink');
+define('PREFS_TABLE', TBL_PREFIX . 'tblPrefs');
+define('RECIPIENTS_TABLE', TBL_PREFIX . 'tblRecipients');
+define('TEMPLATES_TABLE', TBL_PREFIX . 'tblTemplates');
+define('TEMPORARY_DOC_TABLE', TBL_PREFIX . 'tblTemporaryDoc');
+define('UPDATE_LOG_TABLE', TBL_PREFIX . 'tblUpdateLog');
+define('THUMBNAILS_TABLE', TBL_PREFIX . 'tblthumbnails');
+define('VALIDATION_SERVICES_TABLE', TBL_PREFIX . 'tblvalidationservices');
+define('HISTORY_TABLE', TBL_PREFIX . 'tblhistory');
+define('FORMMAIL_LOG_TABLE', TBL_PREFIX . 'tblformmaillog');
+define('FORMMAIL_BLOCK_TABLE', TBL_PREFIX . 'tblformmailblock');
+define('METADATA_TABLE', TBL_PREFIX . 'tblMetadata');
+define('NOTEPAD_TABLE', TBL_PREFIX . 'tblwidgetnotepad');
+define('VERSIONS_TABLE', TBL_PREFIX . 'tblversions');
+define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 
-define(NAVIGATION_TABLE, TBL_PREFIX . 'tblnavigation');
-define(NAVIGATION_RULE_TABLE, TBL_PREFIX . 'tblnavigationrules');
+define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
+define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define(WE_FRAGMENT_DIR, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
-define(WE_MODULE_PATH, WEBEDITION_INCLUDES_PATH.'we_modules/');
-define(WE_MODULE_DIR, $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
+define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH.'we_modules/');
+define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
-define(WE_TOOLS_PATH, WEBEDITION_DIR.'apps/');
-define(WE_TOOLS_DIR, $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
+define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
+define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
 
 (!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 
@@ -181,16 +181,16 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 	}
 }
 
-define(WINDOW_SELECTOR_WIDTH, 900);
-define(WINDOW_SELECTOR_HEIGHT, 685);
-define(WINDOW_DIRSELECTOR_WIDTH, 900);
-define(WINDOW_DIRSELECTOR_HEIGHT, 600);
-define(WINDOW_DOCSELECTOR_WIDTH, 900);
-define(WINDOW_DOCSELECTOR_HEIGHT, 685);
-define(WINDOW_CATSELECTOR_WIDTH, 900);
-define(WINDOW_CATSELECTOR_HEIGHT, 600);
-define(WINDOW_DELSELECTOR_WIDTH, 900);
-define(WINDOW_DELSELECTOR_HEIGHT, 600);
+define('WINDOW_SELECTOR_WIDTH', 900);
+define('WINDOW_SELECTOR_HEIGHT', 685);
+define('WINDOW_DIRSELECTOR_WIDTH', 900);
+define('WINDOW_DIRSELECTOR_HEIGHT', 600);
+define('WINDOW_DOCSELECTOR_WIDTH', 900);
+define('WINDOW_DOCSELECTOR_HEIGHT', 685);
+define('WINDOW_CATSELECTOR_WIDTH', 900);
+define('WINDOW_CATSELECTOR_HEIGHT', 600);
+define('WINDOW_DELSELECTOR_WIDTH', 900);
+define('WINDOW_DELSELECTOR_HEIGHT', 600);
 
 $GLOBALS['WE_LANGS'] = array(
 		'de' => 'Deutsch',

@@ -82,10 +82,6 @@ function we_tag($name, $attribs=array(), $content = ''){
 			$attribs['name'] = $attribs['name'] . $GLOBALS['postTagName'];
 		}
 	}
-	//FIXME: after changing block etc. this is obsolete
-	if($content){
-		$content = str_replace('we_:_', 'we:', $content);
-	}
 	if($edMerk){
 		if(isset($attribs['user']) && $attribs['user']){
 			$uAr = makeArrayFromCSV($attribs['user']);
@@ -170,9 +166,12 @@ function mta($hash, $key){
 }
 
 function printElement($code){
-//FIXME: remove eval
 	if(isset($code)){
-		eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
+		if(strpos($code,'<?')!==FALSE){
+			eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
+		}else{
+			echo $code;
+		}
 	}
 }
 

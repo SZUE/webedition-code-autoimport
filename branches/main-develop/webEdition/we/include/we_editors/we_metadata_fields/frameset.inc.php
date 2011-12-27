@@ -74,4 +74,4 @@ $frameset = new we_htmlFrameset(array("rows" => "*,40", "framespacing" => "0", "
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/editor.php", "name" => "we_metadatafields", "scrolling" => "auto", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/footer.php?closecmd=".(isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_metadatafields_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
+print $frameset->getHtml() . we_htmlElement::htmlBody(array()) . "</html>";

@@ -1021,7 +1021,7 @@ function getUser(){
 						array(
 							"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
 						),
-						$$aProps[0]->getHtmlCode());
+						$$aProps[0]->getHtml());
 				$s2 .= we_htmlElement::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
 		}
@@ -1100,12 +1100,12 @@ function getUser(){
 											"style" => "margin-left:10px;"
 									))) . we_htmlElement::htmlDiv(array(
 						"id" => "widgets"
-					), "") . $oTblWidgets->getHtmlCode() . we_htmlElement::jsElement(
+					), "") . $oTblWidgets->getHtml() . we_htmlElement::jsElement(
 							"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_htmlElement::htmlDiv(
 							array(
 								"id" => "divClone", "style" => "position:relative;display:none;"
 							),
-							$oClone->getHtmlCode()));
+							$oClone->getHtml()));
 
 } else { // no right to see cockpit!!!
 	print

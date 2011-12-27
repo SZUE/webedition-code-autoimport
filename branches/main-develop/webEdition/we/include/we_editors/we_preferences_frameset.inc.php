@@ -157,5 +157,5 @@ $frameset->addFrame(array("src" => WEBEDITION_DIR . "html/white.html", "name" =>
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui".($tabname!="" ? "&tabname=".$tabname : ""), "name" => "we_preferences", "scrolling" => "auto", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences_footer.php", "name" => "we_preferences_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
+print $frameset->getHtml() . we_htmlElement::htmlBody(array()) . "</html>";
 

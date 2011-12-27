@@ -106,13 +106,16 @@ class we_baseCollection extends we_baseElement{
 	 *
 	 * @return		string
 	 */
-	function getHtmlCode($object){
-		$childs_content = "";
-		foreach($object->childs as $kc => $vc){
-			$childs_content.=$object->childs[$kc]->getHtmlCode($object->childs[$kc]);
-		}
-		$object->setContent($childs_content);
-		return we_baseElement::getHtmlCode($object);
+	static function getHtmlCode($object){
+		return $object->getHtml();
 	}
 
+	function getHtml(){
+		$childs_content = "";
+		foreach($this->childs as $kc => $vc){
+			$childs_content.=$vc->getHtml();
+		}
+		$this->setContent($childs_content);
+		return parent::getHtml();
+	}
 }

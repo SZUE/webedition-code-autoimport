@@ -40,7 +40,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc
 	$_head = we_htmlElement::htmlHead(we_htmlElement::jsElement("\n<!--\ntop.toggleBusy(0);\n-->\n"));
 	$_body = we_htmlElement::htmlBody(	array(	"background" => "/webEdition/images/edit/editfooterback.gif",
 												"bgcolor"    => "white"),
-										$_messageTbl->getHtmlCode());
+										$_messageTbl->getHtml());
 
 
 	print we_htmlElement::htmlHtml($_head . STYLESHEET . "\n" . $_body);

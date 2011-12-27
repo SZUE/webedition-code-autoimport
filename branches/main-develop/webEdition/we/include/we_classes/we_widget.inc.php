@@ -86,24 +86,24 @@ abstract class we_widget {
 				we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_close.gif","width"=>$w_i0,"height"=>$h_i0,"border"=>0,"title"=>g_l('cockpit','[close]')))));
 
 		$ico_obj = ($resize)? 'oIco_prc' : 'oIco_pc';
-		$sIco = ($sType != "_reCloneType_")? we_htmlElement::htmlDiv(null,$$ico_obj->getHtmlCode()) :
-			we_htmlElement::htmlDiv(array("id"=>$iId."_ico_prc","style"=>"display:block;"),$oIco_prc->getHtmlCode()).
-			we_htmlElement::htmlDiv(array("id"=>$iId."_ico_pc","style"=>"display:none;"),$oIco_pc->getHtmlCode());
+		$sIco = ($sType != "_reCloneType_")? we_htmlElement::htmlDiv(null,$$ico_obj->getHtml()) :
+			we_htmlElement::htmlDiv(array("id"=>$iId."_ico_prc","style"=>"display:block;"),$oIco_prc->getHtml()).
+			we_htmlElement::htmlDiv(array("id"=>$iId."_ico_pc","style"=>"display:none;"),$oIco_pc->getHtml());
 
 		$oTb = new we_htmlTable(array("id"=>$iId."_tb","style"=>"width:".($w+(2*$wh_edge))."px;height:".$h_tb."px;","cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),1,4);
 		$oTb->setCol(0,0,array("width"=>$wh_edge,"height"=>$h_tb),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_corner_left.gif","width"=>$wh_edge,"height"=>$h_tb)));
-		$oTb->setCol(0,1,array("width"=>$w-$w_icon,"height"=>$h_tb,"style"=>"background-image:url(".IMAGE_DIR."pd/tb_pixel.gif);background-repeat:repeat-x;"),$oDrag->getHtmlCode());
+		$oTb->setCol(0,1,array("width"=>$w-$w_icon,"height"=>$h_tb,"style"=>"background-image:url(".IMAGE_DIR."pd/tb_pixel.gif);background-repeat:repeat-x;"),$oDrag->getHtml());
 		$oTb->setCol(0,2,array("width"=>$w_icon,"height"=>$h_tb,"style"=>"background-image:url(".IMAGE_DIR."pd/tb_pixel.gif);background-repeat:repeat-x;"),$sIco);
 		$oTb->setCol(0,3,array("width"=>$wh_edge,"height"=>$wh_edge),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/tb_corner_right.gif","width"=>$wh_edge,"height"=>$h_tb)));
 
 		$oBox = new we_htmlTable(array("id"=>$iId."_bx","style"=>"width:".($w+(2*$wh_edge))."px;height:".($h+(2*$wh_edge))."px;","cellpadding"=>"0","cellspacing"=>"0","border"=>"0"),4,3);
-		$oBox->setCol(0,0,array("colspan"=>3,"width"=>$wh_edge,"height"=>$h_tb),$oTb->getHtmlCode());
+		$oBox->setCol(0,0,array("colspan"=>3,"width"=>$wh_edge,"height"=>$h_tb),$oTb->getHtml());
 		$oBox->setCol(1,0,array("id"=>$iId."_lbl_mgnl","align"=>"left","width"=>$wh_edge,"height"=>$h_title,"style"=>"background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h_title."px;")));
 		$oBox->setCol(1,1,array("id"=>$iId."_lbl","class"=>"label","style"=>"width:".$w."px;background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::jsElement("setLabel('".$iId."','".str_replace("'","\'",$aLabel[0])."','".str_replace("'","\'",$aLabel[1])."');"));
 		$oBox->setCol(1,2,array("id"=>$iId."_lbl_mgnr","align"=>"right","width"=>$wh_edge,"height"=>$h_title,"style"=>"background-image:url(".IMAGE_DIR."pd/header_".$sCls.".gif);background-repeat:repeat-x;"),we_htmlElement::htmlNobr(we_html_tools::getPixel(10,1).we_htmlElement::htmlImg(array("src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h_title."px;"))));
 		$oBox->setCol(2,0,array("id"=>$iId."_vll","align"=>"left","width"=>$wh_edge,"height"=>$h,"class"=>"bgc_".$sCls),we_htmlElement::htmlImg(array("id"=>$iId."_vline_l","src"=>IMAGE_DIR."pd/line_v.gif","style"=>"width:1px;height:".$h."px;")));
 		$oBox->setCol(2,1,array("id"=>$iId."_wrapper","style"=>"text-align:left;vertical-align:top;","width"=>$w,"height"=>$h,"class"=>"bgc_".$sCls),
-			we_html_tools::getPixel(1,$gap).we_htmlElement::htmlBr().we_htmlElement::htmlDiv(array("id"=>$iId."_content"),((isset($oContent))? $oContent->getHtmlCode() : "")).
+			we_html_tools::getPixel(1,$gap).we_htmlElement::htmlBr().we_htmlElement::htmlDiv(array("id"=>$iId."_content"),((isset($oContent))? $oContent->getHtml() : "")).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_prefix","value"=>$aLabel[0])).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_postfix","value"=>$aLabel[1])).
 			we_htmlElement::htmlHidden(array("id"=>$iId."_res","value"=>$iRes)).

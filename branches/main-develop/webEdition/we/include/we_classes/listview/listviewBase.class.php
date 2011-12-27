@@ -82,7 +82,7 @@ abstract class listviewBase{
 		/* triggers scheduler */
 		if(defined('SCHEDULE_TABLE') && !isset($GLOBALS['scheduler_already_triggered'])){
 			$GLOBALS['scheduler_already_triggered'] = 1;
-			trigger_schedule();
+			we_schedpro::trigger_schedule();
 		}
 		$this->name = $name;
 		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? '���������' : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';

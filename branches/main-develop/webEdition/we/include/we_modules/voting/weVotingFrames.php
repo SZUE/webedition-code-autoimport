@@ -193,7 +193,7 @@ class weVotingFrames extends weModuleFrames {
 					}
 					") .
 					we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0"),
-							we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode())
+							we_htmlElement::htmlForm(array(),$table1->getHtml().$table2->getHtml())
 					)
 		);
 
@@ -420,7 +420,7 @@ class weVotingFrames extends weModuleFrames {
 
 			array_push($parts,array(
 					'headline'=>'',
-					'html'=>$table->getHtmlCode(),
+					'html'=>$table->getHtml(),
 					'space'=>$this->_space_size)
 			);
 
@@ -438,7 +438,7 @@ class weVotingFrames extends weModuleFrames {
 
 			array_push($parts,array(
 					'headline'=>g_l('modules_voting','[control]'),
-					'html'=>$table->getHtmlCode(),
+					'html'=>$table->getHtml(),
 					'space'=>$this->_space_size,
 					'noline'=>1
 				)
@@ -479,13 +479,13 @@ class weVotingFrames extends weModuleFrames {
 			$enclose->addOption(0,g_l('export','[double_quote]'));
 			$enclose->addOption(1,g_l('export','[single_quote]'));
 
-			$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
+			$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtml(),g_l('export','[csv_lineend]')));
 			$export_box->setColContent(4,0,we_html_tools::getPixel(5,5));
 			$export_box->setCol(5, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($import_Charset,g_l('modules_voting','[csv_charset]')));
 			$export_box->setColContent(6,0,we_html_tools::getPixel(5,5));
-			$export_box->setColContent(7,0, we_html_tools::htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
+			$export_box->setColContent(7,0, we_html_tools::htmlFormElementTable($delimiter->getHtml(),g_l('export','[csv_delimiter]')));
 			$export_box->setColContent(8,0,we_html_tools::getPixel(5,5));
-			$export_box->setColContent(9,0, we_html_tools::htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
+			$export_box->setColContent(9,0, we_html_tools::htmlFormElementTable($enclose->getHtml(),g_l('export','[csv_enclose]')));
 			$export_box->setColContent(10,0,we_html_tools::getPixel(5,15));
 			$export_box->setCol(11,0,array("nowrap"=>null),
 			we_button::create_button_table(array($ok))
@@ -496,7 +496,7 @@ class weVotingFrames extends weModuleFrames {
 	   		array_push($parts,array(
 				"headline"=>g_l('modules_voting','[export]'),
 				"html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[export_txt]'),2,$this->_width_size).
-						$export_box->getHtmlCode(),
+						$export_box->getHtml(),
 				"space"=>$this->_space_size)
 			);
 
@@ -515,7 +515,7 @@ class weVotingFrames extends weModuleFrames {
 		$table->setCol(1,0,array('colspan'=>'2'),we_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting','[active_till]'),false,'defaultfont','toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
 		$table->setColContent(2,1,we_htmlElement::htmlDiv(array('id'=>'activetime','style'=>'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';') ,
-										$activeTime->getHtmlCode()
+										$activeTime->getHtml()
 									)
 		);
 		$table->setColContent(3,1,
@@ -526,7 +526,7 @@ class weVotingFrames extends weModuleFrames {
 
 		array_push($parts,array(
 				'headline'=>g_l('modules_voting','[valid]'),
-				'html'=>$table->getHtmlCode(),
+				'html'=>$table->getHtml(),
 				'space'=>$this->_space_size,
 				'noline'=>1)
 		);
@@ -571,11 +571,11 @@ class weVotingFrames extends weModuleFrames {
 		$select->selectOption(isset($_REQUEST['vernr']) ? $_REQUEST['vernr'] : 0);
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),1,3);
-		$table->setColContent(0,0,$select->getHtmlCode());
+		$table->setColContent(0,0,$select->getHtml());
 		$table->setColContent(0,1,we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();question_edit.addVariant();answers_edit.addVariant();question_edit.showVariant(question_edit.variantCount-1);answers_edit.showVariant(answers_edit.variantCount-1);document.we_form.selectVar.options[document.we_form.selectVar.options.length] = new Option('" . g_l('modules_voting','[variant]') . " '+question_edit.variantCount,question_edit.variantCount-1,false,true);"));
 		$table->setColContent(0,2,we_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting','[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
 		$table->setColAttributes(0,1,array("style"=>"padding:0 5px;"));
-		$selectCode = $table->getHtmlCode();
+		$selectCode = $table->getHtml();
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),5,1);
 
@@ -593,7 +593,7 @@ class weVotingFrames extends weModuleFrames {
 						we_htmlElement::htmlHidden(array('name'=>'item_count','value'=>'0')) .
 						we_htmlElement::htmlHidden(array('name'=>'iptable_name','value'=>'')) .
 						we_htmlElement::htmlHidden(array('name'=>'iptable_count','value'=>'0')) .
-						$table->getHtmlCode() .
+						$table->getHtml() .
 						we_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();answers_edit.addItem()")
 				,
 				'space'=>$this->_space_size
@@ -653,9 +653,9 @@ class weVotingFrames extends weModuleFrames {
 					'headline'=>g_l('modules_voting','[headline_revote]'),
 					'html'=>we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[time_after_voting_again_help]'), 2,$this->_width_size,false,100).
 							we_htmlElement::htmlBr().
-						we_html_tools::htmlFormElementTable($selectTime->getHtmlCode(),g_l('modules_voting','[time_after_voting_again]')) .
+						we_html_tools::htmlFormElementTable($selectTime->getHtml(),g_l('modules_voting','[time_after_voting_again]')) .
 							we_htmlElement::htmlBr().
-							$table->getHtmlCode() ,
+							$table->getHtml() ,
 					'space'=>$this->_space_size
 				)
 		);
@@ -673,7 +673,7 @@ class weVotingFrames extends weModuleFrames {
 		array_push($parts,array(
 					'headline'=>g_l('modules_voting','[control]'),
 					'html'=>we_forms::checkboxWithHidden($this->View->voting->Log ? true : false, 'Log', g_l('modules_voting','[voting_log]'),false,'defaultfont','top.content.setHot(); toggle(\'LogData\')') .
-							$table->getHtmlCode(),
+							$table->getHtml(),
 					'space'=>$this->_space_size,
 					'noline'=>1
 				)
@@ -745,7 +745,7 @@ class weVotingFrames extends weModuleFrames {
 									' . we_message_reporting::getShowMessageCall(g_l('modules_voting','[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 							}
-					').$table->getHtmlCode(),
+					').$table->getHtml(),
 				'space'=>$this->_space_size)
 		);
 
@@ -867,11 +867,11 @@ class weVotingFrames extends weModuleFrames {
 		$enclose->addOption(0,g_l('export','[double_quote]'));
 		$enclose->addOption(1,g_l('export','[single_quote]'));
 
-		$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtmlCode(),g_l('export','[csv_lineend]')));
+		$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtml(),g_l('export','[csv_lineend]')));
 		$export_box->setColContent(4,0,we_html_tools::getPixel(5,5));
-		$export_box->setColContent(5,0, we_html_tools::htmlFormElementTable($delimiter->getHtmlCode(),g_l('export','[csv_delimiter]')));
+		$export_box->setColContent(5,0, we_html_tools::htmlFormElementTable($delimiter->getHtml(),g_l('export','[csv_delimiter]')));
 		$export_box->setColContent(6,0,we_html_tools::getPixel(5,5));
-		$export_box->setColContent(7,0, we_html_tools::htmlFormElementTable($enclose->getHtmlCode(),g_l('export','[csv_enclose]')));
+		$export_box->setColContent(7,0, we_html_tools::htmlFormElementTable($enclose->getHtml(),g_l('export','[csv_enclose]')));
 		$export_box->setColContent(8,0,we_html_tools::getPixel(5,15));
 		$export_box->setCol(9,0,array("nowrap"=>null),
 						we_button::create_button_table(array($ok))
@@ -882,7 +882,7 @@ class weVotingFrames extends weModuleFrames {
 	    array_push($parts,array(
 				"headline"=>g_l('modules_voting','[export]'),
 				"html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_voting','[export_txt]'),2,$this->_width_size).
-						$export_box->getHtmlCode(),
+						$export_box->getHtml(),
 				"space"=>$this->_space_size)
 		);
 
@@ -963,7 +963,7 @@ class weVotingFrames extends weModuleFrames {
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treefooter","name"=>"treefooter","noresize"=>null,"scrolling"=>"no"));
 
 		// set and return html code
-		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}
@@ -1053,7 +1053,7 @@ class weVotingFrames extends weModuleFrames {
 								we_htmlElement::htmlForm(array("name"=>"we_form","method"=>"post"),
 									we_htmlElement::htmlHidden(array("name"=>"group","value"=>(isset($group) ? $group : ""))).
 									we_html_tools::htmlDialogLayout(
-															$table->getHtmlCode(),
+															$table->getHtml(),
 															g_l('modules_voting','[csv_download]'),
 															we_button::position_yes_no_cancel(null,$close,null),"100%","30",350)
 									.
@@ -1100,7 +1100,7 @@ class weVotingFrames extends weModuleFrames {
 								we_htmlElement::htmlForm(array("name"=>"we_form","method"=>"post"),
 									we_htmlElement::htmlHidden(array("name"=>"group","value"=>(isset($group) ? $group : ""))).
 									we_html_tools::htmlDialogLayout(
-															$table->getHtmlCode(),
+															$table->getHtml(),
 															g_l('modules_voting','[csv_download]'),
 															we_button::position_yes_no_cancel(null,$close,null),"100%","30",350)
 									.

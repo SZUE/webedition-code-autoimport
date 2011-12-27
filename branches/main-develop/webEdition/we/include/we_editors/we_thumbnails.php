@@ -428,12 +428,12 @@ function build_dialog($selected_setting = "ui") {
 			// Create thumbnails list
 			$_thumbnails_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 3);
 
-			$_thumbnails_table->setCol(0, 0, null, we_htmlElement::htmlHidden(array("name" => "edited_id", "value" => $_GET["id"])) . $_thumbnails->getHtmlCode());
+			$_thumbnails_table->setCol(0, 0, null, we_htmlElement::htmlHidden(array("name" => "edited_id", "value" => $_GET["id"])) . $_thumbnails->getHtml());
 			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 			$_thumbnails_table->setCol(0, 2, array("valign" => "top"), we_button::create_button("add", "javascript:add_thumbnail();") . we_html_tools::getPixel(1, 10) . we_button::create_button("delete", "javascript:delete_thumbnail();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => "", "html" => $_thumbnails_table->getHtmlCode(), "space" => 0));
+			array_push($_thumbs, array("headline" => "", "html" => $_thumbnails_table->getHtml(), "space" => 0));
 
 			/*****************************************************************
 			 * NAME
@@ -487,12 +487,12 @@ function build_dialog($selected_setting = "ui") {
 
 			// Build final HTML code
 			$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
-			$_window_html->setCol(0, 0, null, $_thumbnail_specify_table->getHtmlCode());
+			$_window_html->setCol(0, 0, null, $_thumbnail_specify_table->getHtml());
 			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
-			$_window_html->setCol(2, 0, null, $_thumbnail_option_table->getHtmlCode());
+			$_window_html->setCol(2, 0, null, $_thumbnail_option_table->getHtml());
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => g_l('thumbnails',"[properties]"), "html" => $_window_html->getHtmlCode(), "space" => 200));
+			array_push($_thumbs, array("headline" => g_l('thumbnails',"[properties]"), "html" => $_window_html->getHtml(), "space" => 200));
 
 			/*****************************************************************
 			 * OUTPUT FORMAT
@@ -523,7 +523,7 @@ function build_dialog($selected_setting = "ui") {
 			}
 
 			// Build dialog
-			array_push($_thumbs, array("headline" => g_l('thumbnails',"[format]"), "html" => $_thumbnail_format_select->getHtmlCode(), "space" => 200));
+			array_push($_thumbs, array("headline" => g_l('thumbnails',"[format]"), "html" => $_thumbnail_format_select->getHtml(), "space" => 200));
 
 			/**
 			 * BUILD FINAL DIALOG

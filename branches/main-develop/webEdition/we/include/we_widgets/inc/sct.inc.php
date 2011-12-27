@@ -35,7 +35,7 @@ $oTblCont->setCol(
 						"id" => "m_" . $iCurrId . "_inline",
 						"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 				),
-				$sc->getHtmlCode()));
+				$sc->getHtml()));
 $aLang = array(
 	g_l('cockpit','[shortcuts]'), ''
 );

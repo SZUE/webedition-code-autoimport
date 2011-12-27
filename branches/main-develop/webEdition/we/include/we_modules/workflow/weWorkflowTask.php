@@ -23,10 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowBase.php");
-
-
 /**
 * General Definition of WebEdition Workflow Task
 */

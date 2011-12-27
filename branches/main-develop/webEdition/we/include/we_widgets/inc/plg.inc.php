@@ -37,7 +37,7 @@ $oTblCont->setCol(
 						"id" => "m_" . $iCurrId . "_inline",
 						"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 				),
-				$_pLog->getHtmlCode()));
+				$_pLog->getHtml()));
 $aLang = array(
 	g_l('cockpit','[pagelogger]') . (($pLogUrl != "") ? " - " . $pLogUrl : ""), ""
 );

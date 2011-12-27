@@ -77,7 +77,7 @@ if( we_image_edit::gd_version() > 0 ){
     $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php", "name" => "we_thumbnails", "scrolling" => "auto", "noresize" => "noresize"));
     $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails_footer.php?closecmd=".(isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_thumbnails_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-    print $frameset->getHtmlCode() . we_htmlElement::htmlBody(array()) . "</html>";
+    print $frameset->getHtml() . we_htmlElement::htmlBody(array()) . "</html>";
 
 } else {    //  gd_lib is not installed - show error
     print STYLESHEET . '</head><body class="weDialogBody">';

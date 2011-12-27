@@ -157,11 +157,7 @@ function we_tag_date($attribs, $content){
 
 		$js .= 'document.write("' . $f . '");' . "\n";
 
-		$atts['language'] = 'JavaScript';
-		$atts['type'] = 'text/javascript';
-		$atts['xml'] = $xml;
-
-		return getHtmlTag('script', $atts, $js);
+		return we_htmlElement::jsElement($js);
 	} else {
 		return date(correctDateFormat($format));
 	}

@@ -282,7 +282,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
+	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else if(!$GLOBALS['DB_WE']->isConnected() || $GLOBALS['DB_WE']->Error == 'No database selected'){
 	$_error = we_htmlElement::htmlB(g_l('start', '[no_db_connection]'));
 
@@ -312,7 +312,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
+	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
 	$_error = we_htmlElement::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_htmlElement::htmlBr().we_htmlElement::htmlBr());
 
@@ -342,7 +342,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
+	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !$GLOBALS['brDetect']->isSupported()){
 
 	/*	 * *******************************************************************
@@ -403,10 +403,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtmlCode(), g_l('start', '[cannot_start_we]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtml(), g_l('start', '[cannot_start_we]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtmlCode()) . '</html>';
+	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else{
 
 	/*	 * ***************************************************************************
@@ -557,5 +557,5 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_htmlElement::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtmlCode() . ((isset($_body_javascript)) ? we_htmlElement::jsElement($_body_javascript) : "")) . "</html>";
+	print we_htmlElement::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_htmlElement::jsElement($_body_javascript) : "")) . "</html>";
 }

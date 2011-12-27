@@ -226,7 +226,7 @@ static function login() {
 
 		$_table->setCol(0, 2, array(
 			"class" => "defaultfont"
-			), $_target_box->getHtmlCode());
+			), $_target_box->getHtml());
 		$js = <<<HTS
 <script type="testjavascript">
  var change$jsvarname = 0;
@@ -234,7 +234,7 @@ static function login() {
 
 HTS;
 
-		return $_table->getHtmlCode();
+		return $_table->getHtml();
 	}
 
 
@@ -328,7 +328,7 @@ HTS;
 			$_table->setCol(2, 0, array(
 				"align" => "right"
 				), $buttons);
-			return $_table->getHtmlCode();
+			return $_table->getHtml();
 		} else{
 			return $out;
 		}
@@ -387,7 +387,7 @@ HTS;
 			$_table->setCol(2, 0, array(
 				"align" => "right"
 				), $buttons);
-			return $_table->getHtmlCode();
+			return $_table->getHtml();
 		} else{
 			return $out;
 		}
@@ -812,7 +812,7 @@ HTS;
 			), $text);
 
 
-		$out .= $content->getHtmlCode();
+		$out .= $content->getHtml();
 
 		return we_html_tools::htmlDialogLayout(
 				$out, "", we_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), "99%", "0");

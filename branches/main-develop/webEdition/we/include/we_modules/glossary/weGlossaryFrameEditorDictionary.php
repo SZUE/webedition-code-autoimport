@@ -87,7 +87,7 @@
 			$table2->setCol(0, 0, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
 			$table2->setCol(0, 1, array("nowrap"=>null), $_we_button);
 
-			$form = we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode());
+			$form = we_htmlElement::htmlForm(array(),$table1->getHtml().$table2->getHtml());
 
 	        return weGlossaryFrameEditorDictionary::buildFooter($weGlossaryFrames, $form);
 

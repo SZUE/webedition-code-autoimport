@@ -197,7 +197,7 @@ HTS;
 					"	}\n" .
 					"}\n" . $ajaxJS .
 					"//-->")).
-				$fst->getHtmlCode()
+				$fst->getHtml()
 		);
 	}
 
@@ -287,7 +287,7 @@ HTS;
 			we_htmlElement::htmlBody(array(
 				"class" => "weDialogButtonsBody",
 				"onload" => "top.frames['wizbody'].set_button_state();"
-				), $content->getHtmlCode().$js
+				), $content->getHtml().$js
 			)
 		);
 	}

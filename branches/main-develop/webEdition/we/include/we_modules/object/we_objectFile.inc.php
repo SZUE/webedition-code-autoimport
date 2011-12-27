@@ -1297,7 +1297,7 @@ class we_objectFile extends we_document{
 			}
 
 			$countryselect->selectOption($this->getElement($name));
-			$content = $countryselect->getHtmlCode();
+			$content = $countryselect->getHtml();
 
 			//$content = $this->htmlTextInput("we_".$this->Name."_country[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
 			if($variant){
@@ -1333,7 +1333,7 @@ class we_objectFile extends we_document{
 				}
 			}
 			$languageselect->selectOption($this->getElement($name));
-			$content = $languageselect->getHtmlCode();
+			$content = $languageselect->getHtml();
 			//$content = $this->htmlTextInput("we_".$this->Name."_language[$name]",40,$this->getElement($name),$this->getElement($name,"len"),'onChange="_EditorFrame.setEditorIsHot(true);"',"text",620);
 			if($variant){
 				return $content;

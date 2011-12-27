@@ -821,7 +821,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 						array_push($parts, array(
 							'headline' => "$k: ",
 							'space' => 150,
-							'html' => $countryselect->getHtmlCode(),
+							'html' => $countryselect->getHtml(),
 							'noline' => 1
 							)
 						);
@@ -842,7 +842,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 						array_push($parts, array(
 							'headline' => "$k: ",
 							'space' => 150,
-							'html' => $languageselect->getHtmlCode(),
+							'html' => $languageselect->getHtml(),
 							'noline' => 1
 							)
 						);

@@ -77,7 +77,7 @@ abstract class we_htmlElement{
 		$table->setColContent(0, 1, we_html_tools::getPixel(4, 2));
 		$table->setColContent(0, 2, we_htmlElement::htmlLabel(array('for' => '$name', 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
 
-		return $table->getHtmlCode();
+		return $table->getHtml();
 	}
 
 	/**

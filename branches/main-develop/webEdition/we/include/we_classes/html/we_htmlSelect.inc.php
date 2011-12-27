@@ -215,15 +215,6 @@ class we_htmlSelect extends we_baseCollection{
 	}
 
 	/**
-	 * The function generates html code
-	 *
-	 * @return		void
-	 */
-	function getHtmlCode(){
-		return we_baseCollection::getHtmlCode($this);
-	}
-
-	/**
 	 * The function adds a new option group to the select box
 	 *
 	 * @param  $attribs        array

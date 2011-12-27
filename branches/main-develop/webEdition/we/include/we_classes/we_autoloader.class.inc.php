@@ -41,10 +41,9 @@ abstract class we_autoloader{
 		'database' => 'we_classes/database',
 		'html' => 'we_classes/html',
 		'users' => 'we_modules/users',
-		'xml' => 'we_classes/xml',
+		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
-		'shop'=> 'we_modules/shop',
-		
+		'xml' => 'we_classes/xml',
 	);
 	private static $classes = array(
 		'we_classes' => array(
@@ -317,18 +316,20 @@ abstract class we_autoloader{
 			'weVotingView' => 'voting/weVotingView.php',
 			'we_votingDirSelector' => 'voting/we_votingDirSelector.php',
 			'weModuleInfo' => 'weModuleInfo.class.php',
-			'weModuleFrames' => 'workflow/weModuleWorkflowFrames.class.php',
-			'weWorkflow' => 'workflow/weWorkflow.php',
-			'weWorkflowBase' => 'workflow/weWorkflowBase.php',
-			'weWorkflowDocument' => 'workflow/weWorkflowDocument.php',
-			'weWorkflowDocumentStep' => 'workflow/weWorkflowDocumentStep.php',
-			'weWorkflowDocumentTask' => 'workflow/weWorkflowDocumentTask.php',
-			'weWorkflowFrames' => 'workflow/weWorkflowFrames.php',
-			'weWorkflowLog' => 'workflow/weWorkflowLog.php',
-			'weWorkflowStep' => 'workflow/weWorkflowStep.php',
-			'weWorkflowTask' => 'workflow/weWorkflowTask.php',
-			'weWorkflowUtility' => 'workflow/weWorkflowUtility.php',
-			'weWorkflowView' => 'workflow/weWorkflowView.php',
+		),
+		'we_modules/workflow' => array(
+			'weModuleWorkflowFrames' => 'weModuleWorkflowFrames.class.php',
+			'weWorkflow' => 'weWorkflow.php',
+			'weWorkflowBase' => 'weWorkflowBase.php',
+			'weWorkflowDocument' => 'weWorkflowDocument.php',
+			'weWorkflowDocumentStep' => 'weWorkflowDocumentStep.php',
+			'weWorkflowDocumentTask' => 'weWorkflowDocumentTask.php',
+			'weWorkflowFrames' => 'weWorkflowFrames.php',
+			'weWorkflowLog' => 'weWorkflowLog.php',
+			'weWorkflowStep' => 'weWorkflowStep.php',
+			'weWorkflowTask' => 'weWorkflowTask.php',
+			'weWorkflowUtility' => 'weWorkflowUtility.php',
+			'weWorkflowView' => 'weWorkflowView.php',
 		),
 		'we_hook/class' => array(
 			'weHook' => 'weHook.class.php',
@@ -463,8 +464,8 @@ abstract class we_autoloader{
 		'we_widgets/dlg' => array(
 			'weExportTree' => 'tree.inc.php',
 		),
-		''=>array(
-			'we_linklist'=>'we_linklist.inc.php',
+		'' => array(
+			'we_linklist' => 'we_linklist.inc.php',
 		),
 	);
 

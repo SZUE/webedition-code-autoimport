@@ -169,34 +169,19 @@ class we_baseElement{
 	 *
 	 * @return		string
 	 */
-	function getHtmlCode($object){
-
-		$out = '<' . $object->tag_name;
-		foreach($object->attribs as $k => $v){
-			if(!isset($v)){
-				$out.=' ' . $k;
-			} else{
-				$out.=' ' . $k . '="' . $v . '"';
-			}
-		}
-		$out.=">" . $object->content;
-		if($object->need_end_tag)
-			$out.="</" . $object->tag_name . ">";
-		return $out;
+	static function getHtmlCode($object){
+		return $object->getHTML();
 	}
 
 	function getHTML(){
-
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
-			if($v == null && $v != "")
-				$out.=' ' . $k;
-			else
-				$out.=' ' . $k . '="' . $v . '"';
+			$out.=' ' . $k . (!isset($v) ? '="' . $v . '"' : '');
 		}
 		$out.=">" . $this->content;
-		if($this->need_end_tag)
-			$out.="</" . $this->tag_name . ">\n";
+		if($this->need_end_tag){
+			$out.="</" . $this->tag_name . ">";
+		}
 		return $out;
 	}
 

@@ -315,7 +315,7 @@ const RECOVER=2;
 		$frameset->addFrame(array("src"=>"/webEdition/html/blank.html","name"=>"checker","scrolling"=>"no","noresize"=>null));
 
 		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET ."\n";
-		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
 
 		return we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead($head).
@@ -547,7 +547,7 @@ const RECOVER=2;
 					array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[defaultcharset_warning]"), 1, 600, false),"space"=>0,"noline"=>1));
 			}
 			array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[select_server_file]"), 2, 600, false),"space"=>0,"noline"=>1));
-			array_push($parts,array("headline"=>"","html"=>$select->getHtmlCode(),"space"=>0,"noline"=>1));
+			array_push($parts,array("headline"=>"","html"=>$select->getHtml(),"space"=>0,"noline"=>1));
 			//array_push($parts,array("headline"=>"","html"=>we_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1));
 			array_push($parts,array("headline"=>"","html"=> we_button::create_button("delete_backup", "javascript:delSelected();",true,100,22,'','',false,false),"space"=>0));
 		}
@@ -1049,7 +1049,7 @@ const RECOVER=2;
 
 		$table->setCol(3, 0, null,we_html_tools::getPixel(5,5));
 
-		$content.=$table->getHtmlCode();
+		$content.=$table->getHtml();
 
 		$do_import_after_backup = (isset($_SESSION['weBackupVars']['options']['do_import_after_backup']) && $_SESSION['weBackupVars']['options']['do_import_after_backup']) ? 1 : 0;
 		$js=we_htmlElement::jsElement('
@@ -1148,7 +1148,7 @@ const RECOVER=2;
 		$_error_message = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 1);
 		$_error_message->setCol(0, 0, null, g_l('backup',"[download_failed]"));
 
-		return $_header . '<body class="weDialogBody">' . we_htmlElement::htmlCenter(we_html_tools::htmlDialogLayout($_error_message->getHtmlCode(), g_l('backup',"[export_step2]")));
+		return $_header . '<body class="weDialogBody">' . we_htmlElement::htmlCenter(we_html_tools::htmlDialogLayout($_error_message->getHtml(), g_l('backup',"[export_step2]")));
 	}
 
  	function getHTMLExtern(){
@@ -1360,7 +1360,7 @@ const RECOVER=2;
 			return we_htmlElement::htmlHtml(
 						we_htmlElement::htmlHead($head).
 						we_htmlElement::htmlBody(array("class"=>"weDialogButtonsBody"),
-							$table->getHtmlCode()
+							$table->getHtml()
 						)
 			);
 
@@ -1713,7 +1713,7 @@ const RECOVER=2;
 		$table->setCol(0, 0, null, g_l('backup',"[finish_error]"));
 		$table->setCol(1, 0, null, we_htmlElement::htmlTextArea(array("name"=>"text_errors","cols"=>"45","rows"=>"7"),$text));
 		$table->setCol(2, 0, null, we_html_tools::getPixel(400,5));
-		return $table->getHtmlCode();
+		return $table->getHtml();
 
 }
 
@@ -1742,7 +1742,7 @@ const RECOVER=2;
 			$table->setCol(0, 0, null, g_l('backup',"[finish_warning]"));
 			$table->setCol(1, 0, null, we_htmlElement::htmlTextArea(array("name"=>"text_errors","cols"=>"45","rows"=>"7"),$text));
 			$table->setCol(2, 0, null, we_html_tools::getPixel(400,5));
-			return $table->getHtmlCode();
+			return $table->getHtml();
 		}
 		return "";
 	}
@@ -1767,7 +1767,7 @@ const RECOVER=2;
 
 		$perf->setCol(1,0,array("class"=>"defaultfont","colspan"=>3),$steps_code);
 
-		return $perf->getHtmlCode();
+		return $perf->getHtml();
 
 	}
 

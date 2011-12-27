@@ -901,7 +901,7 @@ HTS;
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 			)));
 
-		return $table->getHtmlCode() . $js;
+		return $table->getHtml() . $js;
 	}
 
 }

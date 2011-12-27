@@ -24,9 +24,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
-if(defined("WORKFLOW_TABLE")){
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-}
 we_html_tools::protect();
 
 $we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : $we_transaction;
@@ -316,22 +313,18 @@ $_js_we_submitForm = "
 	}
 ";
 //	########################	build complete JS-Source #########################################################
-$_js_code = "
-<!--
-var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(\"" . $we_transaction . "\");
-
-$_js_we_save_document
-$_js_workflow_functions
-$_js_weCanSave
-$_js_toggleBusy
-$_js_we_cmd
-$_js_we_submitForm
-//-->
-";
+$_js_code = '
+var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");' .
+	$_js_we_save_document .
+	$_js_workflow_functions .
+	$_js_weCanSave .
+	$_js_toggleBusy .
+	$_js_we_cmd .
+	$_js_we_submitForm;
 
 //	########################	print javascript src	#########################################################
 print we_htmlElement::jsElement($_js_code);
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "windows.js"));
+print we_htmlElement::jsScript(JS_DIR . "windows.js");
 print STYLESHEET;
 ?>
 </head>
@@ -509,7 +502,7 @@ function showEditFooterForNormalMode(){
 		}
 	}
 
-	print $_normalTable->getHtmlCode();
+	print $_normalTable->getHtml();
 }
 
 /**
@@ -696,7 +689,7 @@ function showEditFooterForSEEMMode(){
 			$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), we_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 		}
 	}
-	print $_seeModeTable->getHtmlCode();
+	print $_seeModeTable->getHtml();
 }
 ?>
 
@@ -730,7 +723,7 @@ function showEditFooterForSEEMMode(){
 				$_noPermTable->setColContent(0, 3, g_l('SEEM', "[no_permission_to_edit_document]"));
 
 
-				print $_noPermTable->getHtmlCode();
+				print $_noPermTable->getHtml();
 			}
 		}
 		?>
@@ -798,9 +791,7 @@ function showEditFooterForSEEMMode(){
 		}
 	}
 
-	$_js_code_bottom = $_js_tmpl.$_js_publish.$_js_permnew;
-
-	print we_htmlElement::jsElement($_js_code_bottom);
+	print we_htmlElement::jsElement($_js_tmpl . $_js_publish . $_js_permnew);
 	?>
 </body>
 </html>

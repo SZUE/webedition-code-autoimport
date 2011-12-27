@@ -175,7 +175,10 @@ class we_htmlTable extends we_baseCollection{
 	 *
 	 * @return     string
 	 */
-	function getHtmlCode(){
+	function getHtml($isCopy=false){
+		if($isCopy){
+			return parent::getHtml();
+		}
 
 		$copy = $this->copy();
 		$rows_num = count($copy->childs);
@@ -200,7 +203,7 @@ class we_htmlTable extends we_baseCollection{
 			}
 		}
 
-		return we_baseCollection::getHtmlCode($copy);
+		return $copy->getHTML(true);
 	}
 
 }

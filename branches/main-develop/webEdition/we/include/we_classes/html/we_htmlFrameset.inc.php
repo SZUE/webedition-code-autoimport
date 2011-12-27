@@ -85,13 +85,4 @@ class we_htmlFrameset extends we_baseCollection{
 		$frame->setAttributes($attribs);
 	}
 
-	/**
-	 * Function returns genereted html code.
-	 *
-	 * @return		string
-	 */
-	function getHtmlCode(){
-		return we_baseCollection::getHtmlCode($this);
-	}
-
 }

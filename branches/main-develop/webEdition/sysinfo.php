@@ -59,7 +59,7 @@
 				}
 
 			}
-			return $_table->getHtmlCode();
+			return $_table->getHtml();
 		}
 
 		function ini_get_bool($val) {

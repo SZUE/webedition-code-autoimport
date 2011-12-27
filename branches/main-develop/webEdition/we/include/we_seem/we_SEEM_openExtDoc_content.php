@@ -66,7 +66,7 @@ if(isset($content)){
 	//	there must be a navigation-history - so use it
 	$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
-	$_body = $_table->getHtmlCode();
+	$_body = $_table->getHtml();
 	$_body = we_htmlElement::htmlBody(array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);
 
 	print we_htmlElement::htmlHtml($_head . "\n" . $_body);

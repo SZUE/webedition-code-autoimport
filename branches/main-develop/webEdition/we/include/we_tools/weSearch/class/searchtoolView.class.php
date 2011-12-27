@@ -1620,7 +1620,7 @@ class searchtoolView extends weToolView{
 			'align' => 'right'
 			), we_button::create_button("search", "javascript:search(true);"));
 
-		return $_table->getHtmlCode();
+		return $_table->getHtml();
 	}
 
 	function getSearchDialogCheckboxesAdvSearch(){
@@ -1771,7 +1771,7 @@ class searchtoolView extends weToolView{
 			'align' => 'right'
 			), we_button::create_button("search", "javascript:search(true);"));
 
-		return $_table->getHtmlCode();
+		return $_table->getHtml();
 	}
 
 	function getSearchDialog($whichSearch){

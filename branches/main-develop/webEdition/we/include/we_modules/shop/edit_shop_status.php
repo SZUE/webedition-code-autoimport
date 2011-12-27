@@ -134,7 +134,7 @@ array_push($parts, array(
 array_push($parts, array(
 			'headline' => '',
 			'space' => 0,
-			'html' =>$tabStatus->getHtmlCode()
+			'html' =>$tabStatus->getHtml()
 		)
 	);
 
@@ -171,7 +171,7 @@ array_push($parts, array(
 	);
 array_push($parts, array(
 			'space' => 110,
-			'html' =>$tabEMail->getHtmlCode(),
+			'html' =>$tabEMail->getHtml(),
 
 		)
 	);
@@ -196,7 +196,7 @@ array_push($parts, array(
 array_push($parts, array(
 
 			'space' => 110,
-			'html' =>$tabSprache->getHtmlCode(),
+			'html' =>$tabSprache->getHtml(),
 			'noline' => 1
 		)
 	);
@@ -248,7 +248,7 @@ array_push($parts, array(
 array_push($parts, array(
 			'headline' => '',
 			'space' => 0,
-			'html' =>$tabDokumente->getHtmlCode()
+			'html' =>$tabDokumente->getHtml()
 		)
 	);
 

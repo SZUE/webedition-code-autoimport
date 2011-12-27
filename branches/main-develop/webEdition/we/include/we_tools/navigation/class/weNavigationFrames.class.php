@@ -245,7 +245,7 @@ class weNavigationFrames extends weToolFrames
 								$this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
 						100,
 						3) . $we_tabs->getHTML() . '</div>' . we_htmlElement::jsElement($extraJS))//			$js.
-		//			$table->getHtmlCode() .
+		//			$table->getHtml() .
 		//			$tabsBody
 		;
 
@@ -376,7 +376,7 @@ class weNavigationFrames extends weToolFrames
 				array(
 
 						'headline' => '',
-						'html' => $_table->getHtmlCode(),
+						'html' => $_table->getHtml(),
 						'space' => $this->_space_size,
 						'noline' => 1
 				));
@@ -754,7 +754,7 @@ class weNavigationFrames extends weToolFrames
 			$_table->setColContent(4, 1, $this->Model->Parameter);
 		}
 
-		return $_table->getHtmlCode();
+		return $_table->getHtml();
 
 		$_selection_block = '
 			<div style="display: block;">
@@ -1668,7 +1668,7 @@ function onFolderSelectionChangeJS(elem) {
 							we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 						)));
 
-		return $table->getHtmlCode() . $js . we_htmlElement::jsElement(
+		return $table->getHtml() . $js . we_htmlElement::jsElement(
 				'
 
 							function removeAllCats(){
@@ -1946,7 +1946,7 @@ function onFolderSelectionChangeJS(elem) {
 
 				'headline' => '',
 				'html' => we_html_tools::htmlFormElementTable(
-						$_select->getHtmlCode(),
+						$_select->getHtml(),
 						$this->Model->SelectionType == 'category' ? g_l('navigation','[categories]') : ($this->Model->SelectionType == 'classname' ? g_l('navigation','[objects]') : g_l('navigation','[documents]'))),
 				'space' => 0
 		);
@@ -2146,7 +2146,7 @@ function onFolderSelectionChangeJS(elem) {
 						"defaultfont",
 						false));
 
-		return $table->getHtmlCode();
+		return $table->getHtml();
 	}
 
 	function getLangField($name, $value, $title, $width)
@@ -2760,7 +2760,7 @@ function onFolderSelectionChangeJS(elem) {
 								"topmargin" => "0",
 								"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
 						),
-						we_htmlElement::htmlForm(array(), $table1->getHtmlCode() . $table2->getHtmlCode())))
+						we_htmlElement::htmlForm(array(), $table1->getHtml() . $table2->getHtml())))
 
 		;
 

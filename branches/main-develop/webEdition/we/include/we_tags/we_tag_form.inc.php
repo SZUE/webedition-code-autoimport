@@ -82,7 +82,7 @@ function we_tag_form($attribs, $content) {
 		$GLOBALS["we_form_action"] = ($action ? $action : $_SERVER["SCRIPT_NAME"]);
 	}
 	if ($type != "search") {
-		if (eregi('^(.*)return (.+)$', $onsubmit, $regs)) {
+		if (preg_match('/^(.*)return (.+)$/i', $onsubmit, $regs)) {
 			$onsubmit = $regs[1] . ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return ' . $regs[2];
 		} else {
 			$onsubmit .= ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return true;';

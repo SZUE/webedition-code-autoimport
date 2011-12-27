@@ -166,7 +166,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$_table->addRow(4);
 	$_table->setCol($_actRow,0,array("width" => $_space), we_html_tools::getPixel($_space,5));
-	$_table->setCol($_actRow,1,array(), $_loginTable->getHtmlCode());
+	$_table->setCol($_actRow,1,array(), $_loginTable->getHtml());
 	$_table->setCol($_actRow++,2,array(), we_html_tools::getPixel($_space,5));
 
 
@@ -209,7 +209,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	//	16th
 	$_table->setCol($_actRow,0,array(	"width" => $_space), we_html_tools::getPixel($_space,5));
 	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
-										"class" => "small"), $_modetable->getHtmlCode() );
+										"class" => "small"), $_modetable->getHtml() );
 	$_table->setCol($_actRow++,2,array(	"width" => $_space), we_html_tools::getPixel($_space,1));
 
 	//	17th row
@@ -249,7 +249,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	//	9th Login ok
 	$_table->setCol($_actRow,0,array(	"width" => $_space), we_html_tools::getPixel($_space,5));
 	$_table->setCol($_actRow,1,array(	"width" => $_middlePart,
-								"class" => "small"), $_loginTable->getHtmlCode());
+								"class" => "small"), $_loginTable->getHtml());
 	$_table->setCol($_actRow++,2,array(	"width" => $_space), we_html_tools::getPixel($_space,1));
 
 	//	10th row
@@ -273,7 +273,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 }
 
 if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "info"){
-	print $_table->getHtmlCode();
+	print $_table->getHtml();
 } else {
-	$_loginTable = $_table->getHtmlCode() . we_html_tools::getPixel(1,1);
+	$_loginTable = $_table->getHtml() . we_html_tools::getPixel(1,1);
 }

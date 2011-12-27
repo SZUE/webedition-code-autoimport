@@ -92,7 +92,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 					<table class="attribute">
 					<tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-						<td class="attributeField">' . $select->getHtmlCode() . '</td>
+						<td class="attributeField">' . $select->getHtml() . '</td>
 					</tr>
 					</table>';
 	}

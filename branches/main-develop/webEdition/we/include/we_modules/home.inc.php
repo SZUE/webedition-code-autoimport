@@ -94,7 +94,7 @@ $title = "";
 </head>
 
 <body bgcolor="#F0EFF0" onLoad="loaded=1;">
-	<div id="tabelle"><?php print $_starttable->getHtmlCode(); ?></div>
+	<div id="tabelle"><?php print $_starttable->getHtml(); ?></div>
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
 

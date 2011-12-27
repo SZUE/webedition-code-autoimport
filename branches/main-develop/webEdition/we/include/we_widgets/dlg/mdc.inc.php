@@ -248,7 +248,7 @@ function getHTMLCategory()
 						we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 					)));
 
-	return $table->getHtmlCode() . $js . we_htmlElement::jsElement(
+	return $table->getHtml() . $js . we_htmlElement::jsElement(
 			"
 function removeAllCats(){
 	if(categories_edit.itemCount>0){

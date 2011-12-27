@@ -174,5 +174,5 @@ if (!isset($aProps)) {
 							),
 							we_htmlElement::htmlDiv(array(
 								"id" => "sct"
-							), $sc->getHtmlCode())));
+							), $sc->getHtml())));
 }

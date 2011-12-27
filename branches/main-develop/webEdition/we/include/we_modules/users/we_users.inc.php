@@ -1652,7 +1652,7 @@ function mapPermissions() {
 		array_push($parts,
 						array(
 							"headline"=>g_l('modules_users',"[user_data]"),
-							"html"=>$_tableObj->getHtmlCode(),
+							"html"=>$_tableObj->getHtml(),
 							"space"=>120
 							)
 					);
@@ -1691,7 +1691,7 @@ function mapPermissions() {
 		array_push($parts,
 						array(
 							"headline"=>g_l('modules_users',"[permissions]"),
-							"html"=>$_tableObj->getHtmlCode(),
+							"html"=>$_tableObj->getHtml(),
 							"space"=>120
 							)
 					);
@@ -1804,7 +1804,7 @@ function mapPermissions() {
 		array_push($parts,
 						array(
 							"headline"=>g_l('modules_users',"[group_data]"),
-							"html"=>$_tableObj->getHtmlCode(),
+							"html"=>$_tableObj->getHtml(),
 							"space"=>120
 							)
 					);
@@ -1875,7 +1875,7 @@ function mapPermissions() {
 		array_push($parts,
 						array(
 							"headline"=>g_l('modules_users',"[general_data]"),
-							"html"=>$_tableObj->getHtmlCode(),
+							"html"=>$_tableObj->getHtml(),
 							"space"=>120
 							)
 					);
@@ -1954,7 +1954,7 @@ function mapPermissions() {
 		array_push($parts,
 							array(
 								"headline"=>g_l('modules_users',"[user_data]"),
-								"html"=>$_tableObj->getHtmlCode(),
+								"html"=>$_tableObj->getHtml(),
 								"space"=>120
 								)
 						);
@@ -2417,7 +2417,7 @@ function mapPermissions() {
 
 		// Build dialog if user has permission
 		if (we_hasPerm("ADMINISTRATOR")) {
-			array_push($_settings, array("headline" => g_l('prefs','[glossary_publishing]'), "html" => $_table->getHtmlCode(), "space" => 200, "noline" => 1));
+			array_push($_settings, array("headline" => g_l('prefs','[glossary_publishing]'), "html" => $_table->getHtml(), "space" => 200, "noline" => 1));
 		}
 
 		return $_settings;
@@ -2469,7 +2469,7 @@ function mapPermissions() {
 			}
 
 			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtmlCode(), "space" => 200, 'noline' => 1));
+			array_push($_settings, array("headline" => g_l('prefs','[choose_language]'), "html" => $_languages->getHtml(), "space" => 200, 'noline' => 1));
 		} else { // Just one Language Installed, no select box needed
 			foreach ($_language["translation"] as $key=>$value) {
 		    	$_languages = $value;
@@ -2505,7 +2505,7 @@ function mapPermissions() {
 				$myCompChar = $GLOBALS['WE_BACKENDCHARSET'];
 			}
 		$_charset->selectOption($myCompChar);
-		array_push($_settings, array("headline" => g_l('prefs','[choose_backendcharset]'), "html" => $_charset->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[choose_backendcharset]'), "html" => $_charset->getHtml(), "space" => 200));
 
 
 		/*****************************************************************
@@ -2523,7 +2523,7 @@ function mapPermissions() {
 			}
 		}
 
-		array_push($_settings, array("headline" => g_l('prefs','[cockpit_amount_columns]'), "html" => $_amount->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[cockpit_amount_columns]'), "html" => $_amount->getHtml(), "space" => 200));
 
 
 
@@ -2665,7 +2665,7 @@ function mapPermissions() {
 
 		$_start_type->selectOption($_seem_start_type);
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
-		$weAPPSelector = $_start_weapp->getHtmlCode();
+		$weAPPSelector = $_start_weapp->getHtml();
 
 		$_seem_weapp_chooser = we_button::create_button_table(array($weAPPSelector), 10, array("id"=>"seem_start_weapp", "style"=>"display:none"));
 
@@ -2713,14 +2713,14 @@ function mapPermissions() {
 
 		// Build final HTML code
 		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
-		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtmlCode() . we_html_tools::getPixel(200,1));
+		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtml() . we_html_tools::getPixel(200,1));
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser.$_seem_weapp_chooser);
 
 		if (we_hasPerm("CHANGE_START_DOCUMENT")) {
 			array_push($_settings,
 					array(
 						"headline" => g_l('prefs','[seem_startdocument]'),
-						"html" => $js . $_seem_html->getHtmlCode().'<script  type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
+						"html" => $js . $_seem_html->getHtml().'<script  type="text/javascript">show_seem_chooser("'.$_seem_start_type.'");</script>',
 						"space" => 200
 					)
 				);
@@ -2767,7 +2767,7 @@ function mapPermissions() {
 			$_file_tree_count->selectOption($_tree_count);
 		}
 
-		array_push($_settings, array("headline" => g_l('prefs','[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs','[tree_count_description]'),2)."<br>".$_file_tree_count->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[tree_title]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs','[tree_count_description]'),2)."<br>".$_file_tree_count->getHtml(), "space" => 200));
 
 
 		/*****************************************************************
@@ -2818,12 +2818,12 @@ function mapPermissions() {
 		$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
 		$_window_html->setCol(0, 0, null, $_window_max_code);
 		$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
-		$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtmlCode());
+		$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
 		$_window_html->setCol(3, 0, null, we_html_tools::getPixel(1, 10));
-		$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtmlCode());
+		$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtml());
 
 		// Build dialog
-		array_push($_settings, array("headline" => g_l('prefs','[dimension]'), "html" => $_window_html->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[dimension]'), "html" => $_window_html->getHtml(), "space" => 200));
 
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_htmlTable(array("border"=>"0", "align"=>"right", "cellpadding"=>"1", "cellspacing"=>"0"), 3, 1);
@@ -2834,7 +2834,7 @@ function mapPermissions() {
 		$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 
 		// Build dialog
-		array_push($_settings, array("headline" => g_l('prefs','[predefined]'), "html" => $_window_predefined_table->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[predefined]'), "html" => $_window_predefined_table->getHtml(), "space" => 200));
 
 		$_settings_cookie = weGetCookieVariable("but_settings_predefined");
 
@@ -2862,7 +2862,7 @@ function mapPermissions() {
 			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
 			$_template_editor_mode->addOption('codemirror2', 'CodeMirror2');
 			$_template_editor_mode->selectOption($this->Preferences["editorMode"]);
-			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtmlCode(), "space" => 150));
+			array_push($_settings, array("headline" => g_l('prefs','[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150));
 
 		$_template_fonts = array("Courier New", "Courier", "mono", "Verdana", "Arial", "Helvetica", "sans-serif", "none");
 		$_template_font_sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 24, 32, 48, 72, -1);
@@ -2927,11 +2927,11 @@ function mapPermissions() {
 			}
 		}
 
-		$_template_editor_font_specify_table->setCol(1, 3, null, $_template_editor_font_select_box->getHtmlCode());
-		$_template_editor_font_specify_table->setCol(3, 3, null, $_template_editor_font_sizes_select_box->getHtmlCode());
+		$_template_editor_font_specify_table->setCol(1, 3, null, $_template_editor_font_select_box->getHtml());
+		$_template_editor_font_specify_table->setCol(3, 3, null, $_template_editor_font_sizes_select_box->getHtml());
 
 		// Build dialog
-		array_push($_settings, array("headline" => g_l('prefs','[editor_font]'), "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtmlCode(), "space" => 200));
+		array_push($_settings, array("headline" => g_l('prefs','[editor_font]'), "html" => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtml(), "space" => 200));
 
 		$_settings_cookie = weGetCookieVariable("but_settings_editor_predefined");
 

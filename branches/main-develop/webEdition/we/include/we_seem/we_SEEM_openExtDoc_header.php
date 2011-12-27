@@ -49,7 +49,7 @@
 	$_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg );
 
 
-    $_body = $_table->getHtmlCode();
+    $_body = $_table->getHtml();
 	$_head = STYLESHEET;
 
 

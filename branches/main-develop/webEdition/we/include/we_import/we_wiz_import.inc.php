@@ -650,7 +650,7 @@ class we_wizard_import extends we_wizard {
 			$dir_table->setCol(1,1,null,$docPath);
 			$dir_table->setCol(2,1,null,we_forms::checkboxWithHidden((isset($v["restore_doc_path"]) && $v["restore_doc_path"])? true : false, "v[restore_doc_path]", g_l('import',"[maintain_paths]"),false,"defaultfont","self.document.forms['we_form'].elements['v[doc_dir]'].value='/';"));
 
-			$tbl_extra->setCol(1, 0,  null, $dir_table->getHtmlCode());
+			$tbl_extra->setCol(1, 0,  null, $dir_table->getHtml());
 
 			// --------------
 
@@ -686,7 +686,7 @@ class we_wizard_import extends we_wizard {
 			$dir_table->setCol(2,1,null,we_forms::checkboxWithHidden((isset($v["restore_tpl_path"]) && $v["restore_tpl_path"])? true : false, "v[restore_tpl_path]", g_l('import',"[maintain_paths]"),false,"defaultfont","self.document.forms['we_form'].elements['v[tpl_dir]'].value='/';"));
 
 
-			$tbl_extra->setCol(3, 0,null,$dir_table->getHtmlCode());
+			$tbl_extra->setCol(3, 0,null,$dir_table->getHtml());
 
 			$tbl_extra->setCol(4, 0, array("colspan"=>"2"), we_forms::checkboxWithHidden((isset($v["import_thumbnails"]) && $v["import_thumbnails"]) ? true : false, "v[import_thumbnails]", g_l('import',"[import_thumbnails]"),false,"defaultfont"));
 
@@ -745,7 +745,7 @@ class we_wizard_import extends we_wizard {
 			$dir_table->setCol(0, 1,null,we_html_tools::htmlAlertAttentionBox(g_l('import',"[navigation_desc]"),1,"390"));
 			$dir_table->setCol(1,1,null,$docPath);
 
-			$tbl_extra->setCol(3, 0, null, $dir_table->getHtmlCode());
+			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
 			//--
 
@@ -1352,7 +1352,7 @@ HTS;
 				}
 
 				$tblSelect = new we_htmlTable(array(), 1, 7);
-				$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtmlCode());
+				$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
 				$tblSelect->setCol(0, 2, array("width" => 20));
 				$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('import',"[num_data_sets]"));
 				$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("v[from_iElem]", 4, 1, 5, "align=right", "text", 30, "", "",($isSingleNode&&($firstOptVal==1))?1:0));
@@ -1364,9 +1364,9 @@ HTS;
 					($isSingleNode)? we_html_tools::htmlAlertAttentionBox(g_l('import',"[well_formed]")." ".g_l('import',"[select_elements]"),2,"530") :
 						we_html_tools::htmlAlertAttentionBox(g_l('import',"[xml_valid_1]")." $optid ".g_l('import',"[xml_valid_m2]"),2,"530"));
 				$tblFrame->setCol(1, 0, array("colspan" => "2"));
-				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtmlCode());
+				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
-				array_push($parts, array("html"=>$tblFrame->getHtmlCode(),"space"=>0,"noline"=>1));
+				array_push($parts, array("html"=>$tblFrame->getHtml(),"space"=>0,"noline"=>1));
 			}
 			else array_push($parts,array("html"=>we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed)?g_l('import',"[not_well_formed]"):g_l('import',"[missing_child_node]"),1,"530"),"space"=>0,"noline"=>1));
 		}
@@ -1790,11 +1790,11 @@ HTS;
 		$rowDef = we_forms::checkbox("", (isset($v["csv_fieldnames"]) ? $v["csv_fieldnames"] : true), "checkbox_fieldnames", g_l('import',"[contains]"), true, "defaultfont", "this.form.elements['v[csv_fieldnames]'].value=this.checked ? 1 : 0;");
 
 		$csvSettings = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 7, 1);
-		$csvSettings->setCol(0, 0, array("class" => "defaultfont"), g_l('import',"[file_format]")."<br>".we_html_tools::getPixel(1,1)."<br>".$charSet->getHtmlCode());
+		$csvSettings->setCol(0, 0, array("class" => "defaultfont"), g_l('import',"[file_format]")."<br>".we_html_tools::getPixel(1,1)."<br>".$charSet->getHtml());
 		$csvSettings->setCol(1, 0, array(), we_html_tools::getPixel(1,6));
-		$csvSettings->setCol(2, 0, array("class" => "defaultfont"), g_l('import',"[field_delimiter]")."<br>".we_html_tools::getPixel(1,1)."<br>".$iptDel." ".$fldDel->getHtmlCode());
+		$csvSettings->setCol(2, 0, array("class" => "defaultfont"), g_l('import',"[field_delimiter]")."<br>".we_html_tools::getPixel(1,1)."<br>".$iptDel." ".$fldDel->getHtml());
 		$csvSettings->setCol(3, 0, array(), we_html_tools::getPixel(1,6));
-		$csvSettings->setCol(4, 0, array("class" => "defaultfont"), g_l('import',"[text_delimiter]")."<br>".we_html_tools::getPixel(1,1)."<br>".$txtDel->getHtmlCode());
+		$csvSettings->setCol(4, 0, array("class" => "defaultfont"), g_l('import',"[text_delimiter]")."<br>".we_html_tools::getPixel(1,1)."<br>".$txtDel->getHtml());
 		$csvSettings->setCol(5, 0, array(), we_html_tools::getPixel(1,6));
 		$csvSettings->setCol(6, 0, array(), $rowDef);
 

@@ -182,7 +182,7 @@ class weExportWizard{
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=load","name"=>"load","scrolling"=>"no","noresize"=>null));
 
 		$head=str_replace(WE_DEFAULT_TITLE, g_l('export','[title]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . $js ."\n";
-		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
 
 		return we_htmlElement::htmlHtml(
 					we_htmlElement::htmlHead($head).
@@ -567,7 +567,7 @@ top.close();
 		}*/
 		array_push($parts, array(
 				"headline"	=> "",
-				"html"		=> $header->getHtmlCode().we_htmlElement::htmlDiv(array("id"=>"treetable","class"=>"blockwrapper","style"=>"width: 540px; height: 250px; border:1px #dce6f2 solid;"),""),
+				"html"		=> $header->getHtml().we_htmlElement::htmlDiv(array("id"=>"treetable","class"=>"blockwrapper","style"=>"width: 540px; height: 250px; border:1px #dce6f2 solid;"),""),
 				"space"		=> 0
 				)
 		);
@@ -686,20 +686,20 @@ top.close();
 		$formattable->setCol(2,0,null,we_forms::checkboxWithHidden(($handle_object_includes ? true : false),"handle_object_includes",g_l('export',"[handle_object_includes]")));
 		$formattable->setCol(3,0,null,we_forms::checkboxWithHidden(($handle_document_linked ? true : false),"handle_document_linked",g_l('export',"[handle_document_linked]")));
 
-		array_push($parts,array("headline"=>g_l('export',"[handle_document_options]").we_htmlElement::htmlBr().g_l('export',"[handle_template_options]"),"html"=>$formattable->getHtmlCode(),"space"=>$_space));
+		array_push($parts,array("headline"=>g_l('export',"[handle_document_options]").we_htmlElement::htmlBr().g_l('export',"[handle_template_options]"),"html"=>$formattable->getHtml(),"space"=>$_space));
 
 		$formattable = new we_htmlTable(array("cellpadding" => 2,"cellspacing" => 2, "border" => 0), 3, 1);
 		$formattable->setCol(0,0,array("colspan"=>"2"),we_forms::checkboxWithHidden(($handle_def_classes ? true : false),"handle_def_classes",g_l('export',"[handle_def_classes]")));
 		$formattable->setCol(1,0,null,we_forms::checkboxWithHidden(($handle_object_embeds ? true : false),"handle_object_embeds",g_l('export',"[handle_object_embeds]")));
 		//$formattable->setCol(2,0,null,we_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
-		array_push($parts,array("headline"=>g_l('export',"[handle_object_options]").we_htmlElement::htmlBr().g_l('export',"[handle_classes_options]"),"html"=>$formattable->getHtmlCode(),"space"=>$_space));
+		array_push($parts,array("headline"=>g_l('export',"[handle_object_options]").we_htmlElement::htmlBr().g_l('export',"[handle_classes_options]"),"html"=>$formattable->getHtml(),"space"=>$_space));
 
 		$formattable = new we_htmlTable(array("cellpadding" => 2,"cellspacing" => 2, "border" => 0), 2, 1);
 		$formattable->setCol(0,0,null,we_forms::checkboxWithHidden(($handle_doctypes ? true : false),"handle_doctypes",g_l('export',"[handle_doctypes]")));
 		$formattable->setCol(1,0,null,we_forms::checkboxWithHidden(($handle_categorys ? true : false),"handle_categorys",g_l('export',"[handle_categorys]")));
 
-		array_push($parts,array("headline"=>g_l('export',"[handle_doctype_options]"),"html"=>$formattable->getHtmlCode(),"space"=>$_space));
+		array_push($parts,array("headline"=>g_l('export',"[handle_doctype_options]"),"html"=>$formattable->getHtml(),"space"=>$_space));
 
 		array_push($parts,array("headline"=>g_l('export',"[export_depth]"),"html"=>we_htmlElement::htmlLabel(null,g_l('export',"[to_level]")).we_html_tools::getPixel(5,5).we_html_tools::htmlTextInput("export_depth",10,$export_depth,"","","text",50),"space"=>$_space));
 
@@ -761,13 +761,13 @@ top.close();
 			$_file_encoding->addOption("mac", g_l('export',"[mac]"));
 			$_file_encoding->selectOption($csv_lineend);
 
-			$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export',"[csv_lineend]") . "<br>" . $_file_encoding->getHtmlCode());
+			$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export',"[csv_lineend]") . "<br>" . $_file_encoding->getHtml());
 			$fileformattable->setColContent(1,0,$this->getHTMLChooser("csv_delimiter",$csv_delimiter,array(";"=>g_l('export',"[semicolon]"),","=>g_l('export',"[comma]"),":"=>g_l('export',"[colon]"),"\\t"=>g_l('export',"[tab]")," "=>g_l('export',"[space]")),g_l('export',"[csv_delimiter]")));
 			$fileformattable->setColContent(2,0,$this->getHTMLChooser("csv_enclose",$csv_enclose,array("\""=>g_l('export',"[double_quote]"),"'"=>g_l('export',"[single_quote]")),g_l('export',"[csv_enclose]")));
 
 			$fileformattable->setColContent(3,0,we_forms::checkbox(1,true,"csv_fieldnames",g_l('export',"[csv_fieldnames]")));
 
-			array_push($parts,array("headline" => g_l('export',"[csv_params]"), "html" => $fileformattable->getHtmlCode(),"space" => $_space));
+			array_push($parts,array("headline" => g_l('export',"[csv_params]"), "html" => $fileformattable->getHtml(),"space" => $_space));
 		}
 
 		if ($extype=="gxml") {
@@ -777,7 +777,7 @@ top.close();
 			$table->setColContent(0, 0, we_forms::radiobutton("true", ($cdata=="true"), "cdata", g_l('export',"[export_xml_cdata]"), true, "defaultfont", $this->topFrame.".cdata='true'"));
 			$table->setColContent(2, 0, we_forms::radiobutton("false", ($cdata=="false"), "cdata", g_l('export',"[export_xml_entities]"), true, "defaultfont", $this->topFrame.".cdata='false'"));
 
-			array_push($parts,array("headline" => g_l('export',"[cdata]"), "html" => $table->getHtmlCode(), "space" => $_space));
+			array_push($parts,array("headline" => g_l('export',"[cdata]"), "html" => $table->getHtml(), "space" => $_space));
 		}
 
 		$table = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),3,1);
@@ -786,7 +786,7 @@ top.close();
 		$table->setColContent(1,0,we_html_tools::getPixel(20,20));
 		$table->setColContent(2,0,we_html_tools::htmlFormElementTable($this->formFileChooser(260,"path",$path,"","folder"),we_forms::radiobutton("server", ($export_to=="server" ? true : false), "export_to", g_l('export',"[export_to_server]"),true,"defaultfont",$this->topFrame.".export_to='server'")));
 
-		array_push($parts,array("headline" => g_l('export',"[export_to]"), "html" =>$table->getHtmlCode(), "space" => $_space));
+		array_push($parts,array("headline" => g_l('export',"[export_to]"), "html" =>$table->getHtml(), "space" => $_space));
 
 		return we_htmlElement::htmlHtml(
 						we_htmlElement::htmlHead(STYLESHEET . "\n" .$js).
@@ -1021,7 +1021,7 @@ top.close();
 					we_htmlElement::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('import','[title]'), WE_DEFAULT_HEAD).STYLESHEET.$js).
 					we_htmlElement::htmlBody(array("bgcolor"=>"#ffffff","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0"),
 					$js2.
-					$table->getHtmlCode().
+					$table->getHtml().
 					we_htmlElement::htmlForm(array("name"=>"we_form","target"=>"load","action"=>$this->frameset),
 							we_htmlElement::htmlHidden(array("name"=>"pnt","value"=>"load")).
 							we_htmlElement::htmlHidden(array("name"=>"cmd","value"=>"load")).
@@ -1143,7 +1143,7 @@ top.close();
 								"target"  => "load",
 								"action"  => $this->frameset
 								),
-								$content->getHtmlCode()
+								$content->getHtml()
 						)
 					)
 		);
@@ -1634,7 +1634,7 @@ top.close();
 		$dir=we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE,$width,0,"dir",$dir,"Path",$path),g_l('export',"[dir]"));
 
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0"),3,2);
-		$table->setColContent(0,1,$select->getHtmlCode());
+		$table->setColContent(0,1,$select->getHtml());
 		$table->setColContent(1,0,we_html_tools::getPixel(defined("OBJECT_FILES_TABLE") ? 25 : 0,5));
 		$table->setColContent(2,1,$dir);
 
@@ -1647,7 +1647,7 @@ top.close();
         					we_htmlElement::htmlSpan(array("class" => "defaultfont"), g_l('export',"[doctypename]"));
 
         return we_html_tools::htmlFormElementTable(
-        					$table->getHtmlCode(),
+        					$table->getHtml(),
         					$headline
         			);
 	}
@@ -1675,7 +1675,7 @@ top.close();
 			else $type="";
 
 			$radio =  $showdocs ? we_forms::radiobutton("classname", ($type=="classname" ? true : false), "type", g_l('export',"[classname]"),true,"defaultfont",$this->topFrame.".type='classname'") : we_html_tools::getPixel(25,5).g_l('export',"[classname]");
-	        return $js.we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25,5).$select->getHtmlCode(),$radio);
+	        return $js.we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25,5).$select->getHtml(),$radio);
     	} else {
     		return null;
     	}
@@ -1772,9 +1772,9 @@ top.close();
 
 		$table->setColContent(0,0,we_html_tools::htmlTextInput($name,$input_size,$value));
 		$table->setColContent(0,1,we_html_tools::getPixel(10,10));
-		$table->setColContent(0,2,$select->getHtmlCode());
+		$table->setColContent(0,2,$select->getHtml());
 
-		 return we_html_tools::htmlFormElementTable($table->getHtmlCode(),$title);
+		 return we_html_tools::htmlFormElementTable($table->getHtml(),$title);
 
  	}
 

@@ -98,7 +98,7 @@ function we_tag_include($attribs, $content) {
 		} else {
 			$realPath = $_SERVER['DOCUMENT_ROOT'] . $realPath;
 			//check Customer-Filter on static documents
-				$id=($id?$id:isset($intID)?$intID:0);
+				$id=($id?$id:(isset($intID)?$intID:0));
 			if(defined('CUSTOMER_TABLE') && !$isDynamic && $id){
 				$filter=weDocumentCustomerFilter::getFilterByIdAndTable($id,FILE_TABLE);
 

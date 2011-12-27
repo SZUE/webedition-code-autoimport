@@ -133,7 +133,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	$editbut = we_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
-	array_push($_thumbs, array("headline" => "", "html" => $_thumbnails->getHtmlCode().'<p align="right">'.$editbut.'</p>', "space" => 0));
+	array_push($_thumbs, array("headline" => "", "html" => $_thumbnails->getHtml().'<p align="right">'.$editbut.'</p>', "space" => 0));
 
 
 	$iframe = '<iframe name="showthumbs" id="showthumbs" src="/webEdition/showThumb.php?u='.$uniqid.'&t='.$we_transaction.'&id='.$selectedID.'" width="340" height="130"></iframe>';

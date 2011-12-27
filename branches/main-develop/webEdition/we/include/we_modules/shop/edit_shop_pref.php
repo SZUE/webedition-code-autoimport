@@ -266,7 +266,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 													we_button::create_button("cancel", "javascript:self.close();")
 													);
 
-	$frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtmlCode(), g_l('modules_shop','[pref]'), $_buttons);
+	$frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop','[pref]'), $_buttons);
 
 
 echo we_htmlElement::jsElement('self.focus();').'

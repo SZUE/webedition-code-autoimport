@@ -39,7 +39,7 @@ $_messageTbl->setCol(1, 3, array("class" => "defaultfont"), str_replace("<br>", 
 
 $_head = we_htmlElement::htmlHead(we_htmlElement::jsElement("\n<!--\ntop.toggleBusy(0);\n-->\n") . STYLESHEET);
 $_body = we_htmlElement::htmlBody(array("background" => "/webEdition/images/edit/editfooterback.gif",
-		"bgcolor" => "white"), $_messageTbl->getHtmlCode());
+		"bgcolor" => "white"), $_messageTbl->getHtml());
 
 
 print we_htmlElement::htmlHtml($_head . "\n" . $_body);

@@ -724,7 +724,7 @@ class we_imageDocument extends we_binaryDocument {
 		$_content->setCol(8, 0, array("valign" => "bottom", 'colspan' => 5), $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode());
 
 		// Return HTML
-		return $_content->getHtmlCode();
+		return $_content->getHtml();
  	}
 
 	/**
@@ -947,7 +947,7 @@ class we_imageDocument extends we_binaryDocument {
 		$_ext_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_ext_link_table->setCol(0, 2, null, $butExt);
 
-		$_ext_link = "href" . we_htmlElement::htmlBr() . $_ext_link_table->getHtmlCode();
+		$_ext_link = "href" . we_htmlElement::htmlBr() . $_ext_link_table->getHtml();
 
 		$_content->setCol(2, 0, array("valign" => "top"), we_forms::radiobutton("ext", ($linkType == "ext"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass',"[extern]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true)"));
 		$_content->setCol(2, 1, array("class" => "defaultfont", "valign" => "top"), $_ext_link);
@@ -963,7 +963,7 @@ class we_imageDocument extends we_binaryDocument {
 		$_int_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_int_link_table->setCol(0, 2, null, $this->htmlHidden($idname, $this->getElement("LinkID")) . $but1);
 
-		$_int_link = "href" . we_htmlElement::htmlBr() . $_int_link_table->getHtmlCode();
+		$_int_link = "href" . we_htmlElement::htmlBr() . $_int_link_table->getHtml();
 
 		$_content->setCol(4, 0, array("valign" => "top"), we_forms::radiobutton("int", ($linkType == "int"), "we_" . $this->Name . "_txt[LinkType]", g_l('weClass',"[intern]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
 		$_content->setCol(4, 1, array("class" => "defaultfont", "valign" => "top"), $_int_link);
@@ -979,7 +979,7 @@ class we_imageDocument extends we_binaryDocument {
 			$_obj_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 			$_obj_link_table->setCol(0, 2, null, $this->htmlHidden($objidname, $this->getElement("ObjID")) . $butObj);
 
-			$_obj_link = "href" . we_htmlElement::htmlBr() . $_obj_link_table->getHtmlCode();
+			$_obj_link = "href" . we_htmlElement::htmlBr() . $_obj_link_table->getHtml();
 
 			$_content->setCol(6, 0, array("valign" => "top"), we_forms::radiobutton("obj", ($linkType == "obj"), "we_" . $this->Name . "_txt[LinkType]", g_l('linklistEdit',"[objectFile]"), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);"));
 			$_content->setCol(6, 1, array("class" => "defaultfont", "valign" => "top"), $_obj_link);
@@ -1003,12 +1003,12 @@ class we_imageDocument extends we_binaryDocument {
 		$_rollover_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
 		$_rollover_table->setCol(0, 2, null, $this->htmlHidden($RollOverIDName, $RollOverID) . $but2);
 
-		$_rollover = "href" . we_htmlElement::htmlBr() . $_rollover_table->getHtmlCode();
+		$_rollover = "href" . we_htmlElement::htmlBr() . $_rollover_table->getHtml();
 
 		$_content->setCol((defined("OBJECT_TABLE") ? 10 : 8), 0, array("valign" => "top"), we_forms::checkbox(1, $RollOverFlag, $checkFlagName, "Roll Over", false, "defaultfont", "_EditorFrame.setEditorIsHot(true); this.form.elements['$RollOverFlagName'].value = (this.checked ? 1 : 0); ") . $this->htmlHidden($RollOverFlagName, $RollOverFlag));
 		$_content->setCol((defined("OBJECT_TABLE") ? 10 : 8), 1, array("class" => "defaultfont", "valign" => "top"), $_rollover);
 
-		return $_content->getHtmlCode();
+		return $_content->getHtml();
 	}
 
 	function hasMetaField($name) {

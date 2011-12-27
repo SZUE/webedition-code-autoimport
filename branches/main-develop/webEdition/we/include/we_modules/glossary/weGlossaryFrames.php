@@ -270,7 +270,7 @@ class weGlossaryFrames extends weModuleFrames {
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treefooter","name"=>"treefooter","noresize"=>null,"scrolling"=>"no"));
 
 		// set and return html code
-		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}

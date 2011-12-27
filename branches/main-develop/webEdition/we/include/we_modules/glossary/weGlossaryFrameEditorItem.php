@@ -299,7 +299,7 @@
 				}
 				");
 
-			$form = we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode().$js);
+			$form = we_htmlElement::htmlForm(array(),$table1->getHtml().$table2->getHtml().$js);
 
 	        return weGlossaryFrameEditorItem::buildFooter($weGlossaryFrames, $form);
 

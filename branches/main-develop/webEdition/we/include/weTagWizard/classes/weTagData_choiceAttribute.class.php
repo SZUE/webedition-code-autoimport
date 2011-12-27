@@ -90,7 +90,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute {
 								'id' => $this->getIdName(),
 								'class' => 'wetextinput'
 		)) . '</td>
-						<td class="attributeButton">' . $select->getHtmlCode() . '</td>
+						<td class="attributeButton">' . $select->getHtml() . '</td>
 					</tr>
 					</table>';
 	}

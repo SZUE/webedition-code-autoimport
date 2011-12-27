@@ -53,7 +53,6 @@ function correctUml($in) {
 function inWorkflow($doc) {
 	if (!defined('WORKFLOW_TABLE')||!$doc->IsTextContentDoc)
 		return false;
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php');
 
 	return ($doc->ID?weWorkflowUtility::inWorkflow($doc->ID, $doc->Table):false);
 }
@@ -372,8 +371,6 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 }
 
 function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = '') {
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_objectFile.inc.php');
-
 	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
 	if (!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
@@ -2570,7 +2567,7 @@ function we_isHttps() {
 
 //check if number is positive
 function pos_number($val) {
-	return (bool) is_numeric($val) && $val == (int) $val && $val > 0;
+	return abs($val)==$val && $val>0;
 }
 
 function convertCharsetEncoding($fromC, $toC, $string) {

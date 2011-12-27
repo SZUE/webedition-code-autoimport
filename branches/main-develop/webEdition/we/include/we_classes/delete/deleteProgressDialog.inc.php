@@ -65,7 +65,7 @@ class deleteProgressDialog{
 		return we_htmlElement::htmlHtml(
 			we_htmlElement::htmlHead(
 				we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
-				we_htmlElement::htmlTitle(g_l('delete',"[delete]"))).$fst->getHtmlCode());
+				we_htmlElement::htmlTitle(g_l('delete',"[delete]"))).$fst->getHtml());
 	}
 
 	function cmd(){

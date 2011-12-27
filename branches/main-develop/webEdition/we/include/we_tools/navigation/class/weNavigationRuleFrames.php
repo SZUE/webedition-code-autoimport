@@ -429,7 +429,7 @@ function we_cmd(){
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 			)));
 
-		return $table->getHtmlCode() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_htmlElement::jsElement(
+		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_htmlElement::jsElement(
 				'
 
 							function removeAllCats(){

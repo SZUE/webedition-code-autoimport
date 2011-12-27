@@ -73,7 +73,7 @@ function transmit(){
 								),
 								we_htmlElement::htmlDiv(array(
 									"id" => "content"
-								), $oTblCont->getHtmlCode()) . we_htmlElement::htmlSpan(array(
+								), $oTblCont->getHtml()) . we_htmlElement::htmlSpan(array(
 									"id" => "prefix"
 								), $aLang[0]) . we_htmlElement::htmlSpan(array(
 									"id" => "postfix"
@@ -81,4 +81,3 @@ function transmit(){
 									"id" => "csv"
 								), (isset($aProps[3]) ? $aProps[3] : ""))));
 }
-?>

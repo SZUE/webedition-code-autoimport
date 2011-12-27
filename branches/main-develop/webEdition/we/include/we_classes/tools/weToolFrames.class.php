@@ -104,7 +104,7 @@ class weToolFrames extends weModuleFrames{
 
 		// set and return html code
 		$head = $js;
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body, $head);
 	}
@@ -126,7 +126,7 @@ class weToolFrames extends weModuleFrames{
 		$noframeset = new we_baseElement("noframes");
 
 		// set and return html code
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}
@@ -148,7 +148,7 @@ class weToolFrames extends weModuleFrames{
 		}
 		$noframeset = new we_baseElement("noframes");
 		// set and return html code
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}
@@ -164,7 +164,7 @@ class weToolFrames extends weModuleFrames{
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}
@@ -199,7 +199,7 @@ class weToolFrames extends weModuleFrames{
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("toolFrame"));
 
-		$body = we_htmlElement::htmlBody(array("bgcolor" => "#bfbfbf", "background" => IMAGE_DIR . "java_menu/background.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $table->getHtmlCode()
+		$body = we_htmlElement::htmlBody(array("bgcolor" => "#bfbfbf", "background" => IMAGE_DIR . "java_menu/background.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $table->getHtml()
 		);
 
 		return $this->getHTMLDocument($body);
@@ -335,7 +335,7 @@ class weToolFrames extends weModuleFrames{
 					}
 					')
 				.
-				we_htmlElement::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_htmlElement::htmlForm(array(), $table1->getHtmlCode() .
+				we_htmlElement::htmlBody(array("bgcolor" => "white", "background" => "/webEdition/images/edit/editfooterback.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), we_htmlElement::htmlForm(array(), $table1->getHtml() .
 						$_but_table)
 				)
 		);
@@ -412,7 +412,7 @@ class weToolFrames extends weModuleFrames{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
 
 		// set and return html code
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}

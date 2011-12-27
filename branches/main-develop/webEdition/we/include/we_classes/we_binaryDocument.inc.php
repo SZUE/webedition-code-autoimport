@@ -257,7 +257,7 @@ class we_binaryDocument extends we_document{
 			}
 		}
 
-		$_mdcontent.=$_content->getHtmlCode();
+		$_mdcontent.=$_content->getHtml();
 
 		// Return HTML
 		return $_mdcontent;

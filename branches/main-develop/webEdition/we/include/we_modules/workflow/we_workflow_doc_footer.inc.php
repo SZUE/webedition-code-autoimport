@@ -82,7 +82,7 @@ function showWorkflowFooterForNormalMode(){
 	}
 
 
-	return $_footerTable->getHtmlCode();
+	return $_footerTable->getHtml();
 }
 
 function showWorkflowFooterForSEEMMode(){
@@ -189,7 +189,7 @@ function showWorkflowFooterForSEEMMode(){
 			}
 		}
 	}
-	return $_footerTable->getHtmlCode();
+	return $_footerTable->getHtml();
 }
 
 if(weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
@@ -234,7 +234,7 @@ if(weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["use
 												"marginheight" => 8,
 												"leftmargin"   => 0,
 												"topmargin"    => 8),
-										$_table->getHtmlCode());
+										$_table->getHtml());
 
 	print $_body;
 

@@ -103,10 +103,10 @@ class weCustomerAdd{
 
 				$row_num=$fcounter+1;
 				$sort_table->addRow();
-				$sort_table->setCol($row_num,0,array("class"=>"defaultfont"),$branch->getHtmlCode());
-				$sort_table->setCol($row_num,1,array("class"=>"defaultfont"),$field->getHtmlCode());
-				$sort_table->setCol($row_num,2,array("class"=>"defaultfont"),$function->getHtmlCode());
-				$sort_table->setCol($row_num,3,array("class"=>"defaultfont"),$order->getHtmlCode());
+				$sort_table->setCol($row_num,0,array("class"=>"defaultfont"),$branch->getHtml());
+				$sort_table->setCol($row_num,1,array("class"=>"defaultfont"),$field->getHtml());
+				$sort_table->setCol($row_num,2,array("class"=>"defaultfont"),$function->getHtml());
+				$sort_table->setCol($row_num,3,array("class"=>"defaultfont"),$order->getHtml());
 				$sort_table->setCol($row_num,4,array("class"=>"defaultfont"),we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','$k',$fcounter)",true,30));
 
 				$fcounter++;
@@ -129,7 +129,7 @@ class weCustomerAdd{
 			$fhidden.=we_htmlElement::htmlHidden(array("name"=>"fcounter_".$counter,"value"=>"$fcounter"));
 
 			$_htmlCode = 	$pob->getHTMLBox(we_htmlElement::htmlInput(array("name"=>"sort_".$counter,"value"=>$k,"size"=>"40")),g_l('modules_customer','[name]'),100,50,25,0,0,50).
-							$sort_table->getHtmlCode() .
+							$sort_table->getHtml() .
 							we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
 
 			$_parts[] = array('html'=>$_htmlCode,'headline'=>$k);
@@ -345,8 +345,8 @@ class weCustomerAdd{
 					$value_date_i = we_html_tools::htmlTextInput("value_date_$i",20,"","","id='value_date_$i' style='display:none; width:150' readonly","text",""); // empty field to display the timestemp in date formate - handeld on the client in js
 					$btnDatePicker = we_button::create_button("image:date_picker","javascript:",null,null,null,null,null,null,false,"_$i");
 					$advsearch->addRow();
-					$advsearch->setCol($c,0,array(),$branch->getHtmlCode());
-					$advsearch->setCol($c,1,array(),$field->getHtmlCode());
+					$advsearch->setCol($c,0,array(),$branch->getHtml());
+					$advsearch->setCol($c,1,array(),$field->getHtml());
 					$advsearch->setCol($c,2,array(),we_html_tools::htmlSelect("operator_".$i,$operators,1,(isset($search_arr["operator_".$i]) ? $search_arr["operator_".$i] : ""),false,'',"value","60"));
 					$advsearch->setCol($c,3,array("width"=>"190"),
 						"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".$value_i.$value_date_i."</td><td>".we_html_tools::getPixel(3,1)."</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
@@ -369,7 +369,7 @@ class weCustomerAdd{
 
 			$search->setCol(1,0,array(),
 				we_htmlElement::htmlHidden(array("name"=>"count","value"=>$count)).
-				$advsearch->getHtmlCode()
+				$advsearch->getHtml()
 
 			);
 			$search->setCol(2,0,array(),we_html_tools::getPixel(5,5));
@@ -435,7 +435,7 @@ class weCustomerAdd{
 		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,3);
 		$table->setRow(0,array("valign"=>"bottom"));
 
-		$table->setCol(0,0,array("nowrap"=>null,"class"=>"small"),$select->getHtmlCode());
+		$table->setCol(0,0,array("nowrap"=>null,"class"=>"small"),$select->getHtml());
 		$table->setCol(0,1,array("nowrap"=>null,"class"=>"small"),we_button::create_button("image:btn_function_reload", "javascript:applySort();"));
 		$table->setCol(0,2,array("nowrap"=>null,"class"=>"small"),we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
@@ -448,8 +448,8 @@ class weCustomerAdd{
 					we_htmlElement::jsElement($pob->View->getJSTreeHeader()).
 					we_htmlElement::htmlForm(array("name"=>"we_form"),
 						$hiddens.
-						$table1->getHtmlCode().
-						$table->getHtmlCode()
+						$table1->getHtml().
+						$table->getHtml()
 					)
 		);
 

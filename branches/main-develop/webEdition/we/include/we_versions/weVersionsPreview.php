@@ -221,7 +221,7 @@ foreach($versions as $k => $v) {
 }
 
 $contentDiff = '<div style="margin-left:25px;" id="top">'.g_l('versions','[VersionChangeTxt]').'<br/><br/>'.
-			g_l('versions','[VersionNumber]')." ".$_versions_time_days->getHtmlCode().'
+			g_l('versions','[VersionNumber]')." ".$_versions_time_days->getHtml().'
 			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">'.g_l('versions','[printPage]').'</a></div>
 			</div>
 			<div style="margin:0px 0px 0px 25px;" id="topPrint">

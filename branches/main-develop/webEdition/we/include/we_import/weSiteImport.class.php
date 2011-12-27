@@ -813,7 +813,7 @@ class weSiteImport{
 		array_push(
 			$parts, array(
 			"headline" => g_l('siteimport', "[import]"),
-			"html" => $_tableObj->getHtmlCode(),
+			"html" => $_tableObj->getHtml(),
 			"space" => 120
 		));
 
@@ -826,7 +826,7 @@ class weSiteImport{
 		array_push(
 			$parts, array(
 			"headline" => g_l('siteimport', "[limits]"),
-			"html" => $_tableObj->getHtmlCode(),
+			"html" => $_tableObj->getHtml(),
 			"space" => 120
 		));
 
@@ -1006,7 +1006,7 @@ class weSiteImport{
 		$table->setCol(0, 1, array(
 			"align" => "right"
 			), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
-		$content = $table->getHtmlCode();
+		$content = $table->getHtml();
 		$body = we_htmlElement::htmlBody($bodyAttribs, $content);
 		return $this->_getHtmlPage($body, $js);
 	}
@@ -2076,7 +2076,7 @@ class weSiteImport{
 		));
 
 		// set and return html code
-		$body = $frameset->getHtmlCode() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
 
 		return $this->_getHtmlPage($body);
 	}

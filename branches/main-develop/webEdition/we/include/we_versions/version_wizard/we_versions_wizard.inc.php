@@ -159,7 +159,7 @@ abstract class we_versions_wizard
 			), $pb);
 			$content->setCol(0, 1, array(
 				"align" => "right"
-			), $content2->getHtmlCode());
+			), $content2->getHtml());
 
 		}
 
@@ -169,7 +169,7 @@ abstract class we_versions_wizard
 						array(
 							"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")
 						),
-						($dc ? $pb : $content->getHtmlCode())));
+						($dc ? $pb : $content->getHtml())));
 
 	}
 
@@ -482,7 +482,7 @@ abstract class we_versions_wizard
 				array(
 
 						'headline' => g_l('versions','[time]'),
-						'html' => "<div style='padding-bottom:3px;'>" . g_l('versions','[day]') . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . g_l('versions','[clocktime]') . ":</div>" . $reset_hours->getHtmlCode() . " h : " . $reset_minutes->getHtmlCode() . " m: " . $reset_seconds->getHtmlCode() . " s",
+						'html' => "<div style='padding-bottom:3px;'>" . g_l('versions','[day]') . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . g_l('versions','[clocktime]') . ":</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s",
 						'noline' => 1,
 						'space' => 170
 				));
@@ -807,7 +807,7 @@ abstract class we_versions_wizard
 				$parts,
 				array(
 						'headline' => g_l('versions','[time]'),
-						'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtmlCode() . " h : " . $reset_minutes->getHtmlCode() . " m: " . $reset_seconds->getHtmlCode() . " s ",
+						'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s ",
 						'noline' => 1,
 						'space' => 170
 				));
@@ -1509,7 +1509,7 @@ abstract class we_versions_wizard
 				we_htmlElement::htmlHead(
 						we_htmlElement::jsElement("", array(
 							"src" => JS_DIR . "we_showMessage.js"
-						)) . we_htmlElement::htmlTitle(g_l('versions','[versions_wizard]'))) . $fst->getHtmlCode());
+						)) . we_htmlElement::htmlTitle(g_l('versions','[versions_wizard]'))) . $fst->getHtml());
 
 	}
 

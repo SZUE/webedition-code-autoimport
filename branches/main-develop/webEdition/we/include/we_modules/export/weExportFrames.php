@@ -129,7 +129,7 @@ class weExportFrames extends weModuleFrames {
 			$we_tabs->getHTML() .
 			'</div>' . we_htmlElement::jsElement($extraJS)
 //			$js.
-//			$table->getHtmlCode() .
+//			$table->getHtml() .
 //			$tabsBody
 		);
 
@@ -223,7 +223,7 @@ class weExportFrames extends weModuleFrames {
 
 		return $this->getHTMLDocument(
 					we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"15","marginheight"=>"0","leftmargin"=>"15","topmargin"=>"0"),
-							we_htmlElement::htmlForm(array(),$table1->getHtmlCode().$table2->getHtmlCode())
+							we_htmlElement::htmlForm(array(),$table1->getHtml().$table2->getHtml())
 					),
 			(isset($progressbar) ? $progressbar->getJSCode() . "\n" : "") . $js
 		);
@@ -292,7 +292,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 					"headline" => "",
-					"html" =>$table->getHtmlCode(),
+					"html" =>$table->getHtml(),
 					"space" => $this->_space_size)
 		);
 
@@ -368,7 +368,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 					"headline" => g_l('export','[selection]'),
-					"html" =>$js.$table->getHtmlCode(),
+					"html" =>$js.$table->getHtml(),
 					"space" => $this->_space_size)
 		);
 
@@ -386,7 +386,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 						"headline"=>g_l('export',"[handle_document_options]").we_htmlElement::htmlBr().g_l('export',"[handle_template_options]"),
-						"html"=>we_html_tools::htmlAlertAttentionBox(g_l('export','[txt_document_options]'),2,$this->_width_size,true,70) . $formattable->getHtmlCode(),
+						"html"=>we_html_tools::htmlAlertAttentionBox(g_l('export','[txt_document_options]'),2,$this->_width_size,true,70) . $formattable->getHtml(),
 						"space"=>$this->_space_size)
 		);
 
@@ -396,7 +396,7 @@ class weExportFrames extends weModuleFrames {
 			$formattable->setCol(1,0,null,we_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false),"HandleObjEmbeds",g_l('export',"[handle_object_embeds]"),false,'defaultfont',$this->topFrame.'.hot=1;'));
 			array_push($parts,array(
 							"headline"=>g_l('export',"[handle_object_options]").we_htmlElement::htmlBr().g_l('export',"[handle_classes_options]"),
-							"html"=>we_html_tools::htmlAlertAttentionBox(g_l('export','[txt_object_options]'),2,$this->_width_size,true,70) . $formattable->getHtmlCode(),
+							"html"=>we_html_tools::htmlAlertAttentionBox(g_l('export','[txt_object_options]'),2,$this->_width_size,true,70) . $formattable->getHtml(),
 							"space"=>$this->_space_size)
 			);
 		}
@@ -408,7 +408,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 						"headline"=>g_l('export',"[handle_doctype_options]"),
-						"html"=>$formattable->getHtmlCode(),
+						"html"=>$formattable->getHtml(),
 						"space"=>$this->_space_size)
 		);
 
@@ -423,7 +423,7 @@ class weExportFrames extends weModuleFrames {
 
 		array_push($parts,array(
 						"headline"=>g_l('export',"[handle_owners_option]"),
-						"html"=>we_html_tools::htmlAlertAttentionBox(g_l('export','[txt_owners]'),2,$this->_width_size) . $formattable->getHtmlCode(),
+						"html"=>we_html_tools::htmlAlertAttentionBox(g_l('export','[txt_owners]'),2,$this->_width_size) . $formattable->getHtml(),
 						"space"=>$this->_space_size)
 		);
 
@@ -481,7 +481,7 @@ class weExportFrames extends weModuleFrames {
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treefooter","name"=>"treefooter","noresize"=>null,"scrolling"=>"no"));
 
 		// set and return html code
-		$body=$frameset->getHtmlCode()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
 
 		return $this->getHTMLDocument($body);
 	}

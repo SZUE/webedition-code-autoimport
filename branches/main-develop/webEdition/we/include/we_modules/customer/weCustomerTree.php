@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,34 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weCustomerTree extends weTree{
 
+	function weCustomerTree($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
 
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weTree.inc.php");
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
+		$styles = array();
+		$styles[] = '.item {color: black; font-size: ' . ($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
+		$styles[] = '.item a { text-decoration:none;}';
 
-	class weCustomerTree extends weTree{
+		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . ($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
+		$styles[] = '.group a { text-decoration:none;}';
 
+		$this->setStyles($styles);
+	}
 
-		function weCustomerTree($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
+	function getJSCustomDraw(){
+		$out = weTree::getJSCustomDraw();
+		$out["group"] = "";
 
-				weTree::weTree($frameset,$topFrame,$treeFrame,$cmdFrame);
-
-				$styles=array();
-				$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';
-				$styles[]='.item a { text-decoration:none;}';
-
-				$styles[]='.group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';
-				$styles[]='.group a { text-decoration:none;}';
-
-				$this->setStyles($styles);
-
-		}
-
- 		function getJSCustomDraw(){
- 			$out=weTree::getJSCustomDraw();
- 			$out["group"]="";
-
-			$out["sort"]='
+		$out["sort"] = '
 
 					var newAst = zweigEintrag;
 
@@ -56,7 +50,7 @@
 					var oc_img;
 					var oc_js;
 
-					oc_img="'.$this->tree_image_dir.'"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
+					oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
 
 					oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
@@ -65,7 +59,7 @@
 
 
 					row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\" border=0>";
-					row+="<img src='.$this->tree_image_dir.'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
+					row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
 					row+="</a>";
 
 					row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onClick=\""+oc_js+";return true;\">";
@@ -75,19 +69,19 @@
 					row+="&nbsp;&nbsp;<br>\n";
 
 					if (nf[ai].open){
-						newAst = newAst + "<img src='.$this->tree_image_dir.'"+(ai == nf.laenge?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
+						newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.laenge?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+=draw(nf[ai].id,newAst);
 					}
 			';
 
-			$out["group"]='
+		$out["group"] = '
 					var newAst = zweigEintrag;
 
 					var zusatz = (ai == nf.len) ? "end" : "";
 					var oc_img;
 					var oc_js;
 
-					oc_img="'.$this->tree_image_dir.'"+(nf[ai].open == 1?"zu":"auf")+zusatz+".gif";
+					oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 1?"zu":"auf")+zusatz+".gif";
 
 					if(nf[ai].disabled!=1) oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 					else oc_js="//";
@@ -103,7 +97,7 @@
 
 					if(nf[ai].disabled!=1) row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
 
-					row+="<img src='.$this->tree_image_dir.'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
+					row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
 
 					if(nf[ai].disabled!=1) row+="</a>";
 
@@ -117,7 +111,7 @@
 					row+="&nbsp;&nbsp;<br>\n";
 
 					if (nf[ai].open==1){
-						newAst = newAst + "<img src='.$this->tree_image_dir.'"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
+						newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
 						row+=draw(nf[ai].id,newAst);
 					}
 
@@ -126,11 +120,11 @@
 
 
 
- 			return $out;
- 		}
+		return $out;
+	}
 
-		function getJSOpenClose(){
- 			return '
+	function getJSOpenClose(){
+		return '
   			function openClose(id){
 				var sort="";
 				if(id=="") return;
@@ -138,7 +132,7 @@
 				var openstatus;
 
 				if(treeData[eintragsIndex].typ=="group"){
-					sort='.$this->topFrame.'.resize.left.treeheader.document.we_form.sort.value;
+					sort=' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.value;
 				}
 
 				if(treeData[eintragsIndex].open==0) openstatus=1;
@@ -153,20 +147,19 @@
 					id = id.replace(/\+/g,"%2B");
 					sort = sort.replace(/\+/g,"%2B");
 					if(sort!="")
-						'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+id+"&sort="+sort;
+						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
 					else
-						'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+id;
+						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
 				}else{
 					drawTree();
 				}
 				if(openstatus==1) treeData[eintragsIndex].loaded=1;
  			}
  			';
- 		}
+	}
 
-
- 		function getJSUpdateItem(){
- 			return '
+	function getJSUpdateItem(){
+		return '
  				function updateEntry(id,text){
         			var ai = 1;
         			while (ai <= treeData.len) {
@@ -180,99 +173,101 @@
         			drawTree();
  				}
 			';
- 		}
+	}
 
-		function getJSTreeFunctions(){
+	function getJSTreeFunctions(){
 
-			$out=weTree::getJSTreeFunctions();
+		$out = weTree::getJSTreeFunctions();
 
-			$out.='
+		$out.='
 				function doClick(id,typ){
-					var node='.$this->topFrame.'.get(id);
+					var node=' . $this->topFrame . '.get(id);
     				if(node.typ==\'item\')
-						'.$this->topFrame.'.we_cmd(\'edit_customer\',node.id,node.typ,node.table);
+						' . $this->topFrame . '.we_cmd(\'edit_customer\',node.id,node.typ,node.table);
 				}
-				'.$this->topFrame.'.loaded=1;
+				' . $this->topFrame . '.loaded=1;
 			';
-			return $out;
+		return $out;
+	}
 
-		}
+	function getJSStartTree(){
 
-		function getJSStartTree(){
-
-			return 'function startTree(){
-				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid=0";
+		return 'function startTree(){
+				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
 				drawTree();
 			}';
+	}
 
-		}
+	function getJSIncludeFunctions(){
 
-		function getJSIncludeFunctions(){
+		$out = weTree::getJSIncludeFunctions();
+		$out.="\n" . $this->getJSStartTree() . "\n";
 
-			$out=weTree::getJSIncludeFunctions();
-			$out.="\n".$this->getJSStartTree()."\n";
+		return $out;
+	}
 
-			return $out;
-		}
+	function getJSLoadTree($treeItems){
+		$days = array(
+			"Sunday" => 0,
+			"Monday" => 1,
+			"Tuesday" => 2,
+			"Wednesday" => 3,
+			"Thursday" => 4,
+			"Friday" => 5,
+			"Saturday" => 6
+		);
 
-		function getJSLoadTree($treeItems){
-			$days = array(
-				"Sunday"=>0,
-				"Monday"=>1,
-				"Tuesday"=>2,
-				"Wednesday"=>3,
-				"Thursday"=>4,
-				"Friday"=>5,
-				"Saturday"=>6
-			);
+		$months = array(
+			"January" => 0,
+			"February" => 1,
+			"March" => 2,
+			"April" => 3,
+			"May" => 4,
+			"June" => 5,
+			"July" => 6,
+			"August" => 7,
+			"September" => 8,
+			"October" => 9,
+			"November" => 10,
+			"December" => 11
+		);
 
-			$months= array(
-					"January"=>0,
-					"February"=>1,
-					"March"=>2,
-					"April"=>3,
-					"May"=>4,
-					"June"=>5,
-					"July"=>6,
-					"August"=>7,
-					"September"=>8,
-					"October"=>9,
-					"November"=>10,
-					"December"=>11
-			);
-
-			$js="";
-			$out="";
-			$js="var attribs=new Array();\n";
-			foreach($treeItems as $item){
-				$js.="		if(".$this->topFrame.".indexOfEntry('".$item["id"]."')<0){ \n";
-				foreach($item as $k=>$v){
-					if($k=="text") if(in_array($v,array_keys($days))) $v=g_l('date','[day][long]['.$days[$v].']');
-					if($k=="text") if(in_array($v,array_keys($months))) $v=g_l('date','[month][long]['.$months[$v].']');
-					$js.='
-							attribs["'.strtolower($k).'"]=\''.addslashes(stripslashes($v)).'\';
-					';
-				}
+		$js = "";
+		$out = "";
+		$js = "var attribs=new Array();\n";
+		foreach($treeItems as $item){
+			$js.="		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+			foreach($item as $k => $v){
+				if($k == "text")
+					if(in_array($v, array_keys($days)))
+						$v = g_l('date', '[day][long][' . $days[$v] . ']');
+				if($k == "text")
+					if(in_array($v, array_keys($months)))
+						$v = g_l('date', '[month][long][' . $months[$v] . ']');
 				$js.='
-						'.$this->topFrame.'.treeData.add(new '.$this->topFrame.'.node(attribs));
+							attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes($v)) . '\';
+					';
+			}
+			$js.='
+						' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
 				}
 				';
-			}
-			$js.=$this->topFrame.'.drawTree();';
-
-			return $js;
 		}
+		$js.=$this->topFrame . '.drawTree();';
 
-		function getJSShowSegment(){
- 			return '
+		return $js;
+	}
+
+	function getJSShowSegment(){
+		return '
  				function showSegment(){
 					var sort="";
-					parentnode='.$this->topFrame.'.get(this.parentid);
+					parentnode=' . $this->topFrame . '.get(this.parentid);
 					parentnode.clear();
-					sort='.$this->topFrame.'.resize.left.treeheader.document.we_form.sort.value;
+					sort=' . $this->topFrame . '.resize.left.treeheader.document.we_form.sort.value;
 					we_cmd("load",parentnode.id,this.offset,sort);
 				}
 			';
- 		}
-
 	}
+
+}

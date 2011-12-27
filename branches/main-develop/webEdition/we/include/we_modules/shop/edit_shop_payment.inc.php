@@ -124,7 +124,7 @@ if (defined("CUSTOMER_TABLE")) {
 	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldEmail', array_merge(array(""), $custfields), 1, $feldnamen[18]) );
 
-	array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode()));
+	array_push($Parts, array("html"	=> $_htmlTable->getHtml()));
 
 }
 
@@ -159,7 +159,7 @@ $_htmlTable->setCol($_row, 0, array('class'=>'defaultfont'), g_l('modules_shop',
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10,5) );
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('psb', $paypalPV, 1, $feldnamen[7]). '<span class="small">&nbsp'. g_l('modules_shop','[paypalSBTxt]').' </span>' );
 
-array_push($Parts, array("html"	=> $_htmlTable->getHtmlCode()));
+array_push($Parts, array("html"	=> $_htmlTable->getHtml()));
 
 // saferpay
 $_htmlTable = new we_htmlTable(	array(	'border'      => 0,
@@ -228,7 +228,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20,15));
 
-array_push($Parts, array("html" => $_htmlTable->getHtmlCode()));
+array_push($Parts, array("html" => $_htmlTable->getHtml()));
 
 $_buttons = we_button::position_yes_no_cancel(	we_button::create_button("save", "javascript:document.we_form.submit();"),
 "",

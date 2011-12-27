@@ -298,7 +298,6 @@
 		function getDocumentStatusInfo($docID,$table){
 			$doc=weWorkflowUtility::getWorkflowDocumentID($docID,$table);
 			if($doc){
-				include_once(WE_WORKFLOW_MODULE_DIR."weWorkflowView.php");
 				return weWorkflowView::getDocumentStatus($doc,700);
 			}
 		}
