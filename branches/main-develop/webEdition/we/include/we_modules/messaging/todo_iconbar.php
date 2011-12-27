@@ -39,7 +39,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 print STYLESHEET;
-echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js');
 ?>
 <script type="text/javascript"><!--
 

@@ -76,7 +76,7 @@ if ( window.addEventListener ) { // moz
 <div class=\"rssDiv\" id=\"m_" . $iCurrId . "_inline\" style=\"width: " . $iWidth . "px;height:287px ! important; overflow: auto;\"></div>
 ";
 
-$oTblCont = new we_htmlTable(array(
+$oTblCont = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmRss);

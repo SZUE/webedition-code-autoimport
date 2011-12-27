@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('CSS_DIR', '/webEdition/css/');
-define('SCRIPT_BUTTONS_ONLY', we_htmlElement::jsScript(JS_DIR . 'weButton.js'));
-define('STYLESHEET_BUTTONS_ONLY', we_htmlElement::cssLink(CSS_DIR . 'we_button.css'));
-define('STYLESHEET_SCRIPT', we_htmlElement::cssLink(CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"]).STYLESHEET_BUTTONS_ONLY);
+define('SCRIPT_BUTTONS_ONLY', we_html_element::jsScript(JS_DIR . 'weButton.js'));
+define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css'));
+define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"]).STYLESHEET_BUTTONS_ONLY);
 define('STYLESHEET', STYLESHEET_SCRIPT. SCRIPT_BUTTONS_ONLY);

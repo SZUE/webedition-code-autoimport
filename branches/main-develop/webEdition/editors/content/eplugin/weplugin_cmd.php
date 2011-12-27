@@ -57,7 +57,7 @@
 					$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				}
 
-				$out = we_htmlElement::jsElement('
+				$out = we_html_element::jsElement('
 					session = "'.session_id().'";
 					transaction = "'.$_we_transaction.'";
 					filename = "' . addslashes($_filename) . '";
@@ -94,7 +94,7 @@
 
 
 
-					$out = we_htmlElement::jsElement('
+					$out = we_html_element::jsElement('
 						session = "'.session_id().'";
 						transaction = "'.$_we_transaction.'";
 						siteurl="'.getServerUrl(). $_tmp_file . '";
@@ -116,7 +116,7 @@
 
 				$_we_transaction = isset($_REQUEST['we_cmd'][1]) ? $_REQUEST['we_cmd'][1] : '';
 
-				$out = we_htmlElement::jsElement('
+				$out = we_html_element::jsElement('
 					var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("'.$_we_transaction.'");
 					_EditorFrame.setEditorIsHot(true);
 					if (
@@ -179,11 +179,11 @@
 			}
 		}
 
-		print we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
-				$_meta_content_type = we_htmlElement::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
+		print we_html_element::htmlHtml(
+			we_html_element::htmlHead(
+				$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
 			).
-			we_htmlElement::htmlBody(array("bgcolor"=>"white","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0"),
+			we_html_element::htmlBody(array("bgcolor"=>"white","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0"),
 				$out
 			)
 		);

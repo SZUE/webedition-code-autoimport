@@ -433,14 +433,14 @@ class weWorkflowView extends weWorkflowBase{
 
 			$counter++;
 		}
-		$out  = we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/dom-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/datasource-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/animation-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js"));
-		$out .= we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/autocomplete-min.js"));
+		$out  = we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/dom-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/datasource-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/animation-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js"));
+		$out .= we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/autocomplete-min.js"));
 		$out .= $yuiSuggest->getYuiFiles();
 
 		$out .='	<table style="margin-right:30px;">
@@ -662,7 +662,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getPropertyJS(){
-	echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+	echo we_html_element::jsScript(JS_DIR.'windows.js');
 		?>
 		<script  type="text/javascript">
 			var loaded;
@@ -1095,7 +1095,7 @@ class weWorkflowView extends weWorkflowBase{
 						if($newone) print 'top.content.makeNewEntry("workflow_folder",'.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'",true,"folder","weWorkflowDef","'.$this->workflowDef->Status.'");';
 						else print 'top.content.updateEntry('.$this->workflowDef->ID.',0,"'.$this->workflowDef->Text.'","'.$this->workflowDef->Status.'");';
 						print $childs;
-						print 'top.content.resize.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_htmlElement::htmlB(g_l('modules_workflow','[workflow]'). ': ' . htmlspecialchars($this->workflowDef->Text)).'";';
+						print 'top.content.resize.right.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow','[workflow]'). ': ' . htmlspecialchars($this->workflowDef->Text)).'";';
 						print we_message_reporting::getShowMessageCall(g_l('modules_workflow','[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 						print '</script>';
 					}
@@ -1249,7 +1249,7 @@ class weWorkflowView extends weWorkflowBase{
 		$_space = 100;
 		$_parts = array();
 
-		$out = we_htmlElement::jsScript(JS_DIR.'tooltip.js');
+		$out = we_html_element::jsScript(JS_DIR.'tooltip.js');
 		$out .= '<script  type="text/javascript">function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
@@ -1438,7 +1438,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-		$out  = we_htmlElement::jsScript(JS_DIR.'windows.js').'
+		$out  = we_html_element::jsScript(JS_DIR.'windows.js').'
 		<script  type="text/javascript">function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);

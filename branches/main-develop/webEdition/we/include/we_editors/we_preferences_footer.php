@@ -129,9 +129,9 @@ END_OF_SCRIPT;
  * RENDER FILE
  *****************************************************************************/
 
-print STYLESHEET . we_htmlElement::jsElement($_javascript) . "</head>";
+print STYLESHEET . we_html_element::jsElement($_javascript) . "</head>";
 
 $okbut = we_button::create_button("save", "javascript:we_save();");
 $cancelbut = we_button::create_button("cancel", "javascript:top.close()");
 
-print we_htmlElement::htmlBody(array("class" => "weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");
+print we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");

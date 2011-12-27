@@ -28,10 +28,10 @@
 		function buildHeader(&$weGlossaryFrames, $we_tabs, $titlePre,$titlePost) {
 			$we_tabs->onResize();
 			$tabsHead = $we_tabs->getHeader();
-			//$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0 0 0 5px;" id="headrow">' .we_htmlElement::htmlB($title) . "</div>" . we_html_tools::getPixel(100,3) . $we_tabs->getHTML() . '</div>';
+			//$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0 0 0 5px;" id="headrow">' .we_html_element::htmlB($title) . "</div>" . we_html_tools::getPixel(100,3) . $we_tabs->getHTML() . '</div>';
 			$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100,3).'<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.str_replace(" ","&nbsp;",$titlePre).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.str_replace(" ","&nbsp;",$titlePost).'</b></span></nobr></div>'.we_html_tools::getPixel(100,3).$we_tabs->getHTML() . '</div>';
 
-			$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"),
+			$body=we_html_element::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"0","marginheight"=>"0","leftmargin"=>"0","topmargin"=>"0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"),
 				$bodyContent
 				//$table->getHtml() .
 				//$tabsBody
@@ -43,7 +43,7 @@
 			}
 			top.content.hloaded = 1;\n";
 
-	        $js = we_htmlElement::jsElement($_js);
+	        $js = we_html_element::jsElement($_js);
 
 			return $weGlossaryFrames->getHTMLDocument($body,$tabsHead.$js);
 
@@ -65,7 +65,7 @@
 
 			$hidden = $weGlossaryFrames->View->getCommonHiddens($_hidden);
 
-			$form = we_htmlElement::htmlForm($_form, $hidden . $content);
+			$form = we_html_element::htmlForm($_form, $hidden . $content);
 
 			$_body = array(
 				'class' => 'weEditorBody',
@@ -73,7 +73,7 @@
 				'onunload'		=>"doUnload()"
 			);
 
-			$body = we_htmlElement::htmlBody($_body, $form);
+			$body = we_html_element::htmlBody($_body, $form);
 
 			return $weGlossaryFrames->getHTMLDocument($body,$weGlossaryFrames->View->getJSProperty());
 
@@ -91,7 +91,7 @@
 				'topmargin'		=> '0',
 			);
 
-			$body = we_htmlElement::htmlBody($_body, $content);
+			$body = we_html_element::htmlBody($_body, $content);
 
 			return $weGlossaryFrames->getHTMLDocument($body);
 

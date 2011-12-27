@@ -139,7 +139,7 @@ class we_wysiwyg{
 			switch(WYSIWYG_TYPE){
 				case 'tinyMCE':
 					//FIXME: remove onchange - bad practise
-					return we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js').'
+					return we_html_element::jsScript(WEBEDITION_DIR.'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js').'
 <script  type="text/javascript">
 function tinyMCEchanged(inst){
 	if(inst.isDirty()){
@@ -308,11 +308,11 @@ function tinyMCEchanged(inst){
 
 				-->
 				</script>' .
-				we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').
+				we_html_element::jsScript(JS_DIR.'we_showMessage.js').
 					($GLOBALS['brDetect']->isSafari()
-						? we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwygSafari.js').
-					we_htmlElement::jsScript(JS_DIR.'weDOM_Safari.js')
-						  : we_htmlElement::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwyg.js'));
+						? we_html_element::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwygSafari.js').
+					we_html_element::jsScript(JS_DIR.'weDOM_Safari.js')
+						  : we_html_element::jsScript(WEBEDITION_DIR.'editors/content/wysiwyg/weWysiwyg.js'));
 		}
 	}
 
@@ -1048,7 +1048,6 @@ function tinyMCEchanged(inst){
 
 		list($tbwidth,$tbheight) = $this->getToolbarWidthAndHeight();
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$fns = "";
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",",";",$fn).",";

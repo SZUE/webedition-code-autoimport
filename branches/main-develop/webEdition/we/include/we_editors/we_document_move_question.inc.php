@@ -33,7 +33,7 @@ $cancelCmd = "self.close();opener.top.toggleBusy(0);";
 
 $alerttext = g_l('alert',"[document_move_warning]");
 
-echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js');
 ?>
 <script  type="text/javascript">
 <!--

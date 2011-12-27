@@ -83,7 +83,7 @@ class weGlossarySettingFrames {
 		return we_html_tools::htmlTop() .
 		STYLESHEET . '
 
-' . we_htmlElement::jsElement('', array('src' => JS_DIR . 'formFunctions.js')) . '
+' . we_html_element::jsElement('', array('src' => JS_DIR . 'formFunctions.js')) . '
 
 </head>
 <body class="weDialogBody">

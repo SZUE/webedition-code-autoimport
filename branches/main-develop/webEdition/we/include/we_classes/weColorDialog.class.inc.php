@@ -83,7 +83,7 @@ if(z != 0){
 	}
 
 	function getJs(){
-		return weDialog::getJs() . we_htmlElement::jsScript(JS_DIR . 'we_colors2.js') . '
+		return weDialog::getJs() . we_html_element::jsScript(JS_DIR . 'we_colors2.js') . '
 <script  type="text/javascript">
 
 function selectColor(c){

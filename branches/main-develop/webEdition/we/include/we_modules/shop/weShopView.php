@@ -48,7 +48,7 @@ class weShopView {
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = "") {
-		return we_htmlElement::htmlHidden(array("name"=>trim($name),"value"=>htmlspecialchars($value)));
+		return we_html_element::htmlHidden(array("name"=>trim($name),"value"=>htmlspecialchars($value)));
 	}
 
 
@@ -158,13 +158,13 @@ class weShopView {
 			}
 			';
 
-			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js);
+			return we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).we_html_element::jsElement($js);
 	}
 
 	function getJSProperty(){
 
 		$out="";
-		$out.=we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
+		$out.=we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
 
 		$js='
 			var loaded=0;
@@ -199,7 +199,7 @@ class weShopView {
 
 		';
 
-		$out.=we_htmlElement::jsElement($js);
+		$out.=we_html_element::jsElement($js);
 		return $out;
 	}
 
@@ -268,14 +268,14 @@ function processCommands() {
 			switch ($_REQUEST["cmd"]) {
 				case "new_raw":
 					$this->raw = new weShop();
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->raw->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 					');
 					break;
 				case "edit_raw":
 					$this->raw = new weShop($_REQUEST["cmdid"]);
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->raw->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 					');
@@ -284,7 +284,7 @@ function processCommands() {
 						$js="";
 
 						if($this->raw->filenameNotValid()){
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["we_filename_notValid"], we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							break;
@@ -315,7 +315,7 @@ function processCommands() {
 						} else {
 							$js=''.$this->topFrame.'.updateEntry('.$this->raw->ID.',"'.$tt.'");'."\n";
 						}
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["raw_saved_ok"], we_message_reporting::WE_MESSAGE_NOTICE)
 						);
@@ -327,7 +327,7 @@ function processCommands() {
 						$this->raw->delete();
 						$this->raw=new weShop();
 
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["raw_deleted"], we_message_reporting::WE_MESSAGE_NOTICE)
 						);

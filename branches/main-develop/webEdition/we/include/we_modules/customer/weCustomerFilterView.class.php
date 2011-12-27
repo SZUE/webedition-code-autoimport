@@ -429,7 +429,7 @@ EO_SCRIPT;
 		</table>
 		';
 
-		$js = we_htmlElement::jsElement('
+		$js = we_html_element::jsElement('
 			String.prototype.trim=function () {
    				return this.replace(/^\s+|\s+$/g,"");
 			}

@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weAbstractCustomerFilter.class.php");
 
 /**
  * Filter model class for navigation tool
@@ -143,7 +142,7 @@ class weNavigationCustomerFilter extends weAbstractCustomerFilter {
 		$this->_useDocumentFilter = $useDocumentFilter;
 	}
 
-	function getUseDocumentFilterFromRequest() {
+	static function getUseDocumentFilterFromRequest() {
 		return (isset($_REQUEST['wecf_useDocumentFilter']) && $_REQUEST['wecf_useDocumentFilter']);
 	}
 

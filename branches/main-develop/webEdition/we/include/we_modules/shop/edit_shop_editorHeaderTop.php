@@ -102,7 +102,7 @@ $we_tabs = new we_tabs();
    }
 $we_tabs->onResize();
 $tab_head = $we_tabs->getHeader();
-$tab_body = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB($headline).'</div>' . we_html_tools::getPixel(100,3) .
+$tab_body = '<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_html_element::htmlB($headline).'</div>' . we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
 			'</div>';
 ?>

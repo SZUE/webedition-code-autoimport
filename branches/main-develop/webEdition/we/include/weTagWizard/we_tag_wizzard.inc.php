@@ -25,9 +25,7 @@ $tagName = $_REQUEST['we_cmd'][1];
 $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 $GLOBALS['TagRefURLName'] = strtolower($tagName);
 
-//include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/we_tag.inc.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 if(function_exists('protect')){
 	we_html_tools::protect();
@@ -115,11 +113,11 @@ if($typeAttribute = $weTag->getTypeAttribute()){
 // print html header of page
 print we_html_tools::htmlTop();
 print STYLESHEET;
-print we_htmlElement::cssLink(CSS_DIR . 'tagWizard.css').
-	we_htmlElement::jsScript(JS_DIR.'windows.js').
-	we_htmlElement::jsScript(JS_DIR.'tagWizard.js').
-	we_htmlElement::jsScript(JS_DIR.'keyListener.js').
-	we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').'
+print we_html_element::cssLink(CSS_DIR . 'tagWizard.css').
+	we_html_element::jsScript(JS_DIR.'windows.js').
+	we_html_element::jsScript(JS_DIR.'tagWizard.js').
+	we_html_element::jsScript(JS_DIR.'keyListener.js').
+	we_html_element::jsScript(JS_DIR.'attachKeyListener.js').'
 <script type="text/javascript">
 
 function closeOnEscape() {
@@ -256,7 +254,7 @@ if($attributesCode){
 if($defaultValueCode){
 
 	$defaultValueCode = '<hr/><fieldset>
-		<div class="legend"><strong>' . we_htmlElement::htmlLabel(array('id' => 'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'), g_l('taged', '[defaultvalue]') . ':<br />') . "</strong></div>
+		<div class="legend"><strong>' . we_html_element::htmlLabel(array('id' => 'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'), g_l('taged', '[defaultvalue]') . ':<br />') . "</strong></div>
 		$defaultValueCode
 	</fieldset>";
 }

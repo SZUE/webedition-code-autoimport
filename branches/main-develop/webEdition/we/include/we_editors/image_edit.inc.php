@@ -41,7 +41,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	we_html_tools::htmlTop();
 
-	print we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').'
+	print we_html_element::jsScript(JS_DIR.'we_showMessage.js').'
 <script type="text/javascript"><!--
 
 document.onkeyup = function(e) {
@@ -87,9 +87,9 @@ document.onkeyup = function(e) {
 			$_dialog = "";
 	}
 
-	$_dialog = we_htmlElement::htmlForm(array("name"=>"we_form"),$_dialog);
+	$_dialog = we_html_element::htmlForm(array("name"=>"we_form"),$_dialog);
 
-	print we_htmlElement::htmlBody(array("class"=>"weDialogBody"), $_dialog) . "</html>";
+	print we_html_element::htmlBody(array("class"=>"weDialogBody"), $_dialog) . "</html>";
 
 }else{
 	exit("ERROR: Couldn't initialize we_imageDocument object");

@@ -242,7 +242,7 @@ class we_search extends DB_WE{
 
 	function getJSinWEforwardbackward($name){
 
-			return we_htmlElement::jsScript(JS_DIR.'tooltip.js').'
+			return we_html_element::jsScript(JS_DIR.'tooltip.js').'
 				<script  type="text/javascript"><!--
 				_EditorFrame.setEditorIsHot(false);
 

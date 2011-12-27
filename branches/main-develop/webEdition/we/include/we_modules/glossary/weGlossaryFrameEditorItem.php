@@ -76,10 +76,7 @@
 
 			$tabNr = isset($_REQUEST["tabnr"]) ? (($weGlossaryFrames->View->Glossary->IsFolder && $_REQUEST["tabnr"]!=1) ? 1 : $_REQUEST["tabnr"]) : 1;
 
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-			$out = we_htmlElement::jsElement('
+			$out = we_html_element::jsElement('
 				var table = "'.GLOSSARY_TABLE.'";
 
 				function toggle(id){
@@ -218,7 +215,7 @@
 				  . we_multiIconBox::getJs();
 
 
-			$out .= we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>($tabNr==1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox',"100%",weGlossaryFrameEditorItem::getHTMLTabProperties($weGlossaryFrames),30,'',2,g_l('modules_glossary','[show_extended_linkoptions]'),g_l('modules_glossary','[hide_extended_linkoptions]'),false));
+			$out .= we_html_element::htmlDiv(array('id' => 'tab1','style'=>($tabNr==1 ? '' : 'display: none')), we_multiIconBox::getHTML('weMultibox',"100%",weGlossaryFrameEditorItem::getHTMLTabProperties($weGlossaryFrames),30,'',2,g_l('modules_glossary','[show_extended_linkoptions]'),g_l('modules_glossary','[hide_extended_linkoptions]'),false));
 
 			$js = '
 				showType("'. $weGlossaryFrames->View->Glossary->Type .'");
@@ -234,7 +231,7 @@
 				';
 			}
 
-			$out .= we_htmlElement::jsElement($js);
+			$out .= we_html_element::jsElement($js);
 
 	        return weGlossaryFrameEditorItem::buildBody($weGlossaryFrames, $out);
 
@@ -251,7 +248,7 @@
 				'width'			=> '3000',
 			);
 
-			$table1 = new we_htmlTable($_table, 1, 1);
+			$table1 = new we_html_table($_table, 1, 1);
 			$table1->setCol(0, 0, array("nowrap"=>null,"valign"=>"top"), we_html_tools::getPixel(1600, 10));
 
 
@@ -270,7 +267,7 @@
 			$ShowUnpublish = $weGlossaryFrames->View->Glossary->ID==0?true:($weGlossaryFrames->View->Glossary->Published>0 ? true : false);
 
 			$col = 0;
-			$table2 = new we_htmlTable($_table, 1, 6);
+			$table2 = new we_html_table($_table, 1, 6);
 			$table2->setRow(0, array("valign"=>"middle"));
 			if($ShowUnpublish) {
 				$table2->setCol(0, $col++, array("nowrap"=>null), we_html_tools::getPixel(10, 20));
@@ -291,7 +288,7 @@
 					.	"if(top.publishWhenSave==1 && document.getElementById('publishWhenSave')) {\n"
 					.	"	document.getElementById('publishWhenSave').checked = true;\n"
 					.	"}";
-			$js = we_htmlElement::jsElement(
+			$js = we_html_element::jsElement(
 				$js .
 				"function we_save() {
 					top.content.we_cmd('save_glossary');
@@ -299,7 +296,7 @@
 				}
 				");
 
-			$form = we_htmlElement::htmlForm(array(),$table1->getHtml().$table2->getHtml().$js);
+			$form = we_html_element::htmlForm(array(),$table1->getHtml().$table2->getHtml().$js);
 
 	        return weGlossaryFrameEditorItem::buildFooter($weGlossaryFrames, $form);
 
@@ -319,8 +316,8 @@
 				'textreplacement' => $GLOBALS['l_glossary']['textreplacement'],
 			);
 
-			$hidden =	 	we_htmlElement::htmlHidden(array('name'=>'newone','value'=>($weGlossaryFrames->View->Glossary->ID==0 ? 1 : 0)))
-						.	we_htmlElement::htmlHidden(array('name'=>'Published','id'=>'Published','value'=>$weGlossaryFrames->View->Glossary->ID==0?1:($weGlossaryFrames->View->Glossary->Published>0 ? 1 : 0)));
+			$hidden =	 	we_html_element::htmlHidden(array('name'=>'newone','value'=>($weGlossaryFrames->View->Glossary->ID==0 ? 1 : 0)))
+						.	we_html_element::htmlHidden(array('name'=>'Published','id'=>'Published','value'=>$weGlossaryFrames->View->Glossary->ID==0?1:($weGlossaryFrames->View->Glossary->Published>0 ? 1 : 0)));
 
 			$_languages = $GLOBALS['weFrontendLanguages'];
 			$_languages = getWeFrontendLanguagesForBackend();
@@ -653,7 +650,7 @@
 				'',
 				'left',
 				'defaultfont',
-				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][InternLinkID]',"value"=>$_linkID)),
+				we_html_element::htmlHidden(array('name'=>'link[Attributes][InternLinkID]',"value"=>$_linkID)),
 				we_html_tools::getPixel(20,4),
 				$_button
 			);
@@ -762,7 +759,7 @@
 				'',
 				'left',
 				'defaultfont',
-				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][ObjectLinkID]',"value"=>$_linkID)),
+				we_html_element::htmlHidden(array('name'=>'link[Attributes][ObjectLinkID]',"value"=>$_linkID)),
 				we_html_tools::getPixel(20,4),
 				$_button
 			);
@@ -866,7 +863,7 @@
 				'',
 				'left',
 				'defaultfont',
-				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][CategoryLinkID]',"value"=>$_linkID)),
+				we_html_element::htmlHidden(array('name'=>'link[Attributes][CategoryLinkID]',"value"=>$_linkID)),
 				we_html_tools::getPixel(20,4),
 				$_button
 			);
@@ -883,7 +880,7 @@
 				'',
 				'left',
 				'defaultfont',
-				we_htmlElement::htmlHidden(array('name'=>'link[Attributes][CategoryInternLinkID]',"value"=>$_internLinkID)),
+				we_html_element::htmlHidden(array('name'=>'link[Attributes][CategoryInternLinkID]',"value"=>$_internLinkID)),
 				we_html_tools::getPixel(20,4),
 				$_button
 			);
@@ -1110,7 +1107,7 @@
 
 			$_input_width = 70;
 
-			$_popup = new we_htmlTable(array('cellpadding'=>'5','cellspacing'=>'0'),4,4);
+			$_popup = new we_html_table(array('cellpadding'=>'5','cellspacing'=>'0'),4,4);
 
 			$_popup->setCol(0,0,array('colspan'=>'2'),
 				we_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary','[popup_open]'))

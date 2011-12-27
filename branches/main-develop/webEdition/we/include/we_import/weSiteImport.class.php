@@ -183,11 +183,11 @@ class weSiteImport{
 				}
 				' . "\n";
 
-		$js = we_htmlElement::jsElement($js) . "\n";
-		$js .= we_htmlElement::jsElement("", array(
+		$js = we_html_element::jsElement($js) . "\n";
+		$js .= we_html_element::jsElement("", array(
 				"src" => JS_DIR . "windows.js"
 			)) . "\n";
-		$js .= we_htmlElement::jsElement(
+		$js .= we_html_element::jsElement(
 				"\n" . 'function doUnload() {
 					if (jsWindow_count) {
 						for (i = 0; i < jsWindow_count; i++) {
@@ -336,7 +336,7 @@ class weSiteImport{
 		parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFields ? "block" : "none") . '";
 ';
 
-		$js = we_htmlElement::jsElement($js) . "\n";
+		$js = we_html_element::jsElement($js) . "\n";
 		return $this->_getHtmlPage("", $js);
 	}
 
@@ -785,7 +785,7 @@ class weSiteImport{
 		$_attr = array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 		);
-		$_tableObj = new we_htmlTable($_attr, 6, 3);
+		$_tableObj = new we_html_table($_attr, 6, 3);
 
 		$_tableObj->setCol(0, 0, array(
 			"colspan" => "2"
@@ -817,7 +817,7 @@ class weSiteImport{
 			"space" => 120
 		));
 
-		$_tableObj = new we_htmlTable($_attr, 2, 2);
+		$_tableObj = new we_html_table($_attr, 2, 2);
 		$_tableObj->setCol(0, 0, null, $_depth);
 		$_tableObj->setCol(0, 1, null, $_maxSize);
 		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(220, 1));
@@ -935,7 +935,7 @@ class weSiteImport{
 		$content .= we_multiIconBox::getHTML(
 				"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos == "down"), g_l('siteimport', "[siteimport]")) . $this->_getHiddensHTML();
 
-		$content = we_htmlElement::htmlForm(
+		$content = we_html_element::htmlForm(
 				array(
 				"action" => WEBEDITION_DIR . "we_cmd.php",
 				"name" => "we_form",
@@ -943,7 +943,7 @@ class weSiteImport{
 				"target" => "siteimportcmd"
 				), $content);
 
-		$body = we_htmlElement::htmlBody(array(
+		$body = we_html_element::htmlBody(array(
 				"class" => "weDialogBody", "onunload" => "doUnload();"
 				), $content);
 
@@ -985,7 +985,7 @@ class weSiteImport{
 		$js = "function back() {\n" . "	top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=siteImport';\n" . "}\n\n" .
 			"function next() {\n" . "	var testvalue = 0;;\n" . "	if(!top.siteimportcontent.document.we_form.from.value  || top.siteimportcontent.document.we_form.from.value=='/'){\n" . "		testvalue += 1;\n" . "	}\n" . "	if(top.siteimportcontent.document.we_form.to.value == 0 || top.siteimportcontent.document.we_form.to.value == ''){\n" . "		testvalue += 2;\n" . "	}\n" . "	switch(testvalue){\n" . "		case 0:\n" . "			top.siteimportcontent.document.we_form.submit()\n" . "			break;\n" . "		case 1:\n" . "			if(confirm('" . g_l('importFiles', "[root_dir_1]") . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		case 2:\n" . "			if(confirm('" . g_l('importFiles', "[root_dir_2]") . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		case 3:\n" . "			if(confirm('" . g_l('importFiles', "[root_dir_3]") . "')){\n" . "				top.siteimportcontent.document.we_form.submit()\n" . "			}\n" . "			break;\n" . "		default:\n" . "	}\n" . "}\n\n";
 
-		$js = we_htmlElement::jsElement($js);
+		$js = we_html_element::jsElement($js);
 
 		$prevButton = we_button::create_button("back", "javascript:back();", true, 100, 22, "", "", false, false);
 		$nextButton = we_button::create_button("next", "javascript:next();", true, 100, 22, "", "", false, false);
@@ -999,7 +999,7 @@ class weSiteImport{
 		$pb->addText("&nbsp;", 0, "progressTxt");
 		print $pb->getJS();
 
-		$table = new we_htmlTable(array(
+		$table = new we_html_table(array(
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
 				), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
@@ -1007,7 +1007,7 @@ class weSiteImport{
 			"align" => "right"
 			), we_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
 		$content = $table->getHtml();
-		$body = we_htmlElement::htmlBody($bodyAttribs, $content);
+		$body = we_html_element::htmlBody($bodyAttribs, $content);
 		return $this->_getHtmlPage($body, $js);
 	}
 
@@ -2036,13 +2036,13 @@ class weSiteImport{
 	 * @return string
 	 */
 	function _getHiddensHTML(){
-		$content = we_htmlElement::htmlHidden(array(
+		$content = we_html_element::htmlHidden(array(
 				"name" => "we_cmd[0]", "value" => "siteImport"
 			));
-		$content .= we_htmlElement::htmlHidden(array(
+		$content .= we_html_element::htmlHidden(array(
 				"name" => "cmd", "value" => "buttons"
 			));
-		$content .= we_htmlElement::htmlHidden(array(
+		$content .= we_html_element::htmlHidden(array(
 				"name" => "step", "value" => "1"
 			));
 		return $content;
@@ -2050,7 +2050,7 @@ class weSiteImport{
 
 	function _getFrameset(){
 
-		$frameset = new we_htmlFrameset(array(
+		$frameset = new we_html_frameset(array(
 				"framespacing" => "0", "border" => "0", "frameborder" => "no"
 			));
 		$noframeset = new we_baseElement("noframes");
@@ -2083,7 +2083,7 @@ class weSiteImport{
 
 	function _getHtmlPage($body, $js = ""){
 		$head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . $js . "\n";
-		return we_htmlElement::htmlHtml(we_htmlElement::htmlHead($head) . $body);
+		return we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 	}
 
 }

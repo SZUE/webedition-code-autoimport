@@ -229,8 +229,8 @@ class we_fileselector{
 	function printFramesetHTML(){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
 		we_html_tools::htmlTop();
-		print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
-		print we_htmlElement::jsElement("var weSelectorWindow = true;");
+		print we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js"));
+		print we_html_element::jsElement("var weSelectorWindow = true;");
 		$this->printFramesetJavaScriptIncludes();
 		print $this->getFramesetJavaScriptDef();
 		print $this->getJS_keyListenerFunctions();
@@ -739,7 +739,7 @@ function enableRootDirButs(){
 			}
 
 			function printHeaderJSIncluddes(){
-				print we_htmlElement::jsScript(JS_DIR . 'images.js');
+				print we_html_element::jsScript(JS_DIR . 'images.js');
 			}
 
 			function printHeaderJSDef(){

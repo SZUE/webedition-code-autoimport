@@ -28,7 +28,7 @@
  *
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 $searchButton = we_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate');
 if (isset($GLOBALS['LU_Variables']['clientSubVersion']) &&  $GLOBALS['LU_Variables']['clientSubVersion'] !='0000'){
 	$clientSubVersion = ' (SVN-Revision: '.$GLOBALS['LU_Variables']['clientSubVersion'].')';

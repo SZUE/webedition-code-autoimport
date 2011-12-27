@@ -382,7 +382,7 @@ class weNewsletterView {
 			}
 		}
 
-		return we_htmlElement::jsElement('
+		return we_html_element::jsElement('
 			var get_focus = 1;
 			var hot = 0;
 
@@ -610,12 +610,12 @@ class weNewsletterView {
 
 		';
 
-		return we_htmlElement::jsElement($js);
+		return we_html_element::jsElement($js);
 
 	}
 
 	function getJSCmd() {
-		return we_htmlElement::jsElement('
+		return we_html_element::jsElement('
 			function submitForm() {
 				var f = self.document.we_form;
 
@@ -632,10 +632,10 @@ class weNewsletterView {
 		} else {
 			$_mailCheck = "true";
 		}
-		$js =we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-		$js.=we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/we/weValidate.js"));
+		$js =we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+		$js.=we_html_element::jsElement("",array("src"=>JS_DIR."libs/we/weValidate.js"));
 
-		$js.=we_htmlElement::jsElement('
+		$js.=we_html_element::jsElement('
 
 			function doUnload() {
 				if (!!jsWindow_count) {
@@ -1312,7 +1312,7 @@ class weNewsletterView {
 
 
 		');
-		//$js.=we_htmlElement::jsElement(we_button::create_state_changer(false));
+		//$js.=we_html_element::jsElement(we_button::create_state_changer(false));
 
 		return $js;
 	}
@@ -1328,7 +1328,7 @@ class weNewsletterView {
 					$this->newsletter->Test = $this->settings["test_account"];
 					$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 							top.content.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader'.(isset($_REQUEST["page"]) ? ("&page=".$_REQUEST["page"]) : ("")).'";
 							top.content.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 					');
@@ -1338,7 +1338,7 @@ class weNewsletterView {
 					$this->newsletter = new weNewsletter();
 					$this->newsletter->IsFolder = "1";
 					$this->newsletter->Text = g_l('modules_newsletter','[new_newsletter_group]');
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 							top.content.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&group=1";
 							top.content.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter&group=1";
 					');
@@ -1419,7 +1419,7 @@ class weNewsletterView {
 					break;
 
 				case "reload":
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 							top.content.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&page='.$this->page.'&txt='.urlencode($this->newsletter->Text).($this->newsletter->IsFolder ? '&group=1' : '').'";
 							top.content.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter'.($this->newsletter->IsFolder ? '&group=1' : '').'";
 					');
@@ -1449,7 +1449,7 @@ class weNewsletterView {
 
 
 						if($this->newsletter->filenameNotValid()){
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
@@ -1458,7 +1458,7 @@ class weNewsletterView {
 					    if ($this->newsletter->ParentID>0) {
 					    	$weAcResult = $weAcQuery->getItemById($this->newsletter->ParentID,NEWSLETTER_TABLE,array("IsFolder"), false);
 					    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==0) {
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 								return;
@@ -1487,7 +1487,7 @@ class weNewsletterView {
 							    	$weAcResult = $weAcQuery->getItemById($_REQUEST['block'.$i."_LinkID"],$acTable,array("IsFolder"));
 
 							    	if (!is_array($weAcResult) || count($weAcResult)<1 || $weAcResult[0]['IsFolder']==1) {
-										print we_htmlElement::jsElement(
+										print we_html_element::jsElement(
 											we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter','[blockFieldError]'),($i+1),$acErrorField), we_message_reporting::WE_MESSAGE_ERROR)
 										);
 										return;
@@ -1495,7 +1495,7 @@ class weNewsletterView {
 							    	if(!empty($_REQUEST['block'.$i."_Field"]) && $_REQUEST['block'.$i."_Field"]>0) {
 								    	$weAcResult = $weAcQuery->getItemById($_REQUEST['block'.$i."_Field"],TEMPLATES_TABLE,array("IsFolder"));
 								    	if (!is_array($weAcResult) || $weAcResult[0]['IsFolder']==1) {
-											print we_htmlElement::jsElement(
+											print we_html_element::jsElement(
 												we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter','[blockFieldError]'),$i,g_l('modules_newsletter','[block_template]')), we_message_reporting::WE_MESSAGE_ERROR)
 											);
 											return;
@@ -1513,8 +1513,8 @@ class weNewsletterView {
 							$h=getHash("SELECT Step,Offset FROM ".NEWSLETTER_TABLE." WHERE ID=".$this->newsletter->ID,$this->db);
 
 							if ($h["Step"]!=0 || $h["Offset"]!=0) {
-								print we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-								print we_htmlElement::jsElement('
+								print we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+								print we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
 										new jsWindow("'.$this->frameset.'?pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
@@ -1552,24 +1552,24 @@ class weNewsletterView {
 						}
 
 						if (!we_hasPerm("EDIT_NEWSLETTER") && !we_hasPerm("NEW_NEWSLETTER")) {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
 						} else if ($newone && !we_hasPerm("NEW_NEWSLETTER")) {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
 						} else if (!$newone && !we_hasPerm("EDIT_NEWSLETTER")) {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
 						} else {
 
 							if ($double) {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[double_name]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
@@ -1612,7 +1612,7 @@ class weNewsletterView {
 										top.content.hot=0;
 								';
 							}
-							print we_htmlElement::jsElement($jsmess);
+							print we_html_element::jsElement($jsmess);
 						}
 					}
 					break;
@@ -1620,13 +1620,13 @@ class weNewsletterView {
 				case "delete_newsletter":
 					if (isset($_REQUEST["nid"])){
 						if (!$_REQUEST["nid"]){
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							return;
 						}
 						if (!we_hasPerm("DELETE_NEWSLETTER")) {
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 							return;
@@ -1635,21 +1635,21 @@ class weNewsletterView {
 
 							if ($this->newsletter->delete()) {
 								$this->newsletter = new weNewsletter();
-								print we_htmlElement::jsElement('
+								print we_html_element::jsElement('
 										top.content.deleteEntry('.$_REQUEST["nid"].',"file");
 										setTimeout(\'' . we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? g_l('modules_newsletter','[delete_group_ok]') : g_l('modules_newsletter','[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE ) . '\',500);
 								');
 								$_REQUEST['home'] = '1';
 								$_REQUEST['pnt'] = 'edbody';
 							} else {
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? g_l('modules_newsletter','[delete_group_nok]') : g_l('modules_newsletter','[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR )
 								);
 							}
 						}
 					}
  					else {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall( ($_REQUEST["IsFolder"]==1 ? g_l('modules_newsletter','[delete_group_nok]') : g_l('modules_newsletter','[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR )
 							);
 					}
@@ -1690,7 +1690,7 @@ class weNewsletterView {
 				case "addGroup":
 					$this->newsletter->addGroup();
 					$cg=count($this->newsletter->groups);
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								var edf=top.content.resize.right.editor.edfooter;
 								edf.document.we_form.gview.length = 0;
 								edf.populateGroups();
@@ -1700,7 +1700,7 @@ class weNewsletterView {
 				case "delGroup":
 					if (isset($_REQUEST["ngroup"])) {
 						$this->newsletter->removeGroup($_REQUEST["ngroup"]);
-						print we_htmlElement::jsElement('
+						print we_html_element::jsElement('
 								var edf=top.content.resize.right.editor.edfooter;
 								edf.document.we_form.gview.length = 0;
 								edf.populateGroups();
@@ -1710,13 +1710,13 @@ class weNewsletterView {
 
 				case "send_test":
 					if (!we_hasPerm("SEND_TEST_EMAIL")) {
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_newsletter','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
 					}
 					$this->sendTestMail($_REQUEST["gview"],$_REQUEST["hm"]);
-					print we_htmlElement::jsElement(
+					print we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter','[test_mail_sent]'),$this->newsletter->Test), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
 					break;
@@ -1827,7 +1827,7 @@ class weNewsletterView {
 						}
 
 						if(strpos($filepath,'..')!==false){
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 						}
@@ -1871,7 +1871,7 @@ class weNewsletterView {
 
 							}
 							else {
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 							}
@@ -1889,8 +1889,8 @@ class weNewsletterView {
 							$fname=$_REQUEST["csv_dir".$exportno]."/emails_export_".time().".csv";
 						}
 						weFile::save($_SERVER['DOCUMENT_ROOT'].$fname,$this->newsletter->groups[$exportno]->Emails);
-						print we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
-						print we_htmlElement::jsElement('
+						print we_html_element::jsElement('',array("src"=>JS_DIR."windows.js"));
+						print we_html_element::jsElement('
 							new jsWindow("'.$this->frameset.'?pnt=export_csv_mes&lnk='.$fname.'","edit_email",-1,-1,440,250,true,true,true,true);
 						');
 					}
@@ -1898,7 +1898,7 @@ class weNewsletterView {
 
 				case "save_black":
 					$this->saveSetting("black_list",$this->settings["black_list"]);
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 							self.close();
 					');
 				break;
@@ -1916,13 +1916,13 @@ class weNewsletterView {
 
 						if (move_uploaded_file($we_File["tmp_name"],$tempName)) {
 							$tempName = str_replace($_SERVER['DOCUMENT_ROOT'],"",$tempName);
-							print we_htmlElement::jsElement('
+							print we_html_element::jsElement('
 									opener.document.we_form.csv_file'.$group.'.value="'.$tempName.'";
 									opener.we_cmd("import_csv");
 									self.close();
 							');
 						} else {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 						}
@@ -1937,14 +1937,14 @@ class weNewsletterView {
 
 						if (move_uploaded_file($we_File["tmp_name"],$tempName)) {
 							$tempName = str_replace($_SERVER['DOCUMENT_ROOT'],"",$tempName);
-							print we_htmlElement::jsElement('
+							print we_html_element::jsElement('
 								opener.document.we_form.csv_file.value="'.$tempName.'";
 								opener.document.we_form.sib.value=0;
 								opener.we_cmd("import_black");
 								self.close();
 							');
 						} else {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall( g_l('modules_newsletter','[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 						}
@@ -1998,8 +1998,8 @@ class weNewsletterView {
 							$url='url ="'.$this->frameset.'?pnt=send&nid='.$this->newsletter->ID.'&test=1";';
 						else $url='url ="'.$this->frameset.'?pnt=send&nid='.$this->newsletter->ID.'";';
 
-						print we_htmlElement::jsElement('',array("src"=>JS_DIR."windows.js"));
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement('',array("src"=>JS_DIR."windows.js"));
+						print we_html_element::jsElement(
 							((trim($this->newsletter->Subject)=="") ? 'if(confirm("'.g_l('modules_newsletter','[no_subject]').'")){' : '').'
 							'.$url.'
 							new jsWindow(url,"newsletter_send",-1,-1,600,400,true,true,true,false);

@@ -53,7 +53,7 @@ if(isset($_REQUEST['tool'])) {
 
 we_html_tools::htmlTop($title);
 
-print we_htmlElement::jsElement('
+print we_html_element::jsElement('
 
 	top.weToolWindow = true;
 
@@ -124,10 +124,10 @@ if($_REQUEST['tool']=="weSearch") {
 	}
 }
 
-print we_htmlElement::jsScript(JS_DIR . "keyListener.js");
-print we_htmlElement::jsScript(JS_DIR . "libs/yui/yahoo-min.js") ;
-print we_htmlElement::jsScript(JS_DIR . "libs/yui/event-min.js") ;
-print we_htmlElement::jsScript(JS_DIR . "libs/yui/connection-min.js") ;
+print we_html_element::jsScript(JS_DIR . "keyListener.js");
+print we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") ;
+print we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") ;
+print we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") ;
 
 ?>
 </head>

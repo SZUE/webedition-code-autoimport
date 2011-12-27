@@ -170,7 +170,7 @@ array_push($parts,array("headline"=>"","html"=>g_l('newFile',"[caseFileExists]")
 we_forms::radiobutton("no", false, "overwrite", g_l('newFile',"[renameFile]")),"space"=>0));
 
 if($we_ContentType == "image/*"){
-	$_thumbnails = new we_htmlSelect(array("multiple" => "multiple", "name" => "Thumbnails[]", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 330px;"));
+	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails[]", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 330px;"));
 	$DB_WE->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 
 

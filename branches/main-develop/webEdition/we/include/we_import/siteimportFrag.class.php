@@ -69,7 +69,7 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . html
 	}
 
 	function printHeader(){
-		print "<html>\n" . we_htmlElement::htmlHead(WE_DEFAULT_HEAD . STYLESHEET);
+		print "<html>\n" . we_html_element::htmlHead(WE_DEFAULT_HEAD . STYLESHEET);
 	}
 
 }

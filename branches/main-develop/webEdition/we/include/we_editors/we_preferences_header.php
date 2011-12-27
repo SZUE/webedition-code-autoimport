@@ -102,6 +102,6 @@ $tab_js = $we_tabs->getJS();
 $bodyContent = '<div id="main" >' . $we_tabs->getHTML() . '</div>';
 
 print $tab_head . '</head>';
-print we_htmlElement::htmlBody(array("bgcolor" => "#ffffff", "background" => IMAGE_DIR . "backgrounds/header.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"), $bodyContent);
+print we_html_element::htmlBody(array("bgcolor" => "#ffffff", "background" => IMAGE_DIR . "backgrounds/header.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload"=>"setFrameSize()", "onresize"=>"setFrameSize()"), $bodyContent);
 
 ?></html>

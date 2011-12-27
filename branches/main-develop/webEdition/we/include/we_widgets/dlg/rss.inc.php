@@ -313,7 +313,7 @@ function exit_close(){
 function htmlClipElement($smalltext, $text, $content)
 {
 	$unique = md5(uniqid(microtime()));
-	$js = we_htmlElement::jsElement(
+	$js = we_html_element::jsElement(
 			'
 		var state_' . $unique . '=0;
 		function clip_' . $unique . '(){
@@ -325,22 +325,22 @@ function htmlClipElement($smalltext, $text, $content)
 			if(state_' . $unique . '==0){
 				oText.innerHTML=text_' . $unique . ';
 				oDiv.style.display=\'block\';
-				oBtn.innerHTML=\'' . we_htmlElement::htmlA(
+				oBtn.innerHTML=\'' . we_html_element::htmlA(
 					array(
 						"href" => "javascript:clip_" . $unique . "();"
 					),
-					we_htmlElement::htmlImg(array(
+					we_html_element::htmlImg(array(
 						"src" => IMAGE_DIR . "button/btn_direction_down.gif", "border" => 0
 					))) . '\';
 				state_' . $unique . '=1;
 			}else{
 				oText.innerHTML=textsmall_' . $unique . ';
 				oDiv.style.display=\'none\';
-				oBtn.innerHTML=\'' . we_htmlElement::htmlA(
+				oBtn.innerHTML=\'' . we_html_element::htmlA(
 					array(
 						"href" => "javascript:clip_" . $unique . "();"
 					),
-					we_htmlElement::htmlImg(array(
+					we_html_element::htmlImg(array(
 						"src" => IMAGE_DIR . "button/btn_direction_right.gif", "border" => 0
 					))) . '\';
 				state_' . $unique . '=0;
@@ -348,7 +348,7 @@ function htmlClipElement($smalltext, $text, $content)
 		}
 	');
 
-	$oClip = new we_htmlTable(array(
+	$oClip = new we_html_table(array(
 		"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 	), 1, 3);
 	$oClip->setCol(
@@ -357,9 +357,9 @@ function htmlClipElement($smalltext, $text, $content)
 			array(
 				"width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique
 			),
-			we_htmlElement::htmlA(array(
+			we_html_element::htmlA(array(
 				"href" => "javascript:clip_" . $unique . "();"
-			), we_htmlElement::htmlImg(array(
+			), we_html_element::htmlImg(array(
 				"src" => IMAGE_DIR . "button/btn_direction_right.gif", "border" => 0
 			))));
 	$oClip->setCol(0, 1, array(
@@ -369,7 +369,7 @@ function htmlClipElement($smalltext, $text, $content)
 			0,
 			2,
 			null,
-			we_htmlElement::htmlSpan(
+			we_html_element::htmlSpan(
 					array(
 
 							"id" => $unique,
@@ -379,9 +379,9 @@ function htmlClipElement($smalltext, $text, $content)
 					),
 					addslashes($smalltext)));
 
-	return $js . $oClip->getHTMLCode() . we_htmlElement::htmlDiv(array(
+	return $js . $oClip->getHTMLCode() . we_html_element::htmlDiv(array(
 		"id" => "div_" . $unique, "style" => "display:none;"
-	), we_html_tools::getPixel(1, 15) . we_htmlElement::htmlBr() . $content);
+	), we_html_tools::getPixel(1, 15) . we_html_element::htmlBr() . $content);
 }
 
 $oIptUri = we_html_tools::htmlFormElementTable(
@@ -390,7 +390,7 @@ $oIptUri = we_html_tools::htmlFormElementTable(
 		"left",
 		"defaultfont");
 
-$oSctRss = new we_htmlSelect(
+$oSctRss = new we_html_select(
 		array(
 			"name" => "sct_rss", "size" => "1", "class" => "defaultfont", "onChange" => "onChangeSctRss(this);"
 		));
@@ -455,7 +455,7 @@ $btnDeleteTopRssFeed = we_button::create_button(
 		false,
 		false);
 
-$oBtnNewFeed = new we_htmlTable(array(
+$oBtnNewFeed = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
@@ -464,20 +464,20 @@ $oBtnNewFeed->setCol(0, 2, null, $btnOverwriteTopRssFeed);
 $oBtnNewFeed->setCol(0, 3, null, we_html_tools::getPixel(10, 1));
 $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
-$oNewFeed = new we_htmlTable(array(
+$oNewFeed = new we_html_table(array(
 	"width" => 390, "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 3, 1);
 $oNewFeed->setCol(
 		0,
 		0,
 		null,
-		$oRemTopFeeds . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oIptNewTitle . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oIptNewUri);
+		$oRemTopFeeds . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oIptNewTitle . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oIptNewUri);
 $oNewFeed->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 $oNewFeed->setCol(2, 0, array(
 	"align" => "right"
 ), $oBtnNewFeed->getHTMLCode());
 
-$rssUri = $oIptUri . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oTblSctRss . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . htmlClipElement(
+$rssUri = $oIptUri . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oTblSctRss . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit','[show_edit_toprssfeeds]'),
 		g_l('cockpit','[hide_edit_toprssfeeds]'),
 		$oNewFeed->getHTMLCode());
@@ -555,7 +555,7 @@ $oChbxContCategory = we_forms::checkbox(
 		$description = "",
 		$type = 0,
 		$width = 0);
-$oSctNumEntries = new we_htmlSelect(array(
+$oSctNumEntries = new we_html_select(array(
 	"name" => "sct_conf", "size" => "1", "class" => "defaultfont"
 ));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit','[no]'));
@@ -566,7 +566,7 @@ for ($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++) {
 	}
 }
 
-$oRssContR = new we_htmlTable(array(
+$oRssContR = new we_html_table(array(
 	"height" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 2, 3);
 $oRssContR->setCol(0, 0, array(
@@ -580,7 +580,7 @@ $oRssContR->setCol(1, 0, array(
 	"colspan" => 3, "valign" => "bottom"
 ), $oChbxContPubDate . $oChbxContCategory);
 
-$oSelectRssCont = new we_htmlTable(array(
+$oSelectRssCont = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 2);
 $oSelectRssCont->setCol(0, 0, array(
@@ -590,7 +590,7 @@ $oSelectRssCont->setCol(0, 1, array(
 	"height" => "100%", "valign" => "top"
 ), $oRssContR->getHTMLCode());
 
-$rssConf = $oRemRssConf . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . htmlClipElement(
+$rssConf = $oRemRssConf . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit','[show_select_rsscontent]'),
 		g_l('cockpit','[hide_select_rsscontent]'),
 		$oSelectRssCont->getHTMLCode());
@@ -693,7 +693,7 @@ $oRdoTitle[1] = we_forms::radiobutton(
 		$type = 0,
 		$onMouseUp = "");
 
-$oTitleTb = new we_htmlTable(array(
+$oTitleTb = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 2, 1);
 $oTitleTb->setCol(0, 0, array(
@@ -703,7 +703,7 @@ $oTitleTb->setCol(1, 0, array(
 	"width" => 165
 ), $oRdoTitle[1]);
 
-$oEditTb = new we_htmlTable(array(
+$oEditTb = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 6, 2);
 $oEditTb->setCol(0, 0, array(
@@ -728,7 +728,7 @@ $oEditTb->setCol(5, 0, array(
 	"width" => 165
 ), $oChbxTb[5]);
 
-$rssLabel = $oRemLabel . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . htmlClipElement(
+$rssLabel = $oRemLabel . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit','[show_edit_titlebar]'),
 		g_l('cockpit','[hide_edit_titlebar]'),
 		$oEditTb->getHTMLCode());
@@ -766,18 +766,18 @@ $sTblWidget = we_multiIconBox::getHTML(
 		439);
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[rss_feed]')) . STYLESHEET . we_htmlElement::cssElement(
-								"select{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[rss_feed]')) . STYLESHEET . we_html_element::cssElement(
+								"select{border:#AAAAAA solid 1px}") . we_html_element::jsElement(
 								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
-								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
+								)) . we_html_element::jsElement(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),
-						we_htmlElement::htmlForm("", $sTblWidget)));
+						we_html_element::htmlForm("", $sTblWidget)));
 
 ?>

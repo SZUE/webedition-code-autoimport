@@ -25,7 +25,6 @@
 
 if (defined("MESSAGING_SYSTEM")){
 	include_once(WE_MESSAGING_MODULE_DIR."we_message.inc.php");
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 	$_SESSION['we_data'][$_transact] = array();
 
@@ -47,6 +46,6 @@ if (defined("MESSAGING_SYSTEM")){
 
 	$msg_cmd = "javascript:top.we_cmd('messaging_start','message');";
 	$todo_cmd = "javascript:top.we_cmd('messaging_start','todo');";
-	$msg_button = we_htmlElement::htmlA(array("href"=>$msg_cmd),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/message.gif',"width"=>34,"height"=>34,"border"=>0)));
-	$todo_button = we_htmlElement::htmlA(array("href"=>$todo_cmd),we_htmlElement::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/todo.gif',"width"=>34,"height"=>34,"border"=>0)));
+	$msg_button = we_html_element::htmlA(array("href"=>$msg_cmd),we_html_element::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/message.gif',"width"=>34,"height"=>34,"border"=>0)));
+	$todo_button = we_html_element::htmlA(array("href"=>$todo_cmd),we_html_element::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/todo.gif',"width"=>34,"height"=>34,"border"=>0)));
 }

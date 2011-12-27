@@ -35,9 +35,9 @@ class weModuleBannerFrames{
 	}
 
 	function getJSTreeCode(){
-echo we_htmlElement::jsScript(JS_DIR.'images.js').
-	we_htmlElement::jsScript(JS_DIR.'windows.js').
-	we_htmlElement::jsScript(JS_DIR.'md5.js');
+echo we_html_element::jsScript(JS_DIR.'images.js').
+	we_html_element::jsScript(JS_DIR.'windows.js').
+	we_html_element::jsScript(JS_DIR.'md5.js');
 		?>
 <script  type="text/javascript">
 

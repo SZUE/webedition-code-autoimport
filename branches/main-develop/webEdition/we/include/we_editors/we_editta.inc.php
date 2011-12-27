@@ -66,7 +66,7 @@ if(isset($_REQUEST["ok"])){
 			.	'</script>';
 }
 
-print "<html>\n".we_htmlElement::htmlHead(WE_DEFAULT_HEAD.$js.STYLESHEET);
+print "<html>\n".we_html_element::htmlHead(WE_DEFAULT_HEAD.$js.STYLESHEET);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="'.$_SERVER['SCRIPT_NAME'].'"><input type="hidden" name="ok" value="1" />';
 

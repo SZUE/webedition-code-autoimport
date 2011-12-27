@@ -115,9 +115,9 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 			}
 		}
 		';
-	$js = we_htmlElement::jsElement("", array(
+	$js = we_html_element::jsElement("", array(
 			"src" => JS_DIR . "windows.js"
-		)) . we_htmlElement::jsElement($js);
+		)) . we_html_element::jsElement($js);
 
 	$yes_button = we_button::create_button("ok", "form:we_form");
 	$cancel_button = we_button::create_button("cancel", "javascript:self.close();");
@@ -143,14 +143,14 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 		$content .= we_forms::radiobutton(
 				"nothing", 1, "OverwriteObjects", g_l('copyFolder', "[sameName_nothing]"));
 
-		$content .= we_htmlElement::htmlHidden(
+		$content .= we_html_element::htmlHidden(
 				array(
 					"name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0]
-			)) . we_htmlElement::htmlHidden(array(
+			)) . we_html_element::htmlHidden(array(
 				"name" => "we_cmd[1]", "value" => $_REQUEST['we_cmd'][1]
-			)) . we_htmlElement::htmlHidden(array(
+			)) . we_html_element::htmlHidden(array(
 				"name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2]
-			)) . (isset($_REQUEST['we_cmd'][4]) ? we_htmlElement::htmlHidden(array(
+			)) . (isset($_REQUEST['we_cmd'][4]) ? we_html_element::htmlHidden(array(
 					"name" => "we_cmd[4]", "value" => $_REQUEST['we_cmd'][4]
 				)) : '');
 	} else{
@@ -164,14 +164,14 @@ if(isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3]){
 					</td></tr>
 					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 					<tr><td colspan="2">' . copyFolderFrag::formCreateTemplateDirChooser() . '</td></tr>
-					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_htmlElement::htmlBr() . copyFolderFrag::formCreateCategoryChooser() . we_htmlElement::htmlHidden(
+					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr() . copyFolderFrag::formCreateCategoryChooser() . we_html_element::htmlHidden(
 				array(
 					"name" => "we_cmd[0]", "value" => $_REQUEST['we_cmd'][0]
-			)) . we_htmlElement::htmlHidden(array(
+			)) . we_html_element::htmlHidden(array(
 				"name" => "we_cmd[1]", "value" => $_REQUEST['we_cmd'][1]
-			)) . we_htmlElement::htmlHidden(array(
+			)) . we_html_element::htmlHidden(array(
 				"name" => "we_cmd[2]", "value" => $_REQUEST['we_cmd'][2]
-			)) . (isset($_REQUEST['we_cmd'][4]) ? we_htmlElement::htmlHidden(array(
+			)) . (isset($_REQUEST['we_cmd'][4]) ? we_html_element::htmlHidden(array(
 					"name" => "we_cmd[4]", "value" => $_REQUEST['we_cmd'][4]
 				)) : '') . '</td></tr></table>';
 	}

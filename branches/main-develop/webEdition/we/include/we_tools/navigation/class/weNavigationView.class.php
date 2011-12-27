@@ -25,7 +25,6 @@
 
 /* the parent class of storagable webEdition classes */
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 class weNavigationView {
 
@@ -58,7 +57,7 @@ class weNavigationView {
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = '') {
-		return we_htmlElement::htmlHidden(array('name'=>trim($name),'value'=>htmlspecialchars($value)));
+		return we_html_element::htmlHidden(array('name'=>trim($name),'value'=>htmlspecialchars($value)));
 	}
 
 
@@ -254,12 +253,12 @@ class weNavigationView {
 
 			';
 
-			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js);
+			return we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).we_html_element::jsElement($js);
 	}
 
 	function getJSProperty(){
 		$out="";
-		$out.=we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
+		$out.=we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
 		$_objFields = "\n";
 		if ($this->Model->SelectionType == 'classname') {
 			if(defined('OBJECT_TABLE')) {
@@ -639,7 +638,7 @@ $js .= '
 
 		';
 
-		$out.=we_htmlElement::jsElement($js);
+		$out.=we_html_element::jsElement($js);
 		return $out;
 	}
 
@@ -730,7 +729,7 @@ function processCommands() {
 				case 'tool_navigation_new':
 				case 'tool_navigation_new_group':
 					if(!we_hasPerm('EDIT_NAVIGATION')) {
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
@@ -738,14 +737,14 @@ function processCommands() {
 					$this->Model = new weNavigation();
 					$this->Model->IsFolder = ($_REQUEST['cmd'] == 'tool_navigation_new_group') ? 1 : 0;
 					$this->Model->ParentID = isset($_REQUEST['ParentID']) && $_REQUEST['ParentID'] ? $_REQUEST['ParentID'] : 0;
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								'.$this->editorHeaderFrame.'.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->Model->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 					');
 					break;
 				case 'tool_navigation_edit':
 					if(!we_hasPerm('EDIT_NAVIGATION')) {
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
@@ -758,14 +757,14 @@ function processCommands() {
 					}
 
 					if(!$this->Model->isAllowedForUser()) {
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						$this->Model = new weNavigation();
 						$_REQUEST['home'] = true;
 						break;
 					}
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								'.$this->editorHeaderFrame.'.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->Model->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 								if('.$this->topFrame.'.treeData){
@@ -776,7 +775,7 @@ function processCommands() {
 					break;
 				case 'tool_navigation_save':
 					if(!we_hasPerm('EDIT_NAVIGATION') && !we_hasPerm('EDIT_NAVIGATION')) {
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
@@ -784,14 +783,14 @@ function processCommands() {
 
 					$js='';
 					if($this->Model->filenameNotValid($this->Model->Text)){
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[wrongtext]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
 
 					if(trim($this->Model->Text) == ''){
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[name_empty]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
@@ -801,14 +800,14 @@ function processCommands() {
 					// set the path and check it
 					$this->Model->setPath();
 					if($this->Model->pathExists($this->Model->Path)){
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[name_exists]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
 
 					if($this->Model->isSelf()){
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('navigation',"[path_nok]"), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
@@ -824,13 +823,13 @@ function processCommands() {
 								}
 							}
 							if (!key_exists($this->Model->TitleField,$_fieldsByNamePart) && !key_exists($this->Model->TitleField,$_classFields)) {
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('navigation','[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 								break;
 							}
 						} else {
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('navigation','[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 								break;
@@ -887,7 +886,7 @@ function processCommands() {
 					}
 
 
-					$js = we_htmlElement::jsElement($js . '
+					$js = we_html_element::jsElement($js . '
 						'.$this->editorHeaderFrame.'.location.reload();
 						' . we_message_reporting::getShowMessageCall( ($this->Model->IsFolder==1 ? g_l('navigation',"[save_group_ok]") : g_l('navigation',"[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE ) . '
 						'.$this->topFrame.'.hot=0;
@@ -897,7 +896,7 @@ function processCommands() {
 					');
 
 					if(isset($_REQUEST['delayCmd']) && !empty($_REQUEST['delayCmd'])) {
-						$js .= we_htmlElement::jsElement(
+						$js .= we_html_element::jsElement(
 							$this->topFrame.'.we_cmd("'.$_REQUEST['delayCmd'].'"' . ((isset($_REQUEST['delayParam']) && !empty($_REQUEST['delayParam'])) ? ',"' .$_REQUEST['delayParam'].'"' : '' ) . ');
 							'
 						);
@@ -912,16 +911,16 @@ function processCommands() {
 					break;
 				case 'tool_navigation_delete':
 
-					print we_htmlElement::jsElement('',array('src'=>JS_DIR . 'we_showMessage.js'));
+					print we_html_element::jsElement('',array('src'=>JS_DIR . 'we_showMessage.js'));
 
 					if (!we_hasPerm("DELETE_NAVIGATION")) {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation',"[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 						return;
 					} else {
 						if ($this->Model->delete()) {
-							print we_htmlElement::jsElement('
+							print we_html_element::jsElement('
 									'.$this->topFrame.'.deleteEntry('.$this->Model->ID.');
 									setTimeout(\'' . we_message_reporting::getShowMessageCall( ($this->Model->IsFolder==1 ? g_l('navigation','[group_deleted]') : g_l('navigation','[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 
@@ -930,7 +929,7 @@ function processCommands() {
 							$_REQUEST['home'] = '1';
 							$_REQUEST['pnt'] = 'edbody';
 						} else {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('navigation','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 						}
@@ -941,7 +940,7 @@ function processCommands() {
 				break;
 				case 'move_up' :
 					if($this->Model->reorderUp()) {
-						print we_htmlElement::jsElement('
+						print we_html_element::jsElement('
 								'.
 								$this->editorBodyForm.'.Ordn.value='.($this->Model->Ordn+1).';' .
 								$this->topFrame.'.reloadGroup('.$this->Model->ParentID.');
@@ -962,7 +961,7 @@ function processCommands() {
 					if($this->Model->reorderDown()){
 						$_parentid = f('SELECT ParentID FROM '.NAVIGATION_TABLE.' WHERE ID='.intval($this->Model->ID),'ParentID',$this->db);
 						$_num = f('SELECT MAX(Ordn) as OrdCount FROM '.NAVIGATION_TABLE.' WHERE ParentID='.intval($_parentid),'OrdCount',$this->db);
-						print we_htmlElement::jsElement('
+						print we_html_element::jsElement('
 									'.
 									$this->editorBodyForm.'.Ordn.value='.($this->Model->Ordn+1).';' .
 									$this->topFrame.'.reloadGroup('.$this->Model->ParentID.');
@@ -984,7 +983,7 @@ function processCommands() {
 						$_js .= $this->topFrame.'.deleteEntry('.$_item['id'].');';
 						$_js .= $this->topFrame.'.makeNewEntry(\'link.gif\',\''.$_item['id'].'\',\''.$this->Model->ID.'\',\''.addslashes($_item['text']).'\',0,\'item\',\''. NAVIGATION_TABLE .'\',1,' . $_k . ');';
 					}
-					print we_htmlElement::jsElement(
+					print we_html_element::jsElement(
 						$_js .
 						we_message_reporting::getShowMessageCall(g_l('navigation','[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
@@ -997,20 +996,20 @@ function processCommands() {
 						';
 					}
 					$_js .= we_message_reporting::getShowMessageCall(g_l('navigation','[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
-					print we_htmlElement::jsElement($_js);
+					print we_html_element::jsElement($_js);
 					$this->Model->Selection = 'nodynamic';
 					$this->Model->saveField('Selection');
 				break;
 				case 'dyn_preview':
 
-					print 	we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")) .
-							we_htmlElement::jsElement('
+					print 	we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")) .
+							we_html_element::jsElement('
 						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 					);
 				break;
 				case 'create_template':
-					print we_htmlElement::jsElement(
+					print we_html_element::jsElement(
 							$this->topFrame.'.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","text/weTmpl","","'.base64_encode($this->Model->previewCode).'");
 					');
 				break;
@@ -1026,7 +1025,7 @@ function processCommands() {
 							$_js .= $this->editorBodyForm.'.FolderWsID.options['.$this->editorBodyForm.'.FolderWsID.options.length] = new Option("'.$_path.'",'.$_id.');
 							';
 						}
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							$this->editorBodyFrame.'.setVisible("objLinkFolderWorkspace",true);
 							'.$this->editorBodyForm.'.FolderWsID.options.length = 0;
 							'.$_js.'
@@ -1035,14 +1034,14 @@ function processCommands() {
 					} else {
 
 						if(weDynList::getWorkspaceFlag($this->Model->LinkID)) {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								$this->editorBodyForm.'.FolderWsID.options.length = 0;
 								'. $this->editorBodyForm.'.FolderWsID.options['.$this->editorBodyForm.'.FolderWsID.options.length] = new Option("/",0);
 								'. $this->editorBodyForm.'.FolderWsID.selectedIndex = 0;
 								'.$this->editorBodyFrame.'.setVisible("objLinkFolderWorkspace",true);'
 							);
 						} else {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								$this->editorBodyFrame.'.setVisible("objLinkFolderWorkspace'.$_prefix.'",false);
 								'.$this->editorBodyForm.'.FolderWsID.options.length = 0;
 								'. $this->editorBodyForm.'.FolderWsID.options['.$this->editorBodyForm.'.FolderWsID.options.length] = new Option("-1",-1);
@@ -1091,7 +1090,7 @@ function processCommands() {
 							$_js .= $this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options['.$this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options.length] = new Option("'.$_path.'",'.$_id.');
 							';
 						}
-						$out = we_htmlElement::jsElement(
+						$out = we_html_element::jsElement(
 							$_objFields.
 							$this->editorBodyFrame.'.setVisible("objLinkWorkspace'.$_prefix.'",true);
 							'.$this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options.length = 0;
@@ -1101,7 +1100,7 @@ function processCommands() {
 					} else { // if the class has no workspaces
 
 						if(weDynList::getWorkspaceFlag($this->Model->LinkID)) {
-							$out = we_htmlElement::jsElement(
+							$out = we_html_element::jsElement(
 								$_objFields.
 								$this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options.length = 0;
 								'. $this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options['.$this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options.length] = new Option("/",0);
@@ -1110,7 +1109,7 @@ function processCommands() {
 							);
 							print $out;
 						} else {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								$_objFields.
 								$this->editorBodyFrame.'.setVisible("objLinkWorkspace'.$_prefix.'",false);
 								'.$this->editorBodyForm.'.WorkspaceID'.$_prefix.'.options.length = 0;
@@ -1129,7 +1128,7 @@ function processCommands() {
 						$_cat->Catfields = unserialize($_cat->Catfields);
 
 						if(isset($_cat->Catfields['default']['Title'])){
-							print we_htmlElement::jsElement('
+							print we_html_element::jsElement('
 								'.
 								$this->editorBodyForm.'.Text.value = "'.addslashes($_cat->Catfields['default']['Title']).'";
 								'
@@ -1151,9 +1150,6 @@ function processCommands() {
 		}
 
 		if (defined('CUSTOMER_TABLE')) {
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
-
-
 
 			if (isset($_REQUEST['wecf_mode'])) {
 

@@ -41,7 +41,7 @@ class copyFolderFinishFrag extends copyFolderFrag{
 			$pbText = sprintf(
 				g_l('copyFolder', "[correctTemplate]"), basename(id_to_path($this->data, TEMPLATES_TABLE)));
 
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 				'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
 					$this->alldata)) * ($this->currentTask + 1))) . ');parent.setProgressText("pbar1","' . addslashes(
 					$pbText) . '");');
@@ -73,7 +73,7 @@ class copyFolderFinishFrag extends copyFolderFrag{
 		if(isset($_SESSION["WE_CREATE_TEMPLATE"])){
 			unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		}
-		print we_htmlElement::jsElement(
+		print we_html_element::jsElement(
 			'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 				g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 	}

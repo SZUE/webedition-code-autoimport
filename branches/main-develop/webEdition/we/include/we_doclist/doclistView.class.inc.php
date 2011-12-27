@@ -86,7 +86,7 @@ class doclistView {
 		}
 		$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
 
-		$_js = we_htmlElement::jsElement ( '
+		$_js = we_html_element::jsElement ( '
 
       var ajaxURL = "/webEdition/rpc/rpc.php";
       var ajaxCallbackResultList = {
@@ -877,7 +877,7 @@ class doclistView {
 					$wecmdenc3= '';
 					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','','" . session_id () . "','$_rootDirID','','text/weTmpl')";
 					$_button = we_button::create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
-					$selector = we_html_tools::htmlFormElementTable ( we_html_tools::htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0 ), '', 'left', 'defaultfont', we_htmlElement::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), we_html_tools::getPixel ( 5, 4 ), $_button );
+					$selector = we_html_tools::htmlFormElementTable ( we_html_tools::htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0 ), '', 'left', 'defaultfont', we_html_element::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), we_html_tools::getPixel ( 5, 4 ), $_button );
 
 					$searchInput = $selector;
 				}
@@ -888,7 +888,7 @@ class doclistView {
 
 					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','" . session_id () . "','$_rootDirID','','')";
 					$_button = we_button::create_button ( 'select', $_cmd, true, 70, 22, '', '', false );
-					$selector = we_html_tools::htmlFormElementTable ( we_html_tools::htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0 ), '', 'left', 'defaultfont', we_htmlElement::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), we_html_tools::getPixel ( 5, 4 ), $_button );
+					$selector = we_html_tools::htmlFormElementTable ( we_html_tools::htmlTextInput ( 'search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0 ), '', 'left', 'defaultfont', we_html_element::htmlHidden ( array ('name' => 'searchParentID[' . $i . ']', "value" => "" ) ), we_html_tools::getPixel ( 5, 4 ), $_button );
 
 					$searchInput = $selector;
 				}
@@ -919,7 +919,7 @@ class doclistView {
 
         </table>';
 
-		$out .= we_htmlElement::jsElement ( "calendarSetup(" . $GLOBALS ['we_doc']->searchclassFolder->height . ");" );
+		$out .= we_html_element::jsElement ( "calendarSetup(" . $GLOBALS ['we_doc']->searchclassFolder->height . ");" );
 
 		return $out;
 	}
@@ -1012,7 +1012,7 @@ class doclistView {
 
 
 		if(searchtoolsearch::checkRightTempTable()=="1" && searchtoolsearch::checkRightDropTable()=="1") {
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
    				we_message_reporting::getShowMessageCall ( g_l('searchtool',"[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE )
 			);
 		}
@@ -1528,7 +1528,7 @@ class doclistView {
 
 			$out .= $rightContent;
 
-			$out .= '</div>' . (($GLOBALS ["BROWSER"] == "IE") ? we_htmlElement::htmlBr() : '');
+			$out .= '</div>' . (($GLOBALS ["BROWSER"] == "IE") ? we_html_element::htmlBr() : '');
 
 			if ($i < (count ( $content ) - 1) && (! isset ( $c ["noline"] ))) {
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
@@ -1542,10 +1542,10 @@ class doclistView {
 
 	function getDateSelector($_label, $_name, $_btn, $value) {
 		$btnDatePicker = we_button::create_button ( "image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn );
-		$oSelector = new we_htmlTable ( array ("cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell" ), 1, 5 );
+		$oSelector = new we_html_table ( array ("cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell" ), 1, 5 );
 		$oSelector->setCol ( 0, 2, null, we_html_tools::htmlTextInput ( $name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100 ) );
 		$oSelector->setCol ( 0, 3, null, "&nbsp;" );
-		$oSelector->setCol ( 0, 4, null, we_htmlElement::htmlA ( array ("href" => "#" ), $btnDatePicker ) );
+		$oSelector->setCol ( 0, 4, null, we_html_element::htmlA ( array ("href" => "#" ), $btnDatePicker ) );
 
 		return $oSelector->getHTMLCode ();
 	}

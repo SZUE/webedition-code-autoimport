@@ -24,14 +24,14 @@
  */
 
 /**
- * Filename:    we_htmlElement.inc.php
+ * Filename:    we_html_element.inc.php
  * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Class to create html tags
  *
  * Description: Provides functions for creating html tags
  */
-abstract class we_htmlElement{
+abstract class we_html_element{
 
 	/**
 	 * Function generates html code for html form
@@ -72,10 +72,10 @@ abstract class we_htmlElement{
 	static function htmlRadioCheckbox($attribs=array()){
 		$attribs['type'] = 'checkbox';
 
-		$table = new we_htmlTable(array('cellpadding' => '0', 'cellspacing' => '0', 'border' => '0'), 1, 3);
-		$table->setColContent(0, 0, we_htmlElement::htmlInput($attribs));
+		$table = new we_html_table(array('cellpadding' => '0', 'cellspacing' => '0', 'border' => '0'), 1, 3);
+		$table->setColContent(0, 0, self::htmlInput($attribs));
 		$table->setColContent(0, 1, we_html_tools::getPixel(4, 2));
-		$table->setColContent(0, 2, we_htmlElement::htmlLabel(array('for' => '$name', 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
+		$table->setColContent(0, 2, self::htmlLabel(array('for' => '$name', 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
 
 		return $table->getHtml();
 	}

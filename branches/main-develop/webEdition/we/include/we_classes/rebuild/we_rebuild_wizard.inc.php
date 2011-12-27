@@ -87,23 +87,23 @@ abstract class we_rebuild_wizard{
 			$prevButton = we_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, -1, -1, "", "", true, false);
 			$nextButton = we_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, -1, -1, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
+			$content2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 1, 4);
 			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
 			$content2->setCol(0, 1, array("id" => "next", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $nextButton);
 			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"), $refreshButton);
 			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $cancelButton);
 
-			$content = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
+			$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none", "align" => "left"), $pb);
 			$content->setCol(0, 1, array("align" => "right"), $content2->getHtml());
 		}
 
 
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
 					STYLESHEET .
-					($dc ? "" : we_htmlElement::jsElement(we_button::create_state_changer(false))) . $js) .
-				we_htmlElement::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+					($dc ? "" : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) .
+				we_html_element::htmlBody(array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -280,36 +280,36 @@ abstract class we_rebuild_wizard{
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		for($i = 0; $i < sizeof($doctypesArray); $i++){
-			$dthidden .= we_htmlElement::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
+			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
 		}
 
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_htmlElement::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
 		}
 
 		$metaFieldsHidden = "";
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_htmlElement::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
 		}
 
 		return array($js, we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild]")) .
 			$dthidden .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_htmlElement::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
-			we_htmlElement::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "maintable", "value" => $maintable)) .
-			we_htmlElement::htmlHidden(array("name" => "tmptable", "value" => $tmptable)) .
-			we_htmlElement::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_htmlElement::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_htmlElement::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_htmlElement::htmlHidden(array("name" => "btype", "value" => $btype)) .
-			we_htmlElement::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
-			we_htmlElement::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_htmlElement::htmlHidden(array("name" => "step", "value" => "1")));
+			we_html_element::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
+			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
+			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
+			we_html_element::htmlHidden(array("name" => "maintable", "value" => $maintable)) .
+			we_html_element::htmlHidden(array("name" => "tmptable", "value" => $tmptable)) .
+			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
+			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "btype", "value" => $btype)) .
+			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "1")));
 	}
 
 	/**
@@ -573,25 +573,25 @@ abstract class we_rebuild_wizard{
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_htmlElement::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
 		}
 		$metaFieldsHidden = "";
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_htmlElement::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
 		}
 		return array(we_rebuild_wizard::getPage2Js(), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_documents]")) .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_htmlElement::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "metaFields", "value" => $metaFields)) .
-			we_htmlElement::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
-			we_htmlElement::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_htmlElement::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_htmlElement::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_htmlElement::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_htmlElement::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_htmlElement::htmlHidden(array("name" => "step", "value" => "2")));
+			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
+			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
+			we_html_element::htmlHidden(array("name" => "metaFields", "value" => $metaFields)) .
+			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
+			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
+			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "2")));
 	}
 
 	/**
@@ -649,26 +649,26 @@ abstract class we_rebuild_wizard{
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		for($i = 0; $i < sizeof($doctypesArray); $i++){
-			$dthidden .= we_htmlElement::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
+			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
 		}
 		$metaFieldsHidden = "";
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_htmlElement::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => "_field[$_key]", "value" => $_val));
 		}
 		return array(we_rebuild_wizard::getPage2Js("thumbsFolders"), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_thumbnails]")) .
 			$dthidden .
 			$metaFieldsHidden .
-			we_htmlElement::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
-			we_htmlElement::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "metaFields", "value" => $metaFields)) .
-			we_htmlElement::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
-			we_htmlElement::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_htmlElement::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_htmlElement::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_htmlElement::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_htmlElement::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_htmlElement::htmlHidden(array("name" => "step", "value" => "2")));
+			we_html_element::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
+			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
+			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
+			we_html_element::htmlHidden(array("name" => "metaFields", "value" => $metaFields)) .
+			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
+			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
+			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "2")));
 	}
 
 	static function getRebuildMetadata(){
@@ -722,25 +722,25 @@ abstract class we_rebuild_wizard{
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		for($i = 0; $i < sizeof($doctypesArray); $i++){
-			$dthidden .= we_htmlElement::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
+			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$i]", "value" => $doctypesArray[$i]));
 		}
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		for($i = 0; $i < sizeof($thumbsArray); $i++){
-			$thumbsHidden .= we_htmlElement::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
+			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$i]", "value" => $thumbsArray[$i]));
 		}
 		return array(we_rebuild_wizard::getPage2Js("metaFolders"), we_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild_metadata]")) .
 			$dthidden .
 			$thumbsHidden .
-			we_htmlElement::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
-			we_htmlElement::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_htmlElement::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_htmlElement::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_htmlElement::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_htmlElement::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_htmlElement::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_htmlElement::htmlHidden(array("name" => "step", "value" => "2")));
+			we_html_element::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
+			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
+			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
+			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
+			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
+			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
+			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
+			we_html_element::htmlHidden(array("name" => "step", "value" => "2")));
 	}
 
 	/**
@@ -777,7 +777,7 @@ abstract class we_rebuild_wizard{
 		$cmdFrameHeight = (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 30 : 0;
 
 		if($tail){
-			$fst = new we_htmlFrameset(array(
+			$fst = new we_html_frameset(array(
 					"rows" => "*,$cmdFrameHeight",
 					"framespacing" => 0,
 					"border" => 0,
@@ -790,7 +790,7 @@ abstract class we_rebuild_wizard{
 			$fst->addFrame(array("src" => HTML_DIR . "white.html", "name" => "wizcmd"));
 			$fst->setFrameAttributes(1, array("scrolling" => "no"));
 		} else{
-			$fst = new we_htmlFrameset(array(
+			$fst = new we_html_frameset(array(
 					"rows" => "*,40,$cmdFrameHeight",
 					"framespacing" => 0,
 					"border" => 0,
@@ -808,10 +808,10 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-					we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
-					we_htmlElement::htmlTitle(g_l('rebuild', "[rebuild]"))) . $fst->getHtml());
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+					we_html_element::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
+					we_html_element::htmlTitle(g_l('rebuild', "[rebuild]"))) . $fst->getHtml());
 	}
 
 	/**
@@ -996,15 +996,15 @@ abstract class we_rebuild_wizard{
 		if(!sizeof($contents)){
 			return "";
 		}
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-					STYLESHEET . we_htmlElement::jsScript(JS_DIR . 'windows.js') .
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+					STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') .
 					($contents[0] ?
-						we_htmlElement::jsElement("<!--\n" . $contents[0] . "\n//-->") :
+						we_html_element::jsElement("<!--\n" . $contents[0] . "\n//-->") :
 						"")) .
-				we_htmlElement::htmlBody(array(
+				we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
-					), we_htmlElement::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
+					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
 				)
 		);
 	}

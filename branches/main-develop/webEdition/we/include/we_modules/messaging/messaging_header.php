@@ -36,7 +36,7 @@ print STYLESHEET;
 $port = defined("HTTP_PORT") ? HTTP_PORT : "";
 $protocol=getServerProtocol();
 $jmenu = new weJavaMenu($we_menu_messaging, SERVER_NAME, 'top.opener.top.load', $protocol, $port,300);
-echo we_htmlElement::jsScript(JS_DIR.'images.js');
+echo we_html_element::jsScript(JS_DIR.'images.js');
 ?>
 	<script type="text/javascript"><!--
         function menuaction(cmd){

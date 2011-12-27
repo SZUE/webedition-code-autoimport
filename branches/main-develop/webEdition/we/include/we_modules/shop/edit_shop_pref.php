@@ -99,7 +99,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$weShopStatusMails->save();
 
 	//	Close window when finished
-	echo we_htmlElement::jsElement('self.close();');
+	echo we_html_element::jsElement('self.close();');
 	exit;
 } else {
 	$strFelder = f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"','strFelder',$DB_WE);
@@ -115,7 +115,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 }
 
 	//	generate html-output table
-	$_htmlTable = new we_htmlTable(	array(	'border'      => 0,
+	$_htmlTable = new we_html_table(	array(	'border'      => 0,
 											'cellpadding' => 0,
 											'cellspacing' => 0,
 											'width' => "410"),
@@ -269,7 +269,7 @@ if(!empty($_REQUEST["format"])){	//	save data in arrays ..
 	$frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop','[pref]'), $_buttons);
 
 
-echo we_htmlElement::jsElement('self.focus();').'
+echo we_html_element::jsElement('self.focus();').'
 	</head>
 	<body class="weDialogBody">
 	<form name="we_form" method="post" style="margin-left:8; margin-top:16px;">

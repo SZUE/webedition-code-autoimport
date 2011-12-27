@@ -58,7 +58,7 @@ if(!empty($_REQUEST["fieldForname"])){	//	save data in arrays ..
 
 
 	//	Close window when finished
-	echo we_htmlElement::jsElement('self.close();');
+	echo we_html_element::jsElement('self.close();');
 	exit;
 }
 
@@ -77,7 +77,7 @@ $_row = 0;
 $Parts= array();
 
 if (defined("CUSTOMER_TABLE")) {
-	$_htmlTable = new we_htmlTable(	array(	'border'      => 0,
+	$_htmlTable = new we_html_table(	array(	'border'      => 0,
 	'cellpadding' => 0,
 	'cellspacing' => 0,
 	'width' => "100%"),
@@ -129,7 +129,7 @@ if (defined("CUSTOMER_TABLE")) {
 }
 
 // PayPal
-$_htmlTable = new we_htmlTable(	array(	'border'      => 0,
+$_htmlTable = new we_html_table(	array(	'border'      => 0,
 		'cellpadding' => 0,
 		'cellspacing' => 0,
 		'width' => "100%"),
@@ -162,7 +162,7 @@ $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('psb', $paypalP
 array_push($Parts, array("html"	=> $_htmlTable->getHtml()));
 
 // saferpay
-$_htmlTable = new we_htmlTable(	array(	'border'      => 0,
+$_htmlTable = new we_html_table(	array(	'border'      => 0,
 		'cellpadding' => 0,
 		'cellspacing' => 0,
 		'width' => "100%"),
@@ -238,7 +238,7 @@ we_button::create_button("cancel", "javascript:self.close();")
 $frame = we_multiIconBox::getHTML('','100%',$Parts,'30',$_buttons,-1,'','',false, g_l('modules_shop','[paymentP]'),'','','hidden');
 
 
-echo we_htmlElement::jsElement('self.focus();').'
+echo we_html_element::jsElement('self.focus();').'
 </head>
 <body class="weDialogBody">
 

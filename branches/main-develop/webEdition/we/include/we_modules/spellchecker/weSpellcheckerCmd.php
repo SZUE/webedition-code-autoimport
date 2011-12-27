@@ -87,7 +87,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			if(isset($_REQUEST['cmd'][1])) {
 				$_SESSION['dictLang'] = $_REQUEST['cmd'][1];
 			}
-			print we_htmlElement::jsElement('
+			print we_html_element::jsElement('
 				top.document.we_form.submit();
 			');
 		break;
@@ -144,7 +144,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			$_content = $_REQUEST['defaultDict'];
 			weFile::save(WE_SPELLCHECKER_MODULE_DIR . 'dict/default.inc.php',$_content);
 
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 				we_message_reporting::getShowMessageCall( g_l('modules_spellchecker','[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
 			);
 
@@ -175,7 +175,7 @@ if(isset($_REQUEST['cmd'][0])) {
 				$_messType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
 
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall( $_mess, $_messType) .
 					'parent.loadTable();
 				');
@@ -184,7 +184,7 @@ if(isset($_REQUEST['cmd'][0])) {
 		case 'refresh':
 			we_loadLanguageConfig();
 
-			$table=new we_htmlTable(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),1,6);
+			$table=new we_html_table(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),1,6);
 
 			$table->setRow(0,array('style'=>'background-color: silver;font-weight: bold;'),6);
 			$table->setCol(0,0,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[default]'));
@@ -194,7 +194,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			$table->setCol(0,4,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[refresh]'));
 			$table->setCol(0,5,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[delete]'));
 
-			$_lanSelect = new we_htmlSelect(array('size'=>1,'style'=>'width: 100px;','class'=>'weSelect'));
+			$_lanSelect = new we_html_select(array('size'=>1,'style'=>'width: 100px;','class'=>'weSelect'));
 			foreach(getWeFrontendLanguagesForBackend() as $klan=>$vlan) {
 				$_lanSelect->addOption($klan,$vlan);
 			}
@@ -233,7 +233,7 @@ if(isset($_REQUEST['cmd'][0])) {
 			}
 			$_dir->close();
 
-			print we_htmlElement::jsElement('
+			print we_html_element::jsElement('
 
 				parent.document.getElementById("selector").innerHTML = "'.addslashes(ereg_replace("\r?\n",'',$table->getHtml())).'";
 

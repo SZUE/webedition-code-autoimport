@@ -56,9 +56,9 @@ $_javascript = "
 if( we_image_edit::gd_version() > 0 ){
 
     print
-    	we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
-    	we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
-    	we_htmlElement::jsElement(
+    	we_html_element::jsElement($_javascript, array("type" => "text/javascript")) .
+    	we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
+    	we_html_element::jsElement(
     		"
     			function closeOnEscape() {
 					return true;
@@ -73,11 +73,11 @@ if( we_image_edit::gd_version() > 0 ){
     	) .
     "</head>";
 
-    $frameset = new we_htmlFrameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1",  "frameborder" => "no"), 0);
+    $frameset = new we_html_frameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1",  "frameborder" => "no"), 0);
     $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails.php", "name" => "we_thumbnails", "scrolling" => "auto", "noresize" => "noresize"));
     $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_thumbnails_footer.php?closecmd=".(isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_thumbnails_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-    print $frameset->getHtml() . we_htmlElement::htmlBody(array()) . "</html>";
+    print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";
 
 } else {    //  gd_lib is not installed - show error
     print STYLESHEET . '</head><body class="weDialogBody">';

@@ -209,11 +209,11 @@ $buttonsBottom = '<div style="float:right">' . we_button::position_yes_no_cancel
 		null,
 		we_button::create_button('close', 'javascript:self.close();')) . '</div>';
 
-$_body = we_htmlElement::htmlBody(
+$_body = we_html_element::htmlBody(
 		array(
 			"class" => "weDialogBody", "onLoad" => "loaded=1;queryEntries(" . $_def . ")"
 		),
-		we_htmlElement::htmlForm(
+		we_html_element::htmlForm(
 				array(
 					"name" => "we_form", "onsubmit" => "return false"
 				),
@@ -233,14 +233,14 @@ $_body = we_htmlElement::htmlBody(
 
 ;
 
-$_head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . we_htmlElement::jsElement(
+$_head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . we_html_element::jsElement(
 		'',
 		array(
 			'src' => '/webEdition/js/libs/yui/yahoo-min.js'
-		)) . "\n" . we_htmlElement::jsElement('', array(
+		)) . "\n" . we_html_element::jsElement('', array(
 	'src' => '/webEdition/js/libs/yui/event-min.js'
-)) . "\n" . we_htmlElement::jsElement('', array(
+)) . "\n" . we_html_element::jsElement('', array(
 	'src' => '/webEdition/js/libs/yui/connection-min.js'
-)) . "\n" . we_htmlElement::jsElement($_js);
+)) . "\n" . we_html_element::jsElement($_js);
 
-print we_htmlElement::htmlHtml(we_htmlElement::htmlHead($_head) . $_body);
+print we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);

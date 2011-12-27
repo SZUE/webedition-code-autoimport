@@ -66,7 +66,7 @@ class weVersionsView
 							';
 		}
 
-		$js = we_htmlElement::jsElement(
+		$js = we_html_element::jsElement(
 				'
 
 			function init() {
@@ -935,7 +935,7 @@ class weVersionsView
 
 		$out .= '<div style="border-top: 1px solid #AFB0AF;margin-top:20px;clear:both;"></div>';
 
-		$out .= we_htmlElement::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+		$out .= we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 

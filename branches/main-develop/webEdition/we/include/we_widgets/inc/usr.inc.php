@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$oTblCont = new we_htmlTable(
+$oTblCont = new we_html_table(
 		array(
 
 				"id" => "m_" . $iCurrId . "_inline",

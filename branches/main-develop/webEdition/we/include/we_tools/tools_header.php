@@ -101,7 +101,7 @@ function openTool(tool) {
 <?php
 //	print $tab_js;
 	if (isset($_REQUEST["tab"])) {
-		//print we_htmlElement::jsElement("tabCtrl.setActiveTab(".$_REQUEST["tab"].");");
+		//print we_html_element::jsElement("tabCtrl.setActiveTab(".$_REQUEST["tab"].");");
 	}
 ?>
 </body>

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_inc_min.inc.php");
 
 // print HTML head
 we_html_tools::htmlTop($GLOBALS['lang']['Template']['title']);
@@ -73,15 +73,15 @@ $ButtonNextPreview = we_button::create_button(
 		false,
 		false);
 
-print we_htmlElement::cssLink(CSS_DIR.'global.php').
-we_htmlElement::cssLink(CSS_DIR.'first_steps_wizard.css.php').
-we_htmlElement::cssLink(CSS_DIR.'we_button.css').
+print we_html_element::cssLink(CSS_DIR.'global.php').
+we_html_element::cssLink(CSS_DIR.'first_steps_wizard.css.php').
+we_html_element::cssLink(CSS_DIR.'we_button.css').
 
-we_htmlElement::jsScript(JS_DIR.'weButton.js').
-we_htmlElement::jsScript(JS_DIR.'leWizard/leWizardForm.js').
-we_htmlElement::jsScript(JS_DIR.'windows.js').
+we_html_element::jsScript(JS_DIR.'weButton.js').
+we_html_element::jsScript(JS_DIR.'leWizard/leWizardForm.js').
+we_html_element::jsScript(JS_DIR.'windows.js').
 
-we_htmlElement::jsElement('
+we_html_element::jsElement('
 		var nextUrl = "";
 		var backUrl = "";
 		var repeatUrl = "";

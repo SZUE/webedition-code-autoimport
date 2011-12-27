@@ -24,14 +24,14 @@
  */
 
 /**
- * Filename:    we_htmlTable.inc.php
+ * Filename:    we_html_table.inc.php
  * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Utility class that implements operations on tables
  *
  * Description: Provides functions for creating html tags used in forms.
  */
-class we_htmlFrameset extends we_baseCollection{
+class we_html_frameset extends we_baseCollection{
 
 	/**
 	 * Constructor
@@ -39,7 +39,7 @@ class we_htmlFrameset extends we_baseCollection{
 	 * @param		$attribs								array			(optional)
 	 * @param		$frames_num								int				(optional)
 	 *
-	 * @return		we_htmlFrameset
+	 * @return		we_html_frameset
 	 */
 	function __construct($attribs=array(), $frames_num=0){
 		parent::__construct("frameset", true, $attribs);
@@ -69,7 +69,7 @@ class we_htmlFrameset extends we_baseCollection{
 	 * @return		void
 	 */
 	function addFrameset($attribs=array()){
-		$this->childs[] = new we_htmlFrameset($attribs);
+		$this->childs[] = new self($attribs);
 	}
 
 	/**

@@ -57,15 +57,15 @@ function printHeader($login){
 	we_html_tools::htmlTop('webEdition ');
 	print STYLESHEET;
 
-	print we_htmlElement::jsElement('', array('src' => JS_DIR . 'windows.js'));
-	print we_htmlElement::jsElement('', array('src' => JS_DIR . 'weJsStrings.php'));
+	print we_html_element::jsElement('', array('src' => JS_DIR . 'windows.js'));
+	print we_html_element::jsElement('', array('src' => JS_DIR . 'weJsStrings.php'));
 
 	if($login != 2){
-		print we_htmlElement::linkElement(array('rel' => 'home', 'href' => '/webEdition/'));
-		print we_htmlElement::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
+		print we_html_element::linkElement(array('rel' => 'home', 'href' => '/webEdition/'));
+		print we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
 	}
 
-	print we_htmlElement::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico'));
+	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico'));
 
 	$_head_javascript = "cookieBackup = document.cookie;
 	document.cookie = \"cookie=yep\";
@@ -125,7 +125,7 @@ function showMessage(message, prio, win){
 }
 ';
 
-	print we_htmlElement::jsElement($_head_javascript);
+	print we_html_element::jsElement($_head_javascript);
 
 	print '</head>';
 }
@@ -222,7 +222,7 @@ $count = f('SELECT COUNT(1) AS count FROM ' . FAILED_LOGINS_TABLE . ' WHERE IP="
 
 if($count >= LOGIN_FAILED_NR){
 	we_html_tools::htmlTop('webEdition ');
-	print we_htmlElement::jsElement(
+	print we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), LOGIN_FAILED_NR, LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)
 		);
 	print '</html>';
@@ -254,95 +254,95 @@ if(isset($GLOBALS['userLoginDenied'])){
  * *************************************************************************** */
 
 if(isset($_POST['checkLogin']) && !count($_COOKIE)){
-	$_error = we_htmlElement::htmlB(g_l('start', '[cookies_disabled]'));
+	$_error = we_html_element::htmlB(g_l('start', '[cookies_disabled]'));
 
 	$_error_count = 0;
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) && file_exists($tmp))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
 	}
 
 	if($_error_count == 1){
-		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_one]');
+		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_one]');
 	} else if($_error_count > 1){
-		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_more]');
+		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
 	}
 
-	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else if(!$GLOBALS['DB_WE']->isConnected() || $GLOBALS['DB_WE']->Error == 'No database selected'){
-	$_error = we_htmlElement::htmlB(g_l('start', '[no_db_connection]'));
+	$_error = we_html_element::htmlB(g_l('start', '[no_db_connection]'));
 
 	$_error_count = 0;
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) && file_exists($tmp))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
 	}
 
 	if($_error_count == 1){
-		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_one]');
+		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_one]');
 	} else if($_error_count > 1){
-		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_more]');
+		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
 	}
 
-	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-	$_error = we_htmlElement::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_htmlElement::htmlBr().we_htmlElement::htmlBr());
+	$_error = we_html_element::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr().we_html_element::htmlBr());
 
 	$_error_count = 0;
 	$tmp = ini_get('session.save_path');
 
 	if(!(is_dir($tmp) && file_exists($tmp))){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
 	}
 
 	if(!ini_get('session.use_cookies')){
-		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
 	}
 
 	if(ini_get('session.cookie_path') != '/'){
-		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_htmlElement::htmlBr();
+		$_error .= $_error_count++ . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
 	}
 
 	if($_error_count == 1){
-		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_one]');
+		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_one]');
 	} else if($_error_count > 1){
-		$_error .= we_htmlElement::htmlBr() . g_l('start', '[solution_more]');
+		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
 	}
 
-	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_htmlElement::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !$GLOBALS['brDetect']->isSupported()){
 
 	/*	 * *******************************************************************
@@ -351,40 +351,40 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$supportedBrowserCnt = ($SYSTEM == 'MAC' ? 3 : ($SYSTEM == 'X11' ? 2 : 4));
 
-	$_browser_table = new we_htmlTable(array('cellspacing' => 0, 'cellpadding' => 0, 'border' => 0, 'width' => '100%'), 12, $supportedBrowserCnt);
+	$_browser_table = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'border' => 0, 'width' => '100%'), 12, $supportedBrowserCnt);
 
-	$_browser_table->setCol(1, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_htmlElement::htmlB(g_l('start', '[browser_not_supported]')));
+	$_browser_table->setCol(1, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlB(g_l('start', '[browser_not_supported]')));
 	$_browser_table->setCol(3, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), g_l('start', '[browser_supported]'));
 
 	switch($SYSTEM){
 		case 'MAC':
-			$_browser_table->setCol(5, 0, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_opera.png', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(5, 1, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_safari.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(5, 2, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_firefox.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(7, 0, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), g_l('start', '[browser_opera]'))));
-			$_browser_table->setCol(7, 1, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), g_l('start', '[browser_safari]'))));
-			$_browser_table->setCol(7, 2, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), g_l('start', '[browser_firefox]'))));
+			$_browser_table->setCol(5, 0, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_opera.png', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(5, 1, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_safari.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(5, 2, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_firefox.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(7, 0, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), g_l('start', '[browser_opera]'))));
+			$_browser_table->setCol(7, 1, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), g_l('start', '[browser_safari]'))));
+			$_browser_table->setCol(7, 2, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), g_l('start', '[browser_firefox]'))));
 
 			$_browser_table->setCol(9, 0, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_safari_version]'));
 			$_browser_table->setCol(9, 1, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_firefox_version]'));
 			break;
 		case 'X11':
-			$_browser_table->setCol(5, 0, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_opera.png', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(5, 1, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_firefox.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(7, 0, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), g_l('start', '[browser_opera]'))));
-			$_browser_table->setCol(7, 1, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), g_l('start', '[browser_firefox]'))));
+			$_browser_table->setCol(5, 0, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_opera.png', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(5, 1, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_firefox.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(7, 0, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), g_l('start', '[browser_opera]'))));
+			$_browser_table->setCol(7, 1, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), g_l('start', '[browser_firefox]'))));
 			$_browser_table->setCol(9, 0, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_opera_version]'));
 			$_browser_table->setCol(9, 1, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_firefox_version]'));
 			break;
 		default:
-			$_browser_table->setCol(5, 0, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.microsoft.com/windows/ie/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_ie.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(5, 1, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_opera.png', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(5, 2, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_firefox.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(5, 3, array('align' => 'center'), we_htmlElement::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_safari.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
-			$_browser_table->setCol(7, 0, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.microsoft.com/windows/ie/', 'target' => '_blank'), g_l('start', '[browser_ie]'))));
-			$_browser_table->setCol(7, 1, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), g_l('start', '[browser_opera]'))));
-			$_browser_table->setCol(7, 2, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), g_l('start', '[browser_firefox]'))));
-			$_browser_table->setCol(7, 3, array('align' => 'center', 'class' => 'defaultfont'), we_htmlElement::htmlB(we_htmlElement::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), g_l('start', '[browser_safari]'))));
+			$_browser_table->setCol(5, 0, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.microsoft.com/windows/ie/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_ie.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(5, 1, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_opera.png', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(5, 2, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_firefox.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(5, 3, array('align' => 'center'), we_html_element::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/supported_browser_safari.gif', 'width' => 80, 'height' => 80, 'border' => 0))));
+			$_browser_table->setCol(7, 0, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.microsoft.com/windows/ie/', 'target' => '_blank'), g_l('start', '[browser_ie]'))));
+			$_browser_table->setCol(7, 1, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.opera.com/', 'target' => '_blank'), g_l('start', '[browser_opera]'))));
+			$_browser_table->setCol(7, 2, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.mozilla.org/', 'target' => '_blank'), g_l('start', '[browser_firefox]'))));
+			$_browser_table->setCol(7, 3, array('align' => 'center', 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlA(array('href' => 'http://www.apple.com/safari/', 'target' => '_blank'), g_l('start', '[browser_safari]'))));
 			$_browser_table->setCol(9, 0, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_ie_version]'));
 			$_browser_table->setCol(9, 1, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_opera_version]'));
 			$_browser_table->setCol(9, 2, array('align' => 'center', 'valign' => 'top', 'class' => 'defaultfont'), g_l('start', '[browser_firefox_version]'));
@@ -399,24 +399,24 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_browser_table->setCol(8, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 5));
 	$_browser_table->setCol(10, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 50));
 
-	$_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_htmlElement::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=true'), g_l('start', '[ignore_browser]')));
+	$_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=true'), g_l('start', '[ignore_browser]')));
 
-	$_layout = new we_htmlTable(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
 
-	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_htmlElement::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtml(), g_l('start', '[cannot_start_we]'))));
+	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtml(), g_l('start', '[cannot_start_we]'))));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
 } else{
 
 	/*	 * ***************************************************************************
 	 * GENERATE LOGIN
 	 * *************************************************************************** */
 
-	$_hidden_values = we_htmlElement::htmlHidden(array('name' => 'checkLogin', 'value' => session_id()));
+	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id()));
 
 	if($ignore_browser){
-		$_hidden_values .= we_htmlElement::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
+		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
 	}
 
 
@@ -429,7 +429,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
 
-	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_htmlElement::htmlBr().we_htmlElement::htmlBr().'</noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;text-align:left;">
+	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_html_element::htmlBr().we_html_element::htmlBr().'</noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;text-align:left;">
 	<tr style="height:10px;">
 		<td style="width:260px;background-color:#386AAB;"></td>
 		<td rowspan="2" style="width:430px;">' . $_loginTable . '</td>
@@ -461,12 +461,12 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layoutRight2 = 10;
 	$_layoutRight = ($_layoutRight1 + $_layoutRight2);
 
-	$_layouttable = new we_htmlTable(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => 440), 4, 5);
+	$_layouttable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0', 'width' => 440), 4, 5);
 
-	$_layouttable->setCol(0, 0, null, we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/top_left2.gif', 'width' => $_layoutLeft2, 'height' => 21)));
-	$_layouttable->setCol(0, 1, null, we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/top_left.gif', 'width' => $_layoutLeft, 'height' => 21)));
+	$_layouttable->setCol(0, 0, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left2.gif', 'width' => $_layoutLeft2, 'height' => 21)));
+	$_layouttable->setCol(0, 1, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left.gif', 'width' => $_layoutLeft, 'height' => 21)));
 	$_layouttable->setCol(0, 2, array('background' => IMAGE_DIR . 'info/top.gif', 'width' => $_layoutMiddle, 'class' => 'small', 'align' => 'right'), '&nbsp;');
-	$_layouttable->setCol(0, 3, array('colspan' => 2, 'width' => $_layoutRight), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/top_right.gif', 'width' => $_layoutRight, 'height' => 21)));
+	$_layouttable->setCol(0, 3, array('colspan' => 2, 'width' => $_layoutRight), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_right.gif', 'width' => $_layoutRight, 'height' => 21)));
 
 	//	Here is table to log in
 	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
@@ -477,10 +477,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layouttable->setCol(1, 1, array('colspan' => 3, 'width' => $_contenttable), $_loginTable);
 	$_layouttable->setCol(1, 4, array('width' => $_layoutRight2, 'background' => IMAGE_DIR . 'info/right.gif'), we_html_tools::getPixel($_layoutRight2, 1));
 
-	$_layouttable->setCol(2, 0, array('width' => $_layoutLeft2), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left2.gif', 'width' => $_layoutLeft2, 'height' => 16)));
-	$_layouttable->setCol(2, 1, null, we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left.gif', 'width' => $_layoutLeft, 'height' => 16)));
+	$_layouttable->setCol(2, 0, array('width' => $_layoutLeft2), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left2.gif', 'width' => $_layoutLeft2, 'height' => 16)));
+	$_layouttable->setCol(2, 1, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left.gif', 'width' => $_layoutLeft, 'height' => 16)));
 	$_layouttable->setCol(2, 2, array('background' => IMAGE_DIR . 'info/bottom.gif'), we_html_tools::getPixel(1, 16));
-	$_layouttable->setCol(2, 3, array('colspan' => 2, 'width' => $_layoutRight), we_htmlElement::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_right.gif', 'width' => $_layoutRight, 'height' => 16)));
+	$_layouttable->setCol(2, 3, array('colspan' => 2, 'width' => $_layoutRight), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_right.gif', 'width' => $_layoutRight, 'height' => 16)));
 
 	$_layouttable->setCol(3, 0, null, we_html_tools::getPixel($_layoutLeft2, 1));
 	$_layouttable->setCol(3, 1, null, we_html_tools::getPixel($_layoutLeft, 1));
@@ -552,10 +552,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	}
 
 
-	$_layout = new we_htmlTable(array("style" => "position:absolute;top:0px;bottom:0px;left:0px;right:0px;"), 1, 1);
+	$_layout = new we_html_table(array("style" => "position:absolute;top:0px;bottom:0px;left:0px;right:0px;"), 1, 1);
 
-	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_htmlElement::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
+	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
 	printHeader($login);
-	print we_htmlElement::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_htmlElement::jsElement($_body_javascript) : "")) . "</html>";
+	print we_html_element::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
 }

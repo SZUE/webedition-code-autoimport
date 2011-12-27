@@ -47,11 +47,11 @@ $bodyContent =	'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style
 			$tabs->getHTML() . 
 			'</div>';
 
-$_body = we_htmlElement::htmlBody(	array(	"bgcolor"    => "#ffffff",
+$_body = we_html_element::htmlBody(	array(	"bgcolor"    => "#ffffff",
 											"topmargin"  => "0",
 											"background" => IMAGE_DIR . "backgrounds/header.gif",
 											"onload"=>"setFrameSize();", 
 											"onresize"=>"setFrameSize()"),
 									$bodyContent);
 									
-print we_htmlElement::htmlHtml(we_htmlElement::htmlHead($_tabHead) . "\n" . $_body);
+print we_html_element::htmlHtml(we_html_element::htmlHead($_tabHead) . "\n" . $_body);

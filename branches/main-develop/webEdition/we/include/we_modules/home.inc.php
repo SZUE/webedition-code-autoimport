@@ -30,7 +30,7 @@ if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"]
 	we_html_tools::htmlTop();
 }
 print STYLESHEET;
-print we_htmlElement::jsElement("", array("src"=>JS_DIR . "attachKeyListener.js"));
+print we_html_element::jsElement("", array("src"=>JS_DIR . "attachKeyListener.js"));
 
 $mod = isset($_REQUEST["mod"]) ? $_REQUEST["mod"] : (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "");
 
@@ -53,7 +53,7 @@ $title = "";
 
 
 	$_row = 0;
-	$_starttable = new we_htmlTable(	array(	"border"      => "0",
+	$_starttable = new we_html_table(	array(	"border"      => "0",
 												"cellpadding" => "7",
 												"cellspacing" =>"0",
 												"width" => "228"),
@@ -98,7 +98,7 @@ $title = "";
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
 
-	<?php print $we_body_insert.we_htmlElement::jsElement('var we_is_home = 1;');?>
+	<?php print $we_body_insert.we_html_element::jsElement('var we_is_home = 1;');?>
 
 </body>
 

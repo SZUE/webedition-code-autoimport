@@ -24,8 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 we_html_tools::protect();
 function showWorkflowFooterForNormalMode(){
 
@@ -34,7 +33,7 @@ function showWorkflowFooterForNormalMode(){
 	$_gap = 16;
 	$_col = 0;
 
-	$_footerTable = new we_htmlTable(	array(	"cellpadding" => 0,
+	$_footerTable = new we_html_table(	array(	"cellpadding" => 0,
 												"cellspacing" => 0,
 												"border"      => 0),
 												1,
@@ -91,7 +90,7 @@ function showWorkflowFooterForSEEMMode(){
 
 	$_col = 0;
 	$_gap = 16;
-	$_footerTable = new we_htmlTable(	array(	"cellpadding" => 0,
+	$_footerTable = new we_html_table(	array(	"cellpadding" => 0,
 												"cellspacing" => 0,
 												"border"      => 0),
 										1,0);
@@ -201,12 +200,12 @@ if(weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["use
 	}
 
 
-	$_we_form = we_htmlElement::htmlForm(	array(	"name"   => "we_form",
+	$_we_form = we_html_element::htmlForm(	array(	"name"   => "we_form",
 													"method" => "post"),
 											$_table
 											);
 
-	$_body = we_htmlElement::htmlBody(	array(	"bgcolor"      => "white",
+	$_body = we_html_element::htmlBody(	array(	"bgcolor"      => "white",
 												"background"   => EDIT_IMAGE_DIR . "editfooterback.gif",
 												"marginwidth"  => 0,
 												"marginheight" => 8,
@@ -218,17 +217,17 @@ if(weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["use
 	print $_body;
 } else {
 
-	$_table = new we_htmlTable(	array(	"cellpadding" => 0,
+	$_table = new we_html_table(	array(	"cellpadding" => 0,
 										"cellspacing" => 0,
 										"border"      => 0),
 								1,
 								4);
 	$_table->setColContent(0, 0, we_html_tools::getPixel( 16, 2));
-	$_table->setColContent(0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+	$_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 	$_table->setColContent(0, 2, we_html_tools::getPixel( 16, 2));
 	$_table->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_workflow','[doc_in_wf_warning]'));
 
-	$_body = we_htmlElement::htmlBody(	array(	"bgcolor"      => "white",
+	$_body = we_html_element::htmlBody(	array(	"bgcolor"      => "white",
 												"background"   => EDIT_IMAGE_DIR . "editfooterback.gif",
 												"marginwidth"  => 0,
 												"marginheight" => 8,
@@ -242,6 +241,6 @@ if(weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["use
 
 	$_jscode = "";
 
-	print we_htmlElement::jsElement($_jscode);
+	print we_html_element::jsElement($_jscode);
 ?>
 </html>

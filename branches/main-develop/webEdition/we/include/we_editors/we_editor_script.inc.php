@@ -57,10 +57,10 @@ if (isset($_REQUEST["cmd"]) && $_REQUEST['cmd'] == "ShowPreparedPreview") {
 ";
 }
 
-echo we_htmlElement::jsScript(JS_DIR.'we_textarea.js');
+echo we_html_element::jsScript(JS_DIR.'we_textarea.js');
 
 if (isset($GLOBALS['we_doc'])) {
-	echo we_htmlElement::jsScript(JS_DIR.'seeMode.php?EditPage='.$GLOBALS['we_doc']->EditPageNr.'&ContentType='.$GLOBALS['we_doc']->ContentType);
+	echo we_html_element::jsScript(JS_DIR.'seeMode.php?EditPage='.$GLOBALS['we_doc']->EditPageNr.'&ContentType='.$GLOBALS['we_doc']->ContentType);
 } ?>
 <script  type="text/javascript">
 

@@ -81,7 +81,7 @@ class weNavigationFrames extends weToolFrames
 
 		if (isset($_REQUEST['home'])) {
 			return $this->getHTMLDocument(
-					we_htmlElement::htmlBody(
+					we_html_element::htmlBody(
 							array(
 
 									'bgcolor' => '#F0EFF0',
@@ -144,7 +144,7 @@ class weNavigationFrames extends weToolFrames
 		$js = '';
 
 		if ($this->Model->IsFolder == 0) {
-			$js = we_htmlElement::jsElement(
+			$js = we_html_element::jsElement(
 					'
 				if(' . $this->View->topFrame . '.activ_tab!=1 && ' . $this->View->topFrame . '.activ_tab!=3) {
 					' . $this->View->topFrame . '.activ_tab=1;
@@ -152,7 +152,7 @@ class weNavigationFrames extends weToolFrames
 			');
 		}
 
-		$js .= we_htmlElement::jsElement(
+		$js .= we_html_element::jsElement(
 				'
 
 				function mark() {
@@ -200,7 +200,7 @@ class weNavigationFrames extends weToolFrames
 
 		$tabsHead .= $js;
 
-		$table = new we_htmlTable(array(
+		$table = new we_html_table(array(
 			"width" => "3000", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 		), 3, 1);
 
@@ -212,11 +212,11 @@ class weNavigationFrames extends weToolFrames
 				array(
 					"valign" => "top", "class" => "small"
 				),
-				we_html_tools::getPixel(15, 2) . we_htmlElement::htmlB(
+				we_html_tools::getPixel(15, 2) . we_html_element::htmlB(
 						($this->Model->IsFolder ? g_l('navigation','[group]') :g_l('navigation','[entry]')) . ':&nbsp;' . str_replace(
 								'&amp;',
 								'&',
-								$this->Model->Text) . '<div id="mark" style="display: none;">*</div>' . we_htmlElement::htmlImg(
+								$this->Model->Text) . '<div id="mark" style="display: none;">*</div>' . we_html_element::htmlImg(
 								array(
 
 										"align" => "absmiddle",
@@ -226,7 +226,7 @@ class weNavigationFrames extends weToolFrames
 								))));
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
-		$body = we_htmlElement::htmlBody(
+		$body = we_html_element::htmlBody(
 				array(
 
 						"bgcolor" => "white",
@@ -238,13 +238,13 @@ class weNavigationFrames extends weToolFrames
 						"onload" => "setFrameSize()",
 						"onresize" => "setFrameSize()"
 				),
-				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_htmlElement::htmlB(
+				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(
 						($this->Model->IsFolder ? g_l('navigation','[group]') :g_l('navigation','[entry]')) . ':&nbsp;' . str_replace(
 								'&amp;',
 								'&',
 								$this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
 						100,
-						3) . $we_tabs->getHTML() . '</div>' . we_htmlElement::jsElement($extraJS))//			$js.
+						3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))//			$js.
 		//			$table->getHtml() .
 		//			$tabsBody
 		;
@@ -257,7 +257,7 @@ class weNavigationFrames extends weToolFrames
 	{
 		$parts = array();
 
-		$_table = new we_htmlTable(
+		$_table = new we_html_table(
 				array(
 
 						'border' => '0',
@@ -338,7 +338,7 @@ class weNavigationFrames extends weToolFrames
 				array(
 
 						'headline' => g_l('navigation','[general]'),
-						'html' => we_htmlElement::htmlHidden(
+						'html' => we_html_element::htmlHidden(
 								array(
 									'name' => 'newone', 'value' => ($this->Model->ID == 0 ? 1 : 0)
 								)) . we_html_tools::htmlFormElementTable(
@@ -672,10 +672,10 @@ class weNavigationFrames extends weToolFrames
 								2,
 								($this->_width_size - 120),
 								true,
-								0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_htmlElement::htmlHidden(
+								0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
 								array(
 									'name' => 'CopyFolderID', "value" => ''
-								)) . we_htmlElement::htmlHidden(array(
+								)) . we_html_element::htmlHidden(array(
 							'name' => 'CopyFolderPath', "value" => ''
 						)),
 						'space' => $this->_space_size,
@@ -706,7 +706,7 @@ class weNavigationFrames extends weToolFrames
 			}
 		}
 
-		$_table = new we_htmlTable(
+		$_table = new we_html_table(
 				array(
 
 						'width' => $this->_width_size,
@@ -832,7 +832,7 @@ class weNavigationFrames extends weToolFrames
 				"value",
 				120);
 
-		return we_htmlElement::jsElement(
+		return we_html_element::jsElement(
 				'
 			objectDirs = {' . implode(',', $objectDirs) . '};
 			objectPaths = {' . implode(',', $objectPaths) . '};
@@ -1058,7 +1058,7 @@ class weNavigationFrames extends weToolFrames
 			$_sort[] = $_i['field'] . '&nbsp;(' . ($_i['order'] == 'DESC' ? g_l('navigation','[descending]') : g_l('navigation','[ascending]')) . ')';
 		}
 
-		$_table = new we_htmlTable(
+		$_table = new we_html_table(
 				array(
 
 						'width' => $this->_width_size,
@@ -1226,7 +1226,7 @@ class weNavigationFrames extends weToolFrames
 		<tr>
 			<td height="30"><label for="previewCode">' . g_l('navigation','[preview_code]') . '</label><br /></td>
 		<tr>
-			<td>' . we_htmlElement::htmlTextArea(
+			<td>' . we_html_element::htmlTextArea(
 				array(
 
 						'name' => 'previewCode',
@@ -1252,7 +1252,7 @@ class weNavigationFrames extends weToolFrames
 		</tr>
 		</table>';
 
-		return we_htmlElement::jsElement(
+		return we_html_element::jsElement(
 				'
 					function showPreview() {
 						document.we_form.pnt.value="previewIframe";
@@ -1344,7 +1344,7 @@ function onFolderSelectionChangeJS(elem) {
 
 			// Property tab content
 			$out .= $yuiSuggest->getYuiJsFiles();
-			$out .= we_htmlElement::htmlDiv(
+			$out .= we_html_element::htmlDiv(
 					array(
 						'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
 					),
@@ -1388,7 +1388,7 @@ function onFolderSelectionChangeJS(elem) {
 							'',
 							'',
 							false,
-							$preselect)) . (($this->Model->Selection == 'static' || $this->Model->IsFolder) ? $this->getHTMLAttributes() : '')) . ($this->Model->IsFolder ? (we_htmlElement::htmlDiv(
+							$preselect)) . (($this->Model->Selection == 'static' || $this->Model->IsFolder) ? $this->getHTMLAttributes() : '')) . ($this->Model->IsFolder ? (we_html_element::htmlDiv(
 					array(
 						'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
 					),
@@ -1404,7 +1404,7 @@ function onFolderSelectionChangeJS(elem) {
 							false,
 							$preselect))) :
 
-			'') . ((defined('CUSTOMER_TABLE')) ? we_htmlElement::htmlDiv(
+			'') . ((defined('CUSTOMER_TABLE')) ? we_html_element::htmlDiv(
 					array(
 						'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
 					),
@@ -1553,7 +1553,7 @@ function onFolderSelectionChangeJS(elem) {
 		}
 
 		//$_input  = we_html_tools::htmlTextInput($PathName,58,$_path,'','id="yuiAcInput'.$PathName.'"','text',($this->_width_size-$_width),0);
-		$_result = we_htmlElement::htmlHidden(
+		$_result = we_html_element::htmlHidden(
 				array(
 					'name' => $IDName, 'value' => $IDValue, 'id' => 'yuiAcResult' . $PathName
 				));
@@ -1581,7 +1581,7 @@ function onFolderSelectionChangeJS(elem) {
 					$title,
 					'left',
 					'defaultfont',
-					we_htmlElement::htmlHidden(array(
+					we_html_element::htmlHidden(array(
 						'name' => $IDName, 'value' => $IDValue
 					)),
 					we_html_tools::getPixel(20, 4),
@@ -1596,7 +1596,7 @@ function onFolderSelectionChangeJS(elem) {
 				"add",
 				"javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
 		$del_but = addslashes(
-				we_htmlElement::htmlImg(
+				we_html_element::htmlImg(
 						array(
 
 								'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
@@ -1626,9 +1626,9 @@ function onFolderSelectionChangeJS(elem) {
 			categories_edit.showVariant(0);
 		';
 
-		$js = we_htmlElement::jsElement($variant_js);
+		$js = we_html_element::jsElement($variant_js);
 
-		$table = new we_htmlTable(
+		$table = new we_html_table(
 				array(
 
 						'id' => 'CategoriesBlock',
@@ -1647,7 +1647,7 @@ function onFolderSelectionChangeJS(elem) {
 		$table->setColContent(
 				2,
 				0,
-				we_htmlElement::htmlDiv(
+				we_html_element::htmlDiv(
 						array(
 
 								'id' => 'categories',
@@ -1668,7 +1668,7 @@ function onFolderSelectionChangeJS(elem) {
 							we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 						)));
 
-		return $table->getHtml() . $js . we_htmlElement::jsElement(
+		return $table->getHtml() . $js . we_html_element::jsElement(
 				'
 
 							function removeAllCats(){
@@ -1802,11 +1802,11 @@ function onFolderSelectionChangeJS(elem) {
 						false), we_button::create_button('close', 'javascript:self.close();')
 				));
 
-		$_body = we_htmlElement::htmlBody(
+		$_body = we_html_element::htmlBody(
 				array(
 					"class" => "weDialogBody", "onLoad" => "loaded=1;"
 				),
-				we_htmlElement::htmlForm(
+				we_html_element::htmlForm(
 						array(
 							"name" => "we_form", "onsubmit" => "return false"
 						),
@@ -1822,7 +1822,7 @@ function onFolderSelectionChangeJS(elem) {
 								false,
 								g_l('navigation','[select_field_txt]'))));
 
-		return $this->getHTMLDocument($_body, we_htmlElement::jsElement($_js));
+		return $this->getHTMLDocument($_body, we_html_element::jsElement($_js));
 
 	}
 
@@ -1907,7 +1907,7 @@ function onFolderSelectionChangeJS(elem) {
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
-		return we_htmlElement::htmlDiv(array(
+		return we_html_element::htmlDiv(array(
 			'style' => 'margin-top:' . $this->_margin_top . ';'
 		), $weAcSelector);
 
@@ -1915,7 +1915,7 @@ function onFolderSelectionChangeJS(elem) {
 
 	function getHTMLDynPreview()
 	{
-		$_select = new we_htmlSelect(
+		$_select = new we_html_select(
 				array(
 
 						'size' => '20',
@@ -1929,13 +1929,13 @@ function onFolderSelectionChangeJS(elem) {
 					$_item['id'],
 					($this->Model->SelectionType == 'doctype') ? FILE_TABLE : ($this->Model->SelectionType == 'category' ? CATEGORY_TABLE : OBJECT_FILES_TABLE));
 			if (!empty($_item['field'])) {
-				$_opt = we_htmlSelect::getNewOptionGroup(
+				$_opt = we_html_select::getNewOptionGroup(
 						array(
 
 								'style' => 'font-weight: bold; font-style: normal; color: darkblue;',
 								'label' => $_item['field']
 						));
-				$_opt->addChild(we_htmlSelect::getNewOption($_k, $_txt));
+				$_opt->addChild(we_html_select::getNewOption($_k, $_txt));
 				$_select->addChild($_opt);
 			} else {
 				$_select->addOption($_k, $_txt);
@@ -1951,11 +1951,11 @@ function onFolderSelectionChangeJS(elem) {
 				'space' => 0
 		);
 
-		$_body = we_htmlElement::htmlBody(
+		$_body = we_html_element::htmlBody(
 				array(
 					"class" => "weDialogBody"
 				),
-				we_htmlElement::htmlForm(
+				we_html_element::htmlForm(
 						array(
 							'name' => 'we_form', 'onsubmit' => 'return false'
 						),
@@ -2066,7 +2066,7 @@ function onFolderSelectionChangeJS(elem) {
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
-		return we_htmlElement::jsElement(
+		return we_html_element::jsElement(
 				'
 					function ' . $prefix . 'setLinkSelection(value){
 						if(value=="intern"){
@@ -2125,7 +2125,7 @@ function onFolderSelectionChangeJS(elem) {
 		asort($charsets);
 		reset($charsets);
 
-		$table = new we_htmlTable(array(
+		$table = new we_html_table(array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 		), 1, 3);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
@@ -2338,7 +2338,7 @@ function onFolderSelectionChangeJS(elem) {
 
 		$_input_width = 70;
 
-		$_popup = new we_htmlTable(array(
+		$_popup = new we_html_table(array(
 			'cellpadding' => '5', 'cellspacing' => '0'
 		), 4, 4);
 
@@ -2521,7 +2521,7 @@ function onFolderSelectionChangeJS(elem) {
 	{
 		$_parts = array();
 		$_input_width = 70;
-		$_img_props = new we_htmlTable(array(
+		$_img_props = new we_html_table(array(
 			'cellpadding' => '5', 'cellspacing' => '0', 'border' => '0'
 		), 4, 5);
 
@@ -2692,19 +2692,19 @@ function onFolderSelectionChangeJS(elem) {
 	{
 
 		if (isset($_REQUEST["home"])) {
-			return $this->getHTMLDocument(we_htmlElement::htmlBody(array(
+			return $this->getHTMLDocument(we_html_element::htmlBody(array(
 				"bgcolor" => "#F0EFF0"
 			), ""));
 		}
 
-		$table1 = new we_htmlTable(array(
+		$table1 = new we_html_table(array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"
 		), 1, 1);
 		$table1->setCol(0, 0, array(
 			"nowrap" => null, "valign" => "top"
 		), we_html_tools::getPixel(1600, 10));
 
-		$table2 = new we_htmlTable(array(
+		$table2 = new we_html_table(array(
 			"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "400"
 		), 1, 2);
 		$table2->setColContent(
@@ -2741,15 +2741,15 @@ function onFolderSelectionChangeJS(elem) {
 						""));
 
 		return $this->getHTMLDocument(
-				we_htmlElement::jsElement("", array(
+				we_html_element::jsElement("", array(
 					"src" => JS_DIR . "attachKeyListener.js"
-				)) . we_htmlElement::jsElement(
+				)) . we_html_element::jsElement(
 						'
 					function we_save() {
 						' . $this->topFrame . '.makeNewDoc = document.we_form.makeNewDoc.checked;
 						' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
 					}
-					') . we_htmlElement::htmlBody(
+					') . we_html_element::htmlBody(
 						array(
 
 								"bgcolor" => "white",
@@ -2760,7 +2760,7 @@ function onFolderSelectionChangeJS(elem) {
 								"topmargin" => "0",
 								"onLoad" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
 						),
-						we_htmlElement::htmlForm(array(), $table1->getHtml() . $table2->getHtml())))
+						we_html_element::htmlForm(array(), $table1->getHtml() . $table2->getHtml())))
 
 		;
 

@@ -227,6 +227,6 @@
         '</form>'
         ;
 
-    print we_htmlElement::htmlBody(array('class'=>'weEditorBody', 'onload'=>'setIFrameSize()', 'onresize'=>'setIFrameSize()'),
+    print we_html_element::htmlBody(array('class'=>'weEditorBody', 'onload'=>'setIFrameSize()', 'onresize'=>'setIFrameSize()'),
                     $body);
     print '</html>';

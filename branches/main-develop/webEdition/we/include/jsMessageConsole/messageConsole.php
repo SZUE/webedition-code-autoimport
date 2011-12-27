@@ -92,7 +92,7 @@ li.msgError {
 	color				: red;
 }
 </style>
-<?php echo we_htmlElement::jsScript(JS_DIR.'messageConsoleImages.js').we_htmlElement::jsScript(JS_DIR.'messageConsoleWindow.js');
+<?php echo we_html_element::jsScript(JS_DIR.'messageConsoleImages.js').we_html_element::jsScript(JS_DIR.'messageConsoleWindow.js');
 ?>
 </head>
 

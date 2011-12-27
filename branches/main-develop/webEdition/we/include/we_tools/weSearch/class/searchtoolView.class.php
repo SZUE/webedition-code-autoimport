@@ -107,9 +107,9 @@ class searchtoolView extends weToolView{
 
   ';
 
-		return we_htmlElement::jsElement("", array(
+		return we_html_element::jsElement("", array(
 				"src" => JS_DIR . "windows.js"
-			)) . we_htmlElement::jsElement($js);
+			)) . we_html_element::jsElement($js);
 	}
 
 	function processCommands(){
@@ -125,7 +125,7 @@ class searchtoolView extends weToolView{
 					$this->Model->setIsFolder($_REQUEST['cmd'] == 'tool_weSearch_new_group' ? 1 : 0);
 
 					print
-						we_htmlElement::jsElement(
+						we_html_element::jsElement(
 							'
         ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' . (isset(
 								$_REQUEST['tabnr']) ? '&tab=' . $_REQUEST['tabnr'] : '') . '&text=' . urlencode(
@@ -139,7 +139,7 @@ class searchtoolView extends weToolView{
 
 					if(!$this->Model->isAllowedForUser()){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						$this->Model = new searchtool();
@@ -147,7 +147,7 @@ class searchtoolView extends weToolView{
 						break;
 					}
 					print
-						we_htmlElement::jsElement(
+						we_html_element::jsElement(
 							'
         ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' . (isset(
 								$_REQUEST['cmdid']) ? '&cmdid=' . $_REQUEST['cmdid'] : '') . '&text=' . urlencode(
@@ -166,14 +166,14 @@ class searchtoolView extends weToolView{
 					}
 					if(strlen($this->Model->Text) > 30){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('searchtool', "[nameTooLong]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('searchtool', "[no_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -181,7 +181,7 @@ class searchtoolView extends weToolView{
 
 					if($this->Model->filenameNotValid($this->Model->Text)){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -191,7 +191,7 @@ class searchtoolView extends weToolView{
 
 					if(trim($this->Model->Text) == ''){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -201,14 +201,14 @@ class searchtoolView extends weToolView{
 					$this->Model->setPath();
 					if($this->Model->pathExists($this->Model->Path)){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if($this->Model->isSelf()){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(
 									g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -247,7 +247,7 @@ class searchtoolView extends weToolView{
 							$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
 						}
 
-						$js = we_htmlElement::jsElement(
+						$js = we_html_element::jsElement(
 								$js . '
        ' . $this->editorHeaderFrame . '.location.reload();
        ' . we_message_reporting::getShowMessageCall(
@@ -256,7 +256,7 @@ class searchtoolView extends weToolView{
       ');
 
 						if(isset($_REQUEST['delayCmd']) && !empty($_REQUEST['delayCmd'])){
-							$js .= we_htmlElement::jsElement(
+							$js .= we_html_element::jsElement(
 									$this->topFrame . '.we_cmd("' . $_REQUEST['delayCmd'] . '"' . ((isset(
 										$_REQUEST['delayParam']) && !empty($_REQUEST['delayParam'])) ? ',"' . $_REQUEST['delayParam'] . '"' : '') . ');
         ');
@@ -266,7 +266,7 @@ class searchtoolView extends weToolView{
 							}
 						}
 					} else{
-						$js = we_htmlElement::jsElement(
+						$js = we_html_element::jsElement(
 								$js . '
        ' . $this->editorHeaderFrame . '.location.reload();
        ' . we_message_reporting::getShowMessageCall(
@@ -294,12 +294,12 @@ class searchtoolView extends weToolView{
 					break;
 
 				case 'tool_weSearch_delete' :
-					print we_htmlElement::jsElement('', array(
+					print we_html_element::jsElement('', array(
 							'src' => JS_DIR . 'we_showMessage.js'
 						));
 					if($this->Model->delete()){
 						print
-							we_htmlElement::jsElement(
+							we_html_element::jsElement(
 								'
         ' . $this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
@@ -310,7 +310,7 @@ class searchtoolView extends weToolView{
 						//$_REQUEST['home'] = '0';
 						$_REQUEST['pnt'] = 'edbody';
 
-						print we_htmlElement::jsElement($this->topFrame . '.we_cmd("tool_weSearch_edit");
+						print we_html_element::jsElement($this->topFrame . '.we_cmd("tool_weSearch_edit");
       ');
 					}
 					break;
@@ -564,7 +564,7 @@ class searchtoolView extends weToolView{
 			$showSelects = '';
 		}
 
-		$_js = we_htmlElement::jsElement(
+		$_js = we_html_element::jsElement(
 				'
 
 
@@ -1579,7 +1579,7 @@ class searchtoolView extends weToolView{
 
 	function getSearchDialogCheckboxes($whichSearch){
 
-		$_table = new we_htmlTable(
+		$_table = new we_html_table(
 				array(
 					'border' => '0',
 					'cellpadding' => '2',
@@ -1725,7 +1725,7 @@ class searchtoolView extends weToolView{
 			unset($_SESSION["weSearch"]["checkWhich"]);
 		}
 
-		$_table = new we_htmlTable(
+		$_table = new we_html_table(
 				array(
 					'border' => '0',
 					'cellpadding' => '2',
@@ -2100,7 +2100,7 @@ class searchtoolView extends weToolView{
 
 			if(searchtoolsearch::checkRightTempTable() == "1" && searchtoolsearch::checkRightDropTable() == "1"){
 				print
-					we_htmlElement::jsElement(
+					we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(
 							g_l('searchtool', "[noTempTableRightsSearch]"), we_message_reporting::WE_MESSAGE_NOTICE));
 			} else{
@@ -2923,7 +2923,7 @@ class searchtoolView extends weToolView{
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
-								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_htmlElement::htmlHidden(
+								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
 								array(
 									'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
 							)), we_html_tools::getPixel(5, 4), $_button);
@@ -2942,7 +2942,7 @@ class searchtoolView extends weToolView{
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
-								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_htmlElement::htmlHidden(
+								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
 								array(
 									'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
 							)), we_html_tools::getPixel(5, 4), $_button);
@@ -2958,7 +2958,7 @@ class searchtoolView extends weToolView{
 					$_button = we_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(
 							we_html_tools::htmlTextInput(
-								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_htmlElement::htmlHidden(
+								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
 								array(
 									'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
 							)), we_html_tools::getPixel(5, 4), $_button);
@@ -2994,7 +2994,7 @@ class searchtoolView extends weToolView{
      </tr>
     </table></div>';
 
-		$out .= we_htmlElement::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+		$out .= we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 	}
@@ -3002,7 +3002,7 @@ class searchtoolView extends weToolView{
 	function getDateSelector($_label, $_name, $_btn, $value){
 		$btnDatePicker = we_button::create_button(
 				"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-		$oSelector = new we_htmlTable(
+		$oSelector = new we_html_table(
 				array(
 					"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
 				),
@@ -3012,7 +3012,7 @@ class searchtoolView extends weToolView{
 			0, 2, null, we_html_tools::htmlTextInput(
 				$name = $_name, $size = 55, $value, $maxlength = 10, $attribs = 'id="' . $_name . '" class="wetextinput" readonly="1"', $type = "text", $width = 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
-		$oSelector->setCol(0, 4, null, we_htmlElement::htmlA(array(
+		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(
 				"href" => "#"
 				), $btnDatePicker));
 
@@ -3117,7 +3117,7 @@ class searchtoolView extends weToolView{
 				$allDivs = searchtoolView::makeMouseOverDivs($x, $content, $whichSearch);
 			}
 
-			$out .= we_htmlElement::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(
+			$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(
 						$allDivs) . "';");
 		}
 		return $out;

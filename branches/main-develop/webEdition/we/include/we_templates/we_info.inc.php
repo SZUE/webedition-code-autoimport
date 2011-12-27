@@ -77,7 +77,7 @@ if(defined("WE_VERSION_SUPP")) {
 	}
 }
 
-$_table = new we_htmlTable( array(	"border"      => 0,
+$_table = new we_html_table( array(	"border"      => 0,
 									"cellpadding" => 0,
 									"cellspacing" => 0,
 									"style"  => "background-image:url(" . IMAGE_DIR . "info/".$_logo.");background-repeat: no-repeat;background-color:#EBEBEB" ),
@@ -140,7 +140,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$loginRow = 0;
 
-	$_loginTable = new we_htmlTable(
+	$_loginTable = new we_html_table(
 		array(	"border"      => 0,
 				"cellpadding" => 0,
 				"cellspacing" => 0
@@ -171,7 +171,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 
 	//	mode-table
-	$_modetable = new we_htmlTable(	array(	"border"      => "0",
+	$_modetable = new we_html_table(	array(	"border"      => "0",
 											"cellpadding" => "0",
 											"cellspacing" => "0",
 											"width"       => $_middlePart),
@@ -183,7 +183,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 		$_modetable->setCol(0,1, array(	"align"   => "right",
 									"valign"  => "bottom",
-									"rowspan" => "2"), we_htmlElement::htmlHidden(array("name" => "mode", "value" => "normal")) . we_button::create_button("login", "javascript:document.loginForm.submit();"));
+									"rowspan" => "2"), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . we_button::create_button("login", "javascript:document.loginForm.submit();"));
 	} else {	//	normal login
 
 		//	15th Mode
@@ -232,7 +232,7 @@ if (isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_content = g_l('global','[loginok]');
 
 
-	$_loginTable = new we_htmlTable(
+	$_loginTable = new we_html_table(
 		array(	"border"      => 0,
 				"cellpadding" => 0,
 				"cellspacing" => 0

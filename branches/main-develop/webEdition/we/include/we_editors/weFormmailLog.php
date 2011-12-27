@@ -38,8 +38,8 @@
 
 			$headline = array();
 
-			$headline[0] = array('dat' => we_htmlElement::htmlB("IP Adresse"));
-			$headline[1] = array('dat' => we_htmlElement::htmlB("Datum/Uhrzeit"));
+			$headline[0] = array('dat' => we_html_element::htmlB("IP Adresse"));
+			$headline[1] = array('dat' => we_html_element::htmlB("Datum/Uhrzeit"));
 
 
 			$content = array();
@@ -99,9 +99,9 @@
 			} else {
 				$parts[]=array(
 						'headline' => '',
-						'html' => 	we_htmlElement::htmlSpan(array('class'=>'middlefontgray'), g_l('prefs','[log_is_empty]')) .
-									we_htmlElement::htmlBr() .
-									we_htmlElement::htmlBr() ,
+						'html' => 	we_html_element::htmlSpan(array('class'=>'middlefontgray'), g_l('prefs','[log_is_empty]')) .
+									we_html_element::htmlBr() .
+									we_html_element::htmlBr() ,
 						'space' => 0,
 						'noline'=>1
 
@@ -109,9 +109,9 @@
 
 			}
 
-			$body=we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
+			$body=we_html_element::htmlBody(array("class"=>"weDialogBody"),
 					we_multiIconBox::getHTML("show_log_data","100%",$parts,30,we_button::position_yes_no_cancel($refresh,$close,$deleteLogBut),-1,'','',false,g_l('prefs','[formmail_log]'),"",558) .
-					we_htmlElement::jsElement("self.focus();")
+					we_html_element::jsElement("self.focus();")
 
 			);
 
@@ -132,8 +132,8 @@ function clearLog() {
 
 	function getHTMLDocument($body,$head=""){
 		$head=str_replace(WE_DEFAULT_TITLE, g_l('prefs','[formmail_log]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . "\n".$head;
-		return we_htmlElement::htmlHtml(
-					we_htmlElement::htmlHead($head).
+		return we_html_element::htmlHtml(
+					we_html_element::htmlHead($head).
 					$body
 				);
 	}

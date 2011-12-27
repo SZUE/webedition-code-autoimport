@@ -51,7 +51,6 @@ function we_tag_quicktime($attribs, $content){
 	}
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 		//"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "',". $parentid . ", 'video/quicktime', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3= we_cmd_enc("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");

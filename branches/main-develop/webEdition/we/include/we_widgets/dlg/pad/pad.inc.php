@@ -222,11 +222,11 @@ $DB_WE->query($_sql);
 $pad .= '<table cellspacing="0" cellpadding="0" border="0">';
 while ($DB_WE->next_record()) {
 	$pad .= '<tr>';
-	$pad .= '<td width="20" height="20" valign="middle" nowrap>' . we_htmlElement::htmlImg(
+	$pad .= '<td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
 			array(
 				"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif", "width" => 13, "height" => 14
 			)) . '</td>';
-	$pad .= '<td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
+	$pad .= '<td valign="middle" class="middlefont">' . we_html_element::htmlA(
 			array(
 				"href" => "javascript:void(0)", "title" => "", "style" => "color:#000000;text-decoration:none;"
 			),
@@ -241,15 +241,15 @@ $pad .= '</table>';
 print "hello";
 //$ifr = "<iframe allowtransparency=\"true\" src=\"".WEBEDITION_DIR."we/include/we_widgets/mod/pad1.inc.php\"\" id=\"\" style=\"width:430px;height:100px;overflow: auto;\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\"></iframe>\n";
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . //'<link rel="stylesheet" type="text/css" media="all" href="'.JS_DIR.'jscalendar/calendar-win2k-cold-1.css" title="win2k-cold-1" />'.
-						//we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/test.js")).
-						//we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar.js")).
-						//we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/lang/calendar-de.js")).
-						//we_htmlElement::jsElement("",array("src"=>JS_DIR."jscalendar/calendar-setup.js")).
-						we_htmlElement::jsElement(
-								$js)) . we_htmlElement::htmlBody(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . //'<link rel="stylesheet" type="text/css" media="all" href="'.JS_DIR.'jscalendar/calendar-win2k-cold-1.css" title="win2k-cold-1" />'.
+						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/test.js")).
+						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/calendar.js")).
+						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/lang/calendar-de.js")).
+						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/calendar-setup.js")).
+						we_html_element::jsElement(
+								$js)) . we_html_element::htmlBody(
 						array(
 
 								"marginwidth" => "15",
@@ -258,6 +258,6 @@ print
 								"topmargin" => "10",
 								"onload" => "if(parent!=self)init();"
 						),
-						we_htmlElement::htmlDiv(array(
+						we_html_element::htmlDiv(array(
 							"id" => "pad"
 						), $pad)));

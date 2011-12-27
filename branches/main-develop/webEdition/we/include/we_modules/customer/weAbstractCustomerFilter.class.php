@@ -26,7 +26,7 @@
  * Base Class for all Customer Filters (Model)
  *
  */
-class weAbstractCustomerFilter {
+abstract class weAbstractCustomerFilter {
 	const OFF=0;
 	const ALL=1;
 	const SPECIFIC=2;
@@ -38,7 +38,7 @@ class weAbstractCustomerFilter {
 	 *
 	 * @var integer
 	 */
-	var $_mode = weAbstractCustomerFilter::OFF;
+	var $_mode = self::OFF;
 
 	/**
 	 * Array with customer ids. Only relevant when $_mode is SPECIFIC
@@ -80,7 +80,7 @@ class weAbstractCustomerFilter {
 	 * @param array $filter
 	 * @return weAbstractCustomerFilter
 	 */
-	function weAbstractCustomerFilter($mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
+	function __construct($mode=self::OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		if(is_array($blackList)){
@@ -94,20 +94,6 @@ class weAbstractCustomerFilter {
 		}
 	}
 
-	/**
-	 * Constructor for PHP5
-	 *
-	 * @param integer $mode
-	 * @param array $specificCustomers
-	 * @param array $blackList
-	 * @param array $whiteList
-	 * @param array $filter
-	 * @return weAbstractCustomerFilter
-	 */
-	function __construct($mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $blackList=array(), $whiteList=array(), $filter=array()) {
-		$this->weAbstractCustomerFilter($mode, $specificCustomers, $blackList, $whiteList, $filter);
-	}
-
 	/*##################### End of constructor ################################*/
 
 
@@ -118,22 +104,22 @@ class weAbstractCustomerFilter {
 	 */
 	function customerHasAccess() {
 		switch ($this->_mode) {
-			case weAbstractCustomerFilter::OFF:
+			case self::OFF:
 				return true;
-			case weAbstractCustomerFilter::ALL:
-				return weAbstractCustomerFilter::customerIsLogedIn();
-			case weAbstractCustomerFilter::NONE:
-				return !weAbstractCustomerFilter::customerIsLogedIn();
-			case weAbstractCustomerFilter::SPECIFIC:
-				if (!weAbstractCustomerFilter::customerIsLogedIn()) {
+			case self::ALL:
+				return self::customerIsLogedIn();
+			case self::NONE:
+				return !self::customerIsLogedIn();
+			case self::SPECIFIC:
+				if (!self::customerIsLogedIn()) {
 					return false;
 				}
 				return in_array($_SESSION["webuser"]["ID"], $this->_specificCustomers);
-			case weAbstractCustomerFilter::FILTER:
+			case self::FILTER:
 				if (!( isset($_SESSION) && isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]["ID"]) )) {
 					return false;
 				}
-				return weAbstractCustomerFilter::customerHasFilterAccess();
+				return self::customerHasFilterAccess();
 		}
 		return false;
 	}
@@ -158,10 +144,10 @@ class weAbstractCustomerFilter {
 			'3'=>'%s<=%s',
 			'4'=>'%s>%s',
 			'5'=>'%s>=%s',
-			'6'=>'weAbstractCustomerFilter::startsWith(%s,%s)',
-			'7'=>'weAbstractCustomerFilter::endsWith(%s,%s)',
-			'8'=>'weAbstractCustomerFilter::contains(%s,%s)',
-			'9'=>'weAbstractCustomerFilter::in(%s,%s)'
+			'6'=>'self::startsWith(%s,%s)',
+			'7'=>'self::endsWith(%s,%s)',
+			'8'=>'self::contains(%s,%s)',
+			'9'=>'self::in(%s,%s)'
 
 		);
 
@@ -171,8 +157,8 @@ class weAbstractCustomerFilter {
 		foreach ( $this->_filter as $_filter ) {
 			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"]=="AND" ? " && " : " || ") : "") . sprintf(
 				$_filter_op[$_filter["operation"]],
-				weAbstractCustomerFilter::quote4Eval($_SESSION["webuser"][$_filter["field"]]),
-				weAbstractCustomerFilter::quote4Eval($_filter["value"])
+				self::quote4Eval($_SESSION["webuser"][$_filter["field"]]),
+				self::quote4Eval($_filter["value"])
 			);
 			$_flag = true;
 		}
@@ -194,7 +180,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getFilterFromRequest() {
+	static function getFilterFromRequest() {
 		$_filter = array();
 
 		if(isset($_REQUEST['filterSelect_0'])) {
@@ -235,7 +221,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getSpecificCustomersFromRequest() {
+	static function getSpecificCustomersFromRequest() {
 		$_customers = array();
 
 		if (isset($_REQUEST['specificCustomersEditControl'])){
@@ -258,7 +244,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getBlackListFromRequest() {
+	static function getBlackListFromRequest() {
 		$_blackList = array();
 
 		if (isset($_REQUEST['blackListEditControl'])){
@@ -281,7 +267,7 @@ class weAbstractCustomerFilter {
 	 * @static
 	 * @return array
 	 */
-	function getWhiteListFromRequest() {
+	static function getWhiteListFromRequest() {
 		$_whiteList = array();
 
 		if (isset($_REQUEST['whiteListEditControl'])){

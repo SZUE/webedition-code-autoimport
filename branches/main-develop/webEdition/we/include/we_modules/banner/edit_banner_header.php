@@ -37,8 +37,8 @@ print STYLESHEET;
     $protocol=getServerProtocol();
     $jmenu = new weJavaMenu($we_menu_banner,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30);
 
-echo we_htmlElement::jsScript(JS_DIR.'images.js');
-		echo we_htmlElement::jsElement('
+echo we_html_element::jsScript(JS_DIR.'images.js');
+		echo we_html_element::jsElement('
 	       function menuaction(cmd){
 				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?wecmd0="+cmd);
 	    }

@@ -22,19 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class ImportOptions extends leWizardStepBase
-{
+class ImportOptions extends leWizardStepBase{
 
 	var $EnabledButtons = array(
 		'next'
 	);
 
-	function execute(&$Template)
-	{
+	function execute(&$Template){
 
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSuggest.class.inc.php");
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$WizardSuggest = & weSuggest::getInstance();
 
 
@@ -52,38 +47,20 @@ class ImportOptions extends leWizardStepBase
 		$path = id_to_path(FSW_DEFAULT_MASTER_TEMPLATE, TEMPLATES_TABLE);
 
 		$MastertemplateInput = we_html_tools::htmlTextInput(
-				$textname,
-				30,
-				$path,
-				255,
-				' readonly="readonly" id="' . $textname . '"',
-				'text',
-				388);
+				$textname, 30, $path, 255, ' readonly="readonly" id="' . $textname . '"', 'text', 388);
 		$MastertemplateHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\" />";
-			//javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weTmpl',1)
-			$wecmdenc1= we_cmd_enc("document.getElementById('$idname').value");
-			$wecmdenc2= we_cmd_enc("document.getElementById('$textname').value");
-			$wecmdenc3= '';
+		//javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weTmpl',1)
+		$wecmdenc1 = we_cmd_enc("document.getElementById('$idname').value");
+		$wecmdenc2 = we_cmd_enc("document.getElementById('$textname').value");
+		$wecmdenc3 = '';
 		$MastertemplateButton = we_button::create_button(
-				"select",
-				"javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','','text/weTmpl',1)");
+				"select", "javascript:we_cmd('openDocselector',document.getElementById('$idname').value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','text/weTmpl',1)");
 		$MastertemplateTrash = we_button::create_button(
-				"image:btn_function_trash",
-				"javascript:document.getElementById('$idname').value='$myid';document.getElementById('$textname').value='$path';",
-				true,
-				27,
-				22);
+				"image:btn_function_trash", "javascript:document.getElementById('$idname').value='$myid';document.getElementById('$textname').value='$path';", true, 27, 22);
 
 		$MastertemplateChooserText = $this->Language['choose_mastertemplate'];
 		$MastertemplateChooser = we_html_tools::htmlFormElementTable(
-				$MastertemplateInput,
-				"",
-				"left",
-				"defaultfont",
-				$MastertemplateHidden . we_html_tools::getPixel(20, 1),
-				$MastertemplateButton,
-				we_html_tools::getPixel(10, 1),
-				$MastertemplateTrash);
+				$MastertemplateInput, "", "left", "defaultfont", $MastertemplateHidden . we_html_tools::getPixel(20, 1), $MastertemplateButton, we_html_tools::getPixel(10, 1), $MastertemplateTrash);
 
 		// Use Documents
 		$Name = 'le_documents_use';
@@ -103,38 +80,20 @@ class ImportOptions extends leWizardStepBase
 		$path = "/";
 
 		$DocumentInput = we_html_tools::htmlTextInput(
-				$textname,
-				30,
-				$path,
-				255,
-				' readonly="readonly" id="' . $textname . '"',
-				'text',
-				388);
+				$textname, 30, $path, 255, ' readonly="readonly" id="' . $textname . '"', 'text', 388);
 		$DocumentHidden = "<input type=\"hidden\" id=\"" . $idname . "\" name=\"" . $idname . "\" value=\"" . $myid . "\" />";
 		//javascript:we_cmd('openDirselector',document.getElementById('$idname').value,'$table','document.getElementById(\\'$idname\\').value','document.getElementById(\\'$textname\\').value','','" . session_id() . "','','text/weFolder',1)
-		$wecmdenc1= we_cmd_enc("document.getElementById('$idname').value");
-		$wecmdenc2= we_cmd_enc("document.getElementById('$textname').value");
-		$wecmdenc3= '';
+		$wecmdenc1 = we_cmd_enc("document.getElementById('$idname').value");
+		$wecmdenc2 = we_cmd_enc("document.getElementById('$textname').value");
+		$wecmdenc3 = '';
 		$DocumentButton = we_button::create_button(
-				"select",
-				"javascript:we_cmd('openDirselector',document.getElementById('$idname').value,'$table','".$wecmdenc1."','".$wecmdenc2."','','" . session_id() . "','','text/weFolder',1)");
+				"select", "javascript:we_cmd('openDirselector',document.getElementById('$idname').value,'$table','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','text/weFolder',1)");
 		$DocumentTrash = we_button::create_button(
-				"image:btn_function_trash",
-				"javascript:document.getElementById('$idname').value='$myid';document.getElementById('$textname').value='$path';",
-				true,
-				27,
-				22);
+				"image:btn_function_trash", "javascript:document.getElementById('$idname').value='$myid';document.getElementById('$textname').value='$path';", true, 27, 22);
 
 		$DocumentChooserText = $this->Language['choose_document_path'];
 		$DocumentChooser = we_html_tools::htmlFormElementTable(
-				$DocumentInput,
-				"",
-				"left",
-				"defaultfont",
-				$DocumentHidden . we_html_tools::getPixel(20, 1),
-				$DocumentButton,
-				we_html_tools::getPixel(10, 1),
-				$DocumentTrash);
+				$DocumentInput, "", "left", "defaultfont", $DocumentHidden . we_html_tools::getPixel(20, 1), $DocumentButton, we_html_tools::getPixel(10, 1), $DocumentTrash);
 
 		// Use Navigation
 		$Name = 'le_navigation_use';
@@ -151,13 +110,11 @@ class ImportOptions extends leWizardStepBase
 			'0' => '/'
 		);
 		$_wrkNavi = '';
-		if (!we_hasPerm('ADMINISTRATOR')) {
+		if(!we_hasPerm('ADMINISTRATOR')){
 			$_wrkNavi = makeArrayFromCSV(
-					f('SELECT workSpaceNav FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']),
-							'workSpaceNav',
-							new DB_WE()));
+				f('SELECT workSpaceNav FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), 'workSpaceNav', new DB_WE()));
 			$_condition = array();
-			foreach ($_wrkNavi as $_key => $_value) {
+			foreach($_wrkNavi as $_key => $_value){
 				$_condition[] = 'Path LIKE "' . $_db->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
 			}
 			$_dirs = array();
@@ -165,10 +122,9 @@ class ImportOptions extends leWizardStepBase
 
 		$_db = new DB_WE();
 		$_db->query(
-				'SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(
-						',',
-						$_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path;');
-		while ($_db->next_record()) {
+			'SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . (!empty($_wrkNavi) ? ' AND (ID IN (' . implode(
+					',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))' : '') . ' ORDER BY Path;');
+		while($_db->next_record()) {
 			$_dirs[$_db->f('ID')] = $_db->f('Path');
 		}
 
@@ -219,13 +175,11 @@ EOF;
 		$this->setContent($Content);
 
 		return LE_WIZARDSTEP_NEXT;
-
 	}
 
-	function check(&$Template)
-	{
+	function check(&$Template){
 
-		if (isset($_REQUEST['startImport']) && $_REQUEST['startImport'] == 1) {
+		if(isset($_REQUEST['startImport']) && $_REQUEST['startImport'] == 1){
 
 			// set Default Master Template
 			$MasterTemplateID = $_REQUEST['MasterTemplateID'];
@@ -238,60 +192,55 @@ EOF;
 			$NavigationPathID = 0;
 			$NavigationPath = '/';
 
-			if (isset($_REQUEST['le_documents_use'])) {
+			if(isset($_REQUEST['le_documents_use'])){
 				$ImportDocuments = 1;
 				$DocumentsPathID = $_REQUEST['DocumentPathID'];
 				$DocumentsPath = id_to_path($DocumentsPathID, FILE_TABLE);
 				$_SESSION['we_fsw_document_path'] = $DocumentsPath;
 
-				if (isset($_REQUEST['le_navigation_use'])) {
+				if(isset($_REQUEST['le_navigation_use'])){
 					$ImportNavigation = 1;
 					$NavigationPathID = $_REQUEST['NavigationPathID'];
 					$NavigationPath = id_to_path($NavigationPathID, NAVIGATION_TABLE);
-
 				}
-
 			}
 
 			$_REQUEST['cid'] = -2;
 			$_REQUEST['v'] = array(
-
-					'mode' => 1,  // dont change this
-					'cid' => -2,  // dont change this
-					'type' => 'WXMLImport',  // dont change this
-					'fserver' => '/',  // dont change this
-					'rdofloc' => 'lLocal',  // dont change this
-					'import_from' => '/webEdition/liveUpdate/tmp/files/Import.xml',
-					'collision' => 'replace',
-					'import_owners' => 0,
-					'owners_overwrite' => 0,
-					'owners_overwrite_id' => 0,
-					'import_docs' => $ImportDocuments,
-					'doc_dir_id' => $DocumentsPathID,
-					'doc_dir' => $DocumentsPath,
-					'restore_doc_path' => 1,
-					'import_templ' => 1,
-					'tpl_dir_id' => 0,
-					'tpl_dir' => '/',
-					'restore_tpl_path' => 1,
-					'import_thumbnails' => 1,
-					'import_objs' => 0,
-					'import_classes' => 0,
-					'import_dt' => 1,
-					'import_ct' => 1,
-					'import_navigation' => $ImportNavigation,  // should navigation be imported
-					'navigation_dir_id' => $NavigationPathID,
-					'navigation_dir' => $NavigationPath,
-					'import_binarys' => 1,
-					'rebuild' => 0
+				'mode' => 1, // dont change this
+				'cid' => -2, // dont change this
+				'type' => 'WXMLImport', // dont change this
+				'fserver' => '/', // dont change this
+				'rdofloc' => 'lLocal', // dont change this
+				'import_from' => '/webEdition/liveUpdate/tmp/files/Import.xml',
+				'collision' => 'replace',
+				'import_owners' => 0,
+				'owners_overwrite' => 0,
+				'owners_overwrite_id' => 0,
+				'import_docs' => $ImportDocuments,
+				'doc_dir_id' => $DocumentsPathID,
+				'doc_dir' => $DocumentsPath,
+				'restore_doc_path' => 1,
+				'import_templ' => 1,
+				'tpl_dir_id' => 0,
+				'tpl_dir' => '/',
+				'restore_tpl_path' => 1,
+				'import_thumbnails' => 1,
+				'import_objs' => 0,
+				'import_classes' => 0,
+				'import_dt' => 1,
+				'import_ct' => 1,
+				'import_navigation' => $ImportNavigation, // should navigation be imported
+				'navigation_dir_id' => $NavigationPathID,
+				'navigation_dir' => $NavigationPath,
+				'import_binarys' => 1,
+				'rebuild' => 0
 			);
 			$_REQUEST['mode'] = '';
 			$_REQUEST['type'] = '';
-
 		}
 
 		return true;
-
 	}
 
 }

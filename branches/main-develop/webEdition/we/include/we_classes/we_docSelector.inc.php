@@ -455,7 +455,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 	}
 
 	function printFramesetJavaScriptIncludes() {
-		print we_htmlElement::jsScript(JS_DIR.'windows.js');
+		print we_html_element::jsScript(JS_DIR.'windows.js');
 	}
 
 	function printHeaderHeadlines() {
@@ -679,7 +679,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title
 			$out = '<html>
 <head>
 ' . STYLESHEET . '
-' . we_htmlElement::jsElement("", array("src" => JS_DIR . "attachKeyListener.js")) . '
+' . we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js")) . '
 <style type="text/css">
 	body {
 		margin:0px;

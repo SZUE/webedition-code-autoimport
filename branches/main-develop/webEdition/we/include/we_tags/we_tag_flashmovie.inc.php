@@ -50,11 +50,6 @@ function we_tag_flashmovie($attribs, $content){
 	}
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
-		// Include button class
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
-		// Create new button object
-		
 		// Create "Edit Flash" button
 		//				"javascript:we_cmd('openDocselector','" . ($id != "" ? $id : $startid) . "', '" . FILE_TABLE . "', 'document.forms[\'we_form\'].elements[\'" . $fname . "\'].value', '', 'opener.setScrollTo();opener.top.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);', '" . session_id() . "'," .$parentid. ", 'application/x-shockwave-flash', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")",
 		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $fname . "'].value");

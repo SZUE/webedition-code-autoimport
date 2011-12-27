@@ -88,7 +88,7 @@
 				weContentProvider::object2xml($doc,$fh,$attribute);
 			}
 
-			fwrite($fh,we_htmlElement::htmlComment("webackup")."\n");
+			fwrite($fh,we_html_element::htmlComment("webackup")."\n");
 
 			if($classname=="weTableItem" && $export_binary){
 				if(strtolower($doc->table)==strtolower(FILE_TABLE)){
@@ -303,7 +303,7 @@
 				$out.="></we:map>";
 			}
 			$out.="</we:info>";
-			$out.=we_htmlElement::htmlComment("webackup")."\n";
+			$out.=we_html_element::htmlComment("webackup")."\n";
 			return $out;
 		}
 

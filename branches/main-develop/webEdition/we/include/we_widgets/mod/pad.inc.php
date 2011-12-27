@@ -155,13 +155,13 @@ if (!$bDisplay) {
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit','[always]'), g_l('cockpit','[from_date]'), g_l('cockpit','[period]')
 ), 1, g_l('cockpit','[always]'), false, 'style="width:100px;" onChange="toggleTblValidity()"', 'value', 100, 'middlefont');
-$oTblValidity = new we_htmlTable(array(
+$oTblValidity = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => "oTblValidity"
 ), 1, 3);
 $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit','[from]'), "f_ValidFrom", "_from"));
 $oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit','[until]'), "f_ValidUntil", "_until"));
-$oTblPeriod = new we_htmlTable(array(
+$oTblPeriod = new we_html_table(array(
 	"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 2);
 $oTblPeriod->setCol(0, 0, array(
@@ -208,7 +208,7 @@ $rdoPrio[2] = we_forms::radiobutton(
 		$description = "",
 		$type = 0,
 		$onMouseUp = "");
-$oTblPrio = new we_htmlTable(array(
+$oTblPrio = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
@@ -216,7 +216,7 @@ $oTblPrio->setCol(
 		0,
 		1,
 		null,
-		we_htmlElement::htmlImg(
+		we_html_element::htmlImg(
 				array(
 
 						"src" => IMAGE_DIR . "pd/prio_high.gif",
@@ -230,7 +230,7 @@ $oTblPrio->setCol(
 		0,
 		4,
 		null,
-		we_htmlElement::htmlImg(
+		we_html_element::htmlImg(
 				array(
 
 						"src" => IMAGE_DIR . "pd/prio_medium.gif",
@@ -244,7 +244,7 @@ $oTblPrio->setCol(
 		0,
 		7,
 		null,
-		we_htmlElement::htmlImg(
+		we_html_element::htmlImg(
 				array(
 
 						"src" => IMAGE_DIR . "pd/prio_low.gif",
@@ -260,7 +260,7 @@ $save_button = we_button::create_button("save", "javascript:saveNote();");
 $buttons = we_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
-$oTblProps = new we_htmlTable(array(
+$oTblProps = new we_html_table(array(
 	"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 9, 2);
 $oTblProps->setCol(0, 0, array(
@@ -299,7 +299,7 @@ $oTblProps->setCol(
 		6,
 		1,
 		null,
-		we_htmlElement::htmlTextArea(
+		we_html_element::htmlTextArea(
 				array(
 
 						'name' => 'props_text',
@@ -316,7 +316,7 @@ $oTblProps->setCol(8, 0, array(
 ), $buttons);
 
 // Button: add note
-$oTblBtnProps = new we_htmlTable(array(
+$oTblBtnProps = new we_html_table(array(
 	"width" => "100%", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
@@ -324,7 +324,7 @@ $oTblBtnProps->setCol(0, 0, array(
 ), we_button::create_button("image:btn_add_note", "javascript:displayNote();", false, -1, -1));
 
 // Table with the note list
-$oPad = new we_htmlTable(
+$oPad = new we_html_table(
 		array(
 
 				"width" => "100%",
@@ -337,7 +337,7 @@ $oPad = new we_htmlTable(
 		3);
 $oPad->setCol(0, 0, array(
 	"width" => "6"
-), we_htmlElement::htmlImg(array(
+), we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/pad_corner_lt.gif", "width" => 6, "height" => 4
 )));
 $oPad->setCol(0, 1, array(
@@ -345,17 +345,17 @@ $oPad->setCol(0, 1, array(
 ), "");
 $oPad->setCol(0, 2, array(
 	"width" => "6"
-), we_htmlElement::htmlImg(array(
+), we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/pad_corner_rt.gif", "width" => 6, "height" => 4
 )));
 $oPad->setCol(1, 0, array(
 	"colspan" => 3, "class" => "cl_notes"
-), we_htmlElement::htmlDiv(array(
+), we_html_element::htmlDiv(array(
 	"id" => "notices"
 ), getNoteList($_sql, $bDate, $bDisplay)));
 $oPad->setCol(2, 0, array(
 	"width" => "6"
-), we_htmlElement::htmlImg(array(
+), we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/pad_corner_lb.gif", "width" => 6, "height" => 6
 )));
 $oPad->setCol(2, 1, array(
@@ -363,13 +363,13 @@ $oPad->setCol(2, 1, array(
 ), "");
 $oPad->setCol(2, 2, array(
 	"width" => "6"
-), we_htmlElement::htmlImg(array(
+), we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
 )));
 
-$_notepad = $oPad->getHTMLCode() . we_htmlElement::htmlDiv(array(
+$_notepad = $oPad->getHTMLCode() . we_html_element::htmlDiv(array(
 	"id" => "props"
-), $oTblProps->getHTMLCode()) . we_htmlElement::htmlDiv(array(
+), $oTblProps->getHTMLCode()) . we_html_element::htmlDiv(array(
 	"id" => "view"
 ), $oTblBtnProps->getHTMLCode());
 
@@ -392,28 +392,28 @@ toggleTblValidity();
 </script>';
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . we_htmlElement::cssElement(
-								getCSS()) . we_htmlElement::linkElement(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . we_html_element::cssElement(
+								getCSS()) . we_html_element::linkElement(
 								array(
 
 										"rel" => "stylesheet",
 										"type" => "text/css",
 										"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 										"title" => "Aqua"
-								)) . we_htmlElement::jsElement("", array(
+								)) . we_html_element::jsElement("", array(
 							"src" => JS_DIR . "jscalendar/calendar.js"
-						)) . we_htmlElement::jsElement(
+						)) . we_html_element::jsElement(
 								"",
 								array(
 
 										"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
-								)) . we_htmlElement::jsElement(
+								)) . we_html_element::jsElement(
 								"",
 								array(
 									"src" => JS_DIR . "jscalendar/calendar-setup.js"
-								)) . we_htmlElement::jsElement(we_button::create_state_changer(false)) . we_htmlElement::jsElement(
+								)) . we_html_element::jsElement(we_button::create_state_changer(false)) . we_html_element::jsElement(
 								(($_REQUEST['we_cmd'][6] == "pad/pad") ? "
 			var _sObjId='" . $_sObjId . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;
@@ -708,7 +708,7 @@ print
 				fixedImplode=fixedImplode.substring(separator.length,fixedImplode.length);
 				return fixedImplode;
 			}
-		")) . we_htmlElement::htmlBody(
+		")) . we_html_element::htmlBody(
 						array(
 
 								"marginwidth" => "0",
@@ -717,17 +717,17 @@ print
 								"topmargin" => "0",
 								"onload" => (($_REQUEST['we_cmd'][6] == "pad/pad") ? "if(parent!=self)init();" : "")
 						),
-						we_htmlElement::htmlForm(
+						we_html_element::htmlForm(
 								array(
 									"style" => "display:inline;"
 								),
-								we_htmlElement::htmlDiv(
+								we_html_element::htmlDiv(
 										array(
 											"id" => "pad"
 										),
-										$_notepad . we_htmlElement::htmlHidden(
+										$_notepad . we_html_element::htmlHidden(
 												array(
 													"name" => "mark", "value" => ""
-												)) . we_htmlElement::jsElement("calendarSetup();")))));
+												)) . we_html_element::jsElement("calendarSetup();")))));
 
 ?>

@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.ph
 we_html_tools::htmlTop();
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print STYLESHEET;
-echo we_htmlElement::jsScript(JS_DIR.'windows.js');?>
+echo we_html_element::jsScript(JS_DIR.'windows.js');?>
 
 	</head>
 	<body class="weEditorBody">

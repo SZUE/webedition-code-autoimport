@@ -36,7 +36,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 
 	$_row = 0;
-	$_starttable = new we_htmlTable(	array(	"border"      => "0",
+	$_starttable = new we_html_table(	array(	"border"      => "0",
 												"cellpadding" => "7",
 												"cellspacing" =>"0",
 												"width" => "228"),
@@ -89,7 +89,7 @@ else {
 	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php print $tooldir . $tool . '/layout/home.gif'; ?>" width="335" height="329" /></div>
 
-	<?php print $we_body_insert.we_htmlElement::jsElement('var we_is_home = 1;');?>
+	<?php print $we_body_insert.we_html_element::jsElement('var we_is_home = 1;');?>
 </body>
 
 </html>

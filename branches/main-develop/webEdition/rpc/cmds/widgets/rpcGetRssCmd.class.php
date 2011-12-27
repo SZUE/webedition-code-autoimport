@@ -64,31 +64,31 @@ class rpcGetRssCmd extends rpcCmd {
 			$bShowPubdate = ($bCfgPubDate && isset($item['pubdate']))? true : false;
 			$bShowCategory = ($bCfgCategory && isset($item['category']))? true : false;
 			if ($bShowTitle) {
-				$sRssOut .= ($bShowLink)? we_htmlElement::htmlA(array("href"=>$item['link'],"target"=>"_blank"),we_htmlElement::htmlB($item['title'])) :
-					we_htmlElement::htmlB($item['title']);
-				$sRssOut .= we_htmlElement::htmlBr().we_html_tools::getPixel(1,5).(($bShowDesc || $bShowContEnc)? we_htmlElement::htmlBr() : "");
+				$sRssOut .= ($bShowLink)? we_html_element::htmlA(array("href"=>$item['link'],"target"=>"_blank"),we_html_element::htmlB($item['title'])) :
+					we_html_element::htmlB($item['title']);
+				$sRssOut .= we_html_element::htmlBr().we_html_tools::getPixel(1,5).(($bShowDesc || $bShowContEnc)? we_html_element::htmlBr() : "");
 			}
 			if ($bShowPubdate) {
 				$sRssOut .= g_l('cockpit',"[published]").": ".date(g_l('date','[format][default]'), strtotime($item['pubdate']));
 			}
 			if ($bShowCategory) {
-				$sRssOut .= ($bShowPubdate)? we_htmlElement::htmlBr().we_html_tools::getPixel(1,2).we_htmlElement::htmlBr() : "";
+				$sRssOut .= ($bShowPubdate)? we_html_element::htmlBr().we_html_tools::getPixel(1,2).we_html_element::htmlBr() : "";
 				$sRssOut .= g_l('cockpit',"[category]").": ".$item['category'];
 			}
 			if ($bShowPubdate || $bShowCategory) {
-				$sRssOut .= we_htmlElement::htmlBr().we_html_tools::getPixel(1,5).we_htmlElement::htmlBr();
+				$sRssOut .= we_html_element::htmlBr().we_html_tools::getPixel(1,5).we_html_element::htmlBr();
 			}
 			$sLink = (($bCfgLink && isset($item['link']))&&!$bShowTitle)? " &nbsp;".
-				we_htmlElement::htmlA(array("href"=>$item['link'],"target"=>"_blank","style"=>"text-decoration:underline;"),g_l('cockpit','[more]')) : "";
-			$sRssOut .= ($bShowDesc)? $item['description'].$sLink.we_htmlElement::htmlBr() : "";
+				we_html_element::htmlA(array("href"=>$item['link'],"target"=>"_blank","style"=>"text-decoration:underline;"),g_l('cockpit','[more]')) : "";
+			$sRssOut .= ($bShowDesc)? $item['description'].$sLink.we_html_element::htmlBr() : "";
 			if ($bShowContEnc) {
-				$contEnc = new we_htmlTable(array("border"=>"0","cellpadding" =>"0","cellspacing"=>"0"),1,1);
+				$contEnc = new we_html_table(array("border"=>"0","cellpadding" =>"0","cellspacing"=>"0"),1,1);
 				$contEnc->setCol(0,0,null,$item['content:encoded'].((!$bCfgDesc)? $sLink : ""));
 				$sRssOut .= $contEnc->getHTMLCode();
 			} else if(!$bShowDesc) {
-				$sRssOut .= $sLink.we_htmlElement::htmlBr();
+				$sRssOut .= $sLink.we_html_element::htmlBr();
 			}
-			$sRssOut .= ($bShowDesc || $bShowContEnc)? we_html_tools::getPixel(1,10).we_htmlElement::htmlBr() : "";
+			$sRssOut .= ($bShowDesc || $bShowContEnc)? we_html_tools::getPixel(1,10).we_html_element::htmlBr() : "";
 			if ($iNumItems) {
 				$iCurrItem++;
 				if ($iCurrItem==$iNumItems) {

@@ -59,7 +59,7 @@
 
 							if($_SESSION['weBackupVars']['retry']>10) {
 								$_SESSION['weBackupVars']['retry'] = 1;
-								print we_htmlElement::jsElement(
+								print we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('backup','[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR)
 								);
 								exit();
@@ -447,7 +447,7 @@
 					break;
 
 					case 'rebuild':
-						print we_htmlElement::jsElement('
+						print we_html_element::jsElement('
 							top.opener.top.openWindow("'.WEBEDITION_DIR.'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText='.g_l('backup',"[finished_success]").'","rebuildwin",-1,-1,600,130,0,true);
 							setTimeout("top.close();",300);
 						');

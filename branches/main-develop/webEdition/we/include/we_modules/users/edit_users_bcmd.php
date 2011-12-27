@@ -31,7 +31,7 @@ if(isset($_REQUEST["ucmd"])){
     switch($_REQUEST["ucmd"]){
         case "new_group":
     	    if(!we_hasPerm("NEW_GROUP")){
-                print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+                print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
                 break;
             }
 
@@ -48,7 +48,7 @@ if(isset($_REQUEST["ucmd"])){
 
             $_SESSION["user_session_data"] = $user_object->getState();
 
-            print we_htmlElement::jsElement('
+            print we_html_element::jsElement('
                     top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php";
                     top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php";
                     top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php";
@@ -57,7 +57,7 @@ if(isset($_REQUEST["ucmd"])){
 
         case "new_alias":
             if(!we_hasPerm("NEW_USER")){
-                print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+                print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
                 break;
             }
 
@@ -73,7 +73,7 @@ if(isset($_REQUEST["ucmd"])){
             $user_object->initType(2);
 
             $_SESSION["user_session_data"] = $user_object->getState();
-            print we_htmlElement::jsElement('
+            print we_html_element::jsElement('
                     top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php";
                     top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php";
                     top.content.user_resize.user_right.user_editor.user_edfooter.location="' . WE_USERS_MODULE_PATH . 'edit_users_edfooter.php";
@@ -81,14 +81,14 @@ if(isset($_REQUEST["ucmd"])){
     	    break;
 
         case "search":
-            print we_htmlElement::jsElement('
+            print we_html_element::jsElement('
                     top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_sresults.php?kwd='.$_REQUEST["kwd"].'";
                 ');
             break;
 
         case "display_alias":
             if($uid && $ctype && $ctable){
-                print we_htmlElement::jsElement('
+                print we_html_element::jsElement('
                         top.content.usetHot();
                         top.content.user_resize.user_right.user_editor.user_edheader.location="' . WE_USERS_MODULE_PATH . 'edit_users_edheader.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;
                         top.content.user_resize.user_right.user_editor.user_properties.location="' . WE_USERS_MODULE_PATH . 'edit_users_properties.php?uid=".$uid."&ctype=".ctype."&ctable=".$ctable;

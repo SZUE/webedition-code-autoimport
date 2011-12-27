@@ -842,7 +842,7 @@ function setDir(id){
 			}
 			if($catlistNotDeleted){
 
-				print we_htmlElement::jsElement(
+				print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 				);
 			}
@@ -882,7 +882,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 		$IsDir = f("SELECT IsFolder FROM ".$this->db->escape($this->table)." WHERE ID=".intval($this->id),"IsFolder",$this->db);
 		if($this->CatInUse($this->id,$IsDir)){
 
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('fileselector',"[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 				);
 		}else{
@@ -1112,7 +1112,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 			$dir_chooser = we_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
 
-			$table = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"),4, 3);
+			$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"),4, 3);
 
 			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), '<b>'.g_l('weClass',"[category]").'</b>');
 			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class"=>"defaultfont"), we_html_tools::htmlTextInput("Category",50,$category,"",' id="category"',"text",360));
@@ -1138,7 +1138,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != "")
 
 		we_html_tools::htmlTop();
 		we_html_tools::protect();
-		print we_htmlElement::jsScript(JS_DIR.'we_textarea.js').we_htmlElement::jsScript(JS_DIR.'windows.js').'
+		print we_html_element::jsScript(JS_DIR.'we_textarea.js').we_html_element::jsScript(JS_DIR.'windows.js').'
 <script type="text/javascript">
 function we_cmd(){
 	var args = "";

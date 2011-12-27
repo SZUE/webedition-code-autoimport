@@ -177,7 +177,7 @@ $oRdoSort[4] = we_forms::radiobutton(
 		$type = 0,
 		$onMouseUp = "");
 
-$sort = new we_htmlTable(array(
+$sort = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 3, 3);
 $sort->setCol(0, 0, array(
@@ -220,7 +220,7 @@ $oRdoDisplay[1] = we_forms::radiobutton(
 		$type = 0,
 		$onMouseUp = "");
 
-$display = new we_htmlTable(array(
+$display = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 1, 3);
 $display->setCol(0, 0, array(
@@ -272,7 +272,7 @@ $oRdoDate[2] = we_forms::radiobutton(
 		$type = 0,
 		$onMouseUp = "");
 
-$date = new we_htmlTable(array(
+$date = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 3, 1);
 $date->setCol(0, 0, array(
@@ -322,7 +322,7 @@ $oRdoPrio[2] = we_forms::radiobutton(
 		$type = 0,
 		$onMouseUp = "");
 
-$prio = new we_htmlTable(array(
+$prio = new we_html_table(array(
 	"cellpadding" => "0", "cellspacing" => "0", "border" => "0"
 ), 3, 3);
 $prio->setCol(0, 0, array(
@@ -332,15 +332,15 @@ $prio->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 
 $prio->setCol(0, 2, array(
 	"width" => 20
-), we_htmlElement::htmlImg(array(
+), we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/prio_high.gif", "width" => 13, "height" => 14
 )));
 $prio->setCol(1, 0, null, $oRdoPrio[1]);
-$prio->setCol(1, 2, null, we_htmlElement::htmlImg(array(
+$prio->setCol(1, 2, null, we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/prio_medium.gif", "width" => 13, "height" => 14
 )));
 $prio->setCol(2, 0, null, $oRdoPrio[2]);
-$prio->setCol(2, 2, null, we_htmlElement::htmlImg(array(
+$prio->setCol(2, 2, null, we_html_element::htmlImg(array(
 	"src" => IMAGE_DIR . "pd/prio_low.gif", "width" => 13, "height" => 14
 )));
 
@@ -381,20 +381,20 @@ $cancel_button = we_button::create_button("close", "javascript:exit_close();");
 $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . we_htmlElement::cssElement(
-								"select{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . we_html_element::cssElement(
+								"select{border:#AAAAAA solid 1px}") . we_html_element::jsElement(
 								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
-								)) . we_htmlElement::jsElement("", array(
+								)) . we_html_element::jsElement("", array(
 							"src" => JS_DIR . "weCombobox.js"
-						)) . we_htmlElement::jsElement($jsPrefs . $jsCode)) . we_htmlElement::htmlBody(
+						)) . we_html_element::jsElement($jsPrefs . $jsCode)) . we_html_element::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),
-						we_htmlElement::htmlForm(
+						we_html_element::htmlForm(
 								array(
 									"onsubmit" => "return false;"
 								),
@@ -408,5 +408,5 @@ print
 										"",
 										"",
 										"",
-										g_l('cockpit','[notepad]')))) . we_htmlElement::jsElement(
+										g_l('cockpit','[notepad]')))) . we_html_element::jsElement(
 						"ComboBox=new weCombobox();ComboBox.init('title');"));

@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.
  *			we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
  *			we_html_tools::htmlTextInput("seem_start_document_name", 11, $_document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
  *			'yuiAcInputDoc',																											// Input-Feld-Id. Die Id besteht aus 'yuiAcInput' und AC-Id
- *			we_htmlElement::htmlHidden(array("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) f�r die Document-, Folder-, Object-,...ID
+ *			we_html_element::htmlHidden(array("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) f�r die Document-, Folder-, Object-,...ID
  *			'yuiAcResultDoc', 																											// Result-Feld-Id. Die Id besteht aus 'yuiAcResult' und AC-Id
  *			'',																															// Label: steht �ber dem Inputfeld
  *			FILE_TABLE, 																												// Name der Tabele in f�r die Query
@@ -132,15 +132,15 @@ class weSuggest {
 	 * @return String
 	 */
 	function getYuiJsFiles() {
-		return we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/dom-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/datasource-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/animation-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/json-min.js').
-			we_htmlElement::jsScript(JS_DIR.'libs/yui/autocomplete-min.js').
-			we_htmlElement::jsScript(JS_DIR.'utils/we_cmd_encode.js');
+		return we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/dom-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/datasource-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/animation-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/json-min.js').
+			we_html_element::jsScript(JS_DIR.'libs/yui/autocomplete-min.js').
+			we_html_element::jsScript(JS_DIR.'utils/we_cmd_encode.js');
 	}
 
 	function getYuiCode(){

@@ -1636,7 +1636,7 @@ function mapPermissions() {
 
 
 		$_attr = array("border" => "0", "cellpadding" => "2", "cellspacing" => "0");
-		$_tableObj = new we_htmlTable($_attr, 5, 2);
+		$_tableObj = new we_html_table($_attr, 5, 2);
 
 		$_tableObj->setCol(0, 0, null, $this->getUserfield("First","first_name"));
 		$_tableObj->setCol(0, 1, null, $this->getUserfield("Second","second_name"));
@@ -1671,7 +1671,7 @@ function mapPermissions() {
 		$_button = we_button::create_button("select", "javascript:choseDir()",true,-1,-1,"","",$adminperm,false);
 		$_chooser = we_button::create_button_table(array($_input,$_button));
 
-		$_tableObj = new we_htmlTable($_attr, 6, 3);
+		$_tableObj = new we_html_table($_attr, 6, 3);
 
 		$_tableObj->setCol(0, 0, array("colspan"=>"3"), we_forms::radiobutton("1",$adminperm,$this->Name.'_ADMIN',g_l('modules_users',"[admin_permissions]"),true,"defaultfont","top.content.setHot();doClick()"));
 		$_tableObj->setCol(1, 0, array("colspan"=>"3"), we_forms::radiobutton("0",!$adminperm,$this->Name.'_ADMIN',g_l('modules_users',"[user_permissions]"),true,"defaultfont","top.content.setHot();doClick()"));
@@ -1767,7 +1767,7 @@ function mapPermissions() {
 		$_attr = array("border" => "0", "cellpadding" => "2", "cellspacing" => "0");
 		$js = we_button::create_state_changer();
 
-		$_tableObj = new we_htmlTable($_attr, 5, 1);
+		$_tableObj = new we_html_table($_attr, 5, 1);
 
 		$_username = ($this->ID) ? we_html_tools::htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b><input type="hidden" id="yuiAcInputPathName" value="'.($this->username).'">',g_l('modules_users',"[group_name]")) : $this->getUserfield("username","group_name","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="'.$this->Name.'_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onChange="top.content.setHot();">'.$this->Description.'</textarea>';
@@ -1847,7 +1847,7 @@ function mapPermissions() {
 	function formUserData() {
 
 		$_attr = array("border" => "0", "cellpadding" => "2", "cellspacing" => "0");
-		$_tableObj = new we_htmlTable($_attr, 10, 2);
+		$_tableObj = new we_html_table($_attr, 10, 2);
 
 		$_tableObj->setCol(0, 0, null, $this->getUserfield("Salutation","salutation"));
 		$_tableObj->setCol(0, 1, "");
@@ -1883,7 +1883,7 @@ function mapPermissions() {
 
 
 
-		$_tableObj = new we_htmlTable($_attr, 8, 2);
+		$_tableObj = new we_html_table($_attr, 8, 2);
 
 		$_username = ($this->ID) ? we_html_tools::htmlFormElementTable('<b class="defaultfont">'.$this->username.'</b>',g_l('modules_users',"[username]")) : $this->getUserfield("username","username","text","255",false,'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 
@@ -2409,7 +2409,7 @@ function mapPermissions() {
 		$_settings = array();
 
 		// Create checkboxes
-		$_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
+		$_table = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 3, 1);
 
 		$_table->setCol(0, 0, null, we_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name."_Preference_force_glossary_check", g_l('prefs','[force_glossary_check]'), "false", "defaultfont", "top.content.setHot()" ));
 		$_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -2451,7 +2451,7 @@ function mapPermissions() {
 		}
 
 		if(sizeof($_languages["translation"]) > 0) { // Build language select box
-			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
+			$_languages = new we_html_select(array("name" => $this->Name.'_Preference_Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 			if (isset($this->Preferences['Language']) && $this->Preferences['Language']!=''){
 				$myCompLang = $this->Preferences['Language'];
 			} else {
@@ -2480,7 +2480,7 @@ function mapPermissions() {
 
 
 
-		$_charset = new we_htmlSelect(array("name" => $this->Name.'_Preference_BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
+		$_charset = new we_html_select(array("name" => $this->Name.'_Preference_BackendCharset', "class" => "weSelect","onChange"=> "top.content.setHot();"));
 		$_charset->addOption('UTF-8', 'UTF-8');
 		$_charset->addOption('ISO-8859-1','ISO-8859-1');
 		$_charset->addOption('ISO-8859-2','ISO-8859-2');
@@ -2512,7 +2512,7 @@ function mapPermissions() {
 		 * AMOUNT Number of Columns
 		 *****************************************************************/
 
-		$_amount = new we_htmlSelect(array("name" => $this->Name.'_Preference_cockpit_amount_columns', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
+		$_amount = new we_html_select(array("name" => $this->Name.'_Preference_cockpit_amount_columns', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 		if($this->Preferences['cockpit_amount_columns']=="") {
 			$this->Preferences['cockpit_amount_columns'] = 3;
 		}
@@ -2641,7 +2641,7 @@ function mapPermissions() {
 
 		}
 
-		$_start_type = new we_htmlSelect(array("name" => "seem_start_type","class" => "weSelect", "id" => "seem_start_type", "onchange" => "show_seem_chooser(this.value); top.content.setHot();"));
+		$_start_type = new we_html_select(array("name" => "seem_start_type","class" => "weSelect", "id" => "seem_start_type", "onchange" => "show_seem_chooser(this.value); top.content.setHot();"));
 
 		$_start_type->addOption("cockpit", g_l('prefs','[seem_start_type_cockpit]'));
 		$_start_type->addOption("document", g_l('prefs','[seem_start_type_document]'));
@@ -2651,7 +2651,7 @@ function mapPermissions() {
 
 
 		//weapp
-		$_start_weapp = new we_htmlSelect(array("name" => "seem_start_weapp","class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
+		$_start_weapp = new we_html_select(array("name" => "seem_start_weapp","class" => "weSelect", "id" => "seem_start_weapp", "onchange" => "top.content.setHot();"));
 		$_tools = weToolLookup::getAllTools(true, false);
 		foreach ($_tools as $_k => $_tool) {
 			if(!$_tool['appdisabled'] && isset($this->permissions_slots[$_tool['name']][$_tool['startpermission']]) && $this->permissions_slots[$_tool['name']][$_tool['startpermission']]){
@@ -2712,7 +2712,7 @@ function mapPermissions() {
 
 
 		// Build final HTML code
-		$_seem_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
+		$_seem_html = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 2, 1);
 		$_seem_html->setCol(0, 0, array("class" => "defaultfont"), $_start_type->getHtml() . we_html_tools::getPixel(200,1));
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser.$_seem_weapp_chooser);
 
@@ -2733,7 +2733,7 @@ function mapPermissions() {
 		$_value_selected=false;
 		$_tree_count=$this->Preferences['default_tree_count'];
 
-		$_file_tree_count = new we_htmlSelect(array("name" => $this->Name."_Preference_default_tree_count", "class" => "weSelect", "onChange"=> "top.content.setHot();"));
+		$_file_tree_count = new we_html_select(array("name" => $this->Name."_Preference_default_tree_count", "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 
 		$_file_tree_count->addOption(0, g_l('prefs','[all]'));
 		if (0 == $_tree_count) {
@@ -2792,7 +2792,7 @@ function mapPermissions() {
 		$_window_specify_code = we_forms::radiobutton(1, !($this->Preferences['sizeOpt'] == 0), $this->Name."_Preference_sizeOpt", g_l('prefs','[specify]'), true, "defaultfont", "document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;top.content.setHot();");
 
 		// Create specify window dimension input
-		$_window_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
+		$_window_specify_table = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
 
 		$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 		$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(40, 1));
@@ -2809,13 +2809,13 @@ function mapPermissions() {
 		$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput($this->Name."_Preference_weHeight", 6, ( ($this->Preferences['weHeight'] != '' && $this->Preferences['weHeight'] != '0') ? $this->Preferences['weHeight'] : 600), 4, ($this->Preferences['sizeOpt'] == 0 ? "disabled=\"disabled\"" : "") . "onChange='top.content.setHot();'", "text", 60));
 
 		// Build apply current window dimension
-		$_window_current_dimension_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);
+		$_window_current_dimension_table = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 1, 2);
 
 		$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(90, 1));
 		$_window_current_dimension_table->setCol(0, 1, null, we_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = " . ($GLOBALS['BROWSER'] == "IE" ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true,210));
 
 		// Build final HTML code
-		$_window_html = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
+		$_window_html = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 5, 1);
 		$_window_html->setCol(0, 0, null, $_window_max_code);
 		$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 		$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
@@ -2826,7 +2826,7 @@ function mapPermissions() {
 		array_push($_settings, array("headline" => g_l('prefs','[dimension]'), "html" => $_window_html->getHtml(), "space" => 200));
 
 		// Create predefined window dimension buttons
-		$_window_predefined_table = new we_htmlTable(array("border"=>"0", "align"=>"right", "cellpadding"=>"1", "cellspacing"=>"0"), 3, 1);
+		$_window_predefined_table = new we_html_table(array("border"=>"0", "align"=>"right", "cellpadding"=>"1", "cellspacing"=>"0"), 3, 1);
 
 		$_window_predefined_table->setCol(0, 0, null, we_button::create_button_table(array(we_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '800';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '600';", true), we_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '1024';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '768';", true))));
 		$_window_predefined_table->setCol(2, 0, null, we_button::create_button_table(array(we_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '1280';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '960';", true), we_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('".$this->Name."_Preference_sizeOpt')[1].checked = true;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weHeight')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_weWidth')[0].value = '1600';document.getElementsByName('".$this->Name."_Preference_weHeight')[0].value = '1200';", true))));
@@ -2856,7 +2856,7 @@ function mapPermissions() {
 			/**
 			 * Editor Mode
 			 */
-			$_template_editor_mode = new we_htmlSelect(array("class" => "weSelect", "name" => $this->Name."_Preference_editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+			$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name."_Preference_editorMode",  "size" => "1", "onchange" =>"displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 			$_template_editor_mode->addOption('textarea', 'Textarea');
 			$_template_editor_mode->addOption('java', 'webEdition Java Editor');
 			$_template_editor_mode->addOption('codemirror', 'CodeMirror');
@@ -2882,7 +2882,7 @@ function mapPermissions() {
 		$_template_editor_font_specify_code = we_forms::checkbox(1, $_template_editor_font_specify, $this->Name."_Preference_editorFont", g_l('prefs','[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('".$this->Name."_Preference_editorFont')[0].checked) { document.getElementsByName('".$this->Name."_Preference_editorFontname')[0].disabled = false;document.getElementsByName('".$this->Name."_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('".$this->Name."_Preference_editorFontname')[0].disabled = true;document.getElementsByName('".$this->Name."_Preference_editorFontsize')[0].disabled = true; }");
 
 		// Create specify window dimension input
-		$_template_editor_font_specify_table = new we_htmlTable(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
+		$_template_editor_font_specify_table = new we_html_table(array("border"=>"0", "cellpadding"=>"0", "cellspacing"=>"0"), 4, 4);
 
 		$_template_editor_font_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 		$_template_editor_font_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
@@ -2895,7 +2895,7 @@ function mapPermissions() {
 		$_template_editor_font_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
 		$_template_editor_font_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
 
-		$_template_editor_font_select_box = new we_htmlSelect(array("class" => "weSelect", "name" => $this->Name."_Preference_editorFontname",  "size" => "1", "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();" ));
+		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name."_Preference_editorFontname",  "size" => "1", "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();" ));
 
 		for ($i = 0; $i < (count($_template_fonts) - 1); $i++) {
 			$_template_editor_font_select_box->addOption($_template_fonts[$i], $_template_fonts[$i]);
@@ -2911,7 +2911,7 @@ function mapPermissions() {
 			}
 		}
 
-		$_template_editor_font_sizes_select_box = new we_htmlSelect(array("class" => "weSelect", "name" => $this->Name."_Preference_editorFontsize",  "size" => "1", "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
+		$_template_editor_font_sizes_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name."_Preference_editorFontsize",  "size" => "1", "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
 
 		for ($i = 0; $i < (count($_template_font_sizes) - 1); $i++) {
 			$_template_editor_font_sizes_select_box->addOption($_template_font_sizes[$i], $_template_font_sizes[$i]);

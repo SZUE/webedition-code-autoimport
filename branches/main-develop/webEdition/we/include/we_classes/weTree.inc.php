@@ -196,7 +196,7 @@ class weTree{
 		$out="";
 
 		if ($withTag) {
-			$out.=we_htmlElement::jsElement("",array("src"=>JS_DIR."images.js"));
+			$out.=we_html_element::jsElement("",array("src"=>JS_DIR."images.js"));
 		}
 		$js='
 			var treeData = new container();
@@ -224,7 +224,7 @@ class weTree{
  			self.focus();
 		';
 
-		$out.= $withTag ? we_htmlElement::jsElement($js) : $js;
+		$out.= $withTag ? we_html_element::jsElement($js) : $js;
 
 		return $out;
 
@@ -638,7 +638,7 @@ class weTree{
 		$style_code="";
 		foreach($this->styles as $st) $style_code.=$st."\n";
 
-		//$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"100%"),1,1);
+		//$table=new we_html_table(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"100%"),1,1);
 		//$table->setCol(0,0,array("id"=>"treetable","class"=>"top"),"<nobr>");
 $js='
 <script language="JavaScript" type="text/javascript">
@@ -650,13 +650,13 @@ function setUnCheckNode(imgName){
 }
 </script>
 ';
-		return we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
+		return we_html_element::htmlHtml(
+			we_html_element::htmlHead(
 				WE_DEFAULT_HEAD.
 				STYLESHEET.
-				we_htmlElement::cssElement($style_code).$js
+				we_html_element::cssElement($style_code).$js
 			).
-			we_htmlElement::htmlBody(array(
+			we_html_element::htmlBody(array(
 														"bgcolor"=>"#F3F7FF",
 														"link"=>"#000000",
 														"alink"=>"#000000",

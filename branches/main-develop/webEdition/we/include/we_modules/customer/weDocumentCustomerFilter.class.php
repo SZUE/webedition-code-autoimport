@@ -27,10 +27,10 @@
  *
  */
 class weDocumentCustomerFilter extends weAbstractCustomerFilter {
-	const ACCESS="f_1";
-	const CONTROLONTEMPLATE="f_2";
-	const NO_ACCESS="f_3";
-	const NO_LOGIN="f_4";
+	const ACCESS='f_1';
+	const CONTROLONTEMPLATE='f_2';
+	const NO_ACCESS='f_3';
+	const NO_LOGIN='f_4';
 
 	/**
 	 * db-id of filter
@@ -51,14 +51,14 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 *
 	 * @var string
 	 */
-	var $_modelType = "";
+	var $_modelType = '';
 
 	/**
 	 * Table where model is stored in db (eg. FILE_TABLE)
 	 *
 	 * @var string
 	 */
-	var $_modelTable = "";
+	var $_modelTable = '';
 
 	/**
 	 * Flag if access control is made by template or not
@@ -82,27 +82,6 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 */
 	var $_errorDocNoAccess = 0;
 
-
-	/**
-	 * Constructor for PHP 4
-	 *
-	 * @param integer $id
-	 * @param integer $modelId
-	 * @param string $modelType
-	 * @param string $modelTable
-	 * @param boolean $accessControlOnTemplate
-	 * @param integer $errorDocNoLogin
-	 * @param integer $errorDocNoAccess
-	 * @param integer $mode
-	 * @param array $specificCustomers
-	 * @param array $filter
-	 * @param array $whiteList
-	 * @param array $blackList
-	 * @return weDocumentCustomerFilter
-	 */
-	function weDocumentCustomerFilter ($id=0, $modelId=0, $modelType="", $modelTable="", $accessControlOnTemplate=true, $errorDocNoLogin=0, $errorDocNoAccess=0, $mode=weAbstractCustomerFilter::OFF, $specificCustomers=array(), $filter=array(), $whiteList=array(), $blackList=array()) {
-		$this->__construct($id, $modelId, $modelType, $modelTable, $accessControlOnTemplate, $errorDocNoLogin, $errorDocNoAccess, $mode, $specificCustomers, $filter, $whiteList, $blackList);
-	}
 
 	/**
 	 * Constructor for PHP 5
@@ -141,7 +120,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 */
 	function getFilterByDbHash(&$hash) {
 		$_f = @unserialize($hash['filter']);
-		return new weDocumentCustomerFilter(
+		return new self(
 						intval($hash['id']),
 						intval($hash['modelId']),
 						$hash['modelType'],
@@ -167,15 +146,15 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	function getCustomerFilterFromRequest(&$model) {
 
 		if ($_REQUEST["wecf_mode"] == weAbstractCustomerFilter::OFF ) {
-			return weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
+			return self::getEmptyDocumentCustomerFilter();
 		} else {
-			$_specificCustomers = weDocumentCustomerFilter::getSpecificCustomersFromRequest();
-			$_blackList = weDocumentCustomerFilter::getBlackListFromRequest();
-			$_whiteList = weDocumentCustomerFilter::getWhiteListFromRequest();
-			$_filter = weDocumentCustomerFilter::getFilterFromRequest();
+			$_specificCustomers = self::getSpecificCustomersFromRequest();
+			$_blackList = self::getBlackListFromRequest();
+			$_whiteList = self::getWhiteListFromRequest();
+			$_filter = self::getFilterFromRequest();
 
 
-			return new weDocumentCustomerFilter(
+			return new self(
 				intval($_REQUEST["weDocumentCustomerFilter_id"]),
 				intval($model->ID),
 				$model->ContentType,
@@ -199,7 +178,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @return weDocumentCustomerFilter
 	 */
 	static function getFilterOfDocument( &$model ) {
-		return weDocumentCustomerFilter::getFilterByIdAndTable($model->ID, $model->Table);
+		return self::getFilterByIdAndTable($model->ID, $model->Table);
 	}
 
 
@@ -215,7 +194,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$query = 'SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape($table) . '" AND modelId = ' . intval($id);
 		$hash = getHash($query,$db);
 		if ( count($hash)) {
-			return weDocumentCustomerFilter::getFilterByDbHash($hash);
+			return self::getFilterByDbHash($hash);
 		}
 		unset($db);
 		return ''; // important do NOT return null
@@ -236,7 +215,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$_allowedCTs = array("text/webedition", "objectFile");
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
-		$_restrictedFilesForCustomer = weDocumentCustomerFilter::_getFilesWithRestrictionsOfCustomer($listview);
+		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($listview);
 
 		if ($listview->ClassName == "we_search_listview") { // search
 
@@ -289,7 +268,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	 * @return weDocumentCustomerFilter
 	 */
 	function getEmptyDocumentCustomerFilter() {
-		$_obj = new weDocumentCustomerFilter();
+		$_obj = new self();
 		return $_obj;
 	}
 
@@ -305,10 +284,10 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 	function filterAreQual($filter1="", $filter2="", $applyCheck=false){
 
 		if ($filter1 === "") {
-			$filter1 = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
+			$filter1 = self::getEmptyDocumentCustomerFilter();
 		}
 		if ($filter2 === "") {
-			$filter2 = weDocumentCustomerFilter::getEmptyDocumentCustomerFilter();
+			$filter2 = self::getEmptyDocumentCustomerFilter();
 		}
 
 		$checkFields = array('modelTable', 'accessControlOnTemplate', 'errorDocNoLogin', 'errorDocNoAccess', 'mode', 'specificCustomers', 'filter', 'whiteList', 'blackList');
@@ -342,11 +321,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$_ret = 0;
 		switch ($errorConstant) {
 
-			case weDocumentCustomerFilter::NO_LOGIN:
+			case self::NO_LOGIN:
 				$_ret = ($this->_errorDocNoLogin ? $this->_errorDocNoLogin : $this->_errorDocNoAccess);
 				break;
 
-			case weDocumentCustomerFilter::NO_ACCESS:
+			case self::NO_ACCESS:
 				$_ret = ($this->_errorDocNoAccess ? $this->_errorDocNoAccess : $this->_errorDocNoLogin);
 				break;
 			default:
@@ -367,11 +346,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 		// check if there were any changes?
 		$_docCustomerFilter = $model->documentCustomerFilter; // filter of document
-		$_tmp = weDocumentCustomerFilter::getFilterOfDocument($model); // filter stored in Database
+		$_tmp = self::getFilterOfDocument($model); // filter stored in Database
 
-		if ( !weDocumentCustomerFilter::filterAreQual( $_docCustomerFilter, $_tmp ) ) { // the filter changed
+		if ( !self::filterAreQual( $_docCustomerFilter, $_tmp ) ) { // the filter changed
 
-			weDocumentCustomerFilter::deleteForModel($model);
+			self::deleteForModel($model);
 
 			if ($_docCustomerFilter->getMode() != weAbstractCustomerFilter::OFF && $model->ID) { // only save if its is active
 
@@ -485,7 +464,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		$_db = new DB_WE();
 		$_cid = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 		$_filesWithRestrictionsForCustomer = array();
-		$_defaultQuery = !weDocumentCustomerFilter::customerIsLogedIn() ? "(mode=" . weAbstractCustomerFilter::ALL . ") OR " : "";
+		$_defaultQuery = !self::customerIsLogedIn() ? "(mode=" . weAbstractCustomerFilter::ALL . ") OR " : "";
 
 		$_blacklistQuery = " (mode=".weAbstractCustomerFilter::FILTER." AND blackList LIKE '%,$_cid,%') ";
 		$_whiteLlistQuery = " (mode=".weAbstractCustomerFilter::FILTER." AND whiteList NOT LIKE '%,$_cid,%') ";
@@ -524,7 +503,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 		// execute the query (get all existing filters)
 		$_db->query($_queryForIds);
 
-		if ( !weDocumentCustomerFilter::customerIsLogedIn() ) { // visitor is not logged in
+		if ( !self::customerIsLogedIn() ) { // visitor is not logged in
 
 			// Vistior is not logged in => Visitor has no Access to files with filters!
 			if ($_db->num_rows()) {
@@ -543,7 +522,7 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 			if ($_db->num_rows()) {
 
 				while ($_db->next_record()) {
-					$_filters[] = weDocumentCustomerFilter::getFilterByDbHash($_db->Record);
+					$_filters[] = self::getFilterByDbHash($_db->Record);
 				}
 			}
 
@@ -552,11 +531,11 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 			foreach ( $_filters as $filter ) {
 				$_perm = $filter->accessForVisitor( $__tmp, array("id" => $filter->getModelId(), "contentType" => $filter->getModelType()), false, true);
 				switch ( $_perm ) {
-					case weDocumentCustomerFilter::NO_ACCESS:
-					case weDocumentCustomerFilter::NO_LOGIN:
+					case self::NO_ACCESS:
+					case self::NO_LOGIN:
 						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
 						break;
-					case weDocumentCustomerFilter::CONTROLONTEMPLATE:
+					case self::CONTROLONTEMPLATE:
 						if ($listview->customerFilterType == 'all' || $listview->customerFilterType == 'true') {
 							$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
 						}
@@ -588,22 +567,22 @@ class weDocumentCustomerFilter extends weAbstractCustomerFilter {
 
 			if ( !$_fromListviewCheck && $this->getAccessControlOnTemplate() && !$_fromIfRegisteredUser ) {
 				// access control is on template (for we:ifregisteredUser)
-				return weDocumentCustomerFilter::CONTROLONTEMPLATE;
+				return self::CONTROLONTEMPLATE;
 
 			}
 
-			if ( !weDocumentCustomerFilter::customerIsLogedIn() ) { // no customer logged in
+			if ( !self::customerIsLogedIn() ) { // no customer logged in
 				// visitor is NOT logged in
-				return weDocumentCustomerFilter::NO_LOGIN;
+				return self::NO_LOGIN;
 
 			}
 
 			if (!$this->customerHasAccess()) {
-				return weDocumentCustomerFilter::NO_ACCESS;
+				return self::NO_ACCESS;
 			}
 
 		}
-		return weDocumentCustomerFilter::ACCESS;
+		return self::ACCESS;
 
 	}
 

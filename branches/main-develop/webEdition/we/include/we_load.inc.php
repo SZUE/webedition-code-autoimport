@@ -270,11 +270,11 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 			' . $Tree->topFrame . '.firstLoad = true;
 ';
 	}
-	$body = we_htmlElement::htmlBody(array(
+	$body = we_html_element::htmlBody(array(
 		"bgcolor" => "white"
 	));
 
-	$head = WE_DEFAULT_HEAD . "\n" . we_htmlElement::jsElement($js);
+	$head = WE_DEFAULT_HEAD . "\n" . we_html_element::jsElement($js);
 
-	print we_htmlElement::htmlHtml(we_htmlElement::htmlHead($head) . $body);
+	print we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 }

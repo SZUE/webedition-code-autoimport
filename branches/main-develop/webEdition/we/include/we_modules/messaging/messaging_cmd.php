@@ -66,7 +66,7 @@ function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $u
 
 	if ($id != $GLOBALS['messaging']->Folder_ID) {
 		$GLOBALS['messaging']->reset_ids_selected();
-print we_htmlElement::jsElement('top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;');
+print we_html_element::jsElement('top.content.messaging_main.messaging_right.msg_work.last_entry_selected = -1;');
 	}
 	$GLOBALS['messaging']->get_fc_data(isset($id) ? $id : '', empty($sort) ? '' : $sort, $searchterm, $usecache);
 	$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])?$_REQUEST['we_transaction']:0);
@@ -146,7 +146,7 @@ switch($_REQUEST["mcmd"]) {
 	$messaging->saveInSession($_SESSION["we_data"][$_REQUEST["we_transaction"]]);
 	break;
     case 'new_message':
-			echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+			echo we_html_element::jsScript(JS_DIR.'windows.js');
 	?>
 	<script type="text/javascript">
 	<!--
@@ -156,7 +156,7 @@ switch($_REQUEST["mcmd"]) {
 <?php
 		break;
 	case 'new_todo':
-		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+		echo we_html_element::jsScript(JS_DIR.'windows.js');
 ?>
 	<script type="text/javascript">
 	<!--
@@ -166,7 +166,7 @@ switch($_REQUEST["mcmd"]) {
 <?php
 		break;
 	case 'forward_todo':
-		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+		echo we_html_element::jsScript(JS_DIR.'windows.js');
 ?>
 	<script type="text/javascript">
 	<!--
@@ -176,7 +176,7 @@ switch($_REQUEST["mcmd"]) {
 <?php
 		break;
 	case 'rej_todo':
-		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+		echo we_html_element::jsScript(JS_DIR.'windows.js');
 ?>
 
 	<script type="text/javascript">
@@ -199,7 +199,7 @@ switch($_REQUEST["mcmd"]) {
 	break;
     case 'update_todo':
 	if (!empty($messaging->selected_message)) {
-		echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+		echo we_html_element::jsScript(JS_DIR.'windows.js');
 		?>
 	    <script type="text/javascript">
 	    <!--
@@ -365,7 +365,7 @@ switch($_REQUEST["mcmd"]) {
 	    }
 	    break;
     case 'edit_settings':
-			echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+			echo we_html_element::jsScript(JS_DIR.'windows.js');
         ?>
         <script type="text/javascript">
         <!--
@@ -377,7 +377,7 @@ switch($_REQUEST["mcmd"]) {
     case 'save_settings':
     	if ($ui) {
 	        if ($messaging->save_settings(array('update_interval' => $ui))) {
-						echo we_htmlElement::jsScript(JS_DIR.'messaging_std.js');
+						echo we_html_element::jsScript(JS_DIR.'messaging_std.js');
 		    ?>
 		    <script type="text/javascript">
     		<!--

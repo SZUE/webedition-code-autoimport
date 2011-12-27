@@ -41,7 +41,7 @@ class weTagData_linkAttribute extends weTagDataAttribute {
 	 */
 	function getCodeForTagWizard() {
 		return '<table class="attribute"><tr>
-						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_htmlElement::htmlSpan(
+						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_html_element::htmlSpan(
 				array(
 
 						'name' => $this->Name,

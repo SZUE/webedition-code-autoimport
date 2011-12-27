@@ -107,7 +107,7 @@ abstract class we_versions_wizard
 					$nextbutdisabled,
 					false);
 
-			$content2 = new we_htmlTable(array(
+			$content2 = new we_html_table(array(
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 			), 1, 4);
 			$content2->setCol(
@@ -148,7 +148,7 @@ abstract class we_versions_wizard
 					),
 					$cancelButton);
 
-			$content = new we_htmlTable(
+			$content = new we_html_table(
 					array(
 						"border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"
 					),
@@ -163,9 +163,9 @@ abstract class we_versions_wizard
 
 		}
 
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						STYLESHEET . ($dc ? "" : we_htmlElement::jsElement(we_button::create_state_changer(false))) . $js) . we_htmlElement::htmlBody(
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						STYLESHEET . ($dc ? "" : we_html_element::jsElement(we_button::create_state_changer(false))) . $js) . we_html_element::htmlBody(
 						array(
 							"class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")
 						),
@@ -275,13 +275,13 @@ abstract class we_versions_wizard
 ';
 		$hiddenFields = "";
 		foreach ($version_delete as $k => $v) {
-			$hiddenFields .= we_htmlElement::htmlHidden(array(
+			$hiddenFields .= we_html_element::htmlHidden(array(
 				"name" => $k, "value" => $v
 			));
 		}
 
 		foreach ($version_reset as $k => $v) {
-			$hiddenFields .= we_htmlElement::htmlHidden(array(
+			$hiddenFields .= we_html_element::htmlHidden(array(
 				"name" => $k, "value" => $v
 			));
 		}
@@ -303,13 +303,13 @@ abstract class we_versions_wizard
 
 				$hiddenFields .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "fr", "value" => "body"
 				)) .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "we_cmd[0]", "value" => "versions_wizard"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "step", "value" => "1"
 				))
 		);
@@ -397,7 +397,7 @@ abstract class we_versions_wizard
 
 		$versions_delete_date = weVersionsSearch::getDateSelector("", "delete_date", "_1", $version_delete_date);
 
-		$reset_hours = new we_htmlSelect(
+		$reset_hours = new we_html_select(
 				array(
 
 						"id" => "delete_hours",
@@ -417,7 +417,7 @@ abstract class we_versions_wizard
 
 		$reset_hours->selectOption($version_delete_hours);
 
-		$reset_minutes = new we_htmlSelect(
+		$reset_minutes = new we_html_select(
 				array(
 
 						"id" => "delete_minutes",
@@ -437,7 +437,7 @@ abstract class we_versions_wizard
 
 		$reset_minutes->selectOption($version_delete_minutes);
 
-		$reset_seconds = new we_htmlSelect(
+		$reset_seconds = new we_html_select(
 				array(
 
 						"id" => "delete_seconds",
@@ -603,7 +603,7 @@ abstract class we_versions_wizard
 				}
 				set_button_state(false);';
 
-		$calendar = we_htmlElement::jsElement("calendarSetup();");
+		$calendar = we_html_element::jsElement("calendarSetup();");
 
 		array_push($parts, array(
 			'html' => $calendar, 'noline' => 0, 'space' => 0
@@ -624,15 +624,15 @@ abstract class we_versions_wizard
 						false,
 						g_l('versions','[delete_versions]') . " - " . g_l('versions','[step]') . " 1 " . g_l('versions','[of]') . " 2") .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "fr", "value" => "body"
 				)) .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "type", "value" => $type
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "we_cmd[0]", "value" => "versions_wizard"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "step", "value" => "2"
 				))
 		);
@@ -724,7 +724,7 @@ abstract class we_versions_wizard
 			'headline' => "", 'html' => $doPublish, 'noline' => 1, 'space' => 1
 		));
 
-		$reset_hours = new we_htmlSelect(
+		$reset_hours = new we_html_select(
 				array(
 
 						"id" => "reset_hours",
@@ -744,7 +744,7 @@ abstract class we_versions_wizard
 
 		$reset_hours->selectOption($version_reset_hours);
 
-		$reset_minutes = new we_htmlSelect(
+		$reset_minutes = new we_html_select(
 				array(
 
 						"id" => "reset_minutes",
@@ -764,7 +764,7 @@ abstract class we_versions_wizard
 
 		$reset_minutes->selectOption($version_reset_minutes);
 
-		$reset_seconds = new we_htmlSelect(
+		$reset_seconds = new we_html_select(
 				array(
 
 						"id" => "reset_seconds",
@@ -931,7 +931,7 @@ abstract class we_versions_wizard
 				}
 				set_button_state(false);';
 
-		$calendar = we_htmlElement::jsElement("calendarSetup();");
+		$calendar = we_html_element::jsElement("calendarSetup();");
 
 		array_push($parts, array(
 			'html' => $calendar, 'noline' => 0, 'space' => 0
@@ -952,15 +952,15 @@ abstract class we_versions_wizard
 						false,
 						g_l('versions','[reset_versions]') . " - " . g_l('versions','[step]') . " 1 " . g_l('versions','[of]') . " 2") .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "fr", "value" => "body"
 				)) .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "type", "value" => $type
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "we_cmd[0]", "value" => "versions_wizard"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "step", "value" => "2"
 				))
 		);
@@ -1195,7 +1195,7 @@ abstract class we_versions_wizard
 
 		$hiddenFields = "";
 		foreach ($version_delete as $k => $v) {
-			$hiddenFields .= we_htmlElement::htmlHidden(array(
+			$hiddenFields .= we_html_element::htmlHidden(array(
 				"name" => $k, "value" => $v
 			));
 		}
@@ -1217,13 +1217,13 @@ abstract class we_versions_wizard
 
 				$hiddenFields .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "fr", "value" => "body"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "type", "value" => $type
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "we_cmd[0]", "value" => "versions_wizard"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "step", "value" => "3"
 				))
 		);
@@ -1365,7 +1365,7 @@ abstract class we_versions_wizard
 
 		$hiddenFields = "";
 		foreach ($version_reset as $k => $v) {
-			$hiddenFields .= we_htmlElement::htmlHidden(array(
+			$hiddenFields .= we_html_element::htmlHidden(array(
 				"name" => $k, "value" => $v
 			));
 		}
@@ -1387,13 +1387,13 @@ abstract class we_versions_wizard
 
 				$hiddenFields .
 
-				we_htmlElement::htmlHidden(array(
+				we_html_element::htmlHidden(array(
 					"name" => "fr", "value" => "body"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "type", "value" => $type
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "we_cmd[0]", "value" => "versions_wizard"
-				)) . we_htmlElement::htmlHidden(array(
+				)) . we_html_element::htmlHidden(array(
 					"name" => "step", "value" => "3"
 				))
 		);
@@ -1433,7 +1433,7 @@ abstract class we_versions_wizard
 		$cmdFrameHeight = (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? 30 : 0;
 
 		if ($tail) {
-			$fst = new we_htmlFrameset(
+			$fst = new we_html_frameset(
 					array(
 
 							"rows" => "*,$cmdFrameHeight",
@@ -1464,7 +1464,7 @@ abstract class we_versions_wizard
 			));
 
 		} else {
-			$fst = new we_htmlFrameset(
+			$fst = new we_html_frameset(
 					array(
 
 							"rows" => "*,40,$cmdFrameHeight",
@@ -1505,11 +1505,11 @@ abstract class we_versions_wizard
 
 		}
 
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::jsElement("", array(
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::jsElement("", array(
 							"src" => JS_DIR . "we_showMessage.js"
-						)) . we_htmlElement::htmlTitle(g_l('versions','[versions_wizard]'))) . $fst->getHtml());
+						)) . we_html_element::htmlTitle(g_l('versions','[versions_wizard]'))) . $fst->getHtml());
 
 	}
 
@@ -1679,37 +1679,37 @@ abstract class we_versions_wizard
 		if (!sizeof($contents)) {
 			return "";
 		}
-		$headCal = we_htmlElement::linkElement(
+		$headCal = we_html_element::linkElement(
 				array(
 
 						"rel" => "stylesheet",
 						"type" => "text/css",
 						"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
 						"title" => "Aqua"
-				)) . we_htmlElement::jsElement("", array(
+				)) . we_html_element::jsElement("", array(
 			"src" => JS_DIR . "jscalendar/calendar.js"
-		)) . we_htmlElement::jsElement(
+		)) . we_html_element::jsElement(
 				"",
 				array(
 					"src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js"
-				)) . we_htmlElement::jsElement("", array(
+				)) . we_html_element::jsElement("", array(
 			"src" => JS_DIR . "jscalendar/calendar-setup.js"
 		));
 
-		$headCal .= we_htmlElement::jsScript(JS_DIR.'windows.js').
-			we_htmlElement::jsScript('/webEdition/js/libs/yui/yahoo-min.js').
-			we_htmlElement::jsScript('/webEdition/js/libs/yui/event-min.js').
-			we_htmlElement::jsScript('/webEdition/js/libs/yui/connection-min.js');
+		$headCal .= we_html_element::jsScript(JS_DIR.'windows.js').
+			we_html_element::jsScript('/webEdition/js/libs/yui/yahoo-min.js').
+			we_html_element::jsScript('/webEdition/js/libs/yui/event-min.js').
+			we_html_element::jsScript('/webEdition/js/libs/yui/connection-min.js');
 
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						$headCal . STYLESHEET . we_htmlElement::jsScript(JS_DIR.'windows.js') . ($contents[0] ? we_htmlElement::jsElement(
-								"<!--\n" . $contents[0] . "\n//-->") : "")) . we_htmlElement::htmlBody(
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						$headCal . STYLESHEET . we_html_element::jsScript(JS_DIR.'windows.js') . ($contents[0] ? we_html_element::jsElement(
+								"<!--\n" . $contents[0] . "\n//-->") : "")) . we_html_element::htmlBody(
 						array(
 							"class" => "weDialogBody"
 						)
 						,
-						we_htmlElement::htmlForm(
+						we_html_element::htmlForm(
 								array(
 
 										"name" => "we_form",

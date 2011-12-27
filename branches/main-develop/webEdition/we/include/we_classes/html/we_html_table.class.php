@@ -23,21 +23,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /**
- * Class we_htmlTable
+ * Class we_html_table
  *
  * Provides functions for creating html tags used in forms.
  */
 
-class we_htmlTable extends we_baseCollection{
+class we_html_table extends we_baseCollection{
 
 	/**
-	 * Constructor of class we_htmlTable
+	 * Constructor of class we_html_table
 	 *
 	 * @param      $attribs                                array
 	 * @param      $rows_num                               int                 (optional)
 	 * @param      $cols_num                               int                 (optional)
 	 *
-	 * @return     we_htmlTable
+	 * @return     we_html_table
 	 */
 	function __construct($attribs=array(), $rows_num = 0, $cols_num = 0){
 		parent::__construct("table", true, $attribs);
@@ -50,7 +50,7 @@ class we_htmlTable extends we_baseCollection{
 	 *
 	 * @param      $rows_num                               int                 (optional)
 	 *
-	 * @see        we_htmlTable()
+	 * @see        we_html_table()
 	 *
 	 * @return     void
 	 */
@@ -75,7 +75,7 @@ class we_htmlTable extends we_baseCollection{
 	 *
 	 * @param      $cols_num                               int                 (optional)
 	 *
-	 * @see        we_htmlTable()
+	 * @see        we_html_table()
 	 *
 	 * @return     void
 	 */

@@ -42,7 +42,7 @@ $_thumbs = array();
 if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 	we_html_tools::htmlTop(g_l('weClass',"[thumbnails]"));
-	print we_htmlElement::jsElement('
+	print we_html_element::jsElement('
 	function select_thumbnails(sel){
 
 		var thumbs = "";
@@ -100,13 +100,13 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 
 ').we_button::create_state_changer();
 
-	print we_htmlElement::jsScript(JS_DIR.'windows.js');
+	print we_html_element::jsScript(JS_DIR.'windows.js');
 
 
 	print STYLESHEET . "</head>";
 
 	// SELECT Box with thumbnails
-	$_thumbnails = new we_htmlSelect(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
+	$_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => "6", "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
 	$DB_WE->query("SELECT ID,Name,Format FROM " . THUMBNAILS_TABLE . " ORDER BY Name");
 
 	$_thumbnail_counter_firsttime = true;
@@ -146,7 +146,7 @@ if(isset($we_doc->ClassName) && $we_doc->ClassName == "we_imageDocument"){
 	$buttons = we_button::position_yes_no_cancel($addbut,null,$cancelbut);
 
 	$dialog = we_multiIconBox::getHTML("", "100%", $_thumbs, 30, $buttons,-1,"","",false,g_l('weClass',"[thumbnails]"));
-	print we_htmlElement::htmlBody(array("class"=>"weDialogBody", "style"=>"overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
+	print we_html_element::htmlBody(array("class"=>"weDialogBody", "style"=>"overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
 
 }else{
 	exit("ERROR: Couldn't initialize we_imageDocument object");

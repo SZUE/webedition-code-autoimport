@@ -104,7 +104,7 @@
 								}
 							}
 						}
-						$xml_out.=$customer_xml->getHtmlCode($customer_xml).we_htmlElement::htmlComment("webackup")."\n";
+						$xml_out.=$customer_xml->getHtmlCode($customer_xml).we_html_element::htmlComment("webackup")."\n";
 					}
 				}
 				return $xml_out;

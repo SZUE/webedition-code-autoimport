@@ -47,7 +47,7 @@ class weGlossarySettingControl {
 			}
 
 			print we_html_tools::htmlTop();
-			print we_htmlElement::jsElement($js);
+			print we_html_element::jsElement($js);
 			print "</head>
 			<body>
 				$html

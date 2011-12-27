@@ -94,9 +94,6 @@ function we_tag_link($attribs, $content){
 					$GLOBALS['DB_WE'],
 					$img);
 
-			// Include we_button class
-			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 			$editbut = we_button::create_button(
 					"image:btn_edit_link",
 					"javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')",

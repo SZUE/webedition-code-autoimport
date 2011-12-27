@@ -61,7 +61,7 @@ array_push( $parts, $_docWebUser );
 print we_html_tools::htmlTop();
 print STYLESHEET;
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
-print we_htmlElement::cssElement("
+print we_html_element::cssElement("
 .paddingLeft {
 	padding-left: 25px;
 }
@@ -71,8 +71,8 @@ print we_htmlElement::cssElement("
 }
 
 ");
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "windows.js"));
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "utils/multi_edit.js"));
+print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+print we_html_element::jsElement("", array("src" => JS_DIR . "utils/multi_edit.js"));
 if (isset($yuiSuggest)) { // webuser filter is not displayed at images, so $yuiSuggest is not defined!
 	print $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles();
 }

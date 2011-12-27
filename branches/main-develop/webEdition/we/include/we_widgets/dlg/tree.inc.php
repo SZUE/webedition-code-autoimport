@@ -130,7 +130,7 @@ class weExportTree extends weMainTree
 	function getJSTreeCode()
 	{
 		$js = weMainTree::getJSTreeCode();
-		$js .= we_htmlElement::jsElement($this->getJSStartTree());
+		$js .= we_html_element::jsElement($this->getJSStartTree());
 
 		return $js;
 	}
@@ -203,7 +203,7 @@ class weExportTree extends weMainTree
 
 	function getHTMLMultiExplorer($width = 500, $height = 250)
 	{
-		$js = $this->getJSTreeCode() . we_htmlElement::jsElement(
+		$js = $this->getJSTreeCode() . we_html_element::jsElement(
 				'
 			function populate(id,table){
 
@@ -239,7 +239,7 @@ class weExportTree extends weMainTree
 			foreach ($this->SelectionTree->styles as $st)
 				$style_code .= $st . "\n";
 
-		$header = new we_htmlTable(array(
+		$header = new we_html_table(array(
 			"cellpadding" => 0, "cellspacing" => 0, "border" => "0"
 		), 3, 1);
 
@@ -265,7 +265,7 @@ class weExportTree extends weMainTree
 		//$header->setColContent(1,0,we_html_tools::htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));
 		$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 
-		return $js . $header->getHtml() . we_htmlElement::htmlDiv(
+		return $js . $header->getHtml() . we_html_element::htmlDiv(
 				array(
 
 						'id' => 'treetable',

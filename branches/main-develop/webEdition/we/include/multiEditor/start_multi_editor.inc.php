@@ -133,12 +133,12 @@ if( isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we
 	// :ToDO: alert Box when no vald start document is selected => open cockpit then
 }
 if ($_SESSION["prefs"]["seem_start_type"] !== "") {
-	print we_htmlElement::jsElement(
+	print we_html_element::jsElement(
 		$jsCommand
 
 	);
 } else {
-	print we_htmlElement::jsElement(
+	print we_html_element::jsElement(
 		"top.weEditorFrameController.toggleFrames();"
 
 	);

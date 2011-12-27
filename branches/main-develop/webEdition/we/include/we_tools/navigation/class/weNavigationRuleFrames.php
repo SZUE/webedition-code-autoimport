@@ -239,11 +239,11 @@ class weNavigationRuleFrames{
 				g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 		return we_html_tools::htmlTop() . STYLESHEET . '
 
-' . we_htmlElement::jsElement(
+' . we_html_element::jsElement(
 				'', array(
 				'src' => JS_DIR . 'formFunctions.js'
 			)) . '
-' . we_htmlElement::jsElement(
+' . we_html_element::jsElement(
 				'', array(
 				'src' => JS_DIR . 'windows.js'
 			)) . '
@@ -376,14 +376,14 @@ function we_cmd(){
 		$addbut = we_button::create_button(
 				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
 		$del_but = addslashes(
-			we_htmlElement::htmlImg(
+			we_html_element::htmlImg(
 				array(
 					'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
 			)));
 
-		$js = we_htmlElement::jsElement('', array(
+		$js = we_html_element::jsElement('', array(
 				'src' => JS_DIR . 'utils/multi_edit.js?'
 			));
 
@@ -398,9 +398,9 @@ function we_cmd(){
 			categories_edit.showVariant(0);
 		';
 
-		$js .= we_htmlElement::jsElement($variant_js);
+		$js .= we_html_element::jsElement($variant_js);
 
-		$table = new we_htmlTable(
+		$table = new we_html_table(
 				array(
 					'id' => 'CategoriesBlock',
 					'style' => 'display: block;',
@@ -412,7 +412,7 @@ function we_cmd(){
 				1);
 
 		$table->setColContent(
-			0, 0, we_htmlElement::htmlDiv(
+			0, 0, we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
@@ -429,7 +429,7 @@ function we_cmd(){
 					we_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
 			)));
 
-		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_htmlElement::jsElement(
+		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement(
 				'
 
 							function removeAllCats(){

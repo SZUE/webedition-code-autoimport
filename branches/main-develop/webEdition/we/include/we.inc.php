@@ -118,7 +118,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 		'<meta http-equiv="expires" content="0">' .
 		'<meta http-equiv="pragma" content="no-cache">' .
 		'<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
-		we_htmlElement::jsScript(JS_DIR . 'we_showMessage.js') 
+		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') 
 	);
 
 

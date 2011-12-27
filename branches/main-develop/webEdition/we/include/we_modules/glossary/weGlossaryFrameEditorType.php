@@ -46,9 +46,6 @@
 
 		function Body(&$weGlossaryFrames) {
 
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 			$_js = "";
 
 			$Temp = explode("_", $_REQUEST['cmdid']);
@@ -171,7 +168,7 @@
 		}
 		';
 
-	        $js = we_htmlElement::jsElement($_js);
+	        $js = we_html_element::jsElement($_js);
 
 	        // ---> end of javascript
 
@@ -213,7 +210,7 @@
 		        ),
 	        );
 
-	        $out = we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>''), we_multiIconBox::getHTML('',"100%",$parts,30,'',-1,'','',false));
+	        $out = we_html_element::htmlDiv(array('id' => 'tab1','style'=>''), we_multiIconBox::getHTML('',"100%",$parts,30,'',-1,'','',false));
 
 	        $content = $js . $out;
 
@@ -390,8 +387,6 @@
 		function getHTMLPreferences(&$weGlossaryFrames, &$Search, $Type, $Language) {
 			global $we_transaction;
 
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 			$button = we_button::create_button("search", "javascript:SubmitForm();");
 			$newButton = we_button::create_button("new_entry", "javascript:we_cmd('new_glossary_".$Type."','".$Language."');", true, 100, 22, "", "", !we_hasPerm("NEW_GLOSSARY"));
 
@@ -440,8 +435,6 @@
 
 
 		function getHTMLPrevNext(&$weGlossaryFrames, &$Search, $extended = false) {
-
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 			$sum = $Search->countItems();
 			$min = ($Search->Offset) + 1;

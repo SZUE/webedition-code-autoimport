@@ -209,11 +209,11 @@ if(!$parentFolder)
 
 $js.=$Tree->getJSLoadTree($treeItems);
 
-$body=we_htmlElement::htmlBody(array("bgcolor"=>"#ffffff"));
+$body=we_html_element::htmlBody(array("bgcolor"=>"#ffffff"));
 
-$head=WE_DEFAULT_HEAD. "\n".we_htmlElement::jsElement($js);
+$head=WE_DEFAULT_HEAD. "\n".we_html_element::jsElement($js);
 
-print we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead($head).
+print we_html_element::htmlHtml(
+			we_html_element::htmlHead($head).
 			$body
 );

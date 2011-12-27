@@ -314,7 +314,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 			// determine which articles should be shown >>>
 
 
-			print we_htmlElement::jsElement('
+			print we_html_element::jsElement('
 		self.focus();
 
 		function selectArticle(articleInfo) {
@@ -528,7 +528,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 		case 'edit_shop_cart_custom_field':
 
 			print '
-			' . we_htmlElement::jsElement('
+			' . we_html_element::jsElement('
 	function we_submit() {
 		elem = document.getElementById("cartfieldname");
 
@@ -624,7 +624,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 
 			print '
-			' . we_htmlElement::jsElement($jsCmd) . '
+			' . we_html_element::jsElement($jsCmd) . '
 			</head>
 <body></body>
 </html>';
@@ -777,7 +777,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 						$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
 						$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 						$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
-						$countryselect = new we_htmlSelect(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
+						$countryselect = new we_html_select(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
 
 						if(defined("WE_COUNTRIES_TOP")){
 							$topCountries = explode(',', WE_COUNTRIES_TOP);
@@ -831,7 +831,7 @@ if(isset($_REQUEST['we_cmd'][0])){
 							$lccode = explode('_', $lcvalue);
 							$lcvalue = $lccode[0];
 						}
-						$languageselect = new we_htmlSelect(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
+						$languageselect = new we_html_select(array("name" => "weCustomerOrder[$k]", "size" => "1", "style" => "{width:280;}", "class" => "wetextinput"));
 						foreach(g_l('languages', '') as $languagekey => $languagevalue){
 							if(in_array($languagekey, $frontendL)){
 								$languageselect->addOption($languagekey, $languagevalue);
@@ -911,7 +911,7 @@ print STYLESHEET;
 if(isset($_REQUEST["deletethisorder"])){
 
 	$DB_WE->query("DELETE FROM " . SHOP_TABLE . " WHERE IntOrderID = " . $_REQUEST["bid"]);
-	echo we_htmlElement::jsElement('
+	echo we_html_element::jsElement('
 	top.content.deleteEntry(' . $_REQUEST["bid"] . ')') . '
 	</head>
 	<body class="weEditorBody" onunload="doUnload()">
@@ -1202,7 +1202,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	}
 	if(!isset($ArticleId)){
 
-		echo we_htmlElement::jsElement('
+		echo we_html_element::jsElement('
 		parent.parent.frames.shop_header_icons.location.reload();
 	') . '
 	</head>
@@ -2023,11 +2023,11 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	// ********************************************************************************
 	// "Html output for order with articles"
 	//
-echo we_htmlElement::jsScript(JS_DIR . "jscalendar/calendar.js") .
-	we_htmlElement::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-	we_htmlElement::jsScript(JS_DIR . WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-	we_htmlElement::jsScript(JS_DIR . 'images.js') .
-	we_htmlElement::jsScript(JS_DIR . 'windows.js');
+echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
+	we_html_element::jsScript(JS_DIR . WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(JS_DIR . 'images.js') .
+	we_html_element::jsScript(JS_DIR . 'windows.js');
 	?>
 	<link type="text/css" rel="stylesheet" href="<?php print JS_DIR . "jscalendar/skins/aqua/theme.css"; ?>" title="Aqua" />
 
@@ -2127,7 +2127,7 @@ echo we_htmlElement::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	// "Html output for order with articles"
 	// ********************************************************************************
 } else{ // This order has no more entries
-	echo we_htmlElement::jsElement('
+	echo we_html_element::jsElement('
 		top.content.shop_properties.location="' . WE_SHOP_MODULE_PATH . 'edit_shop_properties.php?deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
 		top.content.deleteEntry(' . $_REQUEST["bid"] . ');
 	') . '
@@ -2135,7 +2135,7 @@ echo we_htmlElement::jsScript(JS_DIR . "jscalendar/calendar.js") .
 <body bgcolor="#ffffff">';
 }
 ?>
-	<script type="text/javascript">we_htmlElement::jsElement(
+	<script type="text/javascript">we_html_element::jsElement(
 			// init the used calendars
 
 			function CalendarChanged(calObject) {

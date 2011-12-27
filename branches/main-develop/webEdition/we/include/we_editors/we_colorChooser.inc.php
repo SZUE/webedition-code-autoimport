@@ -30,7 +30,7 @@ we_html_tools::htmlTop(g_l('global','[select_color]'));
 
 print STYLESHEET;
 
-echo we_htmlElement::jsScript(JS_DIR.'we_colors2.js');
+echo we_html_element::jsScript(JS_DIR.'we_colors2.js');
 ?>
 <script  type="text/javascript">
 

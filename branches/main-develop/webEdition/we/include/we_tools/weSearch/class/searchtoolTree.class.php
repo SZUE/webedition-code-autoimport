@@ -56,7 +56,7 @@ class searchtoolTree extends weToolTree
 	function getJSTreeCode()
 	{
 		
-		return parent::getJSTreeCode() . we_htmlElement::jsElement(
+		return parent::getJSTreeCode() . we_html_element::jsElement(
 				'
  					drawTree.selection_table="' . SUCHE_TABLE . '";
  				');

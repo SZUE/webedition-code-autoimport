@@ -99,7 +99,7 @@ switch ($GLOBALS['BROWSER']) {
 }
 
 we_html_tools::htmlTop();
-print we_htmlElement::jsElement($content=$_contentTypes);
+print we_html_element::jsElement($content=$_contentTypes);
 ?>
 			<script type="text/javascript"><!--
 				function _getIcon(contentType, extension) {

@@ -226,9 +226,9 @@ function getPathInfos(){
 
 HTS;
 
-		$out = we_htmlElement::cssElement($styles);
-		$out.= we_htmlElement::jsElement($script);
-		$out.= we_htmlElement::jsElement("", array("src" => JS_DIR . "attachKeyListener.js"));
+		$out = we_html_element::cssElement($styles);
+		$out.= we_html_element::jsElement($script);
+		$out.= we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js"));
 
 		return $out;
 	}

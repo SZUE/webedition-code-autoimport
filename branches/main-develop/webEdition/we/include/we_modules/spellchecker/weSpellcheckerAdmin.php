@@ -7,7 +7,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	we_html_tools::protect();
 
 	if(!we_hasPerm('SPELLCHECKER_ADMIN')) {
-		print we_htmlElement::jsElement(
+		print we_html_element::jsElement(
 			we_message_reporting::getShowMessageCall( g_l('alert','[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
 			'self.close();
 		');
@@ -77,7 +77,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	$we_tabs->addTab(new we_tab("#",g_l('modules_spellchecker','[userDictAdmin]'),'((activ_tab==2) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('2');", array("id"=>"tab_2")));
 
 
-	$js=$we_tabs->getHeader() . we_htmlElement::jsElement('
+	$js=$we_tabs->getHeader() . we_html_element::jsElement('
 			function setTab(tab) {
 				toggle("tab"+activ_tab);
 				toggle("tab"+tab);
@@ -86,7 +86,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 
 	');
 
-	$table=new we_htmlTable(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),3,5);
+	$table=new we_html_table(array('width'=>'380','cellpadding'=>'2','cellspacing'=>'2','border'=>'0','style'=>'margin: 5px;'),3,5);
 
 	$table->setRow(0,array('style'=>'background-color: silver;font-weight: bold;'),5);
 	$table->setCol(0,0,array('valign'=>'top','class'=>'small','style'=>'color: white;'), g_l('modules_spellchecker','[default]'));
@@ -116,7 +116,7 @@ include_once(WE_SPELLCHECKER_MODULE_DIR . '/spellchecker.conf.inc.php');
 	$_dir->close();
 
 	$_button = we_button::create_button("close", "javascript:self.close();");
-	$tabsBody = $we_tabs->getHTML().we_htmlElement::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
+	$tabsBody = $we_tabs->getHTML().we_html_element::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 	 $_tab_1 =
 	 we_html_tools::htmlDialogLayout('

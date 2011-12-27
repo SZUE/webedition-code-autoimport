@@ -32,7 +32,7 @@ if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be
 
 if ($we_editmode) {
 	we_html_tools::htmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
-	echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+	echo we_html_element::jsScript(JS_DIR.'windows.js');
 	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 	print STYLESHEET;
 
@@ -469,13 +469,13 @@ function we_getCodeMirrorCode($code) {
 	}
 	$parser_css[] = '/webEdition/editors/template/CodeMirror/contrib/webEdition/css/webEdition.css';
 	if (count($parser_js) > 0) { // CodeMirror will be used
-		$maineditor=we_get_CM_css().we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/js/codemirror.js');
+		$maineditor=we_get_CM_css().we_html_element::jsScript('/webEdition/editors/template/CodeMirror/js/codemirror.js');
 		if ($useCSCC && $_SESSION['prefs']['editorCodecompletion']) { //if we use tag completion we need additional files
 			$maineditor.=
-			we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js').
-				we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js').
-				we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js').
-				we_htmlElement::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js').
+			we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc.js').
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-xml.js').
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-parse-css.js').
+				we_html_element::jsScript('/webEdition/editors/template/CodeMirror/contrib/cscc/js/cscc-sense.js').
 			'
 							<script type="text/javascript">
 								if(top.we_tags==undefined) { //this is our tag cache
@@ -757,12 +757,12 @@ function we_getCodeMirror2Code($code) {
 	$parser_css[] = WEBEDITION_DIR.'editors/template/CodeMirror2/mode/webEdition/css/webEdition.css';
 	if (count($parser_js) > 0) { // CodeMirror will be used
 		$maineditor='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.css">'.
-			we_htmlElement::jsScript(WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.js');
+			we_html_element::jsScript(WEBEDITION_DIR.'editors/template/CodeMirror2/lib/codemirror.js');
 		foreach($parser_css as $css){
 			$maineditor.='<link rel="stylesheet" href="'.WEBEDITION_DIR.'editors/template/CodeMirror2/'.$css.'">';
 		}
 		foreach($parser_js as $js){
-			$maineditor.=we_htmlElement::jsScript(WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js);
+			$maineditor.=we_html_element::jsScript(WEBEDITION_DIR.'editors/template/CodeMirror2/'.$js);
 		}
 
 		$maineditor.='
@@ -1185,7 +1185,7 @@ if ($we_editmode) {
 		<tr>
 			<td id="tagSelectCol" style="width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
 			<td id="spacerCol" style="width: 50px;" align="center">' . $editTagbut . '</td>
-			<td id="tagAreaCol" style="width: 100%;" align="right">' . we_htmlElement::htmlTextArea(array('name' => 'we_' . $we_doc->Name . '_TagWizardCode', 'id' => 'tag_edit_area', 'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""), 'class' => 'defaultfont'), $we_doc->TagWizardCode) . '</td>
+			<td id="tagAreaCol" style="width: 100%;" align="right">' . we_html_element::htmlTextArea(array('name' => 'we_' . $we_doc->Name . '_TagWizardCode', 'id' => 'tag_edit_area', 'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""), 'class' => 'defaultfont'), $we_doc->TagWizardCode) . '</td>
 		</tr>
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 5) . '</td>

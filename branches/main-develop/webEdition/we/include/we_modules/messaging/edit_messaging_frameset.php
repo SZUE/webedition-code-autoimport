@@ -28,11 +28,11 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.
 include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 we_html_tools::protect();
 we_html_tools::htmlTop('Messaging System');
-echo we_htmlElement::jsScript(JS_DIR.'images.js').
-	we_htmlElement::jsScript(JS_DIR.'windows.js').
-	we_htmlElement::jsScript(JS_DIR.'we_showMessage.js').
-	we_htmlElement::jsScript(JS_DIR.'messaging_std.js').
-	we_htmlElement::jsScript(JS_DIR.'messaging_hl.js');
+echo we_html_element::jsScript(JS_DIR.'images.js').
+	we_html_element::jsScript(JS_DIR.'windows.js').
+	we_html_element::jsScript(JS_DIR.'we_showMessage.js').
+	we_html_element::jsScript(JS_DIR.'messaging_std.js').
+	we_html_element::jsScript(JS_DIR.'messaging_hl.js');
 
 $cmd_params = '';
 
@@ -42,7 +42,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 if (!$messaging->check_folders()) {
 	include_once(WE_MESSAGING_MODULE_DIR."messaging_interfaces.inc.php");
 	if (!msg_create_folders($_SESSION["user"]["ID"])) {
-			print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
+			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging','[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
 	}
 }
 

@@ -1261,7 +1261,7 @@ class we_objectFile extends we_document{
 			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
 			$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
-			$countryselect = new we_htmlSelect(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
+			$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
 
 			$topCountries = defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', 'DE,AT,CH');
 
@@ -1322,7 +1322,7 @@ class we_objectFile extends we_document{
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			$languageselect = new we_htmlSelect(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
+			$languageselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "size" => "1", "style" => "{width:620;}", "class" => "wetextinput", "onChange" => "_EditorFrame.setEditorIsHot(true);"));
 			if(!$this->DefArray["language_" . $name]["required"]){
 				$languageselect->addOption('--', '');
 			}

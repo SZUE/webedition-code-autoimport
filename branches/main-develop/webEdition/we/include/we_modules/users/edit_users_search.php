@@ -26,7 +26,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::htmlTop();
-echo we_htmlElement::jsScript(JS_DIR.'images.js');
+echo we_html_element::jsScript(JS_DIR.'images.js');
 	print STYLESHEET;
 ?>
 	</head>

@@ -74,7 +74,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute {
 			$jsSelect = 'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;';
 		}
 
-		$select = new we_htmlSelect(array(
+		$select = new we_html_select(array(
 								'onchange' => $jsSelect, 'class' => 'defaultfont selectinput'
 						));
 		$select->addOptions(sizeof($texts), $values, $texts);
@@ -83,7 +83,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute {
 					<table class="attribute">
 					<tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-						<td class="attributeField">' . we_htmlElement::htmlInput(
+						<td class="attributeField">' . we_html_element::htmlInput(
 						array(
 								'name' => $this->Name,
 								'value' => $this->Value,

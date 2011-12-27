@@ -32,14 +32,14 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	if(isset($_SESSION["move_files_nok"]) && is_array($_SESSION["move_files_nok"])){
 		$i=0;
 
-		$table = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 4);
+		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 4);
 		$i=0;
 		$table->setCol(0,0,null,we_html_tools::getPixel(10,10));
 		foreach($_SESSION["move_files_nok"] as $data){
 			$table->addRow();
 			$i++;
 			$table->setCol($i,0,null,we_html_tools::getPixel(10,2));
-			$table->setCol($i,1,null,(isset($data["icon"]) ? we_htmlElement::htmlImg(array("src"=>ICON_DIR.$data["icon"])) : ""));
+			$table->setCol($i,1,null,(isset($data["icon"]) ? we_html_element::htmlImg(array("src"=>ICON_DIR.$data["icon"])) : ""));
 			$table->setCol($i,2,null,we_html_tools::getPixel(10,2));
 			$table->setCol($i,3,null,str_replace($_SERVER['DOCUMENT_ROOT'],"",$data["path"]));
 		}
@@ -58,20 +58,20 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	);
 	array_push($parts,array(
 				"headline"=>"",
-				"html"=>we_htmlElement::htmlDiv(array("class"=>"blockwrapper","style"=>"width: 475px; height: 350px; border:1px #dce6f2 solid;"),$table->getHtml()),
+				"html"=>we_html_element::htmlDiv(array("class"=>"blockwrapper","style"=>"width: 475px; height: 350px; border:1px #dce6f2 solid;"),$table->getHtml()),
 				"space"=>10)
 	);
 
-	$buttons = new we_htmlTable(array("cellpadding" => 0, "cellspacing" => 0, "align"=>"right", "border" => 0, "class" => "defaultfont"), 1, 1);
+	$buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "align"=>"right", "border" => 0, "class" => "defaultfont"), 1, 1);
 	$buttons->setCol(0,0,null,we_button::create_button("close","javascript:self.close();"));
-	print we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
-				//we_htmlElement::htmlTitle("")
+	print we_html_element::htmlHtml(
+			we_html_element::htmlHead(
+				//we_html_element::htmlTitle("")
 				WE_DEFAULT_HEAD
 			).
 			STYLESHEET.
-			we_htmlElement::htmlBody(array("class"=>"weDialogBody"),
-					we_htmlElement::htmlCenter(
+			we_html_element::htmlBody(array("class"=>"weDialogBody"),
+					we_html_element::htmlCenter(
 						we_multiIconBox::getHTML("","100%",$parts,30,$buttons->getHtml())
 
 					)

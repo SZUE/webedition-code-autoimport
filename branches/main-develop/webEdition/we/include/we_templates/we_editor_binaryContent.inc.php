@@ -24,7 +24,7 @@
 
 we_html_tools::htmlTop();
 
-echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js');
 	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
 	print STYLESHEET;

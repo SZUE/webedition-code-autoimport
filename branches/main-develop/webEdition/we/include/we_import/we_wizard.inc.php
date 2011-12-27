@@ -35,7 +35,7 @@ class we_wizard {
 		$args = "pnt=wizbody";
 		if (isset($_REQUEST['we_cmd'][1])) $args .= "&we_cmd[1]=".$_REQUEST['we_cmd'][1];
 
-		$fst = new we_htmlFrameset(array(
+		$fst = new we_html_frameset(array(
 			"rows" => (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0) ? "*,40,60" : "*,40,0" ,
 			"framespacing" => 0,
 			"border" => 0,
@@ -99,16 +99,16 @@ function _executeAjaxRequest(method, aUrl, callback, ajaxData){
 
 HTS;
 
-		return we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
-				we_htmlElement::htmlTitle(g_l('import',"[title]")) .
-				we_htmlElement::jsElement("", array("src" => WEBEDITION_DIR."js/windows.js")).
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."we_showMessage.js")) .
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")).
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js")).
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js")).
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")).
-				we_htmlElement::jsElement("<!--\n".
+		return we_html_element::htmlHtml(
+			we_html_element::htmlHead(
+				we_html_element::htmlTitle(g_l('import',"[title]")) .
+				we_html_element::jsElement("", array("src" => WEBEDITION_DIR."js/windows.js")).
+				we_html_element::jsElement("",array("src"=>JS_DIR."we_showMessage.js")) .
+				we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/yahoo-min.js")).
+				we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/event-min.js")).
+				we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/json-min.js")).
+				we_html_element::jsElement("",array("src"=>JS_DIR."libs/yui/connection-min.js")).
+				we_html_element::jsElement("<!--\n".
 					"function wiz_next(frm, url) {\n".
 					"	eval('window.'+frm+'.location.href=\"'+url+'\"');\n".
 					"}\n".
@@ -211,21 +211,21 @@ HTS;
 		if ($step==1) $a["enctype"] = "multipart/form-data";
 		eval('list($js, $content)=$this->get'.$type.'Step'.$step.'();');
 		$doOnLoad = isset($_REQUEST['noload']) ? false : true;
-		return we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
+		return we_html_element::htmlHtml(
+			we_html_element::htmlHead(
 				STYLESHEET .
-				we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")) .
-				we_htmlElement::jsElement("<!--\n".$js."\n//-->")).
-			we_htmlElement::htmlBody(array(
+				we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")) .
+				we_html_element::jsElement("<!--\n".$js."\n//-->")).
+			we_html_element::htmlBody(array(
 				"class"=>"weDialogBody",
 				"onLoad" => $doOnLoad ? "parent.wiz_next('wizbusy', '".$this->path."?pnt=wizbusy&mode=".$mode."&type=".(isset($_REQUEST['type']) ? $_REQUEST['type'] : '')."'); self.focus();" : "if(set_button_state) set_button_state();"
-			), we_htmlElement::htmlForm($a,
-					we_htmlElement::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
-					we_htmlElement::htmlHidden(array("name" => "type", "value" => $type)) .
-					we_htmlElement::htmlHidden(array("name" => "v[type]", "value" => $type)) .
-					we_htmlElement::htmlHidden(array("name" => "step", "value" => $step)) .
-					we_htmlElement::htmlHidden(array("name" => "mode", "value" => $mode)) .
-					we_htmlElement::htmlHidden(array("name" => "button_state", "value" => 0)) .
+			), we_html_element::htmlForm($a,
+					we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
+					we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
+					we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
+					we_html_element::htmlHidden(array("name" => "step", "value" => $step)) .
+					we_html_element::htmlHidden(array("name" => "mode", "value" => $mode)) .
+					we_html_element::htmlHidden(array("name" => "button_state", "value" => 0)) .
 					$content
 				)
 			)
@@ -241,8 +241,8 @@ HTS;
 			$WE_PB->setStudLen(200);
 			$WE_PB->addText($text=g_l('import',"[import_progress]"),0,"pb1");
 			$pb = $WE_PB->getJSCode();
-			$pb.= we_htmlElement::htmlDiv(array('id'=>'progress'),$WE_PB->getHTML());
-			$js = we_htmlElement::jsElement('
+			$pb.= we_html_element::htmlDiv(array('id'=>'progress'),$WE_PB->getHTML());
+			$js = we_html_element::jsElement('
 
 					function finish(rebuild) {
 						var std = top.frames["wizbusy"].document.getElementById("standardDiv");
@@ -271,7 +271,7 @@ HTS;
 
 		$prevNextButtons= $prevButton ? we_button::create_button_table(array($prevButton,$nextButton)) : null;
 
-		$content = new we_htmlTable(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
+		$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
 		$content->setCol(0, 1, array("align" => "right"),
 				'
@@ -280,11 +280,11 @@ HTS;
 				'
 		);
 
-		print we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
+		print we_html_element::htmlHtml(
+			we_html_element::htmlHead(
 				STYLESHEET.
-				we_htmlElement::jsElement(we_button::create_state_changer(false))).
-			we_htmlElement::htmlBody(array(
+				we_html_element::jsElement(we_button::create_state_changer(false))).
+			we_html_element::htmlBody(array(
 				"class" => "weDialogButtonsBody",
 				"onload" => "top.frames['wizbody'].set_button_state();"
 				), $content->getHtml().$js
@@ -331,7 +331,7 @@ HTS;
 						$JScript	=	"top.frames[\"wizbusy\"].setProgressText(\"pb1\",\"".g_l('import',"[prepare_progress]")."\");\n";
 					}
 
-					$out .= we_htmlElement::htmlForm(array("name"=>"we_form"),$h).we_htmlElement::jsElement(
+					$out .= we_html_element::htmlForm(array("name"=>"we_form"),$h).we_html_element::jsElement(
 								"<!--\n".
 								$JScript .
 								"setTimeout(\"we_import(1,-1);\",15);\n" .
@@ -343,13 +343,13 @@ HTS;
 					if ($v["type"]=="WXMLImport") {
 
 						if($type != "first_steps_wizard") {
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								'<!--
 								if (top.frames["wizbody"] && top.frames["wizbody"].addLog){
 									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10,10)) . '<br>");
-									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
-									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[prepare]')) . '<br>");
-									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[import]')) . '<br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(10,10)) . we_html_element::htmlB(g_l('import','[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br><br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_html_element::htmlB(g_l('import','[prepare]')) . '<br>");
+									top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_html_element::htmlB(g_l('import','[import]')) . '<br>");
 								}
 								//-->');
 							flush();
@@ -418,10 +418,10 @@ HTS;
 					$h = $this->getHdns("v",$v)."\n";
 					if ($v["type"]!="WXMLImport") $h.=$this->getHdns("records",$records)."\n".$this->getHdns("we_flds",$we_flds)."\n";
 					if ($v["type"]=="GXMLImport") $h.=$this->getHdns("attributes",$attributes)."\n".$this->getHdns("attrs",$attrs)."\n";
-					$h .= we_htmlElement::htmlHidden(array("name"=>"v[numFiles]","value"=>($v["type"]!="GXMLImport")? $num_files : $parse->fileId))."\n".
-							we_htmlElement::htmlHidden(array("name"=>"v[uniquePath]","value"=>($v["type"]!="GXMLImport")? $path : $parse->path));
+					$h .= we_html_element::htmlHidden(array("name"=>"v[numFiles]","value"=>($v["type"]!="GXMLImport")? $num_files : $parse->fileId))."\n".
+							we_html_element::htmlHidden(array("name"=>"v[uniquePath]","value"=>($v["type"]!="GXMLImport")? $path : $parse->path));
 
-					$out .= we_htmlElement::htmlForm(array("name"=>"we_form"),$h).we_htmlElement::jsElement("<!--\n".
+					$out .= we_html_element::htmlForm(array("name"=>"we_form"),$h).we_html_element::jsElement("<!--\n".
 							"setTimeout(\"we_import(1,0);\",15);\n".
 							"//-->\n");
 					break;
@@ -450,7 +450,7 @@ HTS;
 										.	"}\n";
 							if($v['type']=='WXMLImport') {
 								$JScript	.=	"if (top.frames['wizbody'] && top.frames['wizbody'].addLog) {\n"
-											.	"	top.frames['wizbody'].addLog(\"<br>" . addslashes(we_html_tools::getPixel(10,10)) . we_htmlElement::htmlB(g_l('import','[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");\n"
+											.	"	top.frames['wizbody'].addLog(\"<br>" . addslashes(we_html_tools::getPixel(10,10)) . we_html_element::htmlB(g_l('import','[end_import]') . " - " . date("d.m.Y H:i:s")) . "<br><br>\");\n"
 											.	"}\n";
 							} else {
 								$JScript	.=	we_message_reporting::getShowMessageCall(g_l('import','[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout("top.close()",100);';
@@ -458,7 +458,7 @@ HTS;
 
 						}
 
-						$out .= we_htmlElement::jsElement($JScript);
+						$out .= we_html_element::jsElement($JScript);
 
 					break;
 
@@ -507,9 +507,9 @@ HTS;
 
 							if($xmlExIm->RefTable->current==0){
 								if($type != "first_steps_wizard") {
-									print we_htmlElement::jsElement('
+									print we_html_element::jsElement('
 										if (top.frames["wizbody"].addLog){
-											top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_htmlElement::htmlB(g_l('import','[update_links]')) . '");
+											top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(20,5)) . we_html_element::htmlB(g_l('import','[update_links]')) . '");
 										}
 									');
 									flush();
@@ -544,7 +544,7 @@ HTS;
 
 								}
 
-								$out .= we_htmlElement::htmlForm(array("name"=>"we_form"), $hiddens.we_htmlElement::jsElement(
+								$out .= we_html_element::htmlForm(array("name"=>"we_form"), $hiddens.we_html_element::jsElement(
 												"<!--\n"
 											.	$JScript
 											.	"setTimeout('we_import(1," . $v['cid'] . ");',15);\n"
@@ -567,7 +567,7 @@ HTS;
 												.	"setTimeout('we_import(1," . $v['numFiles'] . ");',15);\n";
 
 								}
-								$out .= we_htmlElement::htmlForm(array("name"=>"we_form"), $hiddens.we_htmlElement::jsElement(
+								$out .= we_html_element::htmlForm(array("name"=>"we_form"), $hiddens.we_html_element::jsElement(
 												"<!--\n"
 											.	$JScript
 											.	"//-->\n"
@@ -634,7 +634,7 @@ HTS;
 										$_path_info = id_to_path($ref->ID,$ref->Table);
 										break;
 									}
-									$_progress_text = we_htmlElement::htmlB(
+									$_progress_text = we_html_element::htmlB(
 															g_l('contentTypes','['.$ref->ContentType.']')!==false ?
 															g_l('contentTypes','['.$ref->ContentType.']') :
 															(g_l('import','['.$ref->ContentType.']')!==false ?
@@ -647,7 +647,7 @@ HTS;
 									}
 
 									if($type != "first_steps_wizard") {
-										print we_htmlElement::jsElement('
+										print we_html_element::jsElement('
 											if (top.frames["wizbody"].addLog){
 												top.frames["wizbody"].addLog("' . addslashes(we_html_tools::getPixel(50,5)) . $_progress_text . '<br>");
 											}
@@ -673,7 +673,7 @@ HTS;
 
 								}
 
-								$out .= we_htmlElement::htmlForm(array("name"=>"we_form"), $hiddens.we_htmlElement::jsElement(
+								$out .= we_html_element::htmlForm(array("name"=>"we_form"), $hiddens.we_html_element::jsElement(
 												"<!--\n"
 											.	$JScript
 											.	"setTimeout('we_import(1," . ($v["cid"]+1) . ");',15);\n"
@@ -778,7 +778,7 @@ HTS;
 
 					}
 
-					$out .= we_htmlElement::htmlForm(array("name"=>"we_form"), $hiddens.we_htmlElement::jsElement(
+					$out .= we_html_element::htmlForm(array("name"=>"we_form"), $hiddens.we_html_element::jsElement(
 									"<!--\n"
 								.	$JScript
 								.	"setTimeout('we_import(1," . ($v["cid"]+1) . ");',15);\n"
@@ -787,17 +787,17 @@ HTS;
 					break;
 			} // end switch
 		} else if ($mode != 1) {
-			$out .= we_htmlElement::htmlForm(array("name"=>"we_form"),
-				we_htmlElement::htmlHidden(array("name"=>"v[mode]","value"=>""))."\n".
-				we_htmlElement::htmlHidden(array("name"=>"v[cid]","value"=>""))."\n".
-				we_htmlElement::htmlHidden(array("name"=>"mode","value"=>""))."\n".
-				we_htmlElement::htmlHidden(array("name"=>"type","value"=>""))."\n".
-				we_htmlElement::htmlHidden(array("name"=>"cid","value"=>"")));
+			$out .= we_html_element::htmlForm(array("name"=>"we_form"),
+				we_html_element::htmlHidden(array("name"=>"v[mode]","value"=>""))."\n".
+				we_html_element::htmlHidden(array("name"=>"v[cid]","value"=>""))."\n".
+				we_html_element::htmlHidden(array("name"=>"mode","value"=>""))."\n".
+				we_html_element::htmlHidden(array("name"=>"type","value"=>""))."\n".
+				we_html_element::htmlHidden(array("name"=>"cid","value"=>"")));
 		}
 
-		return we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
-				we_htmlElement::jsElement("<!--\n".
+		return we_html_element::htmlHtml(
+			we_html_element::htmlHead(
+				we_html_element::jsElement("<!--\n".
 					"function addField(form, fieldType, fieldName, fieldValue) {\n" .
 					"	if (document.getElementById) {\n" .
 					"		var input = document.createElement('INPUT');\n" .
@@ -859,7 +859,7 @@ HTS;
 					"	we_form.submit();\n" .
 					"}\n" .
 					"//-->")).
-					we_htmlElement::htmlBody(array(), $out));
+					we_html_element::htmlBody(array(), $out));
 
 	}
 

@@ -108,8 +108,6 @@ function we_tag_img($attribs, $content){
 		}
 
 	if ($showcontrol && $GLOBALS['we_editmode']) {
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 		$out = "
 			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 				<tr>

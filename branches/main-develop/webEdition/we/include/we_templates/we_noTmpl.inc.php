@@ -41,7 +41,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 		<?php } ?>
 		<title><?php print $we_doc->getElement("Title") ?></title>
 		<?php if (isset($we_editmode) && $we_editmode) {
-			echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+			echo we_html_element::jsScript(JS_DIR.'windows.js');
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 		} else {
 			print we_tag("textarea", array("name" => "HEAD"));

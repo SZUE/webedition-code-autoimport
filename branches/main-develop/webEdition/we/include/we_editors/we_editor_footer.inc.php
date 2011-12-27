@@ -323,8 +323,8 @@ var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . 
 	$_js_we_submitForm;
 
 //	########################	print javascript src	#########################################################
-print we_htmlElement::jsElement($_js_code);
-print we_htmlElement::jsScript(JS_DIR . "windows.js");
+print we_html_element::jsElement($_js_code);
+print we_html_element::jsScript(JS_DIR . "windows.js");
 print STYLESHEET;
 ?>
 </head>
@@ -344,7 +344,7 @@ function showEditFooterForNormalMode(){
 
 	global $we_doc, $we_transaction, $haspermNew, $showPubl;
 
-	$_normalTable = new we_htmlTable(array("cellpadding" => 0,
+	$_normalTable = new we_html_table(array("cellpadding" => 0,
 			"cellspacing" => 0,
 			"border" => 0),
 			1,
@@ -512,7 +512,7 @@ function showEditFooterForNormalMode(){
 function showEditFooterForSEEMMode(){
 	global $we_doc, $we_transaction, $haspermNew, $showPubl, $_we_active_integrated_modules;
 
-	$_seeModeTable = new we_htmlTable(array("cellpadding" => 0,
+	$_seeModeTable = new we_html_table(array("cellpadding" => 0,
 			"cellspacing" => 0,
 			"border" => 0),
 			1,
@@ -711,14 +711,14 @@ function showEditFooterForSEEMMode(){
 
 			if($_SESSION["we_mode"] == "seem"){
 
-				$_noPermTable = new we_htmlTable(array("cellpadding" => 0,
+				$_noPermTable = new we_html_table(array("cellpadding" => 0,
 						"cellspacing" => 0,
 						"border" => 0),
 						1,
 						4);
 
 				$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
-				$_noPermTable->setColContent(0, 1, we_htmlElement::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+				$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 				$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
 				$_noPermTable->setColContent(0, 3, g_l('SEEM', "[no_permission_to_edit_document]"));
 
@@ -791,7 +791,7 @@ function showEditFooterForSEEMMode(){
 		}
 	}
 
-	print we_htmlElement::jsElement($_js_tmpl . $_js_publish . $_js_permnew);
+	print we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew);
 	?>
 </body>
 </html>

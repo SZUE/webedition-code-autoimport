@@ -73,10 +73,10 @@ if ($_binary{0} && !empty($_csv)) {
 if (isset($_query) && $DB_WE->query($_query) && !empty($_csv)) {
 	$mdc .= '<table cellspacing="0" cellpadding="0" border="0">';
 	while ($DB_WE->next_record()) {
-		$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_htmlElement::htmlImg(
+		$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
 				array(
 					"src" => ICON_DIR . $DB_WE->f("Icon")
-				)) . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_htmlElement::htmlA(
+				)) . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
 				array(
 
 						"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f(
@@ -90,10 +90,10 @@ if (isset($_query) && $DB_WE->query($_query) && !empty($_csv)) {
 }
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[my_documents]')) . STYLESHEET . we_htmlElement::jsElement(
-								$js)) . we_htmlElement::htmlBody(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[my_documents]')) . STYLESHEET . we_html_element::jsElement(
+								$js)) . we_html_element::htmlBody(
 						array(
 
 								"marginwidth" => "15",
@@ -102,7 +102,7 @@ print
 								"topmargin" => "10",
 								"onload" => "if(parent!=self)init();"
 						),
-						we_htmlElement::htmlDiv(array(
+						we_html_element::htmlDiv(array(
 							"id" => "mdc"
 						), $mdc)));
 

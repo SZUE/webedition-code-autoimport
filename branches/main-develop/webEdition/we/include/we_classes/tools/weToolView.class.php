@@ -50,7 +50,7 @@ class weToolView{
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = ''){
-		return we_htmlElement::htmlHidden(array('name' => trim($name), 'value' => htmlspecialchars($value)));
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => htmlspecialchars($value)));
 	}
 
 	//-----------------Init -------------------------------
@@ -184,7 +184,7 @@ class weToolView{
 
 			';
 
-		return we_htmlElement::jsElement("", array("src" => JS_DIR . "windows.js")) . we_htmlElement::jsElement($js);
+		return we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) . we_html_element::jsElement($js);
 	}
 
 	function getTopJSAdditional(){
@@ -197,7 +197,7 @@ class weToolView{
 
 	function getJSProperty(){
 		$out = "";
-		$out.=we_htmlElement::jsElement("", array("src" => JS_DIR . "windows.js"));
+		$out.=we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
 
 		$js = '
 			var loaded=0;
@@ -238,7 +238,7 @@ class weToolView{
 
 		';
 
-		$out.=we_htmlElement::jsElement($js);
+		$out.=we_html_element::jsElement($js);
 		return $out;
 	}
 

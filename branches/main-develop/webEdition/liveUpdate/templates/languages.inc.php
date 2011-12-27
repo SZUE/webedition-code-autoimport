@@ -26,7 +26,7 @@
  * This is the template for tab languages. It contains the information screen
  * before deleting or installing languages
  */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
 
 $nextButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=languages&update_cmd=languages&detail=selectLanguages');
 $deleteButton = we_button::create_button('delete', 'javascript:document.we_form.submit()');

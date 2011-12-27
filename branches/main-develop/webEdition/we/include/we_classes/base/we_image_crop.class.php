@@ -38,7 +38,7 @@ abstract class we_image_crop{
 			$GLOBALS['we_doc']->setElement("origheight", $GLOBALS['we_doc']->getElement("height"));
 		}
 
-		return we_htmlElement::jsElement('
+		return we_html_element::jsElement('
 var CropTool = {
 
 	imgSrc : "",
@@ -909,7 +909,7 @@ if(!Function.prototype.apply){
 	}
 
 	static function getCSS(){
-		return we_htmlElement::cssElement('
+		return we_html_element::cssElement('
 			#weImgDiv {border: 0px solid #CECECE;}
 			#weImagePanelBorder {border: 0px solid #808080;}
 			#weControl img {border:none;}

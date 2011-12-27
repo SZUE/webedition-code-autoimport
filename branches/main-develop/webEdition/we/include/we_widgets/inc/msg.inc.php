@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$oTblCont = new we_htmlTable(
+$oTblCont = new we_html_table(
 		array(
 
 				"id" => "m_" . $iCurrId . "_inline",
@@ -45,14 +45,14 @@ $oTblCont->setCol(
 		array(
 			"valign" => "middle"
 		),
-		we_htmlElement::htmlA(
+		we_html_element::htmlA(
 				array(
 
 						"href" => $msg_cmd,
 						"class" => "middlefont",
 						"style" => "font-weight:bold;text-decoration:none;"
 				),
-				$new_messages . " (" . we_htmlElement::htmlSpan(array(
+				$new_messages . " (" . we_html_element::htmlSpan(array(
 					"id" => "msg_count"
 				), $newmsg_count) . ")"));
 $oTblCont->setCol(1, 0, array(
@@ -70,14 +70,14 @@ $oTblCont->setCol(
 		array(
 			"valign" => "middle"
 		),
-		we_htmlElement::htmlA(
+		we_html_element::htmlA(
 				array(
 
 						"href" => $msg_cmd,
 						"class" => "middlefont",
 						"style" => "font-weight:bold;text-decoration:none;"
 				),
-				$new_tasks . " (" . we_htmlElement::htmlSpan(array(
+				$new_tasks . " (" . we_html_element::htmlSpan(array(
 					"id" => "task_count"
 				), $newtodo_count) . ")"));
 $aLang = array(

@@ -129,10 +129,10 @@ function we_tag_checkForm($attribs, $content) {
 				return parseError(g_l('parser', '[checkForm_jsIncludePath_not_found]'));
 			}
 		} else {
-			$jsEventHandler = we_htmlElement::jsScript($jsIncludePath);
+			$jsEventHandler = we_html_element::jsScript($jsIncludePath);
 		}
 	} else {
-		$jsEventHandler = we_htmlElement::jsScript(JS_DIR.'external/weCheckForm.js');
+		$jsEventHandler = we_html_element::jsScript(JS_DIR.'external/weCheckForm.js');
 	}
 
 	switch ($type) {
@@ -167,7 +167,7 @@ function we_tag_checkForm($attribs, $content) {
     }
             ';
 
-			$function = we_htmlElement::jsElement($initFunction . ' ' . $checkFunction);
+			$function = we_html_element::jsElement($initFunction . ' ' . $checkFunction);
 			break;
 
 		case "name" : //  name of formular is given
@@ -201,7 +201,7 @@ function we_tag_checkForm($attribs, $content) {
     }
             ';
 
-			$function = we_htmlElement::jsElement($initFunction . ' ' . $checkFunction);
+			$function = we_html_element::jsElement($initFunction . ' ' . $checkFunction);
 			break;
 	}
 

@@ -442,7 +442,7 @@ class weImageDialog extends weDialog{
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$js = weDialog::getJs() . we_htmlElement::jsScript(JS_DIR . 'windows.js') . '
+		$js = weDialog::getJs() . we_html_element::jsScript(JS_DIR . 'windows.js') . '
 	<script language=javascript>
 function we_cmd(){
 	var args = "";

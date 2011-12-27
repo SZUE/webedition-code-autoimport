@@ -37,10 +37,10 @@ class weCustomerAdd{
 		$branch->setOptionVT(1,g_l('modules_customer','[other]'),g_l('modules_customer','[other]'));
 
 
-		$order=new we_htmlSelect(array('name'=>'order','style'=>'width:90'));
+		$order=new we_html_select(array('name'=>'order','style'=>'width:90'));
 		foreach($pob->View->settings->OrderTable as $ord) $order->addOption($ord,$ord);
 
-		$function=new we_htmlSelect(array('name'=>'function','style'=>'width:130'));
+		$function=new we_html_select(array('name'=>'function','style'=>'width:130'));
 
 		$counter=0;
 		$fhidden='';
@@ -52,11 +52,11 @@ class weCustomerAdd{
 			$row_num=0;
 			$sort_field_code='';
 
-			$sort_table=new we_htmlTable(array('border'=>'0','cellpadding'=>'2','cellspacing'=>'1','width'=>'400','height'=>'50'),1,5);
-			$sort_table->setCol(0,0,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_branch]')));
-			$sort_table->setCol(0,1,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_field]')));
-			$sort_table->setCol(0,2,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_function]')));
-			$sort_table->setCol(0,3,array('class'=>'defaultfont'),we_htmlElement::htmlB(g_l('modules_customer','[sort_order]')));
+			$sort_table=new we_html_table(array('border'=>'0','cellpadding'=>'2','cellspacing'=>'1','width'=>'400','height'=>'50'),1,5);
+			$sort_table->setCol(0,0,array('class'=>'defaultfont'),we_html_element::htmlB(g_l('modules_customer','[sort_branch]')));
+			$sort_table->setCol(0,1,array('class'=>'defaultfont'),we_html_element::htmlB(g_l('modules_customer','[sort_field]')));
+			$sort_table->setCol(0,2,array('class'=>'defaultfont'),we_html_element::htmlB(g_l('modules_customer','[sort_function]')));
+			$sort_table->setCol(0,3,array('class'=>'defaultfont'),we_html_element::htmlB(g_l('modules_customer','[sort_order]')));
 
 
 			foreach($sorts as $sort){
@@ -126,9 +126,9 @@ class weCustomerAdd{
 			$sort_table->setCol($row_num,4,array(),we_html_tools::getPixel(2,5).we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort_field',document.we_form.sort_".$counter.".value)",true,30));
 
 
-			$fhidden.=we_htmlElement::htmlHidden(array("name"=>"fcounter_".$counter,"value"=>"$fcounter"));
+			$fhidden.=we_html_element::htmlHidden(array("name"=>"fcounter_".$counter,"value"=>"$fcounter"));
 
-			$_htmlCode = 	$pob->getHTMLBox(we_htmlElement::htmlInput(array("name"=>"sort_".$counter,"value"=>$k,"size"=>"40")),g_l('modules_customer','[name]'),100,50,25,0,0,50).
+			$_htmlCode = 	$pob->getHTMLBox(we_html_element::htmlInput(array("name"=>"sort_".$counter,"value"=>$k,"size"=>"40")),g_l('modules_customer','[name]'),100,50,25,0,0,50).
 							$sort_table->getHtml() .
 							we_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','$k')");
 
@@ -142,27 +142,27 @@ class weCustomerAdd{
 
 		$_buttons = we_button::position_yes_no_cancel($save,null,$cancel);
 
-		$add_button= we_button::create_button_table(array(we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"),we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[add_sort_group]'))));
+		$add_button= we_button::create_button_table(array(we_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_sort')"),we_html_element::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[add_sort_group]'))));
 		$_parts[] = array('html'=>$add_button);
 
 		$sort_code = we_multiIconBox::getHTML("","100%",$_parts,30,$_buttons,-1,"","",false,"","",459);
 
-		$hiddens="\n".we_htmlElement::htmlComment("hiddens start")."\n".
-				we_htmlElement::htmlHidden(array("name"=>"pnt","value"=>"sort_admin")).
-		 		we_htmlElement::htmlHidden(array("name"=>"cmd","value"=>"")).
-		 		we_htmlElement::htmlHidden(array("name"=>"counter","value"=>"$counter")).
-		 		we_htmlElement::htmlHidden(array("name"=>"sortindex","value"=>"")).
-		 		we_htmlElement::htmlHidden(array("name"=>"fieldindex","value"=>"")).
+		$hiddens="\n".we_html_element::htmlComment("hiddens start")."\n".
+				we_html_element::htmlHidden(array("name"=>"pnt","value"=>"sort_admin")).
+		 		we_html_element::htmlHidden(array("name"=>"cmd","value"=>"")).
+		 		we_html_element::htmlHidden(array("name"=>"counter","value"=>"$counter")).
+		 		we_html_element::htmlHidden(array("name"=>"sortindex","value"=>"")).
+		 		we_html_element::htmlHidden(array("name"=>"fieldindex","value"=>"")).
 		 		$fhidden.
-		 		"\n".we_htmlElement::htmlComment("hiddens ends")."\n";
+		 		"\n".we_html_element::htmlComment("hiddens ends")."\n";
 
 
 		$sort_code .= $hiddens;
 
 
-		$out=we_htmlElement::htmlBody(array("class"=>"weDialogBody","onload"=>"doScrollTo()"),
-					we_htmlElement::jsElement($pob->View->getJSSortAdmin()).
-					we_htmlElement::htmlForm(array("name"=>"we_form"),
+		$out=we_html_element::htmlBody(array("class"=>"weDialogBody","onload"=>"doScrollTo()"),
+					we_html_element::jsElement($pob->View->getJSSortAdmin()).
+					we_html_element::htmlForm(array("name"=>"we_form"),
 						$sort_code
 					)
 		);
@@ -313,7 +313,7 @@ class weCustomerAdd{
 			}
 
 
-			$advsearch=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,4);
+			$advsearch=new we_html_table(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,4);
 			$branch=$pob->getHTMLBranchSelect();
 			$branch->setOptionVT(1,g_l('modules_customer','[other]'),g_l('modules_customer','[other]'));
 
@@ -368,7 +368,7 @@ class weCustomerAdd{
 			);
 
 			$search->setCol(1,0,array(),
-				we_htmlElement::htmlHidden(array("name"=>"count","value"=>$count)).
+				we_html_element::htmlHidden(array("name"=>"count","value"=>$count)).
 				$advsearch->getHtml()
 
 			);
@@ -376,7 +376,7 @@ class weCustomerAdd{
 			$search->setCol(3,0,array("align"=>"right","colspan"=>$colspan),
 									"<table border='0' cellpadding='0' cellspacing='0'><tr><td>".we_button::create_button_table(
 										array(
-											we_htmlElement::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[simple_search]')),
+											we_html_element::htmlDiv(array("class"=>"defaultgray"),g_l('modules_customer','[simple_search]')),
 											we_button::create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
 											$search_but
 										)
@@ -429,24 +429,24 @@ class weCustomerAdd{
 		$select->setAttributes(array("OnChange"=>"applySort();","style"=>"width:150px"));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
-		$table1=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
+		$table1=new we_html_table(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"0","width"=>"3000"),1,1);
 		$table1->setCol(0,0,array("nowrap"=>null,"class"=>"small"),we_html_tools::getPixel(300,1));
 
-		$table=new we_htmlTable(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,3);
+		$table=new we_html_table(array("border"=>"0","cellpadding"=>"0","cellspacing"=>"3"),1,3);
 		$table->setRow(0,array("valign"=>"bottom"));
 
 		$table->setCol(0,0,array("nowrap"=>null,"class"=>"small"),$select->getHtml());
 		$table->setCol(0,1,array("nowrap"=>null,"class"=>"small"),we_button::create_button("image:btn_function_reload", "javascript:applySort();"));
 		$table->setCol(0,2,array("nowrap"=>null,"class"=>"small"),we_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
-		$hiddens=we_htmlElement::htmlHidden(array("name"=>"pnt","value"=>"treeheader")).
-					we_htmlElement::htmlHidden(array("name"=>"pid","value"=>"0")).
-				 	we_htmlElement::htmlHidden(array("name"=>"cmd","value"=>"no_cmd"));
+		$hiddens=we_html_element::htmlHidden(array("name"=>"pnt","value"=>"treeheader")).
+					we_html_element::htmlHidden(array("name"=>"pid","value"=>"0")).
+				 	we_html_element::htmlHidden(array("name"=>"cmd","value"=>"no_cmd"));
 
 
-		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"5","marginheight"=>"5","leftmargin"=>"5","topmargin"=>"5"),
-					we_htmlElement::jsElement($pob->View->getJSTreeHeader()).
-					we_htmlElement::htmlForm(array("name"=>"we_form"),
+		$body=we_html_element::htmlBody(array("bgcolor"=>"white","background"=>IMAGE_DIR."backgrounds/header_with_black_line.gif","marginwidth"=>"5","marginheight"=>"5","leftmargin"=>"5","topmargin"=>"5"),
+					we_html_element::jsElement($pob->View->getJSTreeHeader()).
+					we_html_element::htmlForm(array("name"=>"we_form"),
 						$hiddens.
 						$table1->getHtml().
 						$table->getHtml()

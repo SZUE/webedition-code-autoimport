@@ -29,7 +29,7 @@
 
 		function getInfoTable($_infoArr,$name) {
 
-			$_table = new we_htmlTable(array("width" => "500", "style" => "width: 500px;", "spellspacing"=>"2"), 1, 2);
+			$_table = new we_html_table(array("width" => "500", "style" => "width: 500px;", "spellspacing"=>"2"), 1, 2);
 			$_i = 0;
 
 			foreach ($_infoArr as $_k=>$_v) {
@@ -303,8 +303,8 @@
 <html>
 <head>
 <title><?php print g_l('sysinfo','[sysinfo]')?></title>
-<?php echo we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js').
-	we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
+<?php echo we_html_element::jsScript(JS_DIR.'attachKeyListener.js').
+	we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 <script type="text/javascript"><!--
 	function closeOnEscape() {
 		return true;

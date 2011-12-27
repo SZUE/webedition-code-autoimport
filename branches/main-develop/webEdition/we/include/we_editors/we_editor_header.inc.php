@@ -160,7 +160,7 @@ if ($_SESSION["we_mode"] != "seem"){	//	No tabs in Super-Easy-Edit_mode
 	$tab_js  .= $we_tabs->getJSRebuildTabs();
 
 } else {
-	$tab_head = we_htmlElement::jsElement("function setFrameSize(){}");
+	$tab_head = we_html_element::jsElement("function setFrameSize(){}");
 }
 
 if ($tab_head) {
@@ -238,7 +238,7 @@ $_js_we_cmd
 
 //-->
 ";
-print we_htmlElement::jsElement($_js_code);
+print we_html_element::jsElement($_js_code);
 
 //	Stylesheet and image pre�pader for buttons
 print STYLESHEET;
@@ -247,7 +247,7 @@ print STYLESHEET;
 </head>
 <body id='eHeaderBody' bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
 <div id="main" ><?php
-print we_html_tools::getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_htmlElement::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span> (ID: <span id="h_id"></span>)</div>'.we_html_tools::getPixel(100,3);
+print we_html_tools::getPixel(100,3).'<div style="margin:0px;" id="headrow">&nbsp;'.we_html_element::htmlB(str_replace(" ","&nbsp;",g_l('contentTypes','['.$we_doc->ContentType.']'))).': <span id="h_path"></span> (ID: <span id="h_id"></span>)</div>'.we_html_tools::getPixel(100,3);
 
 if ($_SESSION["we_mode"] != "seem") {
 	print $we_tabs->getHTML();

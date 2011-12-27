@@ -90,7 +90,7 @@ $_pLog_[] = array(
 	'promo_value_tai', 'promo_value_today', 'promo_value_this_month', 'promo_value_this_year'
 );
 
-$_pLogOut = we_htmlElement::cssElement(
+$_pLogOut = we_html_element::cssElement(
 		"TD{font-family:arial,verdana;color:#2f2f2f;font-size:11px;line-height:16px}
 .tablehead{padding-left:2px;background-color:#cccccc;font-size:10px;color:#000000;font-weight:bold;}
 .boxbg{padding-left:5px;font-size:10px;color:black;background-color:#F8F8F8;}
@@ -102,7 +102,7 @@ $_gap = false;
 for ($i = 0; $i <= 10; $i++) {
 	if ($_pLogCsv[$i]) {
 		if ($_gap) {
-			$_pLogOut .= we_html_tools::getPixel(1, 8) . we_htmlElement::htmlBr();
+			$_pLogOut .= we_html_tools::getPixel(1, 8) . we_html_element::htmlBr();
 		} else {
 			$_gap = true;
 		}
@@ -125,10 +125,10 @@ if ($_isPrev) {
 	";
 
 	print
-			we_htmlElement::htmlHtml(
-					we_htmlElement::htmlHead(
-							we_htmlElement::htmlTitle(g_l('cockpit','[pagelogger]')) . STYLESHEET . we_htmlElement::jsElement(
-									$sJsCode)) . we_htmlElement::htmlBody(
+			we_html_element::htmlHtml(
+					we_html_element::htmlHead(
+							we_html_element::htmlTitle(g_l('cockpit','[pagelogger]')) . STYLESHEET . we_html_element::jsElement(
+									$sJsCode)) . we_html_element::htmlBody(
 							array(
 
 									"marginwidth" => "15",
@@ -137,11 +137,11 @@ if ($_isPrev) {
 									"topmargin" => "10",
 									"onload" => "if(parent!=self)init();"
 							),
-							we_htmlElement::htmlDiv(array(
+							we_html_element::htmlDiv(array(
 								"id" => "plg"
 							), $_pLogOut)));
 } else {
-	$_pLog = new we_htmlTable(array(
+	$_pLog = new we_html_table(array(
 		"width" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 	), 1, 1);
 	$_pLog->setCol(0, 0, null, $_pLogOut);

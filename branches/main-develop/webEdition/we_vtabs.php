@@ -40,8 +40,8 @@ if(defined("OBJECT_TABLE")){
 
 $_treewidth = isset($_COOKIE["treewidth_main"]) ? $_COOKIE["treewidth_main"]  : WE_TREE_DEFAULT_WIDTH;
 
-echo we_htmlElement::jsScript(JS_DIR.'images.js').
-	we_htmlElement::jsScript(JS_DIR.'we_tabs.js');
+echo we_html_element::jsScript(JS_DIR.'images.js').
+	we_html_element::jsScript(JS_DIR.'we_tabs.js');
 ?>
 <script  type="text/javascript">
 

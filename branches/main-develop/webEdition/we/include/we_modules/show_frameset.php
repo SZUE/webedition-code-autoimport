@@ -27,14 +27,14 @@
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop();
-print we_htmlElement::jsElement('
+print we_html_element::jsElement('
 	function toggleBusy(){
 	}
 	var makeNewEntry = 0;
 	var publishWhenSave = 0;
 	var weModuleWindow = true;
 ');
-print we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js"));
+print we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js"));
 if(isset($_REQUEST['mod']) && !isset($mod)) {
 	$mod = $_REQUEST['mod'];
 }

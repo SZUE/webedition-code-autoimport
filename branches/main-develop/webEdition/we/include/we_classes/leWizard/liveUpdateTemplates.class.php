@@ -84,7 +84,7 @@ abstract class liveUpdateTemplates {
 	' . $header . '
 	</head>
 	<body>
-	' . liveUpdateTemplates::getContainer($headline, $content) . we_htmlElement::jsElement($PushJs) . '
+	' . liveUpdateTemplates::getContainer($headline, $content) . we_html_element::jsElement($PushJs) . '
 	</body>
 </html>';
 	}

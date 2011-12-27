@@ -157,7 +157,7 @@ function we_tag_date($attribs, $content){
 
 		$js .= 'document.write("' . $f . '");' . "\n";
 
-		return we_htmlElement::jsElement($js);
+		return we_html_element::jsElement($js);
 	} else {
 		return date(correctDateFormat($format));
 	}

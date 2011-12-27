@@ -375,7 +375,7 @@ class we_document extends we_root{
 			$navis->CanDelete = false;
 		}
 
-		return we_htmlElement::jsElement(we_button::create_state_changer(false)) .
+		return we_html_element::jsElement(we_button::create_state_changer(false)) .
 			$navis->get();
 	}
 

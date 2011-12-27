@@ -53,9 +53,9 @@ $_javascript = "
  *****************************************************************************/
 
 print
-	we_htmlElement::jsElement($_javascript) .
-	we_htmlElement::jsScript(JS_DIR . "keyListener.js") .
-	we_htmlElement::jsElement(
+	we_html_element::jsElement($_javascript) .
+	we_html_element::jsScript(JS_DIR . "keyListener.js") .
+	we_html_element::jsElement(
 		"
 			function closeOnEscape() {
 				return true;
@@ -70,8 +70,8 @@ print
 	) .
 "</head>";
 
-$frameset = new we_htmlFrameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1",  "frameborder" => "no"), 0);
+$frameset = new we_html_frameset(array("rows" => "*,40", "framespacing" => "0", "border" => "1",  "frameborder" => "no"), 0);
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/editor.php", "name" => "we_metadatafields", "scrolling" => "auto", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_metadata_fields/footer.php?closecmd=".(isset($_REQUEST['we_cmd'][1]) ? rawurlencode($_REQUEST['we_cmd'][1]) : ""), "name" => "we_metadatafields_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-print $frameset->getHtml() . we_htmlElement::htmlBody(array()) . "</html>";
+print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";

@@ -72,15 +72,15 @@ we_html_tools::htmlTop('webEdition - '.$_SESSION["user"]["Username"]);
 
 $online_help=true;
 
-echo we_htmlElement::jsScript(JS_DIR.'windows.js').
-	we_htmlElement::jsScript(JS_DIR.'weJsStrings.php').
-	we_htmlElement::jsScript(JS_DIR.'md5.js').
-	we_htmlElement::jsScript(JS_DIR.'weNavigationHistory.php').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js').
-	we_htmlElement::jsScript(JS_DIR.'keyListener.js').
-	we_htmlElement::jsScript(JS_DIR.'messageConsole.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js').
+	we_html_element::jsScript(JS_DIR.'weJsStrings.php').
+	we_html_element::jsScript(JS_DIR.'md5.js').
+	we_html_element::jsScript(JS_DIR.'weNavigationHistory.php').
+	we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js').
+	we_html_element::jsScript(JS_DIR.'keyListener.js').
+	we_html_element::jsScript(JS_DIR.'messageConsole.js');
 
 ?>
 <link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico" />
@@ -1457,7 +1457,7 @@ var cockpitFrame;
 	pWebEdition_Tree();
 ?>
 </head>
-<body bgcolor="grey">
+<body bgcolor="grey" onunload="doUnload()">
 <?php
 //	get the frameset for the actual mode.
 pWebEdition_Frameset();

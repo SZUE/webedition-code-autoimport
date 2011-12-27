@@ -29,14 +29,14 @@ we_html_tools::protect();
 
 we_html_tools::htmlTop ();
 
-echo we_htmlElement::jsScript(JS_DIR.'windows.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js');
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-$headCal = we_htmlElement::linkElement ( array ("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua" ) ) . we_htmlElement::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar.js" ) ) . we_htmlElement::jsElement ( "", array ("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js" ) ) . we_htmlElement::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar-setup.js" ) );
+$headCal = we_html_element::linkElement ( array ("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua" ) ) . we_html_element::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar.js" ) ) . we_html_element::jsElement ( "", array ("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js" ) ) . we_html_element::jsElement ( "", array ("src" => JS_DIR . "jscalendar/calendar-setup.js" ) );
 
 echo $headCal;
 

@@ -278,7 +278,7 @@ function setDir(id){
 
 		if (isset($_REQUEST["todel"])) {
 			$_SESSION["todel"] = $_REQUEST["todel"];
-			print we_htmlElement::jsScript(JS_DIR.'windows.js').'
+			print we_html_element::jsScript(JS_DIR.'windows.js').'
 <script  type="text/javascript">
 	top.opener.top.we_cmd("del_frag", "' . $_REQUEST["todel"] . '");
 	top.close();

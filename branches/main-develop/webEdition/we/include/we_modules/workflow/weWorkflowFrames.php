@@ -145,7 +145,7 @@ class weWorkflowFrames extends weModuleWorkflowFrames{
    <body bgcolor="white" background="'.IMAGE_DIR.'backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onload="setFrameSize()", onresize="setFrameSize()">
 		<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>'.htmlspecialchars($textPre).':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">'.htmlspecialchars($textPost).'</b></span></nobr></div>' . we_html_tools::getPixel(100,3) .
 			$we_tabs->getHTML() .
-			'</div>' . we_htmlElement::jsElement('document.getElementById("tab_'.$page.'").className="tabActive";') . '
+			'</div>' . we_html_element::jsElement('document.getElementById("tab_'.$page.'").className="tabActive";') . '
 	</body>';
 
 

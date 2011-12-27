@@ -50,7 +50,7 @@ if($_REQUEST["todo"] == "add"){
 
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print we_htmlElement::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");');
+		print we_html_element::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");');
 
 } else if($_REQUEST["todo"] == "delete") {
 
@@ -72,7 +72,7 @@ if($_REQUEST["todo"] == "add"){
 
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print we_htmlElement::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");');
+		print we_html_element::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");');
 
 }else if($_REQUEST["todo"] == "search"){
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
@@ -84,31 +84,31 @@ if($_REQUEST["todo"] == "add"){
 
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print we_htmlElement::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");');
+		print we_html_element::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ). '");');
 }else if($_REQUEST["todo"]=="changemeta"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print we_htmlElement::jsElement('top.we_cmd("reload_editpage");');
+		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
 }else if($_REQUEST["todo"]=="changedate"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print we_htmlElement::jsElement('top.we_cmd("reload_editpage");');
+		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
 }else if($_REQUEST["todo"]=="changecheckbox"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		print we_htmlElement::jsElement('top.we_cmd("reload_editpage");');
+		print we_html_element::jsElement('top.we_cmd("reload_editpage");');
 
 }else if($_REQUEST["todo"]=="quickchangemeta"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print we_htmlElement::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");');
+		print we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");');
 
 }else if($_REQUEST["todo"]=="quickchangedate"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print we_htmlElement::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");');
+		print we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");');
 
 }else if($_REQUEST["todo"]=="quickcheckbox"){
 		$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-		print we_htmlElement::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");');
+		print we_html_element::jsElement('top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["3"].location.replace("/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction='.$we_transaction.'&we_cmd[7]='.$_REQUEST["obj_searchField"].'&we_cmd[6]='.$obj_search.'");');
 
 }else if(isset($_REQUEST["obj_searchField"])){
 	//echo $obj_searchField."-_".$obj_search;
@@ -129,7 +129,7 @@ if($_REQUEST["todo"] == "add"){
 
 	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
 
-	print we_htmlElement::jsElement('
+	print we_html_element::jsElement('
 					if (top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["1"].document.we_form && top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["1"].document.we_form.elements[\'SearchStart\']) {
 						top.weEditorFrameController.getDocumentReferenceByTransaction("'.$_SESSION["we_data"][$we_transaction].'").frames["1"].document.we_form.elements[\'SearchStart\'].value = 0;
 					}

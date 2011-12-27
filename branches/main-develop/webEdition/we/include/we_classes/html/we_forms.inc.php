@@ -84,7 +84,7 @@ abstract class we_forms{
 	 */
 	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
-		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . we_forms::checkbox(1, $checked, "_" . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
+		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, "_" . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
 
 	/**
@@ -221,7 +221,7 @@ abstract class we_forms{
 			$inwebedition = $forceinwebedition ? $forceinwebedition : (isset($GLOBALS["WE_MAIN_DOC"]->InWebEdition) && $GLOBALS["WE_MAIN_DOC"]->InWebEdition);
 		}
 
-		$value = we_forms::removeBrokenInternalLinksAndImages($value);
+		$value = self::removeBrokenInternalLinksAndImages($value);
 
 		if($wysiwyg){
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : "520");

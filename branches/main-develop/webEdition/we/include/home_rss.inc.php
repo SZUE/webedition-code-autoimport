@@ -26,7 +26,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::htmlTop();
 print STYLESHEET;
-print we_htmlElement::cssElement('div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . g_l('css','[font_family]') . ';}');
+print we_html_element::cssElement('div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . g_l('css','[font_family]') . ';}');
 print '</head><body bgcolor="#F1F5FF">';
 
 $rss = new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], $GLOBALS['WE_BACKENDCHARSET']);
@@ -37,7 +37,7 @@ foreach ($rss->getItems() as $item) {
 	if (isset($item['link']) && !empty($item['link']))
 		$rss_out .= "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit','[more]') . "</a>";
 	$rss_out .= "</p>";
-	$rss_out .= we_html_tools::getPixel(1, 10) . we_htmlElement::htmlBr();
+	$rss_out .= we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
 }
 $rss_out .= '</div>';
 print $rss_out;

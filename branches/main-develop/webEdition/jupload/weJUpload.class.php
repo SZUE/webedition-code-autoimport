@@ -94,28 +94,24 @@ class weJUpload{
 	}
 
 	function getButtons($buttons, $order='h', $space=5){
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-		$we_button = new we_button();
-
 		$_buttons = array();
 
 		foreach($buttons as $button){
 			switch($button){
 				case 'add':
-					$_buttons[] = $we_button->create_button("add", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickAdd();");
+					$_buttons[] = we_button::create_button("add", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickAdd();");
 					break;
 				case 'remove':
-					$_buttons[] = $we_button->create_button("delete", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickRemove();");
+					$_buttons[] = we_button::create_button("delete", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickRemove();");
 					break;
 				case 'upload':
-					$_buttons[] = $we_button->create_button("upload", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickUpload();");
+					$_buttons[] = we_button::create_button("upload", "javascript:if(document.JUpload.jsIsReady()) document.JUpload.jsClickUpload();");
 					break;
 			}
 		}
 
 		if($order == 'h'){
-			return $we_button->create_button_table($_buttons, $space);
+			return we_button::create_button_table($_buttons, $space);
 		} else{
 			return '<div style="margin-bottom: ' . $space . 'px;">' . implode('</div><div style="margin-bottom: ' . $space . 'px;">', $_buttons) . '</div>';
 		}

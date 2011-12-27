@@ -45,7 +45,7 @@
 
 
 
-	$_table = new we_htmlTable(	array(	"cellpadding" => 0,
+	$_table = new we_html_table(	array(	"cellpadding" => 0,
 										"cellspacing" => 0,
 										"border"      => 0),
 										2,
@@ -58,7 +58,7 @@
     $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 
 
-    $_body = we_htmlElement::htmlBody(	array(	"bgcolor"      => "white",
+    $_body = we_html_element::htmlBody(	array(	"bgcolor"      => "white",
     											"background"   => EDIT_IMAGE_DIR . "editfooterback.gif",
     											"marginwidth"  => 0,
     											"marginheight" => 0,
@@ -66,4 +66,4 @@
     											"topmargin"    => 0),
 										$_body);
 
-	print we_htmlElement::htmlHtml("\n" . $_head . "\n" . $_body );
+	print we_html_element::htmlHtml("\n" . $_head . "\n" . $_body );

@@ -86,7 +86,7 @@ class weTagDataAttribute{
 		if($this->Deprecated){
 			$tmp['style'] .= 'text-decoration:line-through;';
 		}
-		return we_htmlElement::htmlLabel($tmp, $this->Name . ($this->Required ? '*' : ''));
+		return we_html_element::htmlLabel($tmp, $this->Name . ($this->Required ? '*' : ''));
 	}
 
 	/**

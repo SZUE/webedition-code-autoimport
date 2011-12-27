@@ -60,8 +60,8 @@ if(we_hasPerm("BACKUPLOG")){
 
 		<title><?php print g_l('backup', "[view_log]"); ?></title>
 <?php
-echo we_htmlElement::jsScript(JS_DIR . 'attachKeyListener.js') . we_htmlElement::jsScript(JS_DIR . 'keyListener.js') .
- we_htmlElement::jsElement('
+echo we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+ we_html_element::jsElement('
 	function closeOnEscape() {
 		return true;
 	}

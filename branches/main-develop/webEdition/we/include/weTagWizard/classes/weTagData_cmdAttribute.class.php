@@ -47,7 +47,7 @@ class weTagData_cmdAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 		return sprintf('<table class="attribute"><tr><td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">%s</td></tr>
-			</table>', we_htmlElement::htmlSpan(
+			</table>', we_html_element::htmlSpan(
 					array(
 					'name' => $this->Name,
 					'id' => $this->getIdName(),

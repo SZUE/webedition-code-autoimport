@@ -32,7 +32,7 @@ we_html_tools::htmlTop();
 
 $js_load=array('windows','utils/dimension','utils/prototypes','utils/cockpit');
 foreach($js_load as $js){
-	print we_htmlElement::jsScript(JS_DIR.$js.'.js');
+	print we_html_element::jsScript(JS_DIR.$js.'.js');
 }
 unset($js_load);
 
@@ -53,7 +53,7 @@ print
 	color: black;
 	text-decoration:none;
 }
-</style>".we_htmlElement::jsScript(JS_DIR.'/utils/prototypes.js');
+</style>".we_html_element::jsScript(JS_DIR.'/utils/prototypes.js');
 
 if (we_hasPerm("CAN_SEE_QUICKSTART")) {
 
@@ -1017,17 +1017,17 @@ function getUser(){
 						$iWidth,
 						$aPrefs[$aProps[0]]["height"],
 						$aPrefs[$aProps[0]]["isResizable"]);
-				$s2 .= we_htmlElement::htmlDiv(
+				$s2 .= we_html_element::htmlDiv(
 						array(
 							"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;"
 						),
 						$$aProps[0]->getHtml());
-				$s2 .= we_htmlElement::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
+				$s2 .= we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
 		}
 		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . (($bExtendedCol) ? "_expand" : "_collapse") . "\">\n";
 		$s1 .= $s2;
-		$s1 .= we_htmlElement::htmlDiv(array(
+		$s1 .= we_html_element::htmlDiv(array(
 			"class" => "wildcard"
 		), "") . "</td>\n";
 		if ($iDatLen > $iCurrCol) {
@@ -1036,7 +1036,7 @@ function getUser(){
 	}
 	while ($iCurrCol < $iLayoutCols) {
 		$iCurrCol++;
-		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . "_collapse\">" . we_htmlElement::htmlDiv(
+		$s1 .= "<td id=\"c_" . $iCurrCol . "\" class=\"cls_" . $iCurrCol . "_collapse\">" . we_html_element::htmlDiv(
 				array(
 					"class" => "wildcard"
 				),
@@ -1045,7 +1045,7 @@ function getUser(){
 			$s1 .= "<td>&nbsp;&nbsp;</td>\n";
 	}
 
-	$oTblWidgets = new we_htmlTable(array(
+	$oTblWidgets = new we_html_table(array(
 		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "height" => "98%"
 	), 1, 1);
 	$oTblWidgets->setCol(
@@ -1054,7 +1054,7 @@ function getUser(){
 			array(
 				"valign" => "top", "width" => "100%", "align" => "left"
 			),
-			we_htmlElement::htmlDiv(
+			we_html_element::htmlDiv(
 					array(
 						"id" => "modules"
 					),
@@ -1066,7 +1066,7 @@ function getUser(){
 	), "white", 0, "", 100, 60);
 
 	print
-			we_htmlElement::htmlBody(
+			we_html_element::htmlBody(
 					array(
 
 							"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});",
@@ -1076,21 +1076,21 @@ function getUser(){
 							"topmargin" => "10",
 							"class" => "bgc_white"
 					),
-					we_htmlElement::htmlForm(
+					we_html_element::htmlForm(
 							array(
 								"name" => "we_form"
 							),
-							we_htmlElement::htmlHidden(array(
+							we_html_element::htmlHidden(array(
 								"name" => "we_cmd[0]", "value" => "save"
-							)) . we_htmlElement::htmlHidden(array(
+							)) . we_html_element::htmlHidden(array(
 								"name" => "we_cmd[1]", "value" => ""
-							)) . we_htmlElement::htmlHidden(array(
+							)) . we_html_element::htmlHidden(array(
 								"name" => "we_cmd[2]", "value" => ""
-							))) . we_htmlElement::htmlDiv(
+							))) . we_html_element::htmlDiv(
 							array(
 								"id" => "rpcBusy", "style" => "display:none;"
 							),
-							we_htmlElement::htmlImg(
+							we_html_element::htmlImg(
 									array(
 
 											"src" => IMAGE_DIR . "pd/busy.gif",
@@ -1098,10 +1098,10 @@ function getUser(){
 											"height" => 32,
 											"border" => 0,
 											"style" => "margin-left:10px;"
-									))) . we_htmlElement::htmlDiv(array(
+									))) . we_html_element::htmlDiv(array(
 						"id" => "widgets"
-					), "") . $oTblWidgets->getHtml() . we_htmlElement::jsElement(
-							"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_htmlElement::htmlDiv(
+					), "") . $oTblWidgets->getHtml() . we_html_element::jsElement(
+							"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_html_element::htmlDiv(
 							array(
 								"id" => "divClone", "style" => "position:relative;display:none;"
 							),
@@ -1109,7 +1109,7 @@ function getUser(){
 
 } else { // no right to see cockpit!!!
 	print
-			we_htmlElement::jsElement(
+			we_html_element::jsElement(
 					'
 
 		function isHot(){
@@ -1130,7 +1130,7 @@ function getUser(){
 	');
 
 	print
-			we_htmlElement::cssElement(
+			we_html_element::cssElement(
 					'
 		html {
 			heigth: 90%;
@@ -1155,12 +1155,12 @@ function getUser(){
 
 	print "</head>";
 	print
-			we_htmlElement::htmlBody(
+			we_html_element::htmlBody(
 					array(
 						"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
 					),
 
-					we_htmlElement::htmlDiv(
+					we_html_element::htmlDiv(
 							array(
 								"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 							),

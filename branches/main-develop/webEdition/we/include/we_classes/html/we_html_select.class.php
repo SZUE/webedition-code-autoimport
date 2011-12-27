@@ -24,14 +24,14 @@
  */
 
 /**
- * Filename:    we_htmlSelect.inc.php
+ * Filename:    we_html_select.inc.php
  * Directory:   /webEdition/we/include/we_classes/html
  *
  * Function:    Utility class that implements operations on selects
  *
  * Description: Provides functions for creating html tags
  */
-class we_htmlSelect extends we_baseCollection{
+class we_html_select extends we_baseCollection{
 
 	/**
 	 * Constructor
@@ -39,7 +39,7 @@ class we_htmlSelect extends we_baseCollection{
 	 * @param		$attribs								array			(optional)
 	 * @param		$opt_num								array			(optional)
 	 *
-	 * @return		we_htmlSelect
+	 * @return		we_html_select
 	 */
 	function __construct($attribs=array(), $opt_num=0){
 		parent::__construct("select", true, $attribs);

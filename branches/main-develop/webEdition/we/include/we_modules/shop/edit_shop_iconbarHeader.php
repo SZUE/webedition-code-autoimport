@@ -32,7 +32,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-print we_htmlElement::jsElement('
+print we_html_element::jsElement('
 
 	function doUnload() {
 		if (!!jsWindow_count) {

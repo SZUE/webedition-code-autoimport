@@ -25,7 +25,7 @@
 
 function getPLogChart($vals)
 {
-	$_chart = new we_htmlTable(
+	$_chart = new we_html_table(
 			array(
 
 					"width" => "100%",
@@ -42,13 +42,13 @@ function getPLogChart($vals)
 			array(
 				"height" => 16, "colspan" => 3, "class" => "tablehead"
 			),
-			we_html_tools::getPixel(2, 5) . we_htmlElement::htmlImg(
+			we_html_tools::getPixel(2, 5) . we_html_element::htmlImg(
 					array(
 						"src" => IMAGE_DIR . "pd/bullet_circle.gif", "class" => "bulletCircle"
 					)) . we_html_tools::getPixel(2, 5) . g_l('cockpit','['.$vals[0].']'));
 	$_chart->setCol(1, 0, array(
 		"colspan" => 3
-	), we_htmlElement::htmlImg(array(
+	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/blackdot.gif", "width" => "100%", "height" => 1
 	)));
 	for ($i = 2; $i < count($vals) + 1; $i++) {
@@ -67,7 +67,7 @@ function getPLogChart($vals)
 
 function getPLogGraph($gf){
 
-	$_graph = new we_htmlTable(
+	$_graph = new we_html_table(
 			array(
 
 					"width" => "100%",
@@ -85,7 +85,7 @@ function getPLogGraph($gf){
 			array(
 				"colspan" => 3, "align" => "center", "style" => "background-color:#efefef;"
 			),
-			we_htmlElement::htmlImg(
+			we_html_element::htmlImg(
 					array(
 
 							"src" => $GLOBALS['_url'] . "vertical-bar-graph.php?data=" . $GLOBALS['_url'] . "data.php%3Fdta=" . urlencode(

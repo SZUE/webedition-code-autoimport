@@ -112,7 +112,7 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 		// save filter
 		$_targetDoc->documentCustomerFilter->saveForModel($_targetDoc);
 
-		print we_htmlElement::jsElement("
+		print we_html_element::jsElement("
 			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . shortenPath($_targetDoc->Path, 55) . "');
 			parent.setProgress(" . number_format( ( ( $this->currentTask ) / $this->numberOfTasks) *100 , 0 ) . ");
 		");
@@ -120,7 +120,7 @@ class copyWeDocumentCustomerFilterFrag extends taskFragment{
 
 	function finish(){
 
-		print we_htmlElement::jsElement("
+		print we_html_element::jsElement("
 			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter',"[apply_filter_done]") . "');
 			parent.setProgress(100);
 			" . we_message_reporting::getShowMessageCall( g_l('modules_customerFilter',"[apply_filter_done]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
@@ -211,7 +211,7 @@ if (isset($_REQUEST["startCopy"])) { // start the fragment
 
 	we_html_tools::htmlTop();
 	print STYLESHEET;
-	print we_htmlElement::jsElement("
+	print we_html_element::jsElement("
 
 		function checkForOpenChilds() {
 

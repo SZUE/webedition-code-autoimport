@@ -70,7 +70,7 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute {
 				break;
 		}
 
-		$input = we_htmlElement::htmlTextArea(
+		$input = we_html_element::htmlTextArea(
 										array(
 												'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea'
 						));

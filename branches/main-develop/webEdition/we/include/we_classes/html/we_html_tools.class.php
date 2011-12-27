@@ -32,7 +32,7 @@ static function protect(){
 	if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) ||  $_SESSION["user"]["Username"] == '') {
 		print self::htmlTop();
 		print
-						we_htmlElement::jsElement(
+						we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(
 														g_l('alert','[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();');
 		print '</body></html>';
@@ -49,7 +49,7 @@ static function login() {
 
 		print self::htmlTop();
 		print
-						we_htmlElement::jsElement(
+						we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('alert','[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR) . 'history.back();');
 		print '</body></html>';
 		exit();
@@ -177,14 +177,14 @@ static function login() {
 				));
 		}
 
-		$_target_box = new we_htmlSelect($_inputs, 0);
+		$_target_box = new we_html_select($_inputs, 0);
 		$_target_box->addOptions(5, array(
 			"", "_top", "_parent", "_self", "_blank"
 			), array(
 			"", "_top", "_parent", "_self", "_blank"
 		));
 
-		$_table = new we_htmlTable(array(
+		$_table = new we_html_table(array(
 				"cellpadding" => 0, "cellspacing" => 0, "border" => 0
 				), 1, 3);
 
@@ -320,7 +320,7 @@ HTS;
 			$attribs = array(
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 			);
-			$_table = new we_htmlTable($attribs, 3, 1);
+			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array(
 				"colspan" => "2"
 				), $out);
@@ -379,7 +379,7 @@ HTS;
 			$attribs = array(
 				"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 			);
-			$_table = new we_htmlTable($attribs, 3, 1);
+			$_table = new we_html_table($attribs, 3, 1);
 			$_table->setCol(0, 0, array(
 				"colspan" => "2"
 				), $out);
@@ -734,29 +734,29 @@ HTS;
 	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true){
 		return
 		'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>'.
-		we_htmlElement::htmlTitle($_SERVER['SERVER_NAME'].' '.$title).
-		we_htmlElement::htmlMeta(array(
+		we_html_element::htmlTitle($_SERVER['SERVER_NAME'].' '.$title).
+		we_html_element::htmlMeta(array(
 				"http-equiv" => "expires", "content" => 0
 			)).
-		we_htmlElement::htmlMeta(array(
+		we_html_element::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"
 			)).
-		we_htmlElement::htmlMeta(
+		we_html_element::htmlMeta(
 				array(
 					"http-equiv" => "content-type",
 					"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
 			)).
-		we_htmlElement::htmlMeta(array(
+		we_html_element::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
 			)).
-		we_htmlElement::htmlMeta(
+		we_html_element::htmlMeta(
 				array(
 					"name" => "generator", "content" => 'webEdition'
 			)).
-		we_htmlElement::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')).
-		($useMessageBox ? we_htmlElement::jsElement("", array(
+		we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')).
+		($useMessageBox ? we_html_element::jsElement("", array(
 				"src" => JS_DIR . "we_showMessage.js"
-			)) . we_htmlElement::jsElement("", array(
+			)) . we_html_element::jsElement("", array(
 				"src" => JS_DIR . "attachKeyListener.js"
 			)) : '');
 
@@ -778,8 +778,6 @@ HTS;
 	 */
 
 	static function htmlYesNoCancelDialog($text = "", $img = "", $yes = "", $no = "", $cancel = "", $yesHandler = "", $noHandler = "", $cancelHandler = "", $script = ""){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_button.inc.php');
-
 		$cancelButton = ($cancel != "" ? we_button::create_button("cancel", "javascript:$cancelHandler") : "");
 		$noButton = ($no != "" ? we_button::create_button("no", "javascript:$noHandler") : "");
 		$yesButton = ($yes != "" ? we_button::create_button("yes", "javascript:$yesHandler") : "");
@@ -787,10 +785,10 @@ HTS;
 		$out = "";
 
 		if($script != ""){
-			$out .= we_htmlElement::jsElement($script);
+			$out .= we_html_element::jsElement($script);
 		}
 
-		$content = new we_htmlTable(array(
+		$content = new we_html_table(array(
 				"cellpadding" => 10, "cellspacing" => 0, "border" => 0
 				), 1, ($img != "" ? 2 : 1));
 
@@ -800,7 +798,7 @@ HTS;
 				$content->setCol(
 					0, 0, array(
 					"valign" => "top"
-					), we_htmlElement::htmlImg(
+					), we_html_element::htmlImg(
 						array(
 							"src" => $img, "border" => 0, "width" => $size[0], "height" => $size[1]
 					)));
@@ -875,7 +873,7 @@ HTS;
 		if($clip > 0){
 			$unique = md5(uniqid(microtime()));
 			$smalltext = substr($text, 0, $clip) . ' ... ';
-			$js = we_htmlElement::jsElement(
+			$js = we_html_element::jsElement(
 					'
 			function clip_' . $unique . '(){
 					var text = document.getElementById("' . $unique . '");

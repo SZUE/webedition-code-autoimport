@@ -111,11 +111,11 @@ foreach ($shortcuts as $sctCol) {
 	$iCurrSctRow = 0;
 	foreach ($sctCol as $_label) {
 		if (isset($js[$_label])) {
-			$sSctOut .= '<tr><td width="34" height="34">' . we_htmlElement::htmlA(
+			$sSctOut .= '<tr><td width="34" height="34">' . we_html_element::htmlA(
 					array(
 						"href" => "javascript:" . $js[$_label]
 					),
-					we_htmlElement::htmlImg(
+					we_html_element::htmlImg(
 							array(
 
 									"src" => IMAGE_DIR . 'pd/sct/' . $_label . '.gif',
@@ -124,7 +124,7 @@ foreach ($shortcuts as $sctCol) {
 									"border" => 0
 							))) . '</td>';
 			$sSctOut .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
-			$sSctOut .= '<td valign="middle">' . we_htmlElement::htmlA(
+			$sSctOut .= '<td valign="middle">' . we_html_element::htmlA(
 					array(
 
 							"href" => "javascript:" . $js[$_label],
@@ -140,7 +140,7 @@ foreach ($shortcuts as $sctCol) {
 	$_col++;
 }
 
-$sc = new we_htmlTable(array(
+$sc = new we_html_table(array(
 	"width" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 1);
 $sc->setCol(0, 0, array(
@@ -160,10 +160,10 @@ if (!isset($aProps)) {
 	";
 
 	print
-			we_htmlElement::htmlHtml(
-					we_htmlElement::htmlHead(
-							we_htmlElement::htmlTitle(g_l('cockpit','[shortcuts]')) . STYLESHEET . we_htmlElement::jsElement(
-									$sJsCode)) . we_htmlElement::htmlBody(
+			we_html_element::htmlHtml(
+					we_html_element::htmlHead(
+							we_html_element::htmlTitle(g_l('cockpit','[shortcuts]')) . STYLESHEET . we_html_element::jsElement(
+									$sJsCode)) . we_html_element::htmlBody(
 							array(
 
 									"marginwidth" => "15",
@@ -172,7 +172,7 @@ if (!isset($aProps)) {
 									"topmargin" => "10",
 									"onload" => "if(parent!=self)init();"
 							),
-							we_htmlElement::htmlDiv(array(
+							we_html_element::htmlDiv(array(
 								"id" => "sct"
 							), $sc->getHtml())));
 }

@@ -37,7 +37,7 @@ function init() {
 
 
 </script>";
-print we_htmlElement::htmlBody(array(
+print we_html_element::htmlBody(array(
 	"onload" => "init()"
 ));
 print "</html>";

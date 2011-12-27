@@ -136,7 +136,7 @@ if ($_REQUEST['we_cmd'][0] == "do_move" || $_REQUEST['we_cmd'][0] == "move_singl
 				g_l('alert',"[nothing_to_move]"),
 				we_message_reporting::WE_MESSAGE_ERROR) . "\n";
 	}
-	print we_htmlElement::jsScript(JS_DIR.'windows.js');
+	print we_html_element::jsScript(JS_DIR.'windows.js');
 	print '<script  type="text/javascript"><!--
 ' . $script . '
 //-->
@@ -158,7 +158,7 @@ if ($_SESSION["we_mode"] == "seem") {
 		$_js = we_message_reporting::getShowMessageCall(g_l('alert','[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	print
-			we_htmlElement::htmlHtml(we_htmlElement::htmlHead(we_htmlElement::jsElement($_js)));
+			we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($_js)));
 	exit();
 }
 

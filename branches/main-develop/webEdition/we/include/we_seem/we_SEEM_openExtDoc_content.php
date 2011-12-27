@@ -52,9 +52,9 @@ if(isset($content)){
 	}
 
 
-	$_head = we_htmlElement::htmlHead(STYLESHEET);
+	$_head = we_html_element::htmlHead(STYLESHEET);
 
-	$_table = new we_htmlTable(array("cellpadding" => 0,
+	$_table = new we_html_table(array("cellpadding" => 0,
 			"cellspacing" => 0,
 			"border" => 0),
 			4,
@@ -67,9 +67,9 @@ if(isset($content)){
 	$_table->setColContent(3, 1, we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
 	$_body = $_table->getHtml();
-	$_body = we_htmlElement::htmlBody(array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);
+	$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "tree/bg_tree.gif"), $_body);
 
-	print we_htmlElement::htmlHtml($_head . "\n" . $_body);
+	print we_html_element::htmlHtml($_head . "\n" . $_body);
 }
 ?>
 <script type="text/javascript">

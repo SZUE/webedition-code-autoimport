@@ -158,7 +158,7 @@ if($_REQUEST['we_cmd'][1] == 'frameset') {
 		}
 	}
 
-echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
+echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 	<script type="text/javascript"><!--
 
 	function applyOnEnter() {
@@ -421,7 +421,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 		}
 	</style>
 	<?php
-	echo we_htmlElement::jsScript(JS_DIR.'weCombobox.js');?>
+	echo we_html_element::jsScript(JS_DIR.'weCombobox.js');?>
 	<script type="text/javascript"><!--
 
 	var table;
@@ -835,7 +835,7 @@ echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
 
 	$Buttons = we_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
 	if(!isset($_REQUEST['we_cmd'][3]) || $_REQUEST['we_cmd'][3] != "checkOnly") {
-		$Buttons .= we_htmlElement::jsElement("weButton.hide('publish');");
+		$Buttons .= we_html_element::jsElement("weButton.hide('publish');");
 
 	}
 
@@ -963,7 +963,7 @@ top.add();
 	$Js .= we_message_reporting::getShowMessageCall($Message, we_message_reporting::WE_MESSAGE_NOTICE, false, true);
 	$Js .= "top.close();";
 
-	$Js = we_htmlElement::jsElement($Js);
+	$Js = we_html_element::jsElement($Js);
 	print $Js;
 ?>
 

@@ -1,7 +1,5 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 
 /** Funktion zum Blaettern
 *	Funktion zum erstellen einer Linkliste, die das Blaettern durch eine bestimmte Zahl von Ergebnissen erlaubt
@@ -13,9 +11,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/w
 *
 *	@advice Tabulatorweite ist 4
 */
-
-// Nur waehrend der Entwicklung interessant
-// error_reporting(E_ALL);
 
 /*
 Alle moeglichen Varianten

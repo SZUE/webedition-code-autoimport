@@ -34,10 +34,10 @@ we_html_tools::htmlTop(g_l('versions','[versions_log]'));
 
 print STYLESHEET;
 
-echo we_htmlElement::jsScript(JS_DIR.'windows.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/event-min.js').
-	we_htmlElement::jsScript(JS_DIR.'libs/yui/connection-min.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
+	we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js');
 
 print $versionsLogView->getJS();
 

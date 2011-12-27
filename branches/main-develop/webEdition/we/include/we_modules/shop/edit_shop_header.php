@@ -40,7 +40,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules
 	$protocol=getServerProtocol();
 	$jmenu = new weJavaMenu($we_menu_shop,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30);
 
-echo we_htmlElement::jsScript(JS_DIR.'images.js');
+echo we_html_element::jsScript(JS_DIR.'images.js');
 	?>
 
 	<script type="text/javascript"><!--

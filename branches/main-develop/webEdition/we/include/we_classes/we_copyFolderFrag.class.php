@@ -154,7 +154,7 @@ class copyFolderFrag extends taskFragment{
 						$pbText = (sprintf(
 								$this->data["IsFolder"] ? g_l('copyFolder', "[copyFolder]") : g_l('copyFolder', "[copyFile]"), basename($this->data["Path"])));
 					}
-					print we_htmlElement::jsElement(
+					print we_html_element::jsElement(
 						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
 							$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
 							$pbText) . '");');
@@ -166,7 +166,7 @@ class copyFolderFrag extends taskFragment{
 				if($this->copyObjects()){
 					$pbText = (sprintf(
 							$this->data["IsFolder"] ? g_l('copyFolder', "[copyObjectFolder]") : g_l('copyFolder', "[copyObjectFile]"), basename($this->data["Path"])));
-					print we_htmlElement::jsElement(
+					print we_html_element::jsElement(
 						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
 							$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
 							$pbText) . '");');
@@ -758,11 +758,11 @@ class copyFolderFrag extends taskFragment{
 
 			$pbText = g_l('copyFolder', "[prepareTemplates]");
 
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 				'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes(
 					$pbText) . '");');
 			flush();
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 				'setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);');
 			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		} else{
@@ -772,12 +772,12 @@ class copyFolderFrag extends taskFragment{
 				$checkTable = "1";
 			}
 			if(!isset($_SESSION["WE_COPY_OBJECTS"])){
-				print we_htmlElement::jsElement(
+				print we_html_element::jsElement(
 					'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
 						g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			} else{
 				unset($_SESSION["WE_COPY_OBJECTS"]);
-				print we_htmlElement::jsElement(
+				print we_html_element::jsElement(
 					'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
 						g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			}
@@ -796,8 +796,8 @@ function fsubmit(e) {
 }
 
 HTS;
-		$out .= we_htmlElement::jsElement($js);
-		print we_htmlElement::htmlHead($out);
+		$out .= we_html_element::jsElement($js);
+		print we_html_element::htmlHead($out);
 	}
 
 	function formCreateTemplateDirChooser(){
@@ -835,14 +835,14 @@ HTS;
 		$addbut = we_button::create_button(
 				"add", "javascript:we_cmd('openCatselector','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
-			we_htmlElement::htmlImg(
+			we_html_element::htmlImg(
 				array(
 					'src' => IMAGE_DIR . 'button/btn_function_trash.gif',
 					'onclick' => 'javascript:#####placeHolder#####;',
 					'style' => 'cursor: pointer; width: 27px;'
 			)));
 
-		$js = we_htmlElement::jsElement('', array(
+		$js = we_html_element::jsElement('', array(
 				'src' => JS_DIR . 'utils/multi_edit.js?' . time()
 			));
 
@@ -855,9 +855,9 @@ HTS;
 			categories_edit.showVariant(0);
 		';
 
-		$js .= we_htmlElement::jsElement($category_js);
+		$js .= we_html_element::jsElement($category_js);
 
-		$table = new we_htmlTable(
+		$table = new we_html_table(
 				array(
 					'id' => 'CategoriesBlock',
 					'style' => 'display: block;',
@@ -882,7 +882,7 @@ HTS;
 		$table->setCol(
 			2, 0, array(
 			'colspan' => 2
-			), we_htmlElement::htmlDiv(
+			), we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',

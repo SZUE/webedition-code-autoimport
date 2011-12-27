@@ -495,7 +495,7 @@ class weBackup extends we_backup{
 			$out.=">";
 		}
 		$out.="</we:info>";
-		$out.=we_htmlElement::htmlComment("webackup") . "\n";
+		$out.=we_html_element::htmlComment("webackup") . "\n";
 		weFile::save($filename, $out, "ab");
 	}
 

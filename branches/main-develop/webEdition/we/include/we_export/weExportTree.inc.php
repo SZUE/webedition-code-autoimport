@@ -122,7 +122,7 @@ class weExportTree extends weMainTree{
 
 	function getJSTreeCode(){
 		$js=weMainTree::getJSTreeCode();
-		$js.=we_htmlElement::jsElement($this->getJSStartTree());
+		$js.=we_html_element::jsElement($this->getJSStartTree());
 
 		return $js;
 	}
@@ -196,7 +196,7 @@ class weExportTree extends weMainTree{
 
 
  	function getHTMLMultiExplorer($width=500,$height=250){
-		$js=$this->getJSTreeCode().we_htmlElement::jsElement('
+		$js=$this->getJSTreeCode().we_html_element::jsElement('
 			function populate(id,table){
 
 			}
@@ -232,7 +232,7 @@ class weExportTree extends weMainTree{
 		$style_code="";
 		if(isset($this->SelectionTree->styles)) foreach($this->SelectionTree->styles as $st) $style_code.=$st."\n";
 
-		$header = new we_htmlTable(array("cellpadding" => 0,"cellspacing" => 0, "border" => "0"), 3, 1);
+		$header = new we_html_table(array("cellpadding" => 0,"cellspacing" => 0, "border" => "0"), 3, 1);
 
 		$header->setCol(0,0,array("bgcolor"=>"white"),we_html_tools::getPixel(5,5));
 
@@ -254,7 +254,7 @@ class weExportTree extends weMainTree{
 		$header->setColContent(1,0,we_html_tools::htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));
 		$header->setColContent(2,0,we_html_tools::getPixel(5,5));
 
-		return $js.$header->getHtml().we_htmlElement::htmlDiv(array('id'=>'treetable','class'=>'blockwrapper','style'=>'width: '.$width.'px; height: '.$height.'px; border:1px #dce6f2 solid;'),'');
+		return $js.$header->getHtml().we_html_element::htmlDiv(array('id'=>'treetable','class'=>'blockwrapper','style'=>'width: '.$width.'px; height: '.$height.'px; border:1px #dce6f2 solid;'),'');
 
  	}
 

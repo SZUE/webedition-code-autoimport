@@ -70,7 +70,7 @@ class delFragment extends taskFragment{
 			$_SESSION["we_go_seem_start"] = true;
 		}
 		$percent = round((100/count($this->alldata))*(1+$this->currentTask));
-		print we_htmlElement::jsElement('parent.delmain.setProgressText("pb1","'.sprintf(g_l('delete',"[delete_entry]"),$p).'");parent.delmain.setProgress('.$percent.');');
+		print we_html_element::jsElement('parent.delmain.setProgressText("pb1","'.sprintf(g_l('delete',"[delete_entry]"),$p).'");parent.delmain.setProgress('.$percent.');');
 
 	}
 
@@ -84,7 +84,7 @@ class delFragment extends taskFragment{
 
 		}
 		unset($_SESSION["we_not_deleted_entries"]);
-		print we_htmlElement::jsElement($alert.(($_SESSION["we_mode"] == "seem" && $_SESSION["we_go_seem_start"]) ? 'top.opener.top.we_cmd("start_multi_editor");' : '').'top.close();');
+		print we_html_element::jsElement($alert.(($_SESSION["we_mode"] == "seem" && $_SESSION["we_go_seem_start"]) ? 'top.opener.top.we_cmd("start_multi_editor");' : '').'top.close();');
 		unset($_SESSION["we_go_seem_start"]);
 	}
 

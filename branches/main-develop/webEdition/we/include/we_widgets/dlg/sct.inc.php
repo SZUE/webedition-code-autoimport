@@ -431,7 +431,7 @@ function exit_close(){
 
 $aPopulate = array_merge($shortcuts[0], $shortcuts[1]);
 
-$oSctPool = new we_htmlSelect(
+$oSctPool = new we_html_select(
 		array(
 
 				"name" => "sct_pool",
@@ -446,7 +446,7 @@ foreach ($aPopulate as $key => $value) {
 	$iCurrOpt++;
 }
 
-$oSctList11 = new we_htmlSelect(
+$oSctList11 = new we_html_select(
 		array(
 
 				"multiple" => "multiple",
@@ -456,7 +456,7 @@ $oSctList11 = new we_htmlSelect(
 				"class" => "defaultfont",
 				"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
 		));
-$oSctList21 = new we_htmlSelect(
+$oSctList21 = new we_html_select(
 		array(
 
 				"multiple" => "multiple",
@@ -479,7 +479,7 @@ $oBtnDelete = we_button::create_button(
 		false);
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit','[sct_rem]'), 2, 420);
 
-$oPool = new we_htmlTable(array(
+$oPool = new we_html_table(array(
 	"border" => "0", "width" => 420, "cellpadding" => "0", "cellspacing" => "0"
 ), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTMLCode());
@@ -489,37 +489,37 @@ $oPool->setCol(
 		array(
 			"align" => "center", "valign" => "middle"
 		),
-		we_htmlElement::htmlA(
+		we_html_element::htmlA(
 				array(
 
 						"href" => "#",
 						"onClick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
 				),
-				we_htmlElement::htmlImg(array(
+				we_html_element::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_up.gif", "border" => 0
-				))) . we_htmlElement::htmlBr() . we_htmlElement::htmlBr() . we_htmlElement::htmlA(
+				))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 				array(
 
 						"href" => "#",
 						"onClick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
 				),
-				we_htmlElement::htmlImg(array(
+				we_html_element::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
-				))) . we_htmlElement::htmlBr() . we_htmlElement::htmlBr() . we_htmlElement::htmlA(
+				))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 				array(
 
 						"href" => "#",
 						"onClick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
 				),
-				we_htmlElement::htmlImg(array(
+				we_html_element::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
-				))) . we_htmlElement::htmlBr() . we_htmlElement::htmlBr() . we_htmlElement::htmlA(
+				))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
 				array(
 
 						"href" => "#",
 						"onClick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
 				),
-				we_htmlElement::htmlImg(array(
+				we_html_element::htmlImg(array(
 					"src" => IMAGE_DIR . "pd/arrow_down.gif", "border" => 0
 				))));
 $oPool->setCol(0, 2, null, $oSctList21->getHTMLCode());
@@ -528,11 +528,11 @@ $oPool->setCol(2, 0, array(
 	"align" => "right", "colspan" => 3
 ), $oBtnDelete);
 
-$content = $oShortcutsRem . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . we_html_tools::htmlFormElementTable(
+$content = $oShortcutsRem . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 		$oSctPool->getHTMLCode(),
 		g_l('cockpit','[select_buttons]'),
 		"left",
-		"defaultfont") . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oPool->getHTMLCode();
+		"defaultfont") . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oPool->getHTMLCode();
 
 array_push($parts, array(
 	"headline" => "", "html" => $content, "space" => 0
@@ -559,18 +559,18 @@ $sTblWidget = we_multiIconBox::getJS() . we_multiIconBox::getHTML(
 		g_l('cockpit','[shortcuts]'));
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[shortcuts]')) . STYLESHEET . we_htmlElement::cssElement(
-								"select,textarea{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[shortcuts]')) . STYLESHEET . we_html_element::cssElement(
+								"select,textarea{border:#AAAAAA solid 1px}") . we_html_element::jsElement(
 								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
-								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
+								)) . we_html_element::jsElement(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),
-						we_htmlElement::htmlForm("", $sTblWidget)));
+						we_html_element::htmlForm("", $sTblWidget)));
 
 ?>

@@ -94,7 +94,7 @@ class we_binaryDocument extends we_document{
 
 	function we_save($resave=0){
 		if($this->getFilesize() == 0){
-			print we_htmlElement::jsElement(
+			print we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR)
 				);
 			return false;
@@ -221,7 +221,7 @@ class we_binaryDocument extends we_document{
 		// the elements of this imageDocument as values:
 		$_fieldcount = sizeof($_defined_fields);
 		$_fieldcounter = (int) 0; // needed for numbering the table rows
-		$_content = new we_htmlTable(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
+		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
 		$_mdcontent = "";
 		for($i = 0; $i < $_fieldcount; $i++){
 			$_tagName = $_defined_fields[$i]["tag"];

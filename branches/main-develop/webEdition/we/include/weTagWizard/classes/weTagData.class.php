@@ -272,7 +272,7 @@ class weTagData{
 	 */
 	function getDefaultValueCodeForTagWizard(){
 
-		return we_htmlElement::htmlTextArea(
+		return we_html_element::htmlTextArea(
 				array(
 				'name' => 'weTagData_defaultValue',
 				'id' => 'weTagData_defaultValue',

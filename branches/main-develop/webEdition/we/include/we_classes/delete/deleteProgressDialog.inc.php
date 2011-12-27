@@ -32,15 +32,14 @@ class deleteProgressDialog{
 		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
 		$cancelButton = we_button::create_button("cancel","javascript:top.close();");
 		$pb = we_html_tools::htmlDialogLayout($pb,g_l('delete',"[delete]"),$cancelButton);
 
-		return we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
+		return we_html_element::htmlHtml(
+			we_html_element::htmlHead(
 				STYLESHEET .
 				$js).
-			we_htmlElement::htmlBody(array(
+			we_html_element::htmlBody(array(
 				"class"=>"weDialogBody"
 				), $pb
 			)
@@ -48,9 +47,9 @@ class deleteProgressDialog{
 	}
 
 	function frameset(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_htmlFrameset.inc.php");
+		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_html_frameset.inc.php");
 
-		$fst = new we_htmlFrameset(array(
+		$fst = new we_html_frameset(array(
 			"rows" => "*,0",
 			"framespacing" => 0,
 			"border" => 0,
@@ -62,10 +61,10 @@ class deleteProgressDialog{
 
 		$fst->addFrame(array("src" => HTML_DIR."white.html", "name" => "delcmd"));
 		$fst->setFrameAttributes(1, array("scrolling" => "no"));
-		return we_htmlElement::htmlHtml(
-			we_htmlElement::htmlHead(
-				we_htmlElement::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
-				we_htmlElement::htmlTitle(g_l('delete',"[delete]"))).$fst->getHtml());
+		return we_html_element::htmlHtml(
+			we_html_element::htmlHead(
+				we_html_element::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
+				we_html_element::htmlTitle(g_l('delete',"[delete]"))).$fst->getHtml());
 	}
 
 	function cmd(){

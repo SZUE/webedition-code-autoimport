@@ -74,7 +74,7 @@ $DB_WE->query("SELECT strFelder from ".ANZEIGE_PREFS_TABLE." where strDateiname 
 		}
 	}
 
-echo we_htmlElement::jsScript(JS_DIR.'images.js').we_htmlElement::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR.'images.js').we_html_element::jsScript(JS_DIR.'windows.js');
 	?>
  <script type="text/javascript"><!--
 

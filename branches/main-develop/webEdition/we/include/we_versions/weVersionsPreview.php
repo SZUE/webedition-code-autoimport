@@ -99,7 +99,7 @@ if(!empty($oldDoc) && !$isObj) {
 	$we_tabs->addTab(new we_tab("#",g_l('versions','[previewVersionOld]'),'((activ_tab==3) ? TAB_ACTIVE : TAB_NORMAL)',"setTab('3');", array("id"=>"tab_3")));
 }
 
-$js=$we_tabs->getHeader() . we_htmlElement::jsElement('
+$js=$we_tabs->getHeader() . we_html_element::jsElement('
 		function setTab(tab) {
 			toggle("tab"+activ_tab);
 			toggle("tab"+tab);
@@ -157,7 +157,7 @@ function doNotMarkFields($k) {
 
 $pathLength = 40;
 
-$tabsBody = $we_tabs->getHTML().we_htmlElement::jsElement('
+$tabsBody = $we_tabs->getHTML().we_html_element::jsElement('
 						if(!activ_tab) activ_tab = 1;
 						document.getElementById("tab_"+activ_tab).className="tabActive";
 					');
@@ -194,7 +194,7 @@ if(!empty($oldDoc) && $isTempl) {
 	}
 	$contentOld = '<textarea style="width:99%;height:99%">'.$oDocElements['data']['dat'].'</textarea>';
 }
-$_versions_time_days = new we_htmlSelect(array(
+$_versions_time_days = new we_html_select(array(
 	"name" => "versions_time_days",
 	"style"=>"",
 	"class"=>"weSelect",
@@ -718,7 +718,7 @@ function previewVersion(ID, newID) {
 }
 
 </script>
-<?php print we_htmlElement::jsScript(JS_DIR.'windows.js').$js;?>
+<?php print we_html_element::jsScript(JS_DIR.'windows.js').$js;?>
 <style type="text/css" media="screen">
 body {margin: 0;padding: 0;}
 td {font-size:11px;vertical-align:top;}

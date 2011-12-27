@@ -79,5 +79,5 @@ if(isset($_GET['u']) && isset($_GET['t']) && isset($_GET['id'])){
 
 	$table .= '</tr></table>';
 
-	print we_htmlElement::htmlBody(array("bgcolor" => "#ffffff",  "marginwidth" => "5",  "marginheight" => "5",  "leftmargin" => "5",  "topmargin" => "5"), $table) . "</html>";
+	print we_html_element::htmlBody(array("bgcolor" => "#ffffff",  "marginwidth" => "5",  "marginheight" => "5",  "leftmargin" => "5",  "topmargin" => "5"), $table) . "</html>";
 }

@@ -61,7 +61,7 @@ we_html_tools::protect();
 // Ausgabe beginnen
 we_html_tools::htmlTop();
 
-echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js');
 
 echo $we_doc->getSearchJS();
 

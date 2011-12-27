@@ -221,12 +221,12 @@ if($we_doc->EditPageNr === -1 ){	//	there is no view available for this document
 
 	//	show errorMessage - no view for this document (we:hidePages)
 
-	print	we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-					we_htmlElement::jsElement("top.toggleBusy(0);") .
+	print	we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+					we_html_element::jsElement("top.toggleBusy(0);") .
 					STYLESHEET
 				) .
-				we_htmlElement::htmlBody(array( 'class'=>'weDialogBody'),
+				we_html_element::htmlBody(array( 'class'=>'weDialogBody'),
 					we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert','[no_views][description]'),1, 500, true), g_l('alert','[no_views][headline]'))
 				)
 			);

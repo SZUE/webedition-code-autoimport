@@ -962,7 +962,7 @@ top.selectFile(top.currentID);
 			$out = '<html>
 <head>
 ' . STYLESHEET . '
-' . we_htmlElement::jsElement("", array("src" => JS_DIR . "attachKeyListener.js")) . '
+' . we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js")) . '
 <style type="text/css">
 	body {
 		margin:0px;

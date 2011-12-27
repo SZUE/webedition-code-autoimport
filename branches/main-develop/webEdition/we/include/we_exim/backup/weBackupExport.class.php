@@ -106,7 +106,7 @@
 
 
 					weContentProvider::object2xml($_object,$_fh,$_attributes);
-					fwrite($_fh,we_htmlElement::htmlComment("webackup")."\n");
+					fwrite($_fh,we_html_element::htmlComment("webackup")."\n");
 
 
 					if(	($_def_table == 'tblfile' && $export_binarys) &&

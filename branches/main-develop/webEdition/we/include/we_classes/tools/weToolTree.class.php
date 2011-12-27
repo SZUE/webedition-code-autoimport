@@ -250,13 +250,13 @@ class weToolTree extends weMainTree{
 		foreach($this->styles as $st)
 			$style_code.=$st . "\n";
 
-		return we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
+		return we_html_element::htmlHtml(
+				we_html_element::htmlHead(
 					WE_DEFAULT_HEAD .
 					STYLESHEET .
-					we_htmlElement::cssElement($style_code)
+					we_html_element::cssElement($style_code)
 				) .
-				we_htmlElement::htmlBody(array(
+				we_html_element::htmlBody(array(
 					'bgcolor' => '#F3F7FF',
 					'link' => '#000000',
 					'alink' => '#000000',
@@ -295,7 +295,7 @@ class weToolTree extends weMainTree{
 	function getJSTreeCode($withTag=true){
 		// must override
 		return parent::getJSTreeCode($withTag) . "\n" .
-			($withTag ? we_htmlElement::jsElement('drawTree.selection_table="";') : 'drawTree.selection_table="";');
+			($withTag ? we_html_element::jsElement('drawTree.selection_table="";') : 'drawTree.selection_table="";');
 	}
 
 }

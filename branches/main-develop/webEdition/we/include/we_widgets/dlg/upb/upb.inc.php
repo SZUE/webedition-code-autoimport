@@ -185,10 +185,10 @@ foreach ($_cont as $k => $v) {
 $ct .= "</table>\n";
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[unpublished]')) . STYLESHEET . we_htmlElement::jsElement(
-								$jsCode)) . we_htmlElement::htmlBody(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[unpublished]')) . STYLESHEET . we_html_element::jsElement(
+								$jsCode)) . we_html_element::htmlBody(
 						array(
 
 								"marginwidth" => "15",
@@ -197,6 +197,6 @@ print
 								"topmargin" => "10",
 								"onload" => "if(parent!=self)init();"
 						),
-						we_htmlElement::htmlDiv(array(
+						we_html_element::htmlDiv(array(
 							"id" => "upb"
 						), $ct)));

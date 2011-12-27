@@ -104,7 +104,7 @@ if(isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4]!="") {
 
 </script>
 <?php
-echo we_htmlElement::jsScript(JS_DIR.'keyListener.js');?>
+echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 </head>
 
 <frameset rows="73,*,<?php print ( (isset($_REQUEST['we_cmd'][2]) && $_REQUEST['we_cmd'][2] ) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">

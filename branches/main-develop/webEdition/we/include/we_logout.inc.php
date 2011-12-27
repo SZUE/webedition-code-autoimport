@@ -52,4 +52,4 @@ if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with
 	$jsCommand = "top.location.replace('" . WEBEDITION_DIR . "');\n";
 }
 
-echo we_htmlElement::jsElement($jsCommand);
+echo we_html_element::jsElement($jsCommand);

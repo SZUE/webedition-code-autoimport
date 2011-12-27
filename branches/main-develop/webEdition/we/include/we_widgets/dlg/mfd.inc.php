@@ -200,15 +200,15 @@ if (sizeof($users)) {
 }
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>' . "\n";
 
-$sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_htmlElement::htmlDiv(
+$sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_html_element::htmlDiv(
 		array(
 			"class" => "multichooser"
 		),
-		$content) . we_htmlElement::htmlHidden(array(
+		$content) . we_html_element::htmlHidden(array(
 	"name" => "UserNameTmp", "value" => ""
-)) . we_htmlElement::htmlHidden(array(
+)) . we_html_element::htmlHidden(array(
 	"name" => "UserIDTmp", "value" => ""
-)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_htmlElement::htmlBr() . we_button::create_button_table(
+)) . '</td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_button::create_button_table(
 		array(
 			$delallbut, $addbut
 		)) . '</td></tr></table>';
@@ -287,14 +287,14 @@ if (we_hasPerm('CAN_SEE_CLASSES') && $_SESSION["we_mode"] != "seem") {
 	$oChbxCls = "";
 }
 
-$oDbTableType = new we_htmlTable(array(
+$oDbTableType = new we_html_table(array(
 	"border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
-$oSctDate = new we_htmlSelect(array(
+$oSctDate = new we_html_select(array(
 	"name" => "sct_date", "size" => "1", "class" => "defaultfont", "onChange" => ""
 ));
 $aLangDate = array(
@@ -334,7 +334,7 @@ $oChbxShowDate = we_forms::checkbox(
 		$description = "",
 		$type = 0,
 		$width = 0);
-$oSctNumEntries = new we_htmlSelect(array(
+$oSctNumEntries = new we_html_select(array(
 	"name" => "sct_amount_entries", "size" => "1", "class" => "defaultfont"
 ));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit','[all]'));
@@ -346,7 +346,7 @@ for ($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++) {
 }
 $oSctNumEntries->selectOption($iAmountEntries);
 
-$oSelMaxEntries = new we_htmlTable(array(
+$oSelMaxEntries = new we_html_table(array(
 	"height" => "100%", "border" => "0", "cellpadding" => "0", "cellspacing" => "0"
 ), 1, 3);
 $oSelMaxEntries->setCol(0, 0, array(
@@ -357,7 +357,7 @@ $oSelMaxEntries->setCol(0, 2, array(
 	"valign" => "middle"
 ), $oSctNumEntries->getHTMLCode());
 
-$show = $oSelMaxEntries->getHTMLCode() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_htmlElement::htmlBr() . $oShowUser;
+$show = $oSelMaxEntries->getHTMLCode() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
 
 array_push($parts, array(
 	"headline" => g_l('cockpit','[type]'), "html" => $oDbTableType->getHTMLCode(), "space" => 80
@@ -392,17 +392,17 @@ $sTblWidget = we_multiIconBox::getHTML(
 		390);
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[last_modified]')) . STYLESHEET . we_htmlElement::cssElement(
-								"select{border:#AAAAAA solid 1px}") . we_htmlElement::jsElement(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[last_modified]')) . STYLESHEET . we_html_element::cssElement(
+								"select{border:#AAAAAA solid 1px}") . we_html_element::jsElement(
 								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
-								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
+								)) . we_html_element::jsElement(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),
-						we_htmlElement::htmlForm("", $sTblWidget)));
+						we_html_element::htmlForm("", $sTblWidget)));
 

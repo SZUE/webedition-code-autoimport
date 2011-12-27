@@ -45,7 +45,7 @@ class weOrderContainer{
 
 		$src = '';
 		if(!defined("weOrderContainer_JS_loaded")){
-			$src = we_htmlElement::jsScript($jsPath . '/weOrderContainer.js?t=' . time());
+			$src = we_html_element::jsScript($jsPath . '/weOrderContainer.js?t=' . time());
 			define("weOrderContainer_JS_loaded", true);
 		}
 		$src .= '<script type="text/javascript">' . "\n"

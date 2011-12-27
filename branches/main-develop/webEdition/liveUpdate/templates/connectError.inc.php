@@ -101,6 +101,6 @@ $content = '
 
 <div class="defaultfont">
 	' . $GLOBALS['l_liveUpdate']['connect']['connectionError'] . '
-</div>'.we_htmlElement::jsElement('alert("' . $GLOBALS['l_liveUpdate']['connect']['connectionErrorJs'] . '");').$errorMessage;
+</div>'.we_html_element::jsElement('alert("' . $GLOBALS['l_liveUpdate']['connect']['connectionErrorJs'] . '");').$errorMessage;
 				
 print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['connect']['headline'], $content);

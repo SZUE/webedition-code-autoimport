@@ -114,7 +114,7 @@ class weGlossaryFrames extends weModuleFrames {
 
 	function getJSCmdCode() {
 
-		return $this->View->getJSTop() . we_htmlElement::jsElement($this->Tree->getJSMakeNewEntry());
+		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 
 	}
 
@@ -260,7 +260,7 @@ class weGlossaryFrames extends weModuleFrames {
 
 	function getHTMLLeft(){
 
-		$frameset=new we_htmlFrameset(array("framespacing"=>"0","border"=>"0","frameborder"=>"no"));
+		$frameset=new we_html_frameset(array("framespacing"=>"0","border"=>"0","frameborder"=>"no"));
 		$noframeset=new we_baseElement("noframes");
 
    		$frameset->setAttributes(array("rows"=>"1,*,0"));
@@ -283,7 +283,7 @@ class weGlossaryFrames extends weModuleFrames {
 
 	function getHTMLTreeFooter(){
 
-		$body=we_htmlElement::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"5","marginheight"=>"0","leftmargin"=>"5","topmargin"=>"0"),
+		$body=we_html_element::htmlBody(array("bgcolor"=>"white","background"=>"/webEdition/images/edit/editfooterback.gif","marginwidth"=>"5","marginheight"=>"0","leftmargin"=>"5","topmargin"=>"0"),
 						""
 		);
 
@@ -313,13 +313,13 @@ class weGlossaryFrames extends weModuleFrames {
 		'.$this->Tree->topFrame.'.treeData.add(new '.$this->Tree->topFrame.'.rootEntry(\''.$pid.'\',\'root\',\'root\'));
 		';
 
-		$hiddens=we_htmlElement::htmlHidden(array("name"=>"pnt","value"=>"cmd")).
-				 	we_htmlElement::htmlHidden(array("name"=>"cmd","value"=>"no_cmd"));
+		$hiddens=we_html_element::htmlHidden(array("name"=>"pnt","value"=>"cmd")).
+				 	we_html_element::htmlHidden(array("name"=>"cmd","value"=>"no_cmd"));
 
-		$out.=we_htmlElement::htmlBody(array("bgcolor"=>"white","marginwidth"=>"10","marginheight"=>"10","leftmargin"=>"10","topmargin"=>"10"),
-					we_htmlElement::htmlForm(array("name"=>"we_form"),
+		$out.=we_html_element::htmlBody(array("bgcolor"=>"white","marginwidth"=>"10","marginheight"=>"10","leftmargin"=>"10","topmargin"=>"10"),
+					we_html_element::htmlForm(array("name"=>"we_form"),
 							$hiddens.
-							we_htmlElement::jsElement($rootjs.$this->Tree->getJSLoadTree(weGlossaryTreeLoader::getItems($pid,$offset,$this->Tree->default_segment,"")))
+							we_html_element::jsElement($rootjs.$this->Tree->getJSLoadTree(weGlossaryTreeLoader::getItems($pid,$offset,$this->Tree->default_segment,"")))
 					)
 		);
 

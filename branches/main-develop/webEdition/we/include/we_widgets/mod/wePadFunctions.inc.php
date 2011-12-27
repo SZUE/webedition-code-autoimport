@@ -22,17 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * Converts the date from ##-##-#### to ##.##.####
  *
  * @param unknown_type $date
  * @return unknown
  */
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_inc_min.inc.php");
 
-function convertDate($date)
-{
+function convertDate($date){
 	return implode('.', array_reverse(explode('-', $date)));
 }
 
@@ -44,43 +42,23 @@ function convertDate($date)
  * @param unknown_type $_btn
  * @return unknown
  */
-function getDateSelector($_label, $_name, $_btn)
-{
+function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_button::create_button(
-			"image:date_picker",
-			"javascript:",
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			false,
-			$_btn);
-	$oSelector = new we_htmlTable(array(
-		"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
-	), 1, 5);
+			"image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
+	$oSelector = new we_html_table(array(
+			"cellpadding" => "0", "cellspacing" => "0", "border" => "0", "id" => $_name . "_cell"
+			), 1, 5);
 	$oSelector->setCol(0, 0, array(
 		"class" => "middlefont"
-	), $_label);
+		), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(
-			0,
-			2,
-			null,
-			we_html_tools::htmlTextInput(
-					$name = $_name,
-					$size = 55,
-					$value = "",
-					$maxlength = 10,
-					$attribs = 'id="' . $_name . '" readonly="1"',
-					$type = "text",
-					$width = 70,
-					$height = 0));
+		0, 2, null, we_html_tools::htmlTextInput(
+			$name = $_name, $size = 55, $value = "", $maxlength = 10, $attribs = 'id="' . $_name . '" readonly="1"', $type = "text", $width = 70, $height = 0));
 	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
-	$oSelector->setCol(0, 4, null, we_htmlElement::htmlA(array(
-		"href" => "#"
-	), $btnDatePicker));
+	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array(
+			"href" => "#"
+			), $btnDatePicker));
 	return $oSelector->getHTMLCode();
 }
 
@@ -91,57 +69,55 @@ function getDateSelector($_label, $_name, $_btn)
  * @param unknown_type $bDate
  * @return unknown
  */
-function getNoteList($_sql, $bDate, $bDisplay)
-{
+function getNoteList($_sql, $bDate, $bDisplay){
 	global $DB_WE;
 	$DB_WE->query($_sql);
 	$_notes = '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
 	$_rcd = 0;
 	$_fields = array(
-
-			'ID',
-			'WidgetName',
-			'UserID',
-			'CreationDate',
-			'Title',
-			'Text',
-			'Priority',
-			'Valid',
-			'ValidFrom',
-			'ValidUntil'
+		'ID',
+		'WidgetName',
+		'UserID',
+		'CreationDate',
+		'Title',
+		'Text',
+		'Priority',
+		'Valid',
+		'ValidFrom',
+		'ValidUntil'
 	);
-	while ($DB_WE->next_record()) {
-		foreach ($_fields as $_fld) {
-			//$_notes .= we_htmlElement::htmlSpan(array('id'=>$_rcd.'_'.$_fld,'style'=>'display:none;'),$DB_WE->f($_fld));
-			if ($_fld == 'ValidUntil' && ($DB_WE->f('ValidUntil') == "3000-01-01" || $DB_WE->f(
-					'ValidUntil') == "0000-00-00")) {
+	while($DB_WE->next_record()) {
+		foreach($_fields as $_fld){
+			//$_notes .= we_html_element::htmlSpan(array('id'=>$_rcd.'_'.$_fld,'style'=>'display:none;'),$DB_WE->f($_fld));
+			if($_fld == 'ValidUntil' && ($DB_WE->f('ValidUntil') == "3000-01-01" || $DB_WE->f(
+					'ValidUntil') == "0000-00-00")){
 				$_fldValue = "";
-			} else {
+			} else{
 				$_fldValue = $DB_WE->f($_fld);
 			}
 			$_fldValue = str_replace('<', '&lt;', $_fldValue);
 			$_fldValue = str_replace('>', '&gt;', $_fldValue);
 			$_fldValue = str_replace("'", '&#039;', $_fldValue);
 			$_fldValue = str_replace('"', '&quot;', $_fldValue);
-			$_notes .= we_htmlElement::htmlHidden(
+			$_notes .= we_html_element::htmlHidden(
 					array(
 						'id' => $_rcd . '_' . $_fld, 'style' => 'display:none;', 'value' => ($_fldValue)
-					));
+				));
 		}
 
 		$validity = $DB_WE->f("Valid");
-		switch ($bDate) {
+		switch($bDate){
 			case 1 :
-				if ($validity == 'always') {
+				if($validity == 'always'){
 					$showDate = '-';
-				} else {
+				} else{
 					$showDate = convertDate($DB_WE->f("ValidFrom"));
 				}
 				break;
 			case 2 :
-				if ($validity == 'always' || $validity == 'date') {
+				if($validity == 'always' || $validity == 'date'){
 					$showDate = '-';
-				} else {
+				} else{
 					$showDate = convertDate($DB_WE->f("ValidUntil"));
 				}
 				break;
@@ -152,13 +128,13 @@ function getNoteList($_sql, $bDate, $bDisplay)
 		$today = date("Ymd");
 		$vFrom = str_replace("-", "", $DB_WE->f("ValidFrom"));
 		$vTill = str_replace("-", "", $DB_WE->f("ValidUntil"));
-		if ($bDisplay == 1 && $DB_WE->f("Valid") != 'always') {
-			if ($DB_WE->f("Valid") == 'date') {
-				if ($today < $vFrom) {
+		if($bDisplay == 1 && $DB_WE->f("Valid") != 'always'){
+			if($DB_WE->f("Valid") == 'date'){
+				if($today < $vFrom){
 					continue;
 				}
-			} else {
-				if ($today < $vFrom || $today > $vTill) {
+			} else{
+				if($today < $vFrom || $today > $vTill){
 					continue;
 				}
 			}
@@ -170,13 +146,12 @@ function getNoteList($_sql, $bDate, $bDisplay)
 		$showTitle = str_replace('"', '&quot;', $showTitle);
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">';
 		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
-		$_notes .= '<td width="15" height="20" valign="middle" nowrap>' . we_htmlElement::htmlImg(
+		$_notes .= '<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
 				array(
-
-						"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
-						"width" => 13,
-						"height" => 14
-				)) . '</td>';
+					"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
+					"width" => 13,
+					"height" => 14
+			)) . '</td>';
 		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 		$_notes .= '<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>';
 		$_notes .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
@@ -223,7 +198,7 @@ function getCSS(){
 		vertical-align:middle;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . g_l('css','[font_family]') . ";
+		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	.wetextinputselected{
 		color:black;
@@ -232,7 +207,7 @@ function getCSS(){
 		height:18px;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . g_l('css','[font_family]') . ";
+		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	.wetextarea{
 		color:black;
@@ -240,7 +215,7 @@ function getCSS(){
 		height:80px;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . g_l('css','[font_family]') . ";
+		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	.wetextareaselected{
 		color:black;
@@ -249,7 +224,7 @@ function getCSS(){
 		height:80px;
 		" . (($GLOBALS['BROWSER'] == "IE") ? "" : "line-height:normal;") . ";
 		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
-		font-family:" . g_l('css','[font_family]') . ";
+		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	select{
 		border:#AAAAAA solid 1px;

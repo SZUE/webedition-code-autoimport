@@ -32,7 +32,7 @@
 
 			$we_tabs = new we_tabs();
 			$we_tabs->addTab(new we_tab("#",g_l('modules_glossary','[overview]'),'TAB_ACTIVE',"setTab('1');"));
-			
+
 			$frontendL=getWeFrontendLanguagesForBackend();
 			$title = g_l('modules_glossary','[folder]') . ":&nbsp;";
 
@@ -45,15 +45,12 @@
 
 		function Body(&$weGlossaryFrames) {
 
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
-
 			$_js =		$weGlossaryFrames->topFrame.'.resize.right.editor.edheader.location="'.$weGlossaryFrames->frameset.'?pnt=edheader&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '";'
 					.	$weGlossaryFrames->topFrame.'.resize.right.editor.edfooter.location="'.$weGlossaryFrames->frameset.'?pnt=edfooter&cmd=view_folder&cmdid=' . $_REQUEST['cmdid'] . '"';
 
-	        $js = we_htmlElement::jsElement($_js);
+	        $js = we_html_element::jsElement($_js);
 
-	        $out = we_htmlElement::htmlDiv(array('id' => 'tab1','style'=>''), we_multiIconBox::getHTML('',"100%",weGlossaryFrameEditorFolder::getHTMLOverview($weGlossaryFrames),30,'',-1,'','',false));
+	        $out = we_html_element::htmlDiv(array('id' => 'tab1','style'=>''), we_multiIconBox::getHTML('',"100%",weGlossaryFrameEditorFolder::getHTMLOverview($weGlossaryFrames),30,'',-1,'','',false));
 
 	        $content = $js . $out;
 

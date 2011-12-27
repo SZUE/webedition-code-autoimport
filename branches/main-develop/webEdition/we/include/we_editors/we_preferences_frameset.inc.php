@@ -149,13 +149,13 @@ function saveOnKeyBoard() {
  * RENDER FILE
  *****************************************************************************/
 
-print we_htmlElement::jsElement($_javascript, array("type" => "text/javascript")) .
-	  we_htmlElement::jsElement("", array("src" => JS_DIR . "keyListener.js")) . "</head>";
+print we_html_element::jsElement($_javascript, array("type" => "text/javascript")) .
+	  we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js")) . "</head>";
 
-$frameset = new we_htmlFrameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0",  "frameborder" => "no"), 0);
+$frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0",  "frameborder" => "no"), 0);
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "html/white.html", "name" => "we_preferences_header", "scrolling" => "no", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences.php?setting=ui".($tabname!="" ? "&tabname=".$tabname : ""), "name" => "we_preferences", "scrolling" => "auto", "noresize" => "noresize"));
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "we/include/we_editors/we_preferences_footer.php", "name" => "we_preferences_footer", "scrolling" => "no", "noresize" => "noresize"));
 
-print $frameset->getHtml() . we_htmlElement::htmlBody(array()) . "</html>";
+print $frameset->getHtml() . we_html_element::htmlBody(array()) . "</html>";
 

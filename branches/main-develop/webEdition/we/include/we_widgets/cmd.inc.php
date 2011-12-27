@@ -64,20 +64,20 @@ function transmit(){
 }
 ";
 		print
-				we_htmlElement::htmlHtml(
-						we_htmlElement::htmlHead(
-								we_htmlElement::cssElement("div,span{display:none;}") . we_htmlElement::jsElement(
-										$js)) . we_htmlElement::htmlBody(
+				we_html_element::htmlHtml(
+						we_html_element::htmlHead(
+								we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement(
+										$js)) . we_html_element::htmlBody(
 								array(
 									"onload" => "transmit();"
 								),
-								we_htmlElement::htmlDiv(array(
+								we_html_element::htmlDiv(array(
 									"id" => "content"
-								), $oTblCont->getHtml()) . we_htmlElement::htmlSpan(array(
+								), $oTblCont->getHtml()) . we_html_element::htmlSpan(array(
 									"id" => "prefix"
-								), $aLang[0]) . we_htmlElement::htmlSpan(array(
+								), $aLang[0]) . we_html_element::htmlSpan(array(
 									"id" => "postfix"
-								), $aLang[1]) . we_htmlElement::htmlSpan(array(
+								), $aLang[1]) . we_html_element::htmlSpan(array(
 									"id" => "csv"
 								), (isset($aProps[3]) ? $aProps[3] : ""))));
 }

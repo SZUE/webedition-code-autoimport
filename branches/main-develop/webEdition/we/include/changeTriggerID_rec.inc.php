@@ -37,9 +37,9 @@ if ($_SESSION["perms"]["ADMINISTRATOR"]) {
 we_html_tools::htmlTop();
 
 	if ($ok) {
-		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_tid_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
+		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_tid_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
 	} else {
-		print we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_tid_notok]"), we_message_reporting::WE_MESSAGE_ERROR));
+		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass',"[grant_tid_notok]"), we_message_reporting::WE_MESSAGE_ERROR));
 	}
 	?>
 </head>

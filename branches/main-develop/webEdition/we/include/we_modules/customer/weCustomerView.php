@@ -49,7 +49,7 @@ class weCustomerView {
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = '') {
-		return we_htmlElement::htmlHidden(array('name'=>trim($name),'value'=>htmlspecialchars($value)));
+		return we_html_element::htmlHidden(array('name'=>trim($name),'value'=>htmlspecialchars($value)));
 	}
 
 
@@ -218,11 +218,11 @@ class weCustomerView {
 			}
 			';
 
-			return we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js")).we_htmlElement::jsElement($js);
+			return we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).we_html_element::jsElement($js);
 	}
 
 	function getJSProperty(){
-		$out=we_htmlElement::jsElement('',array('src'=>JS_DIR.'windows.js'));
+		$out=we_html_element::jsElement('',array('src'=>JS_DIR.'windows.js'));
 
 		$js='
 			var loaded=0;
@@ -334,7 +334,7 @@ class weCustomerView {
 
 		';
 
-		$out.=we_htmlElement::jsElement($js);
+		$out.=we_html_element::jsElement($js);
 		return $out;
 	}
 
@@ -584,14 +584,14 @@ function processCommands() {
 				case 'new_customer':
 					$this->customer = new weCustomer();
 					$this->settings->initCustomerWithDefaults($this->customer);
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->customer->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 					');
 				break;
 				case 'edit_customer':
 					$this->customer = new weCustomer($_REQUEST["cmdid"]);
-					print we_htmlElement::jsElement('
+					print we_html_element::jsElement('
 								'.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?pnt=edheader&text='.urlencode($this->customer->Text).'";
 								'.$this->topFrame.'.resize.right.editor.edfooter.location="'.$this->frameset.'?pnt=edfooter";
 					');
@@ -601,12 +601,12 @@ function processCommands() {
 						$this->customer->Username=trim($this->customer->Username);
 						if($this->customer->Username==''){
 							$js = we_message_reporting::getShowMessageCall(g_l('modules_customer','[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
-							print we_htmlElement::jsElement($js);
+							print we_html_element::jsElement($js);
 							break;
 						}
 
 						if($this->customer->filenameNotValid()){
-							print we_htmlElement::jsElement(
+							print we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_customer','[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							break;
@@ -620,7 +620,7 @@ function processCommands() {
 						$exists=f('SELECT ID FROM '.CUSTOMER_TABLE.' WHERE Username=\''.$this->db->escape($this->customer->Username).'\''.($newone?'':' AND ID!='.$this->customer->ID),'ID',$this->db);
 						if($exists){
 							$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[username_exists]'),$this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
-							print we_htmlElement::jsElement($js);
+							print we_html_element::jsElement($js);
 							break;
 						}
 						$c = unserialize($_SESSION['customer_session']);
@@ -652,7 +652,7 @@ function processCommands() {
 						}
 
 
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall( sprintf(g_l('modules_customer','[customer_saved_ok]'),addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE )
 						);
@@ -662,7 +662,7 @@ function processCommands() {
 						$this->customer->delete();
 						$this->customer=new weCustomer();
 
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall(g_l('modules_customer','[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 							.$this->topFrame.'.deleteEntry("'.$oldid.'"); '
 							.$this->topFrame.'.resize.right.editor.edheader.location="'.$this->frameset.'?home=1&pnt=edheader"; '
@@ -680,8 +680,8 @@ function processCommands() {
 						url ="'.WE_CUSTOMER_MODULE_PATH.'edit_customer_frameset.php?pnt=customer_admin";
 						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
 					';
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+					print we_html_element::jsElement($js);
 				break;
 				case "save_field":
 					$branch=$_REQUEST["branch"];
@@ -739,7 +739,7 @@ function processCommands() {
 							close();
 						';
 					}
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement($js);
 
 				break;
 				case 'delete_field':
@@ -774,7 +774,7 @@ function processCommands() {
 						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer','[field_deleted]'),$fname,$ber), we_message_reporting::WE_MESSAGE_NOTICE) .
 						'opener.refreshForm();
 					';
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement($js);
 
 				break;
 				case 'reset_edit_order':
@@ -813,7 +813,7 @@ function processCommands() {
 
 						'opener.refreshForm();
 					';
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement($js);
 
 				break;
 				case 'move_field_down':
@@ -845,7 +845,7 @@ function processCommands() {
 
 						'opener.refreshForm();
 					';
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement($js);
 
 				break;
 				case 'save_branch':
@@ -853,7 +853,7 @@ function processCommands() {
 					$branch_old=isset($_REQUEST["branch"]) ? $_REQUEST["branch"] : "";
 
 					if($branch_new==g_l('modules_customer','[common]') || $branch_new==g_l('modules_customer','[other]') || $branch_new==g_l('modules_customer','[all]')){
-						print we_htmlElement::jsElement(
+						print we_html_element::jsElement(
 							we_message_reporting::getShowMessageCall( g_l('modules_customer','[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
@@ -864,7 +864,7 @@ function processCommands() {
 						$arr=$this->customer->getBranchesNames();
 
 						if(in_array($branch_new,$arr)){
-									print we_htmlElement::jsElement(
+									print we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall( g_l('modules_customer','[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 									);
 									return;
@@ -883,7 +883,7 @@ function processCommands() {
 							close();
 						';
 					}
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement($js);
 
 				break;
 				case 'show_sort_admin':
@@ -891,8 +891,8 @@ function processCommands() {
 						url ="'.WE_CUSTOMER_MODULE_PATH.'edit_customer_frameset.php?pnt=sort_admin";
 						new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);
 					';
-					print we_htmlElement::jsElement('',array('src'=>JS_DIR.'windows.js'));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement('',array('src'=>JS_DIR.'windows.js'));
+					print we_html_element::jsElement($js);
 
 				break;
 				case 'add_sort':
@@ -941,46 +941,46 @@ function processCommands() {
 							opener.'.$this->topFrame.'.resize.left.treeheader.applySort();
 							self.close();
 					';
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."we_showMessage.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."we_showMessage.js"));
+					print we_html_element::jsElement($js);
 				break;
 				case 'applySort':
 					$js='
 						'.$this->topFrame.'.clearTree();
 					';
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement($js);
 				break;
 				case 'show_search':
 					$js='
 						url ="'.WE_CUSTOMER_MODULE_PATH.'edit_customer_frameset.php?pnt=search&search=1&keyword='.$_REQUEST["keyword"].'";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);
 					';
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+					print we_html_element::jsElement($js);
 				break;
 				case 'show_customer_settings':
 					$js='
 						url ="'.WE_CUSTOMER_MODULE_PATH.'edit_customer_frameset.php?pnt=settings";
 						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);
 					';
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+					print we_html_element::jsElement($js);
 				break;
 				case 'import_customer':
 					$js='
 						url ="'.WE_CUSTOMER_MODULE_PATH.'edit_customer_frameset.php?pnt=import";
 						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);
 					';
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+					print we_html_element::jsElement($js);
 				break;
 				case 'export_customer':
 					$js='
 						url ="'.WE_CUSTOMER_MODULE_PATH.'edit_customer_frameset.php?pnt=export";
 						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);
 					';
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."windows.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+					print we_html_element::jsElement($js);
 				break;
 				case 'save_settings':
 
@@ -999,8 +999,8 @@ function processCommands() {
 					else
 						$js = we_message_reporting::getShowMessageCall( g_l('modules_customer','[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 
-					print we_htmlElement::jsElement("",array("src"=>JS_DIR."we_showMessage.js"));
-					print we_htmlElement::jsElement($js);
+					print we_html_element::jsElement("",array("src"=>JS_DIR."we_showMessage.js"));
+					print we_html_element::jsElement($js);
 				break;
 				default:
 			}

@@ -131,7 +131,7 @@ function build_dialog($selected_setting = "ui") {
 
 		// THUMBNAILS
 		case "dialog":
-			$_headline = we_htmlElement::htmlDiv(array("class" => "weDialogHeadline", "style" => "padding:10 25 5 25;"),g_l('metadata',"[headline]"));
+			$_headline = we_html_element::htmlDiv(array("class" => "weDialogHeadline", "style" => "padding:10 25 5 25;"),g_l('metadata',"[headline]"));
 
 			// read already defined metadata fields from db:
 			$_defined_fields = array();
@@ -234,7 +234,7 @@ function build_dialog($selected_setting = "ui") {
 			</table>
 			';
 
-			$js = we_htmlElement::jsElement('
+			$js = we_html_element::jsElement('
 
 				function addRow() {
 
@@ -318,7 +318,7 @@ function build_dialog($selected_setting = "ui") {
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata','[fields_hint]'), 1, 440,false);
 
 
-			$_metadata = new we_htmlTable(array('border'=>'1','cellpadding'=>'0','cellspacing'=>'2','width'=>'440','height'=>'50'),4,3);
+			$_metadata = new we_html_table(array('border'=>'1','cellpadding'=>'0','cellspacing'=>'2','width'=>'440','height'=>'50'),4,3);
 
 			$_content = $_hint . '<div style="height:20px"></div>' .$_metadataTable .  we_button::create_button("image:btn_function_plus", "javascript:addRow()");
 			//echo $_content;
@@ -345,10 +345,10 @@ function build_dialog($selected_setting = "ui") {
 
 function render_dialog() {
 	// Render setting groups
-	$_output  = we_htmlElement::htmlDiv(array("id" => "metadatafields_dialog"), build_dialog("dialog"));
+	$_output  = we_html_element::htmlDiv(array("id" => "metadatafields_dialog"), build_dialog("dialog"));
 
 	// Render save screen
-	$_output .= we_htmlElement::htmlDiv(array("id" => "metadatafields_save", "style" => "display: none;"), build_dialog("save"));
+	$_output .= we_html_element::htmlDiv(array("id" => "metadatafields_save", "style" => "display: none;"), build_dialog("save"));
 
 	return $_output;
 }
@@ -363,13 +363,13 @@ $save_javascript ="";
 if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] == "true") {
 
 	if (isset($_REQUEST["metadatafields_name"]) && (strpos($_REQUEST["metadatafields_name"],"'") !== false || strpos($_REQUEST["metadatafields_name"],",") !== false)) {
-		$save_javascript =  we_htmlElement::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[metadatafields_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR).
+		$save_javascript =  we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert',"[metadatafields_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR).
 							'history.back()');
 	} else {
 		save_all_values();
 
 
-		$save_javascript = we_htmlElement::jsElement("
+		$save_javascript = we_html_element::jsElement("
 
 							   " . $save_javascript . "
 								" . we_message_reporting::getShowMessageCall(g_l('metadata',"[saved]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
@@ -381,11 +381,11 @@ if (isset($_REQUEST["save_metadatafields"]) && $_REQUEST["save_metadatafields"] 
 
 	print STYLESHEET . $save_javascript . "</head>";
 
-	print we_htmlElement::htmlBody(array( "class" => "weDialogBody"), build_dialog("saved")) . "</html>";
+	print we_html_element::htmlBody(array( "class" => "weDialogBody"), build_dialog("saved")) . "</html>";
 } else {
-	$_form = we_htmlElement::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_htmlElement::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog());
+	$_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "get", "action" => $_SERVER["SCRIPT_NAME"]), we_html_element::htmlHidden(array("name" => "save_metadatafields", "value" => "false")) . render_dialog());
 
 	print STYLESHEET . "</head>";
 
-	print we_htmlElement::htmlBody(array("class" => "weDialogBody", "onload"=>"init()"), $_form) . "</html>";
+	print we_html_element::htmlBody(array("class" => "weDialogBody", "onload"=>"init()"), $_form) . "</html>";
 }

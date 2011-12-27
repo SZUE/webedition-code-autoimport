@@ -70,7 +70,7 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 			$weCmd = 'openSelector';
 		}
 
-		$input = we_htmlElement::htmlInput(
+		$input = we_html_element::htmlInput(
 				array(
 					'name' => $this->Name,
 					'value' => $this->Value,

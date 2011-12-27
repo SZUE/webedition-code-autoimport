@@ -162,7 +162,7 @@ function getTmplTableRow($type,$name,$isField=false){
 }
 
 we_html_tools::htmlTop(g_l('weClass','[generateTemplate]'));
-echo we_htmlElement::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR.'windows.js');
 
 print STYLESHEET;
 

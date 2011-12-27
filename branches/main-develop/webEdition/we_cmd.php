@@ -392,7 +392,7 @@ if($INCLUDE){
 
     if ( $_REQUEST['we_cmd'][0] == "edit_document" || $_REQUEST['we_cmd'][0] == "switch_edit_page"  || $_REQUEST['we_cmd'][0] == "load_editor" ) {
 
-    	print we_htmlElement::jsScript(JS_DIR.'attachKeyListener.js');
+    	print we_html_element::jsScript(JS_DIR.'attachKeyListener.js');
 
     }
 

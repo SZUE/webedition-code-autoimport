@@ -108,33 +108,32 @@ class we_button{
 	 */
 	static function create_state_changer($standalone = true){
 		// Build the main preload function
-		$_JavaScript_functions = "
-			/**
-			 * This functions switches the state of a text(!!!) button.
-			 *
-			 * @param      element                                 string
-			 * @param      button                                  string
-			 * @param      state                                   string
-			 * @param      type                                    bool                (optional)
-			 *
-			 * @return     button                                  bool
-			 */
-
+		/**
+		 * This functions switches the state of a text(!!!) button.
+		 *
+		 * @param      element                                 string
+		 * @param      button                                  string
+		 * @param      state                                   string
+		 * @param      type                                    bool                (optional)
+		 *
+		 * @return     button                                  bool
+		 */
+		$_JavaScript_functions = '
 			function switch_button_state(element, button, state, type) {
-				if (state == \"enabled\") {
+				if (state == "enabled") {
 					weButton.enable(element);
 					return true;
-				} else if (state == \"disabled\") {
+				} else if (state == "disabled") {
 					weButton.disable(element);
 					return false;
 				}
 
 				return false;
-			}";
+			}';
 
 		// Build string to be returned by the function
 
-		return ($standalone ? we_htmlElement::jsElement($_JavaScript_functions) : $_JavaScript_functions);
+		return ($standalone ? we_html_element::jsElement($_JavaScript_functions) : $_JavaScript_functions);
 	}
 
 	/**
@@ -273,9 +272,9 @@ class we_button{
 	 * @param      $attribs                                array               (optional)
 	 *
 	 * @see        create_button()
-	 * @see        we_htmlTable::we_htmlTable()
-	 * @see        we_htmlTable::setCol()
-	 * @see        we_htmlTable::getHtml()
+	 * @see        we_html_table::we_html_table()
+	 * @see        we_html_table::setCol()
+	 * @see        we_html_table::getHtml()
 	 *
 	 * @return     string
 	 */
@@ -297,7 +296,7 @@ class we_button{
 		}
 
 		// Create table
-		$_button_table = new we_htmlTable($attr, 1, $_cols_to_create);
+		$_button_table = new we_html_table($attr, 1, $_cols_to_create);
 
 		// Build cols for every button
 		for($i = 0; $i < $_count_button; $i++){
@@ -328,9 +327,9 @@ class we_button{
 	 * @param      $attribs                                array               (optional)
 	 * @param	   $aligngap                               int                 (optional)
 	 *
-	 * @see        we_htmlTable::we_htmlTable()
-	 * @see        we_htmlTable::setCol()
-	 * @see        we_htmlTable::getHtml()
+	 * @see        we_html_table::we_html_table()
+	 * @see        we_html_table::setCol()
+	 * @see        we_html_table::getHtml()
 	 *
 	 * @return     string
 	 */
@@ -366,7 +365,7 @@ class we_button{
 		$_cols = (sizeof($_buttons) * 2) - 1;
 
 		//	Create_table
-		$_button_table = new we_htmlTable($attr, 1, ((($aligngap > 0) && ($attr["align"] == "left")) ? $_cols + 1 : $_cols));
+		$_button_table = new we_html_table($attr, 1, ((($aligngap > 0) && ($attr["align"] == "left")) ? $_cols + 1 : $_cols));
 
 		//	Extra gap at left side?
 		if(($aligngap > 0) && ($attr["align"] == "left")){

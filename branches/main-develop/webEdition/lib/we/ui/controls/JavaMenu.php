@@ -68,7 +68,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
 
-		$out = we_htmlElement::jsElement('
+		$out = we_html_element::jsElement('
 				function menuaction(cmd) {
 					weCmdController.fire({cmdName: cmd})
 				}');
@@ -159,7 +159,7 @@ class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement
 					</tr>
 				</table>
 			</div>
-			' . (we_ui_Client::getInstance()->getBrowser() == we_ui_Client::kBrowserGecko ? we_htmlElement::jsElement('
+			' . (we_ui_Client::getInstance()->getBrowser() == we_ui_Client::kBrowserGecko ? we_html_element::jsElement('
 
 			// BUGFIX #1831,
 			// Alternate txt does not work in firefox. Therefore, the select-menu is copied to another visible div ONLY in firefox

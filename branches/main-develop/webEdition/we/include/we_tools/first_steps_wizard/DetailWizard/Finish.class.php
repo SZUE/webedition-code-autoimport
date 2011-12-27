@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,38 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSidebarDocumentParser.class.php");
 
-class Finish extends leWizardStepBase
-{
+class Finish extends leWizardStepBase{
 
 	var $EnabledButtons = array();
 
-	function execute(&$Template)
-	{
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_button.inc.php");
+	function execute(&$Template){
+		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		// copy new Sidebar file to correct position
 		$NewSidebarFile = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . "sidebar/first_steps_wizard.php";
 		$OldSidebarFile = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/SideBar.php";
 
-		if (file_exists($NewSidebarFile) && is_file($NewSidebarFile)) {
+		if(file_exists($NewSidebarFile) && is_file($NewSidebarFile)){
 
-			if (!unlink($NewSidebarFile)) {
+			if(!unlink($NewSidebarFile)){
 				return LE_WIZARDSTEP_ERROR;
-
 			}
-
 		}
 
-		if (file_exists($OldSidebarFile) && is_file($OldSidebarFile)) {
+		if(file_exists($OldSidebarFile) && is_file($OldSidebarFile)){
 
-			if (!copy($OldSidebarFile, $NewSidebarFile)) {
+			if(!copy($OldSidebarFile, $NewSidebarFile)){
 				return LE_WIZARDSTEP_ERROR;
-
 			}
-
 		}
 
 		// now change paths in sidebar document(!)
@@ -62,23 +56,21 @@ class Finish extends leWizardStepBase
 
 		// change mastertemplate in installed templates
 		$TemplateIds = array();
-		foreach ($_SESSION['fsw_importRefTable'] as $index => $entry) {
-			if ($entry['Table'] == TEMPLATES_TABLE) {
+		foreach($_SESSION['fsw_importRefTable'] as $index => $entry){
+			if($entry['Table'] == TEMPLATES_TABLE){
 				$TemplateIds[] = $entry['ID'];
 			}
 		}
 		we_loadDefaultMasterTemplateConfig();
 		$query = "UPDATE " . TEMPLATES_TABLE . " SET MasterTemplateID = " . FSW_DEFAULT_MASTER_TEMPLATE . " WHERE ID IN (" . implode(
-				",",
-				$TemplateIds) . ")"; // AND MasterTemplateID != 0";
+				",", $TemplateIds) . ")"; // AND MasterTemplateID != 0";
 		$DB_WE = new DB_WE();
 		$DB_WE->query($query);
 
 		// write new content
 		$fh = fopen($NewSidebarFile, "w+");
-		if (!$fh || !fputs($fh, $content) || !fclose($fh)) {
+		if(!$fh || !fputs($fh, $content) || !fclose($fh)){
 			return LE_WIZARDSTEP_ERROR;
-
 		}
 
 		// oputput of the wizard step
@@ -111,7 +103,6 @@ EOF;
 		$this->setContent($Content);
 
 		return LE_WIZARDSTEP_NEXT;
-
 	}
 
 }

@@ -63,15 +63,15 @@ $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $can
 $sTblWidget = we_multiIconBox::getHTML("rssProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit','[messaging]'));
 
 print
-		we_htmlElement::htmlHtml(
-				we_htmlElement::htmlHead(
-						we_htmlElement::htmlTitle(g_l('cockpit','[messaging]')) . STYLESHEET . we_htmlElement::jsElement(
+		we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+						we_html_element::htmlTitle(g_l('cockpit','[messaging]')) . STYLESHEET . we_html_element::jsElement(
 								"",
 								array(
 									"src" => JS_DIR . "we_showMessage.js"
-								)) . we_htmlElement::jsElement(
-								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_htmlElement::htmlBody(
+								)) . we_html_element::jsElement(
+								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),
-						we_htmlElement::htmlForm("", $sTblWidget)));
+						we_html_element::htmlForm("", $sTblWidget)));
