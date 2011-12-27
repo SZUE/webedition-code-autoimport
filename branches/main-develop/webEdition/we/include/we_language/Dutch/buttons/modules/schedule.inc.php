@@ -5,5 +5,5 @@ $l_buttons_modules_schedule=array(
 	'schedule_button'=>array(
 		'alt'=>'Geplande acties',
 		'value'=>'Planner',
-		'width'=>'100',
+		'width'=>100,
 ));

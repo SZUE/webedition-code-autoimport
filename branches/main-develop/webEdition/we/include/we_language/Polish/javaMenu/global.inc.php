@@ -74,7 +74,6 @@ $l_javaMenu_global=array(
 	'quit'=>'Zakończ',
 	'rebuild'=>'Rebuild',
 	'recover_backup'=>'Przywróć backup',
-	'register'=>'Rejestracja',
 	'reload'=>'Odśwież',
 	'rss_reader'=>'RSS Reader',
 	'save'=>'Zapisz',

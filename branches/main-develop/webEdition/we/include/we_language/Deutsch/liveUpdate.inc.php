@@ -44,10 +44,6 @@ $l_liveUpdate=array(
 		'noModulesInstalled'=>'Es sind noch keine Module installiert',
 		'showModules'=>'Module auswählen',
 	),
-	'register'=>array(
-		'description'=>'Registrieren Sie webEdition und nutzen sie den vollen Funktionsumfang.',
-		'headline'=>'webEdition registrieren',
-	),
 	'state'=>array(
 		'descriptionError'=>'Der Update-Server kann diese Anfrage nicht ausführen, folgender Fehler ist aufgetreten.',
 		'descriptionTrue'=>'Der Update-Server hat diese Anfrage erfolgreich ausgeführt.',

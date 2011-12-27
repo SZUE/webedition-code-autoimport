@@ -74,7 +74,6 @@ $l_javaMenu_global=array(
 	'quit'=>'Poistu',
 	'rebuild'=>'Rakenna uudelleen',
 	'recover_backup'=>'Palauta varmuuskopiosta',
-	'register'=>'Rekisteröi',
 	'reload'=>'Lataa uudelleen',
 	'rss_reader'=>'RSS lukija',
 	'save'=>'Tallenna',

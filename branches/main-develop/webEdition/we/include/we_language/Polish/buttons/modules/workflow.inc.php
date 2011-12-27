@@ -5,20 +5,20 @@ $l_buttons_modules_workflow=array(
 	'decline'=>array(
 		'alt'=>'',
 		'value'=>'Decline',
-		'width'=>'100',
+		'width'=>100,
 	),
 	'forward'=>array(
 		'alt'=>'',
 		'value'=>'Forward',
-		'width'=>'100',
+		'width'=>100,
 	),
 	'in_workflow'=>array(
 		'alt'=>'In workflow',
 		'value'=>'In workflow',
-		'width'=>'92',
+		'width'=>92,
 	),
 	'new_workflow'=>array(
 		'alt'=>'Tworzy nowy Workflow ...',
 		'value'=>'New workflow',
-		'width'=>'150',
+		'width'=>150,
 ));

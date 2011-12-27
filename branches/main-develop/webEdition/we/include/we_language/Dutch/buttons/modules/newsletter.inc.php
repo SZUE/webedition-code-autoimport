@@ -5,15 +5,15 @@ $l_buttons_modules_newsletter=array(
 	'new_newsletter'=>array(
 		'alt'=>'Maak nieuwe nieuwsbrief aan ...',
 		'value'=>'New newsletter',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'new_newsletter_group'=>array(
 		'alt'=>'Maak nieuwe groep aan...',
 		'value'=>'New group',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'send'=>array(
 		'alt'=>'Verzend nieuwsbrief ...',
 		'value'=>'Verzend',
-		'width'=>'100',
+		'width'=>100,
 ));

@@ -5,15 +5,15 @@ $l_buttons_modules_voting=array(
 	'new_voting'=>array(
 		'alt'=>'Maak nieuwe peiling aan ...',
 		'value'=>'Nieuwe peiling',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'new_voting_group'=>array(
 		'alt'=>'Maak nieuwe groep aan ...',
 		'value'=>'New group',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'reset_score'=>array(
 		'alt'=>'Herstel uitslagen ...',
 		'value'=>'Reset scores',
-		'width'=>'100',
+		'width'=>100,
 ));

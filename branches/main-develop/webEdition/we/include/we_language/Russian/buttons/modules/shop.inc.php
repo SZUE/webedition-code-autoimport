@@ -29,25 +29,25 @@ $l_buttons_modules_shop=array(
 	'payment_val'=>array(
 		'alt'=>'открываются настройки провайдера платежа...',
 		'value'=>'Payment Provider',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'pref_shop'=>array(
 		'alt'=>'открываются настройки магазина',
 		'value'=>'Preferences',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'print'=>array(
 		'alt'=>'',
 		'value'=>'Print',
-		'width'=>'100',
+		'width'=>100,
 	),
 	'quick_rev'=>array(
 		'alt'=>'открывается товар и сумма выручки ...',
 		'value'=>'Article / Revenue',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'shop_orderlist'=>array(
 		'alt'=>'Список заказов',
 		'value'=>'Список заказов',
-		'width'=>'100',
+		'width'=>100,
 ));

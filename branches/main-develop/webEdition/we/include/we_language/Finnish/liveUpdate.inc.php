@@ -44,10 +44,6 @@ $l_liveUpdate=array(
 		'noModulesInstalled'=>'Moduuleja ei ole vielä asennettu',
 		'showModules'=>'Valitse moduulit',
 	),
-	'register'=>array(
-		'description'=>'rekisteröi webEdition ja löydä sen täysi toiminnallisuus.',
-		'headline'=>'rekisteröi webEdition',
-	),
 	'state'=>array(
 		'descriptionError'=>'Päivityspalvelin ei voinut suorittaa tätä pyyntöä. Seuraava ongelma ilmeni.',
 		'descriptionTrue'=>'Päivityspalvelin on suorittanut tämän pyynnön.',

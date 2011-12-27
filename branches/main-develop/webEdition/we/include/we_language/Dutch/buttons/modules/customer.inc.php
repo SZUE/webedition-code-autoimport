@@ -5,5 +5,5 @@ $l_buttons_modules_customer=array(
 	'new_customer'=>array(
 		'alt'=>'Maak nieuwe klant aan ...',
 		'value'=>'Nieuwe klant',
-		'width'=>'150',
+		'width'=>150,
 ));

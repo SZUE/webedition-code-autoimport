@@ -29,25 +29,25 @@ $l_buttons_modules_shop=array(
 	'payment_val'=>array(
 		'alt'=>'Öffnet die Payment Provider Einstellungen...',
 		'value'=>'Zahlungsdienst',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'pref_shop'=>array(
 		'alt'=>'Öffne Einstellungen des Shop Moduls...',
 		'value'=>'Einstellungen',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'print'=>array(
 		'alt'=>'Drucken',
 		'value'=>'Drucken',
-		'width'=>'100',
+		'width'=>100,
 	),
 	'quick_rev'=>array(
 		'alt'=>'Öffnet die Artikel- und Umsatzübersicht...',
 		'value'=>'Artikel / Umsatz',
-		'width'=>'150',
+		'width'=>150,
 	),
 	'shop_orderlist'=>array(
 		'alt'=>'Bestelliste',
 		'value'=>'Bestelliste',
-		'width'=>'100',
+		'width'=>100,
 ));

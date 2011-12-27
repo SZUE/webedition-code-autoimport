@@ -44,10 +44,6 @@ $l_liveUpdate=array(
 		'noModulesInstalled'=>'Er zijn geen modules geïnstalleerd',
 		'showModules'=>'Selecteer modules',
 	),
-	'register'=>array(
-		'description'=>'registreer webEdition en ontdek de complete functionaliteit.',
-		'headline'=>'registreer webEdition',
-	),
 	'state'=>array(
 		'descriptionError'=>'De update server kon het verzoek niet afronden. De volgende fout is opgetreden.',
 		'descriptionTrue'=>'De update server heeft het verzoek afgerond.',

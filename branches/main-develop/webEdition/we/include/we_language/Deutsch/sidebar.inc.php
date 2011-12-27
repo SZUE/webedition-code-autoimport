@@ -42,7 +42,7 @@ $l_sidebar=array(
 		'5'=>array(
 			'headline'=>'Versionshistorie',
 			'icon'=>'demopages.gif',
-			'link'=>'http://documentation.webedition.org/wiki/de/webedition/change-log/start',
+			'link'=>'http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/',
 			'text'=>'Alle Fehlerbehebungen und Neuerungen in webEdition mit Versionsangaben',
 	),),
 	'headline'=>'Seitenleiste',

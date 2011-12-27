@@ -44,10 +44,6 @@ $l_liveUpdate=array(
 		'noModulesInstalled'=>'There are no modules installed',
 		'showModules'=>'Select modules',
 	),
-	'register'=>array(
-		'description'=>'Register webEdition and discover its complete functionality.',
-		'headline'=>'Register webEdition',
-	),
 	'state'=>array(
 		'descriptionError'=>'The update server could not fullfill this request. The following error occured.',
 		'descriptionTrue'=>'The update server has completed this request.',
