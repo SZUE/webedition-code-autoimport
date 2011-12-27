@@ -1011,13 +1011,13 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	function disableHidePages(){
 
 		$MNEMONIC_EDITPAGES = array(
-			'0' => 'properties', '1' => 'edit', '2' => 'information', '3' => 'preview', '8' => 'schedpro', '10' => 'validation', '17' => 'versions'
+			WE_EDITPAGE_PROPERTIES => 'properties', WE_EDITPAGE_CONTENT => 'edit', WE_EDITPAGE_INFO => 'information', WE_EDITPAGE_PREVIEW => 'preview', WE_EDITPAGE_SCHEDULER => 'schedpro', WE_EDITPAGE_VALIDATION => 'validation', WE_EDITPAGE_VERSIONS => 'versions'
 		);
 		if(isset($_we_active_integrated_modules) && in_array('shop', $_we_active_integrated_modules)){
-			$MNEMONIC_EDITPAGES['11'] = 'variants';
+			$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 		}
 		if(isset($_we_active_integrated_modules) && in_array('customer', $_we_active_integrated_modules)){
-			$MNEMONIC_EDITPAGES['14'] = 'customer';
+			$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
 		}
 
 		if(isset($this->hidePages) && $this->InWebEdition){

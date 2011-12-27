@@ -54,13 +54,6 @@ if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
-if(isset($_we_active_integrated_modules) && in_array('shop', $_we_active_integrated_modules)){
-	$MNEMONIC_EDITPAGES['11'] = 'variants';
-}
-if(isset($_we_active_integrated_modules) && in_array('customer', $_we_active_integrated_modules)){
-	$MNEMONIC_EDITPAGES['14'] = 'customer';
-}
-
 
 if(!defined('NO_SESS')){
 	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';//Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
@@ -105,16 +98,16 @@ if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCha
 	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
 if(in_array('shop', $_we_active_integrated_modules)){
-	$MNEMONIC_EDITPAGES['11'] = 'variants';
+	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 }
 if(in_array('customer', $_we_active_integrated_modules)){
-	$MNEMONIC_EDITPAGES['14'] = 'customer';
+	$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
 }
 
 
-if(!isset($GLOBALS['WE_IS_DYN'])){
+if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
+	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly
@@ -125,8 +118,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){
 		'<meta http-equiv="expires" content="0">' .
 		'<meta http-equiv="pragma" content="no-cache">' .
 		'<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
-		we_htmlElement::jsScript(JS_DIR . 'we_showMessage.js') .
-		we_htmlElement::jsScript(JS_DIR . 'we_showMessage.js')
+		we_htmlElement::jsScript(JS_DIR . 'we_showMessage.js') 
 	);
 
 
