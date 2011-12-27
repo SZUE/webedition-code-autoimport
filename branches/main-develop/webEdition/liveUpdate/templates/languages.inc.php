@@ -37,9 +37,9 @@ $languagesStr = '';
 foreach ($languages as $lng) {
 
 	if (WE_LANGUAGE == $lng) {
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . $GLOBALS['l_liveUpdate']['languages']['systemLanguage'] . ")</i>", false, 'defaultfont', '', true);
+		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate','[languages][systemLanguage]') . ")</i>", false, 'defaultfont', '', true);
 	} else if ($GLOBALS['WE_LANGUAGE'] == $lng) {
-		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . $GLOBALS['l_liveUpdate']['languages']['usedLanguage'] . ")</i>", false, 'defaultfont', '', true);
+		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', "<i>$lng (" . g_l('liveUpdate','[languages][usedLanguage]') . ")</i>", false, 'defaultfont', '', true);
 	} else {
 		$lngBox = we_forms::checkbox($lng, false, 'deleteLanguages[]', $lng, true);
 	}
@@ -52,13 +52,13 @@ $deletedLngs = $this->getData('deletedLngs');
 $notDeletedLngs = $this->getData('notDeletedLngs');
 $jsAlert = '';
 if (sizeof($deletedLngs)) {
-	$jsAlert .= $GLOBALS['l_liveUpdate']['languages']['languagesDeleted'] . '\n';
+	$jsAlert .= g_l('liveUpdate','[languages][languagesDeleted]') . '\n';
 	foreach ($deletedLngs as $lng) {
 		$jsAlert .= $lng . '\n';
 	}
 }
 if (sizeof($notDeletedLngs)) {
-	$jsAlert .= $GLOBALS['l_liveUpdate']['languages']['languagesNotDeleted'] . '\n';
+	$jsAlert .= g_l('liveUpdate','[languages][languagesNotDeleted]') . '\n';
 	foreach ($notDeletedLngs as $lng) {
 		$jsAlert .= $lng . '\n';
 	}
@@ -72,20 +72,20 @@ $content = '
 <div>
 <form name="we_form">
 ' . we_html_tools::hidden('section', 'languages') . '
-' . $GLOBALS['l_liveUpdate']['languages']['installedLngs'] . '
+' . g_l('liveUpdate','[languages][installedLngs]') . '
 <br />
 ' . $languagesStr . '
 <br />
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['languages']['showLanguages'] . '</td>
+	<td>' . g_l('liveUpdate','[languages][showLanguages]') . '</td>
 	<td>' . $nextButton . '</td>
 </tr>
 <tr>
 	<td><br /></td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['languages']['deleteSelectedLanguages'] . '</td>
+	<td>' . g_l('liveUpdate','[languages][deleteSelectedLanguages]') . '</td>
 	<td>' . $deleteButton . '</td>
 </tr>
 </table>
@@ -93,4 +93,4 @@ $content = '
 ' . $jsAlert . '
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['languages']['headline'], $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[languages][headline]'), $content);

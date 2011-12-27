@@ -39,11 +39,11 @@ if (isset($GLOBALS['LU_Variables']['clientSubVersion']) &&  $GLOBALS['LU_Variabl
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['actualVersion'] . '</td>
+	<td>' . g_l('liveUpdate','[update][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . '</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['lastUpdate'] . '</td>
+	<td>' . g_l('liveUpdate','[update][lastUpdate]') . '</td>
 	<td>' . $this->Data['lastUpdate'] . '</td>
 </tr>
 <tr>
@@ -53,10 +53,10 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['lookForUpdate'] . '</td>
+	<td>' . g_l('liveUpdate','[update][lookForUpdate]') . '</td>
 	<td>' . $searchButton . '</td>
 </tr>
 </table>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['update']['headline'], $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[update][headline]'), $content);

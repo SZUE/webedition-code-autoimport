@@ -30,8 +30,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$GL
 	* @desc prints the functions needed for the tree.
 	*/
 	function pWebEdition_Tree(){
-
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMainTree.inc.php");
 		$Tree = new weMainTree("webEdition.php","top","self.Tree","top.load");
 		print $Tree->getJSTreeCode();
 	}

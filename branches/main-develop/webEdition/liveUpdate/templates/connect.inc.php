@@ -31,11 +31,11 @@ $checkButton = we_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?sect
 
 $content = '
 <div class="defaultfont">
-	' . $GLOBALS['l_liveUpdate']['connect']['description'] . '
+	' . g_l('liveUpdate','[connect][description]') . '
 	<br />
 	<br />
 	' . $checkButton . '
 </div>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['connect']['headline'], $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[connect][headline]'), $content);

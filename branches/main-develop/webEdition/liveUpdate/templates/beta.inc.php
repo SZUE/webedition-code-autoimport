@@ -25,7 +25,7 @@
 /*
  * This is the template for tab update. It contains the information screen
  * before searching for an update
- * 
+ *
  */
 
 
@@ -33,11 +33,11 @@
 $content = '
 <table class="defaultfont" width="100%">
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['actualVersion'] . '</td>
+	<td>' . g_l('liveUpdate','[update][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . '</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['update']['lastUpdate'] . '</td>
+	<td>' . g_l('liveUpdate','[update][lastUpdate]') . '</td>
 	<td>' . $this->Data['lastUpdate'] . '</td>
 </tr>
 <tr>
@@ -47,13 +47,13 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td></td><td><form name="betaform" action="'.$_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">'.we_forms::checkboxWithHidden( (isset($_REQUEST["testUpdate"]) ? $_REQUEST["testUpdate"]: 0), 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '','defaultfont' , 'betaform.submit()').'</form>
+	<td></td><td><form name="betaform" action="'.$_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">'.we_forms::checkboxWithHidden( (isset($_REQUEST["testUpdate"]) ? $_REQUEST["testUpdate"]: 0), 'setTestUpdate', g_l('liveUpdate','[beta][lookForUpdate]'), '','defaultfont' , 'betaform.submit()').'</form>
 		<br />
 		<br />
 	</td>
 </tr>
 <tr>
-	<td colspan="2">'. $GLOBALS['l_liveUpdate']['beta']['warning'].'
+	<td colspan="2">'. g_l('liveUpdate','[beta][warning]').'
 		<br />
 		<br />
 	</td>
@@ -62,4 +62,4 @@ $content = '
 </table>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['beta']['headline'], $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[beta][headline]'), $content);

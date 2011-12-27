@@ -107,11 +107,6 @@ class liveUpdateFrames {
 				return $this->htmlLanguages();
 			break;
 
-			case 'register':
-				return $this->htmlRegister();
-			break;
-
-
 			case 'updatelog':
 				return $this->htmlUpdatelog();
 			break;
@@ -166,7 +161,7 @@ class liveUpdateFrames {
 	}
 
 	function processUpdateVariables() {
-		$this->Data['lastUpdate'] = $GLOBALS['l_liveUpdate']['update']['neverUpdated'];
+		$this->Data['lastUpdate'] = g_l('liveUpdate','[update][neverUpdated]');
 
 		$query = "
 			SELECT DATE_FORMAT(datum, \"%d.%m.%y - %T \") AS date
@@ -408,12 +403,6 @@ class liveUpdateFrames {
 	function htmlLanguages() {
 
 		include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
-	}
-
-
-	function htmlRegister() {
-
-		include(LIVEUPDATE_TEMPLATE_DIR . 'register.inc.php');
 	}
 
 

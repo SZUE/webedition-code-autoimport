@@ -46,14 +46,14 @@ if (sizeof($GLOBALS['LU_Variables']['clientInstalledModules'])) {
 
 } else {
 
-	$moduleString = $GLOBALS['l_liveUpdate']['modules']['noModulesInstalled'];
+	$moduleString = g_l('liveUpdate','[modules][noModulesInstalled]');
 }
 
 
 $content = '
 <table class="defaultfont" width="100%">
 <tr class="valignTop">
-	<td>' . $GLOBALS['l_liveUpdate']['modules']['installedModules'] . '</td>
+	<td>' . g_l('liveUpdate','[modules][installedModules]') . '</td>
 	<td>' . $moduleString . '</td>
 </tr>
 <tr>
@@ -63,10 +63,10 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td>' . $GLOBALS['l_liveUpdate']['modules']['showModules'] . '</td>
+	<td>' . g_l('liveUpdate','[modules][showModules]') . '</td>
 	<td>' . $nextButton . '</td>
 </tr>
 </table>
 ';
 
-print liveUpdateTemplates::getHtml($GLOBALS['l_liveUpdate']['modules']['headline'], $content);
+print liveUpdateTemplates::getHtml(g_l('liveUpdate','[modules][headline]'), $content);
