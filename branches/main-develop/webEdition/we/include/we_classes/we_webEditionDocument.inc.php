@@ -33,14 +33,14 @@ class we_webEditionDocument extends we_textContentDocument{
 	// ID of the template that is used from the parked document (Bug Fix #6615)
 	var $temp_template_id = 0;
 	// Categories of the parked document (Bug Fix #6615)
-	var $temp_category = "";
+	var $temp_category = '';
 	// Doc-Type of the parked document (Bug Fix #6615)
-	var $temp_doc_type = "";
+	var $temp_doc_type = '';
 	// Path from the template
-	var $TemplatePath = "";
-	var $Icon = "we_dokument.gif";
+	var $TemplatePath = '';
+	var $Icon = 'we_dokument.gif';
 	var $Table = FILE_TABLE;
-	var $ContentType = "text/webedition";
+	var $ContentType = 'text/webedition';
 	// Only needed for output
 	/* 	var $CacheType = "none";
 	  var $CacheLifeTime = 0;
@@ -73,7 +73,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$TemplatePath = $this->TemplatePath;
 		$IsDynamic = $this->IsDynamic;
 		$IsDynamic = $this->IsDynamic;
-		we_textContentDocument::makeSameNew();
+		parent::makeSameNew();
 		$this->TemplateID = $TemplateID;
 		$this->TemplatePath = $TemplatePath;
 		$this->IsDynamic = $IsDynamic;
@@ -499,7 +499,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	  } */
 
 	function we_new(){
-		we_textContentDocument::we_new();
+		parent::we_new();
 		$this->setTemplatePath();
 	}
 
@@ -651,7 +651,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->temp_category = $this->Category;
 
 		// Last step is to save the webEdition document
-		$out = we_textContentDocument::we_save($resave, $skipHook);
+		$out = parent::we_save($resave, $skipHook);
 		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT && isset($_REQUEST["we_" . $this->Name . "_LanguageDocID"]) && $_REQUEST["we_" . $this->Name . "_LanguageDocID"] != 0){
 			$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LanguageDocID"], 'tblFile', false, false);
 		}
@@ -672,14 +672,14 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	function we_publish($DoNotMark=false, $saveinMainDB=true, $skipHook=0){
 		$this->we_clearCache($this->ID);
-		return we_textContentDocument::we_publish($DoNotMark, $saveinMainDB, $skipHook);
+		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 	}
 
 	function we_unpublish($skipHook=0){
 		if(!$this->ID)
 			return false;
 		$this->we_clearCache($this->ID);
-		return we_textContentDocument::we_unpublish($skipHook);
+		return parent::we_unpublish($skipHook);
 	}
 
 	function we_delete(){
@@ -705,7 +705,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					$from = we_class::LOAD_TEMP_DB;
 				}
 			default:
-				we_textContentDocument::we_load($from);
+				parent::we_load($from);
 				$this->setTemplatePath();
 		}
 	}
@@ -749,7 +749,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function we_initSessDat($sessDat){
-		we_textContentDocument::we_initSessDat($sessDat);
+		parent::we_initSessDat($sessDat);
 		$this->setTemplatePath();
 	}
 

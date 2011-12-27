@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
 class we_textContentDocument extends we_textDocument{
 
 	/* Name of the class => important for reconstructing the class from outside the class */
@@ -247,7 +245,7 @@ class we_textContentDocument extends we_textDocument{
 
 ## public ###
 	function we_new(){
-		we_textDocument::we_new();
+		parent::we_new();
 		$this->Filename=$this->i_getDefaultFilename();
 
 	}
@@ -303,7 +301,7 @@ class we_textContentDocument extends we_textDocument{
 		}
 
 		//resave the document in main-table and write it in site dir
-		we_textDocument::we_save();
+		parent::we_save();
 	}
 
 	function we_save($resave=0,$skipHook=0){

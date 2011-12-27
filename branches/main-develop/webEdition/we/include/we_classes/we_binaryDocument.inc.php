@@ -78,7 +78,7 @@ class we_binaryDocument extends we_document{
 	 * @desc loads the data of the document
 	 */
 	function we_load($from=we_class::LOAD_MAID_DB){
-		we_document::we_load($from);
+		parent::we_load($from);
 		//$this->i_getContentData($this->LoadBinaryContent);
 	}
 
@@ -177,7 +177,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function we_new(){
-		we_document::we_new();
+		parent::we_new();
 		$this->Filename = $this->i_getDefaultFilename();
 	}
 

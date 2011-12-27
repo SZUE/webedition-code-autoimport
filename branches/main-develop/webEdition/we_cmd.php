@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,24 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $INCLUDE = "";
 //	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $_we_active_integrated_modules
 if(isset($_we_active_integrated_modules)){
 	foreach($_we_active_integrated_modules as $m){
-		if(file_exists($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $m . "/we_cmd_" . $m . ".inc.php")){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/" . $m . "/we_cmd_" . $m . ".inc.php");
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $m . "/we_cmd_" . $m . ".inc.php")){
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/" . $m . "/we_cmd_" . $m . ".inc.php");
 		}
 	}
 }
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/SEEM/we_SEEM.class.php");
 
 if(!$INCLUDE){
 	switch($_REQUEST['we_cmd'][0]){
@@ -106,14 +106,14 @@ if(!$INCLUDE){
 		case "deleteDocType":
 		case "deleteDocTypeok":
 		case "add_dt_template":
-   		case "delete_dt_template":
-   		case "dt_delete_cat":
+		case "delete_dt_template":
+		case "dt_delete_cat":
 		case "dt_add_cat":
 			$INCLUDE = "we_editors/doctypeEdit.inc.php";
 			break;
-		/*FIXME: remove case "clear_cache":
-			$INCLUDE = "clear_cache.inc.php";
-			break;*/
+		/* FIXME: remove case "clear_cache":
+		  $INCLUDE = "clear_cache.inc.php";
+		  break; */
 		case "rebuild":
 			$INCLUDE = "we_editors/we_rebuild.inc.php";
 			break;
@@ -136,26 +136,26 @@ if(!$INCLUDE){
 			$FROM_WE_SHOW_DOC = true;
 			$INCLUDE = "we_showDocument.inc.php";
 			break;
-        case "open_url_in_editor": // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
-        	$INCLUDE = "/we_seem/open_url_in_editor.php";
-        	break;
+		case "open_url_in_editor": // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
+			$INCLUDE = "/we_seem/open_url_in_editor.php";
+			break;
 		case "open_form_in_editor": // Formular wird an dieses Skript umgeleitet, hier wird ein Kommando daraus gebaut, um das Dokument korrekt zu �ffnen
-        	$INCLUDE = "/we_seem/open_form_in_editor.php";
-        	break;
-        case "open_extern_document"; // wird ben�tigt um ein externes Dokument aufzurufen
-		    $INCLUDE = "/we_seem/we_SEEM_openExtDoc_frameset.php";
-		    break;
-        case "edit_document_with_parameters":
-    	    $parastr = $_REQUEST['we_cmd'][4];
+			$INCLUDE = "/we_seem/open_form_in_editor.php";
+			break;
+		case "open_extern_document"; // wird ben�tigt um ein externes Dokument aufzurufen
+			$INCLUDE = "/we_seem/we_SEEM_openExtDoc_frameset.php";
+			break;
+		case "edit_document_with_parameters":
+			$parastr = $_REQUEST['we_cmd'][4];
 		case "edit_document":
 		case "new_document":
 		case "new_folder":
 		case "edit_folder":
 			$INCLUDE = "we_editors/we_edit_frameset.inc.php";
 			break;
-        case "edit_include_document" :
-		    $INCLUDE = "/we_editors/SEEM_edit_include_document.inc.php";
-		    break;
+		case "edit_include_document" :
+			$INCLUDE = "/we_editors/SEEM_edit_include_document.inc.php";
+			break;
 		case "load_editor":
 			$INCLUDE = "we_editors/we_editor.inc.php";
 			break;
@@ -224,20 +224,24 @@ if(!$INCLUDE){
 			$INCLUDE = "we_editors/we_linklistedit.inc.php";
 			break;
 		case "load":
-        case "loadFolder":
-        case "closeFolder":
-            $INCLUDE = "we_load.inc.php";
+		case "loadFolder":
+		case "closeFolder":
+			$INCLUDE = "we_load.inc.php";
 			break;
 		case "showLoadInfo":
 			$INCLUDE = "we_loadInfo.inc.php";
 			break;
 		case "delete":
-			if($_REQUEST['we_cmd'][1]) $INCLUDE = "we_delete.inc.php";
-			else $INCLUDE = "home.inc.php";
+			if($_REQUEST['we_cmd'][1])
+				$INCLUDE = "we_delete.inc.php";
+			else
+				$INCLUDE = "home.inc.php";
 			break;
 		case "move":
-			if($_REQUEST['we_cmd'][1]) $INCLUDE = "we_move.inc.php";
-			else $INCLUDE = "home.inc.php";
+			if($_REQUEST['we_cmd'][1])
+				$INCLUDE = "we_move.inc.php";
+			else
+				$INCLUDE = "home.inc.php";
 			break;
 		case "do_delete":
 		case "delete_single_document":
@@ -254,26 +258,26 @@ if(!$INCLUDE){
 			$INCLUDE = "we_editors/we_showBinaryDoc.inc.php";
 			break;
 		case "pref_ext_changed":
-			$INCLUDE="we_prefs.inc.php";
+			$INCLUDE = "we_prefs.inc.php";
 			break;
 		case "exit_doc_question":
-			$INCLUDE="we_templates/we_exit_doc_question.inc.php";
+			$INCLUDE = "we_templates/we_exit_doc_question.inc.php";
 			break;
 		case "exit_multi_doc_question":
-			$INCLUDE="we_templates/we_exit_multi_doc_question.inc.php";
+			$INCLUDE = "we_templates/we_exit_multi_doc_question.inc.php";
 			break;
 		case "browse_server":
-			$INCLUDE="we_editors/we_sfileselector_frameset.inc.php";
+			$INCLUDE = "we_editors/we_sfileselector_frameset.inc.php";
 			break;
 		case "make_backup":
-			$INCLUDE="we_editors/we_make_backup.php";
+			$INCLUDE = "we_editors/we_make_backup.php";
 			break;
 		case "recover_backup":
-			$INCLUDE="we_editors/we_recover_backup.php";
+			$INCLUDE = "we_editors/we_recover_backup.php";
 			break;
 		case "import_docs":
-			$INCLUDE="we_editors/we_import_documents.inc.php";
-		    break;
+			$INCLUDE = "we_editors/we_import_documents.inc.php";
+			break;
 		case "browse_users":
 			$INCLUDE = "we_modules/users/browse_users_frameset.inc.php";
 			break;
@@ -319,84 +323,71 @@ if(!$INCLUDE){
 		case "open_wysiwyg_window":
 			$INCLUDE = "wysiwygWindow.inc.php";
 			break;
-        //  stuff about accessibility/validation
-        case 'checkDocument':
-            $INCLUDE = 'accessibility/checkDocument.inc.php';    //  Here request is performed
-            break;
-        case 'customValidationService':
-            $INCLUDE = 'we_templates/customizeValidation.inc.php';    //  edit parameters
-            break;
+		//  stuff about accessibility/validation
+		case 'checkDocument':
+			$INCLUDE = 'accessibility/checkDocument.inc.php';		//  Here request is performed
+			break;
+		case 'customValidationService':
+			$INCLUDE = 'we_templates/customizeValidation.inc.php';		//  edit parameters
+			break;
 
 
 		default:
 			// search tools for command
 			$INCLUDE = weToolLookup::getPhpCmdInclude();
-			if(isset($INCLUDE)) {
+			if(isset($INCLUDE)){
 				break;
 			}
-	//	In we.inc.php all names of the installed modules have already been searched
-	//	so we only have to use the array $_we_active_integrated_modules
+			//	In we.inc.php all names of the installed modules have already been searched
+			//	so we only have to use the array $_we_active_integrated_modules
 
 			$foo = false;
 			foreach($_we_available_modules as $m){
-				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "edit_".$m["name"]."_ifthere" && (!in_array($m["name"],$_we_active_integrated_modules))){
+				if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "edit_" . $m["name"] . "_ifthere" && (!in_array($m["name"], $_we_active_integrated_modules))){
 
 					$foo = true;
 					//if ($m["integrated"]) {
-						$_moduleName = $m["text_short"];
-						$INCLUDE="messageModuleNotActivated.inc.php";
+					$_moduleName = $m["text_short"];
+					$INCLUDE = "messageModuleNotActivated.inc.php";
 
-					/*} else {
-						// buyable module that is not installed should be opened
-						print "DEBUG ME";
-					}*/
+					/* } else {
+					  // buyable module that is not installed should be opened
+					  print "DEBUG ME";
+					  } */
 					break;
 				}
 			}
 			if($foo == false){
 				//	This is ONLY used in the edit-mode of the documents.
-                //	This statement prevents the page from being reloaded.
-                print '<script type="text/javascript">
-<!--
-	parent.openedWithWE = 1;
-//-->
-</script>';
-                exit("command '" . $_REQUEST['we_cmd'][0] . "' not known!");
-            }
+				//	This statement prevents the page from being reloaded.
+				print we_html_element::jsElement('parent.openedWithWE = 1;');
+				exit("command '" . $_REQUEST['we_cmd'][0] . "' not known!");
+			}
 	}
 }
 
 
 if($INCLUDE){
-    //  When pressing a link in edit-mode, the page is being reloaded from
-    //  webedition. If a webedition link was pressed this page shall not be
-    //  reloaded. All entries in this array represent values for we_cmd[0]
-    //  when the javascript command shall NOT be inserted (p.ex while saving the file.)
-    //	This is ONLY used in the edit-mode of the documents.
-    $cmds_no_js = array('siteImport','mod_home','import_images','getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
-    if(substr($INCLUDE, 0, 5)=='apps/') {
-    	include($_SERVER['DOCUMENT_ROOT']."/webEdition/".$INCLUDE);
-    }
-    else {
-   		include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/".$INCLUDE);
-    }
-    //  This statement prevents the page from being reloaded
-    if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
+	//  When pressing a link in edit-mode, the page is being reloaded from
+	//  webedition. If a webedition link was pressed this page shall not be
+	//  reloaded. All entries in this array represent values for we_cmd[0]
+	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
+	//	This is ONLY used in the edit-mode of the documents.
+	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
+	if(substr($INCLUDE, 0, 5) == 'apps/'){
+		include(WEBEDITION_PATH . $INCLUDE);
+	} else{
+		include(WEBEDITION_INCLUDES_DIR . $INCLUDE);
+	}
+	//  This statement prevents the page from being reloaded
+	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){
 
-        print '<script type="text/javascript">
-<!--
-    parent.openedWithWE = 1;
-//-->
-</script>';
-    }
+		print we_html_element::jsElement('parent.openedWithWE = 1;');
+	}
 
-    if ( $_REQUEST['we_cmd'][0] == "edit_document" || $_REQUEST['we_cmd'][0] == "switch_edit_page"  || $_REQUEST['we_cmd'][0] == "load_editor" ) {
+	if($_REQUEST['we_cmd'][0] == "edit_document" || $_REQUEST['we_cmd'][0] == "switch_edit_page" || $_REQUEST['we_cmd'][0] == "load_editor"){
 
-    	print we_html_element::jsScript(JS_DIR.'attachKeyListener.js');
-
-    }
-
-
-
-    exit;
+		print we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
+	}
+	exit;
 }

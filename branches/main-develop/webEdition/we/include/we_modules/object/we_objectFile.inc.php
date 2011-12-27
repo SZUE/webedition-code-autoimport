@@ -116,7 +116,7 @@ class we_objectFile extends we_document{
 		if(!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . $this->TableID . ' SET OF_Url="' . $this->Url . '" WHERE OF_ID=' . (int) $this->ID))
 			return false;
 
-		return we_document::we_rewrite();
+		return parent::we_rewrite();
 	}
 
 	function formCopyDocument(){
@@ -767,7 +767,7 @@ class we_objectFile extends we_document{
 				if(!is_array($hrefArr)){
 					$hrefArr = array();
 				}
-				return we_document::getHrefByArray($hrefArr);
+				return parent::getHrefByArray($hrefArr);
 			case 'link':
 				return $this->htmlLinkInput($name, $attribs, false, false);
 			case 'date':
@@ -1194,7 +1194,7 @@ class we_objectFile extends we_document{
 			$out = '<table border="0" cellpadding="0" cellspacing="0" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif">' . $out . '</table>';
 			return '<span class="weObjectPreviewHeadline"><b>' . $n . ($this->DefArray["href_" . $n]["required"] ? "*" : "") . "</b>" . '</span>' . (isset($this->DefArray["href_" . $n]['editdescription']) && $this->DefArray["href_" . $n]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["href_" . $n]['editdescription'] . '</div>' : '<br/>' ) . $out;
 		} else{
-			$out = we_document::getHrefByArray($hrefArr);
+			$out = parent::getHrefByArray($hrefArr);
 			return $this->getPreviewView($n, $out);
 		}
 	}
@@ -1209,7 +1209,7 @@ class we_objectFile extends we_document{
 			}
 			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 			$img = new we_imageDocument();
-			$content = we_document::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+			$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
 			$startTag = $this->getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
@@ -1970,14 +1970,14 @@ class we_objectFile extends we_document{
 				$hrefArr = $elem ? unserialize($elem) : array();
 				if(!is_array($hrefArr))
 					$hrefArr = array();
-				$elem = we_document::getHrefByArray($hrefArr);
+				$elem = parent::getHrefByArray($hrefArr);
 				break;
 			case "link":
 				$link = $elem ? unserialize($elem) : array();
 				if(is_array($link)){
 					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 					$img = new we_imageDocument();
-					$elem = we_document::getLinkContent($link, 0, '', $this->DB_WE, $img);
+					$elem = parent::getLinkContent($link, 0, '', $this->DB_WE, $img);
 				} else{
 					return "";
 				}
@@ -2315,14 +2315,14 @@ class we_objectFile extends we_document{
 	}
 
 	function we_initSessDat($sessDat){
-		we_document::we_initSessDat($sessDat);
+		parent::we_initSessDat($sessDat);
 		$this->DefArray = $this->getDefaultValueArray();
 		$this->i_objectFileInit();
 	}
 
 	function we_ImportSave(){
 		$this->Icon = "objectFile.gif";
-		if(!we_document::we_save(1))
+		if(!parent::we_save(1))
 			return false;
 		if(!$this->ObjectID)
 			return false;
@@ -2405,7 +2405,7 @@ class we_objectFile extends we_document{
 
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if(!we_document::we_save($resave, 1))
+			if(!parent::we_save($resave, 1))
 				return false;
 			if(!$this->ObjectID)
 				return false;
@@ -2500,7 +2500,7 @@ class we_objectFile extends we_document{
 					$from = we_class::LOAD_MAID_DB;
 				}
 			case we_class::LOAD_MAID_DB:
-				we_document::we_load($from);
+				parent::we_load($from);
 				break;
 			case we_class::LOAD_TEMP_DB:
 				$sessDat = unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
@@ -2650,7 +2650,7 @@ class we_objectFile extends we_document{
 			}
 		}
 
-		return we_document::we_delete();
+		return parent::we_delete();
 	}
 
 	function we_republish($rebuildMain=true){
@@ -3056,7 +3056,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_setElementsFromHTTP(){
-		we_document::i_setElementsFromHTTP();
+		parent::i_setElementsFromHTTP();
 		if(sizeof($_REQUEST)){
 
 			$hrefFields = false;

@@ -53,7 +53,7 @@ $GLOBALS['__WE_CMS_URL__'] = $GLOBALS['__WE_BASE_URL__'] . '/cms';
 // add __WE_LIB_PATH__ and __WE_APP_PATH__ to the include_path
 ini_set('include_path', $GLOBALS['__WE_LIB_PATH__'] . PATH_SEPARATOR . $GLOBALS['__WE_APP_PATH__'] . PATH_SEPARATOR . ini_get('include_path'));
 
-require_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR .'we_classes'.DIRECTORY_SEPARATOR.'we_autoloader.class.inc.php');
+require_once($GLOBALS['__WE_BASE_PATH__'] . DIRECTORY_SEPARATOR . 'we' . DIRECTORY_SEPARATOR . 'include' . DIRECTORY_SEPARATOR .'we_classes'.DIRECTORY_SEPARATOR.'we_autoloader.class.php');
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);

@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
 /*  a class for handling text-documents */
 class we_textDocument extends we_document
 {
@@ -91,7 +89,7 @@ class we_textDocument extends we_document
 
 
 	function we_new(){
-		we_document::we_new();
+		parent::we_new();
 		$this->Filename=$this->i_getDefaultFilename();
 
 	}

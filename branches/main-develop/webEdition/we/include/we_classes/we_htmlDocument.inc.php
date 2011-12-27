@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_textContentDocument.inc.php");
-
 class we_htmlDocument extends we_textContentDocument{
 
 	/* Name of the class => important for reconstructing the class from outside the class */
@@ -52,10 +50,10 @@ class we_htmlDocument extends we_textContentDocument{
 				$this->setElement("Charset", $metas["charset"]);
 			}
 		}
-		return we_textContentDocument::i_saveContentDataInDB();
+		return parent::i_saveContentDataInDB();
 	}
 	function makeSameNew(){
-		we_textContentDocument::makeSameNew();
+		parent::makeSameNew();
 		$this->Icon = "prog.gif";
 
 	}

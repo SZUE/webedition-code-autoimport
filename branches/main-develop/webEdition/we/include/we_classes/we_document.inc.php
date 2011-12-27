@@ -65,7 +65,7 @@ class we_document extends we_root{
 	// Constructor
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language','schedArr');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr');
 	}
 
 	function copyDoc($id){
@@ -271,15 +271,15 @@ class we_document extends we_root{
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
 		if($this->ID == 0 && $_REQUEST['we_cmd'][0] == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
-			if($this->ContentType == 'text/html'){		//	is HTML-File
+			if($this->ContentType == 'text/html'){ //	is HTML-File
 				$selected = (defined('DEFAULT_HTML_EXT') ? DEFAULT_HTML_EXT : '.html');
 			} else if($this->ContentType == 'text/webedition'){ //	webEdition Document
-				if($this->IsDynamic == 1){			//	dynamic
+				if($this->IsDynamic == 1){	//	dynamic
 					$selected = (defined('DEFAULT_DYNAMIC_EXT') ? DEFAULT_DYNAMIC_EXT : '.php');
-				} else{					//	static
+				} else{	 //	static
 					$selected = (defined('DEFAULT_STATIC_EXT') ? DEFAULT_STATIC_EXT : '.html');
 				}
-			} else{					 //	no webEdition Document
+			} else{	 //	no webEdition Document
 				$selected = $this->Extension;
 			}
 		} else{ //	bestehendes Dokument oder Dokument mit DocType
@@ -526,11 +526,9 @@ class we_document extends we_root{
 
 	function addEntryToList($name, $number=1){
 		$list = $this->getElement($name);
-		if($list){
-			$listarray = unserialize($list);
-		} else{
-			$listarray = array();
-		}
+
+		$listarray = $list ? unserialize($list):array();
+
 		if(!is_array($listarray)){
 			$listarray = array();
 		} //bug #4079
@@ -563,11 +561,8 @@ class we_document extends we_root{
 
 	function insertEntryAtList($name, $nr, $number=1){
 		$list = $this->getElement($name);
-		if($list){
-			$listarray = unserialize($list);
-		} else{
-			$listarray = array();
-		}
+
+		$listarray = $list ? unserialize($list) : array();
 
 		for($f = 0; $f < $number; $f++){
 
@@ -592,9 +587,10 @@ class we_document extends we_root{
 
 	function upEntryAtList($name, $nr, $number=1){
 		$list = $this->getElement($name);
-		if($list){
-			$listarray = unserialize($list);
+		if(!$list){
+			return;
 		}
+		$listarray = unserialize($list);
 		if($nr - $number < 0){
 			$number = $nr;
 		}
@@ -608,9 +604,10 @@ class we_document extends we_root{
 
 	function downEntryAtList($name, $nr, $number=1){
 		$list = $this->getElement($name);
-		if($list){
-			$listarray = unserialize($list);
+		if(!$list){
+			return;
 		}
+		$listarray = unserialize($list);
 		$max = max(array_keys($listarray));
 		if($nr + $number > $max){
 			$number = $max - $nr;
@@ -624,21 +621,18 @@ class we_document extends we_root{
 
 	function removeEntryFromList($name, $nr, $names='', $isBlock=false){
 		$list = $this->getElement($name);
+		$listarray = $list ? unserialize($list) : array();
 		if($list){
-			$listarray = unserialize($list);
 			$namesArray = $names ? explode(',', $names) : array();
 			for($i = 0; $i < sizeof($namesArray); $i++){
 				unset($this->elements[$namesArray[$i] . ($isBlock ? ('blk_' . $name . '_') : '') . $listarray[$nr]]);
 			}
-		} else{
-			$listarray = array();
+			if(is_array($listarray)){// Bug #4079
+				unset($listarray[$nr]);
+			}
 		}
 
-		if(is_array($listarray)){// Bug #4079
-			array_splice($listarray, $nr, 1);
-		}
-		$list = serialize($listarray);
-		$this->setElement($name, $list);
+		$this->setElement($name, serialize($listarray));
 	}
 
 	function addLinkToLinklist($name){
@@ -704,7 +698,7 @@ class we_document extends we_root{
 	 */
 
 	function we_new(){
-		we_root::we_new();
+		parent::we_new();
 		$this->i_setExtensions();
 		if(is_array($this->Extensions) && sizeof($this->Extensions)){
 			$this->Extension = $this->Extensions[0];
@@ -743,7 +737,7 @@ class we_document extends we_root{
 		/* version */
 		$version = new weVersions();
 
-		if(!we_root::we_save($resave))
+		if(!parent::we_save($resave))
 			return false;
 		$ret = $this->i_writeDocument();
 		$this->OldPath = $this->Path;
@@ -784,7 +778,7 @@ class we_document extends we_root{
 	}
 
 	function we_load($from=we_class::LOAD_MAID_DB){
-		we_root::we_load($from);
+		parent::we_load($from);
 		// Navigation items
 		$this->i_setExtensions();
 	}
@@ -806,7 +800,7 @@ class we_document extends we_root{
 
 	// reverse function to saveInSession !!!
 	function we_initSessDat($sessDat){
-		we_root::we_initSessDat($sessDat);
+		parent::we_initSessDat($sessDat);
 		if(defined('SCHEDULE_TABLE')){
 			if(
 				isset($_REQUEST['we_' . $this->Name . '_From_day'])
@@ -849,7 +843,7 @@ class we_document extends we_root{
 	}
 
 	function we_delete(){
-		if(!we_root::we_delete())
+		if(!parent::we_delete())
 			return false;
 		if(!$this->i_deleteSiteDir())
 			return false;
@@ -1057,13 +1051,13 @@ class we_document extends we_root{
 						$img->setElement('name', $_useName, 'dat');
 					}
 
-					$xml = weTag_getAttribute('xml', $attribs,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1),true, false);
+					$xml = weTag_getAttribute('xml', $attribs, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1), true, false);
 					$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
 						if($only == 'content'){
 							return self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $htmlspecialchars, $hidedirindex, $objectseourls);
 						} else{
-							return isset($link[$only]) ? $link[$only] : '';	// #3636
+							return isset($link[$only]) ? $link[$only] : ''; // #3636
 						}
 					} else{
 
@@ -1368,7 +1362,7 @@ class we_document extends we_root{
 				$img = new we_imageDocument();
 			}
 			//   image attribs
-			foreach($_imgAtts as $att){	//  take all attribs belonging to image inside content
+			foreach($_imgAtts as $att){ //  take all attribs belonging to image inside content
 				$img_attribs[$att] = isset($link[$att]) ? $link[$att] : '';
 			}
 
@@ -1396,14 +1390,14 @@ class we_document extends we_root{
 			}
 
 			//   2nd take all atts given in link-array - from function we_tag_link()
-			foreach($link AS $k => $v){	//   define all attribs - later we can remove/overwrite them
+			foreach($link AS $k => $v){ //   define all attribs - later we can remove/overwrite them
 				if($v != '' && !in_array($k, $_we_linkAtts) && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
 					$_linkAttribs[$k] = $v;
 				}
 			}
 
 			//   3rd we take attribs given from we:link,
-			foreach($attribs AS $k => $v){	//   define all attribs - later we can remove/overwrite them
+			foreach($attribs AS $k => $v){ //   define all attribs - later we can remove/overwrite them
 				if($v != '' && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
 					$_linkAttribs[$k] = $v;
 				}
@@ -1432,7 +1426,7 @@ class we_document extends we_root{
 			}
 
 
-			if(isset($_popUpCtrl['jswin']) && $_popUpCtrl['jswin']){	 //  add attribs for popUp-window
+			if(isset($_popUpCtrl['jswin']) && $_popUpCtrl['jswin']){ //  add attribs for popUp-window
 				$js = "var we_winOpts = '';";
 				if(isset($_popUpCtrl["jscenter"]) && $_popUpCtrl["jscenter"] && isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] && isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"]){
 					$js .= 'if (window.screen) {var w = ' . $_popUpCtrl["jswidth"] . ';var h = ' . $_popUpCtrl["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';

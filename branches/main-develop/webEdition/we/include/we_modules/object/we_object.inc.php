@@ -1366,7 +1366,7 @@ class we_object extends we_document {
 		}
 		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$img = new we_imageDocument();
-		$content = we_document::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
+		$content = parent::getLinkContent($link,$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
 
 		$startTag = $this->getLinkStartTag($link,$attribs,$this->ParentID,$this->Path,$GLOBALS['DB_WE'],$img);
 		$editbut = we_button::create_button("edit", "javascript:we_cmd('edit_link_at_class','".$n."','','".$i."');");
@@ -2243,7 +2243,7 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	function we_initSessDat($sessDat){
 		//	charset must be in other namespace -> for header !!!
 		$this->elements["Charset"]["dat"] = (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : "");
-		we_document::we_initSessDat($sessDat);
+		parent::we_initSessDat($sessDat);
 		$this->setSort();
 	}
 

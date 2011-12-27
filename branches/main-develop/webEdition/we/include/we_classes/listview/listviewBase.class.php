@@ -22,14 +22,11 @@
  * @package    webEdition_listview
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php');
 
 /*
   This array stores listviews
 
  */
-
-$GLOBALS['we_listviews_array'] = array();
 
 /**
  * class    listviewBase

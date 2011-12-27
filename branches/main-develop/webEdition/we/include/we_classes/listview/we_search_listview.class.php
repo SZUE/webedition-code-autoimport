@@ -37,7 +37,6 @@ class we_search_listview extends listviewBase{
 	var $class = 0;	 /* ID of a class. Search only in Objects of this class */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $ClassName = __CLASS__;
-	var $customerFilterType = 'off';
 	var $languages = ""; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;

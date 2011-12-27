@@ -176,7 +176,7 @@ class we_baseElement{
 	function getHTML(){
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
-			$out.=' ' . $k . (!isset($v) ? '="' . $v . '"' : '');
+			$out.=' ' . $k . (isset($v) ? '="' . $v . '"' : '');
 		}
 		$out.=">" . $this->content;
 		if($this->need_end_tag){

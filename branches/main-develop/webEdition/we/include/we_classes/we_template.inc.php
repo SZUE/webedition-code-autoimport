@@ -283,11 +283,11 @@ class we_template extends we_document{
 		// echoed in templates with CacheType = document
 		$pre_code = '<?php
 	// Activate the webEdition error handler
-	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_error_handler.inc.php");
+	include_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_error_handler.inc.php\');
 	we_error_handler(false);
 
-	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_global.inc.php");
-	include_once($_SERVER[\'DOCUMENT_ROOT\']."/webEdition/we/include/we_tag.inc.php");
+	include_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_global.inc.php\');
+	include_once($_SERVER[\'DOCUMENT_ROOT\'].\'/webEdition/we/include/we_tag.inc.php\');
 	we_templateInit();?>';
 
 
@@ -303,15 +303,15 @@ class we_template extends we_document{
 			//#### parse base href
 			$code = preg_replace('%(</title>)%i', '\1<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>', $code);
 
-			$code = str_replace('</head>', "$head</head>", $code);
+			$code = str_replace('</head>', $head.'</head>', $code);
 
 			$code = str_replace('?>', '__WE_?__WE__', str_replace('=>', '__WE_=__WE__', $code));
 
-			$code = preg_replace('%(<body[^>]*)(>)%i', "\\1<?php if(isset(\$GLOBALS[\"we_editmode\"]) && \$GLOBALS[\"we_editmode\"]) print ' onUnload=\"doUnload()\"'; ?>\\2$preContent", $code);
+			$code = preg_replace('%(<body[^>]*)(>)%i', "\\1<?php if(isset(\$GLOBALS[\"we_editmode\"]) && \$GLOBALS[\"we_editmode\"]) print ' onunload=\"doUnload()\"'; ?>\\2$preContent", $code);
 
 			$code = str_replace('__WE_?__WE__', '?>', str_replace('__WE_=__WE__', '=>', $code));
 
-			$code = str_replace('</body>', "$postContent</body>", $code);
+			$code = str_replace('</body>', $postContent.'</body>', $code);
 		} else if(!$this->hasStartAndEndTag("html", $code) && !$this->hasStartAndEndTag("head", $code) && !$this->hasStartAndEndTag("body", $code)){
 			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>' . $head . '</head>
 <body <?php if(isset($we_editmode) && $we_editmode) print " onUnload=\"doUnload()\""; ?>>
@@ -796,7 +796,7 @@ class we_template extends we_document{
 							$includedTemplateCode = $templObj->getTemplateCode($completeCode);
 							// replace include tag with template code
 							$code = str_replace($tag, $includedTemplateCode, $code);
-							$this->IncludedTemplates .= "," . abs($att["id"]);
+							$this->IncludedTemplates .= "," . intval($att["id"]);
 						}
 					}
 				}
@@ -821,7 +821,7 @@ class we_template extends we_document{
 		} else{
 			$this->doUpdateCode = false;
 		}
-		$_ret = we_document::we_save($resave);
+		$_ret = parent::we_save($resave);
 		if($_ret){
 			$tmplPathWithTmplExt = parent::getRealPath();
 			if(file_exists($tmplPathWithTmplExt)){
@@ -843,7 +843,7 @@ class we_template extends we_document{
 	}
 
 	function we_load($from=we_class::LOAD_MAID_DB){
-		we_document::we_load($from);
+		parent::we_load($from);
 		$ct=new we_base_ContentTypes();
 		$this->Extension = $ct->getExtension("text/weTmpl");
 		$this->_updateCompleteCode();
