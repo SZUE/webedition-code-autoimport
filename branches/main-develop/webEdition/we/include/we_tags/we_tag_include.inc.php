@@ -111,7 +111,7 @@ function we_tag_include($attribs, $content){
 
 		$we_unique = isset($GLOBALS['we_unique']) ? ++$GLOBALS['we_unique'] : ($GLOBALS['we_unique'] = 1);
 		if(isset($GLOBALS['we']['backVars'])){
-			$we_unique = count($GLOBALS['we']['backVars']) + 1;
+			$we_unique = max($GLOBALS['we']['backVars']) + 1;
 		} else{
 			$we_unique = 1;
 			$GLOBALS['we']['backVars'] = array();
