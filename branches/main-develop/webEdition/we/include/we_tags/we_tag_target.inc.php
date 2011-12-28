@@ -25,5 +25,5 @@
 //used in we:linkedlist
 function we_tag_target($attribs,$content){
 	//inside linklist
-	return $GLOBALS['we_ll']->getTarget();
+	return $GLOBALS['we']['ll']->getTarget();
 }

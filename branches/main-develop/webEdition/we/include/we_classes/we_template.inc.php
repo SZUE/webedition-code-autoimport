@@ -259,6 +259,9 @@ class we_template extends we_document{
 			$var = create_function('', '?>' . $code . '<?php ');
 			if(empty($var) && ( $error = error_get_last() )){
 				$tmp = explode("\n", $code);
+				if(!is_array($tmp)){
+					$tmp = explode("\r", $code);
+				}
 				$errCode = "\n";
 				for($ln = $error['line'] - 2; $ln <= $error['line'] + 2; $ln++){
 					$errCode.=$ln . ': ' . $tmp[$ln] . "\n";

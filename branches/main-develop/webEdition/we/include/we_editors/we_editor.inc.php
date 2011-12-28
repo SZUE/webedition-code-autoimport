@@ -36,6 +36,7 @@ $we_dt = isset($_SESSION["we_data"][$we_transaction]) ? $_SESSION["we_data"][$we
 include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 $_insertReloadFooter = "";
+$wasNew=0;
 
 switch($_REQUEST['we_cmd'][0]) {
 	case "load_editor":

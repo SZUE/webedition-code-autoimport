@@ -95,9 +95,11 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size) 
 }
 
 function we_tag_ifPosition($attribs, $content){
-	global $lv;
 	//	content is not needed in this tag
-
+	//Hack for linklist
+	if(isset($GLOBALS['we']['ll'])){
+		$attribs['type']='linklist';
+	}
 	if (($missingAttrib = attributFehltError($attribs, "type", "ifPosition")
 					|| attributFehltError($attribs, "position", "ifPosition"))) {
 		print $missingAttrib;
@@ -114,7 +116,7 @@ function we_tag_ifPosition($attribs, $content){
 	switch ($type) {
 		case "listview" : //	inside a listview, we take direct global listview object
 			foreach ($positionArray as $_position) {
-				$tmp=_we_tag_ifPosition_op($_position,$_size,$operator,$lv->count,$lv->anz);
+				$tmp=_we_tag_ifPosition_op($_position,$_size,$operator,$GLOBALS['lv']->count,$GLOBALS['lv']->anz);
 				if($tmp!==-1){
 					return $tmp;
 				}
@@ -123,13 +125,14 @@ function we_tag_ifPosition($attribs, $content){
 
 		case "linklist" : //	look in fkt we_tag_linklist and callss we_linklist for details
 			//	first we must get right array !!!
-			$missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
+			$_reference=$GLOBALS['we']['ll']->getName();
+			/*$missingAttrib = attributFehltError($attribs, "reference", "ifPosition");
 			if ($missingAttrib) {
 				print $missingAttrib;
 				return "";
 			}
 			$_reference = weTag_getAttribute("reference", $attribs);
-
+*/
 			foreach ($GLOBALS['we_position']['linklist'] as $name => $arr) {
 
 				if (strpos($name, $_reference) === 0) {
