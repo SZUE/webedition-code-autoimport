@@ -69,7 +69,7 @@ function we_tag_include($attribs, $content){
 			return '';
 		}
 		$db = new DB_WE();
-		$realPath='';
+		$realPath = '';
 		if($id){
 			$__id__ = ($id == '' ? '' : $id);
 			$db->query('SELECT Path,IsDynamic,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
@@ -118,25 +118,29 @@ function we_tag_include($attribs, $content){
 		}
 		$GLOBALS['we']['backVars'][$we_unique] = array(
 			'we_doc' => clone($GLOBALS['we_doc']),
-			'WE_IS_DYN' => isset($GLOBALS['WE_IS_DYN']) ? 1 : 0,
-			'WE_DOC_ID' => $GLOBALS['WE_DOC_ID'],
-			'WE_DOC_ParentID' => $GLOBALS['WE_DOC_ParentID'],
-			'WE_DOC_Path' => $GLOBALS['WE_DOC_Path'],
-			'WE_DOC_IsDynamic' => $GLOBALS['WE_DOC_IsDynamic'],
-			'WE_DOC_FILENAME' => $GLOBALS['WE_DOC_FILENAME'],
-			'WE_DOC_Category' => $GLOBALS['WE_DOC_Category'],
-			'WE_DOC_EXTENSION' => $GLOBALS['WE_DOC_EXTENSION'],
-			'TITLE' => $GLOBALS['TITLE'],
-			'KEYWORDS' => $GLOBALS['KEYWORDS'],
-			'DESCRIPTION' => $GLOBALS['DESCRIPTION'],
-			'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
-			'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
-			'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
-			'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
-			'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : 'text/webedition',
-			'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
-			'pv_tid' => isset($_REQUEST['pv_tid']) ? $_REQUEST['pv_tid'] : '',
-		);
+			'GLOBAL' => array(
+				'WE_IS_DYN' => isset($GLOBALS['WE_IS_DYN']) ? 1 : 0,
+				'WE_DOC_ID' => $GLOBALS['WE_DOC_ID'],
+				'WE_DOC_ParentID' => $GLOBALS['WE_DOC_ParentID'],
+				'WE_DOC_Path' => $GLOBALS['WE_DOC_Path'],
+				'WE_DOC_IsDynamic' => $GLOBALS['WE_DOC_IsDynamic'],
+				'WE_DOC_FILENAME' => $GLOBALS['WE_DOC_FILENAME'],
+				'WE_DOC_Category' => $GLOBALS['WE_DOC_Category'],
+				'WE_DOC_EXTENSION' => $GLOBALS['WE_DOC_EXTENSION'],
+				'TITLE' => $GLOBALS['TITLE'],
+				'KEYWORDS' => $GLOBALS['KEYWORDS'],
+				'DESCRIPTION' => $GLOBALS['DESCRIPTION'],
+				'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
+				'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
+				'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
+				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
+				'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : 'text/webedition',
+			),
+			'REQUEST' => array(
+				'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
+				'pv_tid' => isset($_REQUEST['pv_tid']) ? $_REQUEST['pv_tid'] : '',
+				'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
+			));
 
 		if(isset($GLOBALS['WE_IS_DYN'])){
 			unset($GLOBALS['WE_IS_DYN']);
@@ -162,25 +166,14 @@ function we_tag_include($attribs, $content){
 		eval('?>' . str_replace('\'', "\'", $content));
 
 		$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
-		$GLOBALS['WE_DOC_ID'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_ID'];
-		$GLOBALS['WE_DOC_ParentID'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_ParentID'];
-		$GLOBALS['WE_DOC_Path'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_Path'];
-		$GLOBALS['WE_DOC_IsDynamic'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_IsDynamic'];
-		$GLOBALS['WE_DOC_FILENAME'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_FILENAME'];
-		$GLOBALS['WE_DOC_Category'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_Category'];
-		$GLOBALS['WE_DOC_EXTENSION'] = $GLOBALS['we']['backVars'][$we_unique]['WE_DOC_EXTENSION'];
-		$GLOBALS['TITLE'] = $GLOBALS['we']['backVars'][$we_unique]['TITLE'];
-		$GLOBALS['KEYWORDS'] = $GLOBALS['we']['backVars'][$we_unique]['KEYWORDS'];
-		$GLOBALS['DESCRIPTION'] = $GLOBALS['we']['backVars'][$we_unique]['DESCRIPTION'];
-		$GLOBALS['we_cmd'] = $_REQUEST['we_cmd'] = $GLOBALS['we']['backVars'][$we_unique]['we_cmd'];
-		$GLOBALS['FROM_WE_SHOW_DOC'] = $GLOBALS['we']['backVars'][$we_unique]['FROM_WE_SHOW_DOC'];
-		$GLOBALS['we_transaction'] = $GLOBALS['we']['backVars'][$we_unique]['we_transaction'];
-		$GLOBALS['we_editmode'] = $GLOBALS['we']['backVars'][$we_unique]['we_editmode'];
-		$GLOBALS['we_ContentType'] = $GLOBALS['we']['backVars'][$we_unique]['we_ContentType'];
-		$_REQUEST['pv_id'] = $GLOBALS['we']['backVars'][$we_unique]['pv_id'];
-		$_REQUEST['pv_tid'] = $GLOBALS['we']['backVars'][$we_unique]['pv_tid'];
+		foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key=>$val){
+			$GLOBALS[$key]=$val;
+		}
+		foreach($GLOBALS['we']['backVars'][$we_unique]['REQUEST'] as $key=>$val){
+			$_REQUEST[$key]=$val;
+		}
 
-		if($GLOBALS['we']['backVars'][$we_unique]['WE_IS_DYN']){
+		if($GLOBALS['we']['backVars'][$we_unique]['GLOBAL']['WE_IS_DYN']){
 			$GLOBALS['WE_IS_DYN'] = 1;
 		} else if(isset($GLOBALS['WE_IS_DYN'])){
 			unset($GLOBALS['WE_IS_DYN']);
