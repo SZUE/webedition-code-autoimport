@@ -5719,12 +5719,12 @@ else {
 
 				array_push($_settings, array("headline" => $l_prefs["general_seoinside"], "noline" => 1));
 				array_push($_settings, array("html" => htmlAlertAttentionBox($l_prefs["general_seoinside_description"],2,480),"noline" => 1));
-				$_php_setting = new we_htmlSelect(array("name" => "seoinside__hideineditmode","class"=>"weSelect"));
+				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideineditmode","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
-				$_php_setting->selectOption(get_value("seoinside__hideineditmode"));
+				$_php_setting->selectOption(get_value("seoinside_hideineditmode"));
 				array_push($_settings, array("headline" => $l_prefs["seoinside_hideineditmode"], "html" => $_php_setting->getHtmlCode(), "space" => 200,"noline" => 1));
-				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideineditmode","class"=>"weSelect"));
+				$_php_setting = new we_htmlSelect(array("name" => "seoinside_hideinwebedition","class"=>"weSelect"));
 				$_php_setting->addOption(0,"false");
 				$_php_setting->addOption(1,"true");
 				$_php_setting->selectOption(get_value("seoinside_hideinwebedition"));

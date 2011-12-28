@@ -304,10 +304,22 @@ function log_error_message($type, $message, $file, $_line) {
 		mysql_query($_query);
 
 		if (mysql_affected_rows() != 1) {
-			die('Cannot log error! Query failed: ' . mysql_error());
+			$_query = 'INSERT INTO ' . $tbl . ' SET Type=\''.mysql_real_escape_string($_type).'\',
+			`Function`=\''.mysql_real_escape_string($_caller).'\',
+			File=\'' . mysql_real_escape_string($_file) . '\',
+			Line=\'' . abs($_line) . '\',
+			Text=\'' . mysql_real_escape_string($_text) . '\',
+			Backtrace=\'' . mysql_real_escape_string($_detailedError) . '\','.
+			'Request=\''.(isset($_REQUEST)?mysql_real_escape_string(print_r($_REQUEST,true)):' - ').'\','.
+			'Session=\' - \','.
+			'Server=\''.mysql_real_escape_string(print_r($_SERVER,true)).'\';';
+			mysql_query($_query);//neuer Versuch ohne Session falls zu groß
+			if (mysql_affected_rows() != 1) {	
+				//kein 'die' mehr! 
+			}
 		}
 	} else {
-		die('Cannot log error! Database connection not known.');
+		// die('Cannot log error! Database connection not known.');kein 'die' mehr
 	}
 }
 
