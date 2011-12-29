@@ -22,11 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
-if(defined('CUSTOMER_TABLE')){
-	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php");
-}
 
 /**
  * simplified representation of the navigation item
@@ -610,32 +605,33 @@ class weNavigationItems{
 		$this->items = array();
 		$this->rootItem = $parentid;
 		$this->setDefaultTemplates();
-
+		//$start_memory = memory_get_usage();
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/navigation_' . $parentid . '.php';
 
 		if(!file_exists($_cache)){
 			return false;
 		}
 		$_part = weFile::loadPart($_cache, 0, 10);
-		if(stripos($_part, "<?php") !== false){ //was #3849
-			include ($_cache);
-		} else{
-			$navigationItemsStorage = weFile::load($_cache);
-		}
+		/* 		if(stripos($_part, "<?php") !== false){ //was #3849
+		  include ($_cache);
+		  } else{ */
+		$navigationItemsStorage = weFile::load($_cache);
+		//}
 
 		$this->items = unserialize($navigationItemsStorage);
 		unset($navigationItemsStorage);
+//		echo memory_get_usage() - $start_memory;
 
 		$this->items['id' . $parentid]->type = $showRoot ? ($_parent == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
 
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/rules.php';
 		if(file_exists($_cache)){
 			$_part = weFile::loadPart($_cache, 0, 10);
-			if(stripos($_part, "<?php") !== false){ //was #3849
-				include ($_cache);
-			} else{
-				$navigationRulesStorage = weFile::load($_cache);
-			}
+			/* if(stripos($_part, "<?php") !== false){ //was #3849
+			  include ($_cache);
+			  } else{ */
+			$navigationRulesStorage = weFile::load($_cache);
+			//}
 			$this->currentRules = unserialize($navigationRulesStorage);
 			foreach($this->currentRules as &$rule){ //#Bug 4142
 				$rule->renewDB();

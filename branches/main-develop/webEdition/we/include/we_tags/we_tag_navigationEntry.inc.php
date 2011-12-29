@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
 function we_parse_tag_navigationEntry($attribs, $content) {
 	return '<?php printElement('.we_tag_tagParser::printTag('navigationEntry',$attribs,$content,true).');?>';
