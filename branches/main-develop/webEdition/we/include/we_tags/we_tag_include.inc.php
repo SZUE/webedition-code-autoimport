@@ -23,7 +23,59 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_include($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
+	return '<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>';
+}
+
+function we_setBackVar($we_unique){
+			$GLOBALS['we']['backVars'][$we_unique] = array(
+			'we_doc' => clone($GLOBALS['we_doc']),
+			'GLOBAL' => array(
+				'WE_IS_DYN' => isset($GLOBALS['WE_IS_DYN']) ? 1 : 0,
+				'WE_DOC_ID' => $GLOBALS['WE_DOC_ID'],
+				'WE_DOC_ParentID' => $GLOBALS['WE_DOC_ParentID'],
+				'WE_DOC_Path' => $GLOBALS['WE_DOC_Path'],
+				'WE_DOC_IsDynamic' => $GLOBALS['WE_DOC_IsDynamic'],
+				'WE_DOC_FILENAME' => $GLOBALS['WE_DOC_FILENAME'],
+				'WE_DOC_Category' => $GLOBALS['WE_DOC_Category'],
+				'WE_DOC_EXTENSION' => $GLOBALS['WE_DOC_EXTENSION'],
+				'TITLE' => $GLOBALS['TITLE'],
+				'KEYWORDS' => $GLOBALS['KEYWORDS'],
+				'DESCRIPTION' => $GLOBALS['DESCRIPTION'],
+				'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
+				'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
+				'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
+				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
+				'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : 'text/webedition',
+			),
+			'REQUEST' => array(
+				'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
+				'pv_tid' => isset($_REQUEST['pv_tid']) ? $_REQUEST['pv_tid'] : '',
+				'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
+			));
+
+		if(isset($GLOBALS['WE_IS_DYN'])){
+			unset($GLOBALS['WE_IS_DYN']);
+		}
+		unset($_REQUEST['pv_id']);
+		unset($_REQUEST['pv_tid']);
+}
+
+function we_resetBackVar($we_unique){
+			$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
+		foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key => $val){
+			$GLOBALS[$key] = $val;
+		}
+		foreach($GLOBALS['we']['backVars'][$we_unique]['REQUEST'] as $key => $val){
+			$_REQUEST[$key] = $val;
+		}
+
+		if($GLOBALS['we']['backVars'][$we_unique]['GLOBAL']['WE_IS_DYN']){
+			$GLOBALS['WE_IS_DYN'] = 1;
+		} else if(isset($GLOBALS['WE_IS_DYN'])){
+			unset($GLOBALS['WE_IS_DYN']);
+		}
+		unset($GLOBALS['we']['backVars'][$we_unique]);
+
 }
 
 function we_tag_include($attribs, $content){
@@ -109,46 +161,18 @@ function we_tag_include($attribs, $content){
 			}
 		}
 
-		$we_unique = isset($GLOBALS['we_unique']) ? ++$GLOBALS['we_unique'] : ($GLOBALS['we_unique'] = 1);
-		if(isset($GLOBALS['we']['backVars'])){
-			$we_unique = max($GLOBALS['we']['backVars']) + 1;
+		if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
+				end($GLOBALS['we']['backVars']);
+				$we_unique = key($GLOBALS['we']['backVars']) + 1;
 		} else{
 			$we_unique = 1;
 			$GLOBALS['we']['backVars'] = array();
 		}
-		$GLOBALS['we']['backVars'][$we_unique] = array(
-			'we_doc' => clone($GLOBALS['we_doc']),
-			'GLOBAL' => array(
-				'WE_IS_DYN' => isset($GLOBALS['WE_IS_DYN']) ? 1 : 0,
-				'WE_DOC_ID' => $GLOBALS['WE_DOC_ID'],
-				'WE_DOC_ParentID' => $GLOBALS['WE_DOC_ParentID'],
-				'WE_DOC_Path' => $GLOBALS['WE_DOC_Path'],
-				'WE_DOC_IsDynamic' => $GLOBALS['WE_DOC_IsDynamic'],
-				'WE_DOC_FILENAME' => $GLOBALS['WE_DOC_FILENAME'],
-				'WE_DOC_Category' => $GLOBALS['WE_DOC_Category'],
-				'WE_DOC_EXTENSION' => $GLOBALS['WE_DOC_EXTENSION'],
-				'TITLE' => $GLOBALS['TITLE'],
-				'KEYWORDS' => $GLOBALS['KEYWORDS'],
-				'DESCRIPTION' => $GLOBALS['DESCRIPTION'],
-				'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
-				'FROM_WE_SHOW_DOC' => isset($GLOBALS['FROM_WE_SHOW_DOC']) ? $GLOBALS['FROM_WE_SHOW_DOC'] : '',
-				'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
-				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
-				'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : 'text/webedition',
-			),
-			'REQUEST' => array(
-				'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
-				'pv_tid' => isset($_REQUEST['pv_tid']) ? $_REQUEST['pv_tid'] : '',
-				'we_cmd' => isset($_REQUEST['we_cmd']) ? $_REQUEST['we_cmd'] : '',
-			));
+		//create empty array
+		$GLOBALS['we']['backVars'][$we_unique] = array();
 
-		if(isset($GLOBALS['WE_IS_DYN'])){
-			unset($GLOBALS['WE_IS_DYN']);
-		}
-		unset($_REQUEST['pv_id']);
-		unset($_REQUEST['pv_tid']);
 
-		if(we_tag('ifSeeMode', array())){
+		if(we_tag('ifSeeMode')){
 			if($seeMode){ //	only show link to seeMode, when id is given
 				if($id){
 					$content .= '<a href="' . $id . '" seem="include"></a>';
@@ -163,22 +187,9 @@ function we_tag_include($attribs, $content){
 			$content = eregi_replace('< ?/ ?form[^>]*>', '', $content);
 		}
 
-		eval('?>' . str_replace('\'', "\'", $content));
-
-		$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
-		foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key=>$val){
-			$GLOBALS[$key]=$val;
-		}
-		foreach($GLOBALS['we']['backVars'][$we_unique]['REQUEST'] as $key=>$val){
-			$_REQUEST[$key]=$val;
-		}
-
-		if($GLOBALS['we']['backVars'][$we_unique]['GLOBAL']['WE_IS_DYN']){
-			$GLOBALS['WE_IS_DYN'] = 1;
-		} else if(isset($GLOBALS['WE_IS_DYN'])){
-			unset($GLOBALS['WE_IS_DYN']);
-		}
-		unset($GLOBALS['we']['backVars'][$we_unique]);
+		return 'we_setBackVar('.$we_unique.');'.
+		'eval(\'?>' . str_replace('\'',"\'",$content).'\');'.
+		'we_resetBackVar('.$we_unique.');';
 	}
 	return '';
 }

@@ -42,7 +42,7 @@ $_credits = '<br /><span style="line-height:160%">'
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
 if(defined('WE_SVNREV') && WE_SVNREV!='0000') $we_version .= WE_VERSION.' (SVN-Revision: '.WE_SVNREV.')';
-if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' ) $we_version .= ' '.$l_global[WE_VERSION_SUPP];
+if(defined("WE_VERSION_SUPP") && WE_VERSION_SUPP!='' ) $we_version .= ' '.g_l('global','['.WE_VERSION_SUPP.']');
 if(defined("WE_VERSION_SUPP_VERSION") && WE_VERSION_SUPP_VERSION!='0' ) $we_version .= WE_VERSION_SUPP_VERSION;
 }
 
