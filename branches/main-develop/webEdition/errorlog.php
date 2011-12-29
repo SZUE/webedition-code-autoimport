@@ -138,7 +138,7 @@ we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_bu
 		'html' => $nextprev,
 		'space' => $_space_size
 	);
-	$record=getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By Date DESC LIMIT ' . $start . ',1',$db);
+	$record=getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT ' . $start . ',1',$db);
 		$_parts[] = array(
 			'html' => getInfoTable($record),
 			'space' => $_space_size

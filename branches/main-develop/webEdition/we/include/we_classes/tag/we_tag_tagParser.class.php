@@ -27,6 +27,8 @@ class we_tag_tagParser{
 	private $lastpos = 0;
 	private $tags = array();
 	private static $CloseTags = 0;
+	//remove comment-attribute (should never be seen), and obsolete cachelifetime
+	private $removeAttribs = array('cachelifetime', 'comment');
 
 	//private $AppListviewItemsTags = array();
 
@@ -80,12 +82,12 @@ class we_tag_tagParser{
 	private function setAllTags($code){
 		$this->tags = array();
 		$foo = array();
-		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $foo, PREG_SET_ORDER);
+		preg_match_all('%</?we:([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $code, $foo, PREG_SET_ORDER);
 		foreach($foo as $f){
-			if(substr($f[1], -1) == '<'){
-				$f[1] = substr($f[1], 0, strlen($f[1]) - 1);
-			}
-			array_push($this->tags, $f[1]);
+			/* 			if(substr($f[1], -1) == '<'){
+			  $f[1] = substr($f[1], 0, strlen($f[1]) - 1);
+			  } */
+			$this->tags[] = $f[0];
 		}
 	}
 
@@ -117,13 +119,13 @@ class we_tag_tagParser{
 		$_foo = array();
 		$_rettags = array();
 
-		preg_match_all("|(</?we:[^><]+[<>])|U", $code, $_foo, PREG_SET_ORDER);
+		preg_match_all('%</?we:([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $code, $foo, PREG_SET_ORDER);
 
-		foreach($_foo as $f){
-			if(substr($f[1], -1) == '<'){
-				$f[1] = substr($f[1], 0, strlen($f[1]) - 1);
-			}
-			array_push($_tmpTags, $f[1]);
+		foreach($foo as $f){
+			/* 			if(substr($f[1], -1) == '<'){
+			  $f[1] = substr($f[1], 0, strlen($f[1]) - 1);
+			  } */
+			$_tmpTags[] = $f[0];
 		}
 
 		//	only Meta-tags, description, keywords, title and charset
@@ -182,6 +184,10 @@ class we_tag_tagParser{
 		for($ipos = $start; $ipos < $ende;){
 			if($this->tags[$ipos]){
 				$tmp = $this->parseTag($code, $ipos); //	dont add postname tagname in ignorearray
+				if(!is_numeric($tmp)){
+					//parser-error:
+					return $tmp;
+				}
 				$this->tags[$ipos] = '';
 				$ipos+=$tmp;
 			} else{
@@ -201,7 +207,8 @@ class we_tag_tagParser{
 		$Counter = array();
 
 		foreach($TagsInTemplate as $_tag){
-			if(preg_match_all("|<(/?)we:([a-z]*)(.*)>|si", $_tag, $_matches)){
+			$_matches = array();
+			if(preg_match_all('|<(/?)we:([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* *(/)?>?|si', $_tag, $_matches)){
 				if(!is_null($_matches[2][0]) && in_array($_matches[2][0], self::$CloseTags)){
 					if(!isset($Counter[$_matches[2][0]])){
 						$Counter[$_matches[2][0]] = 0;
@@ -211,7 +218,7 @@ class we_tag_tagParser{
 						$Counter[$_matches[2][0]]--;
 					} else{
 						//selfclosing-Tag
-						if(substr($_matches[3][0],-1) == '/'){
+						if($_matches[4][0] == '/'){
 							continue;
 						}
 						$Counter[$_matches[2][0]]++;
@@ -226,13 +233,13 @@ class we_tag_tagParser{
 		foreach($Counter as $_tag => $_counter){
 			if($_counter < 0){
 				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]').' ('.abs($_counter).')', 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
 
 				$isError = true;
 			} else
 			if($_counter > 0){
 				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]').' ('.abs($_counter).')', 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
 				$isError = true;
 			}
 		}
@@ -289,9 +296,9 @@ class we_tag_tagParser{
 
 	private function parseTag(&$code, $ipos){
 		$tag = $this->tags[$ipos];
-
+		$regs = array();
 		//$endTag = false;
-		preg_match("|<(/?)we:(.+)(/?)>?|i", $tag, $regs);
+		preg_match('%<(/?)we:([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* *(/?)(>?)%i', $tag, $regs);
 		$endTag = (bool) ($regs[1]);
 		if($endTag){
 			//there should not be any endtags
@@ -299,11 +306,16 @@ class we_tag_tagParser{
 			return 1;
 		}
 
-		$selfclose = (bool) ($regs[3]);
-		ereg("([^ >/]+) ?(.*)", $regs[2] . '/', $regs);
-		$tagname = $regs[1];
+		$selfclose = (bool) ($regs[4]);
+		$gt = $regs[5];
+
+		$tagname = $regs[2];
+		if(!$gt){
+			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname));
+		}
 		$selfclose|=!in_array($tagname, self::$CloseTags);
-		$attr = trim(rtrim($regs[2], '/'));
+		preg_match('%</?we:[[:alpha:]]+ *(.*)' . $regs[4] . $regs[5] . '%', $regs[0], $regs);
+		$attr = trim($regs[1]);
 
 		//FIXME: remove?!
 		if(preg_match('|name="([^"]*)"|i', $attr, $regs)){
@@ -316,18 +328,19 @@ class we_tag_tagParser{
 		}
 
 		$attribs = '';
-		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
+		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $regs, PREG_SET_ORDER);
 
-		//remove comment-attribute (should never be seen), and obsolete cachelifetime
-		$attr = removeAttribs($foo, array('cachelifetime', 'comment'));
+		if(count($regs)){
+			foreach($regs as $f){
+				if(!in_array($f[1], $this->removeAttribs)){
+					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
+				}
+			}
 
-		foreach($foo as $f){
-			$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
+			$arrstr = 'array(' . rtrim($attribs, ',') . ')';
+
+			@eval('$arr = ' . preg_replace('|"\$([^"]+)"', '"$GLOBALS[\1]"|', $arrstr) . ';');
 		}
-
-		$arrstr = 'array(' . rtrim($attribs, ',') . ')';
-
-		@eval('$arr = ' . ereg_replace('"\$([^"]+)"', '"$GLOBALS[\1]"', $arrstr) . ';');
 		if(!isset($arr)){
 			$arr = array();
 		}
@@ -352,6 +365,7 @@ class we_tag_tagParser{
 				}
 			} else{
 				t_e('Internal Parser Error: endtag for ' . $tag . ' not found', $code);
+				return parseError(sprintf(g_l('parser', '[start_endtag_missing]') , $tagname));
 			}
 		}
 		$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs, ',') . ')'); // workarround Bug Nr 6318
@@ -375,6 +389,9 @@ class we_tag_tagParser{
 		  $this->lastpos = 0;
 		  } else */
 		if(substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript"){
+			if(!isset($endeEndTagPos)){
+				return parseError(sprintf(g_l('parser', '[selfclosingIf]') , $tagname));
+			}
 			$code = substr($code, 0, $tagPos) .
 				'<?php if(' . self::printTag($tagname, $attribs) . '){ ?>' .
 				$content .
