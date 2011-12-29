@@ -22,14 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weNavigationRule extends weModelBase{
 
 	var $table = NAVIGATION_RULE_TABLE;
 	var $Table = NAVIGATION_RULE_TABLE;
 	var $ContentType = 'weNavigationRule';
 	var $ClassName = __CLASS__;
-	var $db;
 	var $ID;
 	var $NavigationName;
 	var $NavigationID;
@@ -53,18 +51,27 @@ class weNavigationRule extends weModelBase{
 		'WorkspaceID'
 	);
 
-	function weNavigationRule(){
-		$this->db = new DB_WE();
+	function __construct($useDB=true,$persData=array()){
+		if($useDB){
+			$this->db = new DB_WE();
+		}
+		if(count($persData)){
+			foreach($this->persistent_slots as $val){
+				if(isset($persData[$val])){
+					$this->$val = $persData[$val];
+				}
+			}
+
+		}
 	}
 
 	function initByID($ruleId){
-
 		parent::load(intval($ruleId));
 	}
 
-	function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true){
+	static function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true){
 
-		$_navigation = new weNavigationRule();
+		$_navigation = new weNavigationRule(false);
 		$_navigation->NavigationName = $navigationName;
 		$_navigation->NavigationID = $navigationId;
 		$_navigation->SelectionType = $selectionType;
@@ -90,7 +97,9 @@ class weNavigationRule extends weModelBase{
 
 	// beide folgenden f�r Bug #4142
 	function deleteDB(){
-		unset($this->db);
+		if(isset($this->db)){
+			unset($this->db);
+		}
 	}
 
 	function renewDB(){

@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 
 class weNavigationRuleFrames{
 
@@ -67,7 +65,7 @@ class weNavigationRuleFrames{
 		$yuiSuggest = & weSuggest::getInstance();
 		$parts = array();
 
-		$allRules = $this->Controller->getAllNavigationRules();
+		$allRules = weNavigationRuleControl::getAllNavigationRules();
 
 		$_rules = array();
 

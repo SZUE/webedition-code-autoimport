@@ -601,43 +601,28 @@ class weNavigationItems{
 	}
 
 	function initFromCache($parentid = 0, $showRoot = true){
-
 		$this->items = array();
 		$this->rootItem = $parentid;
 		$this->setDefaultTemplates();
-		//$start_memory = memory_get_usage();
-		$_cache = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/navigation_' . $parentid . '.php';
 
-		if(!file_exists($_cache)){
+		$navigationItemsStorage = weNavigationCache::getCacheFromParent($parentid);
+		if($navigationItemsStorage===false){
 			return false;
 		}
-		$_part = weFile::loadPart($_cache, 0, 10);
-		/* 		if(stripos($_part, "<?php") !== false){ //was #3849
-		  include ($_cache);
-		  } else{ */
-		$navigationItemsStorage = weFile::load($_cache);
-		//}
 
 		$this->items = unserialize($navigationItemsStorage);
 		unset($navigationItemsStorage);
-//		echo memory_get_usage() - $start_memory;
 
 		$this->items['id' . $parentid]->type = $showRoot ? ($_parent == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
 
-		$_cache = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/rules.php';
-		if(file_exists($_cache)){
-			$_part = weFile::loadPart($_cache, 0, 10);
-			/* if(stripos($_part, "<?php") !== false){ //was #3849
-			  include ($_cache);
-			  } else{ */
-			$navigationRulesStorage = weFile::load($_cache);
-			//}
+		$navigationRulesStorage = weNavigationCache::getCachedRule();
+		if($navigationRulesStorage!==false){
 			$this->currentRules = unserialize($navigationRulesStorage);
 			foreach($this->currentRules as &$rule){ //#Bug 4142
 				$rule->renewDB();
 			}
-			unset($navigationRulesStorage);
 		}
+		unset($navigationRulesStorage);
 
 		foreach($this->items as $_k => &$_item){
 			if(strtolower(get_class($_item)) == 'wenavigationitem'){
@@ -646,7 +631,6 @@ class weNavigationItems{
 		}
 
 		$this->loopAllRules($parentid);
-
 		return true;
 	}
 
@@ -721,6 +705,8 @@ class weNavigationItems{
 		}
 
 		$this->loopAllRules($_navigation->ID);
+		//reduce Memory consumption!
+		$this->Storage = array();
 	}
 
 	function checkCategories($idRule, $idDoc){

@@ -49,17 +49,14 @@
 				$we_doc->load($ID);
 				break;
 			case "weNavigation":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php");
 				$we_doc = new weNavigation();
 				$we_doc->we_load($ID);
 				break;
 			case "weNavigationRule":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationRule.class.php");
 				$we_doc = new weNavigationRule();
 				$we_doc->we_load($ID);
 				break;
 			case "weThumbnail":
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/we_thumbnailEx.class.php");
 				$we_doc = new we_thumbnailEx();
 				$we_doc->we_load($ID);
 				break;
@@ -83,7 +80,6 @@
 			// fix for classes
 			case "object":
 				if (defined("OBJECT_TABLE")) {
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_objectEx.inc.php");
 					$we_doc = new we_objectEx();
 					$we_doc->initByID($ID, OBJECT_TABLE);
 				}

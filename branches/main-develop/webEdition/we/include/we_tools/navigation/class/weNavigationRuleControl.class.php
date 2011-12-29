@@ -292,26 +292,14 @@ class weNavigationRuleControl{
 		}
 	}
 
-	function getAllNavigationRules(){
-
+	static function getAllNavigationRules(){
 		$db = new DB_WE();
-
-		$query = '
-			SELECT *
-			FROM ' . NAVIGATION_RULE_TABLE;
-
-		$db->query($query);
+		$db->query('SELECT * FROM ' . NAVIGATION_RULE_TABLE);
 
 		$navigationRules = array();
 
 		while($db->next_record()) {
-
-			$_navigationRule = new weNavigationRule();
-			foreach($_navigationRule->persistent_slots as $val){
-
-				$_navigationRule->$val = $db->f($val);
-			}
-			$navigationRules[] = $_navigationRule;
+			$navigationRules[] = new weNavigationRule(false,$db->Record);
 		}
 		return $navigationRules;
 	}

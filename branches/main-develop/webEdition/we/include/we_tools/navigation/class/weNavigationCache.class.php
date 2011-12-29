@@ -22,38 +22,38 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weNavigationCache{
+	const CACHEDIR='/webEdition/we/include/we_tools/navigation/cache/';
 
-class weNavigationCache {
-
-	static function createCacheDir() {
-		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/cache/';
-		if (!is_dir($_cacheDir)) {
+	static function createCacheDir(){
+		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . CACHEDIR;
+		if(!is_dir($_cacheDir)){
 			we_util_File::createLocalFolder($_cacheDir);
 		}
 		return $_cacheDir;
 	}
 
-	static function cacheNavigationTree($id) {
+	static function cacheNavigationTree($id){
 		weNavigationCache::cacheNavigationBranch($id);
 		weNavigationCache::cacheRootNavigation();
 	}
 
-	static function cacheNavigationBranch($id) {
+	static function cacheNavigationBranch($id){
 		$_cacheDir = weNavigationCache::createCacheDir();
 
 		$_id = $id;
 		$_c = 0;
-		while ($_id != 0) {
+		while($_id != 0) {
 			weNavigationCache::cacheNavigation($_id);
 			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', new DB_WE());
 			$_c++;
-			if ($_c > 99999) {
+			if($_c > 99999){
 				break;
 			}
 		}
 	}
 
-	static function cacheRootNavigation() {
+	static function cacheRootNavigation(){
 		$_cacheDir = weNavigationCache::createCacheDir();
 
 		$_naviItemes = new weNavigationItems();
@@ -65,7 +65,7 @@ class weNavigationCache {
 		weFile::save($_cacheDir . 'navigation_0.php', $_content);
 
 		$currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
-		foreach ($currentRulesStorage as &$rule) {
+		foreach($currentRulesStorage as &$rule){
 			$rule->deleteDB();
 		}
 		$_content = serialize($currentRulesStorage);
@@ -74,12 +74,29 @@ class weNavigationCache {
 		weFile::save($_cacheDir . 'rules.php', $_content);
 	}
 
-	static function cacheNavigation($id) {
+	static function cacheNavigation($id){
 		$_cacheDir = weNavigationCache::createCacheDir();
 		$_naviItemes = new weNavigationItems();
 		$_naviItemes->initById($id);
 		$_content = serialize($_naviItemes->items);
 		weFile::save($_cacheDir . 'navigation_' . $id . '.php', $_content);
+	}
+
+	static function getCacheFromParent($parentid){
+		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
+
+		if(file_exists($_cache)){
+			return weFile::load($_cache);
+		}
+		return false;
+	}
+
+	static function getCachedRule(){
+		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php';
+		if(file_exists($_cache)){
+			return $navigationRulesStorage = weFile::load($_cache);
+		}
+		return false;
 	}
 
 }
