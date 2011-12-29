@@ -523,7 +523,7 @@ function shutdown_handler(){
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			error_handler($error['type'],$error['message'].print_r($error,true),$error['file'],$error['line'],null);
+			error_handler($error['type'],$error['message']."\n".print_r($error,true),$error['file'],$error['line'],null);
 		}
 	}
 
