@@ -437,6 +437,7 @@ class weNavigationItem{
  */
 class weNavigationItems{
 
+	private static $cache = array();
 	var $items;
 	var $templates;
 	var $rootItem = 0;
@@ -605,12 +606,16 @@ class weNavigationItems{
 		$this->rootItem = $parentid;
 		$this->setDefaultTemplates();
 
-		$this->items = weNavigationCache::getCacheFromParent($parentid);
-		if($this->items === false){
-			$this->items=array();
-			return false;
+		if(isset(self::$cache[$parentid])){
+			$this->items = self::$cache[$parentid];
+		} else{
+			$this->items = weNavigationCache::getCacheFromParent($parentid);
+			if($this->items === false){
+				$this->items = array();
+				return false;
+			}
+			self::$cache[$parentid] = $this->items;
 		}
-
 
 		$this->items['id' . $parentid]->type = $showRoot ? ($_parent == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
 
