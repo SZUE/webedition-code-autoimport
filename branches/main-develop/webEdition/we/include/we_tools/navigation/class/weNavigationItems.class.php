@@ -605,18 +605,17 @@ class weNavigationItems{
 		$this->rootItem = $parentid;
 		$this->setDefaultTemplates();
 
-		$navigationItemsStorage = weNavigationCache::getCacheFromParent($parentid);
-		if($navigationItemsStorage===false){
+		$this->items = weNavigationCache::getCacheFromParent($parentid);
+		if($this->items === false){
+			$this->items=array();
 			return false;
 		}
 
-		$this->items = unserialize($navigationItemsStorage);
-		unset($navigationItemsStorage);
 
 		$this->items['id' . $parentid]->type = $showRoot ? ($_parent == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
 
 		$navigationRulesStorage = weNavigationCache::getCachedRule();
-		if($navigationRulesStorage!==false){
+		if($navigationRulesStorage !== false){
 			$this->currentRules = unserialize($navigationRulesStorage);
 			foreach($this->currentRules as &$rule){ //#Bug 4142
 				$rule->renewDB();

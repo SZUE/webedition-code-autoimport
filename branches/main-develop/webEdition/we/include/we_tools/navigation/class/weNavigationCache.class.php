@@ -78,15 +78,14 @@ class weNavigationCache{
 		$_cacheDir = weNavigationCache::createCacheDir();
 		$_naviItemes = new weNavigationItems();
 		$_naviItemes->initById($id);
-		$_content = serialize($_naviItemes->items);
-		weFile::save($_cacheDir . 'navigation_' . $id . '.php', $_content);
+		weFile::save($_cacheDir . 'navigation_' . $id . '.phpz', serialize($_naviItemes->items));
 	}
 
 	static function getCacheFromParent($parentid){
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
 
 		if(file_exists($_cache)){
-			return weFile::load($_cache);
+			return unserialize(weFile::load($_cache));
 		}
 		return false;
 	}
