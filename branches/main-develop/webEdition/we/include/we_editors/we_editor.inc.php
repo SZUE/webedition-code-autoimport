@@ -328,7 +328,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 	$parent = dirname($tempName);
 	$parent = str_replace("\\","/",$parent);
 
-	while(!checkAndMakeFolder($parent)) {
+	while(!we_util_File::checkAndMakeFolder($parent)) {
 		array_push($cf,$parent);
 		$parent = dirname($parent);
 		$parent = str_replace("\\","/",$parent);

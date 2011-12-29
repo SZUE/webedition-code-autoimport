@@ -257,9 +257,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . $myid, 'Path', $this->DB_WE) : '');
 
 			if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION ["we_mode"] == "normal"){
-				$ueberschrift = '<a href="javascript:goTemplate(' . $myid . ')">' . $l_we_class["template"] . '</a>';
+				$ueberschrift = '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass','[template]') . '</a>';
 			} else{
-				$ueberschrift = $l_we_class["template"];
+				$ueberschrift = g_l('weClass','[template]');
 			}
 
 			return $ueberschrift . '<br/>' . $path;

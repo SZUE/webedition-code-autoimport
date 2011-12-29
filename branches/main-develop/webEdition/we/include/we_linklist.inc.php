@@ -489,14 +489,14 @@ class we_linklist{
 	}
 
 	function next(){
-		if($this->pos!=-1){
+		if($this->pos != -1){
 			++$this->cnt;
 		}
 		$ret = ($this->show == -1 || $this->show > ($this->cnt));
 		$GLOBALS['we_position']['linklist'][$this->name] = array('size' => sizeof($this->listArray), 'position' => $this->cnt);
-		if($this->pos++==-1){
+		if($this->pos++ == -1){
 			reset($this->listArray);
-			return $ret & ($this->length()>0);
+			return $ret & ($this->length() > 0);
 		}
 
 		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
@@ -800,7 +800,7 @@ class we_linklist{
 		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
 		if($editmode && ($this->show == -1 || ($this->show > $this->length()))){
 			echo "<br/>" . we_button::create_button(
-				"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled);
+				"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false);
 			echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . htmlspecialchars(
 				$this->getString()) . '" />' . ($this->length() ? '' : $plusbut);
 		}

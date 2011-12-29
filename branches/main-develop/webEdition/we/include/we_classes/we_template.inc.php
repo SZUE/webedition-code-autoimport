@@ -610,35 +610,6 @@ class we_template extends we_document{
 		return $this->htmlFormElementTable($foo, "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), $button);
 	}
 
-	/* 	function formCacheTempl() {
-	  global $l_we_cache;
-
-
-	  $content = '
-	  <table border="0" cellpadding="0" cellspacing="0">
-	  <tr>
-	  <td colspan="3" class="defaultfont">' . $l_we_cache['cache_type']. '<br />
-	  ' . $this->htmlSelect('we_' . $this->Name . '_CacheType', array('none' => $l_we_cache['cache_type_none'], 'tag' => $l_we_cache['cache_type_wetag'], 'document' => $l_we_cache['cache_type_document'], 'full' => $l_we_cache['cache_type_full']), 1, $this->CacheType, false, 'onChange="if(this.value==\'none\') {document.forms[0].elements[\'we_' . $this->Name . '_CacheLifeTime\'].value=0;document.forms[0].elements[\'we_tmp_' . $this->Name . '_select[CacheLifeTime]\'].value=0;};"', "value", 508)	 . '</td>
-	  </tr>
-	  <tr>
-	  <td>
-	  '.we_html_tools::getPixel(20,4).'</td>
-	  <td>
-	  '.we_html_tools::getPixel(20,2).'</td>
-	  <td>
-	  '.we_html_tools::getPixel(100,2).'</td>
-	  </tr>
-	  <tr>
-	  <td class="defaultfont" colspan="3">' . $l_we_cache['cache_lifetime'] . '</td>
-	  </tr>
-	  <tr>
-	  <td colspan="3">
-	  ' . $this->htmlTextInput('we_' . $this->Name . '_CacheLifeTime', 24, $this->CacheLifeTime, 5, "", "text", 390) .
-	  $this->htmlSelect("we_tmp_" . $this->Name . "_select[CacheLifeTime]", $l_we_cache['cacheLifeTimes'], 1, $this->CacheLifeTime, false,"onChange=\"_EditorFrame.setEditorIsHot(true);document.forms[0].elements['we_" . $this->Name . "_CacheLifeTime'].value=this.options[this.selectedIndex].value;document.forms[0].elements['we_" . $this->Name . "_CacheLifeTime'].value=this.options[this.selectedIndex].value;\" onBlur=\"_EditorFrame.setEditorIsHot(true);\"","value",118) . '</td>
-	  </tr>
-	  </table>';
-	  return $content;
-	  } */
 
 	/**
 	 * @desc 	this function returns the code of the unparsed template
