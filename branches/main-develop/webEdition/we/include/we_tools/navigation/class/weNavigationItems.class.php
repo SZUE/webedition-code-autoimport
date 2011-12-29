@@ -609,7 +609,7 @@ class weNavigationItems{
 		if(isset(self::$cache[$parentid])){
 			$this->items = self::$cache[$parentid];
 		} else{
-			$this->items = weNavigationCache::getCacheFromParent($parentid);
+			$this->items = weNavigationCache::getCacheFromFile($parentid);
 			if($this->items === false){
 				$this->items = array();
 				return false;
@@ -709,6 +709,10 @@ class weNavigationItems{
 		}
 
 		$this->loopAllRules($_navigation->ID);
+
+		//make avail in cache
+		self::$cache[$parentid] = $this->items;
+
 		//reduce Memory consumption!
 		$this->Storage = array();
 	}

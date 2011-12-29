@@ -26,7 +26,7 @@ class weNavigationCache{
 	const CACHEDIR='/webEdition/we/include/we_tools/navigation/cache/';
 
 	static function createCacheDir(){
-		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . CACHEDIR;
+		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR;
 		if(!is_dir($_cacheDir)){
 			we_util_File::createLocalFolder($_cacheDir);
 		}
@@ -75,13 +75,17 @@ class weNavigationCache{
 	}
 
 	static function cacheNavigation($id){
-		$_cacheDir = weNavigationCache::createCacheDir();
 		$_naviItemes = new weNavigationItems();
 		$_naviItemes->initById($id);
-		weFile::save($_cacheDir . 'navigation_' . $id . '.phpz', serialize($_naviItemes->items));
+		self::saveCacheNavigation($id,$_naviItemes);
 	}
 
-	static function getCacheFromParent($parentid){
+	static function saveCacheNavigation($id,$_naviItemes){
+		$_cacheDir = weNavigationCache::createCacheDir();
+		weFile::save($_cacheDir . 'navigation_' . $id . '.php', serialize($_naviItemes->items));
+	}
+
+	static function getCacheFromFile($parentid){
 		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
 
 		if(file_exists($_cache)){
