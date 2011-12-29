@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,115 +22,114 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_date($attribs, $content){
 	$type = weTag_getAttribute("type", $attribs);
-	$format = weTag_getAttribute("format", $attribs, g_l('date','[format][default]'));
+	$format = weTag_getAttribute("format", $attribs, g_l('date', '[format][default]'));
 
 	$xml = weTag_getAttribute("xml", $attribs);
 
-	if (strtolower($type) == "js") {
-		$js = "\nheute = new Date();\n";
-		$js .= 'function getDateS(d){' . "\n";
-		$js .= '	switch(d){' . "\n";
-		$js .= '		case 1:' . "\n";
-		$js .= '		case 21:' . "\n";
-		$js .= '		case 31:' . "\n";
-		$js .= '			return "st";' . "\n";
-		$js .= '		case 2:' . "\n";
-		$js .= '		case 22:' . "\n";
-		$js .= '			return "nd";' . "\n";
-		$js .= '		case 3:' . "\n";
-		$js .= '		case 23:' . "\n";
-		$js .= '			return "rd";' . "\n";
-		$js .= '		default:' . "\n";
-		$js .= '			return "th";' . "\n";
-		$js .= '	}' . "\n";
-		$js .= '}' . "\n";
+	if(strtolower($type) == "js"){
+		$js = 'heute = new Date();
+		function getDateS(d){
+			switch(d){
+				case 1:
+				case 21:
+				case 31:
+					return "st";
+				case 2:
+				case 22:
+					return "nd";
+				case 3:
+				case 23:
+					return "rd";
+				default:
+					return "th";
+			}
+		}';
 
-		$js .= 'function getDateWord(f,dateObj){' . "\n";
-		$js .= '	var l_day_Short = new Array(';
-		foreach (g_l('date','[day][short]') as $d) {
+		$js .= 'function getDateWord(f,dateObj){
+			var l_day_Short = new Array(';
+		foreach(g_l('date', '[day][short]') as $d){
 			$js .= '"' . $d . '",';
 		}
-		$js = rtrim($js,',');
-		$js .= ');' . "\n";
+		$js = rtrim($js, ',');
+		$js .= ');';
 
 		$js .= '	var l_monthLong = new Array(';
-		foreach (g_l('date','[month][long]') as $d) {
+		foreach(g_l('date', '[month][long]') as $d){
 			$js .= '"' . $d . '",';
 		}
-		$js = rtrim($js,',');
-		$js .= ');' . "\n";
+		$js = rtrim($js, ',');
+		$js .= ');';
 
 		$js .= '	var l_dayLong = new Array(';
-		foreach (g_l('date','[day][long]') as $d) {
+		foreach(g_l('date', '[day][long]') as $d){
 			$js .= '"' . $d . '",';
 		}
-		$js = rtrim($js,',');
-		$js .= ');' . "\n";
+		$js = rtrim($js, ',');
+		$js .= ');';
 
 		$js .= '	var l_monthShort = new Array(';
-		foreach (g_l('date','[month][short]') as $d) {
+		foreach(g_l('date', '[month][short]') as $d){
 			$js .= '"' . $d . '",';
 		}
-		$js = rtrim($js,',');
-		$js .= ');' . "\n";
+		$js = rtrim($js, ',');
+		$js .= ');';
 
-		$js .= '	switch(f){' . "\n";
-		$js .= '		case "D":' . "\n";
-		$js .= '			return l_day_Short[dateObj.getDay()];' . "\n";
-		$js .= '		case "F":' . "\n";
-		$js .= '			return l_monthLong[dateObj.getMonth()];' . "\n";
-		$js .= '		case "l":' . "\n";
-		$js .= '			return l_dayLong[dateObj.getDay()];' . "\n";
-		$js .= '		case "M":' . "\n";
-		$js .= '			return l_monthShort[dateObj.getMonth()];' . "\n";
-		$js .= '	}' . "\n";
-		$js .= '}' . "\n";
+		$js .= '	switch(f){
+				case "D":
+					return l_day_Short[dateObj.getDay()];
+				case "F":
+					return l_monthLong[dateObj.getMonth()];
+				case "l":
+					return l_dayLong[dateObj.getDay()];
+				case "M":
+					return l_monthShort[dateObj.getMonth()];
+			}
+		}';
 
 		$f = $format;
 
-		if (preg_match('|[^\\\\]Y|', $f) || preg_match('|^Y|', $f))
+		if(preg_match('|[^\\\\]Y|', $f) || preg_match('|^Y|', $f))
 			$js .= "var Y = heute.getYear();Y = (Y < 1900) ? (Y + 1900) : Y;\n";
-		if (preg_match('|[^\\\\]y|', $f) || preg_match('|^y|', $f))
+		if(preg_match('|[^\\\\]y|', $f) || preg_match('|^y|', $f))
 			$js .= "var y = heute.getYear();y = (y < 1900) ? (y + 1900) : y;y=y.substring(2,4);\n";
 		;
 
-		if (preg_match('|[^\\\\]a|', $f) || preg_match('|^a|', $f))
+		if(preg_match('|[^\\\\]a|', $f) || preg_match('|^a|', $f))
 			$js .= "var a = (heute.getHours() > 11) ? 'pm' : 'am';\n";
-		if (preg_match('|[^\\\\]A|', $f) || preg_match('|^A|', $f))
+		if(preg_match('|[^\\\\]A|', $f) || preg_match('|^A|', $f))
 			$js .= "var A = (heute.getHours() > 11) ? 'PM' : 'AM';\n";
-		if (preg_match('|[^\\\\]s|', $f) || preg_match('|^s|', $f))
+		if(preg_match('|[^\\\\]s|', $f) || preg_match('|^s|', $f))
 			$js .= "var s = heute.getSeconds();\n";
-		if (preg_match('|[^\\\\]m|', $f) || preg_match('|^m|', $f))
+		if(preg_match('|[^\\\\]m|', $f) || preg_match('|^m|', $f))
 			$js .= "var m = heute.getMonth()+1;m = '00'+m;m=m.substring(m.length-2,m.length);\n";
-		if (preg_match('|[^\\\\]n|', $f) || preg_match('|^n|', $f))
+		if(preg_match('|[^\\\\]n|', $f) || preg_match('|^n|', $f))
 			$js .= "var n = heute.getMonth()+1;\n";
-		if (preg_match('|[^\\\\]d|', $f) || preg_match('|^d|', $f))
+		if(preg_match('|[^\\\\]d|', $f) || preg_match('|^d|', $f))
 			$js .= "var d = heute.getDate();d = '00'+d;d=d.substring(d.length-2,d.length);\n";
-		if (preg_match('|[^\\\\]j|', $f) || preg_match('|^j|', $f))
+		if(preg_match('|[^\\\\]j|', $f) || preg_match('|^j|', $f))
 			$js .= "var j = heute.getDate();\n";
-		if (preg_match('|[^\\\\]h|', $f) || preg_match('|^h|', $f))
+		if(preg_match('|[^\\\\]h|', $f) || preg_match('|^h|', $f))
 			$js .= "var h = heute.getHours();if(h > 12){h -= 12;};h = '00'+h;h=h.substring(h.length-2,h.length);\n";
-		if (preg_match('|[^\\\\]H|', $f) || preg_match('|^H|', $f))
+		if(preg_match('|[^\\\\]H|', $f) || preg_match('|^H|', $f))
 			$js .= "var H = heute.getHours();H = '00'+H;H=H.substring(H.length-2,H.length);\n";
-		if (preg_match('|[^\\\\]g|', $f) || preg_match('|^g|', $f))
+		if(preg_match('|[^\\\\]g|', $f) || preg_match('|^g|', $f))
 			$js .= "var g = heute.getHours();if(g > 12){ g -= 12;};\n";
-		if (preg_match('|[^\\\\]G|', $f) || preg_match('|^G|', $f))
+		if(preg_match('|[^\\\\]G|', $f) || preg_match('|^G|', $f))
 			$js .= "var G = heute.getHours();\n";
-		if (preg_match('|[^\\\\]i|', $f) || preg_match('|^i|', $f))
+		if(preg_match('|[^\\\\]i|', $f) || preg_match('|^i|', $f))
 			$js .= "var i = heute.getMinutes();i = '00'+i;i=i.substring(i.length-2,i.length);\n";
-		if (preg_match('|[^\\\\]S|', $f) || preg_match('|^S|', $f))
+		if(preg_match('|[^\\\\]S|', $f) || preg_match('|^S|', $f))
 			$js .= "var S = getDateS(heute.getDate());\n";
 
-		if (preg_match('|[^\\\\]D|', $f) || preg_match('|^D|', $f))
+		if(preg_match('|[^\\\\]D|', $f) || preg_match('|^D|', $f))
 			$js .= "var D = getDateWord('D',heute);\n";
-		if (preg_match('|[^\\\\]F|', $f) || preg_match('|^F|', $f))
+		if(preg_match('|[^\\\\]F|', $f) || preg_match('|^F|', $f))
 			$js .= "var F = getDateWord('F',heute);\n";
-		if (preg_match('|[^\\\\]l|', $f) || preg_match('|^l|', $f))
+		if(preg_match('|[^\\\\]l|', $f) || preg_match('|^l|', $f))
 			$js .= "var l = getDateWord('l',heute);\n";
-		if (preg_match('|[^\\\\]M|', $f) || preg_match('|^M|', $f))
+		if(preg_match('|[^\\\\]M|', $f) || preg_match('|^M|', $f))
 			$js .= "var M = getDateWord('M',heute);\n";
 
 		$f = preg_replace('|([^\\\\])(Y)|', '\1"+\2+"', $f);
@@ -155,16 +155,16 @@ function we_tag_date($attribs, $content){
 		$f = preg_replace('/^([SYymndjHihGgDFlMsaA])/', '"+\1+"', $f);
 		$f = stripslashes($f);
 
-		$js .= 'document.write("' . $f . '");' . "\n";
+		$js .= 'document.write("' . $f . '");';
 
 		return we_html_element::jsElement($js);
-	} else {
+	} else{
 		return date(correctDateFormat($format));
 	}
 }
 
 function correctDateFormat($format, $t = ''){
-	if (!$t){
+	if(!$t){
 		$t = time();
 	}
 
@@ -194,16 +194,16 @@ function correctDateFormat($format, $t = ''){
 	$format = str_replace('l', '%%%2%%%', $format);
 	$format = str_replace('M', '%%%3%%%', $format);
 
-	$foo = g_l('date','[day][short]['.date('w', $t).']');
+	$foo = g_l('date', '[day][short][' . date('w', $t) . ']');
 	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%0%%%', $foo, $format);
-	$foo = g_l('date','[month][long]['.(date('n', $t) - 1).']');
+	$foo = g_l('date', '[month][long][' . (date('n', $t) - 1) . ']');
 	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%1%%%', $foo, $format);
-	$foo = g_l('date','[day][long]['.date('w', $t).']');
+	$foo = g_l('date', '[day][long][' . date('w', $t) . ']');
 	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%2%%%', $foo, $format);
-	$foo = g_l('date','[month][short]['.(date('n', $t) - 1).']');
+	$foo = g_l('date', '[month][short][' . (date('n', $t) - 1) . ']');
 	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
 	$format = str_replace('%%%3%%%', $foo, $format);
 	return $format;

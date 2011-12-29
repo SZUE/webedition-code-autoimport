@@ -165,30 +165,30 @@ class we_tag_tagParser{
 
 	public function parseSpecificTags($tags, &$code, $postName = '', $ignore = array()){
 		$this->tags = $tags;
-		return $this->parseTags($code, ($postName==''?0:$postName), $ignore);
+		return $this->parseTags($code, ($postName == '' ? 0 : $postName), $ignore);
 	}
 
-	public function parseTags(&$code,$start=0,$ende=FALSE){
+	public function parseTags(&$code, $start=0, $ende=FALSE){
 		if(is_string($start)){//old call
-			$start=0;
-			$ende=FALSE;
+			$start = 0;
+			$ende = FALSE;
 			t_e('Tagparser called with old API - please Update your tag!');
 		}
-		if($start==0 && ($tmp = self::checkOpenCloseTags($this->tags, $code)) !== true){
+		if($start == 0 && ($tmp = self::checkOpenCloseTags($this->tags, $code)) !== true){
 			return $tmp;
 		}
 		$this->lastpos = 0;
-		$ende=$ende?$ende:sizeof($this->tags);
-		for($ipos = $start; $ipos < $ende; ){
-				if($this->tags[$ipos]){
-					$tmp=$this->parseTag($code,$ipos); //	dont add postname tagname in ignorearray
-					$this->tags[$ipos]='';
-					$ipos+=$tmp;
-				}else{
-					$ipos++;
-				}
+		$ende = $ende ? $ende : sizeof($this->tags);
+		for($ipos = $start; $ipos < $ende;){
+			if($this->tags[$ipos]){
+				$tmp = $this->parseTag($code, $ipos); //	dont add postname tagname in ignorearray
+				$this->tags[$ipos] = '';
+				$ipos+=$tmp;
+			} else{
+				$ipos++;
+			}
 		}
-			$this->lastpos = 0;
+		$this->lastpos = 0;
 		return true;
 	}
 
@@ -201,18 +201,19 @@ class we_tag_tagParser{
 		$Counter = array();
 
 		foreach($TagsInTemplate as $_tag){
-			if(preg_match_all("|<(\/?)we:([a-z]*)([^/]*)(/?)>|si", $_tag, $_matches)){
+			if(preg_match_all("|<(/?)we:([a-z]*)(.*)>|si", $_tag, $_matches)){
 				if(!is_null($_matches[2][0]) && in_array($_matches[2][0], self::$CloseTags)){
 					if(!isset($Counter[$_matches[2][0]])){
 						$Counter[$_matches[2][0]] = 0;
 					}
-					//selfclosing-Tag
-					if($_matches[4][0]=='/'){
-						continue;
-					}
+
 					if($_matches[1][0] == '/'){
 						$Counter[$_matches[2][0]]--;
 					} else{
+						//selfclosing-Tag
+						if(substr($_matches[3][0],-1) == '/'){
+							continue;
+						}
 						$Counter[$_matches[2][0]]++;
 					}
 				}
@@ -225,13 +226,13 @@ class we_tag_tagParser{
 		foreach($Counter as $_tag => $_counter){
 			if($_counter < 0){
 				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]').' ('.abs($_counter).')', 'we:' . $_tag));
 
 				$isError = true;
 			} else
 			if($_counter > 0){
 				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]').' ('.abs($_counter).')', 'we:' . $_tag));
 				$isError = true;
 			}
 		}
@@ -241,7 +242,7 @@ class we_tag_tagParser{
 		return (!$isError ? true : $err);
 	}
 
-	private function searchEndtag($tagname,$code, $tagPos,$ipos){
+	private function searchEndtag($tagname, $code, $tagPos, $ipos){
 		$tagcount = 0;
 		$endtags = array();
 
@@ -256,8 +257,8 @@ class we_tag_tagParser{
 					for($n = 0; $n < sizeof($endtags); $n++){
 						$endtagpos = strpos($code, $endtags[$n], $endtagpos + 1);
 					}
-					$this->tags[$i]='';
-					return array($endtagpos,$i);
+					$this->tags[$i] = '';
+					return array($endtagpos, $i);
 				}
 			} else{
 				if(preg_match('|(< ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i])){
@@ -265,7 +266,7 @@ class we_tag_tagParser{
 				}
 			}
 		}
-		return array(FALSE,FALSE);
+		return array(FALSE, FALSE);
 	}
 
 	/* 	function getNameAndAttribs($tag) {
@@ -286,7 +287,7 @@ class we_tag_tagParser{
 	  return null;
 	  } */
 
-	private function parseTag(&$code,$ipos){
+	private function parseTag(&$code, $ipos){
 		$tag = $this->tags[$ipos];
 
 		//$endTag = false;
@@ -340,14 +341,14 @@ class we_tag_tagParser{
 		if($selfclose){
 			$content = '';
 		} else{
-			list($endTagPos,$endTagNo) = $this->searchEndtag($tagname,$code, $tagPos,$ipos);
+			list($endTagPos, $endTagNo) = $this->searchEndtag($tagname, $code, $tagPos, $ipos);
 
 			if($endTagPos !== FALSE){
 				$endeEndTagPos = strpos($code, '>', $endTagPos) + 1;
 				$content = substr($code, $endeStartTag, ($endTagPos - $endeStartTag));
 				//only 1 exception: comment tag should be able to contain partly invalid code (e.g. missing attributes etc)
-				if(($tagname!='comment') && (($ipos+1)<$endTagNo)){
-					$this->parseTags($content,($ipos+1),$endTagNo);
+				if(($tagname != 'comment') && (($ipos + 1) < $endTagNo)){
+					$this->parseTags($content, ($ipos + 1), $endTagNo);
 				}
 			} else{
 				t_e('Internal Parser Error: endtag for ' . $tag . ' not found', $code);
@@ -390,7 +391,7 @@ class we_tag_tagParser{
 						$code, $endeStartTag);
 			}
 		}
-		return (isset($endTagNo)?($endTagNo-$ipos):1);
+		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
 	}
 
 	public static function printTag($name, $attribs='', $content='', $cslash=false){

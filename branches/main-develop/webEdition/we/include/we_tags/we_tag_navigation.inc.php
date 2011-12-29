@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
-
 function we_tag_navigation($attribs, $content = ''){
 	$parentid = weTag_getAttribute("parentid", $attribs, -1);
 	$id = weTag_getAttribute("id", $attribs, 0);
@@ -31,12 +29,12 @@ function we_tag_navigation($attribs, $content = ''){
 
 	$GLOBALS['we_navigation'][$name] = new weNavigationItems();
 	if(isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']){
-		$showRoot=($parentid == -1);
+		$showRoot = ($parentid == -1);
 		$GLOBALS['we_navigation'][$name]->initByNavigationObject($showRoot);
 	} else{
-		$realId=($id ? $id : ($parentid != -1 ? $parentid : 0));
+		$realId = ($id ? $id : ($parentid != -1 ? $parentid : 0));
 		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, false)){
-			$showRoot=($id ? true : ($parentid == -1));
+			$showRoot = ($id ? true : ($parentid == -1));
 			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
 		}
 	}

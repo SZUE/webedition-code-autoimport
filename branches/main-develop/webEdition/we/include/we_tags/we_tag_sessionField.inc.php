@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/utils/rndGenPass.inc.php');
-
 function we_tag_sessionField($attribs, $content) {
 	$foo = attributFehltError($attribs, 'name', 'sessionField');
 	if ($foo){
