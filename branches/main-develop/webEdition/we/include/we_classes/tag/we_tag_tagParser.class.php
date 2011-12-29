@@ -201,10 +201,14 @@ class we_tag_tagParser{
 		$Counter = array();
 
 		foreach($TagsInTemplate as $_tag){
-			if(preg_match_all("/<(\/|)we:([a-z]*)(.*)>/si", $_tag, $_matches)){
+			if(preg_match_all("|<(\/?)we:([a-z]*)([^/]*)(/?)>|si", $_tag, $_matches)){
 				if(!is_null($_matches[2][0]) && in_array($_matches[2][0], self::$CloseTags)){
 					if(!isset($Counter[$_matches[2][0]])){
 						$Counter[$_matches[2][0]] = 0;
+					}
+					//selfclosing-Tag
+					if($_matches[4][0]=='/'){
+						continue;
 					}
 					if($_matches[1][0] == '/'){
 						$Counter[$_matches[2][0]]--;
