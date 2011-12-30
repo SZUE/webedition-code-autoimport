@@ -22,10 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-?>
-<link rel="stylesheet" type="text/css" href="<?php print WEBEDITION_DIR; ?>css/menu/pro_drop_1.css" />
-<!-- IE 6 -->
-<?php
+print we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
+
 $_BROWSER = new we_base_browserDetect();
 if($_BROWSER->getBrowser() == 'ie' && $_BROWSER->getBrowserVersion() < 7){
 	echo we_html_element::jsScript(WEBEDITION_DIR . 'css/menu/stuHover.js');
@@ -89,21 +87,17 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 <body>
 	<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
 		<div style="position:relative;border:0;float:left;" >
-<?php
-if($jmenu){
-	print $jmenu->getCode(false);
-}
-?>
+			<?php
+			if($jmenu){
+				print $jmenu->getCode(false);
+			}
+			?>
 		</div>
 		<div style="position:relative;bottom:0;border:0;padding-left: 10px;float:left;" >
 			<?php
-			$amount = sizeof($navigationButtons);
-			if($amount){
-
-				for($i = 0; $i < $amount; $i++){
-					print "
-			<div style=\"float:left;margin-top:5px;\" class=\"navigation_normal\" onclick=\"{$navigationButtons[$i]["onclick"]}\" onmouseover=\"this.className='navigation_hover'\" onmouseout=\"this.className='navigation_normal'\"><img border=\"0\" hspace=\"2\" src=\"" . IMAGE_DIR . "{$navigationButtons[$i]["imagepath"]}\" width=\"17\" height=\"18\" alt=\"{$navigationButtons[$i]["text"]}\" title=\"{$navigationButtons[$i]["text"]}\"></div>
-		";
+			if(count($navigationButtons)){
+				foreach($navigationButtons as $button){
+					print '<div style="float:left;margin-top:5px;" class="navigation_normal" onclick="'.$button['onclick'].'" onmouseover="this.className=\'navigation_hover\'" onmouseout="this.className=\'navigation_normal\'"><img border="0" hspace="2" src="' . IMAGE_DIR . $button['imagepath'].'" width="17" height="18" alt="'.$button['text'].'" title="'.$button['text'].'"></div>';
 				}
 			}
 			?></div>
