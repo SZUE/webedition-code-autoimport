@@ -238,7 +238,7 @@ abstract class we_database_base {
 			// delete getHash DB Cache
 			getHash('',$this);
 		}
-		if(preg_match('/alter table (.*) (add|change|modify|drop)/i', $Query_String,$matches)) {
+		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String,$matches)) {
 			$this->_query('ANALYSE TABLE '.$matches[1]);
 		}
 		$this->Errno = $this->errno();
