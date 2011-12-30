@@ -41,7 +41,7 @@ if ($_SESSION["we_mode"] != "seem"){	//	No tabs in Super-Easy-Edit_mode
 
 	$we_tabs = new we_tabs();
 	// user has no access to file - only preview mode.
-	if( $we_doc->userHasAccess() != 1 && $we_doc->userHasAccess() != -4) {
+	if( $we_doc->userHasAccess() != we_root::USER_HASACCESS && $we_doc->userHasAccess() != we_root::USER_NO_SAVE) {
 		if(in_array(WE_EDITPAGE_PREVIEW,$we_doc->EditPageNrs)){
 			$we_tabs->addTab(new we_tab("#", g_l('weClass',"[preview]"),(($we_doc->EditPageNr == WE_EDITPAGE_PREVIEW) ? "TAB_ACTIVE" : "TAB_NORMAL"),"we_cmd('switch_edit_page'," . WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');",array("id"=>"tab_".WE_EDITPAGE_PREVIEW)));
 		}

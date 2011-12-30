@@ -49,25 +49,25 @@ function getControlElement($type, $name){
 
 switch($we_doc->userHasAccess()){
 
-	case 1 : //	all is allowed, creator or owner
+	case we_root::USER_HASACCESS : //	all is allowed, creator or owner
 		break;
 
-	case -1 : //	file is not in workspace of user
+	case we_root::FILE_NOT_IN_USER_WORKSPACE : //	file is not in workspace of user
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_in_workspace_footer.inc.php");
 		exit();
 		break;
 
-	case -2 : //	access is restricted and user has no permission
+	case we_root::USER_NO_PERM : //	access is restricted and user has no permission
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_restricted_footer.inc.php");
 		exit;
 		break;
 
-	case -3 : //	file is locked by another user
+	case we_root::FILE_LOCKED : //	file is locked by another user
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_locked_footer.inc.php");
 		exit;
 		break;
 
-	case -4 : //	user has not the right to save the file.
+	case we_root::USER_NO_SAVE : //	user has not the right to save the file.
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/file_no_save_footer.inc.php");
 		exit;
 		break;

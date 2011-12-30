@@ -184,7 +184,7 @@ if($we_doc->ID){
 		}
 	}
 	$_access = $we_doc->userHasAccess();
-	if(($_access !== 1 && $_access !== -3) ){ //   user has no access to object/document - bugfix #2481
+	if(($_access !== we_root::USER_HASACCESS && $_access !== we_root::FILE_LOCKED) ){ //   user has no access to object/document - bugfix #2481
         if($we_ContentType!="object") {
             $_SESSION["EditPageNr"] = WE_EDITPAGE_PREVIEW;
         } else {
@@ -247,7 +247,7 @@ if(!isset($we_doc->IsClassFolder)) {
 	if(!$_filelocked){	// file can be edited
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
-		if($we_doc->userHasAccess() == 1){	//	only when user has access to file
+		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){	//	only when user has access to file
 			if($_SESSION["we_mode"] == "normal" || $we_doc->EditPageNr != WE_EDITPAGE_PREVIEW){
 				$we_doc->lockDocument();
 			}
@@ -339,7 +339,7 @@ if(!isset($we_doc->elements['data']['dat'])){
 
 				closeAllModalWindows();
 
-				<?php if($we_doc->userHasAccess()==1){ ?>
+				<?php if($we_doc->userHasAccess()==we_root::USER_HASACCESS){ ?>
 				if(!unlock) {
 						if(!top.opener || top.opener.win){	//	login to super easy edit mode
 							unlock = true;

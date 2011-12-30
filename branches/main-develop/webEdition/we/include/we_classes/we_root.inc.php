@@ -25,6 +25,11 @@
 
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
+	const USER_HASACCESS=1;
+	const FILE_LOCKED=-3;
+	const USER_NO_PERM=-2;
+	const USER_NO_SAVE=-4;
+	const FILE_NOT_IN_USER_WORKSPACE=-1;
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName=__CLASS__;
@@ -1200,23 +1205,19 @@ function formTriggerDocument($isclass=false){
 	function userHasAccess(){
 
 		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){				// file is locked
-			return -3;
+			return self::FILE_LOCKED;
 		}
 
 		if(!$this->userHasPerms()){					//	File is restricted !!!!!
-			return -2;
+			return self::USER_NO_PERM;
 		}
 
 		if(!$this->userCanSave()){					//	user has no right to save.
-			return -4;
+			return self::USER_NO_SAVE;
 		}
 
-		if(we_isOwner($this->CreatorID)){			//	user is creator of doc - all is allowed.
-			return 1;
-		}
-
-		if( we_isOwner($this->Owners) ) {			//	user is owner of doc - all is allowed.
-			return 1;
+		if(we_isOwner($this->CreatorID)|| we_isOwner($this->Owners)){			//	user is creator/owner of doc - all is allowed.
+			return self::USER_HASACCESS;
 		}
 
 		if($this->userHasPerms()) {									//	access to doc is not restricted, check workspaces of user
@@ -1224,11 +1225,11 @@ function formTriggerDocument($isclass=false){
 				$ws = get_ws($GLOBALS['we_doc']->Table);
 				if($ws) {		//	doc has workspaces
 					if(!(in_workspace($GLOBALS['we_doc']->ID,$ws,$GLOBALS['we_doc']->Table,$GLOBALS['DB_WE']))) {
-						return -1;
+						return self::FILE_NOT_IN_USER_WORKSPACE;
 					}
 				}
 			}
-			return 1;
+			return self::USER_HASACCESS;
 		}
 	}
 

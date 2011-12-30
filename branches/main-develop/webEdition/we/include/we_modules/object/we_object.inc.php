@@ -2585,19 +2585,19 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 	function userHasAccess(){
 
 		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){				// file is locked
-			return -3;
+			return self::FILE_LOCKED;
 		}
 
 		if(!$this->userHasPerms()){					//	File is restricted !!!!!
-			return -2;
+			return self::USER_NO_PERM;
 		}
 
 		if(!$this->userCanSave()){					//	user has no right to save.
-			return -4;
+			return self::USER_NO_SAVE;
 		}
 
 		if($this->RestrictUsers && !(we_isOwner($this->CreatorID) || we_isOwner($this->Users))){			//	user is creator of doc - all is allowed.
-			return -1;
+			return self::USER_NO_PERM;
 		}
 
 		if($this->userHasPerms()) {									//	access to doc is not restricted, check workspaces of user
@@ -2605,11 +2605,11 @@ DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch e
 				$ws = get_ws($GLOBALS['we_doc']->Table);
 				if($ws) {		//	doc has workspaces
 					if(!(in_workspace($GLOBALS['we_doc']->ID,$ws,$GLOBALS['we_doc']->Table,$GLOBALS['DB_WE']))) {
-						return -1;
+						return self::FILE_NOT_IN_USER_WORKSPACE;
 					}
 				}
 			}
-			return 1;
+			return self::USER_HASACCESS;
 		}
 	}
 
