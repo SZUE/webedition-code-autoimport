@@ -51,7 +51,7 @@ if(we_hasPerm('NO_DOCTYPE')){
 }
 
 $q = getDoctypeQuery($GLOBALS['DB_WE']);
-$GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
+$GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 if($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')){
 	$we_menu['1010102']['parent'] = '1010100'; // separator
 }
@@ -59,7 +59,7 @@ if($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')){
 $nr = 103;
 while($GLOBALS['DB_WE']->next_record()) {
 
-	$we_menu['1010' . $nr]['text'] = str_replace(array('"','\'',','), array('','',' '), $GLOBALS['DB_WE']->f('DocType'));
+	$we_menu['1010' . $nr]['text'] = str_replace(array('"', '\'', ','), array('', '', ' '), $GLOBALS['DB_WE']->f('DocType'));
 
 	$we_menu['1010' . $nr]['parent'] = '1010100';
 	$we_menu['1010' . $nr]['cmd'] = 'new_dtPage' . $GLOBALS['DB_WE']->f('ID');
@@ -403,7 +403,7 @@ if(sizeof($GLOBALS['_we_active_integrated_modules']) > 0){
 				$moduleList .= 'customerpro|';
 			}
 			$moduleList .= $m['name'] . '|';
-			$menNr = '3000'.$z;
+			$menNr = '3000' . $z;
 			$we_menu[$menNr]['text'] = $m['text'] . '...';
 			$we_menu[$menNr]['parent'] = '3000000';
 			$we_menu[$menNr]['cmd'] = 'edit_' . $m['name'] . '_ifthere';
@@ -442,51 +442,6 @@ $we_menu['4000000']['text'] = g_l('javaMenu_global', '[extras]');
 $we_menu['4000000']['parent'] = '0000000';
 $we_menu['4000000']['enabled'] = '1';
 
-// Extras > Integrated Modules
-$_activeIntModules = weModuleInfo::getIntegratedModules(true);
-weModuleInfo::orderModuleArray($_activeIntModules);
-
-if(sizeof($_activeIntModules)){
-
-	$z = 100;
-
-	foreach($_activeIntModules as $key => $modInfo){
-		if(weModuleInfo::showModuleInMenu($modInfo['name'])){
-			$we_menu['4000$z']['text'] = $modInfo['text'] . '...';
-			$we_menu['4000$z']['parent'] = '4000000';
-			$we_menu['4000$z']['cmd'] = 'edit_' . $modInfo['name'] . '_ifthere';
-			$we_menu['4000$z']['perm'] = isset($modInfo['perm']) ? $modInfo['perm'] : '';
-			$we_menu['4000$z']['enabled'] = '1';
-			$z++;
-		}
-	}
-
-	$we_menu['4010000']['parent'] = '4000000'; // separator
-}
-
-// Extras > Inactive Extras
-/*
-  $_inactiveIntModules = weModuleInfo::getIntegratedModules(false);
-  if (sizeof($_inactiveIntModules) > 0) {
-
-  $we_menu['4020000']['text'] = g_l('javaMenu_global','[inactive_extras]'); // separator
-  $we_menu['4020000']['parent'] = '4000000'; // separator
-  $we_menu['4020000']['enabled'] = '1';
-
-  $z = 100;
-
-  foreach ($_inactiveIntModules as $key => $modInfo) {
-  $we_menu['4020$z']['text'] = $modInfo['text'] . '...';
-  $we_menu['4020$z']['parent'] = '4020000';
-  $we_menu['4020$z']['cmd'] = 'edit_'.$modInfo['name'].'_ifthere';
-  $we_menu['4020$z']['perm'] = isset($modInfo['perm']) ? $modInfo['perm'] : '';
-  $we_menu['4020$z']['enabled'] = '0';
-  $z++;
-  }
-  $we_menu['4030000']['parent'] = '4000000'; // separator
-  }
- */
-
 // Extras > Navigation
 $we_menu['4050000']['text'] = g_l('javaMenu_global', '[navigation]') . '...';
 $we_menu['4050000']['parent'] = '4000000';
@@ -509,9 +464,6 @@ $we_menu['4120000']['perm'] = 'EDIT_KATEGORIE || ADMINISTRATOR';
 $we_menu['4120000']['enabled'] = '1';
 
 $we_menu['4123000']['parent'] = '4000000'; // separator
-
-
-
 // Extras > Thumbnails
 $we_menu['4130000']['text'] = g_l('javaMenu_global', '[thumbnails]') . '...';
 $we_menu['4130000']['parent'] = '4000000';
@@ -567,11 +519,11 @@ if(sizeof($_activeIntModules)){
 
 	foreach($_activeIntModules as $key => $modInfo){
 		if($modInfo['hasSettings']){
-			$we_menu['4184'.$z]['text'] = $modInfo['text'] . '...';
-			$we_menu['4184'.$z]['parent'] = '4180000';
-			$we_menu['4184'.$z]['cmd'] = 'edit_settings_' . $modInfo['name'];
-			$we_menu['4184'.$z]['perm'] = isset($modInfo['perm']) ? $modInfo['perm'] : '';
-			$we_menu['4184'.$z]['enabled'] = '1';
+			$we_menu['4184' . $z]['text'] = $modInfo['text'] . '...';
+			$we_menu['4184' . $z]['parent'] = '4180000';
+			$we_menu['4184' . $z]['cmd'] = 'edit_settings_' . $modInfo['name'];
+			$we_menu['4184' . $z]['perm'] = isset($modInfo['perm']) ? $modInfo['perm'] : '';
+			$we_menu['4184' . $z]['enabled'] = '1';
 			$z++;
 		}
 	}
@@ -590,7 +542,7 @@ if(sizeof($GLOBALS['_we_active_integrated_modules']) > 0){
 
 		if(weModuleInfo::showModuleInMenu($m['name'])){
 			if($m['hasSettings']){
-				$menNr = '4176'.$z;
+				$menNr = '4176' . $z;
 				$we_menu[$menNr]['text'] = $m['text'] . '...';
 				$we_menu[$menNr]['parent'] = '4170000';
 				$we_menu[$menNr]['cmd'] = 'edit_settings_' . $m['name'];
