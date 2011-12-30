@@ -23,39 +23,37 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_html_tools{
-
 	###### protect #################################################################
 ### we_html_tools::protect()
 ### protects a page. Guests can not see this page
 
-static function protect(){
-	if (!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) ||  $_SESSION["user"]["Username"] == '') {
-		print self::htmlTop();
-		print
-						we_html_element::jsElement(
-										we_message_reporting::getShowMessageCall(
-														g_l('alert','[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();');
-		print '</body></html>';
-		exit();
+	static function protect(){
+		if(!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ''){
+			print self::htmlTop();
+			print
+				we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(
+						g_l('alert', '[perms_no_permissions]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.close();');
+			print '</body></html>';
+			exit();
+		}
 	}
-}
 
 ###### login ###################################################################
 ### login()
 ### the same as protect but with an othe error message. It is used after the login
 
-static function login() {
-	if ($_SESSION['user']['Username'] == '') {
+	static function login(){
+		if($_SESSION['user']['Username'] == ''){
 
-		print self::htmlTop();
-		print
-						we_html_element::jsElement(
-										we_message_reporting::getShowMessageCall(g_l('alert','[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR) . 'history.back();');
-		print '</body></html>';
-		exit();
+			print self::htmlTop();
+			print
+				we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR) . 'history.back();');
+			print '</body></html>';
+			exit();
+		}
 	}
-}
-
 
 	/**
 	 * This function creates a table.
@@ -73,7 +71,6 @@ static function login() {
 	 *
 	 * @return         string
 	 */
-
 	static function htmlFormElementTable($element, $text, $textalign = "left", $textclass = "defaultfont", $col2 = "", $col3 = "", $col4 = "", $col5 = "", $col6 = "", $abstand = 1){
 		$colspan = 1;
 		$elemOut = "<td";
@@ -159,7 +156,6 @@ static function login() {
 					2, $abstand) . '</td></tr>') : '') . '<tr>' . $elemOut . ($col2 ? $col2out : "") . ($col3 ? $col3out : "") . ($col4 ? $col4out : "") . ($col5 ? $col5out : "") . ($col6 ? $col6out : "") . '</tr></table>';
 	}
 
-
 	static function targetBox($name, $size, $width = "", $id = "", $value = "", $onChange = "", $abstand = 8, $selectboxWidth = "", $disabled = false){
 		$jsvarname = str_replace("[", "_", $name);
 		$jsvarname = str_replace("]", "_", $jsvarname);
@@ -236,7 +232,6 @@ HTS;
 
 		return $_table->getHtml();
 	}
-
 
 	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = "0", $height = "0", $markHot = "", $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos(
@@ -394,10 +389,10 @@ HTS;
 	}
 
 	static function html_select($name, $size, $vals, $value = "", $onchange = ""){
-		$out = '<select class="weSelect" name="' . $name . '" size="' . $size . '"' . ($onchange ? ' onChange="' . $onchange . '"' : '') . ">\n";
+		$out = '<select class="weSelect" name="' . $name . '" size="' . $size . '"' . ($onchange ? ' onchange="' . $onchange . '"' : '') . ">\n";
 		reset($vals);
-		foreach($vals as $v=>$t) {
-			$out .= '<option value="' . htmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . "$t\n";
+		foreach($vals as $v => $t){
+			$out .= '<option value="' . htmlspecialchars($v) . '"' . (($v == $value) ? ' selected' : '') . '>' . $t . '</option>';
 		}
 		return "$out</select>\n";
 	}
@@ -424,8 +419,8 @@ HTS;
 		if((isset($extensions)) && (sizeof($extensions) > 1)){
 			$out = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlTextInput(
 					$name, 5, $selected, "", $attribs, "text", $width / 2, "0", "top") . '</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onChange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
-			for($i = 0; $i < sizeof($extensions); $i++){
-				$out .= '<option>' . $extensions[$i] . "\n";
+			foreach($extensions as $extension){
+				$out .= '<option>' . $extension . '</option>';
 			}
 			$out .= "</select></td></tr></table>\n";
 		} else{
@@ -440,8 +435,8 @@ HTS;
 	}
 
 	static function getPixel($w, $h, $border = 0){
-		//return '<span style="width:'.$w.(is_numeric($w)?'px':'').';height:'.$h.(is_numeric($h)?'px':'').';'.($border?'border:'.$border.'px solid black;':'').'"></span>';
-		return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '" />';
+		return '<span style="display:inline-block;width:'.$w.(is_numeric($w)?'px':'').';height:'.$h.(is_numeric($h)?'px':'').';'.($border?'border:'.$border.'px solid black;':'').'"></span>';
+		//return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '" />';
 	}
 
 	static function pPixel($w, $h){
@@ -540,13 +535,7 @@ HTS;
 		if(($format == "") || $_dayPos > -1){
 			$days = '';
 			for($i = 1; $i <= 31; $i++){
-				if($time && $day == $i){
-					$_atts2 = array(
-						'selected' => 'selected'
-					);
-				} else{
-					$_atts2 = array();
-				}
+				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$daySelect = getHtmlTag(
@@ -568,13 +557,8 @@ HTS;
 		if(($format == "") || $_monthPos > -1){
 			$months = '';
 			for($i = 1; $i <= 12; $i++){
-				if($time && $month == $i){
-					$_atts2 = array(
-						'selected' => 'selected'
-					);
-				} else{
-					$_atts2 = array();
-				}
+				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected') : array();
+
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$monthSelect = getHtmlTag(
@@ -601,13 +585,7 @@ HTS;
 				$maxyear = abs(date("Y") + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
-				if($time && $year == $i){
-					$_atts2 = array(
-						'selected' => 'selected'
-					);
-				} else{
-					$_atts2 = array();
-				}
+				$_atts2 = ($time && $year == $i)?array('selected' => 'selected'):array();
 				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$yearSelect = getHtmlTag(
@@ -629,13 +607,7 @@ HTS;
 		if(($format == "") || $_hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
-				if($time && $hour == $i){
-					$_atts2 = array(
-						'selected' => 'selected'
-					);
-				} else{
-					$_atts2 = array();
-				}
+				$_atts2 = ($time && $hour == $i)?array('selected' => 'selected'):array();
 				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$hourSelect = getHtmlTag(
@@ -657,13 +629,7 @@ HTS;
 		if(($format == "") || $_minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
-				if($time && $minute == $i){
-					$_atts2 = array(
-						'selected' => 'selected'
-					);
-				} else{
-					$_atts2 = array();
-				}
+				$_atts2 =($time && $minute == $i)?array('selected' => 'selected'):array();
 				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$minSelect = getHtmlTag(
@@ -695,16 +661,14 @@ HTS;
 		ksort($_datePosArray);
 		ksort($_timePosArray);
 
-		$retVal = '<table cellpadding="0" cellspacing="0" border="0">
-';
+		$retVal = '<table cellpadding="0" cellspacing="0" border="0">';
 		if($_showDay || $_showMonth || $_showYear){
 
 			$retVal .= '<tr><td>';
 			foreach($_datePosArray as $foo){
 				$retVal .= $foo;
 			}
-			$retVal .= '</td></tr>
-';
+			$retVal .= '</td></tr>';
 		} else{
 			foreach($_datePosArray as $foo){
 				$retVal .= $foo;
@@ -722,8 +686,7 @@ HTS;
 				$retVal .= $foo;
 			}
 		}
-		$retVal .= '</table>
-';
+		$retVal .= '</table>';
 		return $retVal;
 	}
 
@@ -733,33 +696,32 @@ HTS;
 
 	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true){
 		return
-		'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>'.
-		we_html_element::htmlTitle($_SERVER['SERVER_NAME'].' '.$title).
-		we_html_element::htmlMeta(array(
+			'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>' .
+			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+			we_html_element::htmlMeta(array(
 				"http-equiv" => "expires", "content" => 0
-			)).
-		we_html_element::htmlMeta(array(
+			)) .
+			we_html_element::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"
-			)).
-		we_html_element::htmlMeta(
+			)) .
+			we_html_element::htmlMeta(
 				array(
 					"http-equiv" => "content-type",
 					"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
-			)).
-		we_html_element::htmlMeta(array(
+			)) .
+			we_html_element::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
-			)).
-		we_html_element::htmlMeta(
+			)) .
+			we_html_element::htmlMeta(
 				array(
 					"name" => "generator", "content" => 'webEdition'
-			)).
-		we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')).
-		($useMessageBox ? we_html_element::jsElement("", array(
-				"src" => JS_DIR . "we_showMessage.js"
-			)) . we_html_element::jsElement("", array(
-				"src" => JS_DIR . "attachKeyListener.js"
-			)) : '');
-
+			)) .
+			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')) .
+			($useMessageBox ? we_html_element::jsElement("", array(
+					"src" => JS_DIR . "we_showMessage.js"
+				)) . we_html_element::jsElement("", array(
+					"src" => JS_DIR . "attachKeyListener.js"
+				)) : '');
 	}
 
 	/**
@@ -776,7 +738,6 @@ HTS;
 	 * @param string $script
 	 * @return string
 	 */
-
 	static function htmlYesNoCancelDialog($text = "", $img = "", $yes = "", $no = "", $cancel = "", $yesHandler = "", $noHandler = "", $cancelHandler = "", $script = ""){
 		$cancelButton = ($cancel != "" ? we_button::create_button("cancel", "javascript:$cancelHandler") : "");
 		$noButton = ($no != "" ? we_button::create_button("no", "javascript:$noHandler") : "");
