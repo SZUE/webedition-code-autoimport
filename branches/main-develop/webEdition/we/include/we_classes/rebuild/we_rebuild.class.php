@@ -126,9 +126,11 @@ class we_rebuild{
 				print "Debug: Rebuilding: " . $GLOBALS['we_doc']->Path;
 			}
 
-			if($data["mt"] || $data["tt"]){
+			/*removed 30.12.2011
+			 * if($data["mt"] || $data["tt"]){
 				$GLOBALS['we_doc']->correctFields();
-			}
+			}*/
+
 
 			if($data["tt"]){
 				$GLOBALS['we_doc']->we_resaveTemporaryTable();

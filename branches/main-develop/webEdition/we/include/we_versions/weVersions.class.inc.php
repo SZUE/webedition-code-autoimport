@@ -1655,7 +1655,7 @@ class weVersions {
    /**
 	* @abstract save version-entry in DB which is marked as deleted
 	*/
-	function setVersionOnDelete($docID, $docTable,$ct) {
+	function setVersionOnDelete($docID, $docTable,$ct, $db) {
 
 		if(isset($_SESSION["user"]["ID"])) {
 			$lastEntry = $this->getLastEntry($docID, $docTable);
@@ -1697,13 +1697,9 @@ class weVersions {
 				$theKeys = "(". makeCSVFromArray($keys) .")";
 				$theValues = "VALUES(". makeCSVFromArray($vals) .")";
 
-				$q = "INSERT INTO ".VERSIONS_TABLE." ".$theKeys ." ". $theValues;
-				$db = new DB_WE();
-				$db->query($q);
+				$db->query("INSERT INTO ".VERSIONS_TABLE." ".$theKeys ." ". $theValues);
 
-				$q2 = "UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."' AND version != ".intval($lastEntry['version']);
-
-				$db->query($q2);
+				$db->query("UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."' AND version != ".intval($lastEntry['version']));
 			}
 
 			$this->CheckPreferencesTime($docID, $docTable);

@@ -192,7 +192,6 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 		$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
 		we_util_File::deleteLocalFile($file);
 	}
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 	we_temporaryDocument::delete($id, $table, $DB_WE);
 
 	if($table == FILE_TABLE){
@@ -360,7 +359,6 @@ function deleteEntry($id, $table, $delR = true, $skipHook=0){
 
 	$DB_WE = new DB_WE();
 	if(defined("WORKFLOW_TABLE") && ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
 		if(weWorkflowUtility::inWorkflow($id, $table))
 			weWorkflowUtility::removeDocFromWorkflow($id, $table, $_SESSION["user"]["ID"], g_l('modules_workflow', '[doc_deleted]'));
 	}
@@ -374,7 +372,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook=0){
 				$version->saveVersion($object);
 			}
 
-			$version->setVersionOnDelete($id, $table, $row['ContentType']);
+			$version->setVersionOnDelete($id, $table, $row['ContentType'],$DB_WE);
 		}
 		/* hook */
 		if($skipHook == 0){
@@ -382,7 +380,6 @@ function deleteEntry($id, $table, $delR = true, $skipHook=0){
 			$hook->executeHook();
 		}
 
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_temporaryDocument.inc.php');
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
 		@set_time_limit(30);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,44 +22,35 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 class we_textContentDocument extends we_textDocument{
-
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName=__CLASS__;
 
-
-	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES,WE_EDITPAGE_INFO,WE_EDITPAGE_CONTENT,WE_EDITPAGE_PREVIEW,WE_EDITPAGE_VALIDATION);
+	var $ClassName = __CLASS__;
+	var $EditPageNrs = array(WE_EDITPAGE_PROPERTIES, WE_EDITPAGE_INFO, WE_EDITPAGE_CONTENT, WE_EDITPAGE_PREVIEW, WE_EDITPAGE_VALIDATION);
 
 
 	/* Doc-Type of the document */
-	var $DocType="";
-
+	var $DocType = "";
 	var $PublWhenSave = 0;
-
 	var $Table = FILE_TABLE;
-
 	var $IsTextContentDoc = true;
-
 	var $schedArr = array();
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots,"DocType");
+		array_push($this->persistent_slots, "DocType");
 		if(defined("SCHEDULE_TABLE")){
-			array_push($this->persistent_slots,"FromOk","ToOk","From","To");
+			array_push($this->persistent_slots, "FromOk", "ToOk", "From", "To");
 		}
-		array_push($this->EditPageNrs,WE_EDITPAGE_SCHEDULER);
-
+		array_push($this->EditPageNrs, WE_EDITPAGE_SCHEDULER);
 	}
 
 	function editor($baseHref=true){
-		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl().$this->Path : "";
+		$GLOBALS["we_baseHref"] = $baseHref ? getServerUrl() . $this->Path : "";
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_SCHEDULER:
 				return "we_modules/schedule/we_editor_schedpro.inc.php";
-            case WE_EDITPAGE_VALIDATION:
+			case WE_EDITPAGE_VALIDATION:
 				return "we_templates/validateDocument.inc.php";
 				break;
 			default:
@@ -79,16 +71,15 @@ class we_textContentDocument extends we_textDocument{
 		$this->ContentType = $ContentType;
 		$this->IsSearchable = $IsSearchable;
 		$this->Extension = $Extension;
-
 	}
 
 	function insertAtIndex(){
 		$text = '';
-		if(isset($GLOBALS["INDEX_TYPE"]) && $GLOBALS["INDEX_TYPE"]=="PAGE"){
+		if(isset($GLOBALS["INDEX_TYPE"]) && $GLOBALS["INDEX_TYPE"] == "PAGE"){
 			$text = $this->i_getDocument();
-		}else{
+		} else{
 
-			if ($this->ContentType == 'text/webedition') {
+			if($this->ContentType == 'text/webedition'){
 				// dont save not needed fields in index-table: @bugfix 8798
 				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode());
 				$fieldTypes["Title"] = "txt";
@@ -97,22 +88,22 @@ class we_textContentDocument extends we_textDocument{
 			}
 
 			$this->resetElements();
-			while(list($k,$v) = $this->nextElement('')){
-				$_dat = (isset($v["dat"]) && is_string($v["dat"]) && substr($v["dat"],0,2) == "a:") ? unserialize($v["dat"]) : (isset($v["dat"]) ? $v["dat"] : "");
-				if ((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)) {
-					foreach($fieldTypes as $name=>$val) {
-						if(preg_match('|^'.$name.'$|i',$k)) {
+			while(list($k, $v) = $this->nextElement('')) {
+				$_dat = (isset($v["dat"]) && is_string($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : (isset($v["dat"]) ? $v["dat"] : "");
+				if((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)){
+					foreach($fieldTypes as $name => $val){
+						if(preg_match('|^' . $name . '$|i', $k)){
 							if(!is_array($_dat) && $v["type"] == "txt" && ($k != "Charset")){
-								$text .= " ".$_dat;
-							} else if (is_array($_dat)) {
-								$text .= ' '.$_dat['text'];
+								$text .= " " . $_dat;
+							} else if(is_array($_dat)){
+								$text .= ' ' . $_dat['text'];
 							}
 							break;
 						}
 					}
-				} else if (!is_array($_dat)) {
+				} else if(!is_array($_dat)){
 					if(isset($v["type"]) && $v["type"] == "txt" && ($k != "Charset")){
-						$text .= " ".(isset($v["dat"]) ? $v["dat"] : "");
+						$text .= " " . (isset($v["dat"]) ? $v["dat"] : "");
 					}
 				}
 			}
@@ -120,32 +111,30 @@ class we_textContentDocument extends we_textDocument{
 		$text = trim(strip_tags($text));
 
 		$maxDB = getMaxAllowedPacket($this->DB_WE) - 1024;
-		$maxDB = min(1000000,$maxDB);
+		$maxDB = min(1000000, $maxDB);
 		if(strlen($text) > $maxDB){
-			$text = substr($text,0,$maxDB);
+			$text = substr($text, 0, $maxDB);
 		}
 		$text = addslashes($text);
 
-		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID='.intval($this->ID));
+		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES(".intval($this->ID).",'".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($text)."','".$this->DB_WE->escape($this->ParentPath)."',".intval($this->ParentID).",'".$this->DB_WE->escape($this->Category)."','".$this->DB_WE->escape($this->DocType)."','".$this->DB_WE->escape($this->getElement("Title"))."','".$this->DB_WE->escape($this->getElement("Description"))."','".$this->DB_WE->escape($this->Path)."','".$this->DB_WE->escape($this->Language)."')");
+			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES(" . intval($this->ID) . ",'" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($this->ParentPath) . "'," . intval($this->ParentID) . ",'" . $this->DB_WE->escape($this->Category) . "','" . $this->DB_WE->escape($this->DocType) . "','" . $this->DB_WE->escape($this->getElement("Title")) . "','" . $this->DB_WE->escape($this->getElement("Description")) . "','" . $this->DB_WE->escape($this->Path) . "','" . $this->DB_WE->escape($this->Language) . "')");
 		}
 		return true;
-
 	}
-
 
 	/* publish a document */
 
 	function getMetas($code){
-		if(eregi('< ?title[^>]*>(.*)< ?/ ?title[^>]*>',$code,$regs)){
+		if(eregi('< ?title[^>]*>(.*)< ?/ ?title[^>]*>', $code, $regs)){
 			$title = $regs[1];
-		}else{
+		} else{
 			$title = "";
 		}
-		$tempname = TMP_DIR."/".uniqid(md5(time()));
-		$fp=fopen($tempname,"wb");
-		fputs($fp,$code);
+		$tempname = TMP_DIR . "/" . uniqid(md5(time()));
+		$fp = fopen($tempname, "wb");
+		fputs($fp, $code);
 		fclose($fp);
 		$metas = get_meta_tags($tempname);
 		unlink($tempname);
@@ -153,13 +142,13 @@ class we_textContentDocument extends we_textDocument{
 		return $metas;
 	}
 
-	function changeDoctype($dt="",$force=false){
+	function changeDoctype($dt="", $force=false){
 		if((!$this->ID) || $force){
 			if($dt){
-				$this->DocType=$dt;
+				$this->DocType = $dt;
 			}
 			$db = new DB_WE();
-			$db->query("SELECT * FROM " . DOC_TYPES_TABLE . " WHERE ID =".intval($this->DocType));
+			$db->query("SELECT * FROM " . DOC_TYPES_TABLE . " WHERE ID =" . intval($this->DocType));
 			if($db->next_record()){
 				$this->Extension = $db->f("Extension");
 				if($db->f("ParentPath") != ""){
@@ -169,86 +158,80 @@ class we_textContentDocument extends we_textDocument{
 				if($this->ContentType == "text/webedition"){
 					// only switch template, when current template is not in Templates
 					$_templates = explode(",", $db->f("Templates"));
-					if ( !in_array($this->TemplateID, $_templates) ) {
+					if(!in_array($this->TemplateID, $_templates)){
 						$this->setTemplateID($db->f("TemplateID"));
-
 					}
 					$this->IsDynamic = $db->f("IsDynamic");
 				}
 				$this->IsSearchable = $db->f("IsSearchable");
 				$this->Category = $db->f("Category");
 				$this->Language = $db->f("Language");
-				$_pathFirstPart = substr($this->ParentPath,-1) == "/" ? "" : "/";
+				$_pathFirstPart = substr($this->ParentPath, -1) == "/" ? "" : "/";
 				switch($db->f("SubDir")){
 					case we_class::SUB_DIR_YEAR:
-						$this->ParentPath .= $_pathFirstPart.date("Y");
+						$this->ParentPath .= $_pathFirstPart . date("Y");
 						break;
 					case we_class::SUB_DIR_YEAR_MONTH:
-						$this->ParentPath .= $_pathFirstPart.date("Y")."/".date("m");
+						$this->ParentPath .= $_pathFirstPart . date("Y") . "/" . date("m");
 						break;
 					case we_class::SUB_DIR_YEAR_MONTH_DAY:
-						$this->ParentPath .= $_pathFirstPart.date("Y")."/".date("m")."/".date("d");
+						$this->ParentPath .= $_pathFirstPart . date("Y") . "/" . date("m") . "/" . date("d");
 						break;
 				}
 				$this->i_checkPathDiffAndCreate();
-				$this->Text = $this->Filename.$this->Extension;
+				$this->Text = $this->Filename . $this->Extension;
 
 				// get Customerfilter of parent
-				if (defined("CUSTOMER_TABLE") && isset($this->documentCustomerFilter)) {
+				if(defined("CUSTOMER_TABLE") && isset($this->documentCustomerFilter)){
 					$_tmpFolder = new we_folder();
 					$_tmpFolder->initByID($this->ParentID, $this->Table);
 					$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
 					unset($_tmpFolder);
-
 				}
 			}
 		}
 	}
 
-
-	function formDocType2($width = 300, $disable=false) {
+	function formDocType2($width = 300, $disable=false){
 		$q = getDoctypeQuery($this->DB_WE);
 
 		if($disable){
-			$name=($this->DocType?f('SELECT DocType FROM '.DOC_TYPES_TABLE.' WHERE ID='.intval($this->DocType),'DocType',$this->DB_WE):g_l('weClass',"[nodoctype]"));
-			return g_l('weClass',"[doctype]").'<br>'.$name;
+			$name = ($this->DocType ? f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType), 'DocType', $this->DB_WE) : g_l('weClass', "[nodoctype]"));
+			return g_l('weClass', "[doctype]") . '<br>' . $name;
 		}
-		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", g_l('weClass',"[doctype]"), $q, 1, $this->DocType, false,
-								  (($this->DocType !== "") ?
-								  	"if(confirm('".g_l('weClass','[doctype_changed_question]')."')){we_cmd('doctype_changed');};" :
-								  	"we_cmd('doctype_changed');") .
-								  	"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", we_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!we_hasPerm("EDIT_DOCTYPE"))),
-		 						  ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", g_l('weClass',"[nodoctype]"))  : "");
+		return $this->formSelect2("", $width, "DocType", DOC_TYPES_TABLE, "ID", "DocType", g_l('weClass', "[doctype]"), $q, 1, $this->DocType, false, (($this->DocType !== "") ?
+					"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
+					"we_cmd('doctype_changed');") .
+				"_EditorFrame.setEditorIsHot(true);", "", "left", "defaultfont", "", we_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, -1, -1, "", "", (!we_hasPerm("EDIT_DOCTYPE"))), ((we_hasPerm("NO_DOCTYPE") || ($this->ID && $this->DocType == "") ) ) ? array("", g_l('weClass', "[nodoctype]")) : "");
 	}
 
 	function formDocTypeTempl(){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" align="left">'.$this->formDocType2(388,$this->Published).'</td>
+		<td class="defaultfont" align="left">' . $this->formDocType2(388, $this->Published) . '</td>
 	</tr>
 	<tr>
-		<td>'.we_html_tools::getPixel(2,6).'</td>
+		<td>' . we_html_tools::getPixel(2, 6) . '</td>
 	</tr>
 	<tr>
-		<td>'.$this->formIsSearchable().'</td>
+		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
 	<tr>
-		<td>'.$this->formInGlossar().'</td>
+		<td>' . $this->formInGlossar() . '</td>
 	</tr>
 </table>
 ';
 		return $content;
 	}
 
-
 ### neu
-
 ## public ###
+
 	function we_new(){
 		parent::we_new();
-		$this->Filename=$this->i_getDefaultFilename();
-
+		$this->Filename = $this->i_getDefaultFilename();
 	}
+
 	function we_load($from=we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_MAID_DB:
@@ -257,11 +240,11 @@ class we_textContentDocument extends we_textDocument{
 			case we_class::LOAD_TEMP_DB:
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
-					$sessDat=unserialize($sessDat);
+					$sessDat = unserialize($sessDat);
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
 					$this->OldPath = $this->Path;
-				}else{
+				} else{
 					$this->we_load(we_class::LOAD_MAID_DB);
 				}
 				break;
@@ -269,13 +252,13 @@ class we_textContentDocument extends we_textDocument{
 				$this->we_load(we_class::LOAD_TEMP_DB);
 				break;
 			case we_class::LOAD_SCHEDULE_DB :
-				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='".$this->ID."' AND ClassName='".$this->ClassName."' AND Was='".we_schedpro::SCHEDULE_FROM."'","SerializedData",$this->DB_WE));
-				if($sessDat) {
+				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID='" . $this->ID . "' AND ClassName='" . $this->ClassName . "' AND Was='" . we_schedpro::SCHEDULE_FROM . "'", "SerializedData", $this->DB_WE));
+				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB("Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID");
 					$this->OldPath = $this->Path;
 					break;
-				} else {	// take tmp db, when doc not in schedule db
+				} else{ // take tmp db, when doc not in schedule db
 					$this->we_load(we_class::LOAD_TEMP_DB);
 				}
 				break;
@@ -287,16 +270,18 @@ class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	function we_load_and_resave($id,$resaveTmp=false,$resaveMain=false){
-		$this->initByID($id,FILE_TABLE);
+	function we_load_and_resave($id, $resaveTmp=false, $resaveMain=false){
+		$this->initByID($id, FILE_TABLE);
 
 		if($resaveTmp){
 			$saveArr = array();
 			$this->saveInSession($saveArr);
 			if(!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
-				if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+				if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE))
+					return false;
 			}else{
-				if(!we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+				if(!we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE))
+					return false;
 			}
 		}
 
@@ -304,27 +289,28 @@ class we_textContentDocument extends we_textDocument{
 		parent::we_save();
 	}
 
-	function we_save($resave=0,$skipHook=0){
-		$this->errMsg='';
+	function we_save($resave=0, $skipHook=0){
+		$this->errMsg = '';
 		$this->i_setText();
-		if ($skipHook==0){
-			$hook = new weHook('preSave', '', array($this,'resave'=>$resave));
-			$ret=$hook->executeHook();
+		if($skipHook == 0){
+			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
+			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret===false){
-				$this->errMsg=$hook->getErrorString();
+			if($ret === false){
+				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 
-		if(!$this->ID){  // when no ID, then allways save before in main table
-			if(!we_root::we_save(0)) return false;
+		if(!$this->ID){	// when no ID, then allways save before in main table
+			if(!we_root::we_save(0))
+				return false;
 		}
-		if($resave==0){
+		if($resave == 0){
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 			$this->ModDate = time();
-			$this->wasUpdate=1;
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_history.class.php");
+			$this->wasUpdate = 1;
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 			$this->resaveWeDocumentCustomerFilter();
 		}
@@ -336,17 +322,17 @@ class we_textContentDocument extends we_textDocument{
 		$ret = $this->i_saveTmp(!$resave);
 		$this->OldPath = $this->Path;
 
-		if($this->ContentType=="text/webedition" || $this->ContentType=="text/html") {
+		if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
 			$version->save($this);
 		}
 
 		/* hook */
-		if ($skipHook==0){
-			$hook = new weHook('save', '', array($this,'resave'=>$resave));
-			$ret=$hook->executeHook();
+		if($skipHook == 0){
+			$hook = new weHook('save', '', array($this, 'resave' => $resave));
+			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret===false){
-				$this->errMsg=$hook->getErrorString();
+			if($ret === false){
+				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
@@ -354,13 +340,13 @@ class we_textContentDocument extends we_textDocument{
 		return $ret;
 	}
 
-	function we_publish($DoNotMark=false,$saveinMainDB=true,$skipHook=0){
-		if ($skipHook==0){
+	function we_publish($DoNotMark=false, $saveinMainDB=true, $skipHook=0){
+		if($skipHook == 0){
 			$hook = new weHook('prePublish', '', array($this));
-			$ret=$hook->executeHook();
+			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret===false){
-				$this->errMsg=$hook->getErrorString();
+			if($ret === false){
+				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
@@ -372,78 +358,80 @@ class we_textContentDocument extends we_textDocument{
 
 		$_oldPublished = $this->Published;
 
-		$this->Published=time();
+		$this->Published = time();
 
 		if(!$this->i_writeDocWhenPubl()){
-			$this->Published=$_oldPublished;
+			$this->Published = $_oldPublished;
 			return false;
 		}
 
-		if($DoNotMark==false){
-			if(!$this->DB_WE->query('UPDATE '.$this->DB_WE->escape($this->Table)." SET Published='".intval($this->Published)."' WHERE ID=".intval($this->ID))) return false; // mark the document as published;
+		if($DoNotMark == false){
+			if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . " SET Published='" . intval($this->Published) . "' WHERE ID=" . intval($this->ID)))
+				return false; // mark the document as published;
 		}
 
 		//Bug #5505
 //		if($saveinMainDB) {
-			$this->rewriteNavigation();
+		$this->rewriteNavigation();
 //		}
-		if(isset($_SESSION['Versions']['fromScheduler']) && $_SESSION['Versions']['fromScheduler'] && ($this->ContentType=='text/webedition' || $this->ContentType=="text/html")) {
+		if(isset($_SESSION['Versions']['fromScheduler']) && $_SESSION['Versions']['fromScheduler'] && ($this->ContentType == 'text/webedition' || $this->ContentType == "text/html")){
 			$version = new weVersions();
 			$version->save($this, 'published');
 		}
 		/* hook */
-		if ($skipHook==0){
+		if($skipHook == 0){
 			$hook = new weHook('publish', '', array($this));
-			$ret=$hook->executeHook();
+			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret===false){
-				$this->errMsg=$hook->getErrorString();
+			if($ret === false){
+				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
-		if (we_temporaryDocument::isInTempDB($this->ID,$this->Table,$this->DB_WE) ){
-			we_temporaryDocument::delete($this->ID,$this->Table,$this->DB_WE);
+		if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
+			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 		}
 		return $this->insertAtIndex();
 	}
 
 	function we_unpublish($skipHook=0){
-		if(!$this->ID) return false;
-		if($this->i_isMoved()) {
-			if(!we_util_File::deleteLocalFile($this->getRealPath())) {
+		if(!$this->ID)
+			return false;
+		if($this->i_isMoved()){
+			if(!we_util_File::deleteLocalFile($this->getRealPath())){
 				return false;
 			}
-		} else {
-			if(!we_util_File::deleteLocalFile($this->getRealPath(true))) {
+		} else{
+			if(!we_util_File::deleteLocalFile($this->getRealPath(true))){
 				return false;
 			}
 		}
-		if(!$this->DB_WE->query("UPDATE ".$this->DB_WE->escape($this->Table)." SET Published='0' WHERE ID=".intval($this->ID))) {
+		if(!$this->DB_WE->query("UPDATE " . $this->DB_WE->escape($this->Table) . " SET Published='0' WHERE ID=" . intval($this->ID))){
 			return false;
 		}
-		$this->Published=0;
+		$this->Published = 0;
 
 		$this->rewriteNavigation();
 
 		/* version */
-		if($this->ContentType=="text/webedition" || $this->ContentType=="text/html") {
+		if($this->ContentType == "text/webedition" || $this->ContentType == "text/html"){
 			$version = new weVersions();
 			$version->save($this, "unpublished");
 		}
 		/* hook */
-		if ($skipHook==0){
+		if($skipHook == 0){
 			$hook = new weHook('unpublish', '', array($this));
-			$ret=$hook->executeHook();
+			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret===false){
-				$this->errMsg=$hook->getErrorString();
+			if($ret === false){
+				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 
 		$this->DB_WE->query('SELECT DID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
-		if($this->DB_WE->next_record()) {
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".intval($this->ID));
+		if($this->DB_WE->next_record()){
+			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
 		}
 
 
@@ -452,26 +440,24 @@ class we_textContentDocument extends we_textDocument{
 
 	function we_republish($rebuildMain=true){
 		if($this->Published){
-			return $this->we_publish(true,$rebuildMain);
-		}else{
-			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=".intval($this->ID));
+			return $this->we_publish(true, $rebuildMain);
+		} else{
+			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($this->ID));
 		}
 	}
-
 
 	function we_resaveTemporaryTable(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-			if (($this->ModDate > $this->Published) && $this->Published){
+		if(($this->ModDate > $this->Published) && $this->Published){
 			if(!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
-				if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+				return we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE);
 			}else{
-				if(!we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
+				return we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE);
 			}
 		}
 		return true;
 	}
-
 
 	function ModifyPathInformation($parentID){
 		$this->setParentID($parentID);
@@ -482,16 +468,19 @@ class we_textContentDocument extends we_textDocument{
 		$this->insertAtIndex();
 		$this->modifyChildrenPath(); // only on folders, because on other classes this function is empty
 	}
+
 ### private ####
 
 	private function i_saveTmp($write=true){
 		$saveArr = array();
 		$this->saveInSession($saveArr);
-		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)) return false;
-		if(!$this->i_savePersistentSlotsToDB("Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,temp_doc_type,WebUserID")) return false;
+		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE))
+			return false;
+		if(!$this->i_savePersistentSlotsToDB("Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,temp_doc_type,WebUserID"))
+			return false;
 		if($write){
 			return $this->i_writeDocument();
-		}else{
+		} else{
 			return true;
 		}
 	}
@@ -506,30 +495,31 @@ class we_textContentDocument extends we_textDocument{
 		}
 		$realPath = $this->getRealPath();
 		$parent = dirname($realPath);
-        $parent = str_replace("\\","/",$parent);
+		$parent = str_replace("\\", "/", $parent);
 		$cf = array();
-		while( !we_util_File::checkAndMakeFolder($parent) ){
-			array_push($cf,$parent);
+		while(!we_util_File::checkAndMakeFolder($parent)) {
+			array_push($cf, $parent);
 			$parent = dirname($parent);
-        	$parent = str_replace("\\","/",$parent);
+			$parent = str_replace("\\", "/", $parent);
 		}
-		for($i=(sizeof($cf)-1);$i>=0;$i--){
+		for($i = (sizeof($cf) - 1); $i >= 0; $i--){
 			we_util_File::createLocalFolder($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();
-		if(!we_document::i_writeMainDir($doc)) return false;
+		if(!we_document::i_writeMainDir($doc))
+			return false;
 		return true;
 	}
 
-	function revert_published() {
-		we_temporaryDocument::delete($this->ID,$this->Table);
+	function revert_published(){
+		we_temporaryDocument::delete($this->ID, $this->Table);
 		$this->initByID($this->ID);
 		$this->ModDate = $this->Published;
 		$this->we_save();
 		$this->we_publish();
-		if(defined("WORKFLOW_TABLE") && $this->ContentType == "text/webedition") {
-			if(weWorkflowUtility::inWorkflow($this->ID,$this->Table)){
-				weWorkflowUtility::removeDocFromWorkflow($this->ID,$this->Table,$_SESSION["user"]["ID"],"");
+		if(defined("WORKFLOW_TABLE") && $this->ContentType == "text/webedition"){
+			if(weWorkflowUtility::inWorkflow($this->ID, $this->Table)){
+				weWorkflowUtility::removeDocFromWorkflow($this->ID, $this->Table, $_SESSION["user"]["ID"], "");
 			}
 		}
 	}

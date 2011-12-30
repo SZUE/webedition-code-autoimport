@@ -790,7 +790,6 @@ function formTriggerDocument($isclass=false){
 		}
 		$a = $this->i_saveContentDataInDB();
 		if($resave==0 && $this->ClassName!='we_class_folder'){
-			include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_classes/we_history.class.php');
 			we_history::insertIntoHistory($this);
 		}
 		return $a;

@@ -351,10 +351,10 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$_tags = we_tag_tagParser::getMetaTags($_code);
 
-		for($j = 0; $j < sizeof($_tags); $j++){ //	now parse these tags for property-page.
-			if($_tags[$j][1]){
-				$_tp->parseSpecificTags($_tags[$j][0], $_tags[$j][1]);
-				eval('?>' . $_tags[$j][1]);
+		foreach($_tags as $tag){ //	now parse these tags for property-page.
+			if($tag[1]){
+				$_tp->parseSpecificTags($tag[0], $tag[1]);
+				eval('?>' . $tag[1]);
 			}
 		}
 
@@ -555,7 +555,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function getFieldTypes($templateCode){
-		$tp = new we_tag_tagParser($templateCode);
+		$tp = new we_tag_tagParser($templateCode,$this->getPath());
 		$tags = $tp->getAllTags();
 		$blocks = array();
 		$fieldTypes = array();
@@ -829,7 +829,6 @@ class we_webEditionDocument extends we_textContentDocument{
 			$data = array();
 
 			if(defined('SHOP_TABLE')){
-				require_once(WE_SHOP_MODULE_DIR . "weShopVariants.inc.php");
 				weShopVariants::setVariantDataForModel($this, true);
 			}
 			$this->saveInSession($data);

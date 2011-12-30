@@ -164,16 +164,17 @@ class we_template extends we_document{
 		$foo = array();
 		$regs = array();
 		for($i = $nr; $i >= 0; $i--){
-			if(ereg('</we:if([^> ]+) ?>?', $tags[$i], $regs)){
-				$foo[trim($regs[1])] = isset($foo[trim($regs[1])]) ? abs($foo[trim($regs[1])]) + 1 : 1;
-			} else if(ereg('<we:if([^> ]+) ?>?', $tags[$i], $regs)){
-				$tagname = trim($regs[1]);
-				if(sizeof($foo) == 0){
+			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
+				if($regs[1]=='/'){
+					$foo[$regs[2]]=isset($foo[$regs[2]])?$foo[$regs[2]]+1:1;
+				}else{
+					if(sizeof($foo) == 0){
 					return $i;
-				} else if(isset($foo[$tagname]) && abs($foo[$tagname])){
-					$foo[$tagname] = abs($foo[$tagname]) - 1;
+				} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
+					$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
 				} else{
 					return $i;
+				}
 				}
 			}
 		}
@@ -187,17 +188,18 @@ class we_template extends we_document{
 		$foo = array();
 		$regs = array();
 		for($i = $nr; $i < sizeof($tags); $i++){
-			if(ereg('<we:if([^> ]+) ?>?', $tags[$i], $regs)){
-				$foo[trim($regs[1])] = isset($foo[trim($regs[1])]) ? abs($foo[trim($regs[1])]) + 1 : 1;
-			} else if(ereg('</we:if([^> ]+) ?>?', $tags[$i], $regs)){
-				$tagname = trim($regs[1]);
-				if(sizeof($foo) == 0)
+			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
+				if($regs[1]!='/'){
+					$foo[$regs[2]]=isset($foo[$regs[2]])?$foo[$regs[2]]+1:1;
+				}else{
+					if(sizeof($foo) == 0){
 					return $i;
-				else if(isset($foo[$tagname]) && abs($foo[$tagname])){
-					$foo[$tagname] = abs($foo[$tagname]) - 1;
+				} else if(isset($foo[$regs[2]]) && intval($foo[$regs[2]])){
+					$foo[$regs[2]] = intval($foo[$regs[2]]) - 1;
+				} else{
+					return $i;
 				}
-				else
-					return $i;
+				}
 			}
 		}
 		return -1;
@@ -237,7 +239,7 @@ class we_template extends we_document{
 
 		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $code);
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
-		$tp = new we_tag_tagParser($code);
+		$tp = new we_tag_tagParser($code,$this->getPath());
 		$tags = $tp->getAllTags();
 		if(($foo = $this->checkElsetags($tags))){
 			$this->errMsg = $foo;
@@ -457,7 +459,7 @@ class we_template extends we_document{
 
 		$variant_tags = array('input', 'link', 'textarea', 'img', 'select');
 		$templateCode = $this->getTemplateCode();
-		$tp = new we_tag_tagParser($templateCode);
+		$tp = new we_tag_tagParser($templateCode,$this->getPath());
 		$tags = $tp->getAllTags();
 
 		$blocks = array();
@@ -728,7 +730,7 @@ class we_template extends we_document{
 		}
 		$this->IncludedTemplates = "";
 		// look for included templates (<we:include type="template" id="99">)
-		$tp = new we_tag_tagParser($code);
+		$tp = new we_tag_tagParser($code,$this->getPath());
 		$tags = $tp->getAllTags();
 		// go through all tags
 		foreach($tags as $tag){

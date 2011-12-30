@@ -29,10 +29,12 @@ class we_tag_tagParser{
 	private static $CloseTags = 0;
 	//remove comment-attribute (should never be seen), and obsolete cachelifetime
 	private $removeAttribs = array('cachelifetime', 'comment');
+	private $curFile='';
 
 	//private $AppListviewItemsTags = array();
 
-	public function __construct($content=''){
+	public function __construct($content='',$curFile=''){
+		$this->curFile=$curFile;
 		//init Tags
 		if($content != ''){
 			$this->setAllTags($content);
@@ -176,7 +178,7 @@ class we_tag_tagParser{
 			$ende = FALSE;
 			t_e('Tagparser called with old API - please Update your tag!');
 		}
-		if($start == 0 && ($tmp = self::checkOpenCloseTags($this->tags, $code)) !== true){
+		if($start == 0 && ($tmp = $this->checkOpenCloseTags($code)) !== true){
 			return $tmp;
 		}
 		$this->lastpos = 0;
@@ -198,15 +200,14 @@ class we_tag_tagParser{
 		return true;
 	}
 
-	private static function checkOpenCloseTags($TagsInTemplate, &$code){
-		include_once(WEBEDITION_INCLUDES_DIR . 'weTagWizard/classes/weTagWizard.class.php');
+	private function checkOpenCloseTags(&$code){
 		if(!is_array(self::$CloseTags)){
 			self::$CloseTags = weTagWizard::getTagsWithEndTag();
 		}
 
 		$Counter = array();
 
-		foreach($TagsInTemplate as $_tag){
+		foreach($this->tags as $_tag){
 			$_matches = array();
 			if(preg_match_all('|<(/?)we:([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* *(/)?>?|si', $_tag, $_matches)){
 				if(!is_null($_matches[2][0]) && in_array($_matches[2][0], self::$CloseTags)){
@@ -233,13 +234,13 @@ class we_tag_tagParser{
 		foreach($Counter as $_tag => $_counter){
 			if($_counter < 0){
 				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . '): '.$this->curFile, 'we:' . $_tag));
 
 				$isError = true;
 			} else
 			if($_counter > 0){
 				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . '): '.$this->curFile, 'we:' . $_tag));
 				$isError = true;
 			}
 		}
@@ -311,7 +312,7 @@ class we_tag_tagParser{
 
 		$tagname = $regs[2];
 		if(!$gt){
-			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname));
+			return parseError(sprintf(g_l('parser', '[incompleteTag]').$this->curFile, $tagname));
 		}
 		$selfclose|=!in_array($tagname, self::$CloseTags);
 		preg_match('%</?we:[[:alpha:]]+ *(.*)' . $regs[4] . $regs[5] . '%', $regs[0], $regs);
@@ -320,10 +321,10 @@ class we_tag_tagParser{
 		//FIXME: remove?!
 		if(preg_match('|name="([^"]*)"|i', $attr, $regs)){
 			if(!$regs[1]){
-				print parseError(sprintf(g_l('parser', '[name_empty]'), $tagname));
+				print parseError(sprintf(g_l('parser', '[name_empty]').$this->curFile, $tagname));
 			} else
 			if(strlen($regs[1]) > 255){
-				print parseError(sprintf(g_l('parser', '[name_to_long]'), $tagname));
+				print parseError(sprintf(g_l('parser', '[name_to_long]').$this->curFile, $tagname));
 			}
 		}
 
@@ -337,9 +338,7 @@ class we_tag_tagParser{
 				}
 			}
 
-			$arrstr = 'array(' . rtrim($attribs, ',') . ')';
-
-			@eval('$arr = ' . preg_replace('|"\$([^"]+)"', '"$GLOBALS[\1]"|', $arrstr) . ';');
+			@eval('$arr = array(' . rtrim($attribs, ',') . ');');
 		}
 		if(!isset($arr)){
 			$arr = array();
@@ -364,8 +363,7 @@ class we_tag_tagParser{
 					$this->parseTags($content, ($ipos + 1), $endTagNo);
 				}
 			} else{
-				t_e('Internal Parser Error: endtag for ' . $tag . ' not found', $code);
-				return parseError(sprintf(g_l('parser', '[start_endtag_missing]') , $tagname));
+				return parseError(sprintf(g_l('parser', '[start_endtag_missing]').$this->curFile , $tagname));
 			}
 		}
 		$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs, ',') . ')'); // workarround Bug Nr 6318
@@ -390,7 +388,7 @@ class we_tag_tagParser{
 		  } else */
 		if(substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript"){
 			if(!isset($endeEndTagPos)){
-				return parseError(sprintf(g_l('parser', '[selfclosingIf]') , $tagname));
+				return parseError(sprintf(g_l('parser', '[selfclosingIf]').$this->curFile , $tagname));
 			}
 			$code = substr($code, 0, $tagPos) .
 				'<?php if(' . self::printTag($tagname, $attribs) . '){ ?>' .
