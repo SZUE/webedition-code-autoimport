@@ -169,7 +169,7 @@ $oTblPeriod->setCol(0, 0, array(
 ), $sctValid);
 $oTblPeriod->setCol(0, 1, array(
 	"align" => "right"
-), $oTblValidity->getHTMLCode());
+), $oTblValidity->getHTML());
 
 // Edit note prio settings
 $rdoPrio[0] = we_forms::radiobutton(
@@ -268,12 +268,12 @@ $oTblProps->setCol(0, 0, array(
 ), g_l('cockpit','[valid]') . '&nbsp;');
 $oTblProps->setCol(0, 1, array(
 	"colspan" => 2, "align" => "right"
-), $oTblPeriod->getHTMLCode());
+), $oTblPeriod->getHTML());
 $oTblProps->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(2, 0, array(
 	"class" => "middlefont"
 ), g_l('cockpit','[prio]'));
-$oTblProps->setCol(2, 1, null, $oTblPrio->getHTMLCode());
+$oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
 $oTblProps->setCol(3, 0, null, we_html_tools::getPixel(1, 8));
 $oTblProps->setCol(4, 0, array(
 	"class" => "middlefont"
@@ -367,11 +367,11 @@ $oPad->setCol(2, 2, array(
 	"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
 )));
 
-$_notepad = $oPad->getHTMLCode() . we_html_element::htmlDiv(array(
+$_notepad = $oPad->getHTML() . we_html_element::htmlDiv(array(
 	"id" => "props"
-), $oTblProps->getHTMLCode()) . we_html_element::htmlDiv(array(
+), $oTblProps->getHTML()) . we_html_element::htmlDiv(array(
 	"id" => "view"
-), $oTblBtnProps->getHTMLCode());
+), $oTblBtnProps->getHTML());
 
 $_notepad .= '<script type="text/javascript"><!--
 function toggleTblValidity(){

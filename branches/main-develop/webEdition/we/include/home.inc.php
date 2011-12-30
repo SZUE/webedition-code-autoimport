@@ -972,7 +972,6 @@ function getUser(){
 			$in
 		), array_slice($aDat[0], 0));
 	}
-	$oWidget = new we_widget();
 	$aDiscard = array(
 		'rss', 'pad'
 	);
@@ -1006,7 +1005,7 @@ function getUser(){
 					$bExtendedCol = true;
 				}
 				include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
-				$$aProps[0] = $oWidget->create(
+				$$aProps[0] = we_widget::create(
 						'm_' . $iCurrId,
 						$aProps[0],
 						$oTblCont,
@@ -1061,7 +1060,7 @@ function getUser(){
 					"<table id=\"le_tblWidgets\" cellspacing=\"0\" border=\"0\">\n<tr id=\"rowWidgets\">\n" . $s1 . "</tr>\n</table>"));
 
 	// this is the clone widget
-	$oClone = $oWidget->create("clone", "_reCloneType_", null, array(
+	$oClone = we_widget::create("clone", "_reCloneType_", null, array(
 		"", ""
 	), "white", 0, "", 100, 60);
 

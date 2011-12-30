@@ -22,7 +22,6 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/weModuleInfo.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $we_menu = array();
@@ -44,7 +43,7 @@ $we_menu['1010100']['perm'] = 'NEW_WEBEDITIONSITE || ADMINISTRATOR';
 $we_menu['1010100']['enabled'] = '1';
 
 // File > New > webEdition Document > empty page
-if (we_hasPerm('NO_DOCTYPE')) {
+if(we_hasPerm('NO_DOCTYPE')){
 	$we_menu['1010101']['text'] = g_l('javaMenu_global', '[empty_page]');
 	$we_menu['1010101']['parent'] = '1010100';
 	$we_menu['1010101']['cmd'] = 'new_webEditionPage';
@@ -52,25 +51,22 @@ if (we_hasPerm('NO_DOCTYPE')) {
 }
 
 $q = getDoctypeQuery($GLOBALS['DB_WE']);
-$GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . " $q");
-if ($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')) {
+$GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
+if($GLOBALS['DB_WE']->num_rows() && we_hasPerm('NO_DOCTYPE')){
 	$we_menu['1010102']['parent'] = '1010100'; // separator
 }
 // File > New > webEdition Document > Doctypes*
 $nr = 103;
-while ($GLOBALS['DB_WE']->next_record()) {
+while($GLOBALS['DB_WE']->next_record()) {
 
-	$foo = $GLOBALS['DB_WE']->f('DocType');
-	$foo = str_replace('"', '', str_replace("'", '', str_replace(',', ' ', $foo)));
-
-	$we_menu['1010' . $nr]['text'] = $foo;
+	$we_menu['1010' . $nr]['text'] = str_replace(array('"','\'',','), array('','',' '), $GLOBALS['DB_WE']->f('DocType'));
 
 	$we_menu['1010' . $nr]['parent'] = '1010100';
 	$we_menu['1010' . $nr]['cmd'] = 'new_dtPage' . $GLOBALS['DB_WE']->f('ID');
 	$we_menu['1010' . $nr]['perm'] = 'NEW_WEBEDITIONSITE || ADMINISTRATOR';
 	$we_menu['1010' . $nr]['enabled'] = '1';
 	$nr++;
-	if ($nr == 197)
+	if($nr == 197)
 		break;
 }
 
@@ -278,13 +274,13 @@ $we_menu['1080200']['enabled'] = '1';
 
 // File > Delete > Classes
 // File > Delete > Objects
-/*if (we_hasPerm('ADMINISTRATOR')) {
-	$we_menu['1080500']['text'] = g_l('javaMenu_global', '[cache]') . ' (' . g_l('javaMenu_global', '[documents]') . ')';
-	$we_menu['1080500']['parent'] = '1080000';
-	$we_menu['1080500']['cmd'] = 'delete_documents_cache';
-	$we_menu['1080500']['perm'] = 'ADMINISTRATOR';
-	$we_menu['1080500']['enabled'] = '1';
-}*/
+/* if (we_hasPerm('ADMINISTRATOR')) {
+  $we_menu['1080500']['text'] = g_l('javaMenu_global', '[cache]') . ' (' . g_l('javaMenu_global', '[documents]') . ')';
+  $we_menu['1080500']['parent'] = '1080000';
+  $we_menu['1080500']['cmd'] = 'delete_documents_cache';
+  $we_menu['1080500']['perm'] = 'ADMINISTRATOR';
+  $we_menu['1080500']['enabled'] = '1';
+  } */
 // File > Delete > Objectscache
 // File > Move
 $we_menu['1090000']['text'] = g_l('javaMenu_global', '[move]');
@@ -335,9 +331,9 @@ $we_menu['1150000']['enabled'] = '1';
 $we_menu['1150100']['text'] = g_l('javaMenu_global', '[import]') . '...';
 $we_menu['1150100']['cmd'] = 'import';
 $we_menu['1150100']['parent'] = '1150000';
-if (we_hasPerm('FILE_IMPORT') || we_hasPerm('SITE_IMPORT') || we_hasPerm('GENERICXML_IMPORT') || we_hasPerm('CSV_IMPORT') || we_hasPerm('WXML_IMPORT')) {
+if(we_hasPerm('FILE_IMPORT') || we_hasPerm('SITE_IMPORT') || we_hasPerm('GENERICXML_IMPORT') || we_hasPerm('CSV_IMPORT') || we_hasPerm('WXML_IMPORT')){
 	$we_menu['1150100']['perm'] = 'NEW_GRAFIK || NEW_WEBEDITIONSITE || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE || ADMINISTRATOR';
-} else {
+} else{
 	$we_menu['1150100']['perm'] = 'ADMINISTRATOR';
 }
 $we_menu['1150100']['enabled'] = '1';
@@ -381,13 +377,6 @@ $we_menu['1180000']['parent'] = '1000000';
 $we_menu['1180000']['cmd'] = 'rebuild';
 $we_menu['1180000']['perm'] = 'REBUILD || ADMINISTRATOR';
 $we_menu['1180000']['enabled'] = '1';
-
-/*FIXME: remove $we_menu['1190000']['text'] = g_l('javaMenu_global', '[clear_cache]');
-$we_menu['1190000']['parent'] = '1000000';
-$we_menu['1190000']['cmd'] = 'clear_cache';
-$we_menu['1190000']['perm'] = 'ADMINISTRATOR';
-$we_menu['1190000']['enabled'] = '1';
-*/
 
 $we_menu['1200000']['parent'] = '1000000'; // separator
 // File > Browse server
@@ -438,7 +427,7 @@ $we_menu['2020200']['perm'] = '';
 $we_menu['2020200']['enabled'] = we_hasPerm('CAN_SEE_QUICKSTART');
 
 // Cockpit > new Widget > messaging
-if (defined('MESSAGING_SYSTEM')) {
+if(defined('MESSAGING_SYSTEM')){
 	$we_menu['2020300']['text'] = g_l('javaMenu_global', '[todo_messaging]');
 	$we_menu['2020300']['parent'] = '2020000';
 	$we_menu['2020300']['cmd'] = 'new_widget_msg';
@@ -482,8 +471,8 @@ $we_menu['2020800']['perm'] = '';
 $we_menu['2020800']['enabled'] = we_hasPerm('CAN_SEE_QUICKSTART');
 
 // Cockpit > new Widget > pageLogger
-if (defined('WE_TRACKER_DIR') && WE_TRACKER_DIR &&
-				file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . '/includes/showme.inc.php')) {
+if(defined('WE_TRACKER_DIR') && WE_TRACKER_DIR &&
+	file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . '/includes/showme.inc.php')){
 	$we_menu['2020900']['text'] = g_l('javaMenu_global', '[pagelogger]');
 	$we_menu['2020900']['parent'] = '2020000';
 	$we_menu['2020900']['cmd'] = 'new_widget_plg';
@@ -511,43 +500,43 @@ weModuleInfo::orderModuleArray($buyableModules);
 $userHasAllModules = true;
 $moduleList = 'schedpro|';
 
-if (sizeof($GLOBALS['_we_active_integrated_modules']) > 0) {
+if(sizeof($GLOBALS['_we_active_integrated_modules']) > 0){
 
-	foreach ($buyableModules as $m) {
+	foreach($buyableModules as $m){
 
-		if (weModuleInfo::showModuleInMenu($m['name'])) {
+		if(weModuleInfo::showModuleInMenu($m['name'])){
 			// workarround (old module names) for not installed Modules WIndow
-			if ($m['name'] == 'customer') {
+			if($m['name'] == 'customer'){
 				$moduleList .= 'customerpro|';
 			}
 			$moduleList .= $m['name'] . '|';
-			$menNr = "3000$z";
+			$menNr = '3000'.$z;
 			$we_menu[$menNr]['text'] = $m['text'] . '...';
 			$we_menu[$menNr]['parent'] = '3000000';
 			$we_menu[$menNr]['cmd'] = 'edit_' . $m['name'] . '_ifthere';
 			$we_menu[$menNr]['perm'] = isset($m['perm']) ? $m['perm'] : '';
 			$we_menu[$menNr]['enabled'] = '1';
 			$z++;
-		} else if (in_array($m['name'], $GLOBALS['_we_active_integrated_modules'])) {
+		} else if(in_array($m['name'], $GLOBALS['_we_active_integrated_modules'])){
 			$moduleList .= $m['name'] . '|';
 		}
-		if (!weModuleInfo::isModuleInstalled($m['name'])) {
+		if(!weModuleInfo::isModuleInstalled($m['name'])){
 			$userHasAllModules = false;
 		}
 	}
-} else {
+} else{
 	$userHasAllModules = false;
 }
 
-foreach ($GLOBALS['_we_available_modules'] as $key => $val) {
+foreach($GLOBALS['_we_available_modules'] as $key => $val){
 	//if ($val['integrated']) {
-		$moduleList .= $key . '|';
+	$moduleList .= $key . '|';
 	//}
 }
 $_SESSION['we_module_list'] = rtrim($moduleList, '|');
 
 // Modules > pagelogger
-if (defined('WE_TRACKER_DIR') && WE_TRACKER_DIR) {
+if(defined('WE_TRACKER_DIR') && WE_TRACKER_DIR){
 	$we_menu['3020000']['text'] = 'pageLogger';
 	$we_menu['3020000']['parent'] = '3000000';
 	$we_menu['3020000']['cmd'] = 'we_tracker';
@@ -585,14 +574,14 @@ $we_menu['4033300']['parent'] = '4000000'; // separator
 // Extras > Tools > Custom tools
 $_tools = weToolLookup::getAllTools(true, false);
 
-foreach ($_tools as $_k => $_tool) {
-	if ($_tool['name'] == 'toolfactory') {
+foreach($_tools as $_k => $_tool){
+	if($_tool['name'] == 'toolfactory'){
 		$we_menu['404' . sprintf('%04d', $_k)]['text'] = $_tool['text'] . '...';
 		$we_menu['404' . sprintf('%04d', $_k)]['parent'] = '4000000';
 		$we_menu['404' . sprintf('%04d', $_k)]['cmd'] = 'tool_' . $_tool['name'] . '_edit';
 		$we_menu['404' . sprintf('%04d', $_k)]['perm'] = $_tool['startpermission'] . ' || ADMINISTRATOR';
 		$we_menu['404' . sprintf('%04d', $_k)]['enabled'] = '1';
-	} else {
+	} else{
 		$we_menu['405' . sprintf('%04d', $_k)]['text'] = $_tool['text'] . '...';
 		$we_menu['405' . sprintf('%04d', $_k)]['parent'] = '4000000';
 		$we_menu['405' . sprintf('%04d', $_k)]['cmd'] = 'tool_' . $_tool['name'] . '_edit';
@@ -624,7 +613,7 @@ $we_menu['4160000']['cmd'] = 'change_passwd';
 $we_menu['4160000']['perm'] = 'EDIT_PASSWD || ADMINISTRATOR';
 $we_menu['4160000']['enabled'] = '1';
 
-if (we_hasPerm('ADMINISTRATOR')) {
+if(we_hasPerm('ADMINISTRATOR')){
 	// Extras > versioning
 	$we_menu['4161000']['text'] = g_l('javaMenu_global', '[versioning]') . '...';
 	$we_menu['4161000']['parent'] = '4000000';
@@ -665,17 +654,17 @@ $we_menu['4183000']['parent'] = '4180000'; // separator
 $_activeIntModules = weModuleInfo::getIntegratedModules(true);
 weModuleInfo::orderModuleArray($_activeIntModules);
 
-if (sizeof($_activeIntModules)) {
+if(sizeof($_activeIntModules)){
 
 	$z = 100;
 
-	foreach ($_activeIntModules as $key => $modInfo) {
-		if ($modInfo['hasSettings']) {
-			$we_menu["4184$z"]["text"] = $modInfo["text"] . "...";
-			$we_menu["4184$z"]["parent"] = "4180000";
-			$we_menu["4184$z"]["cmd"] = "edit_settings_" . $modInfo["name"] ;
-			$we_menu["4184$z"]["perm"] = isset($modInfo["perm"]) ? $modInfo["perm"] : "";
-			$we_menu["4184$z"]["enabled"] = "1";
+	foreach($_activeIntModules as $key => $modInfo){
+		if($modInfo['hasSettings']){
+			$we_menu['4184'.$z]['text'] = $modInfo['text'] . '...';
+			$we_menu['4184'.$z]['parent'] = '4180000';
+			$we_menu['4184'.$z]['cmd'] = 'edit_settings_' . $modInfo['name'];
+			$we_menu['4184'.$z]['perm'] = isset($modInfo['perm']) ? $modInfo['perm'] : '';
+			$we_menu['4184'.$z]['enabled'] = '1';
 			$z++;
 		}
 	}
@@ -691,13 +680,13 @@ weModuleInfo::orderModuleArray($buyableModules);
 
 $userHasAllModules = true;
 
-if (sizeof($GLOBALS['_we_active_integrated_modules']) > 0) {
+if(sizeof($GLOBALS['_we_active_integrated_modules']) > 0){
 
-	foreach ($buyableModules as $m) {
+	foreach($buyableModules as $m){
 
-		if (weModuleInfo::showModuleInMenu($m["name"])) {
-			if ($m['hasSettings']) {
-				$menNr = "4186$z";
+		if(weModuleInfo::showModuleInMenu($m['name'])){
+			if($m['hasSettings']){
+				$menNr = '4176'.$z;
 				$we_menu[$menNr]['text'] = $m['text'] . '...';
 				$we_menu[$menNr]['parent'] = '4180000';
 				$we_menu[$menNr]['cmd'] = 'edit_settings_' . $m['name'];
@@ -760,7 +749,7 @@ $we_menu['5010009']['cmd'] = 'help_changelog';
 $we_menu['5010009']['perm'] = '';
 $we_menu['5010009']['enabled'] = '1';
 
-if (!defined('SIDEBAR_DISABLED') || SIDEBAR_DISABLED == 0) {
+if(!defined('SIDEBAR_DISABLED') || SIDEBAR_DISABLED == 0){
 	$we_menu['5015000']['text'] = g_l('javaMenu_global', '[sidebar]') . '...';
 	$we_menu['5015000']['parent'] = '5000000';
 	$we_menu['5015000']['cmd'] = 'openSidebar';
@@ -804,11 +793,11 @@ $we_menu['5100000']['perm'] = '';
 $we_menu['5100000']['enabled'] = '1';
 
 reset($GLOBALS['_we_available_modules']);
-while (list($key, $val) = each($GLOBALS['_we_available_modules'])) {
+while(list($key, $val) = each($GLOBALS['_we_available_modules'])) {
 
-	if (!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )) {
+	if(!isset($val['integrated']) || ( in_array($val['name'], $GLOBALS['_we_active_integrated_modules']) )){
 
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/java_menu/modules/we_menu_' . $val['name'] . '.inc.php')) {
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/java_menu/modules/we_menu_' . $val['name'] . '.inc.php')){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/java_menu/modules/we_menu_' . $val['name'] . '.inc.php');
 		}
 	}
