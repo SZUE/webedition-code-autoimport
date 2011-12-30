@@ -144,19 +144,23 @@ function pWebEdition_JSwe_cmds()
  * @desc the frameset for the SeeMode
  */
 function pWebEdition_Frameset(){
+	$we_cmds=$seem='';
 	if (isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"]) { // edit include file
-		$we_cmds = "we_cmd[0]=edit_document&";
+		$_REQUEST["SEEM_edit_include"]=true;
+		$we_cmds = "?we_cmd[0]=edit_document&";
 
 		for ($i = 1; $i < sizeof($_REQUEST['we_cmd']); $i++) {
 			$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
 		}
+		$we_cmds.='&SEEM_edit_include=true';
+	}
 		?>
 				<div style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px;">
 		<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
-			<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/header.php?SEEM_edit_include=true");?>
+			<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/header.php");?>
 		</div>
-		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0px;">
-			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php?<?php	print $we_cmds?>SEEM_edit_include=true" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0)) ? 100 : 0; ?>px;border: 0px;">
+			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php?<?php	print $we_cmds?>" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 		</div>
 		<div style="position:absolute;left:0px;right:0px;bottom:0px;height:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 1px solid;">
 			<div style="position:absolute;top:0px;bottom:0px;width:25%;border:0px;">"
@@ -193,31 +197,4 @@ function pWebEdition_Frameset(){
 </frameset> -->
 			<?php
 
-	} else
-		if ($_SESSION["we_mode"] == "seem") { //	normal SeeMode
-			?>
-	<div style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px;">
-		<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
-			<?php include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/header.php");?>
-		</div>
-	</div>
-
-			<!--
-<frameset rows="32,*,<?php
-			print (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0) ? 100 : 0;
-			?>" framespacing="0" border="0" frameborder="no" onUnload="doUnload()">
-	<frame src="header.php" name="header" scrolling="no" noresize>
-	<frame src="resizeframe.php" name="rframe" scrolling="no" noresize>
-	<frameset cols="25%,25%,30%,10%,10%" framespacing="0" border="0" frameborder="no">
-		<frame src="<?php	print HTML_DIR?>white.html" name="load" scrolling="no" noresize>
-		<frame src="<?php	print HTML_DIR?>white.html" name="load2" scrolling="no" noresize>
-			<!-- Bugfix Opera >=10.5  target name is always "ad"
-		<frame src="<?php	print HTML_DIR?>white.html" name="ad" scrolling="no" noresize>
-		<frame src="<?php	print WE_USERS_MODULE_PATH?>we_users_ping.php" name="ping" scrolling="no" noresize>
-    <frame src="<?php	print HTML_DIR?>white.html" name="postframe" scrolling="no" noresize>
-    <frame src="<?php	print HTML_DIR?>white.html" name="plugin" scrolling="no" noresize>
-	</frameset>
-</frameset> -->
-<?php
-		}
 }

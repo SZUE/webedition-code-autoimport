@@ -90,6 +90,7 @@ class we_base_ContentTypes{
 </body>
 </html>',
 				'IsRealFile' => false,
+				'IsWebEditionFile' => false,
 				'Icon' => 'we_template.gif',
 			),
 			'text/js' => array(

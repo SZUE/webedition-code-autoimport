@@ -65,7 +65,7 @@ class we_dirSelector extends we_multiSelector{
 			case we_multiSelector::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case self::FS_NEWFOLDER:
+			case self::NEWFOLDER:
 				$this->printNewFolderHTML();
 				break;
 			case self::CREATEFOLDER:
@@ -154,11 +154,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 		function drawNewFolder(){
 		unselectAllFiles();
-		top.fscmd.location.replace(top.queryString(<?php print self::FS_NEWFOLDER; ?>,currentDir));
+		top.fscmd.location.replace(top.queryString(<?php print self::NEWFOLDER; ?>,currentDir));
 		}
 		function RenameFolder(id){
 		unselectAllFiles();
-		top.fscmd.location.replace(top.queryString(<?php print self::FS_RENAMEFOLDER; ?>,currentDir,'',id));
+		top.fscmd.location.replace(top.queryString(<?php print self::RENAMEFOLDER; ?>,currentDir,'',id));
 		}
 
 		<?php
