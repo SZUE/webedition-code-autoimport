@@ -110,7 +110,7 @@ class weExport extends weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
-				$sets[]='"' . $this->db->escape($val) . '"="'.$this->db->escape($this->{$val}).'"';
+				$sets[]='`' . $this->db->escape($val) . '`="'.$this->db->escape($this->{$val}).'"';
 			}
 		}
 		$where = $this->getKeyWhere();

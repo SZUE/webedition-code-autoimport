@@ -95,7 +95,7 @@ class weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
-				$sets[]='"' . $this->db->escape($val) . '"="'.$this->db->escape($this->{$val}).'"';
+				$sets[]='`' . $this->db->escape($val) . '`="'.$this->db->escape($this->{$val}).'"';
 			}
 		}
 		$where = $this->getKeyWhere();
@@ -122,7 +122,7 @@ class weModelBase{
 		if(!$this->isKeyDefined()){
 			return false;
 		}
-		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere() . ';');
+		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere());
 		return true;
 	}
 
