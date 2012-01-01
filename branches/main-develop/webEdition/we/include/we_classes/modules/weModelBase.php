@@ -94,23 +94,21 @@ class weModelBase{
 			$this->isnew = true;
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
-			//FIXME: remove eval
-			eval('if(isset($this->' . $val . ')) $sets[]="' . $val . '=\'".escape_sql_query($this->' . $val . ')."\'";');
+			if(isset($this->{$val})){
+				$sets[]='"' . $this->db->escape($val) . '"="'.$this->db->escape($this->{$val}).'"';
+			}
 		}
 		$where = $this->getKeyWhere();
 		$set = implode(",", $sets);
 
 		if($this->isKeyDefined() && $this->isnew){
-			$query = 'REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set;
-
-			$this->db->query($query);
+			$this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
 			$this->ID = $this->db->getInsertId();
 			$this->isnew = false;
 			return true;
 		} else if($this->isKeyDefined()){
-			$query = 'UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where;
-			$this->db->query($query);
+			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 			return true;
 		}
 

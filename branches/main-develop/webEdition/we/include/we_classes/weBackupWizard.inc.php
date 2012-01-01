@@ -750,11 +750,11 @@ const RECOVER=2;
 		$body=we_html_element::htmlBody(array("class"=>"weDialogBody","onLoad"=>"startStep();"),
 					we_html_element::htmlCenter(
 						we_html_element::htmlForm($form_attribs,
-							we_htmlelement::htmlHidden(array("name"=>"pnt","value"=>"cmd")).
-							we_htmlelement::htmlHidden(array("name"=>"cmd","value"=>"import")).
-							we_htmlelement::htmlHidden(array("name"=>"step","value"=>"3")).
-							we_htmlelement::htmlHidden(array("name"=>"MAX_FILE_SIZE","value"=>$maxsize)).
-							we_htmlelement::htmlInput(array("type"=>"hidden","name"=>"operation_mode","value"=>"import")).
+							we_html_element::htmlHidden(array("name"=>"pnt","value"=>"cmd")).
+							we_html_element::htmlHidden(array("name"=>"cmd","value"=>"import")).
+							we_html_element::htmlHidden(array("name"=>"step","value"=>"3")).
+							we_html_element::htmlHidden(array("name"=>"MAX_FILE_SIZE","value"=>$maxsize)).
+							we_html_element::htmlInput(array("type"=>"hidden","name"=>"operation_mode","value"=>"import")).
 							we_multiIconBox::getJS().
 							we_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", 7,g_l('backup',"[recover_option]"), "<b>".g_l('backup',"[recover_option]")."</b>",false,g_l('backup',"[step3]"))
 						)

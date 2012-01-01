@@ -151,8 +151,7 @@ foreach ($_REQUEST['we_cmd'] as $cmdkey => &$cmdvalue){
 			$str = "setTimeout(\"top.we_cmd(";
 			for($i=0;$i<sizeof($_REQUEST['we_cmd']);$i++){
 
-				$val = str_replace("'","\\'", $_REQUEST['we_cmd'][$i]);
-				$val = str_replace("\"","\\\"", $val);
+				$val = str_replace(array('\'','"'),array('\\\'','\\"'), $_REQUEST['we_cmd'][$i]);
 
 				$str .= "'".$val."'".(($i<(sizeof($_REQUEST['we_cmd'])-1)) ? "," : "");
 			}

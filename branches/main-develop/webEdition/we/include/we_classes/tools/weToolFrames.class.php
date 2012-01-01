@@ -289,7 +289,7 @@ class weToolFrames extends weModuleFrames{
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_htmlelement::htmlHidden(array('name' => 'home', 'value' => '0'))
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array('name' => 'home', 'value' => '0'))
 			);
 			$tool = $GLOBALS['tool'] = $this->toolName;
 			ob_start();

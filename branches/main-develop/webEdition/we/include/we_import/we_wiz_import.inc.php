@@ -2465,12 +2465,6 @@ HTS;
 				$hdns .= we_html_element::htmlHidden(array("name" => "v[dateFields]", "value" => makeCSVFromArray($dateFields)));
 			}
 		}
-		array_push($parts, array(
-			"headline"	=> g_l('import',"[name]"),
-			"html"		=> $fn->getHTMLCode(),
-			"space"		=> 140
-			)
-		);
 
 		$conflict = isset($v["collision"]) ? $v["collision"] : 'rename';
 		$fn_colsn = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 6, 1);
@@ -2485,6 +2479,13 @@ HTS;
 				"headline" => g_l('import','[name_collision]'),
 				"html" => $fn_colsn->getHTMLCode(),
 				"space" => 140)
+		);
+
+		array_push($parts, array(
+			"headline"	=> g_l('import',"[name]"),
+			"html"		=> $fn->getHTMLCode(),
+			"space"		=> 140
+			)
 		);
 
 		$wepos = weGetCookieVariable("but_csv");

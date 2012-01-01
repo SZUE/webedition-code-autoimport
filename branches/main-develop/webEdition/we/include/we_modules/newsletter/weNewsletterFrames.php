@@ -1049,7 +1049,7 @@ class weNewsletterFrames extends weModuleFrames{
 					if(count($values)){
 						$content.=we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", "style='width:440' OnKeyUp='top.content.hot=1;'"), g_l('modules_newsletter', '[block_document_field]'));
 					} else{
-						$content.=we_html_tools::htmlFormElementTable(we_htmlelement::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'));
+						$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'));
 					}
 				}
 			}
@@ -1068,7 +1068,7 @@ class weNewsletterFrames extends weModuleFrames{
 					if(count($values)){
 						$content.=we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, 'OnChange="top.content.hot=1;"'), g_l('modules_newsletter', '[block_object_field]'));
 					} else{
-						$content.=we_html_tools::htmlFormElementTable(we_htmlelement::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'));
+						$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'));
 					}
 				}
 			}
@@ -1090,10 +1090,10 @@ class weNewsletterFrames extends weModuleFrames{
 				$attribs["bgcolor"] = "white";
 
 				$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => "40", "rows" => "10", "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), htmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]'));
-				$content.=we_htmlelement::jsElement('', array("src" => JS_DIR . "we_textarea.js"));
+				$content.=we_html_element::jsElement('', array("src" => JS_DIR . "we_textarea.js"));
 				$content.=we_html_tools::htmlFormElementTable(we_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]'));
 
-				$content.=we_htmlelement::jsElement('
+				$content.=we_html_element::jsElement('
 					function extraInit(){
 							if(weWysiwygInitializeIt){
 								weWysiwygInitializeIt();
