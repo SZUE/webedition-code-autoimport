@@ -29,7 +29,7 @@ we_html_tools::protect();
 $what = isset($_REQUEST["pnt"]) ? $_REQUEST["pnt"] : 'frameset';
 $mode = isset($_REQUEST["art"]) ? $_REQUEST["art"] : 0;
 
-$ExImport=$weFrame=null;
+$ExImport = $weFrame = null;
 
 if($what == "export" || $what == "eibody" || $what == "eifooter" || $what == "eiload" || $what == "import" || $what == "eiupload"){
 	$ExImport = new weCustomerEIWizard();

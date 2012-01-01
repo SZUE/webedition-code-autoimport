@@ -181,8 +181,8 @@ class CSVImport extends CSV {
 	var $FromCharset;
 	var $ToCharset;
 
-	function CSVImport() {
-		parent::CSV();
+	function __construct() {
+		parent::__construct();
 		$this->FieldDelim = ";";
 		if (defined('DEFAULT_CHARSET')) {$this->FromCharset = DEFAULT_CHARSET;$this->ToCharset = DEFAULT_CHARSET;} else {$this->FromCharset = "UTF-8";$this->ToCharset = "UTF-8";}
 
@@ -328,8 +328,8 @@ class CSVImport extends CSV {
 class CSVFixImport extends CSV {
 	var $FieldLengths;
 
-	function CSVFixImport() {
-		parent::CSV();
+	function __construct() {
+		parent::__construct();
 		$this->FieldLengths = array();
 	}
 
