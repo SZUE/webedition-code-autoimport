@@ -48,7 +48,7 @@ class rpcChangeDocTypeCmd extends rpcCmd {
 					$TPLselect->insertOption($optid, $templateID, $paths_arr[$optid]);
 					$optid++;
 				}
-				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTMLCode(), g_l('import','[template]'), "left", "defaultfont");
+				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import','[template]'), "left", "defaultfont");
 				if ($values["Category"]!="") {
 					$categories = $this->getCategories("doc",$values["Category"],'v[docCategories]');
 				}

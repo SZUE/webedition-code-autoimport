@@ -104,7 +104,7 @@ class weToolFrames extends weModuleFrames{
 
 		// set and return html code
 		$head = $js;
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() .$noframeset->getHTML();
 
 		return $this->getHTMLDocument($body, $head);
 	}
@@ -126,7 +126,7 @@ class weToolFrames extends weModuleFrames{
 		$noframeset = new we_baseElement("noframes");
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -148,7 +148,7 @@ class weToolFrames extends weModuleFrames{
 		}
 		$noframeset = new we_baseElement("noframes");
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -164,7 +164,7 @@ class weToolFrames extends weModuleFrames{
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -412,7 +412,7 @@ class weToolFrames extends weModuleFrames{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}

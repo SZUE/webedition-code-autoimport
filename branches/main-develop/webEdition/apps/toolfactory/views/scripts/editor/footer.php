@@ -31,9 +31,9 @@ $page = we_ui_layout_HTMLPage::getInstance();
 
 $saveButton = new we_ui_controls_Button(
 	array(
-		'text'		=> $translate->_('Save'), 
-		'onClick'	=> 'weCmdController.fire({cmdName: "app_toolfactory_save"});', 
-		'type'		=> 'onClick', 
+		'text'		=> $translate->_('Save'),
+		'onClick'	=> 'weCmdController.fire({cmdName: "app_toolfactory_save"});',
+		'type'		=> 'onClick',
 		'width'		=> 110,
 		'disabled'	=> !we_core_Permissions::hasPerm('EDIT_APP_TOOLFACTORY'),
 		'style'		=> 'margin:9px 0 0 15px;'
@@ -41,9 +41,9 @@ $saveButton = new we_ui_controls_Button(
 );
 $unpublishButton = new we_ui_controls_Button(
 	array(
-		'text'		=> $translate->_('Unpublish'), 
-		'onClick'	=> 'weCmdController.fire({cmdName: "app_toolfactory_unpublish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "'.$this->model->classname.'", ignoreHot: "1"}})', 
-		'type'		=> 'onClick', 
+		'text'		=> $translate->_('Unpublish'),
+		'onClick'	=> 'weCmdController.fire({cmdName: "app_toolfactory_unpublish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "'.$this->model->classname.'", ignoreHot: "1"}})',
+		'type'		=> 'onClick',
 		'width'		=> 110,
 		'disabled'	=> !we_core_Permissions::hasPerm('PUBLISH_APP_TOOLFACTORY'),
 		'style'		=> 'margin:9px 0 0 15px;'
@@ -51,9 +51,9 @@ $unpublishButton = new we_ui_controls_Button(
 );
 $publishButton = new we_ui_controls_Button(
 	array(
-		'text'		=> $translate->_('Publish'), 
-		'onClick'	=> 'weCmdController.fire({cmdName: "app_toolfactory_publish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "'.$this->model->classname.'", ignoreHot: "1"}})', 
-		'type'		=> 'onClick', 
+		'text'		=> $translate->_('Publish'),
+		'onClick'	=> 'weCmdController.fire({cmdName: "app_toolfactory_publish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "'.$this->model->classname.'", ignoreHot: "1"}})',
+		'type'		=> 'onClick',
 		'width'		=> 110,
 		'disabled'	=> !we_core_Permissions::hasPerm('PUBLISH_APP_TOOLFACTORY'),
 		'style'		=> 'margin:9px 0 0 15px;'
@@ -65,18 +65,14 @@ $table = new we_ui_layout_Table;
 if(empty($this->model->ID)) {
 	$table->addElement($saveButton, 1, 0);
 } else {
-	
+
 	if(we_app_Common::isDeactivatable($this->model->classname)){
 		if (we_app_Common::isActive($this->model->classname)){
 			$table->addElement($unpublishButton,1,0);
 		} else {
 			$table->addElement($publishButton,1,0);
-		}	
+		}
 	}
 }
 $page->addElement($table);
 echo $page->getHTML();
-
-
-
-?>

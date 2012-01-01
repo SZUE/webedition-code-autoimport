@@ -104,7 +104,7 @@
 								}
 							}
 						}
-						$xml_out.=$customer_xml->getHtmlCode($customer_xml).we_html_element::htmlComment("webackup")."\n";
+						$xml_out.=$customer_xml->getHtml().we_html_element::htmlComment("webackup")."\n";
 					}
 				}
 				return $xml_out;
@@ -128,7 +128,7 @@
 								}
 								else $content=$element["content"];
 								$element=new we_baseElement($element["name"],true,$element["attributes"],$content);
-								$out.=$element->getHtmlCode($element);
+								$out.=$element->getHTML();
 							}
 							return $out;
 		}

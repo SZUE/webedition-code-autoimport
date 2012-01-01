@@ -340,7 +340,7 @@ class weVersionsSearch {
 		$oSelector->setCol(0, 3, null, "&nbsp;");
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 
-		return $oSelector->getHTMLCode();
+		return $oSelector->getHTML();
 
 	}
 

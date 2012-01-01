@@ -26,7 +26,7 @@ abstract class weXMLComposer{
 
 	static function we_xmlElement($name, $content="", $attributes=null){
 		$element = new we_baseElement($name, true, (isset($attributes) && is_array($attributes) ? $attributes : null), $content);
-		return $element->getHtmlCode($element);
+		return $element->getHTML();
 	}
 
 	/* Function creates new xml element.
@@ -47,7 +47,7 @@ abstract class weXMLComposer{
 			else
 				$content = $element["content"];
 			$element = new we_baseElement($element["name"], true, $element["attributes"], $content);
-			$out.=$element->getHtmlCode($element);
+			$out.=$element->getHTML();
 		}
 		return $out;
 	}

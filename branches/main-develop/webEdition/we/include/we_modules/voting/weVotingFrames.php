@@ -837,7 +837,7 @@ class weVotingFrames extends weModuleFrames {
 				"headline"=>g_l('modules_voting','[inquiry]'),
 				"html"=>$js .
 						we_html_element::htmlHidden(array('name'=>'scores_changed','value'=>'0')).
-						$table->getHTMLCode() .
+						$table->getHTML() .
 						we_html_element::htmlBr() .$butt,
 				"space"=>$this->_space_size)
 		);
@@ -963,7 +963,7 @@ class weVotingFrames extends weModuleFrames {
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treefooter","name"=>"treefooter","noresize"=>null,"scrolling"=>"no"));
 
 		// set and return html code
-		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml().$noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}

@@ -2076,7 +2076,7 @@ class weSiteImport{
 		));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->_getHtmlPage($body);
 	}

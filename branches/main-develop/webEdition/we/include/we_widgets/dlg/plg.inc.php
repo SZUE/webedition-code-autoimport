@@ -254,14 +254,14 @@ $chart->setCol(8, 0, null, $chbxChart[6]);
 $chart->setCol(9, 0, null, $chbxChart[7]);
 $chart->setCol(10, 0, null, $chbxChart[8]);
 
-$_pLog = $chart->getHTMLCode();
+$_pLog = $chart->getHTML();
 
 $parts = array();
 array_push($parts, array(
 	"headline" => g_l('cockpit','[display]'), "html" => $_pLog, "space" => 80
 ));
 array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
+	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 ));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);
@@ -298,4 +298,4 @@ print
 						array(
 							"class" => "weDialogBody", "onload" => "init();"
 						),
-						we_html_element::htmlForm("", $_pLogProps->getHTMLCode())));
+						we_html_element::htmlForm("", $_pLogProps->getHTML())));

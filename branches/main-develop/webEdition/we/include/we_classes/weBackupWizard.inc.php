@@ -315,7 +315,7 @@ const RECOVER=2;
 		$frameset->addFrame(array("src"=>"/webEdition/html/blank.html","name"=>"checker","scrolling"=>"no","noresize"=>null));
 
 		$head=WE_DEFAULT_HEAD."\n" . STYLESHEET ."\n";
-		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".$noframeset->getHTML();
 
 		return we_html_element::htmlHtml(
 					we_html_element::htmlHead($head).

@@ -351,7 +351,7 @@ class weExportFrames extends weModuleFrames {
 
 		$table->setColContent(4,0,$this->getHTMLCategory());
 
-		$selectionTypeHtml = $table->getHTMLCode();
+		$selectionTypeHtml = $table->getHTML();
 
 		$table = new we_html_table(array("cellpadding" => 0,"cellspacing" => 0,"border"=>0),4,1);
 		$table->setColContent(0,0,we_html_tools::htmlSelect('Selection',array('auto'=>g_l('export',"[auto_selection]"),"manual"=>g_l('export',"[manual_selection]")),1,$this->View->export->Selection,false,'onChange="closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');'.$this->topFrame.'.hot=1;"','value',$this->_width_size));
@@ -481,7 +481,7 @@ class weExportFrames extends weModuleFrames {
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=treefooter","name"=>"treefooter","noresize"=>null,"scrolling"=>"no"));
 
 		// set and return html code
-		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".$noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}

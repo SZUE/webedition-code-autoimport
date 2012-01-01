@@ -379,7 +379,7 @@ function htmlClipElement($smalltext, $text, $content)
 					),
 					addslashes($smalltext)));
 
-	return $js . $oClip->getHTMLCode() . we_html_element::htmlDiv(array(
+	return $js . $oClip->getHTML() . we_html_element::htmlDiv(array(
 		"id" => "div_" . $unique, "style" => "display:none;"
 	), we_html_tools::getPixel(1, 15) . we_html_element::htmlBr() . $content);
 }
@@ -395,7 +395,7 @@ $oSctRss = new we_html_select(
 			"name" => "sct_rss", "size" => "1", "class" => "defaultfont", "onChange" => "onChangeSctRss(this);"
 		));
 $oSctRss->insertOption(0, "", "");
-$oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTMLCode(), g_l('cockpit','[rss_top_feeds]'), "left", "defaultfont");
+$oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cockpit','[rss_top_feeds]'), "left", "defaultfont");
 
 $oRemTopFeeds = we_html_tools::htmlAlertAttentionBox(g_l('cockpit','[rss_edit_rem]'), 2, 380);
 $oIptNewTitle = we_html_tools::htmlFormElementTable(
@@ -475,12 +475,12 @@ $oNewFeed->setCol(
 $oNewFeed->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 $oNewFeed->setCol(2, 0, array(
 	"align" => "right"
-), $oBtnNewFeed->getHTMLCode());
+), $oBtnNewFeed->getHTML());
 
 $rssUri = $oIptUri . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oTblSctRss . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit','[show_edit_toprssfeeds]'),
 		g_l('cockpit','[hide_edit_toprssfeeds]'),
-		$oNewFeed->getHTMLCode());
+		$oNewFeed->getHTML());
 
 $oRemRssConf = we_html_tools::htmlAlertAttentionBox(g_l('cockpit','[rss_content_rem]'), 2, 410);
 $oChbxContTitle = we_forms::checkbox(
@@ -575,7 +575,7 @@ $oRssContR->setCol(0, 0, array(
 $oRssContR->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 $oRssContR->setCol(0, 2, array(
 	"valign" => "middle"
-), $oSctNumEntries->getHTMLCode());
+), $oSctNumEntries->getHTML());
 $oRssContR->setCol(1, 0, array(
 	"colspan" => 3, "valign" => "bottom"
 ), $oChbxContPubDate . $oChbxContCategory);
@@ -588,12 +588,12 @@ $oSelectRssCont->setCol(0, 0, array(
 ), $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
 $oSelectRssCont->setCol(0, 1, array(
 	"height" => "100%", "valign" => "top"
-), $oRssContR->getHTMLCode());
+), $oRssContR->getHTML());
 
 $rssConf = $oRemRssConf . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit','[show_select_rsscontent]'),
 		g_l('cockpit','[hide_select_rsscontent]'),
-		$oSelectRssCont->getHTMLCode());
+		$oSelectRssCont->getHTML());
 
 $oRemLabel = we_html_tools::htmlAlertAttentionBox(g_l('cockpit','[rss_label_rem]'), 2, 410);
 $oChbxTb[0] = we_forms::checkbox(
@@ -714,7 +714,7 @@ $oEditTb->setCol(1, 0, array(
 ), $oChbxTb[1]);
 $oEditTb->setCol(1, 1, array(
 	"width" => 165
-), $oTitleTb->getHTMLCode());
+), $oTitleTb->getHTML());
 $oEditTb->setCol(2, 0, array(
 	"width" => 165
 ), $oChbxTb[2]);
@@ -731,7 +731,7 @@ $oEditTb->setCol(5, 0, array(
 $rssLabel = $oRemLabel . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit','[show_edit_titlebar]'),
 		g_l('cockpit','[hide_edit_titlebar]'),
-		$oEditTb->getHTMLCode());
+		$oEditTb->getHTML());
 
 array_push($parts, array(
 	"headline" => "", "html" => $rssUri, "space" => 0
@@ -743,7 +743,7 @@ array_push($parts, array(
 	"headline" => "", "html" => $rssLabel, "space" => 0
 ));
 array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
+	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 ));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);

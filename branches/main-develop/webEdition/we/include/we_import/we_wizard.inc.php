@@ -469,7 +469,6 @@ HTS;
 						$hiddens = $this->getHdns("v",$v);
 
 						if((int)$v['cid']==0){
-							include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weXMLExIm.class.php");
 							// clear session data
 							weXMLExIm::unsetPerserves();
 						}

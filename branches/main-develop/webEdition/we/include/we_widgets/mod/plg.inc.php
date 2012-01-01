@@ -108,7 +108,7 @@ for ($i = 0; $i <= 10; $i++) {
 		}
 		if ($i <= 8) {
 			$_pLogChart = getPLogChart($_pLog_[$i]);
-			$_pLogOut .= $_pLogChart->getHTMLCode();
+			$_pLogOut .= $_pLogChart->getHTML();
 		}
 	}
 }

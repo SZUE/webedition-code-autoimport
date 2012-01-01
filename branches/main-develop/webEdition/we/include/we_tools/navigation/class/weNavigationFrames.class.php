@@ -1171,7 +1171,7 @@ class weNavigationFrames extends weToolFrames
 		$parts[] = array(
 
 				'headline' => g_l('navigation','[content]'),
-				'html' => $_table->getHTMLCode(),
+				'html' => $_table->getHTML(),
 				'space' => $this->_space_size
 		);
 
@@ -2498,7 +2498,7 @@ function onFolderSelectionChangeJS(elem) {
 		$_parts[] = array(
 
 				'headline' => g_l('navigation','[popup]'),
-				'html' => $_popup->getHTMLCode(),
+				'html' => $_popup->getHTML(),
 				'space' => $this->_space_size,
 				'noline' => 1
 		);
@@ -2655,7 +2655,7 @@ function onFolderSelectionChangeJS(elem) {
 								($this->_width_size - 50)),
 						g_l('navigation','[icon_title]')));
 
-		return $_img_props->getHTMLCode();
+		return $_img_props->getHTML();
 
 	}
 

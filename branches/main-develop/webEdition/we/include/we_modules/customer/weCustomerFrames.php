@@ -59,7 +59,7 @@ class weCustomerFrames extends weModuleFrames {
 		}
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -702,7 +702,7 @@ LINK_TABLE.".DocumentTable='".FILE_TABLE."' AND ".FILE_TABLE.'.ID='.$DB_WE->f('I
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=treefooter", "name" => "treefooter", "noresize" => null, "scrolling" => "no"));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}

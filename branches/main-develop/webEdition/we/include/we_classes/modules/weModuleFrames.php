@@ -89,7 +89,7 @@ class weModuleFrames{
 
 		// set and return html code
 		$head = $js;
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body, $head);
 	}
@@ -133,7 +133,7 @@ class weModuleFrames{
 		$noframeset = new we_baseElement("noframes");
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -148,7 +148,7 @@ class weModuleFrames{
 		$frameset->addFrame(array("src" => WEBEDITION_DIR . "treeMain.php", "name" => "tree", "noresize" => null, "scrolling" => "auto"));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -170,7 +170,7 @@ class weModuleFrames{
 		}
 		$noframeset = new we_baseElement("noframes");
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -186,7 +186,7 @@ class weModuleFrames{
 		$frameset->addFrame(array('src' => $this->frameset . (isset($_REQUEST['sid']) ? '?sid=' . $_REQUEST['sid'] : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
-		$body = $frameset->getHtml() . "\n" . we_baseElement::getHtmlCode($noframeset);
+		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -215,14 +215,14 @@ class weModuleFrames{
 		$table = new we_html_table(array("width" => "$width", "height" => "$height", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 4);
 
 		if($ident)
-			$table->setCol(0, 0, array("valign" => "top"), we_baseElement::getHtmlCode($pix1));
+			$table->setCol(0, 0, array("valign" => "top"), $pix1->getHTML());
 		if($w)
-			$table->setCol(0, 1, array("valign" => "top"), we_baseElement::getHtmlCode($pix2));
+			$table->setCol(0, 1, array("valign" => "top"), $pix2->getHTML());
 		$table->setCol(1, 1, array("valign" => "middle", "class" => "defaultgray", "align" => $headline_align), $headline);
-		$table->setCol(1, 2, array(), we_baseElement::getHtmlCode($pix3));
+		$table->setCol(1, 2, array(), $pix3->getHTML());
 		$table->setCol(1, 3, array("valign" => "middle", "align" => $content_align), $content);
 		if($w && $headline != "")
-			$table->setCol(2, 1, array("valign" => "top"), we_baseElement::getHtmlCode($pix2));
+			$table->setCol(2, 1, array("valign" => "top"), $pix2->getHTML());
 
 		$out = $table->getHtml();
 

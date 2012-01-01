@@ -192,7 +192,7 @@ $sort->setCol(1, 2, null, $oRdoSort[4]);
 $sort->setCol(2, 0, null, $oRdoSort[2]);
 
 array_push($parts, array(
-	"headline" => g_l('cockpit','[sorting]'), "html" => $sort->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[sorting]'), "html" => $sort->getHTML(), "space" => 100
 ));
 
 $oRdoDisplay[0] = we_forms::radiobutton(
@@ -232,7 +232,7 @@ $display->setCol(0, 2, array(
 ), $oRdoDisplay[1]);
 
 array_push($parts, array(
-	"headline" => g_l('cockpit','[display]'), "html" => $display->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[display]'), "html" => $display->getHTML(), "space" => 100
 ));
 
 $oRdoDate[0] = we_forms::radiobutton(
@@ -282,7 +282,7 @@ $date->setCol(1, 0, null, $oRdoDate[1]);
 $date->setCol(2, 0, null, $oRdoDate[2]);
 
 array_push($parts, array(
-	"headline" => g_l('cockpit','[display_date]'), "html" => $date->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[display_date]'), "html" => $date->getHTML(), "space" => 100
 ));
 
 $oRdoPrio[0] = we_forms::radiobutton(
@@ -345,7 +345,7 @@ $prio->setCol(2, 2, null, we_html_element::htmlImg(array(
 )));
 
 array_push($parts, array(
-	"headline" => g_l('cockpit','[default_priority]'), "html" => $prio->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[default_priority]'), "html" => $prio->getHTML(), "space" => 100
 ));
 
 $oSctValid = we_html_tools::htmlSelect("sct_valid", array(
@@ -372,7 +372,7 @@ array_push($parts, array(
 	"headline" => g_l('cockpit','[title]'), "html" => $oSctTitle, "space" => 100
 ));
 array_push($parts, array(
-	"headline" => g_l('cockpit','[bg_color]'), "html" => $oSctCls->getHTMLCode(), "space" => 100
+	"headline" => g_l('cockpit','[bg_color]'), "html" => $oSctCls->getHTML(), "space" => 100
 ));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);

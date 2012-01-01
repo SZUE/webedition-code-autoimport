@@ -70,7 +70,7 @@ class weCustomerEIWizard{
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=eiload&step=1","name"=>"load","scrolling"=>"no","noresize"=>null));
 
 		$head=str_replace(WE_DEFAULT_TITLE, g_l('modules_customer','[export_title]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . $js ."\n";
-		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".$noframeset->getHTML();
 
 		return we_html_element::htmlHtml(
 					we_html_element::htmlHead($head).
@@ -118,7 +118,7 @@ class weCustomerEIWizard{
 
 		array_push($parts, array(
 			"headline"	=> g_l('modules_customer','[generic_export]'),
-			"html"		=> $generic->getHTMLCode(),
+			"html"		=> $generic->getHTML(),
 			"space"		=> 120,
 			"noline"	=> 1)
 		);
@@ -169,7 +169,7 @@ class weCustomerEIWizard{
 
 		array_push($parts, array(
 			"headline"	=> "",
-			"html"		=> $generic->getHTMLCode(),
+			"html"		=> $generic->getHTML(),
 			"space"		=> 30,
 			"noline"	=> 1)
 		);
@@ -582,7 +582,7 @@ class weCustomerEIWizard{
 
 		array_push($parts, array(
 			"headline"	=> g_l('modules_customer','[generic_import]'),
-			"html"		=> $generic->getHTMLCode(),
+			"html"		=> $generic->getHTML(),
 			"space"		=> 120,
 			"noline"	=> 1)
 		);
@@ -652,7 +652,7 @@ class weCustomerEIWizard{
 
 		array_push($parts, array(
 			"headline"	=> "",
-			"html"		=> $table->getHTMLCode(),
+			"html"		=> $table->getHTML(),
 			"space"		=> 120,
 			"noline"	=> 1)
 		);
@@ -892,7 +892,7 @@ class weCustomerEIWizard{
 				array_push($rows,
 					array(
 						array("dat" => $record),
-						array("dat" => $we_fields->getHTMLCode()),
+						array("dat" => $we_fields->getHTML()),
 						array("dat" => we_html_tools::htmlTextInput("att_mappings[$record]", 30,(isset($att_mappings[$record]) ? $att_mappings[$record] : ""), 255, "", "text", 100))
 					)
 
@@ -901,7 +901,7 @@ class weCustomerEIWizard{
 				array_push($rows,
 					array(
 						array("dat" => $record),
-						array("dat" => $we_fields->getHTMLCode())
+						array("dat" => $we_fields->getHTML())
 					)
 
 				);

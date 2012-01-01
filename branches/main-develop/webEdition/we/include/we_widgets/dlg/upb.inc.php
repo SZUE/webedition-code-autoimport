@@ -137,7 +137,7 @@ array_push($parts, array(
 	"headline" => g_l('cockpit','[type]'), "html" => $dbTableType, "space" => 80
 ));
 array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
+	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 ));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);

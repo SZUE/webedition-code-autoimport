@@ -182,7 +182,7 @@ class weExportWizard{
 		$frameset->addFrame(array("src"=>$this->frameset."?pnt=load","name"=>"load","scrolling"=>"no","noresize"=>null));
 
 		$head=str_replace(WE_DEFAULT_TITLE, g_l('export','[title]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . $js ."\n";
-		$body=$frameset->getHtml()."\n".we_baseElement::getHtmlCode($noframeset);
+		$body=$frameset->getHtml()."\n".$noframeset->getHTML();
 
 		return we_html_element::htmlHtml(
 					we_html_element::htmlHead($head).

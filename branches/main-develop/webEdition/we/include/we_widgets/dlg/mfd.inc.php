@@ -355,21 +355,21 @@ $oSelMaxEntries->setCol(0, 0, array(
 $oSelMaxEntries->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 $oSelMaxEntries->setCol(0, 2, array(
 	"valign" => "middle"
-), $oSctNumEntries->getHTMLCode());
+), $oSctNumEntries->getHTML());
 
-$show = $oSelMaxEntries->getHTMLCode() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
+$show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
 
 array_push($parts, array(
-	"headline" => g_l('cockpit','[type]'), "html" => $oDbTableType->getHTMLCode(), "space" => 80
+	"headline" => g_l('cockpit','[type]'), "html" => $oDbTableType->getHTML(), "space" => 80
 ));
 array_push($parts, array(
-	"headline" => g_l('cockpit','[date]'), "html" => $oSctDate->getHtmLCode(), "space" => 80
+	"headline" => g_l('cockpit','[date]'), "html" => $oSctDate->getHTML(), "space" => 80
 ));
 array_push($parts, array(
 	"headline" => g_l('cockpit','[display]'), "html" => $show, "space" => 80
 ));
 array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
+	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 ));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);

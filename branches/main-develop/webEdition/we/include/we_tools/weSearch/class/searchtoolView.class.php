@@ -3016,7 +3016,7 @@ class searchtoolView extends weToolView{
 				"href" => "#"
 				), $btnDatePicker));
 
-		return $oSelector->getHTMLCode();
+		return $oSelector->getHTML();
 	}
 
 	function tblList($content, $headline, $whichSearch){

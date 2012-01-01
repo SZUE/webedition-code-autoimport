@@ -464,7 +464,7 @@ $divDynamic = we_html_element::htmlDiv(
 			"id" => "dynamic", "style" => (!$_selection ? "display:block;" : "display:none;")
 		),
 		getHTMLDirSelector($_selType) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-				$cls->getHTMLCode(),
+				$cls->getHTML(),
 				g_l('cockpit',"[class]"))) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . getHTMLCategory());
 
 $divContent = we_html_element::htmlDiv(
@@ -506,7 +506,7 @@ array_push($parts, array(
 	"headline" => "", "html" => $divContent, "space" => 0
 ));
 array_push($parts, array(
-	"headline" => "", "html" => $oSelCls->getHTMLCode(), "space" => 0
+	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
 ));
 
 $save_button = we_button::create_button("save", "javascript:save();", false, -1, -1);

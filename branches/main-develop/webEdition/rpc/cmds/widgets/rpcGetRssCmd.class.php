@@ -84,7 +84,7 @@ class rpcGetRssCmd extends rpcCmd {
 			if ($bShowContEnc) {
 				$contEnc = new we_html_table(array("border"=>"0","cellpadding" =>"0","cellspacing"=>"0"),1,1);
 				$contEnc->setCol(0,0,null,$item['content:encoded'].((!$bCfgDesc)? $sLink : ""));
-				$sRssOut .= $contEnc->getHTMLCode();
+				$sRssOut .= $contEnc->getHTML();
 			} else if(!$bShowDesc) {
 				$sRssOut .= $sLink.we_html_element::htmlBr();
 			}

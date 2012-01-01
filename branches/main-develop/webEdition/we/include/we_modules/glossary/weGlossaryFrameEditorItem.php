@@ -527,14 +527,14 @@
 
 			$text = $GLOBALS['l_glossary']['textreplacement'];
 			$language = $GLOBALS['l_glossary']['language'];
-			$_title = unhtmlentities($weGlossaryFrames->View->Glossary->Title);
+			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title,null,$GLOBALS["WE_BACKENDCHARSET"]);
 
 			$_text = "";
 			$_language = "";
 
 			if($weGlossaryFrames->View->Glossary->Type == "textreplacement") {
-				$_text = unhtmlentities($weGlossaryFrames->View->Glossary->Text);
-				$_title = unhtmlentities($weGlossaryFrames->View->Glossary->Title);
+				$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text,null,$GLOBALS["WE_BACKENDCHARSET"]);
+				$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title,null,$GLOBALS["WE_BACKENDCHARSET"]);
 
 			}
 
@@ -1166,7 +1166,7 @@
 
 			$_parts[] = array(
 				'headline'=> g_l('modules_glossary','[popup]'),
-				'html'=>	$_popup->getHTMLCode(),
+				'html'=>	$_popup->getHTML(),
 				'space' => 120,
 				'noline' => 1
 			);

@@ -79,4 +79,4 @@ $oSelCls = new we_html_table(array(
 $oSelCls->setCol(0, 0, array(
 	"width" => 130, "class" => "defaultfont"
 ), g_l('cockpit','[bgcolor]'));
-$oSelCls->setCol(0, 1, null, $oSctCls->getHTMLCode());
+$oSelCls->setCol(0, 1, null, $oSctCls->getHTML());
