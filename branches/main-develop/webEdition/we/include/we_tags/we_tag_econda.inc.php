@@ -23,8 +23,6 @@
  */
 
 function we_tag_econda($attribs, $content){
-	// Define globals
-	global $we_editmode;
 
 	$type = weTag_getAttribute("type",$attribs);
 	if ($type=="exclude" && !$GLOBALS['we_doc']->InWebEdition) {
@@ -54,7 +52,7 @@ function we_tag_econda($attribs, $content){
 				break;
 		}
 
-		if ($we_editmode) {
+		if ($GLOBALS['we_editmode']) {
 			return $retEdit;
 		} else if(!$GLOBALS['we_doc']->InWebEdition){
 			return $retView;

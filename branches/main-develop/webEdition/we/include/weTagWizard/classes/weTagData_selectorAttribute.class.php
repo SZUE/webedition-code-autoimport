@@ -22,8 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-
 class weTagData_selectorAttribute extends weTagDataAttribute{
 
 	/**
@@ -42,12 +40,11 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 	 * @param string $selectable
 	 * @param boolean $required
 	 */
-	function __construct($name, $table, $selectable, $required = false, $module = '',$description='',$deprecated=false){
-
+	function __construct($name, $table, $selectable, $required = false, $module = '', $description='', $deprecated=false){
 		$this->Table = $table;
 		$this->Selectable = $selectable;
 
-		parent::__construct($name, $required, $module, $description,$deprecated);
+		parent::__construct($name, $required, $module, $description, $deprecated);
 	}
 
 	/**

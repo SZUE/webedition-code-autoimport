@@ -52,17 +52,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  * @author     Daniel Schroeder  <deemes79 at googlemail.com>
  */
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_tag.inc.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	we_html_tools::protect();
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_language/'.$GLOBALS['WE_LANGUAGE'].'/we_tag.inc.php');
-	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagWizard.class.php');
-	require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
 
 	echo 'top.we_tags=new Array();';
 	$allWeTags = weTagWizard::getExistingWeTags();
 	foreach($allWeTags as $tagName) {
 		$GLOBALS['TagRefURLName'] = strtolower($tagName);
-		unset($GLOBALS['weTagWizard']['attribute']); //yes, webedition saves this in a global, which is absolutley unhandy in this situation
 		if(isset($weTag))
 			unset($weTag);
 		$weTag = weTagData::getTagData($tagName);

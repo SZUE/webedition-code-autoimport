@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagData_selectAttribute.class.php');
-
-class weTagData_sqlColAttribute extends weTagData_selectAttribute
-{
+class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 
 	/**
 	 * @var string
@@ -40,8 +35,7 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 	 * @param boolean $required
 	 * @param array $filter
 	 */
-	function __construct($name, $table, $required = false, $filter = array(), $module = '',$description='',$deprecated=false)
-	{
+	function __construct($name, $table, $required = false, $filter = array(), $module = '', $description='', $deprecated=false){
 
 		$this->Table = $table;
 
@@ -52,12 +46,13 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute
 		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table);
 		sort($tableInfo); // #3490
 
-		for ($i = 0; $i < sizeof($tableInfo); $i++) {
+		for($i = 0; $i < sizeof($tableInfo); $i++){
 
-			if (!in_array($tableInfo[$i]['name'], $filter)) {
+			if(!in_array($tableInfo[$i]['name'], $filter)){
 				$options[] = new weTagDataOption($tableInfo[$i]['name']);
 			}
 		}
-		parent::__construct($name, $options, $required, $module,$description,$deprecated);
+		parent::__construct($name, $options, $required, $module, $description, $deprecated);
 	}
+
 }

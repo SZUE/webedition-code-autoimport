@@ -24,8 +24,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-require_once($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/weTagWizard/classes/weTagData.class.php');
-
 
 $tagName = isset($_REQUEST['tagName']) ? $_REQUEST['tagName'] : "";
 
@@ -38,7 +36,7 @@ $xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 $xml .= "<attributes>\n";
 
 if ($tagName) {
-	
+
 	$tagData = weTagData::getTagData($tagName);
 	foreach($tagData->getAllAttributes() as $attr){
 		$xml .= "\t". '<attribute name="' . $attr . '" />'."\n";

@@ -22,11 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataOption.class.php');
-
 class weTagData_typeAttribute extends weTagDataAttribute{
-	
+
 	/**
 	 * @var boolean/string
 	 */
@@ -42,9 +39,9 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function weTagData_typeAttribute($name, $options = array(), $required = true, $module = '',$description='',$deprecated=false){
+	function __construct($name, $options = array(), $required = true, $module = '', $description='', $deprecated=false){
 
-		parent::__construct($name, $required, $module,$description,$deprecated);
+		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = parent::getUseOptions($options);
 		foreach($this->Options as &$option){
 			$option->addTypeAttribute($this);

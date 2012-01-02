@@ -30,7 +30,6 @@
  * @see dtd:http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd
  *
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 class weCodeWizardSnippet {
 

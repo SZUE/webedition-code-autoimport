@@ -18,8 +18,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTagWizard/classes/weTagDataAttribute.class.php');
-
 class weTagData_cmdAttribute extends weTagDataAttribute{
 
 	/**
@@ -36,8 +34,8 @@ class weTagData_cmdAttribute extends weTagDataAttribute{
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function weTagData_cmdAttribute($name, $required = false, $module = '', $Options, $Text,$description='',$deprecated=false){
-		parent::__construct($name, $required, $module,$description,$deprecated);
+	function weTagData_cmdAttribute($name, $required = false, $module = '', $Options, $Text, $description='', $deprecated=false){
+		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = $Options;
 		$this->Text = $Text;
 	}
