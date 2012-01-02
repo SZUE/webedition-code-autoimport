@@ -1330,7 +1330,7 @@ function id_to_path($IDs, $table = FILE_TABLE, $db = '', $prePostKomma = false, 
 		if ($id == 0) {
 			array_push($foo, '/');
 		} else {
-			$foo2 = getHash("SELECT Path,IsFolder FROM $table WHERE ID=" . intval($id), $db);
+			$foo2 = getHash('SELECT Path,IsFolder FROM `'.$table.'` WHERE ID=' . intval($id), $db);
 			if (isset($foo2['Path'])) {
 				if ($endslash && $foo2['IsFolder']) {
 					$foo2['Path'] .= '/';
