@@ -24,18 +24,17 @@
 
 
 /* the parent class of storagable webEdition classes */
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once(WE_CUSTOMER_MODULE_DIR.'weCustomerSettings.php');
 
 class weCustomerView {
 
-	var $db;
+	private $db;
 	var $frameset;
 	var $topFrame;
 	var $customer;
 	var $settings;
 
-	function weCustomerView($frameset='',$topframe='top.content') {
+	function __construct($frameset='',$topframe='top.content') {
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);

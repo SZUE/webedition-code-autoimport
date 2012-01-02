@@ -22,72 +22,75 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class DB_WE extends we_database_base{
 
-
-class DB_WE extends we_database_base {
-	private $conType='';
+	private $conType = '';
 	/* public: constructor */
-/*	function __construct(){
-		//call super constructor
-		parent::__construct();
-	}*/
+	/* 	function __construct(){
+	  //call super constructor
+	  parent::__construct();
+	  } */
 
-protected function ping(){
+	protected function ping(){
 		return mysql_ping($this->Link_ID);
 	}
 
 	/* public: connection management */
 
-	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD) {
+	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD){
 		/* establish connection, select database */
-		if (!$this->isConnected()) {
+		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'pconnect':
-				$this->Link_ID = @mysql_pconnect($Host, $User, $Password);
-				if ($this->Link_ID) {
-					$this->conType='pconnect';
-					break;
-				}
+					$this->Link_ID = @mysql_pconnect($Host, $User, $Password);
+					if($this->Link_ID){
+						$this->conType = 'pconnect';
+						break;
+					}
 				//intentionally no break
 				case 'connect':
-				$this->Link_ID = @mysql_connect($Host, $User, $Password);
-				if (!$this->Link_ID) {
-					$this->halt("(p)connect($Host, $User) failed.");
-					return false;
-				}
-				$this->conType='connect';
-				break;
+					$this->Link_ID = @mysql_connect($Host, $User, $Password);
+					if(!$this->Link_ID){
+						$this->halt("(p)connect($Host, $User) failed.");
+						return false;
+					}
+					$this->conType = 'connect';
+					break;
+				default:
+					$this->halt('Error in DB connect');
+					exit('Error in DB connect');
 			}
-			if (!@mysql_select_db($Database, $this->Link_ID))
-				if (!@mysql_select_db($Database, $this->Link_ID))
-					if (!@mysql_select_db($Database, $this->Link_ID))
-						if (!@mysql_select_db($Database, $this->Link_ID)) {
+			if(!@mysql_select_db($Database, $this->Link_ID))
+				if(!@mysql_select_db($Database, $this->Link_ID))
+					if(!@mysql_select_db($Database, $this->Link_ID))
+						if(!@mysql_select_db($Database, $this->Link_ID)){
 							$this->halt('cannot use database ' . $this->Database);
 							return false;
 						}
 		}
 		return ($this->Link_ID > 0);
 	}
-        protected function _setCharset($charset){
-                @ mysql_set_charset($charset);
-        }
 
+	protected function _setCharset($charset){
+		@ mysql_set_charset($charset);
+	}
 
 	/* public: discard the query result */
-	protected function _free() {
+
+	protected function _free(){
 		@mysql_free_result($this->Query_ID);
 	}
 
-	protected function _query($Query_String, $unbuffered=false) {
-		return ($unbuffered?
-			@mysql_unbuffered_query($Query_String, $this->Link_ID):
-			@mysql_query($Query_String, $this->Link_ID));
+	protected function _query($Query_String, $unbuffered=false){
+		return ($unbuffered ?
+				@mysql_unbuffered_query($Query_String, $this->Link_ID) :
+				@mysql_query($Query_String, $this->Link_ID));
 	}
 
-	public function close() {
-		if ($this->Link_ID) {
+	public function close(){
+		if($this->Link_ID){
 			@mysql_close($this->Link_ID);
-			$this->Link_ID = '';
+			$this->Link_ID = 0;
 		}
 	}
 
@@ -95,61 +98,63 @@ protected function ping(){
 		return @mysql_fetch_array($this->Query_ID, $resultType);
 	}
 
-
 	/* public: position in result set */
-	protected function _seek($pos=0) {
+
+	protected function _seek($pos=0){
 		return @mysql_data_seek($this->Query_ID, $pos);
 	}
 
 	/* public: evaluate the result (size, width) */
 
-	public function affected_rows() {
+	public function affected_rows(){
 		return @mysql_affected_rows($this->Link_ID);
 	}
 
-	public function num_rows() {
+	public function num_rows(){
 		return @mysql_num_rows($this->Query_ID);
 	}
 
-	public function num_fields() {
+	public function num_fields(){
 		return @mysql_num_fields($this->Query_ID);
 	}
 
-	public function field_name($no) {
+	public function field_name($no){
 		return @mysql_field_name($this->Query_ID, $no);
 	}
-
 
 	public function field_type($no){
 		return @mysql_field_type($this->Query_ID, $no);
 	}
+
 	public function field_table($no){
 		return @mysql_field_table($this->Query_ID, $no);
 	}
+
 	public function field_len($no){
 		return @mysql_field_len($this->Query_ID, $no);
 	}
+
 	public function field_flags($no){
 		return @mysql_field_flags($this->Query_ID, $no);
 	}
 
-	public function getInsertId() {
+	public function getInsertId(){
 		return mysql_insert_id($this->Link_ID);
 	}
 
 	public function getInfo(){
-		return 'type: '.$this->conType.
-						'<br/>protocol: '.mysql_get_proto_info().
-						'<br/>client: '.mysql_get_client_info().
-						'<br/>host: '.mysql_get_host_info().
-						'<br/>server: '.mysql_get_server_info();
+		return 'type: ' . $this->conType .
+			'<br/>protocol: ' . mysql_get_proto_info() .
+			'<br/>client: ' . mysql_get_client_info() .
+			'<br/>host: ' . mysql_get_host_info() .
+			'<br/>server: ' . mysql_get_server_info();
 	}
 
-	protected function errno() {
+	protected function errno(){
 		return mysql_errno();
 	}
 
-	protected function error() {
+	protected function error(){
 		return mysql_error();
 	}
 

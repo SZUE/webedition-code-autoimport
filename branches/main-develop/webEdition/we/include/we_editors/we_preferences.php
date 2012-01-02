@@ -5383,9 +5383,9 @@ else {
 
 				$_db_set_charset = new we_html_select(array("name" => "db_set_charset", "class" => "weSelect"));
 
-				$GLOBALS['DB_WE']->query("SHOW CHARACTER SET");
+				$GLOBALS['DB_WE']->query('SHOW CHARACTER SET');
 
-				$charsets = array("");
+				$charsets = array('');
 				while($GLOBALS['DB_WE']->next_record()) {
 					$charsets[] = $GLOBALS['DB_WE']->f('Charset');
 				}

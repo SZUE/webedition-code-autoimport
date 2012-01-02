@@ -22,6 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+ini_set('mysqli.reconnect',1);
 class DB_WE extends we_database_base{
 
 	protected function _free(){
@@ -29,12 +31,11 @@ class DB_WE extends we_database_base{
 //			print_r(debug_backtrace());
 			$this->Query_ID->free();
 		}
-		$this->Query_ID = 0;
 	}
 
 	protected function _query($Query_String, $unbuffered=false){
 		$this->_free();
-		$tmp = @$this->Link_ID->query($Query_String, ($unbuffered ? MYSQLI_USE_RESULT : MYSQLI_STORE_RESULT));
+		$tmp = $this->Link_ID->query($Query_String, ($unbuffered ? MYSQLI_USE_RESULT : MYSQLI_STORE_RESULT));
 		if($tmp === false){
 			return 0;
 		} else if($tmp === true){
@@ -91,20 +92,20 @@ class DB_WE extends we_database_base{
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'mysqli_pconnect':
-					$Host = 'p:' . $Host;
+					//FIXME: deactivate persistent connect
+					//$Host = 'p:' . $Host;
 				case 'mysqli_connect':
 					$this->Query_ID = null;
 					$this->Link_ID = new mysqli($Host, $User, $Password, $Database);
-					$this->Link_ID->real_connect();
 					if($this->Link_ID->connect_error){
 						$this->Link_ID = null;
 						$this->halt("mysqli_(p)connect($Host, $User) failed.");
 						return false;
 					}
 					break;
-					default:
-						$this->halt('Error in DB connect');
-						exit('Error in DB connect');
+				default:
+					$this->halt('Error in DB connect');
+					exit('Error in DB connect');
 			}
 		}
 		return true;

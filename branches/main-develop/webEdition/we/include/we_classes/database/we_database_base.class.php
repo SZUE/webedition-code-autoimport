@@ -551,4 +551,20 @@ abstract class we_database_base {
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
+
+	/**
+	 * called on serialize of this class, closes db connection
+	 * @return type empty array
+	 */
+	public function __sleep(){
+		$this->close();
+		return array();
+	}
+
+	/**
+	 * called if this class is unserialized
+	 */
+	public function __wakeup(){
+		$this->connect();
+	}
 }
