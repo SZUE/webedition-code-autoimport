@@ -131,7 +131,7 @@ const PRECISION=2;
 
 	}
 
-	function load($id="0") {
+	function load($id=0) {
 		if(parent::load($id)) {
 			$this->QASet=@unserialize($this->QASet);
 			$this->QASetAdditions=@unserialize($this->QASetAdditions);

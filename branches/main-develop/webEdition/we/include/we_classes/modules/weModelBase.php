@@ -32,7 +32,7 @@ class weModelBase{
 	var $db;
 	var $table = '';
 	var $persistent_slots = array();
-	var $keys = array("ID");
+	var $keys = array('ID');
 	var $isnew = true;
 
 	/**
@@ -58,30 +58,23 @@ class weModelBase{
 	/**
 	 * Load entry from database
 	 */
-	function load($id="0"){
-		$ids = explode(",", $id);
-		foreach($ids as $k => $v){
-			$this->{$this->keys[$k]} = '"' . $this->db->escape($v) . '"';
-		}
-
+	function load($id=0){
 		if($this->isKeyDefined()){
 			$tableInfo = $this->db->metadata($this->table);
-			$this->db->query("SELECT * FROM " . $this->table . " WHERE " . $this->getKeyWhere() . ";");
-			if($this->db->next_record()){
+			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
+
+			if(count($data)){
 				foreach($tableInfo as $info){
 					$fieldName = $info["name"];
 					if(in_array($fieldName, $this->persistent_slots)){
-						$foo = $this->db->f($fieldName);
-						$this->$fieldName = $foo;
+						$this->{$fieldName} = $data[$fieldName];
 					}
 				}
 				$this->isnew = false;
 				return true;
-			}else
-				return false;
-		}else{
-			return false;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -95,14 +88,14 @@ class weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
-				$sets[]='`' . $this->db->escape($val) . '`="'.$this->db->escape($this->{$val}).'"';
+				$sets[] = '`' . $this->db->escape($val) . '`="' . $this->db->escape($this->{$val}) . '"';
 			}
 		}
 		$where = $this->getKeyWhere();
 		$set = implode(",", $sets);
 
 		if($this->isKeyDefined() && $this->isnew){
-			$ret=$this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
+			$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
 			if($ret){
 				$this->ID = $this->db->getInsertId();
@@ -130,10 +123,9 @@ class weModelBase{
 	function getKeyWhere(){
 		$wheres = array();
 		foreach($this->keys as $f){
-			//FIXME: remove eval
-			eval('$wheres[]="' . $f . '=\'".escape_sql_query($this->' . $f . ')."\'";');
+			$wheres[] = '`' . $f . '`="' . escape_sql_query($this->{$f}) . '"';
 		}
-		return implode(" AND ", $wheres);
+		return implode(' AND ', $wheres);
 	}
 
 	function isKeyDefined(){
@@ -152,7 +144,7 @@ class weModelBase{
 		$tmp=get_class_vars(__CLASS__);
 		unset($tmp['db']);
 		return array_keys($tmp);
-	}
+}
 
 	public function __wakeup(){
 		$this->db=new DB_WE();
