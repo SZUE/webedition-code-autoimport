@@ -211,26 +211,26 @@ var widthBeforeDeleteModeSidebar = 0;
 			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 		</div>
 		<div style="position:absolute;left:0px;right:0px;bottom:0px;height:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 1px solid;">
-			<div style="position:absolute;top:0px;bottom:0px;width:25%;border:0px;">"
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
+			<div style="height:100%;float:left;width:25%;border:0px;">
+					<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
+				</div>
+				<div style="height:100%;float:left;width:25%;border:0px;">
+					<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
+				</div>
+				<!-- Bugfix Opera >=10.5  target name is always "ad" -->
+				<div style="height:100%;float:left;width:10%;border:0px;">
+					<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
+				</div>
+				<div style="height:100%;float:left;width:10%;border:0;">
+					<iframe src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
+				</div>
+				<div style="height:100%;float:left;width:10%;border:0;">
+					<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+				</div>
+				<div style="height:100%;float:left;width:10%;border:0;">
+					<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+				</div>
 			</div>
-			<div style="position:absolute;top:0px;bottom:0px;width:25%;border:0px;">"
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
-			</div>
-			<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-			<div style="position:absolute;top:0px;bottom:0px;width:10%;border:0px;">"
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
-			</div>
-			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
-			<iframe src="<?php print WE_USERS_MODULE_PATH; ?>we_users_ping.php" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ping"></iframe>
-			</div>
-			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
-			</div>
-			<div style="position:absolute;top:0;bottom:0;width:10%;border:0;">"
-			<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
-			</div>
-		</div>
 	</div>
 	<?php
 	}
