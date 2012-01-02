@@ -1,7 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_linklistEdit=array(
-	'accesskey'=>'Accesskey',
+	'accesskey'=>'Accesskey-Attribut',
 	'alt_text'=>'Alternativ Text',
 	'edit_link'=>'Link bearbeiten',
 	'external_image'=>'Externe Grafik',

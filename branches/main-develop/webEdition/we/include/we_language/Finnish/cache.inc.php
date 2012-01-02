@@ -3,7 +3,7 @@
 $l_cache=array(
 	
 	'cacheLifeTimes'=>array(
-		'0'=>'',
+		'0'=>'deactivated',
 		'1800'=>'30 minuuttia',
 		'21600'=>'6 tunti',
 		'300'=>'5 minuuttia',

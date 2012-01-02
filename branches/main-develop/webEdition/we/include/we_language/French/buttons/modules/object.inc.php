@@ -3,32 +3,32 @@
 $l_buttons_modules_object=array(
 	
 	'make_new_object'=>array(
-		'alt'=>'Créer un nouveau Object ...',
-		'value'=>'New object',
-		'width'=>100,
+		'alt'=>'Créer un nouveau cbject ...',
+		'value'=>'Nouveau objet',
+		'width'=>120,
 	),
 	'new_class'=>array(
-		'alt'=>'Créer une nouvelle Classe ...',
-		'value'=>'New class',
+		'alt'=>'Créer une nouvelle classe ...',
+		'value'=>'Nouvelle classe',
 		'width'=>200,
 	),
 	'new_object'=>array(
-		'alt'=>'Créer un nouveau Object ...',
-		'value'=>'New object',
+		'alt'=>'Créer un nouveau object ...',
+		'value'=>'Nouveau objet',
 		'width'=>200,
 	),
 	'unpublished_objects'=>array(
-		'alt'=>'Aperçu des Objects non-publiés ...',
-		'value'=>'Unpublished objects',
+		'alt'=>'Aperçu des objects non-publiés ...',
+		'value'=>'Objets non-publiés',
 		'width'=>200,
 	),
 	'workspace_button'=>array(
 		'alt'=>'Sélectionner un éspace de travail',
-		'value'=>'Workspace',
+		'value'=>'Éspace de travail',
 		'width'=>100,
 	),
 	'ws_from_class'=>array(
-		'alt'=>'Adopter l`éspace de travail de la Classe ...',
-		'value'=>'Adopt from class',
+		'alt'=>'Adopter l`éspace de travail de la classe ...',
+		'value'=>'Adopter de la classe',
 		'width'=>200,
 ));

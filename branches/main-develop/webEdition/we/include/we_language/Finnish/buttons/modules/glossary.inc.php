@@ -37,6 +37,11 @@ $l_buttons_modules_glossary=array(
 		'value'=>'Uusi hyperlinkki',
 		'width'=>150,
 	),
+	'new_glossary_textreplacement'=>array(
+		'alt'=>'Add new text replacement...',
+		'value'=>'New text replacement',
+		'width'=>150,
+	),
 	'to_glossary'=>array(
 		'alt'=>'lisää sanastoon ...',
 		'value'=>'lisää sanastoon',

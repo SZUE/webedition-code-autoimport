@@ -310,7 +310,7 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'edit_all_thumbs'=>array(
-		'alt'=>'',
+		'alt'=>'Edit thumbnails...',
 		'value'=>'Edit thumbnails...',
 		'width'=>150,
 	),
@@ -324,12 +324,12 @@ $l_buttons_global=array(
 		'value'=>'First',
 	),
 	'go'=>array(
-		'alt'=>'',
+		'alt'=>'Execute now',
 		'value'=>'Execute now',
 		'width'=>120,
 	),
 	'iconview'=>array(
-		'alt'=>'',
+		'alt'=>'Iconview',
 		'value'=>'Iconview',
 		'width'=>100,
 	),
@@ -348,7 +348,7 @@ $l_buttons_global=array(
 		'value'=>'Last',
 	),
 	'listview'=>array(
-		'alt'=>'',
+		'alt'=>'Listview',
 		'value'=>'Listview',
 		'width'=>100,
 	),
@@ -398,12 +398,12 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'new_folder'=>array(
-		'alt'=>'',
+		'alt'=>'New folder',
 		'value'=>'New folder',
 		'width'=>200,
 	),
 	'new_item'=>array(
-		'alt'=>'',
+		'alt'=>'New item',
 		'value'=>'New item',
 		'width'=>200,
 	),
@@ -498,12 +498,12 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'reindent'=>array(
-		'alt'=>'',
+		'alt'=>'Reindent code',
 		'value'=>'Reindent code',
 		'width'=>100,
 	),
 	'replace'=>array(
-		'alt'=>'',
+		'alt'=>'Replace',
 		'value'=>'Replace',
 		'width'=>100,
 	),

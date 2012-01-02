@@ -160,7 +160,7 @@ $l_modules_shop=array(
 	
 	'paypal'=>array(
 		'head_title'=>'Processing Payment',
-		'name'=>'',
+		'name'=>'PayPal',
 		'redirect_auto'=>'Please wait while your payment is processed. You will be redirected to PayPal shortly.',
 		'redirect_man'=>'If you are not automatically redirected within the next 5 seconds, please click the "PayPal" button.',
 	),

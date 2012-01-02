@@ -24,7 +24,7 @@ $l_prefs=array(
 	'cache_information'=>'Aseta uusien sivupohjien oletusarvot kentille "Välimuistin tyyppi" ja "Välimuistin elinikä".<br /><br />Huomioi että nämä ovat vain esivalinnat.',
 	
 	'cache_lifetimes'=>array(
-		'0'=>'',
+		'0'=>'deactivated',
 		'1800'=>'30 minuuttia',
 		'21600'=>'6 tuntia',
 		'300'=>'5 minuuttia',
@@ -90,7 +90,7 @@ $l_prefs=array(
 	'editor_html_attribute_font_color'=>'HTML määreet',
 	'editor_html_tag_font_color'=>'HTML tagit',
 	'editor_information'=>'Määritä fonttikoko jota haluat käyttää sivupohjien, CSS-tiedostojen ja JavaScript-tiedostojen muokkaamiseen webEditionissa.<br /><br />Asetusta käytetään kaikille yllämainituille tiedostotyypeille.',
-	'editor_javascript2'=>'CodeMirror2 (alpha)',
+	'editor_javascript2'=>'CodeMirror2',
 	'editor_javascript'=>'JavaScript editor (beta)',
 	'editor_javascript_information'=>'The JavaScript editor is still in beta stadium. Depending on which of the following options you`ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.',
 	'editor_java'=>'Java editor',

@@ -324,7 +324,7 @@ $l_buttons_global=array(
 		'value'=>'First',
 	),
 	'go'=>array(
-		'alt'=>'',
+		'alt'=>'Execute now',
 		'value'=>'Suorita nyt',
 		'width'=>120,
 	),
@@ -498,12 +498,12 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'reindent'=>array(
-		'alt'=>'',
+		'alt'=>'Reindent code',
 		'value'=>'Reindent code',
 		'width'=>100,
 	),
 	'replace'=>array(
-		'alt'=>'',
+		'alt'=>'Replace',
 		'value'=>'Replace',
 		'width'=>100,
 	),

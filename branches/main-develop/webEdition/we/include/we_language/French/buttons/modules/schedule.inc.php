@@ -4,6 +4,6 @@ $l_buttons_modules_schedule=array(
 	
 	'schedule_button'=>array(
 		'alt'=>'Tâche dirigée par temps',
-		'value'=>'Scheduler',
+		'value'=>'Planificateur',
 		'width'=>100,
 ));

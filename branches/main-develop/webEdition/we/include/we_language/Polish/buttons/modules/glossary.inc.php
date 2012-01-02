@@ -37,6 +37,11 @@ $l_buttons_modules_glossary=array(
 		'value'=>'New hyperlink',
 		'width'=>150,
 	),
+	'new_glossary_textreplacement'=>array(
+		'alt'=>'Add new text replacement...',
+		'value'=>'New text replacement',
+		'width'=>150,
+	),
 	'to_glossary'=>array(
 		'alt'=>'add to glossary ...',
 		'value'=>'to glossary',

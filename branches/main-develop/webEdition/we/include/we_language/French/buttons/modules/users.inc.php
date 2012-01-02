@@ -4,26 +4,26 @@ $l_buttons_modules_users=array(
 	
 	'checkall'=>array(
 		'alt'=>'Séléctionner tous les permissions',
-		'value'=>'Select all',
+		'value'=>'Séléctionner tous',
 		'width'=>150,
 	),
 	'create_alias'=>array(
-		'alt'=>'Create new alias',
-		'value'=>'New alias',
+		'alt'=>'Créer nouveau alias',
+		'value'=>'Nouveau alias',
 		'width'=>150,
 	),
 	'create_group'=>array(
-		'alt'=>'Add new group',
-		'value'=>'New group',
+		'alt'=>'Créer nouveau groupe',
+		'value'=>'Nouveau groupe',
 		'width'=>150,
 	),
 	'create_user'=>array(
-		'alt'=>'Add new user',
-		'value'=>'New user',
+		'alt'=>'Créer nouveau utilisateur',
+		'value'=>'Nouveau utilisateur',
 		'width'=>150,
 	),
 	'uncheckall'=>array(
 		'alt'=>'Décocher tous les droits',
-		'value'=>'Deselect all',
+		'value'=>'Décocher tous',
 		'width'=>150,
 ));

@@ -24,7 +24,7 @@ $l_prefs=array(
 	'cache_information'=>'Stellen Sie hier die Werte ein, mit welchen die Felder "Art des Caches" und "Cache Gültigkeit in Sekunden" bei neuen Vorlagen belegt sein sollen.<br /><br />Beachten Sie bitte, dass diese Einstellung lediglich eine Vorbelegung der Felder ist.',
 	
 	'cache_lifetimes'=>array(
-		'0'=>'',
+		'0'=>'deaktiviert',
 		'1800'=>'30 Minuten',
 		'21600'=>'6 Stunden',
 		'300'=>'5 Minuten',
@@ -90,7 +90,7 @@ $l_prefs=array(
 	'editor_html_attribute_font_color'=>'HTML-Attribute',
 	'editor_html_tag_font_color'=>'HTML-Tags',
 	'editor_information'=>'Geben Sie hier Schriftart und Größe an, die für die Bearbeitung der Vorlagen, CSS- und JavaScript-Dateien innerhalb von webEdition verwendet werden soll.<br /><br />Diese Einstellungen werden für den Texteditor der obengenannten Dateitypen verwendet.',
-	'editor_javascript2'=>'CodeMirror2 (alpha)',
+	'editor_javascript2'=>'CodeMirror2',
 	'editor_javascript'=>'JavaScript-Editor (beta)',
 	'editor_javascript_information'=>'Der JavaScript-Editor befindet sich derzeit im Beta-Stadium. Je nach aktivierten Funktionen kann es noch zu Fehlern kommen. Die Codevervollständigung funktioniert derzeit nicht im Internet Explorer. Für eine komplette Liste von bekannten Problemen schauen Sie bitte in den <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition Bugtracker</a>.',
 	'editor_java'=>'Java-Editor',

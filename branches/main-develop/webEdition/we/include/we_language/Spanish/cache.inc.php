@@ -3,7 +3,7 @@
 $l_cache=array(
 	
 	'cacheLifeTimes'=>array(
-		'0'=>'',
+		'0'=>'deactivated',
 		'1800'=>'30 minutes',
 		'21600'=>'6 hours',
 		'300'=>'5 minutes',
@@ -22,5 +22,5 @@ $l_cache=array(
 	'cache_type_full'=>'Full cache (whole document will be cached)',
 	'cache_type_none'=>'no caching (Caching deactivated)',
 	'cache_type_wetag'=>'we:Tag cache (we:Tags will be cached)',
-	'delete_cache'=>'Should the whole cache now deleted?',
+	'delete_cache'=>'Should the whole cache be deleted now?',
 );

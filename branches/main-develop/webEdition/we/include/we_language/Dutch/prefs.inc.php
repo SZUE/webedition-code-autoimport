@@ -24,7 +24,7 @@ $l_prefs=array(
 	'cache_information'=>'Stel vooraf de waarden van de velden "Caching Type" en "Cache levensduur in seconden" voor nieuwe sjablonen hier in.<br /><br />Let er wel op dat deze instellingen alleen de voorkeur zijn voor de velden.',
 	
 	'cache_lifetimes'=>array(
-		'0'=>'',
+		'0'=>'deactivated',
 		'1800'=>'30 minuten',
 		'21600'=>'6 uur',
 		'300'=>'5 minuten',
@@ -90,7 +90,7 @@ $l_prefs=array(
 	'editor_html_attribute_font_color'=>'HTML attributes',
 	'editor_html_tag_font_color'=>'HTML tags',
 	'editor_information'=>'Specificeer lettertype en grootte die gebruikt moet worden bij het wijzigen van sjablonen, CSS- en JavaScript bestanden binnen webEdition.<br /><br />Deze instellingen worden gebruikt voor de tekst editor van de bovengenoemde bestands types.',
-	'editor_javascript2'=>'CodeMirror2 (alpha)',
+	'editor_javascript2'=>'CodeMirror2',
 	'editor_javascript'=>'JavaScript editor (beta)',
 	'editor_javascript_information'=>'The JavaScript editor is still in beta stadium. Depending on which of the following options you`ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.',
 	'editor_java'=>'Java editor',

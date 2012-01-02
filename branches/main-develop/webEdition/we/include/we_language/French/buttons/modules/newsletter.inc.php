@@ -3,17 +3,17 @@
 $l_buttons_modules_newsletter=array(
 	
 	'new_newsletter'=>array(
-		'alt'=>'Make new newsletter ...',
-		'value'=>'New newsletter',
+		'alt'=>'Créer nouvelle lettre d`actualité ...',
+		'value'=>'Nouvelle lettre d`actualité',
 		'width'=>150,
 	),
 	'new_newsletter_group'=>array(
-		'alt'=>'Make new group...',
-		'value'=>'New group',
+		'alt'=>'Créer nouveau groupe ...',
+		'value'=>'Nouveau groupe',
 		'width'=>150,
 	),
 	'send'=>array(
-		'alt'=>'Send newsletter ...',
-		'value'=>'Send',
+		'alt'=>'Envoyer lettre d`actualité ...',
+		'value'=>'Envoyer',
 		'width'=>100,
 ));

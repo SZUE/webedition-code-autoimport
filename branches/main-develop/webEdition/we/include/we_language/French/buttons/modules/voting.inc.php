@@ -9,11 +9,11 @@ $l_buttons_modules_voting=array(
 	),
 	'new_voting_group'=>array(
 		'alt'=>'Créer un groupe ...',
-		'value'=>'New group',
+		'value'=>'Nouveau groupe',
 		'width'=>150,
 	),
 	'reset_score'=>array(
 		'alt'=>'Remettre les scores ...',
-		'value'=>'Reset scores',
-		'width'=>100,
+		'value'=>'Supprimer les scores',
+		'width'=>150,
 ));

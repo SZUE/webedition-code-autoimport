@@ -24,7 +24,7 @@ $l_prefs=array(
 	'cache_information'=>'Set the preset values of the fields "Caching Type" and "Cache lifetime in seconds" for new templates here.<br /><br />Please note that these setting are only the presets of the fields.',
 	
 	'cache_lifetimes'=>array(
-		'0'=>'',
+		'0'=>'deactivated',
 		'1800'=>'30 minutes',
 		'21600'=>'6 hours',
 		'300'=>'5 minutes',
@@ -90,7 +90,7 @@ $l_prefs=array(
 	'editor_html_attribute_font_color'=>'HTML attributes',
 	'editor_html_tag_font_color'=>'HTML tags',
 	'editor_information'=>'Specify font and size which should be used for the editing of templates, CSS- and JavaScript files within webEdition.<br /><br />These settings are used for the text editor of the abovementioned file types.',
-	'editor_javascript2'=>'CodeMirror2 (alpha)',
+	'editor_javascript2'=>'CodeMirror2',
 	'editor_javascript'=>'JavaScript editor (beta)',
 	'editor_javascript_information'=>'The JavaScript editor is still in beta stadium. Depending on which of the following options you`ll activate, there might occur errors. Code completion is currently not working in Internet Explorer. For a complete list of known issues please have a look at the <a href="http://qa.webedition.org/tracker/search.php?project_id=107&sticky_issues=on&sortby=last_updated&dir=DESC&hide_status_id=90" target="_blank">webEdition bugtracker</a>.',
 	'editor_java'=>'Java editor',

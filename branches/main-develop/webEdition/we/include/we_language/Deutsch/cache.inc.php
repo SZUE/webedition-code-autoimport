@@ -3,17 +3,17 @@
 $l_cache=array(
 	
 	'cacheLifeTimes'=>array(
-		'0'=>'',
+		'0'=>'deaktiviert',
 		'1800'=>'30 Minuten',
 		'21600'=>'6 Stunden',
 		'300'=>'5 Minuten',
 		'3600'=>'1 Stunde',
 		'43200'=>'12 Stunden',
 		'600'=>'10 Minuten',
-		'60'=>'1 minute',
+		'60'=>'1 Minute',
 		'86400'=>'1 Tag',
 	),
-	'cache'=>'Caching',
+	'cache'=>'Zwischenspeicher',
 	'cache_deleted'=>'Der Cache wurde gelöscht!',
 	'cache_lifetime'=>'Cache Gültigkeit in Sekunden',
 	'cache_not_deleted'=>'Der Cache konnte nicht gelöscht werden.',

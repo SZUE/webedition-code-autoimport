@@ -3,8 +3,8 @@
 $l_buttons_modules_message=array(
 	
 	'advanced'=>array(
-		'alt'=>'Advanced search settings ...',
-		'value'=>'Advanced',
+		'alt'=>'Recherche avancé',
+		'value'=>'Avancé',
 		'width'=>100,
 	),
 	'percent100'=>array(
@@ -23,12 +23,12 @@ $l_buttons_modules_message=array(
 		'width'=>120,
 	),
 	'search'=>array(
-		'alt'=>'Search ...',
+		'alt'=>'Recherche ...',
 		'value'=>'Rechercher',
 		'width'=>100,
 	),
 	'select_user'=>array(
-		'alt'=>'Select user ...',
-		'value'=>'Select user',
-		'width'=>120,
+		'alt'=>'Choisir utilisateur ...',
+		'value'=>'Choisir utilisateur',
+		'width'=>174,
 ));

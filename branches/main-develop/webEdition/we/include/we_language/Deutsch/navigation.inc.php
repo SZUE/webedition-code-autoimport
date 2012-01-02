@@ -1,7 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_navigation=array(
-	'accesskey'=>'Accesskey',
+	'accesskey'=>'Accesskey-Attribut',
 	'add_navigation'=>'Navigation hinzufügen',
 	'anchor'=>'Anker',
 	'and'=>'und',

@@ -6,7 +6,7 @@ $l_buttons_modules_shop=array(
 		'alt'=>'Changer au préférence du fournisseur de paiement',
 	),
 	'btn_shop_addnew'=>array(
-		'alt'=>'Create a new Article',
+		'alt'=>'Créer un nouveau article',
 	),
 	'btn_shop_delOrd'=>array(
 		'alt'=>'Supprimer une commande existante',
@@ -27,27 +27,27 @@ $l_buttons_modules_shop=array(
 		'alt'=>'Changer au sommaire d`article',
 	),
 	'payment_val'=>array(
-		'alt'=>'ouvre les préférence du fournisseur de paiement...',
-		'value'=>'Payment Provider',
+		'alt'=>'Ouvre les préférence du fournisseur de paiement...',
+		'value'=>'Système de paiement',
 		'width'=>150,
 	),
 	'pref_shop'=>array(
-		'alt'=>'ouvre les préférence de boutique...',
-		'value'=>'Preferences',
+		'alt'=>'Ouvre les préférence de boutique...',
+		'value'=>'Paramètres',
 		'width'=>150,
 	),
 	'print'=>array(
-		'alt'=>'',
-		'value'=>'Print',
+		'alt'=>'Imprimer',
+		'value'=>'Imprimer',
 		'width'=>100,
 	),
 	'quick_rev'=>array(
-		'alt'=>'ouvre l`article et la somme de rendement...',
-		'value'=>'Article / Revenue',
+		'alt'=>'Ouvre l`article et la somme de rendement...',
+		'value'=>'Article/Chiffre d`affaires',
 		'width'=>150,
 	),
 	'shop_orderlist'=>array(
-		'alt'=>'',
-		'value'=>'Order list',
+		'alt'=>'Commandes',
+		'value'=>'Commandes',
 		'width'=>100,
 ));

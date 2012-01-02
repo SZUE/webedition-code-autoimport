@@ -160,7 +160,7 @@ $l_modules_shop=array(
 	
 	'paypal'=>array(
 		'head_title'=>'Maksua prosessoidaan',
-		'name'=>'',
+		'name'=>'PayPal',
 		'redirect_auto'=>'Ole hyvä ja odota kun maksuasi prosessoidaan. Sinut ohjataan PayPaliin hetken kuluttua.',
 		'redirect_man'=>'Jos sivua ei automaattisesti ohjata eteenpäin 5 sekunnin kuluessa, klikkaa "PayPal" nappia.',
 	),

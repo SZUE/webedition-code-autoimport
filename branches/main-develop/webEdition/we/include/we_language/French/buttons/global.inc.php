@@ -9,12 +9,12 @@ $l_buttons_global=array(
 	),
 	'add'=>array(
 		'alt'=>'Ajouter',
-		'value'=>'Add',
+		'value'=>'Rajouter',
 		'width'=>100,
 	),
 	'add_languages'=>array(
 		'alt'=>'Installe un language supplémentaire pour webEdition',
-		'value'=>'Add languages',
+		'value'=>'Rajoutez des langues',
 		'width'=>175,
 	),
 	'append'=>array(
@@ -24,7 +24,7 @@ $l_buttons_global=array(
 	),
 	'apply'=>array(
 		'alt'=>'Apply',
-		'value'=>'Apply',
+		'value'=>'Accepter',
 		'width'=>100,
 	),
 	'apply_current_dimension'=>array(
@@ -44,22 +44,22 @@ $l_buttons_global=array(
 	),
 	'backup'=>array(
 		'alt'=>'Sauvegardes',
-		'value'=>'Backup',
+		'value'=>'Sauvegarde',
 		'width'=>100,
 	),
 	'back'=>array(
 		'alt'=>'Reculer',
-		'value'=>'Back',
+		'value'=>'Retour',
 		'width'=>100,
 	),
 	'back_to_login'=>array(
 		'alt'=>'De Retour au webEdition-Authentification',
-		'value'=>'Back',
+		'value'=>'Retour',
 		'width'=>100,
 	),
 	'browse'=>array(
 		'alt'=>'Fouiller des Répertoires',
-		'value'=>'Browse',
+		'value'=>'Parcourir',
 		'width'=>100,
 	),
 	'btn_add_cat'=>array(
@@ -168,7 +168,7 @@ $l_buttons_global=array(
 		'alt'=>'resend e-mail',
 	),
 	'btn_mail_send'=>array(
-		'alt'=>'send e-mail',
+		'alt'=>'Envoyez l`email',
 	),
 	'btn_messages_copy'=>array(
 		'alt'=>'Copier des Messages',
@@ -243,22 +243,22 @@ $l_buttons_global=array(
 	),
 	'change'=>array(
 		'alt'=>'Change',
-		'value'=>'Change',
+		'value'=>'Changer',
 		'width'=>100,
 	),
 	'check'=>array(
 		'alt'=>'Check',
-		'value'=>'Check',
+		'value'=>'Verifier',
 		'width'=>100,
 	),
 	'clear_log'=>array(
 		'alt'=>'Clear logbook',
-		'value'=>'Clear logbook',
-		'width'=>120,
+		'value'=>'Videz l`historique',
+		'width'=>100,
 	),
 	'close'=>array(
 		'alt'=>'Fermer le fenêtre',
-		'value'=>'Close',
+		'value'=>'Fermer',
 		'width'=>100,
 	),
 	'date_picker'=>array(
@@ -266,12 +266,12 @@ $l_buttons_global=array(
 	),
 	'default'=>array(
 		'alt'=>'default',
-		'value'=>'Default',
+		'value'=>'Standard',
 		'width'=>100,
 	),
 	'delete'=>array(
 		'alt'=>'Delete',
-		'value'=>'Delete',
+		'value'=>'Supprimer',
 		'width'=>100,
 	),
 	'delete_all'=>array(
@@ -281,7 +281,7 @@ $l_buttons_global=array(
 	),
 	'delete_backup'=>array(
 		'alt'=>'Supprimer le fichier de sauvegarde choisi',
-		'value'=>'Delete backup file',
+		'value'=>'Supprimer la sauvegarde',
 		'width'=>150,
 	),
 	'delete_doctype'=>array(
@@ -291,7 +291,7 @@ $l_buttons_global=array(
 	),
 	'demoversion'=>array(
 		'alt'=>'Version-Demo',
-		'value'=>'Demo version',
+		'value'=>'Version d`essai',
 		'width'=>100,
 	),
 	'deselectAll'=>array(
@@ -300,55 +300,55 @@ $l_buttons_global=array(
 		'width'=>110,
 	),
 	'editor'=>array(
-		'alt'=>'',
+		'alt'=>'Start Editor',
 		'value'=>'Start Editor',
 		'width'=>100,
 	),
 	'edit'=>array(
 		'alt'=>'Éditer',
-		'value'=>'Edit',
+		'value'=>'Editer',
 		'width'=>100,
 	),
 	'edit_all_thumbs'=>array(
 		'alt'=>'Editer les imagettes...',
 		'value'=>'Edit thumbnails...',
-		'width'=>150,
+		'width'=>200,
 	),
 	'export'=>array(
 		'alt'=>'Export selected files',
-		'value'=>'Export',
+		'value'=>'Exporter',
 		'width'=>100,
 	),
 	'first'=>array(
-		'alt'=>'First',
-		'value'=>'First',
+		'alt'=>'Début',
+		'value'=>'Début',
 	),
 	'go'=>array(
-		'alt'=>'',
-		'value'=>'Execute now',
+		'alt'=>'Executer maintenant',
+		'value'=>'Executer maintenant',
 		'width'=>120,
 	),
 	'iconview'=>array(
-		'alt'=>'',
+		'alt'=>'Iconview',
 		'value'=>'Iconview',
 		'width'=>100,
 	),
 	'ignore'=>array(
 		'alt'=>'Ignore',
-		'value'=>'Ignore',
+		'value'=>'Ignorer',
 		'width'=>100,
 	),
 	'import'=>array(
 		'alt'=>'Import selected file',
-		'value'=>'Import',
+		'value'=>'Importer',
 		'width'=>100,
 	),
 	'last'=>array(
-		'alt'=>'Last',
-		'value'=>'Last',
+		'alt'=>'Fin',
+		'value'=>'Fin',
 	),
 	'listview'=>array(
-		'alt'=>'',
+		'alt'=>'Listview',
 		'value'=>'Listview',
 		'width'=>100,
 	),
@@ -369,27 +369,27 @@ $l_buttons_global=array(
 	),
 	'make_new_document'=>array(
 		'alt'=>'Créer un nouveau Document',
-		'value'=>'New document',
+		'value'=>'Nouveau document',
 		'width'=>125,
 	),
 	'newName'=>array(
 		'alt'=>'Saisissez un nouveau Nom',
-		'value'=>'New name',
+		'value'=>'Nouveau nom',
 		'width'=>100,
 	),
 	'new_directory'=>array(
 		'alt'=>'Créer un nouveau Répertoire',
-		'value'=>'New directory',
+		'value'=>'Nouveau dossier',
 		'width'=>200,
 	),
 	'new_doctype'=>array(
 		'alt'=>'Créer un nouveau Type-de-Document',
-		'value'=>'New document type',
+		'value'=>'Nouveau type de document',
 		'width'=>174,
 	),
 	'new_document'=>array(
 		'alt'=>'Créer un nouveau Document',
-		'value'=>'New document',
+		'value'=>'Nouveau document',
 		'width'=>200,
 	),
 	'new_entry'=>array(
@@ -398,33 +398,33 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'new_folder'=>array(
-		'alt'=>'',
-		'value'=>'New folder',
+		'alt'=>'Nouveau dossier',
+		'value'=>'Nouveau dossier',
 		'width'=>200,
 	),
 	'new_item'=>array(
-		'alt'=>'',
+		'alt'=>'New item',
 		'value'=>'New item',
 		'width'=>200,
 	),
 	'new_service'=>array(
 		'alt'=>'Nouveau Service',
-		'value'=>'New Service',
+		'value'=>'Nouveau service',
 		'width'=>100,
 	),
 	'new_template'=>array(
 		'alt'=>'Créer une nouveau Modèle',
-		'value'=>'New template',
+		'value'=>'Nouvelle maquette',
 		'width'=>200,
 	),
 	'next'=>array(
 		'alt'=>'Avancer',
-		'value'=>'Next',
+		'value'=>'Prochain',
 		'width'=>100,
 	),
 	'no'=>array(
 		'alt'=>'Non',
-		'value'=>'No',
+		'value'=>'Non',
 		'width'=>100,
 	),
 	'ok'=>array(
@@ -439,12 +439,12 @@ $l_buttons_global=array(
 	),
 	'open'=>array(
 		'alt'=>'Open',
-		'value'=>'Open',
+		'value'=>'Ouvrir',
 		'width'=>100,
 	),
 	'open_document'=>array(
 		'alt'=>'Ouvrir un Document',
-		'value'=>'Open document',
+		'value'=>'Ouvrir document',
 		'width'=>200,
 	),
 	'overwrite'=>array(
@@ -464,28 +464,28 @@ $l_buttons_global=array(
 	),
 	'preview'=>array(
 		'alt'=>'Prévision',
-		'value'=>'Preview',
+		'value'=>'Aperçu',
 		'width'=>100,
 	),
 	'properties'=>array(
 		'alt'=>'Indiquer les préférences',
-		'value'=>'Properties',
+		'value'=>'Propriétés',
 		'width'=>100,
 	),
 	'publish'=>array(
 		'alt'=>'Save and publish the document',
-		'value'=>'Publish',
-		'width'=>100,
+		'value'=>'Publier',
+		'width'=>120,
 	),
 	'quit_delete'=>array(
 		'alt'=>'Quittter le mode-supprimer',
 		'value'=>'Finish delete mode',
-		'width'=>175,
+		'width'=>200,
 	),
 	'quit_move'=>array(
 		'alt'=>'Finish move mode',
 		'value'=>'Finish move mode',
-		'width'=>175,
+		'width'=>250,
 	),
 	'rebuild'=>array(
 		'alt'=>'Start rebuild',
@@ -494,22 +494,22 @@ $l_buttons_global=array(
 	),
 	'refresh'=>array(
 		'alt'=>'Mettre à jour',
-		'value'=>'Refresh',
+		'value'=>'Actualiser',
 		'width'=>100,
 	),
 	'reindent'=>array(
-		'alt'=>'',
+		'alt'=>'Reindent code',
 		'value'=>'Reindent code',
-		'width'=>100,
+		'width'=>130,
 	),
 	'replace'=>array(
-		'alt'=>'',
-		'value'=>'Replace',
+		'alt'=>'remplacer',
+		'value'=>'remplacer',
 		'width'=>100,
 	),
 	'reset'=>array(
-		'alt'=>'',
-		'value'=>'Reset',
+		'alt'=>'Réinitialiser',
+		'value'=>'Réinitialiser',
 		'width'=>100,
 	),
 	'restore_backup'=>array(
@@ -579,7 +579,7 @@ $l_buttons_global=array(
 	),
 	'search'=>array(
 		'alt'=>'Recherche',
-		'value'=>'Search',
+		'value'=>'Recherche',
 		'width'=>100,
 	),
 	'selectAll'=>array(
@@ -589,7 +589,7 @@ $l_buttons_global=array(
 	),
 	'select'=>array(
 		'alt'=>'Choisir',
-		'value'=>'Select',
+		'value'=>'Sélectionner',
 		'width'=>100,
 	),
 	'shopVariants'=>array(
@@ -624,6 +624,6 @@ $l_buttons_global=array(
 	),
 	'yes'=>array(
 		'alt'=>'Oui',
-		'value'=>'Yes',
+		'value'=>'Oui',
 		'width'=>100,
 ));
