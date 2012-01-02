@@ -28,8 +28,6 @@ class rpcGetSearchResultCmd extends rpcCmd {
 
 		$resp = new rpcResponse();
 
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_versions/weVersionsView.class.inc.php");
-
 		//FIXME: not needed??
 		//$we_transaction = $_REQUEST['we_cmd']['we_transaction'];
 

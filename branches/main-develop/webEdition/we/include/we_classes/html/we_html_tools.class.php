@@ -842,23 +842,21 @@ HTS;
 			$smalltext = substr($text, 0, $clip) . ' ... ';
 			$js = we_html_element::jsElement(
 					'
+		var state_' . $unique . '=0;
 			function clip_' . $unique . '(){
-					var text = document.getElementById("' . $unique . '");
+					var text = document.getElementById("td_' . $unique . '");
 					var btn = document.getElementById("btn_' . $unique . '");
 
 					if(state_' . $unique . '==0){
-						text.innerHTML = text_' . $unique . ';
+						text.innerHTML = "' . addslashes($text) . '";
 						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_down.gif\' alt=\'down\' border=\'0\'></a>";
 						state_' . $unique . '=1;
 					}else {
-						text.innerHTML = textsmall_' . $unique . ';
+						text.innerHTML = "' . addslashes($smalltext) . '";
 						btn.innerHTML = "<a href=\'javascript:clip_' . $unique . '();\'><img src=\'' . IMAGE_DIR . 'button/btn_direction_right.gif\' alt=\'right\' border=\'0\'></a>";
 						state_' . $unique . '=0;
 					}
 			}
-		var state_' . $unique . '=0;
-		var text_' . $unique . ' = "' . addslashes($text) . '";
-		var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";
 		');
 			$text = $smalltext;
 		}

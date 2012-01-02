@@ -28,7 +28,6 @@ class rpcGetMouseOverDivsCmd extends rpcCmd {
 
 		$resp = new rpcResponse();
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolView.class.php');
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/define.conf.php');
 
 
