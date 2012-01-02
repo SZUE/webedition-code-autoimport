@@ -318,17 +318,17 @@ class weCustomerFrames extends weModuleFrames {
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$tabs->addTab(new we_tab('#', g_l('modules_customer','[common]'),'TAB_NORMAL', "setTab('" . g_l('modules_customer','[common]') . "');", array("id" => "common")));
-		$extraJS .= "aTabs['" . g_l('modules_customer','[common]'). "']='common';\n";
+		$extraJS .= "aTabs['" . g_l('modules_customer','[common]'). "']='common';";
 		$branchCount = 0;
 		foreach ($branches_names as $branch) {
 			$tabs->addTab(new we_tab("#", $branch, 'TAB_NORMAL', "setTab('" . $branch . "');", array("id" => "branch_" . $branchCount)));
-			$extraJS .= "aTabs['" . $branch . "']='branch_" . $branchCount . "';\n";
+			$extraJS .= "aTabs['" . $branch . "']='branch_" . $branchCount . "';";
 			$branchCount++;
 		}
 		$tabs->addTab(new we_tab('#', g_l('modules_customer','[other]'),'TAB_NORMAL', "setTab('" . g_l('modules_customer','[other]') . "');", array("id" => "other")));
-		$extraJS .= "aTabs['" . g_l('modules_customer','[other]'). "']='other';\n";
+		$extraJS .= "aTabs['" . g_l('modules_customer','[other]'). "']='other';";
 		$tabs->addTab(new we_tab("#", g_l('modules_customer','[all]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer','[all]') . "');", array("id" => "all")));
-		$extraJS .= "aTabs['" . g_l('modules_customer','[all]'). "']='all';\n";
+		$extraJS .= "aTabs['" . g_l('modules_customer','[all]'). "']='all';";
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") ? TAB_ACTIVE : TAB_NORMAL)
 		$js = we_html_element::jsElement('
 				function setTab(tab) {
@@ -340,14 +340,14 @@ class weCustomerFrames extends weModuleFrames {
 
 		if (defined('SHOP_TABLE')) {
 			$tabs->addTab(new we_tab("#", g_l('modules_customer','[orderTab]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer','[orderTab]') . "');", array("id" => "orderTab")));
-			$extraJS .= "aTabs['" . g_l('modules_customer','[orderTab]') . "']='orderTab';\n";
+			$extraJS .= "aTabs['" . g_l('modules_customer','[orderTab]') . "']='orderTab';";
 		}
 		if (defined('OBJECT_FILES_TABLE')) {
-			$tabs->addTab(new we_tab("#", $l_customer["objectTab"], 'TAB_NORMAL', "setTab('" . $l_customer["objectTab"] . "');", array("id" => "objectTab")));
-			$extraJS .= "aTabs['" . $l_customer["objectTab"] . "']='objectTab';\n";
+			$tabs->addTab(new we_tab("#", g_l('modules_customer','[objectTab]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer','[objectTab]') . "');", array("id" => "objectTab")));
+			$extraJS .= "aTabs['" . g_l('modules_customer','[objectTab]') . "']='objectTab';\n";
 		}
-		$tabs->addTab(new we_tab("#", $l_customer["documentTab"], 'TAB_NORMAL', "setTab('" . $l_customer["documentTab"] . "');", array("id" => "documentTab")));
-		$extraJS .= "aTabs['" . $l_customer["documentTab"] . "']='documentTab';\n";
+		$tabs->addTab(new we_tab("#", g_l('modules_customer','[documentTab]'), 'TAB_NORMAL', "setTab('" . g_l('modules_customer','[documentTab]') . "');", array("id" => "documentTab")));
+		$extraJS .= "aTabs['" . g_l('modules_customer','[documentTab]') . "']='documentTab';";
 
 
 		$tabs->onResize();

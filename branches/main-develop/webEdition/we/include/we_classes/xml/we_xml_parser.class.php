@@ -923,8 +923,6 @@ class we_xml_parser{
 
 		// Check if the axis specifier exists.
 		if(!in_array($axis['axis'], array_merge($axesSpecifiers, array('method')))){
-			//$this->error_handler($l_xml_xpath['TYPE'].
-			//	$l_xml_xpath['AXIS_UNDEF'], $axis['axis'], $step);
 			return FALSE;
 		}
 
@@ -969,8 +967,6 @@ class we_xml_parser{
 
 		// Check the number of opening and closing brackets.
 		if($brackets != 0){
-			//$this->error_handler($l_xml_xpath['TYPE'].
-			//	$l_xml_xpath['BRACKET_MISMATCH'], $term);
 			return FALSE;
 		}
 
@@ -1029,8 +1025,6 @@ class we_xml_parser{
 
 				// Check if the axis method is defined.
 				if(!method_exists($this, $method)){
-					//$this->error_handler($l_xml_xpath['TYPE'].
-					//	$l_xml_xpath['AXIS_NOT_IMPL'], $axis['axis']);
 					return FALSE;
 				}
 
@@ -1232,8 +1226,6 @@ class we_xml_parser{
 				case ' div ':
 					// Return a division of the two results.
 					if($right == 0){
-						//$this->error_handler($l_xml_xpath['TYPE'].
-						//	$l_xml_xpath['DIV_BY_ZERO'], $predicate);
 						return FALSE;
 					} else{
 						// Return the result of the division.
@@ -1265,8 +1257,6 @@ class we_xml_parser{
 
 			// Check if there is text after the bracket.
 			if(!empty($after)){
-				//$this->error_handler($l_xml_xpath['TYPE'].
-				//	$l_xml_xpath['JUNK_AFTER_BRACKET'], $predicate);
 				return FALSE;
 			}
 
@@ -1278,9 +1268,6 @@ class we_xml_parser{
 				// Return the evaluated method.
 				return $this->evaluateMethod($before, $between, $node);
 			} else{
-				//$this->error_handler($l_xml_xpath['TYPE'].
-				//	$l_xml_xpath['FUNC_UNDEF_IN_EXPR'],
-				//	$before, $this->xPath);
 				return FALSE;
 			}
 		}
@@ -1430,9 +1417,6 @@ class we_xml_parser{
 					break;
 
 				default:
-					//$this->error_handler($l_xml_xpath['TYPE'].
-					//	$l_xml_xpath['FUNC_UNDEF_IN_EXPR'],
-					//	$method, $this->xpath);
 					return FALSE;
 			}
 		} else if($nodeTest == '*'){
@@ -1445,8 +1429,6 @@ class we_xml_parser{
 				return TRUE;
 			}
 		} else{
-			//$this->error_handler($l_xml_xpath['TYPE'].
-			//	$l_xml_xpath['EMPTY_NODE_TEST'], $this->xPath);
 			return FALSE;
 		}
 
