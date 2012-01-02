@@ -22,10 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class DB_WE extends we_database_base{
 
-class DB_WE extends we_database_base {
-
-	protected function _free() {
+	protected function _free(){
 		if(is_object($this->Query_ID)){
 //			print_r(debug_backtrace());
 			$this->Query_ID->free();
@@ -33,12 +32,12 @@ class DB_WE extends we_database_base {
 		$this->Query_ID = 0;
 	}
 
-	protected function _query($Query_String, $unbuffered=false) {
+	protected function _query($Query_String, $unbuffered=false){
 		$this->_free();
-		$tmp=@$this->Link_ID->query($Query_String, ($unbuffered? MYSQLI_USE_RESULT:MYSQLI_STORE_RESULT));
-		if($tmp===false){
+		$tmp = @$this->Link_ID->query($Query_String, ($unbuffered ? MYSQLI_USE_RESULT : MYSQLI_STORE_RESULT));
+		if($tmp === false){
 			return 0;
-		}else if($tmp===true){
+		} else if($tmp === true){
 			return -1; //!=0 what is tested.
 		}
 		return $tmp;
@@ -47,94 +46,112 @@ class DB_WE extends we_database_base {
 	protected function _setCharset($charset){
 		@$this->Link_ID->set_charset($charset);
 	}
-	protected function _seek($pos=0) {
-		return @$this->Query_ID->data_seek($pos);
+
+	protected function _seek($pos=0){
+		return (is_object($this->Query_ID)) && $this->Query_ID->data_seek($pos);
 	}
 
-	protected function errno() {
+	protected function errno(){
 		return $this->Link_ID->errno;
 	}
 
-	protected function error() {
+	protected function error(){
 		return $this->Link_ID->error;
 	}
 
-	protected function fetch_array($resultType) {
-		return @$this->Query_ID->fetch_array($resultType);
-	}
-
-	public function getAll($resultType){
-		return @$this->Query_ID->fetch_all($resultType);
-	}
-
-	public function affected_rows() {
-		return $this->Link_ID->mysqli_affected_rows;
-	}
-
-	public function close() {
-		if($this->Link_ID){
-			$this->Link_ID->close();
+	protected function fetch_array($resultType){
+		if(is_object($this->Query_ID)){
+			return $this->Query_ID->fetch_array($resultType);
+		} else{
+			return false;
 		}
 	}
 
-	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD) {
-		if (!$this->isConnected()) {
+	public function getAll($resultType){
+		if(is_object($this->Query_ID)){
+			return $this->Query_ID->fetch_all($resultType);
+		} else{
+			return false;
+		}
+	}
+
+	public function affected_rows(){
+		return $this->Link_ID->mysqli_affected_rows;
+	}
+
+	public function close(){
+		if($this->Link_ID){
+			$this->Link_ID->close();
+			$this->Link_ID = null;
+			$this->Query_ID = null;
+		}
+	}
+
+	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD){
+		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'mysqli_pconnect':
-					$Host='p:'.$Host;
+					$Host = 'p:' . $Host;
 				case 'mysqli_connect':
-					$this->Link_ID = new mysqli($Host,$User,$Password,$Database);
-					if (mysqli_connect_error()){
-						$this->Link_ID=0;
+					$this->Query_ID = null;
+					$this->Link_ID = new mysqli($Host, $User, $Password, $Database);
+					$this->Link_ID->real_connect();
+					if($this->Link_ID->connect_error){
+						$this->Link_ID = null;
 						$this->halt("mysqli_(p)connect($Host, $User) failed.");
 						return false;
 					}
+					break;
+					default:
+						$this->halt('Error in DB connect');
+						exit('Error in DB connect');
 			}
 		}
 		return true;
 	}
 
-	public function field_flags($no) {
-		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->flags:'');
+	public function field_flags($no){
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->flags : '');
 	}
 
-	public function field_len($no) {
-		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->length:0);
+	public function field_len($no){
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->length : 0);
 	}
 
-	public function field_name($no) {
-		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->orgname:'');
+	public function field_name($no){
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->orgname : '');
 	}
 
-	public function field_table($no) {
-		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->orgtable:'');
+	public function field_table($no){
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->orgtable : '');
 	}
 
-	public function field_type($no) {
-		return ($this->Query_ID ? $this->Query_ID->fetch_field_direct($no)->type:'');
+	public function field_type($no){
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->type : '');
 	}
 
-	public function getInsertId() {
+	public function getInsertId(){
 		return $this->Link_ID->insert_id;
 	}
 
-	public function num_fields() {
+	public function num_fields(){
 		return $this->Link_ID->field_count;
 	}
 
-	public function num_rows() {
-		return $this->Query_ID->num_rows;
+	public function num_rows(){
+		return is_object($this->Query_ID) ? $this->Query_ID->num_rows : 0;
 	}
 
 	public function getInfo(){
-		return 'type: '.DB_CONNECT.
-						'<br/>protocol: '.$this->Link_ID->protocol_version.
-						'<br/>client: '.$this->Link_ID->client_info.
-						'<br/>host: '.$this->Link_ID->host_info.
-						'<br/>server: '.$this->Link_ID->server_info;
+		return 'type: ' . DB_CONNECT .
+			'<br/>protocol: ' . $this->Link_ID->protocol_version .
+			'<br/>client: ' . $this->Link_ID->client_info .
+			'<br/>host: ' . $this->Link_ID->host_info .
+			'<br/>server: ' . $this->Link_ID->server_info;
 	}
 
-	protected function ping() {
+	protected function ping(){
 		return $this->Link_ID->ping();
 	}
+
 }

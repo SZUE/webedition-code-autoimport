@@ -23,6 +23,8 @@
  */
 /**this is the abstract super class for DB connections */
 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+
 abstract class we_database_base {
 	private $retry=false;
 	/**"yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)*/
@@ -183,7 +185,7 @@ abstract class we_database_base {
 		 */
 			return false;
 		}
-		if (!$this->connect())
+		if (!$this->isConnected() && !$this->connect())
 			return false;
 		/* we already complained in connect() about that. */
 

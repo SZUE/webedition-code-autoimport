@@ -1646,7 +1646,7 @@ function t_e($type='warning'){
 			continue;
 		}
 		if(is_array($value)||is_object($value)){
-			$data[]=print_r($value,true);
+			$data[]=@print_r($value,true);
 		}else{
 			$data[]=$value;
 		}
