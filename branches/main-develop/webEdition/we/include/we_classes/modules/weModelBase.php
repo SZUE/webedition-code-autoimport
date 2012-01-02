@@ -102,14 +102,15 @@ class weModelBase{
 		$set = implode(",", $sets);
 
 		if($this->isKeyDefined() && $this->isnew){
-			$this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
+			$ret=$this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
 			# get ID #
-			$this->ID = $this->db->getInsertId();
-			$this->isnew = false;
-			return true;
+			if($ret){
+				$this->ID = $this->db->getInsertId();
+				$this->isnew = false;
+			}
+			return $ret;
 		} else if($this->isKeyDefined()){
-			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
-			return true;
+			return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		}
 
 		return false;

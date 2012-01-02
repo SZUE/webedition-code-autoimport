@@ -119,13 +119,14 @@ class weExport extends weModelBase{
 		$this->table = $this->db->escape($this->table);
 		if(!$this->ID || $force_new){
 
-			$this->db->query('REPLACE INTO ' . $this->table . ' SET ' . $set);
+			$ret=$this->db->query('REPLACE INTO ' . $this->table . ' SET ' . $set);
+			if($ret){
 			# get ID #
-			$this->ID = $this->db->getInsertId();
-			return true;
+				$this->ID = $this->db->getInsertId();
+			}
+			return $ret;
 		} else{
-			$this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
-			return true;
+			return $this->db->query('UPDATE ' . $this->table . ' SET ' . $set . ' WHERE ' . $where);
 		}
 
 		return false;
