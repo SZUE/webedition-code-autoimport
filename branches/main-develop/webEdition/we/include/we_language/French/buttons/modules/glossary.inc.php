@@ -13,8 +13,8 @@ $l_buttons_modules_glossary=array(
 		'width'=>100,
 	),
 	'new_entry'=>array(
-		'alt'=>'create a new entry ...',
-		'value'=>'new entry',
+		'alt'=>'Créer une nouvelle entrée ...',
+		'value'=>'Nouvelle entrée',
 		'width'=>100,
 	),
 	'new_glossary_abbreviation'=>array(
