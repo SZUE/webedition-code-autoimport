@@ -120,11 +120,11 @@ class DB_WE extends we_database_base{
 	}
 
 	public function field_name($no){
-		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->orgname : '');
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->name : '');
 	}
 
 	public function field_table($no){
-		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->orgtable : '');
+		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->table : '');
 	}
 
 	public function field_type($no){
