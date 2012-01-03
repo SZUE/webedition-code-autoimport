@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,69 +21,65 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::htmlTop();
 if($_SESSION["user"]["ID"]){
-	$DB_WE->query("UPDATE ".USER_TABLE." SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=".$_SESSION["user"]["ID"]);
-	$DB_WE->query('UPDATE '.LOCK_TABLE.' SET lockTime=DATE_ADD( NOW( ) , INTERVAL '.(PING_TIME+PING_TOLERANZ).' SECOND) WHERE UserID='.intval($_SESSION["user"]["ID"]).' AND sessionID="'.session_id().'"');
+	$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
+	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=DATE_ADD( NOW( ) , INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND) WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 }
 
-echo we_html_element::jsScript('/webEdition/js/libs/yui/yahoo-min.js').
-	we_html_element::jsScript('/webEdition/js/libs/yui/event-min.js').
-	we_html_element::jsScript('/webEdition/js/libs/yui/connection-min.js');
+echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 ?>
-
 <script  type="text/javascript">
-<!--
+	<!--
 
-var ajaxURL = "/webEdition/rpc/rpc.php";
-var weRpcFailedCnt = 0;
-var ajaxCallback = {
-	success: function(o) {
-		if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
-			eval("var result=" + o.responseText);
-			if (result.Success) {
-				var num_users = result.DataArray.num_users;
-				weRpcFailedCnt = 0;
-				if (top.weEditorFrameController) {
-					var _ref = top.weEditorFrameController.getActiveDocumentReference();
-					if (_ref && _ref.setUsersOnline && _ref.setUsersListOnline) {
-						_ref.setUsersOnline(num_users);
-						var usersHTML = result.DataArray.users;
-						if (usersHTML) {
-							_ref.setUsersListOnline(usersHTML);
+	var ajaxURL = "/webEdition/rpc/rpc.php";
+	var weRpcFailedCnt = 0;
+	var ajaxCallback = {
+		success: function(o) {
+			if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
+				eval("var result=" + o.responseText);
+				if (result.Success) {
+					var num_users = result.DataArray.num_users;
+					weRpcFailedCnt = 0;
+					if (top.weEditorFrameController) {
+						var _ref = top.weEditorFrameController.getActiveDocumentReference();
+						if (_ref && _ref.setUsersOnline && _ref.setUsersListOnline) {
+							_ref.setUsersOnline(num_users);
+							var usersHTML = result.DataArray.users;
+							if (usersHTML) {
+								_ref.setUsersListOnline(usersHTML);
+							}
+						}
+					}
+<?php if(defined("MESSAGING_SYSTEM")){ ?>
+									if (top.header_msg.update) {
+										var newmsg_count = result.DataArray.newmsg_count;
+										var newtodo_count = result.DataArray.newtodo_count;
+
+										top.header_msg.update(newmsg_count, newtodo_count);
+									}
+
+<?php } ?>
+							}
+						}
+					},
+					failure: function(o) {
+						if(weRpcFailedCnt++ > 5){
+							//in this case, rpc failed 5 times, this is severe, user should be in informed!
+							alert("<?php echo g_l('global', "[unable_to_call_ping]"); ?>");
 						}
 					}
 				}
-			<?php if (defined("MESSAGING_SYSTEM")) { ?>
-				if (top.header_msg.update) {
-					var newmsg_count = result.DataArray.newmsg_count;
-					var newtodo_count = result.DataArray.newtodo_count;
 
-					top.header_msg.update(newmsg_count, newtodo_count);
+				function YUIdoAjax() {
+					YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
+					setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
 				}
-
-			<?php } ?>
-			}
-		}
-	},
-	failure: function(o) {
-		if(weRpcFailedCnt++ > 5){
-			//in this case, rpc failed 5 times, this is severe, user should be in informed!
-			alert("<?php echo g_l('global',"[unable_to_call_ping]");?>");
-		}
-	}
-}
-
-function YUIdoAjax() {
-	YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
-	setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-}
-//-->
+				//-->
 </script>
 </head>
 <body bgcolor="white" onload="YUIdoAjax();">
