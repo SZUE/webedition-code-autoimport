@@ -39,17 +39,17 @@ echo we_html_element::jsScript('/webEdition/js/libs/yui/yahoo-min.js').
 ?>
 
 <script  type="text/javascript">
-
-
-
+<!--
 
 var ajaxURL = "/webEdition/rpc/rpc.php";
+var weRpcFailedCnt = 0;
 var ajaxCallback = {
 	success: function(o) {
 		if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
 			eval("var result=" + o.responseText);
 			if (result.Success) {
 				var num_users = result.DataArray.num_users;
+				weRpcFailedCnt = 0;
 				if (top.weEditorFrameController) {
 					var _ref = top.weEditorFrameController.getActiveDocumentReference();
 					if (_ref && _ref.setUsersOnline && _ref.setUsersListOnline) {
@@ -69,25 +69,24 @@ var ajaxCallback = {
 				}
 
 			<?php } ?>
-				setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-
 			}
 		}
 	},
 	failure: function(o) {
-		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-		//silently ignore this - an alert message might stop the js interpreter, if the user doesn't react'
-		//alert("<?php echo g_l('global',"[unable_to_call_ping]");?>");
+		if(weRpcFailedCnt++ > 5){
+			//in this case, rpc failed 5 times, this is severe, user should be in informed!
+			alert("<?php echo g_l('global',"[unable_to_call_ping]");?>");
+		}
 	}
 }
 
 function YUIdoAjax() {
 	YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
+	setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
 }
-
-//setTimeout("self.location='we_users_ping.php?r=<?php print rand() ?>'",<?php print PING_TIME ?>*1000);
+//-->
 </script>
 </head>
-<body bgcolor="white" onLoad="YUIdoAjax();">
+<body bgcolor="white" onload="YUIdoAjax();">
 </body>
 </html>
