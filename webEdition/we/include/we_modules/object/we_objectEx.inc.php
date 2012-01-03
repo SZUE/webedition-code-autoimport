@@ -192,6 +192,7 @@
 				case "binary":
 				case "object":
 				case "date":
+				case "checkbox":
 				case "int":
 					return  "int";
 				case "text":
@@ -221,6 +222,8 @@
 				case "quicktime":
 				case "binary":
 					return  " INT(11) DEFAULT '0' NOT NULL ";
+				case "checkbox":
+					return " INT(1) DEFAULT '0' NOT NULL";
 				case "int":
 					return " INT(".(($len>0  && ($len < 256))?$len:"11").") DEFAULT NULL ";
 				case "float":
