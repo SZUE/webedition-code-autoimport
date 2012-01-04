@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'There is no open document.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'You are not allowed to create new objects!<br>Either you have no permission or there is no class where one of your workspaces is valid!',
+		'objectFile'=>'You are not allowed to create new objects!<br/>Either you have no permission or there is no class where one of your workspaces is valid!',
 	),
 	'noResourceTitle'=>'No Item!',
 	'noResource'=>'The document or directory does not exist!',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'You have not activated cookies. Please activate cookies in your browser!',
 	'no_file_selected'=>'No file has been choosen for upload!',
 	'no_image'=>'The file you have selected is not an image!',
-	'no_perms'=>'Please contact the owner (%s) or an administrator<br>if you need access!',
+	'no_perms'=>'Please contact the owner (%s) or an administrator<br/>if you need access!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Permission denied!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
@@ -135,20 +135,20 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'The highlighted fields contain invalid data.\nPlease enter valid data.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'The document has been changed.<BR> Would you like to save your changes?',
+		'exit_doc_question'=>'The document has been changed.<br/> Would you like to save your changes?',
 		'in_wf_warning'=>'The document has to be saved before it can be put in the workflow!\nDo you want to save the document right now?',
 		'not_im_ws'=>'The file is not located inside your workspace!',
 	),
 	'tblObjectFiles'=>array(
-		'exit_doc_question'=>'The object has been changed.<BR> Would you like to save your changes?',
+		'exit_doc_question'=>'The object has been changed.<br/> Would you like to save your changes?',
 		'in_wf_warning'=>'The object has to be saved before it can be put in the workflow!\nDo you want to save the document right now?',
 	),
 	'tblObject'=>array(
-		'exit_doc_question'=>'The class has been changed.<BR> Would you like to save your changes?',
+		'exit_doc_question'=>'The class has been changed.<br/> Would you like to save your changes?',
 		'in_wf_warning'=>'The class has to be saved before it can be put in the workflow!\nDo you want to save the class right now?',
 	),
 	'tblTemplates'=>array(
-		'exit_doc_question'=>'The template has been changed.<BR> Would you like to save your changes?',
+		'exit_doc_question'=>'The template has been changed.<br/> Would you like to save your changes?',
 		'in_wf_warning'=>'The template has to be saved before it can be put in the workflow!\nDo you want to save the template right now?',
 		'not_im_ws'=>'The template is not located inside your workspace!',
 	),

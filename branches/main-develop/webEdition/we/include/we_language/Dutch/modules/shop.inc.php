@@ -145,7 +145,7 @@ $l_modules_shop=array(
 		'open_customer'=>'Open deze klant in de klanten beheer module.',
 	),
 	'order_comments'=>'Verder commentaar op deze order',
-	'order_data'=>'Bestel- en<br>Gebruikersdetails',
+	'order_data'=>'Bestel- en<br/>Gebruikersdetails',
 	'order_liste'=>'Alle orders van alle klanten:',
 	'order_view'=>'Order summary',
 	'pageMod'=>'Velden per pagina',

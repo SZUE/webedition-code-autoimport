@@ -30,5 +30,5 @@ $l_SEEM=array(
 	'start_mode_seem'=>'SEE-Mode',
 	'start_with_SEEM_no_startdocument'=>'Sie haben nicht die erforderlichen Rechte, das Cockpit zu öffnen. Ihr Administrator kann Ihnen in den Einstellungen stattdessen ein Startdokument zuteilen.',
 	'try_doc_again'=>'Nocheinmal versuchen.',
-	'workspace_seem_startdocument'=>'Startdokument<br>für seeMode',
+	'workspace_seem_startdocument'=>'Startdokument<br/>für seeMode',
 );

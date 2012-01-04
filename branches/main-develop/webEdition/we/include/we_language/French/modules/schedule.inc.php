@@ -10,7 +10,7 @@ $l_modules_schedule=array(
 	'doctypeAll'=>'Adopter les valeurs standards',
 	'doctype'=>'Type de Document',
 	'from'=>'De',
-	'headline'=>'Automatic<br>publishing',
+	'headline'=>'Automatic<br/>publishing',
 	'minutes'=>'Minutes',
 	'months'=>'Mois',
 	

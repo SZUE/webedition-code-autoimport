@@ -145,7 +145,7 @@ $l_modules_shop=array(
 		'open_customer'=>'Abrir este cliente en el Módulo de Administración de Clientes.',
 	),
 	'order_comments'=>'Comentarios adicionales para esta orden',
-	'order_data'=>'Orden y<br>data de usuario',
+	'order_data'=>'Orden y<br/>data de usuario',
 	'order_liste'=>'Todas las ordenes del cliente',
 	'order_view'=>'Order summary',
 	'pageMod'=>'Registros por Página',

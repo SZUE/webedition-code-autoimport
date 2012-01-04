@@ -31,5 +31,5 @@ $l_SEEM=array(
 	'start_with_SEEM_no_startdocument'=>'Er is geen geldig start document toegekend.
 Uw Administrator moet uw start document aangeven.',
 	'try_doc_again'=>'Probeer opnieuw',
-	'workspace_seem_startdocument'=>'Start document<br>voor seeModus',
+	'workspace_seem_startdocument'=>'Start document<br/>voor seeModus',
 );

@@ -31,5 +31,5 @@ $l_SEEM=array(
 	'start_with_SEEM_no_startdocument'=>'Ningún documento de inicio válido ha sido asignado.
 Su Administrador debe ajustar su documento de inicio.',
 	'try_doc_again'=>'Intentelo nuevamente',
-	'workspace_seem_startdocument'=>'Documento inicio<br>para seeMode',
+	'workspace_seem_startdocument'=>'Documento inicio<br/>para seeMode',
 );

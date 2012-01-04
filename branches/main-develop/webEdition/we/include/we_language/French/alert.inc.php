@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'Pas de document ouvert.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'Vous ne pouvez pas créer des nouveaux objects, parce que ou vous n`avez pas les droits nécessaires<br>ou parce qu`il n`y a aucune classe qui est valide dans un de votre éspaces de travail!',
+		'objectFile'=>'Vous ne pouvez pas créer des nouveaux objects, parce que ou vous n`avez pas les droits nécessaires<br/>ou parce qu`il n`y a aucune classe qui est valide dans un de votre éspaces de travail!',
 	),
 	'noResourceTitle'=>'Pas de document resp. dossier !',
 	'noResource'=>'Le document resp. dossier n`existe pas !',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'Vous n`avez pas activé les cookies. S`il vous plaît activez les cookies dans votre navigateur, pour que webEdition puisse fonctionner!',
 	'no_file_selected'=>'Vous n`avez choisi aucun fichier à télécharger!',
 	'no_image'=>'Le fichier choisi n`est pas une graphique!',
-	'no_perms'=>'S`il vous plaît contacter le propriétaire (%s)<br>ou l`administrateur, si vous nécessiter accès!',
+	'no_perms'=>'S`il vous plaît contacter le propriétaire (%s)<br/>ou l`administrateur, si vous nécessiter accès!',
 	'no_perms_action'=>'Vous n`avez pas le droit nécessaires pour effectuer cette action.',
 	'no_perms_title'=>'Non authorisé',
 	'no_perm_to_delete_single_document'=>'Vous n`avez pas les droits nécessaires, pour supprimer le document actif.',
@@ -135,20 +135,20 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'The highlighted fields contain invalid data.\nPlease enter valid data.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'Le document a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?',
+		'exit_doc_question'=>'Le document a été modifié.<br/>Souhaitez-vous enregistrer les modifications apportées?',
 		'in_wf_warning'=>'Avant que le document puisse être passé dans le Gestion de Flux, il doit être enregistré!\nEnregistrer le document maintenant?',
 		'not_im_ws'=>'Le fichier n`est pas dans votre éspace de travail!',
 	),
 	'tblObjectFiles'=>array(
-		'exit_doc_question'=>'L`object a été modifié.<br>Souhaitez-vous enregistrer les modifications',
+		'exit_doc_question'=>'L`object a été modifié.<br/>Souhaitez-vous enregistrer les modifications',
 		'in_wf_warning'=>'Avant que l`object puisse être passé dans le Gestion de Flux, il doit être enregistré!\nEnregistrer l`object maintenant?',
 	),
 	'tblObject'=>array(
-		'exit_doc_question'=>'La classe a été modifiée.<br>Souhaitez-vous enregistrer les modifications apportées?',
+		'exit_doc_question'=>'La classe a été modifiée.<br/>Souhaitez-vous enregistrer les modifications apportées?',
 		'in_wf_warning'=>'Avant que la classe puisse être passée dans le Gestion de Flux, elle doit être enregistrée!\nEnregistrer la classe maintenant',
 	),
 	'tblTemplates'=>array(
-		'exit_doc_question'=>'Le modèle a été modifié.<br>Souhaitez-vous enregistrer les modifications apportées?',
+		'exit_doc_question'=>'Le modèle a été modifié.<br/>Souhaitez-vous enregistrer les modifications apportées?',
 		'in_wf_warning'=>'Avant que le modèle puisse être passé dans le Gestion de Flux, il doit être enregistré!\nEnregistrer le modèle maintenant?',
 		'not_im_ws'=>'Le modèle n`est pas dans votre éspace de travail!',
 	),

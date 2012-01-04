@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'Er is geen geopend document.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'U mag geen nieuwe objecten aanmaken!<br>Of u heeft niet de juiste rechten of er is geen classe waar één van uw werkgebieden geldig is!',
+		'objectFile'=>'U mag geen nieuwe objecten aanmaken!<br/>Of u heeft niet de juiste rechten of er is geen classe waar één van uw werkgebieden geldig is!',
 	),
 	'noResourceTitle'=>'No Item!',
 	'noResource'=>'The document or directory does not exist!',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'U heeft geen cookies geactiveerd. Activeer a.u.b. de cookies in uw browser!',
 	'no_file_selected'=>'Er is geen bestand gekozen voor upload!',
 	'no_image'=>'Het bestand dat u hebt geselecteerd is geen afbeelding!',
-	'no_perms'=>'Neem a.u.b. contact op met de eigenaar (%s) of een admin<br>als u toegang nodig hebt!',
+	'no_perms'=>'Neem a.u.b. contact op met de eigenaar (%s) of een admin<br/>als u toegang nodig hebt!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Geen toestemming!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
@@ -135,20 +135,20 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'De uitgelichte velden bevatten ongeldige data.\nVoer a.u.b. geldige data in.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'Het document is gewijzigd.<BR> Wilt u de wijzigingen bewaren?',
+		'exit_doc_question'=>'Het document is gewijzigd.<br/> Wilt u de wijzigingen bewaren?',
 		'in_wf_warning'=>'Het document moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\nWilt u het document nu bewaren?',
 		'not_im_ws'=>'Het bestand bevindt zich niet in uw werkgebied!',
 	),
 	'tblObjectFiles'=>array(
-		'exit_doc_question'=>'Het object is gewijzigd.<BR> Wilt u de wijzigingen bewaren?',
+		'exit_doc_question'=>'Het object is gewijzigd.<br/> Wilt u de wijzigingen bewaren?',
 		'in_wf_warning'=>'Het object moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\nWilt u het object nu bewaren?',
 	),
 	'tblObject'=>array(
-		'exit_doc_question'=>'De classe is gewijzigd.<BR> Wilt u de wijzigingen bewaren?',
+		'exit_doc_question'=>'De classe is gewijzigd.<br/> Wilt u de wijzigingen bewaren?',
 		'in_wf_warning'=>'De class moet eerst bewaard worden voordat deze in de workflow geplaatst kan worden!\nWilt u de class nu bewaren?',
 	),
 	'tblTemplates'=>array(
-		'exit_doc_question'=>'Het sjabloon is gewijzigd.<BR> Wilt u de wijzigingen bewaren?',
+		'exit_doc_question'=>'Het sjabloon is gewijzigd.<br/> Wilt u de wijzigingen bewaren?',
 		'in_wf_warning'=>'Het sjabloon moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\nWilt u het sjabloon nu bewaren?',
 		'not_im_ws'=>'Het sjabloon bevindt zich niet in uw werkgebied!',
 	),

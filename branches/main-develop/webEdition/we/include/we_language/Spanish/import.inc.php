@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Campos de conjuntos de datos',
 	'record_field'=>'Campo de conjunto de datos',
 	'remark_csv'=>'Ud es capaz de importar archivos CSV (Valores Separados por Comas) o modificar formatos de texto  (por ejemplo *.txt). El delimitador de campo (por ejemplo , ; tabulador, área) y el delimitador de texto (= el cual encapsula las entradas de texto) pueden ser preajustados en la importación de estos formatos de archivo.',
-	'remark_xml'=>'Para evitar la pausa predefinida de un PHP-script, seleccione la opción "Importar conjuntos de datos separadamente", para importar archvios extensos.<br>Si Ud está inseguro de si el archivo seleccionado es un XML de webEdition o no, el archivo puede ser comprobado por validez y sintaxis.',
+	'remark_xml'=>'Para evitar la pausa predefinida de un PHP-script, seleccione la opción "Importar conjuntos de datos separadamente", para importar archvios extensos.<br/>Si Ud está inseguro de si el archivo seleccionado es un XML de webEdition o no, el archivo puede ser comprobado por validez y sintaxis.',
 	'rename'=>'Renombrar',
 	'rename_txt'=>'Asignar un nombre único al archivo nuevo. Todos los vínculos serán ajustados al nuevo nombre de archivo.',
 	'replace'=>'Reemplazar',

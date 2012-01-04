@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'There is no open document.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!',
+		'objectFile'=>'Nie możesz stworzyć obiektów, gdyż albo brakuje ci uprawnień<br/>albo nie istnieje klasa, w której ważny jest jeden z Twoich obszarów pracy!',
 	),
 	'noResourceTitle'=>'No Item!',
 	'noResource'=>'The document or directory does not exist!',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'Nie aktywowano Cookies. Aktywuj Cookies w swojej przeglądarce, żeby program webEdition zadziałał prawidłowo!',
 	'no_file_selected'=>'Nie wybrano plików do załadowania!',
 	'no_image'=>'Wybrany plik nie jest obrazkiem!',
-	'no_perms'=>'Jeżeli potrzebujesz praw dostępu, zwróć się do właściciela (%s)<br>lub administratora!',
+	'no_perms'=>'Jeżeli potrzebujesz praw dostępu, zwróć się do właściciela (%s)<br/>lub administratora!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Brak uprawnień',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
@@ -135,20 +135,20 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'The highlighted fields contain invalid data.\nPlease enter valid data.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'Dokument został zmieniony.<br>Czy zapisać zmiany?',
+		'exit_doc_question'=>'Dokument został zmieniony.<br/>Czy zapisać zmiany?',
 		'in_wf_warning'=>'Przed dołączeniem dokumentu do Workflow, należy go zapisać!\nCzy zapisać dokument?',
 		'not_im_ws'=>'Plik nie znajduje się w twoim obszarze roboczym!',
 	),
 	'tblObjectFiles'=>array(
-		'exit_doc_question'=>'Obiekt został zmieniony.<br>Zapisać zmiany?',
+		'exit_doc_question'=>'Obiekt został zmieniony.<br/>Zapisać zmiany?',
 		'in_wf_warning'=>'Przed dołączeniem obiektu do Workflow, należy go zapisać!\nCzy zapisać teraz dokument?',
 	),
 	'tblObject'=>array(
-		'exit_doc_question'=>'Klasa została zmieniona.<br>Zapisać zmiany?',
+		'exit_doc_question'=>'Klasa została zmieniona.<br/>Zapisać zmiany?',
 		'in_wf_warning'=>'Przed dołączeniem klasy do Workflow, należy ją zapisać!\nCzy zapisać teraz klasę?',
 	),
 	'tblTemplates'=>array(
-		'exit_doc_question'=>'Szablon został zmieniony.<br>Zapisać zmiany?',
+		'exit_doc_question'=>'Szablon został zmieniony.<br/>Zapisać zmiany?',
 		'in_wf_warning'=>'Przed dołączeniem szablonu do Workflow, należy go zapisać!\nCzy zapisać teraz szablon?',
 		'not_im_ws'=>'Szablon nie znajduje się w twoim obszarze roboczym!',
 	),

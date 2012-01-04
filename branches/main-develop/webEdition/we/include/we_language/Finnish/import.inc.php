@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Tietueen kentät',
 	'record_field'=>'Tietuekenttä',
 	'remark_csv'=>'Voit tuoda CSV (Comma Separated Values) tiedostoja ja mukautettuja tekstitiedostoja (esim. *.txt). Kenttien erottimet (esim. , ; tab, space) ja tekstin rajoitusmerkki (= joka sulkee tekstisyötteet) voivat olla mukana näissä tiedostomuodoissa.',
-	'remark_xml'=>'Tuodessasi isoja tiedostoja valitse valitse vaihtoehto "Tuo tietueet erillisinä" välttääksesi ennaltamääritellyn PHP-skriptien aikakatkaisun.<br>Jos olet epävarma siitä onko tiedosto webEdition XML-formaatin mukainen, sen muoto ja syntaksi voidaan testata.',
+	'remark_xml'=>'Tuodessasi isoja tiedostoja valitse valitse vaihtoehto "Tuo tietueet erillisinä" välttääksesi ennaltamääritellyn PHP-skriptien aikakatkaisun.<br/>Jos olet epävarma siitä onko tiedosto webEdition XML-formaatin mukainen, sen muoto ja syntaksi voidaan testata.',
 	'rename'=>'Uudelleennimeä',
 	'rename_txt'=>'Luo yksilöllinen nimi uudelle tiedostolle. Kaikki linkitykset asetetaan uudelle tiedostolle.',
 	'replace'=>'Korvaa',

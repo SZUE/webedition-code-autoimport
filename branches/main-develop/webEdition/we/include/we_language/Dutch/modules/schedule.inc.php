@@ -10,7 +10,7 @@ $l_modules_schedule=array(
 	'doctypeAll'=>'Gebruik standaard waardes',
 	'doctype'=>'Document type',
 	'from'=>'Van',
-	'headline'=>'Automatische<br>publicatie',
+	'headline'=>'Automatische<br/>publicatie',
 	'minutes'=>'Minuten',
 	'months'=>'Maanden',
 	

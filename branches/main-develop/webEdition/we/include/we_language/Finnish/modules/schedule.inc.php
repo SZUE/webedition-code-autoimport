@@ -10,7 +10,7 @@ $l_modules_schedule=array(
 	'doctypeAll'=>'Käytä oletusarvoja',
 	'doctype'=>'Dokumenttityyppi',
 	'from'=>'Mistä',
-	'headline'=>'Automaattinen<br>julkaisu',
+	'headline'=>'Automaattinen<br/>julkaisu',
 	'minutes'=>'Minuutit',
 	'months'=>'Kuukaudet',
 	

@@ -8,7 +8,7 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Banner',
 	),
 	'customer'=>array(
-		'not_installed'=>'Sorry, but you have not yet installed the webEdition Customer Management. The Customer Management enables you to manage external users, to provide special information just for registered users and to establish closed user groups.(period)<br>You will find the module itself and more information under: %s',
+		'not_installed'=>'Sorry, but you have not yet installed the webEdition Customer Management. The Customer Management enables you to manage external users, to provide special information just for registered users and to establish closed user groups.(period)<br/>You will find the module itself and more information under: %s',
 		'text'=>'Customer Management',
 		'text_short'=>'Customer',
 	),
@@ -43,12 +43,12 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Objects',
 	),
 	'schedule'=>array(
-		'not_installed'=>'Sorry, but you have not yet installed the webEdition Scheduler. The Scheduler enables you to publish and unpublish information on pre-defined dates.<br>You will find the module itself and more information under: %s',
+		'not_installed'=>'Sorry, but you have not yet installed the webEdition Scheduler. The Scheduler enables you to publish and unpublish information on pre-defined dates.<br/>You will find the module itself and more information under: %s',
 		'text'=>'Scheduler',
 		'text_short'=>'Scheduler',
 	),
 	'shop'=>array(
-		'not_installed'=>'Sorry, but you have not yet installed the webEdition Shop Module. The Shop Module enables you to set up your own shop(hyhen deleted) system within webEdition using we:tags.<br>You will find the module itself and more information under: %s',
+		'not_installed'=>'Sorry, but you have not yet installed the webEdition Shop Module. The Shop Module enables you to set up your own shop(hyhen deleted) system within webEdition using we:tags.<br/>You will find the module itself and more information under: %s',
 		'text'=>'Shop Module',
 		'text_short'=>'Shop',
 	),
@@ -58,7 +58,7 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Spell Checker',
 	),
 	'users'=>array(
-		'not_installed'=>'Sorry, but you have not yet installed the webEdition User Management. The User Management enables you to provide webEdition editors with permissions and their own workspaces.<br>You will find the module itself and more information under: %s',
+		'not_installed'=>'Sorry, but you have not yet installed the webEdition User Management. The User Management enables you to provide webEdition editors with permissions and their own workspaces.<br/>You will find the module itself and more information under: %s',
 		'text'=>'User Management',
 		'text_short'=>'User',
 	),

@@ -5,7 +5,7 @@ $l_metadata=array(
 	'dummy'=>'Platzhalter',
 	'error_meta_field_empty_msg'=>'Der Feldname der %s1. Zeile darf nicht leer sein!',
 	'fields'=>'Felder',
-	'fields_hint'=>'Definieren Sie hier zusätzliche Felder für Metadaten. In der Originaldatei bereits hinterlegte Daten (Exif, IPTC) können beim Import automatisch übernommen werden. Geben Sie dazu ein oder mehrere einzulesende Felder im Eingabefeld "importiere von" im Format "[Typ]/[Feldname]" an. Beispiel: "exif/copyright,iptc/copyright". Mehrere Felder können kommasepariert angegeben werden. Der Import durchsucht alle angegebenen Felder bis zum ersten mit Daten gefüllten Feld.<br><br>Weitere Informationen zum Exif-Standard finden Sie auf der <a target="_blank" href="http://www.exif.org">Exif Homepage</a>. Informationen über IPTC finden Sie auf der <a target="_blank" href="http://www.iptc.org/IIM">IPTC homepage</a>.',
+	'fields_hint'=>'Definieren Sie hier zusätzliche Felder für Metadaten. In der Originaldatei bereits hinterlegte Daten (Exif, IPTC) können beim Import automatisch übernommen werden. Geben Sie dazu ein oder mehrere einzulesende Felder im Eingabefeld "importiere von" im Format "[Typ]/[Feldname]" an. Beispiel: "exif/copyright,iptc/copyright". Mehrere Felder können kommasepariert angegeben werden. Der Import durchsucht alle angegebenen Felder bis zum ersten mit Daten gefüllten Feld.<br/><br/>Weitere Informationen zum Exif-Standard finden Sie auf der <a target="_blank" href="http://www.exif.org">Exif Homepage</a>. Informationen über IPTC finden Sie auf der <a target="_blank" href="http://www.iptc.org/IIM">IPTC homepage</a>.',
 	'filesize'=>'Dateigröße',
 	'filetype'=>'Dateityp',
 	'file_size_0'=>'Die Dateigröße ist 0 Byte, bitte laden Sie vor dem Speichern ein Dokument auf den Server',

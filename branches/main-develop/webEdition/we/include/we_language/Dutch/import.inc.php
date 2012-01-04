@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Dataset velden',
 	'record_field'=>'Dataset veld',
 	'remark_csv'=>'U heeft de mogelijkheid om CSV bestanden (Comma Seperated Values) of aangepaste tekst formaten (e. g. *.txt) te importeren. Het afbakenen van velden (bijv. , ; tab, spatie) en tekst (= welke de tekst invoer kort samenvat) kan vooraf ingesteld worden bij het importeren van deze bestands formaten.',
-	'remark_xml'=>'Om de vooraf bepaalde timeout van een PHP-script te omzeilen, selecteer de optie "Importeer data-sets afzonderlijk", bij het importeren van grote bestanden.<br>Als u niet zeker weet of het geselecteerde bestand webEdition XML is of niet, kunt u het bestand testen voor validiteit en syntax.',
+	'remark_xml'=>'Om de vooraf bepaalde timeout van een PHP-script te omzeilen, selecteer de optie "Importeer data-sets afzonderlijk", bij het importeren van grote bestanden.<br/>Als u niet zeker weet of het geselecteerde bestand webEdition XML is of niet, kunt u het bestand testen voor validiteit en syntax.',
 	'rename'=>'Hernoem',
 	'rename_txt'=>'Ken een unieke naam toe aan het nieuwe bestand. Alle koppelingen worden aangepast aan de nieuwe bestands naam.',
 	'replace'=>'Vervang',

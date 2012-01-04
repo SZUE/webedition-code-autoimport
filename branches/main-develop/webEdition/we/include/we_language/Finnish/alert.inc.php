@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'Dokumentteja ei ole auki.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'Sinulla ei ole oikeuksia luoda objekteja!<br>Sinulla ei ole joko oikeuksia tai Sellaista luokkaa ei ole olemassa jossa työtilasi olisi oikea!',
+		'objectFile'=>'Sinulla ei ole oikeuksia luoda objekteja!<br/>Sinulla ei ole joko oikeuksia tai Sellaista luokkaa ei ole olemassa jossa työtilasi olisi oikea!',
 	),
 	'noResourceTitle'=>'Kohdetta ei löydy!',
 	'noResource'=>'Tiedosto tai hakemisto ei ole olemassa!',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'Et ole aktivoinut keksejä. Aktivoi keksit selaimestasi!',
 	'no_file_selected'=>'Tuontitiedostoa ei ole valittu!',
 	'no_image'=>'Valitsemasi tiedosto ei ole kuva!',
-	'no_perms'=>'Ota yhteyttä omistajaan (%s) tai järjestelmänvalvojaan<br>jos tarvitset oikeuksia!',
+	'no_perms'=>'Ota yhteyttä omistajaan (%s) tai järjestelmänvalvojaan<br/>jos tarvitset oikeuksia!',
 	'no_perms_action'=>'Sinulla ei ole oikeuksia suorittaa tätä toimintoa.',
 	'no_perms_title'=>'Pääsy estetty!',
 	'no_perm_to_delete_single_document'=>'Sinulla ei ole tarvittavia oikeuksia dokumentin poistoon.',
@@ -135,20 +135,20 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'Korostetut kentät sisältävät virheellisiä syötteitä.\nOle hyvä ja syötä kelvollista dataa.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'Dokumenttia on muutettu.<br>Haluatko tallentaa muutokset?',
+		'exit_doc_question'=>'Dokumenttia on muutettu.<br/>Haluatko tallentaa muutokset?',
 		'in_wf_warning'=>'Dokumentti täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\nHaluatko tallentaa dokumentin?',
 		'not_im_ws'=>'Tiedosto ei sijaitse työtilassasi!',
 	),
 	'tblObjectFiles'=>array(
-		'exit_doc_question'=>'Objektia on muutettu.<br>Haluatko tallentaa muutokset?',
+		'exit_doc_question'=>'Objektia on muutettu.<br/>Haluatko tallentaa muutokset?',
 		'in_wf_warning'=>'Dokumentti täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\nHaluatko tallentaa dokumentin?',
 	),
 	'tblObject'=>array(
-		'exit_doc_question'=>'Luokkaa on muutettu.<BR>Haluatko tallentaa muutokset?',
+		'exit_doc_question'=>'Luokkaa on muutettu.<br/>Haluatko tallentaa muutokset?',
 		'in_wf_warning'=>'Luokka täytyy tallentaa ennenkuin se voidaan asettaa työnkulkuun!\nHaluatko tallentaa luokan?',
 	),
 	'tblTemplates'=>array(
-		'exit_doc_question'=>'Sivupohjaa on muutettu.<br>Haluatko tallentaa muutokset?',
+		'exit_doc_question'=>'Sivupohjaa on muutettu.<br/>Haluatko tallentaa muutokset?',
 		'in_wf_warning'=>'Sivupohja täytyy tallentaa ennekuin se voidaan asettaa työnkulkuun!\nHaluatko tallentaa sivupohjan?',
 		'not_im_ws'=>'Sivupohja ei sijaitse työtilassasi!',
 	),

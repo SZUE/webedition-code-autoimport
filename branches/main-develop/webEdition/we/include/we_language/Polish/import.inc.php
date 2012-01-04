@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Pola rekordów',
 	'record_field'=>'Pole rekordu',
 	'remark_csv'=>'Można importować pliki CSV (Comma Separated Values) lub oparte na nich formaty tekstowe (np. *.txt). Przy imporcie tych formatów danych można ustawić znak separatora(np. , ; Tab, spacja) oraz ogranicznik tekstu (= znak, który zamyka wpis tekstowy).',
-	'remark_xml'=>'Wybierz opcję "Importuj rekordy pojedynczo", żeby można było importować duże pliki w cišgu zdefiniowanego jako limit (Timeout) czasu wykonywania skryptu PHP.<br>Jeżeli nie jese pewien, czy wybrany plik jest plikiem XML webEdition, to możesz przed importem sprawdzić plik pod kštem jego dobrego sformatowania i poprawnoci typu.',
+	'remark_xml'=>'Wybierz opcję "Importuj rekordy pojedynczo", żeby można było importować duże pliki w cišgu zdefiniowanego jako limit (Timeout) czasu wykonywania skryptu PHP.<br/>Jeżeli nie jese pewien, czy wybrany plik jest plikiem XML webEdition, to możesz przed importem sprawdzić plik pod kštem jego dobrego sformatowania i poprawnoci typu.',
 	'rename'=>'Zmień nazwę',
 	'rename_txt'=>'Do nazwy plików zostanie dodane jednoznaczne rozszerzenie ID. Wszystkie odnoniki, które wskazujš na ten plik zostanš odpowiednio dopasowane.',
 	'replace'=>'Zastšp',

@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'There is no open document.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'Ud no puede crear nuevos objetos!<br>O Ud no tiene permiso o no hay una clase donde una de sus áreas de trabajo sea válida!',
+		'objectFile'=>'Ud no puede crear nuevos objetos!<br/>O Ud no tiene permiso o no hay una clase donde una de sus áreas de trabajo sea válida!',
 	),
 	'noResourceTitle'=>'No Item!',
 	'noResource'=>'The document or directory does not exist!',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'UD no tiene cookies activados. Por favor, activar los cookies en su navegador!',
 	'no_file_selected'=>'Ningún archivo ha sido selecionado para cargar!',
 	'no_image'=>'El archivo que Ud ha seleccionado no es una imagen!',
-	'no_perms'=>'Por favor, contacte al dueño (%s) o a un administrador<br>si necesita acceso!',
+	'no_perms'=>'Por favor, contacte al dueño (%s) o a un administrador<br/>si necesita acceso!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Permiso denegado!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
@@ -135,20 +135,20 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'The highlighted fields contain invalid data.\nPlease enter valid data.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'El documento ha sido cambiado.<BR> Desearía Ud salvar sus cambios?',
+		'exit_doc_question'=>'El documento ha sido cambiado.<br/> Desearía Ud salvar sus cambios?',
 		'in_wf_warning'=>'El documento debe ser salvado antes de poder ser colocado en el flujo de trabajo!\Desea UD salvar el documento ahora?',
 		'not_im_ws'=>'El archivo no está situado dentro de su área de trabajo!',
 	),
 	'tblObjectFiles'=>array(
-		'exit_doc_question'=>'El objeto ha sido cambiado.<BR> Desearía UD salvar sus cambios?',
+		'exit_doc_question'=>'El objeto ha sido cambiado.<br/> Desearía UD salvar sus cambios?',
 		'in_wf_warning'=>'El objeto debe ser salvado antes de poder ser colocado en el flujo de trabajo!\Desea UD salvar el objeto ahora?',
 	),
 	'tblObject'=>array(
-		'exit_doc_question'=>'La clase ha sido cambiada.<BR> Desearía Ud salvar sus cambios?',
+		'exit_doc_question'=>'La clase ha sido cambiada.<br/> Desearía Ud salvar sus cambios?',
 		'in_wf_warning'=>'La clase debe ser salvada antes de poder ser colocada en el flujo de trabajo!\Desea UD salvar la clase ahora?',
 	),
 	'tblTemplates'=>array(
-		'exit_doc_question'=>'La plantilla ha sido cambiada.<BR> Desearía Ud salvar sus cambios?',
+		'exit_doc_question'=>'La plantilla ha sido cambiada.<br/> Desearía Ud salvar sus cambios?',
 		'in_wf_warning'=>'La plantilla debe ser salvada antes de poder ser colocada en el flujo de trabajo!\Desea UD salvar la plantilla ahora?',
 		'not_im_ws'=>'La plantilla no está situado dentro de su área de trabajo!',
 	),

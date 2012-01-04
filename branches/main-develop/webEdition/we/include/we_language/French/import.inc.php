@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Champs d`enregistrement',
 	'record_field'=>'Champ d`enregistrement',
 	'remark_csv'=>'Vous pouvez importer des fichiers-CSV(Comma Separated Values) ou des formats comparable (p.ex. *.txt). Avec l`import de ces format de fichier il est possible de choisir le séperateur (p.ex , ; Tab, Éspace) et le limiteur de texte (= le signe, qui emballe le texte).',
-	'remark_xml'=>'Choisissez l`option "Importez les enregistrement isolément ", pour que des grandes fichier peuvent être importé dans le temps de timeout d`un script PHP.<br> Si vous n`êtes pas sûr que le fichier séléctioné est un document webEdition-XML, vous pouvez vérifier s`il est bien formé et valide.',
+	'remark_xml'=>'Choisissez l`option "Importez les enregistrement isolément ", pour que des grandes fichier peuvent être importé dans le temps de timeout d`un script PHP.<br/> Si vous n`êtes pas sûr que le fichier séléctioné est un document webEdition-XML, vous pouvez vérifier s`il est bien formé et valide.',
 	'rename'=>'Renommer',
 	'rename_txt'=>'Au nom du fichier sera ajouté une ID univalent. Tous les liens, qui mennent au fichier, seront réajusté.',
 	'replace'=>'Remplacer',

@@ -10,7 +10,7 @@ $l_modules_schedule=array(
 	'doctypeAll'=>'Standardwerte übernehmen',
 	'doctype'=>'Dokument-Typ',
 	'from'=>'Von',
-	'headline'=>'Automatisch<br>Veröffentlichen',
+	'headline'=>'Automatisch<br/>Veröffentlichen',
 	'minutes'=>'Minuten',
 	'months'=>'Monate',
 	

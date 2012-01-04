@@ -98,7 +98,7 @@ $l_alert=array(
 		'no_open_document'=>'There is no open document.',
 	),
 	'nonew'=>array(
-		'objectFile'=>'Вы не уполномочены создавать новые объекты!<br>У Вас либо нет соответствующего  полномочия,  либо отсутствует класс, в котором действительны Ваши рабочие пространства!',
+		'objectFile'=>'Вы не уполномочены создавать новые объекты!<br/>У Вас либо нет соответствующего  полномочия,  либо отсутствует класс, в котором действительны Ваши рабочие пространства!',
 	),
 	'noResourceTitle'=>'No Item!',
 	'noResource'=>'The document or directory does not exist!',
@@ -114,7 +114,7 @@ $l_alert=array(
 	'no_cookies'=>'Вы не активировали cookies. Активируйте, пожалуйста, cookies в Вашем браузере!',
 	'no_file_selected'=>'Не выбраны файлы к загрузке!',
 	'no_image'=>'Выбранный Вами файл не относится к графике!',
-	'no_perms'=>'Для получения доступа обратитесь, пожалуйста, к владельцу лицензии (%s)<br> или к администратору! <br>',
+	'no_perms'=>'Для получения доступа обратитесь, пожалуйста, к владельцу лицензии (%s)<br/> или к администратору! <br/>',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Нет полномочий!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
@@ -135,7 +135,7 @@ $l_alert=array(
 	'save_error_fields_value_not_valid'=>'The highlighted fields contain invalid data.\nPlease enter valid data.',
 	
 	'tblFile'=>array(
-		'exit_doc_question'=>'Данный документ, по-видимому, был изменен. Сохранить Ваши изменения? <BR>',
+		'exit_doc_question'=>'Данный документ, по-видимому, был изменен. Сохранить Ваши изменения? <br/>',
 		'in_wf_warning'=>'Перед передачей данного документа в поток, его нужно сохранить!\nСохранить документ?',
 		'not_im_ws'=>'Данный файл не из Вашего рабочего пространства!',
 	),

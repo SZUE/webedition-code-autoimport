@@ -32,5 +32,5 @@ $l_SEEM=array(
 	'start_with_SEEM_no_startdocument'=>'Для Вас не задан действующий стартовый документ.
 Стартовый документ задается администратором.',
 	'try_doc_again'=>'Попробуйте еще раз',
-	'workspace_seem_startdocument'=>'Стартовый документ<br>суперлегкого<br>режима',
+	'workspace_seem_startdocument'=>'Стартовый документ<br/>суперлегкого<br/>режима',
 );

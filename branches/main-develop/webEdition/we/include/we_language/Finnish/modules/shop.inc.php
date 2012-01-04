@@ -145,7 +145,7 @@ $l_modules_shop=array(
 		'open_customer'=>'Avaa tämä asiakas asiakashallintamoduulissa.',
 	),
 	'order_comments'=>'Muita kommentteja koskien tilausta',
-	'order_data'=>'Tilauksen ja<br>käyttäjän tiedot',
+	'order_data'=>'Tilauksen ja<br/>käyttäjän tiedot',
 	'order_liste'=>'Asiakkaan kaikki tilaukset:',
 	'order_view'=>'Tilaus yhteenveto',
 	'pageMod'=>'Tietueita / Sivu',

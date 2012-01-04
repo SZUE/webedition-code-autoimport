@@ -145,7 +145,7 @@ $l_modules_shop=array(
 		'open_customer'=>'Open this customer in customer management module.',
 	),
 	'order_comments'=>'Further comments to this order',
-	'order_data'=>'Order and<br>user details',
+	'order_data'=>'Order and<br/>user details',
 	'order_liste'=>'All customer`s orders:',
 	'order_view'=>'Order summary',
 	'pageMod'=>'Records per Page',

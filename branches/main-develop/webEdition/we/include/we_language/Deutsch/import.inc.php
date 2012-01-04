@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Datensatz Felder',
 	'record_field'=>'Datensatz Feld',
 	'remark_csv'=>'Sie können CSV-Dateien (Comma Separated Values) oder davon abgewandelte Textformate (z. B. *.txt) importieren. Beim Import dieser Dateiformate kann das Spaltentrennzeichen (z. B. , ; Tab, Leerzeichen) und der Textbegrenzer (= das Zeichen, welches Texteinträge kapselt) eingestellt werden.',
-	'remark_xml'=>'Wählen Sie die Option "Datensätze einzeln importieren", damit große Dateien innerhalb der als Timeout definierten Ausführungszeit eines PHP-Scriptes importiert werden können.<br>Wenn Sie nicht sicher sind, ob es sich bei der ausgewählten Datei um webEdition XML handelt, dann können Sie die Datei vor dem Import auf Wohlgeformtheit und Gültigkeit überprüfen.',
+	'remark_xml'=>'Wählen Sie die Option "Datensätze einzeln importieren", damit große Dateien innerhalb der als Timeout definierten Ausführungszeit eines PHP-Scriptes importiert werden können.<br/>Wenn Sie nicht sicher sind, ob es sich bei der ausgewählten Datei um webEdition XML handelt, dann können Sie die Datei vor dem Import auf Wohlgeformtheit und Gültigkeit überprüfen.',
 	'rename'=>'Umbenennen',
 	'rename_txt'=>'Dem Dateinamen wird eine eindeutige ID hinzugefügt. Alle Links, die auf diese Datei verweisen, werden entsprechend angepasst.',
 	'replace'=>'Ersetzen',

@@ -131,7 +131,7 @@ $l_import=array(
 	'record_fields'=>'Dataset fields',
 	'record_field'=>'Dataset field',
 	'remark_csv'=>'You are able to import CSV files (Comma Separated Values) or modified text formats (e. g. *.txt). The field delimiter (e. g. , ; tab, space) and text delimiter (= which encapsulates the text inputs) can be preset at the import of these file formats.',
-	'remark_xml'=>'To avoid the predefined timeout of a PHP-script, select the option "Import data-sets separately", to import large files.<br>If you are unsure whether the selected file is webEdition XML or not, the file can be tested for validity and syntax.',
+	'remark_xml'=>'To avoid the predefined timeout of a PHP-script, select the option "Import data-sets separately", to import large files.<br/>If you are unsure whether the selected file is webEdition XML or not, the file can be tested for validity and syntax.',
 	'rename'=>'Переименовать',
 	'rename_txt'=>'Имени файла назначается один номер ID. Все ссылки, указывающие на такой файл, соответствуют его ID.',
 	'replace'=>'Заменить',

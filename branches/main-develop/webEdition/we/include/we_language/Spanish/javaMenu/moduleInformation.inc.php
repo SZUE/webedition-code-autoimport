@@ -13,7 +13,7 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Cliente',
 	),
 	'editor'=>array(
-		'not_installed'=>'En caso que Ud. ha comprado el Plugin del Editor, puede activarlo en el menú principal en <a href="javascript:opener.top.we_cmd (`openPrefs`);">Opciones =>Preferencias</a>. La instalación correrá automáticamente cuando Ud. abra la vista Plantilla =>Editar a &quot;edit&quot;. <br> Mas información sobre el Plugin del Editor en: %s',
+		'not_installed'=>'En caso que Ud. ha comprado el Plugin del Editor, puede activarlo en el menú principal en <a href="javascript:opener.top.we_cmd (`openPrefs`);">Opciones =>Preferencias</a>. La instalación correrá automáticamente cuando Ud. abra la vista Plantilla =>Editar a &quot;edit&quot;. <br/> Mas información sobre el Plugin del Editor en: %s',
 		'text'=>'Plugin del Editor',
 		'text_short'=>'Plugin del Editor',
 	),

@@ -31,5 +31,5 @@ $l_SEEM=array(
 	'start_with_SEEM_no_startdocument'=>'Aloitussivua ei ole määritetty.
 Järjestelmänvalvoja asettaa aloitussivusi.',
 	'try_doc_again'=>'Yritä uudestaan',
-	'workspace_seem_startdocument'=>'Helppokäyttötilan<br>aloitussivu',
+	'workspace_seem_startdocument'=>'Helppokäyttötilan<br/>aloitussivu',
 );
