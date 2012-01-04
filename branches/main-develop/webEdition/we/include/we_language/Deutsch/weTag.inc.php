@@ -51,7 +51,7 @@ $l_weTag=array(
 		'description'=>'Das Tag we:charset generiert eine Meta-Angabe, die bestimmt mit welchem Zeichensatz die fertige Seite angezeigt wird. Für deutsche Seiten wird normalerweise der Zeichensatz "ISO-8859-15" verwendet. Dieser Tag muss innerhalb der &lt;head&gt;&lt;/head&gt; Tags der HTML-Seite stehen.',
 	),
 	'checkForm'=>array(
-		'description'=>'Das Tag we:checkForm führt eine Validierung eines Formulars per JavaScript durch. <br />Die Kombination der Parameter `match` und `type` legen den `name`,bzw. die `id` des zu kontrollierenden Formulars fest.<br />`mandatory` und `email` erwarten eine kommaseparierte Liste von Pflichtfeldern, bzw. Email-Adressen(Syntax-Check). In `password` können kommasepariert 2 Feldnamen und eine Mindestlänge eingegeben werden, die auf Gleichheit, bzw die Mindestlänge überprüft weden.<br />Mit onError kann im Fehlerfall eine eigene JavaScript-Funktion aufgerufen werden, die als Parameter arrays mit fehlenden Pflichtfeldern und den invaliden Email-Adressen erhält, als dritter Parameter wird ein Flag übergeben, ob die Passworteingabe korrekt war. Andernfalls wird der Standardwert im Fehlerfall ausgegeben.',
+		'description'=>'Das Tag we:checkForm führt eine Validierung eines Formulars per JavaScript durch. <br/>Die Kombination der Parameter `match` und `type` legen den `name`,bzw. die `id` des zu kontrollierenden Formulars fest.<br/>`mandatory` und `email` erwarten eine kommaseparierte Liste von Pflichtfeldern, bzw. Email-Adressen(Syntax-Check). In `password` können kommasepariert 2 Feldnamen und eine Mindestlänge eingegeben werden, die auf Gleichheit, bzw die Mindestlänge überprüft weden.<br/>Mit onError kann im Fehlerfall eine eigene JavaScript-Funktion aufgerufen werden, die als Parameter arrays mit fehlenden Pflichtfeldern und den invaliden Email-Adressen erhält, als dritter Parameter wird ein Flag übergeben, ob die Passworteingabe korrekt war. Andernfalls wird der Standardwert im Fehlerfall ausgegeben.',
 	),
 	'colorChooser'=>array(
 		'description'=>'Das we:colorChooser Tag erzeugt ein Eingabefeld um Farbwerte auszuwählen',
@@ -87,7 +87,7 @@ $l_weTag=array(
 		'description'=>'Das we:css-Tag erzeugt ein HTML-Tag, das auf ein webEdition-internes CSS Stylesheet mit der unten angegebenen ID verweist. Dadurch können Sie Stylesheets in einer separaten Datei definieren.',
 	),
 	'customer'=>array(
-		'description'=>'Mit Hilfe dieses Tags kann man einen Kunden auf einer webEdition darstellen. Die Kundenfelder werden wie bei einer Listview und beim &lt;we:object&gt; Tag mit dem Tag &lt;we:field&gt; dargestellt.<br /><br />Durch Kombination der Attribute kann das Tag 3 verschiedene Funktionen erfüllen:<br />Wenn name gesetzt ist, dann kann der Redakteur einen Kunden per Customer-Selector auswählen. Dieser Kunde wird dann im Dokument unter dem in nam angegeben Feld gespeichert.<br />Wenn name nicht gesetzt ist, dafür aber id, wird der Kunde mit dieser ID angezeigt<br />Wenn weder name noch id gesetzt ist, erwartet das Tag, dass die id des Kunden per Request Parameter übermittelt wird. Dies tut zB. die Customer-Listview wenn das Attribut hyperlink="true" im &lt;we:field&gt; Tag gesetzt ist. Der Name des Request Parameters lautet we_cid',
+		'description'=>'Mit Hilfe dieses Tags kann man einen Kunden auf einer webEdition darstellen. Die Kundenfelder werden wie bei einer Listview und beim &lt;we:object&gt; Tag mit dem Tag &lt;we:field&gt; dargestellt.<br/><br/>Durch Kombination der Attribute kann das Tag 3 verschiedene Funktionen erfüllen:<br/>Wenn name gesetzt ist, dann kann der Redakteur einen Kunden per Customer-Selector auswählen. Dieser Kunde wird dann im Dokument unter dem in nam angegeben Feld gespeichert.<br/>Wenn name nicht gesetzt ist, dafür aber id, wird der Kunde mit dieser ID angezeigt<br/>Wenn weder name noch id gesetzt ist, erwartet das Tag, dass die id des Kunden per Request Parameter übermittelt wird. Dies tut zB. die Customer-Listview wenn das Attribut hyperlink="true" im &lt;we:field&gt; Tag gesetzt ist. Der Name des Request Parameters lautet we_cid',
 	),
 	'dateSelect'=>array(
 		'description'=>'Das we:dateSelect-Tag gibt ein Auswahlfeld für ein Datum zurück, welches im Zusammenhang mit dem Tag we:processDateSelect in eine Variable als Unix Timestamp eingelesen werden kann.',
@@ -99,7 +99,7 @@ $l_weTag=array(
 		'description'=>'Das we:deleteShop-Tag löscht den kompletten Warenkorb.',
 	),
 	'delete'=>array(
-		'description'=>'Dieses Tag dient dazu, webEdition-Dokumente bzw. Objekte die über &lt;we:a edit="true" delete="true"&gt; aufgerufen wurden, zu löschen.<br /><br />ACHTUNG: Dieses Tag sollte nur in Verbindung mit der Kundenverwaltung und den Attributen admin bzw. userid und/oder mit den Attributen doctype, pid und classid benutzt werden. Ansonsten ist es theoretisch möglich, dass Unbefugte mit Aufruf des entsprechenden URL webEdition-Dokumente bzw. Objekte löschen können.',
+		'description'=>'Dieses Tag dient dazu, webEdition-Dokumente bzw. Objekte die über &lt;we:a edit="true" delete="true"&gt; aufgerufen wurden, zu löschen.<br/><br/>ACHTUNG: Dieses Tag sollte nur in Verbindung mit der Kundenverwaltung und den Attributen admin bzw. userid und/oder mit den Attributen doctype, pid und classid benutzt werden. Ansonsten ist es theoretisch möglich, dass Unbefugte mit Aufruf des entsprechenden URL webEdition-Dokumente bzw. Objekte löschen können.',
 	),
 	'description'=>array(
 		'description'=>'Das we:description-Tag erzeugt ein description Meta-Tag. Falls das Beschreibungsfeld in der Ansicht "Eigenschaften" leer ist, wird der Inhalt zwischen Start- und Endtag als Standardbeschreibung eingetragen.',
@@ -123,7 +123,7 @@ $l_weTag=array(
 		'description'=>'Dieses Tag dient zum Anlegen und Bearbeiten von Formularfeldern.',
 	),
 	'formmail'=>array(
-		'description'=>'Bei eingeschalteter Einstellung Formmail über webEdition-Dokument aufrufen, erfolgt die Einbindung des Formmail-Scripts über ein webEdition-Dokument. Hierfür wird der neue (derzeit noch parameterlose) we-Tag formmail verwendet.<br />Wird die Captcha-Prüfung eingesetzt, steht &lt;we:formmail/&gt; innerhalb des we-Tags ifCaptcha.',
+		'description'=>'Bei eingeschalteter Einstellung Formmail über webEdition-Dokument aufrufen, erfolgt die Einbindung des Formmail-Scripts über ein webEdition-Dokument. Hierfür wird der neue (derzeit noch parameterlose) we-Tag formmail verwendet.<br/>Wird die Captcha-Prüfung eingesetzt, steht &lt;we:formmail/&gt; innerhalb des we-Tags ifCaptcha.',
 	),
 	'form'=>array(
 		'description'=>'Das we:form Tag wird für Such- und Mailformulare eingesetzt. Es funktioniert wie das normale HTML-Form-Tag, jedoch werden zusätzliche Hidden-Fields vom Parser eingefügt.',
@@ -138,7 +138,7 @@ $l_weTag=array(
 		'description'=>'Das we:href-Tag erzeugt eine Url, welche im Editmodus eingegeben werden kann.',
 	),
 	'icon'=>array(
-		'description'=>'Das we:icon-Tag erzeugt ein HTML-Tag, das auf ein webEdition internes Icon mit der unten angegebenen ID verweist. Dadurch können Sie ein Icon einbinden, welches beim Bookmarken Ihrer Homepage im Internet Explorer, Mozilla, Safari und Opera angezeigt wird.<br /><br />Bitte beachten Sie: Die Icon Datei sollte den Dateinamen "favicon.ico" haben und möglichst direkt im Document-Root liegen.',
+		'description'=>'Das we:icon-Tag erzeugt ein HTML-Tag, das auf ein webEdition internes Icon mit der unten angegebenen ID verweist. Dadurch können Sie ein Icon einbinden, welches beim Bookmarken Ihrer Homepage im Internet Explorer, Mozilla, Safari und Opera angezeigt wird.<br/><br/>Bitte beachten Sie: Die Icon Datei sollte den Dateinamen "favicon.ico" haben und möglichst direkt im Document-Root liegen.',
 	),
 	'ifBack'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn es bei einer Listview auch eine vorherige Seite gibt. Gibt es keine vorherige Seite f?r die Listview, dann wird der umschlossene Inhalt nicht angezeigt.',
@@ -165,7 +165,7 @@ $l_weTag=array(
 		'description'=>'Führt den eingeschlossenen Code nur aus, wenn das Kundenverwaltungs-Modul nicht deaktiviert wurde (Einstellungsdialog).',
 	),
 	'ifDeleted'=>array(
-		'description'=>'Dieses Tag dient dazu, um webEdition-Dokumente bzw. Objekte die über &lt;we:a edit="true" delete="true"&gt; aufgerufen wurden zu löschen.&lt;br&gt;&lt;br&gt;&lt;strong&gt;ACHTUNG: Dieses Tag sollte nur in Verbindung mit der Kundenverwaltung und den Attributen admin bzw. userid und/oder mit den Attributen doctype, pid und classid benutzt werden. Ansonsten ist es theoretisch möglich, dass Unbefugte mit Aufruf des entsprechenden URL webEdition-Dokumente bzw. Objekte löschen können.&lt;/strong&gt;',
+		'description'=>'Dieses Tag dient dazu, um webEdition-Dokumente bzw. Objekte die über &lt;we:a edit="true" delete="true"&gt; aufgerufen wurden zu löschen.<br/><br/><strong>ACHTUNG: Dieses Tag sollte nur in Verbindung mit der Kundenverwaltung und den Attributen admin bzw. userid und/oder mit den Attributen doctype, pid und classid benutzt werden. Ansonsten ist es theoretisch möglich, dass Unbefugte mit Aufruf des entsprechenden URL webEdition-Dokumente bzw. Objekte löschen können.</strong>',
 	),
 	'ifDoctype'=>array(
 		'description'=>'Das we:ifDoctype-Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn der in "doctype" eingetragene Dokument-Typ dem Dokument zugewiesen wurde.',
@@ -222,7 +222,7 @@ $l_weTag=array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn es sich um Inhalt für einen Newsletter im HTML-Format handelt.',
 	),
 	'ifIsDomain'=>array(
-		'description'=>'Das we:ifIsDomain-Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn der Domainname des Servers den in "domain" eingetragenen Namen hat. Der Domainname muss dabei exakt identisch sein, inkl. eventuell führendem "www".<br />Das Ergebnis ist nur auf der fertigen Webseite und in der Vorschau zu sehen, im Bearbeitungsmodus wird alles angezeigt.',
+		'description'=>'Das we:ifIsDomain-Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn der Domainname des Servers den in "domain" eingetragenen Namen hat. Der Domainname muss dabei exakt identisch sein, inkl. eventuell führendem "www".<br/>Das Ergebnis ist nur auf der fertigen Webseite und in der Vorschau zu sehen, im Bearbeitungsmodus wird alles angezeigt.',
 	),
 	'ifIsNotDomain'=>array(
 		'description'=>'Das we:ifIsDomain Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn der Domainname des Servers den in "domain" eingetragenen Namen nicht hat. Das Ergebnis ist nur auf der fertigen Webseite und in der Vorschau zu sehen, im Bearbeitungsmodus wird alles angezeigt.',
@@ -351,7 +351,7 @@ $l_weTag=array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn der Eintrag in eine Newsletter-Adressliste nicht erfolgreich war und sollte in der Vorlage nach &lt;we:addDelNewsletterEmail&gt; stehen, aus der das webEdition-Dokument erzeugt wird, welches nach einem Eintrag in eine Newsletter-Adressliste aufgerufen wird.',
 	),
 	'ifNotTemplate'=>array(
-		'description'=>'Zeigt dem umschlossenen Inhalt nur an, wenn das aktuelle Dokument nicht auf der angegebenen Vorlage beruht.<br /><br />Weitere Informationen finden Sie in der Dokumentation des Tags we:ifTemplate.',
+		'description'=>'Zeigt dem umschlossenen Inhalt nur an, wenn das aktuelle Dokument nicht auf der angegebenen Vorlage beruht.<br/><br/>Weitere Informationen finden Sie in der Dokumentation des Tags we:ifTemplate.',
 	),
 	'ifNotTop'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn sich das Tag innerhalb einer includierten Datei befindet.',
@@ -573,7 +573,7 @@ $l_weTag=array(
 		'description'=>'Dieses Tag muss in jeder Vorlage in der ersten Zeile stehen, aus der ein webEdition-Dokument erzeugt wird, welches mit &lt;we:sendMail/&gt; versendet werden soll.',
 	),
 	'master'=>array(
-		'description'=>'Wird in einer Detailvorlage verwendet und fügt den umschlossenen Inhalt beim we:content Tag im Mastertemplate ein. Die Verknüpfung zu we:content wird über das Attribut "name" hergestellt. (we:master name="head" =&gt; we:content name="head").<br /><br />Inhalt der Detailvorlage außerhalb des we:master Tags wird weiterhin beim we:content ohne Name eingesetzt.',
+		'description'=>'Wird in einer Detailvorlage verwendet und fügt den umschlossenen Inhalt beim we:content Tag im Mastertemplate ein. Die Verknüpfung zu we:content wird über das Attribut "name" hergestellt. (we:master name="head" =&gt; we:content name="head").<br/><br/>Inhalt der Detailvorlage außerhalb des we:master Tags wird weiterhin beim we:content ohne Name eingesetzt.',
 	),
 	'metadata'=>array(
 		'description'=>'Das we:metadata-Tag wird benötigt, um die Metadatenfelder von eingebundenen Bildern, Flash-Movies und Quicktime-Movies darzustellen. Innerhalb des we:metadata Start- und Endtags kann man die Metadatenfelder mit we:field-Tags darstellen. Im Attribut "name" muss der Name des darzustellenden Elements angegeben werden.',
@@ -691,7 +691,7 @@ $l_weTag=array(
 		'description'=>'Das we:sessionLogout-Tag erzeugt ein HTML-Link-Tag, das auf ein webEdition-internes Dokument mit der unten angegebenen ID verweist. Wenn das angegebene Dokument ein we:sessionStart-Tag besitzt und dynamisch gespeichert wurde, dann wird die aktuelle Session gelöscht.',
 	),
 	'sessionStart'=>array(
-		'description'=>'Dieses Tag dient dazu, eine Session zu beginnen oder eine bestehende fortzusetzen. Dieses Tag wird auf folgenden Vorlagen benötigt: bei Seiten, welche durch die Kundenverwaltung geschützt sind, bei Shopseiten und bei Frontend-Eingaben (Erzeugung von webEdition-Dokumenten und Objekten über das Frontend).<br />Das Tag muss immer in der ersten Zeile der Vorlage stehen!',
+		'description'=>'Dieses Tag dient dazu, eine Session zu beginnen oder eine bestehende fortzusetzen. Dieses Tag wird auf folgenden Vorlagen benötigt: bei Seiten, welche durch die Kundenverwaltung geschützt sind, bei Shopseiten und bei Frontend-Eingaben (Erzeugung von webEdition-Dokumenten und Objekten über das Frontend).<br/>Das Tag muss immer in der ersten Zeile der Vorlage stehen!',
 	),
 	'setVar'=>array(
 		'description'=>'Mit we:setVar können verschiedene Arten von Variablen gesetzt werden.<br/><strong>Achtung:</strong> Ohne gesetztes Attribut <strong>striptags</strong> werden dabei HTML- und PHP-Code mit übertragen, dies ist ein potenzielles <strong>Sicherheitsrisiko!</strong>',
@@ -728,10 +728,10 @@ $l_weTag=array(
 		'description'=>'Das we:title-Tag erzeugt ein normales title-Tag. Alles, was zwischen dem Start- und Endtag steht, wird als default-Titel eingetragen, falls das Titelfeld in der Ansicht "Eigenschaft" leer ist. Ansonsten wird der Titel aus dieser Ansicht eingetragen.',
 	),
 	'tr'=>array(
-		'description'=>'Das &lt;we:tr&gt; Tag entspricht dem HTML-tag &lt;tr&gt; und dient der Definition einer Tabellenzeile.<br />Beim Einsatz in einer Listview erzwingt der Tag alle x Datensätze eine neue Tabellenzeile, wobei x die Anzahl der im Listview Parameter cols eingestellten Spalten ist.',
+		'description'=>'Das &lt;we:tr&gt; Tag entspricht dem HTML-tag &lt;tr&gt; und dient der Definition einer Tabellenzeile.<br/>Beim Einsatz in einer Listview erzwingt der Tag alle x Datensätze eine neue Tabellenzeile, wobei x die Anzahl der im Listview Parameter cols eingestellten Spalten ist.',
 	),
 	'unsubscribe'=>array(
-		'description'=>'Dieses Tag erzeugt ein Eingabefeld zum Austragen aus der Newsletter-Liste. Dieser Tag muss innerhalb eines Formulars platziert werden.<br />Auf der Folgeseite muss der Tag &lt;we:addDelNewsletterEmail/&gt; vorhanden sein, bei diesem legen Sie auch den Speicherort der CSV Empfängerlisten fest, aus denen der Empfänger ausgetragen werden soll.',
+		'description'=>'Dieses Tag erzeugt ein Eingabefeld zum Austragen aus der Newsletter-Liste. Dieser Tag muss innerhalb eines Formulars platziert werden.<br/>Auf der Folgeseite muss der Tag &lt;we:addDelNewsletterEmail/&gt; vorhanden sein, bei diesem legen Sie auch den Speicherort der CSV Empfängerlisten fest, aus denen der Empfänger ausgetragen werden soll.',
 	),
 	'url'=>array(
 		'description'=>'Das we:url-Tag erzeugt eine webEdition-interne URL, die auf das Dokument mit der unten angegebenen ID verlinkt.',
@@ -764,7 +764,7 @@ $l_weTag=array(
 		'description'=>'Das we:writeShopData-Tag schreibt alle Daten des aktuellen Warenkorbs in die Datenbank.',
 	),
 	'writeVoting'=>array(
-		'description'=>'Dieses Tag schreibt ein Voting in die Datenbank. Falls das Attribut "id" definiert ist, wird nur das Voting mit dieser id gespeichert.<br /><br />Hinweis:  WICHTIG! Das Tag &lt;we:writeVoting/&gt; muss in der allerersten Zeile der Vorlage stehen, in der es verwendet wird. Andernfalls ist eine &Uuml;berprüfung des Abstimmungsintervalls per COOKIE nicht möglich!',
+		'description'=>'Dieses Tag schreibt ein Voting in die Datenbank. Falls das Attribut "id" definiert ist, wird nur das Voting mit dieser id gespeichert.<br/><br/>Hinweis:  WICHTIG! Das Tag &lt;we:writeVoting/&gt; muss in der allerersten Zeile der Vorlage stehen, in der es verwendet wird. Andernfalls ist eine &Uuml;berprüfung des Abstimmungsintervalls per COOKIE nicht möglich!',
 	),
 	'write'=>array(
 		'description'=>'Das we:write Tag schreibt ein zuvor mit &lt;we:form type="document/object"&gt; erzeugtes webEdition Dokument/Objekt.',

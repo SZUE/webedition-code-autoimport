@@ -15,7 +15,7 @@ $l_validation=array(
 	'checkvia'=>'Envoyer par',
 	'checkvia_upload'=>'Datei-Upload',
 	'checkvia_url'=>'Transmission d`URL',
-	'connection_problems'=>'<strong>Erreur en connectant au service choisi.</strong><br /><br />Considerez: L`option "Transmission d`URL" ne peut être utilisé, que si votre Installation de webEdition est accessible par l`internet (alors en dehors de votre reseau local). Ce n`est pas le cas avec installation local (localhost).<br /><br />Ainsi peuvent se produire des problèmes avec des serveur-proxy ou des pare-feux. Dans ce cas vérifiez votre configuration s`il vous plaît.<br /><br />Réponse-HTTP: %s',
+	'connection_problems'=>'<strong>Erreur en connectant au service choisi.</strong><br/><br/>Considerez: L`option "Transmission d`URL" ne peut être utilisé, que si votre Installation de webEdition est accessible par l`internet (alors en dehors de votre reseau local). Ce n`est pas le cas avec installation local (localhost).<br/><br/>Ainsi peuvent se produire des problèmes avec des serveur-proxy ou des pare-feux. Dans ce cas vérifiez votre configuration s`il vous plaît.<br/><br/>Réponse-HTTP: %s',
 	'ctype'=>'Caractéristique de reconnaissance pou le serveur cible, pour qu`il puisse reconnaître de quel fichier il s`agit. (text/html ou text/css)',
 	'description'=>'Vous pouvez vous servir des services de web, pour vérfifier la validité et accessibilité de votre site.',
 	

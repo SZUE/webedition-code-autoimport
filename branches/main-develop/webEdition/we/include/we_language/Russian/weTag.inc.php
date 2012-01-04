@@ -87,7 +87,7 @@ $l_weTag=array(
 		'description'=>'The css tag creates an HTML tag that references an internal webEdition CSS style sheet that has the ID listed below. You can define style sheets in a separate file.',
 	),
 	'customer'=>array(
-		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br /><br />Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br />If name is not set but instead the id, the customer with this id is displayed.<br />If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
+		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br/><br/>Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br/>If name is not set but instead the id, the customer with this id is displayed.<br/>If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
 	),
 	'dateSelect'=>array(
 		'description'=>'The we:dateSelect tag displays a select field for dates, which can be used together with the we:processDateSelect tag to read the date value into a variable as a UNIX time stamp.',
@@ -123,7 +123,7 @@ $l_weTag=array(
 		'description'=>'This tag is used to generate fields in a front end form.',
 	),
 	'formmail'=>array(
-		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br />If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
+		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br/>If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
 	),
 	'form'=>array(
 		'description'=>'The we:form tag is used to search and mail forms. It works in the same fashion as the normal HTML form tag, but allows the parser to insert additional hidden fields.',
@@ -351,7 +351,7 @@ $l_weTag=array(
 		'description'=>'Content enclosed by this tag is only displayed if a subscription was not successful. This tag should appear in a template (for subscribing to newsletters) after &lt;we:addDelNewsletterEmail&gt;.',
 	),
 	'ifNotTemplate'=>array(
-		'description'=>'Show enclosed content only if the current document is not based on the given template.<br /><br />You`ll find further information in the reference of the tag we:ifTemplate.',
+		'description'=>'Show enclosed content only if the current document is not based on the given template.<br/><br/>You`ll find further information in the reference of the tag we:ifTemplate.',
 	),
 	'ifNotTop'=>array(
 		'description'=>'The enclosed content is only displayed if this tag is located in an included document.',

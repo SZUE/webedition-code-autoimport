@@ -15,7 +15,7 @@ $l_validation=array(
 	'checkvia'=>'Submit via',
 	'checkvia_upload'=>'File upload',
 	'checkvia_url'=>'URL transfer',
-	'connection_problems'=>'<strong>An error occured while connecting to this service</strong><br /><br />Please note: The option "url transfer" is only available if your webEdition installation is also accessible from the internet (outside your local network). This is not possible if webEdition is locally installed (localhost).<br /><br />Also, some problems can occure when using firewalls and proxy-servers. Please check your configuration in such cases.<br /><br />HTTP-Response: %s',
+	'connection_problems'=>'<strong>An error occured while connecting to this service</strong><br/><br/>Please note: The option "url transfer" is only available if your webEdition installation is also accessible from the internet (outside your local network). This is not possible if webEdition is locally installed (localhost).<br/><br/>Also, some problems can occure when using firewalls and proxy-servers. Please check your configuration in such cases.<br/><br/>HTTP-Response: %s',
 	'ctype'=>'Feature for the target server to determine the type of the submited file (text/html or text/css)',
 	'description'=>'You can select a service from the web to check this document for validity/accessibility.',
 	

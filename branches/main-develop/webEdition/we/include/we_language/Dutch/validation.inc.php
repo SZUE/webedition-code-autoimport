@@ -15,7 +15,7 @@ $l_validation=array(
 	'checkvia'=>'Aanbieden via',
 	'checkvia_upload'=>'Bestandsupload',
 	'checkvia_url'=>'URL overdracht',
-	'connection_problems'=>'<strong>Er is een fout opgetreden tijdens het verbinden met deze dienst</strong><br /><br />Let op: De optie "url overdracht" is alleen beschikbaar als uw webEdition installatie ook bereikbaar is via het internet (buiten uw lokale netwerk). Dit is niet mogelijk wanneer webEdition lokaal is geïnstalleerd (localhost).<br /><br />Ook kunnen er problemen optreden wanneer u Firewalls en proxy-servers gebruikt. Controleer uw configuratie als dit het geval is.<br /><br />HTTP-Reactie: %s',
+	'connection_problems'=>'<strong>Er is een fout opgetreden tijdens het verbinden met deze dienst</strong><br/><br/>Let op: De optie "url overdracht" is alleen beschikbaar als uw webEdition installatie ook bereikbaar is via het internet (buiten uw lokale netwerk). Dit is niet mogelijk wanneer webEdition lokaal is geïnstalleerd (localhost).<br/><br/>Ook kunnen er problemen optreden wanneer u Firewalls en proxy-servers gebruikt. Controleer uw configuratie als dit het geval is.<br/><br/>HTTP-Reactie: %s',
 	'ctype'=>'Kenmerk voor de doel server bij het bepalen van het soort aangeboden bestand (tekst/html of tekst/css)',
 	'description'=>'U kunt een internet-dienst kiezen om dit document te testen op geldigheid/toegankelijkheid.',
 	

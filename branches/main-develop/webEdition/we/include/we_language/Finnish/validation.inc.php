@@ -15,7 +15,7 @@ $l_validation=array(
 	'checkvia'=>'Lähetä käyttäen',
 	'checkvia_upload'=>'Tiedoston latausta',
 	'checkvia_url'=>'URL -siirtoa',
-	'connection_problems'=>'<strong>Virhe yhteydenmuodostuksessa palveluun<(/trong><br /><br /><br />Huomioi: valinta "url siirto" on käytettävissä vain, jos webEdition järjestelmän pääsy on sallittu internetiin.Siirto ei ole mahdollinen paikallisasennuksessa.<br /><br />Ongelmia voi myös esiintyä käytettäessä palomuureja tai proxy-palvelimia. Tarkista asetukset tässä tapauksessa.<br /><br />HTTP-Response: %s',
+	'connection_problems'=>'<strong>Virhe yhteydenmuodostuksessa palveluun<(/trong><br/><br/><br/>Huomioi: valinta "url siirto" on käytettävissä vain, jos webEdition järjestelmän pääsy on sallittu internetiin.Siirto ei ole mahdollinen paikallisasennuksessa.<br/><br/>Ongelmia voi myös esiintyä käytettäessä palomuureja tai proxy-palvelimia. Tarkista asetukset tässä tapauksessa.<br/><br/>HTTP-Response: %s',
 	'ctype'=>'Lähetettävän tiedoston tyypin tarkistuksen toiminto kohdepalvelimelle (text/html oder text/css)',
 	'description'=>'Voit valita palvelun verkosta tarkistaaksesi dokumentin validiteetin/käytettävyyden.',
 	

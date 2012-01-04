@@ -15,7 +15,7 @@ $l_validation=array(
 	'checkvia'=>'Verschicken per',
 	'checkvia_upload'=>'Datei-Upload',
 	'checkvia_url'=>'URL-Übergabe',
-	'connection_problems'=>'<strong>Bei der Verbindung zu dem gewählten Dienst ist ein Fehler aufgetreten.</strong><br /><br />Bitte beachten Sie: Die Option "URL-Übergabe" kann nur verwendet werden, wenn Ihre webEdition-Installation vom Internet (also auch ausserhalb ihres lokalen Netzwerks) aus zu erreichen ist. Dies ist nicht der Fall bei einer lokalen Installation (Localhost).<br /><br />Ebenso können Probleme mit Firewalls und Proxy-Servern auftreten. Überprüfen Sie in diesen Fällen bitte Ihre Konfiguration.<br /><br />HTTP-Antwort: %s',
+	'connection_problems'=>'<strong>Bei der Verbindung zu dem gewählten Dienst ist ein Fehler aufgetreten.</strong><br/><br/>Bitte beachten Sie: Die Option "URL-Übergabe" kann nur verwendet werden, wenn Ihre webEdition-Installation vom Internet (also auch ausserhalb ihres lokalen Netzwerks) aus zu erreichen ist. Dies ist nicht der Fall bei einer lokalen Installation (Localhost).<br/><br/>Ebenso können Probleme mit Firewalls und Proxy-Servern auftreten. Überprüfen Sie in diesen Fällen bitte Ihre Konfiguration.<br/><br/>HTTP-Antwort: %s',
 	'ctype'=>'Erkennungsmerkmal für den Zielserver, um was für eine Datei es sich handelt. (text/html oder text/css)',
 	'description'=>'Sie können hier einige Dienste des Webs nutzen, um Ihre Seiten nach Validität, bzw. Zugänglichkeit zu testen.',
 	

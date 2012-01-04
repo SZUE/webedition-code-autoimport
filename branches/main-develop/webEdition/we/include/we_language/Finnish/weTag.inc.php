@@ -87,7 +87,7 @@ $l_weTag=array(
 		'description'=>'Css tagi luo HTML-tagin joka viittaa ID:llä määriteltyyn webEditionin sisäiseen CSS-tiedostoon.',
 	),
 	'customer'=>array(
-		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br /><br />Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br />If name is not set but instead the id, the customer with this id is displayed.<br />If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
+		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br/><br/>Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br/>If name is not set but instead the id, the customer with this id is displayed.<br/>If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
 	),
 	'dateSelect'=>array(
 		'description'=>'we:dateSelect tagi tulostaa valintakentän päivämäärälle. Tätä voidaan käyttää yhdessä we:processDateSelect tagin kanssa jos halutaan lukea valittu arvo esim. muuttujaan joka on tyyppiä UNIX TIMESTAMP.',
@@ -123,7 +123,7 @@ $l_weTag=array(
 		'description'=>'Tagia käytetään lisättäessä lomakekenttiä front end lomakkeeseen.',
 	),
 	'formmail'=>array(
-		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br />If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
+		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br/>If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
 	),
 	'form'=>array(
 		'description'=>'we:form tagia käytetään haku- ja mailiformien luontiin. Se toimii samaan tapaan kuin normaali HTML-lomakekin, mutta se antaa parserin lisätä tarvitsemiaan lisätietokenttiä hidden muotoisena.',
@@ -351,7 +351,7 @@ $l_weTag=array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään vain jos tilaus epäonnistui. Tämä tagi pitäisi olla `Tilaa uutiskirje` templatessa we:addDelNewsletterEmail -tagin jälkeen.',
 	),
 	'ifNotTemplate'=>array(
-		'description'=>'Näytä sisältyvä tieto vain, jos nykyinen dokumentti ei perustu annettuun sivupohjaan.<br /><br />Löydät lisätietoja we:ifTemplate -tagin referenssistä.',
+		'description'=>'Näytä sisältyvä tieto vain, jos nykyinen dokumentti ei perustu annettuun sivupohjaan.<br/><br/>Löydät lisätietoja we:ifTemplate -tagin referenssistä.',
 	),
 	'ifNotTop'=>array(
 		'description'=>'Tämän tagin sisältö näytetään vain jos se sijaitsee `include` -dokumentissa.',

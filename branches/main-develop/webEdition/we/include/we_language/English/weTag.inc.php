@@ -51,7 +51,7 @@ $l_weTag=array(
 		'description'=>'The we:charset tag generates a meta tag which determines the used charset for the page. "ISO-8859-1" is usually used for English Web pages. This tag must be placed within the meta tag of the HTML page.',
 	),
 	'checkForm'=>array(
-		'description'=>'The we:checkForm tag validates the entries of a form with JavaScript.<br />The combination of the parameters `match` and `type` determine the `name` or the `id` of the form to check.<br />`mandatory` and `email` contain a commaseperated list of mandatory or e-mail fields. In `password` it is possible to insert 2 names of fields and a minimum length of inserted passwords.<br />With `onError` you can choose the name of an individual JavaScript-function which is called in case of an error. This function will get an array with the names of missing mandatory and email fields and a flag, if the password was correct. If `onError` is not set or the function does not exist, the default value is displayed in an alert-box.',
+		'description'=>'The we:checkForm tag validates the entries of a form with JavaScript.<br/>The combination of the parameters `match` and `type` determine the `name` or the `id` of the form to check.<br/>`mandatory` and `email` contain a commaseperated list of mandatory or e-mail fields. In `password` it is possible to insert 2 names of fields and a minimum length of inserted passwords.<br/>With `onError` you can choose the name of an individual JavaScript-function which is called in case of an error. This function will get an array with the names of missing mandatory and email fields and a flag, if the password was correct. If `onError` is not set or the function does not exist, the default value is displayed in an alert-box.',
 	),
 	'colorChooser'=>array(
 		'description'=>'The we:colorChooser tag creates an input field for choosing a color value.',
@@ -87,7 +87,7 @@ $l_weTag=array(
 		'description'=>'The css tag creates an HTML tag that references an internal webEdition CSS style sheet that has the ID listed below. You can define style sheets in a separate file.',
 	),
 	'customer'=>array(
-		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br /><br />Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br />If name is not set but instead the id, the customer with this id is displayed.<br />If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
+		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br/><br/>Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br/>If name is not set but instead the id, the customer with this id is displayed.<br/>If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
 	),
 	'dateSelect'=>array(
 		'description'=>'The we:dateSelect tag displays a select field for dates, which can be used together with the we:processDateSelect tag to read the date value into a variable as a UNIX time stamp.',
@@ -123,7 +123,7 @@ $l_weTag=array(
 		'description'=>'This tag is used to generate fields in a front end form.',
 	),
 	'formmail'=>array(
-		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br />If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
+		'description'=>'With activated Setting Call Formmail via webEdition document, the integration of the formmail script is realized with a webEdition document. For this, the (currently without attributes) we-Tag formmail will be used. <br/>If the Captcha-check is used, &lt;we:formmail/&gt; is located within the we-Tag ifCaptcha.',
 	),
 	'form'=>array(
 		'description'=>'The we:form tag is used to search and mail forms. It works in the same fashion as the normal HTML form tag, but allows the parser to insert additional hidden fields.',
@@ -315,7 +315,7 @@ $l_weTag=array(
 		'description'=>'The tag we:ifNotObjectLanguage tests on the language setting in the properties tab of the object, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
 	),
 	'ifNotObject'=>array(
-		'description'=>'The enclosed content is only displayed if the entry within &lt;we:listview type="search"&gt; is not an object.<br />',
+		'description'=>'The enclosed content is only displayed if the entry within &lt;we:listview type="search"&gt; is not an object.<br/>',
 	),
 	'ifNotPageLanguage'=>array(
 		'description'=>'The tag we:ifNotPageLanguage tests on the language setting in the properties tab of the document, several values can be separated by comma (OR relation). The possible values are taken from the general properties dialog, tab languages',
@@ -351,7 +351,7 @@ $l_weTag=array(
 		'description'=>'Content enclosed by this tag is only displayed if a subscription was not successful. This tag should appear in a template (for subscribing to newsletters) after &lt;we:addDelNewsletterEmail&gt;.',
 	),
 	'ifNotTemplate'=>array(
-		'description'=>'Show enclosed content only if the current document is not based on the given template.<br /><br />You`ll find further information in the reference of the tag we:ifTemplate.',
+		'description'=>'Show enclosed content only if the current document is not based on the given template.<br/><br/>You`ll find further information in the reference of the tag we:ifTemplate.',
 	),
 	'ifNotTop'=>array(
 		'description'=>'The enclosed content is only displayed if this tag is located in an included document.',
@@ -691,7 +691,7 @@ $l_weTag=array(
 		'description'=>'The we:sessionLogout tag creates an HTML link tag referring to an internal webEdition document with the ID mentioned in the webEdition Tag Wizard. If this webEdition document has a we:sessionStart tag and holds the attribute "dynamic", the active session will be cleared and closed. No data will be saved.',
 	),
 	'sessionStart'=>array(
-		'description'=>'This tag is used to start a session or to continue an existing one. This tag is required in templates that generate the following pages: Pages which are protected in some form by the Customer Mangement Module, Shop pages and pages which support front end input.<br />This tag MUST be the first tag on the first line of the template!',
+		'description'=>'This tag is used to start a session or to continue an existing one. This tag is required in templates that generate the following pages: Pages which are protected in some form by the Customer Mangement Module, Shop pages and pages which support front end input.<br/>This tag MUST be the first tag on the first line of the template!',
 	),
 	'setVar'=>array(
 		'description'=>'This tag is used to set the values of various types of varibles.<br/><strong>Attention:</strong> Without the attribute <strong>striptags="true"</strong>, HTML- and PHP-Code is not filtered, this is a potenzial security risk!</strong>',
@@ -764,7 +764,7 @@ $l_weTag=array(
 		'description'=>'The we:writeShopData tag writes all current shopping cart data into the database.',
 	),
 	'writeVoting'=>array(
-		'description'=>'This tag writes a voting into the database. If the attribute "id" is defined, only the voting with the respective id will be saved.<br /><br />Note:  Please note the &lt;we:writeVoting /&gt; tag has to be in the very first line of your template!',
+		'description'=>'This tag writes a voting into the database. If the attribute "id" is defined, only the voting with the respective id will be saved.<br/><br/>Note:  Please note the &lt;we:writeVoting /&gt; tag has to be in the very first line of your template!',
 	),
 	'write'=>array(
 		'description'=>'This tag stores a document/object generated by &lt;we:form type="document/object&gt;',

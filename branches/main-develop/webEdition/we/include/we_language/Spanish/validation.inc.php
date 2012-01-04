@@ -15,7 +15,7 @@ $l_validation=array(
 	'checkvia'=>'Vía del envío',
 	'checkvia_upload'=>'Subir archivo',
 	'checkvia_url'=>'Transferir URL',
-	'connection_problems'=>'<strong>Ha ocurrido un error mientras se conectaba a este servicio</strong><br /><br />Por favor notar: La opción "transferencia URL" está solamente disponible si su instalación de WebEdition está también accesible desde internet (fuera de su red local). Esto no es posible si WebEdition esta instalado localmente (servidor local).<br /><br />También, algunos problemas pueden ocurrir cuando se usan firewalls y servidores proxy. Por favor chequee su configuración en estos casos.<br /><br />HTTP responso: %s',
+	'connection_problems'=>'<strong>Ha ocurrido un error mientras se conectaba a este servicio</strong><br/><br/>Por favor notar: La opción "transferencia URL" está solamente disponible si su instalación de WebEdition está también accesible desde internet (fuera de su red local). Esto no es posible si WebEdition esta instalado localmente (servidor local).<br/><br/>También, algunos problemas pueden ocurrir cuando se usan firewalls y servidores proxy. Por favor chequee su configuración en estos casos.<br/><br/>HTTP responso: %s',
 	'ctype'=>'Característica para el servidor destino para determinar el tipo del archivo enviado (texto/html o texto/css)',
 	'description'=>'Puedes seleccionar un servicio de la web para chequear la validez/accesibilidad de este documento',
 	
