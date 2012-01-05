@@ -5,9 +5,9 @@ $l_notPublished=array(
 	'changed'=>'Modifié le',
 	'created'=>'Créé le',
 	'creator'=>'Auteur',
-	'inWorkflow'=>'Étapes du Gestion de Flux',
-	'path'=>'Path',
+	'inWorkflow'=>'Étapes de workflow',
+	'path'=>'Chemin',
 	'published'=>'Dernière publication',
-	'title_objects'=>'Objects non publiés',
+	'title_objects'=>'Objects inédits',
 	'title_pages'=>'Sites non publiés',
 );
