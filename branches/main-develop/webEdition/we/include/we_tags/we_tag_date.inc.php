@@ -167,44 +167,19 @@ function correctDateFormat($format, $t = ''){
 	if(!$t){
 		$t = time();
 	}
+	$rep = array('%%%4%%%' => '\B', '%%%5%%%' => '\I', '%%%6%%%' => '\L', '%%%7%%%' => '\T', '%%%8%%%' => '\U', '%%%9%%%' => '\Z');
 
-	$format = str_replace('\B', '%%%4%%%', $format);
-	$format = str_replace('\I', '%%%5%%%', $format);
-	$format = str_replace('\L', '%%%6%%%', $format);
-	$format = str_replace('\T', '%%%8%%%', $format);
-	$format = str_replace('\U', '%%%9%%%', $format);
-	$format = str_replace('\Z', '%%%10%%%', $format);
+	$format = str_replace(array_values($rep), array_keys($rep), $format);
 
-	$format = str_replace('B', '\\B', $format);
-	$format = str_replace('I', '\\I', $format);
-	$format = str_replace('L', '\\L', $format);
-	$format = str_replace('T', '\\T', $format);
-	$format = str_replace('U', '\\U', $format);
-	$format = str_replace('Z', '\\Z', $format);
+	$format = str_replace(
+		array('B', 'I', 'L', 'T', 'U', 'Z'), array('\\B', '\\I', '\\L', '\\T', '\\U', '\\Z'), $format);
 
-	$format = str_replace('%%%4%%%', '\B', $format);
-	$format = str_replace('%%%5%%%', '\I', $format);
-	$format = str_replace('%%%6%%%', '\L', $format);
-	$format = str_replace('%%%8%%%', '\T', $format);
-	$format = str_replace('%%%9%%%', '\U', $format);
-	$format = str_replace('%%%10%%%', '\Z', $format);
+	$format = str_replace(array_keys($rep), array_values($rep), $format);
+	$rep = array('D' => g_l('date', '[day][short][' . date('w', $t) . ']'),
+		'F' => g_l('date', '[month][long][' . (date('n', $t) - 1) . ']'),
+		'l' => g_l('date', '[day][long][' . date('w', $t) . ']'),
+		'M' => g_l('date', '[month][short][' . (date('n', $t) - 1) . ']')
+	);
 
-	$format = str_replace('D', '%%%0%%%', $format);
-	$format = str_replace('F', '%%%1%%%', $format);
-	$format = str_replace('l', '%%%2%%%', $format);
-	$format = str_replace('M', '%%%3%%%', $format);
-
-	$foo = g_l('date', '[day][short][' . date('w', $t) . ']');
-	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
-	$format = str_replace('%%%0%%%', $foo, $format);
-	$foo = g_l('date', '[month][long][' . (date('n', $t) - 1) . ']');
-	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
-	$format = str_replace('%%%1%%%', $foo, $format);
-	$foo = g_l('date', '[day][long][' . date('w', $t) . ']');
-	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
-	$format = str_replace('%%%2%%%', $foo, $format);
-	$foo = g_l('date', '[month][short][' . (date('n', $t) - 1) . ']');
-	$foo = preg_replace('/([a-zA-Z])/', '\\\1', $foo);
-	$format = str_replace('%%%3%%%', $foo, $format);
-	return $format;
+	return str_replace(array_keys($rep), array_values($rep), $format);
 }
