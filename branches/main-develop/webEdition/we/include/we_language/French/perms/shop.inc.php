@@ -7,5 +7,5 @@ $l_perms_shop=array(
 	'EDIT_SHOP_ORDER'=>'L`utilisateur a le droit d`éditer des commandes',
 	'EDIT_SHOP_PREFS'=>'L`utilisateur a le droit de changer les préférrences de la boutique',
 	'NEW_SHOP_ARTICLE'=>'L`utilisateur a le droit de créer des nouveaux articles',
-	'perm_group_title'=>'Shop Module',
+	'perm_group_title'=>'Module Shop',
 );
