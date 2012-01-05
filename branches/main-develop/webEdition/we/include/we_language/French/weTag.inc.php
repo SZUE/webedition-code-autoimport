@@ -594,7 +594,7 @@ $l_weTag=array(
 		'description'=>'we:navigation is used to initialise a navigation made with the  navigation-tool.',
 	),
 	'newsletterConfirmLink'=>array(
-		'defaultvalue'=>'Confirm newsletter',
+		'defaultvalue'=>'Confirmer la newsletter',
 		'description'=>'This tag is used to generate the double opt-in confirmation link.',
 	),
 	'newsletterField'=>array(
