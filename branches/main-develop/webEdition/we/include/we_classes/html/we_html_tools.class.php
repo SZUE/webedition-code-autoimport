@@ -27,8 +27,14 @@ abstract class we_html_tools{
 ### we_html_tools::protect()
 ### protects a page. Guests can not see this page
 
-	static function protect(){
-		if(!isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ''){
+	static function protect(array $perms=null){
+		$allow = true;
+		if($perms && is_array($perms)){
+			foreach($perms as $perm){
+				$allow&=isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm];
+			}
+		}
+		if(!$allow || !isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ''){
 			print self::htmlTop();
 			print
 				we_html_element::jsElement(
@@ -435,13 +441,13 @@ HTS;
 	}
 
 	static function getPixel($w, $h, $border = 0){
-		if($w==''){
-			$w=0;
+		if($w == ''){
+			$w = 0;
 		}
-		if($h==''){
-			$h=0;
+		if($h == ''){
+			$h = 0;
 		}
-		return '<span style="display:inline-block;width:'.$w.(is_numeric($w)?'px':'').';height:'.$h.(is_numeric($h)?'px':'').';'.($border?'border:'.$border.'px solid black;':'').'"></span>';
+		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 		//return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '" />';
 	}
 
@@ -591,7 +597,7 @@ HTS;
 				$maxyear = abs(date("Y") + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
-				$_atts2 = ($time && $year == $i)?array('selected' => 'selected'):array();
+				$_atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
 				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$yearSelect = getHtmlTag(
@@ -613,7 +619,7 @@ HTS;
 		if(($format == "") || $_hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
-				$_atts2 = ($time && $hour == $i)?array('selected' => 'selected'):array();
+				$_atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
 				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$hourSelect = getHtmlTag(
@@ -635,7 +641,7 @@ HTS;
 		if(($format == "") || $_minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
-				$_atts2 =($time && $minute == $i)?array('selected' => 'selected'):array();
+				$_atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
 				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf("%02d", $i));
 			}
 			$minSelect = getHtmlTag(
