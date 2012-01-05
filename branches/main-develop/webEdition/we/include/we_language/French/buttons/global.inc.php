@@ -3,8 +3,8 @@
 $l_buttons_global=array(
 	
 	'addCursorPosition'=>array(
-		'alt'=>'Insert selected text at cursor position',
-		'value'=>'Insert at cursor position',
+		'alt'=>'Inserer le text selectionné à la position du curseur',
+		'value'=>'Inserer à la position du curseur',
 		'width'=>180,
 	),
 	'add'=>array(
@@ -39,7 +39,7 @@ $l_buttons_global=array(
 	),
 	'attributes'=>array(
 		'alt'=>'Attributs...',
-		'value'=>'Attributes...',
+		'value'=>'Attributs...',
 		'width'=>100,
 	),
 	'backup'=>array(
@@ -48,7 +48,7 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'back'=>array(
-		'alt'=>'Reculer',
+		'alt'=>'Retour',
 		'value'=>'Retour',
 		'width'=>100,
 	),
@@ -63,19 +63,19 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'btn_add_cat'=>array(
-		'alt'=>'Ajouter une Catégorie',
+		'alt'=>'Ajouter une catégorie',
 	),
 	'btn_add_field'=>array(
-		'alt'=>'Ajouter un Champ',
+		'alt'=>'Ajouter un champ',
 	),
 	'btn_add_file'=>array(
-		'alt'=>'Ajouter un Fichier',
+		'alt'=>'Ajouter un fichier',
 	),
 	'btn_add_flash'=>array(
-		'alt'=>'Ajouter un Vidéo-Flash',
+		'alt'=>'Ajouter un vidéo-flash',
 	),
 	'btn_add_image'=>array(
-		'alt'=>'Ajouter une graphique',
+		'alt'=>'Ajouter une image',
 	),
 	'btn_add_link'=>array(
 		'alt'=>'Ajouter un lien',
@@ -87,16 +87,16 @@ $l_buttons_global=array(
 		'alt'=>'Ajouter une note',
 	),
 	'btn_add_quicktime'=>array(
-		'alt'=>'Ajouter un Film-Quicktime',
+		'alt'=>'Ajouter un film-quicktime',
 	),
 	'btn_add_schedule'=>array(
 		'alt'=>'Ajoute une tâche dirigée par temps',
 	),
 	'btn_add_template'=>array(
-		'alt'=>'Ajouter un modèle',
+		'alt'=>'Ajouter un template',
 	),
 	'btn_add_thumbnail'=>array(
-		'alt'=>'Ajouter une imagette',
+		'alt'=>'Ajouter une miniature',
 	),
 	'btn_direction_down'=>array(
 		'alt'=>'Vers le bas',
@@ -114,19 +114,19 @@ $l_buttons_global=array(
 		'alt'=>'Éditer',
 	),
 	'btn_edit_flash'=>array(
-		'alt'=>'Choisir un Vidéo-Flash',
+		'alt'=>'Choisir un vidéo-flash',
 	),
 	'btn_edit_image'=>array(
-		'alt'=>'Éditer la Graphique',
+		'alt'=>'Éditer l`image',
 	),
 	'btn_edit_include'=>array(
 		'alt'=>'Éditer le fichier-inclus',
 	),
 	'btn_edit_link'=>array(
-		'alt'=>'Éditer le Lien',
+		'alt'=>'Éditer le lien',
 	),
 	'btn_edit_list'=>array(
-		'alt'=>'Éditer la Liste',
+		'alt'=>'Éditer la liste',
 	),
 	'btn_edit_object'=>array(
 		'alt'=>'Éditer l`Object',
@@ -135,7 +135,7 @@ $l_buttons_global=array(
 		'alt'=>'Choisir un document-PDF',
 	),
 	'btn_edit_quicktime'=>array(
-		'alt'=>'Choisir un Film-Quicktime',
+		'alt'=>'Choisir un film-quicktime',
 	),
 	'btn_edit_real'=>array(
 		'alt'=>'Choisir un fichier de Real Player',
@@ -165,31 +165,31 @@ $l_buttons_global=array(
 		'alt'=>'Aide',
 	),
 	'btn_mail_resend'=>array(
-		'alt'=>'resend e-mail',
+		'alt'=>'Renvoyer email',
 	),
 	'btn_mail_send'=>array(
 		'alt'=>'Envoyez l`email',
 	),
 	'btn_messages_copy'=>array(
-		'alt'=>'Copier des Messages',
+		'alt'=>'Copier des messages',
 	),
 	'btn_messages_create'=>array(
-		'alt'=>'Créer un Message',
+		'alt'=>'Créer un message',
 	),
 	'btn_messages_cut'=>array(
-		'alt'=>'Couper des Messages',
+		'alt'=>'Couper des messages',
 	),
 	'btn_messages_paste'=>array(
-		'alt'=>'Coller des Messages',
+		'alt'=>'Coller des messages',
 	),
 	'btn_messages_reply'=>array(
-		'alt'=>'Répondre à des Messges',
+		'alt'=>'Répondre à des messges',
 	),
 	'btn_messages_tasks'=>array(
-		'alt'=>'Changer au System-Tâche',
+		'alt'=>'Changer au system-tâche',
 	),
 	'btn_messages_trash'=>array(
-		'alt'=>'Supprimer des Messages',
+		'alt'=>'Supprimer des sessages',
 	),
 	'btn_messages_update'=>array(
 		'alt'=>'Relever les nouveaux Messages',
@@ -201,53 +201,53 @@ $l_buttons_global=array(
 		'alt'=>'Créer un nouveau répertoire',
 	),
 	'btn_open_sidebar'=>array(
-		'alt'=>'Open sidebar',
+		'alt'=>'Ouvrir sidebar',
 	),
 	'btn_select_image'=>array(
-		'alt'=>'Choisir une Graphique',
+		'alt'=>'Choisir une image',
 	),
 	'btn_task_copy'=>array(
-		'alt'=>'Copier des Tâches',
+		'alt'=>'Copier des tâches',
 	),
 	'btn_task_create'=>array(
-		'alt'=>'Créer des Tâches',
+		'alt'=>'Créer des tâches',
 	),
 	'btn_task_cut'=>array(
-		'alt'=>'Couper des Tâches',
+		'alt'=>'Couper des tâches',
 	),
 	'btn_task_forward'=>array(
-		'alt'=>'Transmettre des Tâches',
+		'alt'=>'Transmettre des tâches',
 	),
 	'btn_task_messages'=>array(
 		'alt'=>'Changer au System-Messages',
 	),
 	'btn_task_paste'=>array(
-		'alt'=>'Insérer des Tâches',
+		'alt'=>'Insérer des tâches',
 	),
 	'btn_task_reject'=>array(
-		'alt'=>'Rejeter des Tâches',
+		'alt'=>'Rejeter des tâches',
 	),
 	'btn_task_status'=>array(
 		'alt'=>'Actualiser le état',
 	),
 	'btn_task_trash'=>array(
-		'alt'=>'Supprimer des Tâche',
+		'alt'=>'Supprimer des tâches',
 	),
 	'btn_task_update'=>array(
-		'alt'=>'Voir s`il y a des nouveau Tâche',
+		'alt'=>'Voir s`il y a des nouvelle tâche',
 	),
 	'cancel'=>array(
-		'alt'=>'Cancel',
-		'value'=>'Cancel',
+		'alt'=>'arréter',
+		'value'=>'Arrêter',
 		'width'=>100,
 	),
 	'change'=>array(
-		'alt'=>'Change',
-		'value'=>'Changer',
+		'alt'=>'Changer',
+		'value'=>'Remplacer',
 		'width'=>100,
 	),
 	'check'=>array(
-		'alt'=>'Check',
+		'alt'=>'Verifier',
 		'value'=>'Verifier',
 		'width'=>100,
 	),
@@ -257,7 +257,7 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'close'=>array(
-		'alt'=>'Fermer le fenêtre',
+		'alt'=>'Fermer la fenêtre',
 		'value'=>'Fermer',
 		'width'=>100,
 	),
@@ -265,12 +265,12 @@ $l_buttons_global=array(
 		'alt'=>'Choisir le date',
 	),
 	'default'=>array(
-		'alt'=>'default',
+		'alt'=>'Préconfiguration',
 		'value'=>'Standard',
 		'width'=>100,
 	),
 	'delete'=>array(
-		'alt'=>'Delete',
+		'alt'=>'Supprimer',
 		'value'=>'Supprimer',
 		'width'=>100,
 	),
@@ -285,12 +285,12 @@ $l_buttons_global=array(
 		'width'=>150,
 	),
 	'delete_doctype'=>array(
-		'alt'=>'Supprimer le Type-de-Document séléctioné',
-		'value'=>'Delete document type',
+		'alt'=>'Supprimer le type de document séléctioné',
+		'value'=>'Supprimer type de document',
 		'width'=>174,
 	),
 	'demoversion'=>array(
-		'alt'=>'Version-Demo',
+		'alt'=>'Version d`essai',
 		'value'=>'Version d`essai',
 		'width'=>100,
 	),
@@ -300,8 +300,8 @@ $l_buttons_global=array(
 		'width'=>110,
 	),
 	'editor'=>array(
-		'alt'=>'Start Editor',
-		'value'=>'Start Editor',
+		'alt'=>'Demarrer editeur',
+		'value'=>'Demarrer editeur',
 		'width'=>100,
 	),
 	'edit'=>array(
@@ -310,12 +310,12 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'edit_all_thumbs'=>array(
-		'alt'=>'Editer les imagettes...',
-		'value'=>'Edit thumbnails...',
+		'alt'=>'Editer les miniatures ...',
+		'value'=>'Modifier miniatures ...',
 		'width'=>200,
 	),
 	'export'=>array(
-		'alt'=>'Export selected files',
+		'alt'=>'Exporter le fichier selectionné',
 		'value'=>'Exporter',
 		'width'=>100,
 	),
@@ -329,8 +329,8 @@ $l_buttons_global=array(
 		'width'=>120,
 	),
 	'iconview'=>array(
-		'alt'=>'Iconview',
-		'value'=>'Iconview',
+		'alt'=>'Affichage miniature',
+		'value'=>'Affichage miniature',
 		'width'=>100,
 	),
 	'ignore'=>array(
@@ -339,7 +339,7 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'import'=>array(
-		'alt'=>'Import selected file',
+		'alt'=>'Importer le fichier selectionné',
 		'value'=>'Importer',
 		'width'=>100,
 	),
@@ -364,7 +364,7 @@ $l_buttons_global=array(
 	),
 	'make_backup'=>array(
 		'alt'=>'Créer une sauvegarde',
-		'value'=>'Create Backup',
+		'value'=>'Crée sauvegarde',
 		'width'=>150,
 	),
 	'make_new_document'=>array(
@@ -373,17 +373,17 @@ $l_buttons_global=array(
 		'width'=>125,
 	),
 	'newName'=>array(
-		'alt'=>'Saisissez un nouveau Nom',
+		'alt'=>'Saisissez un nouveau nom',
 		'value'=>'Nouveau nom',
 		'width'=>100,
 	),
 	'new_directory'=>array(
-		'alt'=>'Créer un nouveau Répertoire',
+		'alt'=>'Créer un nouveau répertoire',
 		'value'=>'Nouveau dossier',
 		'width'=>200,
 	),
 	'new_doctype'=>array(
-		'alt'=>'Créer un nouveau Type-de-Document',
+		'alt'=>'Créer un nouveau type de document',
 		'value'=>'Nouveau type de document',
 		'width'=>174,
 	),
@@ -393,18 +393,18 @@ $l_buttons_global=array(
 		'width'=>200,
 	),
 	'new_entry'=>array(
-		'alt'=>'Nouvelle Entrée',
-		'value'=>'New Entry',
+		'alt'=>'Nouvelle entrée',
+		'value'=>'Nouvelle entrée',
 		'width'=>100,
 	),
 	'new_folder'=>array(
-		'alt'=>'Nouveau dossier',
+		'alt'=>'Nouveau repertoire',
 		'value'=>'Nouveau dossier',
 		'width'=>200,
 	),
 	'new_item'=>array(
-		'alt'=>'New item',
-		'value'=>'New item',
+		'alt'=>'Nouvelle entrée',
+		'value'=>'Nouvelle entrée',
 		'width'=>200,
 	),
 	'new_service'=>array(
@@ -413,8 +413,8 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'new_template'=>array(
-		'alt'=>'Créer une nouveau Modèle',
-		'value'=>'Nouvelle maquette',
+		'alt'=>'Créer une nouveau template',
+		'value'=>'Nouveau template',
 		'width'=>200,
 	),
 	'next'=>array(
@@ -428,17 +428,17 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'ok'=>array(
-		'alt'=>'Okay',
+		'alt'=>'Ok',
 		'value'=>'OK',
 		'width'=>100,
 	),
 	'openVersionWizard'=>array(
-		'alt'=>'Versions-Wizard',
-		'value'=>'Versions-Wizard',
+		'alt'=>'Assistent de versions',
+		'value'=>'Assistent de versions',
 		'width'=>120,
 	),
 	'open'=>array(
-		'alt'=>'Open',
+		'alt'=>'Ouvrir',
 		'value'=>'Ouvrir',
 		'width'=>100,
 	),
@@ -454,7 +454,7 @@ $l_buttons_global=array(
 	),
 	'preferences'=>array(
 		'alt'=>'Préferences',
-		'value'=>'Preferences',
+		'value'=>'Préférences',
 		'width'=>200,
 	),
 	'prepend'=>array(
@@ -473,22 +473,22 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'publish'=>array(
-		'alt'=>'Save and publish the document',
+		'alt'=>'Enregistre et publie le document',
 		'value'=>'Publier',
 		'width'=>120,
 	),
 	'quit_delete'=>array(
-		'alt'=>'Quittter le mode-supprimer',
-		'value'=>'Finish delete mode',
+		'alt'=>'Quittter le mode `suppression`',
+		'value'=>'Terminer le mode `suppression`',
 		'width'=>200,
 	),
 	'quit_move'=>array(
-		'alt'=>'Finish move mode',
+		'alt'=>'Finish move `décalage`',
 		'value'=>'Finish move mode',
 		'width'=>250,
 	),
 	'rebuild'=>array(
-		'alt'=>'Start rebuild',
+		'alt'=>'Demarrer rebuild',
 		'value'=>'Rebuild',
 		'width'=>100,
 	),
@@ -504,7 +504,7 @@ $l_buttons_global=array(
 	),
 	'replace'=>array(
 		'alt'=>'remplacer',
-		'value'=>'remplacer',
+		'value'=>'Remplacer',
 		'width'=>100,
 	),
 	'reset'=>array(
@@ -514,7 +514,7 @@ $l_buttons_global=array(
 	),
 	'restore_backup'=>array(
 		'alt'=>'Restaurer la sauvegarde',
-		'value'=>'Recover Backup',
+		'value'=>'Restaurer la sauvegarde',
 		'width'=>180,
 	),
 	'res_1024'=>array(
@@ -558,8 +558,8 @@ $l_buttons_global=array(
 		'width'=>100,
 	),
 	'revert_published'=>array(
-		'alt'=>'Discard changes and restore published version.',
-		'value'=>'Restore published version',
+		'alt'=>'Rejeter les changements et restaurer la version publié.',
+		'value'=>'Restaurer la version publié',
 		'width'=>220,
 	),
 	'root_dir'=>array(
@@ -568,13 +568,13 @@ $l_buttons_global=array(
 		'width'=>40,
 	),
 	'saveversion'=>array(
-		'alt'=>'Saves the template and creates a new version',
-		'value'=>'Save Version',
+		'alt'=>'Enregistre est crée nouvelle version',
+		'value'=>'Enregistrer la version',
 		'width'=>120,
 	),
 	'save'=>array(
 		'alt'=>'Save',
-		'value'=>'Save',
+		'value'=>'Enregistrer',
 		'width'=>100,
 	),
 	'search'=>array(
@@ -584,7 +584,7 @@ $l_buttons_global=array(
 	),
 	'selectAll'=>array(
 		'alt'=>'Choisir tous',
-		'value'=>'Select all',
+		'value'=>'Tout selectionner',
 		'width'=>110,
 	),
 	'select'=>array(
@@ -594,32 +594,32 @@ $l_buttons_global=array(
 	),
 	'shopVariants'=>array(
 		'alt'=>'Éditer les variantes',
-		'value'=>'Variants',
+		'value'=>'Variantes',
 		'width'=>100,
 	),
 	'startEditor'=>array(
 		'alt'=>'Démarrer l`éditeur par le Plugin-Editeur',
-		'value'=>'Start editor',
+		'value'=>'Demarrer l`editeur',
 		'width'=>100,
 	),
 	'thumbnails'=>array(
-		'alt'=>'Show thumbnails',
-		'value'=>'Thumbnails',
+		'alt'=>'Afficher miniatures',
+		'value'=>'Miniatures',
 		'width'=>100,
 	),
 	'unpublished_pages'=>array(
 		'alt'=>'Aperçu des sites non-publiées',
-		'value'=>'Unpublished documents',
+		'value'=>'Documents inédits',
 		'width'=>200,
 	),
 	'unpublish'=>array(
-		'alt'=>'Depublier',
-		'value'=>'Unpublish',
+		'alt'=>'Dépublier',
+		'value'=>'Dépublier',
 		'width'=>100,
 	),
 	'upload'=>array(
 		'alt'=>'Télécharger un fichier',
-		'value'=>'Upload',
+		'value'=>'Télécharger',
 		'width'=>100,
 	),
 	'yes'=>array(
