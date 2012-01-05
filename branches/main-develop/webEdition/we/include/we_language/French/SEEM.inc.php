@@ -4,15 +4,15 @@ $l_SEEM=array(
 	
 	'alert'=>array(
 		'changed_include'=>'Un fichier-inclu a été modifié. La fenêtre principal sera actualisée.',
-		'close_include'=>'This file is no webEdition document. The include window is closed.',
+		'close_include'=>'Le fichier n`est pas un fichier webEdition. La fenetre `include` sera  fermé.',
 	),
 	'confirm'=>array(
 		'change_to_preview'=>'Voulez-vous changer au Mode-de-Prévision?',
 	),
-	'ext_document_on_other_server_selected'=>'Vous avez cliquez sur un lien, qui mène à un document sur un autre web-serveur. Celui sera ouvert dans une nouvelle fenêtre.\nPousuivre?',
+	'ext_document_on_other_server_selected'=>'Vous avez cliquez sur un lien, qui mène à un document sur un autre web-serveur. Celui sera ouvert dans une nouvelle fenêtre.\nPoursuivre?',
 	'ext_doc'=>'La page: <b>%s</b> n`est <u>pas</u> pas editable avec webEdition',
 	'ext_doc_not_found'=>'La page demandée <b>%s</b> ne pouvait pas être trouvée.',
-	'ext_doc_selected'=>'You have selected a link which points to a document that is not administered by webEdition. Continue?',
+	'ext_doc_selected'=>'Vous avez cliquez sur un lien, qui mène à un document qui n`est pas geré par webEdition.\nPoursuivre?',
 	'ext_doc_tmp'=>'La page n`a pas été ouvert correctement par webEdition. S`il vous plaôt utiliser la navigation normale du site, pour aller au document voulu.',
 	'ext_form_target_other_server'=>'Vous voulez envoyer un formulaire à un autre web-serveur.\nCelui sera ouvert dans une nouvelle fenêtre. Poursuivre?',
 	'ext_form_target_we_server'=>'Le formulaire est envoyer à un non webEdition document. Poursuivre?',

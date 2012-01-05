@@ -4,25 +4,25 @@ $l_sidebar=array(
 	
 	'admin'=>array(
 		'0'=>array(
-			'headline'=>'Preferences Sidebar',
+			'headline'=>'Paramètres sidebar',
 			'link'=>'javascript:top.we_cmd(`openPreferences`);',
 			'text'=>'You find the settings for the Sidebar, like individual start documents, width or deactivation of the sidebar under extras> preferences > common ... on the "User interface" tab',
 	),),
-	'confirm_to_close_sidebar'=>'Would you really like to close the sidebar?',
+	'confirm_to_close_sidebar'=>'Vous voulez vraiment fermer le sidebar ?',
 	
 	'default'=>array(
 		'0'=>array(
-			'headline'=>'Welcome!',
-			'text'=>'webEdition is installed successfully, but contains no contents yet.',
+			'headline'=>'Bienvenue',
+			'text'=>'webEdition est bien installé mais contient pas encore du contenu.',
 		),
 		'1'=>array(
 			'headline'=>'Manuals',
 			'icon'=>'documentation.gif',
-			'link'=>'http://documentation.webedition.org/wiki/en/start',
-			'text'=>'Here you find basic information about the operation and structure of webEdition',
+			'link'=>'http://documentation.webedition.org/wiki/de/start',
+			'text'=>'Ici vous trouvez l`informations de base pour l`utilisation et la structure de webEdition.',
 		),
 		'2'=>array(
-			'headline'=>'Other help resources',
+			'headline'=>'Resources d`aide supplementaire',
 			'icon'=>'help.gif',
 			'link'=>'javascript:top.we_cmd(`help`);',
 			'text'=>'Overview of farther instructions and references',
@@ -30,7 +30,7 @@ $l_sidebar=array(
 		'3'=>array(
 			'headline'=>'How to proceed',
 			'icon'=>'firststepswizard.gif',
-			'link'=>'http://tags.webedition.org/wiki/en/',
+			'link'=>'http://tags.webedition.org/wiki/de/',
 			'text'=>'You can create your individual web site entirely from the scratch or access available elements and base layouts.',
 		),
 		'4'=>array(
