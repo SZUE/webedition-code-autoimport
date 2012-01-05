@@ -274,12 +274,12 @@ class we_document extends we_root{
 			if($this->ContentType == 'text/html'){ //	is HTML-File
 				$selected = (defined('DEFAULT_HTML_EXT') ? DEFAULT_HTML_EXT : '.html');
 			} else if($this->ContentType == 'text/webedition'){ //	webEdition Document
-				if($this->IsDynamic == 1){	//	dynamic
+				if($this->IsDynamic == 1){ //	dynamic
 					$selected = (defined('DEFAULT_DYNAMIC_EXT') ? DEFAULT_DYNAMIC_EXT : '.php');
-				} else{	 //	static
+				} else{	//	static
 					$selected = (defined('DEFAULT_STATIC_EXT') ? DEFAULT_STATIC_EXT : '.html');
 				}
-			} else{	 //	no webEdition Document
+			} else{	//	no webEdition Document
 				$selected = $this->Extension;
 			}
 		} else{ //	bestehendes Dokument oder Dokument mit DocType
@@ -527,7 +527,7 @@ class we_document extends we_root{
 	function addEntryToList($name, $number=1){
 		$list = $this->getElement($name);
 
-		$listarray = $list ? unserialize($list):array();
+		$listarray = $list ? unserialize($list) : array();
 
 		if(!is_array($listarray)){
 			$listarray = array();
@@ -1074,14 +1074,23 @@ class we_document extends we_root{
 				return '';
 			case 'date':
 				// it is a date field from the customer module
-				if($val && !is_numeric($val) && strlen($val) == 19){
-					$_y = substr($val, 0, 4);
-					$_m = substr($val, 5, 2);
-					$_d = substr($val, 8, 2);
-					$_h = substr($val, 11, 2);
-					$_min = substr($val, 14, 2);
-					$_s = substr($val, 17, 2);
-					$val = mktime($_h, $_min, $_s, $_m, $_d, $_y);
+				//2010-12-12 00:00:00
+				if($val && !is_numeric($val)){
+					$len = strlen($val);
+					if($len == 19 || $len == 10){
+
+						$_y = substr($val, 0, 4);
+						$_m = substr($val, 5, 2);
+						$_d = substr($val, 8, 2);
+						if($len == 19){
+							$_h = substr($val, 11, 2);
+							$_min = substr($val, 14, 2);
+							$_s = substr($val, 17, 2);
+							$val = mktime($_h, $_min, $_s, $_m, $_d, $_y);
+						} else{
+							$val = mktime(0, 0, 0, $_m, $_d, $_y);
+						}
+					}
 				}
 
 				if($val == 0){

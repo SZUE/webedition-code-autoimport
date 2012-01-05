@@ -61,7 +61,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 
 		$select = new we_html_select(
 				array(
-					'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
+					'name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
 			));
 		$select->addOptions(sizeof($values), $keys, $values);
 

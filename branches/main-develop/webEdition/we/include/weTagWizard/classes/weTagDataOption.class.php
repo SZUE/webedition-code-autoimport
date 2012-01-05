@@ -22,31 +22,35 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTagDataOption {
+class weTagDataOption{
 
 	/**
 	 * @var string
 	 */
-	var $Name;
+	private $Name;
+
 	/**
 	 * value of this option, if differs from $Name
 	 * @var string
 	 */
-	var $Value;
+	public $Value;
+
 	/**
 	 * all allowed attributes, when selecting this option
 	 * @var array
 	 */
-	var $AllowedAttributes;
+	public $AllowedAttributes;
+
 	/**
 	 * required attributes, when selecting this option
 	 * @var array
 	 */
-	var $RequiredAttributes;
+	public $RequiredAttributes;
+
 	/**
 	 * @var string
 	 */
-	var $Module;
+	public $Module;
 
 	/**
 	 * @param string $name
@@ -54,12 +58,9 @@ class weTagDataOption {
 	 * @param array $allowedAttributes
 	 * @param array $requiredAttributes
 	 */
-	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()) {
-
+	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()){
 		$this->Name = $name;
-
 		$this->Value = ($value === false) ? $name : $value;
-
 
 		// clean allowed and required attributes in case not all modules are installed
 		$this->AllowedAttributes = $allowedAttributes;
@@ -70,30 +71,30 @@ class weTagDataOption {
 	/**
 	 * @return array
 	 */
-	function getAssoziation() {
+	function getAssoziation(){
 		return array(
-				"$this->Value" => "$this->Name"
+			"$this->Value" => "$this->Name"
 		);
 	}
 
 	/**
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
 
 	/**
 	 * @return array
 	 */
-	function getAllowedAttributes() {
+	function getAllowedAttributes(){
 		$arr = array();
-		foreach ($this->AllowedAttributes as $attribute) {
+		foreach($this->AllowedAttributes as $attribute){
 			if(!is_object($attribute)){
 				t_e($attribute);
 				continue;
 			}
-			$attr=$attribute->getIdName();
+			$attr = $attribute->getIdName();
 			$arr[] = $attr;
 		}
 		return $arr;
@@ -102,25 +103,26 @@ class weTagDataOption {
 	/**
 	 * @return array
 	 */
-	function getRequiredAttributes() {
+	function getRequiredAttributes(){
 
 		$arr = array();
-		foreach ($this->RequiredAttributes as $attribute) {
-			$attr=$attribute->getIdName();
+		foreach($this->RequiredAttributes as $attribute){
+			$attr = $attribute->getIdName();
 			$arr[] = $attr;
 		}
 		return $arr;
 	}
 
 	function addTypeAttribute($attr){
-		array_unshift($this->AllowedAttributes,$attr);
+		array_unshift($this->AllowedAttributes, $attr);
 	}
 
 	/**
 	 * checks if this attribute should be used, checks if needed modules are installed
 	 * @return boolean
 	 */
-	function useOption() {
+	function useOption(){
 		return ($this->Module == '' || in_array($this->Module, $GLOBALS['_we_active_integrated_modules']));
-}
+	}
+
 }

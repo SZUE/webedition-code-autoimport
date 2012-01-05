@@ -29,29 +29,29 @@ class weTagDataAttribute{
 	/**
 	 * @var string
 	 */
-	private $Id;
+	protected $Id;
 
 	/**
 	 * @var string
 	 */
-	private $Name;
+	protected $Name;
 
 	/**
 	 * @var boolean
 	 */
-	private $Required;
+	protected $Required;
 
 	/**
 	 * @var string
 	 */
-	private $Module;
+	protected $Module;
 
 	/**
 	 * @var string
 	 */
-	private $Value;
-	private $Description;
-	private $Deprecated;
+	protected $Value;
+	protected $Description;
+	protected $Deprecated;
 
 	/**
 	 * @param string $name
