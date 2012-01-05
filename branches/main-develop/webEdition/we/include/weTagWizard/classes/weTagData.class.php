@@ -31,7 +31,7 @@ class weTagData{
 	/**
 	 * @var string
 	 */
-	private $Name;
+	public $Name;
 
 	/**
 	 * @var string

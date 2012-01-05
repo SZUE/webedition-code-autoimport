@@ -27,7 +27,7 @@ class weTagDataOption{
 	/**
 	 * @var string
 	 */
-	private $Name;
+	public $Name;
 
 	/**
 	 * value of this option, if differs from $Name

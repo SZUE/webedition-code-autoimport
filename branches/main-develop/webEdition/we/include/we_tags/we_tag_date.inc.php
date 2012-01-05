@@ -26,10 +26,9 @@ function we_tag_date($attribs, $content){
 	$type = weTag_getAttribute("type", $attribs);
 	$format = weTag_getAttribute("format", $attribs, g_l('date', '[format][default]'));
 
-	$xml = weTag_getAttribute("xml", $attribs);
-
-	if(strtolower($type) == "js"){
-		$js = 'heute = new Date();
+	switch(strtolower($type)){
+		case 'js':
+			$js = 'heute = new Date();
 		function getDateS(d){
 			switch(d){
 				case 1:
@@ -45,38 +44,13 @@ function we_tag_date($attribs, $content){
 				default:
 					return "th";
 			}
-		}';
-
-		$js .= 'function getDateWord(f,dateObj){
-			var l_day_Short = new Array(';
-		foreach(g_l('date', '[day][short]') as $d){
-			$js .= '"' . $d . '",';
 		}
-		$js = rtrim($js, ',');
-		$js .= ');';
-
-		$js .= '	var l_monthLong = new Array(';
-		foreach(g_l('date', '[month][long]') as $d){
-			$js .= '"' . $d . '",';
-		}
-		$js = rtrim($js, ',');
-		$js .= ');';
-
-		$js .= '	var l_dayLong = new Array(';
-		foreach(g_l('date', '[day][long]') as $d){
-			$js .= '"' . $d . '",';
-		}
-		$js = rtrim($js, ',');
-		$js .= ');';
-
-		$js .= '	var l_monthShort = new Array(';
-		foreach(g_l('date', '[month][short]') as $d){
-			$js .= '"' . $d . '",';
-		}
-		$js = rtrim($js, ',');
-		$js .= ');';
-
-		$js .= '	switch(f){
+		function getDateWord(f,dateObj){
+			var l_day_Short = new Array("' . implode('","', g_l('date', '[day][short]')) . '");
+			var l_monthLong = new Array("' . implode('","', g_l('date', '[month][long]')) . '");
+			var l_dayLong = new Array("' . implode('","', g_l('date', '[day][long]')) . '");
+			var l_monthShort = new Array("' . implode('","', g_l('date', '[month][short]')) . '");
+			switch(f){
 				case "D":
 					return l_day_Short[dateObj.getDay()];
 				case "F":
@@ -88,78 +62,89 @@ function we_tag_date($attribs, $content){
 			}
 		}';
 
-		$f = $format;
+			$js_arr = array();
+			$f = str_split($format, 1);
+			$ret = array();
+			for($i = 0; $i < count($f); $i++){
+				$skip = false;
+				switch($f[$i]){
+					case '\\'://skip next char
+						$i++;
+					default:
+						$ret[] = '"' . $f[$i] . '"';
+						$skip = true;
+						break;
+					case 'Y':
+						$js_arr['Y'] = 'var Y = heute.getYear();Y = (Y < 1900) ? (Y + 1900) : Y;';
+						break;
+					case 'y':
+						$js_arr['y'] = 'var y = heute.getYear();y = (y < 1900) ? (y + 1900) : y; y=String(y).substr(2,2);';
+						break;
+					case 'a':
+						$js_arr['a'] = "var a = (heute.getHours() > 11) ? 'pm' : 'am';";
+						break;
+					case 'A':
+						$js_arr['A'] = "var A = (heute.getHours() > 11) ? 'PM' : 'AM';";
+						break;
+					case 's':
+						$js_arr['s'] = "var s = heute.getSeconds();";
+						break;
+					case 'm':
+						$js_arr['m'] = "var m = heute.getMonth()+1;m = '00'+m;m=m.substring(m.length-2,m.length);";
+						break;
+					case 'n':
+						$js_arr['n'] = "var n = heute.getMonth()+1;";
+						break;
+					case 'd':
+						$js_arr['d'] = "var d = heute.getDate();d = '00'+d;d=d.substring(d.length-2,d.length);";
+						break;
+					case 'd':
+						$js_arr['j'] = "var j = heute.getDate();";
+						break;
+					case 'h':
+						$js_arr['h'] = "var h = heute.getHours();if(h > 12){h -= 12;};h = '00'+h;h=h.substring(h.length-2,h.length);";
+						break;
+					case 'H':
+						$js_arr['H'] = "var H = heute.getHours();H = '00'+H;H=H.substring(H.length-2,H.length);";
+						break;
+					case 'g':
+						$js_arr['g'] = "var g = heute.getHours();if(g > 12){ g -= 12;};";
+						break;
+					case 'G':
+						$js_arr['G'] = "var G = heute.getHours();";
+						break;
+					case 'i':
+						$js_arr['i'] = "var i = heute.getMinutes();i = '00'+i;i=i.substring(i.length-2,i.length);";
+						break;
+					case 'S':
+						$js_arr['S'] = "var S = getDateS(heute.getDate());";
+						break;
+					case 'D':
+						$js_arr['D'] = "var D = getDateWord('D',heute);";
+						break;
+					case 'F':
+						$js_arr['F'] = "var F = getDateWord('F',heute);";
+						break;
+					case 'l':
+						$js_arr['l'] = "var l = getDateWord('l',heute);";
+						break;
+					case 'M':
+						$js_arr['M'] = "var M = getDateWord('M',heute);";
+						break;
+				}
+				if(!$skip){
+					$ret[] = $f[$i];
+				}
+			}
+			$js.=implode('', $js_arr);
+			$ret = stripslashes(implode('+', $ret));
 
-		if(preg_match('|[^\\\\]Y|', $f) || preg_match('|^Y|', $f))
-			$js .= "var Y = heute.getYear();Y = (Y < 1900) ? (Y + 1900) : Y;\n";
-		if(preg_match('|[^\\\\]y|', $f) || preg_match('|^y|', $f))
-			$js .= "var y = heute.getYear();y = (y < 1900) ? (y + 1900) : y;y=y.substring(2,4);\n";
-		;
+			$js .= 'document.write(' . $ret . ');';
 
-		if(preg_match('|[^\\\\]a|', $f) || preg_match('|^a|', $f))
-			$js .= "var a = (heute.getHours() > 11) ? 'pm' : 'am';\n";
-		if(preg_match('|[^\\\\]A|', $f) || preg_match('|^A|', $f))
-			$js .= "var A = (heute.getHours() > 11) ? 'PM' : 'AM';\n";
-		if(preg_match('|[^\\\\]s|', $f) || preg_match('|^s|', $f))
-			$js .= "var s = heute.getSeconds();\n";
-		if(preg_match('|[^\\\\]m|', $f) || preg_match('|^m|', $f))
-			$js .= "var m = heute.getMonth()+1;m = '00'+m;m=m.substring(m.length-2,m.length);\n";
-		if(preg_match('|[^\\\\]n|', $f) || preg_match('|^n|', $f))
-			$js .= "var n = heute.getMonth()+1;\n";
-		if(preg_match('|[^\\\\]d|', $f) || preg_match('|^d|', $f))
-			$js .= "var d = heute.getDate();d = '00'+d;d=d.substring(d.length-2,d.length);\n";
-		if(preg_match('|[^\\\\]j|', $f) || preg_match('|^j|', $f))
-			$js .= "var j = heute.getDate();\n";
-		if(preg_match('|[^\\\\]h|', $f) || preg_match('|^h|', $f))
-			$js .= "var h = heute.getHours();if(h > 12){h -= 12;};h = '00'+h;h=h.substring(h.length-2,h.length);\n";
-		if(preg_match('|[^\\\\]H|', $f) || preg_match('|^H|', $f))
-			$js .= "var H = heute.getHours();H = '00'+H;H=H.substring(H.length-2,H.length);\n";
-		if(preg_match('|[^\\\\]g|', $f) || preg_match('|^g|', $f))
-			$js .= "var g = heute.getHours();if(g > 12){ g -= 12;};\n";
-		if(preg_match('|[^\\\\]G|', $f) || preg_match('|^G|', $f))
-			$js .= "var G = heute.getHours();\n";
-		if(preg_match('|[^\\\\]i|', $f) || preg_match('|^i|', $f))
-			$js .= "var i = heute.getMinutes();i = '00'+i;i=i.substring(i.length-2,i.length);\n";
-		if(preg_match('|[^\\\\]S|', $f) || preg_match('|^S|', $f))
-			$js .= "var S = getDateS(heute.getDate());\n";
-
-		if(preg_match('|[^\\\\]D|', $f) || preg_match('|^D|', $f))
-			$js .= "var D = getDateWord('D',heute);\n";
-		if(preg_match('|[^\\\\]F|', $f) || preg_match('|^F|', $f))
-			$js .= "var F = getDateWord('F',heute);\n";
-		if(preg_match('|[^\\\\]l|', $f) || preg_match('|^l|', $f))
-			$js .= "var l = getDateWord('l',heute);\n";
-		if(preg_match('|[^\\\\]M|', $f) || preg_match('|^M|', $f))
-			$js .= "var M = getDateWord('M',heute);\n";
-
-		$f = preg_replace('|([^\\\\])(Y)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(y)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(m)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(n)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(d)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(j)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(H)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(i)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(h)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(G)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(g)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(S)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(D)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(F)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(l)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(M)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(s)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(a)|', '\1"+\2+"', $f);
-		$f = preg_replace('|([^\\\\])(A)|', '\1"+\2+"', $f);
-
-		$f = preg_replace('/^([SYymndjHihGgDFlMsaA])/', '"+\1+"', $f);
-		$f = stripslashes($f);
-
-		$js .= 'document.write("' . $f . '");';
-
-		return we_html_element::jsElement($js);
-	} else{
-		return date(correctDateFormat($format));
+			return we_html_element::jsElement($js);
+		case 'php':
+		default:
+			return date(correctDateFormat($format));
 	}
 }
 
