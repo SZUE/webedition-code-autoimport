@@ -17,7 +17,7 @@ CREATE TABLE ###TBLPREFIX###tblvoting (
   Successor bigint(20) unsigned NOT NULL DEFAULT '0',
   Scores text NOT NULL,
   RevoteControl tinyint(1) unsigned NOT NULL default '0',
-  RevoteTime int(11) unsigned NOT NULL default '0',
+  RevoteTime int(11) default '0',
   Owners text NOT NULL,
   RestrictOwners tinyint(1) unsigned NOT NULL default '0',
   Revote longtext NOT NULL,
