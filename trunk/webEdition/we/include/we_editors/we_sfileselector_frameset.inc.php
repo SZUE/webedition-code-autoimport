@@ -24,9 +24,20 @@ if(!$_SESSION["user"]["Username"])
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/"."we_html_tools.inc.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$GLOBALS["WE_LANGUAGE"]."/contenttypes.inc.php");
+include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/alert.inc.php");
+
 
 protect();
 htmltop();
+if(!($_SESSION["perms"]['BROWSE_SERVER']||$_SESSION["perms"]['ADMINISTRATOR'])){
+			print
+				we_htmlElement::jsElement(
+						we_message_reporting::getShowMessageCall(
+								$l_alert["perms_no_permissions"],
+								WE_MESSAGE_ERROR) . "top.close();");
+		print "</body></html>";
+		exit();
+}
 
 $docroot = $_SERVER["DOCUMENT_ROOT"];
 $docroot = str_replace("\\","/",(substr($docroot,-1) == "/") ? substr($docroot,0,strlen($docroot)-1) : $docroot);

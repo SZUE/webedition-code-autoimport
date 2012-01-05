@@ -174,7 +174,11 @@ class weJavaMenu {
 				if (!isset($m["cmd"])) {
 					$m["cmd"] = "#";
 				}
-				$out .= "\n" . '				<param name="entry'.$i.'" value="'.$id.','.$m["parent"].','.$m["cmd"].','.$mtext.','.( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0").'">'."\n";
+				if(isset($m["enabled"]) && $m["enabled"]){
+					$out .= "\n" . '				<param name="entry'.$i.'" value="'.$id.','.$m["parent"].','.$m["cmd"].','.$mtext.','.( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0").'">'."\n";
+				}else{
+					$out .= "\n" . '				<param name="entry'.$i.'" value="'.$id.','.$m["parent"].',0,'.$mtext.',0"/>'."\n";
+				}
 				$i++;
 			}
 		}
