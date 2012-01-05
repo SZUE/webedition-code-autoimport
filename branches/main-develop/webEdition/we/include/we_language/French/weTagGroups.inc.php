@@ -1,7 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTagGroups=array(
-	'alltags'=>'All we:tags',
+	'alltags'=>'Tout les we:tag',
 	'apptags'=>'Applications we:tags',
 	'custom'=>'custom we:tags',
 	'if_tags'=>'If we:tags',
