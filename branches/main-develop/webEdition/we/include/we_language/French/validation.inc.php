@@ -25,7 +25,7 @@ $l_validation=array(
 		'new'=>'Nouveau Service',
 		'saved_failure'=>'Le service n`a pas pu être enregistré.',
 		'saved_success'=>'Le service a été enregistré avec succès.',
-		'servicename_already_exists'=>'A service with this name already exists.',
+		'servicename_already_exists'=>'Un service avec ce nom existe déjà.',
 	),
 	'fileEndings'=>'Les extension pour lequelles ce service sera utilisé, peuvent être saisi ici. (.html,.css)',
 	'headline'=>'Validation online d`un document.',

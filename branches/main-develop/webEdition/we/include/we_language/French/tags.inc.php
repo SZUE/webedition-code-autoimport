@@ -2,7 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_tags=array(
 	'ext_href'=>'Externe',
-	'include_file'=>'Select file for we:include',
-	'int_href'=>'Internal',
-	'open_sidebar'=>'Open sidebar',
+	'include_file'=>'Selecionner fichier pour we:include',
+	'int_href'=>'Interne',
+	'open_sidebar'=>'Ouvrir colonne laterale',
 );

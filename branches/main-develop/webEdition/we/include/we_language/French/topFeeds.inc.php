@@ -3,7 +3,7 @@
 $l_topFeeds=array(
 	
 	'0'=>array(
-		'0'=>'webEdition News',
+		'0'=>'Nouveautés de webEdition',
 		'1'=>'http://www.webedition.org/de/feeds/aktuelles.xml',
 	),
 	'1'=>array(
