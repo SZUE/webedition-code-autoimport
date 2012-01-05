@@ -137,9 +137,8 @@ function we_tag_date($attribs, $content){
 				}
 			}
 			$js.=implode('', $js_arr);
-			$ret = stripslashes(implode('+', $ret));
 
-			$js .= 'document.write(' . $ret . ');';
+			$js .= 'document.write(' . stripslashes(implode('+', $ret)) . ');';
 
 			return we_html_element::jsElement($js);
 		case 'php':
