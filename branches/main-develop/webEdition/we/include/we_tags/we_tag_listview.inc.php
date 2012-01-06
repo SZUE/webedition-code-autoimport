@@ -69,15 +69,15 @@ function we_parse_tag_listview($attribs, $content){
 }
 
 function we_tag_listview($attribs, $content){
-	$name = weTag_getAttribute('name', $attribs, '0');
+	$name = weTag_getAttribute('name', $attribs, 0);
 	$doctype = weTag_getAttribute('doctype', $attribs);
-	$class = weTag_getAttribute('classid', $attribs, '0');
+	$class = weTag_getAttribute('classid', $attribs, 0);
 	$we_lv_cats = isset($_REQUEST['we_lv_cats_' . $name]) ? $_REQUEST['we_lv_cats_' . $name] : weTag_getAttribute('categories', $attribs);
 	$categoryids = weTag_getAttribute('categoryids', $attribs);
 	$we_lv_categoryids = isset($_REQUEST['we_lv_categoryids_' . $name]) ? $_REQUEST['we_lv_categoryids_' . $name] : $categoryids;
 	$we_lv_catOr = (isset($_REQUEST['we_lv_catOr_' . $name]) ? $_REQUEST['we_lv_catOr_' . $name] : weTag_getAttribute('catOr', $attribs, false, true) ) ? true : false;
 
-	$rows = weTag_getAttribute('rows', $attribs, '100000000');
+	$rows = weTag_getAttribute('rows', $attribs, 100000000);
 	$order = weTag_getAttribute('order', $attribs);
 	$we_lv_order = isset($_REQUEST['we_lv_order_' . $name]) ? $_REQUEST['we_lv_order_' . $name] : $order;
 
@@ -95,13 +95,13 @@ function we_tag_listview($attribs, $content){
 	$workspaceID = $workspaceID ? $workspaceID : weTag_getAttribute('workspaceid', $attribs);
 	$we_lv_ws = isset($_REQUEST['we_lv_ws_' . $name]) ? $_REQUEST['we_lv_ws_' . $name] : $workspaceID;
 
-	$orderid = weTag_getAttribute('orderid', $attribs, '0');
+	$orderid = weTag_getAttribute('orderid', $attribs, 0);
 
 	$we_lv_languages = isset($_REQUEST['we_lv_languages_' . $name]) ? $_REQUEST['we_lv_languages_' . $name] : weTag_getAttribute('languages', $attribs);
 	$we_lv_pagelanguage = isset($_REQUEST['we_lv_pagelanguage_' . $name]) ? $_REQUEST['we_lv_pagelanguage_' . $name] : weTag_getAttribute('pagelanguage', $attribs);
 
-	$triggerid = weTag_getAttribute('triggerid', $attribs, '0');
-	$docid = weTag_getAttribute('docid', $attribs, '0');
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
+	$docid = weTag_getAttribute('docid', $attribs, 0);
 	$customers = weTag_getAttribute('customers', $attribs); // csv value of Ids
 	$casesensitive = weTag_getAttribute('casesensitive', $attribs, false, true);
 	$customer = weTag_getAttribute('customer', $attribs, false, true);
@@ -118,7 +118,7 @@ function we_tag_listview($attribs, $content){
 	$datefield = weTag_getAttribute('datefield', $attribs);
 	$date = weTag_getAttribute('date', $attribs);
 	$weekstart = weTag_getAttribute('weekstart', $attribs, 'monday');
-	$lastaccesslimit = weTag_getAttribute('lastaccesslimit', $attribs, '300');
+	$lastaccesslimit = weTag_getAttribute('lastaccesslimit', $attribs, 300);
 	$lastloginlimit = weTag_getAttribute('lastloginlimit', $attribs);
 
 	$subfolders = (isset($attribs['recursive'])) ?
