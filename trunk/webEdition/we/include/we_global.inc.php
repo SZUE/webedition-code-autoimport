@@ -3149,12 +3149,9 @@ function getXmlAttributeValueAsBoolean($xml) {
  * @desc removes all entries of $attribs, where the key from attribs is in values of $remove
  */
 function removeAttribs($attribs, $remove = array()) {
-
-	array_push($remove, "user");
-
-	for ($i = 0; $i < sizeof($remove); $i++) {
-		if (array_key_exists($remove[$i], $attribs)) {
-			unset($attribs[$remove[$i]]);
+	foreach($remove as $r) {
+		if (array_key_exists($r, $attribs)) {
+			unset($attribs[$r]);
 		}
 	}
 	return $attribs;

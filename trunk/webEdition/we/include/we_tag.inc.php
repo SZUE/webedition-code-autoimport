@@ -41,16 +41,17 @@ include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 function we_tag($name, $attribs=array(), $content = ''){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
+	$user = weTag_getAttribute('user', $attribs);
 
 	//make sure comment attribute is never shown
 	if ($name=='setVar'){//special handling inside this tag
-		$attribs = removeAttribs($attribs, array('comment'));
+		$attribs = removeAttribs($attribs, array('comment','user'));
 		$nameTo = '';
 		$to = 'screen';
 	} else {
 		$nameTo = we_getTagAttribute("nameto", $attribs);
 		$to = we_getTagAttribute("to", $attribs,'screen');
-		$attribs = removeAttribs($attribs, array('comment','to','nameto'));
+		$attribs = removeAttribs($attribs, array('comment','to','nameto','user'));
 		/* if to attribute is set, output of the tag is redirected to a variable
 		 * this makes only sense if tag output is equal to non-editmode*/
 		if($to != 'screen'){
@@ -61,19 +62,9 @@ function we_tag($name, $attribs=array(), $content = ''){
 	if ($content) {
 		$content = str_replace('we_:_', 'we:', $content);
 	}
-	if (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) {
-		if (isset($attribs['user']) && $attribs['user']) {
-			$uAr = makeArrayFromCSV($attribs['user']);
-			$userIds = array();
-			foreach ($uAr as $u) {
-				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . $GLOBALS['DB_WE']->escape($u) . "'", "ID", $GLOBALS["DB_WE"]);
-				if ($i) {
-					array_push($userIds, $i);
-				}
-			}
-			if (!isUserInUsers($_SESSION['user']['ID'], $userIds) && (!$_SESSION['perms']['ADMINISTRATOR'])) {
-				$GLOBALS['we_editmode'] = false;
-			}
+	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){
+		if(!in_array($_SESSION['user']['Username'], makeArrayFromCSV($user))){
+			$GLOBALS['we_editmode'] = false;
 		}
 	}
 
