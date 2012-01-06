@@ -41,7 +41,7 @@ include_once (WE_USERS_MODULE_DIR . 'we_users_util.php');
 function we_tag($name, $attribs=array(), $content = ''){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
-	$user = weTag_getAttribute('user', $attribs);
+	$user = we_getTagAttribute('user', $attribs);
 
 	//make sure comment attribute is never shown
 	if ($name=='setVar'){//special handling inside this tag
