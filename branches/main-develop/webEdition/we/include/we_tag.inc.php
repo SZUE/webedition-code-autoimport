@@ -24,7 +24,6 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
-
 function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;
 
@@ -54,20 +53,20 @@ function we_include_tag_file($name){
 	return parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 }
 
-
 function we_tag($name, $attribs=array(), $content = ''){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
+	$user = weTag_getAttribute('user', $attribs);
 
 	//make sure comment attribute is never shown
 	if($name == 'setVar'){//special handling inside this tag
-		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment'));
+		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
 		$nameTo = '';
 		$to = 'screen';
 	} else{
 		$nameTo = weTag_getAttribute("nameto", $attribs);
 		$to = weTag_getAttribute("to", $attribs, 'screen');
-		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto'));
+		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
 		/* if to attribute is set, output of the tag is redirected to a variable
 		 * this makes only sense if tag output is equal to non-editmode */
 		if($to != 'screen'){
@@ -82,19 +81,9 @@ function we_tag($name, $attribs=array(), $content = ''){
 			$attribs['name'] = $attribs['name'] . $GLOBALS['postTagName'];
 		}
 	}
-	if($edMerk){
-		if(isset($attribs['user']) && $attribs['user']){
-			$uAr = makeArrayFromCSV($attribs['user']);
-			$userIds = array();
-			foreach($uAr as $u){
-				$i = f("SELECT ID FROM " . USER_TABLE . " WHERE Username='" . $GLOBALS['DB_WE']->escape($u) . "'", "ID", $GLOBALS['DB_WE']);
-				if($i){
-					array_push($userIds, $i);
-				}
-			}
-			if(!we_users_util::isUserInUsers($_SESSION['user']['ID'], $userIds) && (!$_SESSION['perms']['ADMINISTRATOR'])){
-				$GLOBALS['we_editmode'] = false;
-			}
+	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){
+		if(!in_array($_SESSION['user']['Username'], makeArrayFromCSV($user))){
+			$GLOBALS['we_editmode'] = false;
 		}
 	}
 
@@ -167,9 +156,9 @@ function mta($hash, $key){
 
 function printElement($code){
 	if(isset($code)){
-		if(strpos($code,'<?')!==FALSE){
+		if(strpos($code, '<?') !== FALSE){
 			eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
-		}else{
+		} else{
 			echo $code;
 		}
 	}
