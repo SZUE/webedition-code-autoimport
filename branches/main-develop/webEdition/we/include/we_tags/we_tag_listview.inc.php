@@ -110,11 +110,10 @@ function we_tag_listview($attribs, $content){
 	$cols = weTag_getAttribute('cols', $attribs);
 	$we_lv_se = (isset($_REQUEST['we_lv_se_' . $name]) ? $_REQUEST['we_lv_se_' . $name] : weTag_getAttribute('searchable', $attribs, true, true)) ? true : false;
 
-	if(isset($attribs['seem'])){
-		$seeMode = weTag_getAttribute('seem', $attribs, true, true); //	backwards compatibility
-	} else{
-		$seeMode = weTag_getAttribute('seeMode', $attribs, true, true);
-	}
+	$seeMode = (isset($attribs['seem'])) ?
+		weTag_getAttribute('seem', $attribs, true, true) : //	backwards compatibility
+		weTag_getAttribute('seeMode', $attribs, true, true);
+
 	$calendar = weTag_getAttribute('calendar', $attribs);
 	$datefield = weTag_getAttribute('datefield', $attribs);
 	$date = weTag_getAttribute('date', $attribs);
@@ -122,12 +121,11 @@ function we_tag_listview($attribs, $content){
 	$lastaccesslimit = weTag_getAttribute('lastaccesslimit', $attribs, '300');
 	$lastloginlimit = weTag_getAttribute('lastloginlimit', $attribs);
 
-	if(isset($attribs['recursive'])){
-		$subfolders = weTag_getAttribute('recursive', $attribs, true, true);
-	} else{
+	$subfolders = (isset($attribs['recursive'])) ?
+		weTag_getAttribute('recursive', $attribs, true, true) :
 		// deprecated, because subfolders acts the other way arround as it should
-		$subfolders = !weTag_getAttribute('subfolders', $attribs, false, true);
-	}
+		!weTag_getAttribute('subfolders', $attribs, false, true);
+
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 	if($we_lv_subfolders == 'false'){
 		$we_lv_subfolders = false;
