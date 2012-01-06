@@ -1121,7 +1121,7 @@ function makeOwnersSql($useCreatorID = true) {
 		we_getAliases($_SESSION['user']['ID'], $aliases, $GLOBALS['DB_WE']);
 		$q = $useCreatorID ? 'CreatorID IN (\'' . implode('\',\'', $aliases) . '\') OR ' : '';
 		foreach ($aliases as $id)
-			$q .= 'Owners like "%,' . intval($id) . ',%\' OR ';
+			$q .= 'Owners like "%,' . intval($id) . ',%" OR ';
 		$groups = array(
 				$_SESSION['user']['ID']
 		);

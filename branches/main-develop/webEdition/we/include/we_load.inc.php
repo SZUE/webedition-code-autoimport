@@ -172,7 +172,7 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 				getItems($ID, 0, $segment);
 
 		}
-		$total = f("SELECT COUNT(*) as total FROM $table $where;", "total", $DB_WE);
+		$total = f("SELECT COUNT(1) as total FROM $table $where;", 'total', $DB_WE);
 		$nextoffset = $offset + $segment;
 		if ($segment && $total > $nextoffset) {
 			$treeItems[] = array(
