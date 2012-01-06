@@ -74,7 +74,6 @@ class we_listview_object extends listviewBase{
 		$this->classID = $classID;
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
-		$this->languages = $languages;
 
 		$this->seeMode = $seeMode; //	edit objects in seeMode
 		$this->searchable = $searchable;
@@ -83,7 +82,7 @@ class we_listview_object extends listviewBase{
 		$this->customerArray = array();
 
 		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		$this->languages = $this->languages ? $this->languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
@@ -480,7 +479,6 @@ class we_listview_object extends listviewBase{
 	}
 
 	function f($key){
-		return $this->DB_WE->f("we_" . $key);
+		return $this->DB_WE->f('we_' . $key);
 	}
-
 }

@@ -39,8 +39,6 @@ class we_listview_multiobject extends listviewBase{
 	var $Path = ""; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = array();
 	var $searchable = true;
-	var $Record = array();
-	var $customerFilterType = 'off';
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
@@ -119,13 +117,13 @@ class we_listview_multiobject extends listviewBase{
 		$this->classID = $data['class'];
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
-
-		$this->seeMode = $seeMode; //	edit objects in seeMode
+		//FIXME:unused
+		//$this->seeMode = $seeMode; //	edit objects in seeMode
 		$this->searchable = $searchable;
 		$this->docID = $docID; //Bug #3720
 
-		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
-		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		$this->condition = $this->condition ? $this->condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : '');
+		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
@@ -464,7 +462,6 @@ class we_listview_multiobject extends listviewBase{
 	}
 
 	function f($key){
-		return $this->DB_WE->f("we_" . $key);
+		return $this->DB_WE->f('we_' . $key);
 	}
-
 }

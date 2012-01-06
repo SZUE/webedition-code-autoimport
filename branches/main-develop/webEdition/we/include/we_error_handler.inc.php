@@ -27,8 +27,11 @@
  *
  * Provides a error handler for webEdition.
  */
+//essential includes, use these to allow it to be called without we "running"
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_global.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
+
 
 /* * ***********************************************************************
  * VARIABLES
@@ -42,7 +45,7 @@ $GLOBALS['we']['errorhandler'] = array(
 	'display' => false,
 	'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
 	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
-	'shutdown'=>'we',
+	'shutdown' => 'we',
 );
 
 if(!defined('E_SQL')){
@@ -55,11 +58,11 @@ if(!defined('E_SQL')){
 
 function we_error_handler($in_webEdition = true){
 	// Get error types to be handled
-	/*$GLOBALS['we']['errorhandler']['notice'] = defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false;
-	$GLOBALS['we']['errorhandler']['deprecated'] = defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false;
-	$GLOBALS['we']['errorhandler']['warning'] = defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false;
-	$GLOBALS['we']['errorhandler']['error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
-*/
+	/* $GLOBALS['we']['errorhandler']['notice'] = defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false;
+	  $GLOBALS['we']['errorhandler']['deprecated'] = defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false;
+	  $GLOBALS['we']['errorhandler']['warning'] = defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false;
+	  $GLOBALS['we']['errorhandler']['error'] = defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true;
+	 */
 	// Get way of how to show errors
 	if($in_webEdition){
 		$GLOBALS['we']['errorhandler']['display'] = false;
@@ -69,10 +72,10 @@ function we_error_handler($in_webEdition = true){
 	} else{
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
-	/*$GLOBALS['we']['errorhandler']['log'] = defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true;
+	/* $GLOBALS['we']['errorhandler']['log'] = defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true;
 
-	$GLOBALS['we']['errorhandler']['send'] = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false;
-*/
+	  $GLOBALS['we']['errorhandler']['send'] = (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false;
+	 */
 	// Check PHP version
 	if(version_compare(PHP_VERSION, '5.2.4') < 0){
 		display_error_message(E_ERROR, 'Unable to launch webEdition - PHP 5.2.4 or higher required!', '/webEdition/we/include/we_error_handler.inc.php', 69);
@@ -210,10 +213,9 @@ function display_error_message($type, $message, $file, $line, $skipBT=false){
 		$type = E_SQL;
 	}
 
+	$detailedError = $_caller = '-';
 	if(!$skipBT){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_handler', 'getBacktrace', 'display_error_message')));
-	}else{
-		$detailedError = $_caller = '-';
 	}
 
 	// Build the error table
@@ -251,7 +253,7 @@ function display_error_message($type, $message, $file, $line, $skipBT=false){
 	$_detailedError .= '		<td nowrap="nowrap" style="border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>';
 	$_detailedError .= '		<td ><font face="Verdana, Arial, Helvetica, sans-serif" size="2">';
 
-	$detailedError = preg_replace("|[\r\n]|", '', nl2br($detailedError));
+	$detailedError = str_replace(array("\r", "\n"), '', nl2br($detailedError));
 	$_detailedError .= $detailedError;
 	$_detailedError .= ' 	</font></td>';
 	$_detailedError .= '	</tr>';
@@ -293,7 +295,7 @@ function getVariableMax($var){
 	}
 
 	if(strlen($ret) > $max){
-		$ret = substr($ret, 0, $max);
+		$ret = substr($ret, 0, $max)."\n[...]";
 	}
 	return $var . '="' . escape_sql_query($ret) . '"';
 }
@@ -304,10 +306,9 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 	if(strpos($message, 'MYSQL-ERROR') === 0){
 		$type = E_SQL;
 	}
+	$_detailedError = $_caller = '-';
 	if(!$skipBT){
 		list($_detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_handler', 'getBacktrace', 'log_error_message')));
-	}else{
-		$_detailedError = $_caller = '-';
 	}
 
 	// Error type
@@ -319,8 +320,6 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 	// Script name
 	$_file = str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file);
 
-
-//FIXME: mysql_ => should this be handled by DB_WE?
 	// Log the error
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
 		$logVars = array('Request', 'Session', 'Server');
@@ -363,10 +362,9 @@ function mail_error_message($type, $message, $file, $line, $skipBT=false){
 	if(strpos($message, 'MYSQL-ERROR') === 0){
 		$type = E_SQL;
 	}
+	$detailedError = $_caller = '-';
 	if(!$skipBT){
 		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_handler', 'getBacktrace', 'mail_error_message')));
-	}else{
-		$detailedError = $_caller = '-';
 	}
 
 	// Build the error table
@@ -511,20 +509,20 @@ function error_handler($type, $message, $file, $line, $context){
 }
 
 function shutdown_handler(){
-	if($GLOBALS['we']['errorhandler']['shutdown']!='we'){
+	if($GLOBALS['we']['errorhandler']['shutdown'] != 'we'){
 		return;
 	}
 	$error = error_get_last();
 	if(is_array($error)){
 		switch($error['type']){
-		case E_ERROR:
-		case E_PARSE:
-		case E_CORE_ERROR:
-		case E_COMPILE_ERROR:
-		case E_USER_ERROR:
-		case E_RECOVERABLE_ERROR:
-			error_handler($error['type'],$error['message']."\n".print_r($error,true),$error['file'],$error['line'],null);
+			case E_ERROR:
+			case E_PARSE:
+			case E_CORE_ERROR:
+			case E_COMPILE_ERROR:
+			case E_USER_ERROR:
+			case E_RECOVERABLE_ERROR:
+				error_handler($error['type'], $error['message'] . "\n" . print_r($error, true), $error['file'], $error['line'], null);
+			default:
 		}
 	}
-
 }

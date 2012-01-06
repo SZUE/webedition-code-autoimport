@@ -70,7 +70,8 @@ class we_langlink_listview extends listviewBase{
 		$this->id = $id;
 		$this->ownlanguage = $ownlanguage;
 		$this->linkType = $linkType;
-		$this->seeMode = $seeMode;
+		//FIXME:unused
+		//$this->seeMode = $seeMode;
 
 
 		$_languages = getWeFrontendLanguagesForBackend();

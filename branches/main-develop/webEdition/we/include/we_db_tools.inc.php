@@ -24,33 +24,33 @@
  */
 
 /**
-@param $query: SQL query; an empty query resets the cache
-*/
+  @param $query: SQL query; an empty query resets the cache
+ */
 function getHash($query, $DB_WE){
 	static $cache = array();
-	if($query==''){
-		$cache=array();
+	if($query == ''){
+		$cache = array();
 		return $cache;
 	}
-	if (!isset($cache[$query])) {
+	if(!isset($cache[$query])){
 		$DB_WE->query($query);
-		$cache[$query] = ($DB_WE->next_record() ? $DB_WE->Record :array());
+		$cache[$query] = ($DB_WE->next_record() ? $DB_WE->Record : array());
 	}
 	return $cache[$query];
 }
 
-function f($query, $field, $DB_WE) {
+function f($query, $field, $DB_WE){
 	$h = getHash($query, $DB_WE);
 	return isset($h[$field]) ? $h[$field] : '';
 }
 
-function doUpdateQuery($DB_WE, $table, $hash, $where) {
+function doUpdateQuery($DB_WE, $table, $hash, $where){
 	$tableInfo = $DB_WE->metadata($table);
-	$sql = 'UPDATE `'.$table.'` SET ';
-for ($i = 0; $i < sizeof($tableInfo); $i++) {
+	$sql = 'UPDATE `' . $table . '` SET ';
+	for($i = 0; $i < sizeof($tableInfo); $i++){
 		$fieldName = $tableInfo[$i]["name"];
-		if ($fieldName != "ID") {
-			$sql .= '`'.$fieldName . '`=\'' . (isset($hash[$fieldName]) ? $DB_WE->escape($hash[$fieldName]) : '') . '\',';
+		if($fieldName != "ID"){
+			$sql .= '`' . $fieldName . '`=\'' . (isset($hash[$fieldName]) ? $DB_WE->escape($hash[$fieldName]) : '') . '\',';
 		}
 	}
 	$sql = rtrim($sql, ',') . ' ' . $where;
@@ -58,30 +58,23 @@ for ($i = 0; $i < sizeof($tableInfo); $i++) {
 }
 
 function escape_sql_query($inp){
-    if(is_array($inp))
-         return array_map(__METHOD__, $inp);
+	if(is_array($inp)){
+		return array_map(__METHOD__, $inp);
+	}
 
-     if(!empty($inp) && is_string($inp)) {
-         return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
-     }
-
-     return $inp;
-
+	if(!empty($inp) && is_string($inp)){
+		return str_replace(array('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $inp);
+	}
+	return $inp;
 }
 
-function doInsertQuery($DB_WE, $table, $hash) {
-
+function doInsertQuery($DB_WE, $table, $hash){
 	$tableInfo = $DB_WE->metadata($table);
 	$fn = array();
-	$values = '';
-	for ($i = 0; $i < sizeof($tableInfo); $i++) {
-		$fieldName = $tableInfo[$i]["name"];
-		array_push($fn, $fieldName);
-		$values .= '"' . $DB_WE->escape(isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName]) . '",';
+	foreach($tableInfo as $t){
+		$fieldName = $t['name'];
+		$fn[$fieldName]=isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName];
 	}
-	$ti_s = implode(',', $fn);
-	$values = rtrim($values, ',');
-	$sql = 'INSERT INTO `'.$table.'` ('.$ti_s.') VALUES ('.$values.')';
 
-	return $DB_WE->query($sql);
+	return $DB_WE->query('INSERT INTO `' . $table . '` SET ' . we_database_base::arraySetter($fn));
 }
