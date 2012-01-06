@@ -838,9 +838,7 @@ class weVersions {
 	* @abstract count versions
 	*/
 	public function countVersions($id, $contentType) {
-
-		$countVersions = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($id)." AND ContentType = '".escape_sql_query($contentType)."'","Count", new DB_WE());
-		return $countVersions;
+		return f("SELECT COUNT(1) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($id)." AND ContentType = '".escape_sql_query($contentType)."'",'Count', new DB_WE());
 	}
 
 	 /**
@@ -1058,7 +1056,7 @@ class weVersions {
 		} else {
 			$prefAnzahl = (defined("VERSIONS_ANZAHL") && VERSIONS_ANZAHL!="") ? VERSIONS_ANZAHL : "";
 		}
-		$anzahl = f("SELECT COUNT(*) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."'","Count",$db);
+		$anzahl = f("SELECT COUNT(1) AS Count FROM ".VERSIONS_TABLE." WHERE documentId = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."'","Count",$db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl!="") {
 			$toDelete = $anzahl - $prefAnzahl;
@@ -1907,7 +1905,7 @@ class weVersions {
 					}
 				}
 
-				$existsFile = f("SELECT COUNT(*) as Count FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID!= ".intval($resetArray["documentID"])." AND Path= '".$db->escape($resetDoc->Path)."' ","Count",$db);
+				$existsFile = f("SELECT COUNT(1) as Count FROM " . $db->escape($resetArray["documentTable"]) . " WHERE ID!= ".intval($resetArray["documentID"])." AND Path= '".$db->escape($resetDoc->Path)."' ","Count",$db);
 
 				$doPark = false;
 				if(!empty($existsFile)) {

@@ -78,8 +78,7 @@ class searchtoolsearch extends we_search{
 				$obj->searchclassFolder->searchstart = ($_REQUEST["searchstart"]);
 			}
 			if(isset($_REQUEST["setView"])){
-				$this->query(
-					"UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['setView']) . " WHERE ID=" . intval($obj->ID));
+				$this->db->query("UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['setView']) . " WHERE ID=" . intval($obj->ID));
 				$obj->searchclassFolder->setView = ($_REQUEST["setView"]);
 			} else{
 				$obj->searchclassFolder->setView = f(
@@ -112,7 +111,7 @@ class searchtoolsearch extends we_search{
 			}
 		} else{
 			if(isset($_REQUEST['we_cmd']["setView"]) && isset($_REQUEST["id"])){
-				$this->query(
+				$this->db->query(
 					"UPDATE " . FILE_TABLE . " SET listview=" . intval($_REQUEST['we_cmd']["setView"]) . " WHERE ID=" . intval($_REQUEST["id"]));
 			}
 		}
@@ -756,7 +755,7 @@ class searchtoolsearch extends we_search{
 		}
 
 		$query = "SELECT `" . SEARCH_TEMP_TABLE . "`.*,LOWER(" . $sortierung[0] . ") AS lowtext, abs(" . $sortierung[0] . ") as Nr, (" . $sortierung[0] . " REGEXP '^[0-9]') as isNr  FROM `" . SEARCH_TEMP_TABLE . "` ORDER BY IsFolder DESC, isNr " . $sortIsNr . ",Nr " . $sortNr . ",lowtext " . $sortNr . ", " . $order . "  limit " . $searchstart . "," . $anzahl . " ";
-		$this->query($query);
+		$this->db->query($query);
 	}
 
 //FIXME path is only implemented for filetable
@@ -774,33 +773,33 @@ class searchtoolsearch extends we_search{
 			case FILE_TABLE:
 				$tmpTableWhere = '';
 				if($path){
-					$this->where .= ' AND Path LIKE "' . $this->escape($path) . '%" ';
-					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->escape($path) . '%" )';
+					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
+					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where . " ";
-				$this->query($query);
+				$this->db->query($query);
 
 				$titles = array();
 				//first check published documents
 				$query = "SELECT a.Name, b.Dat, a.DID FROM `" . LINK_TABLE . "` a LEFT JOIN `" . CONTENT_TABLE . "` b on (a.CID = b.ID) WHERE a.Name='Title' AND NOT a.DocumentTable='" . TEMPLATES_TABLE . "'";
-				$this->query($query);
-				while($this->next_record()) {
-					$titles[$this->f('DID')] = $this->f('Dat');
+				$this->db->query($query);
+				while($this->db->next_record()) {
+					$titles[$this->db->f('DID')] = $this->db->f('Dat');
 				}
 				//check unpublished documents
 				$query2 = 'SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable = "tblFile" AND Active = 1 ' . $tmpTableWhere;
-				$this->query($query2);
-				while($this->next_record()) {
-					$tempDoc = unserialize($this->f('DocumentObject'));
+				$this->db->query($query2);
+				while($this->db->next_record()) {
+					$tempDoc = unserialize($this->db->f('DocumentObject'));
 					if(isset($tempDoc[0]['elements']['Title'])){
-						$titles[$this->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
+						$titles[$this->db->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
 					}
 				}
 				if(is_array($titles) && !empty($titles)){
 					foreach($titles as $k => $v){
 						if($v != ""){
-							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . $this->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
-							$this->query($query3);
+							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . $this->db->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
+							$this->db->query($query3);
 						}
 					}
 				}
@@ -812,7 +811,7 @@ class searchtoolsearch extends we_search{
 					if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", VERSIONS_TABLE . ".", $query);
 					}
-					$this->query($query);
+					$this->db->query($query);
 				}
 				if(defined("OBJECT_FILES_TABLE")){
 					if($_SESSION['weSearch']['onlyObjects'] || $_SESSION['weSearch']['ObjectsAndDocs']){
@@ -820,7 +819,7 @@ class searchtoolsearch extends we_search{
 						if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 							$query = str_replace(OBJECT_FILES_TABLE . ".", VERSIONS_TABLE . ".", $query);
 						}
-						$this->query($query);
+						$this->db->query($query);
 					}
 				}
 				unset($_SESSION['weSearch']['onlyObjects']);
@@ -832,17 +831,17 @@ class searchtoolsearch extends we_search{
 
 			case TEMPLATES_TABLE:
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` " . $this->where . "  ";
-				$this->query($query);
+				$this->db->query($query);
 				break;
 
 			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -4):
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` " . $this->where . " ";
-				$this->query($query);
+				$this->db->query($query);
 				break;
 
 			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -5):
 				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` " . $this->where . "  ";
-				$this->query($query);
+				$this->db->query($query);
 				break;
 		}
 	}
@@ -859,7 +858,7 @@ class searchtoolsearch extends we_search{
 	function createTempTable(){
 
 		$q = "DROP TABLE IF EXISTS `" . SEARCH_TEMP_TABLE . "`";
-		$this->query($q);
+		$this->db->query($q);
 
 		$tableType = searchtoolsearch::getTableType();
 
@@ -899,7 +898,7 @@ class searchtoolsearch extends we_search{
 				) ENGINE = " . $tableType . $charset_collation . "
 			";
 
-			$this->query($q);
+			$this->db->query($q);
 		}
 	}
 

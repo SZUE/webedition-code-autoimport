@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class weGlossarySearch {
+class weGlossarySearch{
 
 	/**
 	 * Database Object DB_WE
@@ -87,84 +87,73 @@ class weGlossarySearch {
 	 */
 	var $Rows = 10;
 
-
 	/**
 	 * PHP 5 Constructor
 	 *
 	 */
-	function __construct($table) {
+	function __construct($table){
 
 		$this->weGlossarySearch($table);
-
 	}
-
 
 	/**
 	 * PHP 4 Constructor
 	 *
 	 * @return weGlossarySearch
 	 */
-	function weGlossarySearch($table) {
+	function weGlossarySearch($table){
 
 		$this->DatabaseObject = new DB_WE();
 
 		$this->Table = $table;
-
 	}
-
 
 	/**
 	 * set the fields wich have to be selected
 	 *
 	 * @param array $fields
 	 */
-	function setFields($fields = array()) {
+	function setFields($fields = array()){
 
 		$this->Fields = $fields;
-
 	}
-
 
 	/**
 	 * set the where clause
 	 *
 	 * @param string $where
 	 */
-	function setWhere($where = "") {
+	function setWhere($where = ""){
 		$this->Where = $where;
 	}
-
 
 	/**
 	 * set the group by clause
 	 *
 	 * @param string $groupBy
 	 */
-	function setGroupBy($groupBy = "") {
+	function setGroupBy($groupBy = ""){
 		$this->GroupBy = $groupBy;
 	}
-
 
 	/**
 	 * set the where clause
 	 *
 	 * @param string $where
 	 */
-	function setHaving($having = "") {
+	function setHaving($having = ""){
 		$this->Having = $having;
 	}
-
 
 	/**
 	 * set the order clause
 	 *
 	 * @param string $order
 	 */
-	function setOrder($order = "", $sort = "ASC") {
+	function setOrder($order = "", $sort = "ASC"){
 		$this->Order = $order;
 		$this->Sort = $sort;
 	}
-
 
 	/**
 	 * set the offset and the count
@@ -172,11 +161,10 @@ class weGlossarySearch {
 	 * @param integer $offset
 	 * @param integer $count
 	 */
-	function setLimit($offset = 0, $rows = 10) {
+	function setLimit($offset = 0, $rows = 10){
 		$this->Offset = $offset;
 		$this->Rows = $rows;
 	}
-
 
 	/**
 	 * get statement
@@ -184,16 +172,16 @@ class weGlossarySearch {
 	 * @param boolean $countStmt
 	 * @return string
 	 */
-	function _getStatement($countStmt = false) {
-		$stmt = "SELECT ".
-		($countStmt? "COUNT(*)":implode(', ', $this->Fields)).
-		" FROM " . escape_sql_query($this->Table) . " ".
-		"WHERE " . ($this->Where == "" ? "1" : $this->Where).
-		($this->GroupBy != ''?" GROUP BY " . $this->GroupBy:'').
-		($this->Having != '' ? " HAVING " . $this->Having : '');
+	function _getStatement($countStmt = false){
+		$stmt = "SELECT " .
+			($countStmt ? "COUNT(1)" : implode(', ', $this->Fields)) .
+			" FROM " . escape_sql_query($this->Table) . " " .
+			"WHERE " . ($this->Where == "" ? "1" : $this->Where) .
+			($this->GroupBy != '' ? " GROUP BY " . $this->GroupBy : '') .
+			($this->Having != '' ? " HAVING " . $this->Having : '');
 
-		if(!$countStmt) {
-			if($this->Order != '') {
+		if(!$countStmt){
+			if($this->Order != ''){
 				$stmt .= " ORDER BY " . $this->Order . " " . $this->Sort;
 			}
 
@@ -203,35 +191,31 @@ class weGlossarySearch {
 		return trim($stmt);
 	}
 
-
 	/**
 	 * count the items
 	 *
 	 * @return integer
 	 */
-	function countItems() {
-		return f($this->_getStatement(true),"COUNT(*)",$this->DatabaseObject);
+	function countItems(){
+		return f($this->_getStatement(true), "COUNT(1)", $this->DatabaseObject);
 	}
-
 
 	/**
 	 * execute the saerch query
 	 *
 	 */
-	function execute() {
+	function execute(){
 		$this->DatabaseObject->query($this->_getStatement());
 	}
-
 
 	/**
 	 * iterate over the whole resultset
 	 *
 	 * @return mixed
 	 */
-	function next() {
+	function next(){
 		return $this->DatabaseObject->next_record();
 	}
-
 
 	/**
 	 * get the value of a field
@@ -239,36 +223,34 @@ class weGlossarySearch {
 	 * @param string $field
 	 * @return mixed
 	 */
-	function getField($field) {
+	function getField($field){
 		return $this->DatabaseObject->f($field);
 	}
-
 
 	/**
 	 * get the pages as array (key = pageNr, value = start)
 	 *
 	 * @return array
 	 */
-	function getPages() {
+	function getPages(){
 		$_count = $this->countItems();
 		$_pages = ceil($_count / $this->Rows);
 
 		$pages = array();
-		for($i = 1; $i <= $_pages; $i++) {
-			$pages[($i-1)*$this->Rows] = $i;
+		for($i = 1; $i <= $_pages; $i++){
+			$pages[($i - 1) * $this->Rows] = $i;
 		}
 
 		return $pages;
 	}
-
 
 	/**
 	 * get the number of the active page
 	 *
 	 * @return integer
 	 */
-	function getActivePage() {
-		return ceil(($this->Offset-1) / $this->Rows);
+	function getActivePage(){
+		return ceil(($this->Offset - 1) / $this->Rows);
 	}
 
 }

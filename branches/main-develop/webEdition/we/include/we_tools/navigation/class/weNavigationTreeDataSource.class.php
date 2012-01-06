@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weNavigationTreeDataSource extends weToolTreeDataSource{
 
 	function __construct($ds){
@@ -126,7 +125,7 @@ class weNavigationTreeDataSource extends weToolTreeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f("SELECT COUNT(*) as total FROM $table $where;", 'total', $db);
+		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(

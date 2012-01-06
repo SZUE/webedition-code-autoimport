@@ -524,6 +524,13 @@ abstract class we_database_base {
 		return $this->_query('unlock tables');
 	}
 
+	/**
+	 * get full query result
+	 * @return array 
+	 */
+	public function getRecord(){
+		return $this->Record;
+	}
 
 	/** eventually print the message and stop further execution, depending on "Halt_On_Error"
 	 * @param string $msg message to be printed

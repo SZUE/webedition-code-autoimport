@@ -26,7 +26,6 @@
   / only used for direct expression input ( exp: ) from old search of slavko
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_search.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_db_tools.inc.php");
 
 class searchtoolExp extends we_search{
@@ -72,17 +71,16 @@ class searchtoolExp extends we_search{
 		$_condition = $this->constructCondition($_tokens);
 
 		$_result = array();
-		$_db = new DB_WE();
 
 		foreach($_tables as $_table){
 
-			$_query = 'SELECT * FROM '.$_table.' '.$_condition;
-			$_db->query($_query);
+			$_query = 'SELECT * FROM ' . $_table . ' ' . $_condition;
+			$this->db->query($_query);
 
-			while($_db->next_record()) {
+			while($this->db->next_record()) {
 				$_result[] = array_merge(array(
 					'Table' => $_table
-					), $_db->Record);
+					), $this->db->Record);
 			}
 		}
 
@@ -178,7 +176,7 @@ class searchtoolExp extends we_search{
 		$_arr = array();
 
 		foreach($this->Operators as $_k => $_v){
-			if(preg_match('_'.$_k.'_', $string)){
+			if(preg_match('_' . $_k . '_', $string)){
 				$_arr = explode($_k, $string);
 				$_expr = array(
 					'operand1' => trim($this->fixFieldNames($_arr[0])),

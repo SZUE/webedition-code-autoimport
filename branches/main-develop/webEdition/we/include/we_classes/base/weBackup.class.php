@@ -426,9 +426,7 @@ class weBackup extends we_backup{
 						$this->backup_step = 0;
 						$this->table_end = 0;
 
-						$this->table_end = f("SELECT COUNT(*) AS Count FROM " . $this->backup_db->escape($table), "Count", $this->backup_db);
-						/* $this->backup_db->query("SELECT COUNT(*) AS Count FROM $table");
-						  if($this->backup_db->next_record()) $this->table_end=$this->backup_db->f("Count"); */
+						$this->table_end = f("SELECT COUNT(1) AS Count FROM " . $this->backup_db->escape($table), "Count", $this->backup_db);
 					}
 
 					if(isset($this->description["export"][strtolower($table)]))

@@ -133,7 +133,7 @@ class weToolTreeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f("SELECT COUNT(*) as total FROM " . $db->escape($table) . " $where;", 'total', $db);
+		$total = f("SELECT COUNT(1) as total FROM " . $db->escape($table) . ' ' . $where, 'total', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(

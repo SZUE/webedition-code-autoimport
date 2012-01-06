@@ -27,7 +27,6 @@
  *
  * Provides functions for exporting and importing backups.
  */
-
 define("BACKUP_TABLE", TBL_PREFIX . "tblbackup");
 
 class we_backup{
@@ -391,7 +390,7 @@ class we_backup{
 	function tableDefinition($table, $nl, $noprefix){
 		$foo = "DROP TABLE IF EXISTS " . $this->backup_db->escape($noprefix) . ";$nl";
 		$foo .= "CREATE TABLE " . $this->backup_db->escape($noprefix) . " ($nl";
-		$this->backup_db->query("SHOW FIELDS FROM " . $this->backup_db->escape($table) );
+		$this->backup_db->query("SHOW FIELDS FROM " . $this->backup_db->escape($table));
 		while($this->backup_db->next_record()) {
 			$row = $this->backup_db->Record;
 			$foo .= "   $row[Field] $row[Type]";
@@ -407,7 +406,7 @@ class we_backup{
 			$foo .= ",$nl";
 		}
 		$foo = preg_replace('/,' . $nl . '$/', '', $foo);
-		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table) );
+		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table));
 		while($this->backup_db->next_record()) {
 			$row = $this->backup_db->Record;
 			$key = $row['Key_name'];
@@ -586,16 +585,13 @@ class we_backup{
 							@fwrite($fh, "#$nl");
 							@fwrite($fh, $nl);
 							$this->backup_step = 0;
-							$this->table_end = 0;
-							$this->backup_db->query("SELECT COUNT(*) AS Count FROM " . $this->backup_db->escape($table) );
-							if($this->backup_db->next_record())
-								$this->table_end = $this->backup_db->f("Count");
-							$fieldnames = "(";
-							for($k = 0; $k < sizeof($metadata); $k++){
-								$fieldnames .= $metadata[$k]["name"] . ", ";
+							$this->table_end = intval(f('SELECT COUNT(1) AS Count FROM ' . $this->backup_db->escape($table), 'Count', $this->backup_db));
+							$fieldnames = '(';
+							foreach($metadata as $m){
+								$fieldnames .= $m["name"] . ", ";
 							}
 							$fieldnames = substr($fieldnames, 0, -2);
-							$fieldnames .= ")";
+							$fieldnames .= ')';
 							$this->current_insert = "INSERT INTO $noprefix $fieldnames VALUES (";
 							if(isset($this->description["export"][strtolower($noprefix)])){
 								$this->current_description = $this->description["export"][strtolower($noprefix)];

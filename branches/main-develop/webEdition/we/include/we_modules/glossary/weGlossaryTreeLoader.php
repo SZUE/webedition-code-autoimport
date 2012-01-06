@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 class weGlossaryTreeLoader{
 
-	function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = "") {
+	function getItems($ParentId, $Offset = 0, $Segment = 500, $Sort = ""){
 
 		$Types = array(
 			'abbreviation',
@@ -39,169 +38,157 @@ class weGlossaryTreeLoader{
 
 		$Temp = explode("_", $ParentId);
 
-		if(in_array($Temp[(sizeof($Temp)-1)], $Types)) {
+		if(in_array($Temp[(sizeof($Temp) - 1)], $Types)){
 			$Type = array_pop($Temp);
 			$Language = implode("_", $Temp);
 			return weGlossaryTreeLoader::getItemsFromDB($Language, $Type, $Offset, $Segment);
-
-		} else if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])) {
+		} else if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])){
 			return weGlossaryTreeLoader::getTypes($ParentId);
-
-		} else {
+		} else{
 			return weGlossaryTreeLoader::getLanguages();
 		}
-
 	}
 
-
-	function getLanguages() {
+	function getLanguages(){
 
 		$Items = array();
 
-		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val) {
+		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val){
 
 			$Item = array(
-				'id'		=> $Key,
-				'parentid'	=> 0,
-				'text'		=> $Val,
-				'typ'		=> 'group',
-				'open'		=> 0,
-				'disabled'	=> 0,
-				'tooltip'	=> $Val,
-				'offset'	=> 0,
-				'published'	=> 1,
-				'cmd'		=> "view_folder",
+				'id' => $Key,
+				'parentid' => 0,
+				'text' => $Val,
+				'typ' => 'group',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $Val,
+				'offset' => 0,
+				'published' => 1,
+				'cmd' => "view_folder",
 			);
 
 			array_push($Items, $Item);
-
 		}
 
 		return $Items;
-
 	}
 
-
-	function getTypes($Language) {
+	function getTypes($Language){
 
 		$Items = array();
 
 		$Types = array(
-			'abbreviation'	=> g_l('modules_glossary','[abbreviation]'),
-			'acronym'		=> g_l('modules_glossary','[acronym]'),
-			'foreignword'	=> g_l('modules_glossary','[foreignword]'),
-			'link'			=> g_l('modules_glossary','[link]'),
-			'textreplacement'	=> $GLOBALS['l_glossary']['textreplacement'],
+			'abbreviation' => g_l('modules_glossary', '[abbreviation]'),
+			'acronym' => g_l('modules_glossary', '[acronym]'),
+			'foreignword' => g_l('modules_glossary', '[foreignword]'),
+			'link' => g_l('modules_glossary', '[link]'),
+			'textreplacement' => $GLOBALS['l_glossary']['textreplacement'],
 		);
 
-		foreach($Types as $Key => $Val) {
+		foreach($Types as $Key => $Val){
 
 			$Item = array(
-				'id'		=> $Language . "_" . $Key,
-				'parentid'	=> $Language,
-				'text'		=> $Val,
-				'typ'		=> 'group',
-				'open'		=> 0,
-				'disabled'	=> 0,
-				'tooltip'	=> $Val,
-				'offset'	=> 0,
-				'published'	=> 1,
-				'cmd'		=> 'view_type',
+				'id' => $Language . "_" . $Key,
+				'parentid' => $Language,
+				'text' => $Val,
+				'typ' => 'group',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $Val,
+				'offset' => 0,
+				'published' => 1,
+				'cmd' => 'view_type',
 			);
 
 			array_push($Items, $Item);
-
 		}
 
-		if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")) {
+		if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")){
 			$Item = array(
-				'id'		=> $Language . "_exception",
-				'parentid'	=> $Language,
-				'text'		=> g_l('modules_glossary','[exception]'),
-				'typ'		=> 'item',
-				'open'		=> 0,
-				'disabled'	=> 0,
-				'tooltip'	=> g_l('modules_glossary','[exception]'),
-				'offset'	=> 0,
-				'published'	=> 1,
-				'cmd'		=> 'view_exception',
-				'Icon'		=> 'prog.gif'
+				'id' => $Language . "_exception",
+				'parentid' => $Language,
+				'text' => g_l('modules_glossary', '[exception]'),
+				'typ' => 'item',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => g_l('modules_glossary', '[exception]'),
+				'offset' => 0,
+				'published' => 1,
+				'cmd' => 'view_exception',
+				'Icon' => 'prog.gif'
 			);
 
-		 	array_push($Items, $Item);
-
+			array_push($Items, $Item);
 		}
 
 		return $Items;
-
 	}
 
-
-	function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500) {
+	function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
 
 		$Db = new DB_WE();
 		$Table = GLOSSARY_TABLE;
 
 		$Items = array();
 
-		$Where = " WHERE Language = '".$Db->escape($Language)."' AND Type = '".$Db->escape($Type)."'";
+		$Where = " WHERE Language = '" . $Db->escape($Language) . "' AND Type = '" . $Db->escape($Type) . "'";
 
-		$PrevOffset = $Offset-$Segment;
-		$PrevOffset = ($PrevOffset<0) ? 0 : $PrevOffset;
+		$PrevOffset = $Offset - $Segment;
+		$PrevOffset = ($PrevOffset < 0) ? 0 : $PrevOffset;
 
 		if($Offset && $Segment){
 			$Item = array(
-				"id"			=> "prev_" . $Language . "_" . $Type,
-				"parentid"		=> $Language . "_" . $Type,
-				"text"			=> "display (" . $PrevOffset . "-" . $Offset . ")",
-				"contenttype"	=> "arrowup",
-				"table"			=> GLOSSARY_TABLE,
-				"typ"			=> "threedots",
-				"icon"			=> "arrowup.gif",
-				"open"			=> 0,
-				"disabled"		=> 0,
-				"tooltip"		=> "",
-				"offset"		=> $PrevOffset,
+				"id" => "prev_" . $Language . "_" . $Type,
+				"parentid" => $Language . "_" . $Type,
+				"text" => "display (" . $PrevOffset . "-" . $Offset . ")",
+				"contenttype" => "arrowup",
+				"table" => GLOSSARY_TABLE,
+				"typ" => "threedots",
+				"icon" => "arrowup.gif",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $PrevOffset,
 			);
-		 	array_push($Items, $Item);
-
+			array_push($Items, $Item);
 		}
 
-		$Query = 	"SELECT "
-				.	"ID, "
-				.	"Type, "
-				.	"Language, "
-				.	"Text, "
-				.	"Icon, "
-				.	"abs(Text) as Nr, "
-				.	"(Text REGEXP '^[0-9]') as isNr, "
-				.	"Published "
-				.	"FROM "
-				.	$Table . " "
-				.	$Where . " "
-				.	"ORDER BY "
-				.	"isNr DESC, "
-				.	"Nr, "
-				.	"Text "
-				.	($Segment ?  "LIMIT ".abs($Offset).",".abs($Segment) : "");
+		$Query = "SELECT "
+			. "ID, "
+			. "Type, "
+			. "Language, "
+			. "Text, "
+			. "Icon, "
+			. "abs(Text) as Nr, "
+			. "(Text REGEXP '^[0-9]') as isNr, "
+			. "Published "
+			. "FROM "
+			. $Table . " "
+			. $Where . " "
+			. "ORDER BY "
+			. "isNr DESC, "
+			. "Nr, "
+			. "Text "
+			. ($Segment ? "LIMIT " . abs($Offset) . "," . abs($Segment) : "");
 
 		$Db->query($Query);
-		while($Db->next_record()){
+		while($Db->next_record()) {
 
 			$Item = array(
-				'id'		=> $Db->f('ID'),
-				'parentid'	=> $Language . "_" . $Type,
-				'text'		=> $Db->f('Text'),
-				'typ'		=> 'item',
-				'open'		=> 0,
-				'disabled'	=> 0,
-				'tooltip'	=> $Db->f('ID'),
-				'offset'	=> $Offset,
-				'published'	=> ($Db->f('Published')>0?true:false),
-				"icon"		=> $Db->f('Icon'),
+				'id' => $Db->f('ID'),
+				'parentid' => $Language . "_" . $Type,
+				'text' => $Db->f('Text'),
+				'typ' => 'item',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $Db->f('ID'),
+				'offset' => $Offset,
+				'published' => ($Db->f('Published') > 0 ? true : false),
+				"icon" => $Db->f('Icon'),
 			);
 
-			switch($Type) {
+			switch($Type){
 
 				case 'abbreviation':
 					$Item['cmd'] = "edit_glossary_abbreviation";
@@ -220,46 +207,41 @@ class weGlossaryTreeLoader{
 					break;
 			}
 
- 			foreach($Db->Record as $Key => $Val) {
- 				if(!is_numeric($Key)) {
- 					if(strtolower($Key)=="text") {
- 						$Item[strtolower($Key)] = htmlspecialchars($Val);
- 					}
- 					else  {
- 						$Item[strtolower($Key)] = $Val;
- 					}
- 				}
+			foreach($Db->Record as $Key => $Val){
+				if(!is_numeric($Key)){
+					if(strtolower($Key) == "text"){
+						$Item[strtolower($Key)] = htmlspecialchars($Val);
+					} else{
+						$Item[strtolower($Key)] = $Val;
+					}
+				}
+			}
 
- 			}
-
-		 	array_push($Items, $Item);
+			array_push($Items, $Item);
 		}
 
-		$Total = f("SELECT COUNT(*) as total FROM ".$Db->escape($Table)." $Where","total",$Db);
+		$Total = f('SELECT COUNT(1) as total FROM ' . $Db->escape($Table) . ' ' . $Where, 'total', $Db);
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){
 			$Item = array(
-				"id"			=> "next_" . $Language . "_" . $Type,
-				"parentid"		=> $Language . "_" . $Type,
-				"text"			=> "display (" . $NextOffset . "-" . ($NextOffset+$Segment) . ")",
-				"contenttype"	=> "arrowdown",
-				"table"			=> GLOSSARY_TABLE,
-				"typ"			=> "threedots",
-				"icon"			=> "arrowdown.gif",
-				"open"			=> 0,
-				"disabled"		=> 0,
-				"tooltip"		=> "",
-				"offset"		=> $NextOffset,
+				"id" => "next_" . $Language . "_" . $Type,
+				"parentid" => $Language . "_" . $Type,
+				"text" => "display (" . $NextOffset . "-" . ($NextOffset + $Segment) . ")",
+				"contenttype" => "arrowdown",
+				"table" => GLOSSARY_TABLE,
+				"typ" => "threedots",
+				"icon" => "arrowdown.gif",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $NextOffset,
 			);
 
-		 	array_push($Items, $Item);
-
+			array_push($Items, $Item);
 		}
 
 		return $Items;
-
 	}
-
 
 }

@@ -23,7 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/we_search.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_db_tools.inc.php");
 
 class objectsearch extends we_search {
@@ -34,7 +33,8 @@ class objectsearch extends we_search {
 	var $searchstart=0;
 	var $show;
 
-	function objectsearch() {
+	function __construct() {
+		parent::__construct();
 	    if(isset($sessDat) && is_array($sessDat) ){
 		    for($i=0;$i<=sizeof($sessDat);$i++) {
     			if(isset($sessDat[$i])) {
@@ -143,10 +143,10 @@ class objectsearch extends we_search {
 						$foo = in_workspace($exws[$i],$userWSArray);
 					}
 					if($foo) {
-						$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\''.$GLOBALS["we_transaction"].'\',\''.$this->f("ID").'\',\''.$exws[$i].'\',\''.$id.'\')"><img name="check_'.$id.'_'.$this->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'.gif" width="16" height="18" border="0" /></a>';
+						$checkbox = '<a href="javascript:we_cmd(\'toggleExtraWorkspace\',\''.$GLOBALS["we_transaction"].'\',\''.$this->db->f("ID").'\',\''.$exws[$i].'\',\''.$id.'\')"><img name="check_'.$id.'_'.$this->db->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->db->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'.gif" width="16" height="18" border="0" /></a>';
 					}
 					else {
-						$checkbox = '<img name="check_'.$id.'_'.$this->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'_disabled.gif" width="16" height="18" border="0" />';
+						$checkbox = '<img name="check_'.$id.'_'.$this->db->f("ID").'" src="'.TREE_IMAGE_DIR.'check'.(strstr($this->db->f("OF_ExtraWorkspacesSelected"),",".$exws[$i].",") ? "1" : "0").'_disabled.gif" width="16" height="18" border="0" />';
 					}
 					$p = id_to_path($exws[$i]);
 					$out .= '
