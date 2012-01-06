@@ -300,7 +300,9 @@ class weJavaMenu{
 					$this->h_pCODE($men, $opt, $id, $newAst);
 					$opt .= '</ul></li>' . "\n";
 				} else if($mtext){
-					$opt .= '<li' . ((isset($e["enabled"]) && $e["enabled"] == 0) ? ' class="disabled" disabled="true"' : '') . '><a href="#void" onclick="parent.menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+					if(!(isset($e["enabled"]) && $e["enabled"] == 0)){
+						$opt .= '<li><a href="#void" onclick="parent.menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+					}
 				} else{
 					$opt .= '<li class="disabled"></li>';
 				}
