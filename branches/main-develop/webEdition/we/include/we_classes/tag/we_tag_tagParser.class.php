@@ -234,13 +234,13 @@ class we_tag_tagParser{
 		foreach($Counter as $_tag => $_counter){
 			if($_counter < 0){
 				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . '): '.self::$curFile, 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
 
 				$isError = true;
 			} else
 			if($_counter > 0){
 				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . '): '.self::$curFile, 'we:' . $_tag));
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
 				$isError = true;
 			}
 		}

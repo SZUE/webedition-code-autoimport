@@ -2632,9 +2632,9 @@ function g_l_encodeArray($tmp){
  *  Note: underscores in name are used as directories - modules_workflow is searched in subdir modules
  * usage example: echo g_l('modules_workflow','[test][new]');
  *
- * @param $name name of the variable, without 'l_', this name is also used for inclusion
- * @param $specific the array element to access
- * @param $useEntities if set, return the string as html-entities
+ * @param $name string name of the variable, without 'l_', this name is also used for inclusion
+ * @param $specific array the array element to access
+ * @param $omitErrors boolean don't throw an error on non-existent entry
  */
 function g_l($name, $specific, $omitErrors=false) {
 	$charset = (isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET'])? $GLOBALS['CHARSET']:$GLOBALS['WE_BACKENDCHARSET']) );

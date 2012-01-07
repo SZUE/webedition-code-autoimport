@@ -270,7 +270,7 @@ class we_template extends we_document{
 
 				$this->errMsg = "Error: " . $error['message'] . "\nLine: " . $error['line'] . "\nCode: " . $errCode;
 				//type error will stop we
-				t_e('warning', "Error in template: " . $error['message'], 'Line: ' . $error['line'], 'Code: ' . $errCode);
+				t_e('warning', "Error in template: ".we_tag_tagParser::$curFile , $error['message'], 'Line: ' . $error['line'], 'Code: ' . $errCode);
 			}
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'we';
 		}
