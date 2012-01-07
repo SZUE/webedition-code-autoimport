@@ -77,7 +77,7 @@ class searchtoolExp extends we_search{
 			$_query = 'SELECT * FROM ' . $_table . ' ' . $_condition;
 			$this->db->query($_query);
 
-			while($this->db->next_record()) {
+			while($this->next_record()) {
 				$_result[] = array_merge(array(
 					'Table' => $_table
 					), $this->db->Record);

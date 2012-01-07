@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,22 +22,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weNavigationTree extends weToolTree{
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolTree.class.php');
-
-class weNavigationTree extends weToolTree
-{
-
-	function weNavigationTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = '')
-	{
-		parent::weToolTree($frameset, $topFrame, $treeFrame, $cmdFrame);
+	function weNavigationTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 	}
 
-	function getJSTreeFunctions()
-	{
-		
+	function getJSTreeFunctions(){
+
 		$out = weTree::getJSTreeFunctions();
-		
+
 		$out .= '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
@@ -45,11 +40,9 @@ class weNavigationTree extends weToolTree
 				' . $this->topFrame . '.loaded=1;
 			';
 		return $out;
-	
 	}
 
-	function getJSTreeCode()
-	{
+	function getJSTreeCode(){
 		return parent::getJSTreeCode() . we_html_element::jsElement(
 				'
  					drawTree.selection_table="' . NAVIGATION_TABLE . '";

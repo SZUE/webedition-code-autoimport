@@ -1128,7 +1128,7 @@ class doclistView {
 
 			$_db2 = new DB_WE ( );
 
-			$q = "DROP TABLE IF EXISTS `" . SEARCH_TEMP_TABLE . "`";
+			$q = 'DROP TABLE IF EXISTS SEARCH_TEMP_TABLE';
 			$_db2->query ( $q );
 
 

@@ -37,6 +37,7 @@ class we_search{
 	var $Order;
 	var $anzahl = 10;
 	var $searchstart = 0;
+	public $Record=array();
 
 	function __construct(){
 		$this->db = new DB_WE();
@@ -335,7 +336,9 @@ class we_search{
 	}
 
 	function next_record(){
-		return $this->db->next_record();
+		$ret=$this->db->next_record();
+		$this->Record=$this->db->Record;
+		return $ret;
 	}
 
 	function f($Name){
@@ -343,6 +346,10 @@ class we_search{
 	}
 
 	function getRecord(){
-		return $this->db->getRecord();
+		return $this->Record;
+	}
+
+	function num_rows(){
+		return $this->db->num_rows();
 	}
 }

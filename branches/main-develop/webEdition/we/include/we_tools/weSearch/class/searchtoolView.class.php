@@ -29,7 +29,7 @@ class searchtoolView extends weToolView{
 	var $searchclass;
 	var $searchclassExp;
 
-	function searchtoolView($frameset = '', $topframe = 'top'){
+	function __construct($frameset = '', $topframe = 'top'){
 		$this->toolName = 'weSearch';
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
@@ -2314,7 +2314,6 @@ class searchtoolView extends weToolView{
 				$thisObj->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
 				while($thisObj->searchclass->next_record()) {
-
 					if(isset($thisObj->searchclass->Record['VersionID']) && $thisObj->searchclass->Record['VersionID'] != 0){
 
 						$versionsFound[] = array(
@@ -2357,15 +2356,7 @@ class searchtoolView extends weToolView{
 						}
 					}
 				}
-
-				$db = new DB_WE();
-				$query = "SELECT *  FROM `" . SEARCH_TEMP_TABLE . "` ";
-				$db->query($query);
-
-				$_SESSION['weSearch']['foundItems' . $whichSearch . ''] = $db->num_rows();
-
-				$q = "DROP TABLE IF EXISTS `" . SEARCH_TEMP_TABLE . "`";
-				$db->query($q);
+				$_SESSION['weSearch']['foundItems' . $whichSearch . ''] = $thisObj->searchclass->getResultCount();
 			}
 		}
 
@@ -2438,7 +2429,7 @@ class searchtoolView extends weToolView{
 				}
 			}
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$ct=new we_base_ContentTypes();
+			$ct = new we_base_ContentTypes();
 			$Icon = $ct->getIcon($_result[$f]["ContentType"], 'link.gif', $ext);
 
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV(
@@ -3371,5 +3362,3 @@ text-overflow:ellipsis;
 	}
 
 }
-
-?>

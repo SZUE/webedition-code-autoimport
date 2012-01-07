@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("SEARCH_TEMP_TABLE", md5(session_id()));
 
 class searchtoolsearch extends we_search{
 
@@ -149,7 +148,7 @@ class searchtoolsearch extends we_search{
 
 		$tableFields = array(
 			'ID' => g_l('searchtool', '[ID]'),
-			'Text' => g_l('searchtool', '[Text]'),
+			'Text' => g_l('searchtool', '[text]'),
 			'Path' => g_l('searchtool', '[Path]'),
 			'ParentIDDoc' => g_l('searchtool', '[ParentIDDoc]'),
 			'ParentIDObj' => g_l('searchtool', '[ParentIDObj]'),
@@ -754,7 +753,7 @@ class searchtoolsearch extends we_search{
 			$sortNr = "DESC";
 		}
 
-		$query = "SELECT `" . SEARCH_TEMP_TABLE . "`.*,LOWER(" . $sortierung[0] . ") AS lowtext, abs(" . $sortierung[0] . ") as Nr, (" . $sortierung[0] . " REGEXP '^[0-9]') as isNr  FROM `" . SEARCH_TEMP_TABLE . "` ORDER BY IsFolder DESC, isNr " . $sortIsNr . ",Nr " . $sortNr . ",lowtext " . $sortNr . ", " . $order . "  limit " . $searchstart . "," . $anzahl . " ";
+		$query = "SELECT SEARCH_TEMP_TABLE.*,LOWER(" . $sortierung[0] . ") AS lowtext, abs(" . $sortierung[0] . ") as Nr, (" . $sortierung[0] . " REGEXP '^[0-9]') as isNr  FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ",Nr " . $sortNr . ",lowtext " . $sortNr . ", " . $order . "  limit " . $searchstart . "," . $anzahl . " ";
 		$this->db->query($query);
 	}
 
@@ -776,7 +775,7 @@ class searchtoolsearch extends we_search{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where . " ";
+				$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT '',ID,'" . FILE_TABLE . "',Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,'',CreationDate,CreatorID,ModDate,Published,Extension,'','' FROM `" . FILE_TABLE . "` " . $this->where . " ";
 				$this->db->query($query);
 
 				$titles = array();
@@ -798,7 +797,7 @@ class searchtoolsearch extends we_search{
 				if(is_array($titles) && !empty($titles)){
 					foreach($titles as $k => $v){
 						if($v != ""){
-							$query3 = "UPDATE `" . SEARCH_TEMP_TABLE . "` SET `SiteTitle` = '" . $this->db->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
+							$query3 = "UPDATE SEARCH_TEMP_TABLE  SET `SiteTitle` = '" . $this->db->escape($v) . "' WHERE docID = " . intval($k) . " AND DocTable = '" . FILE_TABLE . "' LIMIT 1 ";
 							$this->db->query($query3);
 						}
 					}
@@ -807,7 +806,7 @@ class searchtoolsearch extends we_search{
 
 			case VERSIONS_TABLE:
 				if($_SESSION['weSearch']['onlyDocs'] || $_SESSION['weSearch']['ObjectsAndDocs']){
-					$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . FILE_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . FILE_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyDocsRestrUsersWhere'] . " ";
+					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . FILE_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . FILE_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyDocsRestrUsersWhere'] . " ";
 					if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", VERSIONS_TABLE . ".", $query);
 					}
@@ -815,7 +814,7 @@ class searchtoolsearch extends we_search{
 				}
 				if(defined("OBJECT_FILES_TABLE")){
 					if($_SESSION['weSearch']['onlyObjects'] || $_SESSION['weSearch']['ObjectsAndDocs']){
-						$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
+						$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT ''," . VERSIONS_TABLE . ".documentID," . VERSIONS_TABLE . ".documentTable," . VERSIONS_TABLE . ".Text," . VERSIONS_TABLE . ".Path," . VERSIONS_TABLE . ".ParentID,'',''," . VERSIONS_TABLE . ".TemplateID," . VERSIONS_TABLE . ".ContentType,''," . VERSIONS_TABLE . ".timestamp," . VERSIONS_TABLE . ".modifierID,'',''," . VERSIONS_TABLE . ".Extension," . VERSIONS_TABLE . ".TableID," . VERSIONS_TABLE . ".ID FROM " . VERSIONS_TABLE . " LEFT JOIN " . OBJECT_FILES_TABLE . " ON " . VERSIONS_TABLE . ".documentID = " . OBJECT_FILES_TABLE . ".ID " . $this->where . " " . $_SESSION['weSearch']['onlyObjectsRestrUsersWhere'] . " ";
 						if(stristr($query, VERSIONS_TABLE . ".status='deleted'")){
 							$query = str_replace(OBJECT_FILES_TABLE . ".", VERSIONS_TABLE . ".", $query);
 						}
@@ -830,17 +829,17 @@ class searchtoolsearch extends we_search{
 				break;
 
 			case TEMPLATES_TABLE:
-				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` " . $this->where . "  ";
+				$query = "INSERT INTO SEARCH_TEMP_TABLE  SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` " . $this->where . "  ";
 				$this->db->query($query);
 				break;
 
 			case (defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : -4):
-				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` " . $this->where . " ";
+				$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` " . $this->where . " ";
 				$this->db->query($query);
 				break;
 
 			case (defined("OBJECT_TABLE") ? OBJECT_TABLE : -5):
-				$query = "INSERT INTO `" . SEARCH_TEMP_TABLE . "` SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` " . $this->where . "  ";
+				$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` " . $this->where . "  ";
 				$this->db->query($query);
 				break;
 		}
@@ -857,7 +856,7 @@ class searchtoolsearch extends we_search{
 
 	function createTempTable(){
 
-		$q = "DROP TABLE IF EXISTS `" . SEARCH_TEMP_TABLE . "`";
+		$q = "DROP TABLE IF EXISTS SEARCH_TEMP_TABLE ";
 		$this->db->query($q);
 
 		$tableType = searchtoolsearch::getTableType();
@@ -876,7 +875,7 @@ class searchtoolsearch extends we_search{
 		} else{
 
 			$q = "
-				 CREATE " . $tempTableTrue . " TABLE `" . SEARCH_TEMP_TABLE . "` (
+				 CREATE " . $tempTableTrue . " TABLE SEARCH_TEMP_TABLE (
 				`ID` BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 				`docID` BIGINT( 20 ) NOT NULL ,
 				`docTable` VARCHAR( 32 ) NOT NULL ,
@@ -1115,7 +1114,7 @@ class searchtoolsearch extends we_search{
 			$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation;
 		}
 		$rights = "
-			   CREATE TEMPORARY TABLE `test_" . SEARCH_TEMP_TABLE . "` (
+			   CREATE TEMPORARY TABLE test_SEARCH_TEMP_TABLE (
 				`test` VARCHAR( 1 ) NOT NULL
 				) ENGINE=" . $tableType . $charset_collation . "
 		";
@@ -1131,7 +1130,7 @@ class searchtoolsearch extends we_search{
 			$return = "1";
 		}
 
-		$q = "DROP TABLE IF EXISTS `test_" . SEARCH_TEMP_TABLE . "`";
+		$q = "DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE";
 		$db->query($q);
 
 		return $return;
@@ -1150,12 +1149,10 @@ class searchtoolsearch extends we_search{
 		$tableType = searchtoolsearch::getTableType();
 
 
-
 		$rights = "
-			   CREATE TABLE `test_" . SEARCH_TEMP_TABLE . "` (
+			   CREATE TABLE IF NOT EXISTS test_SEARCH_TEMP_TABLE (
 				`test` VARCHAR( 1 ) NOT NULL
-				) ENGINE=" . $tableType . $charset_collation . "
-		";
+				) ENGINE=" . $tableType . $charset_collation;
 		$db->query($rights);
 		$db->next_record();
 
@@ -1164,14 +1161,17 @@ class searchtoolsearch extends we_search{
 		//		}
 		$return = "0";
 
-		$q = "DROP TABLE IF EXISTS `test_" . SEARCH_TEMP_TABLE . "`";
-		$db->query($q);
+		$db->query('DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE');
 
 		if(stristr($db->Error, "command denied")){
 			$return = "1";
 		}
 
 		return $return;
+	}
+
+	function getResultCount(){
+		return f('SELECT COUNT(1) AS Count FROM SEARCH_TEMP_TABLE','Count',$this->db);
 	}
 
 }

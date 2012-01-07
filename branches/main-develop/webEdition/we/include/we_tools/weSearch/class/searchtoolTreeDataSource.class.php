@@ -22,14 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 class searchtoolTreeDataSource extends weToolTreeDataSource{
 
 	var $treeItems = array();
 
-	function searchtoolTreeDataSource($ds){
-		weToolTreeDataSource::weToolTreeDataSource($ds);
+	function __construct($ds){
+		parent::__construct($ds);
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){

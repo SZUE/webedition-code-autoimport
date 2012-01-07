@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,24 +23,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/tools/weToolTree.class.php');
+class searchtoolTree extends weToolTree{
 
-class searchtoolTree extends weToolTree
-{
+	function searchtoolTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 
-	function searchtoolTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = '')
-	{
-		
-		weToolTree::weToolTree($frameset, $topFrame, $treeFrame, $cmdFrame);
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 		$this->setTreeIconDir('/webEdition/we/include/we_tools/weSearch/layout/icons/');
-	
 	}
 
-	function getJSTreeFunctions()
-	{
-		
+	function getJSTreeFunctions(){
+
 		$out = weTree::getJSTreeFunctions();
-		
+
 		$out .= '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
@@ -50,12 +45,10 @@ class searchtoolTree extends weToolTree
 				' . $this->topFrame . '.loaded=1;
 			';
 		return $out;
-	
 	}
 
-	function getJSTreeCode()
-	{
-		
+	function getJSTreeCode(){
+
 		return parent::getJSTreeCode() . we_html_element::jsElement(
 				'
  					drawTree.selection_table="' . SUCHE_TABLE . '";

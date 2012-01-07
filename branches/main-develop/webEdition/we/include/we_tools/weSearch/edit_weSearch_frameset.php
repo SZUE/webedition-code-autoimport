@@ -24,7 +24,7 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/class/searchtoolFrames.class.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/weSearch/conf/define.conf.php');
 
 we_html_tools::protect();
 
@@ -35,5 +35,3 @@ $weFrame=new searchtoolFrames();
 $weFrame->View->processVariables();
 $weFrame->View->processCommands();
 $weFrame->getHTML($what);
-
-?>
