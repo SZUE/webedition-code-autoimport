@@ -825,8 +825,8 @@ function modulFehltError($modul, $tag) {
 }
 
 function parseError($text) {
-	trigger_error($text,E_USER_WARNING);
-	return "<b>" . g_l('parser','[error_in_template]') . ":</b> $text<br>\n";/*.'<?php trigger_error(\''.str_replace('\'', '"', $text).'\',E_USER_WARNING);?>';*/
+	t_e('warning',$text,g_l('weClass','[template]').': '.we_tag_tagParser::$curFile);
+	return "<b>" . g_l('parser','[error_in_template]') . ":</b>$text<br/>\n".g_l('weClass','[template]').': '.we_tag_tagParser::$curFile;/*.'<?php trigger_error(\''.str_replace('\'', '"', $text).'\',E_USER_WARNING);?>';*/
 }
 
 function std_numberformat($content) {
