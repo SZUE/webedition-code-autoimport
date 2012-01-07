@@ -22,7 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*  a class for handling flashDocuments. */
 
 class we_flashDocument extends we_binaryDocument{
@@ -143,7 +142,7 @@ class we_flashDocument extends we_binaryDocument{
 			  /* take all attribs and seperate them in attribs, params and embeds
 			  /***************************************************************************** */
 
-			$xml = (boolean)$this->getElement("xml");
+			$xml = (boolean) $this->getElement("xml");
 
 			//   first we deal with alt-content
 			$alt = $this->getElement("alt");
@@ -154,15 +153,15 @@ class we_flashDocument extends we_binaryDocument{
 				}
 			}
 
-			if($xml){			//  XHTML-Version
+			if($xml){	//  XHTML-Version
 				$allowedAtts = $this->ObjectParamNames;
 				$filter = array("alt", 'parentid', 'startid');
 
 				while(list($k, $v) = $this->nextElement("attrib")) {
 
-					if(in_array($k, $allowedAtts)){				 //  use as name="value"
+					if(in_array($k, $allowedAtts)){	 //  use as name="value"
 						$attribs[$k] = $v["dat"];
-					} else if(!in_array($k, $filter)){			 //  use as <param>
+					} else if(!in_array($k, $filter)){	//  use as <param>
 						$params[$k] = $v["dat"];
 					}
 				}
@@ -170,16 +169,16 @@ class we_flashDocument extends we_binaryDocument{
 				//   needed attribs
 				$attribs["type"] = "application/x-shockwave-flash";
 				$attribs["data"] = $src;
-			} else{																		 //  Normal-Version - with embed-tag
+			} else{					//  Normal-Version - with embed-tag
 				$filter = array("type", "alt", 'parentid', 'startid');
 
 				$allowedAtts = $this->ObjectParamNames;
 
 				while(list($k, $v) = $this->nextElement("attrib")) {
 
-					if(in_array($k, $allowedAtts)){				 //  use as name="value"
+					if(in_array($k, $allowedAtts)){	 //  use as name="value"
 						$attribs[$k] = $v["dat"];
-					} else if(!in_array($k, $filter)){			 //  use as <param>
+					} else if(!in_array($k, $filter)){	//  use as <param>
 						$params[$k] = $v["dat"];
 					}
 					if(!in_array($k, $filter)){
@@ -202,7 +201,7 @@ class we_flashDocument extends we_binaryDocument{
 				}
 			}
 
-			if(!$xml){	//  additional <embed tag>
+			if(!$xml){ //  additional <embed tag>
 				$embedAtts["type"] = "application/x-shockwave-flash";
 				$embedAtts["pluginspage"] = $pluginspage;
 				$embedAtts["src"] = $src;
@@ -406,7 +405,7 @@ class we_flashDocument extends we_binaryDocument{
 			$this->setElement("height", $this->getElement("origheight"));
 		}
 		if($this->Icon == ''){
-			$ct=new we_base_ContentTypes();
+			$ct = new we_base_ContentTypes();
 			$this->Icon = $ct->getIcon($this->ContentType);
 		}
 
@@ -451,56 +450,49 @@ class we_flashDocument extends we_binaryDocument{
 		return $arr;
 	}
 
-	static function checkAndPrepare($formname, $key = "we_document") {
+	static function checkAndPrepare($formname, $key = "we_document"){
 		// check to see if there is an image to create or to change
-		if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
+		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])){
 
 			$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 
-			if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
-				foreach ($_FILES["we_ui_$formname"]["name"] as $flashName => $filename) {
+			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
+				foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){
 
 					$_flashmovieDataId = isset($_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName]) ? $_REQUEST['WE_UI_FLASHMOVIE_DATA_ID_' . $flashName] : false;
 
-					if ($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])) {
+					if($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])){
 
 						$_SESSION[$_flashmovieDataId]['doDelete'] = false;
 
-						if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1) {
+						if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $flashName] == 1){
 							$_SESSION[$_flashmovieDataId]['doDelete'] = true;
 						} else
-						if ($filename) {
+						if($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
-							if ($ct == "application/x-shockwave-flash") {
+							if($ct == "application/x-shockwave-flash"){
 								$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
 
 								// move document from upload location to tmp dir
 								$_SESSION[$_flashmovieDataId]["serverPath"] = TMP_DIR . "/" . md5(
-																uniqid(rand(), 1));
+										uniqid(rand(), 1));
 								move_uploaded_file(
-												$_FILES["we_ui_$formname"]["tmp_name"][$flashName],
-												$_SESSION[$_flashmovieDataId]["serverPath"]);
+									$_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
 
 
 
 								$tmp_Filename = $flashName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-																'[^A-Za-z0-9._-]',
-																'',
-																$_FILES["we_ui_$formname"]["name"][$flashName]);
+										'[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
 
-								if ($flashId) {
+								if($flashId){
 									$_SESSION[$_flashmovieDataId]["id"] = $flashId;
 								}
 
 								$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace(
-																'#^(.+)\..+$#',
-																'\\1',
-																$tmp_Filename);
+									'#^(.+)\..+$#', '\\1', $tmp_Filename);
 								$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-																'#^.+(\..+)$#',
-																'\\1',
-																$tmp_Filename) : '';
+										'#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
 								$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
 
 								$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);
@@ -515,6 +507,5 @@ class we_flashDocument extends we_binaryDocument{
 			}
 		}
 	}
-
 
 }

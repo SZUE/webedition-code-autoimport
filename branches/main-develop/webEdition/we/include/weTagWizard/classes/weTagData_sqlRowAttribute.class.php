@@ -22,17 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
+class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
 
 	/**
 	 * @var string
 	 */
 	var $Table;
+
 	/**
 	 * @var string
 	 */
 	var $ValueName;
+
 	/**
 	 * @var string
 	 */
@@ -46,12 +47,9 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
 	 * @param string $textName
 	 * @param string $order
 	 */
-	function __construct($name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '',$description='',$deprecated=false) {
+	function __construct($name, $table, $required = false, $valueName = 'ID', $textName = 'Text', $order = 'Text', $module = '', $description='', $deprecated=false){
 
 		global $DB_WE;
-		if (!isset($DB_WE)) {
-			$DB_WE = new DB_WE();
-		}
 		$this->Table = $table;
 		$this->ValueName = $valueName;
 		$this->TextName = $textName ? $textName : $valueName;
@@ -62,15 +60,15 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute {
 		$items = array();
 
 		$DB_WE->query(
-						"SELECT " . $DB_WE->escape($this->ValueName) . "," . $DB_WE->escape($this->TextName) . "
+			"SELECT " . $DB_WE->escape($this->ValueName) . "," . $DB_WE->escape($this->TextName) . "
 			 FROM " . $DB_WE->escape($this->Table) . "
 			 " . ($order ? "ORDER BY $order" : ''));
 
-		while ($DB_WE->next_record()) {
+		while($DB_WE->next_record()) {
 
 			$options[] = new weTagDataOption($DB_WE->f($this->TextName), $DB_WE->f($this->ValueName));
 		}
-		parent::__construct($name, $options, $required, $module,$description,$deprecated);
+		parent::__construct($name, $options, $required, $module, $description, $deprecated);
 	}
 
 }

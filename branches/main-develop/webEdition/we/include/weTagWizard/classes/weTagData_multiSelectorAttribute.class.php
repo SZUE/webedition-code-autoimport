@@ -22,17 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-class weTagData_multiSelectorAttribute extends weTagDataAttribute {
+class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 
 	/**
 	 * @var string
 	 */
 	var $Table;
+
 	/**
 	 * @var string
 	 */
 	var $Selectable;
+
 	/**
 	 * @var string
 	 */
@@ -45,22 +46,22 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute {
 	 * @param string $textName
 	 * @param boolean $required
 	 */
-	function __construct($name, $table, $selectable, $textName = 'path', $required = false, $module = '',$description='',$deprecated=false) {
+	function __construct($name, $table, $selectable, $textName = 'path', $required = false, $module = '', $description='', $deprecated=false){
 
 		$this->Table = $table;
 		$this->Selectable = $selectable;
 		$this->TextName = $textName;
 
-		parent::__construct($name, $required, $module,$description,$deprecated);
+		parent::__construct($name, $required, $module, $description, $deprecated);
 	}
 
 	/**
 	 * @return string
 	 */
-	function getCodeForTagWizard() {
+	function getCodeForTagWizard(){
 		$we_cmd = 'openSelector';
 
-		switch ($this->Table) {
+		switch($this->Table){
 			case USER_TABLE :
 				$we_cmd = 'browse_users';
 				break;
@@ -70,11 +71,11 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute {
 		}
 
 		$input = we_html_element::htmlTextArea(
-										array(
-												'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea'
-						));
+				array(
+					'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea'
+			));
 		$button = we_button::create_button(
-										"select", "javascript:we_cmd('" . $we_cmd . "', '', '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value WE_PLUS= \\',\\'WE_PLUS foo2;}else{foo.value = foo2;};')");
+				"select", "javascript:we_cmd('" . $we_cmd . "', '', '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value WE_PLUS= \\',\\'WE_PLUS foo2;}else{foo.value = foo2;};')");
 
 		return '
 					<table class="attribute">

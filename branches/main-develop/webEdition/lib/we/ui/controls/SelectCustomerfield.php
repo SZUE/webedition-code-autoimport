@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractFormElement
  */
@@ -34,9 +34,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select
-{
-
+class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 	/**
 	 * Default class name for Select
 	 */
@@ -47,7 +45,6 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select
 	 */
 	const kSelectClassDisabled = 'we_ui_controls_Select_disabled';
 
-
 	/**
 	 * Constructor
 	 *
@@ -56,18 +53,17 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
 		include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_active_integrated_modules.inc.php");
-		if(in_array('customer',$_we_active_integrated_modules)){
-			if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php")) {
+		if(in_array('customer', $_we_active_integrated_modules)){
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php")){
 				include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/customer/we_conf_customer.inc.php");
 				$db = new DB_WE();
 				$db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
-				$this->addOption(0,'-');
-				while ($db->next_record()) {
-					$this->addOption($db->f("Field"),$db->f("Field"));
+				$this->addOption(0, '-');
+				while($db->next_record()) {
+					$this->addOption($db->f("Field"), $db->f("Field"));
 				}
 			}
 		}
@@ -76,7 +72,6 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-
 	}
 
 }

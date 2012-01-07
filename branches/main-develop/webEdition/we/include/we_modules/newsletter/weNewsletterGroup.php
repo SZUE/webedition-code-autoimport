@@ -47,9 +47,9 @@ class weNewsletterGroup extends weNewsletterBase{
 	 * Can load or create new Newsletter Group depends of parameter
 	 * ****************************************************** */
 
-	function weNewsletterGroup($groupID = 0){
+	function __construct($groupID = 0){
 
-		parent::weNewsletterBase();
+		parent::__construct();
 		$this->table = NEWSLETTER_GROUP_TABLE;
 
 		$this->persistents[] = "NewsletterID";

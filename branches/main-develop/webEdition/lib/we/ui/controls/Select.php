@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractFormElement
  */
@@ -27,15 +27,13 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
 
 /**
  * Class to display a Select
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
-{
-
+class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement{
 	/**
 	 * Default class name for Select
 	 */
@@ -52,7 +50,7 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 	 * @var integer
 	 */
 	protected $_size = '';
-	
+
 	/**
 	 * onChange attribute
 	 *
@@ -66,7 +64,7 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 	 * @var array
 	 */
 	protected $_options = array();
-	
+
 	/**
 	 * option groups of select
 	 *
@@ -87,144 +85,130 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 	 * @var boolean
 	 */
 	protected $_multiple = '';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
-		
+
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		
 	}
-	
+
 	/**
 	 * Retrieve onChange attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getOnChange()
-	{
+	public function getOnChange(){
 		return $this->_onChange;
 	}
 
 	/**
 	 * Set onChange attribute
-	 * 
+	 *
 	 * @param string $_onChange
 	 */
-	public function setOnChange($_onChange)
-	{
+	public function setOnChange($_onChange){
 		$this->_onChange = $_onChange;
 	}
 
 	/**
 	 * Retrieve size attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getSize()
-	{
+	public function getSize(){
 		return $this->_size;
 	}
 
 	/**
 	 * Set size attribute
-	 * 
+	 *
 	 * @param integer $_size
 	 */
-	public function setSize($_size)
-	{
+	public function setSize($_size){
 		$this->_size = $_size;
 	}
 
 	/**
 	 * Retrieve multiple attribute
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function getMultiple()
-	{
+	public function getMultiple(){
 		return $this->_multiple;
 	}
 
 	/**
 	 * Set multiple attribute
-	 * 
+	 *
 	 * @param boolean $_multiple
 	 */
-	public function setMultiple($_multiple)
-	{
+	public function setMultiple($_multiple){
 		$this->_multiple = $_multiple;
 	}
 
 	/**
 	 * Retrieve selected value
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getSelectedValue()
-	{
+	public function getSelectedValue(){
 		return $this->_selectedValue;
 	}
 
 	/**
 	 * Set selected value
-	 * 
+	 *
 	 * @param string $_selectedValue
 	 */
-	public function setSelectedValue($_selectedValue)
-	{
+	public function setSelectedValue($_selectedValue){
 		$this->_selectedValue = $_selectedValue;
 	}
 
 	/**
 	 * Retrieve options of select
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getOptions()
-	{
+	public function getOptions(){
 		return $this->_options;
 	}
 
 	/**
 	 * Set options of select
-	 * 
+	 *
 	 * @param array $_options
 	 */
-	public function setOptions($_options)
-	{
+	public function setOptions($_options){
 		$this->_options = $_options;
 	}
-	
+
 	/**
 	 * Retrieve option groups of select
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getOptGroups()
-	{
+	public function getOptGroups(){
 		return $this->_optgroups;
 	}
 
 	/**
 	 * Set option groups of select
-	 * 
+	 *
 	 * @param array $_optgroups
 	 */
-	public function setOptGroups($_optgroups)
-	{
+	public function setOptGroups($_optgroups){
 		$this->_optgroups = $_optgroups;
 	}
 
@@ -233,21 +217,19 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return int
 	 */
-	function getOptionNum()
-	{
+	function getOptionNum(){
 		return count($this->getOptions());
 	}
 
 	/**
 	 * The function add new option to a select box
 	 *
-	 * @param string $value									
-	 * @param string	$text									
+	 * @param string $value
+	 * @param string	$text
 	 *
 	 * @return void
 	 */
-	function addOption($value, $text)
-	{
+	function addOption($value, $text){
 		$this->_options[$value] = $text;
 	}
 
@@ -258,12 +240,11 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return void
 	 */
-	function addOptions($options)
-	{
-		
-		if (!empty($options)) {
+	function addOptions($options){
+
+		if(!empty($options)){
 			$count = count($options);
-			foreach ($options as $key => $val) {
+			foreach($options as $key => $val){
 				$this->addOption($key, $val);
 			}
 		}
@@ -271,32 +252,31 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 
 	/**
 	 * Renders and returns HTML of options
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getOptionsHTML()
-	{
-		
+	public function getOptionsHTML(){
+
 		$out = '';
 		$options = $this->getOptions();
-		if (!empty($options)) {
-			foreach ($options as $key => $val) {
+		if(!empty($options)){
+			foreach($options as $key => $val){
 				$selected = '';
-				if ($this->getSelectedValue() == $key) {
+				if($this->getSelectedValue() == $key){
 					$selected = 'selected="selected"';
 				}
 				$out .= '<option value="' . $key . '" ' . $selected . '>' . $val . '</option>';
 			}
 		}
 		$optgroups = $this->getOptGroups();
-		if (!empty($optgroups)) {
-			foreach ($optgroups as $k => $v) {
+		if(!empty($optgroups)){
+			foreach($optgroups as $k => $v){
 				$label = isset($v['label']) ? $v['label'] : "";
 				$out .= '<optgroup label="' . $label . '">';
-				if (isset($v['options']) && !empty($v['options'])) {
-					foreach ($v['options'] as $key => $val) {
+				if(isset($v['options']) && !empty($v['options'])){
+					foreach($v['options'] as $key => $val){
 						$selected = '';
-						if ($this->getSelectedValue() == $key) {
+						if($this->getSelectedValue() == $key){
 							$selected = 'selected="selected"';
 						}
 						$out .= '<option value="' . $key . '" ' . $selected . '>' . $val . '</option>';
@@ -305,7 +285,7 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 				$out .= '</optgroup>';
 			}
 		}
-		
+
 		return $out;
 	}
 
@@ -314,18 +294,17 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
-		if ($this->getDisabled()) {
+	protected function _renderHTML(){
+		if($this->getDisabled()){
 			$class = self::kSelectClassDisabled;
-		} else {
+		} else{
 			$class = self::kSelectClass;
 		}
-		
-		if ($this->getHidden()) {
+
+		if($this->getHidden()){
 			$this->_style .= "display:none;";
 		}
-		
+
 		return '<select' . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('id,size,name,onChange') . $this->_getBooleanAttribs('disabled,multiple') . '>' . $this->getOptionsHTML() . '</select>';
 	}
 

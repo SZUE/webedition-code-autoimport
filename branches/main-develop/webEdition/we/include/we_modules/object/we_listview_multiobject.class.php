@@ -358,7 +358,7 @@ class we_listview_multiobject extends listviewBase{
 				$_tmporder = str_replace('we_id', OBJECT_X_TABLE . $classID . '.OF_ID', $_tmporder);
 				$_tmporder = str_replace('we_filename', OBJECT_X_TABLE . $classID . '.OF_Text', $_tmporder);
 				$_tmporder = str_replace('we_published', OBJECT_X_TABLE . $classID . '.OF_Published', $_tmporder);
-				$order = ' ORDER BY '.$_tmporder.($this->desc ? ' DESC' : '');
+				$order = ' ORDER BY ' . $_tmporder . ($this->desc ? ' DESC' : '');
 				break;
 			case 'random()':
 				$order = ' ORDER BY RANDOM ';
@@ -366,7 +366,7 @@ class we_listview_multiobject extends listviewBase{
 			default:
 				$order = makeCSVFromArray($ordertmp);
 				if($order){
-					$order = ' ORDER BY '.$order;
+					$order = ' ORDER BY ' . $order;
 				}
 				break;
 		}
@@ -464,4 +464,5 @@ class we_listview_multiobject extends listviewBase{
 	function f($key){
 		return $this->DB_WE->f('we_' . $key);
 	}
+
 }

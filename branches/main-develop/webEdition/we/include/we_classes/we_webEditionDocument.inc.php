@@ -22,7 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_webEditionDocument extends we_textContentDocument{
 
 	// Name of the class => important for reconstructing the class from outside the class
@@ -257,9 +256,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . $myid, 'Path', $this->DB_WE) : '');
 
 			if(we_hasPerm("CAN_SEE_TEMPLATES") && $_SESSION ["we_mode"] == "normal"){
-				$ueberschrift = '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass','[template]') . '</a>';
+				$ueberschrift = '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>';
 			} else{
-				$ueberschrift = g_l('weClass','[template]');
+				$ueberschrift = g_l('weClass', '[template]');
 			}
 
 			return $ueberschrift . '<br/>' . $path;
@@ -399,7 +398,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$_charsetHandler = new charsetHandler();
 
-		if(isset($GLOBALS["meta"]["Charset"])){	//	charset-tag available
+		if(isset($GLOBALS["meta"]["Charset"])){ //	charset-tag available
 			$name = "Charset";
 
 			//	This is the input field for the charset
@@ -555,7 +554,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function getFieldTypes($templateCode){
-		$tp = new we_tag_tagParser($templateCode,$this->getPath());
+		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
 		$blocks = array();
 		$fieldTypes = array();
@@ -717,7 +716,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$glob .= '$' . $k . ",";
 		}
 		$glob = rtrim($glob, ',');
-		eval('global ' . $glob . ';');	// globalen Namensraum herstellen.
+		eval('global ' . $glob . ';'); // globalen Namensraum herstellen.
 		$editpageSave = $this->EditPageNr;
 		$inWebEditonSave = $this->InWebEdition;
 		$this->InWebEdition = false;
@@ -741,7 +740,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
-		if((version_compare(phpversion(), '5.0') >= 0) && isset($we_EDITOR) && $we_EDITOR){	 //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
+		if((version_compare(phpversion(), '5.0') >= 0) && isset($we_EDITOR) && $we_EDITOR){	//  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
 			$GLOBALS['we_doc'] = $this;
 		}
 

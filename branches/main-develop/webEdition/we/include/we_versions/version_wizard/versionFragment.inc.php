@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,60 +22,49 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/taskFragment.class.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/version_wizard/we_version.class.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_logging/versions/versionsLog.class.php");
 
-class versionFragment extends taskFragment
-{
+class versionFragment extends taskFragment{
 
-	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = "")
-	{
+	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
-
 	}
 
-	function doTask()
-	{
+	function doTask(){
 		we_version::todo($this->data);
 		$this->updateProgressBar();
 	}
 
-	function updateProgressBar()
-	{
+	function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		print
-				'<script type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
-						shortenPath(
-								$this->data["path"] . " - " . g_l('versions','[version]') . " " . $this->data["version"],
-								33)) . '" : "' . "test" . addslashes(
-						shortenPath(
-								$this->data["path"] . " - " . g_l('versions','[version]') . " " . $this->data["version"],
-								60)) . '") );parent.wizbusy.setProgress(' . $percent . ');</script>';
-
+			'<script type="text/javascript">if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
+				shortenPath(
+					$this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" . addslashes(
+				shortenPath(
+					$this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');</script>';
 	}
 
-	function finish()
-	{
-		if (!empty($_SESSION['versions']['logResetIds'])) {
+	function finish(){
+		if(!empty($_SESSION['versions']['logResetIds'])){
 			$versionslog = new versionsLog();
 			$versionslog->saveVersionsLog($_SESSION['versions']['logResetIds'], versionsLog::VERSIONS_RESET);
 		}
 		unset($_SESSION['versions']['logResetIds']);
 		$responseText = isset($_REQUEST["responseText"]) ? $_REQUEST["responseText"] : "";
 		we_html_tools::htmlTop();
-		if ($_REQUEST['type'] == "delete_versions") {
-			$responseText = g_l('versions','[deleteDateVersionsOK]');
+		if($_REQUEST['type'] == "delete_versions"){
+			$responseText = g_l('versions', '[deleteDateVersionsOK]');
 		}
-		if ($_REQUEST['type'] == "reset_versions") {
-			$responseText = g_l('versions','[resetAllVersionsOK]');
+		if($_REQUEST['type'] == "reset_versions"){
+			$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
 		print
-				'<script type="text/javascript">
+			'<script type="text/javascript">
 			' . we_message_reporting::getShowMessageCall(
-						addslashes($responseText ? $responseText : ""),
-						we_message_reporting::WE_MESSAGE_NOTICE) . '
+				addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 
@@ -100,20 +90,19 @@ class versionFragment extends taskFragment
 		</html>';
 	}
 
-	function printHeader()
-	{
+	function printHeader(){
 		we_html_tools::protect();
 		//print "<html><head><title></title></head>";
 	}
 
-	function printBodyTag($attributes = "")
-	{
+	function printBodyTag($attributes = ""){
 
 	}
 
-	function printFooter()
-	{
+	function printFooter(){
 		$this->printJSReload();
 	}
+
 }
+
 ?>

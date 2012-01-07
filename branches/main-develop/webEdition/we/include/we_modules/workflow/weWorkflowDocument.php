@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weWorkflowDocument extends weWorkflowBase{
 	const STATUS_UNKNOWN=0;
 	const STATUS_FINISHED=1;

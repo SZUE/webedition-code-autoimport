@@ -80,8 +80,8 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	function we_save($resave=0){
-		$ct=new we_base_ContentTypes();
-		$this->Icon = $ct->getIcon($this->ContentType,'', $this->Extension);
+		$ct = new we_base_ContentTypes();
+		$this->Icon = $ct->getIcon($this->ContentType, '', $this->Extension);
 		return parent::we_save($resave);
 	}
 
@@ -168,53 +168,48 @@ class we_otherDocument extends we_binaryDocument{
 		return $out;
 	}
 
-	static function checkAndPrepare($formname, $key = 'we_document') {
+	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
-		if (isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])) {
+		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"])){
 
 			$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
 
-			if (isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])) {
-				foreach ($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename) {
+			if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
+				foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
 
 					$_binaryDataId = isset($_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName]) ? $_REQUEST['WE_UI_BINARY_DATA_ID_' . $binaryName] : false;
 
-					if ($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])) {
+					if($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])){
 
 						$_SESSION[$_binaryDataId]['doDelete'] = false;
 
-						if (isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1) {
+						if(isset($_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName]) && $_REQUEST["WE_UI_DEL_CHECKBOX_" . $binaryName] == 1){
 							$_SESSION[$_binaryDataId]['doDelete'] = true;
 						} else
-						if ($filename) {
+						if($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);
-							if ($ct == "application/*") {
+							if($ct == "application/*"){
 								$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 								// move document from upload location to tmp dir
 								$_SESSION[$_binaryDataId]["serverPath"] = TMP_DIR . "/" . md5(
-																uniqid(rand(), 1));
+										uniqid(rand(), 1));
 								move_uploaded_file(
-												$_FILES["we_ui_$formname"]["tmp_name"][$binaryName],
-												$_SESSION[$_binaryDataId]["serverPath"]);
+									$_FILES["we_ui_$formname"]["tmp_name"][$binaryName], $_SESSION[$_binaryDataId]["serverPath"]);
 
 
 
 								$tmp_Filename = $binaryName . "_" . md5(uniqid(rand(), 1)) . "_" . preg_replace(
-																"/[^A-Za-z0-9._-]/",
-																"",
-																$_FILES["we_ui_$formname"]["name"][$binaryName]);
+										"/[^A-Za-z0-9._-]/", "", $_FILES["we_ui_$formname"]["name"][$binaryName]);
 
-								if ($binaryId) {
+								if($binaryId){
 									$_SESSION[$_binaryDataId]["id"] = $binaryId;
 								}
 
-								$_SESSION[$_binaryDataId]["fileName"] = preg_replace('#^(.+)\..+$#','\\1',$tmp_Filename);
+								$_SESSION[$_binaryDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '\\1', $tmp_Filename);
 								$_SESSION[$_binaryDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-																'#^.+(\..+)$#',
-																'\\1',
-																$tmp_Filename) : "";
+										'#^.+(\..+)$#', '\\1', $tmp_Filename) : "";
 								$_SESSION[$_binaryDataId]["text"] = $_SESSION[$_binaryDataId]["fileName"] . $_SESSION[$_binaryDataId]["extension"];
 								$_SESSION[$_binaryDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$binaryName];
 								$_SESSION[$_binaryDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$binaryName];

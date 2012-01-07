@@ -24,8 +24,8 @@
  */
 
 /**
-* General Definition of WebEdition Workflow Task
-*/
+ * General Definition of WebEdition Workflow Task
+ */
 class weWorkflowTask extends weWorkflowBase{
 
 	var $ID;
@@ -34,23 +34,20 @@ class weWorkflowTask extends weWorkflowBase{
 	var $Edit;
 	var $Mail;
 
-
-
 	/**
-	* Default Constructor
-	*
-	* Can load or create new Workflow Task Definition depends of parameter
-	*/
-	function __construct($taskID = 0)
-	{
+	 * Default Constructor
+	 *
+	 * Can load or create new Workflow Task Definition depends of parameter
+	 */
+	function __construct($taskID = 0){
 		parent::__construct();
-		$this->table=WORKFLOW_TASK_TABLE;
+		$this->table = WORKFLOW_TASK_TABLE;
 
-		$this->persistents[]="ID";
-		$this->persistents[]="userID";
-		$this->persistents[]="Edit";
-		$this->persistents[]="Mail";
-		$this->persistents[]="stepID";
+		$this->persistents[] = "ID";
+		$this->persistents[] = "userID";
+		$this->persistents[] = "Edit";
+		$this->persistents[] = "Mail";
+		$this->persistents[] = "stepID";
 
 
 		$this->ID = 0;
@@ -59,48 +56,40 @@ class weWorkflowTask extends weWorkflowBase{
 		$this->Edit = 0;
 		$this->Mail = 0;
 
-		if ($taskID>0){
+		if($taskID > 0){
 			$this->load($taskID);
 		}
-
 	}
 
 	/**
-	* get all workflow tasks from database (STATIC)
-	*/
-	function getAllTasks($stepID)
-	{
+	 * get all workflow tasks from database (STATIC)
+	 */
+	function getAllTasks($stepID){
 		$db = new DB_WE;
 
-		$db->query("SELECT ID FROM ".WORKFLOW_TASK_TABLE." WHERE stepID  =".intval($stepID)." ORDER BY ID");
+		$db->query("SELECT ID FROM " . WORKFLOW_TASK_TABLE . " WHERE stepID  =" . intval($stepID) . " ORDER BY ID");
 
 		$tasks = array();
 
-		while ($db->next_record()){
+		while($db->next_record()) {
 			$tasks[] = new weWorkflowTask($db->f("ID"));
 		}
 		return $tasks;
 	}
 
-
 	/**
-	* Load task from database
-	*/
-	function load($id=0)
-	{
-		if($id) $this->ID=$id;
-		if ($this->ID){
+	 * Load task from database
+	 */
+	function load($id=0){
+		if($id)
+			$this->ID = $id;
+		if($this->ID){
 			parent::load();
 			return true;
-		}
-		else{
+		} else{
 			$this->ErrorReporter->Error("No Task with ID $taskID !");
 			return false;
 		}
-
 	}
 
 }
-
-
-?>

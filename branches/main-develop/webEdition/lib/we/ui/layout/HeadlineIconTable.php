@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -34,9 +34,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
-{
-
+class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 	/*
 	 * Class for main title of table
 	 */
@@ -114,8 +112,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
 
 		// add needed CSS files
@@ -123,7 +120,6 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-
 	}
 
 	/**
@@ -131,8 +127,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return we_ui_layout_ButtonTable
 	 */
-	public function getButtonTable()
-	{
+	public function getButtonTable(){
 		return $this->_buttonTable;
 	}
 
@@ -141,8 +136,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return integer
 	 */
-	public function getFoldAtIndex()
-	{
+	public function getFoldAtIndex(){
 		return $this->_foldAtIndex;
 	}
 
@@ -151,8 +145,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	public function getFoldedText()
-	{
+	public function getFoldedText(){
 		return $this->_foldedText;
 	}
 
@@ -161,8 +154,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return integer
 	 */
-	public function getMarginLeft()
-	{
+	public function getMarginLeft(){
 		return $this->_marginLeft;
 	}
 
@@ -171,8 +163,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return array
 	 */
-	public function getRows()
-	{
+	public function getRows(){
 		return $this->_rows;
 	}
 
@@ -181,8 +172,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	public function getUnfoldedText()
-	{
+	public function getUnfoldedText(){
 		return $this->_unfoldedText;
 	}
 
@@ -191,8 +181,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return boolean
 	 */
-	public function getUnfoldWhenRenders()
-	{
+	public function getUnfoldWhenRenders(){
 		return $this->_unfoldWhenRenders;
 	}
 
@@ -201,8 +190,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function setButtonTable($buttonTable)
-	{
+	public function setButtonTable($buttonTable){
 		$this->_buttonTable = $buttonTable;
 	}
 
@@ -211,8 +199,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function setFoldAtIndex($foldAtIndex)
-	{
+	public function setFoldAtIndex($foldAtIndex){
 		$this->_foldAtIndex = $foldAtIndex;
 	}
 
@@ -221,8 +208,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function setFoldedText($foldedText)
-	{
+	public function setFoldedText($foldedText){
 		$this->_foldedText = $foldedText;
 	}
 
@@ -231,8 +217,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function setMarginLeft($marginLeft)
-	{
+	public function setMarginLeft($marginLeft){
 		$this->_marginLeft = $marginLeft;
 	}
 
@@ -241,14 +226,12 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @param array $rows
 	 */
-	public function setRows($rows)
-	{
+	public function setRows($rows){
 		$this->_rows = $rows;
-		foreach ($this->_rows as $elem) {
+		foreach($this->_rows as $elem){
 			$this->addCSSFiles($elem->getCSSFiles());
 			$this->addJSFiles($elem->getJSFiles());
 		}
-
 	}
 
 	/**
@@ -256,8 +239,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function setUnfoldedText($unfoldedText)
-	{
+	public function setUnfoldedText($unfoldedText){
 		$this->_unfoldedText = $unfoldedText;
 	}
 
@@ -266,8 +248,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function setUnfoldWhenRenders($unfoldWhenRenders)
-	{
+	public function setUnfoldWhenRenders($unfoldWhenRenders){
 		$this->_unfoldWhenRenders = $unfoldWhenRenders;
 	}
 
@@ -276,18 +257,17 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 		$html = $this->_getHeader();
 		$client = we_ui_Client::getInstance();
 
-		foreach ($this->_rows as $i => $row) {
+		foreach($this->_rows as $i => $row){
 
 			$rowHTML = '<div style="margin-left:' . $this->_marginLeft . 'px" id="div_' . $this->_id . '_' . $i . '">' . $row->getHTML() . '</div>' . (($client->getBrowser() == we_ui_Client::kBrowserIE) ? '<br>' : '');
 			$html .= $rowHTML;
-			if ($i < (count($this->_rows) - 1) && ($row->hasLine())) {
+			if($i < (count($this->_rows) - 1) && ($row->hasLine())){
 				$html .= '<div class="we_ui_layout_HeadlineIconTable_Rule"></div>';
-			} else {
+			} else{
 				$html .= '<div class="we_ui_layout_HeadlineIconTable_Space"></div>';
 			}
 		}
@@ -299,12 +279,11 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	protected function _getHeader()
-	{
+	protected function _getHeader(){
 
 		$tableTag = '<table' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib(array('margin-top' => '10px')) . ' border="0" cellspacing="0" cellpadding="0">';
 
-		if ($this->getTitle() !== '') {
+		if($this->getTitle() !== ''){
 
 			return $tableTag . '
 	<tr>
@@ -315,8 +294,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	</tr>
 	<tr>
 		<td id="td_' . htmlspecialchars($this->getId()) . '">';
-
-		} else {
+		} else{
 
 			return $tableTag . '
 	<tr>
@@ -324,7 +302,6 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	</tr>
 	<tr>
 		<td id="td_' . htmlspecialchars($this->getId()) . '">';
-
 		}
 	}
 
@@ -333,8 +310,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	protected function _getFooter()
-	{
+	protected function _getFooter(){
 
 		return '</td>
 	</tr>

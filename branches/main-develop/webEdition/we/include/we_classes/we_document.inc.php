@@ -276,10 +276,10 @@ class we_document extends we_root{
 			} else if($this->ContentType == 'text/webedition'){ //	webEdition Document
 				if($this->IsDynamic == 1){ //	dynamic
 					$selected = (defined('DEFAULT_DYNAMIC_EXT') ? DEFAULT_DYNAMIC_EXT : '.php');
-				} else{	//	static
+				} else{ //	static
 					$selected = (defined('DEFAULT_STATIC_EXT') ? DEFAULT_STATIC_EXT : '.html');
 				}
-			} else{	//	no webEdition Document
+			} else{ //	no webEdition Document
 				$selected = $this->Extension;
 			}
 		} else{ //	bestehendes Dokument oder Dokument mit DocType

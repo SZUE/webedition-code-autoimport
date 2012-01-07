@@ -81,10 +81,10 @@ class weCustomer extends weModelBase{
 		}
 	}
 
-/**
- *	Overwrites an existing User, keeps customerfilters => User should be the same person
- * @param int $id id to overwrite
- */
+	/**
+	 * 	Overwrites an existing User, keeps customerfilters => User should be the same person
+	 * @param int $id id to overwrite
+	 */
 	function overwrite($id){
 		$tmp = new self($id);
 		$tmp->delete(false);

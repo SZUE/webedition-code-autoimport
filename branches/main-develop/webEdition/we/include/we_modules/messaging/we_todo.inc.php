@@ -284,8 +284,8 @@ class we_todo extends we_msg_proto{
 				} else{
 					$set_query[] = 'ParentID=' . $this->default_folders[we_msg_proto::FOLDER_DONE];
 				}
-			}else{
-				if(f('SELECT ParentID FROM '.$this->table.' WHERE ID='.$msg['_ID'],'ParentID',$this->DB)==$this->default_folders[we_msg_proto::FOLDER_DONE]){
+			} else{
+				if(f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . $msg['_ID'], 'ParentID', $this->DB) == $this->default_folders[we_msg_proto::FOLDER_DONE]){
 					$set_query[] = 'ParentID=' . $this->default_folders[we_msg_proto::FOLDER_INBOX];
 				}
 			}

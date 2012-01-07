@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,31 +23,26 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
  * Class we_category
  *
  * Provides functions for handling webEdition category.
  */
+class we_category extends weModelBase{
 
-	class we_category extends weModelBase{
+	var $ClassName = __CLASS__;
+	var $ContentType = "category";
 
-		var $ClassName=__CLASS__;
-		var $ContentType="category";
-
-		function __construct(){
-			parent::__construct(CATEGORY_TABLE);
-		}
-
-		function we_save(){
-			if(isset($this->Catfields) && is_array($this->Catfields)){
-				$this->Catfields = serialize($this->Catfields);
-			}
-
-			weModelBase::save();
-
-		}
-
-
-
+	function __construct(){
+		parent::__construct(CATEGORY_TABLE);
 	}
+
+	function we_save(){
+		if(isset($this->Catfields) && is_array($this->Catfields)){
+			$this->Catfields = serialize($this->Catfields);
+		}
+
+		weModelBase::save();
+	}
+
+}

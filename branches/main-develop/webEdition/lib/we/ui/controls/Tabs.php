@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -27,15 +27,13 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Class to display Tabs
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement
-{
-
+class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	/**
 	 * Default class name for tab container
 	 */
@@ -99,197 +97,188 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
-		
+
 		// add needed CSS files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-		
+
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-	
 	}
 
 	/**
 	 * Retrieve tabs
-	 * 
+	 *
 	 * @return array
 	 */
-	public function getTabs()
-	{
+	public function getTabs(){
 		return $this->_tabs;
 	}
 
 	/**
 	 * Set tabs
-	 * 
+	 *
 	 * @param array $_tabs
 	 */
-	public function setTabs($_tabs)
-	{
+	public function setTabs($_tabs){
 		$this->_tabs = $_tabs;
 	}
 
 	/**
 	 * Retrieve content frame
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getContentFrame()
-	{
+	public function getContentFrame(){
 		return $this->_contentFrame;
 	}
 
 	/**
 	 * Set content Frame
-	 * 
+	 *
 	 * @param string $_contentFrame
 	 */
-	public function setContentFrame($_contentFrame)
-	{
+	public function setContentFrame($_contentFrame){
 		$this->_contentFrame = $_contentFrame;
 	}
 
 	/**
 	 * Retrieve tab attributes
-	 * 
+	 *
 	 * @param array of tab $_tabArray, string $_att
-	 * 
+	 *
 	 * @return string
 	 */
-	protected function getTabAttribute($_tabArray, $_att)
-	{
-		switch ($_att) {
+	protected function getTabAttribute($_tabArray, $_att){
+		switch($_att){
 			case "id" :
-				if (isset($_tabArray["id"]) && $_tabArray["id"] != "") {
+				if(isset($_tabArray["id"]) && $_tabArray["id"] != ""){
 					return $_tabArray["id"];
-				} else {
+				} else{
 					return "";
 				}
 				break;
 			case "active" :
-				if (isset($_tabArray["active"])) {
+				if(isset($_tabArray["active"])){
 					return $_tabArray["active"];
 				}
 				break;
 			case "text" :
-				if (isset($_tabArray["text"])) {
+				if(isset($_tabArray["text"])){
 					return $_tabArray["text"];
-				} else {
+				} else{
 					return '';
 				}
 				break;
 			case "title" :
-				if (isset($_tabArray["title"])) {
+				if(isset($_tabArray["title"])){
 					return $_tabArray["title"];
-				} else {
+				} else{
 					return '';
 				}
 				break;
 			case "hidden" :
-				if (isset($_tabArray["hidden"])) {
+				if(isset($_tabArray["hidden"])){
 					return $_tabArray["hidden"];
 				}
 				break;
 			case "disabled" :
-				if (isset($_tabArray["disabled"])) {
+				if(isset($_tabArray["disabled"])){
 					return $_tabArray["disabled"];
 				}
 				break;
 			case "onClick" :
-				if (isset($_tabArray["onClick"])) {
+				if(isset($_tabArray["onClick"])){
 					return $_tabArray["onClick"];
-				} else {
+				} else{
 					return '';
 				}
 				break;
 			case "bottomline" :
-				if (isset($_tabArray["bottomline"])) {
+				if(isset($_tabArray["bottomline"])){
 					return $_tabArray["bottomline"];
 				}
 				break;
 			case "close" :
-				if (isset($_tabArray["close"])) {
+				if(isset($_tabArray["close"])){
 					return $_tabArray["close"];
 				}
 				break;
 			case "icon" :
-				if (isset($_tabArray["icon"])) {
+				if(isset($_tabArray["icon"])){
 					return $_tabArray["icon"];
 				}
 				break;
 			case "onCloseClick" :
-				if (isset($_tabArray["onCloseClick"])) {
+				if(isset($_tabArray["onCloseClick"])){
 					return $_tabArray["onCloseClick"];
-				} else {
+				} else{
 					return '';
 				}
 				break;
 			case "reload" :
-				if (isset($_tabArray["reload"])) {
+				if(isset($_tabArray["reload"])){
 					return $_tabArray["reload"];
-				} else {
+				} else{
 					return false;
 				}
 				break;
 		}
-		
+
 		return "";
 	}
 
 	/**
 	 * Retrieve tab image border
-	 * 
+	 *
 	 * @return string
 	 */
-	protected function getTabImageBorder()
-	{
+	protected function getTabImageBorder(){
 		return '<img src="/webEdition/images/multiTabs/tabBorder.gif" border="0" ' . $this->_getComputedClassAttrib(self::kTabImageBorder_Class) . ' height="21" />';
 	}
 
 	/**
 	 * Retrieve tabs HTML
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getTabsHTML()
-	{
+	public function getTabsHTML(){
 		$out = '';
 		$tabs = $this->getTabs();
-		if (is_array($tabs) && !empty($tabs)) {
-			foreach ($tabs as $k => $v) {
-				if ($this->getTabAttribute($v, 'id') !== "") {
+		if(is_array($tabs) && !empty($tabs)){
+			foreach($tabs as $k => $v){
+				if($this->getTabAttribute($v, 'id') !== ""){
 					$id = $this->getTabAttribute($v, 'id');
 				}
 				$class = self::kTabNormal_Class;
 				$onClick = '';
-				if ($this->getTabAttribute($v, 'onClick')) {
+				if($this->getTabAttribute($v, 'onClick')){
 					$onClick .= htmlentities($this->getTabAttribute($v, 'onClick'));
 				}
 				$submit = '';
-				if ($this->getTabAttribute($v, 'reload')) {
+				if($this->getTabAttribute($v, 'reload')){
 					$submit = $this->getContentFrame() . 'submitForm();';
 				}
 				$onClick .= 'if ( we_ui_controls_Tabs.allowed_change_edit_page() ){ we_ui_controls_Tabs.setTabClass(\'' . $this->getId() . '\',this); we_ui_controls_Tabs.setTab(\'' . $this->getId() . '\',\'' . $id . '\',\'' . $this->getContentFrame() . '\');' . $submit . '}';
-				if ($this->getTabAttribute($v, 'active')) {
+				if($this->getTabAttribute($v, 'active')){
 					$class = self::kTabActive_Class;
-					if ($this->getTabAttribute($v, 'bottomline')) {
+					if($this->getTabAttribute($v, 'bottomline')){
 						$class = self::kTabActiveBottomline_Class;
 					}
 				}
-				if ($this->getTabAttribute($v, 'disabled')) {
+				if($this->getTabAttribute($v, 'disabled')){
 					$class = self::kTabDisabled_Class;
 					$onClick = 'return false;';
 				}
 				$hiddenStyle = '';
-				if ($this->getTabAttribute($v, 'hidden')) {
+				if($this->getTabAttribute($v, 'hidden')){
 					$hiddenStyle = 'style="display:none;"';
 				}
 				$out .= '<div ' . $hiddenStyle . ' title="' . $this->getTabAttribute($v, 'title') . '" id="Tabs_' . $id . '" onclick="' . $onClick . '" ' . $this->_getComputedClassAttrib($class) . '>';
@@ -311,12 +300,12 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
-		if ($this->getHidden()) {
+	protected function _renderHTML(){
+		if($this->getHidden()){
 			$this->_style .= 'display:none;';
 		}
-		
+
 		return '<div' . $this->_getComputedClassAttrib(self::kTabs_ContainerClass) . $this->_getComputedStyleAttrib() . $this->_getNonBooleanAttribs('id') . '>' . $this->getTabsHTML() . '</div><div style="clear:left;"></div>';
 	}
+
 }

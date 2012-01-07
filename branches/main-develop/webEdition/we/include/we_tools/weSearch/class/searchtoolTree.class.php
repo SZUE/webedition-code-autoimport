@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class searchtoolTree extends weToolTree{
 
 	function searchtoolTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){

@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Class we_html_table
  *
  * Provides functions for creating html tags used in forms.
  */
-
 class we_html_table extends we_baseCollection{
 
 	/**

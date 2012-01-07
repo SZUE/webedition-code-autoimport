@@ -302,7 +302,7 @@ class we_textContentDocument extends we_textDocument{
 			}
 		}
 
-		if(!$this->ID){	// when no ID, then allways save before in main table
+		if(!$this->ID){ // when no ID, then allways save before in main table
 			if(!we_root::we_save(0))
 				return false;
 		}
@@ -452,7 +452,7 @@ class we_textContentDocument extends we_textDocument{
 		if(($this->ModDate > $this->Published) && $this->Published){
 			if(!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
 				return we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE);
-			}else{
+			} else{
 				return we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE);
 			}
 		}

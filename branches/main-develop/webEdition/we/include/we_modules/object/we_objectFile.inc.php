@@ -221,7 +221,7 @@ class we_objectFile extends we_document{
 	}
 
 	function restoreWorkspaces(){
-		if(!$this->TableID){	// WORKARROUND for bug 4631
+		if(!$this->TableID){ // WORKARROUND for bug 4631
 			$ac = makeCSVFromArray(getAllowedClasses($this->DB_WE));
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
@@ -3030,7 +3030,7 @@ class we_objectFile extends we_document{
 				$glob .= '$' . $k . ",";
 		}
 		$glob = ereg_replace('(.*),$', '\1', $glob);
-		eval('global ' . $glob . ';');	// globalen Namensraum herstellen.
+		eval('global ' . $glob . ';'); // globalen Namensraum herstellen.
 
 		$we_doc = new we_webEditionDocument();
 		$we_doc->elements = $this->elements;

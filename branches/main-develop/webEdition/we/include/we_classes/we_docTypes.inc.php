@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,48 +22,47 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 
-class we_docTypes extends we_class {
-
+class we_docTypes extends we_class{
 	/*
-	* Variables
-	*/
+	 * Variables
+	 */
 
 	/* Name of the class => important for reconstructing the class from outside the class */
-	var $ClassName=__CLASS__;
+
+	var $ClassName = __CLASS__;
 
 	/* The Text that will be shown in the tree-menue */
-	var $DocType="New DocType";
+	var $DocType = "New DocType";
 	var $Table = DOC_TYPES_TABLE;
-	var $Extension=".html";
-	var $ParentID="0";
-	var $ParentPath="";
-	var $TemplateID=0;
-	var $ContentTable="";
-	var $IsDynamic=false;
-	var $IsSearchable=false;
+	var $Extension = ".html";
+	var $ParentID = "0";
+	var $ParentPath = "";
+	var $TemplateID = 0;
+	var $ContentTable = "";
+	var $IsDynamic = false;
+	var $IsSearchable = false;
 	var $JavaScript = "";
 	var $Notify = "";
-	var $NotifyTemplateID="";
+	var $NotifyTemplateID = "";
 	var $NotifySubject = "";
-	var $NotifyOnChange="";
-	var $Templates="";
+	var $NotifyOnChange = "";
+	var $Templates = "";
 	var $SubDir = we_class::SUB_DIR_NO;
-	var $Category="";
-	var $Language="";
+	var $Category = "";
+	var $Language = "";
 
 	/*
-	* Functions
-	*/
+	 * Functions
+	 */
 
 	/* Constructor */
-	function __construct() {
+
+	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots,"Category","DocType","Extension","ParentID","ParentPath","TemplateID","ContentTable","IsDynamic","IsSearchable","Notify","NotifyTemplateID","NotifySubject","NotifyOnChange","SubDir","Templates","Language");
-		$this->Extension= (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
+		array_push($this->persistent_slots, "Category", "DocType", "Extension", "ParentID", "ParentPath", "TemplateID", "ContentTable", "IsDynamic", "IsSearchable", "Notify", "NotifyTemplateID", "NotifySubject", "NotifyOnChange", "SubDir", "Templates", "Language");
+		$this->Extension = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 	}
 
 	function we_save($resave=0){
@@ -70,254 +70,242 @@ class we_docTypes extends we_class {
 		$newIdArr = array();
 		if(sizeof($idArr)){
 			foreach($idArr as $id){
-				$path = id_to_path($id,TEMPLATES_TABLE);
+				$path = id_to_path($id, TEMPLATES_TABLE);
 				if($id && $path){
-					array_push($newIdArr,$id);
+					array_push($newIdArr, $id);
 				}
 			}
 		}
 		$this->Templates = makeCSVFromArray($newIdArr);
 
-		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT ){
-			if(isset($_REQUEST["we_".$this->Name."_LangDocType"])){
-				$this->setLanguageLink($_REQUEST["we_".$this->Name."_LangDocType"],'tblDocTypes');
+		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+			if(isset($_REQUEST["we_" . $this->Name . "_LangDocType"])){
+				$this->setLanguageLink($_REQUEST["we_" . $this->Name . "_LangDocType"], 'tblDocTypes');
 			}
 		}
 
 		return we_class::we_save($resave);
 	}
 
-	function we_save_exim() {
+	function we_save_exim(){
 		return we_class::we_save(0);
 	}
 
-
-	function saveInSession(&$save) {
+	function saveInSession(&$save){
 		$save = array();
 		$save[0] = array();
-		for($i=0;$i<sizeof($this->persistent_slots);$i++) {
-			$save[0][$this->persistent_slots[$i]]=$this->{$this->persistent_slots[$i]};
+		for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+			$save[0][$this->persistent_slots[$i]] = $this->{$this->persistent_slots[$i]};
 		}
 	}
 
-	function we_initSessDat($sessDat) {
+	function we_initSessDat($sessDat){
 		we_class::we_initSessDat($sessDat);
-		if(is_array($sessDat)) {
-			for($i=0;$i<sizeof($this->persistent_slots);$i++) {
-				if(isset($sessDat[0][$this->persistent_slots[$i]])) {
-					$this->{$this->persistent_slots[$i]}=$sessDat[0][$this->persistent_slots[$i]];
+		if(is_array($sessDat)){
+			for($i = 0; $i < sizeof($this->persistent_slots); $i++){
+				if(isset($sessDat[0][$this->persistent_slots[$i]])){
+					$this->{$this->persistent_slots[$i]} = $sessDat[0][$this->persistent_slots[$i]];
 				}
 			}
 		}
 		$this->i_setElementsFromHTTP();
 
-		if($this->Language == "") {
+		if($this->Language == ""){
 			$this->initLanguageFromParent();
 		}
 	}
 
-
-	function initLanguageFromParent() {
+	function initLanguageFromParent(){
 
 		$ParentID = $this->ParentID;
 		$i = 0;
 		while($this->Language == "") {
-			if($ParentID == 0 || $i > 20) {
+			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
-				if($this->Language == "") {
+				if($this->Language == ""){
 					$this->Language = "de_DE";
 				}
-
-			} else {
+			} else{
 				$Query = "SELECT Language, ParentID FROM " . $this->DB_WE->escape($this->Table) . " WHERE ID = " . intval($ParentID);
 				$this->DB_WE->query($Query);
 
 				while($this->DB_WE->next_record()) {
 					$ParentID = $this->DB_WE->f("ParentID");
 					$this->Language = $this->DB_WE->f("Language");
-
 				}
-
 			}
 			$i++;
-
 		}
-
 	}
 
-	function formLanguage() {
+	function formLanguage(){
 
 		we_loadLanguageConfig();
 
-		$value = ($this->Language!=""?$this->Language:$GLOBALS['weDefaultFrontendLanguage']);
+		$value = ($this->Language != "" ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
-		$inputName = "we_".$this->Name."_Language";
+		$inputName = "we_" . $this->Name . "_Language";
 
 		$_languages = getWeFrontendLanguagesForBackend();
 
-		if (defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
+		if(defined('LANGLINK_SUPPORT') && LANGLINK_SUPPORT){
 
-			$htmlzw='';
-			foreach ($_languages as $langkey => $lang){
-			  	$LDID = f('SELECT LDID FROM '.LANGLINK_TABLE." WHERE DocumentTable='tblDocTypes' AND DID=".$this->ID." AND Locale='".$langkey."'",'LDID',$this->DB_WE);
-			  	if(!$LDID){$LDID=0;}
-				$htmlzw.= $this->formDocTypes3($lang,$langkey,$LDID);
-				$langkeys[]=$langkey;
+			$htmlzw = '';
+			foreach($_languages as $langkey => $lang){
+				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND DID=" . $this->ID . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
+				if(!$LDID){
+					$LDID = 0;
+				}
+				$htmlzw.= $this->formDocTypes3($lang, $langkey, $LDID);
+				$langkeys[] = $langkey;
 			}
-			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),
-				g_l('weClass','[language]'),	"left",	"defaultfont");
-			$html .= "<br/>".$this->htmlFormElementTable($htmlzw,
-			g_l('weClass','[languageLinksDefaults]'),'left','defaultfont');
-		return $html;
-		} else {
-		return $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521),
-			g_l('weClass','[language]'),
-			"left",
-			"defaultfont");
+			$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
+			$html .= "<br/>" . $this->htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
+			return $html;
+		} else{
+			return $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, "", "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 		}
-
 	}
 
-	function formCategory() {
+	function formCategory(){
 		$addbut = we_button::create_button("add", "javascript:we_cmd('openCatselector', '', '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!we_hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new MultiDirChooser(521,$this->Category,"dt_delete_cat",$addbut,"","Icon,Path", CATEGORY_TABLE);
-		return $this->htmlFormElementTable($cats->get(),g_l('weClass',"[category]"));
+		$cats = new MultiDirChooser(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
+		return $this->htmlFormElementTable($cats->get(), g_l('weClass', "[category]"));
 	}
 
-	function addCat($id) {
+	function addCat($id){
 		$cats = makeArrayFromCSV($this->Category);
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
-			if($id && (!in_array($id,$cats))) {
-				array_push($cats,$id);
+			if($id && (!in_array($id, $cats))){
+				array_push($cats, $id);
 			}
 		}
-		$this->Category=makeCSVFromArray($cats,true);
+		$this->Category = makeCSVFromArray($cats, true);
 	}
 
-	function delCat($id) {
+	function delCat($id){
 		$cats = makeArrayFromCSV($this->Category);
-		if(in_array($id,$cats)) {
-			$pos = getArrayKey($id,$cats);
-			if($pos != "" || $pos=="0") {
-				array_splice($cats,$pos,1);
+		if(in_array($id, $cats)){
+			$pos = getArrayKey($id, $cats);
+			if($pos != "" || $pos == "0"){
+				array_splice($cats, $pos, 1);
 			}
 		}
-		$this->Category=makeCSVFromArray($cats,true);
+		$this->Category = makeCSVFromArray($cats, true);
 	}
 
 	/*
-	* Form functions for generating the html of the input fields
-	*/
+	 * Form functions for generating the html of the input fields
+	 */
 
-	function formDocTypeHeader() {
+	function formDocTypeHeader(){
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr valign="top">
 					<td>
-						'.$this->formDocTypes2().'</td>
+						' . $this->formDocTypes2() . '</td>
 					<td>
-						'.we_html_tools::getPixel(20,2).'</td>
+						' . we_html_tools::getPixel(20, 2) . '</td>
 					<td>
-						'.$this->formNewDocType().'
-						'.we_html_tools::getPixel(2,10).'
-						'.$this->formDeleteDocType().'</td>
+						' . $this->formNewDocType() . '
+						' . we_html_tools::getPixel(2, 10) . '
+						' . $this->formDeleteDocType() . '</td>
 				</tr>
 			</table>';
 		return $content;
 	}
 
-	function formName() {
-		return $this->formInputField("","DocType","",24,520,32);
+	function formName(){
+		return $this->formInputField("", "DocType", "", 24, 520, 32);
 	}
 
-	function formDocTypeTemplates() {
+	function formDocTypeTemplates(){
 		//javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'add_dt_template\\', top.allIDs);', '', '', 'text/weTmpl', 1,1)
-		$wecmdenc1= '';
-		$wecmdenc2= '';
-		$wecmdenc3= we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
+		$wecmdenc1 = '';
+		$wecmdenc2 = '';
+		$wecmdenc3 = we_cmd_enc("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
 
-		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','".$wecmdenc3."', '', '', 'text/weTmpl', 1,1)");
+		$addbut = we_button::create_button("add", "javascript:we_cmd('openDocselector', '', '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', 'text/weTmpl', 1,1)");
 
-		$templ = new MultiDirChooser(521,$this->Templates,"delete_dt_template",$addbut,"","Icon,Path", TEMPLATES_TABLE);
+		$templ = new MultiDirChooser(521, $this->Templates, "delete_dt_template", $addbut, "", "Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
 	}
 
-	function formDocTypeDefaults() {
+	function formDocTypeDefaults(){
 		$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="3">
-						'.$this->formDirChooser($GLOBALS['BROWSER']=="IE"?403:409).'</td>
+						' . $this->formDirChooser($GLOBALS['BROWSER'] == "IE" ? 403 : 409) . '</td>
 				</tr>
 				<tr>
 					<td>
-						'.we_html_tools::getPixel(300,5).'</td>
+						' . we_html_tools::getPixel(300, 5) . '</td>
 					<td>
-						'.we_html_tools::getPixel(20,5).'</td>
+						' . we_html_tools::getPixel(20, 5) . '</td>
 					<td>
-						'.we_html_tools::getPixel(200,5).'</td>
+						' . we_html_tools::getPixel(200, 5) . '</td>
 				</tr>
 				<tr>
 					<td>
-						'.$this->formSubDir(300).'</td>
+						' . $this->formSubDir(300) . '</td>
 					<td>
-						'.we_html_tools::getPixel(20,2).'</td>
+						' . we_html_tools::getPixel(20, 2) . '</td>
 					<td>
-						'.$this->formExtension(200).'</td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						'.we_html_tools::getPixel(2,5).'</td>
+						' . $this->formExtension(200) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.$this->formTemplatePopup(521).'</td>
+						' . we_html_tools::getPixel(2, 5) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.we_html_tools::getPixel(2,5).'</td>
+						' . $this->formTemplatePopup(521) . '</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						' . we_html_tools::getPixel(2, 5) . '</td>
 				</tr>
 				<tr>
 					<td>
-						'.$this->formIsDynamic().'</td>
+						' . $this->formIsDynamic() . '</td>
 					<td></td>
 					<td>
-						'.$this->formIsSearchable().'</td>
+						' . $this->formIsSearchable() . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.we_html_tools::getPixel(2,5).'</td>
+						' . we_html_tools::getPixel(2, 5) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.$this->formLanguage(521).'</td>
+						' . $this->formLanguage(521) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.we_html_tools::getPixel(2,5).'</td>
+						' . we_html_tools::getPixel(2, 5) . '</td>
 				</tr>
 				<tr>
 					<td colspan="3">
-						'.$this->formCategory(521).'</td>
+						' . $this->formCategory(521) . '</td>
 				</tr>
 			</table>';
 
 		return $content;
-
 	}
 
 	/**
-	* @return string
-	* @param  array $arrHide
-	* @desc   returns HTML-Code for a doctype select-box without doctypes given in $array
-	* @return string
-	*/
-	function formDocTypes2($arrHide=array()) {
+	 * @return string
+	 * @param  array $arrHide
+	 * @desc   returns HTML-Code for a doctype select-box without doctypes given in $array
+	 * @return string
+	 */
+	function formDocTypes2($arrHide=array()){
 		$vals = array();
-		$q=getDoctypeQuery($this->DB_WE);
+		$q = getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
 
 		while($this->DB_WE->next_record()) {
@@ -326,145 +314,140 @@ class we_docTypes extends we_class {
 			if(in_array($t, $arrHide)){
 				continue;
 			}
-			$vals[$v]=$t;
+			$vals[$v] = $t;
 		}
-		return $this->htmlSelect("DocTypes",$vals,"8",$this->ID,false,'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
+		return $this->htmlSelect("DocTypes", $vals, "8", $this->ID, false, 'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
 	}
 
-	function formDocTypes3($headline, $langkey,$derDT=0) {
+	function formDocTypes3($headline, $langkey, $derDT=0){
 		$vals = array();
-		$q=getDoctypeQuery($this->DB_WE);
+		$q = getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
-		$vals[0]=g_l('we_class','[nodoctype]');
+		$vals[0] = g_l('we_class', '[nodoctype]');
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f("ID");
 			$t = $this->DB_WE->f("DocType");
-			$vals[$v]=$t;
+			$vals[$v] = $t;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_".$this->Name."_LangDocType[".$langkey."]",$vals,"1",$derDT,false,($langkey==$this->Language?' disabled="disabled" ':'').'style="width:328px" onChange=""'),
-			$headline,
-			"left",
-			"defaultfont");
-
-
+		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_" . $this->Name . "_LangDocType[" . $langkey . "]", $vals, "1", $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
 	}
 
-	function formDirChooser($width=100) {
-		$yuiSuggest =& weSuggest::getInstance();
+	function formDirChooser($width=100){
+		$yuiSuggest = & weSuggest::getInstance();
 
-		$textname = 'we_'.$this->Name.'_ParentPath';
-		$idname = 'we_'.$this->Name.'_ParentID';
+		$textname = 'we_' . $this->Name . '_ParentPath';
+		$idname = 'we_' . $this->Name . '_ParentID';
 
 		//javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'" . $idname . "\\'].value', 'document.forms[\\'we_form\\'].elements[\\'" . $textname  . "\\'].value', '', '" . session_id() . "')
-		$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
-		$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['" . $textname  . "'].value");
-		$wecmdenc3= '';
-		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '".$wecmdenc1."', '".$wecmdenc2."', '', '" . session_id() . "')");
+		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['" . $textname . "'].value");
+		$wecmdenc3 = '';
+		$button = we_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '" . session_id() . "')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput($textname,$this->ParentPath);
-		$yuiSuggest->setLabel(g_l('weClass',"[dir]"));
+		$yuiSuggest->setInput($textname, $this->ParentPath);
+		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($idname,$this->ParentID);
+		$yuiSuggest->setResult($idname, $this->ParentID);
 		$yuiSuggest->setSelector("Dirselector");
-		$yuiSuggest->setWidth($width - ($GLOBALS['BROWSER']=="IE"? 0 : 10));
+		$yuiSuggest->setWidth($width - ($GLOBALS['BROWSER'] == "IE" ? 0 : 10));
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();
-
 	}
 
-	function formExtension($width=100) {
-		$ct=new we_base_ContentTypes();
+	function formExtension($width=100){
+		$ct = new we_base_ContentTypes();
 		$exts = $ct->getExtension('text/webedition');
-		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup("we_".$this->Name."_Extension",$this->Extension,explode(",",$exts),$width),g_l('weClass',"[extension]"));
+		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup("we_" . $this->Name . "_Extension", $this->Extension, explode(",", $exts), $width), g_l('weClass', "[extension]"));
 	}
 
 	/* creates the Template PopupMenue */
-	function formTemplatePopup($width=100) {
-		$tlist="";
-		if($this->TemplateID!="")
-			$tlist=$this->TemplateID;
-		if($this->Templates!="")
-			$tlist.=",".$this->Templates;
-		$tlist=implode(",",array_unique(explode(",",$tlist)));
-		$sqlTeil="";
-		if($tlist!="")
-			$sqlTeil="WHERE IsFolder=0 AND ID IN($tlist)";
+
+	function formTemplatePopup($width=100){
+		$tlist = "";
+		if($this->TemplateID != "")
+			$tlist = $this->TemplateID;
+		if($this->Templates != "")
+			$tlist.="," . $this->Templates;
+		$tlist = implode(",", array_unique(explode(",", $tlist)));
+		$sqlTeil = "";
+		if($tlist != "")
+			$sqlTeil = "WHERE IsFolder=0 AND ID IN($tlist)";
 		else
-			$sqlTeil="WHERE IsFolder=0";
-		return $this->formSelect2("",$width,"TemplateID", TEMPLATES_TABLE,"ID","Path",g_l('weClass',"[standard_template]"),$sqlTeil,1,$this->TemplateID,false,"","","left","defaultfont","","",array(0,g_l('weClass',"[none]")));
+			$sqlTeil = "WHERE IsFolder=0";
+		return $this->formSelect2("", $width, "TemplateID", TEMPLATES_TABLE, "ID", "Path", g_l('weClass', "[standard_template]"), $sqlTeil, 1, $this->TemplateID, false, "", "", "left", "defaultfont", "", "", array(0, g_l('weClass', "[none]")));
 	}
 
 	// return DocumentType HTML
-	function formDocTypeDropDown($selected=-1, $width=200, $onChange="") {
+	function formDocTypeDropDown($selected=-1, $width=200, $onChange=""){
 		$this->DocType = $selected;
-		return  $this->formSelect2(
-			"",								// element type
-			$width,							// width
-			"DocType",						// name
-			DOC_TYPES_TABLE,				// table
-			"ID",							// value in DB
-			"DocType",						// txt in DB
-			g_l('weClass',"[doctype]"),			// text
-			"ORDER BY DocType",				// sql Part
-			1,								// size
-			$selected,						// selectedIndex
-			false,							// multiply
-			$onChange,						// on change part
-			"",								// attribs
-			"left",							// textalign
-			"defaultfont",					// textclass
-			"",								// pre code
-			"",								// postcode
-		array(-1,g_l('weClass',"[nodoctype]"))	// first element
+		return $this->formSelect2(
+				"", // element type
+				$width, // width
+				"DocType", // name
+				DOC_TYPES_TABLE, // table
+				"ID", // value in DB
+				"DocType", // txt in DB
+				g_l('weClass', "[doctype]"), // text
+				"ORDER BY DocType", // sql Part
+				1, // size
+				$selected, // selectedIndex
+				false, // multiply
+				$onChange, // on change part
+				"", // attribs
+				"left", // textalign
+				"defaultfont", // textclass
+				"", // pre code
+				"", // postcode
+				array(-1, g_l('weClass', "[nodoctype]")) // first element
 		);
 	}
 
-	function formIsDynamic() {
+	function formIsDynamic(){
 		$isDyn = $this->IsDynamic ? 1 : 0;
-		$n = "we_".$this->Name."_IsDynamic";
+		$n = "we_" . $this->Name . "_IsDynamic";
 		$v = $this->IsDynamic;
 
-		$out="\nfunction switchExt(){\n";
-		$out.='var a=document.we_form.elements;'."\n";
-		if ($this->ID) {
-			$out.='if(confirm("'.g_l('weClass',"[confirm_ext_change]").'")){'."\n";
+		$out = "\nfunction switchExt(){\n";
+		$out.='var a=document.we_form.elements;' . "\n";
+		if($this->ID){
+			$out.='if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' . "\n";
 		}
 		$DefaultDynamicExt = (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : ".php");
 		$DefaultStaticExt = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
-		$out.='if(a["we_'.$this->Name.'_IsDynamic"].value==1) {var changeto="'.$DefaultDynamicExt.'";} else {var changeto="'.$DefaultStaticExt.'";}'."\n";
-		$out .= 'a["we_'.$this->Name.'_Extension"].value=changeto;'."\n";
-		if ($this->ID) {
+		$out.='if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . $DefaultDynamicExt . '";} else {var changeto="' . $DefaultStaticExt . '";}' . "\n";
+		$out .= 'a["we_' . $this->Name . '_Extension"].value=changeto;' . "\n";
+		if($this->ID){
 			$out.="}\n";
 		}
 		$out.="}\n";
-		$out="\n".'<script  type="text/javascript">'.$out.'</script>'."\n";
+		$out = "\n" . '<script  type="text/javascript">' . $out . '</script>' . "\n";
 
-		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass',"[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
+		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, $v) . $out;
 	}
 
-	function formIsSearchable() {
+	function formIsSearchable(){
 		$isSearchable = $this->IsSearchable ? 1 : 0;
-		$n = "we_".$this->Name."_IsSearchable";
-		$v = $isSearchable ;
+		$n = "we_" . $this->Name . "_IsSearchable";
+		$v = $isSearchable;
 
-		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass',"[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
+		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
 	}
 
-	function formSubDir($width=100) {
+	function formSubDir($width=100){
 		$vals = array();
-		for($i=0;$i<sizeof(g_l('weClass',"[subdir]"));$i++) {
-			$vals[(string)$i] = g_l('weClass',"[subdir][".$i.']');
+		for($i = 0; $i < sizeof(g_l('weClass', "[subdir]")); $i++){
+			$vals[(string) $i] = g_l('weClass', "[subdir][" . $i . ']');
 		}
-		return $this->htmlFormElementTable($this->htmlSelect('we_'.$this->Name.'_SubDir',$vals,$size=1,$this->SubDir,false,"","value",$width),g_l('weClass',"[subdirectory]"));
+		return $this->htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', $vals, $size = 1, $this->SubDir, false, "", "value", $width), g_l('weClass', "[subdirectory]"));
 	}
 
-	function formNewDocType() {
+	function formNewDocType(){
 		return we_button::create_button("new_doctype", "javascript:we_cmd('newDocType')");
 	}
 
-	function formDeleteDocType() {
+	function formDeleteDocType(){
 		return we_button::create_button("delete_doctype", "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_dialog
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_layout_Dialog
  */
@@ -34,8 +34,7 @@ Zend_Loader::loadClass('we_ui_layout_Dialog');
  * @subpackage we_ui_dialog
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
-{
+class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 
 	/**
 	 * yesAction attribute
@@ -77,8 +76,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 
 		$translate = we_core_Local::addTranslation('apps.xml');
 
@@ -114,8 +112,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @return string
 	 */
-	public function getCancelAction()
-	{
+	public function getCancelAction(){
 		return $this->_cancelAction;
 	}
 
@@ -124,8 +121,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @return string
 	 */
-	public function getMessage()
-	{
+	public function getMessage(){
 		return $this->_message;
 	}
 
@@ -134,8 +130,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @return string
 	 */
-	public function getNoAction()
-	{
+	public function getNoAction(){
 		return $this->_noAction;
 	}
 
@@ -144,8 +139,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @return string
 	 */
-	public function getYesAction()
-	{
+	public function getYesAction(){
 		return $this->_yesAction;
 	}
 
@@ -154,8 +148,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @param string $cancelAction
 	 */
-	public function setCancelAction($cancelAction)
-	{
+	public function setCancelAction($cancelAction){
 		$this->_cancelAction = $cancelAction;
 	}
 
@@ -164,8 +157,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @param string $message
 	 */
-	public function setMessage($message)
-	{
+	public function setMessage($message){
 		$this->_message = $message;
 	}
 
@@ -174,8 +166,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @param string $noAction
 	 */
-	public function setNoAction($noAction)
-	{
+	public function setNoAction($noAction){
 		$this->_noAction = $noAction;
 	}
 
@@ -184,8 +175,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @param string $yesAction
 	 */
-	public function setYesAction($yesAction)
-	{
+	public function setYesAction($yesAction){
 		$this->_yesAction = $yesAction;
 	}
 
@@ -194,8 +184,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @return string
 	 */
-	public function getEncodeMessage()
-	{
+	public function getEncodeMessage(){
 		return $this->_encodeMessage;
 	}
 
@@ -204,8 +193,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog
 	 *
 	 * @param string $encodeMessage
 	 */
-	public function setEncodeMessage($encodeMessage)
-	{
+	public function setEncodeMessage($encodeMessage){
 		$this->_encodeMessage = $encodeMessage;
 	}
 

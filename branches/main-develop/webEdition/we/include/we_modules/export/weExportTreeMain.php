@@ -24,7 +24,7 @@
  */
 class weExportTreeMain extends weTree{
 
-	function weExportTree($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
+	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
 
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 	}

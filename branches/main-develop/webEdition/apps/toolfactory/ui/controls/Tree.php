@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_toolfactory
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * @see we_ui_controls_Tree
  */
@@ -36,8 +36,8 @@ Zend_Loader::loadClass('we_ui_controls_Tree');
  * @subpackage toolfactory_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
-{
+class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
+
 	/**
 	 * Constructor
 	 *
@@ -46,8 +46,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
 
 		// add needed CSS files
@@ -61,19 +60,25 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 	 * @param string $text
 	 * @return string
 	 */
-	public function getNodeObject($id, $text,$Published, $Status)
-	{
-		if( isset($Published) && $Published==0){$outClasses[] = 'unpublished';}
-		if( isset($Status) && $Status !=''){$outClasses[] = $Status;}
-		if(!empty($outClasses)){$outClass= ' class=\"'.implode(' ',$outClasses).'\" ';} else $outClass = '';
+	public function getNodeObject($id, $text, $Published, $Status){
+		if(isset($Published) && $Published == 0){
+			$outClasses[] = 'unpublished';
+		}
+		if(isset($Status) && $Status != ''){
+			$outClasses[] = $Status;
+		}
+		if(!empty($outClasses)){
+			$outClass = ' class=\"' . implode(' ', $outClasses) . '\" ';
+		} else
+			$outClass = '';
 		$out = 'var myobj = { ';
-				$out .= 'label: "<span title=\"'.$text.'\" '.$outClass.' id=\"spanText_' . $this->_id . '_'.$id.'\">'.$text.'</span>"';
-				$out .= ',';
-				$out .= 'id: "'.$id.'"';
-				$out .= ',';
-				$out .= 'text: "'.$text.'"';
-				$out .= ',';
-				$out .= 'title: "'.$id.'"';
+		$out .= 'label: "<span title=\"' . $text . '\" ' . $outClass . ' id=\"spanText_' . $this->_id . '_' . $id . '\">' . $text . '</span>"';
+		$out .= ',';
+		$out .= 'id: "' . $id . '"';
+		$out .= ',';
+		$out .= 'text: "' . $text . '"';
+		$out .= ',';
+		$out .= 'title: "' . $id . '"';
 		$out .= '}; ';
 
 		return $out;
@@ -84,30 +89,27 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 	 *
 	 * @return array
 	 */
-	public static function doCustom()
-	{
-		$items=array();
-		$_tools = weToolLookup::getAllTools(false,false,true);
+	public static function doCustom(){
+		$items = array();
+		$_tools = weToolLookup::getAllTools(false, false, true);
 
-		foreach($_tools as $_k=>$_tool) {
-			if(!weToolLookup::isInIgnoreList($_tool['name'])) {
-				if(isset($_tool['text'])) {
+		foreach($_tools as $_k => $_tool){
+			if(!weToolLookup::isInIgnoreList($_tool['name'])){
+				if(isset($_tool['text'])){
 					$name = $_tool['text'];
-				}
-				else {
+				} else{
 					$name = $_tool['name'];
 				}
-				$items[]=array(
-					'ID'=>$_tool['name'],
-					'ParentID'=>0,
-					'Text'=>$name,
-					'ContentType'=>'toolfactory/item',
-					'IsFolder'=>0,
-					'Published'=>!$_tool['appdisabled'],
-					'Status'=>''
+				$items[] = array(
+					'ID' => $_tool['name'],
+					'ParentID' => 0,
+					'Text' => $name,
+					'ContentType' => 'toolfactory/item',
+					'IsFolder' => 0,
+					'Published' => !$_tool['appdisabled'],
+					'Status' => ''
 				);
 			}
-
 		}
 
 		return $items;
@@ -120,14 +122,13 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 	 * @param string $extension
 	 * @return string
 	 */
-	public static function getTreeIconClass($contentType, $extension='')
-	{
-		switch($contentType) {
+	public static function getTreeIconClass($contentType, $extension=''){
+		switch($contentType){
 			case "toolfactory/item":
 				return "toolfactory_item";
 				break;
 			default:
-				return we_ui_controls_Tree::getTreeIconClass($contentType, $extension='');
+				return we_ui_controls_Tree::getTreeIconClass($contentType, $extension = '');
 		}
 	}
 
@@ -136,12 +137,11 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 
 		$this->setUpData();
 		$session = new Zend_Session_Namespace($this->_sessionName);
-		if(!isset($session->openNodes)) {
+		if(!isset($session->openNodes)){
 			$session->openNodes = $this->getOpenNodes();
 		}
 
@@ -152,8 +152,8 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 			(function() {
 
 				function tree_' . $this->_id . '_Init() {
-					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("'.$this->_id.'");
-					'.$this->getNodesJS().'
+					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
+					' . $this->getNodesJS() . '
 
 					tree_' . $this->_id . '.draw();
 				}
@@ -166,7 +166,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);
 
-		return '<div class="yui-skin-sam"><div id="'.htmlspecialchars($this->_id).'"></div></div>';
+		return '<div class="yui-skin-sam"><div id="' . htmlspecialchars($this->_id) . '"></div></div>';
 	}
 
 }

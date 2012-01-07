@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -33,9 +33,7 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement
-{
-
+class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 	/**
 	 * class for HeaderFont
 	 */
@@ -56,6 +54,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement
 	 *
 	 * @var string;
 	 */
+
 	protected $_consoleName = "NoName";
 
 	/**
@@ -66,8 +65,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		parent::__construct($properties);
 
 		// add needed JS Files
@@ -76,7 +74,6 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement
 
 		// add needed CSS Files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
-
 	}
 
 	/**
@@ -84,8 +81,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML()
-	{
+	protected function _renderHTML(){
 		$translate = we_core_Local::addTranslation('messageConsole.xml');
 
 		$page = we_ui_layout_HTMLPage::getInstance();
@@ -138,16 +134,14 @@ EOHTML;
 	/**
 	 * @return unknown
 	 */
-	public function getConsoleName()
-	{
+	public function getConsoleName(){
 		return $this->_consoleName;
 	}
 
 	/**
 	 * @param unknown_type $consoleName
 	 */
-	public function setConsoleName($consoleName)
-	{
+	public function setConsoleName($consoleName){
 		$this->_consoleName = $consoleName;
 	}
 

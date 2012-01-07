@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weNewsletterFrames extends weModuleFrames{
 
 	var $multibox_width = 950;
@@ -825,13 +824,13 @@ class weNewsletterFrames extends weModuleFrames{
 				$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, 'onChange="top.content.hot=1;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');"', "value", "170"));
 				$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, 'onChange="top.content.hot=1;"', "value", "80"));
 				if($v['fieldname'] == "MemberSince" || $v['fieldname'] == "LastLogin" || $v['fieldname'] == "LastAccess"){
-					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k ), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k , "_from_" . $group . "_" . $k , isset($v["fieldvalue"]) && $v["fieldvalue"] != "" ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"]  : ""));
+					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), $this->getDateSelector("", "filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] != "" ? !stristr($v["fieldvalue"], ".") ? @date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"]  : ""));
 					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, 'onChange="top.content.hot=1;"'));
 					$table->setCol($c, 4, array("class" => "defaultfont"), "&nbsp;h :");
 					$table->setCol($c, 5, array(), we_html_tools::htmlSelect("filter_minutes_" . $group . "_" . $k, $minutes, 1, isset($v["minutes"]) ? $v["minutes"] : "", false, 'onChange="top.content.hot=1;"'));
 					$table->setCol($c, 6, array("class" => "defaultfont"), "&nbsp;m");
 				} else{
-					$table->setCol($c, 2, array("colspan" => $colspan, "id" => "td_value_fields_" . $group . "_" . $k ), we_html_tools::htmlTextInput("filter_fieldvalue_" . $group . "_" . $k, 16, isset($v["fieldvalue"]) ? $v["fieldvalue"] : "", "", 'onKeyUp="top.content.hot=1;"', "text", "200"));
+					$table->setCol($c, 2, array("colspan" => $colspan, "id" => "td_value_fields_" . $group . "_" . $k), we_html_tools::htmlTextInput("filter_fieldvalue_" . $group . "_" . $k, 16, isset($v["fieldvalue"]) ? $v["fieldvalue"] : "", "", 'onKeyUp="top.content.hot=1;"', "text", "200"));
 				}
 
 				$c++;
@@ -2757,7 +2756,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
 
-			$not_black=!$this->View->isBlack($email);//Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
+			$not_black = !$this->View->isBlack($email); //Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = '';
 				if($title){

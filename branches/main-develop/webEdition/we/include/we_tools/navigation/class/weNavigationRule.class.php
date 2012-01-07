@@ -51,7 +51,7 @@ class weNavigationRule extends weModelBase{
 		'WorkspaceID'
 	);
 
-	function __construct($useDB=true,$persData=array()){
+	function __construct($useDB=true, $persData=array()){
 		if($useDB){
 			$this->db = new DB_WE();
 		}
@@ -61,7 +61,6 @@ class weNavigationRule extends weModelBase{
 					$this->$val = $persData[$val];
 				}
 			}
-
 		}
 	}
 

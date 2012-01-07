@@ -60,9 +60,9 @@ class weNewsletterBlock extends weNewsletterBase{
 	 * Can load or create new Newsletter depends of parameter
 	 * ****************************************************** */
 
-	function weNewsletterBlock($newsletterID = 0){
+	function __construct($newsletterID = 0){
 
-		parent::weNewsletterBase();
+		parent::__construct();
 		$this->table = NEWSLETTER_BLOCK_TABLE;
 
 		//$this->persistents[]="ID";

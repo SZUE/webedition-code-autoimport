@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,27 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weGlossaryTree extends weMainTree{
 
+	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
 
-	function __construct($frameset="",$topFrame="",$treeFrame="",$cmdFrame=""){
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-			parent::__construct($frameset,$topFrame,$treeFrame,$cmdFrame);
+		$styles = array();
+		$styles[] = '.item {color: black; font-size: ' . ($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
+		$styles[] = '.item a { text-decoration:none;}';
 
-			$styles=array();
-			$styles[]='.item {color: black; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';
-			$styles[]='.item a { text-decoration:none;}';
+		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . ($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
+		$styles[] = '.group a { text-decoration:none;}';
 
-			$styles[]='.group {color: black; font-weight: bold; font-size: '.($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")).'; font-family: '.g_l('css','[font_family]').';}';
-			$styles[]='.group a { text-decoration:none;}';
-
-			$this->setStyles($styles);
-
+		$this->setStyles($styles);
 	}
 
-
-	function getJSOpenClose() {
+	function getJSOpenClose(){
 
 		return '
 			function openClose(id){
@@ -58,20 +55,18 @@ class weGlossaryTree extends weMainTree{
 
 			if(openstatus && treeData[eintragsIndex].loaded!=1){
 				if(sort!="")
-					'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+id+"&sort="+sort;
+					' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
 				else
-					'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+id;
+					' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
 			}else{
 				drawTree();
 			}
 			if(openstatus==1) treeData[eintragsIndex].loaded=1;
 			}
 			';
-
 	}
 
-
-	function getJSUpdateItem() {
+	function getJSUpdateItem(){
 
 		return '
 				function updateEntry(id,text,pid,pub){
@@ -89,57 +84,50 @@ class weGlossaryTree extends weMainTree{
 		';
 	}
 
-
-	function getJSTreeFunctions() {
+	function getJSTreeFunctions(){
 		$out = weTree::getJSTreeFunctions();
 
 		$out.='
 			function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("'.g_l('modules_glossary',"[save_changed_glossary]").'")) {
+						if(confirm("' . g_l('modules_glossary', "[save_changed_glossary]") . '")) {
 							cmd = "save_export";
 							top.content.we_cmd("save_glossary");
 						} else {
 							top.content.usetHot();
-							var node='.$this->topFrame.'.get(id);
-							'.$this->topFrame.'.resize.right.editor.edbody.location="'.$this->frameset.'?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+'.$this->topFrame.'.activ_tab;
+							var node=' . $this->topFrame . '.get(id);
+							' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 						}
 					} else {
-						var node='.$this->topFrame.'.get(id);
-						'.$this->topFrame.'.resize.right.editor.edbody.location="'.$this->frameset.'?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+'.$this->topFrame.'.activ_tab;
+						var node=' . $this->topFrame . '.get(id);
+						' . $this->topFrame . '.resize.right.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 					}
 			}
-			'.$this->topFrame.'.loaded=1;
+			' . $this->topFrame . '.loaded=1;
 		';
 		return $out;
-
 	}
 
-
-	function getJSStartTree() {
+	function getJSStartTree(){
 
 		return 'function startTree(){
-			'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid=0";
+			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
 			drawTree();
 		}';
-
 	}
 
+	function getJSIncludeFunctions(){
 
-	function getJSIncludeFunctions() {
-
-		$out=weTree::getJSIncludeFunctions();
-		$out.="\n".$this->getJSStartTree()."\n";
+		$out = weTree::getJSIncludeFunctions();
+		$out.="\n" . $this->getJSStartTree() . "\n";
 
 		return $out;
-
 	}
 
+	function getJSMakeNewEntry(){
 
-	function getJSMakeNewEntry() {
-
- 		return '
+		return '
 		function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 				if(treeData[indexOfEntry(pid)]){
 					if(treeData[indexOfEntry(pid)].loaded){
@@ -172,30 +160,26 @@ class weGlossaryTree extends weMainTree{
 				}
 		}
 		';
-
 	}
 
-
-	function getJSInfo() {
+	function getJSInfo(){
 
 		return '
 			function info(text) {
 			}
 		';
-
 	}
 
-
-	function getJSShowSegment() {
+	function getJSShowSegment(){
 
 		return '
 				function showSegment(){
-				parentnode='.$this->topFrame.'.get(this.parentid);
+				parentnode=' . $this->topFrame . '.get(this.parentid);
 				parentnode.clear();
-				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
+				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
 				drawTree();
 			}
 		';
-
 	}
+
 }

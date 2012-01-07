@@ -42,7 +42,7 @@ class weNewsletterBase{
 	/**
 	 * Default Constructor
 	 */
-	function weNewsletterBase(){
+	function __construct(){
 		$this->db = new DB_WE();
 		$this->persistents = array();
 	}

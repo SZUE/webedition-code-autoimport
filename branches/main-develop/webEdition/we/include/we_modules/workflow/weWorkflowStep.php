@@ -139,5 +139,3 @@ class weWorkflowStep extends weWorkflowBase{
 	}
 
 }
-
-?>

@@ -25,11 +25,6 @@
 class DB_WE extends we_database_base{
 
 	private $conType = '';
-	/* public: constructor */
-	/* 	function __construct(){
-	  //call super constructor
-	  parent::__construct();
-	  } */
 
 	protected function ping(){
 		return mysql_ping($this->Link_ID);

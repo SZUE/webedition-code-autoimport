@@ -24,7 +24,7 @@
  */
 class weNavigationTree extends weToolTree{
 
-	function weNavigationTree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 	}
 

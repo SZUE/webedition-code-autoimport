@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_layout_HTMLPage
  */
@@ -27,50 +27,47 @@ Zend_Loader::loadClass('we_ui_layout_HTMLPage');
 
 /**
  * Base Class for Dialog Windows
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_Dialog extends we_ui_layout_HTMLPage
-{
+class we_ui_layout_Dialog extends we_ui_layout_HTMLPage{
 
 	protected $_headline = "";
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * Sets object properties if set in $properties array
-	 * 
+	 *
 	 * @param array $properties associative array containing named object properties
 	 * @return void
 	 */
-	public function __construct($properties = null)
-	{
+	public function __construct($properties = null){
 		$this->addInlineJS('
-self.dialog = eval("opener." + self.name + "_Object");		
+self.dialog = eval("opener." + self.name + "_Object");
 ');
 		parent::__construct($properties);
 	}
-	
+
 	/**
 	 * set headline
-	 * 
+	 *
 	 * @param string $headline
 	 */
-	public function setHeadline($headline)
-	{
+	public function setHeadline($headline){
 		$this->_headline = $headline;
 	}
 
 	/**
 	 * retrieve headline
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getHeadline()
-	{
+	public function getHeadline(){
 		return $this->_headline;
 	}
-	
+
 }

@@ -23,17 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 /**
-* WorkfFlow Document Task definition
-*
-* This class describe document task in workflow process
-*
-*/
+ * WorkfFlow Document Task definition
+ *
+ * This class describe document task in workflow process
+ *
+ */
 class weWorkflowDocumentTask extends weWorkflowBase{
-const STATUS_UNKNOWN=0;
-const STATUS_APPROVED=1;
-const STATUS_CANCELED=2;
+	const STATUS_UNKNOWN=0;
+	const STATUS_APPROVED=1;
+	const STATUS_CANCELED=2;
 
 	// workflow document task ID
 	var $ID;
@@ -49,22 +48,22 @@ const STATUS_CANCELED=2;
 	var $Status;
 
 	/**
-	* Default Constructor
-	*/
+	 * Default Constructor
+	 */
 	function __construct($wfDocumentTask=0){
 		parent::__construct();
-		$this->table=WORKFLOW_DOC_TASK_TABLE;
-		$this->ClassName="weWorkflowDocumentTask";
+		$this->table = WORKFLOW_DOC_TASK_TABLE;
+		$this->ClassName = "weWorkflowDocumentTask";
 
-		$this->persistents[]="ID";
-		$this->persistents[]="documentStepID";
-		$this->persistents[]="workflowTaskID";
-		$this->persistents[]="Date";
-		$this->persistents[]="todoID";
-		$this->persistents[]="Status";
+		$this->persistents[] = "ID";
+		$this->persistents[] = "documentStepID";
+		$this->persistents[] = "workflowTaskID";
+		$this->persistents[] = "Date";
+		$this->persistents[] = "todoID";
+		$this->persistents[] = "Status";
 
 		$this->ID = 0;
-		$this->documentStepID=0;
+		$this->documentStepID = 0;
 		$this->workflowTaskID = 0;
 		$this->Date = 0;
 		$this->todoID = 0;
@@ -76,89 +75,88 @@ const STATUS_CANCELED=2;
 		}
 	}
 
-
 	function approve(){
-		$this->Status=self::STATUS_APPROVED;
-		$this->Date=time();
+		$this->Status = self::STATUS_APPROVED;
+		$this->Date = time();
 		$this->doneTodo();
 	}
 
 	function decline(){
-		$this->Status=self::STATUS_CANCELED;
-		$this->Date=time();
+		$this->Status = self::STATUS_CANCELED;
+		$this->Date = time();
 		$this->rejectTodo();
 	}
 
 	function removeTodo(){
-		if($this->todoID) parent::removeTodo($this->todoID);
+		if($this->todoID)
+			parent::removeTodo($this->todoID);
 	}
 
 	function doneTodo(){
-		if($this->todoID) parent::doneTodo($this->todoID);
+		if($this->todoID)
+			parent::doneTodo($this->todoID);
 	}
 
 	function rejectTodo(){
-		if($this->todoID) {
+		if($this->todoID){
 			parent::rejectTodo($this->todoID);
 		}
-
 	}
-
-
 
 	//--------------------------------STATIC FUNCTIONS ------------------------------
 	/**
-	* returns all tasks for workflow step
-	*
-	*/
+	 * returns all tasks for workflow step
+	 *
+	 */
 	function __getAllTasks($workflowDocumentStep){
 
 		$db = new DB_WE();
 
 
-		$db->query("SELECT ID FROM ".WORKFLOW_DOC_TASK_TABLE." WHERE documentStepID =".intval($workflowDocumentStep)." ORDER BY ID");
+		$db->query("SELECT ID FROM " . WORKFLOW_DOC_TASK_TABLE . " WHERE documentStepID =" . intval($workflowDocumentStep) . " ORDER BY ID");
 
 		$docTasks = array();
 
-		while ($db->next_record()){
+		while($db->next_record()) {
 			$docTasks[] = new weWorkflowDocumentTask($db->f("ID"));
 		}
 		return $docTasks;
 	}
 
 	/**
-	* creates all tasks for workflow step
-	*
-	*/
+	 * creates all tasks for workflow step
+	 *
+	 */
 	function __createAllTasks($workflowStepID){
 		$db = new DB_WE();
 
-		$db->query("SELECT ID FROM ".WORKFLOW_TASK_TABLE." WHERE stepID=".intval($workflowStepID)." ORDER BY ID");
+		$db->query("SELECT ID FROM " . WORKFLOW_TASK_TABLE . " WHERE stepID=" . intval($workflowStepID) . " ORDER BY ID");
 		$docTasks = array();
-		while ($db->next_record()){
+		while($db->next_record()) {
 			$docTasks[] = weWorkflowDocumentTask::__createTask($db->f("ID"));
 		}
 		return $docTasks;
 	}
 
 	/**
-	* Create task
-	*/
+	 * Create task
+	 */
 	function __createTask($WorkflowTask){
-		if (is_array($WorkflowTask)) return weWorkflowDocumentTask::__createTaskFromHash($WorkflowTask);
+		if(is_array($WorkflowTask))
+			return weWorkflowDocumentTask::__createTaskFromHash($WorkflowTask);
 
 		$db = new DB_WE;
 
-		$db->query("SELECT * FROM ".WORKFLOW_TASK_TABLE." WHERE ID=".intval($WorkflowTask)." ORDER BY ID");
-		if (!$db->next_record()){
+		$db->query("SELECT * FROM " . WORKFLOW_TASK_TABLE . " WHERE ID=" . intval($WorkflowTask) . " ORDER BY ID");
+		if(!$db->next_record()){
 			return false;
 		}
 		return weWorkflowDocumentTask::__createTaskFromHash($db->Record);
 	}
 
 	/**
-	* Create task from hash
-	*/
+	 * Create task from hash
+	 */
 	function __createTaskFromHash($WorkflowTaskArray){
 		$docTask = new weWorkflowDocumentTask();
 		$docTask->workflowTaskID = $WorkflowTaskArray["ID"];

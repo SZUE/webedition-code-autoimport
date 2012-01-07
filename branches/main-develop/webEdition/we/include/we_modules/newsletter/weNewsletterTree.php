@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,19 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class weNewsletterTree extends weMainTree{
 
+	function __construct($frameset='', $topFrame='', $treeFrame='', $cmdFrame=''){
 
-	class weNewsletterTree extends weMainTree{
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	}
 
-
-		function __construct($frameset='',$topFrame='',$treeFrame='',$cmdFrame=''){
-
-			parent::__construct($frameset,$topFrame,$treeFrame,$cmdFrame);
-
-		}
-
-		function getJSMakeNewEntry(){
-	 		return '
+	function getJSMakeNewEntry(){
+		return '
 			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 					if(treeData[indexOfEntry(pid)]){
 						if(treeData[indexOfEntry(pid)].loaded){
@@ -66,10 +63,10 @@
 					}
 			}
 			';
-		}
+	}
 
- 		function getJSUpdateItem(){
- 			return '
+	function getJSUpdateItem(){
+		return '
  				function updateEntry(id,text,pid){
         			var ai = 1;
         			while (ai <= treeData.len) {
@@ -82,52 +79,49 @@
 					drawTree();
  				}
 			';
- 		}
+	}
 
-		function getJSTreeFunctions(){
+	function getJSTreeFunctions(){
 
-			$out=weTree::getJSTreeFunctions();
+		$out = weTree::getJSTreeFunctions();
 
-			$out.='
+		$out.='
 
 				function doClick(id,typ){
-					var node='.$this->topFrame.'.get(id);
-    				'.$this->topFrame.'.we_cmd(\'edit_newsletter\',node.id,node.typ,node.table);
+					var node=' . $this->topFrame . '.get(id);
+    				' . $this->topFrame . '.we_cmd(\'edit_newsletter\',node.id,node.typ,node.table);
 				}
-				'.$this->topFrame.'.loaded=1;
-			'.$this->getJSMakeNewEntry();
-			return $out;
-		}
+				' . $this->topFrame . '.loaded=1;
+			' . $this->getJSMakeNewEntry();
+		return $out;
+	}
 
-		function getJSStartTree(){
+	function getJSStartTree(){
 
-			return 'function startTree(){
-				'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid=0";
+		return 'function startTree(){
+				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
 				drawTree();
 			}';
+	}
 
-		}
+	function getJSIncludeFunctions(){
 
-		function getJSIncludeFunctions(){
+		$out = weTree::getJSIncludeFunctions();
+		$out.="\n" . $this->getJSStartTree() . "\n";
 
-			$out=weTree::getJSIncludeFunctions();
-			$out.="\n".$this->getJSStartTree()."\n";
+		return $out;
+	}
 
-			return $out;
-		}
-
-
-		function getJSInfo(){
-			return '
+	function getJSInfo(){
+		return '
 			function info(text) {
 
 			}
 		';
+	}
 
-		}
-
-		function getJSOpenClose(){
- 			return '
+	function getJSOpenClose(){
+		return '
   			function openClose(id){
 				var sort="";
 				if(id=="") return;
@@ -142,16 +136,15 @@
 
 				if(openstatus && treeData[eintragsIndex].loaded!=1){
 					if(sort!="")
-						'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+id+"&sort="+sort;
+						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
 					else
-						'.$this->cmdFrame.'.location="'.$this->frameset.'?pnt=cmd&pid="+id;
+						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
 				}else{
 					drawTree();
 				}
 				if(openstatus==1) treeData[eintragsIndex].loaded=1;
  			}
  			';
- 		}
-
-
 	}
+
+}

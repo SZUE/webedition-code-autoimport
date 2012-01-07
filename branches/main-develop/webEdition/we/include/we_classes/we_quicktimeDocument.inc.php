@@ -22,7 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*  a class for handling quicktimeDocuments. */
 
 class we_quicktimeDocument extends we_binaryDocument{
@@ -142,7 +141,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				$this->Path;
 
 			$filter = array("filesize", "type", "xml");
-			$noAtts = array("scale", "volume");	 //  no atts for xml
+			$noAtts = array("scale", "volume");	//  no atts for xml
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
 			if(isset($this->elements["bgcolor"])){
 				$this->elements["bgcolor"]["type"] = "attrib";
@@ -175,7 +174,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				while(list($k, $v) = $this->nextElement("attrib")) {
 					if(!in_array($k, $filter) && !in_array($k, $this->ObjectParamNames)){
 
-						if($v["dat"] != ""){	//  dont use empty params
+						if($v["dat"] != ""){ //  dont use empty params
 							if(!in_array($k, $noAtts)){
 								$_objectAtts[$k] = $v["dat"];
 							}
@@ -183,7 +182,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						}
 					}
 				}
-			} else{								 //  object tag and embed
+			} else{				 //  object tag and embed
 				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
 				$_objectAtts['codebase'] = $codebase;
 				//   we need embed as well
@@ -197,7 +196,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 				while(list($k, $v) = $this->nextElement("attrib")) {
 					if(!in_array($k, $filter) && $v["dat"] != ""){
 
-						if($v["dat"] != ""){	//  dont use empty params
+						if($v["dat"] != ""){ //  dont use empty params
 							$_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
 						}
 

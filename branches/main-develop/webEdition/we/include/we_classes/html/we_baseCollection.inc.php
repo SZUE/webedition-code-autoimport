@@ -118,4 +118,5 @@ class we_baseCollection extends we_baseElement{
 		$this->setContent($childs_content);
 		return parent::getHtml();
 	}
+
 }

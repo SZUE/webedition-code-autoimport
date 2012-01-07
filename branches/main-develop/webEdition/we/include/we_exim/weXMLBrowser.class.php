@@ -26,8 +26,8 @@ class weXMLBrowser extends we_xml_parser{
 
 	var $cache;
 
-	function weXMLBrowser($filename="",$mode="backup"){
-		parent::we_xml_parser();
+	function __construct($filename="",$mode="backup"){
+		parent::__construct();
 		$this->mode=$mode;
 		$this->xmlExt = FALSE;
 		if(!empty($filename)) $this->getFile($filename);

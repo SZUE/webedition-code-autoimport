@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,149 +22,137 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weSpecialCharDialog extends weDialog{
-
-
 
 	var $dialogWidth = 270;
 	var $JsOnly = true;
-
 	var $changeableArgs = array("char");
-
 	var $charset = "iso-88591";
-
-
 
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg',"[insertspecialchar]");
+		$this->dialogTitle = g_l('wysiwyg', "[insertspecialchar]");
 		$this->defaultInit();
 	}
-
-
 
 	function defaultInit(){
 		$this->args["char"] = "";
 	}
 
-
-
-
 	function getDialogContentHTML(){
 
-		$chars=array("&lsquo;",
-"&rsquo;",
-"&sbquo;",
-"&ldquo;",
-"&rdquo;",
-"&bdquo;",
-"&dagger;",
-"&Dagger;",
-"&permil;",
-"&lsaquo;",
-"&rsaquo;",
-"&spades;",
-"&clubs;",
-"&hearts;",
-"&diams;",
-"&oline;",
-"&larr;",
-"&uarr;",
-"&rarr;",
-"&darr;",
-"&trade;",
-"&frasl;",
-"&ndash;",
-"&mdash;",
-"&iexcl;",
-"&cent;",
-"&pound;",
-"&euro;",
-"&yen;",
-"&brvbar;",
-"&uml;",
-"&copy;",
-"&ordf;",
-"&laquo;",
-"&not;",
-"&reg;",
-"&macr;",
-"&deg;",
-"&plusmn;",
-"&acute;",
-"&micro;",
-"&para;",
-"&middot;",
-"&raquo;",
-"&frac14;",
-"&frac12;",
-"&frac34;",
-"&iquest;",
-"&Agrave;",
-"&Aacute;",
-"&Acirc;",
-"&Atilde;",
-"&Auml;",
-"&Aring;",
-"&AElig;",
-"&Ccedil;",
-"&Egrave;",
-"&Eacute;",
-"&Ecirc;",
-"&Euml;",
-"&Igrave;",
-"&Iacute;",
-"&Icirc;",
-"&Iuml;",
-"&ETH;",
-"&Ntilde;",
-"&Ograve;",
-"&Oacute;",
-"&Ocirc;",
-"&Otilde;",
-"&Ouml;",
-"&times;",
-"&Oslash;",
-"&Ugrave;",
-"&Uacute;",
-"&Ucirc;",
-"&Uuml;",
-"&Yacute;",
-"&THORN;",
-"&szlig;",
-"&agrave;",
-"&aacute;",
-"&acirc;",
-"&atilde;",
-"&auml;",
-"&aring;",
-"&aelig;",
-"&ccedil;",
-"&egrave;",
-"&eacute;",
-"&ecirc;",
-"&euml;",
-"&igrave;",
-"&iacute;",
-"&icirc;",
-"&iuml;",
-"&eth;",
-"&ntilde;",
-"&ograve;",
-"&oacute;",
-"&ocirc;",
-"&otilde;",
-"&ouml;",
-"&divide;",
-"&oslash;",
-"&ugrave;",
-"&uacute;",
-"&ucirc;",
-"&uuml;",
-"&yacute;",
-"&thorn;",
-"&yuml;");
+		$chars = array("&lsquo;",
+			"&rsquo;",
+			"&sbquo;",
+			"&ldquo;",
+			"&rdquo;",
+			"&bdquo;",
+			"&dagger;",
+			"&Dagger;",
+			"&permil;",
+			"&lsaquo;",
+			"&rsaquo;",
+			"&spades;",
+			"&clubs;",
+			"&hearts;",
+			"&diams;",
+			"&oline;",
+			"&larr;",
+			"&uarr;",
+			"&rarr;",
+			"&darr;",
+			"&trade;",
+			"&frasl;",
+			"&ndash;",
+			"&mdash;",
+			"&iexcl;",
+			"&cent;",
+			"&pound;",
+			"&euro;",
+			"&yen;",
+			"&brvbar;",
+			"&uml;",
+			"&copy;",
+			"&ordf;",
+			"&laquo;",
+			"&not;",
+			"&reg;",
+			"&macr;",
+			"&deg;",
+			"&plusmn;",
+			"&acute;",
+			"&micro;",
+			"&para;",
+			"&middot;",
+			"&raquo;",
+			"&frac14;",
+			"&frac12;",
+			"&frac34;",
+			"&iquest;",
+			"&Agrave;",
+			"&Aacute;",
+			"&Acirc;",
+			"&Atilde;",
+			"&Auml;",
+			"&Aring;",
+			"&AElig;",
+			"&Ccedil;",
+			"&Egrave;",
+			"&Eacute;",
+			"&Ecirc;",
+			"&Euml;",
+			"&Igrave;",
+			"&Iacute;",
+			"&Icirc;",
+			"&Iuml;",
+			"&ETH;",
+			"&Ntilde;",
+			"&Ograve;",
+			"&Oacute;",
+			"&Ocirc;",
+			"&Otilde;",
+			"&Ouml;",
+			"&times;",
+			"&Oslash;",
+			"&Ugrave;",
+			"&Uacute;",
+			"&Ucirc;",
+			"&Uuml;",
+			"&Yacute;",
+			"&THORN;",
+			"&szlig;",
+			"&agrave;",
+			"&aacute;",
+			"&acirc;",
+			"&atilde;",
+			"&auml;",
+			"&aring;",
+			"&aelig;",
+			"&ccedil;",
+			"&egrave;",
+			"&eacute;",
+			"&ecirc;",
+			"&euml;",
+			"&igrave;",
+			"&iacute;",
+			"&icirc;",
+			"&iuml;",
+			"&eth;",
+			"&ntilde;",
+			"&ograve;",
+			"&oacute;",
+			"&ocirc;",
+			"&otilde;",
+			"&ouml;",
+			"&divide;",
+			"&oslash;",
+			"&ugrave;",
+			"&uacute;",
+			"&ucirc;",
+			"&uuml;",
+			"&yacute;",
+			"&thorn;",
+			"&yuml;");
 
 
 		$field = '<input type="hidden" name="we_dialog_args[char]" value="" />';
@@ -171,18 +160,18 @@ class weSpecialCharDialog extends weDialog{
 		$table = '<table border="1" cellpadding="0" cellspacing="0" id="wechartb" style="border:black solid 1px;cursor:pointer;" width="340">
 ';
 
-		for($i=0;$i<count($chars);$i++){
+		for($i = 0; $i < count($chars); $i++){
 
-				if($i==0){
-					$table .= '<tr>';
-				}else if((($i % 16) == 0)  && ($i != 0)){
-					$table .= "</tr><tr>";
-				}
-				$table .= '<td align="center" style="font-size:14px;border:black solid 1px;width:30px;height:25px;" class="defaultfont" title="'.htmlspecialchars($chars[$i]).'" onclick="fillField(\''.htmlspecialchars($chars[$i]).'\')">'.$chars[$i].'</td>';
+			if($i == 0){
+				$table .= '<tr>';
+			} else if((($i % 16) == 0) && ($i != 0)){
+				$table .= "</tr><tr>";
+			}
+			$table .= '<td align="center" style="font-size:14px;border:black solid 1px;width:30px;height:25px;" class="defaultfont" title="' . htmlspecialchars($chars[$i]) . '" onclick="fillField(\'' . htmlspecialchars($chars[$i]) . '\')">' . $chars[$i] . '</td>';
 
-				if($i == (count($chars)-1)){
-					$table .= '</tr>';
-				}
+			if($i == (count($chars) - 1)){
+				$table .= '</tr>';
+			}
 		}
 		$table .= '</table>
 ';
@@ -203,11 +192,7 @@ class weSpecialCharDialog extends weDialog{
 
 </script>';
 
-		return $script.$table.$field;
-
+		return $script . $table . $field;
 	}
-
-
-
 
 }

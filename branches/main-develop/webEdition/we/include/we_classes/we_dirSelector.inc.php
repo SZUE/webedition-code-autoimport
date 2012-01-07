@@ -190,7 +190,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
 
-		<?php print $this->getJS_attachKeyListener(); ?>
+				<?php print $this->getJS_attachKeyListener(); ?>
 
 				//from we_showMessage.js
 				d.writeln('var WE_MESSAGE_INFO = -1;');
@@ -243,7 +243,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				d.writeln('if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}');
 				d.writeln('if(e.shiftKey){ shiftpressed=true;}');
 				d.writeln('}');
-		<?php if($this->multiple){ ?>
+				<?php if($this->multiple){ ?>
 					d.writeln('if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}');
 				<?php } else{ ?>
 					d.writeln('top.unselectAllFiles();');
@@ -302,26 +302,28 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			d.close();
 			}
 
-		<?php
-	}
+			<?php
+		}
 
-	function printFramesetJSFunctionQueryString(){
-		?>
+		function printFramesetJSFunctionQueryString(){
+			?>
 
 			function queryString(what,id,o,we_editDirID){
 			if(!o) o=top.order;
 			if(!we_editDirID) we_editDirID="";
-			return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php print $this->rootDirID;
+			return '<?php print $_SERVER["SCRIPT_NAME"]; ?>?what='+what+'&rootDirID=<?php
+		print $this->rootDirID;
 		if(isset($this->open_doc)){
 			print "&open_doc=" . $this->open_doc;
-		} ?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+		}
+			?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 			}
 
-		<?php
-	}
+			<?php
+		}
 
-	function printFramesetJSFunctionEntry(){
-		?>
+		function printFramesetJSFunctionEntry(){
+			?>
 
 			function entry(ID,icon,text,isFolder,path,modDate){
 			this.ID=ID;
@@ -332,39 +334,39 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			this.modDate=modDate;
 			}
 
-		<?php
-	}
+			<?php
+		}
 
-	function printFramesetJSFunctionAddEntry(){
-		?>
+		function printFramesetJSFunctionAddEntry(){
+			?>
 
 			function addEntry(ID,icon,text,isFolder,path,modDate){
 			entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate);
 			}
 
-		<?php
-	}
-
-	function printFramesetJSFunctionAddEntries(){
-		while($this->next_record()) {
-			print 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");' . "\n";
+			<?php
 		}
-	}
 
-	function printCmdAddEntriesHTML(){
-		$this->query();
-		while($this->next_record()) {
-			print 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");' . "\n";
+		function printFramesetJSFunctionAddEntries(){
+			while($this->next_record()) {
+				print 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");' . "\n";
+			}
 		}
-		if($this->userCanMakeNewDir()){
-			print 'top.fsheader.enableNewFolderBut();' . "\n";
-		} else{
-			print 'top.fsheader.disableNewFolderBut();' . "\n";
-		}
-	}
 
-	function printHeaderHeadlines(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		function printCmdAddEntriesHTML(){
+			$this->query();
+			while($this->next_record()) {
+				print 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");' . "\n";
+			}
+			if($this->userCanMakeNewDir()){
+				print 'top.fsheader.enableNewFolderBut();' . "\n";
+			} else{
+				print 'top.fsheader.disableNewFolderBut();' . "\n";
+			}
+		}
+
+		function printHeaderHeadlines(){
+			print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
 					<td>' . we_html_tools::getPixel(25, 14) . '</td>
 					<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'IsFolder DESC, Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
@@ -377,17 +379,17 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				</tr>
 			</table>
 ';
-	}
+		}
 
-	function printHeaderJSDef(){
-		we_fileselector::printHeaderJSDef();
-		print 'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';
+		function printHeaderJSDef(){
+			we_fileselector::printHeaderJSDef();
+			print 'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';
 ';
-	}
+		}
 
-	function printHeaderJS(){
-		we_fileselector::printHeaderJS();
-		print we_button::create_state_changer(false) . '
+		function printHeaderJS(){
+			we_fileselector::printHeaderJS();
+			print we_button::create_state_changer(false) . '
 function disableNewFolderBut(){
 
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
@@ -399,143 +401,143 @@ function enableNewFolderBut(){
 	makefolderState = 1;
 }
 ';
-	}
+		}
 
-	function userCanSeeDir($showAll=false){
-		if($_SESSION["perms"]["ADMINISTRATOR"])
-			return true;
-		if(!$showAll){
-			if(!in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
+		function userCanSeeDir($showAll=false){
+			if($_SESSION["perms"]["ADMINISTRATOR"])
+				return true;
+			if(!$showAll){
+				if(!in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
+					return false;
+				}
+			}
+			if(!userIsOwnerCreatorOfParentDir($this->dir, $this->table)){
 				return false;
 			}
-		}
-		if(!userIsOwnerCreatorOfParentDir($this->dir, $this->table)){
-			return false;
-		}
 
-		return true;
-	}
-
-	function userCanRenameFolder(){
-
-		if($_SESSION["perms"]["ADMINISTRATOR"]){
 			return true;
 		}
-		if(!$this->userHasRenameFolderPerms()){
 
-			return false;
-		}
-		return true;
-	}
+		function userCanRenameFolder(){
 
-	function userCanMakeNewDir(){
-		if(defined("OBJECT_FILES_TABLE") && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
-			return false;
-		}
-		if($_SESSION["perms"]["ADMINISTRATOR"])
+			if($_SESSION["perms"]["ADMINISTRATOR"]){
+				return true;
+			}
+			if(!$this->userHasRenameFolderPerms()){
+
+				return false;
+			}
 			return true;
-		if(!$this->userCanSeeDir())
-			return false;
-		if(!$this->userHasFolderPerms()){
-			return false;
 		}
-		return true;
-	}
 
-	function userHasRenameFolderPerms(){
-
-		switch($this->table){
-			case FILE_TABLE:
-				if(!we_hasPerm("CHANGE_DOC_FOLDER_PATH")){
-					return false;
-				}
-				break;
+		function userCanMakeNewDir(){
+			if(defined("OBJECT_FILES_TABLE") && ($this->table == OBJECT_FILES_TABLE) && (!$this->dir)){
+				return false;
+			}
+			if($_SESSION["perms"]["ADMINISTRATOR"])
+				return true;
+			if(!$this->userCanSeeDir())
+				return false;
+			if(!$this->userHasFolderPerms()){
+				return false;
+			}
+			return true;
 		}
-		return true;
-	}
 
-	function userHasFolderPerms(){
+		function userHasRenameFolderPerms(){
 
-		switch($this->table){
-			case FILE_TABLE:
-				if(!we_hasPerm("NEW_DOC_FOLDER")){
-					return false;
-				}
-				break;
-			case TEMPLATES_TABLE:
-				if(!we_hasPerm("NEW_TEMP_FOLDER")){
-					return false;
-				}
-				break;
-			default:
-				if(defined("OBJECT_FILES_TABLE")){
-					switch($this->table){
-						case OBJECT_FILES_TABLE:
-							if(!we_hasPerm("NEW_OBJECTFILE_FOLDER")){
-								return false;
-							}
-							break;
+			switch($this->table){
+				case FILE_TABLE:
+					if(!we_hasPerm("CHANGE_DOC_FOLDER_PATH")){
+						return false;
 					}
-				}
+					break;
+			}
+			return true;
 		}
-		return true;
-	}
 
-	function printFramesetRootDirFn(){
-		print 'function setRootDir(){
+		function userHasFolderPerms(){
+
+			switch($this->table){
+				case FILE_TABLE:
+					if(!we_hasPerm("NEW_DOC_FOLDER")){
+						return false;
+					}
+					break;
+				case TEMPLATES_TABLE:
+					if(!we_hasPerm("NEW_TEMP_FOLDER")){
+						return false;
+					}
+					break;
+				default:
+					if(defined("OBJECT_FILES_TABLE")){
+						switch($this->table){
+							case OBJECT_FILES_TABLE:
+								if(!we_hasPerm("NEW_OBJECTFILE_FOLDER")){
+									return false;
+								}
+								break;
+						}
+					}
+			}
+			return true;
+		}
+
+		function printFramesetRootDirFn(){
+			print 'function setRootDir(){
 	setDir(' . intval($this->rootDirID) . ');
 }
 ';
-	}
+		}
 
-	function printCMDWriteAndFillSelectorHTML(){
-		print '
+		function printCMDWriteAndFillSelectorHTML(){
+			print '
 			top.writeBody(top.fsbody.document);
 			top.fsheader.clearOptions();';
 
-		$pid = $this->dir;
-		$out = "";
-		$c = 0;
-		while($pid != 0) {
-			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
-			if($this->db->next_record()){
-				$out = 'top.fsheader.addOption("' . $this->db->f("Text") . '",' . $this->db->f("ID") . ');' . $out;
-			}
-			$pid = $this->db->f("ParentID");
-			if($c > 500){
-				$pid = 0;
-			}
-			if($this->rootDirID){
-				if($this->db->f("ID") == $this->rootDirID){
+			$pid = $this->dir;
+			$out = "";
+			$c = 0;
+			while($pid != 0) {
+				$c++;
+				$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
+				if($this->db->next_record()){
+					$out = 'top.fsheader.addOption("' . $this->db->f("Text") . '",' . $this->db->f("ID") . ');' . $out;
+				}
+				$pid = $this->db->f("ParentID");
+				if($c > 500){
 					$pid = 0;
 				}
+				if($this->rootDirID){
+					if($this->db->f("ID") == $this->rootDirID){
+						$pid = 0;
+					}
+				}
 			}
+			if(!$this->rootDirID){
+				$out = 'top.fsheader.addOption("/",0);' . $out;
+			}
+			print $out . 'top.fsheader.selectIt();';
 		}
-		if(!$this->rootDirID){
-			$out = 'top.fsheader.addOption("/",0);' . $out;
-		}
-		print $out . 'top.fsheader.selectIt();';
-	}
 
-	function printHeaderTable(){
-		print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		function printHeaderTable(){
+			print '			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 ';
-		$this->printHeaderTableSpaceRow();
-		print '				<tr valign="middle">
+			$this->printHeaderTableSpaceRow();
+			print '				<tr valign="middle">
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 					<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 					<td>
 					<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 ';
-		$this->printHeaderOptions();
+			$this->printHeaderOptions();
 
-		print '</select>
+			print '</select>
 ';
-		if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
+			if((!defined("OBJECT_TABLE")) || $this->table != OBJECT_TABLE){
 
-			print '					</td>
+				print '					</td>
 					<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 					<td width="40">
 						' . we_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, -1, 22, "", "", $this->dir == intval($this->rootDirID), false) . '
@@ -546,63 +548,63 @@ function enableNewFolderBut(){
 					</td>
 
 ';
-			$this->printHeaderTableExtraCols();
+				$this->printHeaderTableExtraCols();
+			}
+			print '				<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>
+';
+			$this->printHeaderTableSpaceRow();
+
+			print '			</table>
+';
 		}
-		print '				<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>
-';
-		$this->printHeaderTableSpaceRow();
 
-		print '			</table>
-';
-	}
-
-	function printHeaderOptions(){
-		$pid = $this->dir;
-		$out = "";
-		$c = 0;
-		$z = 0;
-		while($pid != 0) {
-			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
-			if($this->db->next_record()){
-				$out = '<option value="' . $this->db->f("ID") . '"' . (($z == 0) ? ' selected' : '') . '>' . $this->db->f("Text") . '</options>' . "\n" . $out;
-				$z++;
-			}
-			$pid = $this->db->f("ParentID");
-			if($c > 500){
-				$pid = 0;
-			}
-			if($this->rootDirID){
-				if($this->db->f("ID") == $this->rootDirID){
+		function printHeaderOptions(){
+			$pid = $this->dir;
+			$out = "";
+			$c = 0;
+			$z = 0;
+			while($pid != 0) {
+				$c++;
+				$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
+				if($this->db->next_record()){
+					$out = '<option value="' . $this->db->f("ID") . '"' . (($z == 0) ? ' selected' : '') . '>' . $this->db->f("Text") . '</options>' . "\n" . $out;
+					$z++;
+				}
+				$pid = $this->db->f("ParentID");
+				if($c > 500){
 					$pid = 0;
 				}
+				if($this->rootDirID){
+					if($this->db->f("ID") == $this->rootDirID){
+						$pid = 0;
+					}
+				}
 			}
+			if(!$this->rootDirID){
+				$out = '<option value="0">/</option>' . $out . "\n";
+			}
+			print $out;
 		}
-		if(!$this->rootDirID){
-			$out = '<option value="0">/</option>' . $out . "\n";
+
+		function printHeaderTableExtraCols(){
+			print '                <td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">
+';
+			$makefolderState = $this->userCanMakeNewDir() ? 1 : 0;
+
+			print we_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, -1, 22, "", "", !$this->userCanMakeNewDir(), false);
+			print '               </td>
+';
 		}
-		print $out;
-	}
 
-	function printHeaderTableExtraCols(){
-		print '                <td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">
-';
-		$makefolderState = $this->userCanMakeNewDir() ? 1 : 0;
-
-		print we_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, -1, 22, "", "", !$this->userCanMakeNewDir(), false);
-		print '               </td>
-';
-	}
-
-	function printHeaderTableSpaceRow(){
-		print '				<tr>
+		function printHeaderTableSpaceRow(){
+			print '				<tr>
 					<td colspan="11">' . we_html_tools::getPixel(5, 10) . '</td>
 				</tr>
 ';
-	}
+		}
 
-	function printFramesetJSDoClickFn(){
-		?>
+		function printFramesetJSDoClickFn(){
+			?>
 
 			function showPreview(id) {
 			if(top.fspreview) {
@@ -619,9 +621,9 @@ function enableNewFolderBut(){
 			}
 			}else{
 			if(top.currentID == id && (!fsbody.ctrlpressed)){
-		<?php
-		print $this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);';
-		?>
+			<?php
+			print $this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);';
+			?>
 
 			}else{
 			<?php if($this->multiple){ ?>
@@ -646,7 +648,7 @@ function enableNewFolderBut(){
 				unselectFile(id);
 				}else{
 
-		<?php } ?>
+			<?php } ?>
 
 			selectFile(id);
 
@@ -655,7 +657,7 @@ function enableNewFolderBut(){
 				}
 				}
 
-		<?php } ?>
+			<?php } ?>
 
 			}
 			}
@@ -667,11 +669,11 @@ function enableNewFolderBut(){
 			}
 			}
 
-		<?php
-	}
+			<?php
+		}
 
-	function printFramesetJSsetDir(){
-		?>
+		function printFramesetJSsetDir(){
+			?>
 			function setDir(id){
 			showPreview(id);
 			top.fspreview.document.body.innerHTML = "";
@@ -681,40 +683,40 @@ function enableNewFolderBut(){
 			}
 
 
-		<?php
-	}
+			<?php
+		}
 
-	function printSetDirHTML(){
-		print '<script>
+		function printSetDirHTML(){
+			print '<script>
 top.clearEntries();
 ';
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+			$this->printCmdAddEntriesHTML();
+			$this->printCMDWriteAndFillSelectorHTML();
 
-		if(intval($this->dir) == intval($this->rootDirID)){
-			print 'top.fsheader.disableRootDirButs();
+			if(intval($this->dir) == intval($this->rootDirID)){
+				print 'top.fsheader.disableRootDirButs();
 ';
-		} else{
-			print 'top.fsheader.enableRootDirButs();
+			} else{
+				print 'top.fsheader.enableRootDirButs();
 ';
-		}
-		if(in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
-			if($this->id == 0)
-				$this->path = "/";
-			print 'top.unselectAllFiles();top.currentPath = "' . $this->path . '";
+			}
+			if(in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
+				if($this->id == 0)
+					$this->path = "/";
+				print 'top.unselectAllFiles();top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
 top.fsfooter.document.we_form.fname.value = "' . (($this->id == 0) ? "/" : $this->values["Text"]) . '";
 ';
-		}
-		$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
-		print 'top.currentDir = "' . $this->dir . '";
+			}
+			$_SESSION["we_fs_lastDir"][$this->table] = $this->dir;
+			print 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 </script>
 ';
-	}
+		}
 
-	function printFramesetSelectFileHTML(){
-		?>
+		function printFramesetSelectFileHTML(){
+			?>
 
 			function selectFile(id){
 			if(id){
@@ -741,99 +743,99 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			}
 			}
 
-		<?php
-	}
+			<?php
+		}
 
-	function printNewFolderHTML(){
-		print '<script>
+		function printNewFolderHTML(){
+			print '<script>
 top.clearEntries();
 top.makeNewFolder=1;
 ';
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+			$this->printCmdAddEntriesHTML();
+			$this->printCMDWriteAndFillSelectorHTML();
 
-		print 'top.makeNewFolder = 0;
+			print 'top.makeNewFolder = 0;
 </script>
 ';
-	}
+		}
 
-	function printCreateFolderHTML(){
-		we_html_tools::htmlTop();
-		we_html_tools::protect();
+		function printCreateFolderHTML(){
+			we_html_tools::htmlTop();
+			we_html_tools::protect();
 
-		print '<script>
+			print '<script>
 top.clearEntries();
 ';
-		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-			//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
-			//print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(substr($txt, -1) == '.'){ // neue Version f�r 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(preg_match('/[^a-z0-9\._\-]/i', $txt)){ // Test auf andere verbotene Zeichen
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif($_REQUEST['id'] == 0 && strtolower($txt) == "webedition"){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
-			if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){ //4076
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
-				$folder = new we_class_folder();
+			$this->FolderText = rawurldecode($this->FolderText);
+			$txt = $this->FolderText;
+			if($txt == ""){
+				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
+				//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
+				//print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
+			} elseif(substr($txt, -1) == '.'){ // neue Version f�r 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root
+				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
+			} elseif(preg_match('/[^a-z0-9\._\-]/i', $txt)){ // Test auf andere verbotene Zeichen
+				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR);
+			} elseif($_REQUEST['id'] == 0 && strtolower($txt) == "webedition"){
+				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
 			} else{
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
-				$folder = new we_folder();
-			}
+				if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){ //4076
+					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+					$folder = new we_class_folder();
+				} else{
+					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
+					$folder = new we_folder();
+				}
 
-			$folder->we_new();
-			$folder->setParentID($this->dir);
-			$folder->Table = $this->table;
-			$folder->Text = $txt;
-			$folder->CreationDate = time();
-			$folder->ModDate = time();
-			$folder->Filename = $txt;
-			$folder->Published = time();
-			$folder->Path = $folder->getPath();
-			$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID FROM " . $this->table . " WHERE Path='" . $folder->Path . "'");
-			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
-				if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
-					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
+				$folder->we_new();
+				$folder->setParentID($this->dir);
+				$folder->Table = $this->table;
+				$folder->Text = $txt;
+				$folder->CreationDate = time();
+				$folder->ModDate = time();
+				$folder->Filename = $txt;
+				$folder->Published = time();
+				$folder->Path = $folder->getPath();
+				$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
+				$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
+				$this->db->query("SELECT ID FROM " . $this->table . " WHERE Path='" . $folder->Path . "'");
+				if($this->db->next_record()){
+					$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else{
-					$folder->we_save();
-					print 'var ref;
+					if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
+						$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
+						print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					} else{
+						$folder->we_save();
+						print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ref.makeNewEntry("' . $folder->Icon . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"' . $folder->ContentType . '","' . $this->table . '");
 ';
-					if($this->canSelectDir){
-						print 'top.currentPath = "' . $folder->Path . '";
+						if($this->canSelectDir){
+							print 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
+						}
 					}
 				}
 			}
-		}
 
 
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+			$this->printCmdAddEntriesHTML();
+			$this->printCMDWriteAndFillSelectorHTML();
 
-		print 'top.makeNewFolder = 0;
+			print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
-		print '</head><body></body></html>';
-	}
+			print '</head><body></body></html>';
+		}
 
-	function getFrameset(){
-		$out = '<frameset rows="67,*,65,20,0" border="0">
+		function getFrameset(){
+			$out = '<frameset rows="67,*,65,20,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_fileselector::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">
 		<frame src="' . $this->getFsQueryString(we_fileselector::BODY) . '" name="fsbody" noresize scrolling="auto">
@@ -848,118 +850,118 @@ top.selectFile(top.currentID);
 </body>
 </html>
 ';
-		return $out;
-	}
+			return $out;
+		}
 
-	function getFramesetJavaScriptDef(){
-		$def = we_fileselector::getFramesetJavaScriptDef();
-		$def .= 'var makeNewFolder=0;
+		function getFramesetJavaScriptDef(){
+			$def = we_fileselector::getFramesetJavaScriptDef();
+			$def .= 'var makeNewFolder=0;
 var we_editDirID="";
 var old=0;
 ';
-		return $def;
-	}
+			return $def;
+		}
 
-	function printRenameFolderHTML(){
-		if(userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-			print '<script>
+		function printRenameFolderHTML(){
+			if(userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
+				print '<script>
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';
 ';
-			$this->printCmdAddEntriesHTML();
-			$this->printCMDWriteAndFillSelectorHTML();
+				$this->printCmdAddEntriesHTML();
+				$this->printCMDWriteAndFillSelectorHTML();
 
-			print 'top.we_editDirID = "";
+				print 'top.we_editDirID = "";
 </script>
 ';
+			}
 		}
-	}
 
-	function printDoRenameFolderHTML(){
-		we_html_tools::htmlTop();
-		we_html_tools::protect();
+		function printDoRenameFolderHTML(){
+			we_html_tools::htmlTop();
+			we_html_tools::protect();
 
-		print '<script>
+			print '<script>
 top.clearEntries();
 ';
-		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
-		} else{
-			if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){ //4076
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
-				$folder = new we_class_folder();
+			$this->FolderText = rawurldecode($this->FolderText);
+			$txt = $this->FolderText;
+			if($txt == ""){
+				print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 			} else{
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
-				$folder = new we_folder();
-			}
+				if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE){ //4076
+					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/we_class_folder.inc.php");
+					$folder = new we_class_folder();
+				} else{
+					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_folder.inc.php");
+					$folder = new we_folder();
+				}
 
-			$folder->initByID($this->we_editDirID, $this->table);
-			$folder->Text = $txt;
-			$folder->ModDate = time();
-			$folder->Filename = $txt;
-			$folder->Published = time();
-			$folder->Path = $folder->getPath();
-			$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
-			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else{
-				if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
-					$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
+				$folder->initByID($this->we_editDirID, $this->table);
+				$folder->Text = $txt;
+				$folder->ModDate = time();
+				$folder->Filename = $txt;
+				$folder->Published = time();
+				$folder->Path = $folder->getPath();
+				$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
+				$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
+				if($this->db->next_record()){
+					$we_responseText = sprintf(g_l('weEditor', "[folder][response_path_exists]"), $folder->Path);
 					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else if(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-					if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
-						$folder->we_save();
-						print 'var ref;
+				} else{
+					if(preg_match('/[^a-z0-9\._\-]/i', $folder->Filename)){
+						$we_responseText = sprintf(g_l('weEditor', "[folder][we_filename_notValid]"), $folder->Path);
+						print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					} else if(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
+						if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
+							$folder->we_save();
+							print 'var ref;
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ';
-						print 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
+							print 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
 ';
-						if($this->canSelectDir){
-							print 'top.currentPath = "' . $folder->Path . '";
+							if($this->canSelectDir){
+								print 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
+							}
 						}
 					}
 				}
 			}
-		}
 
 
-		$this->printCmdAddEntriesHTML();
-		$this->printCMDWriteAndFillSelectorHTML();
+			$this->printCmdAddEntriesHTML();
+			$this->printCMDWriteAndFillSelectorHTML();
 
-		print 'top.makeNewFolder = 0;
+			print 'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 </script>
 ';
-		print '</head><body></body></html>';
-	}
+			print '</head><body></body></html>';
+		}
 
-	function printPreviewHTML(){
-		if($this->id){
-			$query = $this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id));
-			while($this->db->next_record()) {
-				$result['Text'] = $this->db->f('Text');
-				$result['Path'] = $this->db->f('Path');
-				$result['ContentType'] = $this->db->f('ContentType');
-				$result['Type'] = $this->db->f('Type');
-				$result['CreationDate'] = $this->db->f('CreationDate');
-				$result['ModDate'] = $this->db->f('ModDate');
-				$result['Filename'] = $this->db->f('Filename');
-				$result['Extension'] = $this->db->f('Extension');
-				$result['MasterTemplateID'] = $this->db->f('MasterTemplateID');
-				$result['IncludedTemplates'] = $this->db->f('IncludedTemplates');
-				$result['ClassName'] = $this->db->f('ClassName');
-				$result['Templates'] = $this->db->f('Templates');
-			}
-			$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id), "Path", $this->db);
-			$out = '<html>
+		function printPreviewHTML(){
+			if($this->id){
+				$query = $this->db->query("SELECT * FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id));
+				while($this->db->next_record()) {
+					$result['Text'] = $this->db->f('Text');
+					$result['Path'] = $this->db->f('Path');
+					$result['ContentType'] = $this->db->f('ContentType');
+					$result['Type'] = $this->db->f('Type');
+					$result['CreationDate'] = $this->db->f('CreationDate');
+					$result['ModDate'] = $this->db->f('ModDate');
+					$result['Filename'] = $this->db->f('Filename');
+					$result['Extension'] = $this->db->f('Extension');
+					$result['MasterTemplateID'] = $this->db->f('MasterTemplateID');
+					$result['IncludedTemplates'] = $this->db->f('IncludedTemplates');
+					$result['ClassName'] = $this->db->f('ClassName');
+					$result['Templates'] = $this->db->f('Templates');
+				}
+				$path = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->id), "Path", $this->db);
+				$out = '<html>
 <head>
 ' . STYLESHEET . '
 ' . we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js")) . '
@@ -1024,171 +1026,172 @@ top.selectFile(top.currentID);
 </head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">
 					';
-			if(isset($result['ContentType']) && !empty($result['ContentType'])){
-				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
-					$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=" . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
-					while($this->db->next_record()) {
-						$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
+				if(isset($result['ContentType']) && !empty($result['ContentType'])){
+					if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
+						$query = $this->db->query("SELECT a.Name, b.Dat FROM " . LINK_TABLE . " a LEFT JOIN " . CONTENT_TABLE . " b on (a.CID = b.ID) WHERE a.DID=" . intval($this->id) . " AND NOT a.DocumentTable='tblTemplates'");
+						while($this->db->next_record()) {
+							$metainfos[$this->db->f('Name')] = $this->db->f('Dat');
+						}
+					} elseif($this->table == FILE_TABLE && $result['ContentType'] = "folder"){
+						$query = $this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=" . intval($this->id));
+						$folderFolders = array();
+						$folderFiles = array();
+						while($this->db->next_record()) {
+							$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+						}
 					}
-				} elseif($this->table == FILE_TABLE && $result['ContentType'] = "folder"){
-					$query = $this->db->query("SELECT ID, Text, IsFolder FROM " . $this->db->escape($this->table) . " WHERE ParentID=" . intval($this->id));
-					$folderFolders = array();
-					$folderFiles = array();
-					while($this->db->next_record()) {
-						$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
-					}
-				}
 
-				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
+					$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-				$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(($fs / (1024 * 1024)), 2) . ' mb');
-				$nextrowclass = "odd";
-				$previewDefauts = "<tr><td class='info' width='100%'>";
-				$previewDefauts .= "<div style='overflow:auto; height:100%' id='info'><table cellpadding='0' cellspacing='0' width='100%'>";
-
-				$previewDefauts .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[tab_properties]") . "</td></tr>";
-				$previewDefauts .= "<tr class='odd'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>";
-				//$previewDefauts .= "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>";
-				//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
-				$previewDefauts .= "<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>";
-				$previewDefauts .= "<tr class='even'><td width='10'>ID: </td><td>";
-				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='/webEdition/images/tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
-				$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a></td></tr>";
-				if($result['CreationDate']){
-					$previewDefauts .= "<tr class='odd'><td class='odd'>" . g_l('fileselector', "[created]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";
-					$nextrowclass = "even";
-				} else{
+					$filesize = $fs < 1000 ? $fs . ' byte' : ($fs < 1024000 ? round(($fs / 1024), 2) . ' kb' : round(($fs / (1024 * 1024)), 2) . ' mb');
 					$nextrowclass = "odd";
-				}
-				if($result['ModDate']){
-					$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[modified]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
-					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-				} else{
-					$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-				}
-				$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+					$previewDefauts = "<tr><td class='info' width='100%'>";
+					$previewDefauts .= "<div style='overflow:auto; height:100%' id='info'><table cellpadding='0' cellspacing='0' width='100%'>";
 
-				$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
-				switch($result['ContentType']){
-					case "image/*":
-						if(file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
-							$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-							if($imagesize[0] > 150 || $imagesize[1] > 150){
-								$extension = substr($result['Extension'], 1);
-								$thumbpath = '/webEdition/preview/' . $this->id . '.' . $extension;
-								$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-								if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
-									include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
-									$thumb = we_image_edit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
+					$previewDefauts .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[tab_properties]") . "</td></tr>";
+					$previewDefauts .= "<tr class='odd'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', "[name]") . ": </td><td>";
+					//$previewDefauts .= "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'><img src='/webEdition/images/tree/icons/browser.gif' border='0' vspace='0' hspace='0'></a></div>";
+					//$previewDefauts .= "<div style='margin-right:14px'><a href='http://".$_SERVER['HTTP_HOST'].$result['Path']."' target='_blank' style='color:black'>".$result['Text']."</a></div></td></tr>";
+					$previewDefauts .= "<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>";
+					$previewDefauts .= "<tr class='even'><td width='10'>ID: </td><td>";
+					$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='/webEdition/images/tree/icons/bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>";
+					$previewDefauts .= "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a></td></tr>";
+					if($result['CreationDate']){
+						$previewDefauts .= "<tr class='odd'><td class='odd'>" . g_l('fileselector', "[created]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";
+						$nextrowclass = "even";
+					} else{
+						$nextrowclass = "odd";
+					}
+					if($result['ModDate']){
+						$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[modified]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
+						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+					} else{
+						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+					}
+					$previewDefauts .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+
+					$out .= "\t<table cellpadding='0' cellspacing='0' height='100%' width='100%'>\n";
+					switch($result['ContentType']){
+						case "image/*":
+							if(file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
+								$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
+								if($imagesize[0] > 150 || $imagesize[1] > 150){
+									$extension = substr($result['Extension'], 1);
+									$thumbpath = '/webEdition/preview/' . $this->id . '.' . $extension;
+									$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
+									if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
+										include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_image_edit.class.php");
+										$thumb = we_image_edit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
+									}
+								} else{
+									$thumbpath = $result['Path'];
 								}
-							} else{
-								$thumbpath = $result['Path'];
+
+								$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='http://" . $_SERVER['HTTP_HOST'] . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
+
+								$out .= $previewDefauts;
+
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ": </td><td>" . $filesize . "</td></tr>";
+
+								$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[metainfo]") . "</td></tr>";
+								$nextrowclass = "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Description]") . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Keywords]") . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
+
+								$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[attribs]") . "</td></tr>";
+								$nextrowclass = "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[name]") . ": </td><td>" . (isset($metainfos['name']) ? $metainfos['name'] : '') . "</td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[alt]") . ": </td><td>" . (isset($metainfos['alt']) ? $metainfos['alt'] : '') . "</td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
 							}
-
-							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='http://" . $_SERVER['HTTP_HOST'] . $result['Path'] . "' target='_blank' align='center'><img src='$thumbpath' border='0' id='previewpic'></a></td></tr>\n";
-
+							break;
+						case "folder":
 							$out .= $previewDefauts;
-
-							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>";
-							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ": </td><td>" . $filesize . "</td></tr>";
-
+							if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
+								$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', "[folders]") . "</td></tr>";
+								$nextrowclass = "odd";
+								foreach($folderFolders as $fId => $fxVal){
+									$out .= "<tr class='$nextrowclass'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
+									$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								}
+							}
+							if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
+								$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', "[files]") . "</td></tr>";
+								$nextrowclass = "odd";
+								foreach($folderFiles as $fId => $fxVal){
+									$out .= "<tr class='$nextrowclass'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
+									$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								}
+							}
+							break;
+						case "text/weTmpl":
+							$out .= $previewDefauts;
+							if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
+								$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
+								$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[master_template]") . "</td></tr>";
+								$nextrowclass = "odd";
+								$out .= "<tr class='$nextrowclass'><td>ID:</td><td>" . $result['MasterTemplateID'] . "</td></tr>";
+								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+								$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[path]") . ":</td><td>" . $mastertemppath . "</td></tr>";
+							}
+							break;
+						case "text/webedition":
+							$out .= $previewDefauts;
 							$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[metainfo]") . "</td></tr>";
 							$nextrowclass = "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Title]") . ":</td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Description]") . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Charset]") . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset'] : '') . "</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Keywords]") . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
-
-							$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[attribs]") . "</td></tr>";
-							$nextrowclass = "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Keywords]") . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[name]") . ": </td><td>" . (isset($metainfos['name']) ? $metainfos['name'] : '') . "</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Description]") . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
+							break;
+						case "text/html":
+							$out .= $previewDefauts;
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[alt]") . ": </td><td>" . (isset($metainfos['alt']) ? $metainfos['alt'] : '') . "</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
+							break;
+						case "text/css":
+							$out .= $previewDefauts;
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
-						}
-						break;
-					case "folder":
-						$out .= $previewDefauts;
-						if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
-							$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', "[folders]") . "</td></tr>";
-							$nextrowclass = "odd";
-							foreach($folderFolders as $fId => $fxVal){
-								$out .= "<tr class='$nextrowclass'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
-								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							}
-						}
-						if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
-							$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', "[files]") . "</td></tr>";
-							$nextrowclass = "odd";
-							foreach($folderFiles as $fId => $fxVal){
-								$out .= "<tr class='$nextrowclass'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
-								$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							}
-						}
-						break;
-					case "text/weTmpl":
-						$out .= $previewDefauts;
-						if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
-							$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
-							$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[master_template]") . "</td></tr>";
-							$nextrowclass = "odd";
-							$out .= "<tr class='$nextrowclass'><td>ID:</td><td>" . $result['MasterTemplateID'] . "</td></tr>";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
+							break;
+						case "text/js":
+							$out .= $previewDefauts;
 							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-							$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[path]") . ":</td><td>" . $mastertemppath . "</td></tr>";
-						}
-						break;
-					case "text/webedition":
-						$out .= $previewDefauts;
-						$out .= "<tr><td colspan='2' class='headline'>" . g_l('weClass', "[metainfo]") . "</td></tr>";
-						$nextrowclass = "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Title]") . ":</td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>";
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Charset]") . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset'] : '') . "</td></tr>";
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Keywords]") . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('weClass', "[Description]") . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
-						break;
-					case "text/html":
-						$out .= $previewDefauts;
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
-						break;
-					case "text/css":
-						$out .= $previewDefauts;
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
-						break;
-					case "text/js":
-						$out .= $previewDefauts;
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
-						break;
-					case "application/*":
-						$out .= $previewDefauts;
-						$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
-						$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
-						break;
-					case "object":
-						$out .= $previewDefauts;
-						break;
-					case "objectFile":
-						$out .= $previewDefauts;
-						break;
-					default:
-						$out .= $previewDefauts;
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
+							break;
+						case "application/*":
+							$out .= $previewDefauts;
+							$nextrowclass = $nextrowclass == "odd" ? "even" : "odd";
+							$out .= "<tr class='$nextrowclass'><td>" . g_l('fileselector', "[filesize]") . ":</td><td>" . $filesize . "</td></tr>";
+							break;
+						case "object":
+							$out .= $previewDefauts;
+							break;
+						case "objectFile":
+							$out .= $previewDefauts;
+							break;
+						default:
+							$out .= $previewDefauts;
+					}
+					$out .= "</table></div></td></tr>\t</table>\n";
 				}
-				$out .= "</table></div></td></tr>\t</table>\n";
+				$out .= "</body>\n</html>";
+				echo $out;
 			}
-			$out .= "</body>\n</html>";
-			echo $out;
 		}
+
 	}
 
-}
