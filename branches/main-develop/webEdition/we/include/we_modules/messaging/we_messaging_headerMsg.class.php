@@ -26,12 +26,17 @@ class we_messaging_headerMsg{
 
 	static function pCSS(){
 		print we_html_element::cssElement('
-			table.nopadding {
-				margin:0px;border-spacing:0px;
+			table.msgheadertable {
+				margin:2px 0px 0px 0px;
+				border-spacing:0px;
+				border: none;
 			}
-			table.nopadding td {
+			table.msgheadertable td {
 				padding:0px;
 	}
+			table.msgheadertable tr {
+				height: 12px;
+			}
 			');
 	}
 
@@ -70,12 +75,8 @@ class we_messaging_headerMsg{
 			$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
 			$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
 			?>
-			<table class="nopadding" style="border: none;">
+			<table class="msgheadertable">
 				<?php echo '
-<tr>
-	<td>' . we_html_tools::getPixel(25, 2) . '</td>
-	<td colspan="2">' . we_html_tools::getPixel(2, 2) . '</td>
-</tr>
 <tr>
 	<td id="msgCount" align="right" class="middlefont' . ($newmsg_count ? 'red' : '') . '"><a style="text-decoration:none"  href="' . $msg_cmd . '">' . $newmsg_count . '</a></td>
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
