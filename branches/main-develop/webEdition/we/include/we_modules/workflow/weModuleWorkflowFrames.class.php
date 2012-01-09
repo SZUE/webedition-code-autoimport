@@ -229,7 +229,7 @@ echo we_html_element::jsScript(JS_DIR.'images.js').
 	function getHTMLHeader(){
 ?>
 </head>
- <body background="<?php print IMAGE_DIR ?>java_menu/background.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
 	HEADER
  </body>
 </html>

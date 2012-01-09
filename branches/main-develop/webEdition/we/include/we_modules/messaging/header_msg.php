@@ -44,7 +44,7 @@ we_html_tools::protect();
 //-->
 	</script>
 </head>
-<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
 <?php
     if (defined("MESSAGING_SYSTEM")) {
         include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");

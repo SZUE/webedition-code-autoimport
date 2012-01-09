@@ -85,15 +85,15 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 </script>
 </head>
 <body>
-	<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
-		<div style="position:relative;border:0;float:left;" >
+	<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
+		<div style="position:relative;border:0px;float:left;" >
 			<?php
 			if($jmenu){
 				print $jmenu->getCode(false);
 			}
 			?>
 		</div>
-		<div style="position:relative;bottom:0;border:0;padding-left: 10px;float:left;" >
+		<div style="position:relative;bottom:0px;border:0px;padding-left: 10px;float:left;" >
 			<?php
 			if(count($navigationButtons)){
 				foreach($navigationButtons as $button){
@@ -101,7 +101,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 				}
 			}
 			?></div>
-		<div style="position:absolute;top:0;bottom:0;right:10px;border:0;" >
+		<div style="position:absolute;top:0px;bottom:0px;right:10px;border:0px;" >
 
 
 			<?php

@@ -622,7 +622,7 @@ $form = '<form name="we_form" method="post">
 print
 		'</head><body class="weTreeHeader">
 <div style="width:380px;">
-<h1 class="big" style="padding:0;margin:0;">' . htmlspecialchars(
+<h1 class="big" style="padding:0px;margin:0px;">' . htmlspecialchars(
 				g_l('newFile',"[title_delete]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '

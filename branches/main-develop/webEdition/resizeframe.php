@@ -57,14 +57,14 @@ function startNormalMode(){
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php print $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
-			<iframe src="<?php print WEBEDITION_DIR; ?>baumFrame.php" style="border:0;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
+			<iframe src="<?php print WEBEDITION_DIR; ?>baumFrame.php" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+			<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if($_sidebarwidth > 0){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
-				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>
 		<?php } ?>
 	</div>
@@ -112,14 +112,14 @@ function startSEEMMode(){
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:0px;border-right:1px solid black;" id="bframeDiv">
-			<iframe src="<?php print HTML_DIR; ?>white.html" style="border:0;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
+			<iframe src="<?php print HTML_DIR; ?>white.html" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bframe"></iframe>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+			<iframe src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if($_sidebarwidth > 0){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
-				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+				<iframe src="<?php print WEBEDITION_DIR; ?>sideBarFrame.php" name="sidebar" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>
 		<?php } ?>
 	</div>
@@ -170,7 +170,7 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 
 //  Open webEdition normally
 } else{
-	echo '<body style="margin:0;">';
+	echo '<body style="margin:0px;">';
 	startNormalMode();
 	echo '</body>';
 }

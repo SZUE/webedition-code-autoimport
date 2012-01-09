@@ -315,7 +315,7 @@ echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 	</style>
 </head>
 
-<body style="margin:0;padding:0;">
+<body style="margin:0px;padding:0px;">
 	<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 
 <?php

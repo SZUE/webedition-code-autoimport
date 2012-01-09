@@ -583,7 +583,7 @@ optgroup.lvl2{
 
 .weTreeHeader {
 	background-image: url(/webEdition/images/backgrounds/bgGrayLineTop.gif);
-	margin:0;
+	margin:0px;
 	padding: 10px 10px;
 	border-bottom: 1px solid black;
 	height:129px;
@@ -592,7 +592,7 @@ optgroup.lvl2{
 
 .weTreeHeaderMove {
 	background-image: url(/webEdition/images/backgrounds/bgGrayLineTop.gif);
-	margin:0;
+	margin:0px;
 	padding: 10px 10px;
 	border-bottom: 1px solid black;
 	height:139px;

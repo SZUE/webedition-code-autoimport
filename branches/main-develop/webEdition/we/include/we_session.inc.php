@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,49 +22,44 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(__DIR__, '', __FILE__)) {
+if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(__DIR__, '', __FILE__)){
 	exit();
 }
 
-if (!isset($_SESSION))
+if(!isset($_SESSION))
 	@session_start();
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_db_tools.inc.php');
-
-if (!isset($_SESSION["user"])) {
+if(!isset($_SESSION["user"])){
 	$_SESSION["user"] = array(
 		"ID" => "", "Username" => "", "workSpace" => "", "isWeSession" => false
 	);
 }
 
-if (isset($_POST["username"]) && isset($_POST["password"])) {
-	$DB_WE->query("SELECT UseSalt, passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape($_POST["username"])."'");
+if(isset($_POST["username"]) && isset($_POST["password"])){
+	$DB_WE->query("SELECT UseSalt, passwd, username, LoginDenied, ID FROM " . USER_TABLE . " WHERE username='" . $DB_WE->escape($_POST["username"]) . "'");
 
 	// only if username exists !!
-	if ($DB_WE->next_record()) {
+	if($DB_WE->next_record()){
 		$useSalt = $DB_WE->f("UseSalt");
 		$salted = md5($_POST["password"] . md5($_POST["username"]));
 
 		$passwd = $useSalt ? $salted : md5($_POST["password"]);
 
-		if ($DB_WE->f('passwd')==$passwd) {
+		if($DB_WE->f('passwd') == $passwd){
 
 			$_userdata = $DB_WE->Record;
 
 
-			if ($_userdata["LoginDenied"]) { // userlogin is denied
+			if($_userdata["LoginDenied"]){ // userlogin is denied
 				$GLOBALS["userLoginDenied"] = true;
-			} else {
-				if (!$useSalt) {
+			} else{
+				if(!$useSalt){
 					// UPDATE Password with SALT
-					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='".$salted."',UseSalt=1 WHERE username='" . $DB_WE->escape(
-							$_POST["username"]) . "' AND passwd='".$DB_WE->escape($passwd)."'");
+					$DB_WE->query("UPDATE " . USER_TABLE . " SET passwd='" . $salted . "',UseSalt=1 WHERE username='" . $DB_WE->escape(
+							$_POST["username"]) . "' AND passwd='" . $DB_WE->escape($passwd) . "'");
 				}
 
-				if (!(isset($_SESSION["user"]) && is_array($_SESSION["user"]))) {
+				if(!(isset($_SESSION["user"]) && is_array($_SESSION["user"]))){
 					$_SESSION["user"] = array();
 				}
 				$_SESSION["user"]["Username"] = $_userdata["username"];
@@ -84,98 +80,95 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$get_wsnl = 0;
 
 				$DB_WE->query("SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($_SESSION["user"]["ID"]) . " OR Alias=" . intval($_SESSION["user"]["ID"]));
-				while ($DB_WE->next_record()) {
+				while($DB_WE->next_record()) {
 					// get workspaces
 					$a = makeArrayFromCSV($DB_WE->f("workSpace"));
-					foreach ($a as $k => $v)
-						if (!in_array($v, $f))
+					foreach($a as $k => $v)
+						if(!in_array($v, $f))
 							array_push($f, $v);
 
-						$a = makeArrayFromCSV($DB_WE->f("workSpaceTmp"));
-						foreach ($a as $k => $v) {
-							if (!in_array($v, $t)) {
-								array_push($t, $v);
-							}
+					$a = makeArrayFromCSV($DB_WE->f("workSpaceTmp"));
+					foreach($a as $k => $v){
+						if(!in_array($v, $t)){
+							array_push($t, $v);
 						}
+					}
 
-						$a = makeArrayFromCSV($DB_WE->f("workSpaceNav"));
-						foreach ($a as $k => $v) {
-							if (!in_array($v, $n)) {
-								array_push($n, $v);
-							}
+					$a = makeArrayFromCSV($DB_WE->f("workSpaceNav"));
+					foreach($a as $k => $v){
+						if(!in_array($v, $n)){
+							array_push($n, $v);
 						}
+					}
 
-						$a = makeArrayFromCSV($DB_WE->f("workSpaceObj"));
-						foreach ($a as $k => $v) {
-							if (!in_array($v, $o)) {
-								array_push($o, $v);
-							}
+					$a = makeArrayFromCSV($DB_WE->f("workSpaceObj"));
+					foreach($a as $k => $v){
+						if(!in_array($v, $o)){
+							array_push($o, $v);
 						}
+					}
 
-						$a = makeArrayFromCSV($DB_WE->f("workSpaceNwl"));
-						foreach ($a as $k => $v) {
-							if (!in_array($v, $nl)) {
-								array_push($nl, $v);
-							}
+					$a = makeArrayFromCSV($DB_WE->f("workSpaceNwl"));
+					foreach($a as $k => $v){
+						if(!in_array($v, $nl)){
+							array_push($nl, $v);
 						}
+					}
 
-						// get parent workspaces
-						$pid = $DB_WE->f("ParentID");
-						$get_ws = $DB_WE->f("ParentWs");
-						$get_wst = $DB_WE->f("ParentWst");
-						$get_wso = $DB_WE->f("ParentWso");
-						$get_wsn = $DB_WE->f("ParentWsn");
-						$get_wsnl = $DB_WE->f("ParentWsnl");
+					// get parent workspaces
+					$pid = $DB_WE->f("ParentID");
+					$get_ws = $DB_WE->f("ParentWs");
+					$get_wst = $DB_WE->f("ParentWst");
+					$get_wso = $DB_WE->f("ParentWso");
+					$get_wsn = $DB_WE->f("ParentWsn");
+					$get_wsnl = $DB_WE->f("ParentWsnl");
 
-						while ($pid) { //	For each group
+					while($pid) { //	For each group
+						array_push($_userGroups, $pid);
 
-
-							array_push($_userGroups, $pid);
-
-							$db_tmp->query(
-									"SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
-							if ($db_tmp->next_record()) {
-								if ($get_ws) {
-									$a = makeArrayFromCSV($db_tmp->f("workSpace"));
-									foreach ($a as $k => $v)
-										if (!in_array($v, $f))
-											array_push($f, $v);
-								}
-								if ($get_wst) {
-									$a = makeArrayFromCSV($db_tmp->f("workSpaceTmp"));
-									foreach ($a as $k => $v)
-										if (!in_array($v, $t))
-											array_push($t, $v);
-								}
-								if ($get_wso) {
-									$a = makeArrayFromCSV($db_tmp->f("workSpaceObj"));
-									foreach ($a as $k => $v)
-										if (!in_array($v, $o))
-											array_push($o, $v);
-								}
-								if ($get_wsn) {
-									$a = makeArrayFromCSV($db_tmp->f("workSpaceNav"));
-									foreach ($a as $k => $v)
-										if (!in_array($v, $n))
-											array_push($n, $v);
-								}
-								if ($get_wsnl) {
-									$a = makeArrayFromCSV($db_tmp->f("workSpaceNwl"));
-									foreach ($a as $k => $v)
-										if (!in_array($v, $nl))
-											array_push($nl, $v);
-								}
-								$pid = $db_tmp->f("ParentID");
-								$get_ws = $db_tmp->f("ParentWs");
-								$get_wst = $db_tmp->f("ParentWst");
-								$get_wso = $db_tmp->f("ParentWso");
-								$get_wsn = $db_tmp->f("ParentWsn");
-								$get_wsnl = $db_tmp->f("ParentWsnl");
-							} else {
-								$pid = 0;
+						$db_tmp->query(
+							"SELECT ParentID,workSpace,workSpaceTmp,workSpaceNav,workSpaceObj,workSpaceNwl,ParentWs,ParentWst,ParentWsn,ParentWso,ParentWsnl FROM " . USER_TABLE . " WHERE ID=" . intval($pid));
+						if($db_tmp->next_record()){
+							if($get_ws){
+								$a = makeArrayFromCSV($db_tmp->f("workSpace"));
+								foreach($a as $k => $v)
+									if(!in_array($v, $f))
+										array_push($f, $v);
 							}
+							if($get_wst){
+								$a = makeArrayFromCSV($db_tmp->f("workSpaceTmp"));
+								foreach($a as $k => $v)
+									if(!in_array($v, $t))
+										array_push($t, $v);
+							}
+							if($get_wso){
+								$a = makeArrayFromCSV($db_tmp->f("workSpaceObj"));
+								foreach($a as $k => $v)
+									if(!in_array($v, $o))
+										array_push($o, $v);
+							}
+							if($get_wsn){
+								$a = makeArrayFromCSV($db_tmp->f("workSpaceNav"));
+								foreach($a as $k => $v)
+									if(!in_array($v, $n))
+										array_push($n, $v);
+							}
+							if($get_wsnl){
+								$a = makeArrayFromCSV($db_tmp->f("workSpaceNwl"));
+								foreach($a as $k => $v)
+									if(!in_array($v, $nl))
+										array_push($nl, $v);
+							}
+							$pid = $db_tmp->f("ParentID");
+							$get_ws = $db_tmp->f("ParentWs");
+							$get_wst = $db_tmp->f("ParentWst");
+							$get_wso = $db_tmp->f("ParentWso");
+							$get_wsn = $db_tmp->f("ParentWsn");
+							$get_wsnl = $db_tmp->f("ParentWsnl");
+						} else{
+							$pid = 0;
 						}
-
+					}
 				}
 				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
@@ -185,19 +178,18 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
 				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_userdata["ID"]), $DB_WE);
-				if (is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0) {
+				if(is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0){
 					$_SESSION["prefs"] = $exprefs;
-
-				} else {
+				} else{
 					$_SESSION["prefs"]["userID"] = $_userdata["ID"];
 					doInsertQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"]);
 				}
 
-				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
+				if(isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]){
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION["user"]["ID"]);
 					$_SESSION["perms"] = $foo->getAllPermissions();
-				} else {
+				} else{
 					$_SESSION["perms"]["ADMINISTRATOR"] = 1;
 				}
 				$_SESSION["user"]["isWeSession"] = true; // for pageLogger, to know that it is really a webEdition session
@@ -210,32 +202,32 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
-				if (isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]) {
+				if(isset($_SESSION["user"]["Username"]) && isset($_SESSION["user"]["ID"]) && $_SESSION["user"]["Username"] && $_SESSION["user"]["ID"]){
 					$foo = new we_user();
 					$foo->initFromDB($_SESSION["user"]["ID"]);
 					$_SESSION["perms"] = $foo->getAllPermissions();
-				} else {
+				} else{
 					$_SESSION["perms"]["ADMINISTRATOR"] = 1;
 				}
 				$_SESSION["user"]["isWeSession"] = true; // for pageLogger, to know that it is really a webEdition session
 			}
-		} else {
+		} else{
 			$_SESSION["user"]["Username"] = "";
-			while (list($name, $val) = each($_SESSION)) {
+			while(list($name, $val) = each($_SESSION)) {
 				unset($_SESSION[$name]);
 			}
 		}
-	} else {
-			$_SESSION["user"]["Username"] = "";
-			while (list($name, $val) = each($_SESSION)) {
-				unset($_SESSION[$name]);
-			}
+	} else{
+		$_SESSION["user"]["Username"] = "";
+		while(list($name, $val) = each($_SESSION)) {
+			unset($_SESSION[$name]);
 		}
+	}
 }
 $we_transaction = isset($_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : md5(uniqID(rand()));
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:md5(uniqID(rand())));
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : md5(uniqID(rand())));
 
-if (!isset($_SESSION["we_data"])) {
+if(!isset($_SESSION["we_data"])){
 	$_SESSION["we_data"] = array($we_transaction => '');
 }
 

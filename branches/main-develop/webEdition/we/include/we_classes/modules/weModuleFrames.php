@@ -110,7 +110,7 @@ class weModuleFrames{
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), createMessageConsole("moduleFrame"));
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "#bfbfbf", "background" => IMAGE_DIR . "java_menu/background.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $table->getHtml()
+		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url('.IMAGE_DIR.'java_menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml()
 		);
 
 		return $this->getHTMLDocument($body);

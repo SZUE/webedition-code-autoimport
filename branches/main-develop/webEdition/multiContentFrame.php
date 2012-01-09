@@ -62,13 +62,13 @@ we_html_tools::htmlTop();
 <body>
 <div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
        <div style="position:absolute;top:0px;height:22px;width:100%;" id="multiEditorDocumentTabsFrameDiv">
-				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0px;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
 			</div>
        <div style="position: absolute;height:0px;bottom: 0px;left:0px;right:0px;">
-				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" name="multiEditorDocumentControllerFrame" style="border:0;overflow: hidden;width:100%;height:100%;" onload="startMultiEditor();"></iframe>
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/EditorFrameController.php" name="multiEditorDocumentControllerFrame" style="border:0px;overflow: hidden;width:100%;height:100%;" onload="startMultiEditor();"></iframe>
 			</div>
 			<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: auto;">
-				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0;width:100%;height:100%;overflow: hidden;"></iframe>
+				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
        </div>
      </div>
 </body>

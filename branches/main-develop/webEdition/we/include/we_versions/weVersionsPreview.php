@@ -763,7 +763,7 @@ td {font-size:9px;vertical-align:top;}
 		</div>
 	</div>
 
-	<div style="left:0;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0;width:100%">
+	<div style="left:0px;height:40px;background-image: url(/webEdition/images/edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">
 		<div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
 	</div>
 

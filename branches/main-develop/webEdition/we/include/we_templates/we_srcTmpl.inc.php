@@ -344,7 +344,7 @@ if($GLOBALS['we_editmode']){
 	</script>
 	</head>
 	<body class="weEditorBody" style="overflow:hidden;" onLoad="setTimeout('initEditor()',200);" onUnload="doUnload(); parent.editorScrollPosTop = getScrollPosTop(); parent.editorScrollPosLeft = getScrollPosLeft();" onResize="sizeEditor();"><?php //'       ?>
-		<form name="we_form" method="post" onsubmit="return false;" style="margin:0;"><?php
+		<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 		$we_doc->pHiddenTrans();
 	}
 

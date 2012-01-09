@@ -872,8 +872,8 @@ function doDebugResizeH(){
 	$ul { padding:5px 0;margin-left:0px; background-color:#ffffff}
 	$li { padding:0 5px;cursor:default;white-space:nowrap; }
 	$yuAcHighlight {background:#B5D5FF;}
-	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0; padding:0; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
-	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-5px; margin-top:-5px; padding:0; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
+	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
+	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-5px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
 	div.yuiAcLayer { margin:0px; padding:0px;}
 ";
 		} else {
@@ -890,8 +890,8 @@ function doDebugResizeH(){
 	$ul { padding:5px 0;margin-left:0px; background-color:#ffffff}
 	$li { padding:0 5px;cursor:default;white-space:nowrap; }
 	$yuAcHighlight {background:#B5D5FF;}
-	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0; padding:0; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
-	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
+	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
+	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
 	div.yuiAcLayer { margin:0px; padding:0px;}
 ";
 		}

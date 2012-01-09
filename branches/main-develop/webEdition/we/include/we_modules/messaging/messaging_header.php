@@ -45,7 +45,7 @@ echo we_html_element::jsScript(JS_DIR.'images.js');
 			//-->
 	</script>
 
-	<body background="<?php print IMAGE_DIR ?>java_menu/background.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>
 				<td align=left valign=top>

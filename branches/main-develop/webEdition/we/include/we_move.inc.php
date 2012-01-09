@@ -358,7 +358,7 @@ $yuiSuggest->setSelectButton(
 $weAcSelector = $yuiSuggest->getHTML();
 
 $content = '<span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile',"[move_text]") . '</span>
-			<p style="margin:0 0 10px 0;padding:0;">' . $weAcSelector . '</p>';
+			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p>';
 
 $_buttons = we_button::position_yes_no_cancel(
 		we_button::create_button("ok", "javascript:press_ok_move();"),
@@ -378,7 +378,7 @@ print
 		'</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
-<h1 class="big" style="padding:0;margin:0;">' . htmlspecialchars(
+<h1 class="big" style="padding:0px;margin:0px;">' . htmlspecialchars(
 				g_l('newFile',"[title_move]")) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '
