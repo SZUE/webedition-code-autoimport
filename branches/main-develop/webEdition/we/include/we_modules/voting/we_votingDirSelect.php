@@ -25,7 +25,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/we_votingDirSelector.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 $_SERVER["SCRIPT_NAME"] = "/webEdition/we/include/we_modules/voting/we_votingDirSelect.php";
@@ -38,5 +38,3 @@ $fs = new we_votingDirSelector(isset($id) ? $id : (isset($_REQUEST["id"]) ? $_RE
 							isset($we_FolderText) ? $we_FolderText : (isset($_REQUEST["we_FolderText"]) ? $_REQUEST["we_FolderText"] : ''));
 
 $fs->printHTML(isset($_REQUEST["what"]) ? $_REQUEST["what"] : we_fileselector::FRAMESET);
-
-?>

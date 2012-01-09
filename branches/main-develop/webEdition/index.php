@@ -54,7 +54,7 @@ function printHeader($login){
 	/*	 * ***************************************************************************
 	 * CREATE HEADER
 	 * *************************************************************************** */
-	we_html_tools::htmlTop('webEdition ');
+	we_html_tools::htmlTop('webEdition');
 	print STYLESHEET;
 
 	print we_html_element::jsElement('', array('src' => JS_DIR . 'windows.js'));
@@ -154,8 +154,8 @@ if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_hook/cust
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_tools/navigation/cache')){
 	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/we_tools/navigation/cache');
 }
-if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
-	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache');
+if(is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
+	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache',true);
 }
 if(!is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache')){
 	we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache');
@@ -171,9 +171,6 @@ if(!is_dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/')){
 }
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt')){
 	$htaccessdata = file_get_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/include/htaccessbase.txt');
-	if(!file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache/.htaccess')){
-		file_put_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache/.htaccess', $htaccessdata);
-	}
 	if(!file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache/.htaccess')){
 		file_put_contents($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache/.htaccess', $htaccessdata);
 	}
@@ -277,12 +274,12 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
 	}
 
-	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$GLOBALS['DB_WE']->isConnected() || $GLOBALS['DB_WE']->Error == 'No database selected'){
 	$_error = we_html_element::htmlB(g_l('start', '[no_db_connection]'));
 
@@ -307,12 +304,12 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
 	}
 
-	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
 	$_error = we_html_element::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr().we_html_element::htmlBr());
 
@@ -337,12 +334,12 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 		$_error .= we_html_element::htmlBr() . g_l('start', '[solution_more]');
 	}
 
-	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(!$ignore_browser && !$GLOBALS['brDetect']->isSupported()){
 
 	/*	 * *******************************************************************

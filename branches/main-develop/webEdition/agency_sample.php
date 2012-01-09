@@ -4,4 +4,4 @@
 // You can also include logos or other stuff
 $_agency = '<b>webEdition e.V.</b><br/> address <br/> phone <br/> fax <br/> email';
 
-?>
+

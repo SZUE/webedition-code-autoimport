@@ -702,13 +702,12 @@ HTS;
 		return $retVal;
 	}
 
-	static function htmlTop($title = 'webEdition', $charset = ''){
-		print self::getHtmlTop($title, $charset);
+	static function htmlTop($title = 'webEdition', $charset = '',$doctype='4Trans'){
+		print self::getHtmlTop($title, $charset,true,$doctype);
 	}
 
-	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true){
-		return
-			'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>' .
+	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true,$doctype='4Trans'){
+		return we_html_element::htmlDocType($doctype).'<html><head>' .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "expires", "content" => 0

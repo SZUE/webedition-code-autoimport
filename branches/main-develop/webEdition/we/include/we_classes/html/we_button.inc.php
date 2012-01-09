@@ -57,7 +57,7 @@ class we_button{
 	 * @static
 	 */
 	static function getButton($value, $id, $cmd='', $width=self::WIDTH, $title='', $disabled=false, $margin='', $padding='', $key='', $float='', $display='', $important=true, $isFormButton=false, $cssInline=false){
-		return '<table cellpadding="0" cellspacing="0" border="0"' . ($title ? ' title="' . htmlspecialchars($title) . '"' : '') .
+		return '<table style="border-style:none; padding:0px;border-spacing:0px;"' . ($title ? ' title="' . htmlspecialchars($title) . '"' : '') .
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
 			'"' . we_button::getInlineStyleByParam($width, '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . htmlspecialchars($cmd) . ';}">' .
@@ -286,7 +286,7 @@ class we_button{
 		$_cols_to_create = ($_count_button > 1) ? (($_count_button * 2) - 1) : $_count_button;
 
 		// Create array for table attributes
-		$attr = array("border" => "0", "cellpadding" => "0", "cellspacing" => "0");
+		$attr = array("style" => "border-style:none; padding:0px;border-spacing:0px;");
 
 		// Check for attribute parameters
 		if($attribs && is_array($attribs)){
@@ -335,7 +335,7 @@ class we_button{
 	 */
 	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = "", $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
-		$attr = array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "align" => $align);
+		$attr = array("style" => "border-style:none; padding:0px;border-spacing:0px;", "align" => $align);
 
 		// Check for attribute parameters
 		if($attribs && is_array($attribs)){

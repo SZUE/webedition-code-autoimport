@@ -184,9 +184,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $nl);
 
-				//FIXME: this makes absolutely no sense!!!
-				$_SESSION["prefs"] = getHash("SELECT * FROM " . PREFS_TABLE.' LIMIT 1', $DB_WE);
-
 				$exprefs = getHash("SELECT * FROM " . PREFS_TABLE . " WHERE userID=" . intval($_userdata["ID"]), $DB_WE);
 				if (is_array($exprefs) && (isset($exprefs["userID"]) && $exprefs["userID"] != 0) && sizeof($exprefs) > 0) {
 					$_SESSION["prefs"] = $exprefs;

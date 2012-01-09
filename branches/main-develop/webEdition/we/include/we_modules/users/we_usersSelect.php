@@ -24,8 +24,7 @@
  */
 
 
-//include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_USERS_MODULE_DIR . "we_usersSelector.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 $_SERVER["SCRIPT_NAME"] = WE_USERS_MODULE_PATH . "we_usersSelect.php";

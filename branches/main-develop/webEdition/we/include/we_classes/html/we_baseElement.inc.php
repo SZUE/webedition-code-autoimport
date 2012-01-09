@@ -50,8 +50,9 @@ class we_baseElement{
 		$this->setTagName($tagname);
 		$this->setNeedEndTag($need_end_tag);
 
-		if(is_array($attribs))
-			$this->setAttributes($attribs);
+		if(is_array($attribs)){
+			$this->attribs=$attribs;
+		}
 		$this->setContent($content);
 	}
 

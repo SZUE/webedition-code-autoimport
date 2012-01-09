@@ -87,7 +87,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var string
 	 */
-	protected $_doctype = '<!DOCTYPE  HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">';
+	protected $_doctype = '';
 
 	/**
 	 * array with attributes to insert in the body tag
@@ -113,6 +113,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 * @return void
 	 */
 	public function __construct(){
+		$this->_doctype = we_html_element::htmlDocType();
 		$charset = we_core_Local::getComputedUICharset();
 		$this->setCharset($charset);
 

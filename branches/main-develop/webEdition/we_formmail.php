@@ -146,7 +146,6 @@ function print_error($errortext){
 		'href' => WEBEDITION_DIR . 'css/global.php?WE_LANGUAGE=' . $GLOBALS['WE_LANGUAGE'] . '&amp;WE_BACKENDCHARSET=' . $GLOBALS['WE_BACKENDCHARSET'],
 	);
 
-	print '<!DOCTYPE  HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">';
 	print we_html_tools::htmlTop();
 	print getHtmlTag('link', $css);
 	print '</head>';
