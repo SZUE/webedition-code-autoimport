@@ -154,7 +154,7 @@ function pWebEdition_Frameset(){
 	?>
 	<div style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px;">
 		<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
-	<?php include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/header.php"); ?>
+			<?php we_main_header::pbody();?>
 		</div>
 		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_seem"]) && $_SESSION["prefs"]["debug_seem"] != 0)) ? 100 : 0; ?>px;border: 0px;">
 			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php?<?php print $we_cmds ?>" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>

@@ -28,11 +28,13 @@ abstract class we_html_tools{
 ### protects a page. Guests can not see this page
 
 	static function protect(array $perms=null){
-		$allow = true;
+		$allow = false;
 		if($perms && is_array($perms)){
 			foreach($perms as $perm){
-				$allow&=isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm];
+				$allow|=isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm];
 			}
+		} else{
+			$allow = true;
 		}
 		if(!$allow || !isset($_SESSION["user"]) || !isset($_SESSION["user"]["Username"]) || $_SESSION["user"]["Username"] == ''){
 			print self::htmlTop();
@@ -702,12 +704,12 @@ HTS;
 		return $retVal;
 	}
 
-	static function htmlTop($title = 'webEdition', $charset = '',$doctype='4Trans'){
-		print self::getHtmlTop($title, $charset,true,$doctype);
+	static function htmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
+		print self::getHtmlTop($title, $charset, true, $doctype);
 	}
 
-	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true,$doctype='4Trans'){
-		return we_html_element::htmlDocType($doctype).'<html><head>' .
+	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true, $doctype='4Trans'){
+		return we_html_element::htmlDocType($doctype) . '<html><head>' .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "expires", "content" => 0
@@ -715,24 +717,19 @@ HTS;
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"
 			)) .
-			we_html_element::htmlMeta(
-				array(
-					"http-equiv" => "content-type",
-					"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
+			we_html_element::htmlMeta(array(
+				"http-equiv" => "content-type",
+				"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
 			)) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
 			)) .
-			we_html_element::htmlMeta(
-				array(
-					"name" => "generator", "content" => 'webEdition'
+			we_html_element::htmlMeta(array(
+				"name" => "generator", "content" => 'webEdition'
 			)) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')) .
-			($useMessageBox ? we_html_element::jsElement("", array(
-					"src" => JS_DIR . "we_showMessage.js"
-				)) . we_html_element::jsElement("", array(
-					"src" => JS_DIR . "attachKeyListener.js"
-				)) : '');
+			($useMessageBox ? we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") : '');
 	}
 
 	/**

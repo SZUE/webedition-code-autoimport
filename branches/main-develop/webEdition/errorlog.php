@@ -19,7 +19,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
+we_html_tools::protect(array('ADMINISTRATOR'));
 
 function getInfoTable($_infoArr){
 	//recode data - this data might be different than the rest...
@@ -151,8 +151,7 @@ we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_bu
 }
 
 we_html_tools::htmlTop('Errorlog', $GLOBALS['WE_BACKENDCHARSET']);
-echo we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('function closeOnEscape() {
 		return true;
 	}

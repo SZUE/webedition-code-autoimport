@@ -72,7 +72,8 @@ we_html_tools::htmlTop('webEdition - '.$_SESSION["user"]["Username"]);
 
 $online_help=true;
 
-echo we_html_element::jsScript(JS_DIR.'windows.js').
+echo print STYLESHEET.
+we_html_element::jsScript(JS_DIR.'windows.js').
 	we_html_element::jsScript(JS_DIR.'weJsStrings.php').
 	we_html_element::jsScript(JS_DIR.'md5.js').
 	we_html_element::jsScript(JS_DIR.'weNavigationHistory.php').
@@ -255,7 +256,8 @@ function doExtClick(url){
 if (defined('MESSAGING_SYSTEM')) {
 ?>
 	function update_msg_quick_view() {
-		top.header_msg.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php?r=<?php srand ((double) microtime() * 1000000);echo rand();?>";
+		//top.header_msg.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>header_msg.php?r=<?php srand ((double) microtime() * 1000000);echo rand();?>";
+		//done by users_ping
 	}
 
 	function msg_update() {
@@ -1415,7 +1417,6 @@ function openWindow(url,ref,x,y,w,h,scrollbars,menues) {
 }
 
 function start() {
-	//self.Header = self.header.header_menu ? self.header.header_menu : self.header;
 	self.Tree = self.rframe.bframe.bm_main;
 	self.Vtabs = self.rframe.bframe.bm_vtabs;
 	self.TreeInfo = self.rframe.bframe.infoFrame;
@@ -1453,14 +1454,16 @@ function openBrowser(url) {
 var cockpitFrame;
 </script>
 <?php
-	//	get the Treefunctions for docselector
-	pWebEdition_Tree();
-?>
+	we_main_header::pCSS();
+	?>
 </head>
 <body bgcolor="grey" onunload="doUnload()">
 <?php
 //	get the frameset for the actual mode.
 pWebEdition_Frameset();
+	we_main_header::pJS();
+	//	get the Treefunctions for docselector
+	pWebEdition_Tree();
 ?>
 </body>
 </html>

@@ -40,6 +40,8 @@ abstract class we_autoloader{
 		'base' => 'we_classes/base',
 		'database' => 'we_classes/database',
 		'html' => 'we_classes/html',
+		'main' => 'we_classes/main',
+		'messaging' => 'we_modules/messaging',
 		'users' => 'we_modules/users',
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',

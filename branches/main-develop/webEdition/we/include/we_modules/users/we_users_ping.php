@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-we_html_tools::htmlTop();
+we_html_tools::protect();
+we_html_tools::htmlTop('ping');
 if($_SESSION["user"]["ID"]){
 	$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
 	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=DATE_ADD( NOW( ) , INTERVAL ' . (PING_TIME + PING_TOLERANZ) . ' SECOND) WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
@@ -56,11 +56,11 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 						}
 					}
 <?php if(defined("MESSAGING_SYSTEM")){ ?>
-									if (top.header_msg.update) {
+									if (top.header_msg_update) {
 										var newmsg_count = result.DataArray.newmsg_count;
 										var newtodo_count = result.DataArray.newtodo_count;
 
-										top.header_msg.update(newmsg_count, newtodo_count);
+										top.header_msg_update(newmsg_count, newtodo_count);
 									}
 
 <?php } ?>
