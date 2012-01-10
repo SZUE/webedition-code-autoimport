@@ -705,10 +705,10 @@ HTS;
 	}
 
 	static function htmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
-		print self::getHtmlTop($title, $charset, true, $doctype);
+		print self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	static function getHtmlTop($title = 'webEdition', $charset = '', $useMessageBox = true, $doctype='4Trans'){
+	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
 		return we_html_element::htmlDocType($doctype) . '<html><head>' .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
@@ -719,7 +719,7 @@ HTS;
 			)) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
-				"content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']
+				"content" => "text/html; charset=" . ($charset?$charset:$GLOBALS['WE_BACKENDCHARSET'])
 			)) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
@@ -728,8 +728,8 @@ HTS;
 				"name" => "generator", "content" => 'webEdition'
 			)) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')) .
-			($useMessageBox ? we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") : '');
+			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 	}
 
 	/**

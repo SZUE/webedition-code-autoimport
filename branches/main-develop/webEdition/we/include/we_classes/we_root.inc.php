@@ -660,7 +660,6 @@ abstract class we_root extends we_class{
 	}
 
 	function getMoveTreeEntryScript($select=true){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMainTree.inc.php");
 		$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
 		return $Tree->getJSUpdateTreeScript($this, $select);
 	}

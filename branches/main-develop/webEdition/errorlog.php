@@ -150,7 +150,7 @@ we_button::create_button("last", '/webEdition/errorlog.php?start=0', true, we_bu
 	);
 }
 
-we_html_tools::htmlTop('Errorlog', $GLOBALS['WE_BACKENDCHARSET']);
+we_html_tools::htmlTop('Errorlog');
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('function closeOnEscape() {
 		return true;

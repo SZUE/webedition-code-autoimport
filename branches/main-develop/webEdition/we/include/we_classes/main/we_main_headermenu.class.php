@@ -111,9 +111,7 @@ top.weSidebar = weSidebar;
 				print createMessageConsole("mainWindow");
 				?>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
-				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" width="10" height="19">
-				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" width="78" height="25">
-				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" width="5" height="19">
+				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" style="width:78px;height:25px;padding-left: 10px;padding-right: 5px;padding-top:3px;">
 			</div>
 		</div>
 		<?php

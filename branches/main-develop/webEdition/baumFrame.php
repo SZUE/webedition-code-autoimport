@@ -21,42 +21,43 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-we_html_tools::htmlTop();
+we_html_tools::htmlTop('', '', 5);
 
 $table = isset($table) ? $table : FILE_TABLE;
+print STYLESHEET;
 ?>
 <script type="text/javascript"><!--
-function we_cmd(){
-	var args = "";
-	for(var i = 0; i < arguments.length; i++){
-		args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+	function we_cmd(){
+		var args = "";
+		for(var i = 0; i < arguments.length; i++){
+			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
+		}
+		eval('parent.we_cmd('+args+')');
 	}
-	eval('parent.we_cmd('+args+')');
-}
-//-->
+	//-->
 </script>
 </head>
-<body>
-<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
-  <div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;">
-		<iframe src="<?php print WEBEDITION_DIR ?>we_vtabs.php" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bm_vtabs"></iframe>
+<body style="margin:0px;">
+	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
+		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;">
+			<iframe src="<?php print WEBEDITION_DIR ?>we_vtabs.php" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bm_vtabs"></iframe>
+		</div>
+		<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;overflow: hidden;" id="treeFrameDiv">
+			<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_vtabsDiv">
+				<iframe src="<?php print HTML_DIR ?>frameheader.html" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+			</div>
+			<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php print EDIT_IMAGE_DIR ?>editfooterback.gif);">
+<?php
+include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/treeInfo.inc.php');
+?>
+			</div>
+			<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: hidden;" id="bm_mainDiv">
+				<iframe src="treeMain.php" name="bm_main" onload="top.start()" style="border:0px;width:100%;height:100%;"></iframe>
+			</div>
+		</div>
 	</div>
-	<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;" id="treeFrameDiv">
-		<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;" id="bm_vtabsDiv">
-			<iframe src="<?php print HTML_DIR ?>frameheader.html" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
-		</div>
-		<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;">
-			<iframe src="treeInfo.php" name="infoFrame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
-		</div>
-		<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: auto;" id="bm_mainDiv">
-			<iframe src="treeMain.php" name="bm_main" onload="top.start()" style="border:0px;width:100%;height:100%;"></iframe>
-		</div>
-	</div>
-</div>
 </body>
 </html>

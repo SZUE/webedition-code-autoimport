@@ -150,94 +150,90 @@ class weMainTree extends weTree{
 	}
 
 	function getJSUpdateTreeScript($doc, $select=true){
-
-
 		$published = ((($doc->Published != 0) && ($doc->Published < $doc->ModDate) && ($doc->ContentType == "text/html" || $doc->ContentType == "text/webedition" || $doc->ContentType == "objectFile")) ? -1 : $doc->Published);
 
 		//	This is needed in SeeMode
-		$s = "isEditInclude = false;\n";
-		$s .= "weWindow = top;\n";
-		$s .= "while(1){\n";
-		$s .= "    if(!weWindow.top.opener || weWindow.top.opener.top.win){\n";
-		$s .= "        break;\n";
-		$s .= "      } else {\n";
-		$s .= "          isEditInclude = true;\n";
-		$s .= "          weWindow = weWindow.opener.top;\n";
-		$s .= "      }\n";
-		$s .= "}\n";
+		$s = '
+isEditInclude = false;
+weWindow = top;
+while(1){
+	if(!weWindow.top.opener || weWindow.top.opener.top.win){
+			break;
+	} else {
+		 isEditInclude = true;
+		 weWindow = weWindow.opener.top;
+	}
+}';
 		if($_SESSION["we_mode"] == "seem"){
 			return $s;
 		}
 
-		$s .= "if(weWindow.treeData){\n";
-		;
-		$s .= "var obj = weWindow.treeData;\n";
-		$s .= "var isIn = false;\n";
+		$s .= '
+if(weWindow.treeData){
+	var obj = weWindow.treeData;
+	var isIn = false;';
 
 		if($select){
-			$s .= '		weWindow.treeData.selection_table="' . $doc->Table . '";' . "\n";
-			$s .= '		weWindow.treeData.selection="' . $doc->ID . '";' . "\n";
+			$s .= '
+	weWindow.treeData.selection_table="' . $doc->Table . '";
+	weWindow.treeData.selection="' . $doc->ID . '";';
 		} else{
 
-			$s .= '		weWindow.treeData.unselectnode();' . "\n";
+			$s .= '
+	weWindow.treeData.unselectnode();';
 		}
 
-		$s .= 'if(weWindow.treeData.table == "' . $doc->Table . '"){' . "\n";
+		$s .= '
+	if(weWindow.treeData.table == "' . $doc->Table . '"){
+		if(weWindow.treeData[top.indexOfEntry("' . $doc->ParentID . '")]){
+				var attribs=new Array();
+				attribs["id"]=\'' . $doc->ID . '\';
+				attribs["parentid"]=\'' . $doc->ParentID . '\';
+				attribs["text"]=\'' . $doc->Text . '\';
+				attribs["published"]=\'' . $published . '\';
+				attribs["table"]=\'' . $doc->Table . '\';
 
-		$s .= '	if(weWindow.treeData[top.indexOfEntry("' . $doc->ParentID . '")]){' . "\n";
-		$s .= '		var attribs=new Array();' . "\n";
-		$s .= '		attribs["id"]=\'' . $doc->ID . '\';' . "\n";
-		$s .= '		attribs["parentid"]=\'' . $doc->ParentID . '\';' . "\n";
-		$s .= '		attribs["text"]=\'' . $doc->Text . '\';' . "\n";
-		$s .= '		attribs["published"]=\'' . $published . '\';' . "\n";
-		$s .= '		attribs["table"]=\'' . $doc->Table . '\';' . "\n";
+				if(' . $this->topFrame . '.indexOfEntry("' . $doc->ParentID . '")!=-1){
+					var visible=' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry("' . $doc->ParentID . '")].open;
+				}else{
+					var visible=0
+				}
 
-		$s .= '		if(' . $this->topFrame . '.indexOfEntry("' . $doc->ParentID . '")!=-1)' . "\n";
-		$s .= '			var visible=' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry("' . $doc->ParentID . '")].open;' . "\n";
-		$s .= '		else ' . "\n";
-		$s .= '			var visible=0' . "\n";
-
-		$s .= '		if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){' . "\n";
-		$s .= "				isIn=true;\n";
-
-		$s .= '				var ai = 1;' . "\n";
-		$s .= '				while (ai <= ' . $this->topFrame . '.treeData.len) {' . "\n";
-		$s .= '					if (' . $this->topFrame . '.treeData[ai].id==attribs["id"]){' . "\n";
-		$s .= '						' . $this->topFrame . '.treeData[ai].text=attribs["text"];' . "\n";
-		$s .= '						' . $this->topFrame . '.treeData[ai].parentid=attribs["parentid"];' . "\n";
-		$s .= '						' . $this->topFrame . '.treeData[ai].table=attribs["table"];' . "\n";
-		$s .= '						' . $this->topFrame . '.treeData[ai].published=attribs["published"];' . "\n";
-		$s .= '					}' . "\n";
-		$s .= '					ai++;' . "\n";
-		$s .= '				}' . "\n";
+				if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
+						isIn=true;
+						var ai = 1;
+						while (ai <= ' . $this->topFrame . '.treeData.len) {
+							if (' . $this->topFrame . '.treeData[ai].id==attribs["id"]){
+								' . $this->topFrame . '.treeData[ai].text=attribs["text"];
+								' . $this->topFrame . '.treeData[ai].parentid=attribs["parentid"];
+								' . $this->topFrame . '.treeData[ai].table=attribs["table"];
+								' . $this->topFrame . '.treeData[ai].published=attribs["published"];
+							}
+							ai++;
+						}';
 
 		//$s .= '				'.$this->topFrame.'.updateEntry("'.$doc->ID.'","'.$doc->Text.'","'.$doc->ParentID.'","'.$doc->Table.'");'."\n";
 
-		$s .= "		}\n";
-		$s .= "		else{\n";
+		$s .= '
+			}else{
+				attribs["icon"]=\'' . $doc->Icon . '\';
+				attribs["contenttype"]=\'' . $doc->ContentType . '\';
+				attribs["isclassfolder"]=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
+				attribs["isnoteditable"]=\'' . (isset($doc->IsNotEditable) ? $doc->IsNotEditable : false) . '\';
+				attribs["checked"]=\'0\';
+				attribs["typ"]=\'' . ($doc->IsFolder ? "group" : "item") . '\';
+				attribs["open"]=\'0\';
+				attribs["disabled"]=\'0\';
+				attribs["tooltip"]=\'' . $doc->ID . '\';
+				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
+		}
+		weWindow.drawTree();
+	}else if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
+		'. $this->topFrame . '.deleteEntry(' . $doc->ID . ');
+	}
+}
+}';
 
-		$s .= '				attribs["icon"]=\'' . $doc->Icon . '\';' . "\n";
-		$s .= '				attribs["contenttype"]=\'' . $doc->ContentType . '\';' . "\n";
-		$s .= '				attribs["isclassfolder"]=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';' . "\n";
-		$s .= '				attribs["isnoteditable"]=\'' . (isset($doc->IsNotEditable) ? $doc->IsNotEditable : false) . '\';' . "\n";
-		$s .= '				attribs["checked"]=\'0\';' . "\n";
-		$s .= '				attribs["typ"]=\'' . ($doc->IsFolder ? "group" : "item") . '\';' . "\n";
-		$s .= '				attribs["open"]=\'0\';' . "\n";
-		$s .= '				attribs["disabled"]=\'0\';' . "\n";
-		$s .= '				attribs["tooltip"]=\'' . $doc->ID . '\';' . "\n";
-		$s .= '				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' . "\n";
-
-		$s .= "		}\n";
-		$s .= "		weWindow.drawTree();\n";
-		$s .= "	}\n";
-
-		$s .= '	else if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){' . "\n";
-		$s .= $this->topFrame . '.deleteEntry(' . $doc->ID . ');' . "\n";
-		$s .= "	}\n";
-
-
-		$s .= "}\n";
-		$s .= "}\n";
 
 		return $s;
 	}

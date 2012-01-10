@@ -21,21 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
-
-if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"){
-	$mheight = "marginheight=4 topMargin=4";
-}else{
-	$mheight = "marginheight=1 topMargin=1";
-}
-
 ?>
-<HTML>
-<?php print WE_DEFAULT_HEAD."\n" . STYLESHEET; ?>
-<BODY bgcolor="white" background="<?php print EDIT_IMAGE_DIR ?>editfooterback.gif" <?php print $mheight ?> topMargin=1 leftMargin=0>
+
+
 	<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>
 	<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table); return false;">
 		<div id="search" style="margin: 10px 0 0 10px;">
@@ -48,5 +36,3 @@ if(($SYSTEM == "MAC" && $GLOBALS['BROWSER'] == "IE") || $GLOBALS['BROWSER']="NN"
 			);?>
 		</div>
 	</form>
-</BODY>
-</HTML>
