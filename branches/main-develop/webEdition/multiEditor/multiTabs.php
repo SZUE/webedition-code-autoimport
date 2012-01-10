@@ -70,7 +70,7 @@ switch ($GLOBALS['BROWSER']) {
 		$imgvalign = "top";
 		$frameDefaultHeight = 22;
 		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr>
-		</div>' . "\n\n";
+		</div>' ;
 		$tabBorder = "border: 0px; border-bottom: 1px solid #888888; border-right: 1px solid #888888;";
 		$tabBG = "";
 		switch ($SYSTEM) {
@@ -135,6 +135,7 @@ function setFrameSize() {
 	tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight <?php echo $heightPlus; ?>) : (document.body.clientHeight <?php echo $heightPlus; ?> ) );
  	tabsHeight = tabsHeight < <?php echo $frameDefaultHeight; ?> ? <?php echo $frameDefaultHeight; ?> : tabsHeight;
 	parent.document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight+"px";
+	parent.document.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight+"px";
 }
 
 			/**
