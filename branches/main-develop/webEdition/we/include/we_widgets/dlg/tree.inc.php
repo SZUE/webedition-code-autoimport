@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,23 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weMainTree.inc.php");
 
-class weExportTree extends weMainTree
-{
+class weExportTree extends weMainTree{
 
-	function getJSInfo()
-	{
+	function getJSInfo(){
 		return '
 			function info(text){
 			}
 		';
-
 	}
 
-	function getJSOpenClose()
-	{
+	function getJSOpenClose(){
 
 		return '
 		function openClose(id){
@@ -66,11 +62,9 @@ class weExportTree extends weMainTree
 			if(openstatus==1) treeData[eintragsIndex].loaded=1;
  		}
  		';
-
 	}
 
-	function getJSLoadTree($treeItems)
-	{
+	function getJSLoadTree($treeItems){
 		$js = "";
 		$out = "";
 
@@ -86,13 +80,13 @@ class weExportTree extends weMainTree
 		$js .= "var attribs=new Array();\n";
 		$js .= $this->topFrame . ".treeData.table=" . $this->topFrame . ".table;\n";
 
-		foreach ($treeItems as $item) {
+		foreach($treeItems as $item){
 			//if(strpos($item["contenttype"], "text") !== false || strpos($item["contenttype"], "folder") !== false || strpos($item["contenttype"], "object") !== false){
 
 
 			$js .= "		if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
-			foreach ($item as $k => $v) {
-				if (strtolower($k) == "checked")
+			foreach($item as $k => $v){
+				if(strtolower($k) == "checked")
 					$js .= '
 							if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '"))
 								attribs["' . strtolower($k) . '"]=\'1\';
@@ -115,11 +109,9 @@ class weExportTree extends weMainTree
 		$js .= $this->topFrame . '.drawTree();';
 
 		return $js;
-
 	}
 
-	function getJSStartTree()
-	{
+	function getJSStartTree(){
 
 		return 'function startTree(){
 				' . $this->cmdFrame . '.location.href="' . $this->frameset . '?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
@@ -127,22 +119,19 @@ class weExportTree extends weMainTree
 			}';
 	}
 
-	function getJSTreeCode()
-	{
+	function getJSTreeCode(){
 		$js = weMainTree::getJSTreeCode();
 		$js .= we_html_element::jsElement($this->getJSStartTree());
 
 		return $js;
 	}
 
-	function getJSDrawTree()
-	{
+	function getJSDrawTree(){
 
 		return '
  		function drawTree(){
 			var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(
-				5,
-				7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
+				5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
 			out+=draw(treeData.startloc,"");
 			out+="</nobr>\n</td></tr></table>\n";
 			' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
@@ -156,8 +145,7 @@ class weExportTree extends weMainTree
  		' . $this->getJSDraw();
 	}
 
-	function getJSCheckNode()
-	{
+	function getJSCheckNode(){
 		return '
  	function checkNode(imgName) {
 		var object_name = imgName.substring(4,imgName.length);
@@ -201,8 +189,7 @@ class weExportTree extends weMainTree
 		';
 	}
 
-	function getHTMLMultiExplorer($width = 500, $height = 250)
-	{
+	function getHTMLMultiExplorer($width = 500, $height = 250){
 		$js = $this->getJSTreeCode() . we_html_element::jsElement(
 				'
 			function populate(id,table){
@@ -235,31 +222,31 @@ class weExportTree extends weMainTree
 		$parts = array();
 
 		$style_code = "";
-		if (isset($this->SelectionTree->styles))
-			foreach ($this->SelectionTree->styles as $st)
+		if(isset($this->SelectionTree->styles))
+			foreach($this->SelectionTree->styles as $st)
 				$style_code .= $st . "\n";
 
 		$header = new we_html_table(array(
-			"cellpadding" => 0, "cellspacing" => 0, "border" => "0"
-		), 3, 1);
+				"cellpadding" => 0, "cellspacing" => 0, "border" => "0"
+				), 3, 1);
 
 		$header->setCol(0, 0, array(
 			"bgcolor" => "white"
-		), we_html_tools::getPixel(5, 5));
+			), we_html_tools::getPixel(5, 5));
 
 		$captions = array();
 
-		if (we_hasPerm("CAN_SEE_DOCUMENTS")) {
-			$captions[FILE_TABLE] = g_l('export',"[documents]");
+		if(we_hasPerm("CAN_SEE_DOCUMENTS")){
+			$captions[FILE_TABLE] = g_l('export', "[documents]");
 		}
-		if (we_hasPerm("CAN_SEE_TEMPLATES")) {
-			$captions[TEMPLATES_TABLE] = g_l('export',"[templates]");
+		if(we_hasPerm("CAN_SEE_TEMPLATES")){
+			$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
 		}
-		if (defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")) {
-			$captions[OBJECT_FILES_TABLE] = g_l('export',"[objects]");
+		if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES")){
+			$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
 		}
-		if (defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")) {
-			$captions[OBJECT_TABLE] = g_l('export',"[classes]");
+		if(defined("OBJECT_TABLE") && we_hasPerm("CAN_SEE_OBJECTS")){
+			$captions[OBJECT_TABLE] = g_l('export', "[classes]");
 		}
 
 		//$header->setColContent(1,0,we_html_tools::htmlSelect('headerSwitch',$captions,1,(isset($_REQUEST['headerSwitch']) ? $_REQUEST['headerSwitch'] : 0),false,'onChange="setHead(this.value);"','value',$width));
@@ -267,13 +254,10 @@ class weExportTree extends weMainTree
 
 		return $js . $header->getHtml() . we_html_element::htmlDiv(
 				array(
-
-						'id' => 'treetable',
-						'class' => 'blockwrapper',
-						'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'
-				),
-				'');
-
+				'id' => 'treetable',
+				'class' => 'blockwrapper',
+				'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'
+				), '');
 	}
 
 }

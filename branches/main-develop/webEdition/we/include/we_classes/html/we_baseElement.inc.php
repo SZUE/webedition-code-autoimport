@@ -36,7 +36,7 @@ class we_baseElement{
 	var $uid;
 	var $tag_name = "";
 	var $need_end_tag = true;
-	var $attribs = array();
+	var $attribs = array('style'=>'');
 	var $content = "";
 
 	/**
@@ -50,8 +50,11 @@ class we_baseElement{
 		$this->setTagName($tagname);
 		$this->setNeedEndTag($need_end_tag);
 
-		if(is_array($attribs)){
+		if(is_array($attribs)&&count($attribs)){
 			$this->attribs=$attribs;
+			if(!isset($this->attribs['style'])){
+				$this->attribs['style']='';
+			}
 		}
 		$this->setContent($content);
 	}
@@ -74,10 +77,7 @@ class we_baseElement{
 	 * @return     we_baseElement
 	 */
 	function copy(){
-
-		$copy = unserialize(serialize($this));
-
-		return $copy;
+		return unserialize(serialize($this));
 	}
 
 	/**
@@ -113,7 +113,7 @@ class we_baseElement{
 	function setAttributes($attribs){
 		if(is_array($attribs)){
 			foreach($attribs as $k => $v){
-				$this->attribs[$k] = $v;
+				$this->setAttribute($k, $v);
 			}
 		}
 	}
@@ -127,7 +127,23 @@ class we_baseElement{
 	 * @return		void
 	 */
 	function setAttribute($attrib_name, $attrib_value){
-		$this->attribs[$attrib_name] = $attrib_value;
+		if($attrib_name=='style'&& isset($this->attribs[$attrib_name])){
+			$this->attribs[$attrib_name].=$attrib_value;
+		}else{
+			switch($attrib_name){
+				case 'valign':
+					$this->attribs['style'].='vertical-align:'.$attrib_value.';';
+					break;
+				case 'width':
+					$this->attribs['style'].='width:'.$attrib_value.(is_numeric($attrib_value)?'px':'').';';
+					break;
+				case 'height':
+					$this->attribs['style'].='height:'.$attrib_value.(is_numeric($attrib_value)?'px':'').';';
+					break;
+				default:
+					$this->attribs[$attrib_name] = $attrib_value;
+			}
+		}
 	}
 
 	/**
@@ -177,9 +193,22 @@ class we_baseElement{
 	function getHTML(){
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
-			$out.=' ' . $k . (isset($v) ? '="' . $v . '"' : '');
+			if($v!==''){
+				$out.=' ' . $k . '="' . $v . '"' ;
+			}else{
+				switch($k){
+					case 'disabled':
+					case 'multiple':
+					case 'noshade':
+					case 'nowrap':
+					case 'readonly':
+					case 'checked':
+					case 'selected':
+						$out.=$k.'="'.$k.'"';
+				}
+			}
 		}
-		$out.=">" . $this->content;
+		$out.='>' . $this->content;
 		if($this->need_end_tag){
 			$out.="</" . $this->tag_name . ">";
 		}

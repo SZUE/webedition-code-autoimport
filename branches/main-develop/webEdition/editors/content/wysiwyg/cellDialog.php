@@ -65,4 +65,3 @@ editorObj.editcell(width,height,bgcolor,align,valign,colspan,className,isheader,
 top.close();
 ';
 }
-?>

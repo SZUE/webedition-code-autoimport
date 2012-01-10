@@ -199,11 +199,8 @@ class weCustomerTree extends weTree{
 	}
 
 	function getJSIncludeFunctions(){
-
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
-
-		return $out;
+		return weTree::getJSIncludeFunctions() .
+			$this->getJSStartTree();
 	}
 
 	function getJSLoadTree($treeItems){

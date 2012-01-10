@@ -24,6 +24,18 @@
  */
 class we_messaging_headerMsg{
 
+	private static $messaging = 0;
+
+	private static function start(){
+		if(is_object(self::$messaging)){
+			return;
+		}
+		self::$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
+		self::$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+		self::$messaging->add_msgobj('we_message', 1);
+		self::$messaging->add_msgobj('we_todo', 1);
+	}
+
 	static function pCSS(){
 		print we_html_element::cssElement('
 			table.msgheadertable {
@@ -41,6 +53,9 @@ class we_messaging_headerMsg{
 	}
 
 	static function pJS(){
+		self::start();
+		$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
+		$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 		?>
 		<script type="text/javascript"><!--
 
@@ -64,19 +79,14 @@ class we_messaging_headerMsg{
 	}
 
 	static function pbody(){
-		if(defined("MESSAGING_SYSTEM")){
-			include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
-			$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
-			$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-			$messaging->add_msgobj('we_message', 1);
-			$messaging->add_msgobj('we_todo', 1);
-			$newmsg_count = $messaging->used_msgobjs['we_message']->get_newmsg_count();
-			$newtodo_count = $messaging->used_msgobjs['we_todo']->get_newmsg_count();
-			$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
-			$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
-			?>
-			<table class="msgheadertable">
-				<?php echo '
+		self::start();
+		$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
+		$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
+		$msg_cmd = "javascript:top.we_cmd('messaging_start', 'message');";
+		$todo_cmd = "javascript:top.we_cmd('messaging_start', 'todo');";
+		?>
+		<table class="msgheadertable">
+			<?php echo '
 <tr>
 	<td id="msgCount" align="right" class="middlefont' . ($newmsg_count ? 'red' : '') . '"><a style="text-decoration:none"  href="' . $msg_cmd . '">' . $newmsg_count . '</a></td>
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -87,10 +97,9 @@ class we_messaging_headerMsg{
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
 	<td valign="bottom"><a href="' . $todo_cmd . '"><img src="' . IMAGE_DIR . 'modules/messaging/launch_tasks.gif" border="0" width="16" height="12" alt="" /></a></td>
 </tr>'
-				?>
-			</table>
-			<?php
-		}
+			?>
+		</table>
+		<?php
 	}
 
 }

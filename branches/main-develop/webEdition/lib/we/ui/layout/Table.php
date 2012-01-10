@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -27,14 +27,13 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Table Class to layout elements. It renders a normal HTML table
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_Table extends we_ui_abstract_AbstractElement
-{
+class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 
 	/**
 	 * Two dimensional array to hold the HTML for the cells
@@ -88,7 +87,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	/**
 	 * Adds an Element to the current cell,
 	 * which is defined by the row and column pointer.
-	 * If the $column or $row parameter is set, 
+	 * If the $column or $row parameter is set,
 	 * the column pointers will be updated before inserting the element
 	 *
 	 * @param we_ui_abstract_AbstractElement $elem element to insert
@@ -96,36 +95,34 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 * @param integer $row
 	 * @return void
 	 */
-	public function addElement($elem, $column = -1, $row = -1)
-	{
+	public function addElement($elem, $column = -1, $row = -1){
 		$this->addCSSFiles($elem->getCSSFiles());
 		$this->addJSFiles($elem->getJSFiles());
-		
-		if ($column == -1) {
+
+		if($column == -1){
 			$column = $this->_column;
-		} else {
+		} else{
 			$this->_column = $column;
 		}
-		if ($row == -1) {
+		if($row == -1){
 			$row = $this->_row;
-		} else {
+		} else{
 			$this->_row = $row;
 		}
-		if (!isset($this->_cellHTML[$row])) {
+		if(!isset($this->_cellHTML[$row])){
 			$this->_cellHTML[$row] = array();
 		}
-		if (!isset($this->_cellHTML[$row][$column])) {
+		if(!isset($this->_cellHTML[$row][$column])){
 			$this->_cellHTML[$row][$column] = $elem->getHTML();
-		} else {
+		} else{
 			$this->_cellHTML[$row][$column] .= $elem->getHTML();
 		}
-	
 	}
 
 	/**
 	 * Adds HTML to the current cell,
 	 * which is defined by the row and column pointer.
-	 * If the $column or $row parameter is set, 
+	 * If the $column or $row parameter is set,
 	 * the column pointers will be updated before inserting the HTML
 	 *
 	 * @param string $html element to insert
@@ -133,24 +130,23 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 * @param integer $row
 	 * @return void
 	 */
-	public function addHTML($html, $column = -1, $row = -1)
-	{
-		if ($column == -1) {
+	public function addHTML($html, $column = -1, $row = -1){
+		if($column == -1){
 			$column = $this->_column;
-		} else {
+		} else{
 			$this->_column = $column;
 		}
-		if ($row == -1) {
+		if($row == -1){
 			$row = $this->_row;
-		} else {
+		} else{
 			$this->_row = $row;
 		}
-		if (!isset($this->_cellHTML[$row])) {
+		if(!isset($this->_cellHTML[$row])){
 			$this->_cellHTML[$row] = array();
 		}
-		if (!isset($this->_cellHTML[$row][$column])) {
+		if(!isset($this->_cellHTML[$row][$column])){
 			$this->_cellHTML[$row][$column] = $html;
-		} else {
+		} else{
 			$this->_cellHTML[$row][$column] .= $html;
 		}
 	}
@@ -158,7 +154,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	/**
 	 * Sets the attributes for the current cell,
 	 * which is defined by the row and column pointer.
-	 * If the $column or $row parameter is set, 
+	 * If the $column or $row parameter is set,
 	 * the column pointers will be updated before setting the attributes
 	 *
 	 * @param array $attributes associative array with attributes to insert
@@ -166,24 +162,23 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 * @param integer $row
 	 * @return void
 	 */
-	public function setCellAttributes($attributes, $column = -1, $row = -1)
-	{
-		if ($column == -1) {
+	public function setCellAttributes($attributes, $column = -1, $row = -1){
+		if($column == -1){
 			$column = $this->_column;
-		} else {
+		} else{
 			$this->_column = $column;
 		}
-		if ($row == -1) {
+		if($row == -1){
 			$row = $this->_row;
-		} else {
+		} else{
 			$this->_row = $row;
 		}
-		if (!isset($this->_cellAttributes[$row])) {
+		if(!isset($this->_cellAttributes[$row])){
 			$this->_cellAttributes[$row] = array();
 		}
-		if (!isset($this->_cellAttributes[$row][$column])) {
+		if(!isset($this->_cellAttributes[$row][$column])){
 			$this->_cellAttributes[$row][$column] = $attributes;
-		} else {
+		} else{
 			$this->_cellAttributes[$row][$column] = array_merge($this->_cellAttributes[$row][$column], $attributes);
 		}
 	}
@@ -194,10 +189,9 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 * @param boolean $resetColumn if set to true the column pointer will be reset to 0
 	 * @return void
 	 */
-	public function nextRow($resetColumn = false)
-	{
+	public function nextRow($resetColumn = false){
 		$this->_row = $this->_row + 1;
-		if ($resetColumn) {
+		if($resetColumn){
 			$this->resetColumn();
 		}
 	}
@@ -207,8 +201,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function nextColumn()
-	{
+	public function nextColumn(){
 		$this->_column = $this->_column + 1;
 	}
 
@@ -217,8 +210,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function resetRow()
-	{
+	public function resetRow(){
 		$this->_row = 0;
 	}
 
@@ -227,8 +219,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 *
 	 * @return void
 	 */
-	public function resetColumn()
-	{
+	public function resetColumn(){
 		$this->_column = 0;
 	}
 
@@ -237,8 +228,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 *
 	 * @return integer
 	 */
-	public function getColumn()
-	{
+	public function getColumn(){
 		return $this->_column;
 	}
 
@@ -247,8 +237,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 *
 	 * @return integer
 	 */
-	public function getRow()
-	{
+	public function getRow(){
 		return $this->_row;
 	}
 
@@ -258,8 +247,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 * @param $column integer
 	 * @return void
 	 */
-	public function setColumn($column)
-	{
+	public function setColumn($column){
 		$this->_column = $column;
 	}
 
@@ -269,8 +257,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 * @param $row integer
 	 * @return void
 	 */
-	public function setRow($row)
-	{
+	public function setRow($row){
 		$this->_row = $row;
 	}
 
@@ -279,112 +266,106 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement
 	 *
 	 * @return string
 	 */
-	public function _renderHTML()
-	{
+	public function _renderHTML(){
 		$html = '<table border="' . htmlspecialchars($this->_border) . '" cellpadding="' . htmlspecialchars($this->_cellPadding) . '" cellspacing="' . htmlspecialchars($this->_cellSpacing) . '"' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
-		
+
 		$maxRowIndex = -1;
 		$maxColIndex = -1;
-		foreach ($this->_cellHTML as $rowIndex => $cols) {
+		foreach($this->_cellHTML as $rowIndex => $cols){
 			$maxRowIndex = max($maxRowIndex, $rowIndex);
-			foreach ($cols as $colIndex => $col) {
+			foreach($cols as $colIndex => $col){
 				$maxColIndex = max($maxColIndex, $colIndex);
 			}
 		}
-		
+
 		$colspan = 1;
-		
-		for ($row = 0; $row <= $maxRowIndex; $row++) {
+
+		for($row = 0; $row <= $maxRowIndex; $row++){
 			$html .= '<tr>';
-			for ($col = 0; $col <= $maxColIndex; $col++) {
-				if ($colspan < 2) {
-					if (isset($this->_cellAttributes[$row][$col])) {
-						if (isset($this->_cellAttributes[$row][$col]['colspan'])) {
+			for($col = 0; $col <= $maxColIndex; $col++){
+				if($colspan < 2){
+					if(isset($this->_cellAttributes[$row][$col])){
+						if(isset($this->_cellAttributes[$row][$col]['colspan'])){
 							$colspan = abs($this->_cellAttributes[$row][$col]['colspan']);
 						}
 						$attribs = $this->_cellAttributes[$row][$col];
-						if (!isset($attribs['valign'])) {
+						if(!isset($attribs['valign'])){
 							$attribs['valign'] = 'top';
 						}
 						$html .= we_xml_Tags::createStartTag('td', $attribs);
-					} else {
+					} else{
 						$html .= '<td valign="top">';
 					}
-					if (isset($this->_cellHTML[$row][$col])) {
+					if(isset($this->_cellHTML[$row][$col])){
 						$html .= $this->_cellHTML[$row][$col];
 					}
 					$html .= '</td>';
-				} else {
+				} else{
 					$colspan--;
 				}
 			}
 			$html .= '</tr>';
 		}
-		
+
 		$html .= '</table>';
 		return $html;
 	}
 
 	/**
 	 * Retrieve border attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getBorder()
-	{
+	public function getBorder(){
 		return $this->_border;
 	}
 
 	/**
 	 * Retrieve cellpadding attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getCellPadding()
-	{
+	public function getCellPadding(){
 		return $this->_cellPadding;
 	}
 
 	/**
 	 * Retrieve cellspacing attribute
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getCellSpacing()
-	{
+	public function getCellSpacing(){
 		return $this->_cellSpacing;
 	}
 
 	/**
 	 * Sets the border attribute
-	 * 
+	 *
 	 * @param integer $border
 	 * @return void
 	 */
-	public function setBorder($border)
-	{
+	public function setBorder($border){
 		$this->_border = $border;
 	}
 
 	/**
 	 * Sets the cellpadding attribute
-	 * 
+	 *
 	 * @param integer $cellPadding
 	 * @return void
 	 */
-	public function setCellPadding($cellPadding)
-	{
+	public function setCellPadding($cellPadding){
 		$this->_cellPadding = $cellPadding;
 	}
 
 	/**
 	 * Sets the cellspaceing attribute
-	 * 
+	 *
 	 * @param integer $cellSpacing
 	 * @return void
 	 */
-	public function setCellSpacing($cellSpacing)
-	{
+	public function setCellSpacing($cellSpacing){
 		$this->_cellSpacing = $cellSpacing;
 	}
+
 }
