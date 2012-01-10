@@ -398,12 +398,12 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 
 	$_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=true'), g_l('start', '[ignore_browser]')));
 
-	$_layout = new we_html_table(array('width' => '100%', 'height' => '75%', 'style' => 'width: 100%; height: 75%;'), 1, 1);
+	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 
 	$_layout->setCol(0, 0, array('align' => 'center', 'valign' => 'middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 380, $_browser_table->getHtml(), g_l('start', '[cannot_start_we]'))));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('bgcolor' => '#FFFFFF'), $_layout->getHtml()) . '</html>';
+	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else{
 
 	/*	 * ***************************************************************************
@@ -554,5 +554,5 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array("bgcolor" => "#386AAB", "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
+	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB;', "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
 }

@@ -72,7 +72,7 @@ we_html_tools::htmlTop('webEdition - '.$_SESSION["user"]["Username"]);
 
 $online_help=true;
 
-echo print STYLESHEET.
+print STYLESHEET.
 we_html_element::jsScript(JS_DIR.'windows.js').
 	we_html_element::jsScript(JS_DIR.'weJsStrings.php').
 	we_html_element::jsScript(JS_DIR.'md5.js').
@@ -81,10 +81,7 @@ we_html_element::jsScript(JS_DIR.'windows.js').
 	we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
 	we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js').
 	we_html_element::jsScript(JS_DIR.'keyListener.js').
-	we_html_element::jsScript(JS_DIR.'messageConsole.js');
-
-?>
-<link rel="SHORTCUT ICON" href="/webEdition/images/webedition.ico" />
+	we_html_element::jsScript(JS_DIR.'messageConsole.js');?>
 
 <script  type="text/javascript">
 
@@ -1457,10 +1454,10 @@ var cockpitFrame;
 	we_main_header::pCSS();
 	?>
 </head>
-<body bgcolor="grey" onunload="doUnload()">
+<body style="background-color:grey;margin: 0px;" onunload="doUnload()">
 <?php
 //	get the frameset for the actual mode.
-pWebEdition_Frameset();
+	pWebEdition_Frameset();
 	we_main_header::pJS();
 	//	get the Treefunctions for docselector
 	pWebEdition_Tree();

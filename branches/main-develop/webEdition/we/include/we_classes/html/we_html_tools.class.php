@@ -712,7 +712,10 @@ HTS;
 		return we_html_element::htmlDocType($doctype) . '<html><head>' .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
-				"http-equiv" => "expires", "content" => 0
+				"http-equiv" => "Expires", "content" => date('r')
+			)) .
+			we_html_element::htmlMeta(array(
+				"http-equiv" => "Cache-Control", "content" => 'no-cache'
 			)) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"

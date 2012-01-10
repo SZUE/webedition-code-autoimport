@@ -309,7 +309,7 @@ abstract class we_html_element{
 				return '<!DOCTYPE html>';
 			case '4Trans':
 			default:
-				return '<!DOCTYPE  HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
+				return '<!DOCTYPE  HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
 		}
 	}
 
