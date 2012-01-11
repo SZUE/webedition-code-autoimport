@@ -717,12 +717,10 @@ if($GLOBALS['we_editmode']){
 		switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 			case 'text/css':
 				$parser_js[] = 'mode/css/css.js';
-				$parser_css[] = 'mode/css/css.css';
 				$mode = 'text/css';
 				break;
 			case 'text/js':
 				$parser_js[] = 'mode/javascript/javascript.js';
-				$parser_css[] = 'mode/javascript/javascript.css';
 				$mode = 'text/javascript';
 				break;
 			case 'text/weTmpl':
@@ -736,15 +734,10 @@ if($GLOBALS['we_editmode']){
 				$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 				$parser_js[] = 'mode/clike/clike.js';
 				$parser_js[] = 'mode/php/php.js';
-				$parser_css[] = 'mode/xml/xml.css';
-				$parser_css[] = 'mode/javascript/javascript.css';
-				$parser_css[] = 'mode/css/css.css';
-				$parser_css[] = 'mode/clike/clike.css';
 				$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 				break;
 			case 'text/xml':
 				$parser_js[] = 'mode/xml/xml.js';
-				$parser_css[] = 'mode/xml/xml.css';
 				$mode = 'application/xml';
 				break;
 			default:
