@@ -497,7 +497,7 @@ class we_textContentDocument extends we_textDocument{
 		$parent = dirname($realPath);
 		$parent = str_replace("\\", "/", $parent);
 		$cf = array();
-		while(!we_util_File::checkAndMakeFolder($parent)) {
+		while(!we_util_File::checkAndMakeFolder($parent,true)) {
 			array_push($cf, $parent);
 			$parent = dirname($parent);
 			$parent = str_replace("\\", "/", $parent);
