@@ -249,8 +249,9 @@ echo we_html_element::jsScript(JS_DIR.'windows.js');
 						$dtNames .= "'".str_replace("'","\'",$DB_WE->f("DocType")) . "',";
 					}
 					//$dtNames = ereg_replace('(.),$','\1',$dtNames);
-					print 'var docTypeNames = new array('.$dtNames.');';
+					print 'var docTypeNames = new Array('.$dtNames.');';
 				?>
+				
 				var name = prompt("<?php print g_l('weClass',"[newDocTypeName]"); ?>","");
 				if(name != null) {
 					if((name.indexOf("<") != -1) || (name.indexOf(">") != -1)) {
