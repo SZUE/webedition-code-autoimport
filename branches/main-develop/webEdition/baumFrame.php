@@ -46,7 +46,7 @@ print STYLESHEET;
 			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>we_vtabs.php" style="border:0px;width:100%;height:100%;overflow: hidden;" name="bm_vtabs"></iframe>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;overflow: hidden;" id="treeFrameDiv">
-			<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_vtabsDiv">
+			<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_treeheaderDiv">
 				<iframe frameBorder="0" src="<?php print HTML_DIR ?>frameheader.html" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>
 			<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: hidden;" id="bm_mainDiv">

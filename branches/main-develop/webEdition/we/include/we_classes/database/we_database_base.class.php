@@ -414,7 +414,7 @@ abstract class we_database_base {
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
 	 */
-	static function arraySetter($arr){
+	static function arraySetter(array $arr){
 		$ret = array();
 		foreach($arr as $key => $val){
 			$ret[] = '`' . $key . '`="' . escape_sql_query($val) . '"';
@@ -526,7 +526,7 @@ abstract class we_database_base {
 
 	/**
 	 * get full query result
-	 * @return array 
+	 * @return array
 	 */
 	public function getRecord(){
 		return $this->Record;

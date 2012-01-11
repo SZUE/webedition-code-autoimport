@@ -226,7 +226,6 @@ abstract class we_forms{
 		if($wysiwyg){
 			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : "520");
 			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : "200");
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_wysiwyg.class.inc.php");
 			if(!$showmenues && (strlen($commands) == 0)){
 				$commands = implode(",", we_wysiwyg::getAllCmds());
 				$commands = str_replace('formatblock,', '', $commands);

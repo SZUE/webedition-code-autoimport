@@ -1342,12 +1342,12 @@ EOF;
 						$obj->getContentDataFromTemporaryDocs($ofid);
 
 						if($obj->we_publish()){
-							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();\n"
+							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();"
 								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-								. $obj->getUpdateTreeScript(false) . "\n"
-								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {\n"
-								. "top.rframe.bframe.bm_vtabs.we_cmd('load', '" . OBJECT_FILES_TABLE . "', 0);\n"
-								. "}\n"
+								. $obj->getUpdateTreeScript(false)
+								. "if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {"
+								. "top.rframe.bframe.bm_vtabs.we_cmd('load', '" . OBJECT_FILES_TABLE . "', 0);"
+								. "}"
 								. "weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 						}
 					}

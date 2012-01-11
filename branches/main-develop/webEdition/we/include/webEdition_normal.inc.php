@@ -133,7 +133,7 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 
-	self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "1px";
+	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
 	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "1px";
 	top.setTreeWidth(widthBeforeDeleteMode);
 	top.setSidebarWidth(widthBeforeDeleteModeSidebar);
@@ -146,7 +146,7 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 	}
-	self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "150px";
+	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
 	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "150px";
 
 	var width = top.getTreeWidth();
@@ -172,7 +172,7 @@ function pWebEdition_JSwe_cmds(){
 	treeData.setstate(treeData.tree_states["edit"]);
 	drawTree();
 	}
-	self.rframe.bframe.document.getElementById("bm_vtabsDiv").style.height = "160px";
+	self.rframe.bframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";
 	self.rframe.bframe.document.getElementById("bm_mainDiv").style.top = "160px";
 
 	var width = top.getTreeWidth();
