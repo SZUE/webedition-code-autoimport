@@ -23,7 +23,7 @@ class we_updater{
 	function updateTables(){
 		global $DB_WE;
 		$db2 = new DB_WE();
-		$tables = $DB_WE->table_names();
+		$tables = $db2->table_names();
 		$hasOwnertable = false;
 		foreach($tables as $t){
 			// old Version of small User Module
