@@ -337,17 +337,20 @@ class we_imageDocument extends we_binaryDocument{
 			$quality = $quality * 10;
 			$dataPath = TMP_DIR . "/" . weFile::getUniqueId();
 			$_resized_image = we_image_edit::edit_image($this->getElement("data"), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
+			if($_resized_image[0]){
+				$this->setElement("data", $dataPath);
 
-			$this->setElement("data", $dataPath);
+				$this->setElement("width", $_resized_image[1], "attrib");
+				$this->setElement("origwidth", $_resized_image[1], "attrib");
 
-			$this->setElement("width", $_resized_image[1], "attrib");
-			$this->setElement("origwidth", $_resized_image[1], "attrib");
+				$this->setElement("height", $_resized_image[2], "attrib");
+				$this->setElement("origheight", $_resized_image[2], "attrib");
 
-			$this->setElement("height", $_resized_image[2], "attrib");
-			$this->setElement("origheight", $_resized_image[2], "attrib");
-
-			$this->DocChanged = true;
+				$this->DocChanged = true;
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -374,16 +377,20 @@ class we_imageDocument extends we_binaryDocument{
 			$dataPath = TMP_DIR . "/" . weFile::getUniqueId();
 			$_resized_image = we_image_edit::edit_image($this->getElement("data"), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
 
-			$this->setElement("data", $dataPath);
+			if($_resized_image[0]){
+				$this->setElement("data", $dataPath);
 
-			$this->setElement("width", $_resized_image[1]);
-			$this->setElement("origwidth", $_resized_image[1], "attrib");
+				$this->setElement("width", $_resized_image[1]);
+				$this->setElement("origwidth", $_resized_image[1], "attrib");
 
-			$this->setElement("height", $_resized_image[2]);
-			$this->setElement("origheight", $_resized_image[2], "attrib");
+				$this->setElement("height", $_resized_image[2]);
+				$this->setElement("origheight", $_resized_image[2], "attrib");
 
-			$this->DocChanged = true;
+				$this->DocChanged = true;
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -523,7 +530,7 @@ class we_imageDocument extends we_binaryDocument{
 			//   attribs for the image tag
 			$attribs['src'] = $src;
 
-			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid');	//  dont use these array-entries
+			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid'); //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';

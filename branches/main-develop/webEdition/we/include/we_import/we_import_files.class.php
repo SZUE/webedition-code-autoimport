@@ -731,9 +731,9 @@ class we_import_files{
 
 			// if file exists we have to see if we should create a new one or overwrite it!
 			if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"', 'ID', $GLOBALS['DB_WE']))){
-				if($this->sameName == "overwrite"){
-		 //FIXME: remove eval
-					eval('$we_doc=new ' . $we_doc->ClassName . '();');
+				if($this->sameName == 'overwrite'){
+					$tmp=$we_doc->ClassName;
+					$we_doc=new $tmp();
 					$we_doc->initByID($file_id, FILE_TABLE);
 				} else
 				if($this->sameName == "rename"){
@@ -823,9 +823,10 @@ class we_import_files{
 				if(($newWidth && ($newWidth != $we_doc->getElement("origwidth"))) || ($newHeight && ($newHeight != $we_doc->getElement(
 						"origheight")))){
 
-					$we_doc->resizeImage($newWidth, $newHeight, $this->quality, $this->keepRatio);
-					$this->width = $newWidth;
-					$this->height = $newHeight;
+					if($we_doc->resizeImage($newWidth, $newHeight, $this->quality, $this->keepRatio)){
+						$this->width = $newWidth;
+						$this->height = $newHeight;
+					}
 				}
 
 				if($this->degrees){
