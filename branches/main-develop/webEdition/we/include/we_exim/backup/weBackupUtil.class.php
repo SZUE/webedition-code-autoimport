@@ -356,10 +356,10 @@
 					if(preg_match('/.*<webEdition.*type="backup".*>/',$_part)){
 						$_found = 'backup';
 					}else
-					if(preg_match($_part,'/<webEdition.*type="backup".*>/')){
+					if(preg_match('/<webEdition.*type="backup".*>/',$_part)){
 						$_found = 'backup';
 					}else
-					if(preg_match('-<we:(document|template|class|object|info|navigation)-i',$_part)){
+					if(preg_match('/<we:(document|template|class|object|info|navigation)/i',$_part)){
 						$_found = 'weimport';
 					} else if(stripos($_part,'<we:table')!==false){
 						$_found = 'backup';

@@ -150,8 +150,8 @@ class weTableAdv extends weTable{
 
 	var $ClassName = __CLASS__;
 
-	function weTableAdv($table, $force_columns=false){
-		parent::weTable($table, $force_columns);
+	function __construct($table, $force_columns=false){
+		parent::__construct($table, $force_columns);
 	}
 
 	function getColumns(){

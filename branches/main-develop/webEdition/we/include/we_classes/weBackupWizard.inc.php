@@ -632,7 +632,7 @@ const RECOVER=2;
 
 		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(g_l('backup',"[tools_import_desc]"), 2, 600, false),"space"=>70,"noline"=>1));
 		foreach ($_tools as $_tool) {
-			$text=g_l('tools_'.$tool,'[import_tool_' . $_tool . '_data]');
+			$text=g_l('tools_'.$_tool,'[import_tool_' . $_tool . '_data]');
 /*			if(isset(${'l_' . $_tool}["import_tool_" . $_tool . "_data"])) {
 				$text = ${'l_' . $_tool}["import_tool_" . $_tool . "_data"];
 			}

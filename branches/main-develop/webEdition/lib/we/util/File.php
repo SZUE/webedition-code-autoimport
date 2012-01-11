@@ -444,7 +444,7 @@ abstract class we_util_File{
 
 		$returnValue = true;
 
-		if(self::checkAndMakeFolder($completeDirPath))
+		if(self::checkAndMakeFolder($completeDirPath,true))
 			return $returnValue;
 
 		$cf = array($completeDirPath);
