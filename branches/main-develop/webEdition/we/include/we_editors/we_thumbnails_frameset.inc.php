@@ -57,7 +57,7 @@ if( we_image_edit::gd_version() > 0 ){
 
     print
     	we_html_element::jsElement($_javascript, array("type" => "text/javascript")) .
-    	we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js")) .
+    	we_html_element::jsScript(JS_DIR . "keyListener.js") .
     	we_html_element::jsElement(
     		"
     			function closeOnEscape() {

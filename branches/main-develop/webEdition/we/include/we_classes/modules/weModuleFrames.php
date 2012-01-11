@@ -77,7 +77,7 @@ class weModuleFrames{
 		$js = $this->getJSCmdCode();
 		$js.=$this->Tree->getJSTreeCode();
 		$js.=we_html_element::jsElement($this->getJSStart());
-		$js.=we_html_element::jsElement('', array('src' => JS_DIR . 'we_showMessage.js'));
+		$js.=we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");

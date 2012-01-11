@@ -1089,7 +1089,7 @@ class weNewsletterFrames extends weModuleFrames{
 				$attribs["bgcolor"] = "white";
 
 				$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => "40", "rows" => "10", "name" => "block" . $counter . "_Source", "onChange" => "top.content.hot=1;", "style" => "width:440"), htmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]'));
-				$content.=we_html_element::jsElement('', array("src" => JS_DIR . "we_textarea.js"));
+				$content.=we_html_element::jsScript(JS_DIR . "we_textarea.js");
 				$content.=we_html_tools::htmlFormElementTable(we_forms::weTextarea("block" . $counter . "_Html", $block->Html, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]'));
 
 				$content.=we_html_element::jsElement('
@@ -1728,7 +1728,7 @@ class weNewsletterFrames extends weModuleFrames{
 				}
 				weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
-				$js.=we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+				$js.=we_html_element::jsScript(JS_DIR . "windows.js");
 				$js.=we_html_element::jsElement('
 						new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);'
 				);
@@ -2295,7 +2295,7 @@ class weNewsletterFrames extends weModuleFrames{
 			if($_REQUEST["ncmd"] == "do_clear_log"){
 				$this->View->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE);
 				return
-					we_html_element::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
+					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 					we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
 						. 'self.close();'
@@ -2380,7 +2380,7 @@ class weNewsletterFrames extends weModuleFrames{
 		}
 
 
-		$head = we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+		$head = we_html_element::jsScript(JS_DIR . "windows.js");
 		$head.=we_html_element::jsElement('
 			function yes(){
 				doSend(' . $_offset . ',' . $_step . ');

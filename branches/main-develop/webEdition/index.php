@@ -57,8 +57,8 @@ function printHeader($login){
 	we_html_tools::htmlTop('webEdition');
 	print STYLESHEET;
 
-	print we_html_element::jsElement('', array('src' => JS_DIR . 'windows.js'));
-	print we_html_element::jsElement('', array('src' => JS_DIR . 'weJsStrings.php'));
+	print we_html_element::jsScript(JS_DIR . 'windows.js');
+	print we_html_element::jsScript(JS_DIR . 'weJsStrings.php');
 
 	if($login != 2){
 		print we_html_element::linkElement(array('rel' => 'home', 'href' => '/webEdition/'));

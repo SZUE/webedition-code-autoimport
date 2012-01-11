@@ -228,8 +228,8 @@ class weVotingFrames extends weModuleFrames{
 
 		$sel_but = addslashes(we_html_element::htmlImg(array('src' => IMAGE_DIR . 'button/btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
 
-		$js = we_html_element::jsElement('', array('src' => JS_DIR . 'utils/multi_edit.js?' . time()));
-		$js .= we_html_element::jsElement('', array('src' => JS_DIR . 'utils/multi_editMulti.js?' . time()));
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . time());
+		$js .= we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js?' . time());
 		$variant_js = '
 
 			function callAnswerLimit() {

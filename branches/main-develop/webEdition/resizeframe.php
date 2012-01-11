@@ -170,7 +170,7 @@ if(isset($_REQUEST["SEEM_edit_include"]) && $_REQUEST["SEEM_edit_include"]){
 
 //  Open webEdition normally
 } else{
-	echo '<body style="margin:0px;">';
+	echo '<body style="margin:0px;border:0px none;">';
 	startNormalMode();
 	echo '</body>';
 }

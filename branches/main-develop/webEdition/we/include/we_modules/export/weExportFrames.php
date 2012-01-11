@@ -820,7 +820,7 @@ class weExportFrames extends weModuleFrames{
 
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
-		$js = we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) .
+		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";

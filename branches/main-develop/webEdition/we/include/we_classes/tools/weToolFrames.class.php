@@ -92,7 +92,7 @@ class weToolFrames extends weModuleFrames{
 		$js = $this->getJSCmdCode();
 		$js.=$this->Tree->getJSTreeCode();
 		$js.=we_html_element::jsElement($this->getJSStart());
-		$js.=we_html_element::jsElement('', array('src' => JS_DIR . 'we_showMessage.js'));
+		$js.=we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
@@ -303,7 +303,7 @@ class weToolFrames extends weModuleFrames{
 			') . $out;
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onLoad' => 'loaded=1;'), we_html_element::jsElement('', array('src' => JS_DIR . 'utils/multi_edit.js?' . WE_VERSION)) .
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onLoad' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
 				we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
 				)
 		);
@@ -327,7 +327,7 @@ class weToolFrames extends weModuleFrames{
 		);
 
 		return $this->getHTMLDocument(
-				we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js"))
+				we_html_element::jsScript(JS_DIR . "attachKeyListener.js")
 				.
 				we_html_element::jsElement('
 					function we_save() {
@@ -511,7 +511,7 @@ class weToolFrames extends weModuleFrames{
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
 			"\n" . STYLESHEET . "\n" .
-			we_html_element::jsElement('', array('src' => JS_DIR . 'attachKeyListener.js')) .
+			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			$head;
 
 		return we_html_element::htmlHtml(

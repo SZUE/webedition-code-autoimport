@@ -780,7 +780,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(4, 1, array("valign" => "top"), we_html_tools::getPixel(10, 10));
 		$table->setCol(4, 2, array("valign" => "top"), $buttons_table->getHtml());
 
-		$out = we_html_element::htmlBody(array("class" => "weDIalogBody"), we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) .
+		$out = we_html_element::htmlBody(array("class" => "weDIalogBody"), we_html_element::jsScript(JS_DIR . "windows.js") .
 				we_html_element::jsElement("self.focus();") .
 				we_html_element::jsElement($this->View->getJSAdmin()) .
 				we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
@@ -963,11 +963,10 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(2, 0, array(), $select->getHtml());
 		$calenderJS =
 			$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => ($mode ? "" : "document.we_form.keyword.focus();")), we_html_element::linkElement(array("rel" => "stylesheet", "type" => "text/css", "href" => JS_DIR . "jscalendar/skins/aqua/theme.css", "title" => "Aqua")) .
-				we_html_element::jsElement("", array("src" => JS_DIR . "utils/weDate.js")) .
-				//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/lang/calendar.js")).
-				we_html_element::jsElement("", array("src" => JS_DIR . "jscalendar/calendar.js")) .
-				we_html_element::jsElement("", array("src" => JS_DIR . "jscalendar/calendar-setup.js")) .
-				we_html_element::jsElement("", array("src" => WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js")) .
+				we_html_element::jsScript(JS_DIR . "utils/weDate.js") .
+				we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
+				we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
+				we_html_element::jsScript(WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 				we_html_element::jsElement($this->View->getJSSearch()) .
 				we_html_element::jsElement("$this->jsOut_fieldTypesByName
 	var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';

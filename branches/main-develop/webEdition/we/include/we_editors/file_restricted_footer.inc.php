@@ -37,7 +37,7 @@ $_messageTbl->setColContent(1, 2, we_html_tools::getPixel(5, 2));
 $_messageTbl->setCol(1, 3, array("class" => "defaultfont"), str_replace("<br>", " ", sprintf(g_l('alert', "[no_perms]"), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $DB_WE))));
 
 
-$_head = we_html_element::htmlHead(we_html_element::jsElement("\n<!--\ntop.toggleBusy(0);\n-->\n") . STYLESHEET);
+$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
 $_body = we_html_element::htmlBody(array("background" => "/webEdition/images/edit/editfooterback.gif",
 		"bgcolor" => "white"), $_messageTbl->getHtml());
 

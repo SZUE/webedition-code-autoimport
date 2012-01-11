@@ -253,12 +253,12 @@ class weNavigationView {
 
 			';
 
-			return we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).we_html_element::jsElement($js);
+			return we_html_element::jsScript(JS_DIR."windows.js").we_html_element::jsElement($js);
 	}
 
 	function getJSProperty(){
 		$out="";
-		$out.=we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+		$out.=we_html_element::jsScript(JS_DIR."windows.js");
 		$_objFields = "\n";
 		if ($this->Model->SelectionType == 'classname') {
 			if(defined('OBJECT_TABLE')) {
@@ -911,7 +911,7 @@ function processCommands() {
 					break;
 				case 'tool_navigation_delete':
 
-					print we_html_element::jsElement('',array('src'=>JS_DIR . 'we_showMessage.js'));
+					print we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
 					if (!we_hasPerm("DELETE_NAVIGATION")) {
 							print we_html_element::jsElement(
@@ -1002,7 +1002,7 @@ function processCommands() {
 				break;
 				case 'dyn_preview':
 
-					print 	we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")) .
+					print 	we_html_element::jsScript(JS_DIR."windows.js") .
 							we_html_element::jsElement('
 						url = "'.WEBEDITION_DIR.'we/include/we_tools/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'

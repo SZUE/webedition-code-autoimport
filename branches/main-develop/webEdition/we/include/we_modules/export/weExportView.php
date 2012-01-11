@@ -261,7 +261,7 @@ class weExportView {
 			}
 			';
 
-			return we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).we_html_element::jsElement($js);
+			return we_html_element::jsScript(JS_DIR."windows.js").we_html_element::jsElement($js);
 	}
 
 	function getJSProperty(){
@@ -269,7 +269,7 @@ class weExportView {
 		$table = isset($_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
 
 		$out="";
-		$out.=we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+		$out.=we_html_element::jsScript(JS_DIR."windows.js");
 
 		$js = '';
 

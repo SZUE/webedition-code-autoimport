@@ -49,14 +49,15 @@ print STYLESHEET;
 			<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_vtabsDiv">
 				<iframe src="<?php print HTML_DIR ?>frameheader.html" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 			</div>
+			<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: hidden;" id="bm_mainDiv">
+				<iframe src="treeMain.php" name="bm_main" onload="top.start()" style="border:0px;width:100%;height:100%;"></iframe>
+			</div>
 			<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php print EDIT_IMAGE_DIR ?>editfooterback.gif);">
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/treeInfo.inc.php');
 ?>
 			</div>
-			<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: hidden;" id="bm_mainDiv">
-				<iframe src="treeMain.php" name="bm_main" onload="top.start()" style="border:0px;width:100%;height:100%;"></iframe>
-			</div>
+
 		</div>
 	</div>
 </body>

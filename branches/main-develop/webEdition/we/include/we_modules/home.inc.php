@@ -30,7 +30,7 @@ if(!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"]
 	we_html_tools::htmlTop();
 }
 print STYLESHEET;
-print we_html_element::jsElement("", array("src"=>JS_DIR . "attachKeyListener.js"));
+print we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 
 $mod = isset($_REQUEST["mod"]) ? $_REQUEST["mod"] : (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "");
 

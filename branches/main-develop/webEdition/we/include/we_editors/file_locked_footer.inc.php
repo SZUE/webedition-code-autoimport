@@ -53,7 +53,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc
 	$_messageTbl->setColContent(1,5, $refreshButton);
 
 
-	$_head = we_html_element::htmlHead(we_html_element::jsElement("\n<!--\ntop.toggleBusy(0);\n-->\n") . STYLESHEET);
+	$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
 	$_body = we_html_element::htmlBody(	array(	"background" => "/webEdition/images/edit/editfooterback.gif",
 												"bgcolor"    => "white"),
 										$_messageTbl->getHtml());

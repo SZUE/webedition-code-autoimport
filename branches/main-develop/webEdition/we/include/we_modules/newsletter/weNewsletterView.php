@@ -594,8 +594,8 @@ class weNewsletterView{
 		} else{
 			$_mailCheck = "true";
 		}
-		$js = we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
-		$js.=we_html_element::jsElement("", array("src" => JS_DIR . "libs/we/weValidate.js"));
+		$js = we_html_element::jsScript(JS_DIR . "windows.js");
+		$js.=we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js");
 
 		$js.=we_html_element::jsElement('
 
@@ -1476,7 +1476,7 @@ class weNewsletterView{
 							$h = getHash("SELECT Step,Offset FROM " . NEWSLETTER_TABLE . " WHERE ID=" . $this->newsletter->ID, $this->db);
 
 							if($h["Step"] != 0 || $h["Offset"] != 0){
-								print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+								print we_html_element::jsScript(JS_DIR . "windows.js");
 								print we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
@@ -1835,7 +1835,7 @@ class weNewsletterView{
 							$fname = $_REQUEST["csv_dir" . $exportno] . "/emails_export_" . time() . ".csv";
 						}
 						weFile::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
-						print we_html_element::jsElement('', array("src" => JS_DIR . "windows.js"));
+						print we_html_element::jsScript(JS_DIR . "windows.js");
 						print we_html_element::jsElement('
 							new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
 						');
@@ -1959,7 +1959,7 @@ class weNewsletterView{
 					else
 						$url = 'url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . '";';
 
-					print we_html_element::jsElement('', array("src" => JS_DIR . "windows.js"));
+					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement(
 							((trim($this->newsletter->Subject) == "") ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
 							' . $url . '

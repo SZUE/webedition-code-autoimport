@@ -210,11 +210,11 @@ class weCustomerView{
 			}
 			';
 
-		return we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) . we_html_element::jsElement($js);
+		return we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
 	}
 
 	function getJSProperty(){
-		$out = we_html_element::jsElement('', array('src' => JS_DIR . 'windows.js'));
+		$out = we_html_element::jsScript(JS_DIR . 'windows.js');
 
 		$js = '
 			var loaded=0;
@@ -666,7 +666,7 @@ class weCustomerView{
 						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=customer_admin";
 						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
 					';
-					print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement($js);
 					break;
 				case "save_field":
@@ -885,7 +885,7 @@ class weCustomerView{
 						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=sort_admin";
 						new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);
 					';
-					print we_html_element::jsElement('', array('src' => JS_DIR . 'windows.js'));
+					print we_html_element::jsScript(JS_DIR . 'windows.js');
 					print we_html_element::jsElement($js);
 
 					break;
@@ -937,7 +937,7 @@ class weCustomerView{
 							opener.' . $this->topFrame . '.resize.left.treeheader.applySort();
 							self.close();
 					';
-					print we_html_element::jsElement("", array("src" => JS_DIR . "we_showMessage.js"));
+					print we_html_element::jsScript(JS_DIR . "we_showMessage.js");
 					print we_html_element::jsElement($js);
 					break;
 				case 'applySort':
@@ -951,7 +951,7 @@ class weCustomerView{
 						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . $_REQUEST["keyword"] . '";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);
 					';
-					print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement($js);
 					break;
 				case 'show_customer_settings':
@@ -959,7 +959,7 @@ class weCustomerView{
 						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=settings";
 						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);
 					';
-					print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement($js);
 					break;
 				case 'import_customer':
@@ -967,7 +967,7 @@ class weCustomerView{
 						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=import";
 						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);
 					';
-					print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement($js);
 					break;
 				case 'export_customer':
@@ -975,7 +975,7 @@ class weCustomerView{
 						url ="' . WE_CUSTOMER_MODULE_PATH . 'edit_customer_frameset.php?pnt=export";
 						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);
 					';
-					print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
+					print we_html_element::jsScript(JS_DIR . "windows.js");
 					print we_html_element::jsElement($js);
 					break;
 				case 'save_settings':
@@ -996,7 +996,7 @@ class weCustomerView{
 					else
 						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 
-					print we_html_element::jsElement("", array("src" => JS_DIR . "we_showMessage.js"));
+					print we_html_element::jsScript(JS_DIR . "we_showMessage.js");
 					print we_html_element::jsElement($js);
 					break;
 				default:

@@ -585,7 +585,7 @@ class weCustomerEIWizard{
 
 		$parts = array();
 
-		$js = we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) .
+		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 					function callBack(){
 						document.we_form.import_from[1].checked=true;
@@ -1564,7 +1564,7 @@ class weCustomerEIWizard{
 
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
-		$js = we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) .
+		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";
@@ -1590,7 +1590,7 @@ class weCustomerEIWizard{
 	function formDirChooser($width="", $rootDirID=0, $table=FILE_TABLE, $Pathname="ParentPath", $Pathvalue="", $IDName="ParentID", $IDValue="", $cmd=""){
 		$table = FILE_TABLE;
 
-		$js = we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) .
+		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 				function formDirChooser() {
 					var args = "";
@@ -1642,7 +1642,7 @@ class weCustomerEIWizard{
 				default:
 			}
 		}
-		$js = we_html_element::jsElement('', array("src" => JS_DIR . "windows.js"));
+		$js = we_html_element::jsScript(JS_DIR . "windows.js");
 		$js.=we_html_element::jsElement('
 			function selector_cmd(){
 				var args = "";

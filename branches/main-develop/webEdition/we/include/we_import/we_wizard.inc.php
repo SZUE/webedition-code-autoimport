@@ -102,101 +102,101 @@ HTS;
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::htmlTitle(g_l('import', "[title]")) .
-					we_html_element::jsElement("", array("src" => WEBEDITION_DIR . "js/windows.js")) .
-					we_html_element::jsElement("", array("src" => JS_DIR . "we_showMessage.js")) .
-					we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/yahoo-min.js")) .
-					we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/event-min.js")) .
-					we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/json-min.js")) .
-					we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/connection-min.js")) .
-					we_html_element::jsElement("<!--\n" .
-						"function wiz_next(frm, url) {\n" .
-						"	eval('window.'+frm+'.location.href=\"'+url+'\"');\n" .
-						"}\n" .
-						"function we_cmd() {\n" .
-						"	var args = '';\n" .
-						"	var url = '" . WEBEDITION_DIR . "we_cmd.php?';\n" .
-						"	for(var i = 0; i < arguments.length; i++) {\n" .
-						"		url += 'we_cmd['+i+']='+escape(arguments[i]);\n" .
-						"		if(i < (arguments.length - 1)) {\n" .
-						"			url += '&';\n" .
-						"		}\n" .
-						"	}\n" .
-						"	switch (arguments[0]) {\n" .
-						"		case 'openDirselector':\n" .
-						"		case 'openDocselector':\n" .
-						"			new jsWindow(url,'we_fileselector',-1,-1," . WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);\n" .
-						"			break;\n" .
-						"		case 'browse_server':\n" .
-						"			new jsWindow(url,'browse_server',-1,-1,840,400,true,false,true);\n" .
-						"			break;\n" .
-						"		case 'openCatselector':\n" .
-						"			new jsWindow(url,'we_catselector',-1,-1," . WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT . ",true,true,true);\n" .
-						"			break;\n" .
-						"		case 'add_docCat':\n" . $addJS .
-						"			if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') == -1) {\n" .
-						"				var cats = arguments[1].split(/,/);\n" .
-						"				for(var i=0; i<cats.length; i++) {\n" .
-						"					if(cats[i] && (self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+cats[i]+',') == -1)) {\n" .
-						"						if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value) {\n" .
-						"							self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value=self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value+cats[i]+',';\n" .
-						"						} else {\n" .
-						"							self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value=','+cats[i]+',';\n" .
-						"						}\n" .
-						"						setTimeout(\"weGetCategories('doc',self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value,'rows')\",100);\n" .
-						"					}\n" .
-						"				}\n" .
-						"			}\n" .
-						"			break;\n" .
-						"		case 'delete_docCat':\n" .
-						"			if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') != -1) {\n" .
-						"				if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value) {\n" .
-						"					re = new RegExp(','+arguments[1]+',');\n" .
-						"					self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value = self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.replace(re,',');\n" .
-						"					if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value == ',') {\n" .
-						"						self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value = '';\n" .
-						"					}\n" .
-						"				}\n" .
-						"				self.frames['wizbody'].we_submit_form(self.frames['wizbody'].document.forms['we_form'], 'wizbody', '" . $this->path . "');" .
-						"			}\n" .
-						"			break;\n" .
-						"		case 'add_objCat':\n" .
-						"			self.frames['wizbody'].document.forms['we_form'].elements['v[import_type]'][1].checked=true;\n" .
-						"			if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.indexOf(','+arguments[1]+',') == -1) {\n" .
-						"				var cats = arguments[1].split(/,/);\n" .
-						"				for(var i=0; i<cats.length; i++) {\n" .
-						"					if(cats[i] && (self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.indexOf(','+cats[i]+',') == -1)) {\n" .
-						"						if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value) {\n" .
-						"							self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value=self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value+cats[i]+',';\n" .
-						"						} else {\n" .
-						"							self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value=','+cats[i]+',';\n" .
-						"						}\n" .
-						"						setTimeout(\"weGetCategories('obj',self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value,'rows')\",100);\n" .
-						"					}\n" .
-						"				}\n" .
-						"			}\n" .
-						"			break;\n" .
-						"		case 'delete_objCat':\n" .
-						"			if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.indexOf(','+arguments[1]+',') != -1) {\n" .
-						"				if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value) {\n" .
-						"					re = new RegExp(','+arguments[1]+',');\n" .
-						"					self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value = self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.replace(re,',');\n" .
-						"					if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value == ',') {\n" .
-						"						self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value = '';\n" .
-						"					}\n" .
-						"				}\n" .
-						"				self.frames['wizbody'].we_submit_form(self.frames['wizbody'].document.forms['we_form'], 'wizbody', '" . $this->path . "');" .
-						"			}\n" .
-						"			break;\n" .
-						"		case 'reload_editpage':\n" .
-						"			break;\n" .
-						"		default:\n" .
-						"			for (var i=0; i < arguments.length; i++) {\n" .
-						"				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');\n" .
-						"			}\n" .
-						"			eval('top.opener.top.we_cmd('+args+')');\n" .
-						"	}\n" .
-						"}\n" . $ajaxJS .
-						"//-->")) .
+					we_html_element::jsScript(WEBEDITION_DIR . "js/windows.js") .
+					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+					we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+					we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+					we_html_element::jsScript(JS_DIR . "libs/yui/json-min.js") .
+					we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+					we_html_element::jsElement("
+					function wiz_next(frm, url) {
+						eval('window.'+frm+'.location.href=\"'+url+'\"');
+					}
+					function we_cmd() {
+						var args = '';
+						var url = '" . WEBEDITION_DIR . "we_cmd.php?';
+						for(var i = 0; i < arguments.length; i++) {
+							url += 'we_cmd['+i+']='+escape(arguments[i]);
+							if(i < (arguments.length - 1)) {
+								url += '&';
+							}
+						}
+						switch (arguments[0]) {
+							case 'openDirselector':
+							case 'openDocselector':
+								new jsWindow(url,'we_fileselector',-1,-1," . WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);
+								break;
+							case 'browse_server':
+								new jsWindow(url,'browse_server',-1,-1,840,400,true,false,true);
+								break;
+							case 'openCatselector':
+								new jsWindow(url,'we_catselector',-1,-1," . WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT . ",true,true,true);
+								break;
+							case 'add_docCat':" . $addJS . "
+								if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') == -1) {
+									var cats = arguments[1].split(/,/);
+									for(var i=0; i<cats.length; i++) {
+										if(cats[i] && (self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+cats[i]+',') == -1)) {
+											if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value) {
+												self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value=self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value+cats[i]+',';
+											} else {
+												self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value=','+cats[i]+',';
+											}
+											setTimeout(\"weGetCategories('doc',self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value,'rows')\",100);
+										}
+									}
+								}
+								break;
+							case 'delete_docCat':
+								if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') != -1) {
+									if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value) {
+										re = new RegExp(','+arguments[1]+',');
+										self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value = self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value.replace(re,',');
+										if(self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value == ',') {
+											self.frames['wizbody'].document.forms['we_form'].elements['v[docCategories]'].value = '';
+										}
+									}
+									self.frames['wizbody'].we_submit_form(self.frames['wizbody'].document.forms['we_form'], 'wizbody', '" . $this->path . "');
+								}
+								break;
+							case 'add_objCat':
+								self.frames['wizbody'].document.forms['we_form'].elements['v[import_type]'][1].checked=true;
+								if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.indexOf(','+arguments[1]+',') == -1) {
+									var cats = arguments[1].split(/,/);
+									for(var i=0; i<cats.length; i++) {
+										if(cats[i] && (self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.indexOf(','+cats[i]+',') == -1)) {
+											if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value) {
+												self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value=self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value+cats[i]+',';
+											} else {
+												self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value=','+cats[i]+',';
+											}
+											setTimeout(\"weGetCategories('obj',self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value,'rows')\",100);
+										}
+									}
+								}
+								break;
+							case 'delete_objCat':
+								if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.indexOf(','+arguments[1]+',') != -1) {
+									if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value) {
+										re = new RegExp(','+arguments[1]+',');
+										self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value = self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value.replace(re,',');
+										if(self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value == ',') {
+											self.frames['wizbody'].document.forms['we_form'].elements['v[objCategories]'].value = '';
+										}
+									}
+									self.frames['wizbody'].we_submit_form(self.frames['wizbody'].document.forms['we_form'], 'wizbody', '" . $this->path . "');
+								}
+								break;
+							case 'reload_editpage':
+								break;
+							default:
+								for (var i=0; i < arguments.length; i++) {
+									args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+								}
+								eval('top.opener.top.we_cmd('+args+')');
+						}
+					}" . $ajaxJS
+					)) .
 				$fst->getHtml()
 		);
 	}
@@ -215,8 +215,8 @@ HTS;
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					STYLESHEET .
-					we_html_element::jsElement("", array("src" => JS_DIR . "windows.js")) .
-					we_html_element::jsElement("<!--\n" . $js . "\n//-->")) .
+					we_html_element::jsScript(JS_DIR . "windows.js") .
+					we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(array(
 					"class" => "weDialogBody",
 					"onLoad" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (isset($_REQUEST['type']) ? $_REQUEST['type'] : '') . "'); self.focus();" : "if(set_button_state) set_button_state();"
@@ -424,9 +424,8 @@ HTS;
 					$h .= we_html_element::htmlHidden(array("name" => "v[numFiles]", "value" => ($v["type"] != "GXMLImport") ? $num_files : $parse->fileId)) . "\n" .
 						we_html_element::htmlHidden(array("name" => "v[uniquePath]", "value" => ($v["type"] != "GXMLImport") ? $path : $parse->path));
 
-					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement("<!--\n" .
-							"setTimeout(\"we_import(1,0);\",15);\n" .
-							"//-->\n");
+					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement(
+							"setTimeout(\"we_import(1,0);\",15);");
 					break;
 
 				case $v["numFiles"]:
@@ -779,16 +778,16 @@ HTS;
 					break;
 			} // end switch
 		} else if($mode != 1){
-			$out .= we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "v[mode]", "value" => "")) . "\n" .
-					we_html_element::htmlHidden(array("name" => "v[cid]", "value" => "")) . "\n" .
-					we_html_element::htmlHidden(array("name" => "mode", "value" => "")) . "\n" .
-					we_html_element::htmlHidden(array("name" => "type", "value" => "")) . "\n" .
+			$out .= we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "v[mode]", "value" => "")) .
+					we_html_element::htmlHidden(array("name" => "v[cid]", "value" => "")) .
+					we_html_element::htmlHidden(array("name" => "mode", "value" => "")) .
+					we_html_element::htmlHidden(array("name" => "type", "value" => "")) .
 					we_html_element::htmlHidden(array("name" => "cid", "value" => "")));
 		}
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_element::jsElement("<!--\n" .
+					we_html_element::jsElement(
 						"function addField(form, fieldType, fieldName, fieldValue) {\n" .
 						"	if (document.getElementById) {\n" .
 						"		var input = document.createElement('INPUT');\n" .
@@ -848,8 +847,8 @@ HTS;
 						"	we_form.action = '" . ($type == "first_steps_wizard" ? $_SERVER['SCRIPT_NAME'] . "?leWizard=" . $_REQUEST['leWizard'] . "&leStep=" . $_REQUEST['leStep'] . "&we_cmd[0]=" . $_REQUEST['we_cmd'][0] : $this->path . "?pnt=wizcmd" ) . "';\n" .
 						"	we_form.method = 'post';\n" .
 						"	we_form.submit();\n" .
-						"}\n" .
-						"//-->")) .
+						"}\n"
+					)) .
 				we_html_element::htmlBody(array(), $out));
 	}
 

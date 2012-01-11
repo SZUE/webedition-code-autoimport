@@ -228,7 +228,7 @@ class we_docSelector extends we_dirSelector{
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -358,7 +358,7 @@ class we_docSelector extends we_dirSelector{
 		if(isset($this->open_doc)){
 			print "&open_doc=" . $this->open_doc;
 		}
-		?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
+			?>&table=<?php print $this->table; ?>&id='+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
 			}
 
 			<?php
@@ -663,7 +663,7 @@ class we_docSelector extends we_dirSelector{
 				$out = '<html>
 <head>
 ' . STYLESHEET . '
-' . we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js")) . '
+' . we_html_element::jsScript(JS_DIR . "attachKeyListener.js") . '
 <style type="text/css">
 	body {
 		margin:0px;
@@ -1045,7 +1045,7 @@ class we_docSelector extends we_dirSelector{
 			}
 			} else {
 			if(getEntry(id).contentType != "folder" || <?php print $this->canSelectDir ? "true" : "false"; ?>){
-		<?php if($this->multiple){ ?>
+			<?php if($this->multiple){ ?>
 				if(fsbody.shiftpressed){
 				var oldid = currentID;
 				var currendPos = getPositionByID(id);
@@ -1070,12 +1070,12 @@ class we_docSelector extends we_dirSelector{
 			<?php } ?>
 			selectFile(id);
 
-		<?php if($this->multiple){ ?>
+			<?php if($this->multiple){ ?>
 
 				}
 				}
 
-		<?php } ?>
+			<?php } ?>
 
 			} else {
 			showPreview(id);

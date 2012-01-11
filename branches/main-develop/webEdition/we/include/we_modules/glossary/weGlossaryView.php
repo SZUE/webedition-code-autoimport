@@ -381,13 +381,13 @@ class weGlossaryView {
 			}
 			';
 
-		return we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).we_html_element::jsElement($js);
+		return we_html_element::jsScript(JS_DIR."windows.js").we_html_element::jsElement($js);
 	}
 
 
 	function getJSProperty() {
 
-		$out = we_html_element::jsElement("",array("src"=>JS_DIR."windows.js"));
+		$out = we_html_element::jsScript(JS_DIR."windows.js");
 
 		$js='
 			var loaded=0;

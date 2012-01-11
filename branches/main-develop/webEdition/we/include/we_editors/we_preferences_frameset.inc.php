@@ -150,7 +150,7 @@ function saveOnKeyBoard() {
  *****************************************************************************/
 
 print we_html_element::jsElement($_javascript, array("type" => "text/javascript")) .
-	  we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js")) . "</head>";
+	  we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
 
 $frameset = new we_html_frameset(array("rows" => "38,*,40", "framespacing" => "0", "border" => "0",  "frameborder" => "no"), 0);
 $frameset->addFrame(array("src" => WEBEDITION_DIR . "html/white.html", "name" => "we_preferences_header", "scrolling" => "no", "noresize" => "noresize"));

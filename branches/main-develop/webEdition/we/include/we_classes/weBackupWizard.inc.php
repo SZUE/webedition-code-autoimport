@@ -658,7 +658,7 @@ const RECOVER=2;
 
 
 		$js=we_html_element::jsElement($js);
-		$js.=we_html_element::jsElement('',array("src"=>JS_DIR."windows.js"));
+		$js.=we_html_element::jsScript(JS_DIR."windows.js");
 		$js.=weBackupWizard::getJSDep("import",$docheck,$doclick,$douncheck);
 		$js.=we_html_element::jsElement(we_button::create_state_changer(false) .'
 
@@ -958,7 +958,7 @@ const RECOVER=2;
 
 
 		$mode="export";
-		$js=we_html_element::jsElement('',array("src"=>JS_DIR."windows.js"));
+		$js=we_html_element::jsScript(JS_DIR."windows.js");
 		$js.=weBackupWizard::getJSDep("export",$docheck,$doclick);
 		$js.=we_html_element::jsElement('
 			function setLocation(loc){
@@ -1263,7 +1263,7 @@ const RECOVER=2;
 							$body=we_button::create_button("next", "javascript:top.opener.weiter();top.close();");
 							unset($_SESSION["inbackup"]);
 						}else{
-							$head.=we_html_element::jsElement("<!--\ntop.opener.top.afterBackup=true;\n-->");
+							$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
 							$body=we_button::create_button("close", "javascript:top.close();");
 						}
 						$table->setCol(0,2,null,we_html_tools::getPixel(495,5));
@@ -1640,7 +1640,7 @@ const RECOVER=2;
 							$_SESSION["backup_delete"]=1;
 							$_SESSION["delete_files_nok"]=array();
 							$_SESSION["delete_files_info"]=g_l('backup',"[files_not_deleted]");
-							print we_html_element::jsElement('',array("src"=>JS_DIR."windows.js"));
+							print we_html_element::jsScript(JS_DIR."windows.js");
 							print we_html_element::jsElement('
 									new jsWindow("'.WEBEDITION_DIR.'delFrag.php?currentID=-1","we_del",-1,-1,600,130,true,true,true);
 							');

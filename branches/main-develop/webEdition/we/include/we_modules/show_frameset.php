@@ -34,7 +34,7 @@ print we_html_element::jsElement('
 	var publishWhenSave = 0;
 	var weModuleWindow = true;
 ');
-print we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js"));
+print we_html_element::jsScript(JS_DIR . "keyListener.js");
 if(isset($_REQUEST['mod']) && !isset($mod)) {
 	$mod = $_REQUEST['mod'];
 }

@@ -387,15 +387,15 @@ class weWorkflowView extends weWorkflowBase{
 
 			$counter++;
 		}
-		$out = we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/yahoo-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/dom-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/event-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/datasource-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/connection-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/animation-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/json-min.js"));
-		$out .= we_html_element::jsElement("", array("src" => JS_DIR . "libs/yui/autocomplete-min.js"));
-		$out .= $yuiSuggest->getYuiFiles();
+		$out = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/dom-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/datasource-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/animation-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/json-min.js") .
+			we_html_element::jsScript(JS_DIR . "libs/yui/autocomplete-min.js") .
+			$yuiSuggest->getYuiFiles();
 
 		$out .='	<table style="margin-right:30px;">
 				<tr valign="top">

@@ -244,10 +244,6 @@ print
 		we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 						we_html_element::htmlTitle(g_l('cockpit','[notepad]')) . STYLESHEET . //'<link rel="stylesheet" type="text/css" media="all" href="'.JS_DIR.'jscalendar/calendar-win2k-cold-1.css" title="win2k-cold-1" />'.
-						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/test.js")).
-						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/calendar.js")).
-						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/lang/calendar-de.js")).
-						//we_html_element::jsElement("",array("src"=>JS_DIR."jscalendar/calendar-setup.js")).
 						we_html_element::jsElement(
 								$js)) . we_html_element::htmlBody(
 						array(

@@ -354,7 +354,7 @@ top.close();
 
 		$_space = 10;
 
-		$js=we_html_element::jsElement('',array("src"=>JS_DIR."windows.js"));
+		$js=we_html_element::jsScript(JS_DIR."windows.js");
 		$js.=we_html_element::jsElement('
 			function we_cmd(){
 				var args = "";
@@ -981,8 +981,8 @@ top.close();
 				var suffix   = "";
 				var layerPosYOffset = 22;
 		');
-		$js.=we_html_element::jsElement("",array("src"=>JS_DIR."images.js"));
-		$js.=we_html_element::jsElement("",array("src"=>JS_DIR."we_tabs/tabs_inc.js"));
+		$js.=we_html_element::jsScript(JS_DIR."images.js").
+		we_html_element::jsScript(JS_DIR."we_tabs/tabs_inc.js");
 
 		$js2=we_html_element::jsElement('
 				var winWidth  = getWindowWidth(window);
@@ -1552,7 +1552,7 @@ top.close();
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = "") {
 
-	  	$js=we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).
+	  	$js=we_html_element::jsScript(JS_DIR."windows.js").
 	  			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";
@@ -1583,7 +1583,7 @@ top.close();
 	function formDirChooser($width="",$rootDirID=0,$table=FILE_TABLE,$Pathname="ParentPath",$Pathvalue="",$IDName="ParentID",$IDValue="",$cmd=""){
 		$table = FILE_TABLE;
 
-	  	$js=we_html_element::jsElement("",array("src"=>JS_DIR."windows.js")).
+	  	$js=we_html_element::jsScript(JS_DIR."windows.js").
 	  			we_html_element::jsElement('
 				function formDirChooser() {
 					var args = "";

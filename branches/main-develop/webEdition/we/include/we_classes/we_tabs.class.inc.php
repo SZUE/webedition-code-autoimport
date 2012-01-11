@@ -228,7 +228,7 @@ HTS;
 
 		$out = we_html_element::cssElement($styles);
 		$out.= we_html_element::jsElement($script);
-		$out.= we_html_element::jsElement("", array("src" => JS_DIR . "attachKeyListener.js"));
+		$out.= we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
 
 		return $out;
 	}

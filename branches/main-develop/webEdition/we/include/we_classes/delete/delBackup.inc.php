@@ -72,8 +72,8 @@ class delBackup extends taskFragment{
 
 	function finish(){
 		if(isset($_SESSION["delete_files_nok"]) && is_array($_SESSION["delete_files_nok"]) && count($_SESSION["delete_files_nok"])){
-			print we_html_element::jsElement("", array("src" => JS_DIR . "windows.js"));
-			print we_html_element::jsElement('
+			print we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsElement('
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
 			');
 		}

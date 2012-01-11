@@ -21,20 +21,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
 // generate ContentType JS-String
-$_contentTypes = '
-var _Contentypes = new Object();
+$_contentTypes = 'var _Contentypes = new Object();
 	_Contentypes["cockpit"] = "icon_cockpit.gif";';
 $ct=new we_base_ContentTypes();
 foreach ($ct->getContentTypes() as $ctype) {
 
-	$_contentTypes .= '
-	_Contentypes["' . $ctype . '"] = "' . $ct->getIcon($ctype) . '";';
+	$_contentTypes .= '_Contentypes["' . $ctype . '"] = "' . $ct->getIcon($ctype) . '";';
 }
 unset($ct);
 
@@ -42,23 +39,22 @@ unset($ct);
  * Browser dependences
  */
 $tabContainerMargin = "0";
-switch ($GLOBALS['BROWSER']) {
-	case "SAFARI":
+$browser=new we_base_browserDetect();
+switch ($browser->getBrowser()) {
+	case we_base_browserDetect::SAFARI:
 		$heightPlus = "";
 		$textvalign = "top";
 		$imgmargintop = 2;
 		$imgvalign = "top";
-		$frameDefaultHeight = 22;
 		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr><span><img src="/webEdition/images/pixel.gif" height="0" /></span></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "";
 		break;
-	case "IE":
+	case we_base_browserDetect::IE:
 		$heightPlus = "";
 		$textvalign = "middle";
 		$imgmargintop = 0;
 		$imgvalign = "middle";
-		$frameDefaultHeight = 22;
 		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "background-position:bottom";
@@ -68,22 +64,21 @@ switch ($GLOBALS['BROWSER']) {
 		$textvalign = "top";
 		$imgmargintop = 2;
 		$imgvalign = "top";
-		$frameDefaultHeight = 22;
 		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr>
 		</div>' ;
 		$tabBorder = "border: 0px; border-bottom: 1px solid #888888; border-right: 1px solid #888888;";
 		$tabBG = "";
-		switch ($SYSTEM) {
-			case 'MAC':
-				if ($GLOBALS['brDetect']->isFF() && $GLOBALS['brDetect']->getBrowserVersion()<3) {
+		switch ($browser->getSystem()) {
+			case we_base_browserDetect::SYS_MAC:
+				if ($browser->isFF() && $browser->getBrowserVersion()<3) {
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:0px -1px" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				} else {
 					$tabContainerMargin = "0px 1px";
 				}
 				$tabBorder = "border: 0px; border-bottom: 0px solid #888888; border-right: 1px solid #888888;";
 				break;
-			case 'X11':
-				if ($GLOBALS['brDetect']->isFF() && $GLOBALS['brDetect']->getBrowserVersion()<3) {
+			case we_base_browserDetect::SYS_UNIX:
+				if ($browser->isFF() && $browser->getBrowserVersion()<3) {
 					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="/webEdition/images/pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:0px -1px"></span><span class="spacer"><img src="/webEdition/images/pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="/webEdition/images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'/webEdition/images/multiTabs/closeOver.gif\'" onmouseout="this.src=\'/webEdition/images/multiTabs/close.gif\'" class="close" />&nbsp;</span><img src="/webEdition/images/multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr></div>';
 				} else {
 					$tabContainerMargin = "0px";
@@ -91,12 +86,13 @@ switch ($GLOBALS['BROWSER']) {
 				$tabBorder = "border:0px;";
 				break;
 			default:
-				if($GLOBALS['brDetect']->isFF() && $GLOBALS['brDetect']->getBrowserVersion()<3) {
+				if($browser->isFF() && $browser->getBrowserVersion()<3) {
 				} else {
 					$tabContainerMargin = "-1px";
 				}
 		}
 }
+$frameDefaultHeight = 22;
 
 we_html_tools::htmlTop();
 print we_html_element::jsElement($content=$_contentTypes);

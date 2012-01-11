@@ -392,8 +392,8 @@ function build_dialog($selected_setting = "ui") {
 					}
 				";
 
-			$_needed_JavaScript = we_html_element::jsElement("<!-- " . $_needed_JavaScript_Source . " //-->") .
-									we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js"));
+			$_needed_JavaScript = we_html_element::jsElement($_needed_JavaScript_Source) .
+									we_html_element::jsScript(JS_DIR . "keyListener.js");
 
 			/**
 			 * Thumbnails

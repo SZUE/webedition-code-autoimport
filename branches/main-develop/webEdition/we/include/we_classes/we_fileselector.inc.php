@@ -229,8 +229,8 @@ class we_fileselector{
 	function printFramesetHTML(){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
 		we_html_tools::htmlTop();
-		print we_html_element::jsElement("", array("src" => JS_DIR . "keyListener.js"));
-		print we_html_element::jsElement("var weSelectorWindow = true;");
+		print we_html_element::jsScript(JS_DIR . "keyListener.js") .
+			we_html_element::jsElement("var weSelectorWindow = true;");
 		$this->printFramesetJavaScriptIncludes();
 		print $this->getFramesetJavaScriptDef();
 		print $this->getJS_keyListenerFunctions();
@@ -269,15 +269,15 @@ class we_fileselector{
 			return new entry(0,"","/",1,"/");
 			}
 
-		<?php
-		$this->printFramesetSelectFileHTML();
-		$this->printFramesetUnselectFileHTML();
-		$this->printFramesetSelectFilesFromHTML();
-		$this->printFramesetGetFirstSelectedHTML();
-		$this->printFramesetGetPositionByIDHTML();
-		$this->printFramesetIsFileSelectedHTML();
-		$this->printFramesetUnselectAllFilesHTML();
-		?>
+			<?php
+			$this->printFramesetSelectFileHTML();
+			$this->printFramesetUnselectFileHTML();
+			$this->printFramesetSelectFilesFromHTML();
+			$this->printFramesetGetFirstSelectedHTML();
+			$this->printFramesetGetPositionByIDHTML();
+			$this->printFramesetIsFileSelectedHTML();
+			$this->printFramesetUnselectAllFilesHTML();
+			?>
 
 			function cutText(text,l){
 			if(text.length > l){

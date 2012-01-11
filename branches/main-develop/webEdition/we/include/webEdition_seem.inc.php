@@ -152,7 +152,6 @@ function pWebEdition_Frameset(){
 		$we_cmds.='&SEEM_edit_include=true';
 	}
 	?>
-	<div style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px;">
 		<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
 			<?php we_main_header::pbody();?>
 		</div>
@@ -180,6 +179,5 @@ function pWebEdition_Frameset(){
 				<iframe src="<?php print HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
 			</div>
 		</div>
-	</div>
 	<?php
 }
