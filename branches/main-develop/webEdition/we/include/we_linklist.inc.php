@@ -802,7 +802,7 @@ class we_linklist{
 			echo "<br/>" . we_button::create_button(
 				"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false);
 			echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . htmlspecialchars(
-				$this->getString()) . '" />' . ($this->length() ? '' : $plusbut);
+				$this->getString()) . '" />';
 		}
 	}
 
