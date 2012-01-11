@@ -23,7 +23,7 @@
  */
 
 // exit if script called directly
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(__DIR__, '', __FILE__)) {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(dirname(__FILE__), '', __FILE__)) {
 	exit();
 }
 

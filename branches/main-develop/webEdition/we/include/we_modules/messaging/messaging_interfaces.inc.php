@@ -24,7 +24,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 // exit if script called directly
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(__DIR__, '', __FILE__)) {
+if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(dirname(__FILE__), '', __FILE__)) {
 	exit();
 }
 /* send new email message */
