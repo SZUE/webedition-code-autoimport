@@ -714,6 +714,7 @@ if($GLOBALS['we_editmode']){
 		$maineditor = '';
 		$parser_js = array();
 		$parser_css = array('theme/default.css');
+		$toolTip=false;
 		switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
 			case 'text/css':
 				$parser_js[] = 'mode/css/css.js';
@@ -726,6 +727,7 @@ if($GLOBALS['we_editmode']){
 			case 'text/weTmpl':
 				$parser_js[] = 'lib/overlay.js';
 				$parser_js[] = 'mode/webEdition/webEdition.js';
+				$toolTip = $_SESSION['prefs']['editorTooltips'];
 				$mode = 'text/weTmpl';
 			case 'text/html':
 				$parser_js[] = 'mode/xml/xml.js';
@@ -758,7 +760,7 @@ if($GLOBALS['we_editmode']){
 			}
 
 			$maineditor.='
-		<style type="text/css">' . we_getCodeMirror2Tags() . '
+		<style type="text/css">' . ($toolTip?we_getCodeMirror2Tags():'') . '
 			.searched {background: yellow;}
 			.activeline {background: #f0fcff !important;}
 			.CodeMirror{

@@ -700,7 +700,7 @@ class we_import_files{
 
 	function importFile(){
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
-			$ct=new we_base_ContentTypes();
+			$ct = new we_base_ContentTypes();
 			if(!we_hasPerm($ct->getPermission(getContentTypeFromFile($_FILES['we_File']["name"])))){
 				return array(
 					"filename" => $_FILES['we_File']["name"], "error" => "no_perms"
@@ -732,8 +732,8 @@ class we_import_files{
 			// if file exists we have to see if we should create a new one or overwrite it!
 			if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"', 'ID', $GLOBALS['DB_WE']))){
 				if($this->sameName == 'overwrite'){
-					$tmp=$we_doc->ClassName;
-					$we_doc=new $tmp();
+					$tmp = $we_doc->ClassName;
+					$we_doc = new $tmp();
 					$we_doc->initByID($file_id, FILE_TABLE);
 				} else
 				if($this->sameName == "rename"){

@@ -585,7 +585,7 @@ class we_image_edit{
 		if(we_image_edit::gd_version() == 0){
 			return IMAGE_DIR . "icons/doclist/image.gif";
 		}
-		if(substr($imgSrc, 0, strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){	// it is no src, it is a server path
+		if(substr($imgSrc, 0, strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
 			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
 		}
 		if(substr($imgSrc, 0, 1) != "/"){
@@ -594,12 +594,12 @@ class we_image_edit{
 
 		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . $imgSrc;
 		if(!($imagesize = getimagesize($_imgPath))){
-			$imagesize = array("", "");
+			$imagesize = array(0, 0);
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){
 			$_previewDir = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/preview/';
 			if(!file_exists($_previewDir) || !is_dir($_previewDir)){
-				we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'], '/webEdition/preview/');
+				we_util_File::createLocalFolder($_previewDir);
 			}
 			if($imgID){
 				$_thumbSrc = '/webEdition/preview/' . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);
