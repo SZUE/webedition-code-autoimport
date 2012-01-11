@@ -206,7 +206,7 @@ function pWebEdition_Frameset(){
 			<?php we_main_header::pbody(); ?>
 		</div>
 		<div style="position:absolute;top:32px;left:0px;right:0px;bottom:<?php print ( (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)) ? 100 : 0; ?>px;border: 0;">
-			<iframe src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 		</div>
 		<div style="position:absolute;left:0px;right:0px;bottom:0px;<?php echo (isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0)?'':'display:none;';?>height: 100px;border: 1px solid;">
 			<div style="height:100%;float:left;width:25%;border:0px;">

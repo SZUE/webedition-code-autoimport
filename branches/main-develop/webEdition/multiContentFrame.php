@@ -65,10 +65,10 @@ include($_SERVER['DOCUMENT_ROOT'].'/webEdition/multiEditor/EditorFrameController
 <body>
 <div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
        <div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver;" id="multiEditorDocumentTabsFrameDiv">
-				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0px;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
+				<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>multiEditor/multiTabs.php" style="border:0px;width: 100%;height:100%;overflow: hidden;" name="multiEditorDocumentTabsFrame"></iframe>
 			</div>
-			<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: auto;" id="multiEditorEditorFramesetsDiv">
-				<iframe src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+			<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: hidden;" id="multiEditorEditorFramesetsDiv">
+				<iframe frameBorder="0" src="<?php print WEBEDITION_DIR ?>multiEditor/multiEditorFrameset.php" name="multiEditorEditorFramesets" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
        </div>
      </div>
 </body>
