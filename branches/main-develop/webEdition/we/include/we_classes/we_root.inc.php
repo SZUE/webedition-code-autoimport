@@ -1289,15 +1289,13 @@ abstract class we_root extends we_class{
 	function rewriteNavigation(){
 		// rewrite filter
 		if(defined('CUSTOMER_TABLE') && isset($this->documentCustomerFilter) && $this->documentCustomerFilter != false){
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weNavigationCustomerFilter.class.php');
 			weNavigationCustomerFilter::updateByFilter($this->documentCustomerFilter, $this->ID, $this->Table);
 		}
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationCache.class.php');
 		$_folders = $this->getNavigationFoldersForDoc();
 		$_folders = array_unique($_folders);
 		foreach($_folders as $_f){
-			weNavigationCache::cacheNavigationTree($_f);
+			weNavigationCache::delNavigationTree($_f);
 		}
 	}
 

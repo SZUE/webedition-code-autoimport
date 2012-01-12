@@ -24,6 +24,7 @@
  */
 class weNavigationCache{
 	const CACHEDIR='/webEdition/we/include/we_tools/navigation/cache/';
+	static $rebuildRootCnt=0;
 
 	static function createCacheDir(){
 		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR;
@@ -33,18 +34,16 @@ class weNavigationCache{
 		return $_cacheDir;
 	}
 
-	static function cacheNavigationTree($id){
-		weNavigationCache::cacheNavigationBranch($id);
-		weNavigationCache::cacheRootNavigation();
-	}
-
-	static function cacheNavigationBranch($id){
-		$_cacheDir = weNavigationCache::createCacheDir();
-
+	static function delNavigationTree($id){
+		if(!self::$rebuildRootCnt){//is increased in next line
+			return;
+		}
+		self::delCacheNavigationEntry(0);
+		self::cacheRootNavigation();
 		$_id = $id;
 		$_c = 0;
 		while($_id != 0) {
-			weNavigationCache::cacheNavigation($_id);
+			self::delCacheNavigationEntry($_id);
 			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', new DB_WE());
 			$_c++;
 			if($_c > 99999){
@@ -53,16 +52,38 @@ class weNavigationCache{
 		}
 	}
 
+	static function cacheNavigationTree($id){
+		weNavigationCache::cacheNavigationBranch($id);
+		weNavigationCache::cacheRootNavigation();
+	}
+
+	static function cacheNavigationBranch($id){
+		$_cacheDir = self::createCacheDir();
+
+		$_id = $id;
+		$_c = 0;
+		$db=new DB_WE();
+		while($_id != 0) {
+			self::cacheNavigation($_id);
+			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
+			$_c++;
+			if($_c > 99999){
+				break;
+			}
+		}
+	}
+
 	static function cacheRootNavigation(){
-		$_cacheDir = weNavigationCache::createCacheDir();
+		if(!self::$rebuildRootCnt++){
+			return;
+		}
+		$_cacheDir = self::createCacheDir();
 
 		$_naviItemes = new weNavigationItems();
 
 		$_naviItemes->initById(0);
 
-		$_content = serialize($_naviItemes->items);
-
-		weFile::save($_cacheDir . 'navigation_0.php', $_content);
+		self::saveCacheNavigation(0, $_naviItemes);
 
 		$currentRulesStorage = $_naviItemes->currentRules; // Bug #4142
 		foreach($currentRulesStorage as &$rule){
@@ -78,6 +99,11 @@ class weNavigationCache{
 		$_naviItemes = new weNavigationItems();
 		$_naviItemes->initById($id);
 		self::saveCacheNavigation($id,$_naviItemes);
+	}
+
+	static function delCacheNavigationEntry($id){
+		$_cacheDir = weNavigationCache::createCacheDir();
+		weFile::delete($_cacheDir . 'navigation_' . $id . '.php');
 	}
 
 	static function saveCacheNavigation($id,$_naviItemes){
