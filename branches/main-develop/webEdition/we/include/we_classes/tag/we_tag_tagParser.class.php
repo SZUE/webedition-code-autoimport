@@ -138,9 +138,8 @@ class we_tag_tagParser{
 				$_tags[] = $t;
 			}
 		}
+
 		//	now we need all between these tags - beware of selfclosing tags
-
-
 		for($i = 0; $i < sizeof($_tags);){
 
 			if(preg_match("|<we:(.*)/(.*)>|i", $_tags[$i])){ //  selfclosing xhtml-we:tag
@@ -163,6 +162,12 @@ class we_tag_tagParser{
 					$_starttag, $_endtag
 				), $_endtag ? substr($code, $_start, $_end) : ''
 			));
+			if($_endtag) {
+				// on behalf of constructions like: 
+				// <we:ifTemplate><we:title prefix="pref1>title</we:title><we:else/><we:title prefix="pref2>title</we:title><we:ifTemplate>
+				// we need to cut after Endtag for the second pair of <title>-Tags to be correctly computeted
+				$code = substr($code, $_start + $_end); 
+			}
 		}
 		return $_rettags;
 	}
