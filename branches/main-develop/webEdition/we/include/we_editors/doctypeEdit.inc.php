@@ -250,7 +250,6 @@ $dtNames = "";
 $DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE);
 while($DB_WE->next_record()) {
 	$dtNames .= "'" . str_replace("'", "\'", $DB_WE->f("DocType")) . "',";
-//$dtNames .= "'".str_replace("'","\'",$DB_WE->f("DocType")) . "'";
 }
 $dtNames = substr($dtNames, 0, -1);
 //$dtNames = ereg_replace('(.),$','\1',$dtNames);
