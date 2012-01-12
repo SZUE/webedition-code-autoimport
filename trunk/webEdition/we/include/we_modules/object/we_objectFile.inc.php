@@ -704,6 +704,28 @@ class we_objectFile extends we_document{
 		return '<span class="defaultfont">' . $this->TableID . '</span>';
 	}
 
+	static function getSortArray($tableID,$db){
+		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $tableID, 'strOrder', $db));
+		$ctable = OBJECT_X_TABLE . $tableID;
+		$tableInfo = $db->metadata($ctable);
+		$fields = array();
+		foreach($tableInfo as $info){
+			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
+				if($regs[1] != "OF" && $regs[1] != "variant"){
+					$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
+				}
+			}
+		}
+
+		if(count($order) != count($fields)){
+			$order=array();
+			for($y = 0; $y < count($fields); $y++){
+				$order[$y] = $y;
+			}
+		}
+		return $order;
+	}
+
 	function getSortedTableInfo($tableID,$contentOnly=false,$db='',$checkVariants=false){
 		if(!$tableID) return array();
 		if(!$db) $db = new DB_WE();
@@ -733,8 +755,7 @@ class we_objectFile extends we_document{
 		}
 		$tableInfo_sorted = array();
 
-		$foo = f('SELECT strOrder FROM ' .OBJECT_TABLE . ' WHERE ID='.(int)$tableID,'strOrder',$db);
-		$order = makeArrayFromCSV($foo);
+		$order = self::getSortArray((int)$tableID, $db);
 		$start = we_objectFile::getFirstTableInfoEntry($tableInfo2);
 		foreach($order as $o){
 			array_push($tableInfo_sorted,$tableInfo2[$start+$o]);

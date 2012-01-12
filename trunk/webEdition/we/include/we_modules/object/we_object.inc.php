@@ -609,6 +609,11 @@ global $l_we_class,$we_JavaScript,$we_responseText, $we_responseTextType;
 					}
 					$sort[uniqid("")] = $v;
 				}
+			}else{
+				for($y = 0; $y < count($fields); $y++){
+					$sort[uniqid("")] = $y;
+				}
+
 			}
 			$this->setElement("we_sort",$sort);
 		}
