@@ -556,33 +556,13 @@ class we_object extends we_document{
 
 	function setSort(){
 		if(!$this->issetElement("we_sort")){
+			$t=we_objectFile::getSortArray($this->ID, $this->DB_WE);
 
-			$ctable = OBJECT_X_TABLE . $this->ID;
-			$tableInfo = $this->DB_WE->metadata($ctable);
-			$fields = array();
-			foreach($tableInfo as $info){
-				if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
-					if($regs[1] != "OF" && $regs[1] != "variant"){
-						$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
-					}
+			foreach($t as $k => $v){
+				if($v < 0){
+					$v = 0;
 				}
-			}
-
-			$sort = array();
-			if(strlen($this->strOrder) > 0){
-				$t = explode(",", $this->strOrder);
-				if(count($t) != count($fields)){
-					$t = array();
-					for($y = 0; $y < count($fields); $y++){
-						$t[$y] = $y;
-					}
-				}
-				foreach($t as $k => $v){
-					if($v < 0){
-						$v = 0;
-					}
-					$sort[uniqid("")] = $v;
-				}
+				$sort[uniqid("")] = $v;
 			}
 			$this->setElement("we_sort", $sort);
 		}
