@@ -58,7 +58,6 @@ class weNavigationItem{
 	var $limitaccess = 0;
 	var $customers;
 	var $items = array();
-	var $Storage = array();
 
 	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "", $CurrentOnUrlPar='0', $CurrentOnAnker ='0'){
 		$this->id = $id;
@@ -505,7 +504,7 @@ class weNavigationItems{
 				$_navigation->CurrentOnUrlPar,
 				$_navigation->CurrentOnAnker);
 
-		$_items = $_navigation->getDynamicPreview($this->Storage);
+		$_items = $_navigation->getDynamicPreview(self::$cache);
 
 		$_new_items = weNavigationItems::getStaticSavedDynamicItems($_navigation);
 
@@ -569,7 +568,7 @@ class weNavigationItems{
 					'type' => 'item',
 					'parentid' => $_nav->ID,
 					'workspaceid' => $_nav->WorkspaceID,
-					'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path(
+					'icon' => isset(self::$cache['ids'][$_nav->IconID]) ? self::$cache['ids'][$_nav->IconID] : id_to_path(
 							$_nav->IconID),
 					'attributes' => $_nav->Attributes,
 					'limitaccess' => $_nav->LimitAccess,
@@ -644,7 +643,9 @@ class weNavigationItems{
 
 		$_navigation = new weNavigation();
 
-		$this->readItemsFromDb($this->rootItem);
+		if(!count(self::$cache)){
+			$this->readItemsFromDb($this->rootItem);
+		}
 
 		$_item = $this->getItemFromPool($parentid);
 
@@ -661,7 +662,7 @@ class weNavigationItems{
 				($_navigation->IsFolder ? ($_navigation->FolderSelection == "objLink" ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == 'classname' || $_navigation->SelectionType == 'objLink') ? OBJECT_FILES_TABLE : FILE_TABLE)),
 				$_navigation->Text,
 				$_navigation->Display,
-				$_navigation->getHref($this->Storage['ids']),
+				$_navigation->getHref(self::$cache['ids']),
 				$showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? 'folder' : 'item')) : 'root',
 				$this->id2path($_navigation->IconID),
 				$_navigation->Attributes,
@@ -670,7 +671,7 @@ class weNavigationItems{
 				$_navigation->CurrentOnUrlPar,
 				$_navigation->CurrentOnAnker);
 
-		$_items = $_navigation->getDynamicPreview($this->Storage, true);
+		$_items = $_navigation->getDynamicPreview(self::$cache, true);
 
 		foreach($_items as $_item){
 
@@ -714,7 +715,7 @@ class weNavigationItems{
 		self::$cache[$parentid] = $this->items;
 
 		//reduce Memory consumption!
-		$this->Storage = array();
+		//$this->Storage = array();
 	}
 
 	function checkCategories($idRule, $idDoc){
@@ -964,8 +965,8 @@ class weNavigationItems{
 	}
 
 	function readItemsFromDb($id){
-		$this->Storage['items'] = array();
-		$this->Storage['ids'] = array();
+		self::$cache['items'] = array();
+		self::$cache['ids'] = array();
 
 		$_pathArr = id_to_path($id, NAVIGATION_TABLE, "", false, true);
 		$_path = isset($_pathArr[0]) ? $_pathArr[0] : "";
@@ -983,7 +984,7 @@ class weNavigationItems{
 
 			$_tmpItem = $_db->Record;
 			$_tmpItem["Name"] = $_tmpItem["Text"];
-			$this->Storage['items'][] = $_tmpItem;
+			self::$cache['items'][] = $_tmpItem;
 			unset($_tmpItem);
 
 			if($_db->Record['IsFolder'] == '1' && ($_db->Record['FolderSelection'] == '' || $_db->Record['FolderSelection'] == 'docLink')){
@@ -1006,14 +1007,14 @@ class weNavigationItems{
 
 			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
 			while($_db->next_record()) {
-				$this->Storage['ids'][$_db->f('ID')] = $_db->f('Path');
+				self::$cache['ids'][$_db->f('ID')] = $_db->f('Path');
 			}
 		}
 	}
 
 	function getItemFromPool($id){
 
-		foreach($this->Storage['items'] as $item){
+		foreach(self::$cache['items'] as $item){
 			if($item['ID'] == $id){
 				return $item;
 			}
@@ -1023,11 +1024,11 @@ class weNavigationItems{
 	}
 
 	function id2path($id){
-		if(isset($this->Storage['ids'][$id])){
-			return $this->Storage['ids'][$id];
+		if(isset(self::$cache['ids'][$id])){
+			return self::$cache['ids'][$id];
 		} else{
 			$_path = id_to_path($id, FILE_TABLE);
-			$this->Storage['ids'][$id] = $_path;
+			self::$cache['ids'][$id] = $_path;
 			return $_path;
 		}
 	}

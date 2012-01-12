@@ -61,7 +61,7 @@ class we_langlink_listview extends listviewBase{
 	 * @return we_listview
 	 */
 	function __construct($name="0", $rows=999999999, $offset=0, $order="", $desc=false, $linkType='tblFile', $cols="", $seeMode=true, $searchable=true, $customerFilterType='off', $showself=false, $id="", $ownlanguage="", $hidedirindex = false, $objectseourls=false){
-
+		$id=intval($id);
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, '', $cols, '', '', '', '', '', 'off', $id);
 
 		$this->showself = $showself;
@@ -178,8 +178,8 @@ class we_langlink_listview extends listviewBase{
 			$this->Record["WE_DOCUMENTLANGUAGE"] = $dLocale[0];
 			$this->Record["WE_TARGETLOCALE"] = $this->foundlinks[$count]["Locale"];
 			$Locale = explode('_', $this->foundlinks[$count]["Locale"]);
-			$this->Record["WE_TARGETCOUNTRY"] = $Locale[1];
-			$this->Record["WE_TARGETLANGUAGE"] = $Locale[0];
+			$this->Record["WE_TARGETCOUNTRY"] = isset($Locale[1])?$Locale[1]:'';
+			$this->Record["WE_TARGETLANGUAGE"] = isset($Locale[0])?$Locale[0]:'';
 			if($this->foundlinks[$count]['DocumentTable'] == 'tblFile'){
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
 			} else{
