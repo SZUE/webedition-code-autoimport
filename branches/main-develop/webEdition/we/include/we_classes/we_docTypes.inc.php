@@ -359,7 +359,7 @@ class we_docTypes extends we_class{
 	function formExtension($width=100){
 		$ct = new we_base_ContentTypes();
 		$exts = $ct->getExtension('text/webedition');
-		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', '.html', $exts, $width), g_l('weClass', "[extension]"));
+		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', "[extension]"));
 	}
 
 	/* creates the Template PopupMenue */
