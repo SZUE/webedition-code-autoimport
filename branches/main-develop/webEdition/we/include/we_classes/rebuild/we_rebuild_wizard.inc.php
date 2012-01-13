@@ -36,10 +36,9 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0";
-		//FIXME: remove eval
-		eval('$contents = we_rebuild_wizard::getStep' . $step . '();');
-		return we_rebuild_wizard::getPage($contents);
+		$step = 'getStep'.(isset($_REQUEST["step"]) ? $_REQUEST["step"] : '0');
+		$contents = self::$step();
+		return self::getPage($contents);
 	}
 
 	/**

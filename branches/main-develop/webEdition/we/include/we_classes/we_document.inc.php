@@ -895,10 +895,12 @@ class we_document extends we_root{
 	protected function i_writeDocument(){
 		$doc = $this->i_getDocumentToSave();
 		if($doc || $doc == ''){
-			if(!$this->i_writeSiteDir($doc))
+			if(!$this->i_writeSiteDir($doc)){
 				return false;
-			if(!$this->i_writeMainDir($doc))
+			}
+			if(!$this->i_writeMainDir($doc)){
 				return false;
+			}
 		}
 		else{
 			return false;
@@ -1222,16 +1224,14 @@ class we_document extends we_root{
 			$db = new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
-		//FIXME: remove eval
-		eval('$int = (' . $fn . '($nint) == "") ? 0 : ' . $fn . '($nint);');
+		$int=$fn($nint);
+		$int = ($int == "") ? 0 : $fn($nint);
 		if($int){
 			$nintID = $n . '_we_jkhdsf_intID';
-			//FIXME: remove eval
-			eval('$intID = ' . $fn . '($nintID);');
+			$intID = $fn ($nintID);
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
 		} else{
-			//FIXME: remove eval
-			eval('$extPath = ' . $fn . '($n);');
+			$extPath = $fn($n);
 			return $extPath;
 		}
 	}

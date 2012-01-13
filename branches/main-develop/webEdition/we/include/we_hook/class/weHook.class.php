@@ -58,7 +58,8 @@ class weHook {
 			include_once($this->file);
 			if (function_exists($this->func)) {
 					//FIXME: remove eval
-				eval($this->func . '($this->param);');
+				$f=$this->func;
+				$f($this->param);
 				return ($this->errStr=='');
 			}
 		}

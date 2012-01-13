@@ -25,7 +25,6 @@
 class we_rebuild{
 
 	function rebuild($data, $printIt=false){
-
 		if($printIt){
 			$_newLine = count($_SERVER['argv']) ? "\n" : "<br>\n";
 		}
@@ -116,7 +115,6 @@ class we_rebuild{
 
 			$GLOBALS['we_doc'] = new $data['cn']();
 			$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
-
 			if($printIt){
 				print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
 				flush();

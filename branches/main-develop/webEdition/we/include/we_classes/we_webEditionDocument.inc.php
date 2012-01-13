@@ -729,6 +729,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		// hier bricht es manchmal ab, aus unbekannten gründen, sieh bugbase #4271
 		ob_start();
 		if(is_file($we_include)){
+//FIXME: Problem, wenn Template ein exit, oder die enthält, hier aber für eine stat. Seite verwendet wird.
 			include($we_include);
 		}
 		$contents = ob_get_contents();
@@ -822,7 +823,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	protected function i_getDocumentToSave(){
-
 		if($this->IsDynamic){
 
 			$data = array();
@@ -836,10 +836,9 @@ class we_webEditionDocument extends we_textContentDocument{
 				weShopVariants::correctModelFields($this);
 			}
 
-
 			$data[0]["InWebEdition"] = 0;
 
-			$doc = '<?php
+			return '<?php
 $GLOBALS[\'noSess\'] = true;
 $GLOBALS[\'WE_IS_DYN\'] = 1;
 $GLOBALS[\'we_transaction\'] = \'\';
@@ -867,9 +866,7 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				if(!isset($GLOBALS["DocStream"])){
 					$GLOBALS["DocStream"] = array();
 				}
-
 				$doc = $this->i_getDocument();
-
 				//
 				// --> Glossary Replacement
 				//
