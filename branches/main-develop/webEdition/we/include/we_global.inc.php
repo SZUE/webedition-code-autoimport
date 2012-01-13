@@ -2769,7 +2769,7 @@ function show_SeoLinks(){
 
 }
 
-function we_TemplateExit($param=''){
+function we_TemplateExit($param=0){
 	if(isset($_SESSION)&&isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession'])&&$_SESSION['user']['isWeSession']){
 		//we are inside we, we don't terminate here
 		if($param){
@@ -2778,7 +2778,7 @@ function we_TemplateExit($param=''){
 		//FIXME: use g_l
 		t_e('template forces document to exit, see Backtrace for template name. Message of statement',$param);
 	}else{
-		exit();
+		exit($param);
 	}
 }
 
