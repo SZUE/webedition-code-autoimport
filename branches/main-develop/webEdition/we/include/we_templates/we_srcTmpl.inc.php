@@ -761,6 +761,11 @@ if($GLOBALS['we_editmode']){
 
 			$maineditor.='
 		<style type="text/css">' . ($toolTip?we_getCodeMirror2Tags():'') . '
+			.weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
+				font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
+				font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
+				line-height: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
+			}
 			.searched {background: yellow;}
 			.activeline {background: #f0fcff !important;}
 			.CodeMirror{
@@ -768,8 +773,8 @@ if($GLOBALS['we_editmode']){
 			background: white;
 			padding: 5px 8px;
 			z-index: 1000;
-			font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'Tahoma') . ';
-			font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
+			font-family: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontname'] ? $_SESSION['prefs']['editorFontname'] : 'Tahoma') . ';
+			font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px;
 			border: outset 1px;
 			box-shadow: 0 2px 2px rgba(0,0,0,0.3);
 			-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3);
@@ -777,7 +782,7 @@ if($GLOBALS['we_editmode']){
 			border-radius: 3px;
 			-moz-border-radius: 3px;
 			-webkit-border-radius: 3px;
-	}
+			}
 	span.c-like-keyword {
 		color: #000;
 		font-weight: bold;
