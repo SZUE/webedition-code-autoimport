@@ -324,7 +324,8 @@ class we_template extends we_document{
 		} else{
 			return parseError(g_l('parser', '[html_tags]'));
 		}
-
+		$code=str_replace('exit(', 'we_TemplateExit(', $code);
+		$code=str_replace('die(', 'we_TemplateExit(', $code);
 		return $pre_code . $code . '<?php we_templatePost();';
 	}
 

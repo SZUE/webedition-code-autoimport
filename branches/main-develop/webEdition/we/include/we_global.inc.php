@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
- 
+
 if (isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)) {
 	exit();
 }
@@ -2585,7 +2585,6 @@ function convertCharsetString($fromC, $toC, $string) {
 }
 
 
-
 function getVarArray($arr, $string) {
 	if (!isset($arr)) {
 		return false;
@@ -2768,6 +2767,19 @@ function show_SeoLinks(){
 	}
 	return true;
 
+}
+
+function we_TemplateExit($param=''){
+	if(isset($_SESSION)&&isset($_SESSION['user'])&&isset($_SESSION['user']['isWeSession'])&&$_SESSION['user']['isWeSession']){
+		//we are inside we, we don't terminate here
+		if($param){
+			echo $param;
+		}
+		//FIXME: use g_l
+		t_e('template forces document to exit, see Backtrace for template name. Message of statement',$param);
+	}else{
+		exit();
+	}
 }
 
 function we_cmd_enc($str) {

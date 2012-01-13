@@ -726,10 +726,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			$basehrefMerk = $GLOBALS["we_baseHref"];
 			unset($GLOBALS["we_baseHref"]);
 		}
-		// hier bricht es manchmal ab, aus unbekannten gründen, sieh bugbase #4271
 		ob_start();
 		if(is_file($we_include)){
-//FIXME: Problem, wenn Template ein exit, oder die enthält, hier aber für eine stat. Seite verwendet wird.
 			include($we_include);
 		}
 		$contents = ob_get_contents();
