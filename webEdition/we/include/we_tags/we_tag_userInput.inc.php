@@ -530,13 +530,13 @@ function we_tag_userInput($attribs, $content){
 						}
 
 
-						return "a".$hidden;
+						return $hidden;
 					} else {
 						if (isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]) {
 
 
 							if (isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]) {
-								return "b".$hidden;
+								return $hidden;
 							}
 
 
