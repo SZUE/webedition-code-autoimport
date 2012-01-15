@@ -469,23 +469,23 @@ class weBackupWizard{
 						$filedate = date("d.m.Y H:i:s.", filemtime($filename));
 						if(strpos($entry, 'weBackup_') === 0){
 							$ts = ereg_replace('^weBackup_', '', $entry);
-							$ts = str_replace('.php', '', $ts);
-							$ts = str_replace('.xml', '', $ts);
-							$ts = str_replace('.gz', '', $ts);
-							$ts = str_replace('.bz', '', $ts);
-							$ts = str_replace('.zip', '', $ts);
+							$ts = str_replace(array('.php','.xml','.gz','.bz','.zip'), '', $ts);
 
 							if(is_numeric($ts) || (substr_count($ts, '_') == 6)){
-
 								if(!($ts < 1004569200)){
 									$comp = weFile::getCompression($entry);
-									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . date("d.m.Y H:i:s", $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
+									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]").' ' . date("d.m.Y H:i", $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
 								} else if((substr_count($ts, '_') == 6)){
 									$comp = weFile::getCompression($entry);
 									$_dateParts = explode('__', $ts);
 									$_date = explode('_', $_dateParts[0]);
 									$_date = array_reverse($_date);
-									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . ( implode('.', $_date) . ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
+									$url='';
+									if(isset($_date[3])){
+										$url=$_date[3];
+										unset($_date[3]);
+									}
+									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]").' ' . ( implode('.', $_date) . ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($url?' - '.$url:'') . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
 								} else{
 									$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize KB";
 								}
@@ -875,7 +875,7 @@ class weBackupWizard{
 		$compression = weFile::hasCompression("gzip");
 
 		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(($compression ? g_l('backup', "[filename_compression]") : g_l('backup', "[filename_info]")), 2, 600, false), "space" => 0, "noline" => 1));
-		array_push($parts, array("headline" => g_l('backup', "[filename]") . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, "weBackup_" . str_replace('.', '_', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . ".xml", "", "", "text"), "space" => 100, "noline" => 1));
+		array_push($parts, array("headline" => g_l('backup', "[filename]") . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, "weBackup_" . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . ".xml", "", "", "text"), "space" => 100, "noline" => 1));
 
 		$switchbut = 7;
 		if($compression){
