@@ -384,7 +384,7 @@ class weCustomerEI{
 			$node_name = $xp->nodeName($node);
 			$node_value = $xp->getData($node);
 			if(isset($fields[$node_name]))
-				eval('$customer->' . $fields[$node_name] . '=\'' . addslashes($node_value) . '\';');
+				$customer->{$fields[$node_name]} =$node_value;
 		}
 
 		$existid = f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . $db->escape($customer->Username) . "' AND ID!=" . intval($customer->ID), "ID", $db);

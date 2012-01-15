@@ -1027,7 +1027,7 @@ class weCustomerView{
 						eval('$this->customer->' . $val . '="0";');
 					}
 				} elseif(isset($_REQUEST[$varname])){
-					eval('$this->customer->' . $val . '="' . addslashes($_REQUEST[$varname]) . '";');
+					$this->customer->{$val} = $_REQUEST[$varname];
 				}
 			}
 		}

@@ -131,9 +131,9 @@ class weCustomerFrames extends weModuleFrames{
 		}
 		switch($props['type']){
 			case 'input':
-				return we_html_tools::htmlTextInput($field, 32, stripslashes($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'");
+				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='{width:240}'");
 			case 'number':
-				return we_html_tools::htmlTextInput($field, 32, stripslashes($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'", 'number');
+				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'", 'number');
 			case 'multiselect':
 				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
 				$values = explode(',', $value);
@@ -229,7 +229,7 @@ class weCustomerFrames extends weModuleFrames{
 				return $select->getHtml();
 				break;
 			case 'textarea':
-				return we_html_element::htmlTextArea(array("name" => $field, "style" => "{width:240}", "class" => "wetextarea", "onblur" => "this.className='wetextarea'", "onfocus" => "this.className='wetextareaselected'"), stripslashes($value));
+				return we_html_element::htmlTextArea(array("name" => $field, "style" => "{width:240}", "class" => "wetextarea", "onblur" => "this.className='wetextarea'", "onfocus" => "this.className='wetextareaselected'"), $value);
 				break;
 			case 'dateTime':
 			case 'date':
@@ -298,7 +298,7 @@ class weCustomerFrames extends weModuleFrames{
 
 				break;
 
-			default: return we_html_tools::htmlTextInput($field, 32, stripslashes($value), "", "onchange=\"top.content.setHot();\" style='{width:240}'");
+			default: return we_html_tools::htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='{width:240}'");
 		}
 		return null;
 	}
@@ -455,7 +455,7 @@ class weCustomerFrames extends weModuleFrames{
 			$c = 0;
 			$table->setRow(0, array("valign" => "top"));
 			foreach($common as $pk => $pv){
-				$pv = stripslashes($pv);
+				$pv = $pv;
 
 				if($this->View->customer->isInfoDate($pk)){
 					$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
