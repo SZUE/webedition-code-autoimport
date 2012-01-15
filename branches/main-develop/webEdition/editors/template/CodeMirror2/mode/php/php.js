@@ -4,20 +4,48 @@
     for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
     return obj;
   }
-  var phpKeywords =
-    keywords("abstract and array as break case catch cfunction class clone const continue declare " +
-             "default do else elseif enddeclare endfor endforeach endif endswitch endwhile extends " +
-             "final for foreach function global goto if implements interface instanceof namespace " +
-             "new or private protected public static switch throw try use var while xor "+
+  function heredoc(delim) {
+    return function(stream, state) {
+      if (stream.match(delim)) state.tokenize = null;
+      else stream.skipToEnd();
+      return "string";
+    }
+  }
+  var phpConfig = {
+    name: "clike",
+    keywords: keywords("abstract and array as break case catch cfunction class clone const continue declare " +
+                       "default do else elseif enddeclare endfor endforeach endif endswitch endwhile extends " +
+                       "final for foreach function global goto if implements interface instanceof namespace " +
+                       "new or private protected public static switch throw try use var while xor return" +
 	     "__CLASS__ __DIR__ __FILE__ __FUNCTION__ __METHOD__ __NAMESPACE__ "+
-	     "die echo empty exit eval include include_once isset list require require_once return print unset"
-	     );
-  var phpConfig = {name: "clike", keywords: phpKeywords, multiLineStrings: true, $vars: true};
+                       "die echo empty exit eval include include_once isset list require require_once print unset"),
+    blockKeywords: keywords("catch do else elseif for foreach if switch try while"),
+    atoms: keywords("true false null TRUE FALSE NULL"),
+    multiLineStrings: true,
+    hooks: {
+      "$": function(stream, state) {
+        stream.eatWhile(/[\w\$_]/);
+        return "variable-2";
+      },
+      "<": function(stream, state) {
+        if (stream.match(/<</)) {
+          stream.eatWhile(/[\w\.]/);
+          state.tokenize = heredoc(stream.current().slice(3));
+          return state.tokenize(stream, state);
+        }
+        return false;
+      },
+      "#": function(stream, state) {
+        stream.skipToEnd();
+        return "comment";
+      }
+    }
+  };
 
   CodeMirror.defineMode("php", function(config, parserConfig) {
-    var htmlMode = CodeMirror.getMode(config, "text/html");
-    var jsMode = CodeMirror.getMode(config, "text/javascript");
-    var cssMode = CodeMirror.getMode(config, "text/css");
+    var htmlMode = CodeMirror.getMode(config, {name: "xml", htmlMode: true});
+    var jsMode = CodeMirror.getMode(config, "javascript");
+    var cssMode = CodeMirror.getMode(config, "css");
     var phpMode = CodeMirror.getMode(config, phpConfig);
 
     function dispatch(stream, state) { // TODO open PHP inside text/css
@@ -27,17 +55,20 @@
           state.curMode = phpMode;
           state.curState = state.php;
           state.curClose = /^\?>/;
+		  state.mode =  'php';
         }
         else if (style == "tag" && stream.current() == ">" && state.curState.context) {
           if (/^script$/i.test(state.curState.context.tagName)) {
             state.curMode = jsMode;
             state.curState = jsMode.startState(htmlMode.indent(state.curState, ""));
             state.curClose = /^<\/\s*script\s*>/i;
+			state.mode =  'javascript';
           }
           else if (/^style$/i.test(state.curState.context.tagName)) {
             state.curMode = cssMode;
             state.curState = cssMode.startState(htmlMode.indent(state.curState, ""));
             state.curClose =  /^<\/\s*style\s*>/i;
+            state.mode =  'css';
           }
         }
         return style;
@@ -46,6 +77,7 @@
         state.curMode = htmlMode;
         state.curState = state.html;
         state.curClose = null;
+		state.mode =  'html';
         return dispatch(stream, state);
       }
       else return state.curMode.token(stream, state.curState);
@@ -56,9 +88,10 @@
         var html = htmlMode.startState();
         return {html: html,
                 php: phpMode.startState(),
-                curMode: htmlMode,
-                curState: html,
-                curClose: null}
+                curMode:	parserConfig.startOpen ? phpMode : htmlMode,
+                curState:	parserConfig.startOpen ? phpMode.startState() : html,
+                curClose:	parserConfig.startOpen ? /^\?>/ : null,
+				mode:		parserConfig.startOpen ? 'php' : 'html'}
       },
 
       copyState: function(state) {
@@ -67,7 +100,8 @@
         if (state.curState == html) cur = htmlNew;
         else if (state.curState == php) cur = phpNew;
         else cur = CodeMirror.copyState(state.curMode, state.curState);
-        return {html: htmlNew, php: phpNew, curMode: state.curMode, curState: cur, curClose: state.curClose};
+        return {html: htmlNew, php: phpNew, curMode: state.curMode, curState: cur,
+                curClose: state.curClose, mode: state.mode};
       },
 
       token: dispatch,
@@ -83,5 +117,6 @@
     }
   });
   CodeMirror.defineMIME("application/x-httpd-php", "php");
+  CodeMirror.defineMIME("application/x-httpd-php-open", {name: "php", startOpen: true});
   CodeMirror.defineMIME("text/x-php", phpConfig);
 })();

@@ -736,6 +736,7 @@ if($GLOBALS['we_editmode']){
 				$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 				$parser_js[] = 'mode/clike/clike.js';
 				$parser_js[] = 'mode/php/php.js';
+				$parser_css[]= 'mode/clike/clike.css';
 				$mode = (isset($mode) ? $mode : 'application/x-httpd-php');
 				break;
 			case 'text/xml':
@@ -831,6 +832,7 @@ if($GLOBALS['we_editmode']){
 				electricChars: true,
 				lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
 				gutter: false,
+				indentWithTabs: true,
 				matchBrackets: true,
 				workTime: 300,
 				workDelay: 800,
