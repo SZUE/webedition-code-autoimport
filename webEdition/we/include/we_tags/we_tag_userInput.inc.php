@@ -85,12 +85,7 @@ function we_tag_userInput($attribs, $content){
 			$GLOBALS["DB_WE"],
 			$object_tableID);
 
-	if ($type == "date") {
-		if ($orgVal == 0) {
-			$orgVal = time();
-		}
-	}
-	if (!$editable && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime") {
+	if (!$editable && !$hidden && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime") {
 		$_hidden = getHtmlTag(
 				'input',
 				array(
@@ -146,7 +141,7 @@ function we_tag_userInput($attribs, $content){
 						if (substr($src, 0, 1) !== "/") {
 							$src = "/" . $src;
 						}
-						
+
 						$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
 					} else {
 						unset($attribs["width"]);
@@ -641,19 +636,20 @@ function we_tag_userInput($attribs, $content){
 					$content = 1;
 				}
 				return we_getInputCheckboxField($fieldname, $content, $atts);
-			case "date" :
+			case 'date' :
 				$currentdate = we_getTagAttribute("currentdate", $attribs, "", true);
-				$minyear = we_getTagAttribute("minyear", $attribs, "");
-				$maxyear = we_getTagAttribute("maxyear", $attribs, "");
-				if ($currentdate) {
+				$minyear = we_getTagAttribute("minyear", $attribs);
+				$maxyear = we_getTagAttribute("maxyear", $attribs);
+				if ($orgVal == 0|| $currentdate) {
 					$orgVal = time();
 				}
 				if ($hidden) {
-
-					$attsHidden['type'] = 'hidden';
-					$attsHidden['name'] = $fieldname;
-					$attsHidden['value'] = $orgVal ? $orgVal : time();
-					$attsHidden['xml'] = $xml;
+					$attsHidden=array(
+						'type' => 'hidden',
+						'name' => $fieldname,
+						'value' => $orgVal ? $orgVal : time(),
+						'xml' => $xml
+						);
 					return getHtmlTag('input', $attsHidden);
 				} else {
 					return getDateInput2(
@@ -671,7 +667,7 @@ function we_tag_userInput($attribs, $content){
 			case "country":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
 				$docAttr = we_getTagAttribute("doc", $attribs, "self");
-				
+
 				$doc = we_getDocForTag($docAttr);
 				$lang=$doc->Language;
 				$langcode= substr($lang,0,2);
@@ -851,10 +847,12 @@ function we_tag_userInput($attribs, $content){
 					return we_getInputRadioField($fieldname, $content, $orgVal, $atts);
 				}
 			case "hidden" :
-				$attsHidden['type'] = 'hidden';
-				$attsHidden['name'] = $fieldname;
-				$attsHidden['value'] = htmlspecialchars($content);
-				$attsHidden['xml'] = $xml;
+				$attsHidden=array(
+					'type' => 'hidden',
+					'name' => $fieldname,
+					'value' => htmlspecialchars($content),
+					'xml' => $xml,
+					);
 				return getHtmlTag('input', $attsHidden);
 			case "choice" :
 				$atts = removeAttribs(
