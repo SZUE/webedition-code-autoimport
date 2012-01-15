@@ -73,7 +73,7 @@ abstract class we_util{
 	 * @param mixed number
 	 */
 	static function cleanNewLine($string){
-		return str_replace(array("\n\r","\r\n","\r"),"\r",$string);
+		return str_replace(array("\n\r","\r\n","\r"),"\n",$string);
 	}
 
 	/**
