@@ -1,3 +1,7 @@
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblnavigation SET SelectionType="doctype" WHERE SelectionType="docType"
+
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblnavigation (
   ID bigint(20) unsigned NOT NULL auto_increment,
   ParentID bigint(20) unsigned NOT NULL default '0',

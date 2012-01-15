@@ -443,7 +443,7 @@ class we_document extends we_root{
 			$_naviItem->Path = $_new_path;
 			if(defined('NAVIGATION_ENTRIES_FROM_DOCUMENT') && NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
 				$_naviItem->Selection = 'nodynamic';
-				$_naviItem->SelectionType = 'docType';
+				$_naviItem->SelectionType = 'doctype';
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				if($charset != ''){
