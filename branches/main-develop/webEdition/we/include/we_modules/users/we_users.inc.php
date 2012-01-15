@@ -2706,32 +2706,32 @@ class we_user{
 
 		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => "1", "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
 
-		for($i = 0; $i < (count($_template_fonts) - 1); $i++){
-			$_template_editor_font_select_box->addOption($_template_fonts[$i], $_template_fonts[$i]);
+		foreach($_template_fonts as $tf){
+			$_template_editor_font_select_box->addOption($tf, $tf);
 
 			if(!$_template_editor_font_specify){
-				if($_template_fonts[$i] == "Courier New"){
-					$_template_editor_font_select_box->selectOption($_template_fonts[$i]);
+				if($tf == "Courier New"){
+					$_template_editor_font_select_box->selectOption($tf);
 				}
 			} else{
-				if($_template_fonts[$i] == $this->Preferences['editorFontname']){
-					$_template_editor_font_select_box->selectOption($_template_fonts[$i]);
+				if($tf == $this->Preferences['editorFontname']){
+					$_template_editor_font_select_box->selectOption($tf);
 				}
 			}
 		}
 
 		$_template_editor_font_sizes_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontsize", "size" => "1", "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onChange" => "top.content.setHot();"));
 
-		for($i = 0; $i < (count($_template_font_sizes) - 1); $i++){
-			$_template_editor_font_sizes_select_box->addOption($_template_font_sizes[$i], $_template_font_sizes[$i]);
+		foreach($_template_font_sizes as $tf){
+			$_template_editor_font_sizes_select_box->addOption($tf, $tf);
 
 			if(!$_template_editor_font_specify){
-				if($_template_font_sizes[$i] == 11){
-					$_template_editor_font_sizes_select_box->selectOption($_template_font_sizes[$i]);
+				if($tf == 11){
+					$_template_editor_font_sizes_select_box->selectOption($tf);
 				}
 			} else{
-				if($_template_font_sizes[$i] == $this->Preferences['editorFontsize']){
-					$_template_editor_font_sizes_select_box->selectOption($_template_font_sizes[$i]);
+				if($tf == $this->Preferences['editorFontsize']){
+					$_template_editor_font_sizes_select_box->selectOption($tf);
 				}
 			}
 		}

@@ -101,20 +101,16 @@ class we_template extends we_document{
 				$GLOBALS["we_file_to_delete_after_include"] = TMP_DIR . "/" . md5(uniqid(rand()));
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
-				break;
 			case WE_EDITPAGE_PREVIEW_TEMPLATE:
 				$GLOBALS["we_editmode"] = false;
 				$GLOBALS["we_file_to_delete_after_include"] = TMP_DIR . "/" . md5(uniqid(rand()));
 				we_util_File::saveFile($GLOBALS["we_file_to_delete_after_include"], $this->i_getDocument());
 				return $GLOBALS["we_file_to_delete_after_include"];
-				break;
 			case WE_EDITPAGE_VARIANTS:
 				$GLOBALS["we_editmode"] = true;
 				return 'we_templates/we_editor_variants.inc.php';
-				break;
 			case WE_EDITPAGE_VERSIONS:
 				return "we_versions/we_editor_versions.inc.php";
-				break;
 			default:
 				$this->EditPageNr = WE_EDITPAGE_PROPERTIES;
 				$_SESSION["EditPageNr"] = WE_EDITPAGE_PROPERTIES;
@@ -270,7 +266,7 @@ class we_template extends we_document{
 
 				$this->errMsg = "Error: " . $error['message'] . "\nLine: " . $error['line'] . "\nCode: " . $errCode;
 				//type error will stop we
-				t_e('warning', "Error in template: ".we_tag_tagParser::$curFile , $error['message'], 'Line: ' . $error['line'], 'Code: ' . $errCode);
+				t_e('warning', "Error in template: " . we_tag_tagParser::$curFile, $error['message'], 'Line: ' . $error['line'], 'Code: ' . $errCode);
 			}
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'we';
 		}
@@ -301,8 +297,8 @@ class we_template extends we_document{
 
 		$postContent = '<?php we_templatePostContent(); ?>';
 
-		if($this->hasStartAndEndTag("html", $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
-			$pre_code = '<?php $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?>' . $pre_code;
+		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
+			$pre_code = '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\'] = true; ?>' . $pre_code;
 
 			//#### parse base href
 			$code = preg_replace('%(</title>)%i', '\1<?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>', $code);
@@ -316,16 +312,15 @@ class we_template extends we_document{
 			$code = str_replace('__WE_?__WE__', '?>', str_replace('__WE_=__WE__', '=>', $code));
 
 			$code = str_replace('</body>', $postContent . '</body>', $code);
-		} else if(!$this->hasStartAndEndTag("html", $code) && !$this->hasStartAndEndTag("head", $code) && !$this->hasStartAndEndTag("body", $code)){
-			$code = '<?php if( (!isset($GLOBALS["WE_HTML_HEAD_BODY"]) || !$GLOBALS["WE_HTML_HEAD_BODY"] ) && (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>' . $head . '</head>
-<body <?php if(isset($we_editmode) && $we_editmode) print " onUnload=\"doUnload()\""; ?>>
+		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
+			$code = '<?php if( (!isset($GLOBALS[\'WE_HTML_HEAD_BODY\']) || !$GLOBALS[\'WE_HTML_HEAD_BODY\'] ) && (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\'])){  $GLOBALS["WE_HTML_HEAD_BODY"] = true; ?><html><head><title></title><?php if(isset($GLOBALS["we_baseHref"]) && $GLOBALS["we_baseHref"]){ ?><base href="<?php print $GLOBALS["we_baseHref"] ?>" /><?php } ?>' . $head . '</head>
+<body <?php if(isset($we_editmode) && $we_editmode) print \' onUnload="doUnload()"\'; ?>>
 ' . $preContent . '<?php } ?>' . $code . '<?php if((!isset($WE_HTML_HEAD_BODY) || !$WE_HTML_HEAD_BODY ) && (isset($we_editmode) && $we_editmode)){ ?>' . $postContent . '
 </body></html><?php $WE_HTML_HEAD_BODY = true; } ?>';
 		} else{
 			return parseError(g_l('parser', '[html_tags]'));
 		}
-		$code=str_replace('exit(', 'we_TemplateExit(', $code);
-		$code=str_replace('die(', 'we_TemplateExit(', $code);
+		$code = str_replace(array('exit(', 'die('), 'we_TemplateExit(', $code);
 		return $pre_code . $code . '<?php we_templatePost();';
 	}
 

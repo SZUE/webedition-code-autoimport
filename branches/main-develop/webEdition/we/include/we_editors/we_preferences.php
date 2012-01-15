@@ -4361,7 +4361,7 @@ function displayEditorOptions(editor) {
 			setJavaEditorDisabled(false); //enabling Java-Colors-Checkbox
 
 			break;
-		case "codemirror2":
+			//FIXME: remove old CM
 		case "codemirror":
 			document.getElementById("div_settings_editor_predefined_2").style.display="block"; //JavaScript-Editor-Notice
 			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="block";
@@ -4383,6 +4383,30 @@ function displayEditorOptions(editor) {
 
 			document.getElementById("div_settings_editor_predefined_8").style.display="block"; //Docu on dblclick
 			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="block";
+			break;
+
+case "codemirror2":
+			document.getElementById("div_settings_editor_predefined_2").style.display="none"; //JavaScript-Editor-Notice
+			document.getElementById("div_settings_editor_predefined_2").previousSibling.style.display="none";
+
+			document.getElementById("div_settings_editor_predefined_3").style.display="block"; //Font
+			document.getElementById("div_settings_editor_predefined_3").previousSibling.style.display="block";
+
+			document.getElementById("div_settings_editor_predefined_4").style.display="none"; //Java Colors
+			document.getElementById("div_settings_editor_predefined_4").previousSibling.style.display="none";
+
+			document.getElementById("div_settings_editor_predefined_5").style.display="block"; //Line numbers
+			document.getElementById("div_settings_editor_predefined_5").previousSibling.style.display="block";
+
+			document.getElementById("div_settings_editor_predefined_6").style.display="none";
+			document.getElementById("div_settings_editor_predefined_6").previousSibling.style.display="none";
+
+			document.getElementById("div_settings_editor_predefined_7").style.display="block"; //Tooltips
+			document.getElementById("div_settings_editor_predefined_7").previousSibling.style.display="block";
+
+			document.getElementById("div_settings_editor_predefined_8").style.display="none";
+			document.getElementById("div_settings_editor_predefined_8").previousSibling.style.display="none";
+
 			setJavaEditorDisabled(true); //disabling Java-Colors-Checkbox
 
 			break;
