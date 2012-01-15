@@ -518,13 +518,13 @@ function we_tag_userInput($attribs, $content){
 						}
 
 
-						return "a".$hidden;
+						return $hidden;
 					} else {
 						if (isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]) {
 
 
 							if (isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]) {
-								return "b".$hidden;
+								return $hidden;
 							}
 
 
@@ -628,7 +628,6 @@ function we_tag_userInput($attribs, $content){
 				$currentdate = weTag_getAttribute("currentdate", $attribs, false, true);
 				$minyear = weTag_getAttribute("minyear", $attribs);
 				$maxyear = weTag_getAttribute("maxyear", $attribs);
-				if ($currentdate) {
 				if ($orgVal == 0|| $currentdate) {
 					$orgVal = time();
 				}
@@ -652,7 +651,6 @@ function we_tag_userInput($attribs, $content){
 							$minyear,
 							$maxyear);
 				}
-				break;
 			case "country":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
 				$docAttr = weTag_getAttribute("doc", $attribs, "self");
@@ -706,7 +704,6 @@ function we_tag_userInput($attribs, $content){
 				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
 				$newAtts['name'] = $fieldname;
 				return getHtmlTag('select', $newAtts, $options, true);
-				break;
 			case "language":
 				$newAtts = removeAttribs($attribs, array('wysiwyg','commands','pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols','fontnames','bgcolor', 'width', 'height', 'maxlength'));
 
@@ -738,7 +735,6 @@ function we_tag_userInput($attribs, $content){
 				$newAtts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
 				$newAtts['name'] = $fieldname;
 				return getHtmlTag('select', $newAtts, $options, true);
-				break;
 			case "select" :
 				$options = '';
 				$atts = removeAttribs(
@@ -804,7 +800,6 @@ function we_tag_userInput($attribs, $content){
 				$atts['size'] = (isset($atts['size']) ? $atts['size'] : 1);
 				$atts['name'] = $fieldname;
 				return getHtmlTag('select', $atts, $options, true) . "\n";
-				break;
 			case "radio" :
 				$atts = removeAttribs(
 						$attribs,
@@ -871,7 +866,6 @@ function we_tag_userInput($attribs, $content){
 						));
 				$mode = weTag_getAttribute("mode", $attribs);
 				return we_getInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
-				break;
 			case "password" :
 				$atts = removeAttribs(
 						$attribs,
@@ -898,8 +892,7 @@ function we_tag_userInput($attribs, $content){
 								'fontnames'
 						));
 				return we_getInputPasswordField($fieldname, $orgVal, $atts);
-				break;
-			case "textinput" :
+			case 'textinput':
 			default :
 				$atts = removeAttribs(
 						$attribs,

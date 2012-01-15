@@ -868,7 +868,7 @@ const RECOVER=2;
 		$compression = weFile::hasCompression("gzip");
 
 		array_push($parts,array("headline"=>"","html"=>we_html_tools::htmlAlertAttentionBox(($compression ? g_l('backup',"[filename_compression]"): g_l('backup',"[filename_info]")), 2, 600, false),"space"=>0,"noline"=>1));
-		array_push($parts,array("headline"=>g_l('backup',"[filename]").":&nbsp;&nbsp;","html"=>we_html_tools::htmlTextInput("filename",32,"weBackup_".date( "Y_m_d__H_i_s" ,time()).".xml","","","text",260),"space"=>100,"noline"=>1));
+		array_push($parts,array("headline"=>g_l('backup',"[filename]").":&nbsp;&nbsp;","html"=>we_html_tools::htmlTextInput("filename",32,"weBackup_".  str_replace('.','_',$_SERVER['SERVER_NAME']).'_'.date( "Y_m_d__H_i" ,time()).".xml","","","text",260),"space"=>100,"noline"=>1));
 
 		$switchbut=7;
 		if($compression){
