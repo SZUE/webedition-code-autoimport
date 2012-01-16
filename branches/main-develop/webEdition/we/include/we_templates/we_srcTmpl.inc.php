@@ -725,7 +725,7 @@ if($GLOBALS['we_editmode']){
 				$mode = 'text/javascript';
 				break;
 			case 'text/weTmpl':
-				$parser_js[] = 'lib/overlay.js';
+				$parser_js[] = 'lib/util/overlay.js';
 				$parser_js[] = 'mode/webEdition/webEdition.js';
 				$toolTip = $_SESSION['prefs']['editorTooltips'];
 				$mode = 'text/weTmpl';
