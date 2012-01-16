@@ -532,8 +532,9 @@ abstract class we_database_base{
 // if no $table specified, assume that we are working with a query
 // result
 		if($table){
-			if($this->query('SELECT * FROM `' . $table . '` LIMIT 1;'))
+			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1;')){
 				$this->halt("Metadata query failed.");
+			}
 		} else{
 			if(!($this->Query_ID))
 				$this->halt("No query specified.");
