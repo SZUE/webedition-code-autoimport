@@ -433,9 +433,6 @@ abstract class we_database_base{
 		$this->Error = $this->error();
 
 		$stat = is_array($this->Record);
-		if(!$stat && $this->Auto_Free){
-			$this->free();
-		}
 		return $stat;
 	}
 
