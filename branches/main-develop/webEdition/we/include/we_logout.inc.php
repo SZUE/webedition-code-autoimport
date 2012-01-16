@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)) {
+if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
@@ -33,23 +34,25 @@ $DB_WE->query("UPDATE " . USER_TABLE . " SET Ping=0 WHERE ID=" . intval($_SESSIO
 
 cleanTempFiles(true);
 
-if (isset($_SESSION["prefs"]["userID"])) { //	bugfix 2585, only update prefs, when userId is available
+if(isset($_SESSION["prefs"]["userID"])){ //	bugfix 2585, only update prefs, when userId is available
 	doUpdateQuery($DB_WE, PREFS_TABLE, $_SESSION["prefs"], " WHERE userID=" . intval($_SESSION["prefs"]["userID"]));
 }
 
 //	getJSCommand
-if (isset($_SESSION["SEEM"]["startId"])) { // logout from webEdition opened with tag:linkToSuperEasyEditMode
+if(isset($_SESSION["SEEM"]["startId"])){ // logout from webEdition opened with tag:linkToSuperEasyEditMode
 	$_path = $_SESSION["SEEM"]["startPath"];
 
-	$jsCommand = "top.location.replace('" . $_path . "');";
-
-	while (list($name, $val) = each($_SESSION)) {
-		if ($name != "webuser") {
+	while(list($name, $val) = each($_SESSION)) {
+		if($name != "webuser"){
 			unset($_SESSION[$name]);
 		}
 	}
-} else { //	normal logout from webEdition.
-	$jsCommand = "top.location.replace('" . WEBEDITION_DIR . "');\n";
+} else{ //	normal logout from webEdition.
+	unset($_SESSION["user"]);
+	if(isset($_SESSION['we'])){
+		unset($_SESSION['we']);
+	}
+	$_path = WEBEDITION_DIR;
 }
 
-echo we_html_element::jsElement($jsCommand);
+echo we_html_element::jsElement("top.location.replace('" . $_path . "');");

@@ -28,6 +28,9 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 
 if(!isset($_SESSION))
 	@session_start();
+if(!isset($_SESSION["we"])){
+	$_SESSION['we']=array();
+}
 
 if(!isset($_SESSION["user"])){
 	$_SESSION["user"] = array(
@@ -170,8 +173,8 @@ if(isset($_POST["username"]) && isset($_POST["password"])){
 						}
 					}
 				}
-				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["groups"] = $_userGroups; //	order: first is folder with user himself (deepest in tree)
+				$_SESSION["user"]["workSpace"] = implode(",", $f);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $t);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $o);
 				$_SESSION["user"]["workSpace"] .= ";" . implode(",", $n);
