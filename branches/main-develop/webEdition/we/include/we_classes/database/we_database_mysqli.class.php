@@ -108,6 +108,7 @@ class DB_WE extends we_database_base{
 					exit('Error in DB connect');
 			}
 		}
+		$this->_setup();
 		return true;
 	}
 

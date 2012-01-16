@@ -62,6 +62,9 @@ class DB_WE extends we_database_base{
 							$this->halt('cannot use database ' . $this->Database);
 							return false;
 						}
+			if($this->Link_ID){
+				$this->_setup();
+			}
 		}
 		return ($this->Link_ID > 0);
 	}

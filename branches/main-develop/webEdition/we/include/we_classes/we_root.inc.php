@@ -964,8 +964,8 @@ abstract class we_root extends we_class{
 					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 					$keys = array();
 					$vals = '';
-					for($i = 0; $i < sizeof($tableInfo); $i++){
-						$fieldName = $tableInfo[$i]["name"];
+					foreach($tableInfo as $t){
+						$fieldName = $t["name"];
 						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
 						if($k == "data" && $this->IsBinary){
 							break;

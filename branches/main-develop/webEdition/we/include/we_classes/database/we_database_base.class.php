@@ -28,12 +28,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 
 abstract class we_database_base{
 
-	private $retry = false;
-	/*	 * "yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning) */
-	private $Halt_On_Error = 'no';
+	private static $pool = array();
+	private static $conCount = 0;
+	private static $linkCount = 0;
 
-	/*	 * Set to 1 for automatic mysql_free_result() */
-	private $Auto_Free = 0;
 	/* link handles */
 	protected $Link_ID = 0;
 	/* query handles */
@@ -166,12 +164,68 @@ abstract class we_database_base{
 	 *
 	 */
 	public function __construct(){
-		if($this->connect()){
-			// deactivate MySQL strict mode; don't use query function (error logging)
-			$this->_query('SET SESSION sql_mode=""');
-			if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
-				$this->_setCharset(DB_SET_CHARSET);
-			}
+		//make lazy connections, only the first one is executed instantly
+		if(!self::$linkCount){
+			$this->connect();
+			self::$linkCount++;
+		}
+		self::$conCount++;
+	}
+
+	/**
+	 * Fill connection pool
+	 */
+	public function __destruct(){
+		if($this->Link_ID && $this->Database == DB_DATABASE){
+			$this->free();
+			self::$pool[] = $this->Link_ID;
+		}
+	}
+
+	/**
+	 * called on serialize of this class, closes db connection
+	 * @return type empty array
+	 */
+	public function __sleep(){
+		$this->close();
+		return array();
+	}
+
+	/**
+	 * called if this class is unserialized
+	 */
+	public function __wakeup(){
+		$this->_connect();
+	}
+
+	/**
+	 * internal connect which uses Connection Pools
+	 * @return type
+	 */
+	protected function _connect(){
+		$this->Link_ID = array_pop(self::$pool);
+		if(!$this->Link_ID){
+			self::$linkCount++;
+			$this->connect();
+		}
+		return $this->Link_ID;
+	}
+
+	/**
+	 * Only for debug
+	 */
+	static function showStat(){
+		echo 'tried connections: ' . self::$conCount . '<br>' . 'real connections: ' . self::$linkCount;
+	}
+
+	/**
+	 * call this function to make sure the connection is setup correctly
+	 */
+	protected function _setup(){
+// deactivate MySQL strict mode; don't use query function (error logging)
+		$this->_query('SET SESSION sql_mode=""');
+		if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
+			$this->_setCharset(DB_SET_CHARSET);
 		}
 	}
 
@@ -208,12 +262,12 @@ abstract class we_database_base{
 			 */
 			return false;
 		}
-		if(!$this->isConnected() && !$this->connect())
+		if(!$this->isConnected() && !$this->_connect())
 			return false;
 		/* we already complained in connect() about that. */
 
-		// check for union This is the fastest check
-		// if union is found in query, then take a closer look
+// check for union This is the fastest check
+// if union is found in query, then take a closer look
 		if($allowUnion == false && stristr($Query_String, 'union')){
 			if(preg_match('/[\s\(`=\)\/]union[\s\(`\/]/i', $Query_String)){
 				$queryToCheck = str_replace("\\\"", '', $Query_String);
@@ -246,7 +300,7 @@ abstract class we_database_base{
 			}
 		}
 
-		# New query, discard previous result.
+# New query, discard previous result.
 		if($this->Query_ID){
 			$this->free();
 		}
@@ -260,7 +314,7 @@ abstract class we_database_base{
 			$this->Query_ID = $this->_query($Query_String);
 		} else
 		if(preg_match('/insert |update|replace /i', $Query_String)){
-			// delete getHash DB Cache
+// delete getHash DB Cache
 			getHash('', $this);
 		}
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
@@ -290,7 +344,7 @@ abstract class we_database_base{
 			}
 		}
 
-		# Will return nada if it fails. That's fine.
+# Will return nada if it fails. That's fine.
 		return (bool) $this->Query_ID;
 	}
 
@@ -478,8 +532,8 @@ abstract class we_database_base{
 		 *   Test:  if (isset($result['meta']['myfield'])) { ...
 		 */
 
-		// if no $table specified, assume that we are working with a query
-		// result
+// if no $table specified, assume that we are working with a query
+// result
 		if($table){
 			if($this->query('SELECT * FROM `' . $table . '` LIMIT 1;'))
 				$this->halt("Metadata query failed.");
@@ -516,7 +570,7 @@ abstract class we_database_base{
 	 * @return bool true, on success
 	 */
 	function lock($table, $mode = 'write'){
-		if(!$this->connect()){
+		if(!$this->_connect()){
 			return false;
 		}
 		$query = '';
@@ -532,7 +586,7 @@ abstract class we_database_base{
 		} else{
 			$query = $table . ' ' . $mode;
 		}
-		//always lock Errlog-Table
+//always lock Errlog-Table
 		if(strpos($query, ERROR_LOG_TABLE) === FALSE){
 			$query.=',' . ERROR_LOG_TABLE . ' write';
 		}
@@ -544,7 +598,7 @@ abstract class we_database_base{
 	 * @return bool true, on success
 	 */
 	function unlock(){
-		if(!$this->connect()){
+		if(!$this->_connect()){
 			return false;
 		}
 		return $this->_query('unlock tables');
@@ -558,22 +612,14 @@ abstract class we_database_base{
 		return $this->Record;
 	}
 
-	/** eventually print the message and stop further execution, depending on "Halt_On_Error"
+	/** print the message and stop further execution
 	 * @param string $msg message to be printed
 	 */
 	protected function halt($msg){
 		$this->Error = $this->error();
 		$this->Errno = $this->errno();
-		switch($this->Halt_On_Error){
-			case 'no':
-				return;
-			case 'report':
-				$this->haltmsg($msg);
-				return;
-			default:
-				$this->haltmsg($msg);
-				die("Session halted.");
-		}
+		$this->haltmsg($msg);
+		die("Session halted.");
 	}
 
 	/**
@@ -583,22 +629,6 @@ abstract class we_database_base{
 	protected function haltmsg($msg){
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
-	}
-
-	/**
-	 * called on serialize of this class, closes db connection
-	 * @return type empty array
-	 */
-	public function __sleep(){
-		$this->close();
-		return array();
-	}
-
-	/**
-	 * called if this class is unserialized
-	 */
-	public function __wakeup(){
-		$this->connect();
 	}
 
 }
