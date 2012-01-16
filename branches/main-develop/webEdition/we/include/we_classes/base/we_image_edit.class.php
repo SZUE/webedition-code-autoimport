@@ -604,7 +604,6 @@ class we_image_edit{
 			if($imgID){
 				$_thumbSrc = '/webEdition/preview/' . $imgID . "_" . $width . "_" . $height . strtolower($outputFormat);
 			} else{
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/weFile.class.php");
 				$_thumbSrc = '/webEdition/we/tmp/' . ($tmpName ? $tmpName : weFile::getUniqueId()) . "." . strtolower($outputFormat);
 			}
 			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;

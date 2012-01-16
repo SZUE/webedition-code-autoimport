@@ -22,6 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 class we_base_ContentTypes{
 
 	private $ct;

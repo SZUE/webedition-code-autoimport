@@ -22,9 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-//include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-//we_html_tools::protect();
+
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
+we_html_tools::protect();
+//FIXME: send no perms img; but better an invalid picture, than access to unallowed images
+
 
 if(!isset($_REQUEST['id']) || $_REQUEST['id'] == '' ||
 	!isset($_REQUEST['path']) || $_REQUEST['path'] == '' ||
