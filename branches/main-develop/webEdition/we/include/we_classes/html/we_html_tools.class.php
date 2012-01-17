@@ -242,8 +242,8 @@ HTS;
 	}
 
 	static function htmlTextInput($name, $size = 24, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = "0", $height = "0", $markHot = "", $disabled = false){
-		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width)?'px':'') . ';') : '') .
-			($height ? ('height: ' . $height . (is_numeric($height) ? 'px':'') . ';') : '') . '"') : '';
+		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
+			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') . (strstr(
 				$attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs(
 				$size) . '" value="' . htmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . ($attribs ? " $attribs" : '') . $style . ' onblur="this.className=\'wetextinput\';" onfocus="this.className=\'wetextinputselected\'"' . ($disabled ? (' disabled="true"') : '') . ' />';
@@ -719,10 +719,7 @@ HTS;
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "pragma", "content" => "no-cache"
 			)) .
-			we_html_element::htmlMeta(array(
-				"http-equiv" => "content-type",
-				"content" => "text/html; charset=" . ($charset?$charset:$GLOBALS['WE_BACKENDCHARSET'])
-			)) .
+			self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])).
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "imagetoolbar", "content" => "no"
 			)) .
@@ -732,6 +729,14 @@ HTS;
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')) .
 			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
+	}
+
+	static function htmlMetaCtCharset($content, $charset){
+		$GLOBALS['we']['PageCharset'] = $charset;
+		return we_html_element::htmlMeta(array(
+				"http-equiv" => "content-type",
+				"content" => "'.$content.'; charset=" . $charset
+			));
 	}
 
 	/**

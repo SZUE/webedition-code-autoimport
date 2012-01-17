@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_inc_min.inc.php");
 
 class we_wizard_import extends we_wizard{
 
@@ -632,7 +631,7 @@ class we_wizard_import extends we_wizard{
 
 			$dir_table = new we_html_table($attribs, 3, 2);
 			if((isset($v["import_docs"]) && !$v["import_docs"]))
-				$dir_table->setAttribute("style", "display: none");
+				$dir_table->setStyle('display','none');
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[documents_desc]"), 1, "390", true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
@@ -666,7 +665,7 @@ class we_wizard_import extends we_wizard{
 			$docPath = $yuiSuggest->getHTML();
 
 			if((isset($v["import_templ"]) && !$v["import_templ"]))
-				$dir_table->setAttribute("style", "display: none");
+				$dir_table->setStyle('display','none');
 			$dir_table->setAttribute("id", "tpl_table");
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[templates_desc]"), 1, "390", true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
@@ -727,7 +726,7 @@ class we_wizard_import extends we_wizard{
 
 			$dir_table = new we_html_table($attribs, 2, 2);
 			if((isset($v["import_navigation"]) && !$v["import_navigation"]))
-				$dir_table->setAttribute("style", "display: none");
+				$dir_table->setStyle('display','none');
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', "[navigation_desc]"), 1, "390"));
 			$dir_table->setCol(1, 1, null, $docPath);
