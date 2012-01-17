@@ -29,12 +29,12 @@ class we_tag_tagParser{
 	private static $CloseTags = 0;
 	//remove comment-attribute (should never be seen), and obsolete cachelifetime
 	private $removeAttribs = array('cachelifetime', 'comment');
-	public static $curFile='';
+	public static $curFile = '';
 
 	//private $AppListviewItemsTags = array();
 
-	public function __construct($content='',$curFile=''){
-		self::$curFile=$curFile;
+	public function __construct($content='', $curFile=''){
+		self::$curFile = $curFile;
 		//init Tags
 		if($content != ''){
 			$this->setAllTags($content);
@@ -162,11 +162,11 @@ class we_tag_tagParser{
 					$_starttag, $_endtag
 				), $_endtag ? substr($code, $_start, $_end) : ''
 			));
-			if($_endtag) {
-				// on behalf of constructions like: 
+			if($_endtag){
+				// on behalf of constructions like:
 				// <we:ifTemplate><we:title prefix="pref1>title</we:title><we:else/><we:title prefix="pref2>title</we:title><we:ifTemplate>
 				// we need to cut after Endtag for the second pair of <title>-Tags to be correctly computeted
-				$code = substr($code, $_start + $_end); 
+				$code = substr($code, $_start + $_end);
 			}
 		}
 		return $_rettags;
@@ -350,7 +350,10 @@ class we_tag_tagParser{
 		}
 
 		if(!function_exists('we_tag_' . $tagname)){
-			we_include_tag_file($tagname);
+			$ret = we_include_tag_file($tagname);
+			if($ret !== true){
+				return $ret;
+			}
 		}
 		$tagPos = strpos($code, $tag, $this->lastpos);
 		$this->lastpos = $tagPos;
@@ -359,7 +362,6 @@ class we_tag_tagParser{
 			$content = '';
 		} else{
 			list($endTagPos, $endTagNo) = $this->searchEndtag($tagname, $code, $tagPos, $ipos);
-
 			if($endTagPos !== FALSE){
 				$endeEndTagPos = strpos($code, '>', $endTagPos) + 1;
 				$content = substr($code, $endeStartTag, ($endTagPos - $endeStartTag));

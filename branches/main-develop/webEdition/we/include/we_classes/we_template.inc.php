@@ -245,7 +245,7 @@ class we_template extends we_document{
 		  } */
 
 		if(($foo = $tp->parseTags($code)) !== true){
-			$this->errMsg = $foo;
+			$this->errMsg = str_replace('<we>','<we:',strip_tags(str_replace('<we:', '<we>', html_entity_decode($foo, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET'])),'<we>'));
 			return $foo;
 		}
 
