@@ -312,14 +312,16 @@ class we_tag_tagParser{
 			return 1;
 		}
 
-		$selfclose = (bool) ($regs[4]);
+		$selfclose = ($regs[4]==='/');
 		$gt = $regs[5];
 
 		$tagname = $regs[2];
 		if(!$gt){
 			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname));
 		}
-		$selfclose|=!in_array($tagname, self::$CloseTags);
+		//tags which need an endtag are not allowed to be selfclosing
+		//FIXME: ok or not?
+		//$selfclose&=!in_array($tagname, self::$CloseTags);
 		preg_match('%</?we:[[:alnum:]]+ *(.*)' . $regs[4] . $regs[5] . '%', $regs[0], $regs);
 		$attr = trim($regs[1]);
 
