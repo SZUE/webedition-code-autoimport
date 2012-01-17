@@ -55,7 +55,7 @@ function we_tag_createShop($attribs, $content) {
 					}*/
 				}
 
-				$GLOBALS[$shopname] = new Basket();
+				$GLOBALS[$shopname] = new we_shop_Basket();
 				$GLOBALS[$shopname]->setCartProperties( (isset($_SESSION["' . $shopname . '_save"]) ? $_SESSION["' . $shopname . '_save"] : array() ) );
 				$GLOBALS[$shopname]->initCartFields();
 				$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();

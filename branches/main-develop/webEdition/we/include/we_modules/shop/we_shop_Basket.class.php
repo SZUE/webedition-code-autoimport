@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class Basket{
+class we_shop_Basket{
 
 	/**
 	 * 	this array contains all shopping items

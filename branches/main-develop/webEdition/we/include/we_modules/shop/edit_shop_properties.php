@@ -189,9 +189,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 
 				if($isObj){
-					$serialDoc = Basket::getserial($id, 'o', $_REQUEST['we_variant'], $customFieldsTmp);
+					$serialDoc = we_shop_Basket::getserial($id, 'o', $_REQUEST['we_variant'], $customFieldsTmp);
 				} else{
-					$serialDoc = Basket::getserial($id, 'w', $_REQUEST['we_variant'], $customFieldsTmp);
+					$serialDoc = we_shop_Basket::getserial($id, 'w', $_REQUEST['we_variant'], $customFieldsTmp);
 				}
 
 				unset($customFieldsTmp);
@@ -1708,7 +1708,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		// now init each article
 		if(empty($Serial[$i])){ // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
 			// this should not happen any more
-			$shopArticleObject = Basket::getserial($ArticleId[$i], 'w');
+			$shopArticleObject = we_shop_Basket::getserial($ArticleId[$i], 'w');
 		} else{	 // output if $Serial[$i] is not empty. This is when a user ordered an article online
 			$shopArticleObject = @unserialize($Serial[$i]);
 		}
