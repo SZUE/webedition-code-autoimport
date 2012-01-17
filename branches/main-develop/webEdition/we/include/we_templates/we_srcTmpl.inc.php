@@ -905,7 +905,6 @@ if($GLOBALS['we_editmode']){
 };
 			var updateEditor=function(){ //this wil save content from CodeMirror2 to our original <textarea>.
 				var currentTemplateCode=editor.getValue().replace(/\r/g,"\n");
-				alert(currentTemplateCode);
 				if(window.orignalTemplateContent!=currentTemplateCode) {
 					window.orignalTemplateContent=currentTemplateCode;
 					document.getElementById("editarea").value=currentTemplateCode;
