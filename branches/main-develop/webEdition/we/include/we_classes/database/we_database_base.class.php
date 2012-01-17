@@ -336,13 +336,13 @@ abstract class we_database_base{
 						return $tmp;
 					}
 				default:
-					trigger_error('MYSQL-ERROR' . "\n" . 'Fehler: ' . $this->Errno . "\n" . 'Detail: ' . $this->Error . "\n" . 'Query: ' . $Query_String . "\n", E_USER_WARNING);
-					if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
-						error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
+						trigger_error('MYSQL-ERROR' . "\n" . 'Fehler: ' . $this->Errno . "\n" . 'Detail: ' . $this->Error . "\n" . 'Query: ' . $Query_String . "\n", E_USER_WARNING);
+						if(defined('WE_SQL_DEBUG') && WE_SQL_DEBUG == 1){
+							error_log('MYSQL-ERROR - Fehler: ' . $this->Errno . ' Detail: ' . $this->Error . ' Query: ' . $Query_String);
+						}
+						$this->halt('Invalid SQL: ' . $Query_String);
 					}
-					$this->halt('Invalid SQL: ' . $Query_String);
 			}
-		}
 
 # Will return nada if it fails. That's fine.
 		return (bool) $this->Query_ID;
@@ -616,8 +616,11 @@ abstract class we_database_base{
 	protected function halt($msg){
 		$this->Error = $this->error();
 		$this->Errno = $this->errno();
+		/* this doesn't work, since LiveUpdate tries to create tables
 		$this->haltmsg($msg);
 		die("Session halted.");
+		 *
+		 */
 	}
 
 	/**

@@ -603,7 +603,7 @@ class liveUpdateFunctions{
 			$db->query('SHOW COLUMNS FROM `' . $matches[2] . '` WHERE Field="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE `' . $matches[2] . '` DROP COLUMN `' . $matches[1] . '`' : '');
 		}
-		if(LIVEUPDATE_TABLE_PREFIX && strpos($query, '###TBLPREFIX###') === false){
+/*		if(LIVEUPDATE_TABLE_PREFIX && strpos($query, '###TBLPREFIX###') === false){
 
 			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
@@ -615,7 +615,7 @@ class liveUpdateFunctions{
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX . '`', '`' . LIVEUPDATE_TABLE_PREFIX, $query);
-		}
+		}*/
 		$query = str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 
 		// second, we need to check if there is a collation
