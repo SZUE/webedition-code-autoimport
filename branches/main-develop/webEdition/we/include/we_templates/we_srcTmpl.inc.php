@@ -705,7 +705,7 @@ if($GLOBALS['we_editmode']){
 				unset($weTag);
 			}
 			$weTag = weTagData::getTagData($tagName);
-			$ret.='.weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(),null,$GLOBALS['WE_BACKENDCHARSET'])) . '";}' . "\n";
+			$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . str_replace('"', '\'', html_entity_decode($weTag->getDescription(),null,$GLOBALS['WE_BACKENDCHARSET'])) . '";}' . "\n";
 		}
 		return $ret;
 	}
