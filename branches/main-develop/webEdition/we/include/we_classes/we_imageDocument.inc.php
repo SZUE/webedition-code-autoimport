@@ -600,12 +600,17 @@ class we_imageDocument extends we_binaryDocument{
 				}
 			}
 		} else{
-			//bugfix WE-350
-			$xhtmlSlash = '';
-			if(defined("XHTML_DEFAULT") && XHTML_DEFAULT){
-				$xhtmlSlash = ' /';
+			$xml = weTag_getAttribute('xml', $attribs, false, true); //rest is done in getHtmlTag
+			$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
+				'src' => IMAGE_DIR . 'icons/no_image.gif',
+				'alt' => '',
+				'xml' => $xml,
+			);
+			if(isset($this->name)){
+				$attribs['name'] = $this->name;
 			}
-			$this->html = '<img src="' . IMAGE_DIR . 'icons/no_image.gif" width="64" height="64" style="margin:8px 18px;" border="0"' . (isset($this->name) ? (' name="' . $this->name . '"') : '') . ' alt=""' . $xhtmlSlash . '>';
+
+			$this->html = getHtmlTag('img', $attribs);
 		}
 
 		return $this->html;

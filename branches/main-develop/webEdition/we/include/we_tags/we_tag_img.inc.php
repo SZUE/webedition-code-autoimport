@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_img($attribs, $content){
 	if(($foo = attributFehltError($attribs, 'name', 'img'))){
 		return $foo;
@@ -35,6 +34,9 @@ function we_tag_img($attribs, $content){
 	$showThumb = weTag_getAttribute("showthumbcontrol", $attribs, true, false);
 	$showimage = weTag_getAttribute("showimage", $attribs, true, true);
 	$showinputs = weTag_getAttribute("showinputs", $attribs, (defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true), true);
+
+	//$attribs = removeAttribs($attribs, array('name', 'xmltype','to','nameto'));
+
 
 	$id = $GLOBALS['we_doc']->getElement($name, "bdid");
 	$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
@@ -95,9 +97,12 @@ function we_tag_img($attribs, $content){
 		$out = '';
 	} elseif(!$id){
 		if($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition == 1){
-			$out = we_baseElement::getHtmlCode(new we_baseElement('img', false, array('src' => IMAGE_DIR . 'icons/no_image.gif', 'width' => 64, 'height' => 64, 'border' => 0, alt => '')));
+			$attribs['src'] = IMAGE_DIR . 'icons/no_image.gif';
+			$attribs['style'] = 'width:64px;height:64px;border-style:none;';
+			$attribs['alt'] = '';
+			$out = getHtmlTag('img', $attribs);
 		} else{
-			$out = '';//no_image war noch in der Vorscha sichtbar
+			$out = ''; //no_image war noch in der Vorscha sichtbar
 		}
 	} else{
 		$out = $GLOBALS['we_doc']->getField($attribs, 'img');

@@ -2181,7 +2181,7 @@ function clearPath($path) {
 	return preg_replace('#/+#', '/', str_replace('\\', '/', $path));
 }
 
-/**
+/** This function should be used ONLY in generating code for the FRONTEND
  * @return	string
  * @param	string $element
  * @param	[opt]array $attribs
@@ -2196,19 +2196,14 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$_xmlClose = false;
 
 	//	take values given from the tag - later from preferences.
-	$xhtml = (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false;
-
-	if (isset($attribs['xml']) && $attribs['xml']) {
-		$xhtml = ($attribs['xml'] == 'true' || $attribs['xml'] == 'on' || $attribs['xml'] == 'xml' || $attribs['xml'] == 1) ? true : false;
-	}
+	$xhtml = weTag_getAttribute('xml', $attribs, ((defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false),true);
 
 	// at the moment only transitional is supported
-	$xhtmlType = (isset($attribs['xmltype']) ? $attribs['xmltype'] : 'transitional');
+	$xhtmlType = weTag_getAttribute('xmltype', $attribs,'transitional');
 
 	//	remove x(ht)ml-attributs
-	$attribs = removeAttribs($attribs, array(
-							'xml', 'xmltype','to','nameto'
-					));
+	$attribs = removeAttribs($attribs, array('xml', 'xmltype','to','nameto'));
+
 	if ($element =='img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array('name'));
 	}
