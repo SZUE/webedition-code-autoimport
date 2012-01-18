@@ -22,8 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+ini_set('mysqli.reconnect', 1);
 
-ini_set('mysqli.reconnect',1);
 class DB_WE extends we_database_base{
 
 	protected function _free(){
@@ -61,19 +61,15 @@ class DB_WE extends we_database_base{
 	}
 
 	protected function fetch_array($resultType){
-		if(is_object($this->Query_ID)){
-			return $this->Query_ID->fetch_array($resultType);
-		} else{
-			return false;
-		}
+		return (is_object($this->Query_ID)) ?
+			$this->Query_ID->fetch_array($resultType) :
+			false;
 	}
 
 	public function getAll($resultType){
-		if(is_object($this->Query_ID)){
-			return $this->Query_ID->fetch_all($resultType);
-		} else{
-			return false;
-		}
+		return (is_object($this->Query_ID)) ?
+			$this->Query_ID->fetch_all($resultType) :
+			false;
 	}
 
 	public function affected_rows(){
@@ -92,8 +88,7 @@ class DB_WE extends we_database_base{
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'mysqli_pconnect':
-					//FIXME: deactivate persistent connect
-					//$Host = 'p:' . $Host;
+				$Host = 'p:' . $Host;
 				case 'mysqli_connect':
 					$this->Query_ID = null;
 					$this->Link_ID = new mysqli($Host, $User, $Password, $Database);
