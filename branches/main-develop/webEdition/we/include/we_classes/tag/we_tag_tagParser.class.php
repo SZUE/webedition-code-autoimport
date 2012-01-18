@@ -405,14 +405,13 @@ class we_tag_tagParser{
 				'<?php } ?>' .
 				substr($code, $endeEndTagPos);
 		} else{
-			// Tag besitzt Endtag 
-			if($content){ 
-			//if(isset($endeEndTagPos)){
+			// Tag besitzt Endtag
+			if($content){
 				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
 						$code, $endeEndTagPos);
 			} else{
 				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs) . '); ?>' . substr(
-						$code, $endeStartTag);
+						$code, (isset($endeEndTagPos)?$endeEndTagPos:$endeStartTag));
 			}
 		}
 		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
