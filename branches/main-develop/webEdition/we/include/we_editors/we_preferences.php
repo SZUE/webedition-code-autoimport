@@ -942,9 +942,7 @@ function remember_value($settingvalue, $settingname){
 				if($settingvalue != $GLOBALS["WE_LANGUAGE"] || $_REQUEST["BackendCharset"] != $GLOBALS['WE_BACKENDCHARSET']){
 
 					// complete webEdition reload: anpassen nach Wegfall der Frames
-					/*
 					$save_javascript .= "
-
 						// reload current document => reload all open Editors on demand
 						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
 						for (frameId in _usedEditors) {
@@ -958,8 +956,10 @@ function remember_value($settingvalue, $settingname){
 							}
 						}
 						_multiEditorreload = true;
+					";
 
-
+					/* 
+					$save_javascript .= "
 						if (parent.opener.top.rframe.bframe.bm_vtabs) {
 							parent.opener.top.rframe.bframe.bm_vtabs.location.reload();
 						}
@@ -6659,7 +6659,7 @@ if($doSave && !$acError){
 
 							   " . (!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)
 			) . "
-							   top.opener.top.frames[0].location.reload();
+							   //top.opener.top.frames[0].location.reload();
 							   top.close();
 							}
 
