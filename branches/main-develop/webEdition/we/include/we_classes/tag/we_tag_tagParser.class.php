@@ -406,8 +406,8 @@ class we_tag_tagParser{
 				substr($code, $endeEndTagPos);
 		} else{
 			// Tag besitzt Endtag 
-			//if($content){
-			if(isset($endeEndTagPos)){
+			if($content){ 
+			//if(isset($endeEndTagPos)){
 				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs, $content, true) . '); ?>' . substr(
 						$code, $endeEndTagPos);
 			} else{
