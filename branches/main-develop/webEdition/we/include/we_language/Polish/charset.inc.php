@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_charset=array(
-	
 	'error'=>array(
 		'no_charset_available'=>'--Brak--',
 		'no_charset_tag'=>'Brak znacznika we:charset w szablonie',

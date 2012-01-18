@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_modules_shop=array(
-	
 	'add_article'=>array(
 		'empty_articles'=>'No se encontraron artículos.',
 		'entry_x_to_y_from_z'=>'Entrar %s a %s de %s',

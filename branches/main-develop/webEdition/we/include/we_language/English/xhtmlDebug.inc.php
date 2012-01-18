@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_xhtmlDebug=array(
-	
 	'missing_attribute'=>array(
 		'error_log'=>'The required attribute "%s" is missing in the element "<%s>".',
 		'js'=>'The required attribute "%s" is missing in the element "<%s>".',

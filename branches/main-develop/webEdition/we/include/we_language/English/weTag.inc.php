@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
-	
 	'addDelNewsletterEmail'=>array(
 		'description'=>'This tag is used to add or remove an email address from a newsletter address list. In attribute "path" the complete path to the newsletter list must be given. If the path begins without "/" the path will be emanated from DOCUMENT_ROOT. If you use several lists, you can enter several paths, separated by a comma.',
 	),

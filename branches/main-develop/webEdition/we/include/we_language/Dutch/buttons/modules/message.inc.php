@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_modules_message=array(
-	
 	'advanced'=>array(
 		'alt'=>'Geavanceerde zoek instellingen ...',
 		'value'=>'Advanced',

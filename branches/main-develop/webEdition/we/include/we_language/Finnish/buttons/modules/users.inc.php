@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_modules_users=array(
-	
 	'checkall'=>array(
 		'alt'=>'Valitse kaikki',
 		'value'=>'Valitse kaikki',

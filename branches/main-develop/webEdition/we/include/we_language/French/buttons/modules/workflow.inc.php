@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_modules_workflow=array(
-	
 	'decline'=>array(
 		'alt'=>'Rejeter',
 		'value'=>'Rejeter',

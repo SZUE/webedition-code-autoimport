@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_SEEM=array(
-	
 	'alert'=>array(
 		'changed_include'=>'An included file has been changed. Main document is reloaded.',
 		'close_include'=>'This file is no webEdition document. The include window is closed.',

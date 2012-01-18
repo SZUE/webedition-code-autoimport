@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_SEEM=array(
-	
 	'alert'=>array(
 		'changed_include'=>'Un archivo adjunto ha sido cambiado. El documento principal es recargado.',
 		'close_include'=>'Este archivo no es un documento webEdition. La ventana de adjunto es cerrada.',

@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_xhtmlDebug=array(
-	
 	'missing_attribute'=>array(
 		'error_log'=>'Brakuje obowiązkowy atrybut "%s" w elemencie "<%s>".',
 		'js'=>'Brakuje obowiązkowy atrybut "%s" w elemencie "<%s>".',

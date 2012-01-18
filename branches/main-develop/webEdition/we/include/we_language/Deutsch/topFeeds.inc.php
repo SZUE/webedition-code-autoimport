@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_topFeeds=array(
-	
 	'0'=>array(
 		'0'=>'webEdition Neuigkeiten',
 		'1'=>'http://www.webedition.org/de/feeds/aktuelles.xml',

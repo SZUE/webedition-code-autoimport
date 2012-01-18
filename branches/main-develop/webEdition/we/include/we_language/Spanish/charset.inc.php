@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_charset=array(
-	
 	'error'=>array(
 		'no_charset_available'=>'--ninguno--',
 		'no_charset_tag'=>'No hay rótulo we:charset en la plantilla',

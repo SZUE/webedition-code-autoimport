@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
-	
 	'application/*'=>array(
 		'filename_empty'=>'Для этого документа не введено имя!',
 		'response_path_exists'=>'Документ `%s` не сохранен, так как другой документ или директория занимает это местоположение!',

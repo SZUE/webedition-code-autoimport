@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_cache=array(
-	
 	'cacheLifeTimes'=>array(
 		'0'=>'deactivated',
 		'1800'=>'30 minuten',

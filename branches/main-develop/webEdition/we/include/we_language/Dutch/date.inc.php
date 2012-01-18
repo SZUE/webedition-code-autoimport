@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_date=array(
-	
 	'day'=>array(
 		'long'=>array(
 			'0'=>'Zondag',

@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_xhtmlDebug=array(
-	
 	'missing_attribute'=>array(
 		'error_log'=>'L`attribut imposé "%s" manque dans l`element "<%s>".',
 		'js'=>'L`attribut imposé "%s" manque dans l`element "<%s>".',

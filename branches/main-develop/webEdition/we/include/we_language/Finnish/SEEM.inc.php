@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_SEEM=array(
-	
 	'alert'=>array(
 		'changed_include'=>'Sisällytettyä tiedostoa on muokattu. Päädokumentti ladataan uudelleen.',
 		'close_include'=>'Tämä ei ole webEdition dokumentti. Sisällytysikkuna on suljettu.',

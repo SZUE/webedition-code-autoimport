@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_SEEM=array(
-	
 	'alert'=>array(
 		'changed_include'=>'Eine Include-Datei wurde verändert. Das Hauptfenster wird neu geladen.',
 		'close_include'=>'Die Datei ist keine webEdition-Datei. Das Include-Fenster wird geschlossen.',

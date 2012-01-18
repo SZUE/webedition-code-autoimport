@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
-	
 	'application/*'=>array(
 		'filename_empty'=>'Dokumentille ei ole annettu nimeä!',
 		'response_path_exists'=>'Dokumenttia `%s` ei voitu tallentaa, koska samanniminen tiedosto tai hakemisto sijaitsee kohteessa!',

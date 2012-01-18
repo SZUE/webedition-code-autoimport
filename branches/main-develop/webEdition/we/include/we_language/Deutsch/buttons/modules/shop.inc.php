@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_modules_shop=array(
-	
 	'btn_payment_val'=>array(
 		'alt'=>'Zu den Payment Provider Einstellungen wechseln',
 	),

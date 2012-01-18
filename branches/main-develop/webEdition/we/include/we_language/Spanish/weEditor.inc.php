@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
-	
 	'application/*'=>array(
 		'filename_empty'=>'Ningún nombre ha sido entrado para este documento!',
 		'response_path_exists'=>'El documento `%s` no pudo ser salvado porque otro documento o directorio está situado en la misma ubicación!',

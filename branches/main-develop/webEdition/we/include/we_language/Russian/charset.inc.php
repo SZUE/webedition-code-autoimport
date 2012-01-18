@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_charset=array(
-	
 	'error'=>array(
 		'no_charset_available'=>'--нет--',
 		'no_charset_tag'=>'Тега we:charset в данном шаблоне нет',

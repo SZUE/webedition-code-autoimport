@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_xhtmlDebug=array(
-	
 	'missing_attribute'=>array(
 		'error_log'=>'Het vereiste attribuut "%s" ontbreekt in het element "<%s>".',
 		'js'=>'Het vereiste attribuut "%s" ontbreekt in het element "<%s>".',

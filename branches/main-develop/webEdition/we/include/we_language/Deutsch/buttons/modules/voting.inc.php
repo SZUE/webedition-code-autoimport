@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_modules_voting=array(
-	
 	'new_voting'=>array(
 		'alt'=>'Neues Voting erstellen ...',
 		'value'=>'Neues Voting',

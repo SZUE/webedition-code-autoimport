@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_global=array(
-	
 	'addCursorPosition'=>array(
 		'alt'=>'Ausgewählten Text an Cursor-Position einfügen',
 		'value'=>'An Cursorposition einfügen',

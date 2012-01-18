@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
-	
 	'application/*'=>array(
 		'filename_empty'=>'Nie wprowadzono nazwy pliku!',
 		'response_path_exists'=>'Nie udało się zapisać pliku `%s`, ponieważ w tym miejscu znajduje się już plik lub katalog!',

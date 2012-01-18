@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
-	
 	'addDelNewsletterEmail'=>array(
 		'description'=>'Deze tag wordt gebuikt om een e-mail adres toe te voegen of te verwijderen uit een nieuwsbrief lijst. In het attribuut &quot;path&quot moet het complete pad naar de nieuwsbrief lijst gegeven worden. Wanneer het pad begint zonder &quot;/&quot; zal het pad voortkomen uit de DOCUMENT_ROOT. Wanneer u meerdere lijsten gerbuikt, kunt u meerdere paden opgeven, gescheiden door een komma',
 	),

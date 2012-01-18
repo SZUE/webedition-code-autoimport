@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
-	
 	'addDelNewsletterEmail'=>array(
 		'description'=>'Dieses Tag erzeugt, schreibt oder entfernt eine Email aus der Newsletter-Empfänger-Liste. Die Empfänger-Listen werden als CSV-Datei gespeichert und können dann beim Versand im Newslettermodul verwendet werden.',
 	),

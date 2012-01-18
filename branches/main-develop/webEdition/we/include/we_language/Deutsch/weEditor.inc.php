@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
-	
 	'application/*'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
 		'response_path_exists'=>'Die Datei `%s` konnte nicht gespeichert werden, da es bereits eine andere Datei oder ein anderes Verzeichnis an dieser Stelle gibt!',

@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
-	
 	'application/*'=>array(
 		'filename_empty'=>'Er is geen naam ingevoerd voor dit document!',
 		'response_path_exists'=>'Het document `%s` kon niet bewaard worden omdat een ander document of directory zich op dezelfde plek bevind!',

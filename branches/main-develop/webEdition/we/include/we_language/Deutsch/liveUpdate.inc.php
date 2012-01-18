@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_liveUpdate=array(
-	
 	'beta'=>array(
 		'headline'=>'Sollen auch Pre-Release Versionen mit in die Suche einbezogen werden?',
 		'lookForUpdate'=>'nach Pre-Release Versionen suchen',

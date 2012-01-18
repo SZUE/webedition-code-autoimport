@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_tabs=array(
-	
 	'editor'=>array(
 		'edit'=>'Редактировать',
 		'fields'=>'Поля',

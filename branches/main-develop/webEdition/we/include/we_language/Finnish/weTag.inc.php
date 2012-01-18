@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
-	
 	'addDelNewsletterEmail'=>array(
 		'description'=>'Tätä tagia käytetään öisäämään tai poistamaan sähköpostiosoite uutiskirjeen tilaajalistalta. Attribuutissa "path" täytyy antaa täydellinen polku uutiskirjeen vastaanottajalistatiedostoon. Jos path alkaa ilman merkkiä "/", lisätään annettu merkkijono DOCUMENT_ROOT arvoon. Jos käytössä on useita listoja, voit antaa pathiin useita polkuja pilkkueroteltuna.',
 	),

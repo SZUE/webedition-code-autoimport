@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_javaMenu_moduleInformation=array(
-	
 	'banner'=>array(
 		'not_installed'=>'Sorry, maar u heeft de webEdition Banner/Statistieken Module nog niet geinstalleerd. U vindt de module en meer informatie onder: %s',
 		'text'=>'Banner/Statistieken Module',

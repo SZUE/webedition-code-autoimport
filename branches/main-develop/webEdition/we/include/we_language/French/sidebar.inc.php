@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_sidebar=array(
-	
 	'admin'=>array(
 		'0'=>array(
 			'headline'=>'Paramètres sidebar',

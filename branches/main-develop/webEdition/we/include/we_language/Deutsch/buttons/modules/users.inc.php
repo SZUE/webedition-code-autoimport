@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_buttons_modules_users=array(
-	
 	'checkall'=>array(
 		'alt'=>'Alle Rechte anwählen',
 		'value'=>'Alle anwählen',

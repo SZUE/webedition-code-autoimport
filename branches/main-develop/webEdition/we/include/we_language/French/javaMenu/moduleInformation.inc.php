@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_javaMenu_moduleInformation=array(
-	
 	'banner'=>array(
 		'not_installed'=>'Malheureusement vous n`avez pas encore installé le module de Bannière-/Statistique de webEdition.<p>Le module et tous renseignements complémentaires trouvez-vous ici: %s',
 		'text'=>'Module de Bannière-/Statistique',

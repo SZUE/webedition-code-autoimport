@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_javaMenu_moduleInformation=array(
-	
 	'banner'=>array(
 		'not_installed'=>'Niestety nie zainstalowano jeszcze modułu Banner do programu webEdition. <p>Moduł oraz dalsze informacje znaleźć można pod adresem: %s',
 		'text'=>'Moduł Banner',

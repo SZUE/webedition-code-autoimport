@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_SEEM=array(
-	
 	'alert'=>array(
 		'changed_include'=>'Een opgenomen bestand is gewijzigd. Hoofd document is opnieuw geladen.',
 		'close_include'=>'Dit bestand is geen webEdition document. Het include venster is gesloten.',

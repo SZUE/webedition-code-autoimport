@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_xhtmlDebug=array(
-	
 	'missing_attribute'=>array(
 		'error_log'=>'Требуемый атрибут "%s" в элементе "<%s>" отсутствует.',
 		'js'=>'Требуемый атрибут "%s" в элементе "<%s>" отсутствует.',
