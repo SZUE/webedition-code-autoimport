@@ -330,13 +330,14 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 			Line=' . intval($_line) . ',
 			Text="' . escape_sql_query($_text) . '",
 			Backtrace="' . escape_sql_query($_detailedError) . '"';
-		if(isset($GLOBALS['DB_WE']) && $GLOBALS['DB_WE']->isConnected()){
-			if(!$GLOBALS['DB_WE']->query($_query)){
+		if(isset($GLOBALS['DB_WE'])){
+			$db=new DB_WE();
+			if(!$db->query($_query)){
 				die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
 			} else{
-				$id = $GLOBALS['DB_WE']->getInsertId();
+				$id = $db->getInsertId();
 				foreach($logVars as $var){
-					$GLOBALS['DB_WE']->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
+					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
 		} else{
