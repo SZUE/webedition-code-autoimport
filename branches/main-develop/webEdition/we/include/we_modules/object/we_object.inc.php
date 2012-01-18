@@ -557,7 +557,7 @@ class we_object extends we_document{
 	function setSort(){
 		if(!$this->issetElement("we_sort")){
 			$t=we_objectFile::getSortArray($this->ID, $this->DB_WE);
-
+			$sort=array();
 			foreach($t as $k => $v){
 				if($v < 0){
 					$v = 0;
@@ -565,27 +565,6 @@ class we_object extends we_document{
 				$sort[uniqid("")] = $v;
 			}
 
-			$sort = array();
-			if(strlen($this->strOrder)>0){
-				$t = explode(",",$this->strOrder);
-				if(count($t) != count($fields)) {
-					$t = array();
-					for($y=0;$y<count($fields);$y++) {
-						$t[$y] = $y;
-					}
-				}
-				foreach($t as $k => $v) {
-					if($v<0) {
-						$v = 0;
-					}
-					$sort[uniqid("")] = $v;
-				}
-			}else{
-				for($y = 0; $y < count($fields); $y++){
-					$sort[uniqid("")] = $y;
-				}
-
-			}
 			$this->setElement("we_sort",$sort);
 		}
 	}
