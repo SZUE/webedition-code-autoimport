@@ -265,11 +265,14 @@ function display_error_message($type, $message, $file, $line, $skipBT=false){
 	print $_detailedError;
 }
 
-function getVariableMax($var){
+function getVariableMax($var,$db=''){
 	static $max = -1;
+	if($db==''){
+			$max = 1073741824 - 2048; //1MB
+	}
 	if($max == -1){
 		if(isset($GLOBALS['DB_WE']) && $GLOBALS['DB_WE']->isConnected()){
-			$max = f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $GLOBALS['DB_WE']) - 2048;
+			$max = f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $db) - 2048;
 			if($max > 12884901888){ //12MB
 				$max = 12884901888 - 2048;
 			}
@@ -337,7 +340,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 			} else{
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
-					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
+					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var,$db) . ' WHERE ID=' . $id);
 				}
 			}
 		} else{
