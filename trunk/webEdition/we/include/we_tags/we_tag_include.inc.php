@@ -95,7 +95,7 @@ function we_tag_include($attribs, $content) {
 				} else {
 					$id=0;
 				}
-			}
+			} 
 			if(defined('CUSTOMER_TABLE') && !$isDynamic && $id){
 				include_once($_SERVER["DOCUMENT_ROOT"].'/webEdition/we/include/we_modules/customer/weDocumentCustomerFilter.class.php');
 
