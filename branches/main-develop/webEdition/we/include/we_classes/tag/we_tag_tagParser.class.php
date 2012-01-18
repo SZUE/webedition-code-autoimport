@@ -305,7 +305,7 @@ class we_tag_tagParser{
 		$regs = array();
 		//$endTag = false;
 		preg_match('%<(/?)we:([[:alnum:]]+)( *[[:alnum:]]+ *= *"[^"]*")* *(/?)(>?)%i', $tag, $regs);
-		$endTag = (bool) ($regs[1]);
+		$endTag = ($regs[4]==='/');
 		if($endTag){
 			//there should not be any endtags
 			$code = str_replace($tag, '', $code);
