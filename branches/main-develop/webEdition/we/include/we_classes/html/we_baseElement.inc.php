@@ -36,9 +36,9 @@ class we_baseElement{
 	var $uid;
 	var $tag_name = '';
 	var $need_end_tag = true;
-	var $attribs = array('style'=>array());
+	var $attribs = array('style' => array());
 	var $content = '';
-	private $rfc='html4';
+	private $rfc = 'html4';
 
 	/**
 	 * Constructor
@@ -47,12 +47,12 @@ class we_baseElement{
 	 *
 	 * @return		we_baseElement
 	 */
-	function __construct($tagname="", $need_end_tag=true, $attribs='', $content='',$rfc='html4'){
+	function __construct($tagname="", $need_end_tag=true, $attribs='', $content='', $rfc='html4'){
 		$this->setTagName($tagname);
 		$this->setNeedEndTag($need_end_tag);
 		$this->setAttributes($attribs);
 		$this->setContent($content);
-		$this->rfc=$rfc;
+		$this->rfc = $rfc;
 	}
 
 	/**
@@ -123,31 +123,31 @@ class we_baseElement{
 	 * @return		void
 	 */
 	function setAttribute($attrib_name, $attrib_value){
-		if($attrib_name=='style'){
-			$attrib_value=rtrim($attrib_value,'; ');
-			if(strpos($attrib_value,';')!==FALSE){
-				$vals=explode(';',$attrib_value);
-				foreach ($vals as $val){
-					list($k,$v)=explode(':',$val);
-					$this->setStyle($k,$v);
+		if($attrib_name == 'style'){
+			$attrib_value = rtrim($attrib_value, '; ');
+			if(strpos($attrib_value, ';') !== FALSE){
+				$vals = explode(';', $attrib_value);
+				foreach($vals as $val){
+					list($k, $v) = explode(':', $val);
+					$this->setStyle($k, $v);
 				}
-			}else{
-				list($k,$v)=explode(':',$attrib_value);
-				$this->setStyle($k,$v);
+			} else{
+				list($k, $v) = explode(':', $attrib_value);
+				$this->setStyle($k, $v);
 			}
-		}else{
+		} else{
 			switch($attrib_name){
 				case 'valign':
-					$this->setStyle('vertical-align:',$attrib_value);
+					$this->setStyle('vertical-align:', $attrib_value);
 					break;
 				case 'width':
-					$this->setStyle('width',$attrib_value.(is_numeric($attrib_value)?'px':''));
+					$this->setStyle('width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 					break;
 				case 'height':
-					$this->setStyle('height',$attrib_value.(is_numeric($attrib_value)?'px':''));
+					$this->setStyle('height', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 					break;
 				case 'border':
-					$this->setStyle('border-width',$attrib_value.(is_numeric($attrib_value)?'px':''));
+					$this->setStyle('border-width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
 					break;
 				default:
 					$this->attribs[$attrib_name] = $attrib_value;
@@ -155,8 +155,8 @@ class we_baseElement{
 		}
 	}
 
-	function setStyle($type,$val){
-		$this->attribs['style'][trim($type)]=trim($val);
+	function setStyle($type, $val){
+		$this->attribs['style'][trim($type)] = trim($val);
 	}
 
 	/**
@@ -206,15 +206,17 @@ class we_baseElement{
 	function getHTML(){
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
-			if($k=='style'){
-				$out.=' ' . $k . '="';
-				foreach($v as $kk=>$vv){
-					$out.=$kk.':'.$vv.';';
+			if($k == 'style'){
+				if(count($v)){
+					$out.=' ' . $k . '="';
+					foreach($v as $kk => $vv){
+						$out.=$kk . ':' . $vv . ';';
+					}
+					$out.='"';
 				}
-				$out.='"';
-			}else if($v!==''){
-				$out.=' ' . $k . '="' . $v . '"' ;
-			}else{
+			} else if($v !== ''){
+				$out.=' ' . $k . '="' . $v . '"';
+			} else{
 				switch($k){
 					case 'disabled':
 					case 'multiple':
@@ -223,10 +225,10 @@ class we_baseElement{
 					case 'readonly':
 					case 'checked':
 					case 'selected':
-						$out.=$k.'="'.$k.'"';
+						$out.=$k . '="' . $k . '"';
 						break;
 					default:
-						$out.=$k.'=""';
+						$out.=$k . '=""';
 				}
 			}
 		}
