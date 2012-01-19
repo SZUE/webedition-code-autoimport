@@ -590,14 +590,9 @@ class we_imageDocument extends we_binaryDocument{
 
 				$this->html = ( trim($ro_script) . getHtmlTag('a', $_aAtts, getHtmlTag('img', $attribs)) );
 			} else{
-				if(defined("WE_EDIT_IMAGE")){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/base/we_image_crop.class.php");
-
-					$CI = new we_image_crop();
-					$this->html = $CI->getJS() . $CI->getCSS() . $CI->getCrop($attribs);
-				} else{
-					$this->html = getHtmlTag('img', $attribs);
-				}
+				$this->html = (defined("WE_EDIT_IMAGE")) ?
+					we_image_crop::getJS() . we_image_crop::getCSS() . we_image_crop::getCrop($attribs) :
+					getHtmlTag('img', $attribs);
 			}
 		} else{
 			$xml = weTag_getAttribute('xml', $attribs, false, true); //rest is done in getHtmlTag

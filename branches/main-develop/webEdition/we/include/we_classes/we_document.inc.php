@@ -901,8 +901,7 @@ class we_document extends we_root{
 			if(!$this->i_writeMainDir($doc)){
 				return false;
 			}
-		}
-		else{
+		} else{
 			return false;
 		}
 		return true;
@@ -1224,11 +1223,11 @@ class we_document extends we_root{
 			$db = new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
-		$int=$fn($nint);
+		$int = $fn($nint);
 		$int = ($int == "") ? 0 : $fn($nint);
 		if($int){
 			$nintID = $n . '_we_jkhdsf_intID';
-			$intID = $fn ($nintID);
+			$intID = $fn($nintID);
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
 		} else{
 			$extPath = $fn($n);
@@ -1649,7 +1648,7 @@ class we_document extends we_root{
 
 		$inputName = 'we_' . $this->Name . "_txt[$name]";
 
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . $GLOBALS['l_we_class']['Charset'] . '</td></tr>' : '');
+		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
 
 		if($withHeadline){
 			$_headline = '
