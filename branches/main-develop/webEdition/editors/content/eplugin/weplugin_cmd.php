@@ -97,7 +97,7 @@
 					$out = we_html_element::jsElement('
 						session = "'.session_id().'";
 						transaction = "'.$_we_transaction.'";
-						siteurl="'.getServerUrl(). $_tmp_file . '";
+						siteurl="'.getServerUrl(true). '/webEdition/editors/template/editor/getTmpFile.php?we_cmd[0]='.basename($_filename).'";
 						top.plugin.document.WePlugin.editFile(session,transaction,"'.addslashes($_filename).'",siteurl,"'.$we_ContentType.'");
 					');
 

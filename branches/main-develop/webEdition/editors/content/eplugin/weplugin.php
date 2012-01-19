@@ -66,10 +66,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 		var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 		document.we_form.elements[\'we_cmd[0]\'].value="editFile";
 		document.we_form.elements[\'we_cmd[1]\'].value=_EditorFrame.getEditorTransaction();
-
 		document.we_form.submit();
-
-
 	}
 
 	function setSource(trans){
