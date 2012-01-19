@@ -141,11 +141,12 @@ class DB_WE extends we_database_base{
 	}
 
 	public function getInfo(){
-		return 'type: ' . $this->conType .
-			'<br/>protocol: ' . mysql_get_proto_info() .
-			'<br/>client: ' . mysql_get_client_info() .
-			'<br/>host: ' . mysql_get_host_info() .
-			'<br/>server: ' . mysql_get_server_info();
+		return '<table class="defaultfont"><tr><td>type:</td><td>' . $this->conType .
+			'</td></tr><tr><td>protocol:</td><td>' . mysql_get_proto_info() .
+			'</td></tr><tr><td>client:</td><td>' . mysql_get_client_info() .
+			'</td></tr><tr><td>host:</td><td>' . mysql_get_host_info() .
+			'</td></tr><tr><td>server:</td><td>' . mysql_get_server_info().
+			'</td></tr><tr><td>encoding:</td><td>'.mysql_client_encoding().'</td></tr></table>';
 	}
 
 	protected function errno(){

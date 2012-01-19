@@ -140,11 +140,13 @@ class DB_WE extends we_database_base{
 	}
 
 	public function getInfo(){
-		return 'type: ' . DB_CONNECT .
-			'<br/>protocol: ' . $this->Link_ID->protocol_version .
-			'<br/>client: ' . $this->Link_ID->client_info .
-			'<br/>host: ' . $this->Link_ID->host_info .
-			'<br/>server: ' . $this->Link_ID->server_info;
+		$charset=$this->Link_ID->get_charset();
+		return '<table class="defaultfont"><tr><td>type:</td><td>' . DB_CONNECT .
+			'</td></tr><tr><td>protocol:</td><td>' . $this->Link_ID->protocol_version .
+			'</td></tr><tr><td>client:</td><td>' . $this->Link_ID->client_info .
+			'</td></tr><tr><td>host:</td><td>' . $this->Link_ID->host_info .
+			'</td></tr><tr><td>server:</td><td>' . $this->Link_ID->server_info.
+			'</td></tr><tr><td>encoding:</td><td>'.$charset->charset.'</td></tr></table>';
 	}
 
 	protected function ping(){
