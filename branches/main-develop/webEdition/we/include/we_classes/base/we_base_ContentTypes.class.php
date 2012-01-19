@@ -22,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 class we_base_ContentTypes{
-
 	private $ct;
 
 	public function __construct(){
+		$charset=defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 		$this->ct = array(
 // Content Type for Images
 			'image/*' => array(
@@ -44,7 +43,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '<html>' . "\n\t" .
 				'<head>' . "\n\t\t" .
 				'<title></title>' . "\n\t\t" .
-				'<meta http-equiv="Content-Type" content="text/html; charset="' . $GLOBALS['WE_BACKENDCHARSET'] . '">' . "\n\t" .
+				'<meta http-equiv="Content-Type" content="text/html; charset="' . $charset . '">' . "\n\t" .
 				'</head>' . "\n\t" .
 				'<body>' . "\n\t" .
 				'</body>' . "\n" .
@@ -169,7 +168,7 @@ class we_base_ContentTypes{
 			'text/xml' => array(
 				'Extension' => '.xml',
 				'Permission' => 'NEW_TEXT',
-				'DefaultCode' => '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" ?>',
+				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'link.gif',
