@@ -199,8 +199,8 @@ abstract class we_forms{
 		}
 
 		if($style){
-			$style = eregi_replace('width:[^;"]+[;"]?', '', $style);
-			$style = eregi_replace('height:[^;"]+[;"]?', '', $style);
+			$style = preg_replace('/width:[^;"]+[;"]?/i', '', $style);
+			$style = preg_replace('/height:[^;"]+[;"]?/i', '', $style);
 			$style = trim($style);
 		}
 		$fontnames = weTag_getAttribute("fontnames", $attribs);

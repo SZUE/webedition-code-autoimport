@@ -52,6 +52,7 @@ class we_class_folder extends we_folder{
 	/* Constructor */
 
 	function __construct(){
+		parent::__construct();
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID');
 		$this->ContentType = 'folder';
 	}
@@ -289,7 +290,6 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		// get Class
-		//$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='".mxysql_real_escape_string($this->Path)."'",$DB_WE);#4076 orig
 		$classArray = getHash("SELECT * FROM " . OBJECT_TABLE . " WHERE Path='" . $DB_WE->escape($this->ClassPath) . "'", $DB_WE);
 
 
@@ -502,8 +502,7 @@ class we_class_folder extends we_folder{
 				if($f == 0){
 					$i = 0;
 
-					while(list($key, $val) = each($this->searchclass->getRecord())) {
-
+					foreach($this->searchclass->getRecord() as $key=>$val){
 						if(preg_match('/(.+?)_(.*)/', $key, $regs)){
 							if($regs[1] != "OF"){
 								if($regs[1] == "object"){
