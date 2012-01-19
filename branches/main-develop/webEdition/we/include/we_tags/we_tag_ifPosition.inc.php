@@ -84,7 +84,9 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size) 
 					case "greater|equal": return $position >= $_position;
 				}
 			} else {
-				if ($position == $_position) {
+				if($operator=='every' && ($position % $_position == 0) ){
+					return true;
+				}else if ($position == $_position) {
 					return true;
 				}
 			}
