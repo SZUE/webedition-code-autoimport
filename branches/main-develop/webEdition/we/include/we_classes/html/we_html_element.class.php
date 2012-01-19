@@ -223,13 +223,9 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlBody($attribs=array(), $content=''){
-		if(!isset($attribs['style'])){
-			$attribs['style'] = 'margin: 0px 0px 0px 0px;';
-		} else if(strstr($attribs['style'], 'margin') === FALSE){
-			$attribs['style'].=';margin: 0px 0px 0px 0px;';
-		}
-
-		return "\n" . we_baseElement::getHtmlCode(new we_baseElement('body', true, $attribs, "\n" . $content . "\n"));
+		$body=new we_baseElement('body', true, $attribs, $content );
+		$body->setStyle('margin','0px 0px 0px 0px');
+		return $body->getHTML();
 	}
 
 	/**
