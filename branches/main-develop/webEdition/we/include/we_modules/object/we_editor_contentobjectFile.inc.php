@@ -30,7 +30,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_tag.inc.php");
 we_html_tools::protect();
 
 if(isset($GLOBALS['we_doc']->Charset)){	//	send charset which might be determined in template
-	header("Content-Type: text/html; charset=" . $GLOBALS['we_doc']->Charset);
+	we_html_tools::headerCtCharset('text/html',$GLOBALS['we_doc']->Charset);
 }
 
 $_editMode = (isset($_previewMode) && $_previewMode == 1 ? 0 : 1);

@@ -22,7 +22,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $defaultCharset = "UTF-8";
 
-@header("Content-Type: text/html; charset=UTF-8");
+we_html_tools::headerCtCharset('text/html',$defaultCharset);
 
 we_html_tools::protect();
 

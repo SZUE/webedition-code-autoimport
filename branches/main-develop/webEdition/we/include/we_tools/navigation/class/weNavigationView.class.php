@@ -721,7 +721,7 @@ function processCommands() {
 		if (isset($_REQUEST["cmd"])) {
 
 			if(!empty($this->Model->Charset) && $_REQUEST['cmd']!='new_navigation') {
-				header('Content-Type: text/html; charset=' . $this->Model->Charset);
+				we_html_tools::headerCtCharset('text/html',$this->Model->Charset);
 				$_header_sent = true;
 			}
 
@@ -753,7 +753,7 @@ function processCommands() {
 					$this->Model = new weNavigation($_REQUEST['cmdid']);
 
 					if(!empty($this->Model->Charset) && !$_header_sent) {
-						header('Content-Type: text/html; charset=' . $this->Model->Charset);
+						we_html_tools::headerCtCharset('text/html',$this->Model->Charset);
 					}
 
 					if(!$this->Model->isAllowedForUser()) {

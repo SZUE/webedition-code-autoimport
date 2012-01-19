@@ -71,7 +71,7 @@ class weNavigationFrames extends weToolFrames{
 	function getHTMLEditorHeader(){
 
 		if(!empty($this->Model->Charset)){
-			header('Content-Type: text/html; charset=' . $this->Model->Charset);
+			we_html_tools::headerCtCharset('text/html',$this->Model->Charset);
 		}
 
 		if(isset($_REQUEST['home'])){

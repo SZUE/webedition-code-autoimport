@@ -68,10 +68,8 @@ function getRevRelSelect($type, $value) {
 $we_dt = $_SESSION["we_data"][$we_transaction];
 include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
-//FIXME: this is incompatible to current backendcharset
 if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be determined in template
-	//	There might be a better place for this.
-	header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+	we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
 }
 
 if (isset($_REQUEST["ok"]) && $_REQUEST["ok"]) {

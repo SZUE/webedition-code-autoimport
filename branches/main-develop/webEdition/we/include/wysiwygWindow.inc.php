@@ -51,7 +51,7 @@ if(isset($_REQUEST['we_cmd'][15])) {
 }
 
 
-@header("Content-Type: text/html; charset=" . ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
+@we_html_tools::headerCtCharset('text/html',($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
 
 we_html_tools::protect();
 

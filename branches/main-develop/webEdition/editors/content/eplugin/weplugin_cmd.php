@@ -175,10 +175,10 @@
 		if(isset($_we_transaction)){
 			if(isset($_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'])) {
 				$charset = $_SESSION['we_data'][$_we_transaction][0]['elements']['Charset']['dat'];
-				header("Content-Type: text/html; charset=" . $charset);
+				we_html_tools::headerCtCharset('text/html',$charset);
 			}
 		}
-
+//FIXME: charset
 		print we_html_element::htmlHtml(
 			we_html_element::htmlHead(
 				$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']))
@@ -189,7 +189,3 @@
 		);
 
 	}
-
-
-
-?>

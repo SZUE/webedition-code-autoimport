@@ -1550,7 +1550,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		header("Pragma: no-cache;");
 		header("Cache-Control: post-check=0, post-check=0, false");
-		header("Content-Type: text/html; charset= " . ($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']) . ";");
+		we_html_tools::headerCtCharset('text/html',($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']));
 
 
 		if(!$hm){

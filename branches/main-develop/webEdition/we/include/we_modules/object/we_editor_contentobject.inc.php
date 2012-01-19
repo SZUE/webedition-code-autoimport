@@ -36,7 +36,7 @@ we_html_tools::protect();
 //
 
 if(isset($we_doc->elements["Charset"]["dat"])){	//	send charset which might be determined in template
-	header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+	we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
 }
 
 

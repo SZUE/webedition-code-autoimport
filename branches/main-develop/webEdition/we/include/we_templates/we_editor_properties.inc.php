@@ -29,10 +29,10 @@ $yuiSuggest =& weSuggest::getInstance();
 
 //	send charset, if one is set:
 if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] && $we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES ){
-	header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+	we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
 }
 
-we_html_tools::htmlTop();
+we_html_tools::htmlTop('',$we_doc->elements["Charset"]["dat"]);
 echo we_html_element::jsScript(JS_DIR.'windows.js');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print STYLESHEET; ?>

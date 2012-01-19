@@ -23,13 +23,12 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-header("Content-Type: text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']);
+we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']);
 
 ?><html>
 <head>
-
-<meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>">
 <?php
+print we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 
 print '<script type="text/javascript">
 					parent.we_wysiwyg_lng = {};

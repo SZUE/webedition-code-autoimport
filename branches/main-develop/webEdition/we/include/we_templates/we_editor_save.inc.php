@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-@header("Content-Type: text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET']);
+@we_html_tools::headerCtCharset('text/html',$GLOBALS['WE_BACKENDCHARSET']);
 we_html_tools::htmlTop();
 
 ?>

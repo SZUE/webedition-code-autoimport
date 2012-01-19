@@ -30,9 +30,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php"
 			print STYLESHEET;
 		}
 		if ($we_doc->getElement("Charset")) {
-			?>
-			<meta http-equiv="Content-Type" content="text/html; charset=<?php print $we_doc->getElement("Charset"); ?>">
-		<?php }
+			print we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement("Charset"));
+		}
 		if ($we_doc->getElement("Keywords")) { ?>
 			<meta name="keywords" content="<?php print $we_doc->getElement("Keywords") ?>">
 		<?php }

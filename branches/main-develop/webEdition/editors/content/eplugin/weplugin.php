@@ -202,6 +202,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 	$charset = '';
 
+	//FIXME: charset
 	print we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 		$_meta_content_type = we_html_element::htmlMeta(array("http-equiv" => "content-type", "content" => "text/html; charset=" . $GLOBALS['WE_BACKENDCHARSET'])).

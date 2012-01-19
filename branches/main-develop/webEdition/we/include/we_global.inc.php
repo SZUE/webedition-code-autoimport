@@ -1991,7 +1991,7 @@ function getServerUrl($useUserPwd=false){
 	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
 }
 
-function we_check_email($email){	// Zend validates only the pure address
+function we_check_email($email){ // Zend validates only the pure address
 	$email = html_entity_decode($email);
 	$namePart[0] = '';
 	if(preg_match('/<(.)*>/', $email, $_email)){
@@ -2570,11 +2570,8 @@ function CheckAndConvertISOfrontend($utf8data){
 }
 
 function CheckAndConvertISObackend($utf8data){
-	if($GLOBALS["WE_BACKENDCHARSET"] != 'UTF-8'){
-		return mb_convert_encoding($utf8data, $GLOBALS["WE_BACKENDCHARSET"], 'UTF-8');
-	} else{
-		return $utf8data;
-	}
+	$to = (isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
+	return ($to == 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
 /* * internal function - do not call */
@@ -2596,7 +2593,11 @@ function g_l_encodeArray($tmp){
  * @param $omitErrors boolean don't throw an error on non-existent entry
  */
 function g_l($name, $specific, $omitErrors=false){
-	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']) );
+	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
+			//inside we
+			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
+			//front-end
+			(isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']) );
 	//cache last accessed lang var
 	static $cache = array();
 	//echo $name.$specific;

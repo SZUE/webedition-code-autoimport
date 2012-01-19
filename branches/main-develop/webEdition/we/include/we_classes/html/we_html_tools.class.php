@@ -735,9 +735,15 @@ HTS;
 		$GLOBALS['we']['PageCharset'] = $charset;
 		return we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
-				"content" => "'.$content.'; charset=" . $charset
+				"content" => $content.'" charset="' . $charset
 			));
 	}
+
+	static function headerCtCharset($content, $charset){
+		$GLOBALS['we']['PageCharset'] = $charset;
+		header('Content-Type: '.$content.'; charset=' . $charset);
+	}
+
 
 	/**
 	 * Enter description here...

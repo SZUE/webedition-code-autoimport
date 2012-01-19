@@ -689,7 +689,7 @@ else {
                     ob_start();
 					if((!defined("WE_CONTENT_TYPE_SET")) && isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){	//	send charset which might be determined in template
 						define("WE_CONTENT_TYPE_SET",1);
-						header("Content-Type: text/html; charset=" . $we_doc->elements["Charset"]["dat"]);
+						we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
 					}
                     include($we_include);
                     $contents = ob_get_contents();

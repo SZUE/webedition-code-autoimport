@@ -113,12 +113,13 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	//FIXME: needed by liveupdate, calls old protect directly
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_perms.inc.php");
 	//	At last we set the charset, as determined from the choosen language
+//FIXME: remove these two defines by replacing them with a proper call in we_html_tools::
 	define('WE_DEFAULT_TITLE', 'webEdition::');
 	define('WE_DEFAULT_HEAD', '<title>' . WE_DEFAULT_TITLE . '</title>' .
 		'<meta http-equiv="expires" content="0">' .
 		'<meta http-equiv="pragma" content="no-cache">' .
 		'<meta http-equiv="content-type" content="text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'] . '">' .
-		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') 
+		we_html_element::jsScript(JS_DIR . 'we_showMessage.js')
 	);
 
 
