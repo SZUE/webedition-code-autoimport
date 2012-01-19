@@ -2562,11 +2562,8 @@ function getVarArray($arr, $string){
 }
 
 function CheckAndConvertISOfrontend($utf8data){
-	if(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] != '' && $GLOBALS['CHARSET'] != 'UTF-8'){
-		return iconv('UTF-8', $GLOBALS['CHARSET'], $utf8data);
-	} else{
-		return $utf8data;
-	}
+	$to = (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
+	return ($to == 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
 function CheckAndConvertISObackend($utf8data){
@@ -2597,7 +2594,7 @@ function g_l($name, $specific, $omitErrors=false){
 			//inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 			//front-end
-			(isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']) );
+			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 	//cache last accessed lang var
 	static $cache = array();
 	//echo $name.$specific;
