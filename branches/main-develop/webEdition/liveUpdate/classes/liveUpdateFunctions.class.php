@@ -609,9 +609,9 @@ class liveUpdateFunctions {
 			return true;
 		}
 
+		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 		$query=str_replace('###UPDATEONLY###', '', $query);
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
-			$matches[2]=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $matches[2]);
 			$db->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
 			$query=($db->num_rows()?'ALTER TABLE `'.$matches[2].'` DROP COLUMN `'.$matches[1].'`':'');
 		}
@@ -628,7 +628,6 @@ class liveUpdateFunctions {
 
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}*/
-		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 
 		// second, we need to check if there is a collation
 		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
