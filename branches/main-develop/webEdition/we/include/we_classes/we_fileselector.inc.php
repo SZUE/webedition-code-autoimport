@@ -51,6 +51,8 @@ class we_fileselector{
 	var $filter = "";
 	var $col2js;
 
+	protected $title='';
+
 	function __construct($id, $table = FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $filter=""){
 
 		if(!isset($_SESSION["we_fs_lastDir"])){
@@ -228,7 +230,7 @@ class we_fileselector{
 
 	function printFramesetHTML(){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
-		we_html_tools::htmlTop();
+		we_html_tools::htmlTop($this->title);
 		print we_html_element::jsScript(JS_DIR . "keyListener.js") .
 			we_html_element::jsElement("var weSelectorWindow = true;");
 		$this->printFramesetJavaScriptIncludes();

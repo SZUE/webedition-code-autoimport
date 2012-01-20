@@ -32,6 +32,7 @@ class we_votingDirSelector extends we_dirSelector{
 		$JSTextName = stripslashes($JSTextName);
 
 		parent::__construct($id, VOTING_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, "", $we_editDirID, $FolderText);
+		$this->title = g_l('fileselector', '[votingDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
 	}
 

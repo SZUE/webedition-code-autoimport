@@ -27,8 +27,8 @@ class we_delSelector extends we_multiSelector{
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
 	function __construct($id, $table=FILE_TABLE){
-
 		parent::__construct($id, $table);
+		$this->title = g_l('fileselector', '[delSelector][title]');
 	}
 
 	function printHTML($what=we_fileselector::FRAMESET){

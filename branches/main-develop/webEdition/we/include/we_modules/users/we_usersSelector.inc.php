@@ -30,6 +30,7 @@ class we_usersSelector extends we_multiSelector{
 	function __construct($id, $table=FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $filter="", $multiple=true){
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple);
+		$this->title = g_l('fileselector', '[userSelector][title]');
 
 		$this->filter = $filter;
 		//FIXME: fix userSelector String

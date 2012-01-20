@@ -44,6 +44,7 @@ class we_docSelector extends we_dirSelector{
 			$this->fields .= ",Published";
 		$this->canSelectDir = $canSelectDir;
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $rootDirID, $multiple);
+		$this->title = g_l('fileselector', '[docSelector][title]');
 		$this->filter = $filter;
 		$this->userCanMakeNewFile = $this->_userCanMakeNewFile();
 		$this->open_doc = $open_doc;

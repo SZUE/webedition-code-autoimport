@@ -29,6 +29,7 @@ class we_shopDirSelector extends we_multiSelector{
 	function __construct($id, $JSIDName="", $JSTextName="", $JSCommand="", $order=""){
 
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);
+		$this->title = g_l('fileselector', '[shopDirSelector][title]');
 	}
 
 	function printFramesetJSDoClickFn(){

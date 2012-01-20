@@ -35,7 +35,7 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-we_html_tools::htmlTop();
+we_html_tools::htmlTop(g_l('thumbnails','[thumbnails]'));
 
 /*****************************************************************************
  * CREATE JAVASCRIPT

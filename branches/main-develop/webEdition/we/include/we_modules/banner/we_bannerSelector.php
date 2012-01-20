@@ -40,6 +40,7 @@ class we_bannerSelector extends we_multiSelector{
 								$JSCommand,
 								$order);
 
+		$this->title = g_l('fileselector', '[bannerSelector][title]');
 
 	}
 

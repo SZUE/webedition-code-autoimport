@@ -41,6 +41,7 @@ class we_dirSelector extends we_multiSelector{
 			$table = FILE_TABLE;
 		}
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID, $multiple);
+		$this->title = g_l('fileselector', '[dirSelector][title]');
 		$this->userCanMakeNewFolder = $this->userCanMakeNewDir();
 		$this->userCanRenameFolder = $this->userCanRenameFolder();
 		$this->we_editDirID = $we_editDirID;

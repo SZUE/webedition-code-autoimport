@@ -33,6 +33,7 @@ class we_navigationDirSelector extends we_dirSelector{
 
 		parent::__construct($id, NAVIGATION_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, '', $we_editDirID, $FolderText
 		);
+		$this->title = g_l('fileselector', '[navigationDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
 	}
 

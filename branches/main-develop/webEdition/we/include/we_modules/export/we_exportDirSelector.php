@@ -29,6 +29,7 @@ class we_exportDirSelector extends we_dirSelector{
 	function __construct($id, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $we_editDirID="", $FolderText=""){
 
 		parent::__construct($id, EXPORT_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, "", $we_editDirID, $FolderText);
+		$this->title = g_l('fileselector', '[exportDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
 	}
 

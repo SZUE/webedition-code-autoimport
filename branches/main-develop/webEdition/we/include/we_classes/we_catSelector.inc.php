@@ -38,7 +38,7 @@ class we_catSelector extends we_multiSelector{
 	function __construct($id, $table=FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $we_editCatID="", $EntryText="", $rootDirID=0, $noChoose=""){
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $rootDirID);
-
+		$this->title = g_l('fileselector', '[catSelector][title]');
 
 		$this->editCatState = $this->userCanEditCat();
 		$this->we_editCatID = $we_editCatID;
