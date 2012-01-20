@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,16 +22,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 // exit if script called directly
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(dirname(__FILE__), '', __FILE__)) {
+if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
 
-if( (!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
-	$we_ContentType = f("SELECT ContentType FROM $we_Table WHERE ID=$we_ID",'ContentType',$DB_WE);
+if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
+	$we_ContentType = f("SELECT ContentType FROM $we_Table WHERE ID=$we_ID", 'ContentType', $DB_WE);
 }
-if(isset($we_ContentType) && $we_ContentType!=''){
+if(isset($we_ContentType) && $we_ContentType != ''){
 	switch($we_ContentType){
 		case 'application/x-shockwave-flash':
 			$we_doc = new we_flashDocument();
@@ -72,42 +72,38 @@ if(isset($we_ContentType) && $we_ContentType!=''){
 				$moduleDir .= '/';
 			}
 
-			if(file_exists($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php')){
-				$we_doc='we_'.$we_ContentType;
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $moduleDir . 'we_' . $we_ContentType . '.inc.php')){
+				$we_doc = 'we_' . $we_ContentType;
 				$we_doc = new $we_doc();
-			}else{
-				exit('Can NOT initialize document of type -'.$we_ContentType.'- '.$_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/' . $moduleDir . 'we_'.$we_ContentType.'.inc.php');
+			} else{
+				exit('Can NOT initialize document of type -' . $we_ContentType . '- ' . $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $moduleDir . 'we_' . $we_ContentType . '.inc.php');
 			}
-
 	}
-}else{
+} else{
 	if(isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName']){
-		$we_doc=$we_dt[0]['ClassName'];
-		$we_doc =new $we_doc();
-	}else{
+		$we_doc = $we_dt[0]['ClassName'];
+		$we_doc = new $we_doc();
+	} else{
 		$we_doc = new we_webEditionDocument();
 	}
 }
 if(isset($we_ID)){
-	$we_doc->initByID($we_ID,$we_Table,( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
-
-}else if(isset($we_dt)){
+	$we_doc->initByID($we_ID, $we_Table, ( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
+} else if(isset($we_dt)){
 	$we_doc->we_initSessDat($we_dt);
 	//	in some templates we must disable some EDIT_PAGES and disable some buttons
 	$we_doc->executeDocumentControlElements();
-
-}else{
-	$we_doc->ContentType=$we_ContentType;
-	$we_doc->Table= (isset($we_Table) && $we_Table) ? $we_Table : FILE_TABLE;
+} else{
+	$we_doc->ContentType = $we_ContentType;
+	$we_doc->Table = (isset($we_Table) && $we_Table) ? $we_Table : FILE_TABLE;
 	$we_doc->we_new();
-
 }
 
 //FIXME: remove this clone
 $GLOBALS['we_doc'] = clone($we_doc);
 
 //if document opens get initial object for versioning if no versions exist
-if(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0]=='load_edit_footer' || $_REQUEST['we_cmd'][0]=='switch_edit_page')) {
+if(isset($_REQUEST['we_cmd'][0]) && ($_REQUEST['we_cmd'][0] == 'load_edit_footer' || $_REQUEST['we_cmd'][0] == 'switch_edit_page')){
 	$version = new weVersions();
 	$version->setInitialDocObject($GLOBALS['we_doc']);
 }

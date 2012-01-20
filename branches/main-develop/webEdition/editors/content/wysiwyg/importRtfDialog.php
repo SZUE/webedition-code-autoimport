@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weImportRtfDialog.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $dialog = new weImportRtfDialog();
 $dialog->initByHttp();
 if(isset($dialog->args["ntxt"]) && $dialog->args["ntxt"]){
-	$dialog->registerOkJsFN("weDoRtfJSTxt");	
+	$dialog->registerOkJsFN("weDoRtfJSTxt");
 }else{
 	$dialog->registerOkJsFN("weDoRtfJS");
 }

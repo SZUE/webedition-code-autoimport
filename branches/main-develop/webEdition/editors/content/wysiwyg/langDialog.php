@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weLangDialog.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $appendJS = "";
 if(defined("GLOSSARY_TABLE") && isset($_REQUEST['weSaveToGlossary']) && $_REQUEST['weSaveToGlossary'] == 1) {

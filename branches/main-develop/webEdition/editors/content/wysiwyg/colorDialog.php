@@ -24,7 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weColorDialog.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $dialog = new weColorDialog();
 $dialog->initByHttp();
@@ -39,7 +39,7 @@ var type = document.we_form.elements["we_dialog_args[type]"].value;
 var color = document.we_form.elements["we_dialog_args[color]"].value;
 var editorObj;
 var name;
- 
+
 if(type == "forecolor" || type == "backcolor"){
 	eval("editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
 }else{

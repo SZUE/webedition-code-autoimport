@@ -24,8 +24,7 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weImageDialog.class.inc.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weSuggest.class.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
 $dialog = new weImageDialog();
 $dialog->initByHttp();

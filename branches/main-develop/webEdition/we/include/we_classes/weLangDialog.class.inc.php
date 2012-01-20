@@ -22,8 +22,6 @@
  * @package    webEdition_wysiwyg
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weDialog.class.inc.php");
-
 class weLangDialog extends weDialog{
 
 	var $dialogWidth = 370;
