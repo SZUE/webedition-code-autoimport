@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Alle bestanden',
 	'already_root'=>'Reeds in hoofd map',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Annuleer',
 	'can_not_overwrite_we_file'=>'Een webEdition bestand kan niet overschreven worden!',
 	'catname'=>'Categorie',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'De volgende categorieën zijn in gebruik en kunnen niet verwijderd worden:',
 	'cat_in_use_rename'=>'De categorie is in gebruik en kan niet gewijzigd worden!',
 	'close'=>'Sluit',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Verwijder geselecteerde invoeren! Weet u het zeker?',
 	'delete'=>'Verwijder bestand',
 	'delete_entry'=>'Verwijder invoer',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Wijzig geselecteerd bestand',
 	'edit_file_is_folder'=>'U hebt een directory gekozen!',
 	'edit_file_nok'=>'De bestandsnaam is leeg!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Bestandsnaam',
 	'filesize'=>'Bestandsgrootte',
 	'files'=>'Bestanden',

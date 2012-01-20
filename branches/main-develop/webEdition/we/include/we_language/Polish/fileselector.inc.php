@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Wszystkie pliki',
 	'already_root'=>'To już jest root',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Przerwij',
 	'can_not_overwrite_we_file'=>'Plik webEdition nie mógł zostać nadpisany!',
 	'catname'=>'Kategoria',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'Nie można usunąć następujących kategorii, ponieważ są używane:',
 	'cat_in_use_rename'=>'Kategoria nie może zostać zmieniona, ponieważ jest używana!',
 	'close'=>'Zamknij',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Wybrane wpisy usunąć. Jeteś pewien?',
 	'delete'=>'Usuń plik',
 	'delete_entry'=>'Usuń wpis',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Edytuj plik',
 	'edit_file_is_folder'=>'Nie wybrano pliku do edycji!',
 	'edit_file_nok'=>'Brakuje nazwy pliku!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Nazwa pliku',
 	'filesize'=>'Wielkość pliku',
 	'files'=>'Files',

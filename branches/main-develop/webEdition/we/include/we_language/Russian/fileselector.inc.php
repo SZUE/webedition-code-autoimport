@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Все типы',
 	'already_root'=>'Принадлежит корневому каталогу',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Отменить',
 	'can_not_overwrite_we_file'=>'Файл системы webEdition не может быть переписан!',
 	'catname'=>'Категория',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'Следующие категории обрабатываются и поэтому не могут быть удалены:',
 	'cat_in_use_rename'=>'Данная категория - действующая и поэтому не может быть изменена!',
 	'close'=>'Закрыть',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Удалить выбранные данные! Вы уверены?',
 	'delete'=>'Удалить файл',
 	'delete_entry'=>'Удалить введенные данные',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Редактировать выделенные файлы',
 	'edit_file_is_folder'=>'Вы не выделили директорию для дальнейшей обработки!',
 	'edit_file_nok'=>'Имя файла не заполнено!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Имя файла',
 	'filesize'=>'Размер файла',
 	'files'=>'Files',

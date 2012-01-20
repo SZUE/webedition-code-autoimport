@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Kaikki tiedostot',
 	'already_root'=>'Olet jo juurihakemistossa',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Peruuta',
 	'can_not_overwrite_we_file'=>'webEdition -tiedostoa ei voida ylikirjoittaa!',
 	'catname'=>'Kategoria',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'Seuraavat kategoriat ovat käytössä ja niitä ei voida tuhota:',
 	'cat_in_use_rename'=>'Kategoria on käytössä joten sitä ei voida tuhota!',
 	'close'=>'Sulje',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Poista valinta! Oletko varma?',
 	'delete'=>'Poista tiedosto',
 	'delete_entry'=>'Poista kohta',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Muokkaa valittua tiedostoa',
 	'edit_file_is_folder'=>'Olet valinnut hakemiston!',
 	'edit_file_nok'=>'Tiedoston nimi on tyhjä!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Tiedoston nimi',
 	'filesize'=>'Tiedoston koko',
 	'files'=>'Tiedostot',

@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Tous le fichiers',
 	'already_root'=>'Cela est déjà le répertoire source',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Annuler',
 	'can_not_overwrite_we_file'=>'Un fichier-webEdition ne peut pas être effacer!',
 	'catname'=>'Catégories',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'Les catégories suivant ne peuvent pas être supprimé, parce qu`elles sont en utilisation:',
 	'cat_in_use_rename'=>'La catégorie ne peut pas être changé, parce qu`elle est en utilisation!',
 	'close'=>'Fermer',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Supprimer les entrées choisies! Êtes-vous sûr?',
 	'delete'=>'Supprimer le fichier',
 	'delete_entry'=>'Supprimer l`entrée',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Éditer le ficher',
 	'edit_file_is_folder'=>'Vous n`avez chois aucun fichier à éditer!',
 	'edit_file_nok'=>'Le nom du fichier est vide!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Nom du ficher',
 	'filesize'=>'Taille de fichier',
 	'files'=>'Files',

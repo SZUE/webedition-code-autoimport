@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Todos los archivos',
 	'already_root'=>'Ya en la carpeta raíz',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Cancelar',
 	'can_not_overwrite_we_file'=>'Un archivo webEdition no puede ser sobrescrito!',
 	'catname'=>'Categoría',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'Las siguientes categorías están en uso y no pueden ser borradas:',
 	'cat_in_use_rename'=>'La categoría está en uso y no puede ser cambiada!',
 	'close'=>'Cerrar',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Borrar entradas seleccionadas! Está UD seguro?',
 	'delete'=>'Borrar archivo',
 	'delete_entry'=>'Borrar entrada',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Editar archivo seleccionado',
 	'edit_file_is_folder'=>'UD ha escogido un directorio!',
 	'edit_file_nok'=>'El nombre del archivo está vacío!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Nombre de archivo',
 	'filesize'=>'Tamaño del archivo',
 	'files'=>'Files',

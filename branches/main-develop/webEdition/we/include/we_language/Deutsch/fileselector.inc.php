@@ -3,9 +3,20 @@
 $l_fileselector=array(
 	'all_Types'=>'Alle Dateien',
 	'already_root'=>'Dies ist bereits das Wurzelverzeichnis',
+	
+	'bannerDirSelector'=>array(
+		'title'=>'',
+	),
+	'bannerSelector'=>array(
+		'title'=>'',
+	),
 	'cancel'=>'Abbrechen',
 	'can_not_overwrite_we_file'=>'Eine webEdition-Datei kann nicht überschrieben werden!',
 	'catname'=>'Kategorie',
+	
+	'catSelector'=>array(
+		'title'=>'',
+	),
 	'cat_in_use'=>'Folgende Kategorien können nicht gelöscht werden, da sie benutzt werden:',
 	'cat_in_use_rename'=>'Die Kategorie kann nicht geändert werden, da sie benutzt wird!',
 	'close'=>'Schließen',
@@ -15,9 +26,23 @@ $l_fileselector=array(
 	'deleteQuestion'=>'Ausgewählte Einträge löschen! Sind Sie sicher?',
 	'delete'=>'Datei löschen',
 	'delete_entry'=>'Eintrag löschen',
+	
+	'delSelector'=>array(
+		'title'=>'',
+	),
+	'dirSelector'=>array(
+		'title'=>'',
+	),
+	'docSelector'=>array(
+		'title'=>'',
+	),
 	'edit_file'=>'Datei bearbeiten',
 	'edit_file_is_folder'=>'Sie haben keine Datei zum Bearbeiten ausgewählt!',
 	'edit_file_nok'=>'Der Dateiname ist leer!',
+	
+	'exportDirSelector'=>array(
+		'title'=>'',
+	),
 	'filename'=>'Dateiname',
 	'filesize'=>'Dateigröße',
 	'files'=>'Dateien',
