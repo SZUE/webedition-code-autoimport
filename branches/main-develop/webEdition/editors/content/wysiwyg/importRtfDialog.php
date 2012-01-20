@@ -48,4 +48,3 @@ taObj.appendText(document.we_form.elements["we_dialog_args[htmltxt]"].value);
 top.close();
 ';
 }
-?>

@@ -22,7 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
+//FIXME: do we need this file????
+trigger_error('Fehler showDoc called');
+exit('Fehler showDoc called');
 //  Diese we_cmds kommen nicht aus REQUEST !!!! werden verwendet in: we_showDocument
 $_REQUEST['we_cmd'][1] = $ID;
 $_REQUEST['we_cmd'][3] = 1;

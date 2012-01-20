@@ -383,4 +383,3 @@ function _checkAll($flag=true) {
 	$_REQUEST['handle_export'] = $flag;
 	$_REQUEST['handle_voting'] = $flag;
 }
-?>
