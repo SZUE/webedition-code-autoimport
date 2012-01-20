@@ -146,7 +146,7 @@ class weDialog{
 				$query .= "we_dialog_args[" . rawurlencode($k) . "]=" . rawurlencode($v) . "&";
 			}
 		}
-		return eregi_replace('^(.+)&$', '\1', $query) . ($what ? "&we_what=" . rawurlencode($what) : "");
+		return rtrim($query,'&') . ($what ? "&we_what=" . rawurlencode($what) : '');
 	}
 
 	function getFramesetHTML(){

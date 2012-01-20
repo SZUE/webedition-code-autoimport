@@ -132,8 +132,10 @@ class we_baseElement{
 					$this->setStyle($k, $v);
 				}
 			} else{
-				list($k, $v) = explode(':', $attrib_value);
-				$this->setStyle($k, $v);
+				if(trim($attrib_value)){
+					list($k, $v) = explode(':', $attrib_value);
+					$this->setStyle($k, $v);
+				}
 			}
 		} else{
 			switch($attrib_name){
