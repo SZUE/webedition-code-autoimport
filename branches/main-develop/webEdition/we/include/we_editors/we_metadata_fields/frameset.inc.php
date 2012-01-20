@@ -42,11 +42,7 @@ we_html_tools::htmlTop(g_l('metadata','[headline]'));
  *****************************************************************************/
 
 // Define needed JS
-$_javascript = "
-<!--
-	self.focus();
-//-->
-";
+$_javascript = 'self.focus();';
 
 /*****************************************************************************
  * RENDER FILE
@@ -54,9 +50,8 @@ $_javascript = "
 
 print
 	we_html_element::jsElement($_javascript) .
-	we_html_element::jsScript(JS_DIR . "keyListener.js") .
-	we_html_element::jsElement(
-		"
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsElement("
 			function closeOnEscape() {
 				return true;
 
