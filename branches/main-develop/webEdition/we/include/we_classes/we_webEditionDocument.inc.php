@@ -422,17 +422,14 @@ class we_webEditionDocument extends we_textContentDocument{
 			//	menu for all possible charsets
 
 			$_defaultInChars = false;
-			for($i = 0; $i < sizeof($chars); $i++){ //	check if default value is already in array
-				if(strtolower($chars[$i]) == strtolower($GLOBALS["meta"]["Charset"]["default"])){
+			foreach($chars as $set){ //	check if default value is already in array
+				if(strtolower($set) == strtolower(DEFAULT_CHARSET)){
 					$_defaultInChars = true;
 				}
 			}
 			if(!$_defaultInChars){
-				array_push($chars, $GLOBALS["meta"]["Charset"]["default"]);
+				array_push($chars, DEFAULT_CHARSET);
 			}
-
-
-
 
 			$chars = $_charsetHandler->getCharsetsByArray($chars);
 
@@ -464,7 +461,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		 				<td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
 		 			<tr>
 		 				<td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td>
-		 				<td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, $GLOBALS['WE_BACKENDCHARSET'], false, "disabled ", "value", "254") . '</td>
+		 				<td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, "disabled ", "value", "254") . '</td>
 		 			</tr>
 		 			</table>';
 		}

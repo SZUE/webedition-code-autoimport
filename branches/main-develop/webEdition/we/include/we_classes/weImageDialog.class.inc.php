@@ -79,6 +79,7 @@ class weImageDialog extends weDialog{
 				//$this->args["src"] .= "?id=".$id;
 			} else{
 				$this->args["type"] = "ext";
+				//FIXME: ereg
 				$this->args["extSrc"] = ereg_replace('^/webEdition/', '', ereg_replace('^/webEdition/we_cmd.php[^"\'#]+(#.*)$', '\1', eregi_replace('^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$', '\1', $this->args["src"])));
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";

@@ -23,8 +23,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-
 $parts = array();
 
 array_push($parts,array("icon"=>"path.gif", "headline"=>g_l('weClass',"[path]")
