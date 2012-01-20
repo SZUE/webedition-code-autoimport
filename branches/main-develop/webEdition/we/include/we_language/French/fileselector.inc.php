@@ -5,17 +5,17 @@ $l_fileselector=array(
 	'already_root'=>'Cela est déjà le répertoire source',
 	
 	'bannerDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner directory',
 	),
 	'bannerSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner',
 	),
 	'cancel'=>'Annuler',
 	'can_not_overwrite_we_file'=>'Un fichier-webEdition ne peut pas être effacer!',
 	'catname'=>'Catégories',
 	
 	'catSelector'=>array(
-		'title'=>'',
+		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Les catégories suivant ne peuvent pas être supprimé, parce qu`elles sont en utilisation:',
 	'cat_in_use_rename'=>'La catégorie ne peut pas être changé, parce qu`elle est en utilisation!',
@@ -28,20 +28,20 @@ $l_fileselector=array(
 	'delete_entry'=>'Supprimer l`entrée',
 	
 	'delSelector'=>array(
-		'title'=>'',
+		'title'=>'Select items to delete',
 	),
 	'dirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory',
 	),
 	'docSelector'=>array(
-		'title'=>'',
+		'title'=>'Select document',
 	),
 	'edit_file'=>'Éditer le ficher',
 	'edit_file_is_folder'=>'Vous n`avez chois aucun fichier à éditer!',
 	'edit_file_nok'=>'Le nom du fichier est vide!',
 	
 	'exportDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory to export',
 	),
 	'filename'=>'Nom du ficher',
 	'filesize'=>'Taille de fichier',
@@ -54,6 +54,10 @@ $l_fileselector=array(
 	'lookin'=>'Rechercher dans',
 	'modified'=>'Date de Modification',
 	'name'=>'Nom',
+	
+	'navigationDirSelector'=>array(
+		'title'=>'Select navigation directory',
+	),
 	'new_cat'=>'Créer une nouvelle catégorie',
 	'new_cat_name'=>'Nouvelle Catégories',
 	'new_file'=>'Créer un nouveau fichier',
@@ -67,9 +71,19 @@ $l_fileselector=array(
 	'rename_file_nok'=>'le fichier ne peut pas être renommé!',
 	'rename_folder_nok'=>'Le répertoire ne peut pas être renommé!',
 	'root_folder'=>'Répertoire de source',
+	
+	'shopDirSelector'=>array(
+		'title'=>'Select shop directory',
+	),
 	'text/xml'=>'ficher XML',
 	'title'=>'Title',
 	'type'=>'Typ de fichier',
 	'up_folder'=>'Répertoire supérieur',
 	'username'=>'User name',
-);
+	
+	'userSelector'=>array(
+		'title'=>'Select users',
+	),
+	'votingDirSelector'=>array(
+		'title'=>'Select voting directory',
+));

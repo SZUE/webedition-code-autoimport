@@ -5,17 +5,17 @@ $l_fileselector=array(
 	'already_root'=>'Принадлежит корневому каталогу',
 	
 	'bannerDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner directory',
 	),
 	'bannerSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner',
 	),
 	'cancel'=>'Отменить',
 	'can_not_overwrite_we_file'=>'Файл системы webEdition не может быть переписан!',
 	'catname'=>'Категория',
 	
 	'catSelector'=>array(
-		'title'=>'',
+		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Следующие категории обрабатываются и поэтому не могут быть удалены:',
 	'cat_in_use_rename'=>'Данная категория - действующая и поэтому не может быть изменена!',
@@ -28,20 +28,20 @@ $l_fileselector=array(
 	'delete_entry'=>'Удалить введенные данные',
 	
 	'delSelector'=>array(
-		'title'=>'',
+		'title'=>'Select items to delete',
 	),
 	'dirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory',
 	),
 	'docSelector'=>array(
-		'title'=>'',
+		'title'=>'Select document',
 	),
 	'edit_file'=>'Редактировать выделенные файлы',
 	'edit_file_is_folder'=>'Вы не выделили директорию для дальнейшей обработки!',
 	'edit_file_nok'=>'Имя файла не заполнено!',
 	
 	'exportDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory to export',
 	),
 	'filename'=>'Имя файла',
 	'filesize'=>'Размер файла',
@@ -54,6 +54,10 @@ $l_fileselector=array(
 	'lookin'=>'Искать в',
 	'modified'=>'Дата последнего изменения',
 	'name'=>'Имя',
+	
+	'navigationDirSelector'=>array(
+		'title'=>'Select navigation directory',
+	),
 	'new_cat'=>'Создать новую категорию',
 	'new_cat_name'=>'Новая категория',
 	'new_file'=>'Создать файл',
@@ -67,9 +71,19 @@ $l_fileselector=array(
 	'rename_file_nok'=>'Файл не может быть переименован!',
 	'rename_folder_nok'=>'Директория не может быть переименована!',
 	'root_folder'=>'Корневой каталог',
+	
+	'shopDirSelector'=>array(
+		'title'=>'Select shop directory',
+	),
 	'text/xml'=>'Файлы XML',
 	'title'=>'Title',
 	'type'=>'Тип файла',
 	'up_folder'=>'Вышестоящая директория',
 	'username'=>'Имя пользователя',
-);
+	
+	'userSelector'=>array(
+		'title'=>'Select users',
+	),
+	'votingDirSelector'=>array(
+		'title'=>'Select voting directory',
+));

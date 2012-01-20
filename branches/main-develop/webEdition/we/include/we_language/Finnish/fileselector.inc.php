@@ -5,17 +5,17 @@ $l_fileselector=array(
 	'already_root'=>'Olet jo juurihakemistossa',
 	
 	'bannerDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner directory',
 	),
 	'bannerSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner',
 	),
 	'cancel'=>'Peruuta',
 	'can_not_overwrite_we_file'=>'webEdition -tiedostoa ei voida ylikirjoittaa!',
 	'catname'=>'Kategoria',
 	
 	'catSelector'=>array(
-		'title'=>'',
+		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Seuraavat kategoriat ovat käytössä ja niitä ei voida tuhota:',
 	'cat_in_use_rename'=>'Kategoria on käytössä joten sitä ei voida tuhota!',
@@ -28,20 +28,20 @@ $l_fileselector=array(
 	'delete_entry'=>'Poista kohta',
 	
 	'delSelector'=>array(
-		'title'=>'',
+		'title'=>'Select items to delete',
 	),
 	'dirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory',
 	),
 	'docSelector'=>array(
-		'title'=>'',
+		'title'=>'Select document',
 	),
 	'edit_file'=>'Muokkaa valittua tiedostoa',
 	'edit_file_is_folder'=>'Olet valinnut hakemiston!',
 	'edit_file_nok'=>'Tiedoston nimi on tyhjä!',
 	
 	'exportDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory to export',
 	),
 	'filename'=>'Tiedoston nimi',
 	'filesize'=>'Tiedoston koko',
@@ -54,6 +54,10 @@ $l_fileselector=array(
 	'lookin'=>'Katso',
 	'modified'=>'Muokattu',
 	'name'=>'Nimi',
+	
+	'navigationDirSelector'=>array(
+		'title'=>'Select navigation directory',
+	),
 	'new_cat'=>'Luo uusi kategoria',
 	'new_cat_name'=>'Uusi kategoria',
 	'new_file'=>'Luo uusi tiedosto',
@@ -67,9 +71,19 @@ $l_fileselector=array(
 	'rename_file_nok'=>'Tiedoston nimeä ei voida muuttaa!',
 	'rename_folder_nok'=>'Hakemiston nimeä ei voida muuttaa!',
 	'root_folder'=>'Juurikansio',
+	
+	'shopDirSelector'=>array(
+		'title'=>'Select shop directory',
+	),
 	'text/xml'=>'XML -tiedosto',
 	'title'=>'Otsikko',
 	'type'=>'Tiedostotyyppi',
 	'up_folder'=>'Yksi hakemisto ylöspäin',
 	'username'=>'Käyttäjänimi',
-);
+	
+	'userSelector'=>array(
+		'title'=>'Select users',
+	),
+	'votingDirSelector'=>array(
+		'title'=>'Select voting directory',
+));

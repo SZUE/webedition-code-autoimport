@@ -5,17 +5,17 @@ $l_fileselector=array(
 	'already_root'=>'To już jest root',
 	
 	'bannerDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner directory',
 	),
 	'bannerSelector'=>array(
-		'title'=>'',
+		'title'=>'Select banner',
 	),
 	'cancel'=>'Przerwij',
 	'can_not_overwrite_we_file'=>'Plik webEdition nie mógł zostać nadpisany!',
 	'catname'=>'Kategoria',
 	
 	'catSelector'=>array(
-		'title'=>'',
+		'title'=>'Select category',
 	),
 	'cat_in_use'=>'Nie można usunąć następujących kategorii, ponieważ są używane:',
 	'cat_in_use_rename'=>'Kategoria nie może zostać zmieniona, ponieważ jest używana!',
@@ -28,20 +28,20 @@ $l_fileselector=array(
 	'delete_entry'=>'Usuń wpis',
 	
 	'delSelector'=>array(
-		'title'=>'',
+		'title'=>'Select items to delete',
 	),
 	'dirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory',
 	),
 	'docSelector'=>array(
-		'title'=>'',
+		'title'=>'Select document',
 	),
 	'edit_file'=>'Edytuj plik',
 	'edit_file_is_folder'=>'Nie wybrano pliku do edycji!',
 	'edit_file_nok'=>'Brakuje nazwy pliku!',
 	
 	'exportDirSelector'=>array(
-		'title'=>'',
+		'title'=>'Select directory to export',
 	),
 	'filename'=>'Nazwa pliku',
 	'filesize'=>'Wielkość pliku',
@@ -54,6 +54,10 @@ $l_fileselector=array(
 	'lookin'=>'Szukaj w',
 	'modified'=>'Data zapsania zmian',
 	'name'=>'Nazwa',
+	
+	'navigationDirSelector'=>array(
+		'title'=>'Select navigation directory',
+	),
 	'new_cat'=>'Utwórz nową kategorię',
 	'new_cat_name'=>'Nowa kategoria',
 	'new_file'=>'Utwórz nowy plik',
@@ -67,9 +71,19 @@ $l_fileselector=array(
 	'rename_file_nok'=>'Nie można zmienić nazwy pliku!',
 	'rename_folder_nok'=>'Nie mozna zmienić nazwy folderu!',
 	'root_folder'=>'Folder root',
+	
+	'shopDirSelector'=>array(
+		'title'=>'Select shop directory',
+	),
 	'text/xml'=>'Plik XML',
 	'title'=>'Title',
 	'type'=>'Typ pliku',
 	'up_folder'=>'Folder nadrzędny',
 	'username'=>'User name',
-);
+	
+	'userSelector'=>array(
+		'title'=>'Select users',
+	),
+	'votingDirSelector'=>array(
+		'title'=>'Select voting directory',
+));
