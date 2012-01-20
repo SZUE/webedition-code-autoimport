@@ -614,7 +614,13 @@ class liveUpdateFunctions {
 		}
 
 		$query=str_replace('###UPDATEONLY###', '', $query);
-		if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
+		$query=str_replace('###UPDATEONLY###', '', $query);
+		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
+			$db->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
+			$query=($db->num_rows()?'ALTER TABLE `'.$matches[2].'` DROP COLUMN `'.$matches[1].'`':'');
+			trigger_error('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"'.$query);
+		}
+		/*if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
 			$query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
@@ -624,14 +630,13 @@ class liveUpdateFunctions {
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
+
 			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
-		}
-		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
+		}*/
 
 		// second, we need to check if there is a collation
 		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
-			if(eregi("^CREATE TABLE ", $query)) {
+			if(stripos($query,"CREATE TABLE ")===0) {
 				$Charset = DB_CHARSET;
 				$Collation = DB_COLLATION;
 				if($Charset == 'UTF-8'){//#4661
@@ -824,12 +829,12 @@ class liveUpdateFunctions {
 		//	Get all installed Languages ...
 		$_installedLanguages = array();
 		//	Look which languages are installed ...
-		$_language_directory = dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language");
+		$_language_directory = dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language");
 
 		while (false !== ($entry = $_language_directory->read())) {
 			if ($entry != "." && $entry != "..") {
-				if (is_dir($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry) &&
-					is_file($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
+				if (is_dir($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry) &&
+					is_file($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_language/".$entry."/translation.inc.php")) {
 					$_installedLanguages[] = $entry;
 				}
 			}
@@ -848,14 +853,11 @@ class liveUpdateFunctions {
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
-
-		global $liveUpdateError;
-
-		$liveUpdateError["errorNr"] = $errno;
-		$liveUpdateError["errorString"] = $errstr;
-		$liveUpdateError["errorFile"] = $errfile;
-		$liveUpdateError["errorLine"] = $errline;
+	static function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
+		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
+		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
+		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
 
 //		ob_start('error_log');
 //		var_dump($liveUpdateError);
