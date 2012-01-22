@@ -283,6 +283,9 @@ class weNavigation extends weModelBase{
 			$this->CustomerFilter = unserialize($this->CustomerFilter);
 		}
 		$this->Name = $this->Text;
+		if($ClearCache){
+			weNavigationCache::delNavigationTree(0);
+		}
 		if($this->IsFolder){
 			weNavigationCache::cacheNavigationTree($this->ID);
 		} else{

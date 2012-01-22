@@ -667,26 +667,19 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function we_publish($DoNotMark=false, $saveinMainDB=true, $skipHook=0){
-		$this->we_clearCache($this->ID);
 		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 	}
 
 	function we_unpublish($skipHook=0){
 		if(!$this->ID)
 			return false;
-		$this->we_clearCache($this->ID);
 		return parent::we_unpublish($skipHook);
 	}
 
 	function we_delete(){
 		if(!$this->ID)
 			return false;
-		$this->we_clearCache($this->ID);
 		return we_document::we_delete();
-	}
-
-	function we_clearCache($id){
-		//FIXME:remove
 	}
 
 	function we_load($from=we_class::LOAD_MAID_DB){

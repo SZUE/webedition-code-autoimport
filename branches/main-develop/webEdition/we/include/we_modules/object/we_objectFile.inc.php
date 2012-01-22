@@ -660,7 +660,7 @@ class we_objectFile extends we_document{
 		return '<span class="defaultfont">' . $this->TableID . '</span>';
 	}
 
-	static function getSortArray($tableID,$db){
+	static function getSortArray($tableID, $db){
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $tableID, 'strOrder', $db));
 		$ctable = OBJECT_X_TABLE . $tableID;
 		$tableInfo = $db->metadata($ctable);
@@ -674,7 +674,7 @@ class we_objectFile extends we_document{
 		}
 
 		if(count($order) != count($fields)){
-			$order=array();
+			$order = array();
 			for($y = 0; $y < count($fields); $y++){
 				$order[$y] = $y;
 			}
@@ -713,7 +713,7 @@ class we_objectFile extends we_document{
 		}
 		$tableInfo_sorted = array();
 
-		$order = self::getSortArray((int)$tableID, $db);
+		$order = self::getSortArray((int) $tableID, $db);
 		$start = we_objectFile::getFirstTableInfoEntry($tableInfo2);
 		foreach($order as $o){
 			array_push($tableInfo_sorted, $tableInfo2[$start + $o]);
@@ -2356,10 +2356,10 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->Workspaces);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f("SELECT ID FROM " . FILE_TABLE . " WHERE ID=$wsID	AND IsFolder=1", "ID", $this->DB_WE)){
-					array_push($newWs, $wsID);
+				if(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'ID', $this->DB_WE)){
+					$newWs[] = $wsID;
 				} else if($wsID == 0 && strlen($wsID) == 1){
-					array_push($newWs, $wsID);
+					$newWs[] = $wsID;
 				}
 			}
 			$this->Workspaces = makeCSVFromArray($newWs, true);
@@ -2368,8 +2368,8 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->ExtraWorkspaces);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f("SELECT ID FROM " . FILE_TABLE . " WHERE ID=$wsID	AND IsFolder=1", "ID", $this->DB_WE)){
-					array_push($newWs, $wsID);
+				if(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'ID', $this->DB_WE)){
+					$newWs[] = $wsID;
 				}
 			}
 			$this->ExtraWorkspaces = makeCSVFromArray($newWs, true);
@@ -2378,8 +2378,8 @@ class we_objectFile extends we_document{
 			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 			$newWs = array();
 			foreach($ws as $wsID){
-				if(f("SELECT ID FROM " . FILE_TABLE . " WHERE ID=$wsID	AND IsFolder=1", "ID", $this->DB_WE)){
-					array_push($newWs, $wsID);
+				if(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', 'ID', $this->DB_WE)){
+					$newWs[] = $wsID;
 				}
 			}
 			$this->ExtraWorkspacesSelected = makeCSVFromArray($newWs, true);
@@ -2389,7 +2389,7 @@ class we_objectFile extends we_document{
 	function we_save($resave=0, $skipHook=0){
 		$this->errMsg = '';
 
-		$foo = getHash("SELECT strOrder,DefaultValues,DefaultTriggerID FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", $this->DB_WE);
+		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$dv = $foo["DefaultValues"] ? unserialize($foo["DefaultValues"]) : array();
 
 		foreach($this->elements as $n => $elem){
@@ -2406,7 +2406,7 @@ class we_objectFile extends we_document{
 			weShopVariants::correctModelFields($this);
 		}
 		if(!$this->TriggerID){
-			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID="' . $this->ParentID . '"', 'TriggerID', $this->DB_WE);
+			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), 'TriggerID', $this->DB_WE);
 			if(!$this->TriggerID){
 				$this->TriggerID = $foo["DefaultTriggerID"];
 			}
@@ -2442,7 +2442,6 @@ class we_objectFile extends we_document{
 		$this->setUrl();
 
 		if($resave == 0 && $this->ID){
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 		}
 		if($resave == 0 && $_resaveWeDocumentCustomerFilter){
@@ -2484,7 +2483,7 @@ class we_objectFile extends we_document{
 	}
 
 	function hasWorkspaces(){
-		return f("SELECT Workspaces FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", "Workspaces", $this->DB_WE);
+		return f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'Workspaces', $this->DB_WE);
 	}
 
 	function setTypeAndLength(){
@@ -2507,7 +2506,7 @@ class we_objectFile extends we_document{
 	function we_load($from=we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
-				$sessDat = unserialize(f("SELECT SerializedData FROM " . SCHEDULE_TABLE . " WHERE DID=" . $this->ID . " AND ClassName='" . $this->ClassName . "' AND Was='" . we_schedpro::SCHEDULE_FROM . "'", "SerializedData", $this->DB_WE));
+				$sessDat = unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $this->ID . ' AND ClassName="' . $this->ClassName . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE));
 
 				if($sessDat){
 					$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
@@ -2532,7 +2531,7 @@ class we_objectFile extends we_document{
 					$this->i_initSerializedDat($sessDat, false);
 					//make sure at least TableID is set from db
 					//and Published as well #5742
-					$this->i_getPersistentSlotsFromDB("TableID,Published");
+					$this->i_getPersistentSlotsFromDB('TableID,Published');
 					$this->i_getUniqueIDsAndFixNames();
 				} else{
 					$this->we_load(we_class::LOAD_MAID_DB);
@@ -2559,7 +2558,7 @@ class we_objectFile extends we_document{
 			$newDefArr = $this->getDefaultValueArray();
 			foreach($newDefArr as $n => $v){
 				if(is_array($v) && isset($v["uniqueID"])){
-					if($oldName = $this->i_DefArrayNameNotEqual($n, $v["uniqueID"])){
+					if(($oldName = $this->i_DefArrayNameNotEqual($n, $v["uniqueID"]))){
 						$foo = explode("_", $n);
 						unset($foo[0]);
 						$nn = implode("_", $foo);
@@ -2578,14 +2577,11 @@ class we_objectFile extends we_document{
 		foreach($this->DefArray as $n => $v){
 			if(is_array($v) && isset($v["uniqueID"])){
 				if($v["uniqueID"] == $uniqueID){
-					if($n == $name)
-						return "";
-					else
-						return $n;
+					return ($n == $name) ? '' : $n;
 				}
 			}
 		}
-		return "";
+		return '';
 	}
 
 	function we_publish($DoNotMark=false, $saveinMainDB=true, $skipHook=0){
@@ -2609,7 +2605,6 @@ class we_objectFile extends we_document{
 				return false; // mark the document as published;
 			if(!$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_Published='" . $this->Published . "' WHERE OF_ID='" . $this->ID . "'"))
 				return false;
-			$this->we_clearCache($this->ID);
 		}
 		/* hook */
 		if($skipHook == 0){
@@ -2635,7 +2630,6 @@ class we_objectFile extends we_document{
 		if(!$this->DB_WE->query("UPDATE " . OBJECT_X_TABLE . $this->TableID . " SET OF_Published=0 WHERE OF_ID='" . $this->ID . "'"))
 			return false;
 		$this->Published = 0;
-		$this->we_clearCache($this->ID);
 
 		/* version */
 		if($this->ContentType == "objectFile"){
@@ -2659,7 +2653,6 @@ class we_objectFile extends we_document{
 	function we_delete(){
 		if(!$this->ID)
 			return false;
-		$this->we_clearCache($this->ID);
 		// Bug 2892, siehe auch we_delete_fn.inc.php
 		$q = "SELECT ID FROM " . OBJECT_TABLE . " ";
 		$this->DB_WE->query($q);
@@ -2680,10 +2673,6 @@ class we_objectFile extends we_document{
 		} else{
 			return $this->DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE OID=" . $this->ID);
 		}
-	}
-
-	function we_clearCache($id){
-		//FIXME:remove
 	}
 
 	function i_objectFileInit($makeSameNewFlag=false){
