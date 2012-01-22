@@ -315,6 +315,14 @@ $l_prefs=array(
 	'we_max_upload_size_hint'=>'(in MByte, 0=automatisch)',
 	'we_new_folder_mod'=>'Toegangsrechten voor <br/>nieuwe directories',
 	'we_new_folder_mod_hint'=>'(standaard is 755)',
+	
+	'we_scheduler_trigger'=>array(
+		'cron'=>'external cron-job',
+		'description'=>'',
+		'head'=>'Trigger of the scheduler',
+		'postDoc'=>'after delivery of the page',
+		'preDoc'=>'before delivery of the page',
+	),
 	'width'=>'Breedte',
 	'wysiwyglinks_directoryindex_hide'=>'in links from the WYSIWYG editor',
 	'wysiwyglinks_objectseourls'=>'in links from the WYSIWYG editor',
