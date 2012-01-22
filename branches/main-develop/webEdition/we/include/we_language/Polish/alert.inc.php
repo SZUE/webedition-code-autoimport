@@ -170,7 +170,7 @@ $l_alert=array(
 	
 	'wrong_file'=>array(
 		'application/x-shockwave-flash'=>'The file could not be stored. Either it is not a Flash movie or your disk space is exhausted!',
-		'image/*'=>'The file could not be stored. Either it is not an image or your webspace is exhausted!',
+		'image/*'=>'The file could not be stored. Either it is not an image, the format is not compatible for publishing in the internet (no bmp, tif) or your webspace is exhausted!',
 		'text/css'=>'The file could not be stored. Either it is not a CSS file or your disk space is exhausted!',
 		'video/quicktime'=>'The file could not be stored. Either it is not a Quicktime movie or your disk space is exhausted!',
 ));
