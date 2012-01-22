@@ -76,11 +76,6 @@ abstract class listviewBase{
 	 */
 	function __construct($name='0', $rows=999999999, $offset=0, $order='', $desc=false, $cats='', $catOr=false, $workspaceID='0', $cols=0, $calendar='', $datefield='', $date='', $weekstart='', $categoryids='', $customerFilterType='all', $id=''){
 
-		/* triggers scheduler */
-		if(defined('SCHEDULE_TABLE') && !isset($GLOBALS['scheduler_already_triggered'])){
-			$GLOBALS['scheduler_already_triggered'] = 1;
-			we_schedpro::trigger_schedule();
-		}
 		$this->name = $name;
 		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? '���������' : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
 		$this->search = str_replace('"', '', str_replace('\\"', '', trim($this->search)));

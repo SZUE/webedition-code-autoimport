@@ -365,4 +365,6 @@ define("SEOINSIDE_HIDEINWEBEDITION", 0);
 // Flag if should be displayed in Editmode
 define("SEOINSIDE_HIDEINEDITMODE", 1);
 
+// decide how the scheduler works
+define('SCHEUDLER_TRIGGER',1);
 ?>

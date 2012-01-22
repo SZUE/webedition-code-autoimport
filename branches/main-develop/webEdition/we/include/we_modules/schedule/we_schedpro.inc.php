@@ -453,7 +453,8 @@ class we_schedpro{
 		$DB_WE->query("UPDATE " . SCHEDULE_TABLE . " SET Active=0 WHERE Wann<='" . $now . "' AND Schedpro != '' AND Active=1 AND TYPE='" . self::TYPE_ONCE . "'");
 	}
 
-	function trigger_schedule(){
+	static function trigger_schedule(){
+		//FXIME: this is not thread safe!!!
 		$scheddyFile = array();
 		$scheddyObject = array();
 		$DB_WE = new DB_WE();

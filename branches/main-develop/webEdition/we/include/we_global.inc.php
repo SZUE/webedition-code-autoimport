@@ -2643,16 +2643,28 @@ function we_templateInit(){
 		$GLOBALS['DB_WE'] = new DB_WE;
 	}
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+
 	if($GLOBALS['we_doc']){
 		$GLOBALS['WE_DOC_ID'] = $GLOBALS['we_doc']->ID;
-		if(!isset($GLOBALS['WE_MAIN_ID']))
+		if(!isset($GLOBALS['WE_MAIN_ID'])){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
-		if(!isset($GLOBALS['WE_MAIN_DOC']))
+		}
+		if(!isset($GLOBALS['WE_MAIN_DOC'])){
 			$GLOBALS['WE_MAIN_DOC'] = clone($GLOBALS['we_doc']);
-		if(!isset($GLOBALS['WE_MAIN_DOC_REF']))
+		}
+		if(!isset($GLOBALS['WE_MAIN_DOC_REF'])){
 			$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
-		if(!isset($GLOBALS['WE_MAIN_EDITMODE']))
+		}
+		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
+		}
+		//check for Trigger
+		if(defined('SCHEDULE_TABLE')&& (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && 
+			!isset($GLOBALS['we']['backVars']) //on first call this variable is unset, so we're not inside an include
+			&& (defined('SCHEUDLER_TRIGGER')&& SCHEUDLER_TRIGGER==SCHEDULER_TRIGGER_PREDOC)){
+				we_schedpro::trigger_schedule();
+		}
+
 		$GLOBALS['WE_DOC_ParentID'] = $GLOBALS['we_doc']->ParentID;
 		$GLOBALS['WE_DOC_Path'] = $GLOBALS['we_doc']->Path;
 		$GLOBALS['WE_DOC_IsDynamic'] = $GLOBALS['we_doc']->IsDynamic;
@@ -2663,6 +2675,7 @@ function we_templateInit(){
 		$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 		$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');
 		$GLOBALS['CHARSET'] = $GLOBALS['we_doc']->getElement('Charset');
+//FIXME: this code is obsolete?
 		list($__lang) = explode('_', $GLOBALS['we_doc']->Language);
 		if($__lang){
 			$__parts = explode('_', $GLOBALS['WE_LANGUAGE']);
@@ -2707,8 +2720,16 @@ function we_templatePreContent(){
 function we_templatePostContent(){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		print '</form>';
-	} else if(defined('WE_ECONDA_STAT') && defined('WE_ECONDA_PATH') && WE_ECONDA_STAT && WE_ECONDA_PATH != '' && !$GLOBALS['we_doc']->InWebEdition){
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTracking/econda/weEcondaImplement.inc.php');
+	} else{
+		if(defined('WE_ECONDA_STAT') && defined('WE_ECONDA_PATH') && WE_ECONDA_STAT && WE_ECONDA_PATH != '' && !$GLOBALS['we_doc']->InWebEdition){
+			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTracking/econda/weEcondaImplement.inc.php');
+		}
+		//check for Trigger
+		if(defined('SCHEDULE_TABLE')&& (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+			(!isset($GLOBALS['we']['backVars'])||(isset($GLOBALS['we']['backVars'])&& count($GLOBALS['we']['backVars'])==0))//not inside an included Doc
+			&& ((defined('SCHEUDLER_TRIGGER')&& SCHEUDLER_TRIGGER==SCHEDULER_TRIGGER_POSTDOC)||!defined('SCHEUDLER_TRIGGER'))){ //is set to Post or not set (new default)
+				we_schedpro::trigger_schedule();
+		}
 	}
 }
 

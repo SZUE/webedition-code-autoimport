@@ -93,6 +93,7 @@ $global_config[] = array('define("XHTML_REMOVE_WRONG",', '// Remove wrong xhtml 
 
 $global_config[] = array('define("WE_MAX_UPLOAD_SIZE",', '// Maximal possible uploadsize' . "\n" . 'define("WE_MAX_UPLOAD_SIZE", "");');
 $global_config[] = array('define("WE_DOCTYPE_WORKSPACE_BEHAVIOR",', '// Which Doctypes should be shown for which workspace 0=normal behaviour , 1=new behaviour' . "\n" . 'define("WE_DOCTYPE_WORKSPACE_BEHAVIOR", 0);');
+$global_config[] = array('define(\'SCHEUDLER_TRIGGER\',', '// decide how the scheduler works' . "\n" . 'define(\'SCHEUDLER_TRIGGER\', 1);');
 
 // accessibility
 $global_config[] = array('define("SHOWINPUTS_DEFAULT",', '// Default setting for showinputs attribute' . "\n" . 'define("SHOWINPUTS_DEFAULT", true);');
@@ -210,59 +211,45 @@ function get_value($settingvalue){
 
 		case "ui_language":
 			return $_SESSION["prefs"]["Language"];
-			break;
 
 		case "ui_charset":
 			return $_SESSION["prefs"]["BackendCharset"];
-			break;
 
 		case "ui_seem_start_file":
 			return $_SESSION["prefs"]["seem_start_file"];
-			break;
 
 		case "ui_seem_start_weapp":
 			return $_SESSION["prefs"]["seem_start_weapp"];
-			break;
 
 		case "ui_seem_start_type":
 			if(($_SESSION["prefs"]["seem_start_type"] == "document" || $_SESSION["prefs"]["seem_start_type"] == "object") && $_SESSION["prefs"]["seem_start_file"] == 0){
 				return "cockpit";
-			} else{
-				return $_SESSION["prefs"]["seem_start_type"];
 			}
-			break;
+			return $_SESSION["prefs"]["seem_start_type"];
 
 		case "ui_disable_seem":
 			return defined("WE_SEEM") ? (WE_SEEM == 0 ? true : false) : false;
-			break;
 
 		case "ui_size_opt":
 			return $_SESSION["prefs"]["sizeOpt"];
-			break;
 
 		case "ui_we_width":
 			return $_SESSION["prefs"]["weWidth"];
-			break;
 
 		case "ui_we_height":
 			return $_SESSION["prefs"]["weHeight"];
-			break;
 
 		case "ui_sidebar_disable":
 			return defined("SIDEBAR_DISABLED") ? SIDEBAR_DISABLED : 0;
-			break;
 
 		case "ui_sidebar_show_on_startup":
 			return defined("SIDEBAR_SHOW_ON_STARTUP") ? SIDEBAR_SHOW_ON_STARTUP : 1;
-			break;
 
 		case "ui_sidebar_file":
 			return defined("SIDEBAR_DEFAULT_DOCUMENT") ? SIDEBAR_DEFAULT_DOCUMENT : 0;
-			break;
 
 		case "ui_sidebar_width":
 			return defined("SIDEBAR_DEFAULT_WIDTH") ? SIDEBAR_DEFAULT_WIDTH : 300;
-			break;
 
 		/*		 * *******************************************************************
 		 * FILE EXTENSIONS
@@ -270,15 +257,12 @@ function get_value($settingvalue){
 
 		case "extension_static":
 			return (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : '.html');
-			break;
 
 		case "extension_dynamic":
 			return (defined("DEFAULT_DYNAMIC_EXT") ? DEFAULT_DYNAMIC_EXT : '.php');
-			break;
 
 		case "extension_html":
 			return (defined("DEFAULT_HTML_EXT") ? DEFAULT_HTML_EXT : '.html');
-			break;
 
 		/*		 * *******************************************************************
 		 * CACHING
@@ -299,12 +283,10 @@ function get_value($settingvalue){
 		case "locale_locales":
 			we_loadLanguageConfig();
 			return getWeFrontendLanguagesForBackend();
-			break;
 
 		case "locale_default":
 			we_loadLanguageConfig();
 			return $GLOBALS['weDefaultFrontendLanguage'];
-			break;
 
 		/*		 * *******************************************************************
 		 * COUNRIES
@@ -312,15 +294,12 @@ function get_value($settingvalue){
 
 		case "countries_default":
 			return defined("WE_COUNTRIES_DEFAULT") ? WE_COUNTRIES_DEFAULT : "";
-			break;
 
 		case "countries_top":
 			return defined("WE_COUNTRIES_TOP") ? WE_COUNTRIES_TOP : "DE,AT,CH";
-			break;
 
 		case "countries_shown":
 			return defined("WE_COUNTRIES_SHOWN") ? WE_COUNTRIES_SHOWN : "BE,DK,FI,FR,GR,IE,IT,LU,NL,PT,SE,ES,GB,EE,LT,MT,PL,SK,SI,CZ,HU,CY";
-			break;
 
 		/*		 * *******************************************************************
 		 * COCKPIT
@@ -328,7 +307,6 @@ function get_value($settingvalue){
 
 		case "cockpit_amount_columns":
 			return $_SESSION["prefs"]["cockpit_amount_columns"];
-			break;
 
 		/*		 * *******************************************************************
 		 * TEMPLATE EDITOR
@@ -336,67 +314,51 @@ function get_value($settingvalue){
 
 		case "editor_mode":
 			return $_SESSION["prefs"]["editorMode"];
-			break;
 
 		case "editor_font_name":
 			return $_SESSION["prefs"]["editorFontname"];
-			break;
 
 		case "editor_font_size":
 			return $_SESSION["prefs"]["editorFontsize"];
-			break;
 
 		case "editor_font_color":
 			return $_SESSION["prefs"]["editorFontcolor"];
-			break;
 
 		case "editor_we_tag_font_color":
 			return $_SESSION["prefs"]["editorWeTagFontcolor"];
-			break;
 
 		case "editor_we_attribute_font_color":
 			return $_SESSION["prefs"]["editorWeAttributeFontcolor"];
-			break;
 
 		case "editor_html_tag_font_color":
 			return $_SESSION["prefs"]["editorHTMLTagFontcolor"];
-			break;
 
 		case "editor_html_attribute_font_color":
 			return $_SESSION["prefs"]["editorHTMLAttributeFontcolor"];
-			break;
 
 		case "editor_pi_tag_font_color":
 			return $_SESSION["prefs"]["editorPiTagFontcolor"];
-			break;
 
 		case "editor_comment_font_color":
 			return $_SESSION["prefs"]["editorCommentFontcolor"];
-			break;
 
 		case 'editor_line_numbers':
 			return $_SESSION['prefs']['editorLinenumbers'];
-			break;
 
 		case 'editor_code_completion':
 			return $_SESSION['prefs']['editorCodecompletion'];
-			break;
 
 		case 'editor_tooltips':
 			return $_SESSION['prefs']['editorTooltips'];
-			break;
 
 		case 'editor_docu_integration':
 			return $_SESSION['prefs']['editorDocuintegration'];
-			break;
 
 		case 'editor_tooltip_font_name':
 			return $_SESSION['prefs']['editorTooltipFontname'];
-			break;
 
 		case 'editor_tooltip_font_size':
 			return $_SESSION['prefs']['editorTooltipFontsize'];
-			break;
 
 		/*		 * *******************************************************************
 		 * PROXY SERVER
@@ -409,23 +371,18 @@ function get_value($settingvalue){
 			}
 
 			return defined("WE_PROXYHOST");
-			break;
 
 		case "proxy_host":
 			return defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
-			break;
 
 		case "proxy_port":
 			return defined("WE_PROXYPORT") ? WE_PROXYPORT : "";
-			break;
 
 		case "proxy_user":
 			return defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
-			break;
 
 		case "proxy_password":
 			return defined("WE_PROXYPASSWORD") ? WE_PROXYPASSWORD : "";
-			break;
 
 		/*		 * *******************************************************************
 		 * ADVANCED
@@ -434,15 +391,12 @@ function get_value($settingvalue){
 
 		case "auth_auth":
 			return (defined("HTTP_USERNAME") && defined("HTTP_PASSWORD"));
-			break;
 
 		case "auth_user":
 			return defined("HTTP_USERNAME") ? HTTP_USERNAME : "";
-			break;
 
 		case "auth_password":
 			return defined("HTTP_PASSWORD") ? HTTP_PASSWORD : "";
-			break;
 
 		/*		 * *******************************************************************
 		 * ERROR HANDLING
@@ -450,62 +404,48 @@ function get_value($settingvalue){
 
 		case "we_error_handler":
 			return defined("WE_ERROR_HANDLER") ? WE_ERROR_HANDLER : true;
-			break;
 
 		case "error_handling_notices":
 			return defined("WE_ERROR_NOTICES") ? WE_ERROR_NOTICES : true;
-			break;
 
 		case "error_handling_deprecated":
 			return defined("WE_ERROR_DEPRECATED") ? WE_ERROR_DEPRECATED : false;
-			break;
 
 		case "error_handling_warnings":
 			return defined("WE_ERROR_WARNINGS") ? WE_ERROR_WARNINGS : true;
-			break;
 
 		case "error_handling_errors":
 			return defined("WE_ERROR_ERRORS") ? WE_ERROR_ERRORS : true;
-			break;
 
 		case "error_display_errors":
 			return defined("WE_ERROR_SHOW") ? WE_ERROR_SHOW : false;
-			break;
 
 		case "error_log_errors":
 			return defined("WE_ERROR_LOG") ? WE_ERROR_LOG : true;
-			break;
 
 		case "error_mail_errors":
 			return defined("WE_ERROR_MAIL") ? WE_ERROR_MAIL : false;
-			break;
 
 		case "error_mail_address":
 			return defined("WE_ERROR_MAIL_ADDRESS") ? WE_ERROR_MAIL_ADDRESS : "";
-			break;
 
 		case "error_document_no_objectfile":
 			return defined("ERROR_DOCUMENT_NO_OBJECTFILE") ? ERROR_DOCUMENT_NO_OBJECTFILE : 0;
-			break;
 
 		case "disable_template_code_check":
 			return defined("DISABLE_TEMPLATE_CODE_CHECK") ? DISABLE_TEMPLATE_CODE_CHECK : 0;
-			break;
 
 		case "error_debug_normal":
 			return $_SESSION["prefs"]["debug_normal"];
-			break;
 
 		case "error_debug_seem":
 			return $_SESSION["prefs"]["debug_seem"];
-			break;
 
 		/*		 * *******************************************************************
 		 * MESSAGE SETTINGS
 		 * ******************************************************************* */
 		case 'message_reporting':
 			return (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"]) ? $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
-			break;
 
 		/*		 * *******************************************************************
 		 * BACKUP
@@ -513,7 +453,6 @@ function get_value($settingvalue){
 
 		case "backup_steps":
 			return defined("BACKUP_STEPS") ? BACKUP_STEPS : 10;
-			break;
 
 		/*		 * *******************************************************************
 		 * THUMBNAILS
@@ -521,23 +460,18 @@ function get_value($settingvalue){
 
 		case "thumbnail_dir":
 			return (defined("WE_THUMBNAIL_DIRECTORY") && WE_THUMBNAIL_DIRECTORY) ? WE_THUMBNAIL_DIRECTORY : '/__we_thumbs__';
-			break;
 		/*		 * *******************************************************************
 		 * INLINEEDIT
 		 * ******************************************************************* */
 
 		case "inlineedit_default":
 			return defined("INLINEEDIT_DEFAULT") ? INLINEEDIT_DEFAULT : true;
-			break;
 		case "removefirstparagraph_default":
 			return defined("REMOVEFIRSTPARAGRAPH_DEFAULT") ? REMOVEFIRSTPARAGRAPH_DEFAULT : false;
-			break;
 		case "hidenameattribinweimg_default":
 			return defined("HIDENAMEATTRIBINWEIMG_DEFAULT") ? HIDENAMEATTRIBINWEIMG_DEFAULT : false;
-			break;
 		case "hidenameattribinweform_default":
 			return defined("HIDENAMEATTRIBINWEFORM_DEFAULT") ? HIDENAMEATTRIBINWEFORM_DEFAULT : false;
-			break;
 
 		/*		 * *******************************************************************
 		 * NAVIGATION
@@ -545,53 +479,37 @@ function get_value($settingvalue){
 
 		case "navigation_entries_from_document":
 			return defined("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? NAVIGATION_ENTRIES_FROM_DOCUMENT : 'item';
-			break;
 		case "navigation_rules_continue_after_first_match":
 			return defined("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH : false;
-			break;
 		case "navigation_directoryindex_hide":
 			return defined("NAVIGATION_DIRECTORYINDEX_HIDE") ? NAVIGATION_DIRECTORYINDEX_HIDE : false;
-			break;
 		case "navigation_directoryindex_names":
 			return defined("NAVIGATION_DIRECTORYINDEX_NAMES") ? NAVIGATION_DIRECTORYINDEX_NAMES : '';
-			break;
 		case "wysiwyglinks_directoryindex_hide":
 			return defined("WYSIWYGLINKS_DIRECTORYINDEX_HIDE") ? WYSIWYGLINKS_DIRECTORYINDEX_HIDE : false;
-			break;
 		case "taglinks_directoryindex_hide":
 			return defined("TAGLINKS_DIRECTORYINDEX_HIDE") ? TAGLINKS_DIRECTORYINDEX_HIDE : false;
-			break;
 		case "navigation_objectseourls":
 			return defined("NAVIGATION_OBJECTSEOURLS") ? NAVIGATION_DIRECTORYINDEX_HIDE : false;
-			break;
 		case "wysiwyglinks_objectseourls":
 			return defined("WYSIWYGLINKS_OBJECTSEOURLS") ? WYSIWYGLINKS_OBJECTSEOURLS : false;
-			break;
 		case "taglinks_objectseourls":
 			return defined("TAGLINKS_OBJECTSEOURLS") ? TAGLINKS_OBJECTSEOURLS : false;
-			break;
 		case "urlencode_objectseourls":
 			return defined("URLENCODE_OBJECTSEOURLS") ? URLENCODE_OBJECTSEOURLS : false;
-			break;
 		case "suppress404code":
 			return defined("SUPPRESS404CODE") ? SUPPRESS404CODE : false;
-			break;
 		case "seoinside_hideinwebedition":
 			return defined("SEOINSIDE_HIDEINWEBEDITION") ? SEOINSIDE_HIDEINWEBEDITION : false;
-			break;
 		case "seoinside_hideineditmode":
 			return defined("SEOINSIDE_HIDEINEDITMODE") ? SEOINSIDE_HIDEINEDITMODE : false;
-			break;
 
 		case "langlink_support":
 			return defined("LANGLINK_SUPPORT") ? LANGLINK_SUPPORT : true;
-			break;
 		case "langlink_support_backlinks":
 			return defined("LANGLINK_SUPPORT_BACKLINKS") ? LANGLINK_SUPPORT_BACKLINKS : true;
-			break;
 		case "langlink_support_recursive":
 			return defined("LANGLINK_SUPPORT_RECURSIVE") ? LANGLINK_SUPPORT_RECURSIVE : true;
-			break;
 
 		/*		 * *******************************************************************
 		 * DEFAULT CHARSET
@@ -599,7 +517,6 @@ function get_value($settingvalue){
 
 		case "default_charset":
 			return defined("DEFAULT_CHARSET") ? DEFAULT_CHARSET : 'UTF-8';
-			break;
 
 
 		/*		 * *******************************************************************
@@ -608,7 +525,6 @@ function get_value($settingvalue){
 
 		case "we_php_default":
 			return defined("WE_PHP_DEFAULT") ? WE_PHP_DEFAULT : false;
-			break;
 
 		/*		 * *******************************************************************
 		 * SAFARI WYSIWYG
@@ -616,11 +532,9 @@ function get_value($settingvalue){
 
 		case "safari_wysiwyg":
 			return defined("SAFARI_WYSIWYG") ? SAFARI_WYSIWYG : true;
-			break;
 
 		case 'wysiwyg_type':
 			return defined("WYSIWYG_TYPE") ? WYSIWYG_TYPE : 'default';
-			break;
 
 		/*		 * *******************************************************************
 		 * SHOWINPUTS
@@ -628,7 +542,6 @@ function get_value($settingvalue){
 
 		case "showinputs_default":
 			return defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true;
-			break;
 
 		/*		 * *******************************************************************
 		 * SHOWINPUTS
@@ -636,7 +549,6 @@ function get_value($settingvalue){
 
 		case "showinputs_default":
 			return defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true;
-			break;
 
 		/*		 * *******************************************************************
 		 * WE_MAX_UPLOAD_SIZE
@@ -644,7 +556,6 @@ function get_value($settingvalue){
 
 		case "we_max_upload_size":
 			return defined("WE_MAX_UPLOAD_SIZE") ? WE_MAX_UPLOAD_SIZE : "";
-			break;
 
 		/*		 * *******************************************************************
 		 * WE_NEW_FOLDER_MOD
@@ -652,7 +563,6 @@ function get_value($settingvalue){
 
 		case "we_new_folder_mod":
 			return defined("WE_NEW_FOLDER_MOD") ? WE_NEW_FOLDER_MOD : "755";
-			break;
 
 		/*		 * *******************************************************************
 		 * WE_DOCTYPE_WORKSPACE_BEHAVIOUR
@@ -660,7 +570,9 @@ function get_value($settingvalue){
 
 		case "we_doctype_workspace_behavior":
 			return defined("WE_DOCTYPE_WORKSPACE_BEHAVIOR") ? WE_DOCTYPE_WORKSPACE_BEHAVIOR : 0;
-			break;
+
+		case 'we_scheduler_trigger':
+			return defined('SCHEUDLER_TRIGGER') ? SCHEUDLER_TRIGGER : SCHEDULER_TRIGGER_POSTDOC;
 
 		/*		 * *******************************************************************
 		 * TREE
@@ -668,45 +580,36 @@ function get_value($settingvalue){
 
 		case "default_tree_count":
 			return $_SESSION["prefs"]["default_tree_count"];
-			break;
 
 		/*		 * *******************************************************************
 		 * HOOKS
 		 * ******************************************************************* */
 		case "execute_hooks":
 			return defined("EXECUTE_HOOKS") ? EXECUTE_HOOKS : false;
-			break;
 
 		/*		 * *******************************************************************
 		 * Validation
 		 * ******************************************************************* */
 		case "xhtml_default":
 			return defined("XHTML_DEFAULT") ? XHTML_DEFAULT : false;
-			break;
 
 		case "xhtml_debug":
 			return defined("XHTML_DEBUG") ? XHTML_DEBUG : false;
-			break;
 
 		case "xhtml_remove_wrong":
 			return defined("XHTML_REMOVE_WRONG") ? XHTML_REMOVE_WRONG : false;
-			break;
 
 		case "xhtml_show_wrong":
 			return $_SESSION["prefs"]["xhtml_show_wrong"];
-			break;
 
 		case "xhtml_show_wrong_text":
 			return $_SESSION["prefs"]["xhtml_show_wrong_text"];
-			break;
 
 		case "xhtml_show_wrong_js":
 			return $_SESSION["prefs"]["xhtml_show_wrong_js"];
-			break;
 
 		case "xhtml_show_wrong_error_log":
 			return $_SESSION["prefs"]["xhtml_show_wrong_error_log"];
-			break;
 
 		/*		 * *******************************************************************
 		 * WESTAT
@@ -714,7 +617,6 @@ function get_value($settingvalue){
 
 		case "we_tracker_dir":
 			return (defined("WE_TRACKER_DIR") && WE_TRACKER_DIR) ? WE_TRACKER_DIR : '';
-			break;
 
 		case "use_jupload":
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/jupload/jupload.jar')){
@@ -723,87 +625,66 @@ function get_value($settingvalue){
 			}
 			if(isset($_SESSION['prefs']['use_jupload'])){
 				return $_SESSION["prefs"]['use_jupload'];
-			} else{
-				return 1;
 			}
-			break;
+			return 1;
+
 
 		case "specify_jeditor_colors":
 			if(isset($_SESSION['prefs']['specify_jeditor_colors'])){
 				return $_SESSION["prefs"]['specify_jeditor_colors'];
-			} else{
-				return 1;
 			}
-			break;
+			return 1;
 
 		/**
 		 * formmail stuff
 		 */
 		case "formmail_log":
 			return defined("FORMMAIL_LOG") ? FORMMAIL_LOG : false;
-			break;
 
 		case "formmail_confirm":
 			return defined("FORMMAIL_CONFIRM") ? FORMMAIL_CONFIRM : true;
-			break;
 
 		case "formmail_ViaWeDoc":
 			return defined("FORMMAIL_VIAWEDOC") ? FORMMAIL_VIAWEDOC : false;
-			break;
 
 		case "formmail_block":
 			return defined("FORMMAIL_BLOCK") ? FORMMAIL_BLOCK : false;
-			break;
 
 		case "formmail_span":
 			return defined("FORMMAIL_SPAN") ? FORMMAIL_SPAN : 300;
-			break;
 
 		case "formmail_emptylog":
 			return defined("FORMMAIL_EMPTYLOG") ? FORMMAIL_EMPTYLOG : 604800;
-			break;
 
 		case "formmail_trials":
 			return defined("FORMMAIL_TRIALS") ? FORMMAIL_TRIALS : 3;
-			break;
 
 		case "formmail_blocktime":
 			return defined("FORMMAIL_BLOCKTIME") ? FORMMAIL_BLOCKTIME : 86400;
-			break;
 
 		/*		 * *******************************************************************
 		 * EMAIL
 		 * ******************************************************************* */
 		case "mailer_type":
 			return defined('WE_MAILER') ? WE_MAILER : 'php';
-			break;
 		case "smtp_server":
 			return defined('SMTP_SERVER') ? SMTP_SERVER : 'localhost';
-			break;
 		case "smtp_port":
 			return defined('SMTP_PORT') ? SMTP_PORT : 25;
-			break;
 		case "smtp_auth":
 			return defined('SMTP_AUTH') ? SMTP_AUTH : 0;
-			break;
 		case "smtp_username":
 			return defined('SMTP_USERNAME') ? SMTP_USERNAME : '';
-			break;
 		case "smtp_password":
 			return defined('SMTP_PASSWORD') ? SMTP_PASSWORD : '';
-			break;
 		case "smtp_halo":
 			return defined('SMTP_HALO') ? SMTP_HALO : '';
-			break;
 		case "smtp_timeout":
 			return defined('SMTP_TIMEOUT') ? SMTP_TIMEOUT : '';
-			break;
 		case "smtp_encryption":
 			return defined('SMTP_ENCRYPTION') ? SMTP_ENCRYPTION : 0;
-			break;
 		default:
 			return "";
-			break;
 
 		/*		 * *******************************************************************
 		 * VERSIONING
@@ -934,7 +815,7 @@ function remember_value($settingvalue, $settingname){
 			 * WINDOW DIMENSIONS
 			 * *************************************************************** */
 
-			case '$_REQUEST["Language"]':	//Handle both
+			case '$_REQUEST["Language"]': //Handle both
 				$_SESSION["prefs"]["Language"] = $settingvalue;
 				$_SESSION["prefs"]["BackendCharset"] = $_REQUEST["BackendCharset"];
 
@@ -958,35 +839,34 @@ function remember_value($settingvalue, $settingname){
 						_multiEditorreload = true;
 					";
 
-					/* 
-					$save_javascript .= "
-						if (parent.opener.top.rframe.bframe.bm_vtabs) {
-							parent.opener.top.rframe.bframe.bm_vtabs.location.reload();
-						}
+					/*
+					  $save_javascript .= "
+					  if (parent.opener.top.rframe.bframe.bm_vtabs) {
+					  parent.opener.top.rframe.bframe.bm_vtabs.location.reload();
+					  }
 
-						if (parent.opener.top.rframe.bframe.infoFrame) {
-							parent.opener.top.rframe.bframe.infoFrame.location.reload();
-						}
+					  if (parent.opener.top.rframe.bframe.infoFrame) {
+					  parent.opener.top.rframe.bframe.infoFrame.location.reload();
+					  }
 
-						if(top.opener.top.weSidebar && top.opener.top.weSidebar.reloadHeader) {
+					  if(top.opener.top.weSidebar && top.opener.top.weSidebar.reloadHeader) {
 
-							top.opener.top.weSidebar.reloadHeader();
-							top.opener.top.weSidebar.reload();
-							top.opener.top.weSidebar.reloadFooter();
+					  top.opener.top.weSidebar.reloadHeader();
+					  top.opener.top.weSidebar.reload();
+					  top.opener.top.weSidebar.reloadFooter();
 
-						}
+					  }
 
-						if (parent.opener.top.header) {
-							parent.opener.top.header.location.reload();
-						}
+					  if (parent.opener.top.header) {
+					  parent.opener.top.header.location.reload();
+					  }
 
-						if (parent.opener.top.reload_weJsStrings) {
-							parent.opener.top.reload_weJsStrings(\"$settingvalue\");
-						}
+					  if (parent.opener.top.reload_weJsStrings) {
+					  parent.opener.top.reload_weJsStrings(\"$settingvalue\");
+					  }
 
-					";
-					*/
-
+					  ";
+					 */
 				}
 
 				$_update_prefs = true;
@@ -1912,6 +1792,12 @@ $_we_active_integrated_modules = array(
 				$_update_prefs = false;
 				break;
 
+			case '$_REQUEST["we_scheduler_trigger"]':
+				$_file = &$GLOBALS['config_files']['conf_global']['content'];
+				$_file = weConfParser::changeSourceCode("define", $_file, "SCHEUDLER_TRIGGER", $settingvalue);
+
+				$_update_prefs = false;
+				break;
 
 
 			/**
@@ -2879,6 +2765,7 @@ function save_all_values(){
 		$_update_prefs = remember_value(isset($_REQUEST["we_max_upload_size"]) ? $_REQUEST["we_max_upload_size"] : null, '$_REQUEST["we_max_upload_size"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_new_folder_mod"]) ? $_REQUEST["we_new_folder_mod"] : null, '$_REQUEST["we_new_folder_mod"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["we_doctype_workspace_behavior"]) ? $_REQUEST["we_doctype_workspace_behavior"] : null, '$_REQUEST["we_doctype_workspace_behavior"]') || $_update_prefs;
+		$_update_prefs = remember_value(isset($_REQUEST["we_scheduler_trigger"]) ? $_REQUEST["we_scheduler_trigger"] : null, '$_REQUEST["we_scheduler_trigger"]') || $_update_prefs;
 
 		$_update_prefs = remember_value(isset($_REQUEST["useauth"]) ? $_REQUEST["useauth"] : null, '$_REQUEST["useauth"]') || $_update_prefs;
 		$_update_prefs = remember_value(isset($_REQUEST["authuser"]) ? $_REQUEST["authuser"] : null, '$_REQUEST["authuser"]') || $_update_prefs;
@@ -3155,7 +3042,7 @@ function build_dialog($selected_setting = "ui"){
 			while(false !== ($entry = $_language_directory->read())) {
 				if($entry != "." && $entry != ".."){
 					if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
-						$_language[$entry]=$entry;
+						$_language[$entry] = $entry;
 					} else{
 						// do nothing
 					}
@@ -3834,34 +3721,34 @@ function build_dialog($selected_setting = "ui"){
 			$_settings = array();
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
 
-			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0,'noline'=>1));
-			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22,get_value("countries_default"), "", "", "text", 225);
-    		array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200,"noline" => 1));
+			array_push($_settings, array("headline" => g_l('prefs', '[countries_headline]'), "html" => $_information, "space" => 0, 'noline' => 1));
+			$_countries_default = we_html_tools::htmlTextInput("countries_default", 22, get_value("countries_default"), "", "", "text", 225);
+			array_push($_settings, array("headline" => g_l('prefs', '[countries_default]'), "html" => $_countries_default, "space" => 200, "noline" => 1));
 
-            $lang = explode('_',$GLOBALS["WE_LANGUAGE"]);
-			$langcode = array_search ($lang[0],$GLOBALS['WE_LANGS']);
-            $countrycode = array_search ($langcode,$GLOBALS['WE_LANGS_COUNTRIES']);
-            $zendsupported = Zend_Locale::getTranslationList('territory', $langcode,2);
-            $oldLocale= setlocale(LC_ALL, NULL);
-            setlocale(LC_ALL, $langcode.'_'.$countrycode.'.UTF-8');
-            asort($zendsupported,SORT_LOCALE_STRING );
-            setlocale(LC_ALL, $oldLocale);
-            $countries_top = explode(',',get_value('countries_top'));
-            $countries_shown = explode(',',get_value('countries_shown'));
-            $tabC = new we_html_table(array("border"=>"1", "cellpadding"=>"2", "cellspacing"=>"0"), $rows_num = 1, $cols_num = 4);
-            $i=0;
-            $tabC->setCol($i, 0, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_country]'));
-            $tabC->setCol($i, 1, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_top]'));
-            $tabC->setCol($i, 2, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_show]'));
-            $tabC->setCol($i, 3, array("class"=>"defaultfont","style"=>"font-weight:bold","nowrap"=>"nowrap"), g_l('prefs', '[countries_noshow]'));
-            foreach ($zendsupported as $countrycode => $country) {
-            	$i++;
-            	$tabC->addRow();
-                $tabC->setCol($i, 0, array("class"=>"defaultfont"), CheckAndConvertISObackend($country));
-                $tabC->setCol($i, 1, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="2" '.(in_array($countrycode,$countries_top) ? 'checked':'').' > ');
-                $tabC->setCol($i, 2, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="1" '.(in_array($countrycode,$countries_shown) ? 'checked':'').' > ');
-            	$tabC->setCol($i, 3, array("class"=>"defaultfont"), '<input type="radio" name="countries['.$countrycode.']" value="0" '.(!in_array($countrycode,$countries_top)&& !in_array($countrycode,$countries_shown)  ? 'checked':'').' > ');
-            }
+			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
+			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+			$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
+			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
+			asort($zendsupported, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+			$countries_top = explode(',', get_value('countries_top'));
+			$countries_shown = explode(',', get_value('countries_shown'));
+			$tabC = new we_html_table(array("border" => "1", "cellpadding" => "2", "cellspacing" => "0"), $rows_num = 1, $cols_num = 4);
+			$i = 0;
+			$tabC->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_country]'));
+			$tabC->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_top]'));
+			$tabC->setCol($i, 2, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_show]'));
+			$tabC->setCol($i, 3, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('prefs', '[countries_noshow]'));
+			foreach($zendsupported as $countrycode => $country){
+				$i++;
+				$tabC->addRow();
+				$tabC->setCol($i, 0, array("class" => "defaultfont"), CheckAndConvertISObackend($country));
+				$tabC->setCol($i, 1, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 2, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 3, array("class" => "defaultfont"), '<input type="radio" name="countries[' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+			}
 
 			$lang = explode('_', $GLOBALS["WE_LANGUAGE"]);
 			$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
@@ -4220,7 +4107,7 @@ EOF;
 			 * webEdition extensions
 			 */
 			// Get webEdition extensions
-			$ct=new we_base_ContentTypes();
+			$ct = new we_base_ContentTypes();
 			$_we_extensions = $ct->getExtension('text/webedition');
 
 			// Build static webEdition extensions select box
@@ -4258,8 +4145,8 @@ EOF;
 			 * HTML extensions
 			 */
 			// Get extensions
-			$ct=new we_base_ContentTypes();
-			$_html_extensions =$ct->getExtension('text/html');
+			$ct = new we_base_ContentTypes();
+			$_html_extensions = $ct->getExtension('text/html');
 
 			// Build static webEdition extensions select box
 			$_static_html_extensions = new we_html_select(array("name" => "DefaultHTMLExt", "class" => "weSelect"));
@@ -5336,8 +5223,15 @@ else {
 					we_forms::radiobutton("1", ($_we_doctype_workspace_behavior == "1"), "we_doctype_workspace_behavior", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
 					'</td></tr></table>';
 
+				$_settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, "space" => 200);
 
-				array_push($_settings, array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, "space" => 200));
+				$_Schedtrigger_setting = new we_html_select(array("name" => "we_scheduler_trigger", "class" => "weSelect"));
+				$_Schedtrigger_setting->addOption(0, g_l('prefs', '[we_scheduler_trigger][preDoc]'));//pre
+				$_Schedtrigger_setting->addOption(1, g_l('prefs', '[we_scheduler_trigger][postDoc]'));//post
+				$_Schedtrigger_setting->addOption(2, g_l('prefs', '[we_scheduler_trigger][cron]'));//cron
+				$tmp='<div>'.$_Schedtrigger_setting->getHtml().'<br/>'.we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430).'</div>';
+				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
+
 			}
 
 
@@ -5467,14 +5361,14 @@ else {
 				$_authpass = we_html_tools::htmlTextInput("authpass", 22, $_auth_pass, "", "", "password", 225, 0, "", !$_auth);
 				array_push($_settings, array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200));
 
-				if(we_image_edit::gd_version() > 0){	 //  gd lib ist installiert
+				if(we_image_edit::gd_version() > 0){ //  gd lib ist installiert
 					//javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'thumbnail_dir\\'].value', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')
 					$wecmdenc1 = we_cmd_enc("document.forms[0].elements['thumbnail_dir'].value");
 					$wecmdenc4 = '';
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
-				} else{																 //  gd lib ist nicht installiert
+				} else{		 //  gd lib ist nicht installiert
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
 					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125, '0', '', true);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
@@ -6527,10 +6421,16 @@ function render_dialog(){
 	if($tabname == "setting_validation")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_validation"), build_dialog("validation"));
 
+
+
+
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
 	if(false && $tabname == "setting_cache")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+
+
+
 
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_cache", "style" => "display: none;"), build_dialog("cache"));
 
@@ -6607,11 +6507,10 @@ if(isset($_REQUEST["save_settings"]) && $_REQUEST["save_settings"] == "true"){
 	} elseif($_REQUEST['seem_start_type'] == "weapp"){
 		if(empty($_REQUEST['seem_start_weapp'])){
 			$acError = true;
-			$acErrorMsg = sprintf(g_l('alert','[field_in_tab_notvalid]'),g_l('prefs', '[seem_startdocument]'),g_l('prefs', '[tab_ui]'))."\\n";
+			$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
 		}
-
-	} elseif ($_REQUEST['seem_start_type']=="object") {
-		if (empty($_REQUEST['seem_start_object'])) {
+	} elseif($_REQUEST['seem_start_type'] == "object"){
+		if(empty($_REQUEST['seem_start_object'])){
 			$acError = true;
 			$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab_ui]')) . "\\n";
 		} else{
