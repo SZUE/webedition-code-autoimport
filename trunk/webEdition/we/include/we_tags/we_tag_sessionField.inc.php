@@ -186,8 +186,7 @@ function we_tag_sessionField($attribs, $content) {
 			}
 		case 'textarea':
 			$pure = we_getTagAttribute('pure', $attribs, '', true);
-			$wysiwyg = we_getTagAttribute('wysiwyg', $attribs, '', true,true);
-			if ($pure||!$wysiwyg) {
+			if ($pure) {
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $newAtts);
 			} else {
