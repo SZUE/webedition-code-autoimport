@@ -187,14 +187,13 @@ function we_tag_sessionField($attribs, $content) {
 				return we_getInputTextInputField('s[' . $name . ']', $orgVal, $newAtts);
 			}
 		case 'textarea':
+			//old Attribute
 			$pure = weTag_getAttribute('pure', $attribs, false, true);
-			$wysiwyg = we_getTagAttribute('wysiwyg', $attribs, '', true,true);
-			if ($pure||!$wysiwyg) {
-				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
-				return we_getTextareaField('s[' . $name . ']', $orgVal, $newAtts);
+			if ($pure) {
+				$attribs = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
+				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
 			} else {
-				echo '<script language="JavaScript" type="text/javascript">weFrontpageEdit=true;</script>';
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/html/we_forms.inc.php');
+				echo we_html_element::jsElement('weFrontpageEdit=true;');
 				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/js/we_textarea_include.inc.php');
 				$autobr = $autobrAttr ? 'on' : 'off';
 				$showAutobr = isset($attribs['autobr']);

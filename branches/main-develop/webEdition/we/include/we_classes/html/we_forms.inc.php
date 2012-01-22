@@ -278,15 +278,8 @@ abstract class we_forms{
 
 			if($showAutobr || $showSpell){
 				$clearval = $value;
-				$value = str_replace("<?", "##|lt;?##", $value);
-				$value = str_replace("<script", "<##scr#ipt##", $value);
-				$value = str_replace("</script", "</##scr#ipt##", $value);
-				$value = str_replace("\\", "\\\\", $value);
-				$value = str_replace("\n", "\\n", $value);
-				$value = str_replace("\r", "\\r", $value);
-				$value = str_replace('"', "\\\"", $value);
-				$out .= '<script  type="text/javascript">
-	new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . $style . '","' . $wrap . '","' . (($GLOBALS["BROWSER"] == "SAFARI") ? "onkeydown" : "onchange") . '","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');</script>' .
+				$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r', '\\"'), $value);
+				$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","' . $width . '","' . $height . '","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . $style . '","' . $wrap . '","' . (($GLOBALS["BROWSER"] == "SAFARI") ? "onkeydown" : "onchange") . '","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ');') .
 					'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($clearval) . '</textarea></noscript>';
 			} else{
 				$out .= '<textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($cols ? ' cols="' . $cols . '"' : '') . ($rows ? ' rows="' . $rows . '"' : '') . ($style ? ' style="' . $style . '"' : '') . ($class ? ' class="' . $class . '"' : '') . ($id ? ' id="' . $id . '"' : '') . '>' . htmlspecialchars($value) . '</textarea>';
