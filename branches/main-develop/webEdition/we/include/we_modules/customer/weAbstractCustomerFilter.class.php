@@ -83,7 +83,6 @@ abstract class weAbstractCustomerFilter{
 	/* ################### CONSTRUCTOR #################### */
 
 	/**
-	 * Constructor for PHP4
 	 *
 	 * @param integer $mode
 	 * @param array $specificCustomers
@@ -165,22 +164,17 @@ abstract class weAbstractCustomerFilter{
 
 		$_flag = false;
 		foreach($this->_filter as $_filter){
-			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"] == "AND" ? " && " : " || ") : "") . sprintf(
+			$_conditions[] = (($_filter["logic"] && $_flag) ? ($_filter["logic"] == 'AND' ? ' && ' : ' || ') : '') . sprintf(
 					$_filter_op[$_filter["operation"]], self::quote4Eval($_SESSION["webuser"][$_filter["field"]]), self::quote4Eval($_filter["value"])
 			);
 			$_flag = true;
 		}
 
 		$_hasPermission = false;
-		$_cond = "if (" . implode("", $_conditions) . ") { \$_hasPermission = true; }";
-		eval($_cond);
+		eval('if (' . implode('', $_conditions) . ') { $_hasPermission = true; }');
 
 		return $_hasPermission;
 	}
-
-	/* #########################################################################################
-	  #################################### static methods #######################################
-	  ######################################################################################### */
 
 	/**
 	 * Creates and returns the filter array from $_REQUEST
