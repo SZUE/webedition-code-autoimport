@@ -318,7 +318,7 @@ $l_prefs=array(
 	
 	'we_scheduler_trigger'=>array(
 		'cron'=>'externer Cron-Job',
-		'description'=>'',
+		'description'=>'Legen Sie hier fest, wann der Scheduler ausgeführt werden soll.<br/>Die Optionen vor und nach Seitenaufruf rufen den Scheduler nur von dynamischen Seiten auf.<br/>Vor einem Seitenaufruf kann die Ladezeit der Seite verlangsamen!<br/>Cron-job ist die bevorzugte Option, erfordert den externen Aufruf von <code>webEdition/triggerWEtasks.php</code>',
 		'head'=>'Auslösen des Schedulers',
 		'postDoc'=>'nach Seitenaufruf',
 		'preDoc'=>'vor Seitenaufruf',

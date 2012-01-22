@@ -318,7 +318,7 @@ $l_prefs=array(
 	
 	'we_scheduler_trigger'=>array(
 		'cron'=>'external cron-job',
-		'description'=>'',
+		'description'=>'Choose when the scheduler should be triggered.<br/>The options before and after page delivery trigger only on dynamic pages<br/>Before page delivery can cause longer page loading.<br/>Cron-job should be used whereever possible, but requires to call <code>webEdition/triggerWEtasks.php</code>',
 		'head'=>'Trigger of the scheduler',
 		'postDoc'=>'after delivery of the page',
 		'preDoc'=>'before delivery of the page',
