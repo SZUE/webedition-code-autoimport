@@ -359,11 +359,7 @@ class we_schedpro{
 
 	function processSchedule($id, $schedFile, $now, $DB_WE){
 		usort($schedFile["value"], "weCmpSchedLast");
-		if($schedFile["ClassName"] == "we_objectFile"){
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/" . $schedFile["ClassName"] . ".inc.php");
-		} else{
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $schedFile["ClassName"] . ".inc.php");
-		}
+
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
 		$GLOBALS['we_doc']->InitByID($id, $schedFile["table"], we_class::LOAD_SCHEDULE_DB);
@@ -427,11 +423,14 @@ class we_schedpro{
 					break;
 			}
 
+//FIXME: why not for objectfiles????
 			if($s["type"] != self::TYPE_ONCE){
 				$nextWann = we_schedpro::getNextTimestamp($s, $now);
 				if($nextWann){
-					$DB_WE->query("UPDATE " . SCHEDULE_TABLE . " SET Wann='" . $nextWann . "' WHERE DID='" . intval($id) . "' AND ClassName!='we_objectFile' AND Type='" . $s["type"] . "' AND Was='" . $s["task"] . "'");
+					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Wann='" . $nextWann . "' WHERE DID='" . intval($id) . "' AND ClassName!='we_objectFile' AND Type='" . $s["type"] . "' AND Was='" . $s["task"] . "'");
 				}
+			}else{
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Active=0 WHERE WHERE DID='" . intval($id)." AND ClassName='" . $schedFile["ClassName"] . "'");
 			}
 		}
 
@@ -449,8 +448,6 @@ class we_schedpro{
 		$GLOBALS['we_doc'] = $doc_save;
 
 		$_SESSION["Versions"]['fromScheduler'] = false;
-
-		$DB_WE->query("UPDATE " . SCHEDULE_TABLE . " SET Active=0 WHERE Wann<='" . $now . "' AND Schedpro != '' AND Active=1 AND TYPE='" . self::TYPE_ONCE . "'");
 	}
 
 	static function trigger_schedule(){
