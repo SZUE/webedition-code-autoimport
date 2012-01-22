@@ -5226,9 +5226,9 @@ else {
 				$_settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, "space" => 200);
 
 				$_Schedtrigger_setting = new we_html_select(array("name" => "we_scheduler_trigger", "class" => "weSelect"));
-				$_Schedtrigger_setting->addOption(0, g_l('prefs', '[we_scheduler_trigger][preDoc]'));//pre
-				$_Schedtrigger_setting->addOption(1, g_l('prefs', '[we_scheduler_trigger][postDoc]'));//post
-				$_Schedtrigger_setting->addOption(2, g_l('prefs', '[we_scheduler_trigger][cron]'));//cron
+				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]'));//pre
+				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]'));//post
+				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]'));//cron
 				$tmp='<div>'.$_Schedtrigger_setting->getHtml().'<br/>'.we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430).'</div>';
 				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 
