@@ -311,7 +311,7 @@ if(!empty($this->model->ID)) {
 			$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppStatus')));
 			$html = '';
 			if(!empty($this->model->appconfig->info->version)){
-				$html .= '<strong>'.$translate->_('Version').': '.we_util_Strings:: number2version($this->model->appconfig->info->version,true).'</strong>';
+				$html .= '<strong>'.$translate->_('Version').': '.$this->model->appconfig->info->version.'</strong>';
 				if(!empty($this->model->appconfig->info->copyright) || !empty($this->model->appconfig->info->copyrighturl)){
 					$html .= ' &copy; ';
 					if(!empty($this->model->appconfig->info->copyrighturl)){
