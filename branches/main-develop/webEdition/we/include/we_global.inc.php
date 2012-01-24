@@ -2163,7 +2163,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$xhtml = we_getTagAttribute('xml', $attribs, ((defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false), true);
 
 	// at the moment only transitional is supported
-	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
+	$xhtmlType = we_getTagAttribute('xmltype', $attribs, 'transitional');
 
 	//	remove x(ht)ml-attributs
 	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto'));
