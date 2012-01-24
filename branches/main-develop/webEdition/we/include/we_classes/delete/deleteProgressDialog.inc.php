@@ -47,8 +47,6 @@ class deleteProgressDialog{
 	}
 
 	function frameset(){
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_html_frameset.inc.php");
-
 		$fst = new we_html_frameset(array(
 			"rows" => "*,0",
 			"framespacing" => 0,

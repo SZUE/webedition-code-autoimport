@@ -22,19 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-
-class ImportFiles extends leWizardStepBase
-{
+class ImportFiles extends leWizardStepBase{
 
 	var $EnabledButtons = array(
 		'back', 'next', 'reload'
 	);
-
 	var $ProgressBarVisible = true;
 
-	function execute(&$Template)
-	{
+	function execute(&$Template){
 
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/we_wizard.inc.php");
@@ -46,17 +41,16 @@ class ImportFiles extends leWizardStepBase
 		$Output = $wizard->getWizCmd('first_steps_wizard');
 
 		$Template->addJavascript(
-				"top.document.getElementById('leWizardHeadline').innerHTML = '" . $this->Language['headline'] . "';");
+			"top.document.getElementById('leWizardHeadline').innerHTML = '" . $this->Language['headline'] . "';");
 		$Template->addJavascript(
-				"top.document.getElementById('leWizardContent').innerHTML = '<p>" . $this->Language['content'] . "</p>';");
+			"top.document.getElementById('leWizardContent').innerHTML = '<p>" . $this->Language['content'] . "</p>';");
 		$Template->addJavascript(
-				"top.document.getElementById('leWizardDescription').innerHTML = '<p>" . $this->Language['description'] . "</p>';");
+			"top.document.getElementById('leWizardDescription').innerHTML = '<p>" . $this->Language['description'] . "</p>';");
 
 		$Javascript = "script type=\"text/javascript\">" . "top.document.getElementById('leWizardHeadline').innerHTML = '" . $this->Language['headline'] . "';" . "top.document.getElementById('leWizardContent').innerHTML = '<p>" . $this->Language['content'] . "</p>';" . "top.document.getElementById('leWizardDescription').innerHTML = '<p>" . $this->Language['description'] . "</p>';" . "top.leWizardForm.setInputField('leWizard', '" . $GLOBALS['WizardCollection']->NextStep->getWizardName() . "');" . "top.leWizardForm.setInputField('leStep', '" . $GLOBALS['WizardCollection']->NextStep->getName() . "');" . "</script>";
 		$Template->Output = preg_replace("</head>", $Javascript . "</head", $Output);
 
 		return LE_WIZARDSTEP_NEXT;
-
 	}
 
 }

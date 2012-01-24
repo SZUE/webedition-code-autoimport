@@ -26,8 +26,6 @@
  * @abstract class making the view for the document list
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-
 class doclistView {
 	/**
 	 * @abstract create javascript for document list

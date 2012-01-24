@@ -25,8 +25,7 @@
 
 include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
 
-//FIXME: no rights management here???
-//we_html_tools::protect();
+we_html_tools::protect();
 switch($_REQUEST['we_cmd'][1]) {
 	case "image/*":
 		$we_doc=new we_imageDocument();

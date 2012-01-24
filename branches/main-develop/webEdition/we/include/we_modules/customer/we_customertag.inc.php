@@ -23,11 +23,6 @@
  */
 
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-include_once( WE_CUSTOMER_MODULE_DIR ."we_listview_customer.class.php");
-
-
-
 class we_customertag{
 
 	var $DB_WE;
