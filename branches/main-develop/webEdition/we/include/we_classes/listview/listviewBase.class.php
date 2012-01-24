@@ -124,7 +124,7 @@ abstract class listviewBase{
 
 	function getIdQuery($fieldname){
 		if($this->id){
-			return ' AND $fieldname IN(' . $this->id . ') ';
+			return ' AND ' . $fieldname . ' IN(' . $this->id . ') ';
 		}
 		return '';
 	}
