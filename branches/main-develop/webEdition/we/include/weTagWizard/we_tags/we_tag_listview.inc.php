@@ -6,7 +6,8 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = '<we:repeat>
-<we:field name="Title" alt="we_path" hyperlink="true"/>';
+<we:field name="Title" alt="we_path" hyperlink="true"/>
+</we:repeat>';
 
 $MultiSelector = new weTagData_multiSelectorAttribute('MultiSelector',FILE_TABLE, '', '', false, '');
 $name = new weTagData_textAttribute('name', false, '');
