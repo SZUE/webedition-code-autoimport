@@ -2160,7 +2160,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$_xmlClose = false;
 
 	//	take values given from the tag - later from preferences.
-	$xhtml = weTag_getAttribute('xml', $attribs, ((defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false), true);
+	$xhtml = we_getTagAttribute('xml', $attribs, ((defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1) ? true : false), true);
 
 	// at the moment only transitional is supported
 	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
