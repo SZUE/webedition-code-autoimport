@@ -147,7 +147,7 @@ function clearEntry(id,ip) {
 
 
 	function getHTMLDocument($body,$head=""){
-		$head=str_replace(WE_DEFAULT_TITLE, g_l('prefs','[formmail_log]'), WE_DEFAULT_HEAD)."\n" . STYLESHEET . "\n".$head;
+		$head=we_html_tools::getHtmlInnerHead(g_l('prefs','[formmail_log]')).STYLESHEET . $head;
 		return we_html_element::htmlHtml(
 					we_html_element::htmlHead($head).
 					$body

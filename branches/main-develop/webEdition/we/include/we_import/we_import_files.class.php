@@ -948,9 +948,8 @@ class we_import_files{
 
 	function _getHtmlPage($body, $js = ""){
 		$yuiSuggest = & weSuggest::getInstance();
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js . "\n";
-		$head .= $yuiSuggest->getYuiCssFiles();
-		$head .= $yuiSuggest->getYuiJsFiles();
+		$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js .
+			$yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles();
 		return we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 	}
 

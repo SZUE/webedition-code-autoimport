@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class copyFolderFrag extends taskFragment{
 
 	var $copyToPath = "";
@@ -155,9 +154,9 @@ class copyFolderFrag extends taskFragment{
 								$this->data["IsFolder"] ? g_l('copyFolder', "[copyFolder]") : g_l('copyFolder', "[copyFile]"), basename($this->data["Path"])));
 					}
 					print we_html_element::jsElement(
-						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
-							$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
-							$pbText) . '");');
+							'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
+								$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
+								$pbText) . '");');
 					flush();
 				} else{
 					exit("Error importing File: " . $this->data["Path"]);
@@ -167,9 +166,9 @@ class copyFolderFrag extends taskFragment{
 					$pbText = (sprintf(
 							$this->data["IsFolder"] ? g_l('copyFolder', "[copyObjectFolder]") : g_l('copyFolder', "[copyObjectFile]"), basename($this->data["Path"])));
 					print we_html_element::jsElement(
-						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
-							$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
-							$pbText) . '");');
+							'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
+								$this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(
+								$pbText) . '");');
 					flush();
 				} else{
 					exit("Error importing Object: " . $this->data["Path"]);
@@ -574,7 +573,7 @@ class copyFolderFrag extends taskFragment{
 								$pathTo = $this->getNewPath($path);
 								$idTo = $this->getID($pathTo, $GLOBALS['DB_WE']);
 								$idTo = $idTo ? $idTo : "##WEPATH##" . $pathTo . " ###WEPATH###";
-								$destTag = preg_replace('/'.
+								$destTag = preg_replace('/' .
 									$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
 							}
 						}
@@ -679,7 +678,7 @@ class copyFolderFrag extends taskFragment{
 		}
 		$n = $attribs["name"];
 		$nint = $n . "_we_jkhdsf_int";
-		$int=$fn($nint);
+		$int = $fn($nint);
 		$int = ( $int == "") ? 0 : $int;
 		if($int){
 			$nintID = $n . "_we_jkhdsf_intID";
@@ -757,11 +756,11 @@ class copyFolderFrag extends taskFragment{
 			$pbText = g_l('copyFolder', "[prepareTemplates]");
 
 			print we_html_element::jsElement(
-				'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes(
-					$pbText) . '");');
+					'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes(
+						$pbText) . '");');
 			flush();
 			print we_html_element::jsElement(
-				'setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);');
+					'setTimeout(\'self.location = "/webEdition/we/include/copyFolder.inc.php?finish=1"\',100);');
 			#unset($_SESSION["WE_CREATE_TEMPLATE"]);
 		} else{
 			if(defined('OBJECT_FILES_TABLE')){
@@ -771,23 +770,21 @@ class copyFolderFrag extends taskFragment{
 			}
 			if(!isset($_SESSION["WE_COPY_OBJECTS"])){
 				print we_html_element::jsElement(
-					'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+						'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
+							g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			} else{
 				unset($_SESSION["WE_COPY_OBJECTS"]);
 				print we_html_element::jsElement(
-					'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
-						g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+						'top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(
+							g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			}
 		}
 	}
 
 	function printHeader(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$out = WE_DEFAULT_HEAD;
-		$out .= STYLESHEET;
-		$out .= $yuiSuggest->getYuiJsFiles();
-		$out .= $yuiSuggest->getYuiCssFiles();
+		//FIXME: missing title
+		$out = we_html_tools::getHtmlInnerHead() . STYLESHEET . $yuiSuggest->getYuiJsFiles() . $yuiSuggest->getYuiCssFiles();
 		$js = <<<HTS
 function fsubmit(e) {
 	return false;

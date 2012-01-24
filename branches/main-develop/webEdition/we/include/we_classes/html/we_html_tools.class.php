@@ -709,7 +709,11 @@ HTS;
 
 	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
 		return we_html_element::htmlDocType($doctype) . '<html><head>' .
-			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+			self::getHtmlInnerHead($title, $charset);
+	}
+
+	static function getHtmlInnerHead($title = 'webEdition', $charset = ''){
+		return 	we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array(
 				"http-equiv" => "Expires", "content" => date('r')
 			)) .
@@ -729,6 +733,7 @@ HTS;
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico')) .
 			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
+
 	}
 
 	static function htmlMetaCtCharset($content, $charset){

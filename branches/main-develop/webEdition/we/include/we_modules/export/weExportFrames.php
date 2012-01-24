@@ -133,7 +133,7 @@ class weExportFrames extends weModuleFrames{
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"),
 				//	'<div id="main" >' . we_html_tools::getPixel(100,3) . '<div style="margin:0px;" id="headrow">&nbsp;'.we_html_element::htmlB(g_l('export','[export]') . ':&nbsp;'.$this->View->export->Text).'</div>' . we_html_tools::getPixel(100,3) .
-				'<div id="main" >'  . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", we_html_element::htmlB(g_l('export', '[export]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+				'<div id="main" >'   . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", we_html_element::htmlB(g_l('export', '[export]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
 //			$js.
@@ -722,7 +722,8 @@ class weExportFrames extends weModuleFrames{
 							we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 							we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
 
-						$head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n";
+						$head = //FIXME: missing title
+							we_html_tools::getHtmlInnerHead() . STYLESHEET;
 
 						if($all > $exports){
 							$out = we_html_element::htmlHtml(
@@ -773,16 +774,16 @@ class weExportFrames extends weModuleFrames{
 					if(isset($_GET["exportfile"])){
 						$_filename = basename(urldecode($_GET["exportfile"]));
 
-						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename)				// Does file exist?
-							&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){	// Security check
+						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename)		// Does file exist?
+							&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 							$_size = filesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename);
 
-							if(we_isHttps()){									// Additional headers to make downloads work using IE in HTTPS mode.
+							if(we_isHttps()){				 // Additional headers to make downloads work using IE in HTTPS mode.
 								header("Pragma: ");
 								header("Cache-Control: ");
 								header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 								header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-								header("Cache-Control: no-store, no-cache, must-revalidate");				 // HTTP 1.1
+								header("Cache-Control: no-store, no-cache, must-revalidate");		 // HTTP 1.1
 								header("Cache-Control: post-check=0, pre-check=0", false);
 							} else{
 								header("Cache-control: private");

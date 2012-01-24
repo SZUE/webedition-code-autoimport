@@ -65,8 +65,8 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 	$buttons->setCol(0,0,null,we_button::create_button("close","javascript:self.close();"));
 	print we_html_element::htmlHtml(
 			we_html_element::htmlHead(
-				//we_html_element::htmlTitle("")
-				WE_DEFAULT_HEAD
+				//FIXME: missing title
+				we_html_tools::getHtmlInnerHead()
 			).
 			STYLESHEET.
 			we_html_element::htmlBody(array("class"=>"weDialogBody"),

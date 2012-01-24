@@ -606,8 +606,8 @@ function setUnCheckNode(imgName){
 </script>
 ';
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					WE_DEFAULT_HEAD .
+				we_html_element::htmlHead(				//FIXME: missing title
+				we_html_tools::getHtmlInnerHead().
 					STYLESHEET .
 					we_html_element::cssElement($style_code) . $js
 				) .

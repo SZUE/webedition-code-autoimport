@@ -181,7 +181,7 @@ class weExportWizard{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=footer", "name" => "footer", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=load", "name" => "load", "scrolling" => "no", "noresize" => null));
 
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('export', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . $js . "\n";
+		$head = we_html_tools::getHtmlInnerHead(g_l('export', '[title]')) . STYLESHEET . $js;
 		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return we_html_element::htmlHtml(
@@ -255,7 +255,8 @@ class weExportWizard{
 
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . $js) .
+				we_html_element::htmlHead(//FIXME: missing title
+					we_html_tools::getHtmlInnerHead() . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
 						we_html_element::htmlHidden(array("name" => "step", "value" => "1")) .
 						we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[title]"))
@@ -311,7 +312,7 @@ top.close();
 
 
 
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('export', "[wizard_title]"), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js;
+		$head = we_html_tools::getHtmlInnerHead(g_l('export', "[wizard_title]")) . STYLESHEET . $js;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -399,7 +400,7 @@ top.close();
 
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . STYLESHEET . $js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles()) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . $yuiSuggest->getYuiCssFiles() . $yuiSuggest->getYuiJsFiles()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step2]"))
 					) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
@@ -427,7 +428,7 @@ top.close();
 			we_html_element::htmlHidden(array("name" => "step", "value" => "2"));
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . STYLESHEET . $js) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						//we_html_element::htmlInput(array("type" => "text","name" => "selectedItems")).
 						we_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', "[step2]"))
@@ -554,7 +555,7 @@ top.close();
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) .
+					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
 					STYLESHEET .
 					we_html_element::cssElement($style_code) .
 					$js
@@ -782,9 +783,7 @@ top.close();
 		unset($_SESSION['exportVars']);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) .
-					"\n" .
-					STYLESHEET .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET .
 					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . $this->frameset . "?pnt=body&step=50&exportfile=" . $filename))) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', "[step10]"))
 				)
@@ -798,16 +797,16 @@ top.close();
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename)		// Does file exist?
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 				$_size = filesize($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/tmp/" . $_filename);
 
-				if(we_isHttps()){				 // Additional headers to make downloads work using IE in HTTPS mode.
+				if(we_isHttps()){	// Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
 					header("Cache-Control: ");
 					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: no-store, no-cache, must-revalidate");		 // HTTP 1.1
+					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
 				} else{
 					header("Cache-control: private");
@@ -864,7 +863,7 @@ top.close();
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), ($returned_message[1] ? (g_l('export', "[error]") . "<br><br>") : "") . $returned_message[0]);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, ($returned_message[1] ? g_l('export', "[step99]") : g_l('export', "[step99_notice]")))
 				)
 		);
@@ -971,7 +970,7 @@ top.close();
 		');
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . STYLESHEET . $js) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => "0", "marginheight" => "0", "leftmargin" => "0", "topmargin" => "0"), $js2 .
 					$table->getHtml() .
 					we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
@@ -1073,7 +1072,7 @@ top.close();
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "")
+					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : "")
 				) .
 				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
@@ -1241,7 +1240,7 @@ top.close();
 							') . "\n";
 					}
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n";
+					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
@@ -1321,7 +1320,7 @@ top.close();
 						we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
 					if((count($remaining_docs) > 0) || (count($remaining_objs) > 0)){
-						$head = str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n";
+						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 						$out = we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
@@ -1331,7 +1330,7 @@ top.close();
 					} else{
 						if(!$export_local)
 							unset($_SESSION['exportVars']);
-						$head = str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n";
+						$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 						$out = we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(
@@ -1439,7 +1438,7 @@ top.close();
 						we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_wexport"));
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('import', '[title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n";
+					$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 
 					if($all > $exports){
 						$out = we_html_element::htmlHtml(

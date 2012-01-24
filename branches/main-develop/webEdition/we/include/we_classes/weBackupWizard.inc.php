@@ -314,8 +314,8 @@ class weBackupWizard{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));
 		$frameset->addFrame(array("src" => "/webEdition/html/blank.html", "name" => "checker", "scrolling" => "no", "noresize" => null));
 
-		$head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n";
-		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]')) . STYLESHEET;
+		$body = $frameset->getHtml() . $noframeset->getHTML();
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -326,22 +326,12 @@ class weBackupWizard{
 	function getHTMLStep($step){
 
 		if($this->mode == self::BACKUP){
-			if($step == 1)
-				return $this->getHTMLBackupStep1();
-			else if($step == 2)
-				return $this->getHTMLBackupStep2();
-			else if($step == 3)
-				return $this->getHTMLBackupStep3();
+			$step = 'getHTMLBackupStep' . $step;
+			return $this->{$step}();
 		}
 		if($this->mode == self::RECOVER){
-			if($step == 1)
-				return $this->getHTMLRecoverStep1();
-			else if($step == 2)
-				return $this->getHTMLRecoverStep2();
-			else if($step == 3)
-				return $this->getHTMLRecoverStep3();
-			else if($step == 4)
-				return $this->getHTMLRecoverStep4();
+			$step = 'getHTMLRecoverStep' . $step;
+			return $this->{$step}();
 		}
 	}
 
@@ -364,9 +354,7 @@ class weBackupWizard{
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', "[step1]"))
 				)
 		);
-		$head = WE_DEFAULT_HEAD . "\n" . $js;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title]"), $head);
-		$head.= "\n" . STYLESHEET . "\n";
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -405,9 +393,7 @@ class weBackupWizard{
 				)
 		);
 
-		$head = WE_DEFAULT_HEAD;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title]"), $head);
-		$head = $head . "\n" . STYLESHEET . "\n" . $js;
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -469,23 +455,23 @@ class weBackupWizard{
 						$filedate = date("d.m.Y H:i:s.", filemtime($filename));
 						if(strpos($entry, 'weBackup_') === 0){
 							$ts = ereg_replace('^weBackup_', '', $entry);
-							$ts = str_replace(array('.php','.xml','.gz','.bz','.zip'), '', $ts);
+							$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', $ts);
 
 							if(is_numeric($ts) || (substr_count($ts, '_') == 6)){
 								if(!($ts < 1004569200)){
 									$comp = weFile::getCompression($entry);
-									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]").' ' . date("d.m.Y H:i", $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
+									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . ' ' . date("d.m.Y H:i", $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
 								} else if((substr_count($ts, '_') == 6)){
 									$comp = weFile::getCompression($entry);
 									$_dateParts = explode('__', $ts);
 									$_date = explode('_', $_dateParts[0]);
 									$_date = array_reverse($_date);
-									$url='';
+									$url = '';
 									if(isset($_date[3])){
-										$url=$_date[3];
+										$url = $_date[3];
 										unset($_date[3]);
 									}
-									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]").' ' . ( implode('.', $_date) . ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($url?' - '.$url:'') . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
+									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . ' ' . ( implode('.', $_date) . ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($url ? ' - ' . $url : '') . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
 								} else{
 									$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize KB";
 								}
@@ -750,21 +736,17 @@ class weBackupWizard{
 		else
 			$form_attribs = array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"),
-					we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-						we_html_element::htmlHidden(array("name" => "cmd", "value" => "import")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => "3")) .
-						we_html_element::htmlHidden(array("name" => "MAX_FILE_SIZE", "value" => $maxsize)) .
-						we_html_element::htmlInput(array("type" => "hidden", "name" => "operation_mode", "value" => "import")) .
-						we_multiIconBox::getJS() .
-						we_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", 7, g_l('backup', "[recover_option]"), "<b>" . g_l('backup', "[recover_option]") . "</b>", false, g_l('backup', "[step3]"))
-					)
-
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onLoad" => "startStep();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
+					we_html_element::htmlHidden(array("name" => "cmd", "value" => "import")) .
+					we_html_element::htmlHidden(array("name" => "step", "value" => "3")) .
+					we_html_element::htmlHidden(array("name" => "MAX_FILE_SIZE", "value" => $maxsize)) .
+					we_html_element::htmlInput(array("type" => "hidden", "name" => "operation_mode", "value" => "import")) .
+					we_multiIconBox::getJS() .
+					we_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", 7, g_l('backup', "[recover_option]"), "<b>" . g_l('backup', "[recover_option]") . "</b>", false, g_l('backup', "[step3]"))
+				)
 		);
 
-		$head = WE_DEFAULT_HEAD;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title]"), $head);
-		$head = $head . "\n" . STYLESHEET . "\n" . $js;
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -797,15 +779,11 @@ class weBackupWizard{
 			self.focus();
 		');
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"),
-					we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_multiIconBox::getHTML("backup_options", "100%", $parts, 34, "", -1, "", "", false, g_l('backup', "[step3]"))
-					)
-
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_multiIconBox::getHTML("backup_options", "100%", $parts, 34, "", -1, "", "", false, g_l('backup', "[step3]"))
+				)
 		);
 
-		$head = WE_DEFAULT_HEAD;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title]"), $head);
-		$head = $head . "\n" . STYLESHEET . $js . "\n";
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -937,7 +915,7 @@ class weBackupWizard{
 		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_export_desc]"), 2, 600, false), "space" => 70, "noline" => 1));
 		$k = 700;
 		foreach($_tools as $_tool){
-			$text = g_l('tools_' . $tool, '[import_tool_' . $_tool . '_data]');
+			$text = g_l('tools_' . $_tool, '[import_tool_' . $_tool . '_data]');
 			/* 			include(weToolLookup::getLanguageInclude($_tool));
 			  if(isset(${'l_' . $_tool}["export_tool_" . $_tool . "_data"])) {
 			  $text = ${'l_' . $_tool}["export_tool_" . $_tool . "_data"];
@@ -980,20 +958,16 @@ class weBackupWizard{
 
 		$_edit_cookie = weGetCookieVariable("but_edit_image");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"),
-					we_html_element::htmlForm(array("name" => "we_form", "method" => "post", 'onsubmit' => 'return false;'), we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-						we_html_element::htmlHidden(array("name" => "cmd", "value" => "export")) .
-						we_html_element::htmlHidden(array("name" => "operation_mode", "value" => "backup")) .
-						we_html_element::htmlHidden(array("name" => "do_import_after_backup", "value" => ((isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0))) .
-						we_multiIconBox::getJS() .
-						we_multiIconBox::getHTML("backup_options1", 580, $parts, 30, "", $switchbut, g_l('backup', "[option]"), "<b>" . g_l('backup', "[option]") . "</b>", $_edit_cookie != false ? ($_edit_cookie == "down") : $_edit_cookie, g_l('backup', "[export_step1]"))
-					)
-
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", 'onsubmit' => 'return false;'), we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
+					we_html_element::htmlHidden(array("name" => "cmd", "value" => "export")) .
+					we_html_element::htmlHidden(array("name" => "operation_mode", "value" => "backup")) .
+					we_html_element::htmlHidden(array("name" => "do_import_after_backup", "value" => ((isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0))) .
+					we_multiIconBox::getJS() .
+					we_multiIconBox::getHTML("backup_options1", 580, $parts, 30, "", $switchbut, g_l('backup', "[option]"), "<b>" . g_l('backup', "[option]") . "</b>", $_edit_cookie != false ? ($_edit_cookie == "down") : $_edit_cookie, g_l('backup', "[export_step1]"))
+				)
 		);
 
-		$head = WE_DEFAULT_HEAD;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title_export]"), $head);
-		$head = $head . "\n" . STYLESHEET . $js . "\n";
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title_export]")) . STYLESHEET . $js;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -1057,13 +1031,9 @@ class weBackupWizard{
 			}
 		');
 
-		$head = WE_DEFAULT_HEAD;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title_export]"), $head);
-		$head = $head . "\n" . STYLESHEET . "\n" . $js;
-		$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onLoad' => 'startStep();'),
-					we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post'), we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
-					)
-
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title_export]")) . $js . STYLESHEET;
+		$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onLoad' => 'startStep();'), we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post'), we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
+				)
 		);
 
 		return we_html_element::htmlHtml(
@@ -1077,15 +1047,15 @@ class weBackupWizard{
 		if(isset($_GET["backupfile"])){
 			$_filename = urldecode($_GET["backupfile"]);
 
-			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){		// Does file exist and does it saved in backup dir?
+			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
-				if(we_isHttps()){									// Additional headers to make downloads work using IE in HTTPS mode.
+				if(we_isHttps()){		 // Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
 					header("Cache-Control: ");
 					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: no-store, no-cache, must-revalidate");				 // HTTP 1.1
+					header("Cache-Control: no-store, no-cache, must-revalidate");	 // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
 				} else{
 					header("Cache-control: private");
@@ -1152,14 +1122,11 @@ class weBackupWizard{
 				self.focus();
 		');
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onBlur" => "self.focus()", "onload" => "self.focus();"),
-					we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd)
-					)
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onBlur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd)
+				)
 		);
 
-		$head = WE_DEFAULT_HEAD;
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('backup', "[wizard_title]"), $head);
-		$head = $head . "\n" . STYLESHEET . $js . "\n";
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', "[wizard_title]")) . $js . STYLESHEET;
 
 		return we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
@@ -1168,7 +1135,8 @@ class weBackupWizard{
 	}
 
 	function getHTMLBusy(){
-		$head = WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n";
+		$head = //FIXME: missing title
+			we_html_tools::getHtmlInnerHead() . STYLESHEET . "\n";
 		$body = "";
 
 		$table = new we_html_table(array("border" => "0", "align" => "right", "cellpadding" => "0", "cellspacing" => "0"), 2, 4);

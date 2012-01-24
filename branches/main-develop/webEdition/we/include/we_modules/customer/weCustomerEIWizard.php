@@ -66,7 +66,7 @@ class weCustomerEIWizard{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", "name" => "footer", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=eiload&step=1", "name" => "load", "scrolling" => "no", "noresize" => null));
 
-		$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . $js . "\n";
+		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . $js . STYLESHEET;
 		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();
 
 		return we_html_element::htmlHtml(
@@ -102,7 +102,7 @@ class weCustomerEIWizard{
 				break;
 			default:
 				return we_html_element::htmlHtml(
-						we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD)) .
+						we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]'))) .
 						we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => "10", "marginheight" => "10", "leftmargin" => "10", "topmargin" => "10"), "aba")
 				);
 		}
@@ -126,7 +126,7 @@ class weCustomerEIWizard{
 		);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
 							//we_html_element::htmlHidden(array("name"=>"pnt","value"=>"eibody")).
@@ -195,7 +195,7 @@ class weCustomerEIWizard{
 
 		');
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => "export", "step" => "2")) .
 							we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step2]'))
@@ -301,7 +301,7 @@ class weCustomerEIWizard{
 					we_html_element::htmlA(array("href" => $this->frameset . "?pnt=eibody&step=5&exportfile=" . $filename), g_l('modules_customer', '[download]'))
 			);
 			return we_html_element::htmlHtml(
-					we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js .
+					we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $js .
 						we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . getServerUrl() . $this->frameset . "?pnt=eibody&step=5&exportfile=" . $filename))
 					) .
 					we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
@@ -316,7 +316,7 @@ class weCustomerEIWizard{
 			);
 
 			return we_html_element::htmlHtml(
-					we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET) . "\n" . $js .
+					we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) . $js .
 					we_html_element::htmlBody(array("class" => "weDIalogBody"), we_html_element::htmlCenter(
 							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 						)
@@ -332,16 +332,16 @@ class weCustomerEIWizard{
 		if(isset($_GET["exportfile"])){
 			$_filename = basename(urldecode($_GET["exportfile"]));
 
-			if(file_exists(TMP_DIR . "/" . $_filename)		// Does file exist?
+			if(file_exists(TMP_DIR . "/" . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 				$_size = filesize(TMP_DIR . "/" . $_filename);
 
-				if(we_isHttps()){				 // Additional headers to make downloads work using IE in HTTPS mode.
+				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
 					header("Cache-Control: ");
 					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: no-store, no-cache, must-revalidate");		 // HTTP 1.1
+					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
 				} else{
 					header("Cache-control: private");
@@ -567,7 +567,7 @@ class weCustomerEIWizard{
 		);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $this->getHiddens(array("art" => "import", "step" => "1")) .
 							we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step1]'))
@@ -636,7 +636,7 @@ class weCustomerEIWizard{
 
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => "import", "step" => "2")) .
 							we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
@@ -788,7 +788,7 @@ class weCustomerEIWizard{
 
 		$_REQUEST["filename"] = $filename;
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $js) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => "import", "step" => "3")) .
 							we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step3]'))
@@ -897,7 +897,7 @@ class weCustomerEIWizard{
 
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . we_multiIconBox::getJS()) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . we_multiIconBox::getJS()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => "import", "step" => "4")) .
 							we_multiIconBox::getHTML("xml", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step4]'))
@@ -939,7 +939,7 @@ class weCustomerEIWizard{
 			rmdir(TMP_DIR . "/" . $tmpdir);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(str_replace(WE_DEFAULT_TITLE, g_l('customer_modules', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . we_multiIconBox::getJS()) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('customer_modules', '[import_title]')) . STYLESHEET . we_multiIconBox::getJS()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load"), we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step5]'))
 						)
@@ -998,8 +998,8 @@ class weCustomerEIWizard{
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "")
+				we_html_element::htmlHead(//FIXME: missing title
+					we_html_tools::getHtmlInnerHead() . STYLESHEET . "\n" . (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "")
 				) .
 				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
@@ -1063,8 +1063,8 @@ class weCustomerEIWizard{
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
 
 		return we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					WE_DEFAULT_HEAD . "\n" . STYLESHEET . "\n" . (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "")
+				we_html_element::htmlHead(//FIXME: missing title
+					we_html_tools::getHtmlInnerHead() . STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : "")
 				) .
 				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
@@ -1110,7 +1110,7 @@ class weCustomerEIWizard{
 									}
 
 								');
-								$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+								$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . $js;
 								$out = we_html_element::htmlHtml(
 										we_html_element::htmlHead($head) .
 										we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
@@ -1132,7 +1132,7 @@ class weCustomerEIWizard{
 							}
 						');
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . $js;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
@@ -1221,7 +1221,7 @@ class weCustomerEIWizard{
 							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
 							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames));
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n";
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
@@ -1311,13 +1311,10 @@ class weCustomerEIWizard{
 						$percent = 100;
 					}
 
-					$progressjs = "\n" .
-						we_html_element::jsElement('
-							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
-						') . "\n";
+					$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
 
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET . "\n" . $progressjs;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $progressjs;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
@@ -1337,7 +1334,7 @@ class weCustomerEIWizard{
 						weCustomerEI::save2File($file_name, "</webEdition>");
 					}
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[export_title]'), WE_DEFAULT_HEAD) . "\n" . STYLESHEET;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("onLoad" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
@@ -1363,7 +1360,7 @@ class weCustomerEIWizard{
 										' . $this->bodyFrame . '.document.we_form.submit();
 									}
 						');
-						$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+						$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 						$out = we_html_element::htmlHtml(
 								we_html_element::htmlHead($head) .
 								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
@@ -1380,7 +1377,7 @@ class weCustomerEIWizard{
 							}
 						');
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
@@ -1446,7 +1443,7 @@ class weCustomerEIWizard{
 								document.we_form.submit();
 							}
 					');
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
@@ -1503,7 +1500,7 @@ class weCustomerEIWizard{
 							}
 					');
 
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
@@ -1522,7 +1519,7 @@ class weCustomerEIWizard{
 									document.we_form.submit();
 							}
 					');
-					$head = str_replace(WE_DEFAULT_TITLE, g_l('modules_customer', '[import_title]'), WE_DEFAULT_HEAD) . "\n" . $js;
+					$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $js;
 					$out = we_html_element::htmlHtml(
 							we_html_element::htmlHead($head) .
 							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => "5", "marginheight" => "5", "leftmargin" => "5", "topmargin" => "5", "onLoad" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .

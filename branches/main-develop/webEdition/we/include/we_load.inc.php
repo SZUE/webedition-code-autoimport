@@ -274,7 +274,8 @@ if (isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == "closeFolder") {
 		"bgcolor" => "white"
 	));
 
-	$head = WE_DEFAULT_HEAD . "\n" . we_html_element::jsElement($js);
+	$head = 				//FIXME: missing title
+				we_html_tools::getHtmlInnerHead(). we_html_element::jsElement($js);
 
 	print we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
 }
