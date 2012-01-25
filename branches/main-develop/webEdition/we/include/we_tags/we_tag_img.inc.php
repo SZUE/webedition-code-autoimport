@@ -43,10 +43,9 @@ function we_tag_img($attribs, $content){
 	$id = $id ? $id : weTag_getAttribute("id", $attribs);
 
 	//look if image exists in tblfile
-	if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ID', new DB_WE()) !== '1'){
+	if(f('SELECT 1 AS a FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'a', new DB_WE()) !== '1'){
 		$id = 0;
 	}
-
 	// images can now have custom attribs ...
 	$alt = '';
 	$title = '';
