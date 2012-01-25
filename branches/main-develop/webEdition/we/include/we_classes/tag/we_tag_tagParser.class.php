@@ -369,7 +369,11 @@ class we_tag_tagParser{
 				$content = substr($code, $endeStartTag, ($endTagPos - $endeStartTag));
 				//only 1 exception: comment tag should be able to contain partly invalid code (e.g. missing attributes etc)
 				if(($tagname != 'comment') && (($ipos + 1) < $endTagNo)){
-					$this->parseTags($content, ($ipos + 1), $endTagNo);
+					$tmp=$this->parseTags($content, ($ipos + 1), $endTagNo);
+					if(!is_numeric($tmp)){
+						//parser-error:
+						return $tmp;
+					}
 				}
 			} else{
 				return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
