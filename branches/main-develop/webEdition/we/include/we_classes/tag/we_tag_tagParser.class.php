@@ -321,7 +321,7 @@ class we_tag_tagParser{
 		if(!$selfclose && !in_array($tagname,self::$CloseTags)){
 					$selfclose = true;
 					//don't break for now.
-					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed! ' . g_l('parser', '[start_endtag_missing]'), $tagname));
+					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!'."\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
 		}
 
 		if(!$gt){
