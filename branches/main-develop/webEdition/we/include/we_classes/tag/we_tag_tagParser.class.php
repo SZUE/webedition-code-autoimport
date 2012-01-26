@@ -314,8 +314,23 @@ class we_tag_tagParser{
 
 		$selfclose = ($regs[4]==='/');
 		$gt = $regs[5];
-
 		$tagname = $regs[2];
+
+		if(!$selfclose){
+			switch($tagname){
+				case 'else':
+					$selfclose=true;
+					//don't break for now.
+					parseError(sprintf('Compatibility MODE of parser: '.g_l('parser', '[start_endtag_missing]'), $tagname));
+					break;
+				case 'img':
+					$selfclose=true;
+					//don't break for now.
+					parseError(sprintf('Compatibility MODE of parser: '.g_l('parser', '[start_endtag_missing]'), $tagname));
+					break;
+			}
+		}
+
 		if(!$gt){
 			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname));
 		}
