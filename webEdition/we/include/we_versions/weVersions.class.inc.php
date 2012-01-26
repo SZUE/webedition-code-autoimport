@@ -1735,7 +1735,7 @@ class weVersions {
 
 
 			if(!empty($keys) && !empty($vals) && $doDelete){
-				$db->query('INSERT INTO '.VERSIONS_TABLE.' ('. implode(','$keys) .') VALUES('. implode(','$vals) .')');
+				$db->query('INSERT INTO '.VERSIONS_TABLE.' ('. implode(',',$keys) .') VALUES('. implode(',',$vals) .')');
 
 				$q2 = "UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = '".abs($docID)."' AND documentTable = '".$db->escape($docTable)."' AND version != '".abs($lastEntry['version'])."'";
 
