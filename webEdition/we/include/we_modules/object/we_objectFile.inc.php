@@ -2455,7 +2455,7 @@ class we_objectFile extends we_document{
 			$this->resaveWeDocumentCustomerFilter();
 
 		}
-
+		if(!we_root::we_save(1)) return false;
 		$a = $this->i_saveTmp();
 
 		/* version */
