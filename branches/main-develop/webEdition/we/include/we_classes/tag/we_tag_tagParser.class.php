@@ -189,8 +189,9 @@ class we_tag_tagParser{
 		$this->lastpos = 0;
 		$ende = $ende ? $ende : sizeof($this->tags);
 		for($ipos = $start; $ipos < $ende;){
+		//t_e($ipos,$this->tags[$ipos],$ende);
 			if($this->tags[$ipos]){
-				$tmp = $this->parseTag($code, $ipos); //	dont add postname tagname in ignorearray
+				$tmp = $this->parseTag($code, $ipos);
 				if(!is_numeric($tmp)){
 					//parser-error:
 					return $tmp;
@@ -316,6 +317,7 @@ class we_tag_tagParser{
 		$gt = $regs[5];
 		$tagname = $regs[2];
 
+		//FIXME: remove in 6.4
 		if(!$selfclose){
 			switch($tagname){
 				case 'else':
@@ -385,7 +387,7 @@ class we_tag_tagParser{
 				//only 1 exception: comment tag should be able to contain partly invalid code (e.g. missing attributes etc)
 				if(($tagname != 'comment') && (($ipos + 1) < $endTagNo)){
 					$tmp=$this->parseTags($content, ($ipos + 1), $endTagNo);
-					if(!is_numeric($tmp)){
+					if(is_string($tmp)){
 						//parser-error:
 						return $tmp;
 					}
@@ -404,7 +406,6 @@ class we_tag_tagParser{
 			 * return value is parsed again and inserted
 			 */
 			$content = $parseFn($attribs, $content);
-
 			$code = substr($code, 0, $tagPos) .
 				$content .
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
