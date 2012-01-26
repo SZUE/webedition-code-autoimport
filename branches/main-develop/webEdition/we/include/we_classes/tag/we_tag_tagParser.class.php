@@ -189,7 +189,7 @@ class we_tag_tagParser{
 		$this->lastpos = 0;
 		$ende = $ende ? $ende : sizeof($this->tags);
 		for($ipos = $start; $ipos < $ende;){
-		//t_e($ipos,$this->tags[$ipos],$ende);
+			//t_e($ipos,$this->tags[$ipos],$ende);
 			if($this->tags[$ipos]){
 				$tmp = $this->parseTag($code, $ipos);
 				if(!is_numeric($tmp)){
@@ -306,31 +306,22 @@ class we_tag_tagParser{
 		$regs = array();
 		//$endTag = false;
 		preg_match('%<(/?)we:([[:alnum:]_]+)( *[[:alnum:]_]+ *= *"[^"]*")* *(/?)(>?)%i', $tag, $regs);
-		$endTag = ($regs[1]==='/');
+		$endTag = ($regs[1] === '/');
 		if($endTag){
 			//there should not be any endtags
 			$code = str_replace($tag, '', $code);
 			return 1;
 		}
 
-		$selfclose = ($regs[4]==='/');
+		$selfclose = ($regs[4] === '/');
 		$gt = $regs[5];
 		$tagname = $regs[2];
 
 		//FIXME: remove in 6.4
-		if(!$selfclose){
-			switch($tagname){
-				case 'else':
-					$selfclose=true;
+		if(!$selfclose && !in_array($tagname,self::$CloseTags)){
+					$selfclose = true;
 					//don't break for now.
-					parseError(sprintf('Compatibility MODE of parser: '.g_l('parser', '[start_endtag_missing]'), $tagname));
-					break;
-				case 'img':
-					$selfclose=true;
-					//don't break for now.
-					parseError(sprintf('Compatibility MODE of parser: '.g_l('parser', '[start_endtag_missing]'), $tagname));
-					break;
-			}
+					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed! ' . g_l('parser', '[start_endtag_missing]'), $tagname));
 		}
 
 		if(!$gt){
@@ -386,7 +377,7 @@ class we_tag_tagParser{
 				$content = substr($code, $endeStartTag, ($endTagPos - $endeStartTag));
 				//only 1 exception: comment tag should be able to contain partly invalid code (e.g. missing attributes etc)
 				if(($tagname != 'comment') && (($ipos + 1) < $endTagNo)){
-					$tmp=$this->parseTags($content, ($ipos + 1), $endTagNo);
+					$tmp = $this->parseTags($content, ($ipos + 1), $endTagNo);
 					if(is_string($tmp)){
 						//parser-error:
 						return $tmp;
@@ -431,7 +422,7 @@ class we_tag_tagParser{
 						$code, $endeEndTagPos);
 			} else{
 				$code = substr($code, 0, $tagPos) . '<?php printElement(' . self::printTag($tagname, $attribs) . '); ?>' . substr(
-						$code, (isset($endeEndTagPos)?$endeEndTagPos:$endeStartTag));
+						$code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 			}
 		}
 		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
