@@ -53,6 +53,20 @@ function we_include_tag_file($name){
 	return parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 }
 
+/**
+ * get the full name of an Attribute with applied postTagName if set
+ * @param type $var
+ * @return type
+ */
+function we_tag_getPostName($var){
+	if($var){
+		if(isset($GLOBALS['postTagName'])){
+			return $var . $GLOBALS['postTagName'];
+		}
+	}
+	return $var;
+}
+
 function we_tag($name, $attribs=array(), $content = ''){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
@@ -77,15 +91,7 @@ function we_tag($name, $attribs=array(), $content = ''){
 	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
 	if(isset($attribs['name'])){
 		$attribs['_name_orig'] = $attribs['name'];
-		if(isset($GLOBALS['postTagName'])){
-			$attribs['name'] = $attribs['name'] . $GLOBALS['postTagName'];
-		}
-	}
-	if(isset($attribs['match'])){
-		$attribs['_match_orig'] = $attribs['match'];
-		if(isset($GLOBALS['postTagName'])){
-			$attribs['match'] = $attribs['match'] . $GLOBALS['postTagName'];
-		}
+		$attribs['name'] = we_tag_getPostName($attribs['name']);
 	}
 
 	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){

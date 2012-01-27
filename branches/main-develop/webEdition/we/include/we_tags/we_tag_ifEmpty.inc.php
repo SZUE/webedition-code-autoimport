@@ -25,7 +25,7 @@
 function we_isNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$type = weTag_getAttribute('type', $attribs);
-	$match = weTag_getAttribute('match', $attribs);
+	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs));
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
