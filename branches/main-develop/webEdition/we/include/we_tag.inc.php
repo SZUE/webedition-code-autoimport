@@ -81,6 +81,13 @@ function we_tag($name, $attribs=array(), $content = ''){
 			$attribs['name'] = $attribs['name'] . $GLOBALS['postTagName'];
 		}
 	}
+	if(isset($attribs['match'])){
+		$attribs['_match_orig'] = $attribs['match'];
+		if(isset($GLOBALS['postTagName'])){
+			$attribs['match'] = $attribs['match'] . $GLOBALS['postTagName'];
+		}
+	}
+
 	if($edMerk && $user && (!$_SESSION['perms']['ADMINISTRATOR'])){
 		if(!in_array($_SESSION['user']['Username'], makeArrayFromCSV($user))){
 			$GLOBALS['we_editmode'] = false;

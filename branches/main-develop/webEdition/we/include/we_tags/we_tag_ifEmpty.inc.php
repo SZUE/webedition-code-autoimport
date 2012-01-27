@@ -30,11 +30,11 @@ function we_isNotEmpty($attribs){
 
 	switch($type){
 		case 'object' :
-			return $doc->getElement($match);
+			return (bool)$doc->getElement($match);
 		case 'binary' :
 		case 'img' :
 		case 'flashmovie' :
-			return $doc->getElement($match, 'bdid');
+			return (bool)$doc->getElement($match, 'bdid');
 		case 'href' :
 			if(isset($doc->TableID) && $doc->TableID){
 				$hreftmp = $doc->getElement($match);
@@ -51,11 +51,11 @@ function we_isNotEmpty($attribs){
 			$int=intval($doc->getElement($match . '_we_jkhdsf_int'));
 			if($int){ // for type = href int
 				$intID = $doc->getElement($match . '_we_jkhdsf_intID');
-				return ($intID > 0) && strlen(id_to_path(array($intID)));
+				return (bool)($intID > 0) && strlen(id_to_path(array($intID)));
 			} else{
 				$hreftmp = $doc->getElement($match);
 				if(substr($hreftmp, 0, 1) == '/'){
-					return (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
+					return (bool)(!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 				}
 			}
 		default :
@@ -76,7 +76,7 @@ function we_isNotEmpty($attribs){
 				//   end of #3938
 			}
 	}
-	return ($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
+	return (bool)($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
 }
 
 function we_tag_ifEmpty($attribs, $content){
