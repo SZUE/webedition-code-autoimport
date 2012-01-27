@@ -320,17 +320,7 @@ class we_tag_tagParser{
 		$gt = $regs[5];
 		$tagname = $regs[2];
 
-		//FIXME: remove in 6.4
-		//if it is not a selfclosing tag (<we:xx/>),
-		//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
-		//NOTE: most custom tags don't have a wizzard file - so this tag must be selfclosing, or have a corresponding closing-tag!
-		if(!$selfclose && in_array($tagname,self::$AllKnownTags) && !in_array($tagname,self::$CloseTags)){
-			//for now we'll correct this error and keep parsing
-			$selfclose = true;
-			//don't break for now.
-			parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!'."\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
-		}
-
+		//@Lukas: =>384
 		if(!$gt){
 			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname));
 		}
@@ -391,6 +381,22 @@ class we_tag_tagParser{
 					}
 				}
 			} else{
+		//FIXME: remove in 6.4
+		//if it is not a selfclosing tag (<we:xx/>),
+		//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
+		//NOTE: most custom tags don't have a wizzard file - so this tag must be selfclosing, or have a corresponding closing-tag!
+		if(!$selfclose && in_array($tagname,self::$AllKnownTags) && !in_array($tagname,self::$CloseTags)){
+			//for now we'll correct this error and keep parsing
+			$selfclose = true;
+			$content='';
+			unset($endeEndTagPos);
+			unset($endTagPos);
+			unset($endTagNo);
+			//don't break for now.
+			parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!'."\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
+		}else
+
+
 				return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
 			}
 		}
