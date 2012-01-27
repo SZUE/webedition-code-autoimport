@@ -6,5 +6,6 @@ $l_weTagGroups=array(
 	'custom'=>'kustomoidut we:tagit',
 	'if_tags'=>'If we:tagit',
 	'input_tags'=>'Input we:tagit',
+	'navigation'=>'Navigation',
 	'navigation_tags'=>'Navigaation',
 );

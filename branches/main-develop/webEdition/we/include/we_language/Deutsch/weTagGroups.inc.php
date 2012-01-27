@@ -6,5 +6,6 @@ $l_weTagGroups=array(
 	'custom'=>'Eigene we:tags',
 	'if_tags'=>'If we:tags',
 	'input_tags'=>'Eingabe we:tags',
+	'navigation'=>'Navigation',
 	'navigation_tags'=>'Navigation',
 );
