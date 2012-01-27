@@ -311,7 +311,7 @@ if($GLOBALS['we_editmode']){
 				}
 				var lastPos = null, lastQuery = null, marked = [];
 				function unmark() {
-					for (var i = 0; i < marked.length; ++i) marked[i]();
+					for (var i = 0; i < marked.length; ++i) marked[i].clear();
 					marked.length = 0;
 				}
 				function search(text) {
@@ -751,6 +751,7 @@ if($GLOBALS['we_editmode']){
 		$parser_css[] = 'mode/webEdition/webEdition.css';
 
 		if(count($parser_js) > 0){ // CodeMirror will be used
+			$parser_js[]='lib/util/searchcursor.js';
 			$maineditor = we_html_element::cssLink(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.css').
 				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror2/lib/codemirror.js');
 			foreach($parser_css as $css){

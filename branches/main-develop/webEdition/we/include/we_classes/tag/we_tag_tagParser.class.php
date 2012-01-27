@@ -27,6 +27,7 @@ class we_tag_tagParser{
 	private $lastpos = 0;
 	private $tags = array();
 	private static $CloseTags = 0;
+	private static $AllKnownTags = 0;
 	//remove comment-attribute (should never be seen), and obsolete cachelifetime
 	private $removeAttribs = array('cachelifetime', 'comment');
 	public static $curFile = '';
@@ -41,6 +42,7 @@ class we_tag_tagParser{
 		}
 		if(!is_array(self::$CloseTags)){
 			self::$CloseTags = weTagWizard::getTagsWithEndTag();
+			self::$AllKnownTags = weTagWizard::getExistingWeTags();
 		}
 	}
 
@@ -208,6 +210,7 @@ class we_tag_tagParser{
 
 	private function checkOpenCloseTags(&$code){
 		if(!is_array(self::$CloseTags)){
+			self::$AllKnownTags = weTagWizard::getExistingWeTags();
 			self::$CloseTags = weTagWizard::getTagsWithEndTag();
 		}
 
@@ -318,10 +321,14 @@ class we_tag_tagParser{
 		$tagname = $regs[2];
 
 		//FIXME: remove in 6.4
-		if(!$selfclose && !in_array($tagname,self::$CloseTags)){
-					$selfclose = true;
-					//don't break for now.
-					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!'."\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
+		//if it is not a selfclosing tag (<we:xx/>),
+		//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
+		//NOTE: most custom tags don't have a wizzard file - so this tag must be selfclosing, or have a corresponding closing-tag!
+		if(!$selfclose && in_array($tagname,self::$AllKnownTags) && !in_array($tagname,self::$CloseTags)){
+			//for now we'll correct this error and keep parsing
+			$selfclose = true;
+			//don't break for now.
+			parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!'."\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
 		}
 
 		if(!$gt){
