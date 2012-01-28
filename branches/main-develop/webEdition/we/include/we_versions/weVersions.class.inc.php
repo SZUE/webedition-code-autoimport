@@ -1670,11 +1670,12 @@ class weVersions {
 
 			$keys = array();
 			$vals = array();
+			$db = new DB_WE();
 
 			foreach($lastEntry as $k => $v){
 				if($k!="ID") {
-					$keys[] = $k;
-					$vals[] = "'".$v."'";
+					$keys[] = $db->escape($k);
+					$vals[] = '"'.$db->escape($v).'"';
 				}
 			}
 
@@ -1691,11 +1692,7 @@ class weVersions {
 
 
 			if(!empty($keys) && !empty($vals) && $doDelete){
-
-				$theKeys = "(". makeCSVFromArray($keys) .")";
-				$theValues = "VALUES(". makeCSVFromArray($vals) .")";
-
-				$db->query("INSERT INTO ".VERSIONS_TABLE." ".$theKeys ." ". $theValues);
+				$db->query('INSERT INTO '.VERSIONS_TABLE.' ('. implode(',',$keys) .') VALUES('. implode(',',$vals) .')');
 
 				$db->query("UPDATE ".VERSIONS_TABLE." SET active = '0' WHERE documentID = ".intval($docID)." AND documentTable = '".$db->escape($docTable)."' AND version != ".intval($lastEntry['version']));
 			}

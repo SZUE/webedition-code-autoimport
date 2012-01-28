@@ -211,10 +211,10 @@ if(!empty($this->model->ID)) {
 					$html .= '<strong>'.$cm->company.'</strong><br/>';
 				}
 				if(!empty($cm->authors->author)){
-					if(is_array($cm->authors->author) ){
+					if(is_object($cm->authors->author) ){
 						$authornames= $cm->authors->author->toArray();
 					} else {$authornames = $cm->authors->author;}
-					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www) ){
+					if(!empty($cm->authorlinks->www) && is_object($cm->authorlinks->www) ){
 						$authorlinks= $cm->authorlinks->www->toArray();
 					} else {$authorlinks= $cm->authorlinks->www;}
 					if (is_array($authornames)){
@@ -315,7 +315,7 @@ if(!empty($this->model->ID)) {
 			$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppStatus')));
 			$html = '';
 			if(!empty($this->model->appconfig->info->version)){
-				$html .= '<strong>'.$translate->_('Version').': '.we_util_Strings:: number2version($this->model->appconfig->info->version,true).'</strong>';
+				$html .= '<strong>'.$translate->_('Version').': '.$this->model->appconfig->info->version.'</strong>';
 				if(!empty($this->model->appconfig->info->copyright) || !empty($this->model->appconfig->info->copyrighturl)){
 					$html .= ' &copy; ';
 					if(!empty($this->model->appconfig->info->copyrighturl)){

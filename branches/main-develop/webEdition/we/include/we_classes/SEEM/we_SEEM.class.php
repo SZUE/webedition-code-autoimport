@@ -680,26 +680,16 @@ class we_SEEM{
 	 * @return   ID              string Document-ID to which the path belongs to or -1
 	 */
 	function getDocIDbyPath($docPath, $tbl=""){
-
-		if($tbl == ""){
-			$tbl = FILE_TABLE;
-		}
-
-		$db = new DB_WE();
-		$query = "
-                SELECT ID
-                FROM " . $db->escape($tbl) . "
-                WHERE Path='" . $db->escape($docPath) . "'
-            ";
-		$db->query($query);
-
-		if($db->num_rows() == 1){
-
-			$db->next_record();
-			return $db->f("ID");
-		} else{
-			return -1;
-		}
+        //FIXME: does this work for SEO Url's???
+        	$docPath=trim($docPath);
+		        $db=new DB_WE();
+            $docPath=$db->escape($docPath);
+            if(defined('NAVIGATION_DIRECTORYINDEX_HIDE')&& defined('NAVIGATION_DIRECTORYINDEX_NAMES') && $docPath[strlen($docPath)-1]== '/'){
+            	$indexFileNames = explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES));
+            	$docPath= $docPath . implode('","' . $docPath, $indexFileNames);
+            }
+            $id = f('SELECT ID FROM ' . $db->escape($tbl?$tbl:FILE_TABLE) . 'WHERE Path IN ("'. $docPath . '") LIMIT 1','ID',$db);
+            return $id?$id:-1;
 	}
 
 	/**

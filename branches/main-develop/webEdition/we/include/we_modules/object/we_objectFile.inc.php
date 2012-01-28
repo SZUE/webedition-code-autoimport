@@ -2447,7 +2447,12 @@ class we_objectFile extends we_document{
 		if($resave == 0 && $_resaveWeDocumentCustomerFilter){
 			$this->resaveWeDocumentCustomerFilter();
 		}
-
+		if (!$this->Published){
+			if(!we_root::we_save(1)) return false;
+			if (we_temporaryDocument::isInTempDB($this->ID,$this->Table,$this->DB_WE) ){
+				we_temporaryDocument::delete($this->ID,$this->Table,$this->DB_WE);
+			}
+		}
 		$a = $this->i_saveTmp();
 
 		/* version */

@@ -757,7 +757,7 @@ abstract class we_root extends we_class{
 	}
 
 	function we_load($from=we_class::LOAD_MAID_DB){
-		we_class::we_load($from);
+		parent::we_load($from);
 		$this->i_getContentData($this->LoadBinaryContent);
 		$this->OldPath = $this->Path;
 	}
