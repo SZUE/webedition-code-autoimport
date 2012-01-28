@@ -2413,7 +2413,7 @@ class we_objectFile extends we_document{
 			include_once($_SERVER['DOCUMENT_ROOT'] .'/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			weShopVariants::correctModelFields($this);
 		}
-		if(!$this->TriggerID){		
+		if(!$this->TriggerID){
 			$this->TriggerID=f('SELECT TriggerID FROM '.OBJECT_FILES_TABLE. ' WHERE ID="'.$this->ParentID.'"','TriggerID',$this->DB_WE);
 			if(!$this->TriggerID){
 				$this->TriggerID=$foo["DefaultTriggerID"];
@@ -3032,6 +3032,7 @@ class we_objectFile extends we_document{
 		return false;
 	}
 
+	
 	function i_saveTmp(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);

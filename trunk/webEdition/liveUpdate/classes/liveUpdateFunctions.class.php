@@ -618,7 +618,6 @@ class liveUpdateFunctions {
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
 			$db->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
 			$query=($db->num_rows()?'ALTER TABLE `'.$matches[2].'` DROP COLUMN `'.$matches[1].'`':'');
-			trigger_error('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"'.$query);
 		}
 		/*if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
