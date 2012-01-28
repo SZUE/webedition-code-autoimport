@@ -31,7 +31,8 @@ function we_tag_img($attribs, $content){
 	$startid = weTag_getAttribute("startid", $attribs);
 	$parentid = weTag_getAttribute("parentid", $attribs, "0");
 	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
-	$showThumb = weTag_getAttribute("showthumbcontrol", $attribs, true, false);
+	//FIXME: wtf is showthumbcontrol?! what does it do?
+	$showThumb = weTag_getAttribute("showthumbcontrol", $attribs, false, true);
 	$showimage = weTag_getAttribute("showimage", $attribs, true, true);
 	$showinputs = weTag_getAttribute("showinputs", $attribs, (defined("SHOWINPUTS_DEFAULT") ? SHOWINPUTS_DEFAULT : true), true);
 

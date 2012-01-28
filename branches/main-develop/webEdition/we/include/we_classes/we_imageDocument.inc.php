@@ -242,10 +242,8 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function initByAttribs($attribs){
 		foreach($attribs as $a => $b){
-			if(strtolower($a) != "id"){
-				if($b != ""){
-					$this->setElement($a, $b, "attrib");
-				}
+			if(strtolower($a) != "id" && $b!=''){
+				$this->setElement($a, $b, "attrib");
 			}
 		}
 	}

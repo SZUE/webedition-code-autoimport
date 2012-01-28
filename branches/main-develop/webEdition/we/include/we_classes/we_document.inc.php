@@ -927,6 +927,9 @@ class we_document extends we_root{
 	$val, $type, $attribs='', $pathOnly=false, $parentID=0, $path='', $db='', $classID='', $fn='$this->getElement'){
 
 		$attribs = is_array($attribs) ? $attribs : array();
+		if(isset($attribs['_name_orig'])){
+			unset($attribs['_name_orig']);
+		}
 		if(!$db)
 			$db = new DB_WE();
 		if((!$attribs) || (!is_array($attribs)))
@@ -968,7 +971,6 @@ class we_document extends we_root{
 					unset($img->elements['height']);
 					unset($img->elements['width']);
 				}
-
 				if(sizeof($attribs)){
 					if(isset($attribs['hyperlink']))
 						unset($attribs['hyperlink']);
@@ -1195,6 +1197,10 @@ class we_document extends we_root{
 	}
 
 	function getField($attribs, $type='txt', $pathOnly=false){
+		if(is_array($attribs) && isset($attribs['_name_orig'])){
+			unset($attribs['_name_orig']);
+		}
+
 		$val = '';
 		switch($type){
 			case 'img':

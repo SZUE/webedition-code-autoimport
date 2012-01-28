@@ -2156,7 +2156,7 @@ function clearPath($path){
  */
 function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
 
-	
+
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 	//	default at the moment is xhtml-style
 	$_xmlClose = false;
@@ -2168,7 +2168,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
 
 	//	remove x(ht)ml-attributs
-	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto'));
+	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto','_name_orig'));
 
 	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array('name'));
@@ -2661,7 +2661,7 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 		}
 		//check for Trigger
-		if(defined('SCHEDULE_TABLE')&& (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) && 
+		if(defined('SCHEDULE_TABLE')&& (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			!isset($GLOBALS['we']['backVars']) //on first call this variable is unset, so we're not inside an include
 			&& (defined('SCHEUDLER_TRIGGER')&& SCHEUDLER_TRIGGER==SCHEDULER_TRIGGER_PREDOC)){
 				we_schedpro::trigger_schedule();
