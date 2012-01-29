@@ -24,7 +24,7 @@ way to fit your requirements.
 	position: relative;
 	z-index: 500;
 	font-family: arial, verdana, sans-serif;
-
+	font-size: 10pt;
 }
 
 #nav li.top {
@@ -36,10 +36,9 @@ way to fit your requirements.
 	display: block;
 	float: left;
 	height: 32px;
-	line-height: 27px;
+	line-height: 32px;
 	color:black;
 	text-decoration:none;
-	font-size: 11px;
 	font-weight:bold;
 	padding: 0 0 0 12px;
 	cursor: pointer;
@@ -110,9 +109,9 @@ way to fit your requirements.
 	background: #fff;
 	border: 1px solid #3a93d2;
 	word-wrap: break-word;
-	width: 170px;
-	height:auto;
-	z-index:300;
+	width: 14em;
+	height: auto;
+	z-index: 300;
 	-webkit-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -127,47 +126,47 @@ way to fit your requirements.
 	display: block;
 	position: relative;
 	float: left;
-	width: 170px;
+	width: 14em;
 	font-weight: normal;
 }
 
 #nav li:hover ul.sub li a{
 	display: block;
-	font-size: 11px;
-	width: 160px;
-	line-height:20px;
-	padding-left: 10px;
+	width: 12em;
+	line-height: 3.2ex;
+	padding-left: 1em;
+	padding-right: 1em;
 	text-indent: -5px;
 	color: #000;
 	text-decoration: none;
 }
 
-#nav li ul.sub li a.fly{
-	background: #fff url(arrow.gif) right 7px no-repeat;
+#nav li ul.sub li a.fly {
+	background: #fff url(arrow.gif) 99% 50% no-repeat;
 }
-#nav li:hover ul.sub li a:hover{
+#nav li:hover ul.sub li a:hover {
 	background: #3a93d2;
 	color: #fff;
 }
-#nav li:hover ul.sub li a.fly:hover{
-	background: #3a93d2 url(arrow_over.gif) right 7px no-repeat;
+#nav li:hover ul.sub li a.fly:hover {
+	background: #3a93d2 url(arrow_over.gif) 99% 50% no-repeat;
 	color: #fff;
 }
 
 #nav li:hover ul li:hover > a.fly {
-	background: #3a93d2 url(arrow_over.gif) right 7px no-repeat;
+	background: #3a93d2 url(arrow_over.gif) 99% 50% no-repeat;
 	color: #fff;
 }
 #nav li:hover ul li:hover ul,
 #nav li:hover ul li:hover ul li:hover ul,
 #nav li:hover ul li:hover ul li:hover ul li:hover ul,
 #nav li:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
-	left: 170px;
-	top: -4px;
+	left: 14em;
+	top: -1px;
 	background: #fff;
 	border: 1px solid #3a93d2;
 	word-wrap: break-word;
-	width: 170px;
+	width: 14em;
 	z-index: 400;
 	height:auto;
 	-webkit-border-radius: 5px;
@@ -182,6 +181,6 @@ way to fit your requirements.
 	height: 0px;
 	line-height: 0px;
 	padding: 0px;
-	width: 170px;
+	width: 14em;
 	border-bottom: 1px solid #264f94;
 }
