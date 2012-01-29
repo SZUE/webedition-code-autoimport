@@ -176,7 +176,6 @@ $l_weClass=array(
 	'target'=>'Target',
 	'template'=>'Template',
 	'thumbnails'=>'Thumbnails',
-	'thumbnail'=>'Thumbnail',
 	'Title'=>'Title',
 	'type_not_supported_hint'=>'The version of the GD library - installed on this server - does not support the %s for output format! Please convert the image to a compatible format!',
 	'upload'=>'Upload',

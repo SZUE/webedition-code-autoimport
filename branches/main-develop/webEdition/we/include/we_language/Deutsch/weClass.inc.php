@@ -176,7 +176,6 @@ $l_weClass=array(
 	'target'=>'Target',
 	'template'=>'Vorlage',
 	'thumbnails'=>'Miniaturansichten',
-	'thumbnail'=>'Miniaturansicht',
 	'Title'=>'Titel',
 	'type_not_supported_hint'=>'Die auf dem Server installierte Version der GD Library unterstützt nicht das %s als Ausgabeformat! Bitte konvertieren Sie die Grafik zuerst in ein kompatibles Format!',
 	'upload'=>'Hochladen',

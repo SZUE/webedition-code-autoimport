@@ -176,7 +176,6 @@ $l_weClass=array(
 	'target'=>'Kohde',
 	'template'=>'Sivupohja',
 	'thumbnails'=>'Esikatselukuvat',
-	'thumbnail'=>'Thumbnail',
 	'Title'=>'Otsikko',
 	'type_not_supported_hint'=>'Palvelimelle asennettu GD-kirjasto ei tue %s kuvatyyppiä! Muunna kuvaformaatti yhteensopivaan muotoon!',
 	'upload'=>'Lataa',

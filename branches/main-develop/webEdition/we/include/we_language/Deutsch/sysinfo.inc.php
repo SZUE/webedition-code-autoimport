@@ -31,7 +31,6 @@ $l_sysinfo=array(
 	'short_open_tag warning'=>'WARNUNG: short_open_tag kann zu erheblichen Problemen bei der Verarbeitung von xml-Dateien führen, z.B. für die Erzeugung von Backup-Files. Wir empfehlen daher, diese Funktion zu deaktivieren!',
 	'suhosin simulation'=>'Simulations Modus',
 	'suhosin warning'=>'Wegen der vielfältigen Konfigurationsmöglichkeiten kann bei Nutzung dieser PHP Erweiterung die volle Funktionsfähigkeit von webEdition leider nicht garantiert werden.',
-	'session.auto_start warning'=>'gesetzt, damit keine Unterstützung für WE-Apps',
 	'sysinfo'=>'Systeminformationen',
 	'version'=>'Version',
 	'we_max_upload_size'=>'Max. Dateigröße für Uploads',
