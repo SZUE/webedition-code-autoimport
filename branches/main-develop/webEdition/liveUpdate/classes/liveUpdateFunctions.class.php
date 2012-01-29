@@ -34,7 +34,7 @@ class liveUpdateFunctions {
 	 * Functions for updatelog
 	 */
 	function insertUpdateLogEntry($action, $version, $errorCode) {
-		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode);");
+		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode)");
 	}
 
 	/**

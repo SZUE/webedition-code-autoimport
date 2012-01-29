@@ -120,18 +120,20 @@ function we_tag_img($attribs, $content){
 			<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" background=\"" . IMAGE_DIR . "backgrounds/aquaBackground.gif\" style=\"border: solid #006DB8 1px;\">
 				<tr>
 					<td class=\"weEditmodeStyle\" colspan=\"2\" align=\"center\">$out
-						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\" /></td>
+						<input onchange=\"_EditorFrame.setEditorIsHot(true);\" type=\"hidden\" name=\"$fname\" value=\"$id\" />
+					</td>
 				</tr>";
 		if($showinputs){ //  only when wanted
 			$out .= "
 		        <tr>
-		            <td class=\"weEditmodeStyle\" align=\"center\" style=\"width: 180px;\">
+		            <td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
 		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     <tr>
                         <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[alt_kurz]") . ":&nbsp;</td>
                         <td class=\"weEditmodeStyle\">" . we_html_tools::htmlTextInput($altname, 16, $alt, '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . "</td>
                     </tr>
 					<tr>
+						<td class=\"weEditmodeStyle\"></td>
 						<td class=\"weEditmodeStyle\"></td>
 					</tr>
 				    <tr>
@@ -153,9 +155,14 @@ function we_tag_img($attribs, $content){
 				$thumbnails .= '</select>';
 				$out .= "
 		        		<tr>
-		            	<td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">" .
-					$thumbnails
-					. "</td>
+		            	<td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
+							<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+                    		<tr>
+                        		<td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[thumbnail]") . ":&nbsp;</td>
+                        		<td class=\"weEditmodeStyle\">" . $thumbnails . "</td>
+                    		</tr>
+							</table>
+						</td>
                 		</tr>";
 			}
 		}

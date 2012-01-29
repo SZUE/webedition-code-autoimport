@@ -176,6 +176,7 @@ $l_weClass=array(
 	'target'=>'Цель',
 	'template'=>'Шаблон',
 	'thumbnails'=>'Иконки',
+	'thumbnail'=>'Thumbnail',
 	'Title'=>'Название',
 	'type_not_supported_hint'=>'Установленная на сервере версия GD Library не поддерживает %s как формат вывода на экран! Рекомендуется конвертировать изображение в формат, поддерживаемый GD Library.',
 	'upload'=>'Загрузить',

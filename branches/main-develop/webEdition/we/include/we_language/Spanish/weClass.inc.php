@@ -176,6 +176,7 @@ $l_weClass=array(
 	'target'=>'Destino',
 	'template'=>'Plantilla',
 	'thumbnails'=>'Imágenes en miniatura',
+	'thumbnail'=>'Imágene en miniatura',
 	'Title'=>'Titulo',
 	'type_not_supported_hint'=>'La versión de la librería GD  - instalada en este servidor - no soporta %s para el formato de salida! Por favor, convirta la imagen a un formato compatible!',
 	'upload'=>'Cargar',

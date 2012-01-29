@@ -176,6 +176,7 @@ $l_weClass=array(
 	'target'=>'Target',
 	'template'=>'Szablon',
 	'thumbnails'=>'Widoki miniatur',
+	'thumbnail'=>'Thumbnail',
 	'Title'=>'Tytuł',
 	'type_not_supported_hint'=>'Zainstalowana na serwerze wersja biblioteki GD nie wspiera  %s jako formatu wyjściowego! Przekonwertuj najpierw obrazek do kompatybilnego formatu!',
 	'upload'=>'Załaduj',

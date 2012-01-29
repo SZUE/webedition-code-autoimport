@@ -220,7 +220,7 @@ if(in_array('suhosin', get_loaded_extensions())){
 		}
 	}
 } else{
-	$SuhosinText = getOK('', $_sysinfo['not_active']);
+	$SuhosinText = getOK('', ini_get_message('suhosin') );
 }
 $_info = array(
 	'webEdition' => array(
@@ -245,6 +245,8 @@ $_info = array(
 		'safe_mode_gid' => ini_get_message('safe_mode_gid'),
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
 		'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
+		'post_max_size' => we_convertIniSizes(ini_get('post_max_size')),
+		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', "[session.auto_start warning]"), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText
 	),
 	'MySql' => array(

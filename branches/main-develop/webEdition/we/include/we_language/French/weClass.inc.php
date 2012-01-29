@@ -176,6 +176,7 @@ $l_weClass=array(
 	'target'=>'Cible',
 	'template'=>'Modèle',
 	'thumbnails'=>'Imagettes',
+	'thumbnail'=>'Thumbnail',
 	'Title'=>'Titre',
 	'type_not_supported_hint'=>'La version de la GD Library installée sur le serveur ne support pas %s comme format d`édition! S`il vous plaît convertez dabord la graphique dans un format compatible!',
 	'upload'=>'télécharger',

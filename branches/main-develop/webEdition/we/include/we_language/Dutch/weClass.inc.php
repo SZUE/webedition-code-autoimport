@@ -176,6 +176,7 @@ $l_weClass=array(
 	'target'=>'Doel',
 	'template'=>'Sjabloon',
 	'thumbnails'=>'Thumbnails',
+	'thumbnail'=>'Thumbnail',
 	'Title'=>'Titel',
 	'type_not_supported_hint'=>'De version van de GD bibliotheek - geïnstalleerd op deze server - ondersteunt niet de %s als output formaat! Converteer a.u.b. de afbeelding naar een compatibel formaat!',
 	'upload'=>'Upload',
