@@ -532,8 +532,8 @@ class liveUpdateFunctions{
 			$query = str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 			$query = str_replace('###UPDATEONLY###', '', $query);
 			if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
-				$leDB->query('SHOW COLUMNS FROM `' . $matches[2] . '` WHERE Field="' . $matches[1] . '"');
-				$query = ($leDB->num_rows() ? 'ALTER TABLE `' . $matches[2] . '` DROP COLUMN `' . $matches[1] . '`' : '');
+				$leDB->query('SHOW COLUMNS FROM ' . $matches[2] . ' WHERE Field="' . $matches[1] . '"');
+				$query = ($leDB->num_rows() ? 'ALTER TABLE ' . $matches[2] . ' DROP COLUMN `' . $matches[1] . '`' : '');
 			}
 
 			if(!$leDB->query($query)){
@@ -600,8 +600,8 @@ class liveUpdateFunctions{
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
 		$query=str_replace('###UPDATEONLY###', '', $query);
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/',$query,$matches)){
-			$db->query('SHOW COLUMNS FROM `'.$matches[2].'` WHERE Field="'.$matches[1].'"');
-			$query=($db->num_rows()?'ALTER TABLE `'.$matches[2].'` DROP COLUMN `'.$matches[1].'`':'');
+			$db->query('SHOW COLUMNS FROM '.$matches[2].' WHERE Field="'.$matches[1].'"');
+			$query=($db->num_rows()?'ALTER TABLE '.$matches[2].' DROP COLUMN `'.$matches[1].'`':'');
 		}
 		/*if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
 
