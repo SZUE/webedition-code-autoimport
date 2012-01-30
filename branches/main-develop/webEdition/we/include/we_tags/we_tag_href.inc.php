@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,80 +22,75 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_href($attribs, $content){
-	$foo = attributFehltError($attribs, "name", "href");
-	if ($foo)
+	if(($foo = attributFehltError($attribs, 'name', 'href'))){
 		return $foo;
-	$name = weTag_getAttribute("name", $attribs);
-	$type = weTag_getAttribute("type", $attribs);
-	$include = weTag_getAttribute("include", $attribs, false, true);
-	$reload = weTag_getAttribute("reload", $attribs, false, true);
-	$rootdir = weTag_getAttribute("rootdir", $attribs, '/');
-	if (substr($rootdir, 0, 1) != "/") {
+	}
+	$name = weTag_getAttribute('name', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$include = weTag_getAttribute('include', $attribs, false, true);
+	$reload = weTag_getAttribute('reload', $attribs, false, true);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	if(substr($rootdir, 0, 1) != '/'){
 		$rootdirid = $rootdir;
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
-	} else {
-		if (strlen($rootdir) > 1) {
-			$rootdir = rtrim($rootdir,'/');
+	} else{
+		if(strlen($rootdir) > 1){
+			$rootdir = rtrim($rootdir, '/');
 		}
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
 	}
 	// Bug Fix #7045
-	if (strlen($rootdir) == 1 && $rootdir == "/") {
-		$rootdir = "";
+	if(strlen($rootdir) == 1 && $rootdir == '/'){
+		$rootdir = '';
 	}
 
-	$file = weTag_getAttribute("file", $attribs, true, true);
-	$directory = weTag_getAttribute("directory", $attribs, false, true);
-	$attribs = removeAttribs($attribs, array(
-		"rootdir"
-	));
+	$file = weTag_getAttribute('file', $attribs, true, true);
+	$directory = weTag_getAttribute('directory', $attribs, false, true);
+	$attribs = removeAttribs($attribs, array('rootdir'));
 
-	if ($GLOBALS['we_doc']->ClassName == "we_objectFile") {
+	if($GLOBALS['we_doc']->ClassName == 'we_objectFile'){
 		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
-		if (!is_array($hrefArr)) {
+		if(!is_array($hrefArr)){
 			$hrefArr = array();
 		}
-		$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : "";
+		$out = sizeof($hrefArr) ? we_document::getHrefByArray($hrefArr) : '';
 		return $out;
 	}
 
-	$nint = $name . "_we_jkhdsf_int";
-	$nintID = $name . "_we_jkhdsf_intID";
-	$nintPath = $name . "_we_jkhdsf_intPath";
+	$nint = $name . '_we_jkhdsf_int';
+	$nintID = $name . '_we_jkhdsf_intID';
+	$nintPath = $name . '_we_jkhdsf_intPath';
 	$extPath = $GLOBALS['we_doc']->getElement($name);
 
 	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 	// as html_entity_decode is only available php > 4.3 we use a custom function
 	$extPath = !empty($extPath) ? htmlspecialchars(html_entity_decode($extPath)) : $extPath;
 
-	if ($GLOBALS['we_editmode']) {
+	if($GLOBALS['we_editmode']){
 		$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 		$trashbut = we_button::create_button(
-				"image:btn_function_trash",
-				"javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ""),
-				true);
-		$span = '<span style="color: black;font-size:' . (($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")) . ';font-family:' . g_l('css','[font_family]') . ';">';
+				"image:btn_function_trash", "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ""), true);
+		$span = '<span style="color: black;font-size:' . (($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
 	}
 
-	if (!$type || $type == "all") {
+	if(!$type || $type == "all"){
 
 		$int = ($GLOBALS['we_doc']->getElement($nint) == "") ? 0 : $GLOBALS['we_doc']->getElement($nint);
 		$intID = $GLOBALS['we_doc']->getElement($nintID);
-		if (!$intID && $rootdirid) {
+		if(!$intID && $rootdirid){
 			$intID = $rootdirid;
 		}
-		$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=".intval($intID), "Path", $GLOBALS['DB_WE']);
+		$intPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), 'Path', $GLOBALS['DB_WE']);
 
-		if ($int) {
+		if($int){
 			$href = $intPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
-		} else {
+			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
+		} else{
 			//if (!$we_editmode) {
 			//	$extPath = htmlspecialchars($extPath);
 			//}
@@ -109,43 +105,32 @@ function we_tag_href($attribs, $content){
 
 		$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
 
-		if ($GLOBALS['we_editmode']) {
-			if (($directory && $file) || $file) {
-				//javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value', 'document.forms[\\'we_form\\'].elements[\\'$intPath_elem_Name\\'].value', 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd(\'reload_editpage\');" : "") . "', '" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");
-				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
-				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") );
+		if($GLOBALS['we_editmode']){
+			if(($directory && $file) || $file){
+				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
+				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
 				$but = we_button::create_button(
-						"select",
-						"javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
+						"select", "javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
 				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
-						"select",
-						"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : "";
-			} else {
-				//javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value', 'document.forms[\\'we_form\\'].elements[\\'$intPath_elem_Name\\'].value', 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd(\'reload_editpage\');" : "") . "', '" . session_id() . "', '" . $rootdirid . "');
-				$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-				$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
-				$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") );
+						"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : "";
+			} else{
+				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
+				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements['$int_elem_Name'][0].checked = true;" . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
 				$but = we_button::create_button(
-						"select",
-						"javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "');");
+						"select", "javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "');");
 				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
-						"select",
-						"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : "";
+						"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true); opener.document.we_form.elements[\'$int_elem_Name\'][1].checked = true;','" . $rootdir . "')") : "";
 			}
 			$trashbut2 = we_button::create_button(
-					"image:btn_function_trash",
-					"javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);",
-					true);
+					"image:btn_function_trash", "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);", true);
 			$out = '
 				<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
 						<td class="weEditmodeStyle">
 							' . we_forms::radiobutton(
-					1,
-					$int,
-					$int_elem_Name,
-					$span . g_l('tags',"[int_href]") . ":</span>") . '</td>
+					1, $int, $int_elem_Name, $span . g_l('tags', "[int_href]") . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
 							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
 							<input type="text" name="' . $intPath_elem_Name . '" value="' . $intPath . '" ' . $attr . ' readonly /></td>
@@ -159,10 +144,7 @@ function we_tag_href($attribs, $content){
 					<tr>
 						<td class="weEditmodeStyle">
 							' . we_forms::radiobutton(
-					0,
-					!$int,
-					$int_elem_Name,
-					$span . g_l('tags',"[ext_href]") . ":</span>") . '</td>
+					0, !$int, $int_elem_Name, $span . g_l('tags', "[ext_href]") . ":</span>") . '</td>
 						<td class="weEditmodeStyle">
 							<input onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
@@ -174,50 +156,41 @@ function we_tag_href($attribs, $content){
 					</tr>
 				</table>';
 
-			if ($include) {
-				$out .= $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
+			if($include){
+				$out .= $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '';
 			}
 			return $out;
-		} else {
-			if ($include) {
-				return $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
-			} else {
-				return $href;
-			}
+		} else{
+			return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
 		}
 	} else
-		if ($type == "int") {
-			$intID = $GLOBALS['we_doc']->getElement($nintID);
-			$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=".intval($intID), "Path", $GLOBALS['DB_WE']);
-			$href = $intPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
+	if($type == "int"){
+		$intID = $GLOBALS['we_doc']->getElement($nintID);
+		$intPath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($intID), "Path", $GLOBALS['DB_WE']);
+		$href = $intPath;
+		$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
 
-			if ($GLOBALS['we_editmode']) {
-				if (($directory && $file) || $file) {
-					//javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value', 'document.forms[\\'we_form\\'].elements[\\'$intPath_elem_Name\\'].value', 'opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd(\'reload_editpage\');" : "") . "', '" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
-					$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-					$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
-					$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") );
-					$but = we_button::create_button(
-							"select",
-							"javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
-				} else {
-					//javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', 'document.forms[\\'we_form\\'].elements[\\'$intID_elem_Name\\'].value', 'document.forms[\\'we_form\\'].elements[\\'$intPath_elem_Name\\'].value', 'opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd(\'reload_editpage\');" : "") . "', '" . session_id() . "', '" . $rootdirid . "');;
-					$wecmdenc1= we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
-					$wecmdenc2= we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
-					$wecmdenc3= we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : "") );
-					$but = we_button::create_button(
-							"select",
-							"javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', '".$wecmdenc1."','".$wecmdenc2."','".$wecmdenc3."','" . session_id() . "', '" . $rootdirid . "');");
-				}
+		if($GLOBALS['we_editmode']){
+			if(($directory && $file) || $file){
+				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
+				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
+				$but = we_button::create_button(
+						"select", "javascript:we_cmd('openDocselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "', '', " . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
+			} else{
+				$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['$intID_elem_Name'].value");
+				$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['$intPath_elem_Name'].value");
+				$wecmdenc3 = we_cmd_enc("opener._EditorFrame.setEditorIsHot(true); " . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
+				$but = we_button::create_button(
+						"select", "javascript:we_cmd('openDirselector', document.forms[0].elements['$intID_elem_Name'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "', '" . $rootdirid . "');");
+			}
 
-				$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
-				$out = '
-				<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+			$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
+			$out = '<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
 							<input type="hidden" name="' . $int_elem_Name . '" value="1" />
-							' . $span . g_l('tags',"[int_href]") . ':</span></td>
+							' . $span . g_l('tags', "[int_href]") . ':</span></td>
 						<td class="weEditmodeStyle">
 							<input type="hidden" name="' . $ext_elem_Name . '" />
 							<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '" />
@@ -230,50 +203,38 @@ function we_tag_href($attribs, $content){
 							' . $trashbut . '</td>
 					</tr>
 				</table>';
-				if ($include) {
-					$out .= $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
-				}
-				return $out;
-			} else {
-				if ($include) {
-					return $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
-				} else {
-					return $href;
-				}
+			if($include){
+				$out .= $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '';
 			}
-		} else {
-			//if (!$we_editmode) {
-			//	$extPath = htmlspecialchars($extPath);
-			//}
-			$href = $extPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . "/" . $href : "";
+			return $out;
+		} else{
+			return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
+		}
+	} else{
+		$href = $extPath;
+		$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
 
-			if ($GLOBALS['we_editmode']) {
-				$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
+		if($GLOBALS['we_editmode']){
+			$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
-				$trashbut2 = we_button::create_button(
-						"image:btn_function_trash",
-						"javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)",
-						true);
+			$trashbut2 = we_button::create_button(
+					"image:btn_function_trash", "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true)", true);
 
-				if (($directory && $file) || $file) {
-					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
-							"select",
-							"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
-				} else {
-					$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
-							"select",
-							"javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
-				}
+			if(($directory && $file) || $file){
+				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
+						"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', '" . (($directory && $file) ? "filefolder" : "") . "', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
+			} else{
+				$but2 = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button(
+						"select", "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'$ext_elem_Name\\'].value', 'folder', document.forms[0].elements['$ext_elem_Name'].value, 'opener._EditorFrame.setEditorIsHot(true);', '" . $rootdir . "')") : "";
+			}
 
-				$attr = we_make_attribs($attribs, "name,value,type,onkeydown,onKeyDown");
+			$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown');
 
-				$out = '
-				<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
+			$out = '<table border="0" cellpadding="0" cellspacing="2" background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="border: solid #006DB8 1px;">
 					<tr>
 						<td class="weEditmodeStyle defaultfont" nowrap="nowrap">
 							<input type="hidden" name="' . $int_elem_Name . '" value="0" />
-							' . $span . g_l('tags',"[ext_href]") . ':</span></td>
+							' . $span . g_l('tags', '[ext_href]') . ':</span></td>
 						<td class="weEditmodeStyle">
 							<input type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $extPath . '" ' . $attr . ' /></td>
 						<td class="weEditmodeStyle">
@@ -284,16 +245,12 @@ function we_tag_href($attribs, $content){
 							' . $trashbut2 . '</td>
 					</tr>
 				</table>';
-				if ($include) {
-					$out .= $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
-				}
-				return $out;
-			} else {
-				if ($include) {
-					return $include_path ? '<?php if(file_exists("' . $include_path . '")) include("' . $include_path . '"); ?>' : '';
-				} else {
-					return $href;
-				}
+			if($include){
+				$out .= $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '';
 			}
+			return $out;
+		} else{
+			return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
 		}
+	}
 }

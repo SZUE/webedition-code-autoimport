@@ -46,6 +46,7 @@ function we_setBackVar($we_unique){
 				'we_transaction' => isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '',
 				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
 				'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : 'text/webedition',
+				'postTagName'=>isset($GLOBALS['postTagName'])?$GLOBALS['postTagName']:'',
 			),
 			'REQUEST' => array(
 				'pv_id' => isset($_REQUEST['pv_id']) ? $_REQUEST['pv_id'] : '',
@@ -55,6 +56,9 @@ function we_setBackVar($we_unique){
 
 		if(isset($GLOBALS['WE_IS_DYN'])){
 			unset($GLOBALS['WE_IS_DYN']);
+		}
+		if(isset($GLOBALS['postTagName'])){
+			unset($GLOBALS['postTagName']);
 		}
 		unset($_REQUEST['pv_id']);
 		unset($_REQUEST['pv_tid']);
