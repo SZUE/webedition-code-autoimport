@@ -140,7 +140,7 @@ class we_baseElement{
 		} else{
 			switch($attrib_name){
 				case 'valign':
-					$this->setStyle('vertical-align:', $attrib_value);
+					$this->setStyle('vertical-align', $attrib_value);
 					break;
 				case 'width':
 					$this->setStyle('width', $attrib_value . (is_numeric($attrib_value) ? 'px' : ''));
