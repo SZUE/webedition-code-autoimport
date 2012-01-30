@@ -731,7 +731,7 @@
             	$indexFileNames = explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES));
             	$docPath= $docPath . implode('","' . $docPath, $indexFileNames);
             }
-            $id = f('SELECT ID FROM ' . $db->escape($tbl?$tbl:FILE_TABLE) . 'WHERE Path IN ("'. $docPath . '") LIMIT 1','ID',$db);
+            $id = f('SELECT ID FROM ' . $db->escape($tbl?$tbl:FILE_TABLE) . ' WHERE Path IN ("'. $docPath . '") LIMIT 1','ID',$db);
             return $id?$id:-1;
         }
 
