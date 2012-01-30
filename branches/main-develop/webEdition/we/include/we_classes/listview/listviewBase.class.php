@@ -22,7 +22,6 @@
  * @package    webEdition_listview
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
   This array stores listviews
 
@@ -35,26 +34,26 @@
  */
 abstract class listviewBase{
 
-	var $DB_WE;						/* Main DB Object */
-	var $name;						 /* name of listview */
-	var $rows = -1;				/* Number of rows */
-	var $cols = 0;				/* Number of cols */
+	var $DB_WE;	 /* Main DB Object */
+	var $name;		/* name of listview */
+	var $rows = -1;	/* Number of rows */
+	var $cols = 0;	/* Number of cols */
 	var $maxItemsPerPage = 1;
 	var $stop_next_row = false;
-	var $start = 0;				/* Where to start output */
-	var $search = '';			/* search words */
-	var $offset = 0;			 /* start offset of first page */
-	var $order = '';			 /* Order string */
-	var $desc = false;		 /* set to true, if order should be descendend */
-	var $cats = '';				/* category string */
-	var $catOr = false;		/* set to true if it should be an 'OR condition' e.g. categories='value1' OR categories='value2' */
-	var $anz_all = 0;			/* total number of matches */
-	var $anz = 0;					/* number of rows in page */
+	var $start = 0;	/* Where to start output */
+	var $search = '';	/* search words */
+	var $offset = 0;	/* start offset of first page */
+	var $order = '';	/* Order string */
+	var $desc = false;	/* set to true, if order should be descendend */
+	var $cats = '';	/* category string */
+	var $catOr = false; /* set to true if it should be an 'OR condition' e.g. categories='value1' OR categories='value2' */
+	var $anz_all = 0;	/* total number of matches */
+	var $anz = 0;	 /* number of rows in page */
 	var $workspaceID = ''; /* commaseperated string of id's of workspace */
-	var $count = 0;				/* internal counter */
+	var $count = 0;	/* internal counter */
 	var $Record = array(); /* array to store results */
 	var $ClassName = __CLASS__; /* Name of class */
-	var $close_a = true;	 /* close </a> when endtag used */
+	var $close_a = true; /* close </a> when endtag used */
 	var $customerFilterType = 'off'; // shall we control customer-filter?
 	var $calendar_struct = array();
 	var $id = '';
@@ -77,6 +76,7 @@ abstract class listviewBase{
 	function __construct($name='0', $rows=999999999, $offset=0, $order='', $desc=false, $cats='', $catOr=false, $workspaceID='0', $cols=0, $calendar='', $datefield='', $date='', $weekstart='', $categoryids='', $customerFilterType='all', $id=''){
 
 		$this->name = $name;
+		//FIXME: broken String due to UTF-8 conversion
 		$this->search = ((!isset($_REQUEST['we_lv_search_' . $this->name])) && (isset($_REQUEST['we_from_search_' . $this->name]))) ? '���������' : isset($_REQUEST['we_lv_search_' . $this->name]) ? $_REQUEST['we_lv_search_' . $this->name] : '';
 		$this->search = str_replace('"', '', str_replace('\\"', '', trim($this->search)));
 		$this->DB_WE = new DB_WE;
@@ -123,10 +123,7 @@ abstract class listviewBase{
 	}
 
 	function getIdQuery($fieldname){
-		if($this->id){
-			return ' AND ' . $fieldname . ' IN(' . $this->id . ') ';
-		}
-		return '';
+		return ($this->id ? ' AND ' . $fieldname . ' IN(' . $this->id . ') ' : '');
 	}
 
 	/**
@@ -244,7 +241,6 @@ abstract class listviewBase{
 	 *
 	 */
 	function getBackLink($attribs){
-
 		$only = weTag_getAttribute('only', $attribs);
 		$urlID = weTag_getAttribute('id', $attribs);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
@@ -278,12 +274,12 @@ abstract class listviewBase{
 				$newdate = $year . '-' . $month . '-' . $day;
 			}
 			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
-			if(strpos($attribs["href"], '?') === false){
-				$attribs["href"] = $attribs["href"] . '?';
+			if(strpos($attribs['href'], '?') === false){
+				$attribs['href'] = $attribs['href'] . '?';
 			} else{
-				$attribs["href"] = $attribs["href"] . '&';
+				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs["href"] = $attribs["href"] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
+			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=' . $newdate));
 			if($only){
 				$this->close_a = false;
 				return (isset($attribs[$only]) ? $attribs[$only] : '');
@@ -294,12 +290,12 @@ abstract class listviewBase{
 
 			$foo = $this->start - $this->maxItemsPerPage;
 			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
-			if(strpos($attribs["href"], '?') === false){
-				$attribs["href"] = $attribs["href"] . '?';
+			if(strpos($attribs['href'], '?') === false){
+				$attribs['href'] = $attribs['href'] . '?';
 			} else{
-				$attribs["href"] = $attribs["href"] . '&';
+				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs["href"] = $attribs["href"] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
+			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '=' . $foo));
 
 			if($only){
 				$this->close_a = false;
@@ -333,13 +329,13 @@ abstract class listviewBase{
 		$url_tail = '';
 		if(isset($_REQUEST)){
 			foreach($_REQUEST as $key => $val){
-				if((!in_array($key, $usedKeys)) && (!in_array($key, $filterArr)) && (strpos($key, "we_ui_") !== 0)){
+				if((!in_array($key, $usedKeys)) && (!in_array($key, $filterArr)) && (strpos($key, 'we_ui_') !== 0)){
 					if(is_array($val)){
 						foreach($val as $ikey => $ival){
-							$url_tail .= "$key" . "[" . $ikey . "]=" . rawurlencode($ival) . "&";
+							$url_tail .= $key . '[' . $ikey . ']=' . rawurlencode($ival) . '&';
 						}
 					} else{
-						$url_tail .= "$key=" . rawurlencode($val) . "&";
+						$url_tail .= $key . '=' . rawurlencode($val) . '&';
 					}
 				}
 			}
@@ -357,28 +353,27 @@ abstract class listviewBase{
 	 *
 	 */
 	function getNextLink($attribs){
+		$only = weTag_getAttribute('only', $attribs);
+		$urlID = weTag_getAttribute('id', $attribs);
+		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 
-		$only = weTag_getAttribute("only", $attribs);
-		$urlID = weTag_getAttribute("id", $attribs);
-		if(isset($this->calendar_struct["calendar"]) && $this->calendar_struct["calendar"] != ""){
-
-			$month = $this->calendar_struct["month_human"];
-			$day = $this->calendar_struct["day_human"];
-			$year = $this->calendar_struct["year_human"];
-			$newdate = $year . "-" . $month . "-" . $day;
-			if($this->calendar_struct["calendar"] == "month" || $this->calendar_struct["calendar"] == "month_table"){
+			$month = $this->calendar_struct['month_human'];
+			$day = $this->calendar_struct['day_human'];
+			$year = $this->calendar_struct['year_human'];
+			$newdate = $year . '-' . $month . '-' . $day;
+			if($this->calendar_struct['calendar'] == 'month' || $this->calendar_struct['calendar'] == 'month_table'){
 				if($month >= 12){
 					$month = 1;
 					$year++;
 				}
 				else
 					$month++;
-				$newdate = $year . "-" . $month . "-1";
+				$newdate = $year . '-' . $month . '-1';
 			}
-			else if($this->calendar_struct["calendar"] == "year"){
+			else if($this->calendar_struct['calendar'] == 'year'){
 				$year++;
-				$newdate = $year . "-" . $month . "-" . $day;
-			} else if($this->calendar_struct["calendar"] == "day"){
+				$newdate = $year . '-' . $month . '-' . $day;
+			} else if($this->calendar_struct['calendar'] == 'day'){
 				$day++;
 				$numd = getNumberOfDays($month, $year);
 				if($day > $numd){
@@ -389,54 +384,48 @@ abstract class listviewBase{
 					$month = 1;
 					$year++;
 				}
-				$newdate = $year . "-" . $month . "-" . $day;
+				$newdate = $year . '-' . $month . '-' . $day;
 			}
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
-			if(strpos($attribs["href"], '?') === false){
-				$attribs["href"] = $attribs["href"] . '?';
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
+			if(strpos($attribs['href'], '?') === false){
+				$attribs['href'] = $attribs['href'] . '?';
 			} else{
-				$attribs["href"] = $attribs["href"] . '&';
+				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs["href"] = $attribs["href"] . htmlspecialchars(listviewBase::we_makeQueryString("we_lv_calendar_" . $this->name . "=" . $this->calendar_struct["calendar"] . "&we_lv_datefield_" . $this->name . "=" . $this->calendar_struct["datefield"] . "&we_lv_date_" . $this->name . "=$newdate"));
+			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_calendar_' . $this->name . '=' . $this->calendar_struct['calendar'] . '&we_lv_datefield_' . $this->name . '=' . $this->calendar_struct['datefield'] . '&we_lv_date_' . $this->name . '=$newdate'));
 			if($only){
 				$this->close_a = false;
-				return (isset($attribs[$only]) ? $attribs[$only] : "");
+				return (isset($attribs[$only]) ? $attribs[$only] : '');
 			} else{
-				return getHtmlTag("a", $attribs, "", false, true);
+				return getHtmlTag('a', $attribs, '', false, true);
 			}
 		} else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
-			if(strpos($attribs["href"], '?') === false){
-				$attribs["href"] = $attribs["href"] . '?';
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
+			if(strpos($attribs['href'], '?') === false){
+				$attribs['href'] = $attribs['href'] . '?';
 			} else{
-				$attribs["href"] = $attribs["href"] . '&';
+				$attribs['href'] = $attribs['href'] . '&';
 			}
-			$attribs["href"] = $attribs["href"] . htmlspecialchars(listviewBase::we_makeQueryString("we_lv_start_" . $this->name . "=$foo"));
+			$attribs['href'] = $attribs['href'] . htmlspecialchars(listviewBase::we_makeQueryString('we_lv_start_' . $this->name . '='.$foo));
 			if($only){
 				$this->close_a = false;
-				return (isset($attribs[$only]) ? $attribs[$only] : "");
+				return (isset($attribs[$only]) ? $attribs[$only] : '');
 			} else{
-				return getHtmlTag("a", $attribs, "", false, true);
+				return getHtmlTag('a', $attribs, '', false, true);
 			}
 		} else{
-			return "";
+			return '';
 		}
 	}
 
 	function shouldPrintEndTR(){
-		if($this->cols){
-			return (($this->count % $this->cols) == 0);
-		}
-		return false;
+		return ($this->cols ? (($this->count % $this->cols) == 0):false);
 	}
 
 	function shouldPrintStartTR(){
-		if($this->cols){
-			return (($this->count - 1) % $this->cols) == 0;
-		}
-		return false;
+		return ($this->cols ? (($this->count - 1) % $this->cols) == 0 : false);
 	}
 
 	function tdEmpty(){
@@ -453,91 +442,65 @@ abstract class listviewBase{
 	}
 
 	function getCalendarField($calendar, $type){
-		$out = "";
-
 		switch($type){
-			case "day":
-				if($calendar == "day")
-					$out = 'print date("j",$GLOBALS["lv"]->calendar_struct["defaultDate"]);';
-				else
-					$out = 'if($GLOBALS["lv"]->calendar_struct["date"]>0) print date("j",$GLOBALS["lv"]->calendar_struct["date"]);';
-				break;
-			case "dayname":
-			case "dayname_long":
-				$out = 'print g_l("date","[day][long][".date("w",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))."]");';
-				break;
-			case "dayname_short":
-				$out = 'print g_l("date","[day][short][".date("w",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"])."]");';
-				break;
-			case "month":
-				$out = 'print date("m",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]));';
-				break;
-			case "monthname":
-			case "monthname_long":
-				$out = 'print g_l("date","[month][long][".(int)(date("n",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))-1)."]");';
-				break;
-			case "monthname_short":
-				$out = 'print g_l("date","[month][short][".(int)(date("n",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]))-1)."]");';
-				break;
-			case "year":
-				$out = 'print date("Y",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]));';
-				break;
-			case "hour":
-				$out = 'print date("H:i",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]));';
-				break;
-			case "week":
-				$out = 'print date("W",($GLOBALS["lv"]->calendar_struct["date"]>0 ? $GLOBALS["lv"]->calendar_struct["date"] : $GLOBALS["lv"]->calendar_struct["defaultDate"]));';
-				break;
+			case 'day':
+				if($calendar == 'day'){
+					return date('j', $GLOBALS['lv']->calendar_struct['defaultDate']);
+				} else{
+					return ($GLOBALS['lv']->calendar_struct['date'] > 0 ? date('j', $GLOBALS['lv']->calendar_struct['date']) : '');
+				}
+			case 'dayname':
+			case 'dayname_long':
+				return g_l('date', '[day][long][' . date('w', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) . ']');
+			case 'dayname_short':
+				return g_l('date', '[day][short][' . date('w', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) . ']');
+			case 'month':
+				return date('m', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
+			case 'monthname':
+			case 'monthname_long':
+				return g_l('date', '[month][long][' . (int) (date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
+			case 'monthname_short':
+				return g_l('date', '[month][short][' . (int) (date('n', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate'])) - 1) . ']');
+			case 'year':
+				return date('Y', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
+			case 'hour':
+				return date('H:i', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
+			case 'week':
+				return date('W', ($GLOBALS['lv']->calendar_struct['date'] > 0 ? $GLOBALS['lv']->calendar_struct['date'] : $GLOBALS['lv']->calendar_struct['defaultDate']));
 			default:
-				$out = 'if($GLOBALS["lv"]->calendar_struct["date"]>0) print date("j",$GLOBALS["lv"]->calendar_struct["date"]);';
+				return ($GLOBALS['lv']->calendar_struct['date'] > 0 ? date('j', $GLOBALS['lv']->calendar_struct['date']) : '');
 		}
-
-
-		return '<?php ' . $out . ' ?>';
 	}
 
 	function getCalendarFieldValue($calendar, $name){
-		$out = '';
-
 		switch($name){
 			case 'day':
 				if($calendar['date'] > 0)
 					return date('j', $calendar['date']);
 				else
 					return date('j', $calendar['defaultDate']);
-				break;
 			case 'month':
 				return date('m', $calendar['date']);
-				break;
 			case 'year':
 				return date('Y', $calendar['date']);
-				break;
 			case 'dayname':
 			case 'dayname_long':
-				return g_l('date', '[day][long][' . date("w", $calendar["date"]) . ']');
-				break;
+				return g_l('date', '[day][long][' . date('w', $calendar['date']) . ']');
 			case 'dayname_short':
-				return g_l('date', '[day][short][' . date("w", $calendar["date"]) . ']');
-				break;
+				return g_l('date', '[day][short][' . date('w', $calendar['date']) . ']');
 			case 'monthname':
 			case 'monthname_long':
-				return g_l('date', '[month][long][' . (date("n", $calendar["date"]) - 1) . ']');
-				break;
+				return g_l('date', '[month][long][' . (date('n', $calendar['date']) - 1) . ']');
 			case 'monthname_short':
-				return g_l('date', '[month][short][' . (date("n", $calendar["date"]) - 1) . ']');
-				break;
+				return g_l('date', '[month][short][' . (date('n', $calendar['date']) - 1) . ']');
 			case 'hour':
 				return date('H:i', $calendar['date']);
-				break;
 			case 'start_date':
 				return $calendar['start_date'];
-				break;
 			case 'end_date':
 				return $calendar['end_date'];
-				break;
 			case 'timestamp':
 				return $calendar['date'];
-				break;
 			default:
 				if($calendar['date'] > 0)
 					return date('j', $calendar['date']);
@@ -585,7 +548,7 @@ abstract class listviewBase{
 			if($this->calendar_struct['datefield'] == '' || $this->calendar_struct['datefield'] == '###Published###'){
 				$this->calendar_struct['datefield'] = '###Published###';
 				$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
-				$calendar_where = ' AND (' . FILE_TABLE . ".Published>=$start_date AND " . FILE_TABLE . ".Published<=$end_date) ";
+				$calendar_where = ' AND (' . FILE_TABLE . '.Published>='.$start_date.' AND ' . FILE_TABLE . '.Published<='.$end_date.') ';
 			} else{
 				if(count($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))){
 					$field = $matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'];
@@ -595,9 +558,9 @@ abstract class listviewBase{
 
 				$calendar_select = ',' . $field . ' AS Calendar ';
 				if($condition == ''){
-					$condition = $this->calendar_struct['datefield'] . ">=$start_date AND " . $this->calendar_struct['datefield'] . "<=$end_date";
+					$condition = $this->calendar_struct['datefield'] . '>='.$start_date.' AND ' . $this->calendar_struct['datefield'] . '<='.$end_date;
 				} else{
-					$condition.=' AND ' . $this->calendar_struct['datefield'] . ">=$start_date AND " . $this->calendar_struct['datefield'] . "<=$end_date";
+					$condition.=' AND ' . $this->calendar_struct['datefield'] . '>='.$start_date.' AND ' . $this->calendar_struct['datefield'] . '<='.$end_date;
 				}
 			}
 		}

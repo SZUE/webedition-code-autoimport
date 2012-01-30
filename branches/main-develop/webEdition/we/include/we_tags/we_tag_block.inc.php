@@ -99,6 +99,7 @@ function we_tag_block($attribs, $content){
 	} else{
 		$list = $GLOBALS['we_doc']->getElement($name);
 	}
+
 	if($list){
 		$list = unserialize($list);
 	} else if($start){

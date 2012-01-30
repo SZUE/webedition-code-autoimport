@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_input($attribs, $content) {
-	$foo = attributFehltError($attribs, 'name', 'input');
-	if ($foo)
+	if (($foo = attributFehltError($attribs, 'name', 'input'))){
 		return $foo;
+	}
 
 	$name = weTag_getAttribute('name', $attribs);
 	$value = weTag_getAttribute('value', $attribs);
