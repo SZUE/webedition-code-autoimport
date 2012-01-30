@@ -2362,7 +2362,7 @@ function getDoctypeQuery($db = ''){
 	} else
 		$q = ' ORDER BY DocType';
 
-	return '';
+	return $q;
 }
 
 /**

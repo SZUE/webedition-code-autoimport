@@ -50,7 +50,7 @@ switch($_REQUEST['we_cmd'][0]){
 			$we_JavaScript = "";
 			$we_show_response = 1;
 		} else{
-			$DB_WE->query("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . addslashes($we_doc->DocType) . "'");
+			$DB_WE->query('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . addslashes($we_doc->DocType) . '"');
 			if(($DB_WE->next_record()) && ($we_doc->ID != $DB_WE->f("ID"))){
 				$we_responseText = sprintf(g_l('weClass', "[doctype_save_nok_exist]"), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
@@ -247,9 +247,9 @@ if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){ ?>
 						case "newDocType":
 <?php
 $dtNames = "";
-$DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE);
+$DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE.' ORDER BY DocType');
 while($DB_WE->next_record()) {
-	$dtNames .= "'" . str_replace("'", "\'", $DB_WE->f("DocType")) . "',";
+	$dtNames .= '\'' . str_replace('\'', '\\\'', $DB_WE->f("DocType")) . '\',';
 }
 $dtNames = substr($dtNames, 0, -1);
 //$dtNames = ereg_replace('(.),$','\1',$dtNames);

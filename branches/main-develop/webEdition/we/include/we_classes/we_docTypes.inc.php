@@ -306,7 +306,7 @@ class we_docTypes extends we_class{
 	function formDocTypes2($arrHide=array()){
 		$vals = array();
 		$q = getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' '.$q);
 
 		while($this->DB_WE->next_record()) {
 			$v = $this->DB_WE->f("ID");

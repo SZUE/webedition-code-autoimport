@@ -709,6 +709,7 @@ if(sizeof($_activeIntModules)){
 	}
 }
 
+/*
 $we_menu["4185000"]["parent"] = "4180000"; // separator
 
 $z = 100;
@@ -737,7 +738,7 @@ if(sizeof($GLOBALS['_we_active_integrated_modules']) > 0){
 	}
 }
 
-
+*/
 // Help
 $we_menu['5000000']['text'] = g_l('javaMenu_global', '[help]');
 $we_menu['5000000']['parent'] = '0000000';
