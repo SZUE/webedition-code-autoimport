@@ -216,7 +216,7 @@ class we_baseElement{
 					}
 					$out.='"';
 				}
-			} else if($v !== ''){
+			} else if($v !== '' || $k == 'value'){ //wg. Bug #5971 neu || $k == 'value'
 				$out.=' ' . $k . '="' . $v . '"';
 			} else{
 				switch($k){
