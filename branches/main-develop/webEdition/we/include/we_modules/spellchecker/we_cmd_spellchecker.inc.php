@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * webEdition CMS
@@ -22,13 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+switch($_REQUEST['we_cmd'][0]){
+	case 'edit_spellchecker_ifthere':
+	case 'edit_spellchecker':
+		$mod = 'spellchecker';
+		$INCLUDE = 'we_modules/spellchecker/weSpellcheckerAdmin.php';
+		break;
+}
 
-		switch($_REQUEST['we_cmd'][0]){
-				case 'edit_spellchecker_ifthere':
-		        case 'edit_spellchecker':
-		        	$mod='spellchecker';
-			        $INCLUDE = 'we_modules/spellchecker/weSpellcheckerAdmin.php';
-			        break;
-		}
-
-?>

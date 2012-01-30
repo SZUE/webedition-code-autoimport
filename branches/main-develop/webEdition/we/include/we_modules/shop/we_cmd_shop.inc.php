@@ -22,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+switch($_REQUEST['we_cmd'][0]){
 
-switch ($_REQUEST['we_cmd'][0]) {
-
-	case "edit_shop_ifthere":
-	case "edit_shop":
-		$mod="shop";
-		$INCLUDE = "we_modules/show_frameset.php";
-	break;
+	case 'edit_shop_ifthere':
+	case 'edit_shop':
+		$mod = 'shop';
+		$INCLUDE = 'we_modules/show_frameset.php';
+		break;
 
 	case 'shop_insert_variant':
 	case 'shop_move_variant_up':
@@ -37,5 +36,5 @@ switch ($_REQUEST['we_cmd'][0]) {
 	case 'shop_remove_variant':
 	case 'shop_preview_variant':
 		$INCLUDE = 'we_editors/we_editor.inc.php';
-	break;
+		break;
 }

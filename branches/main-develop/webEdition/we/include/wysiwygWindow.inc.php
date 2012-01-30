@@ -59,10 +59,10 @@ $we_dt = isset($_SESSION["we_data"][$_REQUEST['we_cmd'][4]]) ? $_SESSION["we_dat
 include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
 if (preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST['we_cmd'][1])) {
-	$fieldName = ereg_replace('^.+_te?xt\[(.+)\]$', '\1', $_REQUEST['we_cmd'][1]);
+	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
 } else
 	if (preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])) {
-		$fieldName = ereg_replace('^.+_input\[(.+)\]$', '\1', $_REQUEST['we_cmd'][1]);
+		$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
 	}
 
 we_html_tools::htmlTop(
@@ -71,10 +71,10 @@ we_html_tools::htmlTop(
 
 if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpressed"]) {
 	if (preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])) {
-		$reqName = ereg_replace('^(.+_te?xt)\[.+\]$', '\1', $_REQUEST['we_cmd'][1]);
+		$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
 	} else
 		if (preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST['we_cmd'][1])) {
-			$reqName = ereg_replace('^(.+_input)\[.+\]$', '\1', $_REQUEST['we_cmd'][1]);
+			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
 		}
 	$we_doc->setElement($fieldName, $_REQUEST[$reqName][$fieldName], "input");
 	$we_doc->saveInSession($_SESSION["we_data"][$_REQUEST['we_cmd'][4]]);

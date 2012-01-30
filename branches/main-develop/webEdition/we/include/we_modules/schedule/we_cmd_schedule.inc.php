@@ -22,21 +22,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-switch ($_REQUEST['we_cmd'][0]) {
-//	case "edit_schedule_ifthere":
-//	case "edit_schedule":
-//		$mod="schedule";
-//		$INCLUDE = "we_modules/show_frameset.php";
+switch($_REQUEST['we_cmd'][0]){
+//	case 'edit_schedule_ifthere':
+//	case 'edit_schedule':
+//		$mod='schedule';
+//		$INCLUDE = 'we_modules/show_frameset.php';
 //		break;
 
-	case "add_schedule":
-	case "del_schedule":
-	case "add_schedcat":
-	case "delete_all_schedcats":
-	case "delete_schedcat":
-		$INCLUDE = "we_editors/we_editor.inc.php";
+	case 'add_schedule':
+	case 'del_schedule':
+	case 'add_schedcat':
+	case 'delete_all_schedcats':
+	case 'delete_schedcat':
+		$INCLUDE = 'we_editors/we_editor.inc.php';
 		break;
-
 }

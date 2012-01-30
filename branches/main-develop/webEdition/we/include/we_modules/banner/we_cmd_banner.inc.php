@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,24 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-switch ($_REQUEST['we_cmd'][0]) {
-	case "edit_banner_ifthere":
-	case "edit_banner":
-		$mod="banner";
-		$INCLUDE = "we_modules/show_frameset.php";
+switch($_REQUEST['we_cmd'][0]){
+	case 'edit_banner_ifthere':
+	case 'edit_banner':
+		$mod = 'banner';
+		$INCLUDE = 'we_modules/show_frameset.php';
 		break;
-	case "openBannerDirselector":
-		$INCLUDE = "we_modules/banner/we_bannerDirSelectorFrameset.php";
+	case 'openBannerDirselector':
+		$INCLUDE = 'we_modules/banner/we_bannerDirSelectorFrameset.php';
 		break;
-	case "openBannerSelector":
-		$INCLUDE = "we_modules/banner/we_bannerSelectorFrameset.php";
+	case 'openBannerSelector':
+		$INCLUDE = 'we_modules/banner/we_bannerSelectorFrameset.php';
 		break;
-	case "default_banner":
-		$INCLUDE = "we_modules/banner/we_defaultbanner.php";
+	case 'default_banner':
+		$INCLUDE = 'we_modules/banner/we_defaultbanner.php';
 		break;
-	case "banner_code":
-		$INCLUDE = "we_modules/banner/we_bannercode.php";
+	case 'banner_code':
+		$INCLUDE = 'we_modules/banner/we_bannercode.php';
 		break;
 }
 
