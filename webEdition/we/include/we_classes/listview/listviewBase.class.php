@@ -65,6 +65,7 @@ class listviewBase{
 	var $BlockInside = false; // set to true if listview is inside a block
 	var $calendar_struct=array();
 	var $id = '';
+	var $hidedirindex = false;
 
 
 	/**
@@ -288,7 +289,7 @@ class listviewBase{
 				}
 				$newdate=$year.'-'.$month.'-'.$day;
 			}
-			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
+			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -305,7 +306,7 @@ class listviewBase{
 		else if($this->hasPrevPage()){
 
 			$foo = $this->start - $this->maxItemsPerPage;
-			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
+			$attribs['href'] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -420,7 +421,7 @@ class listviewBase{
 				}
 				$newdate=$year."-".$month."-".$day;
 			}
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
@@ -437,7 +438,7 @@ class listviewBase{
 		else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex'=>'false'));
+			$attribs["href"] = we_tag('url',array('id'=>($urlID?$urlID:'top'),'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs["href"],'?') === false){
 				$attribs["href"]=$attribs["href"].'?';
 			} else {
