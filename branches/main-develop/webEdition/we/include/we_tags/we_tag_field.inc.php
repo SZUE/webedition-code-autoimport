@@ -123,8 +123,6 @@ function we_tag_field($attribs, $content){
 				$href = (empty($href) ? $out : $href);
 				break;
 			}
-
-
 		case 'img' :
 			if($src){
 				$_imgAtts = array(
@@ -143,8 +141,9 @@ function we_tag_field($attribs, $content){
 					));
 
 				$out = getHtmlTag('img', $_imgAtts);
+				break;
 			}
-			break;
+			//intentionally no break
 		case 'int' :
 		case 'date' :
 		case 'float' :
