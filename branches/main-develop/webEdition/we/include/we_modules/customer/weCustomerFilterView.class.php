@@ -326,7 +326,7 @@ EO_SCRIPT;
 			weAbstractCustomerFilter::OP_LESS => g_l('modules_customerFilter', '[less]'),
 			weAbstractCustomerFilter::OP_LEQ => g_l('modules_customerFilter', '[less_equal]'),
 			weAbstractCustomerFilter::OP_GREATER => g_l('modules_customerFilter', '[greater]'),
-			weAbstractCustomerFilter::GEQ => g_l('modules_customerFilter', '[greater_equal]'),
+			weAbstractCustomerFilter::OP_GEQ => g_l('modules_customerFilter', '[greater_equal]'),
 			weAbstractCustomerFilter::OP_STARTS_WITH => g_l('modules_customerFilter', '[starts_with]'),
 			weAbstractCustomerFilter::OP_ENDS_WITH => g_l('modules_customerFilter', '[ends_with]'),
 			weAbstractCustomerFilter::OP_CONTAINS => g_l('modules_customerFilter', '[contains]'),
