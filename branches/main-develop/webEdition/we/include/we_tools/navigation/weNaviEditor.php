@@ -39,12 +39,11 @@ $_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_fo
 
 $_navi = new weNavigation($_id);
 
-$_wrkNavi = '';
-
+$_wrkNavi = array();
 if(!we_hasPerm('ADMINISTRATOR')){
-	$_wrkNavi = makeArrayFromCSV(
-		f(
-			'SELECT workSpaceNav FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), 'workSpaceNav', new DB_WE()));
+	if($_ws = get_ws(NAVIGATION_TABLE)){ // #5836: Use function get_ws()
+			$_wrkNavi = makeArrayFromCSV($_ws);
+	}					
 	$_condition = array();
 	foreach($_wrkNavi as $_key => $_value){
 		$_condition[] = 'Path LIKE "' . escape_sql_query(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
