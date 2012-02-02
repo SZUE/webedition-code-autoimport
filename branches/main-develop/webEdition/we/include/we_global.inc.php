@@ -1104,21 +1104,25 @@ function makeOwnersSql($useCreatorID = true){
 			$q .= "Owners like '%," . intval($id) . ",%' OR ";
 		$q = preg_replace('#^(.*) OR $#', '\1', $q);
 		return ' AND ( RestrictOwners=0 OR (' . $q . ')) ';
-	} else
+	} else {
 		return '';
+	}
 }
 
-function we_getParentIDs($table, $id, &$ids, $db = ''){
-	if(!$db)
+function we_getParentIDs($table, $id, $ids, $db = ''){
+	if(!$db){
 		$db = new DB_WE();
+	}
 	while(($pid = f('SELECT ParentID FROM ' . $table . ' WHERE ID=' . intval($id), 'ParentID', $db)) > 0) {
-		$ids[] = $pid;
+		$id = $pid; // #5836
+		$ids[] = $id;
 	}
 }
 
 function we_getAliases($id, &$ids, $db = ''){
-	if(!$db)
+	if(!$db){
 		$db = new DB_WE();
+	}
 	$foo = f('SELECT GROUP_CONCAT(ID) AS IDS FROM ' . USER_TABLE . ' WHERE Alias=' . intval($id), 'IDS', $db);
 	if($foo){
 		$ids = array_merge($ids, explode(',', $foo));
