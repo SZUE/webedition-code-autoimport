@@ -1228,6 +1228,8 @@ class we_document extends we_root {
 					$retval = htmlspecialchars($retval, ENT_QUOTES);
 					$retval = preg_replace('/#we##br([^#]*)#we##/' ,'<br\1>', $retval);
 				}
+				$xml = we_getTagAttribute('xml', $attribs, '', true,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1));
+				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml?'<\\1\\2/>':'<\\1\\2>'), $retval);
 
 				if(!(defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT)){
 					if((!isset($attribs['php'])) || ($attribs['php'] != 'on' && $attribs['php'] != 'true' && $attribs['php'] != '1')){
