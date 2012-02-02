@@ -207,7 +207,7 @@ class we_schedpro{
 			$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
 			$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
 			$button = $we_button->create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','".$wecmdenc1."','".$wecmdenc2."','".wecmdenc3."','".session_id()."','" . $_rootDirID . "')");
-			
+
 			$yuiSuggest =& weSuggest::getInstance();
 			$yuiSuggest->setAcId("WsDir");
 			$yuiSuggest->setContentType("folder");
@@ -219,8 +219,8 @@ class we_schedpro{
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setWidth(320);
 			$yuiSuggest->setSelectButton($button);
-			
-			
+
+
 			$extracont = $yuiSuggest->getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
 			$extraheadl = $GLOBALS["l_schedpro"]["dirctory"];
 		}
@@ -358,9 +358,9 @@ $this->getSpacerRowHTML().
 		$deleted = false;
 		$changeTmpDoc=false;
 		$_SESSION["Versions"]['fromScheduler'] = true;
-		
+
 		foreach($schedFile["value"] as $s){
-			
+
 			if($s["task"] == SCHEDULE_DELETE){
 				$GLOBALS["NOT_PROTECT"]=true;
 				include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_delete_fn.inc.php");
@@ -421,7 +421,7 @@ $this->getSpacerRowHTML().
 					$DB_WE->query("UPDATE ".SCHEDULE_TABLE." SET Wann='".$nextWann."' WHERE DID='".abs($id)."' AND ClassName!='we_objectFile' AND Type='".$s["type"]."' AND Was='".$s["task"]."'");
 				}
 			}
-			
+
 		}
 
 		if($changeTmpDoc){
@@ -434,11 +434,11 @@ $this->getSpacerRowHTML().
 				$GLOBALS["we_doc"]->we_unpublish();
 			}
 		}
-				
+
 		$GLOBALS["we_doc"] = $doc_save;
-		
+
 		$_SESSION["Versions"]['fromScheduler'] = false;
-			
+
 		$DB_WE->query("UPDATE ".SCHEDULE_TABLE." SET Active=0 WHERE Wann<='".$now."' AND Schedpro != '' AND Active=1 AND TYPE='".SCHEDULE_TYPE_ONCE."'");
 	}
 
@@ -447,8 +447,7 @@ $this->getSpacerRowHTML().
 		$scheddyObject = array();
 		$DB_WE = new DB_WE();
 		$now = time();
-
-		$DB_WE->query("SELECT * FROM ".SCHEDULE_TABLE." WHERE Wann<='".$now."' AND Schedpro != '' AND Active=1");
+		$DB_WE->query("SELECT * FROM ".SCHEDULE_TABLE." WHERE Wann<=".$now." AND Schedpro != '' AND Active=1");
 		while($DB_WE->next_record()){
 			$s = unserialize($DB_WE->f("Schedpro"));
 			if(is_array($s)){
@@ -473,7 +472,7 @@ $this->getSpacerRowHTML().
 				}
 			}
 		}
-		
+
 		foreach($scheddyFile as $id=>$s){
 			we_schedpro::processSchedule($id,$s,$now,$DB_WE);
 		}
