@@ -59,10 +59,8 @@ function we_include_tag_file($name){
  * @return type
  */
 function we_tag_getPostName($var){
-	if($var){
-		if(isset($GLOBALS['postTagName'])){
-			return $var . $GLOBALS['postTagName'];
-		}
+	if($var && isset($GLOBALS['postTagName'])){
+		return $var . $GLOBALS['postTagName'];
 	}
 	return $var;
 }

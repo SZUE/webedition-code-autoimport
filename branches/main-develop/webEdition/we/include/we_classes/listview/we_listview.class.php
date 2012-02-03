@@ -140,11 +140,11 @@ class we_listview extends listviewBase{
 			default:
 				if($this->search){
 					$orderstring = $this->order ?
-						(' AND ' . LINK_TABLE . ".Name='" . $this->DB_WE->escape($this->order) . "' ORDER BY ranking," . CONTENT_TABLE . ".Dat" . ($this->desc ? " DESC" : "")) :
+						(' AND ' . LINK_TABLE . ".Name='" . $this->DB_WE->escape($this->order) . "' ORDER BY ranking," . CONTENT_TABLE . '.Dat' . ($this->desc ? ' DESC' : '')) :
 						' ORDER BY ranking';
 				} else{
 					$orderstring = $this->order ?
-						(" AND " . LINK_TABLE . ".Name='" . $this->DB_WE->escape($this->order) . "' ORDER BY " . ($this->numorder ? "0+" : "") . CONTENT_TABLE . ".Dat" . ($this->desc ? " DESC" : "")) :
+						(' AND ' . LINK_TABLE . ".Name='" . $this->DB_WE->escape($this->order) . "' ORDER BY " . ($this->numorder ? '0+' : '') . CONTENT_TABLE . '.Dat' . ($this->desc ? ' DESC' : '')) :
 						'';
 				}
 				break;

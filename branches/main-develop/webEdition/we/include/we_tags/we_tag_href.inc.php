@@ -27,7 +27,7 @@ function we_tag_href($attribs, $content){
 		return $foo;
 	}
 	$name = weTag_getAttribute('name', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
+	$type = weTag_getAttribute('type', $attribs,'all');
 	$include = weTag_getAttribute('include', $attribs, false, true);
 	$reload = weTag_getAttribute('reload', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
@@ -78,8 +78,7 @@ function we_tag_href($attribs, $content){
 		$span = '<span style="color: black;font-size:' . (($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
 	}
 
-	if(!$type || $type == "all"){
-
+	if($type == "all"){
 		$int = ($GLOBALS['we_doc']->getElement($nint) == "") ? 0 : $GLOBALS['we_doc']->getElement($nint);
 		$intID = $GLOBALS['we_doc']->getElement($nintID);
 		if(!$intID && $rootdirid){
@@ -91,9 +90,6 @@ function we_tag_href($attribs, $content){
 			$href = $intPath;
 			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . '/' . $href : '';
 		} else{
-			//if (!$we_editmode) {
-			//	$extPath = htmlspecialchars($extPath);
-			//}
 			$href = $extPath;
 			$include_path = $href;
 		}
