@@ -57,6 +57,7 @@ abstract class listviewBase{
 	var $customerFilterType = 'off'; // shall we control customer-filter?
 	var $calendar_struct = array();
 	var $id = '';
+	var $hidedirindex = false;
 
 	/**
 	 * listviewBase()
@@ -273,7 +274,7 @@ abstract class listviewBase{
 				}
 				$newdate = $year . '-' . $month . '-' . $day;
 			}
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs['href'], '?') === false){
 				$attribs['href'] = $attribs['href'] . '?';
 			} else{
@@ -289,7 +290,7 @@ abstract class listviewBase{
 		} else if($this->hasPrevPage()){
 
 			$foo = $this->start - $this->maxItemsPerPage;
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs['href'], '?') === false){
 				$attribs['href'] = $attribs['href'] . '?';
 			} else{
@@ -386,7 +387,7 @@ abstract class listviewBase{
 				}
 				$newdate = $year . '-' . $month . '-' . $day;
 			}
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs['href'], '?') === false){
 				$attribs['href'] = $attribs['href'] . '?';
 			} else{
@@ -402,7 +403,7 @@ abstract class listviewBase{
 		} else if($this->hasNextPage()){
 
 			$foo = $this->start + $this->maxItemsPerPage;
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => 'false'));
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
 			if(strpos($attribs['href'], '?') === false){
 				$attribs['href'] = $attribs['href'] . '?';
 			} else{

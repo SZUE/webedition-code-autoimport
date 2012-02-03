@@ -2313,7 +2313,19 @@ class we_objectFile extends we_document{
 			foreach($this->DefArray as $n => $foo){
 				$regs = explode('_', $n);
 				if(isset($regs[0])){
-					$type = $regs[0];
+					$testtype= $regs[0];
+					unset($regs[0]);
+					if(isset($regs[1])){
+						if(is_array($regs)){//unterstrich in eigentlichen Feldnamen
+							$fieldname=implode('_',$regs);
+						} else {
+							$fieldname=$regs[1];
+						}
+						if($k==$fieldname){
+							$type = $testtype;
+						}
+					}
+					
 				}
 			}
 		}

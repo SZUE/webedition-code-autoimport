@@ -42,7 +42,7 @@ class we_listview extends listviewBase{
 	var $customers = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
-	var $hidedirindex = false;
+	
 
 	/**
 	 * we_listview()

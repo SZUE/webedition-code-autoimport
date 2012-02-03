@@ -1136,6 +1136,9 @@ class we_document extends we_root{
 				if(weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = removePHP($retval);
 				}
+				$xml = weTag_getAttribute('xml', $attribs, '', true,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1));
+				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml?'<\\1\\2/>':'<\\1\\2>'), $retval);
+				
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 
