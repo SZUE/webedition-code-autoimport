@@ -184,6 +184,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_WeWysiwygEditor'));
+		$this->addJSFile("/webEdition/js/utils/prototypes.js");
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 	}
 
@@ -463,7 +464,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 			$Fonts='","'.$this->getFonts();
 		} else {
 			$Fonts='';
-		}
+		}$Fonts='';
 		$Fieldname=$this->getName();
 		if ($this->getAppName() !== '') {
 			$appname = $this->getAppName();			
@@ -531,10 +532,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement
 	 */
 	public function getOnBeforeSubmitJS()
 	{
-	
 		$js = ' document.getElementById("'.$this->getId().'").value=document.getElementById("'.$this->getId().'_Daten").innerHTML;';
-		
-		
 		return $js ;
 	}
 	
