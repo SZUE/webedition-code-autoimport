@@ -44,29 +44,28 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 
 	$newHTML = $_REQUEST[$fieldName];
 	$_SESSION['WEAPP_' . $_REQUEST["we_cmd"][0] .'_'.$_REQUEST["we_cmd"][1]] = $newHTML;
-
+	
+	$newHTMLoldA=preg_replace(
+					'|script|i', 
+					'scr"+"ipt', 
+					$newHTML);
+	$newHTMLoldB=	preg_replace(
+					'|script|i', 
+					'scr"+"ipt', 
+					parseInternalLinks($newHTML,0));			
+	
+	$newHTMLencA= base64_encode(htmlspecialchars($newHTMLoldA));
+	$newHTMLencB= base64_encode($newHTMLoldB);
 	?>
 <script language="JavaScript" type="text/javascript">
-	
 	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>')){
-		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>').innerHTML = "<?php
-	print 
-			preg_replace(
-					'|script|i', 
-					'scr"+"ipt', 
-					str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", $newHTML))));
-	?>";
+		opener.we_ui_controls_WeWysiwygEditor.setData('<?php print $_REQUEST["we_cmd"][1];?>','<?php print $newHTMLencA;?>');
+	}
+	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View')){
+		opener.we_ui_controls_WeWysiwygEditor.setDataView('<?php print $_REQUEST["we_cmd"][1];?>','<?php print $newHTMLencB;?>');
 	}
 	
-	if (opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View')){
-		opener.document.getElementById('<?php print $_REQUEST["we_cmd"][1];?>_View').innerHTML = "<?php
-	print 
-			preg_replace(
-					'|script|i', 
-					'scr"+"ipt', 
-					str_replace("\"", "\\\"", str_replace("\r", "\\r", str_replace("\n", "\\n", parseInternalLinks($newHTML,0)))));
-	?>";
-	}
+	
 	window.close();
 </script>
 
@@ -100,7 +99,7 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 		print '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST["we_cmd"][$i] . '" />' . "\n";
 	}
 	
-	/*
+	/*  diese Liste ist wohl nicht ganz richtig
 1 = name
 2 = width
 3 = height
@@ -132,15 +131,17 @@ if (isset($fieldName) && isset($_REQUEST["we_okpressed"]) && $_REQUEST["we_okpre
 			$_REQUEST["we_cmd"][6], //$className
 			'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings',//$_REQUEST["we_cmd"][7], fontnames ,
 			$_REQUEST["we_cmd"][8], //$outsideWE=false
-			'',
-			'',
-			true,//$_REQUEST["we_cmd"][11], //$xml=false
-			false, //$removeFirstParagraph=true
-			true, //$inlineedit=true
-			$_REQUEST["we_cmd"][14], //$baseHref=
-			'UTF-8',// $_REQUEST["we_cmd"][15], 
-			$_REQUEST["we_cmd"][16], //$cssClasses
-			$_REQUEST["we_cmd"][17]); //$Language=""
+			true,//dies ist xml
+			false,//$removeFirstParagraph=true
+			true,//$inlineedit=true
+			'', //$baseHref
+			'UTF-8', 
+			$_REQUEST["we_cmd"][14], //$cssClasses
+			'',// $_REQUEST["we_cmd"][15], $Language=""
+			'', //test
+			$_REQUEST["we_cmd"][17],//$spell
+			false //frontendEdit
+			); 
 	
 	print we_wysiwyg::getHeaderHTML() . $e->getHTML();
 	print '<div style="height:8px"></div>' . $we_button->position_yes_no_cancel($okBut, $cancelBut);
