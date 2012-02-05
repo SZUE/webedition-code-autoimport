@@ -64,7 +64,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		if ($model->ID == 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))) {
 			$ex = new we_service_Exception(
 					$translate->_(
-							'You do not have the permission to create new entries or folders!',null,$utf8_decode));
+							'You do not have the permission to create new entries or folders!'));
 			$ex->setType('warning');
 			throw $ex;
 		}
@@ -72,7 +72,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		// check if name is empty
 		if ($model->Text === '') {
 			$ex = new we_service_Exception(
-					$translate->_('The name must not be empty!',null,$utf8_decode), 
+					$translate->_('The name must not be empty!'), 
 					we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -81,7 +81,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		// check if name is empty after converting text name for internal use
 		if ($model->classname === '') {
 			$ex = new we_service_Exception(
-					$translate->_('The name of the model class could not be empty!',null,$utf8_decode), 
+					$translate->_('The name of the model class could not be empty!'), 
 					we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -90,7 +90,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		// check if it is a folder saving in itself
 		if ($model->IsFolder && $model->ID > 0 && $model->ParentID == $model->ID) {
 			$ex = new we_service_Exception(
-					$translate->_('The folder cannot be saved in the chosen folder!',null,$utf8_decode), 
+					$translate->_('The folder cannot be saved in the chosen folder!'), 
 					we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -99,7 +99,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		$_miss = array();
 		if (!$model->hasRequiredFields($_miss)) {
 			$ex = new we_service_Exception(
-					$translate->_('Required fields are empty!',null,$utf8_decode), 
+					$translate->_('Required fields are empty!'), 
 					we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -108,7 +108,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		// check if maintable name is valid
 		if($model->maintablenameNotValid()){
 			$ex = new we_service_Exception(
-					$translate->_('The name of the maintable is not valid!',null,$utf8_decode), 
+					$translate->_('The name of the maintable is not valid!'), 
 					we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -118,7 +118,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		if((isset($model->maintable) && $model->maintable!="")) {
 			if(we_io_DB::tableExists($model->maintable)){
 				$ex = new we_service_Exception(
-					$translate->_('The maintable exists!',null,$utf8_decode), 
+					$translate->_('The maintable exists!'), 
 					we_service_ErrorCodes::kModelTextEmpty);
 				$ex->setType('warning');
 				throw $ex;
@@ -127,7 +127,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		
 		if($model->textNotValid()) {
 			$ex = new we_service_Exception(
-				$translate->_('The name is not valid!',null,$utf8_decode), 
+				$translate->_('The name is not valid!'), 
 				we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -135,7 +135,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		
 		if($model->classnameNotValid()) {
 			$ex = new we_service_Exception(
-				$translate->_('The name of the model class is not valid!',null,$utf8_decode), 
+				$translate->_('The name of the model class is not valid!'), 
 				we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -143,7 +143,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		
 		if($model->modelclassExists($model->classname)) {
 			$ex = new we_service_Exception(
-				$translate->_('The model class exists!',null,$utf8_decode), 
+				$translate->_('The model class exists!'), 
 				we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
@@ -155,7 +155,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 			switch ($e->getCode()) {
 				case we_service_ErrorCodes::kPathExists :
 					$ex = new we_service_Exception(
-							$translate->_('The name already exists! Please choose another name or folder.',null,$utf8_decode), 
+							$translate->_('The name already exists! Please choose another name or folder.'), 
 							$e->getCode());
 					$ex->setType('warning');
 					throw $ex;
@@ -233,7 +233,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd
 		we_app_Common::rebuildAppTOC();
 		$ex = new we_service_Exception(
 					$translate->_(
-							'The application toc.xml was succesfully rebuild!',null,$utf8_decode));
+							'The application toc.xml was succesfully rebuild!'));
 		$ex->setType('notice');
 		throw $ex;
 		return $args;

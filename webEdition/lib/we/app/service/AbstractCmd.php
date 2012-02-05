@@ -65,28 +65,28 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		$newBeforeSaving = $model->ID == 0;
 		// check if user has the permissions to create new entries
 		if ($model->ID == 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))) {
-			$ex = new we_service_Exception($translate->_('You do not have the permission to create new entries or folders!', null, $utf8_decode));
+			$ex = new we_service_Exception($translate->_('You do not have the permission to create new entries or folders!'));
 			$ex->setType('warning');
 			throw $ex;
 		}
 		
 		// check if name is empty
 		if ($model->Text === '') {
-			$ex = new we_service_Exception($translate->_('The name must not be empty!', null, $utf8_decode), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception($translate->_('The name must not be empty!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 		
 		// check if name is valid
 		if ($model->textNotValid()) {
-			$ex = new we_service_Exception($translate->_('Invalid entry name!', null, $utf8_decode), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception($translate->_('Invalid entry name!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
 		
 		// check if it is a folder saving in itself
 		if ($model->IsFolder && $model->ID > 0 && $model->ParentID == $model->ID) {
-			$ex = new we_service_Exception($translate->_('The folder cannot be saved in the chosen folder!', null, $utf8_decode), we_service_ErrorCodes::kModelTextEmpty);
+			$ex = new we_service_Exception($translate->_('The folder cannot be saved in the chosen folder!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
 			throw $ex;
 		}
@@ -101,7 +101,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService
 		} catch (we_core_ModelException $e) {
 			switch ($e->getCode()) {
 				case we_service_ErrorCodes::kPathExists :
-					$ex = new we_service_Exception($translate->_('The name already exists! Please choose another name or folder.', null, $utf8_decode), $e->getCode());
+					$ex = new we_service_Exception($translate->_('The name already exists! Please choose another name or folder.'), $e->getCode());
 					$ex->setType('warning');
 					throw $ex;
 					break;
