@@ -225,7 +225,7 @@ const INPUTFORMAT_NOT_SUPPORTED=4;
 		$this->date = $date;
 		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
-			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset($GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)]) ? $GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)] : "jpg");
+			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
 			$this->_checkAndGetImageSizeIfNeeded();
 			$this->_setOutputPath();
 			$this->_calculateOutsize();
@@ -311,11 +311,11 @@ const INPUTFORMAT_NOT_SUPPORTED=4;
 			return self::NO_GDLIB_ERROR;
 		}
 
-		if($this->_useOriginalSize() && $this->outputFormat == $GLOBALS["GDIMAGE_TYPE"][strtolower(ereg_replace('^.+(\..+)$', '\1', $this->imagePath))]){
+		if($this->_useOriginalSize() && $this->outputFormat == we_image_edit::$GDIMAGE_TYPE[strtolower(ereg_replace('^.+(\..+)$', '\1', $this->imagePath))]){
 			return self::USE_ORIGINAL;
 		}
 
-		if(!we_image_edit::is_imagetype_read_supported($GLOBALS["GDIMAGE_TYPE"][strtolower(ereg_replace('^.+(\..+)$', '\1', $this->imagePath))])){
+		if(!we_image_edit::is_imagetype_read_supported(we_image_edit::$GDIMAGE_TYPE[strtolower(ereg_replace('^.+(\..+)$', '\1', $this->imagePath))])){
 			return self::INPUTFORMAT_NOT_SUPPORTED;
 		}
 
@@ -455,8 +455,8 @@ const INPUTFORMAT_NOT_SUPPORTED=4;
 	function _setOutputPath(){
 		if(we_image_edit::gd_version() > 0 &&
 			we_image_edit::is_imagetype_supported($this->outputFormat) &&
-			we_image_edit::is_imagetype_read_supported(isset($GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)]) ?
-					$GLOBALS["GDIMAGE_TYPE"][strtolower($this->imageExtension)] : "") &&
+			we_image_edit::is_imagetype_read_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
+					we_image_edit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
 			( (!$this->_useOriginalSize()) || (!$this->_hasOriginalType() ) )){
 			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
 		} else{

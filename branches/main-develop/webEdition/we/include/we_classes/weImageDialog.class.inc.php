@@ -297,7 +297,7 @@ class weImageDialog extends weDialog{
 			$extension = $_p ? ereg_replace('^.+(\.[^\.]+)$', '\1', $_p) : "";
 			unset($_p);
 
-			if(we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset($GLOBALS['GDIMAGE_TYPE'][strtolower($extension)]) ? $GLOBALS['GDIMAGE_TYPE'][strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")){
+			if(we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")){
 
 				$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' . "\n";
 				$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', "[nothumb]") . '</option>' . "\n";

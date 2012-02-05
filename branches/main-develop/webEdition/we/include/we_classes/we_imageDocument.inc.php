@@ -723,7 +723,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return string
 	 */
 	function getGDType(){
-		return isset($GLOBALS["GDIMAGE_TYPE"][strtolower($this->Extension)]) ? $GLOBALS["GDIMAGE_TYPE"][strtolower($this->Extension)] : "jpg";
+		return isset(we_image_edit::$GDIMAGE_TYPE[strtolower($this->Extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($this->Extension)] : 'jpg';
 	}
 
 	function convert($type, $quality=8){

@@ -57,21 +57,18 @@ if (version_compare(phpversion(), '5.1.3', '=')) {
 	}
 }
 
-define('WE_TREE_DEFAULT_WIDTH', 300);
+
 define('WEBEDITION_DIR', '/webEdition/');
 define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'].'/webEdition/');
 
 define('WEBEDITION_INCLUDES_PATH',WEBEDITION_DIR.'we/include/');
 define('WEBEDITION_INCLUDES_DIR', WEBEDITION_PATH.'we/include/');
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
+define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH.'we_modules/');
+define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
-// Activate the webEdition error handler
-include_once (WEBEDITION_INCLUDES_DIR.'we_error_handler.inc.php');
-if (!defined('WE_ERROR_HANDLER_SET')){
-	we_error_handler();
-}
-
-include_once (WEBEDITION_INCLUDES_DIR . 'we_version.php');
-
+define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
+define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
@@ -82,8 +79,16 @@ define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('ZENDCACHE_DIR', WEBEDITION_DIR . 'we/zendcache/');
-
 define('BUTTONS_DIR', IMAGE_DIR . 'button/');
+
+// Activate the webEdition error handler
+include_once (WEBEDITION_INCLUDES_DIR.'we_error_handler.inc.php');
+if (!defined('WE_ERROR_HANDLER_SET')){
+	we_error_handler();
+}
+
+include_once (WEBEDITION_INCLUDES_DIR . 'we_version.php');
+
 
 define('WE_EDITPAGE_PROPERTIES', 0);
 define('WE_EDITPAGE_CONTENT', 1);
@@ -104,15 +109,9 @@ define('WE_EDITPAGE_IMAGEEDIT', 15);
 define('WE_EDITPAGE_DOCLIST', 16);
 define('WE_EDITPAGE_VERSIONS', 17);
 
+define('WE_TREE_DEFAULT_WIDTH', 300);
 define('FILE_ONLY', 0);
 define('FOLDER_ONLY', 1);
-
-// Initialize imageType array
-$IMAGE_TYPE = array('', 'image/gif', 'image/jpeg', 'image/png');
-
-// Initialize gdImageType arrays
-$GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
-
 
 define('CATEGORY_TABLE', TBL_PREFIX . 'tblCategorys');
 define('CLEAN_UP_TABLE', TBL_PREFIX . 'tblCleanUp');
@@ -142,12 +141,6 @@ define('VERSIONS_TABLE_LOG', TBL_PREFIX . 'tblversionslog');
 define('NAVIGATION_TABLE', TBL_PREFIX . 'tblnavigation');
 define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
-define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH.'we_modules/');
-define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
-
-define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
-define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
 
 (!defined('LOGIN_FAILED_TIME')) && define('LOGIN_FAILED_TIME', 2); // in minutes
 
