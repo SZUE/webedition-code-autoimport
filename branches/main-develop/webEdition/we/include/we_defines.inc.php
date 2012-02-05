@@ -22,23 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_stripslashes(&$arr) {
-	foreach ($arr as $n => $v) {
-		if (is_array($v)) {
+function we_stripslashes(&$arr){
+	foreach($arr as $n => $v){
+		if(is_array($v)){
 			we_stripslashes($arr[$n]);
-		} else {
+		} else{
 			$arr[$n] = stripslashes($v);
 		}
 	}
 }
 
-if ((get_magic_quotes_gpc() == 1)) {
-	if (!empty($_REQUEST)) {
-		foreach ($_REQUEST as $n => $v) {
-			if (is_array($v)) {
+if((get_magic_quotes_gpc() == 1)){
+	if(!empty($_REQUEST)){
+		foreach($_REQUEST as $n => $v){
+			if(is_array($v)){
 				we_stripslashes($v);
 				$_REQUEST[$n] = $v;
-			} else {
+			} else{
 				$_REQUEST[$n] = stripslashes($v);
 			}
 		}
@@ -46,10 +46,10 @@ if ((get_magic_quotes_gpc() == 1)) {
 }
 
 // bugfix for php bug id #37276
-if (version_compare(phpversion(), '5.1.3', '=')) {
-	if (isset($_REQUEST['we_cmd'])) {
-		foreach ($_REQUEST['we_cmd'] as $key => $value) {
-			if (is_array($value)) {
+if(version_compare(phpversion(), '5.1.3', '=')){
+	if(isset($_REQUEST['we_cmd'])){
+		foreach($_REQUEST['we_cmd'] as $key => $value){
+			if(is_array($value)){
 				$value = array_shift($value);
 			}
 			$_REQUEST['we_cmd'][$key] = $value;
@@ -59,15 +59,15 @@ if (version_compare(phpversion(), '5.1.3', '=')) {
 
 
 define('WEBEDITION_DIR', '/webEdition/');
-define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'].'/webEdition/');
+define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/');
 
-define('WEBEDITION_INCLUDES_PATH',WEBEDITION_DIR.'we/include/');
-define('WEBEDITION_INCLUDES_DIR', WEBEDITION_PATH.'we/include/');
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR.'fragments'); // important noot to add a slash at the end!
-define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH.'we_modules/');
+define('WEBEDITION_INCLUDES_PATH', WEBEDITION_DIR . 'we/include/');
+define('WEBEDITION_INCLUDES_DIR', WEBEDITION_PATH . 'we/include/');
+define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'fragments/');
+define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH . 'we_modules/');
 define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
-define('WE_TOOLS_PATH', WEBEDITION_DIR.'apps/');
+define('WE_TOOLS_PATH', WEBEDITION_DIR . 'apps/');
 define('WE_TOOLS_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_TOOLS_PATH);
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
@@ -82,8 +82,8 @@ define('ZENDCACHE_DIR', WEBEDITION_DIR . 'we/zendcache/');
 define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 
 // Activate the webEdition error handler
-include_once (WEBEDITION_INCLUDES_DIR.'we_error_handler.inc.php');
-if (!defined('WE_ERROR_HANDLER_SET')){
+include_once (WEBEDITION_INCLUDES_DIR . 'we_error_handler.inc.php');
+if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
@@ -147,28 +147,25 @@ define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 (!defined('LOGIN_FAILED_NR')) && define('LOGIN_FAILED_NR', 3);
 
 (!defined('LOGIN_FAILED_HOLDTIME')) && define('LOGIN_FAILED_HOLDTIME', 30); // in days
-
-
 //define how long Errors hold in DB
 define('ERROR_LOG_HOLDTIME', 30); // in days
 
 
 
-define('WE_WYSIWYG_COMMANDS',
-		'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
+define('WE_WYSIWYG_COMMANDS', 'formatblock,fontname,fontsize,applystyle,bold,italic,underline,subscript,superscript,strikethrough,removeformat,removetags,forecolor,backcolor,justifyleft,justifycenter,justifyright,justifyfull,insertunorderedlist,insertorderedlist,indent,outdent,createlink,unlink,anchor,insertimage,inserthorizontalrule,insertspecialchar,inserttable,edittable,editcell,insertcolumnright,insertcolumnleft,insertrowabove,insertrowbelow,deletecol,deleterow,increasecolspan,decreasecolspan,caption,removecaption,importrtf,fullscreen,cut,copy,paste,undo,redo,visibleborders,editsource,prop,justify,list,link,color,copypaste,table,insertbreak,acronym,lang,spellcheck');
 
 /**
  * Fix the none existing $_SERVER['REQUEST_URI'] on IIS
  */
-if (!isset($_SERVER['REQUEST_URI'])) {
-	if (!isset($_SERVER['HTTP_REQUEST_URI'])) {
-		if (isset($_SERVER['SCRIPT_NAME'])) {
+if(!isset($_SERVER['REQUEST_URI'])){
+	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
+		if(isset($_SERVER['SCRIPT_NAME'])){
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		} else {
+		} else{
 			$_SERVER['HTTP_REQUEST_URI'] = $_SERVER['PHP_SELF'];
 		}
 
-		if (isset($_SERVER['QUERY_STRING'])) {
+		if(isset($_SERVER['QUERY_STRING'])){
 			$_SERVER['HTTP_REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
 		}
 	}
@@ -186,27 +183,27 @@ define('WINDOW_DELSELECTOR_WIDTH', 900);
 define('WINDOW_DELSELECTOR_HEIGHT', 600);
 
 $GLOBALS['WE_LANGS'] = array(
-		'de' => 'Deutsch',
-		'en' => 'English',
-		'nl' => 'Dutch',
-		'fi' => 'Finnish',
-		'ru' => 'Russian',
-		'es' => 'Spanish',
-		'pl' => 'Polish',
-		'fr' => 'French'
+	'de' => 'Deutsch',
+	'en' => 'English',
+	'nl' => 'Dutch',
+	'fi' => 'Finnish',
+	'ru' => 'Russian',
+	'es' => 'Spanish',
+	'pl' => 'Polish',
+	'fr' => 'French'
 );
 $GLOBALS['WE_LANGS_COUNTRIES'] = array(
-		'DE' => 'de',
-		'GB' => 'en',
-		'NL' => 'nl',
-		'FI' => 'fi',
-		'RU' => 'ru',
-		'ES' => 'es',
-		'PL' => 'pl',
-		'FR' => 'fr'
+	'DE' => 'de',
+	'GB' => 'en',
+	'NL' => 'nl',
+	'FI' => 'fi',
+	'RU' => 'ru',
+	'ES' => 'es',
+	'PL' => 'pl',
+	'FR' => 'fr'
 );
-if (!defined('DATETIME_INITIALIZED')) {// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
-	if (!date_default_timezone_set(@date_default_timezone_get())) {
+if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in autoload, this also allows later to make that an settings-item
+	if(!date_default_timezone_set(@date_default_timezone_get())){
 		date_default_timezone_set('Europe/Berlin');
 	}
 	define('DATETIME_INITIALIZED', '1');
