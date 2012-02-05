@@ -2462,7 +2462,7 @@ function mapPermissions() {
 		  	}
 		}
 
-		if(sizeof($_languages["translation"]) > 1) { // Build language select box
+		if(sizeof($_languages["translation"]) > 0) { // Build language select box
 			$_languages = new we_htmlSelect(array("name" => $this->Name.'_Preference_'.'Language', "class" => "weSelect", "onChange"=> "top.content.setHot();"));
 			if (isset($this->Preferences['Language']) && $this->Preferences['Language']!=''){
 				$myCompLang = $this->Preferences['Language'];
@@ -2482,13 +2482,7 @@ function mapPermissions() {
 
 			// Build dialog
 			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["choose_language"], "html" => $_languages->getHtmlCode(), "space" => 200));
-		} else { // Just one Language Installed, no select box needed
-			foreach ($_language["translation"] as $key=>$value) {
-		    	$_languages = $value;
-		  	}
-			// Build dialog
-			array_push($_settings, array("headline" => $GLOBALS['l_prefs']["choose_language"], "html" => $_languages, "space" => 200));
-		}
+		} 
 
 
 		/*****************************************************************
