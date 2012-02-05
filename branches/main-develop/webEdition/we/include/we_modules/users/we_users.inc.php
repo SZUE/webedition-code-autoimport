@@ -2287,12 +2287,6 @@ class we_user{
 
 			// Build dialog
 			array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages->getHtml(), "space" => 200, 'noline' => 1));
-		} else{ // Just one Language Installed, no select box needed
-			foreach($_language["translation"] as $key => $value){
-				$_languages = $value;
-			}
-			// Build dialog
-			array_push($_settings, array("headline" => g_l('prefs', '[choose_language]'), "html" => $_languages, "space" => 200, 'noline' => 1));
 		}
 
 

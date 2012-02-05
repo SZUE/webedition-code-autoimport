@@ -183,6 +183,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_WeWysiwygEditor'));
+		$this->addJSFile("/webEdition/js/utils/prototypes.js");
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 	}
 
@@ -497,11 +498,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 	 * @return string
 	 */
 	public function getOnBeforeSubmitJS(){
-
-		$js = ' document.getElementById("' . $this->getId() . '").value=document.getElementById("' . $this->getId() . '_Daten").innerHTML;';
-
-
-		return $js;
+		return ' document.getElementById("'.$this->getId().'").value=document.getElementById("'.$this->getId().'_Daten").innerHTML;';
 	}
 
 }

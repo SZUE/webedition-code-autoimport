@@ -2506,8 +2506,8 @@ $_we_active_integrated_modules = array(
 				$_update_prefs = true;
 				break;
 
-			case '$_REQUEST["debug_normal"]':
-				$_SESSION["prefs"]["debug_normal"] = 0;
+			case '$_REQUEST["debug_seem"]':
+				$_SESSION["prefs"]["debug_seem"] = 0;
 
 				$_update_prefs = true;
 				break;
