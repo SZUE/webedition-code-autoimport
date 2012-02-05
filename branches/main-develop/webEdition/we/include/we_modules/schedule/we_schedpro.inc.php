@@ -212,11 +212,11 @@ class we_schedpro{
 				} else{
 					$_rootDirID = 0;
 				}
-				//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $_rootDirID . "')
-				$wecmdenc1 = we_cmd_enc("document.we_form.elements['$idname'].value");
-				$wecmdenc2 = we_cmd_enc("document.we_form.elements['$textname'].value");
-				$wecmdenc3 = we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
-				$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'" . $GLOBALS['we_doc']->Table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . wecmdenc3 . "','" . session_id() . "','" . $_rootDirID . "')");
+
+				$wecmdenc1 = we_cmd_enc('document.we_form.elements[\''.$idname.'\'].value');
+				$wecmdenc2 = we_cmd_enc('document.we_form.elements[\''.$textname.'\'].value');
+				$wecmdenc3 = we_cmd_enc('top.opener._EditorFrame.setEditorIsHot(true);');
+				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\''.$idname.'\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId("WsDir");
@@ -225,34 +225,13 @@ class we_schedpro{
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);
 				$yuiSuggest->setResult($idname, $myid);
-				$yuiSuggest->setSelector("Dirselector");
+				$yuiSuggest->setSelector('Dirselector');
 				$yuiSuggest->setTable(FILE_TABLE);
 				$yuiSuggest->setWidth(320);
 				$yuiSuggest->setSelectButton($button);
 
-			} else {
-				$_rootDirID = 0;
-			}
-			//javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','document.we_form.elements[\\'$idname\\'].value','document.we_form.elements[\\'$textname\\'].value','top.opener._EditorFrame.setEditorIsHot(true);','".session_id()."','" . $_rootDirID . "')
-			$wecmdenc1= we_cmd_enc("document.we_form.elements['$idname'].value");
-			$wecmdenc2= we_cmd_enc("document.we_form.elements['$textname'].value");
-			$wecmdenc3= we_cmd_enc("top.opener._EditorFrame.setEditorIsHot(true);");
-			$button = we_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['$idname'].value,'".$GLOBALS['we_doc']->Table."','".$wecmdenc1."','".$wecmdenc2."','".wecmdenc3."','".session_id()."','" . $_rootDirID . "')");
-
-			$yuiSuggest =& weSuggest::getInstance();
-			$yuiSuggest->setAcId("WsDir");
-			$yuiSuggest->setContentType("folder");
-			$yuiSuggest->setInput($textname,$path);
-			$yuiSuggest->setMaxResults(20);
-			$yuiSuggest->setMayBeEmpty(0);
-			$yuiSuggest->setResult($idname,$myid);
-			$yuiSuggest->setSelector("Dirselector");
-			$yuiSuggest->setTable(FILE_TABLE);
-			$yuiSuggest->setWidth(320);
-			$yuiSuggest->setSelectButton($button);
-
-			$extracont = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
-			$extraheadl = g_l('modules_schedule', "[dirctory]");
+				$extracont = $yuiSuggest->getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+				$extraheadl = g_l('modules_schedule', "[dirctory]");
 		}
 
 		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
@@ -448,8 +427,8 @@ class we_schedpro{
 				if($nextWann){
 					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Wann='" . $nextWann . "' WHERE DID='" . intval($id) . "' AND ClassName!='we_objectFile' AND Type='" . $s["type"] . "' AND Was='" . $s["task"] . "'");
 				}
-			}else{
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Active=0 WHERE WHERE DID='" . intval($id)." AND ClassName='" . $schedFile["ClassName"] . "'");
+			} else{
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Active=0 WHERE WHERE DID='" . intval($id) . " AND ClassName='" . $schedFile["ClassName"] . "'");
 			}
 		}
 
@@ -468,7 +447,7 @@ class we_schedpro{
 
 		$_SESSION["Versions"]['fromScheduler'] = false;
 
-		$DB_WE->query('UPDATE '.SCHEDULE_TABLE.' SET Active=0 WHERE Wann<='.$now.' AND Schedpro != "" AND Active=1 AND TYPE="'.SCHEDULE_TYPE_ONCE.'"');
+		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND TYPE="' . SCHEDULE_TYPE_ONCE . '"');
 	}
 
 	static function trigger_schedule(){
@@ -477,8 +456,8 @@ class we_schedpro{
 		$scheddyObject = array();
 		$DB_WE = new DB_WE();
 		$now = time();
-		$DB_WE->query('SELECT * FROM '.SCHEDULE_TABLE.' WHERE Wann<='.$now.' AND Schedpro != "" AND Active=1');
-		while($DB_WE->next_record()){
+		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1');
+		while($DB_WE->next_record()) {
 			$s = unserialize($DB_WE->f("Schedpro"));
 			if(is_array($s)){
 				if($DB_WE->f("ClassName") == "we_objectFile"){
