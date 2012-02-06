@@ -841,8 +841,8 @@ function encode($in){
  * @param type $table
  * @return bool true on success, or if not in DB
  */
-function deleteContentFromDB($id, $table){
-	$DB_WE = new DB_WE();
+function deleteContentFromDB($id, $table, $DB_WE=''){
+	$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
 
 	if(f('SELECT 1 AS cnt FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', 'cnt', $DB_WE) != 1){
 		return true;
@@ -919,7 +919,7 @@ function cleanTempFiles($cleanSessFiles = false){
 	$d->close();
 
 	// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
-	$d = dir(rtrim(WE_FRAGMENT_DIR,'/'));
+	$d = dir(rtrim(WE_FRAGMENT_DIR, '/'));
 	while(false !== ($entry = $d->read())) {
 		if($entry != '.' && $entry != '..'){
 			$foo = WE_FRAGMENT_DIR . $entry;
@@ -1104,7 +1104,7 @@ function makeOwnersSql($useCreatorID = true){
 			$q .= "Owners like '%," . intval($id) . ",%' OR ";
 		$q = preg_replace('#^(.*) OR $#', '\1', $q);
 		return ' AND ( RestrictOwners=0 OR (' . $q . ')) ';
-	} else {
+	} else{
 		return '';
 	}
 }
@@ -2172,7 +2172,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
 
 	//	remove x(ht)ml-attributs
-	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto','_name_orig'));
+	$attribs = removeAttribs($attribs, array('xml', 'xmltype', 'to', 'nameto', '_name_orig'));
 
 	if($element == 'img' && defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT && !$GLOBALS['WE_MAIN_DOC']->InWebEdition){
 		$attribs = removeAttribs($attribs, array('name'));
@@ -2665,10 +2665,10 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 		}
 		//check for Trigger
-		if(defined('SCHEDULE_TABLE')&& (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			!isset($GLOBALS['we']['backVars']) //on first call this variable is unset, so we're not inside an include
-			&& (defined('SCHEUDLER_TRIGGER')&& SCHEUDLER_TRIGGER==SCHEDULER_TRIGGER_PREDOC)){
-				we_schedpro::trigger_schedule();
+			&& (defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_PREDOC)){
+			we_schedpro::trigger_schedule();
 		}
 
 		$GLOBALS['WE_DOC_ParentID'] = $GLOBALS['we_doc']->ParentID;
@@ -2731,10 +2731,10 @@ function we_templatePostContent(){
 			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/weTracking/econda/weEcondaImplement.inc.php');
 		}
 		//check for Trigger
-		if(defined('SCHEDULE_TABLE')&& (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			(!isset($GLOBALS['we']['backVars'])||(isset($GLOBALS['we']['backVars'])&& count($GLOBALS['we']['backVars'])==0))//not inside an included Doc
-			&& ((defined('SCHEUDLER_TRIGGER')&& SCHEUDLER_TRIGGER==SCHEDULER_TRIGGER_POSTDOC)||!defined('SCHEUDLER_TRIGGER'))){ //is set to Post or not set (new default)
-				we_schedpro::trigger_schedule();
+		if(defined('SCHEDULE_TABLE') && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
+			&& ((defined('SCHEUDLER_TRIGGER') && SCHEUDLER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) || !defined('SCHEUDLER_TRIGGER'))){ //is set to Post or not set (new default)
+			we_schedpro::trigger_schedule();
 		}
 	}
 }

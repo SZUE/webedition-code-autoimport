@@ -35,15 +35,14 @@ function we_tag_condition($attribs, $content){
 	switch($_type){
 		case 'start':
 
-			$GLOBALS['we_lv_conditionCount'] = isset($GLOBALS['we_lv_conditionCount']) ? intval($GLOBALS['we_lv_conditionCount']) : 0;
+			$GLOBALS['we_lv_conditionCount'] = isset($GLOBALS['we_lv_conditionCount']) ? intval($GLOBALS['we_lv_conditionCount']) + 1 : 1;
 
-			if($GLOBALS['we_lv_conditionCount'] == 0){
+			if($GLOBALS['we_lv_conditionCount'] == 1){
 				$GLOBALS['we_lv_conditionName'] = $name;
 				$GLOBALS[$GLOBALS['we_lv_conditionName']] = '(';
 			} else{
 				$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(';
 			}
-			$GLOBALS['we_lv_conditionCount']++;
 			break;
 		case 'stop':
 			$GLOBALS[$GLOBALS['we_lv_conditionName']] .= ')';

@@ -2313,19 +2313,18 @@ class we_objectFile extends we_document{
 			foreach($this->DefArray as $n => $foo){
 				$regs = explode('_', $n);
 				if(isset($regs[0])){
-					$testtype= $regs[0];
+					$testtype = $regs[0];
 					unset($regs[0]);
 					if(isset($regs[1])){
 						if(is_array($regs)){//unterstrich in eigentlichen Feldnamen
-							$fieldname=implode('_',$regs);
-						} else {
-							$fieldname=$regs[1];
+							$fieldname = implode('_', $regs);
+						} else{
+							$fieldname = $regs[1];
 						}
-						if($k==$fieldname){
+						if($k == $fieldname){
 							$type = $testtype;
 						}
 					}
-					
 				}
 			}
 		}
@@ -2459,10 +2458,11 @@ class we_objectFile extends we_document{
 		if($resave == 0 && $_resaveWeDocumentCustomerFilter){
 			$this->resaveWeDocumentCustomerFilter();
 		}
-		if (!$this->Published){
-			if(!we_root::we_save(1)) return false;
-			if (we_temporaryDocument::isInTempDB($this->ID,$this->Table,$this->DB_WE) ){
-				we_temporaryDocument::delete($this->ID,$this->Table,$this->DB_WE);
+		if(!$this->Published){
+			if(!we_root::we_save(1))
+				return false;
+			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
+				we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 			}
 		}
 		$a = $this->i_saveTmp();
@@ -2931,18 +2931,9 @@ class we_objectFile extends we_document{
 	}
 
 	function getContentDataFromTemporaryDocs($ObjectID, $loadBinary=0){
-
-		$db = $this->DB_WE;
-
-		$query = "SELECT * FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID=" . intval($ObjectID) . " AND Active=1 AND  DocTable='tblObjectFiles'";
-
-		$db->query($query);
-
-		if($db->next_record()){
-
-			if($db->f("DocumentObject") != ""){
-				$DocumentObject = unserialize($db->f("DocumentObject"));
-			}
+		$DocumentObject = f("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID=" . intval($ObjectID) . " AND Active=1 AND  DocTable='tblObjectFiles'", 'DocumentObject', $this->DB_WE);
+		if($DocumentObject){
+			$DocumentObject = unserialize($DocumentObject);
 		}
 		if(isset($DocumentObject[0]["elements"]) && is_array($DocumentObject[0]["elements"])){
 			$this->elements = $DocumentObject[0]["elements"];
@@ -2950,9 +2941,6 @@ class we_objectFile extends we_document{
 	}
 
 	function i_saveContentDataInDB(){
-
-
-
 		$ctable = OBJECT_X_TABLE . $this->TableID;
 
 		// updater

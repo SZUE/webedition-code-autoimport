@@ -796,7 +796,7 @@ abstract class we_root extends we_class{
 		if(!we_class::we_delete()){
 			return false;
 		}
-		return deleteContentFromDB($this->ID, $this->Table);
+		return deleteContentFromDB($this->ID, $this->Table,$this->DB_WE);
 	}
 
 	protected function i_getDefaultFilename(){
@@ -949,21 +949,28 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function i_saveContentDataInDB(){
-		if(!deleteContentFromDB($this->ID, $this->Table)){
-			return false;
+	private function getLinkReplaceArray(){
+		$ret=array();
+		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
+		while($this->DB_WE->next_record()){
+			$ret[$this->DB_WE->f('Name')]=$this->DB_WE->f('CID');
 		}
+		return $ret;
+	}
+
+	function i_saveContentDataInDB(){
 		if(!is_array($this->elements)){
-			return true;
+			return deleteContentFromDB($this->ID, $this->Table,$this->DB_WE);
 		}
 
+		//don't stress index:
+		$replace=$this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
 			if($this->i_isElement($k)){
 				if((!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
 
 					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
-					$keys = array();
-					$vals = '';
+					$data = array();
 					foreach($tableInfo as $t){
 						$fieldName = $t["name"];
 						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
@@ -983,24 +990,34 @@ abstract class we_root extends we_class{
 							$val = sprintf("%016d", $val);
 						}
 						if($fieldName != "ID"){
-							$keys[] = $fieldName;
-							$vals .= "'" . addslashes($val) . "',";
+							$data[$fieldName]= $val;
 						}
 					}
-					if(count($keys)){
-						$vals = 'VALUES(' . substr($vals, 0, strlen($vals) - 1) . ')';
-						$this->DB_WE->query('INSERT INTO ' . CONTENT_TABLE . '(' . implode(',', $keys) . ') ' . $vals);
-						$cid = $this->DB_WE->getInsertId();
+					if(count($data)){
+						$data = we_database_base::arraySetter($data);
+						$key=$v["type"].'_'.$k;
+						$cid=$where='';
+						if(isset($replace[$key])){
+							$cid = $replace[$key];
+							$where=',ID='.$cid;
+							unset($replace[$key]);
+						}
+						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE .' SET '. $data.$where);
+						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
-						$q = 'INSERT INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
-						if(!$this->DB_WE->query($q)){
+						$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
+						if(!$cid || !$this->DB_WE->query($q)){
 							return false;
 						}
 					}
 				}
 			}
 		}
-
+		$replace=implode(',',$replace);
+		if($replace){
+			$this->DB_WE->query('DELETE FROM '.LINK_TABLE.' WHERE DocumentTable="'.$this->DB_WE->escape(stripTblPrefix($this->Table)).'" AND CID IN('.$replace.')');
+			$this->DB_WE->query('DELETE FROM '.CONTENT_TABLE.' WHERE ID IN ('.$replace.')');
+		}
 		return true;
 	}
 
