@@ -849,7 +849,7 @@ function weWysiwyg_insertContent(content, doNoCollapse) {
         ;
 
         if (startOffBefore ==this.range.startOffset) {
-            try { this.range.setEnd(this.range.endContainer, this.range.endOffset +1);}
+            try {this.range.setEnd(this.range.endContainer, this.range.endOffset +1);}
 			catch(e) {};
         }
 
@@ -1045,7 +1045,7 @@ function weWysiwyg_getSelection() {
 		this.eDocument = this.eFrame.contentDocument;
 		this.eWindow = this.eFrame.contentWindow;
 		this.selection = this.eWindow.getSelection();
-		this.range = this.selection ? this.selection.getRangeAt(0) : null;
+		this.range = this.selection.rangeCount ? this.selection.getRangeAt(0) : null;
 	}else{
 		this.eFrame = frames[this.fName];
 		this.eDocument = this.eFrame.document;
@@ -1186,6 +1186,11 @@ function weWysiwyg_setButtonsState(){
 			this.buttons["lang"].uncheck();
 		}else{
 			this.buttons["lang"].check();
+		}
+		if(length && this.eDocument.body.innerHTML.match(/<[^>]*>/)){
+			this.buttons["removetags"].enable();
+		}else{
+			this.buttons["removetags"].disable();
 		}
 
 
@@ -2601,7 +2606,7 @@ function weWysiwyg_execCommand(cmd){
 		this.getSelection();
 	}
 
-	switch(cmd){
+switch(cmd){
 		case "lang":
 
 
@@ -3233,6 +3238,7 @@ function weWysiwygButton_out(){
 		this.div.className = this.checked ? "tbButtonDown" : "tbButton";
 		return true;
 	}
+	return false;
 }
 
 function weWysiwygButton_check(){
@@ -3241,6 +3247,7 @@ function weWysiwygButton_check(){
 		this.div.className = this.isover ? "tbButtonMouseOverDown" : "tbButtonDown";
 		return true;
 	}
+	return false;
 }
 
 function weWysiwygButton_uncheck(){
@@ -3249,6 +3256,7 @@ function weWysiwygButton_uncheck(){
 		this.div.className = this.isover ? "tbButtonMouseOverUp" : "tbButton";
 		return true;
 	}
+	return false;
 }
 
 function weWysiwygButton_disable(){
@@ -3918,7 +3926,7 @@ function we_removeEvent(e, name, f) {
 }
 
 function we_getElemPos(el) {
-	var arr = { x: el.offsetLeft, y: el.offsetTop };
+	var arr = {x: el.offsetLeft, y: el.offsetTop};
 	if (el.offsetParent) {
 		var tmp = we_getElemPos(el.offsetParent);
 		arr.x += tmp.x;
@@ -3983,6 +3991,5 @@ function weWysiwygUrlEncode(str) {
 	str = str.replace(/##WE_PLUS##/,"%2B");
 	return str;
 }
-
 
 var weWysiwyg_translationTable = new Array (338,339,352,353,376,381,382,402,710,732,8211,8212,8216,8217,8218,8220,8221,8222,8224,8225,8226,8230,8240,8249,8250,8364,8482);
