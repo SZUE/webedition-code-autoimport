@@ -996,13 +996,13 @@ abstract class we_root extends we_class{
 					if(count($data)){
 						$data = we_database_base::arraySetter($data);
 						$key=$v["type"].'_'.$k;
-						$cid=$where='';
+						$cid = 0;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
-							$where=',ID='.$cid;
+							$data.=',ID='.$cid;
 							unset($replace[$key]);
 						}
-						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE .' SET '. $data.$where);
+						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE .' SET '. $data);
 						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
 						$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
