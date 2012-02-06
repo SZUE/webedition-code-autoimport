@@ -158,7 +158,7 @@ function we_tag_img($attribs, $content){
 		            	<td class=\"weEditmodeStyle\" align=\"center\" colspan=\"2\" style=\"width: 180px;\">
 							<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     		<tr>
-                        		<td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[thumbnail]") . ":&nbsp;</td>
+                        		<td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[thumbnails]") . ":&nbsp;</td>
                         		<td class=\"weEditmodeStyle\">" . $thumbnails . "</td>
                     		</tr>
 							</table>
