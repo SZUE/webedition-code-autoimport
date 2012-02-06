@@ -24,7 +24,11 @@
  * 
  */
 
-
+$ischecked=0;
+if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP!='release'){$ischecked=1;}
+if (isset($_REQUEST["setTestUpdate"])){
+	 $ischecked = $_REQUEST["setTestUpdate"];
+}
 
 $content = '
 <table class="defaultfont" width="100%">
@@ -43,7 +47,7 @@ $content = '
 	</td>
 </tr>
 <tr>
-	<td></td><td><form name="betaform" action="'.$_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">'.we_forms::checkboxWithHidden( (isset($_REQUEST["testUpdate"]) ? $_REQUEST["testUpdate"]: 0), 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '','defaultfont' , 'betaform.submit()').'</form>
+	<td></td><td><form name="betaform" action="'.$_SERVER['SCRIPT_NAME'] . '?section=beta" method="post">'.we_forms::checkboxWithHidden($ischecked , 'setTestUpdate', $GLOBALS['l_liveUpdate']['beta']['lookForUpdate'], '','defaultfont' , 'betaform.submit()').'</form>
 		<br />
 		<br />
 	</td>
