@@ -1058,7 +1058,14 @@ function weWysiwyg_setButtonState(cmd){
 	if(this.hasCmd(cmd)){
 		var enabled = true;
 		try {
-			enabled = this.eDocument.queryCommandEnabled(cmd);
+			switch(cmd){
+				case 'removetags':
+					enabled = true;
+					break;
+				default:
+						enabled = this.eDocument.queryCommandEnabled(cmd);
+						break;
+			}
 		} catch (e) {}
 
 		if(enabled){
@@ -1186,11 +1193,6 @@ function weWysiwyg_setButtonsState(){
 			this.buttons["lang"].uncheck();
 		}else{
 			this.buttons["lang"].check();
-		}
-		if(length && this.eDocument.body.innerHTML.match(/<[^>]*>/)){
-			this.buttons["removetags"].enable();
-		}else{
-			this.buttons["removetags"].disable();
 		}
 
 
