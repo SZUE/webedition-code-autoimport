@@ -22,7 +22,6 @@ var we_styleSheets;
 var we_classNames;
 var we_styleString = "";
 var we_parentRef = null;
-var we_parentRef = null;
 var weMainWinRef = self;
 var weCssEntries = new Array();
 
@@ -675,7 +674,15 @@ weWysiwyg.prototype.toggleBorders = function(){
 
 weWysiwyg.prototype.setButtonState = function(cmd, obj){
 	if(this.hasCmd(cmd)){
-		var enabled = this.queryCommandEnabled(cmd,obj);
+		var enabled=false;
+		switch(cmd){
+			case 'removetags':
+				enabled = true;
+				break;
+			default:
+				enabled = this.queryCommandEnabled(cmd,obj);
+				break;
+		}
 		if(enabled){
 			this.buttons[cmd].enable();
 		}else{

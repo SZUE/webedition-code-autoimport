@@ -25,12 +25,6 @@ String.prototype.trim2=function () {
    return this.replace(/^\s{2,}|\s{2,}$/g," ");
 }
 
-//Detect IE5.5+
-var weIE55=false;
-if (navigator.appVersion.indexOf("MSIE")!=-1){
-	var temp=navigator.appVersion.split("MSIE");
-	weIE55= parseFloat(temp[1]) < 6;
-}
 var isIE9=false;
 if (typeof weFrontpageEdit!='undefined'){
 	if (navigator.appVersion.indexOf("MSIE")!=-1){
