@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_abstract
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_core_AbstractObject
  */
@@ -27,14 +27,13 @@ Zend_Loader::loadClass('we_core_AbstractObject');
 
 /**
  * Base class for all kind of html elements
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_abstract
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
-{
+abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 
 	/**
 	 * id attribute
@@ -140,7 +139,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	protected $_JSFiles = array();
 
 	/**
-	 * array to hold all needed CSS files 
+	 * array to hold all needed CSS files
 	 *
 	 * @var array
 	 */
@@ -152,8 +151,8 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 * @param string $classname
 	 * @return string
 	 */
-	public static function computeJSURL($classname)	{
-		return (substr($classname, 0, 3) == 'we_'?$GLOBALS['__WE_LIB_URL__']:$GLOBALS['__WE_APP_URL__']) . '/' . join('/', explode('_', $classname)) . '.js';
+	public static function computeJSURL($classname){
+		return (substr($classname, 0, 3) == 'we_' ? $GLOBALS['__WE_LIB_URL__'] : $GLOBALS['__WE_APP_URL__']) . '/' . join('/', explode('_', $classname)) . '.js';
 	}
 
 	/**
@@ -161,8 +160,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 *
 	 * @return string
 	 */
-	public function getHTML()
-	{
+	public function getHTML(){
 		$this->_willRenderHTML();
 		$html = $this->_renderHTML();
 		$this->_didRenderHTML();
@@ -170,13 +168,12 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	}
 
 	/**
-	 * Retrieve HTML of ui element for use in 
+	 * Retrieve HTML of ui element for use in
 	 * JavaScript
 	 *
 	 * @return string
 	 */
-	public function getJSHTML()
-	{
+	public function getJSHTML(){
 		$html = $this->getHTML();
 		return str_replace('\'', '\\\'', str_replace('\\', '\\\\', $html));
 	}
@@ -196,53 +193,52 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 * @param integer $heightOffset value to add to height, can also be negative. Used for box model problems
 	 * @return string
 	 */
-	protected function _getComputedStyleAttrib($additionalStyles = array(), $widthOffset = 0, $heightOffset = 0, $leftOffset = 0, $topOffset = 0)
-	{
+	protected function _getComputedStyleAttrib($additionalStyles = array(), $widthOffset = 0, $heightOffset = 0, $leftOffset = 0, $topOffset = 0){
 		$style = '';
 		$w = abs($this->_width) + $widthOffset;
 		$wUnit = (strpos($this->_width, "%") === false) ? 'px' : '%';
-		
+
 		$h = abs($this->_height) + $heightOffset;
 		$hUnit = (strpos($this->_height, "%") === false) ? 'px' : '%';
-		
+
 		$top = abs($this->_top) + $topOffset;
 		;
 		$topUnit = (strpos($this->_top, "%") === false) ? 'px' : '%';
-		
+
 		$left = abs($this->_left) + $leftOffset;
 		;
 		$leftUnit = (strpos($this->_left, "%") === false) ? 'px' : '%';
-		
-		if ($w > 0) {
+
+		if($w > 0){
 			$style .= "width:{$w}$wUnit;";
 		}
-		
-		if ($h > 0) {
+
+		if($h > 0){
 			$style .= "height:{$h}$hUnit;";
 		}
-		
-		if ($top > 0) {
+
+		if($top > 0){
 			$style .= "top:{$top}$topUnit;";
 		}
-		
-		if ($left > 0) {
+
+		if($left > 0){
 			$style .= "left:{$left}$leftUnit;";
 		}
-		
-		if ($this->_overflow !== '') {
+
+		if($this->_overflow !== ''){
 			$style .= "overflow:$this->_overflow;";
 		}
-		
-		if ($this->_position !== '') {
+
+		if($this->_position !== ''){
 			$style .= "position:$this->_position;";
 		}
-		
-		foreach ($additionalStyles as $n => $k) {
+
+		foreach($additionalStyles as $n => $k){
 			$style .= "$n:$k;";
 		}
-		
+
 		$style .= $this->getStyle();
-		if ($style !== '') {
+		if($style !== ''){
 			return ' style="' . htmlspecialchars($style) . '"';
 		}
 		return '';
@@ -254,16 +250,15 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 * @param string $class  default class name for element
 	 * @return string
 	 */
-	protected function _getComputedClassAttrib($class = '')
-	{
-		if ($this->getClass() !== '') {
-			if ($class !== '') {
+	protected function _getComputedClassAttrib($class = ''){
+		if($this->getClass() !== ''){
+			if($class !== ''){
 				$class .= ' ' . $this->getClass();
-			} else {
+			} else{
 				$class = $this->getClass();
 			}
 		}
-		if ($class !== '') {
+		if($class !== ''){
 			$class = ' class="' . htmlspecialchars($class) . '"';
 		}
 		return $class;
@@ -275,13 +270,12 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 * @param string $attribsString comma separated string with attribute names
 	 * @return string
 	 */
-	protected function _getNonBooleanAttribs($attribsString)
-	{
+	protected function _getNonBooleanAttribs($attribsString){
 		$arr = explode(',', $attribsString);
 		$attribs = '';
-		foreach ($arr as $attribName) {
+		foreach($arr as $attribName){
 			$internalName = "_$attribName";
-			if (isset($this->$internalName) && $this->$internalName !== '') {
+			if(isset($this->$internalName) && $this->$internalName !== ''){
 				$attribs .= ' ' . htmlspecialchars($attribName) . '="' . htmlspecialchars($this->$internalName) . '"';
 			}
 		}
@@ -294,13 +288,12 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 * @param string $attribsString comma separated string with attribute names
 	 * @return string
 	 */
-	protected function _getBooleanAttribs($attribsString)
-	{
+	protected function _getBooleanAttribs($attribsString){
 		$arr = explode(',', $attribsString);
 		$attribs = '';
-		foreach ($arr as $attribName) {
+		foreach($arr as $attribName){
 			$internalName = "_$attribName";
-			if (isset($this->$internalName) && $this->$internalName === true) {
+			if(isset($this->$internalName) && $this->$internalName === true){
 				$attribs .= ' ' . htmlspecialchars($attribName) . '="' . htmlspecialchars($attribName) . '"';
 			}
 		}
@@ -312,9 +305,8 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 *
 	 * @return void
 	 */
-	protected function _willRenderHTML()
-	{
-		if ($this->getId() === '') {
+	protected function _willRenderHTML(){
+		if($this->getId() === ''){
 			$this->setId(we_util_Strings::createUniqueId());
 		}
 	}
@@ -324,69 +316,64 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 *
 	 * @return void
 	 */
-	protected function _didRenderHTML()
-	{
+	protected function _didRenderHTML(){
 		// overwrite
 	}
 
 	/**
-	 * Adds an  array with CSS file to the page. 
+	 * Adds an  array with CSS file to the page.
 	 * Will be inserted into the header section of the page
 	 * using the <link> tag
 	 *
 	 * @param string $path path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void
 	 */
-	public function addCSSFiles($files)
-	{
-		foreach ($files as $file) {
+	public function addCSSFiles($files){
+		foreach($files as $file){
 			$this->addCSSFile($file['path'], $file['media']);
 		}
 	}
 
 	/**
-	 * Adds a CSS file to the page. 
+	 * Adds a CSS file to the page.
 	 * Will be inserted into the header section of the page
 	 * using the <link> tag
 	 *
 	 * @param string $path path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void
 	 */
-	public function addCSSFile($path, $media = 'all')
-	{
-		if ($path) {
+	public function addCSSFile($path, $media = 'all'){
+		if($path){
 			$elem = array('media' => $media, 'path' => $path);
-			if (!in_array($elem, $this->_CSSFiles)) {
+			if(!in_array($elem, $this->_CSSFiles)){
 				$this->_CSSFiles[] = array('media' => $media, 'path' => $path);
 			}
 		}
 	}
 
 	/**
-	 * Adds a JS file to the page. 
+	 * Adds a JS file to the page.
 	 * Will be inserted into the header section of the document
 	 * using the <script> tag
 	 *
 	 * @param string $path path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void
 	 */
-	public function addJSFile($path)
-	{
-		if ($path && !in_array($path, $this->_JSFiles)) {
+	public function addJSFile($path){
+		if($path && !in_array($path, $this->_JSFiles)){
 			$this->_JSFiles[] = $path;
 		}
 	}
 
 	/**
-	 * Adds an array with JS files to the page. 
+	 * Adds an array with JS files to the page.
 	 * Will be inserted into the header section of the document
 	 * using the <script> tag
 	 *
 	 * @param string $path path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void
 	 */
-	public function addJSFiles($files)
-	{
+	public function addJSFiles($files){
 		$this->_JSFiles = array_unique(array_merge($this->_JSFiles, $files));
 	}
 
@@ -395,9 +382,8 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 *
 	 * @return array
 	 */
-	public function getJSFiles()
-	{
-		
+	public function getJSFiles(){
+
 		return $this->_JSFiles;
 	}
 
@@ -406,282 +392,255 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject
 	 *
 	 * @return array
 	 */
-	public function getCSSFiles()
-	{
-		
+	public function getCSSFiles(){
+
 		return $this->_CSSFiles;
 	}
 
 	/**
 	 * Retrieve class attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getClass()
-	{
+	public function getClass(){
 		return $this->_class;
 	}
 
 	/**
 	 * Retrieve disabled attribute
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function getDisabled()
-	{
+	public function getDisabled(){
 		return $this->_disabled;
 	}
 
 	/**
 	 * Retrieve hidden attribute
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function getHidden()
-	{
+	public function getHidden(){
 		return $this->_hidden;
 	}
 
 	/**
 	 * Set hidden attribute
-	 * 
+	 *
 	 * @param boolean $hidden
 	 * @return void
 	 */
-	public function setHidden($hidden)
-	{
+	public function setHidden($hidden){
 		$this->_hidden = $hidden;
 	}
 
 	/**
 	 * Retrieve height property.
-	 * 
+	 *
 	 * @return integer
 	 */
-	public function getHeight()
-	{
+	public function getHeight(){
 		return $this->_height;
 	}
 
 	/**
 	 * Retrieve id attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getId()
-	{
+	public function getId(){
 		return $this->_id;
 	}
 
 	/**
 	 * Retrieve lang attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getLang()
-	{
+	public function getLang(){
 		return $this->_lang;
 	}
 
 	/**
 	 * Retrieve left property
-	 * 
+	 *
 	 * @return integer|string
 	 */
-	public function getLeft()
-	{
+	public function getLeft(){
 		return $this->_left;
 	}
 
 	/**
-	 * Retrieve overflow 
-	 * 
+	 * Retrieve overflow
+	 *
 	 * @return string
 	 */
-	public function getOverflow()
-	{
+	public function getOverflow(){
 		return $this->_overflow;
 	}
 
 	/**
 	 * Retrieve position property
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getPosition()
-	{
+	public function getPosition(){
 		return $this->_position;
 	}
 
 	/**
 	 * Retrieve style attribute
-	 * 
+	 *
 	 * @return string
 	 */
-	public function getStyle()
-	{
+	public function getStyle(){
 		return $this->_style;
 	}
 
 	/**
 	 * Retrieve title property
-	 * 
+	 *
 	 * @return s
 	 */
-	public function getTitle()
-	{
+	public function getTitle(){
 		return $this->_title;
 	}
 
 	/**
 	 * Retrieve top property
-	 * 
+	 *
 	 * @return integer|string
 	 */
-	public function getTop()
-	{
+	public function getTop(){
 		return $this->_top;
 	}
 
 	/**
 	 * Retrieve width property
-	 * 
+	 *
 	 * @return integer|string
 	 */
-	public function getWidth()
-	{
+	public function getWidth(){
 		return $this->_width;
 	}
 
 	/**
 	 * Set class attribute
-	 * 
+	 *
 	 * @param string $class
 	 * @return void
 	 */
-	public function setClass($class)
-	{
+	public function setClass($class){
 		$this->_class = $class;
 	}
 
 	/**
 	 * Set disabled attribute
-	 * 
+	 *
 	 * @param boolean $disabled
 	 * @return void
 	 */
-	public function setDisabled($disabled)
-	{
+	public function setDisabled($disabled){
 		$this->_disabled = $disabled;
 	}
 
 	/**
 	 * Set height attribute
-	 * 
+	 *
 	 * @param integer $height
 	 * @return void
 	 */
-	public function setHeight($height)
-	{
+	public function setHeight($height){
 		$this->_height = $height;
 	}
 
 	/**
 	 * Set id attribute
-	 * 
+	 *
 	 * @param string $id
 	 * @return void
 	 */
-	public function setId($id)
-	{
+	public function setId($id){
 		$this->_id = $id;
 	}
 
 	/**
 	 * Set lang attribute
-	 * 
+	 *
 	 * @param string $lang
 	 * @return void
 	 * 	 */
-	public function setLang($lang)
-	{
+	public function setLang($lang){
 		$this->_lang = $lang;
 	}
 
 	/**
 	 * Set left attribute
-	 * 
+	 *
 	 * @param integer|string $left
 	 * @return void
 	 * 	 */
-	public function setLeft($left)
-	{
+	public function setLeft($left){
 		$this->_left = $left;
 	}
 
 	/**
 	 * Set overflow attribute
-	 * 
+	 *
 	 * @param string $overflow
 	 * @return void
 	 */
-	public function setOverflow($overflow)
-	{
+	public function setOverflow($overflow){
 		$this->_overflow = $overflow;
 	}
 
 	/**
 	 * Set position attribute
-	 * 
+	 *
 	 * @param string $position
 	 * @return void
 	 */
-	public function setPosition($position)
-	{
+	public function setPosition($position){
 		$this->_position = $position;
 	}
 
 	/**
 	 * Set style attribute
-	 * 
+	 *
 	 * @param string $style
 	 * @return void
 	 */
-	public function setStyle($style)
-	{
+	public function setStyle($style){
 		$this->_style = $style;
 	}
 
 	/**
 	 * Set title attribute
-	 * 
+	 *
 	 * @param string $title
 	 * @return void
 	 */
-	public function setTitle($title)
-	{
+	public function setTitle($title){
 		$this->_title = $title;
 	}
 
 	/**
 	 * Set top attribute
-	 * 
+	 *
 	 * @param integer|string $top
 	 * @return void
 	 * 	 */
-	public function setTop($top)
-	{
+	public function setTop($top){
 		$this->_top = $top;
 	}
 
 	/**
 	 * Set width attribute
-	 * 
+	 *
 	 * @param integer|string $width
 	 * @return void
 	 */
-	public function setWidth($width)
-	{
+	public function setWidth($width){
 		$this->_width = $width;
 	}
 

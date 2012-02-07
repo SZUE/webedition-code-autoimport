@@ -429,9 +429,8 @@ class weWorkflowView extends weWorkflowBase{
 		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($headline){
 			$out = '<table cellpadding="0" cellspacing="0" border="0">
-			<tr>
-				<td><img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="15" /></td>
-				<td><img src="' . IMAGE_DIR . 'pixel.gif" width="' . $width . '" height="15" /></td>
+			<tr>'.we_html_tools::getPixel(24, 15).'</td>
+				<td>'.we_html_tools::getPixel($width, 15).'</td>
 				<td></td>
 			</tr>
 			<tr>
@@ -440,22 +439,21 @@ class weWorkflowView extends weWorkflowBase{
 				<td>' . $content . '</td>
 			</tr>
 			<tr>
-				<td><img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="15" /></td>
-				<td><img src="' . IMAGE_DIR . 'pixel.gif" width="' . $width . '" height="15" /></td>
+				<td>'.we_html_tools::getPixel(24, 15).'</td>
+				<td>'.we_html_tools::getPixel($width, 15).'</td>
 				<td></td>
 			</tr></table>';
 		} else{
 			$out = '<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td><img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="15 /"></td>
+				<td>'.we_html_tools::getPixel(24, 15).'</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>' . $content . '</td>
 			</tr>
-			<tr>
-				<td><img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="15" /></td>
+			<tr>'.we_html_tools::getPixel(24, 15).'</td>
 				<td></td>
 			</tr></table>';
 		}

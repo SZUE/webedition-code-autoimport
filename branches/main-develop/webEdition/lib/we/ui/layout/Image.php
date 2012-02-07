@@ -29,9 +29,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-abstract class we_ui_layout_Image
-{
-
+abstract class we_ui_layout_Image{
 	/**
 	 * path of tree icon audio
 	 */
@@ -339,9 +337,8 @@ abstract class we_ui_layout_Image
 	 * @param integer $h height of the image
 	 * @return string
 	 */
-	static function getPixel($w = 1, $h = 1)
-	{
-		return '<img src="/webEdition/lib/we/ui/layout/img/pixel.gif" width="' . abs($w) . '" height="' . abs($h) . '" alt=""/>';
+	static function getPixel($w = 1, $h = 1){
+		return we_html_tools::getPixel(intval($w), intval($h));
 	}
 
 	/**
@@ -351,9 +348,8 @@ abstract class we_ui_layout_Image
 	 * @param string $extension
 	 * @return string
 	 */
-	public static function getIconClass($contentType, $extension = '')
-	{
-		switch ($contentType) {
+	public static function getIconClass($contentType, $extension = ''){
+		switch($contentType){
 			case "image/*" :
 				return "image";
 				break;
@@ -400,7 +396,7 @@ abstract class we_ui_layout_Image
 				return "objectFile";
 				break;
 			case "application/*" :
-				switch ($extension) {
+				switch($extension){
 					case ".pdf" :
 						return "pdf";
 					case ".zip" :
@@ -421,4 +417,5 @@ abstract class we_ui_layout_Image
 				return "text_plain";
 		}
 	}
+
 }

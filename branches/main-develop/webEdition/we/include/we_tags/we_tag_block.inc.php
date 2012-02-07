@@ -93,12 +93,7 @@ function we_tag_block($attribs, $content){
 	$start = weTag_getAttribute('start', $attribs);
 	$limit = weTag_getAttribute('limit', $attribs);
 
-
-	if(isset($GLOBALS['lv'])){
-		$list = $GLOBALS['lv']->f($name);
-	} else{
-		$list = $GLOBALS['we_doc']->getElement($name);
-	}
+	$list = $GLOBALS[isset($GLOBALS['lv']) ? 'lv' : 'we_doc']->f($name);
 
 	if($list){
 		$list = unserialize($list);

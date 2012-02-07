@@ -117,8 +117,8 @@ abstract class we_xhtmlConverter {
 			// correct attribs in the form of attrib='attrib'
 			$attr = preg_replace("/([^> ]+)='([^']+)'/e", "we_xhtmlConverter::_corrAttr('\\1','\\2')", $attr);
 			// replace "=" within attribs to  be sure that the following regex will work correct
-			while(eregi(" ?= ?\"[^\"]*=[^\"]*\"",$attr)){
-				$attr = preg_replace("/( ?= ?\"[^\"]*)=([^\"]*\")/","\\1WE##ISTGLEICH\\2", $attr);
+			while(preg_match('/ ?= ?"[^"]*=[^"]*"/',$attr)){
+				$attr = preg_replace('/( ?= ?"[^"]*)=([^"]*")/',"\\1WE##ISTGLEICH\\2", $attr);
 			}
 			// convert attribs in the form of attrib=attrib
 			$attr = preg_replace("/([^> ]+)=([^> \"']+)/e", "we_xhtmlConverter::_corrAttr('\\1','\\2')", $attr);

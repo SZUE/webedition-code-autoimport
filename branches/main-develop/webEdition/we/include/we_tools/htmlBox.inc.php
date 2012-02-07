@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class htmlBox{
 
-
-class htmlBox {
 	var $width = 400;
 	var $height = 50;
-	var $title ="htmlBox (c) 2000 by Holger Meyer";
+	var $title = "htmlBox (c) 2000 by Holger Meyer";
 	var $leftMargin = 10;
 	var $topMargin = 10;
 	var $rightMargin = 10;
@@ -43,74 +43,86 @@ class htmlBox {
 	var $titleAlign = "center";
 	var $titleClass = "htmlBoxTitle";
 	var $contentClass = "defaultfont";
-	
+
 	function getCode(){
-		$html = '<table border="0" cellpadding="0" cellspacing="0" width="'.$this->width.'">
+		$html = '<table border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '">
 	<tr>
-		<td colspan="'.$this->colspan().'"'.$this->bColor().' align="'.$this->titleAlign.'"><table cellpadding="0" cellspacing="0" border="0"><tr><td>'.$this->tMargin().'</td><td class="'.$this->titleClass.'">'.$this->title.'</td></tr></table></td>
+		<td colspan="' . $this->colspan() . '"' . $this->bColor() . ' align="' . $this->titleAlign . '"><table cellpadding="0" cellspacing="0" border="0"><tr><td>' . $this->tMargin() . '</td><td class="' . $this->titleClass . '">' . $this->title . '</td></tr></table></td>
 	</tr>
-'.$this->mTop().'
+' . $this->mTop() . '
 	<tr>
-		<td'.$this->bColor().'>'.$this->cHeight().'</td>
-'.($this->leftMargin ? "<td></td>" : "").'
-		<td align="left" valign="top" class="'.$this->contentClass.'">'.$this->content.'</td>
-'.($this->rightMargin ? "<td></td>" : "").'
-		<td'.$this->bColor().'>'.$this->cHeight().'</td>
+		<td' . $this->bColor() . '>' . $this->cHeight() . '</td>
+' . ($this->leftMargin ? "<td></td>" : "") . '
+		<td align="left" valign="top" class="' . $this->contentClass . '">' . $this->content . '</td>
+' . ($this->rightMargin ? "<td></td>" : "") . '
+		<td' . $this->bColor() . '>' . $this->cHeight() . '</td>
 	</tr>
-'.$this->mBottom().'
+' . $this->mBottom() . '
 	<tr>
-		<td'.$this->bColor().'><img'.$this->bHeight().$this->bWidth().' src="'.$this->pixelGif.'" /></td>
-'.($this->leftMargin ? '		<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->leftMargin.'" src="'.$this->pixelGif.'" /></td>
-' : "").'<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->cWidth().'" src="'.$this->pixelGif.'" /></td>
-'.($this->rightMargin ? '		<td'.$this->bColor().'><img'.$this->bHeight().' width="'.$this->rightMargin.'" src="'.$this->pixelGif.'" /></td>
-' : "").'<td'.$this->bColor().'><img'.$this->bHeight().$this->bWidth().' src="'.$this->pixelGif.'" /></td>
+		<td' . $this->bColor() . '><img' . $this->bHeight() . $this->bWidth() . ' src="' . $this->pixelGif . '" /></td>
+' . ($this->leftMargin ? '		<td' . $this->bColor() . '><img' . $this->bHeight() . ' width="' . $this->leftMargin . '" src="' . $this->pixelGif . '" /></td>
+' : "") . '<td' . $this->bColor() . '><img' . $this->bHeight() . ' width="' . $this->cWidth() . '" src="' . $this->pixelGif . '" /></td>
+' . ($this->rightMargin ? '		<td' . $this->bColor() . '><img' . $this->bHeight() . ' width="' . $this->rightMargin . '" src="' . $this->pixelGif . '" /></td>
+' : "") . '<td' . $this->bColor() . '><img' . $this->bHeight() . $this->bWidth() . ' src="' . $this->pixelGif . '" /></td>
 	</tr>
 </table>
 ';
-	return $html;
+		return $html;
 	}
+
 	function colspan(){
 		$cs = 3;
-		if($this->leftMargin) $cs++;
-		if($this->rightMargin) $cs++;
+		if($this->leftMargin)
+			$cs++;
+		if($this->rightMargin)
+			$cs++;
 		return $cs;
 	}
+
 	function bColor(){
-		return $this->borderColor ? ' bgcolor="'.$this->borderColor.'"' : '';
+		return $this->borderColor ? ' bgcolor="' . $this->borderColor . '"' : '';
 	}
+
 	function bWidth(){
-		return $this->borderWidth ? ' width="'.$this->borderWidth.'"' : ' width="1"';
+		return $this->borderWidth ? ' width="' . $this->borderWidth . '"' : ' width="1"';
 	}
+
 	function bHeight(){
-		return $this->borderWidth ? ' height="'.$this->borderWidth.'"' : ' height="1"';
+		return $this->borderWidth ? ' height="' . $this->borderWidth . '"' : ' height="1"';
 	}
+
 	function tMargin(){
-		return $this->titleMargin ? '<img height="'.$this->titleHeight.'" width="'.$this->titleMargin.'" src="'.$this->pixelGif.'" />' : '<img height="'.$this->titleHeight.'" width="1" />';
+		return $this->titleMargin ? '<img height="' . $this->titleHeight . '" width="' . $this->titleMargin . '" src="' . $this->pixelGif . '" />' : '<img height="' . $this->titleHeight . '" width="1" />';
 	}
+
 	function cHeight(){
-		return '<img height="'.($this->height ? $this->height : "1").'"'.$this->bWidth().' src="'.$this->pixelGif.'" />';
+		return '<img height="' . ($this->height ? $this->height : "1") . '"' . $this->bWidth() . ' src="' . $this->pixelGif . '" />';
 	}
+
 	function cWidth(){
-		return $this->width - ($this->leftMargin + $this->rightMargin + $this->borderWidth*2);
+		return $this->width - ($this->leftMargin + $this->rightMargin + $this->borderWidth * 2);
 	}
+
 	function mBottom(){
 		return $this->bottomMargin ? '	<tr>
-		<td'.$this->bColor().'><img height="'.$this->bottomMargin.'"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
-		'.($this->leftMargin ? "<td></td>" : "").'
+		<td' . $this->bColor() . '><img height="' . $this->bottomMargin . '"' . $this->bWidth() . ' src="' . $this->pixelGif . '" /></td>
+		' . ($this->leftMargin ? "<td></td>" : "") . '
 		<td></td>
-		'.($this->rightMargin ? "<td></td>" : "").'
-		<td'.$this->bColor().'><img height="10"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
+		' . ($this->rightMargin ? "<td></td>" : "") . '
+		<td' . $this->bColor() . '><img height="10"' . $this->bWidth() . ' src="' . $this->pixelGif . '" /></td>
 	</tr>
 ' : "";
 	}
+
 	function mTop(){
 		return $this->topMargin ? '	<tr>
-		<td'.$this->bColor().'><img height="'.$this->topMargin.'"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
-		'.($this->leftMargin ? "<td></td>" : "").'
+		<td' . $this->bColor() . '><img height="' . $this->topMargin . '"' . $this->bWidth() . ' src="' . $this->pixelGif . '" /></td>
+		' . ($this->leftMargin ? "<td></td>" : "") . '
 		<td></td>
-		'.($this->rightMargin ? "<td></td>" : "").'
-		<td'.$this->bColor().'><img height="10"'.$this->bWidth().' src="'.$this->pixelGif.'" /></td>
+		' . ($this->rightMargin ? "<td></td>" : "") . '
+		<td' . $this->bColor() . '><img height="10"' . $this->bWidth() . ' src="' . $this->pixelGif . '" /></td>
 	</tr>
 ' : "";
 	}
+
 }

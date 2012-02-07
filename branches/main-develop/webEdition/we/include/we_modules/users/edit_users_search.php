@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,28 +21,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::htmlTop();
-echo we_html_element::jsScript(JS_DIR.'images.js');
-	print STYLESHEET;
+echo we_html_element::jsScript(JS_DIR . 'images.js') .
+ STYLESHEET;
 ?>
-	</head>
-    <body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
-     <form name="we_form" onSubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
-        <table border="0" cellpadding="0" cellspacing="0" width="3000">
+</head>
+<body bgcolor="white" background="/webEdition/images/edit/editfooterback.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+	<form name="we_form" onSubmit="top.content.we_cmd('search',document.we_form.keyword.value); return false;">
+		<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
 				<td></td>
 				<td colspan="2" valign="top"><img align="absmiddle" height="10" width="1600" src="<?php print IMAGE_DIR ?>pixel.gif" /></td>
 			</tr>
 			<tr>
-				<td><?php we_html_tools::pPixel(1,5);?></td>
-				<td><?php print
-				we_button::create_button_table(array(we_html_tools::htmlTextInput("keyword",14,"","","","text",120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
-				?></td>
+				<td><?php we_html_tools::pPixel(1, 5); ?></td>
+				<td><?php
+print
+	we_button::create_button_table(array(we_html_tools::htmlTextInput("keyword", 14, "", "", "", "text", 120), we_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form.keyword.value);")), 5);
+?></td>
 			</tr>
 		</table>
-     </form>
-	</body>
+	</form>
+</body>
 </html>

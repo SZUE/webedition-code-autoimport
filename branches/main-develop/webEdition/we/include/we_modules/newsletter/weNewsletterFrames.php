@@ -664,13 +664,10 @@ class weNewsletterFrames extends weModuleFrames{
 		$headline = str_replace(" ", "&nbsp;", $headline);
 
 		if($headline){
-			$out = '
-				<table cellpadding="0" cellspacing="0" border="0">
+			$out = '<table cellpadding="0" cellspacing="0" border="0">
 					<tr>
-						<td>
-							<img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="' . $height . '" /></td>
-						<td>
-							<img src="' . IMAGE_DIR . 'pixel.gif" width="' . $width . '" height="' . $height . '" /></td>
+						<td>' . we_html_tools::getPixel(24, $height) . '</td>
+						<td>' . we_html_tools::getPixel($width, $height) . '</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -681,10 +678,8 @@ class weNewsletterFrames extends weModuleFrames{
 							' . $content . '</td>
 					</tr>
 					<tr>
-						<td>
-							<img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="' . $height . '" /></td>
-						<td>
-							<img src="' . IMAGE_DIR . 'pixel.gif" width="' . $width . '" height="' . $height . '" /></td>
+						<td>' . we_html_tools::getPixel(24, $height) . '</td>
+						<td>' . we_html_tools::getPixel($width, $height) . '</td>
 						<td></td>
 					</tr>
 				</table>';
@@ -692,8 +687,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$out = '
 				<table cellpadding="0" cellspacing="0" border="0">
 					<tr>
-						<td>
-							<img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="' . $height . '" /></td>
+						<td>' . we_html_tools::getPixel(24, $height) . '</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -702,8 +696,7 @@ class weNewsletterFrames extends weModuleFrames{
 							' . $content . '</td>
 					</tr>
 					<tr>
-						<td>
-							<img src="' . IMAGE_DIR . 'pixel.gif" width="24" height="' . $height . '" /></td>
+						<td>' . we_html_tools::getPixel(24, $height) . '</td>
 						<td></td>
 					</tr></table>';
 		}
@@ -1197,7 +1190,7 @@ class weNewsletterFrames extends weModuleFrames{
 			else
 				$chk = we_html_element::htmlInput(array("type" => "checkbox", "value" => "0", "name" => "reply_same", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"));
 
-			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=1;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}", 'text', $this->def_width), g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
+			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=1;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}"), g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
 
 			$table->setCol(5, 0, array(), we_html_tools::getPixel(10, 10));
 
@@ -1212,7 +1205,7 @@ class weNewsletterFrames extends weModuleFrames{
 			}
 			$_embedImagesHid = we_html_element::htmlHidden(array("name" => "isEmbedImages", "value" => $this->View->newsletter->isEmbedImages));
 			//$_embedImagesChk = we_html_element::htmlInput(array("type"=>"checkbox", "value"=>"1", "name"=>"_isEmbedImages" ,"onClick"=>$this->topFrame.".hot=1;","checked"=>($this->View->newsletter->isEmbedImages?"true":"false")),g_l('modules_newsletter','[isEmbedImages]'));
-			$_embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}", 'text', $this->def_width), g_l('modules_newsletter', '[isEmbedImages]'));
+			$_embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onClick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"), g_l('modules_newsletter', '[isEmbedImages]'));
 
 			$table->setCol(8, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
 
@@ -1550,7 +1543,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 		header("Pragma: no-cache;");
 		header("Cache-Control: post-check=0, post-check=0, false");
-		we_html_tools::headerCtCharset('text/html',($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']));
+		we_html_tools::headerCtCharset('text/html', ($this->View->newsletter->Charset != "" ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']));
 
 
 		if(!$hm){

@@ -84,7 +84,7 @@ function we_tag_object($attribs, $content) {
 			<table border="0" cellpadding="0" cellspacing="0" background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif">
 				<tr>
 					<td style="padding:0 6px;"><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif"><b><?php echo $_showName; ?></b></span></td>
-					<td><?php print we_html_tools::hidden($idname, $we_oid) ?></td>
+					<td><?php print we_html_tools::hidden($idname, $we_oid); ?></td>
 					<td><?php print we_html_tools::htmlTextInput($textname, $size , $path, "", ' readonly', "text", 0, 0); ?></td>
 					<td><?php we_html_tools::getPixel(6, 4);?></td>
 					<td><?php print $button; ?></td>

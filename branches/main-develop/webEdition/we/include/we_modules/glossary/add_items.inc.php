@@ -480,6 +480,12 @@ echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 		return newText;
 	}
 
+	function getInnerColumn(html){
+		var td = document.createElement('td');
+		td.innerHTML = html;
+		return td
+	}
+
 	function getImageColumn(src, width, height) {
 		var td = document.createElement('td');
 		var html;
@@ -569,22 +575,22 @@ echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 	function addRow(word, suggestions) {
 		var tr = document.createElement('tr');
 
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
 		table.appendChild(tr);
 
 		tr = document.createElement('tr');
 		tr.appendChild(getTextColumn(word, 1));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 20, 1));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20,1);?>"));
 		tr.appendChild(getActionColumn(word, ''));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 20, 1));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20,1);?>"));
 		tr.appendChild(getTitleColumn(word, suggestions, ''));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 20, 1));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20,1);?>"));
 		tr.appendChild(getLanguageColumn(word, ''));
 		table.appendChild(tr);
 
@@ -599,22 +605,22 @@ echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 	function addPredefinedRow(word, suggestions, type, title, lang) {
 		var tr = document.createElement('tr');
 
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 1, 5));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(1,5);?>"));
 		table.appendChild(tr);
 
 		tr = document.createElement('tr');
 		tr.appendChild(getTextColumn(word, 1));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 20, 1));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20,1);?>"));
 		tr.appendChild(getActionColumn(word, type));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 20, 1));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20,1);?>"));
 		tr.appendChild(getTitleColumn(word, suggestions, title));
-		tr.appendChild(getImageColumn("<?php echo IMAGE_DIR; ?>pixel.gif", 20, 1));
+		tr.appendChild(getInnerColumn("<?php echo we_html_tools::getPixel(20,1);?>"));
 		tr.appendChild(getLanguageColumn(word, lang));
 		table.appendChild(tr);
 

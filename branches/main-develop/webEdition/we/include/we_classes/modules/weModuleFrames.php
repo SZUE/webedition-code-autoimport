@@ -204,14 +204,14 @@ class weModuleFrames{
 		$out = "";
 		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($ident)
-			$pix1 = new we_baseElement("img", false, array("src" => IMAGE_DIR . "pixel.gif", "width" => "$ident", "height" => "$vh"));
+			$pix1 = we_html_tools::getPixel($ident, $vh);
 		if($w){
 			if(!$vh)
 				$vh = 1;
-			$pix2 = new we_baseElement("img", false, array("src" => IMAGE_DIR . "pixel.gif", "width" => "$w", "height" => "$vh"));
+			$pix2 = we_html_tools::getPixel($w, $vh);
 		}
 
-		$pix3 = new we_baseElement("img", false, array("src" => IMAGE_DIR . "pixel.gif", "width" => "$space", "height" => "1"));
+		$pix3 = we_html_tools::getPixel($space, 1);
 
 		$table = new we_html_table(array("width" => "$width", "height" => "$height", "cellpadding" => "0", "cellspacing" => "0", "border" => "0"), 3, 4);
 
