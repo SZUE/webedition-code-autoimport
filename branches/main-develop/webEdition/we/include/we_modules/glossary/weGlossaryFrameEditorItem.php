@@ -59,9 +59,9 @@
 					$title .= g_l('modules_glossary','[link]');
 					break;
 				case 'textreplacement':
-					$we_tabs->addTab(new we_tab("#",$GLOBALS['l_glossary']['property'],'TAB_ACTIVE',"setTab('1');"));
+					$we_tabs->addTab(new we_tab("#",g_l('modules_glossary', '[property]'),'TAB_ACTIVE',"setTab('1');"));
 
-					$title .= $GLOBALS['l_glossary']['textreplacement'];
+					$title .= g_l('modules_glossary', '[textreplacement]');
 					break;
 			}
 
@@ -313,7 +313,7 @@
 				'abbreviation' => g_l('modules_glossary','[abbreviation]'),
 				'foreignword' => g_l('modules_glossary','[foreignword]'),
 				'link' => g_l('modules_glossary','[link]'),
-				'textreplacement' => $GLOBALS['l_glossary']['textreplacement'],
+				'textreplacement' => g_l('modules_glossary', '[textreplacement]'),
 			);
 
 			$hidden =	 	we_html_element::htmlHidden(array('name'=>'newone','value'=>($weGlossaryFrames->View->Glossary->ID==0 ? 1 : 0)))
@@ -525,8 +525,8 @@
 
 		function getHTMLTextReplacement(&$weGlossaryFrames) {
 
-			$text = $GLOBALS['l_glossary']['textreplacement'];
-			$language = $GLOBALS['l_glossary']['language'];
+			$text = g_l('modules_glossary', '[textreplacement]');
+			$language = g_l('modules_glossary', '[language]');
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title,null,$GLOBALS["WE_BACKENDCHARSET"]);
 
 			$_text = "";
@@ -554,7 +554,7 @@
 							'.we_html_tools::getPixel(2,4).'</td>
 					</tr>
 					<tr>
-						<td class="defaultfont">' . $GLOBALS['l_glossary']['textreplacement_Text'] . '</td>
+						<td class="defaultfont">' . g_l('modules_glossary', '[textreplacement_Text]') . '</td>
 					</tr>
 					<tr>
 						<td>

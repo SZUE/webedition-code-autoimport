@@ -83,7 +83,7 @@ class weGlossaryTreeLoader{
 			'acronym' => g_l('modules_glossary', '[acronym]'),
 			'foreignword' => g_l('modules_glossary', '[foreignword]'),
 			'link' => g_l('modules_glossary', '[link]'),
-			'textreplacement' => $GLOBALS['l_glossary']['textreplacement'],
+			'textreplacement' => g_l('modules_glossary', '[textreplacement]'),
 		);
 
 		foreach($Types as $Key => $Val){

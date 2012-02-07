@@ -42,12 +42,6 @@ if ($we_doc->EditPageNr != WE_EDITPAGE_WORKSPACE) {
 						"space"=>140,
 						"icon"=>"default.gif")
 				);
-	/*array_push($parts,array(
-						"headline"=>$GLOBALS["l_we_cache"]["cache"],
-						"html"=>$GLOBALS['we_doc']->formCache(),
-						"space"=>140,
-						"icon"=>"cache.gif")
-				);*/
 	array_push($parts,array(
 						"headline"=>g_l('weClass',"[Charset]"),
 						"html"=>$GLOBALS['we_doc']->formCharset(),

@@ -149,7 +149,6 @@ class we_objectFile extends we_document{
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
 				$langkeys[] = $langkey;
 			}
-			//$html = $this->htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, 'onchange="dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"', "value", 521),				$GLOBALS['l_we_class']['language'],	"left",	"defaultfont");
 
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">
@@ -170,7 +169,7 @@ class we_objectFile extends we_document{
 						' . g_l('weClass', '[languageLinks]') . '</td>
 				</tr>
 			</table>';
-			$content .= "<br/>" . $htmlzw; //.$this->htmlFormElementTable($htmlzw,$GLOBALS['l_we_class']['languageLinksDefaults'],"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+			$content .= "<br/>" . $htmlzw;
 		} else{
 			$content = '
 			<table border="0" cellpadding="0" cellspacing="0">

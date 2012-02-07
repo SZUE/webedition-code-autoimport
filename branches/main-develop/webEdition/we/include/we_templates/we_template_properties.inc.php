@@ -34,7 +34,6 @@ if($GLOBALS['we_doc']->MasterTemplateID) {
 }
 array_push($parts,array("icon"=>"mastertemplate.gif", "headline"=>$headline,"html"=>$GLOBALS['we_doc']->formMasterTemplate(),"space"=>140));
 array_push($parts,array("icon"=>"doc.gif", "headline"=>g_l('weClass',"[documents]"),"html"=>$GLOBALS['we_doc']->formTemplateDocuments(),"space"=>140));
-//array_push($parts,array("icon"=>"cache.gif", "headline"=>$GLOBALS["l_we_cache"]["cache"],"html"=>$GLOBALS['we_doc']->formCacheTempl(),"space"=>140));
 array_push($parts,array("icon"=>"charset.gif", "headline"=>g_l('weClass',"[Charset]"),"html"=>$GLOBALS['we_doc']->formCharset(),"space"=>140));
 array_push($parts,array("icon"=>"copy.gif", "headline"=>g_l('weClass',"[copyTemplate]"),"html"=>$GLOBALS['we_doc']->formCopyDocument(),"space"=>140));
 

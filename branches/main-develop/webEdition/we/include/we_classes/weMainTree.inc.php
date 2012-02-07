@@ -25,9 +25,6 @@
 class weMainTree extends weTree{
 
 	function __construct($frameset="", $topFrame="", $treeFrame="", $cmdFrame=""){
-		if(!isset($GLOBALS["l_css"])){
-			$GLOBALS["l_css"]['font_family'] = 'arial';
-		}
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
 

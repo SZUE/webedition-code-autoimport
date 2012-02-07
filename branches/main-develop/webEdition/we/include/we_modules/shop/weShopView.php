@@ -108,17 +108,17 @@ class weShopView {
 					case "delete_raw":
 						if(top.content.resize.right.editor.edbody.document.we_form.cmd.value=="home") return;
 						'.(!we_hasPerm("DELETE_RAW") ?
-						(	we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["no_perms"], we_message_reporting::WE_MESSAGE_ERROR))
+						(	we_message_reporting::getShowMessageCall( g_l('modules_shop','[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR))
 						:
 						('
 								if ('.$this->topFrame.'.resize.right.editor.edbody.loaded) {
-									if (confirm("'.$GLOBALS["l_raw"]["delete_alert"].'")) {
+									if (confirm("'.g_l('modules_shop','[delete_alert]').'")) {
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
 										'.$this->topFrame.'.resize.right.editor.edbody.document.we_form.tabnr.value='.$this->topFrame.'.activ_tab;
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 									}
 								} else {
-									' . we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["nothing_to_delete"], we_message_reporting::WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall( g_l('modules_shop','[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 
 						')).'
@@ -134,7 +134,7 @@ class weShopView {
 
 										'.$this->topFrame.'.resize.right.editor.edbody.submitForm();
 								} else {
-									' . we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["nothing_to_save"], we_message_reporting::WE_MESSAGE_ERROR) . '
+									' . we_message_reporting::getShowMessageCall( g_l('modules_shop','[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								}
 
 						break;
@@ -285,7 +285,7 @@ function processCommands() {
 
 						if($this->raw->filenameNotValid()){
 							print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["we_filename_notValid"], we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall( g_l('modules_shop','[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 							break;
 						}
@@ -317,7 +317,7 @@ function processCommands() {
 						}
 						print we_html_element::jsElement(
 							$js .
-							we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["raw_saved_ok"], we_message_reporting::WE_MESSAGE_NOTICE)
+							we_message_reporting::getShowMessageCall( g_l('modules_shop','[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 						);
 					break;
 				case "delete_raw":
@@ -329,7 +329,7 @@ function processCommands() {
 
 						print we_html_element::jsElement(
 							$js .
-							we_message_reporting::getShowMessageCall( $GLOBALS["l_raw"]["raw_deleted"], we_message_reporting::WE_MESSAGE_NOTICE)
+							we_message_reporting::getShowMessageCall( g_l('modules_shop','[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 						);
 				break;
 				case "switchPage":

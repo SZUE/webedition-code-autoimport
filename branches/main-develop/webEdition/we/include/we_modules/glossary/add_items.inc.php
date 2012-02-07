@@ -384,7 +384,7 @@ echo we_html_element::jsScript(JS_DIR.'keyListener.js');?>
 		$Modes['abbreviation'] = g_l('modules_glossary','[abbreviation]');
 		$Modes['acronym'] = g_l('modules_glossary','[acronym]');
 		$Modes['foreignword'] = g_l('modules_glossary','[foreignword]');
-		$Modes['textreplacement'] = $GLOBALS['l_glossary']['textreplacement'];
+		$Modes['textreplacement'] = g_l('modules_glossary','[textreplacement]');
 	}
 	if(we_hasPerm("EDIT_GLOSSARY_DICTIONARY")) {
 		$Modes['exception'] = g_l('modules_glossary','[to_exceptionlist]');

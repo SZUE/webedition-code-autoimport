@@ -1074,7 +1074,6 @@ class we_object extends we_document{
 				$dd = abs($this->getElement($name . "defaultThumb", "dat"));
 				$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>';
 				$content .= '<td width="170" class="defaultfont">';
-				//$content .= we_forms::checkbox("1", $this->getElement($name."default","dat"), "we_".$this->Name."_date[".$name."defaultThumb]", $GLOBALS["l_object"]["checked"], true, "defaultfont", "if(this.checked){document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=1;}else{ document.we_form.elements['"."we_".$this->Name."_input[".$name."default]"."'].value=0;}");
 				$content .= we_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 				$content .= we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? $d : time()), true);
 				$content .= '</td></tr>';
