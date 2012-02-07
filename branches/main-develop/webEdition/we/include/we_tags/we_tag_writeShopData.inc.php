@@ -65,12 +65,9 @@ function we_tag_writeShopData($attribs,$content) {
 	}
 
 	if ($useVat) {
-		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-
 		$weShopVatRule = weShopVatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
 	}
-	require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 
 	// Check for Shop being set
@@ -161,7 +158,6 @@ emosBasketPageArray[$articleCount][7]='NULL';
 			$cartField[WE_SHOP_PRICE_IS_NET_NAME] = $netprices; // add netprice flag to article
 			$cartField[WE_SHOP_CART_CUSTOMER_FIELD] = $_customer; // add netprice flag to article
 
-			require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 			$weShippingControl = weShippingControl::getShippingControl();
 
 			if ($shipping==''){
@@ -205,7 +201,6 @@ emosBillingPageArray [3]='".$totPrice."';
 		}
 		$doc = we_getDocForTag('top');
 		$lang=substr($doc->Language,0,2);
-		require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 		$weShopStatusMails = weShopStatusMails::getShopStatusMails();
 		$weShopStatusMails->checkAutoMailAndSend('Order',$orderID,$_customer,$lang);
 	}

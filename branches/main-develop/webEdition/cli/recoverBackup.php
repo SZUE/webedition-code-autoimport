@@ -22,7 +22,6 @@
  * @package    webEdition_cli
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * The script exports webEdition backup file to the given file
  * webEdition must be installed
@@ -138,7 +137,6 @@ $_REQUEST['handle_extern'] = false;
 $_REQUEST['verbose'] = true;
 
 // CONFIGURATION ENDS ---------------------------------------------------------
-
 // we want to see errors
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
@@ -146,10 +144,10 @@ error_reporting(E_ALL);
 //use we-error handler; ignore if logging is disabled!
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
 if(!defined('WE_ERROR_SHOW')){
-	define('WE_ERROR_SHOW',1);
+	define('WE_ERROR_SHOW', 1);
 }
 if(!defined('WE_ERROR_LOG')){
-	define('WE_ERROR_LOG',1);
+	define('WE_ERROR_LOG', 1);
 }
 
 we_error_handler(false);
@@ -166,17 +164,17 @@ $_SESSION["perms"]["ADMINISTRATOR"] = true;
 $_SESSION["user"]["Username"] = 1;
 
 
-if (!isset($_SERVER['SERVER_NAME'])) {
+if(!isset($_SERVER['SERVER_NAME'])){
 	$_SERVER['SERVER_NAME'] = $SERVER_NAME;
 }
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/PEAR.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/Getopt.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/PEAR.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/Getopt.php");
 
 // Define exit codes for errors
-define('NO_ARGS',10);
-define('INVALID_OPTION',11);
+define('NO_ARGS', 10);
+define('INVALID_OPTION', 11);
 
 // Reading the incoming arguments - same as $argv
 $args = Console_Getopt::readPHPArgv();
@@ -213,9 +211,9 @@ Options:
 ';
 
 // Make sure we got them (for non CLI binaries)
-if (PEAR::isError($args)) {
-   fwrite(STDERR,$args->getMessage()."\n");
-   exit(NO_ARGS);
+if(PEAR::isError($args)){
+	fwrite(STDERR, $args->getMessage() . "\n");
+	exit(NO_ARGS);
 }
 
 // Short options
@@ -223,64 +221,64 @@ $short_opts = 'v';
 
 // Long options
 $long_opts = array(
-'all',
-'core',
-'versions',
-'versions_binarys',
-'binary',
-'user',
-'customer',
-'shop',
-'workflow',
-'todo',
-'newsletter',
-'temporary',
-'banner',
-'object',
-'schedule',
-'settings',
-'configuration',
-'export',
-'voting',
-'extern',
-'verbose',
-'help'
+	'all',
+	'core',
+	'versions',
+	'versions_binarys',
+	'binary',
+	'user',
+	'customer',
+	'shop',
+	'workflow',
+	'todo',
+	'newsletter',
+	'temporary',
+	'banner',
+	'object',
+	'schedule',
+	'settings',
+	'configuration',
+	'export',
+	'voting',
+	'extern',
+	'verbose',
+	'help'
 );
 
 // Convert the arguments to options - check for the first argument
-if ( count($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__ ) {
-   $options = Console_Getopt::getOpt($args,$short_opts,$long_opts);
-} else {
-   $options = Console_Getopt::getOpt2($args,$short_opts,$long_opts);
+if(count($_SERVER['argv']) && realpath($_SERVER['argv'][0]) == __FILE__){
+	$options = Console_Getopt::getOpt($args, $short_opts, $long_opts);
+} else{
+	$options = Console_Getopt::getOpt2($args, $short_opts, $long_opts);
 }
 
 // Check the options are valid
-if (PEAR::isError($options)) {
-   fwrite(STDERR,$options->getMessage()."\n");
-   fwrite(STDERR,$_cliHelp."\n");
-   exit(INVALID_OPTION);
+if(PEAR::isError($options)){
+	fwrite(STDERR, $options->getMessage() . "\n");
+	fwrite(STDERR, $_cliHelp . "\n");
+	exit(INVALID_OPTION);
 }
-if (count($args) ) {
+if(count($args)){
 	$_REQUEST['verbose'] = false;
 	_checkAll(false);
 	$_REQUEST['handle_extern'] = false;
 }
 
-foreach ($options[0] as $opt) {
-	switch ($opt[0]) {
+foreach($options[0] as $opt){
+	switch($opt[0]){
 		case '--all':
 			_checkAll(true);
-		break;
+			break;
 
 		case 'v':
 		case '--verbose':
 			$_REQUEST['verbose'] = true;
-		break;
+			break;
 
 		case '--help':
 			print $_cliHelp;
 			exit(0);
-		break;
+			break;
 
 		default:
 			$_REQUEST['handle_' . preg_replace('/^--/', '', $opt[0])] = true;
@@ -292,9 +290,9 @@ foreach ($options[0] as $opt) {
 
 $__optionsSelected = false;
 
-foreach ($_REQUEST as $_k=>$_v) {
-	if (substr($_k,0,7) == "handle_") {
-		if ($_v) {
+foreach($_REQUEST as $_k => $_v){
+	if(substr($_k, 0, 7) == "handle_"){
+		if($_v){
 			$__optionsSelected = true;
 			break;
 		}
@@ -302,68 +300,59 @@ foreach ($_REQUEST as $_k=>$_v) {
 }
 
 // if no option is checked, then check the dafaults
-if ($__optionsSelected === false) {
+if($__optionsSelected === false){
 	$_REQUEST['handle_core'] = true;
 }
 
 
-if (isset($options[1][0])) {
+if(isset($options[1][0])){
 	$_backup_filename = $options[1][0];
 }
 
 
 
 // include needed libraries
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupPreparer.class.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupImport.class.php');
 
 $_REQUEST['backup_select'] = basename($_backup_filename);
-if($_backup_filename!=$_SERVER['DOCUMENT_ROOT'].'/webEdition/we_backup/'.$_REQUEST['backup_select']) {
-	copy($_backup_filename,$_SERVER['DOCUMENT_ROOT'].'/webEdition/we_backup/'.$_REQUEST['backup_select']);
+if($_backup_filename != $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_backup/' . $_REQUEST['backup_select']){
+	copy($_backup_filename, $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we_backup/' . $_REQUEST['backup_select']);
 }
 
-if(weBackupPreparer::prepareImport()===true){
-	if($_REQUEST['verbose']) {
-		print "\nImporting from ".$_backup_filename."...\n";
+if(weBackupPreparer::prepareImport() === true){
+	if($_REQUEST['verbose']){
+		print "\nImporting from " . $_backup_filename . "...\n";
 	}
-	while(($_SESSION['weBackupVars']['offset'] < $_SESSION['weBackupVars']['offset_end'])){
-		if($_REQUEST['verbose']) {
+	while(($_SESSION['weBackupVars']['offset'] < $_SESSION['weBackupVars']['offset_end'])) {
+		if($_REQUEST['verbose']){
 			print "-";
 		}
-		weBackupImport::import(	$_SESSION['weBackupVars']['backup_file'],
-							$_SESSION['weBackupVars']['offset'],
-							$_SESSION['weBackupVars']['backup_steps'],
-							$_SESSION['weBackupVars']['options']['compress'],
-							$_SESSION['weBackupVars']['encoding'],
-							$_SESSION['weBackupVars']['backup_log']
+		weBackupImport::import($_SESSION['weBackupVars']['backup_file'], $_SESSION['weBackupVars']['offset'], $_SESSION['weBackupVars']['backup_steps'], $_SESSION['weBackupVars']['options']['compress'], $_SESSION['weBackupVars']['encoding'], $_SESSION['weBackupVars']['backup_log']
 		);
-
 	}
 
-	if($_REQUEST['verbose']) {
+	if($_REQUEST['verbose']){
 		print "\nUpdate...\n";
 	}
 
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUpdater.class.php');
-	$updater=new weBackupUpdater();
+	$updater = new weBackupUpdater();
 	$updater->doUpdate();
-
-
-} else {
+} else{
 	print weBackupPreparer::getErrorMessage();
 }
 
 unset($_SESSION['weBackupVars']);
 //unlink($_SERVER['DOCUMENT_ROOT'].'/webEdition/we_backup/'.$_REQUEST['backup_select']);
 
-if($_REQUEST['verbose']) {
-		print "\nDone\n";
+if($_REQUEST['verbose']){
+	print "\nDone\n";
 }
 
-
-function _checkAll($flag=true) {
+function _checkAll($flag=true){
 	$_REQUEST['handle_core'] = $flag;
 	$_REQUEST['handle_binary'] = $flag;
 	$_REQUEST['handle_versions'] = $flag;

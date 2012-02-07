@@ -28,11 +28,11 @@
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_listview_order extends listviewBase{
+class we_shop_listviewOrder extends listviewBase{
 
 	var $ClassName = __CLASS__;
-	var $condition = "";
-	var $Path = "";
+	var $condition = '';
+	var $Path = '';
 	var $docID = 0;
 	var $hidedirindex = false;
 

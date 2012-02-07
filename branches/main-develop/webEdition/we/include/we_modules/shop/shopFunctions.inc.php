@@ -26,7 +26,6 @@
 
 function getCustomersOrderList($customerId, $sameModul=true) {
 
-	require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
 	$orderStr = '

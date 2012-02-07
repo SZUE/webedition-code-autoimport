@@ -1149,7 +1149,6 @@ class we_object extends we_document{
 			case 'shopVat':
 				$values = array();
 				if(defined('SHOP_TABLE')){
-					require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 					$allVats = weShopVats::getAllShopVATs();
 					foreach($allVats as $id => $shopVat){

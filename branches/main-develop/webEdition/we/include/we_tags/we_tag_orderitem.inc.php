@@ -51,12 +51,10 @@ function we_tag_orderitem($attribs, $content) {
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	include_once(WE_SHOP_MODULE_DIR . "we_orderitemtag.inc.php");
-
 	$we_orderitemid = $we_orderitemid ? $we_orderitemid : (isset($_REQUEST["we_orderitemid"]) ? $_REQUEST["we_orderitemid"] : 0);
 
 
-	$GLOBALS["lv"] = new we_orderitemtag($we_orderitemid, $condition, $hidedirindex);
+	$GLOBALS["lv"] = new we_shop_orderitemtag($we_orderitemid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 	if (is_array($GLOBALS["we_lv_array"])){
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));

@@ -352,7 +352,6 @@ class we_document extends we_root{
 
 		$navis = new MultiFileChooser(508, $this->NavigationItems, 'delete_navi', we_button::create_button_table(array($delallbut, $addbut)), "tool_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$NoDelNavis = makeArrayFromCSV($this->NavigationItems);
 		foreach($NoDelNavis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
@@ -952,7 +951,7 @@ class we_document extends we_root{
 				$altField = $img->Name . '_img_custom_alt';
 				$titleField = $img->Name . '_img_custom_title';
 
-				if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_listview_shopVariants'){
+				if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants'){
 
 					$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 					$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
@@ -1138,7 +1137,7 @@ class we_document extends we_root{
 				}
 				$xml = weTag_getAttribute('xml', $attribs, '', true,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1));
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml?'<\\1\\2/>':'<\\1\\2>'), $retval);
-				
+
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 

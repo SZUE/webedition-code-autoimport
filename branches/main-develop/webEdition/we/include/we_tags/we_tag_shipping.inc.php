@@ -33,8 +33,6 @@ function we_tag_shipping($attribs, $content) {
 	// shipping depends on total value of basket
 	if (isset($GLOBALS['summe'][$sumName])) {
 
-		require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
-
 		$orderVal = $GLOBALS['summe'][$sumName];
 		$weShippingControl = weShippingControl::getShippingControl();
 

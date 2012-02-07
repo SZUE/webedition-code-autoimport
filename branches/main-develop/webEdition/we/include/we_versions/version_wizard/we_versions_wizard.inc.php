@@ -36,9 +36,8 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0";
-		eval('$contents = we_versions_wizard::getStep' . $step . '();');
-		return self::getPage($contents);
+		$step = 'getStep'.isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0";
+		return self::getPage(self::$step());
 	}
 
 	/**
@@ -984,7 +983,7 @@ abstract class we_versions_wizard{
 		}
 
 		return array(
-			we_versions_wizard::getPage2Js(empty($cont), "delete"),
+			self::getPage2Js(empty($cont), "delete"),
 			we_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
@@ -1139,7 +1138,7 @@ abstract class we_versions_wizard{
 		}
 
 		return array(
-			we_versions_wizard::getPage2Js(empty($cont), "reset"),
+			self::getPage2Js(empty($cont), "reset"),
 			we_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .

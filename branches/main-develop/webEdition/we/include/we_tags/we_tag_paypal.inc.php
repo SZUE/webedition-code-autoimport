@@ -65,8 +65,6 @@ function we_tag_paypal($attribs, $content){
 	$currency = weTag_getAttribute('currency', $attribs);
 
 	if($useVat){
-		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-
 		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
 		$weShopVatRule = weShopVatRule::getShopVatRule();
@@ -245,7 +243,6 @@ function we_tag_paypal($attribs, $content){
 					$p->add_field('amount_' . $i, $itemPrice);
 
 					// foreach article we must determine the correct tax-rate
-					require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 					$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 					$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 					if($shopVat){ // has selected or standard shop rate
@@ -269,7 +266,6 @@ function we_tag_paypal($attribs, $content){
 				}
 
 				//get the shipping costs
-				require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 				$weShippingControl = weShippingControl::getShippingControl();
 
 				if(we_tag('ifRegisteredUser')){ // check if user is registered

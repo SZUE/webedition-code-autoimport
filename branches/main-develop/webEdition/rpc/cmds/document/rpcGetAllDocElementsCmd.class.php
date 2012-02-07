@@ -22,24 +22,20 @@
  * @package    webEdition_rpc
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+class rpcGetAllDocElementsCmd extends rpcCmd{
 
-	class rpcGetAllDocElementsCmd extends rpcCmd {
+	var $Parameters = array('docid');
 
-		var $Parameters = array('docid');
+	function execute(){
 
-		function execute() {
+		$resp = new rpcResponse();
 
-			$resp = new rpcResponse();
+		$_doc = new we_webEditionDocument();
+		$_doc->initByID($_REQUEST['docid']);
 
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
-			$_doc = new we_webEditionDocument();
-			$_doc->initByID($_REQUEST['docid']);
+		$resp->setData('elements', $_doc->elements);
 
-			$resp->setData('elements',$_doc->elements);
-
-			return $resp;
-
-		}
-
-
+		return $resp;
 	}
+
+}

@@ -97,9 +97,9 @@ function we_tag_a($attribs, $content){
 
 		} else {
 			//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
-			if ( (isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_listview_shopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_objecttag' ) {
+			if ( (isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants' && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName == 'we_objectFile') || isset($GLOBALS['lv']) && get_class($GLOBALS['lv']) == 'we_objecttag' ) {
 				$type='o';
-				if (get_class($GLOBALS['lv']) == 'we_listview_shopVariants') {
+				if (get_class($GLOBALS['lv']) == 'we_shop_listviewShopVariants') {
 					$idd = $GLOBALS['lv']->Id;
 				} else {
 					$idd = $GLOBALS['lv']->id;

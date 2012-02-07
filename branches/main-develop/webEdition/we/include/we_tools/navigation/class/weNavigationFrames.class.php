@@ -632,7 +632,6 @@ class weNavigationFrames extends weToolFrames{
 
 		$_wsid = array();
 		if($this->Model->SelectionType == 'objLink' && $this->Model->LinkID){
-			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weDynList.class.php');
 			$_wsid = weDynList::getWorkspacesForObject($this->Model->LinkID);
 		}
 
@@ -937,8 +936,6 @@ class weNavigationFrames extends weToolFrames{
 	}
 
 	function getHTMLEditorPreview(){
-
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
 
 		$defaultPreviewCode = str_replace("\r\n", '\n', addslashes($this->Model->defaultPreviewCode));
 		$defaultPreviewCode = str_replace("\n", '\n', $defaultPreviewCode);

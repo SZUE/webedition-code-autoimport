@@ -185,7 +185,6 @@ class we_shop_Basket{
 			}
 
 			if($variant){
-				require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 				weShopVariants::useVariantForShop($Record, $variant);
 			}
 
@@ -234,7 +233,6 @@ class we_shop_Basket{
 				$obj = new we_objectFile();
 				$obj->initByID($id, OBJECT_FILES_TABLE);
 
-				require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 				weShopVariants::useVariantForShopObject($Record, $variant, $obj);
 
 				// add variant to path ...

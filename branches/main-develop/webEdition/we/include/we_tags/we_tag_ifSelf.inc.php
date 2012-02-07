@@ -46,7 +46,7 @@ function we_tag_ifSelf($attribs, $content){
 				if ($GLOBALS["lv"]->ClassName == "we_search_listview") {
 					return in_array($GLOBALS["lv"]->DB_WE->f("WE_ID"), $ids);
 				} else
-					if ($GLOBALS["lv"]->ClassName == "we_listview_shopVariants") {
+					if ($GLOBALS["lv"]->ClassName == "we_shop_listviewShopVariants") {
 						reset($GLOBALS['lv']->Record);
 						$key = key($GLOBALS['lv']->Record);
 						if (isset($GLOBALS['we_doc']->Variant)) {

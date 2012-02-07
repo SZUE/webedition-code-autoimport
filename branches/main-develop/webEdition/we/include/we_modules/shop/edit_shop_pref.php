@@ -81,13 +81,11 @@ if(!empty($_REQUEST["format"])){ //	save data in arrays ..
 	// check if field exists
 	$DB_WE->query("REPLACE " . ANZEIGE_PREFS_TABLE . " SET strFelder = '" . $DB_WE->escape(serialize($CLFields)) . "',strDateiname ='shop_CountryLanguage'");
 	// Update Country Field in weShopVatRule
-	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 	$weShopVatRule = weShopVatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
 	$weShopVatRule->stateFieldIsISO = $CLFields['stateFieldIsISO'];
 	$weShopVatRule->save();
 	// Update Language Field in weShopStatusMails
-	require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 	$weShopStatusMails = weShopStatusMails::getShopStatusMails();
 	$weShopStatusMails->LanguageData['languageField'] = $CLFields['languageField'];
 	$weShopStatusMails->LanguageData['languageFieldIsISO'] = $CLFields['languageFieldIsISO'];

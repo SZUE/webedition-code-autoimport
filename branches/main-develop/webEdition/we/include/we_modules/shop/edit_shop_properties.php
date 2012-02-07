@@ -29,10 +29,8 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 
-require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 $weShopVatRule = weShopVatRule::getShopVatRule();
 
-require_once(WE_SHOP_MODULE_DIR . 'weShopStatusMails.class.php');
 $weShopStatusMails = weShopStatusMails::getShopStatusMails();
 
 // Get Country and Lanfield Data
@@ -197,7 +195,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 				unset($customFieldsTmp);
 
 				// shop vats must be calculated
-				require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 				$standardVat = weShopVats::getStandardShopVat();
 
 				if(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
@@ -383,7 +380,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 
 				$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();window.close();");
 
-				require_once(WE_SHOP_MODULE_DIR . 'weShopVariants.inc.php');
 
 				$articleInfo = explode('_', $_REQUEST['add_article']);
 
@@ -396,8 +392,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 				$variantOptions['-'] = '-';
 
 				if($type == 'o'){
-
-					require_once(WE_OBJECT_MODULE_DIR . 'we_objectFile.inc.php');
 
 					$model = new we_objectFile();
 					$model->initByID($id, OBJECT_FILES_TABLE);
@@ -634,7 +628,6 @@ if(isset($_REQUEST['we_cmd'][0])){
 			break;
 
 		case 'edit_shipping_cost':
-			require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 			$shopVats = weShopVats::getAllShopVATs();
 			$shippingVats = array();

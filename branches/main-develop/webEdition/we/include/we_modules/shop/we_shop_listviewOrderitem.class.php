@@ -28,7 +28,7 @@
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_listview_orderitem extends listviewBase{
+class we_shop_listviewOrderitem extends listviewBase{
 
 	var $ClassName = __CLASS__;
 	var $condition = "";

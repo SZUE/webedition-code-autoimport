@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shopDirSelector extends we_multiSelector{
+class we_shop_dirSelector extends we_multiSelector{
 
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 

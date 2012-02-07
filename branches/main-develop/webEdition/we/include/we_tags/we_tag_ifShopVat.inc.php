@@ -21,7 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 function we_tag_ifShopVat($attribs,$content) {
 	$foo = attributFehltError($attribs,"id","ifShopVat");if($foo) return $foo;

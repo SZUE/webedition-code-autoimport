@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weDynList{
+abstract class weDynList{
 
 	function getDocuments($doctypeid, $dirid, $categories, &$sort, $count, $field){
 		$_select = array(

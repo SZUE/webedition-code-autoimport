@@ -242,14 +242,14 @@ function we_tag_listview($attribs, $content){
 				print modulFehltError('Shop', 'listview type="order"');
 				return;
 			}
-			$GLOBALS['lv'] = new we_listview_order($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
+			$GLOBALS['lv'] = new we_shop_listviewOrder($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'orderitem':
 			if(!defined('SHOP_TABLE')){
 				print modulFehltError('Shop', 'listview type="orderitem"');
 				return;
 			}
-			$GLOBALS['lv'] = new we_listview_orderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
+			$GLOBALS['lv'] = new we_shop_listviewOrderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
 			break;
 		case 'multiobject':
 			if(!defined('OBJECT_TABLE')){
@@ -289,7 +289,7 @@ function we_tag_listview($attribs, $content){
 					$objectId = $GLOBALS['lv']->DB_WE->f('OF_ID');
 				}
 			}
-			$GLOBALS['lv'] = new we_listview_shopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_shop_listviewShopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls);
 			break;
 		case 'category':
 			$parentid = weTag_getAttribute('parentid', $attribs, 0);

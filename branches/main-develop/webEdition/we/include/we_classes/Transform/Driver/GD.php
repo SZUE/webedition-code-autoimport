@@ -24,7 +24,6 @@
  * @version    CVS: $Id: GD.php,v 1.3 2007/05/25 13:54:17 andreas.frey Exp $
  * @link       http://pear.php.net/package/Image_Transform
  */
-//require_once "Image/Transform.php";
 
 /**
  * GD implementation for Image_Transform package

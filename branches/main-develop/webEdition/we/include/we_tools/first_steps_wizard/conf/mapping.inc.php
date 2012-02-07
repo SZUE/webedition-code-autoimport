@@ -27,4 +27,3 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/conf/mapping.in
 $LU_ParameterNames[] = 'leWizard';
 $LU_ParameterNames[] = 'leStep';
 
-?>

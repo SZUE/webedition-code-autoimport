@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,31 +22,27 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_tag_ifShopPayVat($attribs,$content) {
-	require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-	include_once(WE_CUSTOMER_MODULE_DIR . "we_customertag.inc.php");
-	$namefrom = we_getTagAttribute("customerfrom",$attribs);
+function we_tag_ifShopPayVat($attribs, $content){
+	$namefrom = we_getTagAttribute("customerfrom", $attribs);
 	$weShopVatRule = weShopVatRule::getShopVatRule();
-	if (we_tag('ifRegisteredUser',array(), '')) {
+	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
-	} else {
-	
-		if (isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
-			$cus= new we_customertag($GLOBALS[$namefrom]);
+	} else{
+
+		if(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
+			$cus = new we_customertag($GLOBALS[$namefrom]);
 			$customerarray = $cus->object->DB_WE->Record;
 			unset($cus);
-			if ($customerarray){
+			if($customerarray){
 				$customer = $customerarray;
-			} else {
+			} else{
 				$customer = false;
 			}
-		} else {
+		} else{
 			$customer = false;
 		}
 	}
 
 
 	return $weShopVatRule->executeVatRule($customer);
-
 }

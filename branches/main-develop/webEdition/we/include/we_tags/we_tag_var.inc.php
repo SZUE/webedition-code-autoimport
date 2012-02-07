@@ -71,7 +71,6 @@ function we_tag_var($attribs, $content){
 		case 'shopVat' :
 			if (defined('SHOP_TABLE')) {
 
-				require_once (WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 				$vatId = $GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME);
 				return weShopVats::getVatRateForSite($vatId);
 			}

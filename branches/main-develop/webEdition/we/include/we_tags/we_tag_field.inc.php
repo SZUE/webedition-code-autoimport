@@ -217,7 +217,6 @@ function we_tag_field($attribs, $content){
 				$normVal = we_document::getFieldByVal(
 						$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
-				require_once (WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
 			break;
@@ -492,7 +491,7 @@ function we_tag_field($attribs, $content){
 					}
 				} else{
 
-					$showlink = (!isset($GLOBALS['lv']->ClassName) || $GLOBALS['lv']->ClassName == '' || $GLOBALS['lv']->ClassName == 'we_listview') || ($GLOBALS['lv']->ClassName == 'we_search_listview') || ($GLOBALS['lv']->ClassName == 'we_listview_shopVariants') || ($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart') || ($GLOBALS['lv']->ClassName == 'we_objecttag' && $GLOBALS['lv']->triggerID != '0') || ($GLOBALS['lv']->ClassName == 'we_customertag') || ($GLOBALS['lv']->ClassName == 'we_listview_customer') || ($GLOBALS['lv']->ClassName == 'we_listview_object' && $GLOBALS['lv']->triggerID != '0') || ($tid && $GLOBALS['lv']->ClassName == 'we_listview_object') || ($GLOBALS['lv']->ClassName == 'we_listview_object' && ($GLOBALS['lv']->DB_WE->f(
+					$showlink = (!isset($GLOBALS['lv']->ClassName) || $GLOBALS['lv']->ClassName == '' || $GLOBALS['lv']->ClassName == 'we_listview') || ($GLOBALS['lv']->ClassName == 'we_search_listview') || ($GLOBALS['lv']->ClassName == 'we_shop_listviewShopVariants') || ($GLOBALS['lv']->ClassName == 'we_listview_shoppingCart') || ($GLOBALS['lv']->ClassName == 'we_objecttag' && $GLOBALS['lv']->triggerID != '0') || ($GLOBALS['lv']->ClassName == 'we_customertag') || ($GLOBALS['lv']->ClassName == 'we_listview_customer') || ($GLOBALS['lv']->ClassName == 'we_listview_object' && $GLOBALS['lv']->triggerID != '0') || ($tid && $GLOBALS['lv']->ClassName == 'we_listview_object') || ($GLOBALS['lv']->ClassName == 'we_listview_object' && ($GLOBALS['lv']->DB_WE->f(
 							'OF_Templates') || $GLOBALS['lv']->docID)) || ($GLOBALS['lv']->ClassName == 'we_listview_multiobject' && ($GLOBALS['lv']->DB_WE->f(
 							'OF_Templates') || $GLOBALS['lv']->docID));
 

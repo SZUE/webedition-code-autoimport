@@ -258,7 +258,6 @@ class weMetaData {
 	function _getInstance($value="") {
 		if(!$this->_valid) return false;
 		if(is_readable($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php")) {
-			require_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/weMetaData/classes/".$value.".class.php");
 			$className = "weMetaData_".$value;
 			$this->_instance[$value] = new $className($this->filetype);
 			if(!$this->_instance[$value]->_checkDependencies()) {

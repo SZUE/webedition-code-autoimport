@@ -31,7 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_w
  * @desc    class for tag <we:listview type="shopVariants">
  *
  */
-class we_listview_shopVariants extends listviewBase{
+class we_shop_listviewShopVariants extends listviewBase{
 
 	var $Record = array();
 	var $ClassName = __CLASS__;
@@ -45,7 +45,7 @@ class we_listview_shopVariants extends listviewBase{
 	var $hidedirindex = false;
 	var $objectseourls = false;
 
-	function __construct($name="0", $rows, $defaultname='default', $documentid='', $objectid='', $offset=0, $hidedirindex=false, $objectseourls=false, $triggerID=""){
+	function __construct($name, $rows, $defaultname='default', $documentid='', $objectid='', $offset=0, $hidedirindex=false, $objectseourls=false, $triggerID=""){
 
 		parent::__construct($name, $rows, $offset);
 

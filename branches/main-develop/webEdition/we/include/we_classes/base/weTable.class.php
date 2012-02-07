@@ -27,7 +27,6 @@
  *
  * Provides functions for loading and saving db tables.
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 class weTable{
 

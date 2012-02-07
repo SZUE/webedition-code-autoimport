@@ -43,12 +43,11 @@ function we_tag_order($attribs, $content) {
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	include_once(WE_SHOP_MODULE_DIR . "we_ordertag.inc.php");
 
 	$we_orderid = $we_orderid ? $we_orderid : (isset($_REQUEST["we_orderid"]) ? $_REQUEST["we_orderid"] : 0);
 
 
-	$GLOBALS["lv"] = new we_ordertag($we_orderid, $condition, $hidedirindex);
+	$GLOBALS["lv"] = new we_shop_ordertag($we_orderid, $condition, $hidedirindex);
 	$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 	if (is_array($GLOBALS["we_lv_array"])){
 		array_push($GLOBALS["we_lv_array"], clone($GLOBALS["lv"]));

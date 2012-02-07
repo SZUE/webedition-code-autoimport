@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weVersions{
 
 	protected $ID;
@@ -1966,7 +1965,7 @@ class weVersions{
 			case 'timestamp':
 				return date("d.m.y - H:i:s", $v);
 			case 'status':
-				return g_l('versions','['.$v.']');
+				return g_l('versions', '[' . $v . ']');
 			case 'ParentID':
 				return id_to_path($v, $table);
 			case 'modifierID':
@@ -1978,11 +1977,11 @@ class weVersions{
 			case 'InGlossar':
 			case 'IsDynamic':
 			case 'IsSearchable':
-				return ($v == 1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
+				return ($v == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
 			case 'DocType':
 				return f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = '" . $v . "'", "DocType", $db);
 			case 'RestrictOwners':
-				return ($v == 1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
+				return ($v == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
 			case 'Language':
 				return isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
 			case 'WebUserID':
@@ -2058,9 +2057,9 @@ class weVersions{
 				}
 				return $fieldValueText;
 			case 'fromScheduler':
-				return ($v == 1) ? g_l('versions','[yes]') : g_l('versions','[no]');
+				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
 			case 'fromImport':
-				return ($v == 1) ? g_l('versions','[yes]') : g_l('versions','[no]');
+				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
 			case 'resetFromVersion':
 				return ($v == 0) ? "-" : $v;
 			case 'Category':
@@ -2097,7 +2096,7 @@ class weVersions{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$stat = ($val == 1) ? g_l('versions','[activ]') : g_l('versions','[notactiv]');
+						$stat = ($val == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
 						$fieldValueText .= shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
 					}
 				}
@@ -2131,17 +2130,17 @@ class weVersions{
 				return $fieldValueText . "<br/>";
 			//Scheduler
 			case 'task':
-				return ($v != '' ? g_l('versions','['.$k . '_' . $v.']') : '');
+				return ($v != '' ? g_l('versions', '[' . $k . '_' . $v . ']') : '');
 			case 'type':
-				return g_l('versions','[type_' . $v.']');
+				return g_l('versions', '[type_' . $v . ']');
 			case 'active':
-				return ($v == 1) ? g_l('versions','[yes]') :g_l('versions','[no]');
+				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
 			case 'months':
 				$months = array();
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
-							$months[] = g_l('date','[month][short]['.$k.']');
+							$months[] = g_l('date', '[month][short][' . $k . ']');
 						}
 					}
 				}
@@ -2165,7 +2164,7 @@ class weVersions{
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
-							$weekdays[] = g_l('date','[day][short]['.$k.']');
+							$weekdays[] = g_l('date', '[day][short][' . $k . ']');
 						}
 					}
 				}
@@ -2174,7 +2173,7 @@ class weVersions{
 			case 'time':
 				return date("d.m.y - H:i:s", $v);
 			case 'doctypeAll':
-				return ($v == 1) ? g_l('versions','[yes]') : '';
+				return ($v == 1) ? g_l('versions', '[yes]') : '';
 			case 'DoctypeID':
 				return f("SELECT DocType FROM " . DOC_TYPES_TABLE . " WHERE ID = " . intval($v), "DocType", $db);
 			case 'CategoryIDs':
@@ -2193,7 +2192,7 @@ class weVersions{
 			case '_id':
 				return ($v == "") ? 0 : $v;
 			case '_accessControlOnTemplate':
-				return ($v == 1) ? g_l('versions','[yes]') : g_l('versions','[no]');
+				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
 			case '_errorDocNoLogin':
 				return shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_errorDocNoAccess':
@@ -2201,13 +2200,13 @@ class weVersions{
 			case '_mode':
 				switch($v){
 					case 0:
-						return g_l('modules_customerFilter','[mode_off]');
+						return g_l('modules_customerFilter', '[mode_off]');
 					case 1:
-						return g_l('modules_customerFilter','[mode_all]');
+						return g_l('modules_customerFilter', '[mode_all]');
 					case 2:
-						return g_l('modules_customerFilter','[mode_specific]');
+						return g_l('modules_customerFilter', '[mode_specific]');
 					case 3:
-						return g_l('modules_customerFilter','[mode_filter]');
+						return g_l('modules_customerFilter', '[mode_filter]');
 					default:
 						return '';
 				}

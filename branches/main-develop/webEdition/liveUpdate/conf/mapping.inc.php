@@ -26,7 +26,6 @@
  * map needed variables for the program here, for example map version number
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_version.php');
 
 $LU_Variables = array(
 

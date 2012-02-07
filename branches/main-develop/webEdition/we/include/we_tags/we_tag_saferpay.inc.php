@@ -60,8 +60,6 @@ function we_tag_saferpay($attribs,$content) {
 	$useVat = weTag_getAttribute('usevat',$attribs,false, true);
 
 	if ($useVat) {
-		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
-
 		if (isset($_SESSION['webuser'])) {
 			$_customer = $_SESSION['webuser'];
 		} else {
@@ -168,7 +166,6 @@ function we_tag_saferpay($attribs,$content) {
       $itemPrice = (isset($item['serial']["we_".$pricename]) ? $item['serial']["we_".$pricename] : $item['serial'][$pricename]);
 
         // foreach article we must determine the correct tax-rate
-			require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 			$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 			$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
 			if ($shopVat) { // has selected or standard shop rate
@@ -195,7 +192,6 @@ function we_tag_saferpay($attribs,$content) {
 
 
 	       //get the shipping costs
-	        require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 
 			$weShippingControl = weShippingControl::getShippingControl();
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/version_wizard/we_versions_wizard.inc.php");
 
 $fr = isset($_REQUEST["fr"]) ? $_REQUEST["fr"] : "";
 
-switch ($fr) {
-	
+switch($fr){
+
 	case "body" :
 		print we_versions_wizard::getBody();
 		break;
@@ -42,5 +42,3 @@ switch ($fr) {
 	default :
 		print we_versions_wizard::getFrameset();
 }
-
-?>

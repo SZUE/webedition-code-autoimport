@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
-
 class weShippingControl {
 
 	var $stateField = '';
@@ -34,7 +32,7 @@ class weShippingControl {
 	var $vatRate = 0;
 
 
-	function weShippingControl($stateField, $isNet, $vatId, $shippings) {
+	function __construct($stateField, $isNet, $vatId, $shippings) {
 
 		$this->stateField = $stateField;
 		$this->isNet = $isNet;
@@ -82,7 +80,7 @@ class weShippingControl {
 			$newShipping = new weShipping(
 				$req['weShippingId'],
 				$req['weShipping_text'],
-				weShippingControl::makeArrayFromReq($req['weShipping_countries']),
+				self::makeArrayFromReq($req['weShipping_countries']),
 				$req['weShipping_cartValue'],
 				$req['weShipping_shipping'],
 				($req['weShipping_default'] == '1' ? 1 : 0)

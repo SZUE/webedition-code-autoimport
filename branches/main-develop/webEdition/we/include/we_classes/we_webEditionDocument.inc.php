@@ -751,8 +751,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	function i_areVariantNamesValid(){
 
 		if(defined("SHOP_TABLE")){
-
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			$variationFields = weShopVariants::getAllVariationFields($this);
 
 			if(sizeof($variationFields)){
@@ -1091,27 +1089,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			}
 		}
 
-
-		/* require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_template.inc.php');
-		  $template = new we_template();
-		  // initByID �berschreibt $GLOBALS['we_Table'] und gibt dann einen falschen Wert zur�ck.
-		  if(isset($GLOBALS['we_Table'])) {
-		  $tmp_we_Table = $GLOBALS['we_Table'];
-		  }
-		  $template->initByID($this->TemplateID,TEMPLATES_TABLE);
-		  if(isset($GLOBALS['we_Table']) && isset($tmp_we_Table)) {
-		  $GLOBALS['we_Table'] = $tmp_we_Table;
-		  }
-
-		  if ($checkFields) {
-		  //return $template->canHaveVariants() && sizeof($template->getVariantFields());
-		  $this->hasVariants = $template->canHaveVariants() && sizeof($template->getVariantFields());
-		  } else {
-		  //return $template->canHaveVariants();
-		  $this->hasVariants = $template->canHaveVariants();
-		  }
-		 */
-
 		return $this->hasVariants;
 	}
 
@@ -1119,7 +1096,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 		if($this->canHaveVariants()){
 
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			weShopVariants::correctModelFields($this);
 		}
 	}
@@ -1127,7 +1103,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	function initVariantDataFromDb(){
 
 		if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]["dat"]){
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 
 			// unserialize the variant data when loading the model
 			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
@@ -1141,7 +1116,6 @@ if (!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	function getVariantFields(){
 		if($this->TemplateID == 0)
 			return array();
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_template.inc.php');
 		$template = new we_template();
 		$template->initByID($this->TemplateID, TEMPLATES_TABLE);
 		return $template->getVariantFields();

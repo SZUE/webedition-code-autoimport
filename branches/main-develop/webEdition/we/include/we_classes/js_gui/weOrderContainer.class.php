@@ -39,8 +39,6 @@ class weOrderContainer{
 		$this->containerType = $type;
 	}
 
-// end: PHP5 Constructor
-
 	function getJS($jsPath){
 
 		$src = '';

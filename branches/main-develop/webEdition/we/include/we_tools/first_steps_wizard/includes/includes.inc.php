@@ -29,5 +29,3 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/leW
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/first_steps_wizard/conf/conf.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/first_steps_wizard/conf/mapping.inc.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/first_steps_wizard/includes/functions.inc.php');
-
-?>

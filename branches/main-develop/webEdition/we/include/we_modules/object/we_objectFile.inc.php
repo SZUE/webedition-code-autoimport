@@ -456,8 +456,6 @@ class we_objectFile extends we_document{
 	function i_areVariantNamesValid(){
 
 		if(defined('SHOP_TABLE')){
-
-			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			$variationFields = weShopVariants::getAllVariationFields($this);
 
 			if(sizeof($variationFields)){
@@ -1133,8 +1131,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getShopVatFieldHtml($name, $attribs, $we_editmode = true){
-
-		require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 
 		if($we_editmode){
 
@@ -3157,7 +3153,6 @@ class we_objectFile extends we_document{
 		if($this->TableID == 0){
 			return false;
 		}
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
 		$object = new we_object();
 		$object->initByID($this->TableID, OBJECT_TABLE);
 
@@ -3202,7 +3197,6 @@ class we_objectFile extends we_document{
 	function getVariantFields(){
 		if($this->TableID == 0)
 			return array();
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/object/we_object.inc.php');
 		$object = new we_object();
 		$object->initByID($this->TableID, OBJECT_TABLE);
 		return $object->getVariantFields();
