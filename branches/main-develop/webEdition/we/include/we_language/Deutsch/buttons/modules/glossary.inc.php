@@ -39,7 +39,7 @@ $l_buttons_modules_glossary=array(
 	'new_glossary_textreplacement'=>array(
 		'alt'=>'Neue Text-Ersetzung erstellen...',
 		'value'=>'Neue Text-Ersetzung',
-		'width'=>100,
+		'width'=>150,
 	),
 	'to_glossary'=>array(
 		'alt'=>'zum Glossar hinzufügen ...',
