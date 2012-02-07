@@ -21,8 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 we_html_tools::protect();
 $parts = array();
 
@@ -174,7 +172,7 @@ if($we_show_response){
 	print $we_JavaScript . ';';
 	if($we_responseText){
 		?>
-					 opener.top.toggleBusy(0);
+					opener.top.toggleBusy(0);
 		<?php
 		print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
 	}
@@ -187,67 +185,69 @@ if($_REQUEST['we_cmd'][0] == "deleteDocType"){
 					if(confirm("<?php printf(g_l('weClass', "[doctype_delete_prompt]"), $we_doc->DocType); ?>")) {
 						we_cmd("deleteDocTypeok","<?php print $_REQUEST['we_cmd'][1]; ?>");
 					}
-	<?php }
+	<?php
+	}
 }
-if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){ ?>
-			opener.top.makefocus = self;
-			opener.top.header.document.location.reload();
+if($_REQUEST['we_cmd'][0] == "deleteDocTypeok"){
+	?>
+		opener.top.makefocus = self;
+		opener.top.header.document.location.reload();
 	<?php print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 } ?>
 
-		 var countSaveLoop = 0;
+	var countSaveLoop = 0;
 
-		 function we_save_docType(doc,url) {
-			 acStatus = '';
-			 invalidAcFields = false;
-			 if(YAHOO && YAHOO.autocoml) {
-				 acStatus = YAHOO.autocoml.checkACFields();
-			 } else {
-				 we_submitForm(doc,url);
-				 return;
-			 }
-			 acStatusType = typeof acStatus;
-			 if (countSaveLoop > 10) {
+	function we_save_docType(doc,url) {
+		acStatus = '';
+		invalidAcFields = false;
+		if(YAHOO && YAHOO.autocoml) {
+			acStatus = YAHOO.autocoml.checkACFields();
+		} else {
+			we_submitForm(doc,url);
+			return;
+		}
+		acStatusType = typeof acStatus;
+		if (countSaveLoop > 10) {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) ?>;
-						countSaveLoop = 0;
-					} else if(acStatusType.toLowerCase() == 'object') {
-						if(acStatus.running) {
-							countSaveLoop++;
-							setTimeout('we_save_docType(doc,url)',100);
-						} else if(!acStatus.valid) {
+			countSaveLoop = 0;
+		} else if(acStatusType.toLowerCase() == 'object') {
+			if(acStatus.running) {
+				countSaveLoop++;
+				setTimeout('we_save_docType(doc,url)',100);
+			} else if(!acStatus.valid) {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) ?>;
-								countSaveLoop=0;
-							} else {
-								countSaveLoop=0;
-								we_submitForm(doc,url);
-							}
-						} else {
+				countSaveLoop=0;
+			} else {
+				countSaveLoop=0;
+				we_submitForm(doc,url);
+			}
+		} else {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) ?>;
-					}
-				}
+		}
+	}
 
-				function we_cmd() {
-					var args = "";
-					var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURIComponent(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]) {
-						case "openDocselector":
-						case "openDirselector":
-							new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openCatselector":
-							new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "add_dt_template":
-						case "delete_dt_template":
-						case "dt_add_cat":
-						case "dt_delete_cat":
-						case "save_docType":
-							we_save_docType(self.name,url)
-							break;
-						case "newDocType":
+	function we_cmd() {
+		var args = "";
+		var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURIComponent(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+		switch (arguments[0]) {
+			case "openDocselector":
+			case "openDirselector":
+				new jsWindow(url,"we_fileselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
+				break;
+			case "openCatselector":
+				new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . ',' . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
+				break;
+			case "add_dt_template":
+			case "delete_dt_template":
+			case "dt_add_cat":
+			case "dt_delete_cat":
+			case "save_docType":
+				we_save_docType(self.name,url)
+				break;
+			case "newDocType":
 <?php
 $dtNames = "";
-$DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE.' ORDER BY DocType');
+$DB_WE->query('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
 while($DB_WE->next_record()) {
 	$dtNames .= '\'' . str_replace('\'', '\\\'', $DB_WE->f("DocType")) . '\',';
 }
@@ -256,91 +256,91 @@ $dtNames = substr($dtNames, 0, -1);
 print 'var docTypeNames = new Array(' . $dtNames . ');';
 ?>
 
-								var name = prompt("<?php print g_l('weClass', "[newDocTypeName]"); ?>","");
-								if(name != null) {
-									if((name.indexOf("<") != -1) || (name.indexOf(">") != -1)) {
+				var name = prompt("<?php print g_l('weClass', "[newDocTypeName]"); ?>","");
+				if(name != null) {
+					if((name.indexOf("<") != -1) || (name.indexOf(">") != -1)) {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-												return;
-											}
-											if(name.indexOf("'") != -1 || name.indexOf('"') != -1 || name.indexOf(',') != -1) {
+						return;
+					}
+					if(name.indexOf("'") != -1 || name.indexOf('"') != -1 || name.indexOf(',') != -1) {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[doctype_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-											}
-											else if(name=="") {
+					}
+					else if(name=="") {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[doctype_empty]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-											}
-											else if(in_array(docTypeNames,name)) {
+					}
+					else if(in_array(docTypeNames,name)) {
 <?php print we_message_reporting::getShowMessageCall(g_l('alert', "[doctype_exists]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
-											}
-											else {
-												if (top.opener.top.header) {
-													top.opener.top.header.location.reload();
-												}
-												self.location = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]="+encodeURIComponent(name);
-											}
-										}
-										break;
-									case "change_docType":
-									case "deleteDocType":
-									case "deleteDocTypeok":
-										self.location = url;
-										break;
-									default:
-										for(var i = 0; i < arguments.length; i++) {
-											args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-										}
-										eval('opener.top.we_cmd('+args+')');
-									}
-								}
+					}
+					else {
+						if (top.opener.top.header) {
+							top.opener.top.header.location.reload();
+						}
+						self.location = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]="+encodeURIComponent(name);
+					}
+				}
+				break;
+			case "change_docType":
+			case "deleteDocType":
+			case "deleteDocTypeok":
+				self.location = url;
+				break;
+			default:
+				for(var i = 0; i < arguments.length; i++) {
+					args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+				}
+				eval('opener.top.we_cmd('+args+')');
+			}
+		}
 
 
-								function we_submitForm(target,url) {
-									var f = self.document.we_form;
-									f.target = target;
-									f.action = url;
-									f.method = "post";
-									f.submit();
-								}
+		function we_submitForm(target,url) {
+			var f = self.document.we_form;
+			f.target = target;
+			f.action = url;
+			f.method = "post";
+			f.submit();
+		}
 
-								function doUnload() {
-									if(jsWindow_count) {
-										for(i=0;i<jsWindow_count;i++) {
-											eval("jsWindow"+i+"Object.close()");
-										}
-									}
-									opener.top.dc_win_open=false;
-								}
+		function doUnload() {
+			if(jsWindow_count) {
+				for(i=0;i<jsWindow_count;i++) {
+					eval("jsWindow"+i+"Object.close()");
+				}
+			}
+			opener.top.dc_win_open=false;
+		}
 
-								function in_array(haystack, needle) {
-									for(var i=0;i<haystack.length;i++) {
-										if(haystack[i] == needle)
-											return true;
-									}
-									return false;
-								}
+		function in_array(haystack, needle) {
+			for(var i=0;i<haystack.length;i++) {
+				if(haystack[i] == needle)
+					return true;
+			}
+			return false;
+		}
 
-								function makeNewEntry(icon,id,pid,txt,offen,ct,tab) {
-									opener.top.makeNewEntry(icon,id,pid,txt,offen,ct,tab);
-								}
+		function makeNewEntry(icon,id,pid,txt,offen,ct,tab) {
+			opener.top.makeNewEntry(icon,id,pid,txt,offen,ct,tab);
+		}
 
-								function updateEntry(id,text,pid,tab) {
-									opener.top.updateEntry(id,text,pid,tab);
-								}
+		function updateEntry(id,text,pid,tab) {
+			opener.top.updateEntry(id,text,pid,tab);
+		}
 
-								function disableLangDefault(allnames,allvalues,deselect){
-									var arr = allvalues.split(",");
+		function disableLangDefault(allnames,allvalues,deselect){
+			var arr = allvalues.split(",");
 
-									for(var v in arr){
-										w=allnames+'['+arr[v]+']';
-										e = document.getElementById(w);
-										e.disabled=false;
-									}
-									w=allnames+'['+deselect+']';
-									e = document.getElementById(w);
-									e.disabled=true;
+			for(var v in arr){
+				w=allnames+'['+arr[v]+']';
+				e = document.getElementById(w);
+				e.disabled=false;
+			}
+			w=allnames+'['+deselect+']';
+			e = document.getElementById(w);
+			e.disabled=true;
 
 
-								}
-								//-->
+		}
+		//-->
 </script>
 <?php print STYLESHEET; ?>
 </head>

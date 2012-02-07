@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,9 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
 
 we_html_tools::protect();
@@ -34,37 +31,37 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 
 //	Include javaMenu information for this module
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/java_menu/modules/module_menu_shop.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_shop.inc.php");
 
-	$port = defined("HTTP_PORT") ? HTTP_PORT : "";
-	$protocol=getServerProtocol();
-	$jmenu = new weJavaMenu($we_menu_shop,SERVER_NAME,"top.opener.top.load",$protocol,$port,350,30);
+$port = defined("HTTP_PORT") ? HTTP_PORT : "";
+$protocol = getServerProtocol();
+$jmenu = new weJavaMenu($we_menu_shop, SERVER_NAME, "top.opener.top.load", $protocol, $port, 350, 30);
 
-echo we_html_element::jsScript(JS_DIR.'images.js');
-	?>
+echo we_html_element::jsScript(JS_DIR . 'images.js');
+?>
 
-	<script type="text/javascript"><!--
-        function menuaction(cmd){
-				top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
-	    }
-			//-->
-	</script>
-	</head>
-	<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
+<script type="text/javascript"><!--
+	function menuaction(cmd){
+		top.opener.top.load.location.replace("/webEdition/we_lcmd.php?we_cmd[0]="+cmd);
+	}
+	//-->
+</script>
+</head>
+<body style="background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat:repeat;margin:0px;">
 
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td align=left valign=top>
-					<?php $jmenu->printMenu(); ?>
-				</td>
-				<td align="right">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td align=left valign=top>
+<?php $jmenu->printMenu(); ?>
+			</td>
+			<td align="right">
 				<?php
-					include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
-					print createMessageConsole("moduleFrame");
+				include_once( $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/jsMessageConsole/messageConsole.inc.php" );
+				print createMessageConsole("moduleFrame");
 				?>
-				</td>
-			</tr>
-		</table>
-	</body>
+			</td>
+		</tr>
+	</table>
+</body>
 </html>

@@ -1188,7 +1188,6 @@ class weBackupWizard{
 					$do_import_after_backup = (isset($_REQUEST["do_import_after_backup"]) && $_REQUEST["do_import_after_backup"]) ? 1 : 0;
 					if($do_import_after_backup == 1){
 						$body = we_button::create_button("next", "javascript:top.body.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=busy';");
-						//$body=we_button::create_button("next", "javascript:top.body.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=body&step=2';javascript:top.busy.location='/webEdition/we/include/we_editors/we_recover_backup.php?pnt=cmd';javascript:top.cmd.location='/webEdition/we/include/we_exim/we_backup_cmd.inc.php?cmd=import';");
 					} else if(isset($_SESSION["inbackup"]) && $_SESSION["inbackup"]){
 						$body = we_button::create_button("next", "javascript:top.opener.weiter();top.close();");
 						unset($_SESSION["inbackup"]);

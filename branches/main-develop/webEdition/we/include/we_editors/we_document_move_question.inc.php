@@ -21,29 +21,26 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('global','[question]'));
+we_html_tools::htmlTop(g_l('global', '[question]'));
 
 $yesCmd = "url = '" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter';new jsWindow(url,'templateMoveQuestion',-1,-1,600,135,true,false,true);opener.top.toggleBusy(1);self.close();";
 $noCmd = "self.close();opener.top.toggleBusy(0);";
 $cancelCmd = "self.close();opener.top.toggleBusy(0);";
 
-$alerttext = g_l('alert',"[document_move_warning]");
+$alerttext = g_l('alert', "[document_move_warning]");
 
-echo we_html_element::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script  type="text/javascript">
-<!--
-self.focus();
-//-->
+	<!--
+	self.focus();
+	//-->
 </script>
 <?php print STYLESHEET; ?>
-	</head>
-	<body class="weEditorBody" onBlur="self.focus()">
-	  <?php print we_html_tools::htmlYesNoCancelDialog($alerttext,IMAGE_DIR."alert.gif",true,true,true,$yesCmd,$noCmd,$cancelCmd); ?>
-	</body>
+</head>
+<body class="weEditorBody" onBlur="self.focus()">
+<?php print we_html_tools::htmlYesNoCancelDialog($alerttext, IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
+</body>
 
 </html>

@@ -39,5 +39,3 @@ if (isset($_REQUEST["leWizard"])) {
 	include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/first_steps_wizard/includes/template.inc.php');
 
 }
-
-?>

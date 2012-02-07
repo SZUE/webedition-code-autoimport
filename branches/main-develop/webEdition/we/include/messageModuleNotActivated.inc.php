@@ -21,10 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-
 we_html_tools::htmlTop();
 print STYLESHEET;
 
@@ -32,15 +28,14 @@ $content = '
 <table border="0" cellpadding="7" width="100%" class="defaultfont">
 <tr>
 	<td colspan="2"><strong>' . sprintf(
-		g_l('moduleActivation','[headline]'),
-		$_moduleName) . '</strong></td>
+		g_l('moduleActivation', '[headline]'), $_moduleName) . '</strong></td>
 </tr>
 <tr>
 	<td valign="top">
 		<img src="' . IMAGE_DIR . "alert.gif" . '" />
 	</td>
 	<td class="defaultfont">
-		' . $g_l('moduleActivation','[content]') . '
+		' . $g_l('moduleActivation', '[content]') . '
 	</td>
 </tr>
 </table>';
@@ -48,10 +43,8 @@ $content = '
 </head>
 
 <body bgcolor="#ffffff"
-	background="<?php
-	print IMAGE_DIR?>backgrounds/aquaBackground.gif"
-	onload="self.focus();" onBlur="setTimeout('self.close()',500);">
-<?php
-print $content?>
+			background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif"
+			onload="self.focus();" onBlur="setTimeout('self.close()',500);">
+				<?php print $content ?>
 </body>
 </html>

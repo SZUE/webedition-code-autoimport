@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,31 +22,29 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/*****************************************************************************
+/* * ***************************************************************************
  * INCLUDES
- *****************************************************************************/
+ * *************************************************************************** */
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-/*****************************************************************************
+/* * ***************************************************************************
  * INITIALIZATION
- *****************************************************************************/
+ * *************************************************************************** */
 
 we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
-/*****************************************************************************
+/* * ***************************************************************************
  * CREATE JAVASCRIPT
- *****************************************************************************/
+ * *************************************************************************** */
 
 // Define needed JS
 
-$_meta_field_empty_messsage = addslashes(g_l('metadata','[error_meta_field_empty_msg]'));
-$_meta_field_wrong_chars_messsage = addslashes(g_l('metadata','[meta_field_wrong_chars_messsage]'));
-$_meta_field_wrong_name_messsage = addslashes(g_l('metadata','[meta_field_wrong_name_messsage]'));
+$_meta_field_empty_messsage = addslashes(g_l('metadata', '[error_meta_field_empty_msg]'));
+$_meta_field_wrong_chars_messsage = addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]'));
+$_meta_field_wrong_name_messsage = addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]'));
 
 $_javascript = <<< END_OF_SCRIPT
 <!--
@@ -102,14 +101,14 @@ function checkMetaFieldName(inpElem, nr) {
 //-->
 END_OF_SCRIPT;
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
 print STYLESHEET . we_html_element::jsElement($_javascript) . "</head>";
 
 
 $okbut = we_button::create_button("ok", "javascript:we_save();");
-$cancelbut = we_button::create_button("cancel", "javascript:".((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ?  ($_REQUEST["closecmd"].";") : "")."top.close()");
+$cancelbut = we_button::create_button("cancel", "javascript:" . ((isset($_REQUEST["closecmd"]) && $_REQUEST["closecmd"]) ? ($_REQUEST["closecmd"] . ";") : "") . "top.close()");
 
-print we_html_element::htmlBody(array("class"=>"weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "",0) . "</html>");
+print we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 0) . "</html>");

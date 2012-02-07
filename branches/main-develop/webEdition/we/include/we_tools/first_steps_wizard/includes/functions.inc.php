@@ -22,22 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_loadDefaultMasterTemplateConfig(){
 
-function we_loadDefaultMasterTemplateConfig()
-{
-	
 	$file = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
-	if (!file_exists($file) || !is_file($file)) {
+	if(!file_exists($file) || !is_file($file)){
 		we_writeDefaultMasterTemplateConfig(0);
-	
 	}
 	include_once ($file);
-
 }
 
-function we_writeDefaultMasterTemplateConfig($default)
-{
-	
+function we_writeDefaultMasterTemplateConfig($default){
+
 	$code = <<<EOF
 <?php
 
@@ -46,16 +41,14 @@ define("FSW_DEFAULT_MASTER_TEMPLATE", {$default});
 
 ?>
 EOF;
-	
+
 	$file = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/first_steps_wizard/conf/defaultMasterTemplate.inc.php";
 	$fh = fopen($file, "w+");
-	if (!$fh) {
+	if(!$fh){
 		return false;
-	
 	}
 	fputs($fh, $code);
 	return fclose($fh);
-
 }
 
 ?>

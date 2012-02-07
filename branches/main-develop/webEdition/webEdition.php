@@ -1244,7 +1244,7 @@ function we_cmd() {
 			break;
 		case "edit_home":
 			if(arguments[1]=='add'){
-				self.load.location='<?php print WEBEDITION_DIR; ?>we/include/we_widgets/cmd.inc.php?we_cmd[0]='+arguments[1]+'&we_cmd[1]='+arguments[2]+'&we_cmd[2]='+arguments[3];
+				self.load.location='<?php print WEBEDITION_DIR; ?>we/include/we_widgets/cmd.php?we_cmd[0]='+arguments[1]+'&we_cmd[1]='+arguments[2]+'&we_cmd[2]='+arguments[3];
 			}
 			break;
 		case "edit_navi":

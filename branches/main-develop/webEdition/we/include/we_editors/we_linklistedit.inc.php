@@ -21,10 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-function getLangField($name, $value, $title, $width) {
+function getLangField($name, $value, $title, $width){
 	$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", $width - 50);
 	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 						<option value=""></option>
@@ -40,7 +39,7 @@ function getLangField($name, $value, $title, $width) {
 	return we_html_tools::htmlFormElementTable($input, $title, "left", "small", $select);
 }
 
-function getRevRelSelect($type, $value) {
+function getRevRelSelect($type, $value){
 	$input = we_html_tools::htmlTextInput($type, 15, $value, "", '', "text", 70);
 	$select = '<select name="' . $type . '_sel" class="defaultfont" size="1" style="width:70px;" onchange="this.form.elements[\'' . $type . '\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 <option></option>
@@ -68,11 +67,11 @@ function getRevRelSelect($type, $value) {
 $we_dt = $_SESSION["we_data"][$we_transaction];
 include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
-if (isset($we_doc->elements["Charset"]["dat"])) { //	send charset which might be determined in template
-	we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
+if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be determined in template
+	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
-if (isset($_REQUEST["ok"]) && $_REQUEST["ok"]) {
+if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$alt = $_REQUEST["alt"];
 	$img_title = $_REQUEST["img_title"];
 	$text = $_REQUEST["text"];
@@ -88,19 +87,19 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"]) {
 	$params = $_REQUEST["params"];
 	$title = $_REQUEST["title"];
 
-	if (strlen($anchor) > 0) { //	accept anchor with or without '#', when saving the link
+	if(strlen($anchor) > 0){ //	accept anchor with or without '#', when saving the link
 		$anchor = (substr($anchor, 0, 1) == '#' ? $anchor : '#' . $anchor);
 		$_REQUEST["anchor"] = $anchor;
 	}
 
-	if (strlen($params) > 0) { //	accept parameters with or without '?', when saving the link
+	if(strlen($params) > 0){ //	accept parameters with or without '?', when saving the link
 		//	when type=object we need a '&'
-		if ($_REQUEST["type"] == "obj") {
-			if (substr($params, 0, 1) != '&') {
+		if($_REQUEST["type"] == "obj"){
+			if(substr($params, 0, 1) != '&'){
 				$params = (substr($params, 0, 1) == '?' ? '&' . substr($params, 1) : '&' . $params);
 			}
-		} else {
-			if (substr($params, 0, 1) != '?') {
+		} else{
+			if(substr($params, 0, 1) != '?'){
 				$params = (substr($params, 0, 1) == '&' ? '?' . substr($params, 1) : '?' . $params);
 			}
 		}
@@ -109,18 +108,18 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"]) {
 	}
 }
 
-if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && $_REQUEST["linklist"]) {
+if(isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] && $_REQUEST["linklist"]){
 	$linklist = $_REQUEST["linklist"];
 	//  set $nr to global, because it is used everywhere;
 	$nr = $_REQUEST["nr"];
 	$ll = new we_linklist($linklist);
 	$ll->setID($_REQUEST["nr"], $_REQUEST["id"]);
-	if (defined("OBJECT_TABLE")) {
+	if(defined("OBJECT_TABLE")){
 		$ll->setObjID($_REQUEST["nr"], $_REQUEST["obj_id"]);
 	}
-	if ($_REQUEST["type"] == "mail") {
+	if($_REQUEST["type"] == "mail"){
 		$ll->setHref($_REQUEST["nr"], "mailto:" . str_replace('mailto:', '', $_REQUEST["emaillink"]));
-	} else {
+	} else{
 		$ll->setHref($_REQUEST["nr"], $_REQUEST["href"]);
 	}
 	$ll->setAnchor($_REQUEST["nr"], $_REQUEST["anchor"]);
@@ -162,10 +161,10 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	$ll->setImageAttrib($_REQUEST["nr"], "alt", $_REQUEST["alt"]);
 
 	$linklist = $ll->getString();
-} else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"]) {
+} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$ln = array();
 	$ln["id"] = $_REQUEST["id"];
-	if (defined("OBJECT_TABLE")) {
+	if(defined("OBJECT_TABLE")){
 		$ln["obj_id"] = $_REQUEST["obj_id"];
 	}
 	$ln["anchor"] = $_REQUEST["anchor"];
@@ -178,9 +177,9 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	$ln["params"] = $_REQUEST["params"];
 	$ln["title"] = $_REQUEST["title"];
 
-	if ($_REQUEST["type"] == "mail") {
+	if($_REQUEST["type"] == "mail"){
 		$ln["href"] = "mailto:" . str_replace('mailto:', '', $_REQUEST["emaillink"]);
-	} else {
+	} else{
 		$ln["href"] = $_REQUEST["href"];
 	}
 
@@ -214,17 +213,17 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 	$ln["alt"] = $_REQUEST["alt"];
 	$ln["img_title"] = $_REQUEST["img_title"];
 	$link = serialize($ln);
-} else {
+} else{
 	$name = $_REQUEST['we_cmd'][1];
 	$nr = isset($_REQUEST['we_cmd'][2]) ? $_REQUEST['we_cmd'][2] : "";
-	if ($nr != "") {
+	if($nr != ""){
 		$ll = new we_linklist($we_doc->getElement($name));
 		$href = $ll->getHref($nr);
-		if (strlen($href) >= 7 && substr($href, 0, 7) == "mailto:") {
+		if(strlen($href) >= 7 && substr($href, 0, 7) == "mailto:"){
 			$emaillink = substr($href, 7);
 			$href = "";
 			$type = "mail";
-		} else {
+		} else{
 			$type = $ll->getType($nr);
 			$type = empty($type) ? "int" : $type;
 			$emaillink = "";
@@ -255,7 +254,7 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 		$jslocation = $ll->getJsWinAttrib($nr, "jslocation");
 
 		$id = $ll->getID($nr);
-		if (defined("OBJECT_TABLE")) {
+		if(defined("OBJECT_TABLE")){
 			$obj_id = $ll->getObjID($nr);
 			$href_obj = $ll->getHrefObj($nr);
 		}
@@ -272,17 +271,17 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 		$href_int = $ll->getHrefInt($nr);
 		$src_int = $ll->getImageSrcInt($nr);
 		$ctype = $ll->getCType($nr);
-	} else {
+	} else{
 		$ln = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
-		if (!sizeof($ln)) {
+		if(!sizeof($ln)){
 			$ln = array("ctype" => "text", "type" => "int", "href" => "http://", "text" => g_l('global', "[new_link]"));
 		}
 		$href = isset($ln["href"]) ? $ln["href"] : "";
-		if (strlen($href) >= 7 && substr($href, 0, 7) == "mailto:") {
+		if(strlen($href) >= 7 && substr($href, 0, 7) == "mailto:"){
 			$emaillink = substr($href, 7);
 			$href = "";
 			$type = "mail";
-		} else {
+		} else{
 			$type = isset($ln["type"]) ? $ln["type"] : "int";
 			$emaillink = "";
 		}
@@ -323,22 +322,22 @@ if (isset($_REQUEST["ok"]) && isset($_REQUEST["linklist"]) && $_REQUEST["ok"] &&
 		$align = isset($ln["align"]) ? $ln["align"] : "";
 		$alt = isset($ln["alt"]) ? $ln["alt"] : "";
 		$img_title = isset($ln["img_title"]) ? $ln["img_title"] : "";
-		$href_int = (isset($id) && $id) ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id) , "Path", $DB_WE) : "";
-		if (defined("OBJECT_TABLE")) {
+		$href_int = (isset($id) && $id) ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "Path", $DB_WE) : "";
+		if(defined("OBJECT_TABLE")){
 			$obj_id = isset($ln["obj_id"]) ? $ln["obj_id"] : "";
-			$href_obj = (isset($obj_id) && $obj_id) ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($obj_id) , "Path", $DB_WE) : "";
+			$href_obj = (isset($obj_id) && $obj_id) ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=" . intval($obj_id), "Path", $DB_WE) : "";
 		}
-		$src_int = (isset($img_id) && $img_id) ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($img_id) , "Path", $DB_WE) : "";
+		$src_int = (isset($img_id) && $img_id) ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($img_id), "Path", $DB_WE) : "";
 		$ctype = isset($ln["ctype"]) ? $ln["ctype"] : "";
 	}
 }
 
-we_html_tools::htmlTop(g_l('linklistEdit', "[edit_link]"), isset($we_doc->elements["Charset"]["dat"])?$we_doc->elements["Charset"]["dat"]:'');
+we_html_tools::htmlTop(g_l('linklistEdit', "[edit_link]"), isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
 $yuiSuggest = & weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles();
 echo $yuiSuggest->getYuiJsFiles();
 print we_html_element::jsScript(JS_DIR . "keyListener.js");
-echo we_html_element::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script  type="text/javascript"><!--
 
@@ -429,7 +428,7 @@ echo we_html_element::jsScript(JS_DIR.'windows.js');
 <?php
 $_REQUEST["we_transaction"] = (preg_match('|^([a-f0-9]){32}$|i', $_REQUEST["we_transaction"]) ? $_REQUEST["we_transaction"] : 0);
 
-if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_class") {
+if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_class"){
 	$_SESSION["WE_LINK"] = $link;
 	//FIXME: we_field XSS
 	?>
@@ -437,25 +436,26 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit
 			opener.we_cmd("change_link_at_class", "<?php print $_REQUEST["we_transaction"]; ?>", "<?php print $_REQUEST["we_field"]; ?>", "<?php print $_REQUEST["name"]; ?>");
 			top.close();
 	<?php
-} else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_object") {
+} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit_link_at_object"){
 	$_SESSION["WE_LINK"] = $link;
 	?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link_at_object", "<?php print $_REQUEST["we_transaction"]; ?>", "link_<?php print $_REQUEST["name"]; ?>");
 			top.close();
 	<?php
-} else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($linklist) && $linklist) {
-	 $_SESSION["WE_LINKLIST"] = $linklist; ?>
-					opener.setScrollTo();
-					opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
+} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($linklist) && $linklist){
+	$_SESSION["WE_LINKLIST"] = $linklist;
+	?>
+			 opener.setScrollTo();
+			 opener.we_cmd("change_linklist", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
-} else if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($link) && $link) {
+} else if(isset($_REQUEST["ok"]) && $_REQUEST["ok"] && isset($link) && $link){
 	$_SESSION["WE_LINK"] = $link;
 	?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link", "<?php print $_REQUEST["name"]; ?>", "");
 	<?php
-} else {
+} else{
 	?>
 			function we_cmd() {
 				var args = "";
@@ -489,7 +489,7 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit
 	<?php
 }
 ?>
-//-->
+		//-->
 </script>
 
 <?php print STYLESHEET; ?>
@@ -497,10 +497,10 @@ if (isset($_REQUEST["ok"]) && $_REQUEST["ok"] && $_REQUEST['we_cmd'][0] == "edit
 </head>
 
 <body class="weDialogBody" style="overflow:hidden;">
-<?php
-if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
+	<?php
+	if(!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]){
 
-	$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
+		$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="ext"' . (($type == "ext") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="int"' . (($type == "int") ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
 <option value="mail"' . (($type == "mail") ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
@@ -510,68 +510,68 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 
 
 
-	//javascript:we_cmd('browse_server', 'document.we_form.href.value', '', document.we_form.href.value, '');
-	$wecmdenc1 = we_cmd_enc("document.we_form.href.value");
-	$wecmdenc4 = '';
-	$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
-	if ($GLOBALS['BROWSER'] == "SAFARI") {
-		$butspace = 8;
-	} else {
-		$butspace = 10;
-	}
-	$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, "", '', "text", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
-	$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", '', "text", 300);
+		//javascript:we_cmd('browse_server', 'document.we_form.href.value', '', document.we_form.href.value, '');
+		$wecmdenc1 = we_cmd_enc("document.we_form.href.value");
+		$wecmdenc4 = '';
+		$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
+		if($GLOBALS['BROWSER'] == "SAFARI"){
+			$butspace = 8;
+		} else{
+			$butspace = 10;
+		}
+		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, "", '', "text", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
+		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", '', "text", 300);
 
-	//javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_int\\'].value','','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
-	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['id'].value");
-	$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_int'].value");
-	$wecmdenc3 = '';
-
-	$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-
-	$yuiSuggest->setAcId("Doc");
-	$yuiSuggest->setContentType("folder,text/webEdition,text/html");
-	$yuiSuggest->setInput("href_int", $href_int);
-	$yuiSuggest->setMaxResults(20);
-	$yuiSuggest->setMayBeEmpty(true);
-	$yuiSuggest->setResult("id", $id);
-	$yuiSuggest->setSelector("Docselector");
-	$yuiSuggest->setWidth(300);
-	$yuiSuggest->setSelectButton($but, 10);
-
-	$intLink = $yuiSuggest->getHTML();
-	if (defined("OBJECT_TABLE")) {
-		//javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','document.forms[\\'we_form\\'].elements[\\'obj_id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_obj\\'].value','','".session_id()."','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");"
-		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['obj_id'].value");
-		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_obj'].value");
+		//javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_int\\'].value','','".session_id()."',0,'',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");")
+		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['id'].value");
+		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_int'].value");
 		$wecmdenc3 = '';
-		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
-		$yuiSuggest->setAcId("Obj");
-		$yuiSuggest->setContentType("folder,objectFile");
-		$yuiSuggest->setInput("href_obj", $href_obj);
+		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "',0,''," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+
+		$yuiSuggest->setAcId("Doc");
+		$yuiSuggest->setContentType("folder,text/webEdition,text/html");
+		$yuiSuggest->setInput("href_int", $href_int);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult("obj_id", $obj_id);
+		$yuiSuggest->setResult("id", $id);
 		$yuiSuggest->setSelector("Docselector");
-		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($but, 10);
 
-		$objLink = $yuiSuggest->getHTML();
-	}
-	$anchor = we_html_tools::htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
-	$accesskey = we_html_tools::htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
-	$tabindex = we_html_tools::htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);
-	$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);
-	$relfield = getRevRelSelect("rel", $rel);
-	$revfield = getRevRelSelect("rev", $rev);
-	$hreflang = getLangField('hreflang', $hreflang, g_l('linklistEdit', '[href_language]'), 140);
-	$params = we_html_tools::htmlTextInput("params", 30, $params, "", "", "text", 300);
-	$title = we_html_tools::htmlTextInput("title", 30, $title, "", "", "text", 300);
-	$ctarget = we_html_tools::targetBox("target", 30, 300, "", $target);
-	$cattribs = we_html_tools::htmlTextInput("attribs", 30, $attribs, "", "", "text", 300);
-	$jsWinProps = '
+		$intLink = $yuiSuggest->getHTML();
+		if(defined("OBJECT_TABLE")){
+			//javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','document.forms[\\'we_form\\'].elements[\\'obj_id\\'].value','document.forms[\\'we_form\\'].elements[\\'href_obj\\'].value','','".session_id()."','','objectFile',".(we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1).");"
+			$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['obj_id'].value");
+			$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['href_obj'].value");
+			$wecmdenc3 = '';
+			$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','objectFile'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+
+			$yuiSuggest->setAcId("Obj");
+			$yuiSuggest->setContentType("folder,objectFile");
+			$yuiSuggest->setInput("href_obj", $href_obj);
+			$yuiSuggest->setMaxResults(20);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult("obj_id", $obj_id);
+			$yuiSuggest->setSelector("Docselector");
+			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+			$yuiSuggest->setWidth(300);
+			$yuiSuggest->setSelectButton($but, 10);
+
+			$objLink = $yuiSuggest->getHTML();
+		}
+		$anchor = we_html_tools::htmlTextInput("anchor", 30, $anchor, "", "", "text", 300);
+		$accesskey = we_html_tools::htmlTextInput("accesskey", 30, $accesskey, "", "", "text", 140);
+		$tabindex = we_html_tools::htmlTextInput("tabindex", 30, $tabindex, "", "", "text", 140);
+		$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);
+		$relfield = getRevRelSelect("rel", $rel);
+		$revfield = getRevRelSelect("rev", $rev);
+		$hreflang = getLangField('hreflang', $hreflang, g_l('linklistEdit', '[href_language]'), 140);
+		$params = we_html_tools::htmlTextInput("params", 30, $params, "", "", "text", 300);
+		$title = we_html_tools::htmlTextInput("title", 30, $title, "", "", "text", 300);
+		$ctarget = we_html_tools::targetBox("target", 30, 300, "", $target);
+		$cattribs = we_html_tools::htmlTextInput("attribs", 30, $attribs, "", "", "text", 300);
+		$jsWinProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width="100%">
 					<tr>
 						<td class="small">
@@ -634,7 +634,7 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 						<td></td>
 					</tr>
 				</table>';
-	$foo = '
+		$foo = '
 				<table border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td>
@@ -645,42 +645,42 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 							' . we_forms::checkbox("1", $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 					</tr>
 				</table>';
-	$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
+		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 
 
-	$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
+		$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
 <option value="text"' . (($ctype == "text") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[text]")) . '</option>
 <option value="ext"' . (($ctype == "ext") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[external_image]")) . '</option>
 <option value="int"' . (($ctype == "int") ? ' selected="selected"' : '') . '>' . htmlspecialchars(g_l('linklistEdit', "[internal_image]")) . '</option>
 </select>';
 
 
-	$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
+		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-	//javascript:we_cmd('browse_server', 'document.we_form.img_src.value', '', document.we_form.img_src.value, '')
-	$wecmdenc1 = we_cmd_enc("document.we_form.img_src.value");
-	$wecmdenc4 = '';
-	$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
-	$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), $but, "", "", "", 0);
+		//javascript:we_cmd('browse_server', 'document.we_form.img_src.value', '', document.we_form.img_src.value, '')
+		$wecmdenc1 = we_cmd_enc("document.we_form.img_src.value");
+		$wecmdenc4 = '';
+		$but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
+		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), $but, "", "", "", 0);
 
-	//javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'img_id\\'].value','document.forms[\\'we_form\\'].elements[\\'src_int\\'].value','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
-	$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['img_id'].value");
-	$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['src_int'].value");
-	$wecmdenc3 = '';
-	$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','image/*'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		//javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','document.forms[\\'we_form\\'].elements[\\'img_id\\'].value','document.forms[\\'we_form\\'].elements[\\'src_int\\'].value','','".session_id()."','','image/*',".(we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1).");"
+		$wecmdenc1 = we_cmd_enc("document.forms['we_form'].elements['img_id'].value");
+		$wecmdenc2 = we_cmd_enc("document.forms['we_form'].elements['src_int'].value");
+		$wecmdenc3 = '';
+		$but = we_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "','','image/*'," . (we_hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-	$yuiSuggest->setAcId("Image");
-	$yuiSuggest->setContentType("folder,image/*");
-	$yuiSuggest->setInput("src_int", $src_int);
-	$yuiSuggest->setMaxResults(20);
-	$yuiSuggest->setMayBeEmpty(true);
-	$yuiSuggest->setResult('img_id', $img_id);
-	$yuiSuggest->setSelector("Docselector");
-	$yuiSuggest->setWidth(300);
-	$yuiSuggest->setSelectButton($but, 10);
+		$yuiSuggest->setAcId("Image");
+		$yuiSuggest->setContentType("folder,image/*");
+		$yuiSuggest->setInput("src_int", $src_int);
+		$yuiSuggest->setMaxResults(20);
+		$yuiSuggest->setMayBeEmpty(true);
+		$yuiSuggest->setResult('img_id', $img_id);
+		$yuiSuggest->setSelector("Docselector");
+		$yuiSuggest->setWidth(300);
+		$yuiSuggest->setSelectButton($but, 10);
 
-	$intImg = $yuiSuggest->getHTML();
-	$imgProps = '
+		$intImg = $yuiSuggest->getHTML();
+		$imgProps = '
 				<table cellspacing="0" cellpadding="0" border="0" width="100%">
 					<tr>
 						<td class="small">
@@ -757,11 +757,11 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 							' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td>
 					</tr>
 				</table>';
-	$buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:document.forms['we_form'].submit()"), null, we_button::create_button("cancel", "javascript:self.close()"));
+		$buttons = we_button::position_yes_no_cancel(we_button::create_button("save", "javascript:document.forms['we_form'].submit()"), null, we_button::create_button("cancel", "javascript:self.close()"));
 
-	$_parts = array();
+		$_parts = array();
 
-	$_html = '<table cellpadding="0" cellspacing="0" border="0">
+		$_html = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr>
 						<td>
 							' . $_select_type . '</td>
@@ -786,12 +786,12 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 ' : '') . '
 </table>';
 
-	$_parts[] = array('headline' => 'URL',
+		$_parts[] = array('headline' => 'URL',
 			'html' => $_html,
 			'space' => '150',
 			'noline' => 1);
 
-	$_html = '
+		$_html = '
 				<table cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td>
@@ -813,29 +813,29 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 					</tr>
 				</table><div></div>';
 
-	$_parts[] = array('headline' => g_l('global', "[content]"),
+		$_parts[] = array('headline' => g_l('global', "[content]"),
 			'html' => $_html,
 			'space' => '150');
 
 
-	$_parts[] = array('headline' => g_l('linklistEdit', "[link_anchor]"),
+		$_parts[] = array('headline' => g_l('linklistEdit', "[link_anchor]"),
 			'html' => $anchor,
 			'space' => '150',
 			'noline' => 1);
 
-	$_parts[] = array('headline' => g_l('linklistEdit', "[link_params]"),
+		$_parts[] = array('headline' => g_l('linklistEdit', "[link_params]"),
 			'html' => $params,
 			'space' => '150',
 			'noline' => 1);
 
-	$_parts[] = array('headline' => g_l('linklistEdit', "[link_target]"),
+		$_parts[] = array('headline' => g_l('linklistEdit', "[link_target]"),
 			'html' => $ctarget,
 			'space' => '150');
 
 
-	if (we_hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")) {
-		//   start of accessible parameters
-		$_html = '<table border="0" cellpadding="0" cellspacing="0">
+		if(we_hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
+			//   start of accessible parameters
+			$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>' . $lang . '</td>
                                 <td>' . we_html_tools::getPixel(20, 5) . '</td>
@@ -843,17 +843,17 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
                             </tr>
 			                 </table>';
 
-		$_parts[] = array('headline' => g_l('linklistEdit', '[language]'),
+			$_parts[] = array('headline' => g_l('linklistEdit', '[language]'),
 				'html' => $_html,
 				'space' => '150',
 				'noline' => 1);
 
-		$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
+			$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
 				'space' => '150',
 				'noline' => 1);
 
-		$_html = '<table border="0" cellpadding="0" cellspacing="0">
+			$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td class="small">' . g_l('linklistEdit', '[accesskey]') . '</td>
 			                    <td>' . we_html_tools::getPixel(20, 5) . '</td>
@@ -866,12 +866,12 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
                             </tr>
 			                 </table>';
 
-		$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
+			$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
 				'html' => $_html,
 				'space' => '150',
 				'noline' => 1);
 
-		$_html = '<table border="0" cellpadding="0" cellspacing="0">
+			$_html = '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>' . $relfield . '</td>
                                 <td>' . we_html_tools::getPixel(20, 5) . '</td>
@@ -879,31 +879,31 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
                             </tr>
 			                 </table>';
 
-		$_parts[] = array('headline' => g_l('wysiwyg', "[relation]"),
+			$_parts[] = array('headline' => g_l('wysiwyg', "[relation]"),
 				'html' => $_html,
 				'space' => '150',
 				'noline' => 1);
 
-		$_parts[] = array('headline' => g_l('linklistEdit', "[link_attr]"),
+			$_parts[] = array('headline' => g_l('linklistEdit', "[link_attr]"),
 				'html' => $cattribs,
 				'space' => '150');
-	}
+		}
 
 
-	//   Pop-Up
-	$_parts[] = array('headline' => g_l('global', "[jswin]"),
+		//   Pop-Up
+		$_parts[] = array('headline' => g_l('global', "[jswin]"),
 			'html' => $jswinonoff,
 			'space' => '150');
-	?>
+		?>
 		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onSubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php print $_REQUEST['we_cmd'][0]; ?>" />
-		<?php
-		if (isset($ll) && $ll) {
-			?>
-				<input type="hidden" name="linklist" value="<?php print htmlspecialchars($ll->getString()); ?>" />
 			<?php
-		}
-		?>
+			if(isset($ll) && $ll){
+				?>
+				<input type="hidden" name="linklist" value="<?php print htmlspecialchars($ll->getString()); ?>" />
+				<?php
+			}
+			?>
 			<input type="hidden" name="name" value="<?php print $name; ?>" />
 			<input type="hidden" name="nr" value="<?php print isset($_REQUEST["nr"]) ? $_REQUEST["nr"] : $nr; ?>" />
 			<input type="hidden" name="ok" value="1" />
@@ -915,13 +915,13 @@ if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
 			print $yuiSuggest->getYuiJs();
 			?>
 		</form>
-	<?php
-}
-?>
+		<?php
+	}
+	?>
 </body>
 
 </html>
-		<?php
-		if (!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]) {
-			$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
-		}
+<?php
+if(!isset($_REQUEST["ok"]) || !$_REQUEST["ok"]){
+	$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]);
+}

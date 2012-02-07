@@ -30,6 +30,7 @@ if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
 
+//leave this
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**

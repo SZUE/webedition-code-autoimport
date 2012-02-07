@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,24 +22,23 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-class weGlossarySettingFrames {
+class weGlossarySettingFrames{
 
 	var $Frameset = '/webEdition/we/include/we_modules/glossary/edit_glossary_settings_frameset.php';
 	var $Controller;
 	var $db;
 
-	function weGlossarySettingFrames() {
+	function weGlossarySettingFrames(){
 		$this->Controller = new weGlossarySettingControl();
 		$this->db = new DB_WE();
 	}
 
 	function getHTML($what){
 		switch($what){
-			case 'frameset': print $this->getHTMLFrameset(); break;
-			case 'content': print $this->getHTMLContent(); break;
+			case 'frameset': print $this->getHTMLFrameset();
+				break;
+			case 'content': print $this->getHTMLContent();
+				break;
 			default:
 				error_log(__FILE__ . " unknown reference: $what");
 		}
@@ -51,16 +51,16 @@ class weGlossarySettingFrames {
    <frame src="' . HTML_DIR . 'white.html" name="cmdFrame" scrolling=no noresize>
   </frameset>
 </head>
- <body background="' .IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+ <body background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
  </body>
 </html>';
 	}
 
-	function getHTMLContent() {
+	function getHTMLContent(){
 
-		$configFile = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
-		if(!file_exists($configFile) || !is_file($configFile)) {
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php");
+		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/we_conf_glossary_settings.inc.php";
+		if(!file_exists($configFile) || !is_file($configFile)){
+			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php");
 			weGlossarySettingControl::saveSettings(true);
 		}
 		include($configFile);
@@ -68,20 +68,20 @@ class weGlossarySettingFrames {
 		$parts = array();
 
 		// Automatic Replacement
-		$content = 		we_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary','[enable_replacement]'));
+		$content = we_forms::checkboxWithHidden($GLOBALS['weGlossaryAutomaticReplacement'], 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
 		array_push($parts, array(
-							'headline' => "",
-							'space' => 0,
-							'html' => $content,
-							'noline' => 1)
+			'headline' => "",
+			'space' => 0,
+			'html' => $content,
+			'noline' => 1)
 		);
 
 		$saveButton = we_button::create_button('save', 'javascript:document.we_form.submit();');
 		$closeButton = we_button::create_button('close', 'javascript:top.window.close();');
 
 		return we_html_tools::htmlTop() .
-		STYLESHEET . '
+			STYLESHEET . '
 
 ' . we_html_element::jsScript(JS_DIR . 'formFunctions.js') . '
 
@@ -89,7 +89,7 @@ class weGlossarySettingFrames {
 <body class="weDialogBody">
 	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '
-	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('modules_glossary','[menu_settings]') ) . '
+	' . we_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
 	</form>
 </body>
 </html>';

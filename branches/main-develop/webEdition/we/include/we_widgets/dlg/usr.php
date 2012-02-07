@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/dlg/prefs.inc.php");
 we_html_tools::protect();
@@ -36,8 +36,7 @@ function save(){
 	savePrefs();
 	previewPrefs();
 	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit','[prefs_saved_successfully]'),
-		we_message_reporting::WE_MESSAGE_NOTICE) . "
+		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
@@ -60,29 +59,17 @@ $cancel_button = we_button::create_button("close", "javascript:exit_close();");
 $buttons = we_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_multiIconBox::getHTML(
-		"usrProps",
-		"100%",
-		$parts,
-		30,
-		$buttons,
-		-1,
-		"",
-		"",
-		"",
-		g_l('cockpit','[users_online]'));
+		"usrProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[users_online]'));
 
 print
-		we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-						we_html_element::htmlTitle(g_l('cockpit','[users_online]')) . STYLESHEET . we_html_element::jsElement(
-								"",
-								array(
-									"src" => JS_DIR . "we_showMessage.js"
-								)) . we_html_element::jsElement(
-								$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
-						array(
-							"class" => "weDialogBody", "onload" => "init();"
-						),
-						we_html_element::htmlForm("", $sTblWidget)));
-
+	we_html_element::htmlHtml(
+		we_html_element::htmlHead(
+			we_html_element::htmlTitle(g_l('cockpit', '[users_online]')) . STYLESHEET . we_html_element::jsElement(
+				"", array(
+				"src" => JS_DIR . "we_showMessage.js"
+			)) . we_html_element::jsElement(
+				$jsPrefs . $jsCode . we_button::create_state_changer(false))) . we_html_element::htmlBody(
+			array(
+			"class" => "weDialogBody", "onload" => "init();"
+			), we_html_element::htmlForm("", $sTblWidget)));
 ?>

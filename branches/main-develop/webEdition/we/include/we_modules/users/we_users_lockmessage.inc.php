@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,38 +21,33 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$foo = f("SELECT username FROM ".USER_TABLE." WHERE ID=$_userID","username",$DB_WE);
+$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=$_userID", "username", $DB_WE);
 
 
-$content = "<p class='defaultfont'>" . sprintf(g_l('alert',"[temporaere_no_access_text]"), $we_doc->Text, $foo) . "</p>";
-
+$content = "<p class='defaultfont'>" . sprintf(g_l('alert', "[temporaere_no_access_text]"), $we_doc->Text, $foo) . "</p>";
 ?>
 <script  type="text/javascript">
-<!--
-top.toggleBusy(0);
-//-->
+	<!--
+	top.toggleBusy(0);
+	//-->
 </script>
-	</head>
+</head>
 
-    <body class="weDialogBody">
+<body class="weDialogBody">
 <?php
+print we_html_tools::htmlDialogLayout($content, g_l('alert', "[temporaere_no_access]"));
 
-	print we_html_tools::htmlDialogLayout($content,g_l('alert',"[temporaere_no_access]"));
-
-	//	For SEEM-Mode
-	if($_SESSION["we_mode"] == "seem"){
-		?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print g_l('SEEM',"[try_doc_again]") ?></a>
+//	For SEEM-Mode
+if($_SESSION["we_mode"] == "seem"){
+	?><a href="javascript://" style="text-decoration:none" onClick="top.weNavigationHistory.navigateReload()" ><?php print g_l('SEEM', "[try_doc_again]") ?></a>
 		<?php
 	}
-?>
-    </body>
+	?>
+</body>
 </html>

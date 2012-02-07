@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,27 +22,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 abstract class logging{
-
 
 	public $db;
 	public $table;
 	public $userID;
 	public $timestamp;
-	public $persistent_slots=array();
+	public $persistent_slots = array();
 
-
-
-	function __construct($_table) {
+	function __construct($_table){
 
 		$this->db = new DB_WE();
 		$this->userID = $_SESSION['user']['ID'];
 		$this->timestamp = time();
-		$this->table=$_table;
+		$this->table = $_table;
 		$this->loadPresistents();
 	}
 
@@ -49,56 +45,55 @@ abstract class logging{
 
 		$tableInfo = $this->db->metadata($this->table);
 		$sizeTable = count($tableInfo);
-		for($i=0;$i<$sizeTable;$i++){
-				$columnName=$tableInfo[$i]["name"];
-				$this->persistent_slots[] = $columnName;
-				if(!isset($this->$columnName)) $this->$columnName="";
+		for($i = 0; $i < $sizeTable; $i++){
+			$columnName = $tableInfo[$i]["name"];
+			$this->persistent_slots[] = $columnName;
+			if(!isset($this->$columnName))
+				$this->$columnName = "";
 		}
 	}
 
-	function load()	{
+	function load(){
 
 		$content = array();
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query("SELECT ID,timestamp,action,userID FROM ".$this->db->escape($this->table)." ORDER BY timestamp DESC");
-		$m=0;
-		while($this->db->next_record()){
-			for($i=0;$i<count($tableInfo);$i++){
+		$this->db->query("SELECT ID,timestamp,action,userID FROM " . $this->db->escape($this->table) . " ORDER BY timestamp DESC");
+		$m = 0;
+		while($this->db->next_record()) {
+			for($i = 0; $i < count($tableInfo); $i++){
 				$columnName = $tableInfo[$i]["name"];
-				if(in_array($columnName,$this->persistent_slots)){
+				if(in_array($columnName, $this->persistent_slots)){
 					$content[$m][$columnName] = $this->db->f($columnName);
-
 				}
 			}
 			$m++;
 		}
-		
+
 		return $content;
 	}
 
 	function saveLog(){
 
-		$keys=array();
-		$values=array();
+		$keys = array();
+		$values = array();
 
-		foreach($this->persistent_slots as $key=>$val){
+		foreach($this->persistent_slots as $key => $val){
 
-				if(isset($this->$val)) {
-					$keys[]='`'.$val.'`';
-					$values[]="'".($this->$val)."'";
-				}
+			if(isset($this->$val)){
+				$keys[] = '`' . $val . '`';
+				$values[] = "'" . ($this->$val) . "'";
+			}
 		}
 
 
-		$keys=implode(",",$keys);
-		$values=implode(",",$values);
+		$keys = implode(",", $keys);
+		$values = implode(",", $values);
 
-		if (!empty($keys) && !empty($values)){
+		if(!empty($keys) && !empty($values)){
 
-			$query = 'INSERT INTO '.$this->db->escape($this->table).' ('.$keys.') VALUES ('.$values.')';
+			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' (' . $keys . ') VALUES (' . $values . ')';
 			$this->db->query($query);
 		}
-
 	}
 
 }

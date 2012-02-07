@@ -20,6 +20,7 @@
 
 /*NOTE!! This file DOES NOT START a SESSION */
 
+//FIXME: do we really need this file anymore?!
 //	This is the new absolute minimum include for any we-file, reduces memory consumption for special usages about 20 MB.
 
 // exit if script called directly

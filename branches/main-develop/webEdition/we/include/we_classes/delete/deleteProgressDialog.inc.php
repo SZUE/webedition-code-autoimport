@@ -67,12 +67,10 @@ class deleteProgressDialog{
 
 	function cmd(){
 		if(isset($_SESSION["backup_delete"]) && $_SESSION["backup_delete"]){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/delete/delBackup.inc.php");
 			$taskname = md5(session_id()."_backupdel");
 			$fr = new delBackup($taskname,1,0);
 		}
 		else{
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/delete/delFragment.inc.php");
 			$taskname = md5(session_id()."_del");
 			$table = (isset($_REQUEST["table"]) && $_REQUEST["table"]) ? $_REQUEST["table"] : FILE_TABLE;
 			$fr = new delFragment($taskname,1,0,$table);

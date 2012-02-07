@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,16 +21,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_html_tools.class.inc.php");
 
+we_html_tools::htmlTop();?>
+</head>
 
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_html_tools.class.inc.php");
-
-we_html_tools::htmlTop();
-?>
-	</head>
-
-	<body bgcolor="white" background="<?php print IMAGE_DIR?>backgrounds/header_with_black_lines.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
-	</body>
+<body bgcolor="white" background="<?php print IMAGE_DIR ?>backgrounds/header_with_black_lines.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+</body>
 
 </html>

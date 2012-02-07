@@ -22,14 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/weSidebarDocumentParser.class.php");
 
 class Finish extends leWizardStepBase{
 
 	var $EnabledButtons = array();
 
 	function execute(&$Template){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_button.inc.php");
 
 		// set Default Master Template
 		$MasterTemplateID = path_to_id("/master/standard.tmpl", TEMPLATES_TABLE);

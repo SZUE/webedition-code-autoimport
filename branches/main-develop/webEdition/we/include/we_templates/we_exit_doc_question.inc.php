@@ -21,13 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
 we_html_tools::protect();
 
-we_html_tools::htmlTop(g_l('global','[question]'));
+we_html_tools::htmlTop(g_l('global', '[question]'));
 
 
 // we_cmd[0] => exit_doc_question
@@ -36,41 +32,41 @@ we_html_tools::htmlTop(g_l('global','[question]'));
 // we_cmd[3] => nextCommand -> as JS-String
 
 
-$editorFrameId	= $_REQUEST['we_cmd']['1'];
-if (!preg_match('/^multiEditFrame_[0-9]+$/', $editorFrameId)) {
+$editorFrameId = $_REQUEST['we_cmd']['1'];
+if(!preg_match('/^multiEditFrame_[0-9]+$/', $editorFrameId)){
 	exit('cmd[1] is not valid at we_exit_doc_question!');
 }
 
-$exitDocCt		= $_REQUEST['we_cmd']['2'];
-$nextCmd		= isset($_REQUEST['we_cmd']['3']) ? $_REQUEST['we_cmd']['3'] : ""; // close_all, logout, open_document, new_document(seeMode) etc.
+$exitDocCt = $_REQUEST['we_cmd']['2'];
+$nextCmd = isset($_REQUEST['we_cmd']['3']) ? $_REQUEST['we_cmd']['3'] : ""; // close_all, logout, open_document, new_document(seeMode) etc.
 
 $isOpenDocCmd = preg_match('/^top\.weEditorFrameController\.openDocument\("[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*\)\s*;\s*$/', $nextCmd);
-$isDoLogoutCmd = preg_match('/^top\.we_cmd\("dologout"\)\s*;\s*$/',$nextCmd);
-$isCloseAllCmd = preg_match('/^top\.we_cmd\("close_all_documents"\)\s*;\s*$/',$nextCmd);
-$isCloseAllButActiveDocumentCmd = preg_match('/^top\.we_cmd\("close_all_but_active_document"\s*,\s*"[^"]*"\s*\)\s*;\s*$/',$nextCmd);
+$isDoLogoutCmd = preg_match('/^top\.we_cmd\("dologout"\)\s*;\s*$/', $nextCmd);
+$isCloseAllCmd = preg_match('/^top\.we_cmd\("close_all_documents"\)\s*;\s*$/', $nextCmd);
+$isCloseAllButActiveDocumentCmd = preg_match('/^top\.we_cmd\("close_all_but_active_document"\s*,\s*"[^"]*"\s*\)\s*;\s*$/', $nextCmd);
 
 $nextCmdOk = ($nextCmd === "")
-		|| $isOpenDocCmd
-		|| $isDoLogoutCmd
-		|| $isCloseAllCmd
-		|| $isCloseAllButActiveDocumentCmd;
+	|| $isOpenDocCmd
+	|| $isDoLogoutCmd
+	|| $isCloseAllCmd
+	|| $isCloseAllButActiveDocumentCmd;
 
 
-if (!$nextCmdOk) {
-	exit('cmd[3] (nextCmd) is not valid at we_exit_doc_question!'.$nextCmd );
+if(!$nextCmdOk){
+	exit('cmd[3] (nextCmd) is not valid at we_exit_doc_question!' . $nextCmd);
 }
 
-switch ($exitDocCt) {
+switch($exitDocCt){
 	case "text/weTmpl":
 		$_documentTable = TEMPLATES_TABLE;
 		break;
 	case "object":
-		if( defined("OBJECT_TABLE") ){
+		if(defined("OBJECT_TABLE")){
 			$_documentTable = OBJECT_TABLE;
 		}
 		break;
 	case "objectFile":
-		if( defined("OBJECT_FILES_TABLE") ){
+		if(defined("OBJECT_FILES_TABLE")){
 			$_documentTable = OBJECT_FILES_TABLE;
 		}
 		break;
@@ -83,11 +79,11 @@ switch ($exitDocCt) {
 	case "application/*":
 	default:
 		$_documentTable = FILE_TABLE;
-	break;
+		break;
 }
 
 
-print we_html_element::jsScript(JS_DIR.'keyListener.js')."
+print we_html_element::jsScript(JS_DIR . 'keyListener.js') . "
 <script type=\"text/javascript\">
 
 	var _nextCmd = null;
@@ -107,7 +103,7 @@ print we_html_element::jsScript(JS_DIR.'keyListener.js')."
 	}
 
 	function pressed_yes() {
-		_EditorFrame.getDocumentReference().frames[3].we_save_document('" . str_replace("'","\\'", "top.weEditorFrameController.closeDocument('$editorFrameId');" .  ($nextCmd ? "top.setTimeout('$nextCmd', 1000);" : "" ) ) . "');
+		_EditorFrame.getDocumentReference().frames[3].we_save_document('" . str_replace("'", "\\'", "top.weEditorFrameController.closeDocument('$editorFrameId');" . ($nextCmd ? "top.setTimeout('$nextCmd', 1000);" : "" )) . "');
 		window_closed();
 		self.close();
 	}
@@ -147,7 +143,7 @@ print STYLESHEET;
 </head>
 
 <body onUnload="window_closed();" class="weEditorBody" onLoad="self.focus();" onBlur="self.focus();">
-	<?php print we_html_tools::htmlYesNoCancelDialog(g_l('alert','['.stripTblPrefix($_documentTable).'][exit_doc_question]'),IMAGE_DIR."alert.gif",true,true,true,$yesCmd,$noCmd,$cancelCmd); ?>
+<?php print we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
 </body>
 
 </html>

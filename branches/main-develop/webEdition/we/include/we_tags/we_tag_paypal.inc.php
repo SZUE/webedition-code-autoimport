@@ -22,12 +22,7 @@
  * @package	 webEdition_base
  * @license	 http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_conf_shop.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_util.inc.php');
-
-// Setup class
-require_once(WE_SHOP_MODULE_DIR . 'paypal.class.php'); // include the class file
 
 /**
  * This function writes the shop data (order) to the database and send values to paypal
@@ -36,13 +31,13 @@ require_once(WE_SHOP_MODULE_DIR . 'paypal.class.php'); // include the class file
  *
  * @return			void
  */
-function we_tag_paypal($attribs, $content) {
+function we_tag_paypal($attribs, $content){
 	global $DB_WE;
 	$name = weTag_getAttribute('name', $attribs);
-	if (($foo = attributFehltError($attribs, 'pricename', 'PayPal')))
+	if(($foo = attributFehltError($attribs, 'pricename', 'PayPal')))
 		return $foo;
-	if (!$name) {
-		if (($foo = attributFehltError($attribs, 'shopname', 'PayPal')))
+	if(!$name){
+		if(($foo = attributFehltError($attribs, 'shopname', 'PayPal')))
 			return $foo;
 	}
 	$shopname = weTag_getAttribute('shopname', $attribs);
@@ -52,14 +47,14 @@ function we_tag_paypal($attribs, $content) {
 	$countrycode = weTag_getAttribute('countrycode', $attribs);
 	$languagecode = weTag_getAttribute('languagecode', $attribs);
 	$shipping = weTag_getAttribute('shipping', $attribs);
-	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs,false,true);
+	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
 	$messageRedirectAuto = weTag_getAttribute('messageredirectAuto', $attribs);
-	if ($messageRedirectAuto==''){
+	if($messageRedirectAuto == ''){
 		$messageRedirectAuto = weTag_getAttribute('messageredirectauto', $attribs);
 	}
 	$messageRedirectMan = weTag_getAttribute('messageredirectMan', $attribs);
-	if ($messageRedirectMan==''){
+	if($messageRedirectMan == ''){
 		$messageRedirectMan = weTag_getAttribute('messageredirectman', $attribs);
 	}
 	$formTagOnly = weTag_getAttribute('formtagonly', $attribs, false, true);
@@ -69,7 +64,7 @@ function we_tag_paypal($attribs, $content) {
 	$useVat = weTag_getAttribute('usevat', $attribs, true, true);
 	$currency = weTag_getAttribute('currency', $attribs);
 
-	if ($useVat) {
+	if($useVat){
 		require_once(WE_SHOP_MODULE_DIR . 'weShopVatRule.class.php');
 
 		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
@@ -82,13 +77,13 @@ function we_tag_paypal($attribs, $content) {
 
 
 
-	if (isset($GLOBALS[$shopname])) {
+	if(isset($GLOBALS[$shopname])){
 		$basket = $GLOBALS[$shopname];
 
 		$shoppingItems = $basket->getShoppingItems();
 		$cartFields = $basket->getCartFields();
 
-		if (sizeof($shoppingItems) == 0) {
+		if(sizeof($shoppingItems) == 0){
 			return;
 		}
 
@@ -108,13 +103,13 @@ function we_tag_paypal($attribs, $content) {
 		$DB_WE = !isset($DB_WE) ? new DB_WE : $DB_WE;
 
 		//	NumberFormat - currency and taxes
-		if ($currency == '') {
+		if($currency == ''){
 			$feldnamen = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
-			if (!isset($feldnamen[0])) { // determine the currency
+			if(!isset($feldnamen[0])){ // determine the currency
 				$feldnamen[0] = -1;
 			}
 
-			switch ($feldnamen[0]) {
+			switch($feldnamen[0]){
 				case '$':
 				case 'USD':
 					$currency = 'USD';
@@ -136,54 +131,54 @@ function we_tag_paypal($attribs, $content) {
 		}
 
 		$formField = explode('|', f('SELECT strFelder FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname = "payment_details"', 'strFelder', $DB_WE));
-		if (isset($formField[0])) { // determine the Forename
+		if(isset($formField[0])){ // determine the Forename
 			$sendForename = $_SESSION['webuser'][$formField[0]];
 		}
-		if (isset($formField[1])) { // determine the Surename
+		if(isset($formField[1])){ // determine the Surename
 			$sendSurname = $_SESSION['webuser'][$formField[1]];
 		}
-		if (isset($formField[2])) { // determine the Street
+		if(isset($formField[2])){ // determine the Street
 			$sendStreet = $_SESSION['webuser'][$formField[2]];
 		}
-		if (isset($formField[3])) { // determine the Zip
+		if(isset($formField[3])){ // determine the Zip
 			$sendZip = $_SESSION['webuser'][$formField[3]];
 		}
-		if (isset($formField[4])) { // determine the City
+		if(isset($formField[4])){ // determine the City
 			$sendCity = $_SESSION['webuser'][$formField[4]];
 		}
-		if (isset($formField[18]) && $formField[18]) { // determine the City
+		if(isset($formField[18]) && $formField[18]){ // determine the City
 			$sSendEmail = $_SESSION['webuser'][$formField[18]];
 		}
 
-		if (isset($formField[5])) { // determine the country code
+		if(isset($formField[5])){ // determine the country code
 			$lc = $formField[5];
 		}
 
-		if (isset($formField[6])) { // determine the paypal business email
+		if(isset($formField[6])){ // determine the paypal business email
 			$paypalEmail = $formField[6];
 		}
-		if (isset($formField[7])) { // todo
-			if ($formField[7] == 'default') {
+		if(isset($formField[7])){ // todo
+			if($formField[7] == 'default'){
 				$paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
-			} else {
+			} else{
 				$paypalURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 			}
-		} else {
+		} else{
 			$paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
 		}
 
 // Setup class
-		$p = new paypal_class;	 // initiate an instance of the class
+		$p = new paypal_class;	// initiate an instance of the class
 		$p->paypal_url = $paypalURL; // testing paypal url
 //$p->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';	  // paypal url
 // setup a variable for this script (ie: 'http://www.webedition.org/shop/paypal.php')
 		$this_script = getServerProtocol(true) . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
 
 // if there is not action variable, set the default action of 'process'
-		if (empty($_GET['action']))
+		if(empty($_GET['action']))
 			$_GET['action'] = 'process';
 
-		switch ($_GET['action']) {
+		switch($_GET['action']){
 
 			case 'process': // Process and order...
 				// There should be no output at this point.  To process the POST data,
@@ -206,7 +201,7 @@ function we_tag_paypal($attribs, $content) {
 
 				$i = 0;
 				$summit = 0;
-				foreach ($shoppingItems as $key => $item) {
+				foreach($shoppingItems as $key => $item){
 					$i++; //  loop through basket
 
 					$p->add_field('business', $paypalEmail);
@@ -214,9 +209,9 @@ function we_tag_paypal($attribs, $content) {
 					$p->add_field('cancel_return', $this_script . '?action=cancel');
 					$p->add_field('notify_url', $this_script . '?action=ipn');
 					$p->add_field('currency_code', $currency);
-					if ($languagecode == '') {
+					if($languagecode == ''){
 						$p->add_field('lc', $lc);
-					} else {
+					} else{
 						$p->add_field('lc', $languagecode);
 					}
 					// get user details
@@ -226,15 +221,15 @@ function we_tag_paypal($attribs, $content) {
 					$p->add_field('zip', $sendZip);
 					$p->add_field('city', $sendCity);
 					//#4615, don't set country code if not specified.
-					if ($countrycode != '') {
+					if($countrycode != ''){
 						$p->add_field('country', $countrycode);
 					}
 
-					if (isset($sSendEmail) && we_check_email($sSendEmail)) {
+					if(isset($sSendEmail) && we_check_email($sSendEmail)){
 						$p->add_field('email', $sSendEmail);
 						$p->add_field('receiver_email', $sSendEmail);
 					}
-					if ($charset != '') {
+					if($charset != ''){
 						$p->add_field('charset', $charset);
 					}
 					//  determine the basket data
@@ -253,16 +248,16 @@ function we_tag_paypal($attribs, $content) {
 					require_once(WE_SHOP_MODULE_DIR . 'weShopVats.class.php');
 					$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 					$shopVat = weShopVats::getVatRateForSite($vatId, true, false);
-					if ($shopVat) { // has selected or standard shop rate
+					if($shopVat){ // has selected or standard shop rate
 						$item['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
-					} else { // could not find any shoprates, remove field if necessary
-						if (isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])) {
+					} else{ // could not find any shoprates, remove field if necessary
+						if(isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])){
 							unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 						}
 					}
 
 
-					if ($netprices && $useVat) { //Bug 4549
+					if($netprices && $useVat){ //Bug 4549
 						$totalVat = $itemPrice / 100 * $shopVat;
 						$totalVats = number_format($totalVat, 2);
 						// add the polychronic taxes
@@ -277,23 +272,23 @@ function we_tag_paypal($attribs, $content) {
 				require_once(WE_SHOP_MODULE_DIR . 'weShippingControl.class.php');
 				$weShippingControl = weShippingControl::getShippingControl();
 
-				if (we_tag('ifRegisteredUser')) { // check if user is registered
+				if(we_tag('ifRegisteredUser')){ // check if user is registered
 					$customer = $_SESSION['webuser'];
-				} else {
+				} else{
 					$customer = false;
 				}
 
-				if ($shipping == '') {
+				if($shipping == ''){
 					$cartField[WE_SHOP_SHIPPING] = array(
-							'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
-							'isNet' => $weShippingControl->isNet,
-							'vatRate' => $weShippingControl->vatRate
+						'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+						'isNet' => $weShippingControl->isNet,
+						'vatRate' => $weShippingControl->vatRate
 					);
-				} else {
+				} else{
 					$cartField[WE_SHOP_SHIPPING] = array(
-							'costs' => $shipping,
-							'isNet' => $shippingIsNet,
-							'vatRate' => $shippingVatRate
+						'costs' => $shipping,
+						'isNet' => $shippingIsNet,
+						'vatRate' => $shippingVatRate
 					);
 				}
 				$shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];
@@ -303,10 +298,10 @@ function we_tag_paypal($attribs, $content) {
 				$shippingFee = $shippingCosts + $shippingCostVat;
 
 				//Bug 4549
-				if ($isNet && $useVat) { // net prices
+				if($isNet && $useVat){ // net prices
 					$shippingCostVat = $shippingCosts / 100 * $vatRate;
 					$shippingFee = $shippingCosts + $shippingCostVat;
-				} else {
+				} else{
 					$shippingFee = $shippingCosts;
 				}
 				/*
@@ -344,14 +339,14 @@ function we_tag_paypal($attribs, $content) {
 
 				break;
 
-			case 'cancel':	// Order was canceled...
+			case 'cancel': // Order was canceled...
 				// The order was canceled before being completed.
 
 
 
 				break;
 
-			case 'ipn':	// Paypal is calling page for IPN validation...
+			case 'ipn': // Paypal is calling page for IPN validation...
 				// It's important to remember that paypal calling this script.  There
 				// is no output here.  This is where you validate the IPN data and if it's
 				// valid, update your database to signify that the user has payed.  If
@@ -359,7 +354,7 @@ function we_tag_paypal($attribs, $content) {
 				// a bit of good.  This is on the "backend".  That is why, by default, the
 				// class logs all IPN data to a text file.
 
-				if ($p->validate_ipn()) {
+				if($p->validate_ipn()){
 
 					// Payment has been recieved and IPN is verified.  This is where you
 					// update your database to activate or process the order, or setup

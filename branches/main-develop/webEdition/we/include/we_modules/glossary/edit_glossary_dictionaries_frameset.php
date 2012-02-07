@@ -22,8 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/glossary/weGlossarySettingFrames.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/glossary/weGlossarySettingControl.class.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 

@@ -23,12 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /**
-* include connection with webEdition
-*/
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-
-
+ * include connection with webEdition
+ */
 /**
  * name of table in database where will be stored all temporary documents
  *
@@ -47,15 +43,15 @@ include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
  */
 
 /**
-* Temporary document
-*
-* all functions on this class is static, and please use it in static form :
-*    we_temporaryDocument::function_name();
-*
-*
-* @static
-* @package WebEdition.Classes
-*/
+ * Temporary document
+ *
+ * all functions on this class is static, and please use it in static form :
+ *    we_temporaryDocument::function_name();
+ *
+ *
+ * @static
+ * @package WebEdition.Classes
+ */
 abstract class we_temporaryDocument{
 
 	/**
@@ -133,4 +129,5 @@ abstract class we_temporaryDocument{
 			return false;
 		}
 	}
+
 }

@@ -23,7 +23,6 @@
  */
 
 // widget MY DOCUMENTS
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $mdc = "";
 $ct["image"] = true;

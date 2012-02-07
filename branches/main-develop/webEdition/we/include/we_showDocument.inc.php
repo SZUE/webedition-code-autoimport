@@ -29,6 +29,7 @@ if (str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) =
 if (isset($noSess) && $noSess && !defined('NO_SESS')) {
 	define('NO_SESS', 1);
 }
+//leave this
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 

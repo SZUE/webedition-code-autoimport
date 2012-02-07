@@ -21,11 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-we_html_tools::htmlTop(g_l('global','[question]'));
+we_html_tools::htmlTop(g_l('global', '[question]'));
 
 $yesCmd = "yes_cmd_pressed();";
 $cancelCmd = "self.close();";
@@ -33,7 +30,7 @@ $cancelCmd = "self.close();";
 $nextCmd = $_REQUEST['we_cmd'][1];
 
 $allowedCmds = array("dologout", "close_all_documents");
-if (!in_array($nextCmd,$allowedCmds)) {
+if(!in_array($nextCmd, $allowedCmds)){
 	$nextCmd = "";
 }
 
@@ -41,12 +38,12 @@ if (!in_array($nextCmd,$allowedCmds)) {
 $ctLngs = '
 var ctLngs = new Object();';
 
-foreach (g_l('contentTypes','') as $key => $lng) {
+foreach(g_l('contentTypes', '') as $key => $lng){
 	$ctLngs .= "
 	ctLngs[\"$key\"] = \"$lng\";";
 }
 
-$untitled = g_l('global',"[untitled]");
+$untitled = g_l('global', "[untitled]");
 
 print <<< EOFEOF
 <script type="text/javascript">
@@ -134,7 +131,7 @@ EOFEOF;
 
 $content = '
 <div>
-	' . g_l('alert',"[exit_multi_doc_question]") . '
+	' . g_l('alert', "[exit_multi_doc_question]") . '
 	<br />
 	<br />
 	<div style="width: 350px; height: 150px; background: white; overflow: auto;">
@@ -150,7 +147,7 @@ print STYLESHEET;
 </head>
 
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
-	<?php print we_html_tools::htmlYesNoCancelDialog($content,IMAGE_DIR."alert.gif",true,false,true,$yesCmd,"",$cancelCmd); ?>
+<?php print we_html_tools::htmlYesNoCancelDialog($content, IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
 </body>
 
 </html>

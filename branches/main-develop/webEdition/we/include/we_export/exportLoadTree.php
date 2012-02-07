@@ -188,8 +188,6 @@ function getItems($ParentID){
 
 we_html_tools::protect();
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_export/weExportTree.inc.php");
-
 $Tree = new weExportTree("export_frameset.php",
 		$topFrame,
 		$topFrame . ".body",

@@ -22,85 +22,82 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+we_html_tools::protect();
+we_html_tools::htmlTop();
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowFrames.php");
+print STYLESHEET;
 
-	we_html_tools::protect();
-	we_html_tools::htmlTop();
+$workflowFrame = new weWorkflowFrames();
+$workflowFrame->View->processVariables();
+$workflowFrame->View->processCommands();
 
-	print STYLESHEET;
+if(isset($_GET["pnt"])){
+	$what = $_GET["pnt"];
+} else{
+	$what = "frameset";
+}
 
-	$workflowFrame=new weWorkflowFrames();
-	$workflowFrame->View->processVariables();
-	$workflowFrame->View->processCommands();
+if(isset($_GET["art"])){
+	$mode = $_GET["art"];
+} else{
+	$mode = 0;
+}
 
-	if(isset($_GET["pnt"])){
-	    $what = $_GET["pnt"];
-	} else {
-	    $what="frameset";
-	}
+if(isset($_GET["type"])){
+	$type = $_GET["type"];
+} else{
+	$type = 0;
+}
 
-	if(isset($_GET["art"])){
-	    $mode=$_GET["art"];
-	} else {
-	    $mode=0;
-	}
+switch($what){
+	case "frameset":
+		print $workflowFrame->getHTMLFrameset();
+		break;
 
-	if(isset($_GET["type"])){
-	    $type=$_GET["type"];
-	} else {
-	    $type=0;
-	}
+	case "header":print $what;
+		print $workflowFrame->getHTMLHeader();
+		break;
 
-	switch($what){
-		case "frameset":
-			print $workflowFrame->getHTMLFrameset();
-			break;
+	case "resize":
+		print $workflowFrame->getHTMLResize();
+		break;
 
-		case "header":print $what;
-			print $workflowFrame->getHTMLHeader();
-			break;
+	case "left":
+		print $workflowFrame->getHTMLLeft();
+		break;
+	case "right":
+		print $workflowFrame->getHTMLRight();
+		break;
 
-		case "resize":
-			print $workflowFrame->getHTMLResize();
-			break;
+	case "editor":
+		print $workflowFrame->getHTMLEditor();
+		break;
 
-		case "left":
-			print $workflowFrame->getHTMLLeft();
-			break;
-		case "right":
-			print $workflowFrame->getHTMLRight();
-			break;
+	case "edheader":
+		print $workflowFrame->getHTMLEditorHeader($mode);
+		break;
 
-		case "editor":
-			print $workflowFrame->getHTMLEditor();
-			break;
+	case "edbody":
+		print $workflowFrame->getHTMLEditorBody();
+		break;
 
-		case "edheader":
-			print $workflowFrame->getHTMLEditorHeader($mode);
-			break;
+	case "edfooter":
+		print $workflowFrame->getHTMLEditorFooter($mode);
+		break;
 
-		case "edbody":
-			print $workflowFrame->getHTMLEditorBody();
-			break;
+	case "qlog":
+		print $workflowFrame->getHTMLLogQuestion();
+		break;
 
-		case "edfooter":
-			print $workflowFrame->getHTMLEditorFooter($mode);
-			break;
+	case "log":
+		print $workflowFrame->getHTMLLog($mode, $type);
+		break;
 
-		case "qlog":
-			print $workflowFrame->getHTMLLogQuestion();
-			break;
+	case "cmd":
+		print $workflowFrame->getHTMLCmd();
+		break;
 
-		case "log":
-			print $workflowFrame->getHTMLLog($mode,$type);
-			break;
-
-		case "cmd":
-			print $workflowFrame->getHTMLCmd();
-			break;
-
-		default:
-	}
+	default:
+}

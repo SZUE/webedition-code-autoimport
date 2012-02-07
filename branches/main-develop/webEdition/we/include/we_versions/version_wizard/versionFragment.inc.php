@@ -22,10 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/taskFragment.class.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/version_wizard/we_version.class.php");
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_logging/versions/versionsLog.class.php");
-
 class versionFragment extends taskFragment{
 
 	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){

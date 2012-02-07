@@ -21,8 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 we_html_tools::protect();
 
 // init document
@@ -123,16 +121,18 @@ if($we_alerttext){
 	if($error){
 		?>
 					top.close();
-	<?php }
+	<?php
+	}
 }
 
-if(isset($we_File) && (!$we_alerttext)){ ?>
-			 opener.we_cmd("update_file");
-			 _EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-			 _EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
-			 self.close();
+if(isset($we_File) && (!$we_alerttext)){
+	?>
+		opener.we_cmd("update_file");
+		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>","<?php print $we_doc->Text; ?>");
+		self.close();
 <?php } ?>
-		//-->
+	//-->
 </script>
 </head>
 

@@ -21,19 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 we_html_tools::htmlTop();
 
 print STYLESHEET . "\n";
-
 ?>
 </head>
 <body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;" onBlur="self.close()" onClick="self.close()" onload="self.focus();">
-<center><?php
-			include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_info.inc.php");
-			?>
-		</center>
+	<center><?php
+include ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_info.inc.php");
+?>
+	</center>
 </body>
 </html>
