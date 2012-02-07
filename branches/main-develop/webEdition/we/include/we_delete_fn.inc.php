@@ -31,36 +31,34 @@ if(!$notprotect){
 }
 
 function deleteTreeEntries($dontDeleteClassFolders = false){
-	$s = "var obj = top.treeData;\n";
-	$s .= "var cont = new top.container();\n";
-	$s .= "\n";
-	$s .= "for(var i=1;i<=obj.len;i++){\n";
-	$s .= "if(obj[i].checked!=1 " . ($dontDeleteClassFolders ? " || obj[i].parentid==0" : "") . "){\n";
-	$s .= "if(obj[i].parentid != 0){\n";
-	$s .= "if(!parentChecked(obj[i].parentid)){\n";
-	$s .= "cont.add(obj[i]);\n";
-	$s .= "}\n";
-	$s .= "}else{\n";
-	$s .= "cont.add(obj[i]);\n";
-	$s .= "}\n";
-	$s .= "\n";
-	$s .= "}\n";
-	$s .= "}\n";
-	$s .= "top.treeData = cont;\n";
-	$s .= "top.drawTree();\n";
-	$s .= "\n";
-	$s .= "function parentChecked(start){\n";
-	$s .= "var obj = top.treeData;\n";
-	$s .= "for(var i=1;i<=obj.len;i++){\n";
-	$s .= "if(obj[i].id == start){\n";
-	$s .= "if(obj[i].checked==1) return true;\n";
-	$s .= "else if(obj[i].parentid != 0) parentChecked(obj[i].parentid);\n";
-	$s .= "}\n";
-	$s .= "}\n";
-	$s .= "\n";
-	$s .= "return false;\n";
-	$s .= "}\n";
-	return $s;
+	return '
+		var obj = top.treeData;
+		var cont = new top.container();
+		for(var i=1;i<=obj.len;i++){
+			if(obj[i].checked!=1 ' . ($dontDeleteClassFolders ? ' || obj[i].parentid==0' : '') . '){
+				if(obj[i].parentid != 0){
+					if(!parentChecked(obj[i].parentid)){
+						cont.add(obj[i]);
+					}
+				}else{
+					cont.add(obj[i]);
+				}
+			}
+		}
+		top.treeData = cont;
+		top.drawTree();
+
+		function parentChecked(start){
+			var obj = top.treeData;
+			for(var i=1;i<=obj.len;i++){
+				if(obj[i].id == start){
+					if(obj[i].checked==1) return true;
+					else if(obj[i].parentid != 0) parentChecked(obj[i].parentid);
+				}
+			}
+
+			return false;
+		}';
 }
 
 function checkDeleteEntry($id, $table){
@@ -75,7 +73,6 @@ function checkDeleteEntry($id, $table){
 }
 
 function checkDeleteFolder($id, $table){
-
 	if($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE))
 		return true;
 
@@ -165,11 +162,8 @@ function deleteFolder($id, $table, $path = "", $delR = true){
 
 function isColExistForDelete($tab, $col){
 	$DB_WE = new DB_WE();
-	;
-	$DB_WE->query("SHOW COLUMNS FROM " . $tab . " LIKE '$col';");
-	if($DB_WE->next_record())
-		return true; else
-		return false;
+	$DB_WE->query('SHOW COLUMNS FROM ' . $tab . " LIKE '$col'");
+	return $DB_WE->next_record();
 }
 
 function deleteFile($id, $table, $path = "", $contentType = ""){
@@ -199,11 +193,9 @@ function deleteFile($id, $table, $path = "", $contentType = ""){
 		$DB_WE->query("DELETE FROM " . INDEX_TABLE . " WHERE DID=" . intval($id));
 
 		if(in_array("schedule", $GLOBALS['_we_active_integrated_modules'])){ //	Delete entries from schedule as well
-			$DB_WE->query(
-				'DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
+			$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName !="we_objectFile"');
 		}
-		$DB_WE->query(
-			'DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
+		$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
 	}
 
 	if(defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE){
@@ -372,7 +364,7 @@ function deleteEntry($id, $table, $delR = true, $skipHook=0){
 				$version->saveVersion($object);
 			}
 
-			$version->setVersionOnDelete($id, $table, $row['ContentType'],$DB_WE);
+			$version->setVersionOnDelete($id, $table, $row['ContentType'], $DB_WE);
 		}
 		/* hook */
 		if($skipHook == 0){

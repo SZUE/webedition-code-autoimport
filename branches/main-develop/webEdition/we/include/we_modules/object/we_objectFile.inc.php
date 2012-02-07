@@ -2959,70 +2959,40 @@ class we_objectFile extends we_document{
 
 		$tableInfo = $this->DB_WE->metadata($ctable);
 		$foo = f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . $this->TableID, "DefaultValues", $this->DB_WE);
-		if($foo){
-			$defVal = unserialize($foo);
-		} else{
-			$defVal = array();
+		$defVal = ($foo ? unserialize($foo) : array());
+
+		if($this->wasUpdate && $this->ExtraWorkspacesSelected){
+			$ews = makeArrayFromCSV($this->ExtraWorkspacesSelected);
+			$ew = makeArrayFromCSV($this->ExtraWorkspaces);
+			$newews = array();
+			foreach($ews as $ws){
+				if(in_array($ws, $ew)){
+					array_push($newews, $ws);
+				}
+			}
+			$this->ExtraWorkspacesSelected = makeCSVFromArray($newews, true);
 		}
 		if(!$this->wasUpdate){
-			$keys = "(";
-			$values = "VALUES(";
 			$this->CreatorID = $this->CreatorID ? $this->CreatorID : (isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0);
-			for($i = 0; $i < sizeof($tableInfo); $i++){
-				if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
-					$name = $regs[2];
-					if($regs[1] == "OF"){
-						$keys .= $tableInfo[$i]["name"] . ",";
-						$values .= "'" . (isset($this->$name) ? addslashes($this->$name) : '') . "',";
-					} else{
-						$name = ($regs[1] == "object") ? ("object_" . $name) : $name;
-						$keys .= $tableInfo[$i]["name"] . ",";
-						$foo = $this->getElement($name);
-						$values .= "'" . addslashes($foo) . "',";
-					}
-				}
-			}
-			$keys = rtrim($keys, ',') . ")";
-			$values = rtrim($values, ',') . ")";
-			if($this->DB_WE->query("INSERT INTO $ctable $keys $values")){
-				$this->ObjectID = $this->DB_WE->getInsertId();
-				return true;
-			} else{
-				return false;
-			}
-		} else{
-			if($this->ExtraWorkspacesSelected){
-				$ews = makeArrayFromCSV($this->ExtraWorkspacesSelected);
-				$ew = makeArrayFromCSV($this->ExtraWorkspaces);
-				$newews = array();
-				foreach($ews as $ws){
-					if(in_array($ws, $ew)){
-						array_push($newews, $ws);
-					}
-				}
-				$this->ExtraWorkspacesSelected = makeCSVFromArray($newews, true);
-			}
-			$q = "";
-			for($i = 0; $i < sizeof($tableInfo); $i++){
-				if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
-					$name = $regs[2];
-					if($regs[1] == "OF"){
-						$q .= $tableInfo[$i]["name"] . "=";
-						$q .= "'" . addslashes($this->$name) . "',";
-					} else{
-						if($regs[1] == "object"){
-							$name = "we_object_" . $name;
-						}
-						$q .= $tableInfo[$i]["name"] . "=";
-						$foo = $this->getElement($name);
-						$q .= "'" . addslashes($foo) . "',";
-					}
-				}
-			}
-			$q = rtrim($q, ',');
-			return $this->DB_WE->query("UPDATE $ctable SET $q WHERE ID='" . $this->ObjectID . "'");
 		}
-		return false;
+
+		$data = array();
+		for($i = 0; $i < sizeof($tableInfo); $i++){
+			if(preg_match('/(.+?)_(.*)/', $tableInfo[$i]["name"], $regs)){
+				$name = $regs[2];
+				if($regs[1] == "OF"){
+					$data[$tableInfo[$i]["name"]] = (isset($this->$name) ? $this->$name : '');
+				} else{
+					$name = ($regs[1] == "object") ? ("object_" . $name) : $name;
+					$data[$tableInfo[$i]["name"]] = $this->getElement($name);
+				}
+			}
+		}
+		$data = we_database_base::arraySetter($data) .
+			($this->wasUpdate ? ',ID=' . intval($this->ObjectID) : '');
+		$ret = $this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET ' . $data);
+		$this->ObjectID = ($this->wasUpdate ? $this->ObjectID : $this->DB_WE->getInsertId());
+		return $ret;
 	}
 
 	private function i_saveTmp(){

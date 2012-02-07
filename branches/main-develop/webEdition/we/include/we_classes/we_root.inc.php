@@ -86,7 +86,7 @@ abstract class we_root extends we_class{
 	/* ID of the user who last modify the document */
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
-	var $DefaultInit = false;	// this flag is set when the document was first initialized with default values e.g. from Doc-Types
+	var $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 	var $DocStream = "";
 
 
@@ -796,7 +796,7 @@ abstract class we_root extends we_class{
 		if(!we_class::we_delete()){
 			return false;
 		}
-		return deleteContentFromDB($this->ID, $this->Table,$this->DB_WE);
+		return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 	}
 
 	protected function i_getDefaultFilename(){
@@ -950,21 +950,21 @@ abstract class we_root extends we_class{
 	}
 
 	private function getLinkReplaceArray(){
-		$ret=array();
+		$ret = array();
 		$this->DB_WE->query('SELECT CONCAT_WS("_",Type,Name) AS Name,CID FROM ' . LINK_TABLE . ' WHERE DID=' . $this->ID . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
-		while($this->DB_WE->next_record()){
-			$ret[$this->DB_WE->f('Name')]=$this->DB_WE->f('CID');
+		while($this->DB_WE->next_record()) {
+			$ret[$this->DB_WE->f('Name')] = $this->DB_WE->f('CID');
 		}
 		return $ret;
 	}
 
 	function i_saveContentDataInDB(){
 		if(!is_array($this->elements)){
-			return deleteContentFromDB($this->ID, $this->Table,$this->DB_WE);
+			return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
 
 		//don't stress index:
-		$replace=$this->getLinkReplaceArray();
+		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
 			if($this->i_isElement($k)){
 				if((!isset($v["type"]) || $v["type"] != "vars") && (( isset($v["dat"]) && $v["dat"] != "" ) || (isset($v["bdid"]) && $v["bdid"]) || (isset($v["ffname"]) && $v["ffname"]))){
@@ -990,33 +990,34 @@ abstract class we_root extends we_class{
 							$val = sprintf("%016d", $val);
 						}
 						if($fieldName != "ID"){
-							$data[$fieldName]= $val;
+							$data[$fieldName] = $val;
 						}
 					}
 					if(count($data)){
 						$data = we_database_base::arraySetter($data);
-						$key=$v["type"].'_'.$k;
+						$key = $v["type"] . '_' . $k;
 						$cid = 0;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
-							$data.=',ID='.$cid;
+							$data.=',ID=' . $cid;
 							unset($replace[$key]);
 						}
-						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE .' SET '. $data);
+						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
 						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
 						$q = 'REPLACE INTO ' . LINK_TABLE . " (DID,CID,Name,Type,DocumentTable) VALUES ('" . intval($this->ID) . "'," . $cid . ",'" . $this->DB_WE->escape($k) . "','" . $this->DB_WE->escape($v["type"]) . "','" . $this->DB_WE->escape(stripTblPrefix($this->Table)) . "')";
 						if(!$cid || !$this->DB_WE->query($q)){
+							//this should never happen
 							return false;
 						}
 					}
 				}
 			}
 		}
-		$replace=implode(',',$replace);
+		$replace = implode(',', $replace);
 		if($replace){
-			$this->DB_WE->query('DELETE FROM '.LINK_TABLE.' WHERE DocumentTable="'.$this->DB_WE->escape(stripTblPrefix($this->Table)).'" AND CID IN('.$replace.')');
-			$this->DB_WE->query('DELETE FROM '.CONTENT_TABLE.' WHERE ID IN ('.$replace.')');
+			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
+			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
 		}
 		return true;
 	}
@@ -1198,26 +1199,26 @@ abstract class we_root extends we_class{
 	 */
 	function userHasAccess(){
 
-		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){		// file is locked
+		if($this->isLockedByUser() != 0 && $this->isLockedByUser() != $_SESSION["user"]["ID"] && $GLOBALS['we_doc']->ID){ // file is locked
 			return self::FILE_LOCKED;
 		}
 
-		if(!$this->userHasPerms()){		 //	File is restricted !!!!!
+		if(!$this->userHasPerms()){	//	File is restricted !!!!!
 			return self::USER_NO_PERM;
 		}
 
-		if(!$this->userCanSave()){		 //	user has no right to save.
+		if(!$this->userCanSave()){	//	user has no right to save.
 			return self::USER_NO_SAVE;
 		}
 
-		if(we_isOwner($this->CreatorID) || we_isOwner($this->Owners)){	 //	user is creator/owner of doc - all is allowed.
+		if(we_isOwner($this->CreatorID) || we_isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
 			return self::USER_HASACCESS;
 		}
 
-		if($this->userHasPerms()){				 //	access to doc is not restricted, check workspaces of user
-			if($GLOBALS['we_doc']->ID){	//	userModule installed
+		if($this->userHasPerms()){	 //	access to doc is not restricted, check workspaces of user
+			if($GLOBALS['we_doc']->ID){ //	userModule installed
 				$ws = get_ws($GLOBALS['we_doc']->Table);
-				if($ws){	//	doc has workspaces
+				if($ws){ //	doc has workspaces
 					if(!(in_workspace($GLOBALS['we_doc']->ID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
 						return self::FILE_NOT_IN_USER_WORKSPACE;
 					}
