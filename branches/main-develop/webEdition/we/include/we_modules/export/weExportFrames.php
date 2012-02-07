@@ -126,7 +126,7 @@ class weExportFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text .
-				we_html_element::htmlImg(array("align" => "absmiddle", "height" => "19", "width" => "1600", "src" => IMAGE_DIR . "pixel.gif"))
+				we_html_tools::getPixel(1600,19)
 			)
 		);
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;

@@ -363,7 +363,7 @@ class weCustomerFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				g_l('modules_customer', '[customer]') . ":&nbsp;" . $this->View->customer->Username .
-				we_html_element::htmlImg(array("align" => "absmiddle", "height" => "19", "width" => "1600", "src" => IMAGE_DIR . "pixel.gif"))
+				we_html_tools::getPixel(1600,10)
 			)
 		);
 
@@ -713,7 +713,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
 		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 2, 1);
-		$table->setCol(0, 0, array("valign" => "top"), we_html_element::htmlImg(array("align" => "absmiddle", "height" => "10", "width" => "1600", "src" => IMAGE_DIR . "pixel.gif")));
+		$table->setCol(0, 0, array("valign" => "top"), we_html_tools::getPixel(1600,10));
 		$table->setCol(1, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("treefooter")) .
 			$hiddens .
 			we_button::create_button_table(

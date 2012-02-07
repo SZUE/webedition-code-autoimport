@@ -43,7 +43,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><img src="' . IMAGE_DIR . 'pixel.gif" width="15" height="15" border="0" alt="\'+we_color2[col]+\'" /></a></td>\');
+document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onClick="selectColor(\\\'\'+col+\'\\\');"><span style="display:inline-block;width:15px;height:15px" title="\'+we_color2[col]+\'"></span></a></td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');

@@ -427,7 +427,6 @@ abstract class we_autoloader{
 			'ImportFiles' => 'first_steps_wizard/MasterWizard/ImportFiles.class.php',
 			'ImportOptions' => 'first_steps_wizard/MasterWizard/ImportOptions.class.php',
 			'Startscreen' => 'first_steps_wizard/MasterWizard/Startscreen.class.php',
-			'htmlBox' => 'htmlBox.inc.php',
 			'weDynList' => 'navigation/class/weDynList.class.php',
 			'weNavigation' => 'navigation/class/weNavigation.class.php',
 			'weNavigationCache' => 'navigation/class/weNavigationCache.class.php',

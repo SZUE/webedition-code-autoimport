@@ -138,7 +138,7 @@ class weVotingFrames extends weModuleFrames{
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
 				($this->View->voting->IsFolder ? g_l('modules_voting', '[group]') : g_l('modules_voting', '[voting]')) . ':&nbsp;' . $this->View->voting->Text .
-				we_html_element::htmlImg(array("align" => "absmiddle", "height" => "19", "width" => "1600", "src" => IMAGE_DIR . "pixel.gif"))
+				we_html_tools::getPixel(1600,19)
 			)
 		);
 

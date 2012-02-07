@@ -407,15 +407,8 @@ class we_import_files{
 		$this->savePropsInSession();
 
 		// create Second Screen ##############################################################################
-		$but = we_html_element::htmlImg(
-				array(
-					"src" => IMAGE_DIR . "pixel.gif",
-					"width" => "10",
-					"height" => "22",
-					"border" => "0",
-					"align" => "absmiddle"
-			));
-		$but .= we_html_element::htmlImg(
+		$but = we_html_tools::getPixel(10, 22) .
+			we_html_element::htmlImg(
 				array(
 					"src" => IMAGE_DIR . 'button/btn_function_trash.gif',
 					"width" => "27",

@@ -71,7 +71,7 @@ class weNavigationFrames extends weToolFrames{
 	function getHTMLEditorHeader(){
 
 		if(!empty($this->Model->Charset)){
-			we_html_tools::headerCtCharset('text/html',$this->Model->Charset);
+			we_html_tools::headerCtCharset('text/html', $this->Model->Charset);
 		}
 
 		if(isset($_REQUEST['home'])){
@@ -204,13 +204,8 @@ class weNavigationFrames extends weToolFrames{
 			"valign" => "top", "class" => "small"
 			), we_html_tools::getPixel(15, 2) . we_html_element::htmlB(
 				($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' . str_replace(
-					'&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>' . we_html_element::htmlImg(
-					array(
-						"align" => "absmiddle",
-						"height" => "19",
-						"width" => "1600",
-						"src" => IMAGE_DIR . "pixel.gif"
-				))));
+					'&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>' . we_html_tools::getPixel(1600, 19)
+			));
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(

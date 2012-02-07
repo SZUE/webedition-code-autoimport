@@ -31,7 +31,8 @@ abstract class we_database_base{
 	private static $pool = array();
 	private static $conCount = 0;
 	private static $linkCount = 0;
-
+	//states if we have lost connection and try again
+	private $retry = false;
 	/* link handles */
 	protected $Link_ID = 0;
 	/* query handles */

@@ -449,7 +449,6 @@ HTS;
 			$h = 0;
 		}
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
-		//return '<img src="' . IMAGE_DIR . 'pixel.gif" alt="pixel" width="' . $w . '" height="' . $h . '" border="' . $border . '" />';
 	}
 
 	static function pPixel($w, $h){
