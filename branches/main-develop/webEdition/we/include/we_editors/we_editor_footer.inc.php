@@ -232,7 +232,7 @@ if($_ctrlElem && $_ctrlElem['hide']){
 
 if(defined("WORKFLOW_TABLE")){
 	if(inWorkflow($we_doc)){
-		if(!weWorkflowUtility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
+		if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
 			$_js_weCanSave .= "
 	weCanSave=false;
 ";

@@ -26,7 +26,7 @@
 /**
  * General Definition of WebEdition Workflow Task
  */
-class weWorkflowTask extends weWorkflowBase{
+class we_workflow_task extends we_workflow_base{
 
 	var $ID;
 	var $stepID;
@@ -72,7 +72,7 @@ class weWorkflowTask extends weWorkflowBase{
 		$tasks = array();
 
 		while($db->next_record()) {
-			$tasks[] = new weWorkflowTask($db->f("ID"));
+			$tasks[] = new self($db->f("ID"));
 		}
 		return $tasks;
 	}

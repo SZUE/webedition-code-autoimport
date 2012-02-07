@@ -29,7 +29,7 @@ we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$workflowFrame = new weWorkflowFrames();
+$workflowFrame = new we_workflow_frames();
 $workflowFrame->View->processVariables();
 $workflowFrame->View->processCommands();
 

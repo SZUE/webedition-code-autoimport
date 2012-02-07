@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class weModuleWorkflowFrames{
+class we_workflow_moduleFrames{
 
 	var $db;
 	var $View;

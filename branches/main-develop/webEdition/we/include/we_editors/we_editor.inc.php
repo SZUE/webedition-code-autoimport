@@ -531,8 +531,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 									} else{
 										if($we_doc->we_publish() == true){
 											if(defined("WORKFLOW_TABLE")){
-												if(weWorkflowUtility::inWorkflow($we_doc->ID, $we_doc->Table)){
-													weWorkflowUtility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "");
+												if(we_workflow_utility::inWorkflow($we_doc->ID, $we_doc->Table)){
+													we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "");
 												}
 											}
 											$we_responseText .= "\\n" . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);

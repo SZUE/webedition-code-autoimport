@@ -45,6 +45,7 @@ abstract class we_autoloader{
 		'users' => 'we_modules/users',
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
+		'workflow'=>'we_modules/workflow',
 		'xml' => 'we_classes/xml',
 	);
 	private static $classes = array(
@@ -96,7 +97,7 @@ abstract class we_autoloader{
 			'Services_JSON_Error' => 'JSON.php',
 			'Services_JSON' => 'JSON.php',
 			'taskFragment' => 'taskFragment.class.php',
-			'usersOnline' => 'we_usersOnline.class.php',
+			'usersOnline' => 'we_zusersOnline.class.php',
 			'weAbbrDialog' => 'weAbbrDialog.class.inc.php',
 			'weAcronymDialog' => 'weAcronymDialog.class.inc.php',
 			'weBackup' => 'base/weBackup.class.php',
@@ -314,20 +315,6 @@ abstract class we_autoloader{
 			'weVotingView' => 'voting/weVotingView.php',
 			'we_votingDirSelector' => 'voting/we_votingDirSelector.php',
 			'weModuleInfo' => 'weModuleInfo.class.php',
-		),
-		'we_modules/workflow' => array(
-			'weModuleWorkflowFrames' => 'weModuleWorkflowFrames.class.php',
-			'weWorkflow' => 'weWorkflow.php',
-			'weWorkflowBase' => 'weWorkflowBase.php',
-			'weWorkflowDocument' => 'weWorkflowDocument.php',
-			'weWorkflowDocumentStep' => 'weWorkflowDocumentStep.php',
-			'weWorkflowDocumentTask' => 'weWorkflowDocumentTask.php',
-			'weWorkflowFrames' => 'weWorkflowFrames.php',
-			'weWorkflowLog' => 'weWorkflowLog.php',
-			'weWorkflowStep' => 'weWorkflowStep.php',
-			'weWorkflowTask' => 'weWorkflowTask.php',
-			'weWorkflowUtility' => 'weWorkflowUtility.php',
-			'weWorkflowView' => 'weWorkflowView.php',
 		),
 		'we_hook/class' => array(
 			'weHook' => 'weHook.class.php',

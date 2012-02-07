@@ -152,10 +152,10 @@ if($GLOBALS['we_doc']->ContentType != "folder"){
 				);
 	}
 	if(defined("WORKFLOW_TABLE") && $GLOBALS['we_doc']->ContentType == "text/webedition"){
-		if(weWorkflowUtility::inWorkflow($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table)){
-			$anzeige = weWorkflowUtility::getDocumentStatusInfo($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table);
+		if(we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table)){
+			$anzeige = we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table);
 		}else{
-			$anzeige = weWorkflowUtility::getLogButton($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table);
+			$anzeige = we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID,$GLOBALS['we_doc']->Table);
 		}
 		array_push($parts,array(	"headline"=>g_l('modules_workflow','[workflow]'),
 									"html"=>$anzeige,

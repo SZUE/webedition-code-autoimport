@@ -34,7 +34,7 @@ we_html_tools::protect();
 if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];
 	$wf_select = $_REQUEST["wf_select"];
-	if(weWorkflowUtility::insertDocInWorkflow($we_doc->ID,$we_doc->Table,$wf_select,$_SESSION["user"]["ID"],$wf_text)){
+	if(we_workflow_utility::insertDocInWorkflow($we_doc->ID,$we_doc->Table,$wf_select,$_SESSION["user"]["ID"],$wf_text)){
 		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][in_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 		if($_SESSION["we_mode"] == "seem"){
@@ -82,17 +82,17 @@ if($cmd == "ok"){
 	<center>
 		<?php if($cmd!="ok"){
 				if($we_doc->Table==FILE_TABLE) {
-					$wfDoc = weWorkflowUtility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID);
+					$wfDoc = we_workflow_utility::getWorkflowDocumentForDoc($we_doc->DocType, $we_doc->Category, $we_doc->ParentID);
 				}
 				else {
-					$wfDoc = weWorkflowUtility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID);
+					$wfDoc = we_workflow_utility::getWorkflowDocumentForObject($we_doc->TableID, $we_doc->Category, $we_doc->ParentID);
 				}
 				$wfID=$wfDoc->workflowID;
 			 if($wfID){ ?>
 				<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
 					<?php
 						$wf_select = '<select name="wf_select" size="1">';
-						$wfs = weWorkflowUtility::getAllWorkflows(self::STATE_ACTIVE,$we_doc->Table);
+						$wfs = we_workflow_utility::getAllWorkflows(self::STATE_ACTIVE,$we_doc->Table);
 						foreach($wfs as $wID=>$wfname) {
 							$wf_select .= '<option value="'.$wID.'"'.(($wID == $wfID) ? ' selected' : '').'>'.htmlspecialchars($wfname)."</option>\n";
 						}

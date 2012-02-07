@@ -25,7 +25,7 @@ if(defined("SCHEDULE_TABLE")) {
 
 }
 if(defined("WORKFLOW_TABLE")){
-	echo weWorkflowUtility::forceOverdueDocuments();
+	echo we_workflow_utility::forceOverdueDocuments();
 }
 $_tooltasks = weToolLookup::getExternTriggeredTasks();
 foreach($_tooltasks as $task){

@@ -55,11 +55,10 @@ foreach($tbls as $table){
 	$wfDocsCSV = "";
 	$myWfDocsCSV = "";
 	if(defined("WORKFLOW_TABLE")){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-		$myWfDocsArray = weWorkflowUtility::getWorkflowDocsForUser(
+		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser(
 				$_SESSION["user"]["ID"], $table, $_SESSION["perms"]["ADMINISTRATOR"], $_SESSION["perms"]["PUBLISH"], ($table == $_objectFilesTable) ? "" : get_ws($table));
 		$myWfDocsCSV = makeCSVFromArray($myWfDocsArray);
-		$wfDocsArray = weWorkflowUtility::getAllWorkflowDocs($table);
+		$wfDocsArray = we_workflow_utility::getAllWorkflowDocs($table);
 		$wfDocsCSV = makeCSVFromArray($wfDocsArray);
 	}
 
@@ -152,8 +151,8 @@ foreach($tbls as $table){
 		));
 		if(defined("WORKFLOW_TABLE"))
 			if($DB_WE->f("wforder")){
-				$step = weWorkflowUtility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
-				$steps = count(weWorkflowUtility::getNumberOfSteps($DB_WE->f("ID"), $table));
+				$step = we_workflow_utility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
+				$steps = count(we_workflow_utility::getNumberOfSteps($DB_WE->f("ID"), $table));
 				$text = "$step&nbsp;" . $g_l('resave', '[of]') . "&nbsp;$steps";
 				if($DB_WE->f("mywforder"))
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';

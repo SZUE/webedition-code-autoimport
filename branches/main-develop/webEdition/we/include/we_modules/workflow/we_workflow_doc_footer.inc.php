@@ -45,7 +45,7 @@ function showWorkflowFooterForNormalMode(){
 	$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 	$_footerTable->setColContent(0, $_col++, we_button::create_button("decline", "javascript:decline_workflow();"));
 
-	if(weWorkflowUtility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+weWorkflowUtility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(weWorkflowUtility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
+	if(we_workflow_utility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+we_workflow_utility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
 		$_publishbutton = we_button::create_button("publish", "javascript:finish_workflow();");
 
 	} else {
@@ -55,7 +55,7 @@ function showWorkflowFooterForNormalMode(){
 
 	}
 
-	if(weWorkflowUtility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+	if(we_workflow_utility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 		$_footerTable->setColContent(0, $_col++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();") );
@@ -68,7 +68,7 @@ function showWorkflowFooterForNormalMode(){
 		$_footerTable->setColContent(0, $_col++, $_publishbutton );
 
 	} else {
-		if(weWorkflowUtility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+		if(we_workflow_utility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 
 			if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 				if( $showPubl ){
@@ -109,7 +109,7 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(weWorkflowUtility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+weWorkflowUtility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(weWorkflowUtility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+we_workflow_utility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();") );
 		} else {
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();") );
@@ -135,12 +135,12 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(weWorkflowUtility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+weWorkflowUtility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(weWorkflowUtility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+we_workflow_utility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();") );
 		} else {
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();") );
 		}
-		if(weWorkflowUtility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+		if(we_workflow_utility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();") );
@@ -168,13 +168,13 @@ function showWorkflowFooterForSEEMMode(){
 
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		if(weWorkflowUtility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+weWorkflowUtility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(weWorkflowUtility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
+		if(we_workflow_utility::isWorkflowFinished($we_doc->ID,$we_doc->Table) || ((1+we_workflow_utility::findLastActiveStep($we_doc->ID,$we_doc->Table)) == sizeof(we_workflow_utility::getNumberOfSteps($we_doc->ID,$we_doc->Table)) && we_hasPerm("PUBLISH"))){
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("publish", "javascript:finish_workflow();") );
 		} else {
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("forward", "javascript:pass_workflow();") );
 		}
 
-		if(weWorkflowUtility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+		if(we_workflow_utility::canUserEditDoc($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 			$_footerTable->setColContent(0, $_col++, we_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();") );
@@ -191,7 +191,7 @@ function showWorkflowFooterForSEEMMode(){
 	return $_footerTable->getHtml();
 }
 
-if(weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
+if(we_workflow_utility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]) || we_hasPerm("PUBLISH")){
 
 	if($_SESSION["we_mode"] == "normal"){
 		$_table = showWorkflowFooterForNormalMode();

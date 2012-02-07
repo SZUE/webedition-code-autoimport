@@ -1904,11 +1904,6 @@ class weVersions{
 				$GLOBALS['we_doc'] = $resetDoc;
 
 
-				if(defined("WORKFLOW_TABLE")){
-					include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-				}
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_temporaryDocument.inc.php");
-
 				we_temporaryDocument::delete($resetDoc->ID, $resetDoc->Table);
 				//$resetDoc->initByID($resetDoc->ID);
 				$resetDoc->ModDate = time();
@@ -1933,8 +1928,8 @@ class weVersions{
 				}
 
 				if(defined("WORKFLOW_TABLE") && $resetDoc->ContentType == "text/webedition"){
-					if(weWorkflowUtility::inWorkflow($resetDoc->ID, $resetDoc->Table)){
-						weWorkflowUtility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION["user"]["ID"], "");
+					if(we_workflow_utility::inWorkflow($resetDoc->ID, $resetDoc->Table)){
+						we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION["user"]["ID"], "");
 					}
 				}
 

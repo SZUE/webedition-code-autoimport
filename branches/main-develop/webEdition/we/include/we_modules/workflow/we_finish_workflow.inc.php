@@ -32,7 +32,7 @@ $we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_tran
 $we_dt = $_SESSION["we_data"][$we_transaction];
 include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_init_doc.inc.php");
 
-if(weWorkflowUtility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "", true)){
+if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "", true)){
 	if($we_doc->i_publInScheduleTable()){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $we_doc->From));
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;

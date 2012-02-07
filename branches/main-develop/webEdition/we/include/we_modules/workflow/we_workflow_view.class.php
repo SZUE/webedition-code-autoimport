@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class weWorkflowView extends weWorkflowBase{
+class we_workflow_view extends we_workflow_base{
 
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
@@ -39,8 +39,8 @@ class weWorkflowView extends weWorkflowBase{
 
 	function __construct(){
 		parent::__construct();
-		$this->workflowDef = new weWorkflow();
-		$this->documentDef = new weWorkflowDocument();
+		$this->workflowDef = new we_workflow_workflow();
+		$this->documentDef = new we_workflow_document();
 		array_push($this->hiddens, "ID", "Type", "Status", "Folders", "ObjectFileFolders", "Categories", "ObjCategories", "DocType", "Objects");
 		//$this->hiddens[]="EmailPath";
 		//$this->hiddens[]="LastStepAutoPublish";
@@ -184,14 +184,14 @@ class weWorkflowView extends weWorkflowBase{
 			we_html_tools::getPixel(2, 10),
 			$this->getFoldersHTML(),
 		);
-		$out .= $this->getTypeTableHTML(we_forms::radiobutton(weWorkflow::FOLDER, ($this->workflowDef->Type == weWorkflow::FOLDER ? "1" : "0"), $this->uid . "_Type", g_l('modules_workflow', '[type_dir]'), true, "defaultfont", 'onclick=top.content.setHot();'), $vals, 25);
+		$out .= $this->getTypeTableHTML(we_forms::radiobutton(we_workflow_workflow::FOLDER, ($this->workflowDef->Type == we_workflow_workflow::FOLDER ? "1" : "0"), $this->uid . "_Type", g_l('modules_workflow', '[type_dir]'), true, "defaultfont", 'onclick=top.content.setHot();'), $vals, 25);
 		$vals = array(
 			we_html_tools::getPixel(2, 10),
 			$this->getDocTypeHTML(),
 			we_html_tools::getPixel(2, 10),
 			$this->getCategoryHTML(),
 		);
-		$out .= $this->getTypeTableHTML(we_forms::radiobutton(weWorkflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == weWorkflow::DOCTYPE_CATEGORY ? "1" : "0"), $this->uid . "_Type", g_l('modules_workflow', '[type_doctype]'), true, "defaultfont", 'onclick=top.content.setHot();'), $vals, 25);
+		$out .= $this->getTypeTableHTML(we_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY ? "1" : "0"), $this->uid . "_Type", g_l('modules_workflow', '[type_doctype]'), true, "defaultfont", 'onclick=top.content.setHot();'), $vals, 25);
 
 		if(defined("OBJECT_TABLE")){
 			$vals = array(
@@ -202,7 +202,7 @@ class weWorkflowView extends weWorkflowBase{
 				we_html_tools::getPixel(2, 10),
 				$this->getObjectFileFoldersHTML(),
 			);
-			$out .= $this->getTypeTableHTML(we_forms::radiobutton(weWorkflow::OBJECT, ($this->workflowDef->Type == weWorkflow::OBJECT ? "1" : "0"), $this->uid . "_Type", g_l('modules_workflow', '[type_object]'), true, "defaultfont", 'onclick=top.content.setHot();'), $vals, 25);
+			$out .= $this->getTypeTableHTML(we_forms::radiobutton(we_workflow_workflow::OBJECT, ($this->workflowDef->Type == we_workflow_workflow::OBJECT ? "1" : "0"), $this->uid . "_Type", g_l('modules_workflow', '[type_object]'), true, "defaultfont", 'onclick=top.content.setHot();'), $vals, 25);
 		}
 
 		return $out;
@@ -852,7 +852,7 @@ class weWorkflowView extends weWorkflowBase{
 		if(isset($_REQUEST["wcmd"]))
 			switch($_REQUEST["wcmd"]){
 				case "new_workflow":
-					$this->workflowDef = new weWorkflow();
+					$this->workflowDef = new we_workflow_workflow();
 					$this->page = 0;
 					print '<script  type="text/javascript">
 					top.content.resize.right.editor.edheader.location="' . WE_WORKFLOW_MODULE_PATH . 'edit_workflow_frameset.php?pnt=edheader";
@@ -993,7 +993,7 @@ class weWorkflowView extends weWorkflowBase{
 				case "edit_workflow":
 					$this->show = 0;
 					if(isset($_REQUEST["wid"])){
-						$this->workflowDef = new weWorkflow($_REQUEST["wid"]);
+						$this->workflowDef = new we_workflow_workflow($_REQUEST["wid"]);
 					}
 
 					$_REQUEST["wcmd"] = "reload";
@@ -1040,7 +1040,7 @@ class weWorkflowView extends weWorkflowBase{
 							$this->workflowDef->save();
 							print '<script  type="text/javascript">';
 							if($newone)
-								print 'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","weWorkflowDef","' . $this->workflowDef->Status . '");';
+								print 'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");';
 							else
 								print 'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");';
 							print $childs;
@@ -1070,9 +1070,9 @@ class weWorkflowView extends weWorkflowBase{
 							return;
 						} else{
 
-							$this->workflowDef = new weWorkflow($_REQUEST["wid"]);
+							$this->workflowDef = new we_workflow_workflow($_REQUEST["wid"]);
 							if($this->workflowDef->delete()){
-								$this->workflowDef = new weWorkflow();
+								$this->workflowDef = new we_workflow_workflow();
 								print '<script  type="text/javascript">
 							top.content.deleteEntry(' . $_REQUEST["wid"] . ',"folder");
 							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
@@ -1195,7 +1195,7 @@ class weWorkflowView extends weWorkflowBase{
 	}
 
 	function getDocumentInfo(){
-		if($this->documentDef->workflow->Type == weWorkflow::OBJECT)
+		if($this->documentDef->workflow->Type == we_workflow_workflow::OBJECT)
 			return $this->getObjectInfo();
 
 		$_space = 100;
@@ -1216,10 +1216,10 @@ class weWorkflowView extends weWorkflowBase{
 		array_push($_parts, array("headline" => g_l('weEditorInfo', "[content_type]"),
 			"html" => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
 			"space" => $_space,
-			"noline" => (($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type != weWorkflow::OBJECT) ? 1 : 0)
+			"noline" => (($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
 			)
 		);
-		if($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type != weWorkflow::OBJECT){
+		if($this->documentDef->document->ContentType != "folder" && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
 			$GLOBALS['we_doc'] = $this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
 			array_push($_parts, array("headline" => g_l('weEditorInfo', "[file_size]"),
@@ -1278,7 +1278,7 @@ class weWorkflowView extends weWorkflowBase{
 
 		//	Part - Path-information
 
-		if($this->documentDef->document->Table != TEMPLATES_TABLE && $this->documentDef->workflow->Type != weWorkflow::OBJECT){
+		if($this->documentDef->document->Table != TEMPLATES_TABLE && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
 			$rp = $this->documentDef->document->getRealPath();
 			$http = $this->documentDef->document->getHttpPath();
 			$showlink = ($this->documentDef->document->ContentType == "text/html" ||
@@ -1427,7 +1427,7 @@ class weWorkflowView extends weWorkflowBase{
 		$db = new DB_WE;
 		$headline[0]["dat"] = '<div class="middlefont">' . g_l('modules_workflow', '[step]') . "</div>";
 
-		$workflowDocument = new weWorkflowDocument($workflowDocID);
+		$workflowDocument = new we_workflow_document($workflowDocID);
 
 		$counter = 0;
 		$counter1 = 0;
@@ -1436,16 +1436,16 @@ class weWorkflowView extends weWorkflowBase{
 			return g_l('modules_workflow', '[cannot_find_active_step]');
 		foreach($workflowDocument->steps as $sk => $sv){
 
-			$workflowStep = new weWorkflowStep($sv->workflowStepID);
+			$workflowStep = new we_workflow_step($sv->workflowStepID);
 
 			$now = date(g_l('weEditorInfo', "[date_format]"), time());
 			$start = date(g_l('weEditorInfo', "[date_format]"), $sv->startDate);
 
 			$secs = time() - $sv->startDate;
-			$elapsed = weWorkflowView::getTime($secs);
+			$elapsed = self::getTime($secs);
 
 			$secs = ($sv->startDate + round($workflowStep->Worktime * 3600)) - time();
-			$remained = weWorkflowView::getTime($secs);
+			$remained = self::getTime($secs);
 
 			if($remained["hour"] < 0){
 				if($sk > $current){
@@ -1462,7 +1462,7 @@ class weWorkflowView extends weWorkflowBase{
 
 			$end = date(g_l('weEditorInfo', "[date_format]"), $sv->startDate + round($workflowStep->Worktime * 3600));
 
-			$content[$counter][0]["dat"] = ($sv->Status == weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . ($counter + 1) . "</div>";
+			$content[$counter][0]["dat"] = ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . ($counter + 1) . "</div>";
 			$content[$counter][0]["height"] = "";
 			$content[$counter][0]["align"] = "center";
 
@@ -1471,12 +1471,12 @@ class weWorkflowView extends weWorkflowBase{
 
 				$headline[$counter1 + 1]["dat"] = g_l('modules_workflow', '[user]') . (string) ($counter1 + 1);
 
-				$workflowTask = new weWorkflowTask($tv->workflowTaskID);
+				$workflowTask = new we_workflow_task($tv->workflowTaskID);
 
 				$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($workflowTask->userID), "username", $db);
 
 				if($sk == $current)
-					$out = ($tv->Status == weWorkflowDocumentTask::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $foo . "</div>";
+					$out = ($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $foo . "</div>";
 				else if($sk < $current)
 					$out = '<div class="' . $finished_font . '">' . $foo . '</div>';
 				else
@@ -1491,7 +1491,7 @@ class weWorkflowView extends weWorkflowBase{
 
 			$headline[$counter1 + 1]["dat"] = g_l('modules_workflow', '[worktime]');
 
-			$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $workflowStep->Worktime . '</div>';
+			$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $workflowStep->Worktime . '</div>';
 			$content[$counter][$counter1 + 1]["height"] = "";
 			$content[$counter][$counter1 + 1]["align"] = "right";
 
@@ -1500,14 +1500,14 @@ class weWorkflowView extends weWorkflowBase{
 				$headline[$counter1 + 1]["dat"] = g_l('modules_workflow', '[time_elapsed]');
 
 
-				$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $elapsed["hour"] . ":" . $elapsed["min"] . ":" . $elapsed["sec"] . "</div>";
+				$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $elapsed["hour"] . ":" . $elapsed["min"] . ":" . $elapsed["sec"] . "</div>";
 				$content[$counter][$counter1 + 1]["height"] = "";
 				$content[$counter][$counter1 + 1]["align"] = "right";
 
 				$counter1++;
 				$headline[$counter1 + 1]["dat"] = g_l('modules_workflow', '[time_remained]');
 
-				$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $remained["hour"] . ":" . $remained["min"] . ":" . $remained["sec"] . "</div>";
+				$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $remained["hour"] . ":" . $remained["min"] . ":" . $remained["sec"] . "</div>";
 				$content[$counter][$counter1 + 1]["height"] = "";
 				$content[$counter][$counter1 + 1]["align"] = "right";
 
@@ -1515,7 +1515,7 @@ class weWorkflowView extends weWorkflowBase{
 
 				$headline[$counter1 + 1]["dat"] = g_l('modules_workflow', '[step_plan]');
 
-				$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == weWorkflowDocumentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $end . "</div>";
+				$content[$counter][$counter1 + 1]["dat"] = ($sv->Status == we_workflow_documentStep::STATUS_UNKNOWN ? '<div class="' . $notfinished_font . '">' : '<div class="' . $finished_font . '">') . $end . "</div>";
 				$content[$counter][$counter1 + 1]["height"] = "";
 				$content[$counter][$counter1 + 1]["align"] = "right";
 			}
@@ -1553,13 +1553,13 @@ class weWorkflowView extends weWorkflowBase{
 		$headlines[3]["dat"] = g_l('modules_workflow', '[user]');
 
 		$logs = array();
-		$logs = weWorkflowLog::getLogForDocument($docID, "DESC", $type);
+		$logs = we_workflow_log::getLogForDocument($docID, "DESC", $type);
 		$counter = 0;
 
 		$offset = isset($_REQUEST["offset"]) ? $_REQUEST["offset"] : 0;
 		$art = isset($_REQUEST["art"]) ? $_REQUEST["art"] : "";
 		$type = isset($_REQUEST["type"]) ? $_REQUEST["type"] : "";
-		$numRows = weWorkflowLog::NUMBER_LOGS;
+		$numRows = we_workflow_log::NUMBER_LOGS;
 		$anz = $GLOBALS["ANZ_LOGS"];
 
 		foreach($logs as $v){

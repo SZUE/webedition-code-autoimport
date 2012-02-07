@@ -27,7 +27,7 @@
  * General Definition of WebEdition Workflow
  *
  */
-class weWorkflow extends weWorkflowBase{
+class we_workflow_workflow extends we_workflow_base{
 	const STATE_INACTIVE=0;
 	const STATE_ACTIVE=1;
 // Document-Type/Category based Workflow Type
@@ -53,7 +53,7 @@ class weWorkflow extends weWorkflowBase{
 
 	/**
 	 * steps for WorkFlow Definition
-	 * this is array of weWorkflowStep objects
+	 * this is array of we_workflow_step objects
 	 */
 	var $steps = array();
 	// default document object
@@ -119,7 +119,7 @@ class weWorkflow extends weWorkflowBase{
 			parent::load();
 
 			// get steps for workflow
-			$this->steps = weWorkflowStep::getAllSteps($this->ID);
+			$this->steps = we_workflow_step::getAllSteps($this->ID);
 			$this->loadDocuments();
 			return true;
 		} else{
@@ -155,7 +155,7 @@ class weWorkflow extends weWorkflowBase{
 
 		$wfs = array();
 		while($this->db->next_record()) {
-			$wfs[] = new weWorkflow($this->db->f('ID'));
+			$wfs[] = new self($this->db->f('ID'));
 		}
 		return $wfs;
 	}
@@ -204,7 +204,7 @@ class weWorkflow extends weWorkflowBase{
 
 		//remove all documents from workflow
 		foreach($this->documents as $k => $val){
-			$this->documentDef = new weWorkflowDocument($val['ID']);
+			$this->documentDef = new we_workflow_document($val['ID']);
 			$this->documentDef->finishWorkflow(1);
 			$this->documentDef->save();
 		}
@@ -224,7 +224,7 @@ class weWorkflow extends weWorkflowBase{
 		}
 
 		foreach($this->documents as $key => $val){
-			$this->documentDef = new weWorkflowDocument($val['ID']);
+			$this->documentDef = new we_workflow_document($val['ID']);
 			$this->documentDef->delete();
 		}
 
@@ -305,7 +305,7 @@ class weWorkflow extends weWorkflowBase{
 		if($workflowID) // when we have found a document type-based workflow we can return
 			return $workflowID;
 
-		$workflowID = weWorkflow::findWfIdForFolder($folder);
+		$workflowID = self::findWfIdForFolder($folder);
 		/**
 		 * create workflow document
 		 */
@@ -320,7 +320,7 @@ class weWorkflow extends weWorkflowBase{
 		$wfID = f('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE Folders LIKE \'%,' . intval($folderID) . ',%\' AND Type=' . self::FOLDER . ' AND Status=' . self::STATE_ACTIVE, 'ID', $db);
 		if($folderID > 0 && (!$wfID)){
 			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), 'ParentID', $db);
-			return weWorkflow::findWfIdForFolder($pid);
+			return self::findWfIdForFolder($pid);
 		} else{
 			return $wfID;
 		}
@@ -383,14 +383,12 @@ class weWorkflow extends weWorkflowBase{
 	}
 
 	function addNewStep(){
-		$this->steps[] = new weWorkflowStep();
+		$this->steps[] = new we_workflow_step();
 	}
 
 	function addNewTask(){
 		foreach($this->steps as $k => $v)
-			$this->steps[$k]->tasks[] = new weWorkflowTask();
+			$this->steps[$k]->tasks[] = new we_workflow_task();
 	}
 
 }
-
-?>

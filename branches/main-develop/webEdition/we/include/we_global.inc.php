@@ -53,7 +53,7 @@ function inWorkflow($doc){
 	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc)
 		return false;
 
-	return ($doc->ID ? weWorkflowUtility::inWorkflow($doc->ID, $doc->Table) : false);
+	return ($doc->ID ? we_workflow_utility::inWorkflow($doc->ID, $doc->Table) : false);
 }
 
 function getAllowedClasses($db = ''){

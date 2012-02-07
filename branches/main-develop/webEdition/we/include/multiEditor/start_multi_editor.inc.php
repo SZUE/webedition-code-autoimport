@@ -56,14 +56,14 @@ function _buildJsCommand($cmdArray = array("", "", "cockpit", "open_cockpit", ""
 $jsCommand = _buildJsCommand();
 
 if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_cmd'][4] == 'SEEM_edit_include'){ // Edit-Include-Mode
-	// in multiEditorFrameset we_cmd[1] can be set to reach this
+// in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
 	for($i = 1; $i < sizeof($_REQUEST['we_cmd']) && $i < 4; $i++){
 		$directCmd[] = $_REQUEST['we_cmd'][$i];
 	}
 	$jsCommand = _buildJsCommand($directCmd);
 } else{ // check preferences for which document to open at startup
-	// <we:linkToSeeMode> !!!!
+// <we:linkToSeeMode> !!!!
 	if(isset($_SESSION["SEEM"]) && isset($_SESSION["SEEM"]["open_selected"])){
 
 		if(isset($_SESSION["SEEM"]["startType"]) && ($_SESSION["SEEM"]["startType"] == 'document' && checkIfValidStartdocument($_SESSION["SEEM"]["startId"]) )){
@@ -85,7 +85,7 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 		}
 		unset($_SESSION["SEEM"]["open_selected"]);
 
-		// normal mode, start document depends on settings
+// normal mode, start document depends on settings
 	} else if(isset($_SESSION["prefs"]["seem_start_type"])){
 		if($_SESSION["prefs"]["seem_start_type"] == "object" && $_SESSION["prefs"]["seem_start_file"] != 0 && checkIfValidStartdocument($_SESSION["prefs"]["seem_start_file"], "object")){ //	if a stardocument is already selected - show this
 			$directCmd = array(
@@ -112,14 +112,12 @@ if(isset($_REQUEST['we_cmd']) && isset($_REQUEST['we_cmd'][4]) && $_REQUEST['we_
 			$jsCommand = _buildJsCommand();
 		}
 	}
-	// :ToDO: alert Box when no vald start document is selected => open cockpit then
+// :ToDO: alert Box when no vald start document is selected => open cockpit then
 }
 if($_SESSION["prefs"]["seem_start_type"] !== ""){
 	print we_html_element::jsElement(
 			$jsCommand
 		);
 } else{
-	print we_html_element::jsElement(
-			"top.weEditorFrameController.toggleFrames();"
-		);
+	print we_html_element::jsElement("top.weEditorFrameController.toggleFrames();");
 }

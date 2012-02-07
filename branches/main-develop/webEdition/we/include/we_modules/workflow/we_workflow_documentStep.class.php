@@ -27,7 +27,7 @@
  * WorkfFlow Document Step definition
  * This class describe document step in workflow process
  */
-class weWorkflowDocumentStep extends weWorkflowBase{
+class we_workflow_documentStep extends we_workflow_base{
 	const STATUS_UNKNOWN=0;
 	const STATUS_APPROVED=1;
 	const STATUS_CANCELED=2;
@@ -53,7 +53,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	function __construct($wfDocumentStep=0){
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_STEP_TABLE;
-		$this->ClassName = "weWorkflowDocumentStep";
+		$this->ClassName = __CLASS__;
 
 		$this->persistents[] = "ID";
 		$this->persistents[] = "workflowDocID";
@@ -87,7 +87,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		if($this->ID){
 			parent::load();
 			## get tasks for workflow
-			$this->tasks = weWorkflowDocumentTask::__getAllTasks($this->ID);
+			$this->tasks = we_workflow_documentTask::__getAllTasks($this->ID);
 			return true;
 		}
 		else
@@ -102,13 +102,13 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		$this->startDate = time();
 
 
-		$workflowDoc = new weWorkflowDocument($this->workflowDocID);
-		$workflowStep = new weWorkflowStep($this->workflowStepID);
+		$workflowDoc = new we_workflow_document($this->workflowDocID);
+		$workflowStep = new we_workflow_step($this->workflowStepID);
 		$deadline = $this->startDate + round($workflowStep->Worktime * 3600);
 
 		// set all tasks to pending
 		for($i = 0; $i < count($this->tasks); $i++){
-			$workflowTask = new weWorkflowTask($this->tasks[$i]->workflowTaskID);
+			$workflowTask = new we_workflow_task($this->tasks[$i]->workflowTaskID);
 			if($workflowTask->userID){
 				//send todo to next user
 				$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($workflowDoc->document->ContentType == 'objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $workflowDoc->document->Table . '\',\'' . $workflowDoc->document->ID . '\',\'' . $workflowDoc->document->ContentType . '\');");" >' . $workflowDoc->document->Path . '</a>';
@@ -140,7 +140,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	 * create all tasks for step
 	 */
 	function createAllTasks(){
-		$this->tasks = weWorkflowDocumentTask::__createAllTasks($this->workflowStepID);
+		$this->tasks = we_workflow_documentTask::__createAllTasks($this->workflowStepID);
 		return true;
 	}
 
@@ -171,40 +171,40 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			foreach($this->tasks as $tk => $tv){
 				$this->tasks[$tk]->approve();
 			}
-			$this->Status = weWorkflowDocumentStep::STATUS_APPROVED;
+			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, weWorkflowLog::TYPE_APPROVE_FORCE, $desc);
+			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
 		if($i > -1){
 			$this->tasks[$i]->approve();
 
-			$workflowStep = new weWorkflowStep($this->workflowStepID);
+			$workflowStep = new we_workflow_step($this->workflowStepID);
 			if($workflowStep->stepCondition == 0)
-				$this->Status = weWorkflowDocumentStep::STATUS_APPROVED;
+				$this->Status = self::STATUS_APPROVED;
 			else{
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
 					foreach($this->tasks as $k => $v){
-						$status = $status && ($v->Status == weWorkflowDocumentTask::STATUS_APPROVED ? true : false);
+						$status = $status && ($v->Status == we_workflow_documentTask::STATUS_APPROVED ? true : false);
 					}
 
 					if($status)
-						$this->Status = weWorkflowDocumentStep::STATUS_APPROVED;
+						$this->Status = self::STATUS_APPROVED;
 				}
 			}
-			if($this->Status == weWorkflowDocumentStep::STATUS_APPROVED || $this->Status == weWorkflowDocumentStep::STATUS_CANCELED){
+			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
 				foreach($this->tasks as $tk => $tv){
-					if($tv->Status == weWorkflowDocumentTask::STATUS_UNKNOWN)
+					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN)
 						$this->tasks[$tk]->removeTodo();
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, weWorkflowLog::TYPE_APPROVE, $desc);
+			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
 			return true;
 		}
 		return false;
@@ -215,40 +215,40 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 			foreach($this->tasks as $tk => $tv){
 				$this->tasks[$tk]->approve();
 			}
-			$this->Status = weWorkflowDocumentStep::STATUS_APPROVED;
+			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, weWorkflowLog::TYPE_APPROVE_FORCE, $desc);
+			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
 		if($i > -1){
 			$this->tasks[$i]->approve();
 
-			$workflowStep = new weWorkflowStep($this->workflowStepID);
+			$workflowStep = new we_workflow_step($this->workflowStepID);
 			if($workflowStep->stepCondition == 0)
-				$this->Status = weWorkflowDocumentStep::STATUS_APPROVED;
+				$this->Status = self::STATUS_APPROVED;
 			else{
 				$num = $this->findNumOfFinishedTasks();
 				if($num == count($this->tasks)){
 					$status = true;
 					foreach($this->tasks as $k => $v){
-						$status = $status && ($v->Status == weWorkflowDocumentTask::STATUS_APPROVED ? true : false);
+						$status = $status && ($v->Status == we_workflow_documentTask::STATUS_APPROVED ? true : false);
 					}
 
 					if($status)
-						$this->Status = weWorkflowDocumentStep::STATUS_APPROVED;
+						$this->Status = self::STATUS_APPROVED;
 				}
 			}
-			if($this->Status == weWorkflowDocumentStep::STATUS_APPROVED || $this->Status == weWorkflowDocumentStep::STATUS_CANCELED){
+			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
 				foreach($this->tasks as $tk => $tv){
-					if($tv->Status == weWorkflowDocumentTask::STATUS_UNKNOWN)
+					if($tv->Status == we_workflow_documentTask::STATUS_UNKNOWN)
 						$this->tasks[$tk]->removeTodo();
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, weWorkflowLog::TYPE_APPROVE, $desc);
+			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
 			return true;
 		}
 		return false;
@@ -258,21 +258,21 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		if($force){
 			foreach($this->tasks as $tk => $tv)
 				$this->tasks[$tk]->decline();;
-			$this->Status = weWorkflowDocumentStep::STATUS_CANCELED;
+			$this->Status = self::STATUS_CANCELED;
 			$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, weWorkflowLog::TYPE_DECLINE, $desc);
+			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
 		if($i > -1){
 			$this->tasks[$i]->decline();
-			$workflowStep = new weWorkflowStep($this->workflowStepID);
-			$this->Status = weWorkflowDocumentStep::STATUS_CANCELED;
-			if($this->Status == weWorkflowDocumentStep::STATUS_APPROVED || $this->Status == weWorkflowDocumentStep::STATUS_CANCELED)
+			$workflowStep = new we_workflow_step($this->workflowStepID);
+			$this->Status = self::STATUS_CANCELED;
+			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED)
 				$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, weWorkflowLog::TYPE_DECLINE, $desc);
+			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
 			return true;
 		}
 		return false;
@@ -280,7 +280,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 
 	function findTaskByUser($uID){
 		for($i = 0; $i < count($this->tasks); $i++){
-			$workflowTask = new weWorkflowTask($this->tasks[$i]->workflowTaskID);
+			$workflowTask = new we_workflow_task($this->tasks[$i]->workflowTaskID);
 			if($workflowTask->userID == $uID)
 				return $i;
 		}
@@ -309,7 +309,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		$db->query("SELECT ID FROM " . WORKFLOW_DOC_STEP_TABLE . " WHERE workflowDocID=" . intval($workflowDocumentID) . " ORDER BY ID");
 		$docSteps = array();
 		while($db->next_record()) {
-			$docSteps[] = new weWorkflowDocumentStep($db->f("ID"));
+			$docSteps[] = new self($db->f("ID"));
 		}
 		return $docSteps;
 	}
@@ -324,7 +324,7 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 		$db->query("SELECT ID FROM " . WORKFLOW_STEP_TABLE . " WHERE workflowID =" . intval($workflowID) . " ORDER BY ID");
 		$docSteps = array();
 		while($db->next_record()) {
-			$docSteps[] = weWorkflowDocumentStep::__createStep($db->f("ID"));
+			$docSteps[] = self::__createStep($db->f("ID"));
 		}
 		return $docSteps;
 	}
@@ -336,14 +336,14 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	static function __createStep($WorkflowStep){
 
 		if(is_array($WorkflowStep))
-			return weWorkflowDocumentStep::__createStepFromHash($WorkflowStep);
+			return self::__createStepFromHash($WorkflowStep);
 
 		$db = new DB_WE();
 		$db->query("SELECT * FROM " . WORKFLOW_STEP_TABLE . " WHERE ID=" . intval($WorkflowStep) . " ORDER BY ID");
 		if(!$db->next_record()){
 			return false;
 		}
-		return weWorkflowDocumentStep::__createStepFromHash($db->Record);
+		return self::__createStepFromHash($db->Record);
 	}
 
 	/**
@@ -351,13 +351,13 @@ class weWorkflowDocumentStep extends weWorkflowBase{
 	 *
 	 */
 	static function __createStepFromHash($WorkflowStepArray){
-		$docStep = new weWorkflowDocumentStep();
+		$docStep = new self();
 
 		$docStep->workflowStepID = $WorkflowStepArray["ID"];
 		$docStep->startDate = 0;
 		$docStep->finishDate = 0;
-		$docStep->Status = weWorkflowDocumentStep::STATUS_UNKNOWN;
-		$docStep->tasks = weWorkflowDocumentTask::__createAllTasks($docStep->workflowStepID);
+		$docStep->Status = self::STATUS_UNKNOWN;
+		$docStep->tasks = we_workflow_documentTask::__createAllTasks($docStep->workflowStepID);
 		return $docStep;
 	}
 

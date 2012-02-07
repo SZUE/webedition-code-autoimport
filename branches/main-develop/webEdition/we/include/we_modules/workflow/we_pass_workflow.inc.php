@@ -30,9 +30,9 @@ if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];
 	$wf_select = isset($_REQUEST["wf_select"]) ? $_REQUEST["wf_select"] : "";
 
-	$force = (!weWorkflowUtility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]));
+	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"]));
 
-	$ok = weWorkflowUtility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],$wf_text,$force);
+	$ok = we_workflow_utility::approve($we_doc->ID,$we_doc->Table,$_SESSION["user"]["ID"],$wf_text,$force);
 
 	if($ok){
 		$msg = g_l('modules_workflow','['.stripTblPrefix($we_doc->Table).'][pass_workflow_ok]');

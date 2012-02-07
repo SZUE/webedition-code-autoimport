@@ -518,8 +518,8 @@ class we_textContentDocument extends we_textDocument{
 		$this->we_save();
 		$this->we_publish();
 		if(defined("WORKFLOW_TABLE") && $this->ContentType == "text/webedition"){
-			if(weWorkflowUtility::inWorkflow($this->ID, $this->Table)){
-				weWorkflowUtility::removeDocFromWorkflow($this->ID, $this->Table, $_SESSION["user"]["ID"], "");
+			if(we_workflow_utility::inWorkflow($this->ID, $this->Table)){
+				we_workflow_utility::removeDocFromWorkflow($this->ID, $this->Table, $_SESSION["user"]["ID"], "");
 			}
 		}
 	}

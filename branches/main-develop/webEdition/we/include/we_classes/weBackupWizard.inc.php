@@ -1252,8 +1252,7 @@ class weBackupWizard{
 					break;
 				case 3:
 					if(defined("WORKFLOW_TABLE")){
-						include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-						if(count(weWorkflowUtility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined("OBJECT_FILES_TABLE") && count(weWorkflowUtility::getAllWorkflowDocs(OBJECT_FILES_TABLE))) > 0){
+						if(count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined("OBJECT_FILES_TABLE") && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE))) > 0){
 							$nextbut = we_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();");
 						} else{
 							$nextbut = we_button::create_button("restore_backup", "javascript:top.body.startImport();");

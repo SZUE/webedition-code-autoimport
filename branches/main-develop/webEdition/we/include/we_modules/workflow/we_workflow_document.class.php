@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weWorkflowDocument extends weWorkflowBase{
+class we_workflow_document extends we_workflow_base{
 	const STATUS_UNKNOWN=0;
 	const STATUS_FINISHED=1;
 	const STATUS_CANCELED=2;
@@ -45,7 +45,7 @@ class weWorkflowDocument extends weWorkflowBase{
 	function __construct($wfDocument=0){
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_TABLE;
-		$this->ClassName = "weWorkflowDocument";
+		$this->ClassName = __CLASS__;
 		$this->persistents[] = "ID";
 		$this->persistents[] = "workflowID";
 		$this->persistents[] = "documentID";
@@ -76,9 +76,9 @@ class weWorkflowDocument extends weWorkflowBase{
 
 		if($this->ID){
 			parent::load();
-			$this->workflow = new weWorkflow($this->workflowID);
+			$this->workflow = new we_workflow_workflow($this->workflowID);
 
-			$docTable = $this->workflow->Type == weWorkflow::OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
+			$docTable = $this->workflow->Type == we_workflow_workflow::OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE;
 			$this->db->query("SELECT * FROM $docTable WHERE ID=" . intval($this->documentID));
 			if($this->db->next_record())
 				if($this->db->f("ClassName")){
@@ -90,7 +90,7 @@ class weWorkflowDocument extends weWorkflowBase{
 					}
 				}
 
-			$this->steps = weWorkflowDocumentStep::__getAllSteps($this->ID);
+			$this->steps = we_workflow_documentStep::__getAllSteps($this->ID);
 		}
 	}
 
@@ -100,7 +100,7 @@ class weWorkflowDocument extends weWorkflowBase{
 			return false;
 		}
 		$ret = $this->steps[$i]->approve($uID, $desc, $force);
-		if($this->steps[$i]->Status == weWorkflowDocumentStep::STATUS_APPROVED){
+		if($this->steps[$i]->Status == we_workflow_documentStep::STATUS_APPROVED){
 			$this->nextStep($i, $desc, $uID);
 		}
 		return $ret;
@@ -112,7 +112,7 @@ class weWorkflowDocument extends weWorkflowBase{
 			return false;
 		}
 		$ret = $this->steps[$i]->approve($uID, $desc, $force);
-		if($this->steps[$i]->Status == weWorkflowDocumentStep::STATUS_APPROVED){
+		if($this->steps[$i]->Status == we_workflow_documentStep::STATUS_APPROVED){
 			$this->finishWorkflow(1, $uID);
 			$this->document->save();
 			if($this->document->i_publInScheduleTable()){
@@ -136,7 +136,7 @@ class weWorkflowDocument extends weWorkflowBase{
 		if($i < 0 && !$force)
 			return false;
 		$ret = $this->steps[$i]->decline($uID, $desc, $force);
-		if($this->steps[$i]->Status == weWorkflowDocumentStep::STATUS_CANCELED){
+		if($this->steps[$i]->Status == we_workflow_documentStep::STATUS_CANCELED){
 			$this->finishWorkflow(1, $uID);
 
 			$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
@@ -153,7 +153,7 @@ class weWorkflowDocument extends weWorkflowBase{
 	function restartWorkflow($desc){
 		foreach($this->steps as $k => $v)
 			$this->steps[$k]->delete();
-		$this->steps = weWorkflowDocumentStep::__createAllSteps($this->workflowID);
+		$this->steps = we_workflow_documentStep::__createAllSteps($this->workflowID);
 		$this->steps[0]->start($desc);
 	}
 
@@ -170,19 +170,19 @@ class weWorkflowDocument extends weWorkflowBase{
 		if($force){
 			$this->Status = self::STATUS_CANCELED;
 			foreach($this->steps as $sk => $sv){
-				if($this->steps[$sk]->Status == weWorkflowDocumentStep::STATUS_UNKNOWN)
-					$this->steps[$sk]->Status = weWorkflowDocumentStep::STATUS_CANCELED;
+				if($this->steps[$sk]->Status == we_workflow_documentStep::STATUS_UNKNOWN)
+					$this->steps[$sk]->Status = we_workflow_documentStep::STATUS_CANCELED;
 				foreach($this->steps[$sk]->tasks as $tk => $tv){
-					if($this->steps[$sk]->tasks[$tk]->Status == weWorkflowDocumentTask::STATUS_UNKNOWN)
-						$this->steps[$sk]->tasks[$tk]->Status = weWorkflowDocumentTask::STATUS_CANCELED;
+					if($this->steps[$sk]->tasks[$tk]->Status == we_workflow_documentTask::STATUS_UNKNOWN)
+						$this->steps[$sk]->tasks[$tk]->Status = we_workflow_documentTask::STATUS_CANCELED;
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->ID, $uID, weWorkflowLog::TYPE_DOC_FINISHED_FORCE, "");
+			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "");
 		}
 		else{
 			$this->Status = self::STATUS_FINISHED;
-			$this->Log->logDocumentEvent($this->ID, $uID, weWorkflowLog::TYPE_DOC_FINISHED, "");
+			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "");
 		}
 		return true;
 	}
@@ -251,7 +251,7 @@ class weWorkflowDocument extends weWorkflowBase{
 		$db = new DB_WE();
 		$db->query("SELECT " . WORKFLOW_DOC_TABLE . ".ID FROM " . WORKFLOW_DOC_TABLE . "," . WORKFLOW_TABLE . " WHERE " . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . ".ID AND " . WORKFLOW_DOC_TABLE . ".documentID=" . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type != "" ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC");
 		if($db->next_record()){
-			return new weWorkflowDocument($db->f("ID"));
+			return new self($db->f("ID"));
 		} else{
 			return false;
 		}
@@ -262,18 +262,18 @@ class weWorkflowDocument extends weWorkflowBase{
 	 *    if workflow for that document exists, function will return it
 	 */
 	function createNew($documentID, $type, $workflowID, $userID, $desc){
-		$newWfDoc = weWorkflowDocument::find($documentID, $type);
+		$newWfDoc = self::find($documentID, $type);
 
 		if(isset($newWfDoc->ID)){
 			return $newWfDoc;
 		}
 
-		$newWFDoc = new weWorkflowDocument();
+		$newWFDoc = new self();
 		$newWFDoc->documentID = $documentID;
 		$newWFDoc->userID = $userID;
 		$newWFDoc->workflowID = $workflowID;
-		$newWFDoc->workflow = new weWorkflow($workflowID);
-		$newWFDoc->steps = weWorkflowDocumentStep::__createAllSteps($workflowID);
+		$newWFDoc->workflow = new we_workflow_workflow($workflowID);
+		$newWFDoc->steps = we_workflow_documentStep::__createAllSteps($workflowID);
 
 		return $newWFDoc;
 	}

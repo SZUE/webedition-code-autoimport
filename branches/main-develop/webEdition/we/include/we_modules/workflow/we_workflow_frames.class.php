@@ -22,11 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weWorkflowFrames extends weModuleWorkflowFrames{
+class we_workflow_frames extends we_workflow_moduleFrames{
 
 	function __construct(){
 		parent::__construct();
-		$this->View = new weWorkflowView();
+		$this->View = new we_workflow_view();
 	}
 
 	function getHTMLFrameset(){
@@ -49,7 +49,7 @@ class weWorkflowFrames extends weModuleWorkflowFrames{
 	function getJSTreeCode(){
 		$db_tmp = new DB_WE();
 		$db_tmp1 = new DB_WE();
-		$out = weModuleWorkflowFrames::getJSTreeCode();
+		$out = parent::getJSTreeCode();
 
 		$out.='
 		 <script  type="text/javascript">
@@ -61,7 +61,7 @@ class weWorkflowFrames extends weModuleWorkflowFrames{
 		$out.="startloc=" . $startloc . ";\n";
 		$this->db->query("SELECT * FROM " . WORKFLOW_TABLE . " ORDER BY Text ASC");
 		while($this->db->next_record()) {
-			$this->View->workflowDef = new weWorkflow();
+			$this->View->workflowDef = new we_workflow_workflow();
 			$this->View->workflowDef->load($this->db->f("ID"));
 			$out.="  menuDaten.add(new dirEntry('folder','" . $this->View->workflowDef->ID . "','0','" . htmlspecialchars(addslashes($this->View->workflowDef->Text)) . "',false,'folder','workflowDef','" . $this->View->workflowDef->Status . "'));\n";
 

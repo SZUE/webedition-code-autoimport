@@ -23,9 +23,6 @@
  */
 
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_exim/weContentProvider.class.php");
-if(defined("WORKFLOW_TABLE")) {
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/workflow/weWorkflowUtility.php");
-}
 
 class rpcPublishDocsCmd extends rpcCmd {
 
@@ -58,8 +55,8 @@ class rpcPublishDocsCmd extends rpcCmd {
 						$object->we_save();
 						$object->we_publish();
 						if(defined("WORKFLOW_TABLE") && $object->ContentType == "text/webedition") {
-							if(weWorkflowUtility::inWorkflow($object->ID,$object->Table)){
-								weWorkflowUtility::removeDocFromWorkflow($object->ID,$object->Table,$_SESSION["user"]["ID"],"");
+							if(we_workflow_utility::inWorkflow($object->ID,$object->Table)){
+								we_workflow_utility::removeDocFromWorkflow($object->ID,$object->Table,$_SESSION["user"]["ID"],"");
 							}
 						}
 						unset($_SESSION['versions']['doPublish']);

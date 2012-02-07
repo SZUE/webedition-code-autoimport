@@ -26,14 +26,14 @@
 /**
  * General Definition of WebEdition Workflow Step
  */
-class weWorkflowStep extends weWorkflowBase{
+class we_workflow_step extends we_workflow_base{
 
 	var $ID;
 	var $workflowID;
 	var $Worktime;
 	var $timeAction;
 	var $stepCondition;
-	var $tasks = array(); # array of weWorkflowTask objects
+	var $tasks = array(); # array of we_workflow_task objects
 
 	/**
 	 * Default Constructor
@@ -77,7 +77,7 @@ class weWorkflowStep extends weWorkflowBase{
 		$steps = array();
 
 		while($db->next_record()) {
-			$steps[] = new weWorkflowStep($db->f("ID"));
+			$steps[] = new self($db->f("ID"));
 		}
 		return $steps;
 	}
@@ -91,7 +91,7 @@ class weWorkflowStep extends weWorkflowBase{
 		if($this->ID){
 			parent::load();
 			## get tasks for step
-			$this->tasks = weWorkflowTask::getAllTasks($this->ID);
+			$this->tasks = we_workflow_task::getAllTasks($this->ID);
 			return true;
 		} else{
 			return false;
