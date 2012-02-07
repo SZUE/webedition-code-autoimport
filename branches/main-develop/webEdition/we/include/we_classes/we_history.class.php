@@ -30,6 +30,7 @@
  * the 'personalized desktop'.
  */
 abstract class we_history{
+	const MAX=5;
 
 	static function userHasPerms($creatorid, $owners, $restricted){
 		if($_SESSION['perms']['ADMINISTRATOR']){
@@ -44,20 +45,23 @@ abstract class we_history{
 		return false;
 	}
 
-	static function insertIntoHistory(&$object){
-		$_db = new DB_WE();
-		//print $object->Table;
+	static function insertIntoHistory(&$object, $action='save'){
+		$_db = $object->DB_WE;
+		$table = $_db->escape(stripTblPrefix($object->Table));
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
-		$_query = "SELECT * FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".DID=" . intval($object->ID) .
-			" AND " . HISTORY_TABLE . ".DocumentTable='" . $_db->escape(str_replace(TBL_PREFIX, '', $object->Table)) . "';";
-		$object->DB_WE->query($_query);
-		while($object->DB_WE->next_record()) {
-			$_row = "DELETE FROM " . HISTORY_TABLE . " WHERE " . HISTORY_TABLE . ".ID = '" . $_db->escape($object->DB_WE->f("ID")) . "';";
-			$_db->query($_row);
+		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . 'AND DocumentTable="' . $table . '"', 'cnt', $_db);
+		if($cnt > self::MAX){
+			$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . 'AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
 		}
-
-		$_query = 'INSERT INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,Act,UserName) VALUES(' . intval($object->ID) . ',"' . $_db->escape(str_replace(TBL_PREFIX, '', $object->Table)) . '","' . $_db->escape($object->ContentType) . '","' . $_db->escape($object->ModDate) . '","save","' . $_db->escape($_username) . '");';
-		$object->DB_WE->query($_query);
+		$insert = array(
+			'DID' => intval($object->ID),
+			'DocumentTable' => $table,
+			'ContentType' => $object->ContentType,
+			'ModDate' => 'FROM_UNIXTIME(' . intval($object->ModDate) . ')',
+			'Act' => $action,
+			'UserName' => $_username,
+		);
+		$object->DB_WE->query('INSERT INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter($insert));
 	}
 
 	/**
@@ -67,9 +71,7 @@ abstract class we_history{
 	 * @param string $table
 	 */
 	static function deleteFromHistory($modelIds, $table){
-
 		$_db = new DB_WE();
-
 		$query = "DELETE FROM " . HISTORY_TABLE . " WHERE DID in (" . implode(", ", $modelIds) . ") AND DocumentTable = \"" . stripTblPrefix($table) . "\"";
 		$_db->query($query);
 	}

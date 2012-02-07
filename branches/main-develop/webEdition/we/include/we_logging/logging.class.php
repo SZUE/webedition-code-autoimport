@@ -41,9 +41,8 @@ abstract class logging{
 		$this->db = new DB_WE();
 		$this->userID = $_SESSION['user']['ID'];
 		$this->timestamp = time();
-		$this->loadPresistents();
 		$this->table=$_table;
-
+		$this->loadPresistents();
 	}
 
 	function loadPresistents(){
@@ -73,7 +72,7 @@ abstract class logging{
 			}
 			$m++;
 		}
-
+		
 		return $content;
 	}
 
