@@ -111,7 +111,7 @@ abstract class we_util{
 	}
 
 	static function html2uml($text){
-		return corretUml(html_entity_decode($text));
+		return correctUml(html_entity_decode($text));
 	}
 
 }
