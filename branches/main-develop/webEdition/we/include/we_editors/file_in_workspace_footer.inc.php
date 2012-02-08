@@ -22,9 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-
-
 $_messageTbl = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 4);
 //	spaceholder
 $_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));

@@ -27,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_inc_min.inc.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 class we_core_Local {
 

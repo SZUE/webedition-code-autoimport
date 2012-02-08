@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,46 +21,42 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
 if(defined("SCHEDULE_TABLE")){
 	we_schedpro::trigger_schedule();
 }
 
 we_html_tools::htmlTop();
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR.'windows.js');?>
-	</head>
-	<body  class="weEditorBody" onunload="doUnload()">
-<form name="we_form" onsubmit="return false"><?php $we_doc->pHiddenTrans();
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
+?>
+</head>
+<body  class="weEditorBody" onunload="doUnload()">
+	<form name="we_form" onsubmit="return false"><?php
+$we_doc->pHiddenTrans();
 
 $parts = array();
 
-foreach($we_doc->schedArr as $i=>$sched){
-	$schedObj = new we_schedpro($sched,$i);
+foreach($we_doc->schedArr as $i => $sched){
+	$schedObj = new we_schedpro($sched, $i);
 
 	$ofT = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
 
-	array_push($parts, array(	"headline"=>"",
-								"html"=>$schedObj->getHTML($GLOBALS['we_doc']->Table==$ofT),
-								"space"=>0
-							)
-				);
-
+	array_push($parts, array("headline" => "",
+		"html" => $schedObj->getHTML($GLOBALS['we_doc']->Table == $ofT),
+		"space" => 0
+		)
+	);
 }
-array_push($parts, array(		"headline"=>"",
-								"html"=>we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule',"[descriptiontext]"),2,"700").'<br><br>'. we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
-								"space"=>0
-						)
-				);
+array_push($parts, array("headline" => "",
+	"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', "[descriptiontext]"), 2, "700") . '<br><br>' . we_button::create_button("image:btn_add_schedule", "javascript:we_cmd('add_schedule')"),
+	"space" => 0
+	)
+);
 print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("","100%",$parts,20,"",-1,"","",false);
-
+print we_multiIconBox::getHTML("", "100%", $parts, 20, "", -1, "", "", false);
 ?>
-</form>
-	</body>
+	</form>
+</body>
 </html>

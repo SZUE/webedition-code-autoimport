@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,10 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
-
-	switch ($_REQUEST['we_cmd'][0]) {
+switch($_REQUEST['we_cmd'][0]){
 	case "openCatselector" :
 		$noChoose = isset($_REQUEST['we_cmd'][8]) ? $_REQUEST['we_cmd'][8] : "";
 	case "openDirselector" :
@@ -57,7 +55,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.ph
 		break;
 }
 
-switch ($_REQUEST['we_cmd'][0]) {
+switch($_REQUEST['we_cmd'][0]){
 	case "openDirselector" :
 		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we_dirSelect.php");
 		break;

@@ -22,45 +22,44 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/conf/we_conf_global.inc.php");
 
 /**
  * class to handle hooks in webEdition and in applications
  */
-class weHook {
+class weHook{
 
 	protected $action;
 	protected $appName;
 	protected $param;
-	private $file='';
+	private $file = '';
 	private $func;
-	private $errStr='';
+	private $errStr = '';
 
-	function __construct($action, $appName='', $param=array()) {
-		if (!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)) {
+	function __construct($action, $appName='', $param=array()){
+		if(!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)){
 			return;
 		}
 		$this->action = $action;
 		$this->appName = $appName;
 		$this->param = $param;
-		$this->param['hookHandler']=$this;
+		$this->param['hookHandler'] = $this;
 		$this->findHookFile();
-		$this->func='weCustomHook_' . ($appName != ''?$appName . '_':'') . $action;
+		$this->func = 'weCustomHook_' . ($appName != '' ? $appName . '_' : '') . $action;
 	}
 
-	function executeHook() {
-		if (!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)) {
+	function executeHook(){
+		if(!(defined('EXECUTE_HOOKS') && EXECUTE_HOOKS)){
 			return true;
 		}
 
-		if ($this->action != '' && is_array($this->param) && $this->file != '') {
+		if($this->action != '' && is_array($this->param) && $this->file != ''){
 			include_once($this->file);
-			if (function_exists($this->func)) {
-					//FIXME: remove eval
-				$f=$this->func;
+			if(function_exists($this->func)){
+				//FIXME: remove eval
+				$f = $this->func;
 				$f($this->param);
-				return ($this->errStr=='');
+				return ($this->errStr == '');
 			}
 		}
 		return true;
@@ -74,26 +73,26 @@ class weHook {
 	 *
 	 * return string
 	 */
-	function findHookFile() {
+	function findHookFile(){
 		$hookFile = '';
 
-		if ($this->appName != '') {
+		if($this->appName != ''){
 			$filename = 'weCustomHook_' . $this->appName . '_' . $this->action . '.inc.php';
 			// look in app folder
 			$hookFile = WE_TOOLS_DIR . $this->appName . '/hook/custom_hooks/' . $filename;
-		} else {
+		} else{
 			$filename = 'weCustomHook_' . $this->action . '.inc.php';
 			// look in we_hook/custom_hooks folder
 			$hookFile = WEBEDITION_INCLUDES_DIR . 'we_hook/custom_hooks/' . $filename;
 			//no more check for sample hooks - they are overwritten on update
 		}
-		if (file_exists($hookFile) && is_readable($hookFile)) {
-			$this->file=$hookFile;
+		if(file_exists($hookFile) && is_readable($hookFile)){
+			$this->file = $hookFile;
 		}
 	}
 
 	function setErrorString($str){
-		$this->errStr=$str;
+		$this->errStr = $str;
 	}
 
 	function getErrorString(){

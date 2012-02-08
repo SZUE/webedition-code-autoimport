@@ -83,7 +83,7 @@ class weImportUpdater extends weXMLExIm{
 					)
 				);
 				if($ref && isset($ref->OldTemplatePath)){
-					$tpath = clearPath(eregi_replace("^(.)+webEdition/we/templates", '', $ref->OldTemplatePath));
+					$tpath = clearPath(preg_replace("|^.+webEdition/we/templates|i", '', $ref->OldTemplatePath));
 					$id = path_to_id($tpath, TEMPLATES_TABLE);
 					if($id)
 						$object->TemplateID = $id;

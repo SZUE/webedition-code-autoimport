@@ -21,8 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
-
 $yuiSuggest = & weSuggest::getInstance();
 
 //	send charset, if one is set:
@@ -94,12 +92,12 @@ print STYLESHEET;
 		?>
 		<!--</td></tr></table> -->
 	</form>
-<?php
-echo $yuiSuggest->getYuiCssFiles();
-echo $yuiSuggest->getYuiCss();
+	<?php
+	echo $yuiSuggest->getYuiCssFiles();
+	echo $yuiSuggest->getYuiCss();
 
-echo $yuiSuggest->getYuiJsFiles();
-echo $yuiSuggest->getYuiJs();
-?>
+	echo $yuiSuggest->getYuiJsFiles();
+	echo $yuiSuggest->getYuiJs();
+	?>
 </body>
 </html>

@@ -24,7 +24,6 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_inc_min.inc.php");
 we_html_tools::protect();
 if($cmd == "ok"){
 	$wf_text = $_REQUEST["wf_text"];

@@ -22,14 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
+$id = $_REQUEST['we_cmd'][1];
 
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
+$JSIDName = we_cmd_dec(2);
+$JSTextName = we_cmd_dec(3);
+$JSCommand = we_cmd_dec(4);
 
-		$id = $_REQUEST['we_cmd'][1];
-
-		$JSIDName = we_cmd_dec(2);
-		$JSTextName = we_cmd_dec(3);
-		$JSCommand = we_cmd_dec(4);
-
-		include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/voting/we_votingDirSelect.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/voting/we_votingDirSelect.php");

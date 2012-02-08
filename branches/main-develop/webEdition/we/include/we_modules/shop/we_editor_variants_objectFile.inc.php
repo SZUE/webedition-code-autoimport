@@ -22,34 +22,31 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_inc_min.inc.php");
-
 $variantFields = $we_doc->getVariantFields();
 
 // if editing data the class weShopVariants must do some stuff
 // add, move, delete
 // :TODO: decide WHERE to put this
-switch ($_REQUEST['we_cmd'][0]) {
+switch($_REQUEST['we_cmd'][0]){
 	case 'shop_insert_variant':
 		weShopVariants::insertVariant($we_doc, $_REQUEST['we_cmd'][1]);
-	break;
+		break;
 	case "shop_move_variant_up":
 		weShopVariants::moveVariant($we_doc, $_REQUEST['we_cmd'][1], 'up');
-	break;
+		break;
 	case "shop_move_variant_down":
 		weShopVariants::moveVariant($we_doc, $_REQUEST['we_cmd'][1], 'down');
-	break;
+		break;
 	case "shop_remove_variant":
 		weShopVariants::removeVariant($we_doc, $_REQUEST['we_cmd'][1]);
-	break;
+		break;
 	case "shop_preview_variant":
 		weShopVariants::correctModelFields($we_doc, false);
-		require($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/show_variant.inc.php');
+		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/show_variant.inc.php');
 		exit;
-	break;
+		break;
 }
 
 $parts = weShopVariants::getVariantsEditorMultiBoxArrayObjectFile($we_doc);
-print we_multiIconBox::getHTML("","100%",$parts,30,"",-1,"","",false);
+print we_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
 ?>

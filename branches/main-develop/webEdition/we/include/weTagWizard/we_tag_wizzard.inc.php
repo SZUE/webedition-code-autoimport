@@ -25,7 +25,6 @@ $tagName = $_REQUEST['we_cmd'][1];
 $openAtCursor = $_REQUEST['we_cmd'][2] === "1" ? true : false;
 $GLOBALS['TagRefURLName'] = strtolower($tagName);
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 if(function_exists('protect')){
 	we_html_tools::protect();
@@ -56,7 +55,7 @@ if(sizeof($_attributes)){
 $_reqAttributes = $weTag->getRequiredAttributes();
 $jsReqAttributes = "var reqAttributes = new Object();";
 foreach($_reqAttributes as $_attribName){
-	$jsReqAttributes .= "\n\t".'reqAttributes["'.$_attribName.'"] = 1;';
+	$jsReqAttributes .= "\n\t" . 'reqAttributes["' . $_attribName . '"] = 1;';
 }
 
 // #3 all neccessary stuff for typeAttribute
@@ -113,11 +112,11 @@ if($typeAttribute = $weTag->getTypeAttribute()){
 // print html header of page
 print we_html_tools::htmlTop();
 print STYLESHEET;
-print we_html_element::cssLink(CSS_DIR . 'tagWizard.css').
-	we_html_element::jsScript(JS_DIR.'windows.js').
-	we_html_element::jsScript(JS_DIR.'tagWizard.js').
-	we_html_element::jsScript(JS_DIR.'keyListener.js').
-	we_html_element::jsScript(JS_DIR.'attachKeyListener.js').'
+print we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . '
 <script type="text/javascript">
 
 function closeOnEscape() {
@@ -261,7 +260,7 @@ if($defaultValueCode){
 
 $code = '<fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>
-		' . ($weTag->isDeprecated()?'<b>Deprecated:</b> ':'') .$weTag->getDescription() . '
+		' . ($weTag->isDeprecated() ? '<b>Deprecated:</b> ' : '') . $weTag->getDescription() . '
 	</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 	$defaultValueCode;
 
@@ -272,7 +271,7 @@ $_buttons = we_button::position_yes_no_cancel(
 );
 ?>
 <div id="divTagName">
-	<h1>&lt;we:<?php print $weTag->getName().'&gt;'.($weTag->isDeprecated()?' (Deprecated)':''); ?></h1>
+	<h1>&lt;we:<?php print $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (Deprecated)' : ''); ?></h1>
 </div>
 <div id="divContent">
 	<?php print $code; ?>

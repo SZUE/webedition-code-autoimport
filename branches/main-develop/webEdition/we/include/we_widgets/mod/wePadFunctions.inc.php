@@ -22,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Converts the date from ##-##-#### to ##.##.####
  *
  * @param unknown_type $date
  * @return unknown
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_inc_min.inc.php");
-
 function convertDate($date){
 	return implode('.', array_reverse(explode('-', $date)));
 }

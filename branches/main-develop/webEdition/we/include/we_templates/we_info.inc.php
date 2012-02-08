@@ -22,9 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_inc_min.inc.php");
-
-
 //	build table for login screen.
 $_widthTotal = 432;
 $_space = 15;

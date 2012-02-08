@@ -24,7 +24,6 @@
  * @see we_ui_abstract_AbstractFormElement
  */
 Zend_Loader::loadClass('we_ui_controls_Select');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
 
 /**
  * Class to display a Select

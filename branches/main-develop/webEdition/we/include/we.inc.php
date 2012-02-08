@@ -32,7 +32,30 @@ if(isset($_SERVER['DOCUMENT_ROOT'])){
 	$_SERVER['DOCUMENT_ROOT'] = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
 }
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php'); //	New absolute minimum include for any we-file, reduces memory consumption for special usages about 20 MB.
+// Set PHP flags
+@$_memlimit = intval(ini_get('memory_limit'));
+if($_memlimit < 32){
+	@ini_set('memory_limit', '32M');
+}
+@ini_set('allow_url_fopen', '1');
+@ini_set('file_uploads', '1');
+@ini_set('session.use_trans_sid', '0');
+
+//prepare space for we-variables; $_SESSION['we'] is set in we_session
+$GLOBALS['we'] = array();
+
+//start autoloader!
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
+
+// Activate the webEdition error handler
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+if(!defined('WE_ERROR_HANDLER_SET')){
+	we_error_handler();
+}
+
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_global.inc.php');
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_defines.inc.php');
+
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
@@ -49,14 +72,13 @@ foreach($_we_active_integrated_modules as $active){
 	}
 }
 
-//include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 if(!isset($GLOBALS['DB_WE'])){
 	$GLOBALS['DB_WE'] = new DB_WE();
 }
 
 
 if(!defined('NO_SESS')){
-	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';//Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
+	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_session.inc.php");
 	$_tooldefines = weToolLookup::getDefineInclude();
 	if(!empty($_tooldefines)){

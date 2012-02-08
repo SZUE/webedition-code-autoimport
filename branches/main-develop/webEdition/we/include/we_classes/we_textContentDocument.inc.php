@@ -310,7 +310,6 @@ class we_textContentDocument extends we_textDocument{
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 			$this->ModDate = time();
 			$this->wasUpdate = 1;
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_history.class.php");
 			we_history::insertIntoHistory($this);
 			$this->resaveWeDocumentCustomerFilter();
 		}

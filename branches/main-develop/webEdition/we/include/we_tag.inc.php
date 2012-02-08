@@ -22,7 +22,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_inc_min.inc.php');
+//make sure this is included - but is it really needed? Isn't it done by we_show...
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 function we_include_tag_file($name){
 	$fn = 'we_tag_' . $name;

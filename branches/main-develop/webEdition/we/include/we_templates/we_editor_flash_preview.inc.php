@@ -21,17 +21,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
 we_html_tools::htmlTop();
 
 
-echo we_html_element::jsScript(JS_DIR.'windows.js');
-	include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
 
-	print STYLESHEET;
-
+print STYLESHEET;
 ?>
 </head>
 

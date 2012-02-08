@@ -21,42 +21,39 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
-
-
 //	send charset, if one is set:
-if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] && $we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES ){
-		we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
+if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] && $we_doc->EditPageNr == WE_EDITPAGE_PROPERTIES){
+	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
 we_html_tools::htmlTop();
-echo we_html_element::jsScript(JS_DIR.'windows.js');
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_editors/we_editor_script.inc.php");
-print STYLESHEET; ?>
-	</head>
-	<body class="weEditorBody" onUnload="doUnload()">
-		<form name="we_form" method="post" onsubmit="return false;"><?php $we_doc->pHiddenTrans();
-
-	switch ($we_doc->ContentType) {
-		case 'text/webedition':
-			include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_editor_variants_webEditionDocument.inc.php');
-		break;
-
-		case 'objectFile':
-			include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_editor_variants_objectFile.inc.php');
-		break;
-
-		case 'text/weTmpl':
-			include($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_modules/shop/we_template_variant.inc.php');
-		break;
-
-		default:
-			print $we_doc->ContentType . ' not available (' . __FILE__ .')';
-		break;
-	}
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_editors/we_editor_script.inc.php");
+print STYLESHEET;
 ?>
-		</form>
+</head>
+<body class="weEditorBody" onUnload="doUnload()">
+	<form name="we_form" method="post" onsubmit="return false;"><?php
+$we_doc->pHiddenTrans();
+
+switch($we_doc->ContentType){
+	case 'text/webedition':
+		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_editor_variants_webEditionDocument.inc.php');
+		break;
+
+	case 'objectFile':
+		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_editor_variants_objectFile.inc.php');
+		break;
+
+	case 'text/weTmpl':
+		include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/we_template_variant.inc.php');
+		break;
+
+	default:
+		print $we_doc->ContentType . ' not available (' . __FILE__ . ')';
+		break;
+}
+?>
+	</form>
 </body>
 </html>

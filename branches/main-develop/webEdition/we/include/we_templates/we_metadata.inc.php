@@ -23,7 +23,8 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_inc_min.inc.php');
+//FIXME: is this file used??
+include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 $parts = array();
 array_push($parts,array("icon"=>"upload.gif", "headline"=>"","html"=>$GLOBALS['we_doc']->formUpload(),"space"=>140));
