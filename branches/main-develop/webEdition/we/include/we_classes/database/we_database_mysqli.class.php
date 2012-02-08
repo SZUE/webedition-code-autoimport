@@ -29,7 +29,7 @@ class DB_WE extends we_database_base{
 	protected function _free(){
 		if(is_object($this->Query_ID)){
 //			print_r(debug_backtrace());
-			$this->Query_ID->free();
+			@$this->Query_ID->free();
 		}
 	}
 

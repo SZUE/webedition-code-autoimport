@@ -213,10 +213,10 @@ class we_schedpro{
 					$_rootDirID = 0;
 				}
 
-				$wecmdenc1 = we_cmd_enc('document.we_form.elements[\''.$idname.'\'].value');
-				$wecmdenc2 = we_cmd_enc('document.we_form.elements[\''.$textname.'\'].value');
+				$wecmdenc1 = we_cmd_enc('document.we_form.elements[\'' . $idname . '\'].value');
+				$wecmdenc2 = we_cmd_enc('document.we_form.elements[\'' . $textname . '\'].value');
 				$wecmdenc3 = we_cmd_enc('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\''.$idname.'\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
+				$button = we_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . wecmdenc3 . '\',\'' . session_id() . '\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId("WsDir");
@@ -425,10 +425,10 @@ class we_schedpro{
 			if($s["type"] != self::TYPE_ONCE){
 				$nextWann = we_schedpro::getNextTimestamp($s, $now);
 				if($nextWann){
-					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Wann='" . $nextWann . "' WHERE DID='" . intval($id) . "' AND ClassName!='we_objectFile' AND Type='" . $s["type"] . "' AND Was='" . $s["task"] . "'");
+					$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE DID=' . intval($id) . " AND ClassName!='we_objectFile' AND Type='" . $s['type'] . "' AND Was='" . $s['task'] . "'");
 				}
 			} else{
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . " SET Active=0 WHERE WHERE DID='" . intval($id) . " AND ClassName='" . $schedFile["ClassName"] . "'");
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '"');
 			}
 		}
 
@@ -447,47 +447,34 @@ class we_schedpro{
 
 		$_SESSION["Versions"]['fromScheduler'] = false;
 
-		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND TYPE="' . SCHEDULE_TYPE_ONCE . '"');
+		$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1 AND TYPE="' . self::TYPE_ONCE . '"');
 	}
 
 	static function trigger_schedule(){
-		//FXIME: this is not thread safe!!!
 		$scheddyFile = array();
 		$scheddyObject = array();
 		$DB_WE = new DB_WE();
 		$now = time();
-		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=' . $now . ' AND Schedpro != "" AND Active=1');
-		while($DB_WE->next_record()) {
-			$s = unserialize($DB_WE->f("Schedpro"));
+
+		while(($DB_WE->lock(array(SCHEDULE_TABLE,ERROR_LOG_TABLE)) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=' . $now . ' AND lockedUntil<NOW() AND Schedpro != "" AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE)))) {
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
+			$DB_WE->unlock();
+			$s = unserialize($rec["Schedpro"]);
 			if(is_array($s)){
-				if($DB_WE->f("ClassName") == "we_objectFile"){
-					if(!(isset($scheddyObject[$DB_WE->f("DID")]) && is_array($scheddyObject[$DB_WE->f("DID")]))){
-						$scheddyObject[$DB_WE->f("DID")] = array();
-						$scheddyObject[$DB_WE->f("DID")]["value"] = array();
-						$scheddyObject[$DB_WE->f("DID")]["ClassName"] = $DB_WE->f("ClassName");
-						$scheddyObject[$DB_WE->f("DID")]["table"] = OBJECT_FILES_TABLE;
-					}
-					$s["lasttime"] = we_schedpro::getPrevTimestamp($s, $now);
-					array_push($scheddyObject[$DB_WE->f("DID")]["value"], $s);
-				} else{
-					if(!(isset($scheddyFile[$DB_WE->f("DID")]) && is_array($scheddyFile[$DB_WE->f("DID")]))){
-						$scheddyFile[$DB_WE->f("DID")] = array();
-						$scheddyFile[$DB_WE->f("DID")]["value"] = array();
-						$scheddyFile[$DB_WE->f("DID")]["ClassName"] = $DB_WE->f("ClassName");
-						$scheddyFile[$DB_WE->f("DID")]["table"] = FILE_TABLE;
-					}
-					$s["lasttime"] = we_schedpro::getPrevTimestamp($s, $now);
-					array_push($scheddyFile[$DB_WE->f("DID")]["value"], $s);
-				}
+				$s["lasttime"] = we_schedpro::getPrevTimestamp($s, $now);
+				$tmp = array(
+					"value" => array($s),
+					"ClassName" => $rec["ClassName"],
+					"table" => $rec["ClassName"] == "we_objectFile" ? OBJECT_FILES_TABLE : FILE_TABLE,
+				);
+				we_schedpro::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
+			} else{
+				//data invalid, reset & make sure this is not processed the next time
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="" WHERE DID=' . $rec['DID'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
 			}
 		}
-
-		foreach($scheddyFile as $id => $s){
-			we_schedpro::processSchedule($id, $s, $now, $DB_WE);
-		}
-		foreach($scheddyObject as $id => $s){
-			we_schedpro::processSchedule($id, $s, $now, $DB_WE);
-		}
+		//make sure DB is unlocked!
+		$DB_WE->unlock();
 	}
 
 	function check_and_convert_to_sched_pro(){
