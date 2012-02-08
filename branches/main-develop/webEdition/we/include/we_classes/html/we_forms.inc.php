@@ -164,7 +164,7 @@ abstract class we_forms{
 		$rows = weTag_getAttribute("rows", $attribs);
 		$width = weTag_getAttribute("width", $attribs);
 		$height = weTag_getAttribute("height", $attribs);
-		$commands = weTag_getAttribute("commands", $attribs);
+		$commands = preg_replace('/ *, */',',',weTag_getAttribute('commands', $attribs));
 		$bgcolor = weTag_getAttribute("bgcolor", $attribs);
 		$wrap = weTag_getAttribute("wrap", $attribs);
 		$hideautobr = weTag_getAttribute("hideautobr", $attribs, false, true);
