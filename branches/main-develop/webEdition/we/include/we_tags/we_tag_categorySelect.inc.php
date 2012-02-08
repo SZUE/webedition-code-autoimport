@@ -94,7 +94,7 @@ function we_tag_categorySelect($attribs, $content){
 			$deep = sizeof(explode("/", $db->f('Path'))) - 2;
 			$field = $db->f($dbfield);
 			if ($rootdir && $rootdir != "/" && $showpath) {
-				$field = ereg_replace('^' . quotemeta($rootdir) . '(.*)$', '\1', $field);
+				$field = str_replace($rootdir, '', $field,1);
 			}
 			if ($field) {
 				if (in_array($db->f("Path"), $valuesArray)) {

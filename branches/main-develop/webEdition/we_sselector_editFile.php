@@ -50,7 +50,7 @@ if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save"){
 		while(!feof($fh)) $we_fileData .= fread($fh,10000);
 		fclose($fh);
 	}else{
-		$we_alerttext=sprintf(g_l('alert',"[can_not_open_file]"),ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]));
+		$we_alerttext=sprintf(g_l('alert',"[can_not_open_file]"),str_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),1);
 	}
 
 }
@@ -84,7 +84,7 @@ self.focus();
 <body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
 <form method="post">
    <input type="hidden" name="cmd" value="save" />
-   <?php print we_html_tools::htmlDialogLayout($content,g_l('global','[edit_file]').": <span class=\"weMultiIconBoxHeadline\">".ereg_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons)."</span>"; ?>
+   <?php print we_html_tools::htmlDialogLayout($content,g_l('global','[edit_file]').": <span class=\"weMultiIconBoxHeadline\">".str_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons,1)."</span>"; ?>
 </form></center>
 </body>
 </html>

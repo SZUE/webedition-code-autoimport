@@ -97,7 +97,6 @@ abstract class we_autoloader{
 			'Services_JSON_Error' => 'JSON.php',
 			'Services_JSON' => 'JSON.php',
 			'taskFragment' => 'taskFragment.class.php',
-			'usersOnline' => 'we_zusersOnline.class.php',
 			'weAbbrDialog' => 'weAbbrDialog.class.inc.php',
 			'weAcronymDialog' => 'weAcronymDialog.class.inc.php',
 			'weBackup' => 'base/weBackup.class.php',

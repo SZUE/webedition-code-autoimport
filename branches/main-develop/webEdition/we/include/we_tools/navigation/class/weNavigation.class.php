@@ -885,10 +885,10 @@ class weNavigation extends weModelBase{
 		$close = "!###@";
 		$amp = "!!##@";
 
-		$string = ereg_replace("<br(\/)?>", $open . "br\\1" . $close, $string);
-		$string = ereg_replace("<(\/)?b>", $open . "\\1b" . $close, $string);
-		$string = ereg_replace("<(\/)?i>", $open . "\\1i" . $close, $string);
-		$string = ereg_replace("&([^;]+);", $amp . "\\1;", $string);
+		$string = preg_replace("|<br(\/)?>|", $open . "br\\1" . $close, $string);
+		$string = preg_replace("|<(\/)?b>|", $open . "\\1b" . $close, $string);
+		$string = preg_replace("|<(\/)?i>|", $open . "\\1i" . $close, $string);
+		$string = preg_replace("|&([^;]+);|", $amp . "\\1;", $string);
 
 		$string = htmlspecialchars($string);
 

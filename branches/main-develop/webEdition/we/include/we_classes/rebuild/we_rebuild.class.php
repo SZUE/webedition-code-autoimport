@@ -91,21 +91,24 @@ class we_rebuild{
 			switch($data["type"]){
 				case "document":
 					if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
-					} else{	// it has to be an object
+
+					} else{ // it has to be an object
 						return false;
 					}
 					$table = FILE_TABLE;
 					break;
 				case "template":
 					if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
-					} else{	// it has to be an object
+
+					} else{ // it has to be an object
 						return false;
 					}
 					$table = TEMPLATES_TABLE;
 					break;
 				case "object":
 					if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/" . $data["cn"] . ".inc.php")){
-					} else{	// it has to be an object
+
+					} else{ // it has to be an object
 						return false;
 					}
 					$table = OBJECT_FILES_TABLE;
@@ -124,10 +127,10 @@ class we_rebuild{
 				print "Debug: Rebuilding: " . $GLOBALS['we_doc']->Path;
 			}
 
-			/*removed 30.12.2011
+			/* removed 30.12.2011
 			 * if($data["mt"] || $data["tt"]){
-				$GLOBALS['we_doc']->correctFields();
-			}*/
+			  $GLOBALS['we_doc']->correctFields();
+			  } */
 
 
 			if($data["tt"]){
@@ -318,21 +321,20 @@ class we_rebuild{
 			$_template_query = "";
 
 			if($categories){
-				$bool = $catAnd ? "AND" : "OR";
 				$_foo = makeArrayFromCSV($categories);
+				$tmp = array();
 				foreach($_foo as $catID){
-					$_cat_query .= " Category like '%," . intval($catID) . ",%' $bool ";
+					$tmp [] = " Category like '%," . intval($catID) . ",%'";
 				}
-				$_cat_query = ereg_replace('^(.+)' . $bool . ' $', '\1', $_cat_query);
-				$_cat_query = "(" . $_cat_query . ")";
+				$_cat_query = "(" . implode(' ' . ($catAnd ? 'AND' : 'OR') . ' ', $tmp) . ")";
 			}
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
+				$tmp=array();
 				foreach($_foo as $doctypeID){
-					$_doctype_query .= " Doctype = '" . escape_sql_query($doctypeID) . "' OR ";
+					$tmp []= " Doctype = '" . escape_sql_query($doctypeID) . "'";
 				}
-				$_doctype_query = ereg_replace('^(.+)OR $', '\1', $_doctype_query);
-				$_doctype_query = "(" . $_doctype_query . ")";
+				$_doctype_query = "(" . implode(' OR ',$tmp) . ")";
 			}
 			if($folders){
 				$_foo = makeArrayFromCSV($folders);

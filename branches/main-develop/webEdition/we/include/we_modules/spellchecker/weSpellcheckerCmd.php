@@ -235,7 +235,7 @@ if(isset($_REQUEST['cmd'][0])) {
 
 			print we_html_element::jsElement('
 
-				parent.document.getElementById("selector").innerHTML = "'.addslashes(ereg_replace("\r?\n",'',$table->getHtml())).'";
+				parent.document.getElementById("selector").innerHTML = "'.addslashes(preg_replace("|\r?\n|",'',$table->getHtml())).'";
 
 			');
 		break;

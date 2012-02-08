@@ -983,10 +983,11 @@ class we_backup{
 										}
 										if(($itbl != "") && (strtolower(substr($buff, 0, 6)) == "insert")){
 											if(defined("OBJECT_X_TABLE") && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
-												if(eregi("VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,", $buff))
+												if(preg_match("|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i", $buff)){
 													$this->dummy[] = $buff;
-												else
+												}else{
 													$this->backup_db->query($buff);
+												}
 											}
 											else
 												$this->backup_db->query($buff);

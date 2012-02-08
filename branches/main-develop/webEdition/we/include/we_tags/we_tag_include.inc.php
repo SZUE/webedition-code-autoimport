@@ -187,8 +187,7 @@ function we_tag_include($attribs, $content){
 				}
 			}
 
-			$content = eregi_replace('< ?form[^>]*>', '', $content);
-			$content = eregi_replace('< ?/ ?form[^>]*>', '', $content);
+			$content = preg_replace('|< */? *form[^>]*>|i', '', $content);
 		}
 
 		return 'we_setBackVar('.$we_unique.');'.

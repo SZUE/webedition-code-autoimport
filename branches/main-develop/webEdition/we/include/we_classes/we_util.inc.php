@@ -48,17 +48,12 @@ abstract class we_util{
 			$number = number_format($number, 2, '.', '');
 		}
 		if(preg_match('|.*,[0-9]*$|', $number)){ // deutsche schreibweise
-			$umschreib = ereg_replace('(.*),([0-9]*)$', '\1.\2', $number);
-			$pos = strrpos($number, ",");
-			$vor = str_replace(".", "", substr($umschreib, 0, $pos));
-			$number = $vor . substr($umschreib, $pos, strlen($umschreib) - $pos);
+			$tmp=explode(',',str_replace(".", "",$number));
+			$number = implode('.',$tmp);
 		} else if(preg_match('|.*\.[0-9]*$|', $number)){ // engl schreibweise
-			$pos = strrpos($number, ".");
-			$vor = substr($number, 0, $pos);
-			$vor = ereg_replace('[,\.]', '', $vor);
-			$number = $vor . substr($number, $pos, strlen($number) - $pos);
+			$number = str_replace(',', '', $number);
 		} else{
-			$number = ereg_replace('[,\.]', '', $number);
+			$number = str_replace(array(',','.'), '', $number);
 		}
 		return $number;
 	}
@@ -87,7 +82,7 @@ abstract class we_util{
 	 */
 	static function br2nl($string){
 		$string = str_replace(array("\n","\r"), '', $string);
-		return eregi_replace("<br ?/?>", "\n", $string);
+		return preg_replace('|<br ?/?>|i', "\n", $string);
 	}
 
 	static function rmPhp($in){

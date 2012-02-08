@@ -294,7 +294,8 @@ class weImageDialog extends weDialog{
 			$thumbdata = (isset($this->args["thumbnail"]) ? $this->args["thumbnail"] : "");
 
 			$_p = (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "");
-			$extension = $_p ? ereg_replace('^.+(\.[^\.]+)$', '\1', $_p) : "";
+			$tmp = $_p ? explode('.', $_p) : array();
+			$extension = count($tmp>1) ? '.'.$tmp[count($tmp)-1] : '';
 			unset($_p);
 
 			if(we_image_edit::gd_version() > 0 && we_image_edit::is_imagetype_supported(isset(we_image_edit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_image_edit::$GDIMAGE_TYPE[strtolower($extension)] : "") && (isset($this->args["type"]) && $this->args["type"] == "int")){

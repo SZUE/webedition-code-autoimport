@@ -29,11 +29,11 @@
  * Provides functions for creating and handling webEdition thumbnails.
  */
 class we_thumbnail{
-const OK=0;
-const USE_ORIGINAL=1;
-const BUILDERROR=2;
-const NO_GDLIB_ERROR=3;
-const INPUTFORMAT_NOT_SUPPORTED=4;
+	const OK=0;
+	const USE_ORIGINAL=1;
+	const BUILDERROR=2;
+	const NO_GDLIB_ERROR=3;
+	const INPUTFORMAT_NOT_SUPPORTED=4;
 
 	/**
 	 * ID of the thumbnail
@@ -310,12 +310,13 @@ const INPUTFORMAT_NOT_SUPPORTED=4;
 		if(we_image_edit::gd_version() <= 0){
 			return self::NO_GDLIB_ERROR;
 		}
-
-		if($this->_useOriginalSize() && $this->outputFormat == we_image_edit::$GDIMAGE_TYPE[strtolower(ereg_replace('^.+(\..+)$', '\1', $this->imagePath))]){
+		$tmp = explode('.', $this->imagePath);
+		$type = we_image_edit::$GDIMAGE_TYPE['.'.strtolower($tmp[count($tmp) - 1])];
+		if($this->_useOriginalSize() && $this->outputFormat == $type){
 			return self::USE_ORIGINAL;
 		}
 
-		if(!we_image_edit::is_imagetype_read_supported(we_image_edit::$GDIMAGE_TYPE[strtolower(ereg_replace('^.+(\..+)$', '\1', $this->imagePath))])){
+		if(!we_image_edit::is_imagetype_read_supported($type)){
 			return self::INPUTFORMAT_NOT_SUPPORTED;
 		}
 

@@ -1113,7 +1113,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 			return "";
 		}
 
-		$name = ereg_replace('^(.+)]$', '\1%s]', $name);
+		$name = preg_replace('|^(.+)]$|', '\1%s]', $name);
 		if(($format == '') || we_html_tools::we_getDayPos($format) != -1){
 			$daySelect = '<select class="weSelect" name="' . sprintf($name, "_day") . '" size="1" onChange="' . $onchange . '">';
 			for($i = 1; $i <= 31; $i++){

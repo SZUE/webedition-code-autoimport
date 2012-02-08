@@ -127,10 +127,10 @@ class we_textContentDocument extends we_textDocument{
 	/* publish a document */
 
 	function getMetas($code){
-		if(eregi('< ?title[^>]*>(.*)< ?/ ?title[^>]*>', $code, $regs)){
+		if(preg_match('|< ?title[^>]*>(.*)< ?/ ?title[^>]*>|i', $code, $regs)){
 			$title = $regs[1];
 		} else{
-			$title = "";
+			$title = '';
 		}
 		$tempname = TMP_DIR . "/" . uniqid(md5(time()));
 		$fp = fopen($tempname, "wb");

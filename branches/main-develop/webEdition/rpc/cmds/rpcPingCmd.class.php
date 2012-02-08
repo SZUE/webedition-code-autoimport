@@ -44,7 +44,7 @@ class rpcPingCmd extends rpcCmd{
 			$resp->setData("newtodo_count", $messaging->used_msgobjs['we_todo']->get_newmsg_count());
 		}
 
-		$users_online = new usersOnline();
+		$users_online = new we_users_online();
 
 		$resp->setData("users", $users_online->getUsers());
 		$resp->setData("num_users", $users_online->getNumUsers());

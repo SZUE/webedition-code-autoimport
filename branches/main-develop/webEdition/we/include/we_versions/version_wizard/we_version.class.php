@@ -221,21 +221,20 @@ class we_version{
 			$_template_query = "";
 
 			if($categories){
-				$bool = $catAnd ? "AND" : "OR";
 				$_foo = makeArrayFromCSV($categories);
+				$tmp=array();
 				foreach($_foo as $catID){
-					$_cat_query .= " Category like '%," . intval($catID) . ",%' $bool ";
+					$tmp[]= " Category like '%," . intval($catID) . ",%'";
 				}
-				$_cat_query = ereg_replace('^(.+)' . $bool . ' $', '\1', $_cat_query);
-				$_cat_query = "(" . $_cat_query . ")";
+				$_cat_query = "(" . implode(' '.($catAnd ? "AND" : "OR").' ',$tmp). ")";
 			}
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
+				$tmp=array();
 				foreach($_foo as $doctypeID){
-					$_doctype_query .= " Doctype = '" . $GLOBALS['DB_WE']->escape($doctypeID) . "' OR ";
+					$tmp .= " Doctype = '" . $GLOBALS['DB_WE']->escape($doctypeID) . "'";
 				}
-				$_doctype_query = ereg_replace('^(.+)OR $', '\1', $_doctype_query);
-				$_doctype_query = "(" . $_doctype_query . ")";
+				$_doctype_query = "(" . implode(' OR ',$tmp) . ")";
 			}
 			if($folders){
 				$_foo = makeArrayFromCSV($folders);

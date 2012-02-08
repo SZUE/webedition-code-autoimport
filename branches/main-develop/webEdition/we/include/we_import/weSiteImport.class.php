@@ -270,8 +270,7 @@ class weSiteImport{
 		for($i = 0; $i < sizeof($foo); $i++){
 			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 		}
-		$arrstr = 'array(' . ereg_replace('(.+),$', "\\1", $attribs) . ')';
-		eval('$arr = ' . $arrstr . ';');
+		eval('$arr = array(' . $attribs . ');');
 
 		return $arr;
 	}

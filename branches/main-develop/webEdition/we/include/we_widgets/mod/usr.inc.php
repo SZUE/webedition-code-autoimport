@@ -24,8 +24,8 @@
 if (str_replace(dirname($_SERVER['SCRIPT_NAME']),'',$_SERVER['SCRIPT_NAME'])==str_replace(dirname(__FILE__), '', __FILE__)) {
 	exit();
 }
-include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_usersOnline.class.php");
+include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
-$UO = new usersOnline();
+$UO = new we_users_online();
 
 $inline = '<div id="users_online">' . $UO->getUsers() . '</div>';

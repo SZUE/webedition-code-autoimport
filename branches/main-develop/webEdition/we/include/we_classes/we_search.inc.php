@@ -132,12 +132,11 @@ class we_search{
 		$concat = (isset($concat)) ? $concat : "AND";
 		if(strpos($we_SearchField, ',') !== false){
 			$foo = makeArrayFromCSV($we_SearchField);
-			$q = '';
+			$q = array();
 			foreach($foo as $f){
-				$q .= " $f $searchlocation OR ";
+				$q []= $f.' '.$searchlocation;
 			}
-			$q = ereg_replace('^(.*)OR ', '\1', $q);
-			return " $concat ( $q ) ";
+			return ' '.$concat.' ( '.implode(' OR ',$q).' ) ';
 		} else{
 			return " $concat $we_SearchField $searchlocation  ";
 		}

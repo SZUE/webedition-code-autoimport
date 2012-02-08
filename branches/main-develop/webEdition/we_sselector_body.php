@@ -146,7 +146,7 @@ if($_REQUEST["dir"] == ""){
 
 $dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
 if($dir != "/")
-	$dir = ereg_replace("(.)/$", '\1', $dir);
+	$dir = rtrim($dir,'/');
 if(!isset($_REQUEST["ord"]))
 	$_REQUEST["ord"] = 10;
 @chdir($dir);

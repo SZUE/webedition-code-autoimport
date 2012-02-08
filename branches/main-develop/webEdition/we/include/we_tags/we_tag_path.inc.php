@@ -49,11 +49,11 @@ function we_tag_path($attribs, $content){
 	$style = $style ? ' style="' . $style . '"' : '';
 
 	$path = "";
-	$q = "";
+	$q = array();
 	foreach ($indexArray as $i => $v) {
-		$q .= " Text='$v' OR ";
+		$q .= " Text='$v'";
 	}
-	$q = ereg_replace("(.*) OR ", '\1', $q);
+	$q = implode(' OR ',$q);
 	$id = $doc->ID;
 	$show = $doc->getElement($field);
 	if (!in_array($doc->Text, $indexArray)) {

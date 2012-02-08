@@ -98,7 +98,7 @@ class weGlossaryCache {
 	 * @abstract
 	 */
 	function filenameToCacheId($filename) {
-		return ereg_replace("^" . WE_GLOSSARY_MODULE_DIR . "data/cache_", ereg_replace(".php$", $filename));
+		return intval(str_replace(array(WE_GLOSSARY_MODULE_DIR . "data/cache_",'.php'), '', $filename));
 	}
 
 

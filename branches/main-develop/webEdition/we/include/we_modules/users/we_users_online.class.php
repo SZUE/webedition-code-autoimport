@@ -28,7 +28,7 @@
  *
  * This class handles the users online for the personalized desktop (Cockpit).
  */
-class usersOnline{
+class we_users_online{
 
 	var $num_uo = 0;
 	var $users = '';

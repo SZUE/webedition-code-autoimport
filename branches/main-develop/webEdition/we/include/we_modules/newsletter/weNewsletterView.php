@@ -2214,7 +2214,7 @@ class weNewsletterView{
 								$newplain = "";
 								$newplain = str_ireplace("<br>", "\n", $block->Html);
 								$newplain = trim(strip_tags($newplain));
-								$newplain = eregi_replace("&nbsp;(&nbsp;)+", "\t", $newplain);
+								$newplain = preg_replace("|&nbsp;(&nbsp;)+|i", "\t", $newplain);
 								$newplain = str_ireplace('&nbsp;', ' ', $newplain);
 								$newplain = str_ireplace("&lt;", "<", $newplain);
 								$newplain = str_ireplace("&gt;", ">", $newplain);
@@ -2260,7 +2260,7 @@ class weNewsletterView{
 												else
 													$path = "";
 											}
-											$newname = $url["scheme"] . "://" . ereg_replace("/+", "/", $url["host"] . "/" . $path . basename($name));
+											$newname = $url["scheme"] . "://" . preg_replace("|/+|", "/", $url["host"] . "/" . $path . basename($name));
 											$content = str_replace($name, $newname, $content);
 										}
 									}
@@ -2298,11 +2298,11 @@ class weNewsletterView{
 				}
 			} else{
 				$newplain = str_ireplace("<br>", "\n", $content);
-				$newplain = eregi_replace("<title>(.)*</title>", "\n", $newplain);
+				$newplain = preg_replace("|<title>.*</title>|i", "\n", $newplain);
 				if($block->Type != weNewsletterBlock::TEXT){
 					$newplain = strip_tags($newplain);
 				}
-				$newplain = eregi_replace("&nbsp;(&nbsp;)+", "\t", $newplain);
+				$newplain = preg_replace("|&nbsp;(&nbsp;)+|i", "\t", $newplain);
 				$newplain = str_ireplace("&nbsp;", " ", $newplain);
 				$newplain = str_ireplace("&lt;", "<", $newplain);
 				$newplain = str_ireplace("&gt;", ">", $newplain);

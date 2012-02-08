@@ -1693,13 +1693,13 @@ class we_objectFile extends we_document{
 			$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, false, true);
 			if(count($paths) > 0){
 				$ClassWs = "";
-				$where = "";
+				$where = array();
 				foreach($paths as $path){
 					if($path != "/"){
-						$where .= "Path like '" . $this->DB_WE->escape($path) . "/%' OR Path = '" . $this->DB_WE->escape($path) . "' OR ";
+						$where [] = "Path like '" . $this->DB_WE->escape($path) . "/%' OR Path = '" . $this->DB_WE->escape($path) . "'";
 					}
 				}
-				$where = ereg_replace("(.*) OR $", '\1', $where);
+				$where = implode(' OR ', $where);
 				if($where){
 					$where = "($where)";
 				}
@@ -3009,7 +3009,7 @@ class we_objectFile extends we_document{
 			if((!preg_match('|^[0-9]|', $k)) && (!preg_match('|[^a-z0-9_]|i', $k)) && $k != "_SESSION" && $k != "_GET" && $k != "_POST" && $k != "_REQUEST" && $k != "_SERVER" && $k != "_FILES" && $k != "_SESSION" && $k != "_ENV" && $k != "_COOKIE")
 				$glob .= '$' . $k . ",";
 		}
-		$glob = ereg_replace('(.*),$', '\1', $glob);
+		$glob = trim($glob, ',');
 		eval('global ' . $glob . ';'); // globalen Namensraum herstellen.
 
 		$we_doc = new we_webEditionDocument();
@@ -3053,9 +3053,9 @@ class we_objectFile extends we_document{
 			if($hrefFields){
 				$this->resetElements();
 				$hrefs = array();
+				$realName = $key = '';
 				while(list($k, $v) = $this->nextElement("href")) {
-					$realName = ereg_replace("^(.+)_we_jkhdsf_.+$", '\1', $k);
-					$key = ereg_replace("^.+_we_jkhdsf_(.+)$", '\1', $k);
+					list($realName, $key) = explode('_we_jkhdsf_', $k);
 					if(!isset($hrefs[$realName]))
 						$hrefs[$realName] = array();
 					$hrefs[$realName][$key] = $v["dat"];

@@ -454,7 +454,7 @@ class weBackupWizard{
 						$filesize = round(filesize($filename) / 1024, 2);
 						$filedate = date("d.m.Y H:i:s.", filemtime($filename));
 						if(strpos($entry, 'weBackup_') === 0){
-							$ts = ereg_replace('^weBackup_', '', $entry);
+							$ts = preg_replace('|^weBackup_|', '', $entry);
 							$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', $ts);
 
 							if(is_numeric($ts) || (substr_count($ts, '_') == 6)){
