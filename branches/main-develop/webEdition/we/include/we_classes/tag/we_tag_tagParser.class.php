@@ -51,7 +51,7 @@ class we_tag_tagParser{
 	  }
 	 */
 
-	public static function getNames($tags){
+/*	public static function getNames($tags){
 		$names = array();
 		$ll = 0;
 		$l = 0;
@@ -78,7 +78,7 @@ class we_tag_tagParser{
 		}
 		return $names;
 	}
-
+*/
 	public function getAllTags(){
 		return $this->tags;
 	}
