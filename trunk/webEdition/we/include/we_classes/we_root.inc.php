@@ -916,18 +916,25 @@ function formTriggerDocument($isclass=false){
 	}
 
 	function i_convertElemFromRequest($type,&$v,$k){
-		if($type=="float") $v= str_replace(",",".",$v);
-		if($type=="float" || $type=="int") $v = abs($v);
-		if($type=="int") $v=floor($v);
-		if($type == "text" || $type=="input"){
-			if($this->DefArray[$type."_".$k]["forbidphp"] == "on"){
-				$v = removePHP($v);
-			}
-			if($this->DefArray[$type."_".$k]["forbidhtml"] == "on"){
-				$v = removeHTML($v);
-			}
-		}else if($type == "float"){
-			$v = we_util::std_numberformat($v);
+		switch($type){
+			case float:
+				$v= floatval(str_replace(',','.',$v));
+				break;
+			case int:
+				$v=intval($v);
+				break;
+			case 'text':
+			case 'input':
+				if($this->DefArray[$type."_".$k]["forbidphp"] == "on"){
+					$v = removePHP($v);
+				}
+				if($this->DefArray[$type."_".$k]["forbidhtml"] == "on"){
+					$v = removeHTML($v);
+				}
+				break;
+			default:
+				$v = removeHTML(removePHP($v));
+				break;
 		}
 	}
 

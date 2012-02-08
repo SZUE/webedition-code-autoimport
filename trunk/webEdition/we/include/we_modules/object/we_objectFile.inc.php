@@ -2320,38 +2320,21 @@ class we_objectFile extends we_document{
 	function i_convertElemFromRequest($type,&$v,$k){
 		if(!$type){
 			foreach($this->DefArray as $n=>$foo){
-				$regs=explode('_',$n);
+				$regs=explode('_',$n,1);
 				if(isset($regs[0])){
 					$testtype= $regs[0];
 					unset($regs[0]);
 					if(isset($regs[1])){
-						if(is_array($regs)){//unterstrich in eigentlichen Feldnamen
-							$fieldname=implode('_',$regs);
-						} else {
-							$fieldname=$regs[1];
-						}
+						$fieldname=$regs[1];
 						if($k==$fieldname){
 							$type = $testtype;
+							break;
 						}
 					}
-					
 				}
 			}
 		}
-		if(strlen($v)){
-			if($type=="float" || $type=="int") $v= str_replace(",",".",$v);
-			if($type=="int") $v=round($v);
-		}
-		if($type == "text" || $type=="input"){
-			if($this->DefArray[$type."_".$k]["forbidphp"] == "on"){
-				$v = removePHP($v);
-			}
-			if($this->DefArray[$type."_".$k]["forbidhtml"] == "on"){
-				$v = removeHTML($v);
-			}
-		}else if($type == "float"){
-			$v = we_util::std_numberformat($v);
-		}
+		parent::i_convertElemFromRequest($type, $v, $k);
 	}
 
 	function we_initSessDat($sessDat){
@@ -3044,7 +3027,7 @@ class we_objectFile extends we_document{
 		return false;
 	}
 
-	
+
 	function i_saveTmp(){
 		$saveArr = array();
 		$this->saveInSession($saveArr);

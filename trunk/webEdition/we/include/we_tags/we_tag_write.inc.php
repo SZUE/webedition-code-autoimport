@@ -26,6 +26,7 @@ function we_tag_write($attribs, $content){
 		if ($foo)
 			return $foo;
 	} else {
+		$type='document'; //make sure type is known!
 		$foo = attributFehltError($attribs, "doctype", "write");
 		if ($foo)
 			return $foo;
@@ -57,32 +58,24 @@ function we_tag_write($attribs, $content){
 	$onpredefinedname = we_getTagAttribute("onpredefinedname", $attribs,"appendto");
 	$workflowname = we_getTagAttribute("workflowname", $attribs,"");
 	$workflowuserid = we_getTagAttribute("workflowuserid", $attribs,0);
-	if ($workflowname!='' && $workflowuserid!=0){
-		$doworkflow = true;
-	} else {
-		$doworkflow = false;
-	}
+	$doworkflow = ($workflowname!='' && $workflowuserid!=0);
 
 	if (isset($_REQUEST["edit_$type"]) && $_REQUEST["edit_$type"]) {
 
 		if ($type == "document") {
 			$ok = initDocument($name, $tid, $doctype, $categories);
 		} else {
-			$ok = initObject($classid, $name, $categories, $parentid);
+			$ok = initObject(intval($classid), $name, $categories, intval($parentid));
 		}
 
 		if ($ok) {
 			$isOwner = false;
 			if ($protected && isset($_SESSION["webuser"]["ID"])) {
 				$isOwner = ($_SESSION["webuser"]["ID"] == $GLOBALS["we_$type"][$name]->WebUserID);
-			} else
-				if ($userid) {
-					$isOwner = ($_SESSION["webuser"]["ID"] == $GLOBALS["we_$type"][$name]->getElement($userid));
-				}
-			$isAdmin = false;
-			if ($admin) {
-				$isAdmin = isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin];
+			} else{
+				$isOwner = ($userid) && ($_SESSION["webuser"]["ID"] == $GLOBALS["we_$type"][$name]->getElement($userid));
 			}
+			$isAdmin = ($admin) && isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin];
 
 			if ($isAdmin || ($GLOBALS["we_$type"][$name]->ID == 0) || $isOwner || $forceedit) {
 				$doWrite = true;
@@ -112,7 +105,9 @@ function we_tag_write($attribs, $content){
 				if ($objname=='') {
 					$GLOBALS["we_$type"][$name]->i_correctDoublePath();
 				}
-				if(isset($GLOBALS["we_doc"])){$_WE_DOC_SAVE = $GLOBALS["we_doc"];}
+				if(isset($GLOBALS["we_doc"])){
+					$_WE_DOC_SAVE = $GLOBALS["we_doc"];
+				}
 				$GLOBALS["we_doc"] = &$GLOBALS["we_$type"][$name];
 				if (strlen($workspaces) > 0 && $type == "object") {
 					$wsArr = makeArrayFromCSV($workspaces);
