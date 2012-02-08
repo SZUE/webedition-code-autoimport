@@ -358,7 +358,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, $db = '', 
 	return '';
 }
 
-function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = ''){
+function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0){
 	$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
 	if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
@@ -371,7 +371,7 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 		}
 		$GLOBALS['we_object'][$formname]->we_new();
 		if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-			$GLOBALS['we_object'][$formname]->initByID($_REQUEST['we_editObject_ID'], OBJECT_FILES_TABLE);
+			$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
 		} else{
 			$GLOBALS['we_object'][$formname]->TableID = $classID;
 			$GLOBALS['we_object'][$formname]->setRootDirID(true);
@@ -405,7 +405,7 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 		$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->getDefaultValueArray();
 	} else{
 		if(isset($_REQUEST['we_editObject_ID']) && $_REQUEST['we_editObject_ID']){
-			$GLOBALS['we_object'][$formname]->initByID($_REQUEST['we_editObject_ID'], OBJECT_FILES_TABLE);
+			$GLOBALS['we_object'][$formname]->initByID(intval($_REQUEST['we_editObject_ID']), OBJECT_FILES_TABLE);
 		} else{
 			if($session){
 				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['we_object_session_' . $formname]);
@@ -436,10 +436,15 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 			}
 		}
 
-		foreach($dates as $k => $v){
+		foreach ($dates as $k => $v) {
 			$GLOBALS['we_object'][$formname]->setElement(
-				$k, mktime(
-					$dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']));
+							$k,mktime(
+											intval($dates[$k]["hour"]),
+											intval($dates[$k]["minute"]),
+											0,
+											intval($dates[$k]["month"]),
+											intval($dates[$k]["day"]),
+											intval($dates[$k]["year"])));
 		}
 	}
 	if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
@@ -458,10 +463,12 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 			$_REQUEST["we_ui_$formname" . "_Category"] = makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true);
 		}
 	}
-	foreach($GLOBALS["we_object"][$formname]->persistent_slots as $slotname){
-		if($slotname != "categories" && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])){
-			$GLOBALS["we_object"][$formname]->$slotname = $_REQUEST["we_ui_" . $formname . "_" . $slotname];
-		}
+	foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
+		if($slotname != 'categories' && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])){
+				$v = removePHP($_REQUEST["we_ui_".$formname."_".$slotname]);
+				$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
+				$GLOBALS["we_object"][$formname]->{$slotname} = $v;
+			}
 	}
 
 	we_imageDocument::checkAndPrepare($formname, "we_object");
