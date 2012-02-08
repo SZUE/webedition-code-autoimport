@@ -917,10 +917,10 @@ function formTriggerDocument($isclass=false){
 
 	function i_convertElemFromRequest($type,&$v,$k){
 		switch($type){
-			case float:
+			case 'float':
 				$v= floatval(str_replace(',','.',$v));
 				break;
-			case int:
+			case 'int':
 				$v=intval($v);
 				break;
 			case 'text':
