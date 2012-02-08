@@ -544,7 +544,7 @@ function we_getCatsFromIDs($catIDs, $tokken = ",", $showpath = false, $db = "", 
 	return "";
 }
 
-function initObject($classID, $formname = "we_global_form", $categories = "", $parentid = '') {
+function initObject($classID, $formname = "we_global_form", $categories = "", $parentid = 0) {
 	include_once ($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/" . "we_modules/object/we_objectFile.inc.php");
 
 	$session = isset($GLOBALS["WE_SESSION_START"]) && $GLOBALS["WE_SESSION_START"];
@@ -558,7 +558,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 		}
 		$GLOBALS["we_object"][$formname]->we_new();
 		if (isset($_REQUEST["we_editObject_ID"]) && $_REQUEST["we_editObject_ID"])
-			$GLOBALS["we_object"][$formname]->initByID($_REQUEST["we_editObject_ID"], OBJECT_FILES_TABLE);
+			$GLOBALS["we_object"][$formname]->initByID(intval($_REQUEST["we_editObject_ID"]), OBJECT_FILES_TABLE);
 		else {
 			$GLOBALS["we_object"][$formname]->TableID = $classID;
 			$GLOBALS["we_object"][$formname]->setRootDirID(true);
@@ -595,13 +595,16 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 		}
 		$GLOBALS["we_object"][$formname]->DefArray = $GLOBALS["we_object"][$formname]->getDefaultValueArray();
 	} else {
-		if (isset($_REQUEST["we_editObject_ID"]) && $_REQUEST["we_editObject_ID"])
-			$GLOBALS["we_object"][$formname]->initByID($_REQUEST["we_editObject_ID"], OBJECT_FILES_TABLE);
-		else
-		if ($session)
-			$GLOBALS["we_object"][$formname]->we_initSessDat($_SESSION["we_object_session_$formname"]);
-		if ($classID && ($GLOBALS["we_object"][$formname]->TableID != $classID))
+		if (isset($_REQUEST["we_editObject_ID"]) && $_REQUEST["we_editObject_ID"]){
+			$GLOBALS["we_object"][$formname]->initByID(intval($_REQUEST["we_editObject_ID"]), OBJECT_FILES_TABLE);
+		}else{
+			if ($session){
+				$GLOBALS["we_object"][$formname]->we_initSessDat($_SESSION["we_object_session_$formname"]);
+			}
+		}
+		if ($classID && ($GLOBALS["we_object"][$formname]->TableID != $classID)){
 			$GLOBALS["we_object"][$formname]->TableID = $classID;
+		}
 		if (strlen($categories)) {
 			$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 			$GLOBALS["we_object"][$formname]->Category = $categories;
@@ -619,7 +622,7 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 				$dates[$regs[1]][$regs[2]] = $v;
 			} else {
 				$v = removePHP($v);
-				$GLOBALS["we_object"][$formname]->i_convertElemFromRequest("", $v, $n);
+				$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $n);
 				$GLOBALS["we_object"][$formname]->setElement($n, $v);
 			}
 		}
@@ -628,19 +631,19 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 			$GLOBALS["we_object"][$formname]->setElement(
 							$k,
 							mktime(
-											$dates[$k]["hour"],
-											$dates[$k]["minute"],
+											intval($dates[$k]["hour"]),
+											intval($dates[$k]["minute"]),
 											0,
-											$dates[$k]["month"],
-											$dates[$k]["day"],
-											$dates[$k]["year"]));
+											intval($dates[$k]["month"]),
+											intval($dates[$k]["day"]),
+											intval($dates[$k]["year"])));
 		}
 	}
 	if (isset($_REQUEST["we_ui_" . $formname . "_categories"])) {
 		$cats = $_REQUEST["we_ui_" . $formname . "_categories"];
 		// Bug Fix #750
 		if (is_array($cats)) {
-			$cats = implode(",", $cats);
+			$cats = implode(',', $cats);
 		}
 		$cats = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 		$GLOBALS["we_object"][$formname]->Category = $cats;
@@ -654,8 +657,10 @@ function initObject($classID, $formname = "we_global_form", $categories = "", $p
 	}
 	foreach ($GLOBALS["we_object"][$formname]->persistent_slots as $slotname) {
 		if ($slotname != "categories" && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])) {
-			eval('$GLOBALS["we_object"][$formname]->' . $slotname . '  =  $_REQUEST["we_ui_".$formname."_".$slotname];');
-		}
+				$v = removePHP($_REQUEST["we_ui_".$formname."_".$slotname]);
+				$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
+				$GLOBALS["we_object"][$formname]->{$slotname} = $v;
+			}
 	}
 
 	checkAndPrepareImage($formname, "we_object");
