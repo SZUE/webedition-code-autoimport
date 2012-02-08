@@ -51,7 +51,7 @@ abstract class we_history{
 		$_username = isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : '';
 		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $_db);
 		if($cnt > self::MAX){
-			$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . 'AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
+			$_db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ID LIMIT ' . ($cnt - self::MAX));
 		}
 		$insert = array(
 			'DID' => intval($object->ID),

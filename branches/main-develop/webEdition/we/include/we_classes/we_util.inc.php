@@ -44,16 +44,16 @@ abstract class we_util{
 	 * @param mixed number
 	 */
 	static function std_numberformat($number){
-		if(strpos($number, 'E')){	//  when number is too big, it is shown with E+xx
+		if(strpos($number, 'E')){ //  when number is too big, it is shown with E+xx
 			$number = number_format($number, 2, '.', '');
 		}
 		if(preg_match('|.*,[0-9]*$|', $number)){ // deutsche schreibweise
-			$tmp=explode(',',str_replace(".", "",$number));
-			$number = implode('.',$tmp);
+			$tmp = explode(',', str_replace(".", "", $number));
+			$number = implode('.', $tmp);
 		} else if(preg_match('|.*\.[0-9]*$|', $number)){ // engl schreibweise
 			$number = str_replace(',', '', $number);
 		} else{
-			$number = str_replace(array(',','.'), '', $number);
+			$number = str_replace(array(',', '.'), '', $number);
 		}
 		return $number;
 	}
@@ -68,7 +68,7 @@ abstract class we_util{
 	 * @param mixed number
 	 */
 	static function cleanNewLine($string){
-		return str_replace(array("\n\r","\r\n","\r"),"\n",$string);
+		return str_replace(array("\n\r", "\r\n", "\r"), "\n", $string);
 	}
 
 	/**
@@ -81,7 +81,7 @@ abstract class we_util{
 	 * @param mixed number
 	 */
 	static function br2nl($string){
-		$string = str_replace(array("\n","\r"), '', $string);
+		$string = str_replace(array("\n", "\r"), '', $string);
 		return preg_replace('|<br ?/?>|i', "\n", $string);
 	}
 
@@ -111,7 +111,7 @@ abstract class we_util{
 	}
 
 	static function html2uml($text){
-		return html_entity_decode($text,ENT_COMPAT,(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET));
+		return html_entity_decode($text, ENT_COMPAT, (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET));
 	}
 
 }

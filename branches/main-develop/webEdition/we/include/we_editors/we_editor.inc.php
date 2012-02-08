@@ -515,7 +515,8 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 							if($we_doc->we_save()){
 								$wasSaved = true;
 								if($we_doc->ContentType == "object"){
-									$we_JavaScript .= "top.header.document.location.reload();\nif(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}\n";
+									//FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
+									$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}\n";
 								}
 								$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 								$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;

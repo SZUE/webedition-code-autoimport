@@ -49,21 +49,17 @@ if(isset($_REQUEST["ok"])){
 }
 
 if(isset($_REQUEST["ok"])){
-	$js = '<script  type="text/javascript">'
-		. 'opener._EditorFrame.setEditorIsHot(true);'
+	$js = 'opener._EditorFrame.setEditorIsHot(true);'
 		. 'opener.we_cmd("reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");'
-		. 'top.close();'
-		. '</script>';
+		. 'top.close();';
 } else{
-	$js = '<script  type="text/javascript">'
-		. 'function okFn(){'
+	$js = 'function okFn(){'
 		. 'document.forms[0].submit();'
-		. '}'
-		. '</script>';
+		. '}';
 }
 
-print "<html>\n" . we_html_element::htmlHead(//FIXME: missing title
-		we_html_tools::getHtmlInnerHead() . $js . STYLESHEET);
+print we_html_element::htmlDocType() . '<html>' . we_html_element::htmlHead(//FIXME: missing title
+		we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '"><input type="hidden" name="ok" value="1" />';
 
