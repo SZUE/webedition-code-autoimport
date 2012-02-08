@@ -91,7 +91,7 @@ class weNavigation extends weModelBase{
 
 		parent::__construct(NAVIGATION_TABLE);
 
-		if($_ws = get_ws(NAVIGATION_TABLE)){
+		if(($_ws = get_ws(NAVIGATION_TABLE))){
 			$_wsa = makeArrayFromCSV($_ws);
 			$this->ParentID = $_wsa[0];
 		}
@@ -183,10 +183,9 @@ class weNavigation extends weModelBase{
 		}
 	}
 
-	function save($order = true){
+	function save($order = true, $rebuild=false){
 		$configFile = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/conf/we_conf_navigation.inc.php";
 		if(!file_exists($configFile) || !is_file($configFile)){
-			include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tools/navigation/class/weNavigationSettingControl.class.php");
 			weNavigationSettingControl::saveSettings(true);
 		}
 		include ($configFile);
@@ -283,13 +282,18 @@ class weNavigation extends weModelBase{
 			$this->CustomerFilter = unserialize($this->CustomerFilter);
 		}
 		$this->Name = $this->Text;
-		if($ClearCache){
-			weNavigationCache::delNavigationTree(0);
-		}
-		if($this->IsFolder){
-			weNavigationCache::cacheNavigationTree($this->ID);
+		if($rebuild){
+			//cache is written on demand, just make sure current entry is deleted
+			weNavigationCache::delCacheNavigationEntry($this->ID);
 		} else{
-			weNavigationCache::cacheNavigationTree($this->ParentID);
+			if($ClearCache){
+				weNavigationCache::delNavigationTree(0);
+			}
+			if($this->IsFolder){
+				weNavigationCache::cacheNavigationTree($this->ID);
+			} else{
+				weNavigationCache::cacheNavigationTree($this->ParentID);
+			}
 		}
 	}
 

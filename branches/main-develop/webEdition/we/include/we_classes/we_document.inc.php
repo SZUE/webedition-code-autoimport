@@ -22,7 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 if(!isset($GLOBALS['WE_IS_IMG'])){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 }
@@ -402,8 +401,6 @@ class we_document extends we_root{
 	function addNavi($id, $text, $parentid, $ordn){
 		$text = urldecode($text); //Bug #3769
 		if($this->ID){
-			require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
-
 			$navis = makeArrayFromCSV($this->NavigationItems);
 
 			if(is_numeric($ordn)){
@@ -477,7 +474,6 @@ class we_document extends we_root{
 
 	function delNavi($path){
 		$path = urldecode($path); //Bug #3816
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		if(in_array($path, $navis)){
 			$pos = getArrayKey($path, $navis);
@@ -494,7 +490,6 @@ class we_document extends we_root{
 	}
 
 	function delAllNavi(){
-		require($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 		$navis = makeArrayFromCSV($this->NavigationItems);
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
@@ -841,15 +836,7 @@ class we_document extends we_root{
 	}
 
 	function we_delete(){
-		if(!parent::we_delete())
-			return false;
-		if(!$this->i_deleteSiteDir())
-			return false;
-		if(!$this->i_deleteMainDir())
-			return false;
-		if(!$this->i_deleteNavigation())
-			return false;
-		return true;
+		return parent::we_delete() && $this->i_deleteSiteDir() && $this->i_deleteMainDir() && $this->i_deleteNavigation();
 	}
 
 	function we_rewrite(){
@@ -870,14 +857,14 @@ class we_document extends we_root{
 
 	protected function i_writeSiteDir($doc){
 		if($this->i_isMoved()){
-			we_util_File::deleteLocalFile($this->getSitePath(1));
+			we_util_File::deleteLocalFile($this->getSitePath(true));
 		}
 		return we_util_File::saveFile($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
 		if($this->i_isMoved()){
-			we_util_File::deleteLocalFile($this->getRealPath(1));
+			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_util_File::saveFile($this->getRealPath(), $doc);
 	}
@@ -1135,8 +1122,8 @@ class we_document extends we_root{
 				if(weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = removePHP($retval);
 				}
-				$xml = weTag_getAttribute('xml', $attribs, '', true,(defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1));
-				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml?'<\\1\\2/>':'<\\1\\2>'), $retval);
+				$xml = weTag_getAttribute('xml', $attribs, '', true, (defined('XHTML_DEFAULT') && XHTML_DEFAULT == 1));
+				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;

@@ -29,136 +29,139 @@ class we_rebuild{
 			$_newLine = count($_SERVER['argv']) ? "\n" : "<br>\n";
 		}
 
-		if($data["type"] == "navigation"){
-			if($printIt){
-				print ('Rebuilding Navigation Item with Id: ' . $data['id']);
-				flush();
-			}
-
-			if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
-				print 'Rebuilding Navigation Item with Id: ' . $data['id'];
-			}
-			if($data['id'] == 0){
-				weNavigationCache::cacheRootNavigation();
-			} else{
-				weNavigationCache::cacheNavigationBranch($data['id']);
-			}
-			if($printIt){
-				print ("   done$_newLine");
-				flush();
-			}
-		} else if($data["type"] == "thumbnail"){
-			$GLOBALS["WE_IS_IMG"] = 1;
-			$imgdoc = new we_imageDocument();
-			$imgdoc->initByID($data["id"]);
-			if($printIt){
-				print ('Rebuilding thumb for image: ' . $imgdoc->Path);
-				flush();
-			}
-
-			if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
-				print "Debug: Rebuilding thumb for image: " . $imgdoc->Path;
-			}
-			$imgdoc->Thumbs = $data["thumbs"] ? $data["thumbs"] : -1;
-			$imgdoc->DocChanged = true;
-			$imgdoc->we_save(true);
-			unset($imgdoc);
-			if($printIt){
-				print ("   done$_newLine");
-				flush();
-			}
-		} else if($data["type"] == "metadata"){
-			$imgdoc = new we_imageDocument();
-			$imgdoc->initByID($data["id"]);
-			if($printIt){
-				print ('Rebulding meta data for image: ' . $imgdoc->Path);
-				flush();
-			}
-
-			if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
-				print "Rebulding meta data for image: " . $imgdoc->Path;
-			}
-
-			$imgdoc->importMetaData($data["metaFields"], $data["onlyEmpty"]);
-
-			$imgdoc->we_save(true);
-			unset($imgdoc);
-			if($printIt){
-				print ("   done$_newLine");
-				flush();
-			}
-		} else{
-			switch($data["type"]){
-				case "document":
-					if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
-
-					} else{ // it has to be an object
-						return false;
-					}
-					$table = FILE_TABLE;
-					break;
-				case "template":
-					if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
-
-					} else{ // it has to be an object
-						return false;
-					}
-					$table = TEMPLATES_TABLE;
-					break;
-				case "object":
-					if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/" . $data["cn"] . ".inc.php")){
-
-					} else{ // it has to be an object
-						return false;
-					}
-					$table = OBJECT_FILES_TABLE;
-					break;
-				default: return false;
-			}
-
-			$GLOBALS['we_doc'] = new $data['cn']();
-			$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
-			if($printIt){
-				print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
-				flush();
-			}
-
-			if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
-				print "Debug: Rebuilding: " . $GLOBALS['we_doc']->Path;
-			}
-
-			/* removed 30.12.2011
-			 * if($data["mt"] || $data["tt"]){
-			  $GLOBALS['we_doc']->correctFields();
-			  } */
-
-
-			if($data["tt"]){
-				$GLOBALS['we_doc']->we_resaveTemporaryTable();
-			}
-			if($data["mt"] || ($table == TEMPLATES_TABLE)){
-				$tmpPath = $GLOBALS['we_doc']->constructPath();
-				if($tmpPath){
-					$GLOBALS['we_doc']->Path = $tmpPath;
+		switch($data["type"]){
+			case "navigation":
+				if($printIt){
+					print ('Rebuilding Navigation Item with Id: ' . $data['id']);
+					flush();
 				}
 
-				if($table == TEMPLATES_TABLE){
-					// templates has to be treated differently
-					$GLOBALS['we_doc']->we_save(1);
+				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+					print 'Rebuilding Navigation Item with Id: ' . $data['id'];
+				}
+				weNavigationCache::delCacheNavigationEntry($data['id']);
+				$nav=new weNavigation($data['id']);
+				$nav->save(false,true);
+				if($printIt){
+					print ("   done$_newLine");
+					flush();
+				}
+				break;
+			case "thumbnail":
+				$GLOBALS["WE_IS_IMG"] = 1;
+				$imgdoc = new we_imageDocument();
+				$imgdoc->initByID($data["id"]);
+				if($printIt){
+					print ('Rebuilding thumb for image: ' . $imgdoc->Path);
+					flush();
+				}
+
+				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+					print "Debug: Rebuilding thumb for image: " . $imgdoc->Path;
+				}
+				$imgdoc->Thumbs = $data["thumbs"] ? $data["thumbs"] : -1;
+				$imgdoc->DocChanged = true;
+				$imgdoc->we_save(true);
+				unset($imgdoc);
+				if($printIt){
+					print ("   done$_newLine");
+					flush();
+				}
+				break;
+			case "metadata":
+				$imgdoc = new we_imageDocument();
+				$imgdoc->initByID($data["id"]);
+				if($printIt){
+					print ('Rebulding meta data for image: ' . $imgdoc->Path);
+					flush();
+				}
+
+				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+					print "Rebulding meta data for image: " . $imgdoc->Path;
+				}
+
+				$imgdoc->importMetaData($data["metaFields"], $data["onlyEmpty"]);
+
+				$imgdoc->we_save(true);
+				unset($imgdoc);
+				if($printIt){
+					print ("   done$_newLine");
+					flush();
+				}
+				break;
+			default:
+				switch($data["type"]){
+					case "document":
+						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
+
+						} else{ // it has to be an object
+							return false;
+						}
+						$table = FILE_TABLE;
+						break;
+					case "template":
+						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/" . $data["cn"] . ".inc.php")){
+
+						} else{ // it has to be an object
+							return false;
+						}
+						$table = TEMPLATES_TABLE;
+						break;
+					case "object":
+						if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/object/" . $data["cn"] . ".inc.php")){
+
+						} else{ // it has to be an object
+							return false;
+						}
+						$table = OBJECT_FILES_TABLE;
+						break;
+					default:
+						return false;
+				}
+
+				$GLOBALS['we_doc'] = new $data['cn']();
+				$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
+				if($printIt){
+					print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
+					flush();
+				}
+
+				if(isset($_SESSION["prefs"]["debug_normal"]) && $_SESSION["prefs"]["debug_normal"] != 0){
+					print "Debug: Rebuilding: " . $GLOBALS['we_doc']->Path;
+				}
+
+				/* removed 30.12.2011
+				 * if($data["mt"] || $data["tt"]){
+				  $GLOBALS['we_doc']->correctFields();
+				  } */
+
+
+				if($data["tt"]){
+					$GLOBALS['we_doc']->we_resaveTemporaryTable();
+				}
+				if($data["mt"] || ($table == TEMPLATES_TABLE)){
+					$tmpPath = $GLOBALS['we_doc']->constructPath();
+					if($tmpPath){
+						$GLOBALS['we_doc']->Path = $tmpPath;
+					}
+
+					if($table == TEMPLATES_TABLE){
+						// templates has to be treated differently
+						$GLOBALS['we_doc']->we_save(1);
+					} else{
+						$GLOBALS['we_doc']->we_resaveMainTable();
+					}
+				}
+				if($data["it"]){
+					$GLOBALS['we_doc']->insertAtIndex();
 				} else{
-					$GLOBALS['we_doc']->we_resaveMainTable();
+					$GLOBALS['we_doc']->we_rewrite();
+					$GLOBALS['we_doc']->we_republish($data["mt"]);
 				}
-			}
-			if($data["it"]){
-				$GLOBALS['we_doc']->insertAtIndex();
-			} else{
-				$GLOBALS['we_doc']->we_rewrite();
-				$GLOBALS['we_doc']->we_republish($data["mt"]);
-			}
-			if($printIt){
-				print ("   done$_newLine");
-				flush();
-			}
+				if($printIt){
+					print ("   done$_newLine");
+					flush();
+				}
 		}
 	}
 
@@ -330,11 +333,11 @@ class we_rebuild{
 			}
 			if($doctypes){
 				$_foo = makeArrayFromCSV($doctypes);
-				$tmp=array();
+				$tmp = array();
 				foreach($_foo as $doctypeID){
-					$tmp []= " Doctype = '" . escape_sql_query($doctypeID) . "'";
+					$tmp [] = " Doctype = '" . escape_sql_query($doctypeID) . "'";
 				}
-				$_doctype_query = "(" . implode(' OR ',$tmp) . ")";
+				$_doctype_query = "(" . implode(' OR ', $tmp) . ")";
 			}
 			if($folders){
 				$_foo = makeArrayFromCSV($folders);
