@@ -28,6 +28,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handle
 if(function_exists('we_error_setHandleAll')){
 	we_error_setHandleAll();
 }
+if(!defined('WE_ERROR_HANDLER_SET')){
+	we_error_handler();
+}
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateResponse.class.php');
