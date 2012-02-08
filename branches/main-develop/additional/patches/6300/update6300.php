@@ -8,7 +8,7 @@ if(!is_readable("../../we/include/conf/we_conf.inc.php")) {
 	//return true;
 }
 //die Vorbilder includen mehr, aber wozu?
-include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_inc_min.inc.php");//nicht we.inc.php da genau das nicht funktioniert wegen der noch nicht verschobenen we_active_integrated_modules
+include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we.inc.php");//nicht we.inc.php da genau das nicht funktioniert wegen der noch nicht verschobenen we_active_integrated_modules
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weConfParser.class.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
