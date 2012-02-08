@@ -111,7 +111,7 @@ abstract class we_util{
 	}
 
 	static function html2uml($text){
-		return correctUml(html_entity_decode($text));
+		return html_entity_decode($text,ENT_COMPAT,(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET));
 	}
 
 }
