@@ -52,9 +52,21 @@ if(!defined('E_SQL')){
 	define('E_SQL', -1);
 }
 
-/* * ***********************************************************************
- * FUNCTIONS
- * *********************************************************************** */
+
+function we_error_setHandleAll(){
+$GLOBALS['we']['errorhandler'] = array(
+	'notice' => true,
+	'deprecated' => true,
+	'warning' => true,
+	'error' => true,
+	'display' => false,
+	'log' => true,
+	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
+	'shutdown' => 'we',
+);
+
+}
+
 
 function we_error_handler($in_webEdition = true){
 	// Get error types to be handled

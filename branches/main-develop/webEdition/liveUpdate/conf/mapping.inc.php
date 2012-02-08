@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,12 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /*
  * map needed variables for the program here, for example map version number
  */
 
 
 $LU_Variables = array(
-
 	// always needed variables
 	'clientVersion' => WE_VERSION,
 	'clientSubVersion' => WE_SVNREV,
@@ -36,8 +35,8 @@ $LU_Variables = array(
 	'clientVersionSuppVersion' => (defined("WE_VERSION_SUPP_VERSION")) ? WE_VERSION_SUPP_VERSION : '',
 	'clientVersionBranch' => (defined("WE_VERSION_BRANCH")) ? WE_VERSION_BRANCH : '',
 	'clientPhpVersion' => phpversion(),
-	'clientPhpExtensions' => implode(',',get_loaded_extensions()),
-	'clientPcreVersion' => (defined("PCRE_VERSION")) ? PCRE_VERSION:'',
+	'clientPhpExtensions' => implode(',', get_loaded_extensions()),
+	'clientPcreVersion' => (defined("PCRE_VERSION")) ? PCRE_VERSION : '',
 	'clientMySQLVersion' => getMysqlVer(false),
 	'clientDBcharset' => (defined("DB_CHARSET") && DB_CHARSET != "") ? DB_CHARSET : '',
 	'clientDBcollation' => (defined("DB_COLLATION") && DB_COLLATION != "") ? DB_COLLATION : '',
@@ -66,6 +65,6 @@ $LU_IgnoreRequestParameters = array(
 	'cookie',
 	'treewidth_main',
 	session_name(),
-	'we'.session_id()
+	'we' . session_id()
 );
 ?>

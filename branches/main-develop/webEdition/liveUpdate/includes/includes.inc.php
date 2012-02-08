@@ -24,7 +24,11 @@
 
 define('LIVEUPDATE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/');
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
+if(function_exists('we_error_setHandleAll')){
+	we_error_setHandleAll();
+}
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateResponse.class.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateFrames.class.php');

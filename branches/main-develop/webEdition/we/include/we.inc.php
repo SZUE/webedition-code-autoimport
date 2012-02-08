@@ -42,8 +42,9 @@ if($_memlimit < 32){
 @ini_set('session.use_trans_sid', '0');
 
 //prepare space for we-variables; $_SESSION['we'] is set in we_session
-$GLOBALS['we'] = array();
-
+if(!isset($GLOBALS['we'])){
+	$GLOBALS['we'] = array();
+}
 //start autoloader!
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
