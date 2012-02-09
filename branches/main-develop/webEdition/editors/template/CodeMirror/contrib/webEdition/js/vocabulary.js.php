@@ -63,12 +63,12 @@
 			unset($weTag);
 		$weTag = weTagData::getTagData($tagName);
 		echo sprintf('top.we_tags["we:%s"]= {',$tagName);
-		echo sprintf('"desc": "%s",',addslashes($weTag->Description));
+		echo sprintf('"desc": "%s",',addslashes($weTag->getDescription()));
 		echo '"attributes":';
-		if(isset($weTag->Attributes) && is_array($weTag->Attributes) && count($weTag->Attributes)) {
+		if(count($weTag->getAllAttributes())) {
 			echo '{';
 			$attributes=array();
-			foreach($weTag->Attributes as $attribute) {
+			foreach($weTag->getAllAttributes() as $attribute) {
 				if(get_class($attribute)=='weTagData_cmdAttribute')
 					continue;
 				$attributeString=sprintf('"%s":',$attribute->getName());
