@@ -932,6 +932,8 @@ function formTriggerDocument($isclass=false){
 					$v = removeHTML($v);
 				}
 				break;
+			case 'internal'://pseudo-element for i_setElementsFromHTTP
+				break;
 			default:
 				$v = removeHTML(removePHP($v));
 				break;
@@ -974,7 +976,7 @@ function formTriggerDocument($isclass=false){
 									$this->elements[$regs2[1]][$regs2[2]] = $v2;
 								}else{
 									$this->elements[$name]["type"] = $type;
-									$this->i_convertElemFromRequest("",$v2,$name);
+									$this->i_convertElemFromRequest('internal',$v2,$name);
 									$this->elements[$name]["dat"] = $v2;
 								}
 							}
