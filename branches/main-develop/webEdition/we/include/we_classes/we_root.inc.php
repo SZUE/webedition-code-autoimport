@@ -843,22 +843,24 @@ abstract class we_root extends we_class{
 		$this->Text = $this->Filename;
 	}
 
-	protected function i_convertElemFromRequest($type,&$v,$k){
+	protected function i_convertElemFromRequest($type, &$v, $k){
 		switch($type){
 			case 'float':
-				$v= floatval(str_replace(',','.',$v));
+				$v = floatval(str_replace(',', '.', $v));
 				break;
 			case 'int':
-				$v=intval($v);
+				$v = intval($v);
 				break;
 			case 'text':
 			case 'input':
-				if($this->DefArray[$type."_".$k]["forbidphp"] == "on"){
+				if($this->DefArray[$type . "_" . $k]["forbidphp"] == "on"){
 					$v = removePHP($v);
 				}
-				if($this->DefArray[$type."_".$k]["forbidhtml"] == "on"){
+				if($this->DefArray[$type . "_" . $k]["forbidhtml"] == "on"){
 					$v = removeHTML($v);
 				}
+				break;
+			case 'internal'://pseudo-element for i_setElementsFromHTTP
 				break;
 			default:
 				$v = removeHTML(removePHP($v));
@@ -900,7 +902,7 @@ abstract class we_root extends we_class{
 									$this->elements[$regs2[1]][$regs2[2]] = $v2;
 								} else{
 									$this->elements[$name]["type"] = $type;
-									$this->i_convertElemFromRequest("", $v2, $name);
+									$this->i_convertElemFromRequest('internal', $v2, $name);
 									$this->elements[$name]["dat"] = $v2;
 								}
 							}
@@ -1207,11 +1209,11 @@ abstract class we_root extends we_class{
 			return self::FILE_LOCKED;
 		}
 
-		if(!$this->userHasPerms()){	//	File is restricted !!!!!
+		if(!$this->userHasPerms()){ //	File is restricted !!!!!
 			return self::USER_NO_PERM;
 		}
 
-		if(!$this->userCanSave()){	//	user has no right to save.
+		if(!$this->userCanSave()){ //	user has no right to save.
 			return self::USER_NO_SAVE;
 		}
 
@@ -1219,7 +1221,7 @@ abstract class we_root extends we_class{
 			return self::USER_HASACCESS;
 		}
 
-		if($this->userHasPerms()){	 //	access to doc is not restricted, check workspaces of user
+		if($this->userHasPerms()){	//	access to doc is not restricted, check workspaces of user
 			if($GLOBALS['we_doc']->ID){ //	userModule installed
 				$ws = get_ws($GLOBALS['we_doc']->Table);
 				if($ws){ //	doc has workspaces

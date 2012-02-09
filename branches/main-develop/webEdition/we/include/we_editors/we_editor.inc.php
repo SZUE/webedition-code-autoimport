@@ -423,7 +423,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 					$we_responseText = g_l('weEditor', "[variantNameInvalid]");
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else{
-					$we_JavaScript = "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");\n"; // save/ rename a document
+					$we_JavaScript = "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ");"; // save/ rename a document
 					if($we_doc->ContentType == "text/weTmpl"){
 						if(isset($_REQUEST['we_cmd'][8]) && $_REQUEST['we_cmd'][8]){
 							// if  we_cmd[8] is set, it means that "automatic rebuild" was clicked
@@ -484,6 +484,7 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 							include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_editor_save.inc.php");
 							exit();
 						}
+						//FIXME: is this safe??? Code-Injection!
 						if(isset($_REQUEST['we_cmd'][6]) && $_REQUEST['we_cmd'][6]){
 							$we_JavaScript .= "\n" . $_REQUEST['we_cmd'][6] . "\n";
 						}
