@@ -902,6 +902,7 @@ abstract class we_root extends we_class{
 									$this->elements[$regs2[1]][$regs2[2]] = $v2;
 								} else{
 									$this->elements[$name]["type"] = $type;
+									//FIXME: check if we can apply the correct type
 									$this->i_convertElemFromRequest('internal', $v2, $name);
 									$this->elements[$name]["dat"] = $v2;
 								}

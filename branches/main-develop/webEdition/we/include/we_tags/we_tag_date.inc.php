@@ -151,18 +151,24 @@ function correctDateFormat($format, $t = ''){
 	if(!$t){
 		$t = time();
 	}
-	$rep = array('%%%4%%%' => '\B', '%%%5%%%' => '\I', '%%%6%%%' => '\L', '%%%7%%%' => '\T', '%%%8%%%' => '\U', '%%%9%%%' => '\Z');
+	$escapes = array('d' => '\\d', 'D' => '\\D', 'j' => '\\j', 'l' => '\\l', 'N' => '\\N', 'S' => '\\S', 'w' => '\\w', 'Z' => '\\Z',
+		'W' => '\\W', 'F' => '\\F', 'M' => '\\M', 'm' => '\\m', 'n' => '\\n', 't' => '\\t', 'L' => '\\L', 'o' => '\\o', 'Y' => '\\Y',
+		'y' => '\\y', 'a' => '\\a', 'A' => '\\A', 'B' => '\\B', 'g' => '\\g', 'G' => '\\G', 'h' => '\\h', 'H' => '\\H', 'i' => '\\i', 's' => '\\s',
+		'u' => '\\u', 'e' => '\\e', 'I' => '\\I', 'O' => '\\O', 'P' => '\\P', 'T' => '\\T', 'Z' => '\\Z', 'c' => '\\c', 'r' => '\\r', 'U' => '\\U');
+
+	$rep = array('%%%4%%%' => '\\B', '%%%5%%%' => '\\I', '%%%6%%%' => '\\L', '%%%7%%%' => '\\T', '%%%8%%%' => '\\U', '%%%9%%%' => '\\Z');
 
 	$format = str_replace(array_values($rep), array_keys($rep), $format);
-
 	$format = str_replace(
 		array('B', 'I', 'L', 'T', 'U', 'Z'), array('\\B', '\\I', '\\L', '\\T', '\\U', '\\Z'), $format);
 
 	$format = str_replace(array_keys($rep), array_values($rep), $format);
-	$rep = array('D' => g_l('date', '[day][short][' . date('w', $t) . ']'),
-		'F' => g_l('date', '[month][long][' . (date('n', $t) - 1) . ']'),
-		'l' => g_l('date', '[day][long][' . date('w', $t) . ']'),
-		'M' => g_l('date', '[month][short][' . (date('n', $t) - 1) . ']')
+
+	$rep = array(
+		'D' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][short][' . date('w', $t) . ']')),
+		'F' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][long][' . (date('n', $t) - 1) . ']')),
+		'l' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[day][long][' . date('w', $t) . ']')),
+		'M' => str_replace(array_keys($escapes), array_values($escapes), g_l('date', '[month][short][' . (date('n', $t) - 1) . ']'))
 	);
 
 	return str_replace(array_keys($rep), array_values($rep), $format);
