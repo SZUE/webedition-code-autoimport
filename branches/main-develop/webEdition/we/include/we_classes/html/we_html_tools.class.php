@@ -739,7 +739,7 @@ HTS;
 		$GLOBALS['we']['PageCharset'] = $charset;
 		return we_html_element::htmlMeta(array(
 				"http-equiv" => "content-type",
-				"content" => $content.'" charset="' . $charset
+				"content" => $content.'; charset=' . $charset
 			));
 	}
 

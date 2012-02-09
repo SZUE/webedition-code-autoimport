@@ -275,16 +275,16 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	$isin = 0;
 	foreach($options as $option){
 		if($option == $value){
-			$content .= getHtmlTag('option', array('value' => $option, 'selected' => 'selected'), $option, true) . "\n";
+			$content .= getHtmlTag('option', array('value' => $option, 'selected' => 'selected'), $option, true);
 			$isin = 1;
 		} else{
-			$content .= getHtmlTag('option', array('value' => $option), $option, true) . "\n";
+			$content .= getHtmlTag('option', array('value' => $option), $option, true);
 		}
 	}
-	if((!$isin) && $addMissing){
+	if((!$isin) && $addMissing && value!=''){
 		$content .= getHtmlTag('option', array(
 				'value' => htmlspecialchars($value), 'selected' => 'selected'
-				), htmlspecialchars($value), true) . "\n";
+				), htmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }

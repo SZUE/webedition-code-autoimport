@@ -131,9 +131,9 @@ class weCustomerFrames extends weModuleFrames{
 		}
 		switch($props['type']){
 			case 'input':
-				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='{width:240}'");
+				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='width:240px;'");
 			case 'number':
-				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='{width:240}'", 'number');
+				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
 			case 'multiselect':
 				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
 				$values = explode(',', $value);
@@ -153,7 +153,7 @@ class weCustomerFrames extends weModuleFrames{
 				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
 
 				$countrycode = array_search($langcode, $GLOBALS['WE_LANGS_COUNTRIES']);
-				$countryselect = new we_html_select(array('name' => $field, 'size' => '1', 'style' => '{width:240;}', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
+				$countryselect = new we_html_select(array('name' => $field, 'size' => '1', 'style' => 'width:240px;', 'class' => 'wetextinput', 'onblur' => 'this.className=\'wetextinput\'', 'onfocus' => 'this.className=\'wetextinputselected\'', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
 				$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
 
@@ -202,7 +202,7 @@ class weCustomerFrames extends weModuleFrames{
 						$lccode = explode('_', $lcvalue);
 						$lcvalue = $lccode[0];
 					}
-					$languageselect = new we_html_select(array("name" => $field, "size" => "1", "style" => "{width:240;}", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+					$languageselect = new we_html_select(array("name" => $field, "size" => "1", "style" => "width:240px;", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
 					foreach(g_l('languages', '') as $languagekey => $languagevalue){
 						if(in_array($languagekey, $frontendL)){
 							$languageselect->addOption($languagekey, $languagevalue);
@@ -222,14 +222,14 @@ class weCustomerFrames extends weModuleFrames{
 					$defs = array_merge(array($value), $defs);
 				}
 
-				$select = new we_html_select(array("name" => $field, "size" => "1", "style" => "{width:240;}", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+				$select = new we_html_select(array("name" => $field, "size" => "1", "style" => "width:240px;", "class" => "wetextinput", "onblur" => "this.className='wetextinput'", "onfocus" => "this.className='wetextinputselected'", "id" => ($field == "Gruppe" ? "yuiAcInputPathGroupX" : ""), "onchange" => ($field == "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
 				foreach($defs as $def)
 					$select->addOption($def, $def);
 				$select->selectOption($value);
 				return $select->getHtml();
 				break;
 			case 'textarea':
-				return we_html_element::htmlTextArea(array("name" => $field, "style" => "{width:240}", "class" => "wetextarea", "onblur" => "this.className='wetextarea'", "onfocus" => "this.className='wetextareaselected'"), $value);
+				return we_html_element::htmlTextArea(array("name" => $field, "style" => "width:240px;", "class" => "wetextarea", "onblur" => "this.className='wetextarea'", "onfocus" => "this.className='wetextareaselected'"), $value);
 				break;
 			case 'dateTime':
 			case 'date':
@@ -269,7 +269,7 @@ class weCustomerFrames extends weModuleFrames{
 				return $out;
 				break;
 			case 'password':
-				return we_html_tools::htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="{width:240}" autocomplete="off" ', 'password');
+				return we_html_tools::htmlTextInput($field, 32, $value, '', 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 				break;
 			case 'img':
 
@@ -298,7 +298,7 @@ class weCustomerFrames extends weModuleFrames{
 
 				break;
 
-			default: return we_html_tools::htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='{width:240}'");
+			default: return we_html_tools::htmlTextInput($field, 32, $value, "", "onchange=\"top.content.setHot();\" style='width:240px;'");
 		}
 		return null;
 	}
@@ -742,11 +742,11 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 
 
 		$select = $this->getHTMLBranchSelect(false);
-		$select->setAttributes(array("name" => "branch_select", "class" => "weSelect", "onChange" => "selectBranch()", "style" => "width:150"));
+		$select->setAttributes(array("name" => "branch_select", "class" => "weSelect", "onChange" => "selectBranch()", "style" => "width:150px;"));
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
-		$fields->setAttributes(array("name" => "fields_select", "size" => "15", "onChange" => "", "style" => "width:310;height:250"));
+		$fields->setAttributes(array("name" => "fields_select", "size" => "15", "onChange" => "", "style" => "width:350px;height:250px;"));
 		$hiddens = we_html_element::htmlHidden(array("name" => "field", "value" => ""));
 
 		$buttons_table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 12, 1);
@@ -767,7 +767,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(0, 0, array("class" => "defaultgray"), g_l('modules_customer', '[branch]'));
 		$table->setCol(0, 1, array(), we_html_tools::getPixel(10, 10));
 		$table->setCol(0, 2, array("class" => "defaultgray"), g_l('modules_customer', '[branch_select]'));
-		$table->setCol(1, 0, array(), we_html_tools::htmlTextInput("branch", 48, $branch, "", 'style="width:310"'));
+		$table->setCol(1, 0, array(), we_html_tools::htmlTextInput("branch", 48, $branch, "", 'style="width:350px;"'));
 		$table->setCol(1, 1, array(), we_html_tools::getPixel(10, 10));
 		$table->setCol(1, 2, array(), $select->getHtml());
 		$table->setCol(1, 3, array(), we_html_tools::getPixel(10, 10));
@@ -780,7 +780,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$table->setCol(4, 1, array("valign" => "top"), we_html_tools::getPixel(10, 10));
 		$table->setCol(4, 2, array("valign" => "top"), $buttons_table->getHtml());
 
-		$out = we_html_element::htmlBody(array("class" => "weDIalogBody"), we_html_element::jsScript(JS_DIR . "windows.js") .
+		$out = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsScript(JS_DIR . "windows.js") .
 				we_html_element::jsElement("self.focus();") .
 				we_html_element::jsElement($this->View->getJSAdmin()) .
 				we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
@@ -822,7 +822,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		} else{
 			$field_props = $this->View->getFieldProperties($field);
 
-			$types = new we_html_select(array("name" => "field_type", "class" => "weSelect", "style" => "width:200"));
+			$types = new we_html_select(array("name" => "field_type", "class" => "weSelect", "style" => "width:200px;"));
 			$types->addOptions(count($this->View->settings->field_types), array_keys($this->View->settings->field_types), array_keys($this->View->settings->field_types));
 			if(isset($field_props["type"]))
 				$types->selectOption($field_props["type"]);
@@ -926,7 +926,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		$search->setRow(0, array("valign" => "top"));
 		$search->setCol(0, 0, array("class" => "defaultfont", "colspan" => "3", "style" => "padding-bottom: 3px;"), g_l('modules_customer', '[search_for]'));
 
-		$select = new we_html_select(array("name" => "search_result", "style" => "width:550px", "onDblClick" => "opener." . $this->topFrame . ".we_cmd('edit_customer',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
+		$select = new we_html_select(array("name" => "search_result", "style" => "width:550px;", "onDblClick" => "opener." . $this->topFrame . ".we_cmd('edit_customer',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
 		if($mode){
 			include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerAdd.php");
@@ -1045,7 +1045,7 @@ WHERE ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.CID=' 
 		}
 
 		$default_sort_view_select = $this->getHTMLSortSelect();
-		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px"));
+		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px;"));
 		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
 		$table = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0"), 5, 3);

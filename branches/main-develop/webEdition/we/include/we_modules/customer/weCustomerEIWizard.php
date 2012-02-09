@@ -242,7 +242,7 @@ class weCustomerEIWizard{
 			$csv_input_size = 3;
 			$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 5, 1);
 
-			$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "defaultfont", "style" => "width: 254px"));
+			$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "defaultfont", "style" => "width: 254px;"));
 			$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
 			$_file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
 			$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
@@ -317,7 +317,7 @@ class weCustomerEIWizard{
 
 			return we_html_element::htmlHtml(
 					we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) . $js .
-					we_html_element::htmlBody(array("class" => "weDIalogBody"), we_html_element::htmlCenter(
+					we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 						)
 					)
@@ -683,7 +683,7 @@ class weCustomerEIWizard{
 
 				$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 6, 1);
 
-				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "defaultfont", "style" => "width: 254px"));
+				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => "1", "class" => "defaultfont", "style" => "width: 254px;"));
 				$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
 				$_file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
 				$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
@@ -922,7 +922,7 @@ class weCustomerEIWizard{
 					$log.=fread($fh, 4096);
 
 				$table->setColContent(1, 0, we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[show_log]'), 1, "550"));
-				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550; height: 200"), htmlspecialchars($log)));
+				$table->setColContent(2, 0, we_html_element::htmlTextArea(array("name" => "log", "rows" => "15", "cols" => "15", "style" => "width: 550px; height: 200px;"), htmlspecialchars($log)));
 				fclose($fh);
 				unlink(TMP_DIR . "/$tmpdir/$tmpdir.log");
 			}
@@ -1701,7 +1701,7 @@ class weCustomerEIWizard{
 
 		$input_size = 5;
 
-		$select = new we_html_select(array("name" => $name . "_select", "onChange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200;"));
+		$select = new we_html_select(array("name" => $name . "_select", "onChange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200px;"));
 		$select->addOption("", "");
 		foreach($values as $k => $v)
 			$select->addOption(htmlspecialchars($k), htmlspecialchars($v));
