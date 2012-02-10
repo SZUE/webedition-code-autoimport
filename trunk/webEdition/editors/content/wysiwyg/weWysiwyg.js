@@ -2670,7 +2670,7 @@ switch(cmd){
 		case "removetags":
 			if(confirm(we_wysiwyg_lng["removetags_warning"])){
 				var text = this.eDocument.body.innerHTML;
-				text = text.replace(/<style[^>]*>.*?<\/style>|<!--.*?-->|&lt;!--.*?&gt;|<[^>]*>/gi, ''); // remove all tags
+				text = text.replace(/< *style[\s\S]*< *\/ *style>|<!--[\s\S]*-->|&lt;!--[\s\S]*&gt;|<[^>]*>/gi, ''); // remove all tags
 				this.eDocument.body.innerHTML = text;
 			}
 			break;
