@@ -35,7 +35,7 @@ function we_tag_banner($attribs, $content){
 	$width = weTag_getAttribute("width",$attribs,($type == "pixel") ? "1" : "");
 	$height = weTag_getAttribute("height",$attribs,($type == "pixel") ? "1" : "");
 	$link = weTag_getAttribute("link",$attribs,true,true);
-	$page = weTag_getAttribute("page",$attribs);	
+	$page = weTag_getAttribute("page",$attribs);
 	$pixel = weTag_getAttribute("page",$attribs,false,true);
 	$bannerclick = weTag_getAttribute("clickscript",$attribs,"/webEdition/bannerclick.php");
 	$getbanner = weTag_getAttribute("getscript",$attribs,"/webEdition/getBanner.php");
@@ -111,6 +111,7 @@ function we_tag_banner($attribs, $content){
 			if($type ==  "cookie"){
 				return $noscript;
 			}else{
+				//FIXME: replace by call of jsScript
 				return 	'<script  type="text/javascript">
 <!--
 	r = Math.random();

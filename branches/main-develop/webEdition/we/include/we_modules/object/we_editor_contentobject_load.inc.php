@@ -61,7 +61,7 @@ if($we_doc->CSS){
 	foreach($cssArr as $cs){
 		$path = id_to_path($cs);
 		if($path){
-			print '<link href="' . $path . '" rel="styleSheet" type="text/css" />' . "\n";
+			print we_html_element::cssLink($path);
 		}
 	}
 }

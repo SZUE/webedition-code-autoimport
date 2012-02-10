@@ -2020,11 +2020,11 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 	we_html_element::jsScript(JS_DIR . WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 	we_html_element::jsScript(JS_DIR . 'images.js') .
-	we_html_element::jsScript(JS_DIR . 'windows.js');
+	we_html_element::jsScript(JS_DIR . 'windows.js').
+	we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
 	?>
-	<link type="text/css" rel="stylesheet" href="<?php print JS_DIR . "jscalendar/skins/aqua/theme.css"; ?>" title="Aqua" />
-
-	<script language="JavaScript" type="text/javascript">
+	
+	<script type="text/javascript">
 		function SendMail(was){
 			document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"]; ?>&SendMail=" + was ;
 		}

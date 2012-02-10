@@ -163,17 +163,6 @@ $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 	?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php
 
 	$passed_dls = array();
-/*
-   	if (isset($_REQUEST["si"]) && $_REQUEST["si"] == 'sender') {
-    		    $_db = new DB_WE();
-    		    $_db->query('SELECT headerTo FROM '.MESSAGES_TABLE.' WHERE ID=' . $val['int_hdrs']['_ID']);
-   				$_db->next_record();
-				$_toUserId = $_db->f('headerTo');
-	    		$_showUser = '<a id="td_' .  $val['ID'] . '_link_2" href="javascript:newMessage(\'' . $_toUserId . '\')">' . $_toUserId . '</a>';
-   	} else {
-
-   	}
-*/
    	foreach($messaging->selected_set as $key => $val) {
 	    echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">
 		<td id="td_' . $val['ID'] . '_cb" width="18" align="left" class="defaultfont"></td>';

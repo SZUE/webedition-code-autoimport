@@ -21,12 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop('sideBar');
+echo we_html_element::cssLink('/webEdition/css/global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '&amp;WE_BACKENDCHARSET=' . $GLOBALS["WE_BACKENDCHARSET"]);
 ?>
-<link href="/webEdition/css/global.php?WE_LANGUAGE=<?php echo $GLOBALS["WE_LANGUAGE"]; ?>&amp;WE_BACKENDCHARSET=<?php echo $GLOBALS["WE_BACKENDCHARSET"]; ?>" rel="styleSheet" type="text/css" />
 
 </head>
 <body class="weSidebarBody">
@@ -61,27 +60,27 @@ we_html_tools::htmlTop('sideBar');
 					<td colspan="2"><?php we_html_tools::pPixel(1, 5); ?></td>
 				</tr>
 				<tr>
-				<?php
-				if($icon == ""){
-					?>
+					<?php
+					if($icon == ""){
+						?>
 						<td class="defaultfont" valign="top" colspan="2">
 							<strong><?php echo $headline; ?></strong><br />
-						<?php we_html_tools::pPixel(1, 4); ?>
+							<?php we_html_tools::pPixel(1, 4); ?>
 							<br />
-						<?php echo $text['text']; ?>
+							<?php echo $text['text']; ?>
 						</td>
-			<?php
-		} else{
-			?>
+						<?php
+					} else{
+						?>
 						<td class="defaultfont" valign="top" width="52"><?php echo $icon; ?></td>
 						<td class="defaultfont" valign="top">
 							<strong><?php echo $headline; ?></strong><br />
-						<?php we_html_tools::pPixel(1, 4); ?><br />
-						<?php echo $text['text']; ?>
+							<?php we_html_tools::pPixel(1, 4); ?><br />
+							<?php echo $text['text']; ?>
 						</td>
-			<?php
-		}
-		?>
+						<?php
+					}
+					?>
 				</tr>
 				<tr>
 					<?php

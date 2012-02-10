@@ -381,12 +381,19 @@ abstract class we_html_element{
 		return we_baseElement::getHtmlCode(new we_baseElement('param', false, $attribs));
 	}
 
+	/**
+	 * this func is used to get a parameter variing in each version, to get the latest file (browser cache)
+	 * but don't offer information about the current installed version!
+	 * @staticvar string $cache saves current cached path
+	 * @param string $url url to add the version-unique param
+	 * @return string resulting url
+	 */
 	static function getUnCache($url){
 		static $cache = -1;
 		if($cache == -1){
-			$cache = md5(WE_VERSION . filemtime(__FILE__));
+			$cache = md5(WE_VERSION . filemtime(__FILE__) . __FILE__);
 		}
-		return $url.(strstr($url, '?') ? '&' : '?') . $cache;
+		return $url . (strstr($url, '?') ? '&' : '?') . $cache;
 	}
 
 }

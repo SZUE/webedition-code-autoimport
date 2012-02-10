@@ -41,7 +41,7 @@ $getscript = isset($_REQUEST["getscript"]) ? $_REQUEST["getscript"] : getServerU
 $clickscript = isset($_REQUEST["clickscript"]) ? $_REQUEST["clickscript"] : getServerUrl()."/webEdition/bannerclick.php";
 
 if($ok){
-
+//FIXME: replace by call of jsScript
 	if($type=="js"){
 		$code = '<script type="text/javascript">
 <!--

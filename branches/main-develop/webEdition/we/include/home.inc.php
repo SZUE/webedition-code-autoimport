@@ -132,12 +132,6 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 				return document.getElementById ? document.getElementById(id_) : null;
 			}
 
-			/*for(var _file_ in oCfg.js_load_){
-		document.write('<scr'+'ipt src="<?php
-	echo JS_DIR;
-	?>'+oCfg.js_load_[_file_]+'.js"/>');
-	}*/
-
 			jsCss='<style type="text/css">';
 			for(var _cls_ in oCfg.color_scheme_){
 				jsCss+='.bgc_'+_cls_+'{background-color:'+oCfg.color_scheme_[_cls_]+';}';

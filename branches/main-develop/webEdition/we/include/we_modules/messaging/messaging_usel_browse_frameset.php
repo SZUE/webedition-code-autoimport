@@ -82,7 +82,7 @@ echo we_html_element::jsScript(JS_DIR.'images.js').
     fr = messaging_usel_main.window.document;
     fr.open();
     fr.writeln("<HTML><HEAD>");
-    fr.writeln("<script language=\"JavaScript\" src=\"<?php echo JS_DIR?>messaging_std.js\"></" + "script>");
+    fr.writeln("<?php echo addslashes(we_html_element::jsScript(JS_DIR.'messaging_std.js'));?>");
 
     fr.writeln("<SCRIPT LANGUAGE=\"JavaScript\">");
     fr.writeln("clickCount=0;");

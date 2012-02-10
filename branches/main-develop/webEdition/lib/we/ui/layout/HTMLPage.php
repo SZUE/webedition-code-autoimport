@@ -280,22 +280,21 @@ EOS;
 		}
 
 		// add <header> tag
-		$html .= "\n";
-		$html .= "<head>\n";
+		$html .= '<head>';
 
 		// add meta tag for charset if not empty
 		if($this->getCharset() !== ''){
-			$html .= "\t" . '<meta http-equiv="content-type" content="text/html; charset=' . $this->getCharset() . '">' . "\n";
+			$html .= '<meta http-equiv="content-type" content="text/html; charset=' . $this->getCharset() . '">' . "\n";
 		}
 
 		// add title tag if not empty
 		if($this->getTitle() !== ''){
-			$html .= "\t" . '<title>' . $this->getTitle() . '</title>' . "\n";
+			$html .= '<title>' . $this->getTitle() . '</title>' . "\n";
 		}
 
 		// add link tags for external CSS files
 		foreach($this->_CSSFiles as $file){
-			$html .= "\t" . '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />' . "\n";
+			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />' . "\n";
 		}
 
 		// add inline CSS
