@@ -30,8 +30,6 @@
  */
 //fIXME: this should be abstract - but liveupdate currently fails with this
 class we_button{
-	const LEFT_WIDTH=5;
-	const RIGHT_WIDTH=7;
 	const HEIGHT=22;
 	const WIDTH=100;
 	const WE_IMAGE_BUTTON_IDENTIFY='image:';
@@ -61,9 +59,8 @@ class we_button{
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
 			'"' . we_button::getInlineStyleByParam($width, '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . htmlspecialchars($cmd) . ';}">' .
-			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '"></td>' .
-			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . ($width ? ('" style="width:' .
-				($width - (self::LEFT_WIDTH + self::RIGHT_WIDTH)) . 'px;') : '') . '" >' . $value . '</td>' .
+			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
+			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') .'">' . $value . '</td>' .
 			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
 			'</tr></table>';
 	}

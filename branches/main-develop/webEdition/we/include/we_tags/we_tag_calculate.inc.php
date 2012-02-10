@@ -25,16 +25,16 @@
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_util.inc.php");
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/util/Strings.php');
 
-function we_parse_tag_calculate($attribs, $content) {
+function we_parse_tag_calculate($attribs, $content){
 	eval('$attribs = ' . $attribs . ';');
 	$attribs['_type'] = 'stop';
 	return '<?php ' . we_tag_tagParser::printTag('calculate', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('calculate', $attribs) . ');?>';
 }
 
-function we_tag_calculate($attribs, $content) {
+function we_tag_calculate($attribs, $content){
 	//internal Attribute
 	$_type = weTag_getAttribute('_type', $attribs);
-	switch ($_type) {
+	switch($_type){
 		case 'start':
 			$GLOBALS['calculate'] = 1;
 			ob_start();
@@ -45,14 +45,14 @@ function we_tag_calculate($attribs, $content) {
 			unset($GLOBALS['calculate']);
 			$sum = weTag_getAttribute("sum", $attribs);
 			$num_format = weTag_getAttribute("num_format", $attribs);
-			$print = weTag_getAttribute("print", $attribs,true, true);
+			$print = weTag_getAttribute("print", $attribs, true, true);
 			@eval('$result = (' . $content . ') ;');
-			if (!isset($result)) {
+			if(!isset($result)){
 				$result = 0;
 			}
 
-			if (!empty($sum)) {
-				if (!isset($GLOBALS["summe"][$sum])) {
+			if(!empty($sum)){
+				if(!isset($GLOBALS["summe"][$sum])){
 					$GLOBALS["summe"][$sum] = 0;
 				}
 				$GLOBALS["summe"][$sum] += $result;

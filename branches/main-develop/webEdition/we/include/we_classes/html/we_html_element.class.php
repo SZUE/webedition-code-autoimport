@@ -95,7 +95,7 @@ abstract class we_html_element{
 
 	static function jsScript($name){
 		$attribs = array(
-			'src' => $name,
+			'src' => self::getUnCache($name),
 			'type' => 'text/javascript',
 		);
 		return we_baseElement::getHtmlCode(new we_baseElement('script', true, $attribs));
@@ -119,7 +119,7 @@ abstract class we_html_element{
 
 	static function cssLink($url){
 		return we_baseElement::getHtmlCode(new we_baseElement('link', false,
-					array('href' => $url, 'rel' => 'styleSheet', 'type' => 'text/css')
+					array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
 			));
 	}
 
@@ -223,8 +223,8 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlBody($attribs=array(), $content=''){
-		$body=new we_baseElement('body', true, $attribs, $content );
-		$body->setStyle('margin','0px 0px 0px 0px');
+		$body = new we_baseElement('body', true, $attribs, $content);
+		$body->setStyle('margin', '0px 0px 0px 0px');
 		return $body->getHTML();
 	}
 
@@ -379,6 +379,14 @@ abstract class we_html_element{
 	 */
 	static function htmlParam($attribs = array()){
 		return we_baseElement::getHtmlCode(new we_baseElement('param', false, $attribs));
+	}
+
+	static function getUnCache($url){
+		static $cache = -1;
+		if($cache == -1){
+			$cache = md5(WE_VERSION . filemtime(__FILE__));
+		}
+		return $url.(strstr($url, '?') ? '&' : '?') . $cache;
 	}
 
 }

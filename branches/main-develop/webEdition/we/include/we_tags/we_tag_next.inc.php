@@ -22,23 +22,24 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_next($attribs, $content) {
-	return '<?php printElement('.we_tag_tagParser::printTag('next',$attribs).');?>' . $content . '<?php printElement('.we_tag_tagParser::printTag('next',array('_type'=>'stop')).');?>';
+function we_parse_tag_next($attribs, $content){
+	return '<?php printElement(' . we_tag_tagParser::printTag('next', $attribs) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('next', array('_type' => 'stop')) . ');?>';
 }
 
-function we_tag_next($attribs, $content) {
+function we_tag_next($attribs, $content){
 	$_type = weTag_getAttribute('_type', $attribs);
-	switch ($_type) {
+	$attribs = removeAttribs($attribs, array('_type'));
+	switch($_type){
 		default:
-			if (isset($GLOBALS["_we_voting_list"])) {
+			if(isset($GLOBALS["_we_voting_list"])){
 				return $GLOBALS["_we_voting_list"]->getNextLink($attribs);
-			} else {
+			} else{
 				return $GLOBALS["lv"]->getNextLink($attribs);
 			}
 		case 'stop':
-			if (isset($GLOBALS["_we_voting_list"])) {
+			if(isset($GLOBALS["_we_voting_list"])){
 				return ($GLOBALS["_we_voting_list"]->hasNextPage() ? '</a>' : '');
-			} else {
+			} else{
 				return ($GLOBALS["lv"]->hasNextPage() && $GLOBALS["lv"]->close_a() ? '</a>' : '');
 			}
 	}

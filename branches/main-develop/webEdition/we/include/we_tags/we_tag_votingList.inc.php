@@ -49,7 +49,6 @@ function we_tag_votingList($attribs, $content) {
 	$_type = weTag_getAttribute('_type', $attribs);
 	switch ($_type) {
 		case 'start':
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/voting/weVotingList.php');
 			$GLOBALS['_we_voting_list'] = new weVotingList($name, $groupid, ($version > 0 ? ($version - 1) : 0), $rows, $offset, $desc, $order, $subgroup);
 			break;
 		case 'stop':

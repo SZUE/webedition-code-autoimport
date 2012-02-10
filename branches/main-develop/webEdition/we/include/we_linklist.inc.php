@@ -656,15 +656,15 @@ class we_linklist{
 	}
 
 	function makeImgTag($attribs = ""){
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_imageDocument.inc.php');
 		$id = $this->getImageID();
+		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		if(!$attribs)
 			$attribs = $this->getImageAttribs();
 		$img = new we_imageDocument();
 		$img->initByID($id);
 		$img->initByAttribs($attribs);
 		//	name in linklist is generated from linklistname
-		$img->elements['name']['dat'] = $this->name . "_img" . $nr;
+		$img->elements['name']['dat'] = $this->name . "_img" . array_key($cur);
 		$this->rollScript = $img->getRollOverScript();
 		$this->rollAttribs = $img->getRollOverAttribsArr();
 

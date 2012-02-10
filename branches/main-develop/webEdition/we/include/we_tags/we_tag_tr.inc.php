@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,20 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-function we_parse_tag_tr($attribs, $content) {
+function we_parse_tag_tr($attribs, $content){
 	//NOTE: _type is an internal attribute.
-	return '<?php printElement('.we_tag_tagParser::printTag('tr',array('_type'=>'start')).');?>' . $content . '<?php printElement('.we_tag_tagParser::printTag('tr',array('_type'=>'end')).');?>';
+	return '<?php printElement(' . we_tag_tagParser::printTag('tr', array('_type' => 'start')) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('tr', array('_type' => 'end')) . ');?>';
 }
 
+function we_tag_tr($attribs, $content){
+	$_type = weTag_getAttribute('_type', $attribs);
+	$attribs = removeAttribs($attribs, array('_type'));
 
-function we_tag_tr($attribs, $content) {
-		$_type = weTag_getAttribute('_type', $attribs);
-
-switch($_type){
-	case 'start':
-		return ($GLOBALS["lv"]->shouldPrintStartTR() ? getHtmlTag('tr', $arr, "", false, true): '');
-	case 'end':
-		return ($GLOBALS["lv"]->shouldPrintEndTR()?'</tr>':'');
-}
+	switch($_type){
+		case 'start':
+			return ($GLOBALS["lv"]->shouldPrintStartTR() ? getHtmlTag('tr', $attribs, '', false, true) : '');
+		case 'end':
+			return ($GLOBALS["lv"]->shouldPrintEndTR() ? '</tr>' : '');
+	}
 }
