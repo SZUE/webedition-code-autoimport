@@ -144,7 +144,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			2
 	);
 
-	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_baseElement::getHtmlCode(new we_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
 
 	//$_loginTable->setCol($loginRow++, 1, array('width'=> $_logoPart, 'rowspan' => '5', 'valign' => 'bottom'), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
 

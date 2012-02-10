@@ -484,7 +484,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	}
 
 
-	$_layout = new we_html_table(array("style" => "position:absolute;top:0px;bottom:0px;left:0px;right:0px;"), 1, 1);
+	$_layout = new we_html_table(array("style" => "position:absolute;top:0px;bottom:0px;left:0px;right:0px;width:100%;"), 1, 1);
 
 	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
