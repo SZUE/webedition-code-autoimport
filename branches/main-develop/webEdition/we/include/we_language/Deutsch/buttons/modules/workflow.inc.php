@@ -14,7 +14,7 @@ $l_buttons_modules_workflow=array(
 	'in_workflow'=>array(
 		'alt'=>'In den Ablaufplan',
 		'value'=>'In den Ablaufplan',
-		'width'=>100,
+		'width'=>150,
 	),
 	'new_workflow'=>array(
 		'alt'=>'Neuen Ablaufplan erstellen ...',
