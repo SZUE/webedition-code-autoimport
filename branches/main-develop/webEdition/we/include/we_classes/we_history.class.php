@@ -57,7 +57,6 @@ abstract class we_history{
 			'DID' => intval($object->ID),
 			'DocumentTable' => $table,
 			'ContentType' => $object->ContentType,
-			'ModDate' => 'FROM_UNIXTIME(' . intval($object->ModDate) . ')',
 			'Act' => $action,
 			'UserName' => $_username,
 		);

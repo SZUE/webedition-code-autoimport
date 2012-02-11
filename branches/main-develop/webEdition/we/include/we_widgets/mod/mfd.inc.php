@@ -36,22 +36,16 @@ $bTypeCls = (bool) $sTypeBinary{3};
 $iDate = $aCols[1];
 switch($iDate){
 	case 1 :
-		$timestamp = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+		$timestamp = 'CURDATE()';
 		break;
 	case 2 :
-		$iTime = time() - (7 * 24 * 60 * 60);
-		$timestamp = mktime(
-			date('H', $iTime), date('i', $iTime), date('s', $iTime), date('m', $iTime), date('d', $iTime), date('Y', $iTime));
+		$timestamp = '(CURDATE()-INTERVAL 1 WEEK)';
 		break;
 	case 3 :
-		$iTime = time() - (30 * 24 * 60 * 60);
-		$timestamp = mktime(
-			date('H', $iTime), date('i', $iTime), date('s', $iTime), date('m', $iTime), date('d', $iTime), date('Y', $iTime));
+		$timestamp = '(CURDATE()-INTERVAL 1 MONTH)';
 		break;
 	case 4 :
-		$iTime = time() - (365 * 24 * 60 * 60);
-		$timestamp = mktime(
-			date('H', $iTime), date('i', $iTime), date('s', $iTime), date('m', $iTime), date('d', $iTime), date('Y', $iTime));
+		$timestamp = '(CURDATE()-INTERVAL 1 YEAR)';
 		break;
 }
 $iNumItems = $aCols[2];
@@ -111,8 +105,8 @@ $lastModified .= "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n";
 $_count = 10;
 $i = $j = $k = 0;
 while($j < $iMaxItems) {
-	$_query = "SELECT * FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(
-					',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >' . intval($timestamp) : '') . $_whereSeem . ' ORDER BY ModDate DESC LIMIT ' . ($k * $_count) . " , " . $_count . ";";
+	$_query = "SELECT DISTINCT DID,UserName,DocumentTable FROM " . HISTORY_TABLE . (!empty($_where) ? (' WHERE ' . ((count($_users_where) > 0) ? 'UserName IN (' . implode(
+					',', $_users_where) . ') AND ' : '') . 'DocumentTable IN(' . implode(',', $_where) . ')') : '') . (($iDate) ? ' AND ModDate >=' . $timestamp : '') . $_whereSeem . ' ORDER BY ModDate DESC LIMIT ' . ($k * $_count) . " , " . $_count . ";";
 	$k++;
 	$DB_WE->query($_query);
 	$_db = new DB_WE();
