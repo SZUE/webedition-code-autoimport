@@ -123,7 +123,7 @@ abstract class we_forms{
 					<td class="weEditmodeStyle">
 						' . we_html_tools::getPixel(4, 2) . '</td>
 					<td class="weEditmodeStyle ' . $class . '" nowrap="nowrap"><label' . /* (($GLOBALS['BROWSER'] == "SAFARI" && !$GLOBALS['SAFARI_3']) ? ' onclick="if(!document.getElementById(\''.$_id.'\').disabled){document.getElementById(\''.$_id.'\').checked=true;'.$labelonclick.'}"' : ''). */' id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0;" ' . ($onMouseUp ? " onmouseup=\"" . str_replace("this.", "document.getElementById('" . $_id . "').", $onMouseUp) . "\"" : "") . '>' . $text . '</label>' . ($description ? "<br>" . we_html_tools::getPixel(1, 3) . "<br>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
-			($extra_content ? ("<br>" . we_html_tools::getPixel(1, 3) . "<br>" . $extra_content) : "") . '</td>
+			($extra_content ? (we_html_element::htmlBr() . we_html_tools::getPixel(1, 3) . we_html_element::htmlBr() . $extra_content) : "") . '</td>
 				</tr>
 			</table>';
 		// Return generated tags
