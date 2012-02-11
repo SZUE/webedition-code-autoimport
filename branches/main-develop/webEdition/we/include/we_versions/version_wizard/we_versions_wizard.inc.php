@@ -36,7 +36,7 @@ abstract class we_versions_wizard{
 	 * @return string
 	 */
 	static function getBody(){
-		$step = 'getStep'.isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0";
+		$step = 'getStep'.(isset($_REQUEST["step"]) ? $_REQUEST["step"] : "0");
 		return self::getPage(self::$step());
 	}
 
