@@ -489,5 +489,5 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB;', "class" => "header", "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
+	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB;', "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
 }

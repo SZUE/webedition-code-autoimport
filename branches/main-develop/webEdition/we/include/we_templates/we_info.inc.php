@@ -84,7 +84,7 @@ $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++, 0, array("colspan" => 3,
 	"style" => 'width: ' . $_widthTotal . 'px;height:110px;',
-	), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a><br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
+	), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>');//<br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
 
 $_table->addRow(2);
 //	spaceholder
@@ -191,7 +191,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			<td>' . we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
 		</tr>
 		<tr>
-			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", g_l('SEEM', "[start_mode_seem]"), true, "small") . '</td>
+			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", '<acronym title="'.g_l('SEEM', "[start_mode_seem_acronym]").'">'.g_l('SEEM', "[start_mode_seem]").'</acronym>', true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",
