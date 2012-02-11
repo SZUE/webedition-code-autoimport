@@ -393,7 +393,7 @@ abstract class we_html_element{
 		if($cache == -1){
 			$cache = md5(WE_VERSION . filemtime(__FILE__) . __FILE__);
 		}
-		return $url . (strstr($url, '?') ? '&' : '?') . $cache;
+		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
 }
