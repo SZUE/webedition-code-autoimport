@@ -993,7 +993,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					$bExtendedCol = true;
 				}
 				include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
-				t_e($aPrefs,$aProps);
+//				t_e($aPrefs,$aProps);
 				$$aProps[0] = we_widget::create(
 						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
