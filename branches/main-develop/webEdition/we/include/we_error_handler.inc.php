@@ -126,9 +126,9 @@ function translate_error_type($type){
 		define('E_DEPRECATED', 8192);
 	}
 
-	if(!defined('E_USER_DEPRECATED')){
+/*	if(!defined('E_USER_DEPRECATED')){
 		define('E_USER_DEPRECATED', 16384);
-	}
+	}*/
 
 	switch($type){
 		case E_ERROR:
