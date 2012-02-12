@@ -27,6 +27,7 @@ $l_SEEM=array(
 	'start_mode'=>'Mode',
 	'start_mode_normal'=>'Normal',
 	'start_mode_seem'=>'seeMode',
+	'start_mode_seem_acronym'=>'Super-Easy-Editmode',
 	'start_with_SEEM_no_startdocument'=>'You have not the required permissions to open the Cockpit. Your administrator can assign a valid start document in the user settings to you.',
 	'try_doc_again'=>'Try again',
 	'workspace_seem_startdocument'=>'Start document<br/>for seeMode',

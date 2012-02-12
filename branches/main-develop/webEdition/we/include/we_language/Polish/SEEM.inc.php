@@ -27,6 +27,7 @@ $l_SEEM=array(
 	'start_mode'=>'Tryb',
 	'start_mode_normal'=>'Normalny',
 	'start_mode_seem'=>'seeMode',
+	'start_mode_seem_acronym'=>'Super-Easy-Editmode',
 	'start_with_SEEM_no_startdocument'=>'Nie ustalono dla Ciebie prawidłowego dokumentu początkowego.\nTa opcja może być ustawiona przez Twojego administratora.\nOtwiera się teraz dokument startowy serwera WWW.',
 	'try_doc_again'=>'Spróbuj ponownie.',
 	'workspace_seem_startdocument'=>'Dokument początkowy<br/>dla seeMode',

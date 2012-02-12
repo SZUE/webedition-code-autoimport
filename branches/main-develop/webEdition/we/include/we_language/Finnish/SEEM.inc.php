@@ -27,6 +27,7 @@ $l_SEEM=array(
 	'start_mode'=>'Tila',
 	'start_mode_normal'=>'Normaali',
 	'start_mode_seem'=>'Helppokäyttötila',
+	'start_mode_seem_acronym'=>'Super-Easy-Editmode',
 	'start_with_SEEM_no_startdocument'=>'Aloitussivua ei ole määritetty.
 Järjestelmänvalvoja asettaa aloitussivusi.',
 	'try_doc_again'=>'Yritä uudestaan',

@@ -27,6 +27,7 @@ $l_SEEM=array(
 	'start_mode'=>'Modus',
 	'start_mode_normal'=>'Normaal',
 	'start_mode_seem'=>'seeModus',
+	'start_mode_seem_acronym'=>'Super-Easy-Editmode',
 	'start_with_SEEM_no_startdocument'=>'Er is geen geldig start document toegekend.
 Uw Administrator moet uw start document aangeven.',
 	'try_doc_again'=>'Probeer opnieuw',

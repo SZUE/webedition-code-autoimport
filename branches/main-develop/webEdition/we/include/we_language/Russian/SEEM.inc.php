@@ -28,6 +28,7 @@ $l_SEEM=array(
 	'start_mode'=>'Режим',
 	'start_mode_normal'=>'стандартный',
 	'start_mode_seem'=>'суперлегкий',
+	'start_mode_seem_acronym'=>'Super-Easy-Editmode',
 	'start_with_SEEM_no_startdocument'=>'Для Вас не задан действующий стартовый документ.
 Стартовый документ задается администратором.',
 	'try_doc_again'=>'Попробуйте еще раз',

@@ -27,6 +27,7 @@ $l_SEEM=array(
 	'start_mode'=>'Mode',
 	'start_mode_normal'=>'Normal',
 	'start_mode_seem'=>'seeMode',
+	'start_mode_seem_acronym'=>'Super-Easy-Editmode',
 	'start_with_SEEM_no_startdocument'=>'Pour le moment aucune page d`accueil valide est défini.\nCela peut être défini par votre administrateur eingestellt werden.\nLa page d`accueil du web-serveur sera overt.',
 	'try_doc_again'=>'Essayer de nouveau.',
 	'workspace_seem_startdocument'=>'Page d`accueil<br/>pour le seeMode',
