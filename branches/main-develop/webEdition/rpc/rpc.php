@@ -90,4 +90,3 @@ if($_shell->getStatus() == rpcCmd::STATUS_OK){
 
 unset($_shell);
 
-//include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/rpc/navi.php');
