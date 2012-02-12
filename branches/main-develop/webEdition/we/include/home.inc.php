@@ -817,7 +817,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					_tmpForm.method = "POST";
 					_tmpForm.action = '<?php
 	echo WEBEDITION_DIR;
-	?>we/include/we_widgets/'+path+'.inc.php';
+	?>we/include/we_widgets/'+path+'.php';
 					_tmpForm.target = "RSIFrame";
 					for(var i=0;i<arguments.length;i++){
 						var _tmpField = document.createElement('input');
@@ -984,7 +984,7 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 							$aProps[3] = '10';
 						}
 					}
-					include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.inc.php');
+					include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.php');
 					if($aProps[0] == 'usr' || $aProps[0] == 'msg'){
 						array_push($aDiscard, $aProps[0]);
 					}
@@ -993,7 +993,6 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 					$bExtendedCol = true;
 				}
 				include ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
-//				t_e($aPrefs,$aProps);
 				$$aProps[0] = we_widget::create(
 						'm_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(

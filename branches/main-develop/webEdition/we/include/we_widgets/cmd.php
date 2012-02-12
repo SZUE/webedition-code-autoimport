@@ -48,7 +48,7 @@ switch ($_REQUEST['we_cmd'][0]) {
 		if ($aProps[0] != 'rss' && $aProps[0] != 'pad') {
 			if ($aProps[0] == "msg")
 				$_transact = md5(uniqid(rand()));
-			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.inc.php');
+			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.php');
 		}
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/inc/' . $aProps[0] . '.inc.php');
 

@@ -122,7 +122,7 @@ class we_updater{
 		if(!$this->isColExist(PREFS_TABLE, "xhtml_show_wrong_error_log"))
 			$this->addCol(PREFS_TABLE, "xhtml_show_wrong_error_log", "TINYINT(2) DEFAULT '0' NOT NULL");
 		if(!$this->isColExist(PREFS_TABLE, "default_tree_count"))
-			$this->addCol(PREFS_TABLE, "default_tree_count", "INT(11) DEFAULT '0' NOT NULL");
+			$this->addCol(PREFS_TABLE, "default_tree_count", "smallint unsigned DEFAULT '0' NOT NULL");
 
 		if(!$this->isColExist(PREFS_TABLE, "editorMode"))
 			$this->addCol(PREFS_TABLE, "editorMode", "  varchar(64) NOT NULL DEFAULT 'textarea'", ' AFTER  specify_jeditor_colors ');

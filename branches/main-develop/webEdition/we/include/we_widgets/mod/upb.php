@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 // widget UNPUBLISHED
 we_html_tools::protect();
 $bTypeDoc = (bool)$aProps[3]{0};
