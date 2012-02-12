@@ -35,14 +35,14 @@ $InfoFieldId->setStyle('margin:5px 10px;font-size:11px;');
 $js = '
 	//var weTree = new we_ui_controls_Tree("' . $tree->getId() . '"); f�r yui 2.5
 	var weTree;
-	
-//next 2 functions are for IE9	
+
+//next 2 functions are for IE9
 function subscribeLabelClick(){
-	tree_' . $tree->getId() . '.subscribe("labelClick", function(node) { 
+	tree_' . $tree->getId() . '.subscribe("labelClick", function(node) {
 		weTree.unmarkAllNodes();
 		weTree.markNode(node.data.id, true);
 		tree_' . $tree->getId() . '_activEl = node.data.id;
-		weCmdController.fire({cmdName:"app_'.$appName.'_open", id:node.data.id}); 
+		weCmdController.fire({cmdName:"app_'.$appName.'_open", id:node.data.id});
 		return false;
 	});
 	weTree = new we_ui_controls_Tree("' . $tree->getId() . '");
@@ -51,7 +51,7 @@ function delaySubcriptionForIE9(){
 	window.setTimeout("subscribeLabelClick()", 1000);
 }
 	YAHOO.util.Event.addListener(window, "load", delaySubcriptionForIE9());
-	
+
 	YAHOO.util.Event.addListener("'.$TreeDiv->getId().'", "mouseover", function(e) {
 		var elTarget = YAHOO.util.Event.getTarget(e);
 	    var a = "ygtvlabelel";
@@ -122,7 +122,7 @@ function delaySubcriptionForIE9(){
 			weTree.markNodeP(data, 1);
 	});
 	weEventController.register("markunpublished", function(data, sender) {
-		weTree.markNodeP(data, 0);					
+		weTree.markNodeP(data, 0);
 	});
 ';
 

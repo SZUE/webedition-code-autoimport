@@ -28,6 +28,7 @@ Zend_Loader::loadClass('we_ui_controls_Button');
 Zend_Loader::loadClass('we_ui_controls_Label');
 Zend_Loader::loadClass('we_ui_layout_Table');
 
+!defined('NO_SESS') && define('NO_SESS',1);
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**

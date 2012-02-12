@@ -19,6 +19,7 @@
  * @package    we_core
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+!defined('NO_SESS') && define('NO_SESS',1);
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**

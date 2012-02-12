@@ -26,7 +26,10 @@ if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+//	Insert all config files for all modules.
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_active_integrated_modules.inc.php');
+//start autoloader!
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php');
 
 $INCLUDE = '';
 //	In we.inc.php all names of the active modules have already been searched
@@ -357,8 +360,11 @@ if($INCLUDE){
 	//	This is ONLY used in the edit-mode of the documents.
 	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
 	if(substr($INCLUDE, 0, 5) == 'apps/'){
+		define('NO_SESS',1);
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include(WEBEDITION_PATH . $INCLUDE);
 	} else{
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include(WEBEDITION_INCLUDES_DIR . $INCLUDE);
 	}
 	//  This statement prevents the page from being reloaded

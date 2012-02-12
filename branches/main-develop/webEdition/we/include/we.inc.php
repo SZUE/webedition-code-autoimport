@@ -66,7 +66,7 @@ include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_active
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 
-foreach($_we_active_integrated_modules as $active){
+foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	if(file_exists(
 			$_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php')){
 		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/' . $active . '/we_conf_' . $active . '.inc.php');
@@ -102,7 +102,7 @@ if((isset($_SESSION['user']['ID']) && isset($_REQUEST['weSessionId']) && $_REQUE
 	session_id($sid);
 	@session_start();
 }
-if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC'])){
+if(!session_id() && !isset($GLOBALS['FROM_WE_SHOW_DOC']) && !defined('NO_SESS')){
 	@session_start();
 }
 if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] != ''){
@@ -121,10 +121,10 @@ if(isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCha
 	$GLOBALS['WE_BACKENDCHARSET'] = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
 }
 
-if(in_array('shop', $_we_active_integrated_modules)){
+if(in_array('shop', $GLOBALS['_we_active_integrated_modules'])){
 	$MNEMONIC_EDITPAGES[WE_EDITPAGE_VARIANTS] = 'variants';
 }
-if(in_array('customer', $_we_active_integrated_modules)){
+if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
 	$MNEMONIC_EDITPAGES[WE_EDITPAGE_WEBUSER] = 'customer';
 }
 
