@@ -2647,7 +2647,6 @@ function g_l($name, $specific, $omitErrors=false){
 			return false;
 		}
 	}
-	//t_e('warning','Requested lang file '.$file.' not found!');
 	return '';
 }
 

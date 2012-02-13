@@ -35,10 +35,12 @@ we_html_tools::protect();
 //	---> Setting the Content-Type
 //
 
-if(isset($we_doc->elements["Charset"]["dat"])){	//	send charset which might be determined in template
-	we_html_tools::headerCtCharset('text/html',$we_doc->elements["Charset"]["dat"]);
+if(isset($we_doc->elements["Charset"]["dat"])&&$we_doc->elements["Charset"]["dat"]){	//	send charset which might be determined in template
+	$charset=$we_doc->elements["Charset"]["dat"];
+} else{
+	$charset = DEFAULT_CHARSET;
 }
-
+we_html_tools::headerCtCharset('text/html', $charset);
 
 //
 //	---> initialize some vars
@@ -52,7 +54,7 @@ $parts = array();
 //	---> Output the HTML Header
 //
 
-we_html_tools::htmlTop();
+we_html_tools::htmlTop('',$charset);
 
 //
 //	---> Loading the Stylesheets

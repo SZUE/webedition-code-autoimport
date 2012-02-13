@@ -482,7 +482,6 @@ class we_objectFile extends we_document{
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 	function editor(){
-		global $we_responseText, $we_JavaScript;
 		switch($this->EditPageNr){
 			case WE_EDITPAGE_PROPERTIES:
 			case WE_EDITPAGE_WORKSPACE:

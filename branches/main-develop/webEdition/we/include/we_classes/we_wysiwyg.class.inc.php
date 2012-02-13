@@ -1060,14 +1060,13 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 	var $tooltiptext = "";
 	var $imgSrc = "";
 
-	function we_wysiwygToolbarButton($editor, $cmd, $imgSrc, $tooltiptext="", $width=25, $height=22){
+	function __construct($editor, $cmd, $imgSrc, $tooltiptext="", $width=25, $height=22){
 		$this->we_wysiwygToolbarElement($editor, $cmd, $width, $height);
 		$this->tooltiptext = $tooltiptext;
 		$this->imgSrc = $imgSrc;
 	}
 
 	function getHTML(){
-
 		if($GLOBALS['brDetect']->isSafari()){
 			return '<div id="' . $this->editor->ref . 'edit_' . $this->cmd . 'Div" class="tbButton">
 <img  width="' . ($this->width - 2) . '" height="' . $this->height . '" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" src="' . $this->imgSrc . '" alt="' . $this->tooltiptext . '" title="' . $this->tooltiptext . '"
@@ -1144,7 +1143,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 	var $title = "";
 	var $vals = array();
 
-	function we_wysiwygToolbarSelect($editor, $cmd, $title, $vals, $width=0, $height=20){
+	function __construct($editor, $cmd, $title, $vals, $width=0, $height=20){
 		$this->we_wysiwygToolbarElement($editor, $cmd, $width, $height);
 		$this->title = $title;
 		$this->vals = $vals;

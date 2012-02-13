@@ -667,15 +667,20 @@ if((($_REQUEST['we_cmd'][0] != "save_document" && $_REQUEST['we_cmd'][0] != "pub
 			include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_templates/we_editor_publish.inc.php");
 			break;
 		default:
-			if($we_include = $we_doc->editor()){	// object does not handle html-output, so we need to include a template( return value)
+			if(($we_include = $we_doc->editor())){ // object does not handle html-output, so we need to include a template( return value)
 				$we_doc->saveInSession($_SESSION["we_data"][$we_transaction]); // save the changed object in session
 				$_serverDocRoot = $_SERVER['DOCUMENT_ROOT'];
 				if($_serverDocRoot != "" && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
 
 					ob_start();
-					if((!defined("WE_CONTENT_TYPE_SET")) && isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
+					if(!defined("WE_CONTENT_TYPE_SET")){
+						if(isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"]){ //	send charset which might be determined in template
+							$charset = $we_doc->elements["Charset"]["dat"];
+						} else{
+							$charset = DEFAULT_CHARSET;
+						}
 						define("WE_CONTENT_TYPE_SET", 1);
-						we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
+						we_html_tools::headerCtCharset('text/html', $charset);
 					}
 					include($we_include);
 					$contents = ob_get_contents();
