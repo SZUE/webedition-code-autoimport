@@ -27,7 +27,7 @@ class DB_WE extends we_database_base{
 	private $conType = '';
 
 	protected function ping(){
-		return mysql_ping($this->Link_ID);
+		return @mysql_ping($this->Link_ID);
 	}
 
 	/* public: connection management */
