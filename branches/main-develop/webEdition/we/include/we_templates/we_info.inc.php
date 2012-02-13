@@ -77,7 +77,7 @@ if(defined("WE_VERSION_SUPP")){
 }
 
 $_table = new we_html_table(array(
-		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . "info/" . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB"),
+		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . "info/" . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:".$_widthTotal.'px'),
 		8,
 		3);
 $_actRow = 0;

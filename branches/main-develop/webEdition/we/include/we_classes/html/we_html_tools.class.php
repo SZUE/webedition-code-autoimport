@@ -703,7 +703,7 @@ HTS;
 	}
 
 	static function htmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){
-		print self::getHtmlTop($title, $charset, $doctype);
+		print self::getHtmlTop($title, $charset, $doctype,$style);
 	}
 
 	static function getHtmlTop($title = 'webEdition', $charset = '', $doctype='4Trans'){

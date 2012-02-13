@@ -4,7 +4,7 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
   DocumentTable varchar(64) NOT NULL default '',
   ContentType varchar(32) NOT NULL default '',
   ModDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  Act ENUM('save') NOT NULL default 'save',
+  Act enum('save') NOT NULL default 'save',
   UserName varchar(64) NOT NULL default '',
   PRIMARY KEY  (ID),
   KEY UserName (UserName,DocumentTable),

@@ -55,7 +55,8 @@ function printHeader($login){
 	 * CREATE HEADER
 	 * *************************************************************************** */
 	we_html_tools::htmlTop('webEdition');
-	print STYLESHEET;
+	print STYLESHEET.
+		we_html_element::cssElement('html, body {height:100%;}');
 
 	print we_html_element::jsScript(JS_DIR . 'windows.js');
 	print we_html_element::jsScript(JS_DIR . 'weJsStrings.php');
@@ -361,23 +362,24 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
 
-	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_html_element::htmlBr().we_html_element::htmlBr().'</noscript><table cellpadding="0" cellspacing="0" border="0" style="width:818px;text-align:left;">
-	<tr style="height:10px;">
-		<td style="width:260px;background-color:#386AAB;"></td>
-		<td rowspan="2" style="width:430px;">' . $_loginTable . '</td>
-		<td valign="top" style="width:260px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;"><img src="/webEdition/images/login/top_r.jpg" width="260" height="10"/></td>
+	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_html_element::htmlBr().we_html_element::htmlBr().'</noscript>
+<table cellpadding="0" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;text-align:left;">
+	<tr>
+		<td style="background-color:#386AAB;"></td>
+		<td rowspan="2">' . $_loginTable . '</td>
+		<td valign="top" style="background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;"><img src="/webEdition/images/login/top_r.jpg"/></td>
 
 	</tr>
 	<tr>
-		<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;">'.we_html_tools::getPixel(260,296).'</td>
+		<td  valign="bottom" style="background-color:#386AAB;"></td>
 
-		<td valign="bottom" style="width:260px;height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;"><img src="/webEdition/images/login/bottom_r.jpg" width="260" height="296" /></td>
+		<td valign="bottom" style="height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;"><img src="/webEdition/images/login/bottom_r.jpg"/></td>
 
 	</tr>
-	<tr style="height:10px;">
-		<td style="width:260px;"></td>
-		<td style="background-image:url(/webEdition/images/login/bottom.jpg);height:10px;"><img src="/webEdition/images/login/bottom_l.jpg" width="184" height="10" /></td>
-		<td style="width:260px;"><img src="/webEdition/images/login/bottom_r2.jpg" width="260" height="10" /></td>
+	<tr>
+		<td></td>
+		<td style="background-image:url(/webEdition/images/login/bottom.jpg);background-repeat:repeat-x;"><img src="/webEdition/images/login/bottom_l.jpg"/></td>
+		<td><img src="/webEdition/images/login/bottom_r2.jpg"/></td>
 	</tr>
 
 </table>';
@@ -445,15 +447,15 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			$_body_javascript .= 'function open_we() {';
 
 			if(isset($_SESSION['prefs']['weWidth']) && $_SESSION['prefs']['weWidth'] > 0){
-				$_body_javascript .= 'var aw=' . $_SESSION['prefs']['weWidth'] . ";\n";
+				$_body_javascript .= 'var aw=' . $_SESSION['prefs']['weWidth'] . ";";
 			} else{
-				$_body_javascript .= "var aw=8000;\n";
+				$_body_javascript .= "var aw=8000;";
 			}
 
 			if(isset($_SESSION['prefs']['weHeight']) && $_SESSION['prefs']['weHeight'] > 0){
-				$_body_javascript .= 'var ah=' . $_SESSION['prefs']['weHeight'] . ";\n";
+				$_body_javascript .= 'var ah=' . $_SESSION['prefs']['weHeight'] . ";";
 			} else{
-				$_body_javascript .= "var ah=6000;\n";
+				$_body_javascript .= "var ah=6000;";
 			}
 
 			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert', "[popupLoginError]") . "', '/webEdition/index.php'); }";
@@ -484,10 +486,8 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	}
 
 
-	$_layout = new we_html_table(array("style" => "position:absolute;top:0px;bottom:0px;left:0px;right:0px;width:100%;"), 1, 1);
-
-	$_layout->setCol(0, 0, array('style'=>"text-align: center;vertical-align: middle;"), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable));
+	$_layout = '<div style="float: left;height: 50%;width: 1px;"></div><div style="clear:left;position:relative;top:-25%;">'.we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable).'</div>';
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB;', "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout->getHtml() . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
+	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
 }

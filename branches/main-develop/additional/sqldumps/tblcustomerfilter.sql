@@ -1,8 +1,8 @@
 CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `modelId` bigint(20) unsigned NOT NULL,
-  `modelType` ENUM('folder','objectFile','text/webedition')  NOT NULL,
-  `modelTable` ENUM('tblFile','tblObjectFiles') NOT NULL,
+  `modelType` enum('folder','objectFile','text/webedition')  NOT NULL,
+  `modelTable` enum('tblFile','tblObjectFiles') NOT NULL,
   `accessControlOnTemplate` tinyint(1) unsigned NOT NULL default '0',
   `errorDocNoLogin` bigint(20) unsigned NOT NULL default '0',
   `errorDocNoAccess` bigint(20) unsigned NOT NULL default '0',
