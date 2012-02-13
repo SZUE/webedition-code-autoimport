@@ -25,6 +25,7 @@
 function we_parse_tag_listview($attribs, $content){
 	eval('$arr = ' . str_replace('$', '\$', $attribs) . ';');
 	switch(weTag_getParserAttribute('type', $arr)){
+		default:
 		case 'document':
 		case 'search':
 		case 'languagelink':
@@ -61,8 +62,6 @@ function we_parse_tag_listview($attribs, $content){
 					return $foo;
 			}
 			break;
-		default:
-			return parseError(sprintf(g_l('parser', '[wrong_type]'), 'listview'));
 	}
 	//setting global $lv is for backward compatibility
 	return '<?php global $lv;' . we_tag_tagParser::printTag('listview', $attribs) . ';?>' . $content . '<?php we_post_tag_listview();?>';
