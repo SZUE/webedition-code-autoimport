@@ -1272,6 +1272,9 @@ class we_objectFile extends we_document{
 	}
 
 	function getCountryFieldHTML($name, $attribs, $editable=true, $variant=false){
+		if(!Zend_Locale::hasCache()){
+			Zend_Locale::setCache(getWEZendCache());
+		}
 
 		if($editable){
 			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
@@ -2306,12 +2309,12 @@ class we_objectFile extends we_document{
 	protected function i_convertElemFromRequest($type, &$v, $k){
 		if(!$type){
 			foreach($this->DefArray as $n => $foo){
-				$regs = explode('_', $n,1);
+				$regs = explode('_', $n, 1);
 				if(isset($regs[0])){
 					$testtype = $regs[0];
 					unset($regs[0]);
 					if(isset($regs[1])){
-						$fieldname=$regs[1];
+						$fieldname = $regs[1];
 						if($k == $fieldname){
 							$type = $testtype;
 							break;

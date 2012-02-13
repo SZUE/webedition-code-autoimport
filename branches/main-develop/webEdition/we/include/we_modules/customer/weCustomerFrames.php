@@ -158,6 +158,9 @@ class weCustomerFrames extends weModuleFrames{
 				$topCountries = (defined('WE_COUNTRIES_TOP') ? explode(',', WE_COUNTRIES_TOP) : explode(',', "DE,AT,CH"));
 
 				$topCountries = array_flip($topCountries);
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 				}

@@ -143,7 +143,7 @@ function we_tag_field($attribs, $content){
 				$out = getHtmlTag('img', $_imgAtts);
 				break;
 			}
-			//intentionally no break
+		//intentionally no break
 		case 'int' :
 		case 'date' :
 		case 'float' :
@@ -193,6 +193,9 @@ function we_tag_field($attribs, $content){
 			if(defined('WE_COUNTRIES_DEFAULT') && WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) == '--'){
 				$out = WE_COUNTRIES_DEFAULT;
 			} else{
+				if(!Zend_Locale::hasCache()){
+					Zend_Locale::setCache(getWEZendCache());
+				}
 				$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['lv']->f($name), 'territory', $langcode));
 			}
 			break;
@@ -207,6 +210,9 @@ function we_tag_field($attribs, $content){
 			if($lang == ''){
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], $GLOBALS['WE_LANGS']);
+			}
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
 			}
 			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['lv']->f($name), 'language', $langcode));
 			break;

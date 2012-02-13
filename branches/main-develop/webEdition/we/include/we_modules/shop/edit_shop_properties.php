@@ -730,7 +730,9 @@ if(isset($_REQUEST['we_cmd'][0])){
 		case 'edit_order_customer'; // edit data of the saved customer.
 			$saveBut = we_button::create_button('save', "javascript:document.we_form.submit();self.close();");
 			$cancelBut = we_button::create_button('cancel', "javascript:self.close();");
-
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
 			// 1st get the customer for this order
 			$_customer = getOrderCustomerData($_REQUEST['bid']);
 			ksort($_customer);
@@ -1702,7 +1704,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		if(empty($Serial[$i])){ // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
 			// this should not happen any more
 			$shopArticleObject = we_shop_Basket::getserial($ArticleId[$i], 'w');
-		} else{	// output if $Serial[$i] is not empty. This is when a user ordered an article online
+		} else{ // output if $Serial[$i] is not empty. This is when a user ordered an article online
 			$shopArticleObject = @unserialize($Serial[$i]);
 		}
 
@@ -2020,7 +2022,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 	we_html_element::jsScript(JS_DIR . WEBEDITION_DIR . "we/include/we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 	we_html_element::jsScript(JS_DIR . 'images.js') .
-	we_html_element::jsScript(JS_DIR . 'windows.js').
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
 	?>
 
@@ -2138,12 +2140,26 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 
 			}
 <?php if(!$weShopStatusMails->FieldsHidden['DateOrder']){ ?>
-				// Calender for order date
+			// Calender for order date
+			Calendar.setup(
+			{
+				"inputField" : "hidden_Calendar_DateOrder",
+				"displayArea" : "div_Calendar_DateOrder",
+				"button" : "date_pickerbutton_Calendar_DateOrder",
+				"ifFormat" : "<?php print $da; ?>",
+				"daFormat" : "<?php print $da; ?>",
+				"onUpdate" : CalendarChanged
+			}
+		);
+	<?php
+}
+if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){
+	?>
 				Calendar.setup(
 				{
-					"inputField" : "hidden_Calendar_DateOrder",
-					"displayArea" : "div_Calendar_DateOrder",
-					"button" : "date_pickerbutton_Calendar_DateOrder",
+					"inputField" : "hidden_Calendar_DateConfirmation",
+					"displayArea" : "div_Calendar_DateConfirmation",
+					"button" : "date_pickerbutton_Calendar_DateConfirmation",
 					"ifFormat" : "<?php print $da; ?>",
 					"daFormat" : "<?php print $da; ?>",
 					"onUpdate" : CalendarChanged
@@ -2151,32 +2167,18 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 			);
 	<?php
 }
-if(!$weShopStatusMails->FieldsHidden['DateConfirmation']){
-	?>
-					Calendar.setup(
-					{
-						"inputField" : "hidden_Calendar_DateConfirmation",
-						"displayArea" : "div_Calendar_DateConfirmation",
-						"button" : "date_pickerbutton_Calendar_DateConfirmation",
-						"ifFormat" : "<?php print $da; ?>",
-						"daFormat" : "<?php print $da; ?>",
-						"onUpdate" : CalendarChanged
-					}
-				);
-	<?php
-}
 if(!$weShopStatusMails->FieldsHidden['DateCustomA']){
 	?>
-					Calendar.setup(
-					{
-						"inputField" : "hidden_Calendar_DateCustomA",
-						"displayArea" : "div_Calendar_DateCustomA",
-						"button" : "date_pickerbutton_Calendar_DateCustomA",
-						"ifFormat" : "<?php print $da; ?>",
-						"daFormat" : "<?php print $da; ?>",
-						"onUpdate" : CalendarChanged
-					}
-				);
+				Calendar.setup(
+				{
+					"inputField" : "hidden_Calendar_DateCustomA",
+					"displayArea" : "div_Calendar_DateCustomA",
+					"button" : "date_pickerbutton_Calendar_DateCustomA",
+					"ifFormat" : "<?php print $da; ?>",
+					"daFormat" : "<?php print $da; ?>",
+					"onUpdate" : CalendarChanged
+				}
+			);
 	<?php
 }
 if(!$weShopStatusMails->FieldsHidden['DateCustomB']){

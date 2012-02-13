@@ -281,10 +281,10 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 			$content .= getHtmlTag('option', array('value' => $option), $option, true);
 		}
 	}
-	if((!$isin) && $addMissing && value!=''){
+	if((!$isin) && $addMissing && value != ''){
 		$content .= getHtmlTag('option', array(
-				'value' => htmlspecialchars($value), 'selected' => 'selected'
-				), htmlspecialchars($value), true);
+			'value' => htmlspecialchars($value), 'selected' => 'selected'
+			), htmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }
@@ -436,15 +436,10 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 			}
 		}
 
-		foreach ($dates as $k => $v) {
+		foreach($dates as $k => $v){
 			$GLOBALS['we_object'][$formname]->setElement(
-							$k,mktime(
-											intval($dates[$k]["hour"]),
-											intval($dates[$k]["minute"]),
-											0,
-											intval($dates[$k]["month"]),
-											intval($dates[$k]["day"]),
-											intval($dates[$k]["year"])));
+				$k, mktime(
+					intval($dates[$k]["hour"]), intval($dates[$k]["minute"]), 0, intval($dates[$k]["month"]), intval($dates[$k]["day"]), intval($dates[$k]["year"])));
 		}
 	}
 	if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
@@ -465,10 +460,10 @@ function initObject($classID, $formname = 'we_global_form', $categories = '', $p
 	}
 	foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
 		if($slotname != 'categories' && isset($_REQUEST["we_ui_" . $formname . "_" . $slotname])){
-				$v = removePHP($_REQUEST["we_ui_".$formname."_".$slotname]);
-				$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
-				$GLOBALS["we_object"][$formname]->{$slotname} = $v;
-			}
+			$v = removePHP($_REQUEST["we_ui_" . $formname . "_" . $slotname]);
+			$GLOBALS["we_object"][$formname]->i_convertElemFromRequest('', $v, $slotname);
+			$GLOBALS["we_object"][$formname]->{$slotname} = $v;
+		}
 	}
 
 	we_imageDocument::checkAndPrepare($formname, "we_object");
@@ -2421,6 +2416,9 @@ function we_loadLanguageConfig(){
 function getWeFrontendLanguagesForBackend(){
 	$la = array();
 	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
+	if(!Zend_Locale::hasCache()){
+		Zend_Locale::setCache(getWEZendCache());
+	}
 	foreach($GLOBALS["weFrontendLanguages"] as $Locale){
 		$temp = explode('_', $Locale);
 		if(sizeof($temp) == 1){
@@ -2791,4 +2789,17 @@ function we_cmd_dec($no, $default=''){
 		return $_REQUEST['we_cmd'][$no];
 	}
 	return $default;
+}
+
+function getWEZendCache($lifetime=1800){
+	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_DIR));
+}
+
+function cleanWEZendCache(){
+	if(file_exists(ZENDCACHE_DIR . 'clean')){
+		$cache = getWEZendCache();
+		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
+		//remove file
+		unlink(ZENDCACHE_DIR . 'clean');
+	}
 }

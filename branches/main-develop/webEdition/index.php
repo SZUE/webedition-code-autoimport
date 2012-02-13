@@ -138,7 +138,7 @@ if(is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
 }
 
 cleanTempFiles(true);
-weTagWizard::cleanCache();
+cleanWEZendCache();
 
 //clean Error-Log-Table
 $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . ERROR_LOG_HOLDTIME . ' DAY)');

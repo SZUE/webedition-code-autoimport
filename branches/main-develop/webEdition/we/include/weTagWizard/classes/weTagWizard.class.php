@@ -22,16 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weTagWizard{
-	static function cleanCache(){
-		if(file_exists(WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/clean')){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 1800, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
-		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
-		//remove file
-		unlink(WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/clean');
-		}
-	}
 
 	static function getExistingWeTags(){
 		$retTags = array();
@@ -56,8 +47,8 @@ class weTagWizard{
 	static function getWeTagGroups($allTags = array()){
 		//initTagList
 		$tags = self::getExistingWeTags();
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 1800, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
-		return $cache->load('_groups');
+		$cache = getWEZendCache();
+		return $cache->load('TagWizard_groups');
 
 
 		$taggroups = array();
@@ -107,8 +98,8 @@ class weTagWizard{
 	}
 
 	static function getMainTagModules(){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 1800, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
-		if(!($main = $cache->load('_mainTags'))){
+		$cache = getWEZendCache();
+		if(!($main = $cache->load('TagWizard_mainTags'))){
 			$main = array();
 			$tags = self::getTagsFromDir(WEBEDITION_INCLUDES_DIR . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
@@ -124,11 +115,10 @@ class weTagWizard{
 	 * Initializes database for all tags
 	 */
 	static function initTagLists($tags){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 24 * 3600, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
-		if(($count = $cache->load('_tagCount')) && (count($tags) == $count)){
+		$cache = getWEZendCache(24*3600);
+		if(($count = $cache->load('TagWizard_tagCount')) && (count($tags) == $count)){
 			return;
 		}
-		include_once (WEBEDITION_INCLUDES_DIR . 'weTagWizard/classes/weTagData.class.php');
 		$endTags = array();
 		$modules = array();
 		$groups = array();
@@ -147,25 +137,25 @@ class weTagWizard{
 				$endTags[] = $tagname;
 			}
 		}
-		$cache->save(count($tags), '_tagCount');
-		$cache->save($endTags, '_needsEndTag');
-		$cache->save($groups, '_groups');
-		$cache->save($modules, '_modules');
+		$cache->save(count($tags), 'TagWizard_tagCount');
+		$cache->save($endTags, 'TagWizard_needsEndTag');
+		$cache->save($groups, 'TagWizard_groups');
+		$cache->save($modules, 'TagWizard_modules');
 	}
 
 	//FIXME: check if custom tags are updated correctly!
 	static function getTagsWithEndTag(){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 24 * 3600, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
-		if(!($tags = $cache->load('_needsEndTag'))){
+		$cache = getWEZendCache(24*3600);
+		if(!($tags = $cache->load('TagWizard_needsEndTag'))){
 			self::getExistingWeTags();
-			$tags = $cache->load('_needsEndTag');
+			$tags = $cache->load('TagWizard_needsEndTag');
 		}
 		return $tags;
 	}
 
 	static function getCustomTags(){
-		$cache = Zend_Cache::factory('Core', 'File', array('lifetime' => 1800, 'automatic_serialization' => true), array('cache_dir' => WEBEDITION_INCLUDES_DIR . 'weTagWizard/data/'));
-		if(!($customTags = $cache->load('_customTags'))){
+		$cache = getWEZendCache();
+		if(!($customTags = $cache->load('TagWizard_customTags'))){
 			$customTags = self::getTagsFromDir(WEBEDITION_INCLUDES_DIR . 'weTagWizard/we_tags/custom_tags');
 			$cache->save($customTags);
 		}

@@ -3718,6 +3718,10 @@ function build_dialog($selected_setting = "ui"){
 
 			break;
 		case "countries":
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+
 			$_settings = array();
 			$_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), 2, 450, false);
 
@@ -5227,10 +5231,10 @@ else {
 
 				if(defined('SCHEDULE_TABLE')){
 					$_Schedtrigger_setting = new we_html_select(array("name" => "we_scheduler_trigger", "class" => "weSelect"));
-					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]'));//pre
-					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]'));//post
-					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]'));//cron
-					$tmp='<div>'.$_Schedtrigger_setting->getHtml().'<br/>'.we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430,false).'</div>';
+					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
+					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
+					$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
+					$tmp = '<div>' . $_Schedtrigger_setting->getHtml() . '<br/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), 2, 430, false) . '</div>';
 					$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 				}
 			}
@@ -5369,7 +5373,7 @@ else {
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', 'folder', document.forms[0].elements['thumbnail_dir'].value, '')") : "";
 					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but));
-				} else{		 //  gd lib ist nicht installiert
+				} else{	 //  gd lib ist nicht installiert
 					$_but = we_hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
 					$_inp = we_html_tools::htmlTextInput("thumbnail_dir", 12, get_value("thumbnail_dir"), "", "", "text", 125, '0', '', true);
 					$_thumbnail_dir = we_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
@@ -6425,10 +6429,12 @@ function render_dialog(){
 
 
 
+
 		else$_output .= we_html_element::htmlDiv(array("id" => "setting_validation", "style" => "display: none;"), build_dialog("validation"));
 
 	if(false && $tabname == "setting_cache")
 		$_output .= we_html_element::htmlDiv(array("id" => "setting_cache"), build_dialog("cache"));
+
 
 
 
