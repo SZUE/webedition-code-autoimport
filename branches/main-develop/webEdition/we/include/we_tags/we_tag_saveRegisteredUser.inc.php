@@ -28,8 +28,6 @@ function we_tag_saveRegisteredUser($attribs, $content){
 
 
 	if(defined('CUSTOMER_TABLE') && isset($_REQUEST['s'])){
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/customer/weCustomer.php');
-
 		if(isset($_REQUEST['s']['Password2'])){
 			unset($_REQUEST['s']['Password2']);
 		}

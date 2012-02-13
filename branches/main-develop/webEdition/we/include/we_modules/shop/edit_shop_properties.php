@@ -146,7 +146,7 @@ function numfom($result){
 }
 
 function numfom2($result){
-	return rtrim(rtrim($numfom($result), '.00'), ',00');
+	return rtrim(rtrim(numfom($result), '.00'), ',00');
 }
 
 if(isset($_REQUEST['we_cmd'][0])){
@@ -1678,7 +1678,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 	$orderTable = '
 	<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
 	<tr>
-		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Anzahl]') . '</th>
+		<th class="defaultgray" height="25">' . g_l('modules_shop', '[anzahl]') . '</th>
 		<td>' . $pixelImg . '</td>
 		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Titel]') . '</th>
 		<td>' . $pixelImg . '</td>
@@ -1688,7 +1688,7 @@ if(!isset($letzerartikel)){ // order has still articles - get them all
 		<td>' . $pixelImg . '</td>
 		<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>
 		' . ($calcVat ? '<td>' . $pixelImg . '</td>
-		<th class="defaultgray" height="25">' . g_l('modules_shop', '[MwSt]') . '</th>' : '' ) . '
+		<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwSt]') . '</th>' : '' ) . '
 	</tr>';
 
 
@@ -2023,7 +2023,7 @@ echo we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
 	we_html_element::jsScript(JS_DIR . 'windows.js').
 	we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css');
 	?>
-	
+
 	<script type="text/javascript">
 		function SendMail(was){
 			document.location = "<?php print $_SERVER['SCRIPT_NAME'] . "?bid=" . $_REQUEST["bid"]; ?>&SendMail=" + was ;
