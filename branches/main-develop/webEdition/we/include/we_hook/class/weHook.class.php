@@ -56,7 +56,6 @@ class weHook{
 		if($this->action != '' && is_array($this->param) && $this->file != ''){
 			include_once($this->file);
 			if(function_exists($this->func)){
-				//FIXME: remove eval
 				$f = $this->func;
 				$f($this->param);
 				return ($this->errStr == '');

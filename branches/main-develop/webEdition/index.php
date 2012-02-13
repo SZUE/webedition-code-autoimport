@@ -55,7 +55,7 @@ function printHeader($login){
 	 * CREATE HEADER
 	 * *************************************************************************** */
 	we_html_tools::htmlTop('webEdition');
-	print STYLESHEET.
+	print STYLESHEET .
 		we_html_element::cssElement('html, body {height:100%;}');
 
 	print we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -68,16 +68,14 @@ function printHeader($login){
 
 	print we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => '/webEdition/images/webedition.ico'));
 
-	$_head_javascript = "cookieBackup = document.cookie;
-	document.cookie = \"cookie=yep\";
-	cookieOk = document.cookie.indexOf(\"cookie=yep\") > -1;
+	$_head_javascript = 'cookieBackup = document.cookie;
+	document.cookie = "cookie=yep";
+	cookieOk = document.cookie.indexOf("cookie=yep") > -1;
 	document.cookie = cookieBackup;
 
 	if (!cookieOk) {
-		" . we_message_reporting::getShowMessageCall(g_l('alert', "[no_cookies]"), we_message_reporting::WE_MESSAGE_ERROR) . "
-	}
-
-";
+		' . we_message_reporting::getShowMessageCall(g_l('alert', "[no_cookies]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+	}';
 
 	$_head_javascript .= 'var messageSettings = ' . (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE) . ';
 
@@ -135,7 +133,7 @@ function showMessage(message, prio, win){
  * CLEAN Temporary Data left over from last logout  bug #4240
  * *************************************************************************** */
 if(is_dir($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache')){
-	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache',true);
+	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/cache', true);
 }
 
 cleanTempFiles(true);
@@ -247,7 +245,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	printHeader($login);
 	print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
 } else if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-	$_error = we_html_element::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr().we_html_element::htmlBr());
+	$_error = we_html_element::htmlB(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr());
 
 	$_error_count = 0;
 	$tmp = ini_get('session.save_path');
@@ -362,7 +360,7 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	$GLOBALS['loginpage'] = ($login == 2) ? false : true;
 	include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_templates/we_info.inc.php');
 
-	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!'.we_html_element::htmlBr().we_html_element::htmlBr().'</noscript>
+	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!' . we_html_element::htmlBr() . we_html_element::htmlBr() . '</noscript>
 <table cellpadding="0" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;text-align:left;">
 	<tr>
 		<td style="background-color:#386AAB;"></td>
@@ -447,15 +445,15 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			$_body_javascript .= 'function open_we() {';
 
 			if(isset($_SESSION['prefs']['weWidth']) && $_SESSION['prefs']['weWidth'] > 0){
-				$_body_javascript .= 'var aw=' . $_SESSION['prefs']['weWidth'] . ";";
+				$_body_javascript .= 'var aw=' . $_SESSION['prefs']['weWidth'] . ';';
 			} else{
-				$_body_javascript .= "var aw=8000;";
+				$_body_javascript .= 'var aw=8000;';
 			}
 
 			if(isset($_SESSION['prefs']['weHeight']) && $_SESSION['prefs']['weHeight'] > 0){
-				$_body_javascript .= 'var ah=' . $_SESSION['prefs']['weHeight'] . ";";
+				$_body_javascript .= 'var ah=' . $_SESSION['prefs']['weHeight'] . ';';
 			} else{
-				$_body_javascript .= "var ah=6000;";
+				$_body_javascript .= 'var ah=6000;';
 			}
 
 			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert', "[popupLoginError]") . "', '/webEdition/index.php'); }";
@@ -486,8 +484,8 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	}
 
 
-	$_layout = '<div style="float: left;height: 50%;width: 1px;"></div><div style="clear:left;position:relative;top:-25%;">'.we_html_element::htmlForm(array("action" => WEBEDITION_DIR . "index.php", "method" => "post", "name" => "loginForm"), $_hidden_values . $dialogtable).'</div>';
+	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
 	printHeader($login);
-	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : "")) . "</html>";
+	print we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == 2) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }

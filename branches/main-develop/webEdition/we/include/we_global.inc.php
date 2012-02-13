@@ -2792,7 +2792,7 @@ function we_cmd_dec($no, $default=''){
 }
 
 function getWEZendCache($lifetime=1800){
-	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_DIR));
+	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
 }
 
 function cleanWEZendCache(){

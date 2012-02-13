@@ -78,8 +78,12 @@ define('ICON_DIR', TREE_IMAGE_DIR . 'icons/');
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
-define('ZENDCACHE_DIR', WEBEDITION_DIR . 'we/zendcache/');
 define('BUTTONS_DIR', IMAGE_DIR . 'button/');
+
+
+//all paths
+define('ZENDCACHE_PATH', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache/');
+
 
 // Activate the webEdition error handler
 include_once (WEBEDITION_INCLUDES_DIR . 'we_error_handler.inc.php');
