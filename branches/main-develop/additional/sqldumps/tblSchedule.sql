@@ -1,7 +1,7 @@
 CREATE TABLE ###TBLPREFIX###tblSchedule (
   DID bigint(20) unsigned NOT NULL default '0',
   Wann int(11) unsigned NOT NULL default '0',
-  `lockedUntil` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Was int(11) unsigned NOT NULL default '0',
   ClassName varchar(64) NOT NULL default '',
   SerializedData longblob,
