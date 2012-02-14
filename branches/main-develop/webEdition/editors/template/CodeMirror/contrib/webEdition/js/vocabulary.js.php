@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -52,46 +53,47 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  * @author     Daniel Schroeder  <deemes79 at googlemail.com>
  */
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-	we_html_tools::protect();
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
-	echo 'top.we_tags=new Array();';
-	$allWeTags = weTagWizard::getExistingWeTags();
-	foreach($allWeTags as $tagName) {
-		$GLOBALS['TagRefURLName'] = strtolower($tagName);
-		if(isset($weTag))
-			unset($weTag);
-		$weTag = weTagData::getTagData($tagName);
-		echo sprintf('top.we_tags["we:%s"]= {',$tagName);
-		echo sprintf('"desc": "%s",',addslashes($weTag->getDescription()));
-		echo '"attributes":';
-		if(count($weTag->getAllAttributes())) {
-			echo '{';
-			$attributes=array();
-			foreach($weTag->getAllAttributes() as $attribute) {
-				if(get_class($attribute)=='weTagData_cmdAttribute')
-					continue;
-				$attributeString=sprintf('"%s":',$attribute->getName());
-				if(isset($attribute->Options) && is_array($attribute->Options) && count($attribute->Options)) {
-					$attributeString.='{';
-					$options=array();
-					foreach($attribute->Options as $option) {
-						if($option->Value != '-')
-							$options[]=sprintf('"%s": 3',$option->Value);
+echo 'top.we_tags=new Array();';
+$allWeTags = weTagWizard::getExistingWeTags();
+foreach($allWeTags as $tagName){
+	$GLOBALS['TagRefURLName'] = strtolower($tagName);
+	if(isset($weTag))
+		unset($weTag);
+	$weTag = weTagData::getTagData($tagName);
+	echo sprintf('top.we_tags["we:%s"]= {', $tagName);
+	echo sprintf('"desc": "%s",', addslashes($weTag->getDescription()));
+	echo '"attributes":';
+	$attr = $weTag->getAllAttributes();
+
+	if(count($attr)){
+		echo '{';
+		$attributes = array();
+		foreach($attr as $attribute){
+			$attributeString = sprintf('"%s":', $attribute);
+			$options = $weTag->getTypeAttributeOptions();
+			if($options){
+				$attributeString.='{';
+				$optionsJS = array();
+				foreach($options as $option){
+					if($option->Value != '-'){
+						$optionsJS[] = sprintf('"%s": 3', $option->Value);
 					}
-					$attributeString.=implode(',',$options);
-					$attributeString.='}';
 				}
-				else {
-					$attributeString.='2';
-				}
-				$attributes[]=$attributeString;
+				$attributeString.=implode(',', $optionsJS);
+				$attributeString.='}';
 			}
-			echo implode(',',$attributes);
-			echo '}';
+			else{
+				$attributeString.='2';
+			}
+			$attributes[] = $attributeString;
 		}
-		else {
-			echo '1';
-		}
-		echo '};';
+		echo implode(',', $attributes);
+		echo '}';
+	} else{
+		echo '1';
 	}
+	echo '};';
+}
