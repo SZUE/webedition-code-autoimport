@@ -1454,7 +1454,7 @@ var cockpitFrame;
 	we_main_header::pCSS();
 	?>
 </head>
-<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onunload="doUnload()">
+<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onLoad="initClickMenu()" onUnload="doUnload()">
 <?php
 //	get the frameset for the actual mode.
 	pWebEdition_Frameset();

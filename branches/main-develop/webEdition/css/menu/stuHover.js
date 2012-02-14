@@ -8,7 +8,11 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
 This script and the associated (x)html may be modified in any 
 way to fit your requirements.
 =================================================================== */
+
+var stuHoverLoaded = true; 
+
 stuHover = function() {
+	
 	var cssRule;
 	var newSelector;
 	for (var i = 0; i < document.styleSheets.length; i++)
@@ -31,5 +35,4 @@ stuHover = function() {
 		}
 	}
 }
-if (window.attachEvent) window.attachEvent("onload", stuHover);
-
+//if (window.attachEvent) window.attachEvent("onload", stuHover);

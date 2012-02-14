@@ -95,7 +95,7 @@ class weJavaMenu{
 						$mtext = ($e["text"] ? $e["text"] : "");
 					}
 					$menus[] = array('id' => $id,
-						'code' => '<li class="top"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">' . "\n",
+						'code' => '<li class="top"><div class="top_div"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">' . "\n",
 					);
 				}
 			}
@@ -103,7 +103,7 @@ class weJavaMenu{
 			foreach($menus as $menu){
 				$foo = $menu['code'];
 				$this->h_pCODE($this->entries, $foo, $menu['id'], '');
-				$foo .= '</ul></li>';
+				$foo .= '</ul></div></li>';
 				$out .= $foo;
 			}
 
