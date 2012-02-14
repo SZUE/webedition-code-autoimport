@@ -2795,10 +2795,10 @@ function getWEZendCache($lifetime=1800){
 }
 
 function cleanWEZendCache(){
-	if(file_exists(ZENDCACHE_DIR . 'clean')){
+	if(file_exists(ZENDCACHE_PATH . 'clean')){
 		$cache = getWEZendCache();
 		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
 		//remove file
-		unlink(ZENDCACHE_DIR . 'clean');
+		unlink(ZENDCACHE_PATH . 'clean');
 	}
 }
