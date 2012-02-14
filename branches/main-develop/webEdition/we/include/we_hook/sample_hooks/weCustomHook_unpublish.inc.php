@@ -43,13 +43,4 @@
 		switch(get_class($obj)){
 		}*/
 
-		/**
-		 * e.g.:
-		 *
-		 * ob_start("error_log");
-		 * print_r($param);
-		 * ob_end_clean();
-		 */
-
-
 	}

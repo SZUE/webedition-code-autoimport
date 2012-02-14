@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,31 +22,34 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_ifTemplate($attribs, $content){
 	$id = weTag_getAttribute("id", $attribs);
 	$workspaceID = weTag_getAttribute("workspaceID", $attribs);
 	$path = weTag_getAttribute("path", $attribs);
 
-	if (isset($GLOBALS['we_doc']->TemplateID) && $id !== "") {
+	if(isset($GLOBALS['we_doc']->TemplateID) && $id !== ""){
 		$idArray = makeArrayFromCSV($id);
 		return in_array($GLOBALS['we_doc']->TemplateID, $idArray);
-	} else {
-		if ($workspaceID !== "") {
-			$TempPath = $_SERVER['DOCUMENT_ROOT']."/webEdition/we/templates";
-			if (isset($GLOBALS['we_doc']->TemplatePath)) { // in documents
+	} else{
+		if($workspaceID !== ""){
+			$TempPath = $_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/templates";
+			if(isset($GLOBALS['we_doc']->TemplatePath)){ // in documents
 				$curTempPath = $GLOBALS['we_doc']->TemplatePath;
-				$curTempPath = str_replace($TempPath,'',$curTempPath);
-			} else { // in templates
+				$curTempPath = str_replace($TempPath, '', $curTempPath);
+			} else{ // in templates
 				$curTempPath = $GLOBALS['we_doc']->Path;
 			}
-			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=".intval($workspaceID)." LIMIT 1", new DB_WE());
-			if (isset($row['Path']) && strpos($curTempPath,$row['Path']) !== false && strpos($curTempPath,$row['Path'])==0) { return true; } else {return false;}
-		} else {
-			if ($path === "") {
+			$row = getHash("SELECT DISTINCT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($workspaceID) . " LIMIT 1", new DB_WE());
+			if(isset($row['Path']) && strpos($curTempPath, $row['Path']) !== false && strpos($curTempPath, $row['Path']) == 0){
+				return true;
+			} else{
+				return false;
+			}
+		} else{
+			if($path === ""){
 				return true;
 			}
-			if (isset($GLOBALS['we_doc']->TemplatePath)) {
+			if(isset($GLOBALS['we_doc']->TemplatePath)){
 				$pathReg = "|^" . str_replace("\\*", ".*", preg_quote($path, "|")) . "\$|";
 				return preg_match($pathReg, $GLOBALS['we_doc']->TemplatePath);
 			}

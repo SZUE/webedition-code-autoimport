@@ -41,12 +41,4 @@
 		//don't publish, with err msg
 		//$hookHandler->setErrorString('I don\'t like you! Go away.');
 
-		/**
-		 * e.g.:
-		 *
-		 * ob_start("error_log");
-		 * print_r($param);
-		 * ob_end_clean();
-		 */
-
 	}
