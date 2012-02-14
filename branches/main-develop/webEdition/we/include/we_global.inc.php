@@ -921,10 +921,10 @@ function cleanTempFiles($cleanSessFiles = false){
 	$d->close();
 
 	// when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
-	$d = dir(rtrim(WE_FRAGMENT_DIR, '/'));
+	$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 	while(false !== ($entry = $d->read())) {
 		if($entry != '.' && $entry != '..'){
-			$foo = WE_FRAGMENT_DIR . $entry;
+			$foo = WE_FRAGMENT_PATH . $entry;
 			if(filemtime($foo) <= (time() - 3600 * 24)){
 				if(is_dir($foo))
 					we_util_File::deleteLocalFolder($foo, 1);

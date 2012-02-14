@@ -59,12 +59,8 @@ if(version_compare(phpversion(), '5.1.3', '=')){
 
 
 define('WEBEDITION_DIR', '/webEdition/');
-define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/');
-
-define('WEBEDITION_INCLUDES_PATH', WEBEDITION_DIR . 'we/include/');
-define('WEBEDITION_INCLUDES_DIR', WEBEDITION_PATH . 'we/include/');
-define('WE_FRAGMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'fragments/');
-define('WE_MODULE_PATH', WEBEDITION_INCLUDES_PATH . 'we_modules/');
+define('WE_INCLUDES_DIR', WEBEDITION_DIR . 'we/include/');
+define('WE_MODULE_PATH', WE_INCLUDES_DIR . 'we_modules/');
 define('WE_MODULE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_MODULE_PATH);
 
 define('WE_TOOLS_PATH', WEBEDITION_DIR . 'apps/');
@@ -82,16 +78,21 @@ define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 
 
 //all paths
-define('ZENDCACHE_PATH', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we/zendcache/');
+define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/');
+define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
+
+//paths without "DIRS"
+define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
+define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');
 
 
 // Activate the webEdition error handler
-include_once (WEBEDITION_INCLUDES_DIR . 'we_error_handler.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_error_handler.inc.php');
 if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
-include_once (WEBEDITION_INCLUDES_DIR . 'we_version.php');
+include_once (WE_INCLUDES_PATH . 'we_version.php');
 
 
 define('WE_EDITPAGE_PROPERTIES', 0);

@@ -1418,7 +1418,6 @@ class we_objectFile extends we_document{
 	}
 
 	function getTextareaHTML($name, $attribs, $editable=true, $variant=false){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/html/we_forms.inc.php");
 		if($editable){
 
 			if(isset($this->Charset)){ //	send charset which might be determined in template

@@ -82,7 +82,7 @@ class weHook{
 		} else{
 			$filename = 'weCustomHook_' . $this->action . '.inc.php';
 			// look in we_hook/custom_hooks folder
-			$hookFile = WEBEDITION_INCLUDES_DIR . 'we_hook/custom_hooks/' . $filename;
+			$hookFile = WE_INCLUDES_PATH . 'we_hook/custom_hooks/' . $filename;
 			//no more check for sample hooks - they are overwritten on update
 		}
 		if(file_exists($hookFile) && is_readable($hookFile)){

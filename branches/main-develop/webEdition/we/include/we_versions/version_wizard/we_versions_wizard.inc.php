@@ -1179,7 +1179,7 @@ abstract class we_versions_wizard{
 		}
 
 		$taskname = md5(session_id() . "_version_wizard");
-		$taskFilename = WE_FRAGMENT_DIR . $taskname;
+		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 		if(file_exists($taskFilename)){
 			@unlink($taskFilename);
 		}

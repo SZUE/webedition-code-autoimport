@@ -365,7 +365,7 @@ if($INCLUDE){
 		include(WEBEDITION_PATH . $INCLUDE);
 	} else{
 		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-		include(WEBEDITION_INCLUDES_DIR . $INCLUDE);
+		include(WE_INCLUDES_PATH . $INCLUDE);
 	}
 	//  This statement prevents the page from being reloaded
 	if(!in_array($_REQUEST['we_cmd'][0], $cmds_no_js)){

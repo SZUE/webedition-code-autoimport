@@ -48,7 +48,7 @@ if(!isset($SEEM_edit_include) || !$SEEM_edit_include){
 
     }
 	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-    @chmod($_SERVER['DOCUMENT_ROOT']."/webEdition/we_backup",0777);
+    @chmod($_SERVER['DOCUMENT_ROOT'].BACKUP_DIR,0777);
 }
 
 

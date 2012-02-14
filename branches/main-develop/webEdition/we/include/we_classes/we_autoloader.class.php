@@ -458,8 +458,8 @@ abstract class we_autoloader{
 			if(!isset(self::$domains[$domain])){
 				//				t_e('Error class domain not set in autoloader!');
 			} else{
-				if(file_exists(WEBEDITION_INCLUDES_DIR . self::$domains[$domain] . '/' . $class_name . '.class.php')){
-					include(WEBEDITION_INCLUDES_DIR . self::$domains[$domain] . '/' . $class_name . '.class.php');
+				if(file_exists(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php')){
+					include(WE_INCLUDES_PATH . self::$domains[$domain] . '/' . $class_name . '.class.php');
 					return;
 				}
 			}
@@ -468,7 +468,7 @@ abstract class we_autoloader{
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
-				include(WEBEDITION_INCLUDES_DIR . $path . '/' . $array[$class_name]);
+				include(WE_INCLUDES_PATH . $path . '/' . $array[$class_name]);
 				break;
 			}
 		}

@@ -922,7 +922,7 @@ class weNewsletterView{
 				old = document.we_form.pnt.value;
 				document.we_form.pnt.value=pnt;
 
-				new jsWindow("/webEdition/html/white.html",wname,-1,-1,width,height,true,true,true,true);
+				new jsWindow("' . HTML_DIR . 'white.html",wname,-1,-1,width,height,true,true,true,true);
 
 
 				' . ((($GLOBALS["SYSTEM"] == "MAC") && ($GLOBALS["BROWSER"] == "IE")) ? '

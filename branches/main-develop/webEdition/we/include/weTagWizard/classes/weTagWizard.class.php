@@ -101,7 +101,7 @@ class weTagWizard{
 		$cache = getWEZendCache();
 		if(!($main = $cache->load('TagWizard_mainTags'))){
 			$main = array();
-			$tags = self::getTagsFromDir(WEBEDITION_INCLUDES_DIR . 'weTagWizard/we_tags/');
+			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
 				$tag = weTagData::getTagData($tagname);
 				$main[$tag->getModule()][] = $tagname;
@@ -156,7 +156,7 @@ class weTagWizard{
 	static function getCustomTags(){
 		$cache = getWEZendCache();
 		if(!($customTags = $cache->load('TagWizard_customTags'))){
-			$customTags = self::getTagsFromDir(WEBEDITION_INCLUDES_DIR . 'weTagWizard/we_tags/custom_tags');
+			$customTags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags');
 			$cache->save($customTags);
 		}
 		return $customTags;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/html/we_multiIconBox.class.inc.php");
-
 $parts = array();
 
-array_push($parts,array("icon"=>"path.gif", "headline"=>g_l('weClass',"[path]"),"html"=>$GLOBALS['we_doc']->formPath(),"space"=>140));
-array_push($parts,array("icon"=>"default.gif", "headline"=>g_l('weClass',"[other]"),"html"=>$GLOBALS['we_doc']->formOther(),"space"=>140));
+array_push($parts, array("icon" => "path.gif", "headline" => g_l('weClass', "[path]"), "html" => $GLOBALS['we_doc']->formPath(), "space" => 140));
+array_push($parts, array("icon" => "default.gif", "headline" => g_l('weClass', "[other]"), "html" => $GLOBALS['we_doc']->formOther(), "space" => 140));
 $wepos = weGetCookieVariable("but_weFlashProp");
 
 print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("weFlashProp","100%",$parts,20);
+print we_multiIconBox::getHTML("weFlashProp", "100%", $parts, 20);

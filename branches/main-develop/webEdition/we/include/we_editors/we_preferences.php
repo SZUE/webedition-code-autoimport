@@ -2901,7 +2901,6 @@ function save_all_values(){
 		}
 
 		if(!empty($_SESSION['versions']['logPrefsChanged'])){
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_logging/versions/versionsLog.class.php");
 			$versionslog = new versionsLog();
 			$versionslog->saveVersionsLog($_SESSION['versions']['logPrefsChanged'], versionsLog::VERSIONS_PREFS);
 		}

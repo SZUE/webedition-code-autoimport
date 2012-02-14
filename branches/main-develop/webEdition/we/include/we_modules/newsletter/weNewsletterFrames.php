@@ -2311,7 +2311,7 @@ class weNewsletterFrames extends weModuleFrames{
 			$csv.=$this->View->db->f("NewsletterName") . "," . date(g_l('weEditorInfo', "[date_format]"), $this->View->db->f("LogTime")) . "," . (g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']') !== false ? (sprintf($lg_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']'), $this->View->db->f("Param"))) : $this->View->db->f("Log")) . "\n";
 		}
 
-		$link = "/webEdition/we_backup/download/log_" . time() . ".csv";
+		$link = BACKUP_DIR."download/log_" . time() . ".csv";
 		if(!weFile::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv))
 			$link = "";
 

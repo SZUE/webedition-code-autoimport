@@ -632,10 +632,10 @@ class weBackup extends we_backup{
 	}
 
 	function getSiteFiles(){
-		$this->getFileList($_SERVER['DOCUMENT_ROOT'] . '/webEdition/site', true, false);
+		$this->getFileList($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, true, false);
 		$out = array();
 		foreach($this->file_list as $file){
-			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . '/webEdition/site', '', $file)) . '";', 'ContentType', $this->backup_db);
+			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape(str_replace($_SERVER['DOCUMENT_ROOT'] . rtrim(SITE_DIR, '/'), '', $file)) . '";', 'ContentType', $this->backup_db);
 			if($ct){
 				if($ct != 'image/*' && $ct != 'application/*' && $ct != 'application/x-shockwave-flash')
 					$out[] = $file;

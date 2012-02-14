@@ -312,7 +312,7 @@ class weBackupWizard{
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=body", "name" => "body", "scrolling" => "auto", "noresize" => null));
 		$frameset->addFrame(array("src" => $this->frameset, "name" => "busy", "scrolling" => "no"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=cmd", "name" => "cmd", "scrolling" => "no", "noresize" => null));
-		$frameset->addFrame(array("src" => "/webEdition/html/blank.html", "name" => "checker", "scrolling" => "no", "noresize" => null));
+		$frameset->addFrame(array("src" => HTML_DIR . 'blank.html', "name" => "checker", "scrolling" => "no", "noresize" => null));
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]')) . STYLESHEET;
 		$body = $frameset->getHtml() . $noframeset->getHTML();
@@ -1028,12 +1028,12 @@ class weBackupWizard{
 			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
-				if(we_isHttps()){		 // Additional headers to make downloads work using IE in HTTPS mode.
+				if(we_isHttps()){	 // Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
 					header("Cache-Control: ");
 					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: no-store, no-cache, must-revalidate");	 // HTTP 1.1
+					header("Cache-Control: no-store, no-cache, must-revalidate");	// HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
 				} else{
 					header("Cache-control: private");

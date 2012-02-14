@@ -146,7 +146,7 @@ class weDialog{
 				$query .= "we_dialog_args[" . rawurlencode($k) . "]=" . rawurlencode($v) . "&";
 			}
 		}
-		return rtrim($query,'&') . ($what ? "&we_what=" . rawurlencode($what) : '');
+		return rtrim($query, '&') . ($what ? "&we_what=" . rawurlencode($what) : '');
 	}
 
 	function getFramesetHTML(){
@@ -179,7 +179,7 @@ class weDialog{
 
 			<frameset rows="*,0" framespacing="0" border="0" frameborder="no">
 				<frame src="' . $_SERVER["SCRIPT_NAME"] . '?' . $this->getQueryString("dialog") . '" name="we_' . $this->ClassName . '_edit_area" scrolling="no" noresize="noresize">
-				<frame src="/webEdition/html/white.html" name="we_' . $this->ClassName . '_cmd_frame" scrolling="no" noresize="noresize">
+				<frame src="' . HTML_DIR . 'white.html" name="we_' . $this->ClassName . '_cmd_frame" scrolling="no" noresize="noresize">
 			</frameset>';
 	}
 
