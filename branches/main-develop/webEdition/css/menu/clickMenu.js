@@ -70,3 +70,16 @@ clickMenu = function(){
 		}
 	}
 }
+
+/* Initialize clickMenu onload */
+if (window.attachEvent) {
+	//IE and Opera
+	window.attachEvent("onload", initClickMenu);
+} else if (window.addEventListener) {
+	// IE and newer FireFox
+	window.addEventListener("load", initClickMenu, false);
+} else {
+	// older FireFox
+	document.addEventListener("load", initClickMenu, false);
+}
+
