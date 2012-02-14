@@ -25,7 +25,7 @@
 
 function we_parse_tag_captcha($attribs, $content) {
 	eval('$attribs = ' . $attribs . ';');
-	if (($foo = attributFehltError($arr, 'name', 'block')))
+	if (($foo = attributFehltError($attribs, 'name', 'captcha')))
 		return $foo;
 
 		$width = weTag_getParserAttribute('width', $attribs, 100);
