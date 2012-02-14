@@ -24,15 +24,7 @@
  */
 class weNavigationCache{
 	const CACHEDIR='/webEdition/we/include/we_tools/navigation/cache/';
-	static $rebuildRootCnt=0;
-
-	static function createCacheDir(){
-		$_cacheDir = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR;
-		if(!is_dir($_cacheDir)){
-			we_util_File::createLocalFolder($_cacheDir);
-		}
-		return $_cacheDir;
-	}
+	static $rebuildRootCnt = 0;
 
 	static function delNavigationTree($id){
 		if(!self::$rebuildRootCnt){//is increased in next line
@@ -58,11 +50,9 @@ class weNavigationCache{
 	}
 
 	static function cacheNavigationBranch($id){
-		$_cacheDir = self::createCacheDir();
-
 		$_id = $id;
 		$_c = 0;
-		$db=new DB_WE();
+		$db = new DB_WE();
 		while($_id != 0) {
 			self::cacheNavigation($_id);
 			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
@@ -77,8 +67,6 @@ class weNavigationCache{
 		if(!self::$rebuildRootCnt++){
 			return;
 		}
-		$_cacheDir = self::createCacheDir();
-
 		$_naviItemes = new weNavigationItems();
 
 		$_naviItemes->initById(0);
@@ -92,23 +80,21 @@ class weNavigationCache{
 		$_content = serialize($currentRulesStorage);
 		unset($currentRulesStorage);
 
-		weFile::save($_cacheDir . 'rules.php', $_content);
+		weFile::save(self::CACHEDIR . 'rules.php', $_content);
 	}
 
 	static function cacheNavigation($id){
 		$_naviItemes = new weNavigationItems();
 		$_naviItemes->initById($id);
-		self::saveCacheNavigation($id,$_naviItemes);
+		self::saveCacheNavigation($id, $_naviItemes);
 	}
 
 	static function delCacheNavigationEntry($id){
-		$_cacheDir = weNavigationCache::createCacheDir();
-		weFile::delete($_cacheDir . 'navigation_' . $id . '.php');
+		weFile::delete(self::CACHEDIR . 'navigation_' . $id . '.php');
 	}
 
-	static function saveCacheNavigation($id,$_naviItemes){
-		$_cacheDir = weNavigationCache::createCacheDir();
-		weFile::save($_cacheDir . 'navigation_' . $id . '.php', serialize($_naviItemes->items));
+	static function saveCacheNavigation($id, $_naviItemes){
+		weFile::save(self::CACHEDIR . 'navigation_' . $id . '.php', serialize($_naviItemes->items));
 	}
 
 	static function getCacheFromFile($parentid){
