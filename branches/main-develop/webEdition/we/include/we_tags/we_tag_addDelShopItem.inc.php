@@ -55,7 +55,7 @@ function we_tag_addDelShopItem($attribs, $content) {
 					reset($_REQUEST["shop_anzahl_und_id"]);
 					while (list($shop_articleid_variant, $shop_anzahl) = each($_REQUEST["shop_anzahl_und_id"])) {
 						$articleInfo = explode("_", $shop_articleid_variant);
-						$shop_artikelid = $articleInfo[0];
+						$shop_artikelid = intval($articleInfo[0]);
 						$shop_artikeltype = $articleInfo[1];
 						$shop_variant = (isset($articleInfo[2]) ? $articleInfo[2] : "");
 						$GLOBALS[$shopname]->Set_Item($shop_artikelid, $floatquantities ? $floatfilter->filter($shop_anzahl) : $shop_anzahl, $shop_artikeltype, $shop_variant);
@@ -65,18 +65,18 @@ function we_tag_addDelShopItem($attribs, $content) {
 				}
 				$_SESSION["tb"] = $_REQUEST["t"];
 			}
-		} else if (isset($_REQUEST["shop_artikelid"]) && $_REQUEST["shop_artikelid"] != "" && isset($_REQUEST["shop_anzahl"]) && $_REQUEST["shop_anzahl"] != "0") {
+		} else if (isset($_REQUEST["shop_artikelid"]) && ($artID=intval($_REQUEST["shop_artikelid"]))>0 && isset($_REQUEST["shop_anzahl"]) && ($floatquantities ? $floatfilter->filter($anz=$_REQUEST["shop_anzahl"]) : intval($_REQUEST["shop_anzahl"]))>0) {
 			if ($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0)) {
 				if ($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0)) {
-					$GLOBALS[$shopname]->Add_Item($_REQUEST["shop_artikelid"], $floatquantities ? $floatfilter->filter($_REQUEST["shop_anzahl"]) : $_REQUEST["shop_anzahl"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array()));
+					$GLOBALS[$shopname]->Add_Item($artID, $anz, $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array()));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				}
 				$_SESSION["tb"] = $_REQUEST["t"];
 			}
-		} else if (isset($_REQUEST["del_shop_artikelid"]) && $_REQUEST["del_shop_artikelid"] != "") {
+		} else if (isset($_REQUEST["del_shop_artikelid"]) && ($artID=intval($_REQUEST["del_shop_artikelid"]))>0) {
 			if ($_REQUEST["t"] > (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 )) {
 				if ($_REQUEST["t"] != (isset($_SESSION["tb"]) ? $_SESSION["tb"] : 0 )) {
-					$GLOBALS[$shopname]->Del_Item($_REQUEST["del_shop_artikelid"], $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array()));
+					$GLOBALS[$shopname]->Del_Item($artID, $_REQUEST["type"], (isset($_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"]) ? $_REQUEST["' . WE_SHOP_VARIANT_REQUEST . '"] : ""), ( ( isset($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) && is_array($_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"]) ) ? $_REQUEST["' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '"] : array()));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				}
 				$_SESSION["tb"] = $_REQUEST["t"];

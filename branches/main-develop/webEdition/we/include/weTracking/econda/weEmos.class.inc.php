@@ -123,11 +123,10 @@ emosECPageArray['var3']		= 'NULL';
 	function weAddRemoveArticle($type, $complete=false){
 		if ($type=="doc") {
 			$article = new we_document();
-			$article->initByID($_REQUEST["shop_artikelid"]);
+			$article->initByID(intval($_REQUEST["shop_artikelid"]));
 		} else {
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_modules/object/we_objectFile.inc.php");
 			$article = new we_objectFile();
-			$article->initByID($_REQUEST["shop_artikelid"], OBJECT_FILES_TABLE);
+			$article->initByID(intval($_REQUEST["shop_artikelid"]), OBJECT_FILES_TABLE);
 		}
 
 		if (isset($_REQUEST['we_variant']) && count($article->elements['weInternVariantElement']['dat'])>0) {
