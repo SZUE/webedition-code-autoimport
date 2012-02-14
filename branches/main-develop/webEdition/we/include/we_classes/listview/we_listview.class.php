@@ -42,7 +42,7 @@ class we_listview extends listviewBase{
 	var $customers = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
-	
+
 
 	/**
 	 * we_listview()
@@ -123,19 +123,19 @@ class we_listview extends listviewBase{
 
 		switch($this->order){
 			case 'we_id':
-				$orderstring = ' ORDER BY ' . FILE_TABLE . '.ID ' . ($this->desc ? 'DESC' : '');
+				$orderstring = ' ORDER BY ' . FILE_TABLE . '.ID' . ($this->desc ? ' DESC' : '');
 				break;
 			case 'we_creationdate':
-				$orderstring = ' ORDER BY ' . FILE_TABLE . '.CreationDate' . ($this->desc ? 'DESC' : '');
+				$orderstring = ' ORDER BY ' . FILE_TABLE . '.CreationDate' . ($this->desc ? ' DESC' : '');
 				break;
 			case 'we_filename':
-				$orderstring = ' ORDER BY ' . FILE_TABLE . '.Text' . ($this->desc ? 'DESC' : '');
+				$orderstring = ' ORDER BY ' . FILE_TABLE . '.Text' . ($this->desc ? ' DESC' : '');
 				break;
 			case 'we_moddate':
-				$orderstring = ' ORDER BY ' . FILE_TABLE . '.ModDate' . ($this->desc ? 'DESC' : '');
+				$orderstring = ' ORDER BY ' . FILE_TABLE . '.ModDate' . ($this->desc ? ' DESC' : '');
 				break;
 			case 'we_published':
-				$orderstring = ' ORDER BY ' . FILE_TABLE . '.Published' . ($this->desc ? 'DESC' : '');
+				$orderstring = ' ORDER BY ' . FILE_TABLE . '.Published' . ($this->desc ? ' DESC' : '');
 				break;
 			default:
 				if($this->search){
