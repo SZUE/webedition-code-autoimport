@@ -1522,7 +1522,7 @@ class we_document extends we_root{
 		array_splice($this->schedArr, $nr, 1);
 	}
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		if(sizeof($_REQUEST)){
 			$dates = array();

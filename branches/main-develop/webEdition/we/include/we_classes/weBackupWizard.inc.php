@@ -967,9 +967,6 @@ class weBackupWizard{
 			if(is_file($_SESSION['weBackupVars']['backup_file'])){
 
 				$_php_version = phpversion();
-
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
-
 				$_link = weBackupUtil::getHttpLink(
 						$_SERVER['SERVER_NAME'], str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down), (defined('HTTP_PORT') ? HTTP_PORT : ''), (defined('HTTP_USERNAME') ? HTTP_USERNAME : ''), (defined('HTTP_PASSWORD') ? HTTP_PASSWORD : '')
 				);
@@ -1028,12 +1025,12 @@ class weBackupWizard{
 			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
-				if(we_isHttps()){	 // Additional headers to make downloads work using IE in HTTPS mode.
+				if(we_isHttps()){	// Additional headers to make downloads work using IE in HTTPS mode.
 					header("Pragma: ");
 					header("Cache-Control: ");
 					header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 					header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-					header("Cache-Control: no-store, no-cache, must-revalidate");	// HTTP 1.1
+					header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
 					header("Cache-Control: post-check=0, pre-check=0", false);
 				} else{
 					header("Cache-control: private");
@@ -1322,7 +1319,7 @@ class weBackupWizard{
 					$handle_options["voting"] = (isset($_REQUEST["handle_voting"]) && $_REQUEST["handle_voting"]) ? 1 : 0;
 
 					$we_backup_obj = new weBackup($handle_options);
-					$temp_filename = (isset($_REQUEST["temp_filename"]) && $_REQUEST["temp_filename"]) ? $_REQUEST["temp_filename"] : "";
+					$temp_filename = (isset($_REQUEST["temp_filename"]) && $_REQUEST["temp_filename"]) ? $_REQUEST["temp_filename"] : '';
 
 					if(!$temp_filename){
 						$we_backup_obj->backup_extern = (isset($_REQUEST["handle_extern"]) && $_REQUEST["handle_extern"]) ? 1 : 0;
@@ -1337,8 +1334,9 @@ class weBackupWizard{
 						$we_backup_obj->backup_binary = (isset($_REQUEST["handle_binary"]) && $_REQUEST["handle_binary"]) ? 1 : 0;
 
 						//create file list
-						if($we_backup_obj->backup_extern)
+						if($we_backup_obj->backup_extern){
 							$we_backup_obj->getFileList();
+						}
 						//create table list
 						//$we_backup_obj->getTableList();
 					} else{

@@ -3018,7 +3018,7 @@ class we_objectFile extends we_document{
 		return $contents;
 	}
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		if(sizeof($_REQUEST)){
 

@@ -81,6 +81,7 @@ class weBackupPreparer{
 		if(!weBackupPreparer::prepare()){
 			return false;
 		}
+		we_updater::fixInconsistentTables();
 
 		$_SESSION['weBackupVars']['protect'] = (isset($_REQUEST['protect']) && $_REQUEST['protect']) ? $_REQUEST['protect'] : 0;
 

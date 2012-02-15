@@ -334,7 +334,7 @@ class we_template extends we_document{
 		return (substr($Name, 0, 8) == "variant_" || $Name == "data" || $Name == "Charset" || $Name == "completeData" || $Name == "allVariants");
 	}
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		//get clean variants
 		$regs = array();

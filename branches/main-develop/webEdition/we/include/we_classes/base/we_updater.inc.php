@@ -971,7 +971,7 @@ class we_updater{
 		}
 	}
 
-	static function getAllIDFromQuery($sql){
+	private static function getAllIDFromQuery($sql){
 		$db = $GLOBALS['DB_WE'];
 		$db->query($sql);
 		$ret = array();

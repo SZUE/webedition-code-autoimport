@@ -429,6 +429,7 @@ class weExportPreparer extends weXMLExIm{
 	}
 
 	function prepareExport(){
+		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] || $this->options['handle_doctypes'] ||
 			$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||

@@ -2276,14 +2276,8 @@ class weNewsletterView{
 
 
 
-			if(isset($this->settings["use_port"]) && $this->settings["use_port"]){
-				$port = ":" . $this->settings["use_port"];
-			} else{
-				//if ($_SERVER['SERVER_PORT'] != 80) { $port = ":".$_SERVER['SERVER_PORT'];} //Dieses Verhalten führt zu Bug #3894
-				// else {$port = "";}
-				$port = "";
-			}
-			$protocol = (isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"] ? "https://" : "http://");
+			$port = (isset($this->settings["use_port"]) && $this->settings["use_port"]) ? ':' . $this->settings["use_port"] : '';
+			$protocol = (isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"] ? 'https://' : 'http://');
 
 			if($hm){
 				if($block->Type != weNewsletterBlock::URL){
@@ -2297,8 +2291,8 @@ class weNewsletterView{
 					$content = eregi_replace('(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
 				}
 			} else{
-				$newplain = str_ireplace("<br>", "\n", $content);
-				$newplain = preg_replace("|<title>.*</title>|i", "\n", $newplain);
+				$newplain = preg_replace('/<br */? *>/', "\n", $content);
+				$newplain = preg_replace('|<title>.*</title>|i', "\n", $newplain);
 				if($block->Type != weNewsletterBlock::TEXT){
 					$newplain = strip_tags($newplain);
 				}

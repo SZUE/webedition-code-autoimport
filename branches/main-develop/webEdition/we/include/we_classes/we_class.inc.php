@@ -502,7 +502,7 @@ abstract class we_class{
 
 # private ###################
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 
 		// do not set REQUEST VARS into the document
 		if(($_REQUEST['we_cmd'][0] == "switch_edit_page" && isset($_REQUEST['we_cmd'][3]))
@@ -548,55 +548,31 @@ abstract class we_class{
 	function i_savePersistentSlotsToDB($felder=""){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
-		if($this->wasUpdate){
-			$updt = "";
-			foreach($tableInfo as $info){
-				$fieldName = $info["name"];
-				if(in_array($fieldName, $feldArr)){
-					if(isset($this->$fieldName)){
-						$val = $this->$fieldName;
-					}
-					if($fieldName == "Category"){ // Category-Fix!
-						$val = $this->i_fixCSVPrePost($val);
-					}
-					if($fieldName != "ID")
-						$updt .= $fieldName . "='" . addslashes($val) . "',";
+		$fields = array();
+		foreach($tableInfo as $info){
+
+			$fieldName = $info["name"];
+			if(in_array($fieldName, $feldArr)){
+				$val = isset($this->$fieldName) ? $this->$fieldName : '';
+
+				if($fieldName == "Category"){ // Category-Fix!
+					$val = $this->i_fixCSVPrePost($val);
 				}
-			}
-			$updt = substr($updt, 0, -1);
-			if($updt){
-				$q = 'UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET ' . $updt . ' WHERE ID=' . intval($this->ID);
-				return ($this->DB_WE->query($q) ? true : false);
-			} else{
-				return false;
-			}
-		} else{
-			$keys = "";
-			$vals = "";
-			foreach($tableInfo as $info){
-				$fieldName = $info['name'];
-				if(in_array($fieldName, $feldArr)){
-					$val = $this->$fieldName;
-					if($fieldName == "Category"){ // Category-Fix!
-						$val = $this->i_fixCSVPrePost($val);
-					}
-					if($fieldName != "ID"){
-						$keys .= $fieldName . ",";
-						$vals .= "'" . $this->DB_WE->escape($val) . "',";
-					}
-				}
-			}
-			if($keys){
-				$keys = "(" . substr($keys, 0, strlen($keys) - 1) . ")";
-				$vals = "VALUES(" . substr($vals, 0, strlen($vals) - 1) . ")";
-				$q = "INSERT INTO " . $this->DB_WE->escape($this->Table) . " $keys $vals";
-				if($this->DB_WE->query($q)){
-					$this->ID = $this->DB_WE->getInsertId();
-					return true;
-				}
-				return false;
+				if($fieldName != "ID")
+					$fields[$fieldName] = $val;
 			}
 		}
+		if($this->wasUpdate){
+			$fields['ID'] = intval($this->ID);
+		}
+		if(count($fields)){
+			$ret = ($this->DB_WE->query('REPLACE INTO ' . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields)) ? true : false);
+			if($this->wasUpdate && ret){
+				$this->ID = $this->DB_WE->getInsertId();
+			}
+			return $ret;
+		}
+		return false;
 	}
 
 	function i_descriptionMissing(){

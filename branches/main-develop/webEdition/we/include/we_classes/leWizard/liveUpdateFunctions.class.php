@@ -323,7 +323,7 @@ class liveUpdateFunctions{
 		if(file_exists($filePath)){
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
-			$newContent = ($needle ? ereg_replace($needle, $replace, $oldContent) : $replace );
+			$newContent = ($needle ? preg_replace('/'.preg_quote($needle).'/', $replace, $oldContent) : $replace );
 
 			return ($this->filePutContent($filePath, $newContent));
 		} else{

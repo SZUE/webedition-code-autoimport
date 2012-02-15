@@ -874,7 +874,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 
 		// do not set REQUEST VARS into the document
 		if(isset($_REQUEST['we_cmd'][0])){

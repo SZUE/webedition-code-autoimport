@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,28 +22,36 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+we_html_tools::protect();
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+$what = (isset($_REQUEST["pnt"])) ? $_REQUEST["pnt"] : 'frameset';
 
-	we_html_tools::protect();
+$step = (isset($_REQUEST["step"])) ? $_REQUEST["step"] : 1;
 
-	if(isset($_REQUEST["pnt"])) $what=$_REQUEST["pnt"];
-	else $what="frameset";
+$weBackupWizard = new weBackupWizard("/webEdition/we/include/we_editors/we_make_backup.php", weBackupWizard::BACKUP);
 
-	if(isset($_REQUEST["step"])) $step=$_REQUEST["step"];
-	else $step=1;
-
-	$weBackupWizard=new weBackupWizard("/webEdition/we/include/we_editors/we_make_backup.php",  weBackupWizard::BACKUP);
-
-	switch($what){
-		case "frameset": print $weBackupWizard->getHTMLFrameset();break;
-		case "body": print $weBackupWizard->getHTMLStep($step);break;
-		case "cmd": print $weBackupWizard->getHTMLCmd();break;
-		case "busy":  print $weBackupWizard->getHTMLBusy();break;
-		case "extern":  print $weBackupWizard->getHTMLExtern();break;
-		case "checker":  print $weBackupWizard->getHTMLChecker();break;
-		default:
-			error_log(__FILE__ . " unknown reference: $what");
-	}
+switch($what){
+	case "frameset":
+		print $weBackupWizard->getHTMLFrameset();
+		break;
+	case "body":
+		print $weBackupWizard->getHTMLStep($step);
+		break;
+	case "cmd":
+		print $weBackupWizard->getHTMLCmd();
+		break;
+	case "busy":
+		print $weBackupWizard->getHTMLBusy();
+		break;
+	case "extern":
+		print $weBackupWizard->getHTMLExtern();
+		break;
+	case "checker":
+		print $weBackupWizard->getHTMLChecker();
+		break;
+	default:
+		error_log(__FILE__ . " unknown reference: $what");
+}
 

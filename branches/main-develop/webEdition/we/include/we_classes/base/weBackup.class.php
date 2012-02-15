@@ -79,12 +79,12 @@ class weBackup extends we_backup{
 
 	function splitFile2(){
 		global $_language;
-		if($this->filename == "")
+		if($this->filename == ""){
 			return -1;
-		if($this->mode == "sql")
+		}
+		if($this->mode == "sql"){
 			return parent::splitFile($this->filename);
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExIm.class.php");
+		}
 
 		return weXMLExIm::splitFile($this->filename, $this->backup_dir_tmp, $this->backup_steps);
 

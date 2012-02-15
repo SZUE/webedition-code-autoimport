@@ -83,8 +83,6 @@ if(isset($_REQUEST['cmd'])){
 
 			if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupPreparer.class.php');
-
 				$_SESSION['weBackupVars'] = array();
 
 				if(weBackupPreparer::prepareExport() === true){
@@ -275,8 +273,6 @@ if(isset($_REQUEST['cmd'])){
 		case 'import':
 
 			if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
-
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupPreparer.class.php');
 
 				if(weBackupPreparer::prepareImport() === true){
 

@@ -189,7 +189,7 @@ class we_binaryDocument extends we_document{
 		return false;
 	}
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 		// preventing fields from override
 		if(isset($_REQUEST['we_cmd'][0]) && $_REQUEST['we_cmd'][0] == 'update_file'){
 			return;

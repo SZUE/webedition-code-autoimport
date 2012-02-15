@@ -2358,7 +2358,7 @@ class we_object extends we_document{
 		return true; // we don't have to write!
 	}
 
-	function i_setElementsFromHTTP(){
+	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		$hrefFields = false;
 
