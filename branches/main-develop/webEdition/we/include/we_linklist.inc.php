@@ -655,7 +655,7 @@ class we_linklist{
 		}
 	}
 
-	function makeImgTag($attribs = ""){
+	function makeImgTag($nr=-1){
 		$id = $this->getImageID();
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
 		if(!$attribs)
@@ -664,7 +664,7 @@ class we_linklist{
 		$img->initByID($id);
 		$img->initByAttribs($attribs);
 		//	name in linklist is generated from linklistname
-		$img->elements['name']['dat'] = $this->name . "_img" . array_key($cur);
+		$img->elements['name']['dat'] = $this->name . "_img" . key($cur);
 		$this->rollScript = $img->getRollOverScript();
 		$this->rollAttribs = $img->getRollOverAttribsArr();
 
