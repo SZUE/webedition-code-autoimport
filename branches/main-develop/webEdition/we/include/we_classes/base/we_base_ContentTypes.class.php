@@ -83,9 +83,9 @@ class we_base_ContentTypes{
 							<br/><br/>
 						</we:ifEditmode>
 					</we:ifNotEmpty></p>
-					
+
 					<we:textarea name="Content" width="400" height="200" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
-				
+
 		</td></tr>
 	</table>
 </body>
@@ -267,5 +267,6 @@ class we_base_ContentTypes{
 				$ret[]=$type;
 			}
 		}
+		return $ret;
 	}
 }
