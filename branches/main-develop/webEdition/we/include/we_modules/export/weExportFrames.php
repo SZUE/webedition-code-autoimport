@@ -172,23 +172,24 @@ class weExportFrames extends weModuleFrames{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-
+		$col=0;
 		$table1 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "3000"), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1600, 10));
 
 		$table2 = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "210"), 1, 5);
 		$table2->setRow(0, array("valign" => "middle"));
-		$table2->setCol(0, 0, array("nowrap" => null), we_button::create_button("save", "javascript:we_save()")
+		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
+		$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("save", "javascript:we_save()")
 		);
 
-		$table2->setCol(0, 1, array("nowrap" => null), we_html_tools::getPixel(5, 5));
+		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, 2, array("nowrap" => null), we_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !we_hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, array("nowrap" => null), we_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !we_hasPerm("MAKE_EXPORT"))
 			);
 		}
 
-		$table2->setCol(0, 3, array("nowrap" => null), we_html_tools::getPixel(290, 5));
+		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(290, 5));
 
 		$js = we_html_element::jsElement('
 				function we_save() {
