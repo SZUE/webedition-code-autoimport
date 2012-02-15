@@ -2966,9 +2966,10 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$data = we_database_base::arraySetter($data) .
-			($this->wasUpdate ? ',ID=' . intval($this->ObjectID) : '');
-		$ret = $this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET ' . $data);
+		if($this->wasUpdate){
+			$data['ID']=intval($this->ObjectID);
+		}
+		$ret = $this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET ' . we_database_base::arraySetter($data));
 		$this->ObjectID = ($this->wasUpdate ? $this->ObjectID : $this->DB_WE->getInsertId());
 		return $ret;
 	}
