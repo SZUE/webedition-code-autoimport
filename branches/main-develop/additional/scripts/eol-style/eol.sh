@@ -9,5 +9,5 @@ find ${DIR} -name \*.js -exec svn propset svn:eol-style native {} \;|tee -a log.
 find ${DIR} -name \*.css -exec svn propset svn:eol-style native {} \;|tee -a log.txt
 find ${DIR} -name \*.java -exec svn propset svn:eol-style native {} \;|tee -a log.txt
 find ${DIR} -name \*.xml -exec svn propset svn:eol-style native {} \;|tee -a log.txt
-find ${DIR} -name .htacces -exec svn propset svn:eol-style native {} \;|tee -a log.txt
+find ${DIR} -name .htaccess -exec svn propset svn:eol-style native {} \;|tee -a log.txt
 find ${DIR} -name \*.txt -exec svn propset svn:eol-style native {} \;|tee -a log.txt

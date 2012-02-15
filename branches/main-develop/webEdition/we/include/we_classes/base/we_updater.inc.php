@@ -922,7 +922,7 @@ class we_updater{
 		return true;
 	}
 
-	function updateTableKeys(){
+	static function updateTableKeys(){
 		if(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys'])){
 			$myarray = $_SESSION['weBackupVars']['tablekeys'];
 			foreach($myarray as $k => $v){
@@ -981,7 +981,7 @@ class we_updater{
 		return $ret;
 	}
 
-	function fixInconsistentTables(){
+	static function fixInconsistentTables(){
 		$db = $GLOBALS['DB_WE'];
 		$del = array();
 		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')'));
@@ -1012,8 +1012,8 @@ class we_updater{
 		$this->updateLock();
 		$this->updateLangLink();
 		$this->convertTemporaryDoc();
-		$this->updateTableKeys();
-		$this->fixInconsistentTables();
+		self::updateTableKeys();
+		self::fixInconsistentTables();
 	}
 
 }
