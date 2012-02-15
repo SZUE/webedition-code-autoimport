@@ -26,8 +26,6 @@ class weBackupExport{
 
 	function export($filename, &$offset, &$row_count, $lines=1, $export_binarys=0, $log=0, $export_version_binarys=0){
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
-
 		$_fh = fopen($filename, 'ab');
 
 		if($_fh){
@@ -41,7 +39,6 @@ class weBackupExport{
 					weBackupUtil::addLog(sprintf('Exporting table %s', $_table));
 				}
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
 				$_object = new weTableAdv($_table, true);
 
 				$_attributes = array(
@@ -69,7 +66,6 @@ class weBackupExport{
 			}
 
 			// export table item
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTableItem.class.php');
 
 			$_keys = weTableItem::getTableKey($_table);
 			$_keys_str = implode(',', $_keys);
@@ -89,7 +85,7 @@ class weBackupExport{
 
 				$_keyvalue = array();
 				foreach($_keys as $_key){
-					$_keyvalue[] = $_db->f($_key);
+					$_keyvalue[$_key] = $_db->f($_key);
 				}
 				$_ids = implode(",", $_keyvalue);
 
@@ -97,9 +93,8 @@ class weBackupExport{
 					weBackupUtil::addLog(sprintf('Exporting item %s:%s', $_table, $_ids));
 				}
 
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTableItem.class.php');
 				$_object = new weTableItem($_table);
-				$_object->load($_ids);
+				$_object->load($_keyvalue);
 
 
 				weContentProvider::object2xml($_object, $_fh, $_attributes);

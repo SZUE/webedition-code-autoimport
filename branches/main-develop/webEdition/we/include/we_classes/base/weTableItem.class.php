@@ -44,8 +44,11 @@ class weTableItem extends weModelBase{
 		$this->setKeys($this->getTableKey($this->table));
 	}
 
-	function load($id){
-		weModelBase::load($id);
+	function load($ids){
+		foreach($ids as $key=>$val){
+			$this->$key=$val;
+		}
+		parent::load();
 		// remove binary content
 		if($this->table == CONTENT_TABLE && weContentProvider::IsBinary($id))
 			$this->Dat = "";
