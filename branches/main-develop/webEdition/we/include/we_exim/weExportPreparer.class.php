@@ -22,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class weExportPreparer extends weXMLExIm{
 
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
 
-	function weExportPreparer(){
+	function __construct(){
 		$this->RefTable = new RefTable();
 		$this->PatternSearch = new weSearchPatterns();
 	}
@@ -112,7 +111,7 @@ class weExportPreparer extends weXMLExIm{
 					if(is_numeric($value)){
 						$_path = '';
 						if($value){
-							$_path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value) . ';', 'Path', $_db);
+							$_path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), 'Path', $_db);
 						}
 
 						$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
@@ -131,7 +130,7 @@ class weExportPreparer extends weXMLExIm{
 
 	function getNavigationRule($naviid, $level){
 		$_db = new DB_WE();
-		$_db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID=' . intval($naviid) . ';');
+		$_db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID=' . intval($naviid));
 		while($_db->next_record()) {
 			$this->addToDepArray($level, $_db->f('ID'), 'weNavigationRule', NAVIGATION_RULE_TABLE);
 		}
@@ -145,7 +144,7 @@ class weExportPreparer extends weXMLExIm{
 				$_db = new DB_WE();
 				foreach($match[2] as $key => $value){
 
-					$_id = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $_db->escape($value) . '";', 'ID', $_db);
+					$_id = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $_db->escape($value) . '"', 'ID', $_db);
 
 					if($_id){
 						$this->addToDepArray($level, $_id, 'weThumbnail', THUMBNAILS_TABLE);

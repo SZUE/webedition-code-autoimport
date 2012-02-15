@@ -27,7 +27,6 @@
  *
  * Provides functions for exporting and importing table rows.
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 class weTableItem extends weModelBase{
 

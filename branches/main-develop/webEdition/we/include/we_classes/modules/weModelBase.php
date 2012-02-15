@@ -60,6 +60,9 @@ class weModelBase{
 	 */
 	function load($id=0){
 		if($this->isKeyDefined()){
+			if($id){
+				$this->ID=$id;
+			}
 			$tableInfo = $this->db->metadata($this->table);
 			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
 
@@ -123,7 +126,7 @@ class weModelBase{
 	function getKeyWhere(){
 		$wheres = array();
 		foreach($this->keys as $f){
-			$wheres[] = '`' . $f . '`="' . escape_sql_query($this->{$f}) . '"';
+			$wheres[] = '`' . $f . '`="' . escape_sql_query($this->$f) . '"';
 		}
 		return implode(' AND ', $wheres);
 	}

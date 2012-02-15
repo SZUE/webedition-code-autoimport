@@ -36,7 +36,7 @@
 		var $special_patterns = array();
 
 
-		function weSearchPatterns(){
+		function __construct(){
 			$this->doc_patterns=array("id"=>array(),"path"=>array());
 			$this->obj_patterns=array("id"=>array(),"path"=>array());
 			$this->class_patterns=array();
@@ -144,4 +144,3 @@
 
 
 	}
-	

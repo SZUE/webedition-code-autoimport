@@ -270,25 +270,15 @@
 
 		function prepareExport(){
 			//$this->RefTable = new RefTable();
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weExportPreparer.class.php');
 			$_preparer = new weExportPreparer($this->options,$this->RefTable);
 			$_preparer->prepareExport();
 		}
 
 		function getHeader($encoding=''){
-
 			return $GLOBALS['weXmlExImHeader'];
-
-			/*if($encoding==''){
-				$encoding = $GLOBALS["_language"]["charset"];
-			}
-			return "<?xml version=\"1.0\" encoding=\"" . $encoding . "\" standalone=\"yes\"?>"."\n".
-					 "<webEdition version=\"".WE_VERSION."\" xmlns:we=\"we-namespace\">"."\n";*/
 		}
 
 		function getFooter(){
-
-
 			return $GLOBALS['weXmlExImFooter'];
 		}
 

@@ -391,7 +391,6 @@ class weBackup extends we_backup{
 	 * table if the users chose to backup external files.
 	 */
 	function exportTables(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_exim/weXMLExIm.class.php");
 
 		$tab = array();
 		$tabtmp = array();
@@ -840,7 +839,7 @@ class weBackup extends we_backup{
 		while($this->backup_db->next_record()) {
 			$table = $this->backup_db->f("Name");
 			$name = stripTblPrefix($this->backup_db->f("Name"));
-			if(substr(strtolower($name), 0, 10) == strtolower(stripTblPrefix(OBJECT_X_TABLE)) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE), "", strtolower($table)))){
+			if(substr(strtolower($name), 0, 10) == strtolower(stripTblPrefix(OBJECT_X_TABLE)) && is_numeric(str_replace(strtolower(OBJECT_X_TABLE), '', strtolower($table)))){
 				weDBUtil::delTable($table);
 			}
 		}
@@ -852,7 +851,7 @@ class weBackup extends we_backup{
 	}
 
 	function clearTemporaryData($docTable){
-		$this->backup_db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable="' . $this->backup_db->escape(stripTblPrefix($docTable)) . '";');
+		$this->backup_db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable="' . $this->backup_db->escape(stripTblPrefix($docTable)) . '"');
 	}
 
 }
