@@ -658,8 +658,7 @@ class we_linklist{
 	function makeImgTag($nr=-1){
 		$id = $this->getImageID();
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		if(!$attribs)
-			$attribs = $this->getImageAttribs();
+		$attribs = $this->getImageAttribs();
 		$img = new we_imageDocument();
 		$img->initByID($id);
 		$img->initByAttribs($attribs);
