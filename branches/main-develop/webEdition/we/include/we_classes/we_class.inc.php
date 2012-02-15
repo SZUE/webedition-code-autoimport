@@ -567,7 +567,7 @@ abstract class we_class{
 		}
 		if(count($fields)){
 			$ret = ($this->DB_WE->query('REPLACE INTO ' . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields)) ? true : false);
-			if($this->wasUpdate && ret){
+			if($this->wasUpdate && $ret){
 				$this->ID = $this->DB_WE->getInsertId();
 			}
 			return $ret;

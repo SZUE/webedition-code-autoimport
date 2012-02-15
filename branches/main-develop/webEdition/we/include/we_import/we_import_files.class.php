@@ -39,7 +39,7 @@ class we_import_files{
 	var $degrees = 0;
 	var $categories = '';
 
-	function we_import_files(){
+	function __construct(){
 
 		if(isset($_REQUEST['categories'])){
 			$_catarray = makeArrayFromCSV($_REQUEST['categories']);
@@ -767,7 +767,7 @@ class we_import_files{
 					$we_doc->setElement("origheight", $we_size[1]);
 				}
 			}
-			$we_doc->setElement("type", $ct, "attrib");
+			$we_doc->setElement("type", $we_ContentType, "attrib");
 			$fh = @fopen($tempName, "rb");
 			if($_FILES['we_File']["size"] <= 0){
 				$_FILES['we_File']["size"] = 1;
