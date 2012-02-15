@@ -350,7 +350,7 @@ abstract class we_versions_wizard{
 			'space' => 0
 		));
 
-		$clearDate = $button->create_button(
+		$clearDate = we_button::create_button(
 			"reset", "javascript:document.getElementById('delete_date').value='';", true, -1, -1, "", "", "", false);
 
 		array_push(
