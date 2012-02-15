@@ -21,26 +21,25 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
 
-if (!preg_match('|^([a-f0-9]){32}|i',$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
 print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-    <script type="text/javascript"><!--
+<script type="text/javascript"><!--
 	function doSearch() {
-		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=search_messages&we_transaction=<?php echo $_REQUEST['we_transaction']?>&searchterm=' + document.we_messaging_search.messaging_search_keyword.value;
+		top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=search_messages&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&searchterm=' + document.we_messaging_search.messaging_search_keyword.value;
 	}
 
 	function launchAdvanced() {
-		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_advanced.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_advanced.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
 	}
 
 	function clearSearch() {
@@ -48,26 +47,26 @@ echo we_html_element::jsScript(JS_DIR.'windows.js');
 		doSearch();
 	}
 	//-->
-    </script>
-  </head>
-  <body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="/webEdition/images/msg_white_bg.gif">
-    <nobr>
-    <form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_PATH ?>todo_search_frame.php" onSubmit="return doSearch()">
-      <?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) ?>
-      <table cellpadding="0" cellspacing="0" border="0">
-	<tr>
-	  <td class="defaultfont"><?php print g_l('modules_messaging',"[search_todos]"); ?>:</td>
-	<?php
-	    echo '<td class="defaultfont">' . we_html_tools::getPixel(10, 1) . we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) . '</td>';
-	    echo '<td class="defaultfont">' . we_html_tools::getPixel(10, 1) . '</td>';
-	    print "<td>" . we_button::create_button_table(array(	we_button::create_button("search", "javascript:doSearch();"),
-	    														we_button::create_button("advanced", "javascript:launchAdvanced()"),
-	    														we_button::create_button("reset_search", "javascript:clearSearch()")),10)
-				."</td>";
-	?>
-	  </tr>
-	</table>
-    </form>
-    </nobr>
-  </body>
+</script>
+</head>
+<body marginwidth="10" marginheight="7" topmargin="7" leftmargin="7" background="/webEdition/images/msg_white_bg.gif">
+<nobr>
+	<form name="we_messaging_search" action="<?php print WE_MESSAGING_MODULE_PATH ?>todo_search_frame.php" onSubmit="return doSearch()">
+		<?php echo we_html_tools::hidden('we_transaction', $_REQUEST['we_transaction']) ?>
+		<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td class="defaultfont"><?php print g_l('modules_messaging', "[search_todos]"); ?>:</td>
+				<?php
+				echo '<td class="defaultfont">' . we_html_tools::getPixel(10, 1) . we_html_tools::htmlTextInput('messaging_search_keyword', 15, isset($_REQUEST['messaging_search_keyword']) ? $_REQUEST['messaging_search_keyword'] : '', 15) . '</td>';
+				echo '<td class="defaultfont">' . we_html_tools::getPixel(10, 1) . '</td>';
+				print "<td>" . we_button::create_button_table(array(we_button::create_button("search", "javascript:doSearch();"),
+						we_button::create_button("advanced", "javascript:launchAdvanced()"),
+						we_button::create_button("reset_search", "javascript:clearSearch()")), 10)
+					. "</td>";
+				?>
+			</tr>
+		</table>
+	</form>
+</nobr>
+</body>
 </html>

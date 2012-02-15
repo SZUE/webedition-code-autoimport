@@ -21,9 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -35,19 +33,19 @@ Zend_Loader::loadClass('we_core_Local');
 
 
 $title = 'webEdition ';
-if(isset($_REQUEST['tool'])) {
+if(isset($_REQUEST['tool'])){
 	switch($_REQUEST['tool']){
-	case 'weSearch':
-		$title .= g_l('tools','[tools]'). ' - '.g_l('searchtool','[weSearch]');
-		break;
-	case 'navigation':
-		$title .= g_l('tools','[tools]'). ' - '.g_l('navigation','[navigation]');
-		break;
-	default:
-		$translate = we_core_Local::addTranslation('apps.xml');
-		we_core_Local::addTranslation('default.xml', $_REQUEST['tool']);
-		$title .= $translate->_('Applications'). ' - '.$translate->_($_REQUEST['tool']);
-		break;
+		case 'weSearch':
+			$title .= g_l('tools', '[tools]') . ' - ' . g_l('searchtool', '[weSearch]');
+			break;
+		case 'navigation':
+			$title .= g_l('tools', '[tools]') . ' - ' . g_l('navigation', '[navigation]');
+			break;
+		default:
+			$translate = we_core_Local::addTranslation('apps.xml');
+			we_core_Local::addTranslation('default.xml', $_REQUEST['tool']);
+			$title .= $translate->_('Applications') . ' - ' . $translate->_($_REQUEST['tool']);
+			break;
 	}
 }
 
@@ -74,66 +72,67 @@ print we_html_element::jsElement('
 
 ');
 
-if($_REQUEST['tool']=="weSearch") {
-	if(isset($_REQUEST['we_cmd'][1])) {
+if($_REQUEST['tool'] == "weSearch"){
+	if(isset($_REQUEST['we_cmd'][1])){
 		$_SESSION["weSearch"]["keyword"] = $_REQUEST['we_cmd'][1];
 	}
 	//look which search is activ
-	if(isset($_REQUEST['we_cmd'][2])) {
+	if(isset($_REQUEST['we_cmd'][2])){
 
-		if(defined("OBJECT_FILES_TABLE")) {
+		if(defined("OBJECT_FILES_TABLE")){
 			$objectFilesTable = OBJECT_FILES_TABLE;
-		}
-		else {
+		} else{
 			$objectFilesTable = "";
 		}
-		if(defined("OBJECT_TABLE")) {
+		if(defined("OBJECT_TABLE")){
 			$objectTable = OBJECT_TABLE;
-		}
-		else {
+		} else{
 			$objectTable = "";
 		}
 
 		$table = $_REQUEST['we_cmd'][2];
-		switch ($table) {
+		switch($table){
 
 			case FILE_TABLE:
 				$tab = 1;
 				$_SESSION["weSearch"]["checkWhich"] = 1;
-			break;
+				break;
 			case TEMPLATES_TABLE:
 				$tab = 2;
 				$_SESSION["weSearch"]["checkWhich"] = 2;
-			break;
+				break;
 			case $objectFilesTable:
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 3;
-			break;
+				break;
 			case $objectTable:
 				$tab = 3;
 				$_SESSION["weSearch"]["checkWhich"] = 4;
-			break;
+				break;
 
 			default:
 				$tab = $_REQUEST['we_cmd'][2];
 		}
 	}
 
-	if(isset($_REQUEST['we_cmd'][3])) {
+	if(isset($_REQUEST['we_cmd'][3])){
 		$modelid = $_REQUEST['we_cmd'][3];
 	}
 }
 
 print we_html_element::jsScript(JS_DIR . "keyListener.js");
-print we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") ;
-print we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") ;
-print we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") ;
-
+print we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js");
+print we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js");
+print we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
 ?>
 </head>
-	<frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
-		<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no">
-		<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php echo $_REQUEST['tool']; echo (isset($modelid)) ?('&modelid=' . $modelid) : ''; echo (isset($tab)) ?('&tab=' . $tab) : ''; ?>" name="content" noresize scrolling="no">
-	</frameset>
-	<body bgcolor="#ffffff"></body>
+<frameset rows="26,*" border="0" framespacing="0" frameborder="no">');
+	<frame src="/webEdition/we/include/we_tools/tools_header.php?tool=<?php echo $_REQUEST['tool']; ?>" name="navi" noresize scrolling="no"/>
+	<frame src="/webEdition/we/include/we_tools/tools_content.php?tool=<?php
+echo $_REQUEST['tool'];
+echo (isset($modelid)) ? ('&modelid=' . $modelid) : '';
+echo (isset($tab)) ? ('&tab=' . $tab) : '';
+?>" name="content" noresize scrolling="no"/>
+</frameset>
+<body bgcolor="#ffffff"></body>
 </html>

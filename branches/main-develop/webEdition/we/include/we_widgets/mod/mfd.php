@@ -24,7 +24,7 @@
  */
 // widget LAST MODIFIED
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $sCsv = $aProps[3];
 $aCols = explode(";", $sCsv);

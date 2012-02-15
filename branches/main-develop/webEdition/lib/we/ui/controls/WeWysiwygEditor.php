@@ -28,8 +28,7 @@ Zend_Loader::loadClass('we_ui_controls_Button');
 Zend_Loader::loadClass('we_ui_controls_Label');
 Zend_Loader::loadClass('we_ui_layout_Table');
 
-!defined('NO_SESS') && define('NO_SESS',1);
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+!defined('NO_SESS') && define('NO_SESS', 1);
 
 /**
  * Class to display an webEdition Wysiwyg-Editor
@@ -499,7 +498,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 	 * @return string
 	 */
 	public function getOnBeforeSubmitJS(){
-		return ' document.getElementById("'.$this->getId().'").value=document.getElementById("'.$this->getId().'_Daten").innerHTML;';
+		return ' document.getElementById("' . $this->getId() . '").value=document.getElementById("' . $this->getId() . '_Daten").innerHTML;';
 	}
 
 }

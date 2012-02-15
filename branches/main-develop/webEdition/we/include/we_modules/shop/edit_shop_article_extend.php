@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 
 /* * ************ fuction for orders  ************** */
@@ -219,7 +219,7 @@ if(isset($daten)){
 
 	/*	 * ************ selectbox function ************** */
 
-	function array_select($arr_value, $select_name, $label){	// function for a selectbox for the purpose of selecting a class..
+	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class..
 		if(isset($GLOBALS['feldnamen'][3])){
 			$fe = explode(",", $GLOBALS['feldnamen'][3]); //determine more than just one class-ID
 		} else{
@@ -245,7 +245,7 @@ if(isset($daten)){
 
 	/*	 * ************ selectbox function ************** */
 
-	$selClass = array_select("$val", "ViewClass", g_l('modules_shop', '[classSel]'));	// displays a selectbox for the purpose of selecting a class..
+	$selClass = array_select("$val", "ViewClass", g_l('modules_shop', '[classSel]')); // displays a selectbox for the purpose of selecting a class..
 
 
 
@@ -278,7 +278,7 @@ if(isset($daten)){
 			$where_expression = OBJECT_X_TABLE . "$classid.OF_ID !=0";
 		}
 		$DB_WE->query("SELECT $count_expression as dbEntries FROM $from_expression WHERE $where_expression");
-		while($DB_WE->next_record()) {		 // Pager: determine the number of records;
+		while($DB_WE->next_record()) {	 // Pager: determine the number of records;
 			$entries += $DB_WE->f("dbEntries");
 		}
 		$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the current page
@@ -287,7 +287,7 @@ if(isset($daten)){
 		if(!isset($classSelectTable)){
 			$classSelectTable = "";
 		}
-		if($entries != 0){	 // Pager: Number of records not empty?
+		if($entries != 0){	// Pager: Number of records not empty?
 			$topInfo = ($entries > 0) ? $entries : g_l('modules_shop', '[noRecord]');
 
 			$classid = abs($_REQUEST["ViewClass"]); // gets the value from the selectbox;
@@ -311,7 +311,7 @@ if(isset($daten)){
                     FROM " . $queryFrom . "
                     WHERE " . $queryCondition . "
                     ORDER BY obID";
-			$DB_WE->query($queryObjects);		// get the shop-objects from DB;
+			$DB_WE->query($queryObjects);	// get the shop-objects from DB;
 			// build the table
 			$nr = 0;
 			$orderRows = array();
@@ -329,10 +329,10 @@ if(isset($daten)){
 
 				// save all data in array
 				$orderRows[$nr]['obTitle'] = $DB_WE->f('obTitle'); // also for ordering
-				$orderRows[$nr]['obID'] = $DB_WE->f('obID');			 // also for ordering
-				$orderRows[$nr]['cDate'] = $DB_WE->f('cDate');		 // also for ordering
-				$orderRows[$nr]['cPub'] = $DB_WE->f('cPub');			 // also for ordering
-				$orderRows[$nr]['cMob'] = $DB_WE->f('cMob');			 // also for ordering
+				$orderRows[$nr]['obID'] = $DB_WE->f('obID');		// also for ordering
+				$orderRows[$nr]['cDate'] = $DB_WE->f('cDate');	 // also for ordering
+				$orderRows[$nr]['cPub'] = $DB_WE->f('cPub');		// also for ordering
+				$orderRows[$nr]['cMob'] = $DB_WE->f('cMob');		// also for ordering
 				//$orderRows[$nr]['type'] = "Objekt";       // also for ordering
 
 				$orderRows[$nr]['orderArray'] = array();
@@ -413,17 +413,17 @@ if(isset($daten)){
 
 
 		/*		 * ******** START PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */
-	} elseif($_REQUEST['typ'] == "document"){	//start output doc
+	} elseif($_REQUEST['typ'] == "document"){ //start output doc
 		$orderBy = isset($_REQUEST['orderBy']) ? $_REQUEST['orderBy'] : 'sql';
 		$DB_WE->query("SELECT count(Name) as Anzahl FROM " . LINK_TABLE . " WHERE Name ='" . $DB_WE->escape($dbTitlename) . "'");
-		while($DB_WE->next_record()) {							// Pager: determine the number of records;
+		while($DB_WE->next_record()) {			 // Pager: determine the number of records;
 			$entries = $DB_WE->f("Anzahl");
 		}
 		$active_page = !empty($_GET['page']) ? $_GET['page'] : 0; // Pager: determine the number of records;
 		$docType = isset($docType) ? $docType = "text/webedition" : $docType = "text/webedition"; // Pager: determine the current page
 		$typeAlias = isset($typeAlias) ? $typeAlias = "document" : $typeAlias = "document"; // Pager: determine the current page
 
-		if($entries != 0){	// Pager: Number of records not empty?
+		if($entries != 0){ // Pager: Number of records not empty?
 			$topInfo = ($entries > 0) ? $entries : g_l('modules_shop', '[noRecord]');
 			// :: then do the query for documents
 			$queryCondition = FILE_TABLE . ".ID = " . LINK_TABLE . ".DID AND " . LINK_TABLE . ".CID = " . CONTENT_TABLE . ".ID AND " . LINK_TABLE . ".Name = \"" . $dbTitlename . "\" ";
@@ -433,7 +433,7 @@ if(isset($daten)){
             WHERE " . $queryCondition . "
             ORDER BY dd";
 
-			$DB_WE->query($queryDocuments);		// get the shop-documents from DB;
+			$DB_WE->query($queryDocuments);	// get the shop-documents from DB;
 			//print $queryDocuments;
 			// build the table
 			$nr = 0;
@@ -450,10 +450,10 @@ if(isset($daten)){
 
 				// save all data in array
 				$orderRows[$nr]['sql'] = $DB_WE->f('sqlDat'); // also for ordering
-				$orderRows[$nr]['dd'] = $DB_WE->f('dd');			 // also for ordering
-				$orderRows[$nr]['dDate'] = $DB_WE->f('dDate');		 // also for ordering
-				$orderRows[$nr]['dPub'] = $DB_WE->f('dPub');			 // also for ordering
-				$orderRows[$nr]['dMod'] = $DB_WE->f('dMod');			 // also for ordering
+				$orderRows[$nr]['dd'] = $DB_WE->f('dd');		// also for ordering
+				$orderRows[$nr]['dDate'] = $DB_WE->f('dDate');	 // also for ordering
+				$orderRows[$nr]['dPub'] = $DB_WE->f('dPub');		// also for ordering
+				$orderRows[$nr]['dMod'] = $DB_WE->f('dMod');		// also for ordering
 				//$orderRows[$nr]['type'] = "Doc";       // also for ordering
 
 				$orderRows[$nr]['orderArray'] = array();

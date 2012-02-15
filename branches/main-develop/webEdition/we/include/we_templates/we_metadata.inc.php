@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
 //FIXME: is this file used??
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $parts = array();
-array_push($parts,array("icon"=>"upload.gif", "headline"=>"","html"=>$GLOBALS['we_doc']->formUpload(),"space"=>140));
-array_push($parts,array("icon"=>"attrib.gif", "headline"=>g_l('weClass',"[attribs]"),"html"=>$GLOBALS['we_doc']->formProperties(),"space"=>140));
+array_push($parts, array("icon" => "upload.gif", "headline" => "", "html" => $GLOBALS['we_doc']->formUpload(), "space" => 140));
+array_push($parts, array("icon" => "attrib.gif", "headline" => g_l('weClass', "[attribs]"), "html" => $GLOBALS['we_doc']->formProperties(), "space" => 140));
 //array_push($parts,array("icon"=>"meta.gif", "headline"=>g_l('weClass',"[metainfo]"),"html"=>$GLOBALS['we_doc']->formMetaInfos(),"space"=>140));
-array_push($parts,array("icon"=>"meta.gif", "headline"=>g_l('weClass',"[metadata]"),"html"=>$GLOBALS['we_doc']->formMetaInfos().$GLOBALS['we_doc']->formMetaData(),"space"=>140));
+array_push($parts, array("icon" => "meta.gif", "headline" => g_l('weClass', "[metadata]"), "html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(), "space" => 140));
 print we_multiIconBox::getJS();
-print we_multiIconBox::getHTML("weImgProp","100%",$parts,20);
+print we_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);

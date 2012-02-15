@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,15 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_OBJECT_MODULE_DIR . "we_object.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$we_transaction=$_REQUEST['we_cmd'][3];
-$we_transaction = (preg_match('|^([a-f0-9]){32}$|i',$we_transaction)?$we_transaction:'');
+$we_transaction = $_REQUEST['we_cmd'][3];
+$we_transaction = (preg_match('|^([a-f0-9]){32}$|i', $we_transaction) ? $we_transaction : '');
 
 $nr = abs($_REQUEST['we_cmd'][2]);
 
@@ -41,21 +39,20 @@ $filename = "we_" . $_REQUEST["SID"] . "_Filename";
 $filename = $_REQUEST[$filename];
 
 $ParentID = "we_" . $_REQUEST["SID"] . "_ParentID";
-$ParentID  = $_REQUEST[$ParentID];
+$ParentID = $_REQUEST[$ParentID];
 
 
 $GLOBALS['we_doc']->Filename = $filename;
-$GLOBALS['we_doc']->Extension =  ".tmpl";
-$GLOBALS['we_doc']->Icon="prog.gif";
+$GLOBALS['we_doc']->Extension = ".tmpl";
+$GLOBALS['we_doc']->Icon = "prog.gif";
 $GLOBALS['we_doc']->setParentID($ParentID);
-$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->ParentPath.(($GLOBALS['we_doc']->ParentPath != "/") ? "/" : "").$filename.".tmpl";
+$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->ParentPath . (($GLOBALS['we_doc']->ParentPath != "/") ? "/" : "") . $filename . ".tmpl";
 $GLOBALS['we_doc']->ContentType = "text/weTmpl";
 
 $GLOBALS['we_doc']->Table = TEMPLATES_TABLE;
 
 
 //$GLOBALS['we_doc']->ID = 61;
-
 //  $_SESSION["content"] is only used for generating a default template, it is
 //  set in WE_OBJECT_MODULE_DIR\we_object_createTemplate.inc.php
 $GLOBALS['we_doc']->elements["data"]["dat"] = $_SESSION["content"];
@@ -63,33 +60,33 @@ $GLOBALS['we_doc']->elements["data"]["type"] = "txt";
 unset($_SESSION["content"]);
 
 if($GLOBALS['we_doc']->i_filenameEmpty()){
-	$we_responseText = g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][filename_empty]');
-}else if($GLOBALS['we_doc']->i_sameAsParent()){
-	$we_responseText = g_l('weEditor',"[folder_save_nok_parent_same]");
-}else if($GLOBALS['we_doc']->i_filenameNotValid()){
-	$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][we_filename_notValid]'),$GLOBALS['we_doc']->Path);
-}else if($GLOBALS['we_doc']->i_filenameNotAllowed()){
-	$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][we_filename_notAllowed]'),$GLOBALS['we_doc']->Path);
-}else if($GLOBALS['we_doc']->i_filenameDouble()){
-	$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][response_path_exists]'),$GLOBALS['we_doc']->Path);
+	$we_responseText = g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][filename_empty]');
+} else if($GLOBALS['we_doc']->i_sameAsParent()){
+	$we_responseText = g_l('weEditor', "[folder_save_nok_parent_same]");
+} else if($GLOBALS['we_doc']->i_filenameNotValid()){
+	$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][we_filename_notValid]'), $GLOBALS['we_doc']->Path);
+} else if($GLOBALS['we_doc']->i_filenameNotAllowed()){
+	$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][we_filename_notAllowed]'), $GLOBALS['we_doc']->Path);
+} else if($GLOBALS['we_doc']->i_filenameDouble()){
+	$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_path_exists]'), $GLOBALS['we_doc']->Path);
 }
 if(isset($we_responseText)){
 	echo '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '</script>
 ';
-	include_once(WE_OBJECT_MODULE_DIR."we_object_createTemplate.inc.php");
-}else{
+	include_once(WE_OBJECT_MODULE_DIR . "we_object_createTemplate.inc.php");
+} else{
 	if($GLOBALS['we_doc']->we_save()){
-		$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][response_save_ok]'),$GLOBALS['we_doc']->Path);
+		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path);
 		echo '<script  type="text/javascript">
-		' . we_message_reporting::getShowMessageCall( $we_responseText, we_message_reporting::WE_MESSAGE_NOTICE,false,true) . '
-opener.we_cmd("changeTempl_ob",'.$nr.','.$GLOBALS['we_doc']->ID.');
+		' . we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE, false, true) . '
+opener.we_cmd("changeTempl_ob",' . $nr . ',' . $GLOBALS['we_doc']->ID . ');
 self.close();
 </script>
 ';
-	}else{
-		$we_responseText = sprintf(g_l('weEditor','['.$GLOBALS['we_doc']->ContentType.'][response_save_notok]'),$GLOBALS['we_doc']->Path);
-	echo '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall( $we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '</script>
+	} else{
+		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
+		echo '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR) . '</script>
 ';
-		include_once(WE_OBJECT_MODULE_DIR."we_object_createTemplate.inc.php");
+		include_once(WE_OBJECT_MODULE_DIR . "we_object_createTemplate.inc.php");
 	}
 }

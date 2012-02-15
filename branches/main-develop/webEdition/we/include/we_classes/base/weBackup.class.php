@@ -48,7 +48,6 @@ class weBackup extends we_backup{
 	var $backup_binary = 1;
 
 	function __construct($handle_options=array()){
-		global $_language;
 		$this->nl = "\n";
 
 		$this->header = "<?xml version=\"1.0\" encoding=\"" . $GLOBALS['WE_BACKENDCHARSET'] . "\" standalone=\"yes\"?>" . $this->nl .
@@ -78,7 +77,6 @@ class weBackup extends we_backup{
 	}
 
 	function splitFile2(){
-		global $_language;
 		if($this->filename == ""){
 			return -1;
 		}

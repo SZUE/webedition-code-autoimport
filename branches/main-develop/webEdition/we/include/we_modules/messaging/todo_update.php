@@ -21,11 +21,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
@@ -41,12 +39,12 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 
-if ($_REQUEST['todo_status'] != $messaging->selected_message['hdrs']['status']) {
-    $arr['todo_status'] = $_REQUEST['todo_status'];
+if($_REQUEST['todo_status'] != $messaging->selected_message['hdrs']['status']){
+	$arr['todo_status'] = $_REQUEST['todo_status'];
 }
 
-if (!empty($_REQUEST['todo_comment'])) {
-    $arr['todo_comment'] = $_REQUEST['todo_comment'];
+if(!empty($_REQUEST['todo_comment'])){
+	$arr['todo_comment'] = $_REQUEST['todo_comment'];
 }
 
 $arr['todo_priority'] = $_REQUEST['todo_priority'];
@@ -60,27 +58,27 @@ $messaging->saveInSession($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 <html>
 	<head>
-		<title><?php echo $heading?></title>
-		<?php print STYLESHEET; ?>
+		<title><?php echo $heading ?></title>
+<?php print STYLESHEET; ?>
 		<script type="text/javascript">
-		if (opener && opener.top && opener.top.content) {
-			top.opener.top.content.update_messaging();
-			top.opener.top.content.update_msg_quick_view();
-		}
+			if (opener && opener.top && opener.top.content) {
+				top.opener.top.content.update_messaging();
+				top.opener.top.content.update_msg_quick_view();
+			}
 		</script>
 	</head>
 
 	<body class="weDialogBody">
-		<?php
-			$tbl = '
+<?php
+$tbl = '
 				<table align="center" cellpadding="0" cellspacing="0" width="100%">
 					<tr>
 						<td class="defaultfont" align="center">
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-			echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
-		?>
+echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+?>
 	</body>
 
 </html>

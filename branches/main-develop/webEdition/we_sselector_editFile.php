@@ -21,13 +21,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(!we_hasPerm("BROWSE_SERVER")) exit();
+if(!we_hasPerm("BROWSE_SERVER"))
+	exit();
 
 we_html_tools::htmlTop();
 
@@ -35,33 +34,30 @@ print STYLESHEET;
 
 $we_fileData = "";
 
-if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]=="save"){
+if(isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == "save"){
 	if(isset($_REQUEST["editFile"])){
-		$fh = fopen($_REQUEST["id"],"wb");
-		fwrite($fh,$_REQUEST["editFile"]);
+		$fh = fopen($_REQUEST["id"], "wb");
+		fwrite($fh, $_REQUEST["editFile"]);
 		fclose($fh);
 	}
-	$we_fileData=stripslashes($_REQUEST["editFile"]);
-}else if(isset($_REQUEST["id"])){
+	$we_fileData = stripslashes($_REQUEST["editFile"]);
+} else if(isset($_REQUEST["id"])){
 
-	$_REQUEST["id"]=str_replace("//","/",$_REQUEST["id"]);
-	$fh = fopen($_REQUEST["id"],"rb");
+	$_REQUEST["id"] = str_replace("//", "/", $_REQUEST["id"]);
+	$fh = fopen($_REQUEST["id"], "rb");
 	if($fh){
-		while(!feof($fh)) $we_fileData .= fread($fh,10000);
+		while(!feof($fh))
+			$we_fileData .= fread($fh, 10000);
 		fclose($fh);
-	}else{
-		$we_alerttext=sprintf(g_l('alert',"[can_not_open_file]"),str_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),1);
+	} else{
+		$we_alerttext = sprintf(g_l('alert', "[can_not_open_file]"), str_replace(str_replace("\\", "/", dirname($_REQUEST["id"])) . "/", "", $_REQUEST["id"]), 1);
 	}
-
 }
 
 $buttons = we_button::position_yes_no_cancel(
-										we_button::create_button("save", "javascript:document.forms[0].submit();"),
-										null,
-										we_button::create_button("cancel", "javascript:self.close();")
-											);
-$content='<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">'.htmlspecialchars($we_fileData).'</textarea>';
-
+		we_button::create_button("save", "javascript:document.forms[0].submit();"), null, we_button::create_button("cancel", "javascript:self.close();")
+);
+$content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . htmlspecialchars($we_fileData) . '</textarea>';
 ?>
 <script  type="text/javascript"><!--
 	function setSize(){
@@ -71,20 +67,20 @@ $content='<textarea name="editFile" id="editFile" style="width:540px;height:380p
 	}
 <?php if(isset($we_alerttext)){
 	print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR); ?>
-self.close();
+			self.close();
 <?php } ?>
-self.focus();
+	self.focus();
 <?php if(isset($_REQUEST["editFile"]) && (!isset($we_alerttext))){ ?>
-    opener.top.fscmd.selectDir();
-	self.close();
+		opener.top.fscmd.selectDir();
+		self.close();
 <?php } ?>
-//-->
+	//-->
 </script>
 </head>
 <body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
-<form method="post">
-   <input type="hidden" name="cmd" value="save" />
-   <?php print we_html_tools::htmlDialogLayout($content,g_l('global','[edit_file]').": <span class=\"weMultiIconBoxHeadline\">".str_replace(str_replace("\\","/",dirname($_REQUEST["id"]))."/","",$_REQUEST["id"]),$buttons,1)."</span>"; ?>
-</form></center>
+		<form method="post">
+			<input type="hidden" name="cmd" value="save" />
+<?php print we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ": <span class=\"weMultiIconBoxHeadline\">" . str_replace(str_replace("\\", "/", dirname($_REQUEST["id"])) . "/", "", $_REQUEST["id"]), $buttons, 1) . "</span>"; ?>
+		</form></center>
 </body>
 </html>

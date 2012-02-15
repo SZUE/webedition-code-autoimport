@@ -23,9 +23,8 @@
  */
 
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_browser_check.inc.php");
-include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
 we_html_tools::protect();
 we_html_tools::htmlTop('Messaging System');
 echo we_html_element::jsScript(JS_DIR.'images.js').

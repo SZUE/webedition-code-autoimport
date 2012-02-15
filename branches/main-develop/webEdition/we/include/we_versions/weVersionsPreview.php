@@ -21,8 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_versions/weVersions.class.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 @include_once('Text/Diff.php');
 @include_once('Text/Diff/Renderer/inline.php');
 
@@ -695,24 +694,24 @@ print STYLESHEET;
 
 <body>
 	<div id="mytabs">
-<?php print $tabsBody; ?>
+		<?php print $tabsBody; ?>
 	</div>
 	<div id="content" style="margin: 0px; width: 980px;height: 90%;">
 		<div id="tab1" style="visibility:visible;top:30px;left:0px;height:680px;width: 980px;">
 
-<?php print $_tab_1 ?>
+			<?php print $_tab_1 ?>
 
 
 		</div>
 		<div id="tab2" style="position:absolute;visibility:hidden;top:30px;left:-9999px;height:680px;overflow:auto;width: 980px;">
 
-<?php print $_tab_2 ?>
+			<?php print $_tab_2 ?>
 
 
 		</div>
 		<div id="tab3" style="position:absolute;visibility:hidden;top:30px;left:-9999px;height:680px;overflow:auto;width: 980px;">
 
-<?php print $_tab_3 ?>
+			<?php print $_tab_3 ?>
 
 
 		</div>

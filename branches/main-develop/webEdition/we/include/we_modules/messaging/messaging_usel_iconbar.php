@@ -21,26 +21,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-    <script type="text/javascript"><!--
+<script type="text/javascript"><!--
 	function get_selection() {
 		parent.do_selupdate();
 	}
-//-->
-    </script>
-  </head>
-  <body background="/webEdition/images/edit/editfooterback.gif" style="padding:10px;">
-    <?php
-      print we_button::position_yes_no_cancel(	we_button::create_button("ok", "javascript:get_selection();"),
-      											"",
-      											we_button::create_button("cancel", "javascript:parent.close();")
-      											);
-    ?>
-  </body>
+	//-->
+</script>
+</head>
+<body background="/webEdition/images/edit/editfooterback.gif" style="padding:10px;">
+<?php
+print we_button::position_yes_no_cancel(we_button::create_button("ok", "javascript:get_selection();"), "", we_button::create_button("cancel", "javascript:parent.close();")
+	);
+?>
+</body>
 </html>

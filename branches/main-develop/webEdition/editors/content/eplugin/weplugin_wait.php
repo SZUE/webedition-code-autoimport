@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,21 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
+$_callback = getRequestVar('callback', '');
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-	we_html_tools::protect();
-
-	$_callback = getRequestVar('callback','');
-
-	$js=we_html_element::jsElement('
+$js = we_html_element::jsElement('
 
 		var wait_count = 0;
 		var wait_retry = 40;
 
 		function nojava() {
-				alert("'.g_l('eplugin','[no_java]').'");
-				top.opener.top.plugin.location="' .WEBEDITION_DIR . 'html/white.html";
+				alert("' . g_l('eplugin', '[no_java]') . '");
+				top.opener.top.plugin.location="' . WEBEDITION_DIR . 'html/white.html";
 				self.close();
 		}
 
@@ -59,23 +58,21 @@
 		}
 
 		function initPlugin() {
-			top.opener.top.plugin.location="' .WEBEDITION_DIR . 'editors/content/eplugin/weplugin.php";
+			top.opener.top.plugin.location="' . WEBEDITION_DIR . 'editors/content/eplugin/weplugin.php";
 		}
 
 		self.focus();
 	');
-	$css=we_html_element::cssLink('/webEdition/css/global.php?WE_LANGUAGE='.$GLOBALS["WE_LANGUAGE"].'&amp;WE_BACKENDCHARSET='.$GLOBALS['WE_BACKENDCHARSET']);
+$css = we_html_element::cssLink('/webEdition/css/global.php?WE_LANGUAGE=' . $GLOBALS["WE_LANGUAGE"] . '&amp;WE_BACKENDCHARSET=' . $GLOBALS['WE_BACKENDCHARSET']);
 
-	print we_html_element::htmlHtml(
-			we_html_element::htmlHead($css."\n".$js).
-			we_html_element::htmlBody(array("bgcolor"=>"#ffffff","leftmargin"=>"20","topmargin"=>"20","marginheight"=>"20","marginwidth"=>"20","onload"=>"initPlugin();checkPlugin()"),
-							we_html_element::htmlForm(array("name"=>"we_form"),
-									we_html_element::htmlCenter(
-										we_html_element::htmlImg(array("src"=>IMAGE_DIR."spinner.gif")).
-										we_html_element::htmlBr().
-										we_html_element::htmlBr().
-										we_html_element::htmlDiv(array("class"=>"header_small"),g_l('eplugin',"[initialisation]"))
-									)
-							)
+print we_html_element::htmlHtml(
+		we_html_element::htmlHead($css . "\n" . $js) .
+		we_html_element::htmlBody(array("bgcolor" => "#ffffff", "leftmargin" => "20", "topmargin" => "20", "marginheight" => "20", "marginwidth" => "20", "onload" => "initPlugin();checkPlugin()"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
+					we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .
+					we_html_element::htmlBr() .
+					we_html_element::htmlBr() .
+					we_html_element::htmlDiv(array("class" => "header_small"), g_l('eplugin', "[initialisation]"))
+				)
 			)
+		)
 	);

@@ -328,7 +328,7 @@ if(isset($options[1][0])){
 $_REQUEST['filename'] = basename($_backup_filename);
 
 // include needed libraries
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 if(!isset($_SESSION['weBackupVars']) || empty($_SESSION['weBackupVars'])){
 

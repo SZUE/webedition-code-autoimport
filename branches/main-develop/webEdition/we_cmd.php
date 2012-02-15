@@ -315,10 +315,10 @@ if(!$INCLUDE){
 			break;
 		//  stuff about accessibility/validation
 		case 'checkDocument':
-			$INCLUDE = 'accessibility/checkDocument.inc.php';	//  Here request is performed
+			$INCLUDE = 'accessibility/checkDocument.inc.php'; //  Here request is performed
 			break;
 		case 'customValidationService':
-			$INCLUDE = 'we_templates/customizeValidation.inc.php';	//  edit parameters
+			$INCLUDE = 'we_templates/customizeValidation.inc.php'; //  edit parameters
 			break;
 
 
@@ -360,11 +360,11 @@ if($INCLUDE){
 	//	This is ONLY used in the edit-mode of the documents.
 	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show');
 	if(substr($INCLUDE, 0, 5) == 'apps/'){
-		define('NO_SESS',1);
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+		define('NO_SESS', 1);
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include(WEBEDITION_PATH . $INCLUDE);
 	} else{
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 		include(WE_INCLUDES_PATH . $INCLUDE);
 	}
 	//  This statement prevents the page from being reloaded

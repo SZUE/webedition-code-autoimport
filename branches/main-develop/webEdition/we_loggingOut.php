@@ -21,24 +21,21 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-if (isset($_SESSION)){
-    while(list($name, $val) = each($_SESSION)){
-        unset($_SESSION[$name]);
-    }
+if(isset($_SESSION)){
+	while(list($name, $val) = each($_SESSION)) {
+		unset($_SESSION[$name]);
+	}
 }
 $_SESSION = array();
-header("location: " . WEBEDITION_DIR ."index.php");
-
-
+header("location: " . WEBEDITION_DIR . "index.php");
 ?>
 <html>
-<head>
-<title>webEdition</title>
-</head>
-<body>
-<?php echo g_l('global',"[redirect_to_login_failed]"). '<a href="' . WEBEDITION_DIR .'index.php">' . g_l('global',"[redirect_to_login_name]") . '</a>'; ?>
-</body>
+	<head>
+		<title>webEdition</title>
+	</head>
+	<body>
+<?php echo g_l('global', "[redirect_to_login_failed]") . '<a href="' . WEBEDITION_DIR . 'index.php">' . g_l('global', "[redirect_to_login_name]") . '</a>'; ?>
+	</body>
 </html>

@@ -23,12 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_delete_fn.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
 
 $javascript = '';
-if (isset($_REQUEST['do'])) {
-	switch ($_REQUEST['do']) {
+if(isset($_REQUEST['do'])){
+	switch($_REQUEST['do']){
 		case 'delete':
 			$javascript .= $we_doc->deleteObjects();
 			break;
@@ -62,11 +61,11 @@ we_html_tools::protect();
 // Ausgabe beginnen
 we_html_tools::htmlTop();
 
-echo we_html_element::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 
 echo $we_doc->getSearchJS();
 
-if ($javascript != '') {
+if($javascript != ''){
 	echo '<script  type="text/javascript">' . $javascript . '</script>';
 }
 

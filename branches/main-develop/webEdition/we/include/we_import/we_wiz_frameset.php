@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,26 +22,33 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $wizard = new we_wizard_import();
 
 we_html_tools::protect();
 
-if (isset($_REQUEST["pnt"])) $what = $_REQUEST["pnt"];
-else $what = "wizframeset";
+if(isset($_REQUEST["pnt"]))
+	$what = $_REQUEST["pnt"];
+else
+	$what = "wizframeset";
 
-if (isset($_REQUEST["type"])) $type = $_REQUEST["type"];
-else $type = "";
+if(isset($_REQUEST["type"]))
+	$type = $_REQUEST["type"];
+else
+	$type = "";
 
-if (isset($_REQUEST["step"])) $step = $_REQUEST["step"];
-else $step = 0;
+if(isset($_REQUEST["step"]))
+	$step = $_REQUEST["step"];
+else
+	$step = 0;
 
-if (isset($_REQUEST["mode"])) $mode = $_REQUEST["mode"];
-else $mode = 0;
+if(isset($_REQUEST["mode"]))
+	$mode = $_REQUEST["mode"];
+else
+	$mode = 0;
 
-switch ($what) {
+switch($what){
 	case "wizframeset":
 		print $wizard->getWizFrameset();
 		break;

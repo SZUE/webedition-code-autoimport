@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,32 +21,30 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-  include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-  we_html_tools::htmlTop();
+we_html_tools::htmlTop();
 ?>
 </head>
 
-<?php if ($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right">
+		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
+		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
+<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right">
+		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
+		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
-<?php } else { //IE ?>
+<?php } else{ //IE  ?>
 	<frameset cols="170,*" framespacing="0" border="0" frameborder="0" id="resizeframeid">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no" frameborder="0">
-		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right">
+		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no" frameborder="0"/>
+		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>
 	</frameset>
 <?php } ?>
 <noframes>
- <body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
- </body>
+	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	</body>
 </noframes>
 </html>

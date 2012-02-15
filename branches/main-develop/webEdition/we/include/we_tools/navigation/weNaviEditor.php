@@ -22,10 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigation.class.php');
 
 $_margin_top = 5;
 $_space_size = 100;
@@ -42,8 +41,8 @@ $_navi = new weNavigation($_id);
 $_wrkNavi = array();
 if(!we_hasPerm('ADMINISTRATOR')){
 	if($_ws = get_ws(NAVIGATION_TABLE)){ // #5836: Use function get_ws()
-			$_wrkNavi = makeArrayFromCSV($_ws);
-	}					
+		$_wrkNavi = makeArrayFromCSV($_ws);
+	}
 	$_condition = array();
 	foreach($_wrkNavi as $_key => $_value){
 		$_condition[] = 'Path LIKE "' . escape_sql_query(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';

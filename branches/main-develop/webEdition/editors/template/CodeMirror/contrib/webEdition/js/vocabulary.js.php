@@ -53,7 +53,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  * @author     Daniel Schroeder  <deemes79 at googlemail.com>
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 echo 'top.we_tags=new Array();';
@@ -84,8 +84,7 @@ foreach($allWeTags as $tagName){
 				}
 				$attributeString.=implode(',', $optionsJS);
 				$attributeString.='}';
-			}
-			else{
+			} else{
 				$attributeString.='2';
 			}
 			$attributes[] = $attributeString;

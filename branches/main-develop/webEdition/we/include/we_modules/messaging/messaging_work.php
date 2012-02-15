@@ -21,34 +21,32 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
+if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
+	exit();
+}
 
-  include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
-	if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
-		exit();
-	}
-
-  we_html_tools::protect();
-
-  we_html_tools::htmlTop();
+we_html_tools::htmlTop();
 ?>
-    <script type="text/javascript"><!--
+<script type="text/javascript"><!--
 	do_mark_messages = 0;
 	last_entry_selected = -1;
 	entries_selected = new Array();
 	//-->
-    </script>
+</script>
 
 </head>
-   <frameset rows="35,26,1,*" framespacing="0" border="0" frameborder="NO">
-     <frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_frame.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="messaging_search" scrolling="no" noresize>
-     <frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_fv_headers.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="messaging_fv_headers" scrolling="no" noresize>
-     <frame src="<?php echo HTML_DIR?>msg_white_fr.html" noresize scrolling="no">
-     <frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_mfv.php" name="msg_mfv" scrolling="no">
-   </frameset>
+<frameset rows="35,26,1,*" framespacing="0" border="0" frameborder="NO">
+	<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_search_frame.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_search" scrolling="no" noresize/>
+	<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_fv_headers.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="messaging_fv_headers" scrolling="no" noresize/>
+	<frame src="<?php echo HTML_DIR ?>msg_white_fr.html" noresize scrolling="no"/>
+	<frame src="<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_mfv.php" name="msg_mfv" scrolling="no"/>
+</frameset>
 <noframes>
- <body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
- </body>
+	<body background="<?php print IMAGE_DIR ?>backgrounds/aquaBackground.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	</body>
 </noframes>
 </html>

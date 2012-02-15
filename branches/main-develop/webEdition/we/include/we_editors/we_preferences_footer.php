@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,28 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-/*****************************************************************************
- * INCLUDES
- *****************************************************************************/
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-/*****************************************************************************
- * INITIALIZATION
- *****************************************************************************/
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
 we_html_tools::htmlTop();
 
-/*****************************************************************************
- * CREATE JAVASCRIPT
- *****************************************************************************/
-
 // Define needed JS
-$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert','[save_error_fields_value_not_valid]'),we_message_reporting::WE_MESSAGE_ERROR);
+$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 $_javascript = <<< END_OF_SCRIPT
 <!--
 var countSaveTrys = 0;
@@ -113,7 +100,7 @@ function we_save() {
 
 END_OF_SCRIPT;
 
-if (we_hasPerm("FORMMAIL")) {
+if(we_hasPerm("FORMMAIL")){
 	$_javascript .= "top.we_preferences.send_recipients();";
 }
 
@@ -125,9 +112,9 @@ $_javascript .= <<< END_OF_SCRIPT
 //-->
 END_OF_SCRIPT;
 
-/*****************************************************************************
+/* * ***************************************************************************
  * RENDER FILE
- *****************************************************************************/
+ * *************************************************************************** */
 
 print STYLESHEET . we_html_element::jsElement($_javascript) . "</head>";
 

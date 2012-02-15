@@ -21,16 +21,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once(WE_MESSAGING_MODULE_DIR . "msg_html_tools.inc.php");
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
 
-if (!preg_match('|^([a-f0-9]){32}|i',$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
@@ -39,57 +36,57 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 print STYLESHEET;
-echo we_html_element::jsScript(JS_DIR.'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script type="text/javascript"><!--
 
 	function new_todo() {
-	    new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
+		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
 	}
 
 	function forward_todo() {
-	    if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=forward", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
-	    }
+		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=forward", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
+		}
 	}
 
 	function reject_todo() {
-	    if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
-	    }
+		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_edit_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+		}
 	}
 
 	function update_todo() {
-	    if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-		new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mode=reject", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
-	    }
+		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+			new jsWindow("<?php print WE_MESSAGING_MODULE_PATH; ?>todo_update_todo.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mode=reject", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
+		}
 	}
 
 	function copy_messages() {
-	    if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-		top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mcmd=copy_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
-	    }
+		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=copy_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+		}
 	}
 
 	function cut_messages() {
-	    if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-		top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mcmd=cut_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
-	    }
+		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
+			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=cut_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+		}
 	}
 
 	function paste_messages() {
 		if (top.content.messaging_main.messaging_right.msg_work.entries_selected) {
-	    	top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mcmd=paste_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=paste_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
 		}
 	}
 
 	function delete_messages() {
 		if (top.content.messaging_main.messaging_right.msg_work.entries_selected && top.content.messaging_main.messaging_right.msg_work.entries_selected.length > 0) {
-			c = confirm("<?php echo g_l('modules_messaging','[q_rm_todos]')?>");
+			c = confirm("<?php echo g_l('modules_messaging', '[q_rm_todos]') ?>");
 			if (c == false) {
 				return;
 			}
-			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>&mcmd=delete_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
+			top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>&mcmd=delete_msg&entrsel=" + top.content.messaging_main.messaging_right.msg_work.entries_selected.join(',');
 		}
 	}
 
@@ -100,10 +97,10 @@ echo we_html_element::jsScript(JS_DIR.'windows.js');
 
 	function launch_msg() {
 		if (top.content.messaging_main.messaging_right.msg_work.entries_selected) {
-	    	top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=launch&mode=message&we_transaction=<?php echo $_REQUEST['we_transaction']?>';
+			top.content.messaging_cmd.location = '<?php print WE_MESSAGING_MODULE_PATH; ?>messaging_cmd.php?mcmd=launch&mode=message&we_transaction=<?php echo $_REQUEST['we_transaction'] ?>';
 		}
 	}
-//-->
+	//-->
 </script>
 </head>
 
@@ -111,7 +108,7 @@ echo we_html_element::jsScript(JS_DIR.'windows.js');
 	<table border="0" cellpadding="8" cellspacing="0" width="100%">
 		<tr>
 			<td width="36">
-				<?php echo we_button::create_button("image:btn_task_create", "javascript:new_todo()", true); ?></td>
+<?php echo we_button::create_button("image:btn_task_create", "javascript:new_todo()", true); ?></td>
 			<td width="36">
 				<?php echo we_button::create_button("image:btn_task_forward", "javascript:forward_todo()", true); ?></td>
 			<td width="36">
@@ -119,9 +116,9 @@ echo we_html_element::jsScript(JS_DIR.'windows.js');
 			<td width="36">
 				<?php echo we_button::create_button("image:btn_task_status", "javascript:update_todo()", true); ?></td>
 			<td width="36">
-				</td>
+			</td>
 			<td width="36">
-				<?php echo we_button::create_button("image:btn_task_copy", "javascript:copy_messages()", true); ?></td>
+<?php echo we_button::create_button("image:btn_task_copy", "javascript:copy_messages()", true); ?></td>
 			<td width="36">
 				<?php echo we_button::create_button("image:btn_task_cut", "javascript:cut_messages()", true); ?></td>
 			<td width="36">

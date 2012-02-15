@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)) {
+if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
 	exit();
 }
 
@@ -31,7 +31,7 @@ if(!defined('NO_SESS')){
 }
 
 //leave this
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**
  * showContent()
@@ -82,7 +82,7 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 
 		if(isset($_lastDoc['Path'])){
 
-			if(sizeof($workspaces) > 0){	// get the correct template
+			if(sizeof($workspaces) > 0){ // get the correct template
 				//	Select a matching workspace.
 				for($i = 0; $i < sizeof($workspaces); $i++){
 
@@ -235,7 +235,7 @@ $tmplPath = preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_
 if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
 	define('WE_CONTENT_TYPE_SET', 1);
 	//	@ -> to aware of unproper use of this element, f. ex in include-File
-	@we_html_tools::headerCtCharset('text/html',$GLOBALS['we_doc']->Charset);
+	@we_html_tools::headerCtCharset('text/html', $GLOBALS['we_doc']->Charset);
 }
 
 // Caching
@@ -246,7 +246,7 @@ if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $G
   $we_doc->CacheLifeTime = isset($h['CacheLifeTime']) ? $h['CacheLifeTime'] : 0;
  */
 //	If in webEdition, parse the document !!!!
-if(isset($_SESSION['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['we_data'][$we_transaction]['0']['InWebEdition']){	//	In webEdition, parse the file.
+if(isset($_SESSION['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
 	$contentOrig = implode('', file(TEMPLATE_DIR . $tmplPath));
 
 	ob_start();

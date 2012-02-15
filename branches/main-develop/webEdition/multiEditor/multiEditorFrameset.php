@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -51,8 +51,8 @@ for($i = 0; $i < $MULTIEDITOR_AMOUNT; $i++){
 
 	</head>
 	<frameset id="multiEditorFrameset" cols="<?php print implode(",", $cols); ?>" border="0" frameborder="no" framespacing="0" noresize>
-<?php
-print $frames;
-?>
+		<?php
+		print $frames;
+		?>
 	</frameset>
 </html>

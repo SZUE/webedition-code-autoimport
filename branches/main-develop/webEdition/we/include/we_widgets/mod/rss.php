@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 print we_html_tools::htmlTop();
 print
-		"<script type=\"text/javascript\">
+	"<script type=\"text/javascript\">
 
 function init() {
 	parent.executeAjaxRequest('" . implode("', '", $_REQUEST['we_cmd']) . "');
@@ -37,6 +37,6 @@ function init() {
 
 </script>";
 print we_html_element::htmlBody(array(
-	"onload" => "init()"
-));
+		"onload" => "init()"
+	));
 print "</html>";

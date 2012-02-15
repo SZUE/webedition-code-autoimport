@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,20 +22,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-if (defined("MESSAGING_SYSTEM")){
-	include_once(WE_MESSAGING_MODULE_DIR."we_message.inc.php");
+if(defined("MESSAGING_SYSTEM")){
+	include_once(WE_MESSAGING_MODULE_DIR . "we_message.inc.php");
 
 	$_SESSION['we_data'][$_transact] = array();
 
 	$_we_messaging = new we_messaging($_SESSION['we_data'][$_transact]);
 	$_we_messaging->add_msgobj('we_message');
 	$_we_messaging->saveInSession($_SESSION['we_data'][$_transact]);
-	$messaging_text = g_l('javaMenu_moduleInformation','[messaging][text]').":";
-	$new_messages = g_l('modules_messaging',"[new_messages]");
-	$new_tasks = g_l('modules_messaging',"[new_tasks]");
+	$messaging_text = g_l('javaMenu_moduleInformation', '[messaging][text]') . ":";
+	$new_messages = g_l('modules_messaging', "[new_messages]");
+	$new_tasks = g_l('modules_messaging', "[new_tasks]");
 
 	$messaging = "";
 	$messaging = new we_messaging($_SESSION["we_data"]["we_transaction"]);
@@ -47,6 +47,6 @@ if (defined("MESSAGING_SYSTEM")){
 
 	$msg_cmd = "javascript:top.we_cmd('messaging_start','message');";
 	$todo_cmd = "javascript:top.we_cmd('messaging_start','todo');";
-	$msg_button = we_html_element::htmlA(array("href"=>$msg_cmd),we_html_element::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/message.gif',"width"=>34,"height"=>34,"border"=>0)));
-	$todo_button = we_html_element::htmlA(array("href"=>$todo_cmd),we_html_element::htmlImg(array("src"=>IMAGE_DIR.'pd/msg/todo.gif',"width"=>34,"height"=>34,"border"=>0)));
+	$msg_button = we_html_element::htmlA(array("href" => $msg_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/message.gif', "width" => 34, "height" => 34, "border" => 0)));
+	$todo_button = we_html_element::htmlA(array("href" => $todo_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/todo.gif', "width" => 34, "height" => 34, "border" => 0)));
 }

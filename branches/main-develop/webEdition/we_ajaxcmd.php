@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,13 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 if(!isset($_REQUEST['we_cmd'])){
 	exit();
 }
 
 $include = "";
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -36,6 +36,6 @@ switch($_REQUEST['we_cmd'][0]){
 	case "selectorSuggest" :
 		break;
 }
-if ($include) {
-	include($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/".$include);
+if($include){
+	include($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/" . $include);
 }

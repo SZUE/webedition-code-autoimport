@@ -21,37 +21,34 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
-
 ?>
-  </head>
+</head>
 
-<?php if ($GLOBALS["BROWSER"] == "NN6")	{ ?>
-<frameset cols="*" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="msg_work" scrolling="no" noresize>
-</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI") { ?>
-<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize>
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="msg_work" scrolling="no" noresize>
-</frameset>
-<?php } else { ?>
-<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
-	<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize>
-	<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction']?>" name="msg_work" scrolling="no" noresize>
-</frameset>
+<?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
+	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
+		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
+	</frameset>
+<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
+	<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
+		<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize/>
+		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
+	</frameset>
+<?php } else{ ?>
+	<frameset cols="2,*" framespacing="0" border="0" frameborder="NO">
+		<frame src="<?php print HTML_DIR ?>ieResize.html" name="bm_resize" scrolling="no" noresize/>
+		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
+	</frameset>
 <?php } ?>
 
-  <body>
-  </body>
+<body>
+</body>
 </body>

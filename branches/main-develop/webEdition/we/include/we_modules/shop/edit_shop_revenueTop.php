@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/util/Strings.php');
 
 $selectedYear = isset($_REQUEST['ViewYear']) ? $_REQUEST['ViewYear'] : date("Y");
@@ -224,14 +224,14 @@ if($DB_WE->num_rows()){
 		// save all data in array
 		$orderRows[$nr]['IntOrderID'] = $DB_WE->f('IntOrderID'); // also for ordering
 		$orderRows[$nr]['IntCustomerID'] = $DB_WE->f('IntCustomerID');
-		$orderRows[$nr]['IntArticleID'] = $DB_WE->f('IntArticleID');	// also for ordering
+		$orderRows[$nr]['IntArticleID'] = $DB_WE->f('IntArticleID'); // also for ordering
 		$orderRows[$nr]['IntQuantity'] = $DB_WE->f('IntQuantity');
 		$orderRows[$nr]['DatePayment'] = $DB_WE->f('DatePayment');
 		$orderRows[$nr]['DateOrder'] = $DB_WE->f('DateOrder');
-		$orderRows[$nr]['formatDateOrder'] = $DB_WE->f('formatDateOrder');	// also for ordering
+		$orderRows[$nr]['formatDateOrder'] = $DB_WE->f('formatDateOrder'); // also for ordering
 		$orderRows[$nr]['formatDatePayment'] = $DB_WE->f('formatDatePayment'); // also for ordering
-		$orderRows[$nr]['Price'] = $DB_WE->f('Price');	// also for ordering
-		$orderRows[$nr]['shoptitle'] = (isset($shopArticleObject['shoptitle']) ? $shopArticleObject['shoptitle'] : $shopArticleObject['we_shoptitle']);	// also for ordering
+		$orderRows[$nr]['Price'] = $DB_WE->f('Price'); // also for ordering
+		$orderRows[$nr]['shoptitle'] = (isset($shopArticleObject['shoptitle']) ? $shopArticleObject['shoptitle'] : $shopArticleObject['we_shoptitle']); // also for ordering
 		// all data from strSerialOrder
 		// first unserialize order-data
 		if($DB_WE->f('strSerialOrder')){

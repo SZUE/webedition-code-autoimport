@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -96,7 +96,7 @@ $_buttons = we_button::position_yes_no_cancel($deleteAllButton, null, $closeButt
 
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
-<?php print g_l('messageConsole', "[headline]") ?>
+			<?php print g_l('messageConsole', "[headline]") ?>
 		</div>
 	</div>
 	<div id="messageDiv">
@@ -104,7 +104,7 @@ $_buttons = we_button::position_yes_no_cancel($deleteAllButton, null, $closeButt
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="padding: 10px 10px 0 0;">
-<?php print $_buttons; ?>
+			<?php print $_buttons; ?>
 		</div>
 	</div>
 </body>

@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -122,116 +122,116 @@ function _cutText($text, $l){
 	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onSubmit="return false;">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 
-<?php
+			<?php
 
-function getDataType($dat){
-	$ct = getContentTypeFromFile($dat);
-	if(g_l('contentTypes', '[' . $ct . ']') !== false){
-		return g_l('contentTypes', '[' . $ct . ']');
-	}
-	return "";
-}
-
-$arDir = array();
-$arFile = array();
-$ordDir = array();
-$ordFile = array();
-$final = array();
-
-if($_REQUEST["dir"] == ""){
-	$org = "/";
-} else{
-	$org = $_REQUEST["dir"];
-}
-
-$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
-if($dir != "/")
-	$dir = rtrim($dir,'/');
-if(!isset($_REQUEST["ord"]))
-	$_REQUEST["ord"] = 10;
-@chdir($dir);
-$dir_obj = @dir($dir);
-
-if($dir_obj){
-	while(false !== ($entry = $dir_obj->read())) {
-		if($entry != '.' && $entry != '..'){
-			if(is_dir($dir . "/" . $entry)){
-				array_push($arDir, $entry);
-				switch($_REQUEST["ord"]){
-					case 10:
-					case 11:array_push($ordDir, $entry);
-						break;
-					case 20:
-					case 21:array_push($ordDir, getDataType($dir . "/" . $entry));
-						break;
-					case 30:
-					case 31:array_push($ordDir, filectime($dir . "/" . $entry));
-						break;
-					case 40:
-					case 41:array_push($ordDir, filesize($dir . "/" . $entry));
-						break;
+			function getDataType($dat){
+				$ct = getContentTypeFromFile($dat);
+				if(g_l('contentTypes', '[' . $ct . ']') !== false){
+					return g_l('contentTypes', '[' . $ct . ']');
 				}
-			} else{
-				array_push($arFile, $entry);
-				switch($_REQUEST["ord"]){
-					case 10:
-					case 11:array_push($ordFile, $entry);
-						break;
-					case 20:
-					case 21:array_push($ordFile, getDataType($dir . "/" . $entry));
-						break;
-					case 30:
-					case 31:array_push($ordFile, filectime($dir . "/" . $entry));
-						break;
-					case 40:
-					case 41:array_push($ordFile, filesize($dir . "/" . $entry));
-						break;
-				}
+				return "";
 			}
-		}
-	}
-	$dir_obj->close();
-} else{
-	print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
-}
 
-switch($_REQUEST["ord"]){
-	case 10:
-	case 20:
-	case 30:
-	case 40:asort($ordDir);
-		asort($ordFile);
-		break;
-	case 11:
-	case 21:
-	case 31:
-	case 41:arsort($ordDir);
-		arsort($ordFile);
-		break;
-}
+			$arDir = array();
+			$arFile = array();
+			$ordDir = array();
+			$ordFile = array();
+			$final = array();
+
+			if($_REQUEST["dir"] == ""){
+				$org = "/";
+			} else{
+				$org = $_REQUEST["dir"];
+			}
+
+			$dir = $_SERVER['DOCUMENT_ROOT'] . $_REQUEST["dir"];
+			if($dir != "/")
+				$dir = rtrim($dir, '/');
+			if(!isset($_REQUEST["ord"]))
+				$_REQUEST["ord"] = 10;
+			@chdir($dir);
+			$dir_obj = @dir($dir);
+
+			if($dir_obj){
+				while(false !== ($entry = $dir_obj->read())) {
+					if($entry != '.' && $entry != '..'){
+						if(is_dir($dir . "/" . $entry)){
+							array_push($arDir, $entry);
+							switch($_REQUEST["ord"]){
+								case 10:
+								case 11:array_push($ordDir, $entry);
+									break;
+								case 20:
+								case 21:array_push($ordDir, getDataType($dir . "/" . $entry));
+									break;
+								case 30:
+								case 31:array_push($ordDir, filectime($dir . "/" . $entry));
+									break;
+								case 40:
+								case 41:array_push($ordDir, filesize($dir . "/" . $entry));
+									break;
+							}
+						} else{
+							array_push($arFile, $entry);
+							switch($_REQUEST["ord"]){
+								case 10:
+								case 11:array_push($ordFile, $entry);
+									break;
+								case 20:
+								case 21:array_push($ordFile, getDataType($dir . "/" . $entry));
+									break;
+								case 30:
+								case 31:array_push($ordFile, filectime($dir . "/" . $entry));
+									break;
+								case 40:
+								case 41:array_push($ordFile, filesize($dir . "/" . $entry));
+									break;
+							}
+						}
+					}
+				}
+				$dir_obj->close();
+			} else{
+				print '<script  type="text/javascript">' . we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR) . '</script><br><br><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+			}
+
+			switch($_REQUEST["ord"]){
+				case 10:
+				case 20:
+				case 30:
+				case 40:asort($ordDir);
+					asort($ordFile);
+					break;
+				case 11:
+				case 21:
+				case 31:
+				case 41:arsort($ordDir);
+					arsort($ordFile);
+					break;
+			}
 
 
 
-foreach($ordDir as $key => $value){
-	array_push($final, $arDir[$key]);
-}
-foreach($ordFile as $key => $value){
-	array_push($final, $arFile[$key]);
-}
+			foreach($ordDir as $key => $value){
+				array_push($final, $arDir[$key]);
+			}
+			foreach($ordFile as $key => $value){
+				array_push($final, $arFile[$key]);
+			}
 
-print '<script type="text/javascript">
+			print '<script type="text/javascript">
 top.allentries = new Array();
 var i = 0;
 ';
-foreach($final as $key => $entry){
-	print 'top.allentries[i++] = "' . $entry . '"' . "\n";
-}
-print '</script>
+			foreach($final as $key => $entry){
+				print 'top.allentries[i++] = "' . $entry . '"' . "\n";
+			}
+			print '</script>
 ';
-$set_rename = false;
+			$set_rename = false;
 
-if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
-	?>
+			if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
+				?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print ICON_DIR ?>folder.gif" width="16" height="18" border="0"></td>
 					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
@@ -239,7 +239,7 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 					<td class="selector"><?php print date("d-m-Y H:i:s") ?></td>
 					<td class="selector"></td>
 				</tr>
-			<?php
+				<?php
 			}
 
 			foreach($final as $key => $entry){
@@ -325,18 +325,18 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
 						<td><?php print we_html_tools::getPixel(10, 1) ?></td>
 					</tr>
-		<?php
-	}
-}
-?>
+					<?php
+				}
+			}
+			?>
 
 		</table>
-<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
+		<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
 			<input type="hidden" name="cmd" value="<?php print $_REQUEST["nf"]; ?>" />
-	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
+			<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?><input type="hidden" name="sid" value="<?php print $_REQUEST["sid"] ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
 			<input type="hidden" name="pat" value="<?php print isset($_REQUEST["pat"]) ? $_REQUEST["pat"] : ""  ?>" />
-	<?php } ?>
+		<?php } ?>
 	</form>
 
 	<?php if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){ ?>
@@ -344,15 +344,15 @@ if(isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder"){
 			document.forms["we_form"].elements["txt"].focus();
 			document.forms["we_form"].elements["txt"].select();
 	<?php if($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file"){ ?>
-				 document.forms["we_form"].elements["oldtxt"].value=document.forms["we_form"].elements["txt"].value;
+			document.forms["we_form"].elements["oldtxt"].value=document.forms["we_form"].elements["txt"].value;
 	<?php } ?>
-			 document.forms["we_form"].elements["pat"].value=top.currentDir;
+		document.forms["we_form"].elements["pat"].value=top.currentDir;
 		</script>
-<?php
-}
-if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){
+		<?php
+	}
+	if(( isset($_REQUEST["nf"]) && $_REQUEST["nf"] == "new_folder") || (( isset($_REQUEST["nf"]) && ($_REQUEST["nf"] == "rename_folder" || $_REQUEST["nf"] == "rename_file")) && ($set_rename))){
 
-}
-?>
+	}
+	?>
 </body>
 </html>

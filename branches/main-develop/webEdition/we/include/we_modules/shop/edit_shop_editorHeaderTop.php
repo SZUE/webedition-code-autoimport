@@ -25,7 +25,7 @@ if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
 	print '<body bgcolor="#FFFFFF" background="/webEdition/images/backgrounds/bgGrayLineTop.gif"></body></html>';
 	exit;
 }
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php");
 
 we_html_tools::protect();
@@ -90,7 +90,7 @@ if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
 		$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), "TAB_NORMAL", "setTab(1);"));
 	} elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects
 		$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), "TAB_NORMAL", "setTab(0);"));
-	} elseif(($resultD < 1) && (!empty($resultO))){	// no docs but objects
+	} elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects
 		$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), "TAB_NORMAL", "setTab(1);"));
 	}
 	if(isset($yearTrans) && $yearTrans != 0){
@@ -117,10 +117,10 @@ $tab_body = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="
 <?php
 if(isset($yearTrans)){
 	?>
-					case 2:
-						parent.edbody.document.location = 'edit_shop_revenueTop.php?ViewYear=<?php print $yearTrans; ?>' // ' + top.yearshop
+						case 2:
+							parent.edbody.document.location = 'edit_shop_revenueTop.php?ViewYear=<?php print $yearTrans; ?>' // ' + top.yearshop
 
-						break;
+							break;
 	<?php
 }
 ?>
@@ -134,8 +134,8 @@ if(isset($yearTrans)){
 print $tab_head;
 ?>
 <body bgcolor="white" background="<?php print IMAGE_DIR; ?>backgrounds/header_with_black_line.gif" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" onLoad="setFrameSize()" onResize="setFrameSize()">
-<?php
-print $tab_body;
-?>
+	<?php
+	print $tab_body;
+	?>
 </body>
 </html>

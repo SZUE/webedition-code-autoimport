@@ -21,22 +21,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::htmlTop();
 
 print STYLESHEET;
 
-$content='<table cellpadding="0" cellspacing="0" border="0">
-        <tr><td class="defaultfont">'.$g_l('help','[help_not_available_text]').'</td></tr>
-        <tr><td class="defaultfont">'.$g_l('help','[help_not_available_again]').'</td></tr>
+$content = '<table cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="defaultfont">' . $g_l('help', '[help_not_available_text]') . '</td></tr>
+        <tr><td class="defaultfont">' . $g_l('help', '[help_not_available_again]') . '</td></tr>
     </table>';
-
 ?>
 </head>
 <body class="weDialogBody">
- <?php print we_html_tools::htmlDialogLayout($content,$g_l('help','[help_not_available_title]'),we_button::create_button("close", "javascript:self.close();")); ?>
+<?php print we_html_tools::htmlDialogLayout($content, $g_l('help', '[help_not_available_title]'), we_button::create_button("close", "javascript:self.close();")); ?>
 </body>
 </html>

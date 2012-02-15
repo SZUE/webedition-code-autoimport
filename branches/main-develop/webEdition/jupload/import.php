@@ -26,7 +26,7 @@ if(empty($_SESSION["user"]["Username"]) && isset($_REQUEST['csid'])){
 	session_id($_REQUEST['csid']);
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 

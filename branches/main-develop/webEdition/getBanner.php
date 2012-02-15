@@ -22,7 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 define("NO_SESS", 1);
 
@@ -47,8 +47,6 @@ $xml = (isset($_GET["xml"]) && $_GET["xml"]) ? true : false;
 $c = isset($_GET["c"]) ? $_GET["c"] : 0;
 
 if($type && $type != "pixel"){
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-	include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_modules/banner/weBanner.php");
 	$code = weBanner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
 }
 if($type == "js"){

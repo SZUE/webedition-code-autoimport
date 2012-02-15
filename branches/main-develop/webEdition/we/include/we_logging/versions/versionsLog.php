@@ -21,8 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -30,45 +29,43 @@ $versionsLogView = new versionsLogView();
 $content = $versionsLogView->getContent();
 $out = $versionsLogView->printContent($content);
 
-we_html_tools::htmlTop(g_l('versions','[versions_log]'));
+we_html_tools::htmlTop(g_l('versions', '[versions_log]'));
 
 print STYLESHEET;
 
-echo we_html_element::jsScript(JS_DIR.'windows.js').
-	we_html_element::jsScript(JS_DIR.'libs/yui/yahoo-min.js').
-	we_html_element::jsScript(JS_DIR.'libs/yui/event-min.js').
-	we_html_element::jsScript(JS_DIR.'libs/yui/connection-min.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 
 print $versionsLogView->getJS();
 
 $closeButton = we_button::create_button("close", "javascript:window.close();");
-
-
 ?>
 <style type="text/css">
 
-#headlineDiv {
-	height				: 40px;
-}
-#headlineDiv div {
-	padding				: 10px 0 0 15px;
-}
+	#headlineDiv {
+		height				: 40px;
+	}
+	#headlineDiv div {
+		padding				: 10px 0 0 15px;
+	}
 
-#versionsDiv {
-	background			: #fff;
-	overflow			: auto;
-	height				: 420px ! important;
-	margin				: 0px ! important;
-}
+	#versionsDiv {
+		background			: #fff;
+		overflow			: auto;
+		height				: 420px ! important;
+		margin				: 0px ! important;
+	}
 
-.dialogButtonDiv {
-	left				: 0;
-	height				: 40px;
-	background-image	: url(/webEdition/images/edit/editfooterback.gif);
-	position			: absolute;
-	bottom				: 0;
-	width				: 100%;
-}
+	.dialogButtonDiv {
+		left				: 0;
+		height				: 40px;
+		background-image	: url(/webEdition/images/edit/editfooterback.gif);
+		position			: absolute;
+		bottom				: 0;
+		width				: 100%;
+	}
 
 
 </style>
@@ -77,23 +74,21 @@ $closeButton = we_button::create_button("close", "javascript:window.close();");
 
 <body class="weDialogBody">
 
-<div id="headlineDiv">
-	<div class="weDialogHeadline">
-		<?php print g_l('versions','[versions_log]') ?>
+	<div id="headlineDiv">
+		<div class="weDialogHeadline">
+<?php print g_l('versions', '[versions_log]') ?>
+		</div>
 	</div>
-</div>
-<div id="versionsDiv">
-	<?php
+	<div id="versionsDiv">
+<?php
+print $out;
+?>
 
-	print $out;
-
-	?>
-
-</div>
-<div class="dialogButtonDiv">
-	<div style="position:absolute;top:10px;right:20px;">
+	</div>
+	<div class="dialogButtonDiv">
+		<div style="position:absolute;top:10px;right:20px;">
 		<?php print $closeButton; ?>
+		</div>
 	</div>
-</div>
 </body>
 </html>

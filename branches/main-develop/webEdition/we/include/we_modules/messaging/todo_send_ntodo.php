@@ -21,13 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-if (!preg_match('|^([a-f0-9]){32}$|i',$_REQUEST['we_transaction'])) {
+if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 	exit();
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-include_once(WE_MESSAGING_MODULE_DIR . "we_messaging.inc.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
@@ -36,45 +34,43 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION["we_data"][$_REQUEST['we_transaction']]);
 
 if(isset($_REQUEST['td_deadline_hour'])){
-    $deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
+	$deadline = mktime($_REQUEST['td_deadline_hour'], $_REQUEST['td_deadline_minute'], 0, $_REQUEST['td_deadline_month'], $_REQUEST['td_deadline_day'], $_REQUEST['td_deadline_year']);
 }
 
-if ($_REQUEST["mode"] == 'forward') {
-    $arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
-    $res = $messaging->forward($arr);
-    $heading = g_l('modules_messaging','[forwarding_todo]');
-    $action = g_l('modules_messaging','[forwarded_to]');
-    $s_action = g_l('modules_messaging','[todo_s_forwarded]');
-    $n_action = g_l('modules_messaging','[todo_n_forwarded]');
-} elseif ($_REQUEST["mode"] == 'reject') {
-    $arr = array('body' => $_REQUEST['mn_body']);
-    $res = $messaging->reject($arr);
-    $heading = g_l('modules_messaging','[rejecting_todo]');
-    $action = g_l('modules_messaging','[rejected_to]');
-    $s_action = g_l('modules_messaging','[todo_s_rejected]');
-    $n_action = g_l('modules_messaging','[todo_n_rejected]');
-} else {
-    $arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body'], 'deadline' => $deadline, 'status' => 0, 'priority' => $_REQUEST['mn_priority']);
-    $res = $messaging->send($arr, "we_todo");
-    $heading = g_l('modules_messaging','[creating_todo]');
-    $s_action = g_l('modules_messaging','[todo_s_created]');
-    $n_action = g_l('modules_messaging','[todo_n_created]');
-
-
+if($_REQUEST["mode"] == 'forward'){
+	$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'deadline' => $deadline, 'body' => $_REQUEST['mn_body']);
+	$res = $messaging->forward($arr);
+	$heading = g_l('modules_messaging', '[forwarding_todo]');
+	$action = g_l('modules_messaging', '[forwarded_to]');
+	$s_action = g_l('modules_messaging', '[todo_s_forwarded]');
+	$n_action = g_l('modules_messaging', '[todo_n_forwarded]');
+} elseif($_REQUEST["mode"] == 'reject'){
+	$arr = array('body' => $_REQUEST['mn_body']);
+	$res = $messaging->reject($arr);
+	$heading = g_l('modules_messaging', '[rejecting_todo]');
+	$action = g_l('modules_messaging', '[rejected_to]');
+	$s_action = g_l('modules_messaging', '[todo_s_rejected]');
+	$n_action = g_l('modules_messaging', '[todo_n_rejected]');
+} else{
+	$arr = array('rcpts_string' => $_REQUEST['rcpts_string'], 'subject' => $_REQUEST['mn_subject'], 'body' => $_REQUEST['mn_body'], 'deadline' => $deadline, 'status' => 0, 'priority' => $_REQUEST['mn_priority']);
+	$res = $messaging->send($arr, "we_todo");
+	$heading = g_l('modules_messaging', '[creating_todo]');
+	$s_action = g_l('modules_messaging', '[todo_s_created]');
+	$n_action = g_l('modules_messaging', '[todo_n_created]');
 }
 ?>
 <html>
-    <head>
-        <title><?php echo $heading ?></title>
-        <?php print STYLESHEET; ?>
-        <script type="text/javascript">
-        <!--
-        top.opener.top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction']?>";
-        //-->
-        </script>
-		<?php
-        if(!empty($res['ok'])){
-		    echo "
+	<head>
+		<title><?php echo $heading ?></title>
+<?php print STYLESHEET; ?>
+		<script type="text/javascript">
+			<!--
+			top.opener.top.content.messaging_cmd.location = "<?php print WE_MESSAGING_MODULE_PATH . 'messaging_cmd.php?mcmd=refresh_mwork&we_transaction=' . $_REQUEST['we_transaction'] ?>";
+			//-->
+		</script>
+<?php
+if(!empty($res['ok'])){
+	echo "
         <script language=\"javascript\">
         if (opener && opener.top && opener.top.content) {
 		    top.opener.top.content.update_messaging();
@@ -82,34 +78,33 @@ if ($_REQUEST["mode"] == 'forward') {
         }
 		</script>
 		    ";
-		    }
-		?>
-    </head>
+}
+?>
+	</head>
 
-    <body class="weDialogBody">
-    <?php
+	<body class="weDialogBody">
+<?php
+$res['ok'] = array_map('htmlspecialchars', $res['ok']);
+$res['failed'] = array_map('htmlspecialchars', $res['failed']);
+$res['err'] = array_map('htmlspecialchars', $res['err']);
 
-    $res['ok'] = array_map('htmlspecialchars', $res['ok']);
-    $res['failed'] = array_map('htmlspecialchars', $res['failed']);
-    $res['err'] = array_map('htmlspecialchars', $res['err']);
 
-
-    $tbl = '<table align="center" cellpadding="7" cellspacing="3">
+$tbl = '<table align="center" cellpadding="7" cellspacing="3">
 		    <tr>
 		      <td class="defaultfont" valign="top">' . $s_action . ':</td>
-		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging','[nobody]'): join("</li>\n<li>", $res['ok'])) . '</li></ul></td>
+		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging', '[nobody]') : join("</li>\n<li>", $res['ok'])) . '</li></ul></td>
 		    </tr>
 		    ' . (empty($res['failed']) ? '' : '<tr>
 		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . join("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
-		    (empty($res['err']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . g_l('modules_messaging','[occured_errs]') . ':</td>
+	(empty($res['err']) ? '' : '<tr>
+		        <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . join("</li>\n<li>", $res['err']) . '</li></ul></td>
 		    </tr>') . '
 	    </table>
 	';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"),"100%","30","","hidden");
-    ?>
-    </body>
+echo we_html_tools::htmlDialogLayout($tbl, $heading, we_button::create_button("ok", "javascript:top.window.close()"), "100%", "30", "", "hidden");
+?>
+	</body>
 </html>

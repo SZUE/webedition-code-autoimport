@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /**
  * webEdition CMS
@@ -22,11 +22,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
- //FIXME: remove by call of ./webEdition/showTempFile.php
- include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+//FIXME: remove by call of ./webEdition/showTempFile.php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-t_e($_REQUEST);
+//t_e($_REQUEST);
 if(isset($_REQUEST['we_cmd'][0])){
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/tmp/' . basename($_REQUEST['we_cmd'][0]);
 	readfile($file);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-switch ($_REQUEST['we_cmd'][0]) {
+switch($_REQUEST['we_cmd'][0]){
 	case "save" :
 		setUserPref("cockpit_dat", $_REQUEST['we_cmd'][1]);
 		break;
@@ -35,9 +36,9 @@ switch ($_REQUEST['we_cmd'][0]) {
 		$aProps[1] = $aPrefs[$aProps[0]]["cls"];
 		$aProps[2] = $aPrefs[$aProps[0]]["res"];
 		$aProps[3] = $aPrefs[$aProps[0]]["csv"];
-		foreach ($aCfgProps as $a) {
-			foreach ($a as $arr) {
-				if ($arr[0] == $aProps[0]) {
+		foreach($aCfgProps as $a){
+			foreach($a as $arr){
+				if($arr[0] == $aProps[0]){
 					$aProps[3] = $arr[3];
 					break 2;
 				}
@@ -45,8 +46,8 @@ switch ($_REQUEST['we_cmd'][0]) {
 		}
 		$iCurrId = str_replace('m_', '', $_REQUEST['we_cmd'][2]);
 		$iWidth = $aPrefs[$aProps[0]]['width'];
-		if ($aProps[0] != 'rss' && $aProps[0] != 'pad') {
-			if ($aProps[0] == "msg")
+		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
+			if($aProps[0] == "msg")
 				$_transact = md5(uniqid(rand()));
 			include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_widgets/mod/' . $aProps[0] . '.php');
 		}
@@ -63,20 +64,19 @@ function transmit(){
 }
 ";
 		print
-				we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement(
-										$js)) . we_html_element::htmlBody(
-								array(
-									"onload" => "transmit();"
-								),
-								we_html_element::htmlDiv(array(
-									"id" => "content"
-								), $oTblCont->getHtml()) . we_html_element::htmlSpan(array(
-									"id" => "prefix"
-								), $aLang[0]) . we_html_element::htmlSpan(array(
-									"id" => "postfix"
-								), $aLang[1]) . we_html_element::htmlSpan(array(
-									"id" => "csv"
-								), (isset($aProps[3]) ? $aProps[3] : ""))));
+			we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+					we_html_element::cssElement("div,span{display:none;}") . we_html_element::jsElement(
+						$js)) . we_html_element::htmlBody(
+					array(
+					"onload" => "transmit();"
+					), we_html_element::htmlDiv(array(
+						"id" => "content"
+						), $oTblCont->getHtml()) . we_html_element::htmlSpan(array(
+						"id" => "prefix"
+						), $aLang[0]) . we_html_element::htmlSpan(array(
+						"id" => "postfix"
+						), $aLang[1]) . we_html_element::htmlSpan(array(
+						"id" => "csv"
+						), (isset($aProps[3]) ? $aProps[3] : ""))));
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 header("Content-Type: text/javascript");
 
 print "
-var we_string_message_reporting_notice = \"" . g_l('alert','[notice]') . "\";
-var we_string_message_reporting_warning = \"" . g_l('alert','[warning]') . "\";
-var we_string_message_reporting_error = \"" . g_l('alert','[error]') . "\";
+var we_string_message_reporting_notice = \"" . g_l('alert', '[notice]') . "\";
+var we_string_message_reporting_warning = \"" . g_l('alert', '[warning]') . "\";
+var we_string_message_reporting_error = \"" . g_l('alert', '[error]') . "\";
 ";

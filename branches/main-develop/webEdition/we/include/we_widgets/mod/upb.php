@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,41 +22,36 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 // widget UNPUBLISHED
 we_html_tools::protect();
-$bTypeDoc = (bool)$aProps[3]{0};
-$bTypeObj = (bool)$aProps[3]{1};
+$bTypeDoc = (bool) $aProps[3]{0};
+$bTypeObj = (bool) $aProps[3]{1};
 $_objectFilesTable = defined("OBJECT_FILES_TABLE") ? OBJECT_FILES_TABLE : "";
 $numRows = 25;
 
 $tbls = array();
-if ($bTypeDoc && $bTypeObj) {
-	if (defined("FILE_TABLE"))
+if($bTypeDoc && $bTypeObj){
+	if(defined("FILE_TABLE"))
 		$tbls[] = FILE_TABLE;
-	if (defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"))
+	if(defined("OBJECT_FILES_TABLE") && we_hasPerm("CAN_SEE_OBJECTFILES"))
 		$tbls[] = OBJECT_FILES_TABLE;
-} else {
-	if ($bTypeDoc && defined("FILE_TABLE")){
+} else{
+	if($bTypeDoc && defined("FILE_TABLE")){
 		$tbls[] = FILE_TABLE;
 	}
-	if ($bTypeObj && defined("OBJECT_FILES_TABLE")){
+	if($bTypeObj && defined("OBJECT_FILES_TABLE")){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 }
 
 $_cont = array();
-foreach ($tbls as $table) {
+foreach($tbls as $table){
 	$wfDocsCSV = "";
 	$myWfDocsCSV = "";
-	if (defined("WORKFLOW_TABLE")) {
+	if(defined("WORKFLOW_TABLE")){
 		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser(
-				$_SESSION["user"]["ID"],
-				$table,
-				$_SESSION["perms"]["ADMINISTRATOR"],
-				$_SESSION["perms"]["PUBLISH"],
-				($table == $_objectFilesTable) ? "" : get_ws($table));
+				$_SESSION["user"]["ID"], $table, $_SESSION["perms"]["ADMINISTRATOR"], $_SESSION["perms"]["PUBLISH"], ($table == $_objectFilesTable) ? "" : get_ws($table));
 		$myWfDocsCSV = makeCSVFromArray($myWfDocsArray);
 		$wfDocsArray = we_workflow_utility::getAllWorkflowDocs($table);
 		$wfDocsCSV = makeCSVFromArray($wfDocsArray);
@@ -73,10 +69,10 @@ foreach ($tbls as $table) {
 	$childlist = "";
 	$wsQuery = "";
 
-	if ($table == FILE_TABLE)
-		if ($ws = get_ws($table)) {
+	if($table == FILE_TABLE)
+		if($ws = get_ws($table)){
 			$wsArr = makeArrayFromCSV($ws);
-			foreach ($wsArr as $i) {
+			foreach($wsArr as $i){
 				array_push($parents, $i);
 				array_push($childs, $i);
 				we_readParents($i, $parents, $table);
@@ -84,13 +80,13 @@ foreach ($tbls as $table) {
 			}
 			$childlist = makeCSVFromArray($childs);
 			$parentlist = makeCSVFromArray($parents);
-			if ($parentlist)
+			if($parentlist)
 				$wsQuery = " ID IN(" . $parentlist . ") ";
-			if ($parentlist && $childlist)
+			if($parentlist && $childlist)
 				$wsQuery .= " OR ";
-			if ($childlist)
+			if($childlist)
 				$wsQuery .= " ParentID IN(" . $childlist . ") ";
-			if ($wsQuery)
+			if($wsQuery)
 				$wsQuery = " AND (" . $wsQuery . ") ";
 		}
 
@@ -99,17 +95,17 @@ foreach ($tbls as $table) {
 
 	$q = "
 			SELECT " . ($wfDocsCSV ? "(ID IN($wfDocsCSV)) AS wforder," : "") . " " . ($myWfDocsCSV ? "(ID IN($myWfDocsCSV)) AS mywforder," : "") . " ContentType,ID,Text,ParentID,Path,Published,ModDate,CreationDate,ModifierID,CreatorID,Icon
-			FROM ".$DB_WE->escape($table)."
+			FROM " . $DB_WE->escape($table) . "
 			WHERE (((Published=0 OR Published < ModDate) AND (ContentType='text/webedition' OR ContentType='text/html' OR ContentType='objectFile'))" . ($myWfDocsCSV ? " OR (ID IN($myWfDocsCSV)) " : "") . ") $wsQuery
 			ORDER BY " . ($myWfDocsCSV ? "mywforder DESC," : "") . " $order";
 
 	$DB_WE->query($q);
 	$anz = $DB_WE->num_rows();
-	$DB_WE->query($q . " LIMIT ".intval($offset).",".intval($numRows));
+	$DB_WE->query($q . " LIMIT " . intval($offset) . "," . intval($numRows));
 	$db2 = new DB_WE();
 	$content = array();
 
-	while ($DB_WE->next_record()) {
+	while($DB_WE->next_record()) {
 		$row = array();
 		$_cont[$DB_WE->f("ModDate")] = $path = '<tr><td width="20" height="20" valign="middle" nowrap><img src="' . ICON_DIR . $DB_WE->f(
 				"Icon") . '" width="16" height="18" />' . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f(
@@ -127,7 +123,7 @@ foreach ($tbls as $table) {
 			"dat" => $usern
 		));
 
-		$foo = $DB_WE->f("CreationDate") ? date(g_l('date','[format][default]'), $DB_WE->f("CreationDate")) : "-";
+		$foo = $DB_WE->f("CreationDate") ? date(g_l('date', '[format][default]'), $DB_WE->f("CreationDate")) : "-";
 		array_push($row, array(
 			"dat" => $foo
 		));
@@ -140,20 +136,20 @@ foreach ($tbls as $table) {
 			"dat" => $usern
 		));
 
-		$foo = $DB_WE->f("ModDate") ? date(g_l('date','[format][default]'), $DB_WE->f("ModDate")) : "-";
+		$foo = $DB_WE->f("ModDate") ? date(g_l('date', '[format][default]'), $DB_WE->f("ModDate")) : "-";
 		array_push($row, array(
 			"dat" => $foo
 		));
-		$foo = $DB_WE->f("Published") ? date(g_l('date','[format][default]'), $DB_WE->f("Published")) : "-";
+		$foo = $DB_WE->f("Published") ? date(g_l('date', '[format][default]'), $DB_WE->f("Published")) : "-";
 		array_push($row, array(
 			"dat" => $foo
 		));
-		if (defined("WORKFLOW_TABLE"))
-			if ($DB_WE->f("wforder")) {
+		if(defined("WORKFLOW_TABLE"))
+			if($DB_WE->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($DB_WE->f("ID"), $table) + 1;
 				$steps = count(we_workflow_utility::getNumberOfSteps($DB_WE->f("ID"), $table));
-				$text = "$step&nbsp;" . $g_l('resave','[of]') . "&nbsp;$steps";
-				if ($DB_WE->f("mywforder"))
+				$text = "$step&nbsp;" . $g_l('resave', '[of]') . "&nbsp;$steps";
+				if($DB_WE->f("mywforder"))
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" align="absmiddle" />';
 				else
 					$text .= '&nbsp;<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" align="absmiddle" />';
@@ -172,7 +168,7 @@ $ct = "";
 $ct .= "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n";
 asort($_cont);
 reset($_cont);
-foreach ($_cont as $k => $v) {
+foreach($_cont as $k => $v){
 	$ct .= $v . "\n";
 }
 $ct .= "</table>\n";

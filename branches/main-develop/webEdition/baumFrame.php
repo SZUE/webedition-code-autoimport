@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop('', '', 5);
@@ -53,9 +53,9 @@ print STYLESHEET;
 				<iframe frameBorder="0" src="treeMain.php" name="bm_main" onload="top.start()" style="border:0px;width:100%;height:100%;"></iframe>
 			</div>
 			<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php print EDIT_IMAGE_DIR ?>editfooterback.gif);">
-<?php
-include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/treeInfo.inc.php');
-?>
+				<?php
+				include($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/treeInfo.inc.php');
+				?>
 			</div>
 
 		</div>

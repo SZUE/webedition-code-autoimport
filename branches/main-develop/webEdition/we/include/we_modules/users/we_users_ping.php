@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 we_html_tools::htmlTop('ping');
 if($_SESSION["user"]["ID"]){
@@ -56,30 +56,30 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 						}
 					}
 <?php if(defined("MESSAGING_SYSTEM")){ ?>
-									if (top.header_msg_update) {
-										var newmsg_count = result.DataArray.newmsg_count;
-										var newtodo_count = result.DataArray.newtodo_count;
+						if (top.header_msg_update) {
+							var newmsg_count = result.DataArray.newmsg_count;
+							var newtodo_count = result.DataArray.newtodo_count;
 
-										top.header_msg_update(newmsg_count, newtodo_count);
-									}
+							top.header_msg_update(newmsg_count, newtodo_count);
+						}
 
 <?php } ?>
-							}
-						}
-					},
-					failure: function(o) {
-						if(weRpcFailedCnt++ > 5){
-							//in this case, rpc failed 5 times, this is severe, user should be in informed!
-							alert("<?php echo g_l('global', "[unable_to_call_ping]"); ?>");
-						}
-					}
 				}
+			}
+		},
+		failure: function(o) {
+			if(weRpcFailedCnt++ > 5){
+				//in this case, rpc failed 5 times, this is severe, user should be in informed!
+				alert("<?php echo g_l('global', "[unable_to_call_ping]"); ?>");
+			}
+		}
+	}
 
-				function YUIdoAjax() {
-					YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
-					setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
-				}
-				//-->
+	function YUIdoAjax() {
+		YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
+		setTimeout("YUIdoAjax()",<?php print PING_TIME; ?>*1000);
+	}
+	//-->
 </script>
 </head>
 <body bgcolor="white" onload="YUIdoAjax();">

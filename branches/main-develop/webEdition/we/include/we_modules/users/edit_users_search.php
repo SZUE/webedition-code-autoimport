@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::htmlTop();
 echo we_html_element::jsScript(JS_DIR . 'images.js') .
  STYLESHEET;
@@ -32,7 +32,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 		<table border="0" cellpadding="0" cellspacing="0" width="3000">
 			<tr>
 				<td></td>
-				<td colspan="2" valign="top"><?php we_html_tools::pPixel(1600,10);?></td>
+				<td colspan="2" valign="top"><?php we_html_tools::pPixel(1600, 10); ?></td>
 			</tr>
 			<tr>
 				<td><?php we_html_tools::pPixel(1, 5); ?></td>

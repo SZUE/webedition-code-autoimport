@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,37 +22,35 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
-
-if(function_exists('protect')) {
+if(function_exists('protect')){
 	we_html_tools::protect();
-}
-else {
+} else{
 	exit();
 }
 
-$tools = weToolLookup::getAllTools(true,true);
+$tools = weToolLookup::getAllTools(true, true);
 
 $whiteList = array();
-foreach($tools as $k=>$v) {
-	if(isset($v['name'])) {
+foreach($tools as $k => $v){
+	if(isset($v['name'])){
 		$whiteList[] = $v['name'];
 	}
 }
 
-if (!isset($_REQUEST['tool']) || $_REQUEST['tool']=='' || !in_array($_REQUEST['tool'], $whiteList)) {
+if(!isset($_REQUEST['tool']) || $_REQUEST['tool'] == '' || !in_array($_REQUEST['tool'], $whiteList)){
 	exit();
 }
 
 //check if bootstrap file exists of specific app
-if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_REQUEST['tool'] . '/index.php')) {
+if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/apps/' . $_REQUEST['tool'] . '/index.php')){
 
 	header('Location: /webEdition/apps/' . $_REQUEST['tool'] . '/index.php/frameset/index' .
-			(isset($REQUEST['modelid']) ? '/modelId/' . abs($REQUEST['modelid']) : '') .
-			(isset($REQUEST['tab']) ? '/tab/' . abs($REQUEST['tab']) : ''));
-		exit();
+		(isset($REQUEST['modelid']) ? '/modelId/' . abs($REQUEST['modelid']) : '') .
+		(isset($REQUEST['tab']) ? '/tab/' . abs($REQUEST['tab']) : ''));
+	exit();
 }
-if($_REQUEST['tool']=='weSearch' || $_REQUEST['tool']=='navigation') {
+if($_REQUEST['tool'] == 'weSearch' || $_REQUEST['tool'] == 'navigation'){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/' . $_REQUEST['tool'] . '/edit_' . $_REQUEST['tool'] . '_frameset.php');
 }

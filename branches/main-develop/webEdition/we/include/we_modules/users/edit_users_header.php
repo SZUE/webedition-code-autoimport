@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //	Include the menu.
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/java_menu/modules/module_menu_users.inc.php");
@@ -49,7 +49,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js');
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td align=left valign=top>
-<?php $jmenu->printMenu(); ?>
+				<?php $jmenu->printMenu(); ?>
 			</td>
 			<td align="right">
 				<?php

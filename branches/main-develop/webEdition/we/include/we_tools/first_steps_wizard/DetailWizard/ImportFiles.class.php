@@ -30,11 +30,6 @@ class ImportFiles extends leWizardStepBase{
 	var $ProgressBarVisible = true;
 
 	function execute(&$Template){
-
-		include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/we_wizard.inc.php");
-		include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_import/we_wiz_import.inc.php");
-
 		$wizard = new we_wizard_import();
 
 		$Template->UseOnlineInstallerTemplate = false;

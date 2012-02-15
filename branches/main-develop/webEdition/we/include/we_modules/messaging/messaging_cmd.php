@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::htmlTop();
 we_html_tools::protect();
@@ -43,7 +43,7 @@ function print_fc_html($blank = true){
 		echo 'top.content.messaging_main.messaging_right.msg_work.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";';
 	}
 	?>
-			//-->
+		//-->
 	</script>
 	<?php
 }
@@ -120,11 +120,11 @@ switch($_REQUEST["mcmd"]){
 		print_fc_html();
 		update_treeview();
 		?><script type="text/javascript">
-				<!--
-				if (top.content.viewclass != '<?php echo $_REQUEST['mode'] ?>') {
-					top.content.set_frames('<?php echo $_REQUEST['mode'] ?>');
-				}
-				//-->
+			<!--
+			if (top.content.viewclass != '<?php echo $_REQUEST['mode'] ?>') {
+				top.content.set_frames('<?php echo $_REQUEST['mode'] ?>');
+			}
+			//-->
 		</script>
 		<?php
 		break;
@@ -242,8 +242,8 @@ switch($_REQUEST["mcmd"]){
 		if($idx > -1){
 			?>
 
-				aid = <?php echo $aid ?>;
-				top.content.updateEntry(aid, -1, "<?php echo $messaging->available_folders[$idx]['Name'] . ' - (' . $messaging->get_message_count($aid, '') . ')'; ?>", -1, 1);
+					aid = <?php echo $aid ?>;
+					top.content.updateEntry(aid, -1, "<?php echo $messaging->available_folders[$idx]['Name'] . ' - (' . $messaging->get_message_count($aid, '') . ')'; ?>", -1, 1);
 		<?php } ?>
 
 		</script>
@@ -313,8 +313,8 @@ switch($_REQUEST["mcmd"]){
 					top.content.folder_added(<?php echo $_REQUEST['parent_id'] ?>);
 					top.content.menuDaten.add(new top.content.urlEntry('<?php echo ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder') ?>.gif', '<?php echo $_REQUEST['id'] ?>', '<?php echo $_REQUEST['parent_id'] ?>', '<?php echo $_REQUEST['name'] . ' - (0)' ?>', 'leaf_Folder', '<?php print MESSAGES_TABLE; ?>', '<?php echo ($_REQUEST['type'] == 'we_todo' ? 'todo_folder' : 'msg_folder') ?>'));
 				<?php print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
-							top.content.drawEintraege();
-							//-->
+					top.content.drawEintraege();
+					//-->
 				</script>
 				<?php
 			} else{
@@ -377,8 +377,8 @@ switch($_REQUEST["mcmd"]){
 				<script type="text/javascript">
 					<!--
 				<?php print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
-						close_win("messaging_settings");
-						//-->
+					close_win("messaging_settings");
+					//-->
 				</script>
 				<?php
 			}
