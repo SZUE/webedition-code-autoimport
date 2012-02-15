@@ -61,7 +61,7 @@ class weModelBase{
 	function load($id=0){
 		if($this->isKeyDefined()){
 			if($id){
-				$this->ID=$id;
+				$this->ID = $id;
 			}
 			$tableInfo = $this->db->metadata($this->table);
 			$data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db);
@@ -91,21 +91,22 @@ class weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
-				$sets[] = '`' . $this->db->escape($val) . '`="' . $this->db->escape($this->{$val}) . '"';
+				$sets[$val] = $this->db->escape($this->{$val});
 			}
 		}
 		$where = $this->getKeyWhere();
-		$set = implode(",", $sets);
+		$set = we_database_base::arraySetter($sets);
 
-		if($this->isKeyDefined() && $this->isnew){
-			$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
-			# get ID #
-			if($ret){
-				$this->ID = $this->db->getInsertId();
-				$this->isnew = false;
+		if($this->isKeyDefined()){
+			if($this->isnew){
+				$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
+				# get ID #
+				if($ret){
+					$this->ID = $this->db->getInsertId();
+					$this->isnew = false;
+				}
+				return $ret;
 			}
-			return $ret;
-		} else if($this->isKeyDefined()){
 			return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $set . ' WHERE ' . $where);
 		}
 

@@ -31,12 +31,18 @@ class weXMLParser{
 	var $Mark;
 	var $XPaths = array();
 
-	function weXMLParser(){
-
-	}
-
 	function parse(&$data, $encoding='ISO-8859-1'){
 		if(!empty($data)){
+
+			//parser only supports ISO-8859-1, US-ASCII, UTF-8
+			switch($encoding){
+				case 'US-ASCII':
+				case 'ISO-8859-1':
+				case 'UTF-8':
+					break;
+				default:
+					$encoding='ISO-8859-1';
+			}
 			// Initialize the parser
 			$parser = xml_parser_create($encoding);
 

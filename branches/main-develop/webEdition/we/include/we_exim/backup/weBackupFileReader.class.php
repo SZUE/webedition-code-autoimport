@@ -22,17 +22,14 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLFileReader.class.php');
-
 class weBackupFileReader extends weXMLFileReader{
 
 	function preParse(&$content){
 
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
 		$match = array();
 
-		if(eregi('<we:table(item)?([^>]*)', $content, $match)){
+		if(preg_match('|<we:table(item)?([^>]*)|i', $content, $match)){
 
 			$attributes = explode('=', $match[2]);
 			$attributes[0] = trim($attributes[0]);
@@ -48,7 +45,7 @@ class weBackupFileReader extends weXMLFileReader{
 			}
 		}
 
-		if(eregi('<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>', $content, $match)){
+		if(preg_match('|<we:binary><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match)){
 
 			if(!weBackupUtil::canImportBinary($match[1], $match[3])){
 
@@ -56,7 +53,7 @@ class weBackupFileReader extends weXMLFileReader{
 			}
 		}
 
-		if(eregi('<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>', $content, $match)){
+		if(preg_match('|<we:version><ID>([^<]*)</ID>(.*)<Path>([^<]*)</Path>|i', $content, $match)){
 
 			if(!weBackupUtil::canImportVersion($match[1], $match[3])){
 

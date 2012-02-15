@@ -189,11 +189,12 @@ class weContentProvider{
 			"weTableItem" => array("Text", "BText", "answertext"),
 			"we_category" => array("Catfields")
 		);
-
+		return strpos($content,'<')!==FALSE||strpos($content,'>')!==FALSE||strpos($content,'&')!==FALSE;
+/*
 		if($classname == "weTableItem"){
 			return !(is_numeric($content) || $content === '');
 		}
-		return (isset($encoded[$classname])) && in_array($prop, $encoded[$classname]);
+		return (isset($encoded[$classname])) && in_array($prop, $encoded[$classname]);*/
 	}
 
 	function needSerialize(&$object, $classname, $prop){

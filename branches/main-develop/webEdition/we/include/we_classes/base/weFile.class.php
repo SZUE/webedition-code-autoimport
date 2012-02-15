@@ -319,12 +319,16 @@ abstract class weFile{
 	}
 
 	static function getZExtension($compression){
-		if($compression == "gzip")
-			return "gz";
-		if($compression == "zip")
-			return "zip";
-		if($compression == "bzip")
-			return "bz";
+		switch($compression){
+			case "gzip":
+				return "gz";
+			case "zip":
+				return "zip";
+			case "bzip":
+				return "bz";
+			default:
+				return '';
+		}
 	}
 
 	static function getCompression($filename){
@@ -332,7 +336,7 @@ abstract class weFile{
 		foreach($compressions as $val){
 			$ext = '.' . weFile::getZExtension($val);
 			$extlen = strlen($ext);
-			if(substr_compare(basename($filename), $ext, -1 * $extlen, $extlen, true)){
+			if(substr_compare(basename($filename), $ext, -1 * $extlen, $extlen, true)===0){
 				return $val;
 			}
 		}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,270 +22,253 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
-	include_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
+class weBackupImport{
 
-	class weBackupImport {
+	function import($filename, &$offset, $lines=1, $iscompressed=0, $encoding='ISO-8859-1', $log=0){
 
-		function import($filename,&$offset,$lines=1,$iscompressed=0,$encoding='ISO-8859-1',$log=0) {
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupFileReader.class.php');
-			if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
-				$data ='<?xml version="1.0" encoding="'.$_SESSION['weBackupVars']['encoding'].'" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
-					 '<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
-			} else {
-				$data = $GLOBALS['weXmlExImHeader'];
-			}
-			if($log){
-				weBackupUtil::addLog(sprintf('Reading offset %s',$offset));
-			}
-
-			$_fileReader = new weBackupFileReader();
-			$_fileReader->readLine($filename,$data,$offset,$lines,0,$iscompressed);
-
-			$data .= $GLOBALS['weXmlExImFooter'];
-
-			weBackupImport::transfer($data,$encoding,$log);
-
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLExImConf.inc.php');
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupFileReader.class.php');
+		if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+			$data = '<?xml version="1.0" encoding="' . $_SESSION['weBackupVars']['encoding'] . '" standalone="yes"?>' . $GLOBALS['weXmlExImNewLine'] .
+				'<webEdition version="' . WE_VERSION . '" xmlns:we="we-namespace">' . $GLOBALS['weXmlExImNewLine'];
+		} else{
+			$data = $GLOBALS['weXmlExImHeader'];
+		}
+		if($log){
+			weBackupUtil::addLog(sprintf('Reading offset %s', $offset));
 		}
 
-		function transfer(&$data,$charset='ISO-8859-1',$log=0) {
+		$_fileReader = new weBackupFileReader();
+		$_fileReader->readLine($filename, $data, $offset, $lines, 0, $iscompressed);
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLParser.class.php');
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
+		$data .= $GLOBALS['weXmlExImFooter'];
 
-			$nFactor = 5;
+		weBackupImport::transfer($data, $encoding, $log);
+	}
 
-			if($log){
-				weBackupUtil::addLog('Parsing data');
-			}
+	function transfer(&$data, $charset='ISO-8859-1', $log=0){
 
-			$parser = new weXMLParser();
-			//if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){ vor 4092
-			if (defined('DEFAULT_CHARSET') && DEFAULT_CHARSET!=''){// Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
-				$parser->parse($data,DEFAULT_CHARSET);
-			} else {
-				$parser->parse($data);
-			}
-			if($parser===false){p_r($parser->parseError);}
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weXMLParser.class.php');
+		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/weContentProvider.class.php');
 
-			// free some memory
-			unset($parser->Indexes);
-			unset($data);
+		$nFactor = 5;
 
-			$parser->normalize();
-			// set parser on the first child node
-			$parser->seek(1);
+		if($log){
+			weBackupUtil::addLog('Parsing data');
+		}
 
-			do {
+		$parser = new weXMLParser();
+		//if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){ vor 4092
+		if(defined('DEFAULT_CHARSET') && DEFAULT_CHARSET != ''){// Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+			$parser->parse($data, DEFAULT_CHARSET);
+		} else{
+			$parser->parse($data);
+		}
+		if($parser === false){
+			p_r($parser->parseError);
+		}
 
-				$entity = $parser->getNodeName();
-				$attributes = $parser->getNodeAttributes();
+		// free some memory
+		unset($parser->Indexes);
+		unset($data);
 
-				$classname = '';
-				$object = '';
+		$parser->normalize();
+		// set parser on the first child node
+		$parser->seek(1);
 
-				if(weBackupImport::getObject($entity,$attributes,$object,$classname)){
+		do{
+
+			$entity = $parser->getNodeName();
+			$attributes = $parser->getNodeAttributes();
+
+			$classname = '';
+			$object = '';
+
+			if(weBackupImport::getObject($entity, $attributes, $object, $classname)){
 
 
-					$parser->addMark('first');
-					$parser->next();
-					do {
+				$parser->addMark('first');
+				$parser->next();
+				do{
 
 
-						$name = $parser->getNodeName();
+					$name = $parser->getNodeName();
 
-						//import elements
-						if($name == 'we:content') {
+					//import elements
+					if($name == 'we:content'){
 
-							$parser->addMark('second');
-							$parser->next();
+						$parser->addMark('second');
+						$parser->next();
 
-							do {
+						do{
 
-								$element_value=$parser->getNodeName();
-								if($element_value=='Field') {
-									$element_name=$parser->getNodeData();
-								}
-								if($element_name) {
-									$object->elements[$element_name][$element_value]=$parser->getNodeData();
-								}
+							$element_value = $parser->getNodeName();
+							if($element_value == 'Field'){
+								$element_name = $parser->getNodeData();
+							}
+							if($element_name){
+								$object->elements[$element_name][$element_value] = $parser->getNodeData();
+							}
+						} while($parser->nextSibling());
 
-							} while($parser->nextSibling());
+						unset($element_name);
+						unset($element_value);
 
-							unset($element_name);
-							unset($element_value);
-
-							$parser->gotoMark('second');
-						} else {
+						$parser->gotoMark('second');
+					} else{
 						// import field
-							if(weContentProvider::needCoding($classname,$name)){
-								$object->$name = weContentProvider::decode($parser->getNodeData());
-							} else {
-								$object->$name = $parser->getNodeData();//original mit Bug #3412 aber diese Version l�st 4092
-								// ehemaliger Fix Bug #3412, nicht mehr notwendig dank fix oben f�r 4092
-								/*
-								if($charset=="UTF-8"){
-									$object->$name = utf8_encode($parser->getNodeData());
-								} else {
-									$object->$name = $parser->getNodeData();
-								}
-								*/
-							}
-							if(isset($object->persistent_slots) && !in_array($name,$object->persistent_slots)) {
-								$object->persistent_slots[]=$name;
-							}
-
+						if(weContentProvider::needCoding($classname, $name)){
+							$object->$name = weContentProvider::decode($parser->getNodeData());
+						} else{
+							$object->$name = $parser->getNodeData(); //original mit Bug #3412 aber diese Version l�st 4092
+							// ehemaliger Fix Bug #3412, nicht mehr notwendig dank fix oben f�r 4092
+							/*
+							  if($charset=="UTF-8"){
+							  $object->$name = utf8_encode($parser->getNodeData());
+							  } else {
+							  $object->$name = $parser->getNodeData();
+							  }
+							 */
 						}
-
-						//correct table name in tblversions
-						if(isset($object->table) && $object->table=="tblversions") {
-							if(isset($object->documentTable)) {
-								if(strtolower(substr($object->documentTable,-14))=="tblobjectfiles") {
-									$object->documentTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'tblobjectfiles';
-								}
-								if(strtolower(substr($object->documentTable,-7))=="tblfile") {
-									$object->documentTable = defined('FILE_TABLE') ? FILE_TABLE : 'tblfile';
-								}
-							}
-						}
-
-					} while($parser->nextSibling());
-
-
-					if($log){
-						$addtext='';
-						if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
-							if (method_exists($object,'convertCharsetEncoding')) {
-								$addtext=" - Converting Charset: ".$_SESSION['weBackupVars']['encoding']." -> ".DEFAULT_CHARSET;
-							} else {
-								$addtext=" - Converting Charset: NO ";
-							}
-						}
-						$_prefix = 'Saving object ';
-						if($classname=='weTable' || $classname=='weTableAdv') {
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
-						} else if($classname=='weTableItem'){
-							$_id_val = '';
-							foreach ($object->keys as $_key) {
-								$_id_val .= ':' . $object->$_key;
-							}
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
-
-						} else if($classname=='weBinary'){
-							weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' .  $object->Path . $addtext);
+						if(isset($object->persistent_slots) && !in_array($name, $object->persistent_slots)){
+							$object->persistent_slots[] = $name;
 						}
 					}
+
+					//correct table name in tblversions
+					if(isset($object->table) && $object->table == "tblversions"){
+						if(isset($object->documentTable)){
+							if(strtolower(substr($object->documentTable, -14)) == "tblobjectfiles"){
+								$object->documentTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'tblobjectfiles';
+							}
+							if(strtolower(substr($object->documentTable, -7)) == "tblfile"){
+								$object->documentTable = defined('FILE_TABLE') ? FILE_TABLE : 'tblfile';
+							}
+						}
+					}
+				} while($parser->nextSibling());
+
+
+				if($log){
+					$addtext = '';
 					if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
-							if (method_exists($object,'convertCharsetEncoding')) 	$object->convertCharsetEncoding($_SESSION['weBackupVars']['encoding'],DEFAULT_CHARSET);
+						if(method_exists($object, 'convertCharsetEncoding')){
+							$addtext = " - Converting Charset: " . $_SESSION['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET;
+						} else{
+							$addtext = " - Converting Charset: NO ";
+						}
 					}
-					if(isset($object->Path) && $object->Path == '/webEdition/we/include/conf/we_conf_global.inc.php'){
-						weBackupImport::handlePrefs($object);
-					} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path,'/webEdition/we/include/we_modules/spellchecker/')===0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
-						// do nothing
-					} else {
-						$object->save();
+					$_prefix = 'Saving object ';
+					if($classname == 'weTable' || $classname == 'weTableAdv'){
+						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $addtext);
+					} else if($classname == 'weTableItem'){
+						$_id_val = '';
+						foreach($object->keys as $_key){
+							$_id_val .= ':' . $object->$_key;
+						}
+						weBackupUtil::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
+					} else if($classname == 'weBinary'){
+						weBackupUtil::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
 					}
-
-					//speedup for some tables
-					if(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE)) {
-						$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS * $nFactor;
-					} else {
-						$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS;
-					}
-
-					$parser->gotoMark('first');
-
+				}
+				if(isset($_SESSION['weBackupVars']['options']['convert_charset']) && $_SESSION['weBackupVars']['options']['convert_charset']){
+					if(method_exists($object, 'convertCharsetEncoding'))
+						$object->convertCharsetEncoding($_SESSION['weBackupVars']['encoding'], DEFAULT_CHARSET);
+				}
+				if(isset($object->Path) && $object->Path == '/webEdition/we/include/conf/we_conf_global.inc.php'){
+					weBackupImport::handlePrefs($object);
+				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, '/webEdition/we/include/we_modules/spellchecker/') === 0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
+					// do nothing
+				} else{
+					$object->save();
 				}
 
-
-
-				if(isset($object)){
-					unset($object);
+				//speedup for some tables
+				if(isset($object->table) && ($object->table == LINK_TABLE || $object->table == CONTENT_TABLE)){
+					$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS * $nFactor;
+				} else{
+					$_SESSION['weBackupVars']['backup_steps'] = BACKUP_STEPS;
 				}
 
-			} while($parser->nextSibling());
-
-		}
-
-
-		function getObject($tagname,$attribs,&$object,&$classname) {
-
-			switch($tagname) {
-
-				case 'we:table':
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
-					$table = weBackupUtil::getRealTableName($attribs['name']);
-					if($table !== false) {
-						weBackupUtil::setBackupVar('current_table',$table);
-						$object = new weTable($table);
-						$classname = 'weTable';
-						return true;
-					}
-				break;
-
-				case 'we:tableadv':
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTable.class.php');
-					$table = weBackupUtil::getRealTableName($attribs['name']);
-					if($table !== false) {
-						weBackupUtil::setBackupVar('current_table',$table);
-						$object = new weTableAdv($table);
-						$classname = 'weTableAdv';
-						return true;
-					}
-				break;
-
-				case 'we:tableitem':
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weTableItem.class.php');
-					$table = weBackupUtil::getRealTableName($attribs['table']);
-					if($table !== false) {
-						weBackupUtil::setBackupVar('current_table',$table);
-						$object = new weTableItem($table);
-						$classname = 'weTableItem';
-						return true;
-					}
-				break;
-
-				case 'we:binary':
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weBinary.class.php');
-					$object = new weBinary();
-					$classname = 'weBinary';
-					return true;
-				break;
-
-				case 'we:version':
-					include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/weVersion.class.php');
-					$object = new weVersion();
-					$classname = 'weVersion';
-					return true;
-				break;
-
+				$parser->gotoMark('first');
 			}
 
-			return false;
 
+
+			if(isset($object)){
+				unset($object);
+			}
+		} while($parser->nextSibling());
+	}
+
+	function getObject($tagname, $attribs, &$object, &$classname){
+
+		switch($tagname){
+
+			case 'we:table':
+				$table = weBackupUtil::getRealTableName($attribs['name']);
+				if($table !== false){
+					weBackupUtil::setBackupVar('current_table', $table);
+					$object = new weTable($table);
+					$classname = 'weTable';
+					return true;
+				}
+				break;
+
+			case 'we:tableadv':
+				$table = weBackupUtil::getRealTableName($attribs['name']);
+				if($table !== false){
+					weBackupUtil::setBackupVar('current_table', $table);
+					$object = new weTableAdv($table);
+					$classname = 'weTableAdv';
+					return true;
+				}
+				break;
+
+			case 'we:tableitem':
+				$table = weBackupUtil::getRealTableName($attribs['table']);
+				if($table !== false){
+					weBackupUtil::setBackupVar('current_table', $table);
+					$object = new weTableItem($table);
+					$classname = 'weTableItem';
+					return true;
+				}
+				break;
+
+			case 'we:binary':
+				$object = new weBinary();
+				$classname = 'weBinary';
+				return true;
+				break;
+
+			case 'we:version':
+				$object = new weVersion();
+				$classname = 'weVersion';
+				return true;
+				break;
 		}
 
-		function handlePrefs(&$object){
-			include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we_classes/base/weConfParser.class.php");
-			$file="/webEdition/we/tmp/we_conf_global.inc.php";
-			$object->Path=$file;
-			$object->save(true);
-			$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);
+		return false;
+	}
 
-			$newglobals = $parser->getData();
+	function handlePrefs(&$object){
+		$file = "/webEdition/we/tmp/we_conf_global.inc.php";
+		$object->Path = $file;
+		$object->save(true);
+		$parser = weConfParser::getConfParserByFile($_SERVER['DOCUMENT_ROOT'] . $file);
 
-			foreach ($newglobals as $k=>$v){
-				if($k != 'BACKUP_STEPS' && $v != ''){
-					if($k != 'DB_SET_CHARSET') {
-				 		weConfParser::setGlobalPref($k,$v);
-					}
+		$newglobals = $parser->getData();
+
+		foreach($newglobals as $k => $v){
+			if($k != 'BACKUP_STEPS' && $v != ''){
+				if($k != 'DB_SET_CHARSET'){
+					weConfParser::setGlobalPref($k, $v);
 				}
 			}
-			@unlink($_SERVER['DOCUMENT_ROOT'].$file);
-
 		}
-
+		@unlink($_SERVER['DOCUMENT_ROOT'] . $file);
+	}
 
 }
