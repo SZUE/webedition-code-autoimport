@@ -265,7 +265,7 @@ class we_updater{
 	}
 
 	function isColExist($tab, $col){
-		global $DB_WE;
+		$DB_WE = $GLOBALS['DB_WE'];
 		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "';");
 		if($DB_WE->next_record())
 			return true; else
@@ -971,6 +971,33 @@ class we_updater{
 		}
 	}
 
+	static function getAllIDFromQuery($sql){
+		$db = $GLOBALS['DB_WE'];
+		$db->query($sql);
+		$ret = array();
+		while($db->next_record()) {
+			$ret[] = $db->f(0);
+		}
+		return $ret;
+	}
+
+	function fixInconsistentTables(){
+		$db = $GLOBALS['DB_WE'];
+		$del = array();
+		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')'));
+		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')'));
+
+		if(count($del)){
+			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
+		}
+
+		$del = array_merge($del, self::getAllIDFromQuery('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')'));
+		if(count($del)){
+			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
+		}
+
+	}
+
 	function doUpdate(){
 		$this->updateTables();
 		$this->updateUsers();
@@ -986,6 +1013,7 @@ class we_updater{
 		$this->updateLangLink();
 		$this->convertTemporaryDoc();
 		$this->updateTableKeys();
+		$this->fixInconsistentTables();
 	}
 
 }

@@ -154,7 +154,7 @@
 				$_file->save(true);
 			}
 
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . BACKUP_TABLE);
+			$GLOBALS['DB_WE']->query('TRUNCATE ' . BACKUP_TABLE);
 			unset($_file);
 
 		}
