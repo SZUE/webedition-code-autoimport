@@ -26,7 +26,7 @@ function we_tag_var($attribs, $content){
 	if(($foo = attributFehltError($attribs, "name", "var")))
 		return $foo;
 	$docAttr = weTag_getAttribute("doc", $attribs);
-	$name = weTag_getAttribute("name", $attribs);
+	$name = weTag_getAttribute("_name_orig", $attribs);
 	//$_name_orig=weTag_getAttribute("_name_orig", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
 	$htmlspecialchars = weTag_getAttribute("htmlspecialchars", $attribs, false, true); // #3771

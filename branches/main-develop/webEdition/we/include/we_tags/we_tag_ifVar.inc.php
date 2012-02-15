@@ -35,7 +35,7 @@ function we_tag_ifVar($attribs, $content){
 	}
 
 	$match = weTag_getAttribute("match", $attribs);
-	$name = weTag_getAttribute("name", $attribs);
+	$name = weTag_getAttribute("_name_orig", $attribs);
 	$type = weTag_getAttribute("type", $attribs);
 	$operator  = weTag_getAttribute("operator", $attribs);
 
