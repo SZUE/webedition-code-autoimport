@@ -182,7 +182,7 @@ class weContentProvider{
 		}
 	}
 
-	function needCdata($classname, $prop){
+	function needCdata($classname, $prop, $content){
 		$encoded = array(
 			"we_element" => array("Dat"),
 			"we_object" => array("DefaultText", "DefaultValues"),
@@ -190,12 +190,10 @@ class weContentProvider{
 			"we_category" => array("Catfields")
 		);
 
-		if($classname == "weTableItem")
-			return true;
-		if(isset($encoded[$classname]))
-			return in_array($prop, $encoded[$classname]);
-		else
-			return false;
+		if($classname == "weTableItem"){
+			return !(is_numeric($content) || $content === '');
+		}
+		return (isset($encoded[$classname])) && in_array($prop, $encoded[$classname]);
 	}
 
 	function needSerialize(&$object, $classname, $prop){
@@ -245,8 +243,9 @@ class weContentProvider{
 					$content = $object->$v;
 				if(weContentProvider::needCoding($object->ClassName, $v)){
 					$content = weContentProvider::encode($content);
-				} else if(weContentProvider::needCdata($object->ClassName, $v))
+				} else if(weContentProvider::needCdata($object->ClassName, $v, $content)){
 					$content = weContentProvider::getCDATA($content);
+				}
 				$attribs .= weXMLComposer::we_xmlElement($v, $content);
 			}
 		}
@@ -287,8 +286,9 @@ class weContentProvider{
 					$content = $object->$v;
 				if(weContentProvider::needCoding($object->ClassName, $v)){
 					$content = weContentProvider::encode($content);
-				} else if(weContentProvider::needCdata($object->ClassName, $v))
+				} else if(weContentProvider::needCdata($object->ClassName, $v, $content)){
 					$content = weContentProvider::getCDATA($content);
+				}
 				$attribs .= weXMLComposer::we_xmlElement($v, $content);
 			}
 		}
@@ -379,7 +379,7 @@ class weContentProvider{
 					if(!is_array($content)){
 						$content = weContentProvider::encode($content);
 					}
-				} else if(weContentProvider::needCdata($classname, $v)){
+				} else if(weContentProvider::needCdata($classname, $v, $content)){
 					$content = weContentProvider::getCDATA($content);
 				}
 				//$out.=weXMLComposer::we_xmlElement($v,$content);
