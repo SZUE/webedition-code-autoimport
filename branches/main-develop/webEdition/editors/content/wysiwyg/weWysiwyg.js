@@ -19,10 +19,10 @@
 
 //document.write('<textarea id="debug" name="debug" rows="10" cols="70"></textarea>');
 String.prototype.trim=function () {
-   return this.replace(/^\s+|\s+$/g,"");
+	return this.replace(/^\s+|\s+$/g,"");
 }
 String.prototype.trim2=function () {
-   return this.replace(/^\s{2,}|\s{2,}$/g," ");
+	return this.replace(/^\s{2,}|\s{2,}$/g," ");
 }
 
 var isIE9=false;
@@ -42,16 +42,17 @@ var weMainWinRef = self;
 var weCssEntries = new Array();
 
 var isFullScreen = false;
+var weWysiwyg_translationTable = new Array (338,339,352,353,376,381,382,402,710,732,8211,8212,8216,8217,8218,8220,8221,8222,8224,8225,8226,8230,8240,8249,8250,8364,8482);
 
-	try{
-		if (top.weEditorFrameController) {
-			weMainWinRef = top.weEditorFrameController.getVisibleEditorFrame();
-		} else if(top.opener && top.opener.top.weEditorFrameController && top.opener.top.weEditorFrameController.getVisibleEditorFrame() && top.opener.top.weEditorFrameController.getVisibleEditorFrame().document){
-			weMainWinRef = top.opener.top.weEditorFrameController.getVisibleEditorFrame();
-		}else if(top.opener && top.opener.we_styleString){
-			weMainWinRef = top.opener;
-		}
-	}catch(e){}
+try{
+	if (top.weEditorFrameController) {
+		weMainWinRef = top.weEditorFrameController.getVisibleEditorFrame();
+	} else if(top.opener && top.opener.top.weEditorFrameController && top.opener.top.weEditorFrameController.getVisibleEditorFrame() && top.opener.top.weEditorFrameController.getVisibleEditorFrame().document){
+		weMainWinRef = top.opener.top.weEditorFrameController.getVisibleEditorFrame();
+	}else if(top.opener && top.opener.we_styleString){
+		weMainWinRef = top.opener;
+	}
+}catch(e){}
 
 
 
@@ -371,7 +372,7 @@ function weWysiwyg_doSetFocus(){
 		this.hasFocus = true;
 
 	} catch(e) {
-		// Nothing
+	// Nothing
 	}
 }
 
@@ -440,11 +441,11 @@ function weWysiwyg_getNodeUnderInsertionPoint(nName,tdstop,mustHaveClass){
 				|| obj.nodeName == "H6"
 				|| obj.nodeName == "ADDR"
 				|| obj.nodeName == "PRE") && nName!="TABLE" && nName!="TD" && nName!="TH" && nName!="TR" && nName!="TBODY")){
-				if(obj.nodeName == nName && ((mustHaveClass && obj.className != "") || (!mustHaveClass))){
-					return obj;
-				}else{
-					return null;
-				}
+			if(obj.nodeName == nName && ((mustHaveClass && obj.className != "") || (!mustHaveClass))){
+				return obj;
+			}else{
+				return null;
+			}
 		}
 		if(obj.nodeName == nName && ((mustHaveClass && obj.className != "") || (!mustHaveClass))){
 			return obj;
@@ -472,11 +473,11 @@ function weWysiwyg_getNodeUnderInsertionPoint2(nName,tdstop,mustHaveClass){  // 
 				|| obj.nodeName == "H6"
 				|| obj.nodeName == "ADDR"
 				|| obj.nodeName == "PRE") && (!weWysiwygInArray("TABLE", nNames)) && (!weWysiwygInArray("TD", nNames)) && (!weWysiwygInArray("TH", nNames)) && (!weWysiwygInArray("TR", nNames)) && (!weWysiwygInArray("TBODY", nNames)))){
-				if(weWysiwygInArray(obj.nodeName, nNames) && ((mustHaveClass && obj.className != "") || (!mustHaveClass))){
-					return obj;
-				}else{
-					return null;
-				}
+			if(weWysiwygInArray(obj.nodeName, nNames) && ((mustHaveClass && obj.className != "") || (!mustHaveClass))){
+				return obj;
+			}else{
+				return null;
+			}
 		}
 		if(weWysiwygInArray(obj.nodeName, nNames) && ((mustHaveClass && obj.className != "") || (!mustHaveClass))){
 			return obj;
@@ -533,11 +534,11 @@ function weWysiwyg_writeHTMLDocument(){
 			we_parentRef = parentRef;
 		}
 	}else if(isFullScreen && top.opener && top.opener.document.getElementById(this.fullScreenRef+"_table")){ // fullscreen
-			if(top.opener.we_parentRef != null){
-				parentRef = top.opener.we_parentRef;
-			}else{
-				parentRef = top.opener.document.getElementById(this.fullScreenRef+"_table");
-			}
+		if(top.opener.we_parentRef != null){
+			parentRef = top.opener.we_parentRef;
+		}else{
+			parentRef = top.opener.document.getElementById(this.fullScreenRef+"_table");
+		}
 	}else{ // normal
 		normal = true;
 		parentRef = document.getElementById(this.name+"_table");
@@ -686,7 +687,7 @@ function weWysiwyg_getSelectedText(){
 }
 
 function weWysiwyg_doStyleIE(className){
-    var elem = this.getParentElementFromRange();
+	var elem = this.getParentElementFromRange();
 	if (elem.nodeName == 'CAPTION') {
 		if (className) {
 			elem.className = className;
@@ -726,7 +727,7 @@ function weWysiwyg_doStyleIE(className){
 		}else{
 			parentElem.removeAttribute("className");
 			if(parentElem.outerHTML.toUpperCase().substring(0,6) == "<SPAN>")
-			parentElem.removeNode(false);
+				parentElem.removeNode(false);
 		}
 	}
 }
@@ -812,12 +813,12 @@ function weWysiwyg_doStyle(className){
 	}else{
 		this.doStyleIE(className);
 	}
-   	this.windowFocus();
+	this.windowFocus();
 }
 
 function weWysiwyg_insertContent(content, doNoCollapse) {
-    var StartContainer = this.range.startContainer;
-    var StartPosition = this.range.startOffset;
+	var StartContainer = this.range.startContainer;
+	var StartPosition = this.range.startOffset;
 
 	this.selection.removeAllRanges();
 	try {
@@ -825,34 +826,36 @@ function weWysiwyg_insertContent(content, doNoCollapse) {
 	} catch(e) {}
 
 
-    var startOffBefore = this.range.startOffset;
+	var startOffBefore = this.range.startOffset;
 
-    if (StartContainer.nodeType==StartContainer.TEXT_NODE && content.nodeType==content.TEXT_NODE) {
-        StartContainer.insertData(StartPosition, content.nodeValue );
-        if (startOffBefore == range.startOffset) {
-            this.range.setEnd(BX_range.endContainer, this.range.endOffset +1);
-            this.range.collapse(false);
-        }
-    } else {
+	if (StartContainer.nodeType==StartContainer.TEXT_NODE && content.nodeType==content.TEXT_NODE) {
+		StartContainer.insertData(StartPosition, content.nodeValue );
+		if (startOffBefore == range.startOffset) {
+			this.range.setEnd(BX_range.endContainer, this.range.endOffset +1);
+			this.range.collapse(false);
+		}
+	} else {
 
-        this.range.we_insertNode = we_InsertNodeAtRange;
-        content.normalize();
-        try {
-            this.range.we_insertNode(content);
-        } catch(e) {}
-        ;
+		this.range.we_insertNode = we_InsertNodeAtRange;
+		content.normalize();
+		try {
+			this.range.we_insertNode(content);
+		} catch(e) {}
+		;
 
-        if (startOffBefore ==this.range.startOffset) {
-            try {this.range.setEnd(this.range.endContainer, this.range.endOffset +1);}
+		if (startOffBefore ==this.range.startOffset) {
+			try {
+				this.range.setEnd(this.range.endContainer, this.range.endOffset +1);
+			}
 			catch(e) {};
-        }
+		}
 
-        if (!doNoCollapse) {
-            this.range.collapse(false);
-        }
-    }
-    this.selection.addRange(this.range);
-    return content;
+		if (!doNoCollapse) {
+			this.range.collapse(false);
+		}
+	}
+	this.selection.addRange(this.range);
+	return content;
 }
 
 function weWysiwyg_hasCmd(cmd){
@@ -1043,9 +1046,9 @@ function weWysiwyg_getSelection() {
 	}else{
 		this.eFrame = frames[this.fName];
 		this.eDocument = this.eFrame.document;
-    	this.selection = frames[this.fName].document.selection;
-    	this.range = frames[this.fName].document.selection.createRange();
-    }
+		this.selection = frames[this.fName].document.selection;
+		this.range = frames[this.fName].document.selection.createRange();
+	}
 }
 
 function weWysiwyg_setButtonState(cmd){
@@ -1057,8 +1060,8 @@ function weWysiwyg_setButtonState(cmd){
 					enabled = true;
 					break;
 				default:
-						enabled = this.eDocument.queryCommandEnabled(cmd);
-						break;
+					enabled = this.eDocument.queryCommandEnabled(cmd);
+					break;
 			}
 		} catch (e) {}
 
@@ -1093,7 +1096,7 @@ function weWysiwyg_getLangSpan(){
 				|| obj.nodeName == "H6"
 				|| obj.nodeName == "ADDR"
 				|| obj.nodeName == "PRE")){
-				return null;
+			return null;
 		}
 		if(obj.nodeName == "SPAN" && obj.lang){
 			return obj;
@@ -1232,18 +1235,18 @@ function weWysiwyg_setMenuState(cmd){
 			// have I said that i hate internet explorer?
 			var newval = "";
 			if(cmd == "applystyle"){
-					var span_node = this.getNodeUnderInsertionPoint("SPAN",true,true);
-					if(span_node){
-						if(span_node.className){
-							newval = span_node.className;
-						}
-					} else {
-						var _elem = this.getParentElementFromRange();
-						if (_elem && _elem.nodeName == 'CAPTION') {
-							newval = _elem.className;
-						}
-
+				var span_node = this.getNodeUnderInsertionPoint("SPAN",true,true);
+				if(span_node){
+					if(span_node.className){
+						newval = span_node.className;
 					}
+				} else {
+					var _elem = this.getParentElementFromRange();
+					if (_elem && _elem.nodeName == 'CAPTION') {
+						newval = _elem.className;
+					}
+
+				}
 			}else{
 				try {
 					newval = this.eDocument.queryCommandValue(cmd);
@@ -1309,9 +1312,9 @@ function weWysiwyg_getHTMLCode(rootNode, outputRootNode){
 
 	var html = "";
 	switch (rootNode.nodeType) {
-	    case 1: // element
-	    case 11: // document fragment
-	    		//document.forms[0].debug.value += "Inner:"+rootNode.innerHTML+"\n\n";
+		case 1: // element
+		case 11: // document fragment
+			//document.forms[0].debug.value += "Inner:"+rootNode.innerHTML+"\n\n";
 			var closed;
 			var i;
 			var root_tag = (rootNode.nodeType == 1) ? rootNode.tagName.toLowerCase() : '';
@@ -1334,7 +1337,7 @@ function weWysiwyg_getHTMLCode(rootNode, outputRootNode){
 					var a = attrs.item(i);
 					var name=a.nodeName.toLowerCase();
 					if(root_tag == "area" && a.nodeValue){
-						// do nothing
+					// do nothing
 					}else if (!a.specified) {
 						continue;
 					}
@@ -1382,8 +1385,8 @@ function weWysiwyg_getHTMLCode(rootNode, outputRootNode){
 								if(properties[n].length > 1){
 									var v = properties[n].split(':');
 									if(v[1] != " null" &&
-											((this.showBorders && v[1] != " 1px dotted rgb(204, 204, 204)" && v[1] != " #cccccc 1px dotted")
-												|| (!this.showBorders))  && v[0].substr(0,5) != " mso-" && v[0].substr(0,4) != "mso-"){
+										((this.showBorders && v[1] != " 1px dotted rgb(204, 204, 204)" && v[1] != " #cccccc 1px dotted")
+											|| (!this.showBorders))  && v[0].substr(0,5) != " mso-" && v[0].substr(0,4) != "mso-"){
 										value += (v[0].toLowerCase() + ':');
 										value += String(v[1]).replace(/\&/g, "&amp;").replace(/</g, "&lt;").replace(/\"/g, "&quot;") + ';';
 									}
@@ -1423,24 +1426,24 @@ function weWysiwyg_getHTMLCode(rootNode, outputRootNode){
 				this.pre = false;
 			}
 			break;
-	    case 3: // Text
-	    	if(rootNode.nodeValue){
-	    		//document.forms[0].debug.value += "Text:"+this.encodeText(rootNode.nodeValue)+"\n\n";
+		case 3: // Text
+			if(rootNode.nodeValue){
+				//document.forms[0].debug.value += "Text:"+this.encodeText(rootNode.nodeValue)+"\n\n";
 
-	    		if(this.nodeDone == rootNode){
-	    			this.nodeDone = null;
-	    			break;
-	    		}
-	    		if(!(isGecko||isOpera)){
-	    			this.nodeDone = rootNode;
-	    		}
-	    		if(rootNode.nodeValue == "\n"){
-	    			break;
-	    		}
+				if(this.nodeDone == rootNode){
+					this.nodeDone = null;
+					break;
+				}
+				if(!(isGecko||isOpera)){
+					this.nodeDone = rootNode;
+				}
+				if(rootNode.nodeValue == "\n"){
+					break;
+				}
 				html = this.encodeText(rootNode.nodeValue).trim2();
 			}
 			break;
-	    case 8: // Comment
+		case 8: // Comment
 			html = "<!--" + rootNode.data + "-->";
 			break;
 	}
@@ -1468,14 +1471,22 @@ function weWysiwyg_cleanCode(code){
 	if(code.search(re) != -1) code = code.replace(re, "");
 	re = /.*?(<style type="text\/css">)[\s\S]*?(<\/style>)/gi;
 	if(code.search(re) != -1) code = code.replace(re, "");
-	re = /<([\w]+) class=["']?Mso([^ |>]*)([^>]*)/gi;if(code.search(re) != -1) code = code.replace(re, "<$1$3");
-	re = /<\\?\??xml[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "");
-	re = /<\?xml[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "");
-	re = /<\/xml>/gi;if(code.search(re) != -1) code = code.replace(re, ""); //Armin
-	re = /<\/?\w+:[^>]*>/gi;if(code.search(re) != -1) code = code.replace(re, "");
-	re = /<p([^>])*>(&nbsp;)*\s*<\/p>/gi;if(code.search(re) != -1) code = code.replace(re, "");
-	re = /<div([^>])*>(&nbsp;)*\s*<\/div>/gi;if(code.search(re) != -1) code = code.replace(re, "");
-	re = /<span([^>])*>(&nbsp;)*\s*<\/span>/gi;if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<([\w]+) class=["']?Mso([^ |>]*)([^>]*)/gi;
+	if(code.search(re) != -1) code = code.replace(re, "<$1$3");
+	re = /<\\?\??xml[^>]*>/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<\?xml[^>]*>/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<\/xml>/gi;
+	if(code.search(re) != -1) code = code.replace(re, ""); //Armin
+	re = /<\/?\w+:[^>]*>/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<p([^>])*>(&nbsp;)*\s*<\/p>/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<div([^>])*>(&nbsp;)*\s*<\/div>/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
+	re = /<span([^>])*>(&nbsp;)*\s*<\/span>/gi;
+	if(code.search(re) != -1) code = code.replace(re, "");
 	if(code.indexOf('DESIGNTIMESP="') > -1){
 		code = code.replace(/ DESIGNTIMESP="[^"]+"/gi,'');
 	}
@@ -1702,7 +1713,7 @@ function weWysiwyg_showPopupmenu(cmd){
 			}
 			break;
 		case "applystyle":
-				//weLastPopupMenu.document.body.innerHTML +='<div class="' + we_classNames[i].substring(1,we_classNames[i].length) +'" style="position:relative;border:0px;padding-bottom:3px;padding-top:3px;padding-left:10px;"'+popattr+'>' + we_classNames[i] + '</div>';
+			//weLastPopupMenu.document.body.innerHTML +='<div class="' + we_classNames[i].substring(1,we_classNames[i].length) +'" style="position:relative;border:0px;padding-bottom:3px;padding-top:3px;padding-left:10px;"'+popattr+'>' + we_classNames[i] + '</div>';
 
 			var popattr = 'onmouseover="parent.we_popupMenuOver(this)"  onmouseout="parent.we_popupMenuOut(this)" onclick="parent.we_hidePopupmenu();parent.'+this.obj+'.setPopupmenu(\''+cmd+'\',\'\');"';
 			weLastPopupMenu.document.body.innerHTML +='<div style="position:relative;border:0px;padding-bottom:3px;padding-top:3px;padding-left:10px;color:black;"'+popattr+' unselectable="on">' + we_wysiwyg_lng["none"] + '</div>';
@@ -2084,7 +2095,7 @@ function weWysiwyg_edittable(edit,rows,cols,border,cellpadding,cellspacing,bgcol
 	}
 
 	if(edit==false){
- 		if(isGecko||isOpera){
+		if(isGecko||isOpera){
 			this.range.extractContents();
 			this.insertContent(table, false);
 		}else{
@@ -2602,13 +2613,13 @@ function weWysiwyg_execCommand(cmd){
 		this.getSelection();
 	}
 
-switch(cmd){
+	switch(cmd){
 		case "lang":
 
 
 			var dialog = new weWysiwygDialog(this.name, weWysiwygFolderPath + "langDialog.php");
 
- 			var langspan = this.getLangSpan();
+			var langspan = this.getLangSpan();
 			if(langspan != null){
 				dialog.append("lang", null, langspan);
 			}
@@ -3097,7 +3108,7 @@ function weWysiwygPopupMenu_execCommand(value){
 	if(this.cmd == "formatblock"){
 		if(value=="normal"){
 			value = "Normal";
-			//value = "<"+"div"+">";
+		//value = "<"+"div"+">";
 		}else{
 			value = "<"+value+">";
 		}
@@ -3258,10 +3269,10 @@ function weWysiwygButton_uncheck(){
 function weWysiwygButton_disable(){
 	if(!this.disabled && this.div){
 		this.disabled = true;
-			this.div.className = "tbButton";
-			var src = this.button.src;
-			if(src.indexOf("_dis.gif") == -1) src = src.replace(/\.gif/,"_dis.gif");
-			this.button.src = src;
+		this.div.className = "tbButton";
+		var src = this.button.src;
+		if(src.indexOf("_dis.gif") == -1) src = src.replace(/\.gif/,"_dis.gif");
+		this.button.src = src;
 	}
 }
 
@@ -3453,25 +3464,25 @@ function we_makehexcolor(col){
 }
 
 function we_deleteTag(node) {
-    var childsLen = node.childNodes.length;
-    var child = node.firstChild;
-    var newchild;
-    do {
-        newchild = child.nextSibling;
-        try {
-            var newNode = node.parentNode.insertBefore(child,node);
-        } catch(e) { }
-        ;
-    } while (child = newchild )
-        node.parentNode.removeChild(node);
-    return newNode;
+	var childsLen = node.childNodes.length;
+	var child = node.firstChild;
+	var newchild;
+	do {
+		newchild = child.nextSibling;
+		try {
+			var newNode = node.parentNode.insertBefore(child,node);
+		} catch(e) { }
+	;
+	} while (child = newchild )
+	node.parentNode.removeChild(node);
+	return newNode;
 }
 
 
 // ### Range Extension
 function we_InsertNodeAtRange(newNode) {
-    var node=newNode;
-    switch( node.nodeType ) {
+	var node=newNode;
+	switch( node.nodeType ) {
 		case Node.DOCUMENT_NODE:
 		case Node.ATTRIBUTE_NODE:
 		case Node.ENTITY_NODE:
@@ -3480,19 +3491,19 @@ function we_InsertNodeAtRange(newNode) {
 			break;
 		case Node.DOCUMENT_FRAGMENT_NODE:
 			var firstChild = node.firstChild;
-    }
-    if( this.startContainer.nodeType == Node.TEXT_NODE) {
-         this.startContainer.parentNode.insertBefore(node, this.startContainer.splitText( this.startOffset));
-    } else if( this.startOffset == this.startContainer.childNodes.length) {
-        this.startContainer.appendChild( node );
-    } else {
-        this.startContainer.insertBefore(node, this.startContainer.childNodes.item(this.startOffset) );
-    }
-    if( node.nodeType == Node.DOCUMENT_FRAGMENT_NODE)
-        node = firstChild;
-    try {
-        this.setStart( node, 0 );
-    } catch(err) {}
+	}
+	if( this.startContainer.nodeType == Node.TEXT_NODE) {
+		this.startContainer.parentNode.insertBefore(node, this.startContainer.splitText( this.startOffset));
+	} else if( this.startOffset == this.startContainer.childNodes.length) {
+		this.startContainer.appendChild( node );
+	} else {
+		this.startContainer.insertBefore(node, this.startContainer.childNodes.item(this.startOffset) );
+	}
+	if( node.nodeType == Node.DOCUMENT_FRAGMENT_NODE)
+		node = firstChild;
+	try {
+		this.setStart( node, 0 );
+	} catch(err) {}
 }
 
 
@@ -3508,8 +3519,8 @@ var we_GeneralContextMenu = new Array();
 var we_TableContextMenu = new Array();
 
 function we_ContextMenuItem(string, cmdId) {
-  this.string = string;
-  this.cmdId = cmdId;
+	this.string = string;
+	this.cmdId = cmdId;
 }
 
 function we_contextHighlight(event){
@@ -3666,7 +3677,7 @@ function weRemoveAlloneEndtags(html,tagname){
 	if(endtagpos > -1){
 		if(endtagpos < starttagpos || starttagpos==-1){
 			html = ((endtagpos > 0) ? html.substring(0,endtagpos) : "") +
-					html.substring(endtagpos+tagname.length+3,html.length);
+			html.substring(endtagpos+tagname.length+3,html.length);
 			html = weRemoveAlloneEndtags(html,tagname);
 		}
 	}
@@ -3715,18 +3726,18 @@ function weGetOuterHTML(elem){
 }
 
 function we_on_key_down(obj){
-		if(!(isGecko||isOpera)){
-			if (obj.eFrame.event.keyCode == 9) { // TAB
-				obj.getSelection();
-				obj.range.pasteHTML(" &nbsp;&nbsp;&nbsp; ");
-				obj.range.select();
-				obj.range.moveEnd("character", 1);
-				obj.range.moveStart("character", 1);
-				obj.range.collapse(false);
-				return false;
-			}
+	if(!(isGecko||isOpera)){
+		if (obj.eFrame.event.keyCode == 9) { // TAB
+			obj.getSelection();
+			obj.range.pasteHTML(" &nbsp;&nbsp;&nbsp; ");
+			obj.range.select();
+			obj.range.moveEnd("character", 1);
+			obj.range.moveStart("character", 1);
+			obj.range.collapse(false);
+			return false;
 		}
-		return true;
+	}
+	return true;
 }
 
 function we_on_key_up(obj){
@@ -3922,7 +3933,10 @@ function we_removeEvent(e, name, f) {
 }
 
 function we_getElemPos(el) {
-	var arr = {x: el.offsetLeft, y: el.offsetTop};
+	var arr = {
+		x: el.offsetLeft,
+		y: el.offsetTop
+		};
 	if (el.offsetParent) {
 		var tmp = we_getElemPos(el.offsetParent);
 		arr.x += tmp.x;
@@ -3987,5 +4001,3 @@ function weWysiwygUrlEncode(str) {
 	str = str.replace(/##WE_PLUS##/,"%2B");
 	return str;
 }
-
-var weWysiwyg_translationTable = new Array (338,339,352,353,376,381,382,402,710,732,8211,8212,8216,8217,8218,8220,8221,8222,8224,8225,8226,8230,8240,8249,8250,8364,8482);

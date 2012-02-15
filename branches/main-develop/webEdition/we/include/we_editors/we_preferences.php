@@ -6047,13 +6047,8 @@ else {
 			break;
 
 		case 'versions':
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_versions/weVersions.class.inc.php");
-
 			$_settings = array();
-
 			$version = new weVersions();
-
 
 			//js
 			$jsCheckboxCheckAll = '';
@@ -6141,10 +6136,10 @@ else {
 					$checked = get_value("version_" . $k);
 					if($k == "all"){
 						$jvs = "checkAll(this);";
-						$checkboxes .= we_forms::checkbox($val, $checked, $name, g_l('prefs', '[version_all]'), false, "defaultfont", $jvs) . "<br/>";
+						$checkboxes .= we_forms::checkbox($val, $checked, $name, g_l('prefs', '[version_all]'), false, "defaultfont", $jvs) . '<br/>';
 					} else{
 						$jvs = "checkAllRevert(this);";
-						$checkboxes .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . "<br/>";
+						$checkboxes .= we_forms::checkbox($val, $checked, $name, g_l('contentTypes', '[' . $txt . ']'), false, "defaultfont", $jvs) . '<br/>';
 					}
 				}
 

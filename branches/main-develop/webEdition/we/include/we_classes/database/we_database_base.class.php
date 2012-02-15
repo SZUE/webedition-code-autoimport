@@ -183,7 +183,7 @@ abstract class we_database_base{
 		}
 	}
 
-	/**
+		/**
 	 * called on serialize of this class, closes db connection
 	 * @return type empty array
 	 */

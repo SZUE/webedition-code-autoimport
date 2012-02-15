@@ -2630,10 +2630,10 @@ function g_l($name, $specific, $omitErrors=false){
 	$file = $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
 	if(file_exists($file)){
 		include($file);
-		$tmp = (isset(${"l_$name"}) ? getVarArray(${"l_$name"}, $specific) : false);
+		$tmp = (isset(${'l_'.$name}) ? getVarArray(${'l_'.$name}, $specific) : false);
 		//get local variable
 		if($tmp !== false){
-			$cache["l_$name"] = ${"l_$name"};
+			$cache['l_'.$name] = ${'l_'.$name};
 			return ($charset != 'UTF-8' ?
 					(is_array($tmp) ?
 						array_map('g_l_encodeArray', $tmp) :
@@ -2647,6 +2647,7 @@ function g_l($name, $specific, $omitErrors=false){
 			return false;
 		}
 	}
+	t_e('Language file "'.$file.'" not found');
 	return '';
 }
 
