@@ -22,12 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Class weTableItem
  *
  * Provides functions for exporting and importing table rows.
  */
-
 class weTableItem extends weModelBase{
 
 	var $Pseudo = "weTableItem";
@@ -44,9 +44,9 @@ class weTableItem extends weModelBase{
 		$this->setKeys($this->getTableKey($this->table));
 	}
 
-	function load($ids){
-		foreach($ids as $key=>$val){
-			$this->$key=$val;
+	function load(array $ids){
+		foreach($ids as $key => $val){
+			$this->$key = $val;
 		}
 		parent::load();
 		// remove binary content
