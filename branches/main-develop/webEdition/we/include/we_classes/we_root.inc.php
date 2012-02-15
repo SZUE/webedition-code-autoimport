@@ -1099,7 +1099,6 @@ abstract class we_root extends we_class{
 			if(!$this->IsTextContentDoc || empty($this->DocType)){
 				return false;
 			} else if($this->IsTextContentDoc && $this->DocType){
-				include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_docTypes.inc.php");
 				$doctype = new we_docTypes();
 				$doctype->initByID($this->DocType, DOC_TYPES_TABLE);
 				if(empty($doctype->SubDir)){

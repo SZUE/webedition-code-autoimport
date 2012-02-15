@@ -46,6 +46,11 @@
 		$tableKeys[strtolower(SHOP_TABLE)] = array('IntID');
 	}
 
+	/*TODO: change this prim. Key
+	 * if(defined('ANZEIGE_PREFS_TABLE')){
+		$tableKeys[strtolower(ANZEIGE_PREFS_TABLE)] = array('strDateiname');
+	}*/
+
 	if(defined('SCHEDULE_TABLE')) {
 		$tableKeys[strtolower(SCHEDULE_TABLE)] = array('DID','Wann');
 	}

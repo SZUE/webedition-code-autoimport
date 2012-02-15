@@ -110,8 +110,8 @@ class weShippingControl {
 	}
 
 	function save() {
-
-		global $DB_WE;
+		//FIXME: change Primary Key!!
+		$DB_WE=$GLOBALS['DB_WE'];
 		// check if already inserted
 		$query = 'SELECT 1 FROM ' . ANZEIGE_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"';
 
@@ -122,8 +122,7 @@ class weShippingControl {
 			$query = 'UPDATE ' . ANZEIGE_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '" WHERE strDateiname="weShippingControl"';
 
 		} else {
-			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . $DB_WE->escape(serialize($this)) . '")
-			';
+			$query = 'INSERT INTO ' . ANZEIGE_PREFS_TABLE . ' (strDateiname, strFelder) VALUES ("weShippingControl", "' . $DB_WE->escape(serialize($this)) . '")';
 		}
 
 		if ($DB_WE->query($query)) {

@@ -124,9 +124,14 @@ class we_binaryDocument extends we_document{
 			if(!we_util_File::copyFile($this->elements["data"]["dat"], $this->getRealPath())){
 				return false;
 			}
+			if($this->i_isMoved()){
+				we_util_File::delete($this->getRealPath(true));
+				we_util_File::delete($this->getSitePath(true));
+			}
 		} else{
 			return false;
 		}
+
 		return true;
 	}
 
@@ -135,7 +140,7 @@ class we_binaryDocument extends we_document{
 		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $this->getSitePath());
 			if($this->i_isMoved()){
-				we_util_File::delete($this->getSitePath(1));
+				we_util_File::delete($this->getSitePath(true));
 			}
 		}
 		return $is_ok;
@@ -146,7 +151,7 @@ class we_binaryDocument extends we_document{
 		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
 			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $this->getRealPath());
 			if($this->i_isMoved()){
-				we_util_File::delete($this->getRealPath(1));
+				we_util_File::delete($this->getRealPath(true));
 			}
 		}
 		return $is_ok;
@@ -171,7 +176,17 @@ class we_binaryDocument extends we_document{
 					}
 				}
 			}
-			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path) VALUES(" . intval($this->ID) . ",'" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($this->ParentPath) . "'," . intval($this->ParentID) . ",'" . $this->DB_WE->escape($this->Category) . "','','" . $this->DB_WE->escape($this->getElement("Title")) . "','" . $this->DB_WE->escape($this->getElement("Description")) . "','" . $this->DB_WE->escape($this->Path) . "')");
+			$set=array('DID'=>intval($this->ID),
+				'Text'=>$text,
+				'BText'=>$text,
+				'Workspace'=>$this->ParentPath,
+				'WorkspaceID'=>intval($this->ParentID),
+				'Category'=>$this->Category,
+				'Doctype'=>'',
+				'Title'=>$this->getElement("Title"),
+				'Description'=>$this->getElement("Description"),
+				'Path'=>$this->Path);
+			return $this->DB_WE->query("INSERT INTO " . INDEX_TABLE . ' SET '.we_database_base::arraySetter($set));
 		}
 		return true;
 	}

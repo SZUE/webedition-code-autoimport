@@ -230,7 +230,7 @@ function enableDelBut(){
 		function writeBody(d){
 		d.open();
 		//d.writeln('<?php print $htmltop; ?>'); Geht nicht im IE
-		d.writeln('<?php print we_html_element::htmlDocType();?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
+		d.writeln('<?php print we_html_element::htmlDocType(); ?><html><head><title>webEdition</title><meta http-equiv="expires" content="0"><meta http-equiv="pragma" content="no-cache"><meta http-equiv="content-type" content="text/html; charset=<?php echo $GLOBALS['WE_BACKENDCHARSET']; ?>"><meta http-equiv="imagetoolbar" content="no"><meta name="generator" content="webEdition">');
 				d.writeln('<?php print STYLESHEET_SCRIPT; ?>');
 				d.writeln('</head>');
 			d.writeln('<scr'+'ipt>');
@@ -431,12 +431,15 @@ top.clearEntries();
 						$we_responseText = sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $Path);
 						print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 					} else{
-						$this->db->query("INSERT INTO " . $this->db->escape($this->table) . "
-								(Category,ParentID,Text,Path,IsFolder,Icon)
-								VALUES('" . $this->db->escape($txt) . "',
-									" . intval($this->dir) . ",
-									'" . $this->db->escape($txt) . "',
-									'" . $this->db->escape($Path) . "'," . $what . ",'" . (($what == 1) ? 'folder.gif' : 'cat.gif') . "')");
+						$set = array(
+							'Category' => $txt,
+							'ParentID' => intval($this->dir),
+							'Text' => $txt,
+							'Path' => $Path,
+							'IsFolder' => intval($what),
+							'Icon' => (($what == 1) ? 'folder.gif' : 'cat.gif'),
+						);
+						$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter($set));
 						$folderID = $this->db->getInsertId();
 						print 'top.currentPath = "' . $Path . '";
 top.currentID = "' . $folderID . '";

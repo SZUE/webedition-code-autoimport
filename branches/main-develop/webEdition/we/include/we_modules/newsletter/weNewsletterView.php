@@ -2681,16 +2681,14 @@ class weNewsletterView{
 		// WORKARROUND BUG NR 7450
 		foreach($this->settings as $key => $value){
 			if($key != 'black_list'){
-				$db->query('REPLACE ' . NEWSLETTER_PREFS_TABLE . ' SET pref_value="' . $db->escape($value) . '" WHERE pref_name="' . $key . '"');
+				$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET '.we_database_base::arraySetter(array('pref_name'=>$key,'pref_value'=>$value)));
 			}
 		}
 	}
 
 	function saveSetting($name, $value){
 		$db = new DB_WE();
-		$name = $db->escape($name);
-		$value = $db->escape($value);
-		$db->query('REPLACE ' . NEWSLETTER_PREFS_TABLE . ' SET pref_value="' . $db->escape($value) . '" WHERE pref_name="' . $name . '"');
+		$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET '.we_database_base::arraySetter(array('pref_name'=>$name,'pref_value'=>$value)));
 	}
 
 	function getBlackList(){

@@ -119,7 +119,19 @@ class we_textContentDocument extends we_textDocument{
 
 		$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 		if($this->IsSearchable && $this->Published){
-			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . " (DID,Text,BText,Workspace,WorkspaceID,Category,Doctype,Title,Description,Path,Language) VALUES(" . intval($this->ID) . ",'" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($text) . "','" . $this->DB_WE->escape($this->ParentPath) . "'," . intval($this->ParentID) . ",'" . $this->DB_WE->escape($this->Category) . "','" . $this->DB_WE->escape($this->DocType) . "','" . $this->DB_WE->escape($this->getElement("Title")) . "','" . $this->DB_WE->escape($this->getElement("Description")) . "','" . $this->DB_WE->escape($this->Path) . "','" . $this->DB_WE->escape($this->Language) . "')");
+
+			$set = array('DID' => intval($this->ID),
+				'Text' => $text,
+				'BText' => $text,
+				'Workspace' => $this->ParentPath,
+				'WorkspaceID' => intval($this->ParentID),
+				'Category' => $this->Category,
+				'Doctype' => $this->DocType,
+				'Title' => $this->getElement("Title"),
+				'Description' => $this->getElement("Description"),
+				'Path' => $this->Path,
+				'Language' => $this->Language);
+			return $this->DB_WE->query('INSERT INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 		}
 		return true;
 	}
@@ -496,7 +508,7 @@ class we_textContentDocument extends we_textDocument{
 		$parent = dirname($realPath);
 		$parent = str_replace("\\", "/", $parent);
 		$cf = array();
-		while(!we_util_File::checkAndMakeFolder($parent,true)) {
+		while(!we_util_File::checkAndMakeFolder($parent, true)) {
 			array_push($cf, $parent);
 			$parent = dirname($parent);
 			$parent = str_replace("\\", "/", $parent);

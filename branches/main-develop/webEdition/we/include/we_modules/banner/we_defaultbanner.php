@@ -32,12 +32,7 @@ $DefaultBannerID = 0;
 
 if(isset($_REQUEST["ok"]) && $_REQUEST["ok"]){
 	$DefaultBannerID = isset($_REQUEST["DefaultBannerID"]) ? $_REQUEST["DefaultBannerID"] : 0;
-	$DB_WE->query("SELECT * FROM ".BANNER_PREFS_TABLE." WHERE pref_name='DefaultBannerID'");
-	if($DB_WE->num_rows()){
-		$DB_WE->query("UPDATE ".BANNER_PREFS_TABLE." SET pref_value='".$DB_WE->escape($DefaultBannerID)."' WHERE pref_name='DefaultBannerID'");
-	}else{
-		$DB_WE->query("INSERT INTO ".BANNER_PREFS_TABLE." (pref_name,pref_value) VALUES('DefaultBannerID','".$DB_WE->escape($DefaultBannerID)."')");
-	}
+	$GLOBALS['DB_WE']->query('REPLACE INTO '.BANNER_PREFS_TABLE.' SET '.we_database_base::arraySetter(array('pref_name'=>'DefaultBannerID','pref_value'=>$DefaultBannerID)));
 
 	print '<script type="text/javascript">
 

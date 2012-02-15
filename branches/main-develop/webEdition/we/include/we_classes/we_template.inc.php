@@ -363,7 +363,7 @@ class we_template extends we_document{
 
 	protected function i_writeMainDir($doc){
 		if($this->i_isMoved()){
-			we_util_File::deleteLocalFile($this->getRealPath(1));
+			we_util_File::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_util_File::saveFile($this->getRealPath(), $doc);
 	}

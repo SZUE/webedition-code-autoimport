@@ -54,7 +54,7 @@ class we_htmlDocument extends we_textContentDocument{
 
 	function makeSameNew(){
 		parent::makeSameNew();
-		$this->Icon = "prog.gif";
+		$this->Icon = 'prog.gif';
 	}
 
 	function i_publInScheduleTable(){
@@ -70,11 +70,18 @@ class we_htmlDocument extends we_textContentDocument{
 					$serializedDoc = "";
 				}
 				$Wann = we_schedpro::getNextTimestamp($s, time());
+				$set = array('DID' => intval($this->ID),
+					'Wann' => $Wann,
+					'Was' => $s["task"],
+					'ClassName' => $this->ClassName,
+					'SerializedData' => $serializedDoc,
+					'Schedpro' => serialize($s),
+					'Type' => $s["type"],
+					'Active' => $s["active"]);
 
-				if(!$this->DB_WE->query("INSERT INTO " . SCHEDULE_TABLE .
-						" (DID,Wann,Was,ClassName,SerializedData,Schedpro,Type,Active)
-						VALUES(" . intval($this->ID) . ",'" . $this->DB_WE->escape($Wann) . "','" . $this->DB_WE->escape($s["task"]) . "','" . $this->DB_WE->escape($this->ClassName) . "','" . $this->DB_WE->escape($serializedDoc) . "','" . $this->DB_WE->escape(serialize($s)) . "','" . $this->DB_WE->escape($s["type"]) . "','" . $this->DB_WE->escape($s["active"]) . "')"))
+				if(!$this->DB_WE->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter($set))){
 					return false;
+				}
 			}
 			return $makeSched;
 		}
@@ -92,3 +99,4 @@ class we_htmlDocument extends we_textContentDocument{
 	}
 
 }
+
