@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupUtil.class.php');
 
 we_html_tools::protect();
 @set_time_limit(360);
@@ -122,7 +121,6 @@ if(isset($_REQUEST['cmd'])){
 				}
 				$description = g_l('backup', '[external_backup]');
 			} else{
-				include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_exim/backup/weBackupExport.class.php');
 				if(weBackupExport::export(
 						$_SESSION['weBackupVars']['backup_file'], $_SESSION['weBackupVars']['offset'], $_SESSION['weBackupVars']['row_counter'], $_SESSION['weBackupVars']['backup_steps'], $_SESSION['weBackupVars']['options']['backup_binary'], $_SESSION['weBackupVars']['backup_log'], $_SESSION['weBackupVars']['handle_options']['versions_binarys']
 					) === false){

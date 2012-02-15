@@ -432,19 +432,19 @@ function error_handler($type, $message, $file, $line, $context){
 	switch($type){
 		case E_NOTICE:
 		case E_USER_NOTICE:
-			if($GLOBALS['we']['errorhandler']['notice']){
+			if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['notice']){
 				// Display error?
-				if($GLOBALS['we']['errorhandler']['display']){
+				if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if($GLOBALS['we']['errorhandler']['log']){
+				if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+				if(isset($GLOBALS['we']['errorhandler'])&&isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -454,19 +454,19 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
-			if($GLOBALS['we']['errorhandler']['warning']){
+			if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['warning']){
 				// Display error?
-				if($GLOBALS['we']['errorhandler']['display']){
+				if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if($GLOBALS['we']['errorhandler']['log']){
+				if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+				if(isset($GLOBALS['we']['errorhandler'])&&isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -479,19 +479,19 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			if($GLOBALS['we']['errorhandler']['error']){
+			if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['error']){
 				// Display error?
-				if($GLOBALS['we']['errorhandler']['display']){
+				if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line, true);
 				}
 
 				// Log error?
-				if($GLOBALS['we']['errorhandler']['log']){
+				if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line, true);
 				}
 
 				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+				if(isset($GLOBALS['we']['errorhandler'])&&isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
 					mail_error_message($type, $message, $file, $line, true);
 				}
 			}
@@ -525,7 +525,7 @@ function error_handler($type, $message, $file, $line, $context){
 }
 
 function shutdown_handler(){
-	if($GLOBALS['we']['errorhandler']['shutdown'] != 'we'){
+	if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['shutdown'] != 'we'){
 		return;
 	}
 	$error = error_get_last();

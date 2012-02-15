@@ -2647,7 +2647,9 @@ function g_l($name, $specific, $omitErrors=false){
 			return false;
 		}
 	}
-	t_e('Language file "'.$file.'" not found');
+	if(!$omitErrors){
+		t_e('Language file "'.$file.'" not found');
+	}
 	return '';
 }
 

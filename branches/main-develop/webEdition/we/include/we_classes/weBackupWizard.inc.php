@@ -905,7 +905,7 @@ class weBackupWizard{
 		array_push($parts, array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_export_desc]"), 2, 600, false), "space" => 70, "noline" => 1));
 		$k = 700;
 		foreach($_tools as $_tool){
-			$text = g_l('tools_' . $_tool, '[import_tool_' . $_tool . '_data]');
+			$text = g_l(($_tool=='weSearch'?'searchtool':$_tool.'tool'), '[import_tool_' . $_tool . '_data]');
 			array_push($parts, array("headline" => "", "html" => we_forms::checkbox(1, true, 'handle_tool_' . $_tool, $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1));
 			$k++;
 		}

@@ -51,7 +51,7 @@ class weTableItem extends weModelBase{
 		parent::load();
 		// remove binary content
 		if($this->table == CONTENT_TABLE){
-			$id=f('SELECT DID FROM '.LINK_TABLE.' WHERE CID='.$ids[0],'DID',$this->db);
+			$id = f('SELECT DID FROM ' . LINK_TABLE . ' WHERE CID=' . $ids['ID'], 'DID', $this->db);
 			if(weContentProvider::IsBinary($id)){
 				$this->Dat = '';
 			}

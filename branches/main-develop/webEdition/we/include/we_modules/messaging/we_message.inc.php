@@ -22,15 +22,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once(WE_MESSAGING_MODULE_DIR . "we_msg_proto.inc.php");
 include_once(WE_MESSAGING_MODULE_DIR . "messaging_std.inc.php");
-
-// Activate the webEdition error handler
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_error_handler.inc.php");
-if(!defined("WE_ERROR_HANDLER_SET")){
-	we_error_handler();
-}
-
 
 /* message object class */
 
