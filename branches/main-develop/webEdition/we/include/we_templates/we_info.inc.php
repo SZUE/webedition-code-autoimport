@@ -173,11 +173,11 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			1,
 			3);
 
-
+$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">'.we_button::create_button("login", "javascript:document.loginForm.submit();").'</button>';
 	if(defined("WE_SEEM") && !WE_SEEM){ //	deactivate See-Mode
 		$_modetable->setCol(0, 1, array("align" => "right",
 			"valign" => "bottom",
-			"rowspan" => "2"), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . we_button::create_button("login", "javascript:document.loginForm.submit();"));
+			"rowspan" => "2"), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
 	} else{ //	normal login
 		//	15th Mode
 		$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
@@ -196,7 +196,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",
 			"valign" => "bottom",
-			"rowspan" => "2"), we_button::create_button("login", "javascript:document.loginForm.submit();"));
+			"rowspan" => "2"), $loginButton);
 	}
 
 	//	16th
