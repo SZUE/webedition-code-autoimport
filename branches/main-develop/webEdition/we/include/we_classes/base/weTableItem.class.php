@@ -50,11 +50,8 @@ class weTableItem extends weModelBase{
 		}
 		parent::load();
 		// remove binary content
-		if($this->table == CONTENT_TABLE){
-			$id = f('SELECT DID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND CID=' . $ids['ID'], 'DID', $this->db);
-			if($id && weContentProvider::IsBinary($id)){
+		if($this->table == CONTENT_TABLE && $this->IsBinary){
 				$this->Dat = '';
-			}
 		}
 	}
 
