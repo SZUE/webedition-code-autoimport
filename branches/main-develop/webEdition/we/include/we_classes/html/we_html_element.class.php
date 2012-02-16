@@ -211,6 +211,10 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	static function htmlImg($attribs=array()){
+		//if no alt is set, set dummy alt
+		if(!isset($attribs['alt'])){
+			$attribs['alt']='-';
+		}
 		return we_baseElement::getHtmlCode(new we_baseElement('img', false, $attribs));
 	}
 
