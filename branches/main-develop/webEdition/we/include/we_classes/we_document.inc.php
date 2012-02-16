@@ -1210,7 +1210,7 @@ class we_document extends we_root{
 		return we_document::getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
 	}
 
-	private function getValFromSrc($fn,$name){
+	private function getValFromSrc($fn, $name){
 		switch($fn){
 			default:
 			case 'this':
@@ -1225,15 +1225,14 @@ class we_document extends we_root{
 			$db = new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
-		//FIXME: remove eval
-		$int=$this->getValFromSrc($fn,$nint);
+		$int = $this->getValFromSrc($fn, $nint);
 		$int = ($int == "") ? 0 : $int;
 		if($int){
 			$nintID = $n . '_we_jkhdsf_intID';
-			$intID = $this->getValFromSrc($fn,$nintID);
+			$intID = $this->getValFromSrc($fn, $nintID);
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
 		} else{
-			return $this->getValFromSrc($fn,$n);
+			return $this->getValFromSrc($fn, $n);
 		}
 	}
 
