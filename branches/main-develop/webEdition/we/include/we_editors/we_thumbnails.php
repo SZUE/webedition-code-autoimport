@@ -488,7 +488,7 @@ function build_dialog($selected_setting = "ui"){
 			$_thumbnail_format_select_attribs = array("name" => "Format", "id" => "Format", "class" => "weSelect", "style" => "width: 225px;", "onchange" => "changeFormat()");
 
 			if($_thumbnail_format == -1){
-				array_push($_thumbnail_format_select_attribs, array("disabled" => "true"));
+				$_thumbnail_format_select_attribs["disabled"] = "true"; //#6027
 			}
 
 			$_thumbnail_format_select = new we_html_select($_thumbnail_format_select_attribs);
