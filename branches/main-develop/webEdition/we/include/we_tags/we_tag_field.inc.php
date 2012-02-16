@@ -94,8 +94,7 @@ function we_tag_field($attribs, $content){
 
 	switch($type){
 		case 'binary' :
-			$t = we_document::getFieldByVal(
-					$GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
+			$t = we_document::getFieldByVal($GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
 			if($only == '' || $only == 'name'){
 				$out = $t[0];
 			}
@@ -118,8 +117,7 @@ function we_tag_field($attribs, $content){
 			break;
 		case 'link' :
 			if($GLOBALS['lv']->ClassName){
-				$out = we_document::getFieldByVal(
-						$GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
+				$out = we_document::getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
 				$href = (empty($href) ? $out : $href);
 				break;
 			}

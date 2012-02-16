@@ -909,8 +909,7 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
 	}
 
-	function getFieldByVal(
-	$val, $type, $attribs='', $pathOnly=false, $parentID=0, $path='', $db='', $classID='', $fn='$this->getElement'){
+	function getFieldByVal($val, $type, $attribs='', $pathOnly=false, $parentID=0, $path='', $db='', $classID='', $fn='$this->getElement'){
 
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
@@ -1217,14 +1216,14 @@ class we_document extends we_root{
 			$db = new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
-		$int = $fn($nint);
-		$int = ($int == "") ? 0 : $fn($nint);
+		//FIXME: remove eval
+		eval('$int = ('.$fn.'($nint) == "") ? 0 : '.$fn.'($nint);');
 		if($int){
 			$nintID = $n . '_we_jkhdsf_intID';
-			$intID = $fn($nintID);
+			eval('$intID = '.$fn.'($nintID);');
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
 		} else{
-			$extPath = $fn($n);
+			eval('$extPath = '.$fn.'($n);');
 			return $extPath;
 		}
 	}
