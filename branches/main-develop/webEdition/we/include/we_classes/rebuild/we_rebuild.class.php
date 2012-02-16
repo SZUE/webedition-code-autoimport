@@ -118,8 +118,8 @@ class we_rebuild{
 					default:
 						return false;
 				}
-
-				$GLOBALS['we_doc'] = new $data['cn']();
+				$tmp=$data['cn'];
+				$GLOBALS['we_doc'] = new $tmp();
 				$GLOBALS['we_doc']->initByID($data['id'], $table, we_class::LOAD_MAID_DB);
 				if($printIt){
 					print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);

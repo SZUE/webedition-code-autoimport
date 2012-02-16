@@ -182,7 +182,7 @@ class weBackupImport{
 				} else if(defined('SPELLCHECKER') && isset($object->Path) && (strpos($object->Path, '/webEdition/we/include/we_modules/spellchecker/') === 0) && !$_SESSION['weBackupVars']['handle_options']['spellchecker']){
 					// do nothing
 				} else{
-					$object->save();
+					$object->save(true);
 				}
 
 				//speedup for some tables

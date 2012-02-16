@@ -758,6 +758,7 @@ abstract class we_root extends we_class{
 
 	function we_load($from=we_class::LOAD_MAID_DB){
 		parent::we_load($from);
+
 		$this->i_getContentData($this->LoadBinaryContent);
 		$this->OldPath = $this->Path;
 	}
@@ -944,11 +945,11 @@ abstract class we_root extends we_class{
 				$this->elements[$Name] = unserialize($this->DB_WE->f("Dat"));
 			} else{
 				if($this->i_isElement($Name)){
-					while(list($k, $v) = each($this->DB_WE->Record)) {
-						if(!in_array($k, $filter) && !ctype_digit($k)){
+					foreach($this->DB_WE->Record as $k=>$v) {
+						if(!in_array($k, $filter) && !is_numeric($k)){
 							$k = strtolower($k);
 							$this->elements[$Name][$k] = $v;
-						}
+							}
 					}
 					$this->elements[$Name]["table"] = CONTENT_TABLE;
 				}
@@ -969,7 +970,6 @@ abstract class we_root extends we_class{
 		if(!is_array($this->elements)){
 			return deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
-
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
@@ -1021,8 +1021,11 @@ abstract class we_root extends we_class{
 				}
 			}
 		}
+
 		$replace = implode(',', $replace);
 		if($replace){
+/*			t_e($replace,$this);
+			exit();*/
 			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
 			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
 		}

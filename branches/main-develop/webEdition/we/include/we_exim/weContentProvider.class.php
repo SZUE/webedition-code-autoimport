@@ -189,12 +189,12 @@ class weContentProvider{
 			"weTableItem" => array("Text", "BText", "answertext"),
 			"we_category" => array("Catfields")
 		);
-		return strpos($content,'<')!==FALSE||strpos($content,'>')!==FALSE||strpos($content,'&')!==FALSE;
-/*
-		if($classname == "weTableItem"){
-			return !(is_numeric($content) || $content === '');
-		}
-		return (isset($encoded[$classname])) && in_array($prop, $encoded[$classname]);*/
+		return strpos($content, '<') !== FALSE || strpos($content, '>') !== FALSE || strpos($content, '&') !== FALSE;
+		/*
+		  if($classname == "weTableItem"){
+		  return !(is_numeric($content) || $content === '');
+		  }
+		  return (isset($encoded[$classname])) && in_array($prop, $encoded[$classname]); */
 	}
 
 	function needSerialize(&$object, $classname, $prop){
@@ -324,10 +324,7 @@ class weContentProvider{
 
 	function object2xml(&$object, &$file, $attribs=array()){
 
-		if(isset($object->Pseudo))
-			$classname = $object->Pseudo;
-		else
-			$classname = $object->ClassName;
+		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
 
 		if($classname == "we_category" || $classname == "weNavigation" || $classname == "weNavigationRule" || $classname == "we_thumbnail")
 			$object->persistent_slots = array_merge(array("ClassName"), $object->persistent_slots);
@@ -368,8 +365,9 @@ class weContentProvider{
 		foreach($object->persistent_slots as $k => $v){
 			if($v != "elements"){
 				$content = "";
-				if(isset($object->$v))
+				if(isset($object->$v)){
 					$content = $object->$v;
+				}
 
 				if(weContentProvider::needSerialize($object, $classname, $v)){
 					$content = serialize($content);

@@ -688,8 +688,6 @@ class we_template extends we_document{
 			}
 		}
 
-
-
 		if($this->MasterTemplateID != 0){
 
 			$_templates = array();

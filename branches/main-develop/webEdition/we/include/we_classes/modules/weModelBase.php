@@ -91,7 +91,7 @@ class weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){
-				$sets[$val] = $this->db->escape($this->{$val});
+				$sets[$val] = $this->{$val};
 			}
 		}
 		$where = $this->getKeyWhere();
@@ -99,7 +99,7 @@ class weModelBase{
 
 		if($this->isKeyDefined()){
 			if($this->isnew){
-				$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set);
+				$ret = $this->db->query('REPLACE INTO ' . $this->db->escape($this->table) . ' SET ' . $set, false, true);
 				# get ID #
 				if($ret){
 					$this->ID = $this->db->getInsertId();

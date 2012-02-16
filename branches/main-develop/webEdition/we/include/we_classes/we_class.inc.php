@@ -520,7 +520,7 @@ abstract class we_class{
 		}
 	}
 
-	function i_getPersistentSlotsFromDB($felder='*'){
+		function i_getPersistentSlotsFromDB($felder='*'){
 		$fields = getHash('SELECT ' . $felder . ' FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), $this->DB_WE);
 		if(count($fields)){
 			foreach($fields as $k => $v){

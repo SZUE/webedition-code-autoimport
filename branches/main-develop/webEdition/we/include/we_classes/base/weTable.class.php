@@ -78,7 +78,7 @@ class weTable{
 		$this->fetchNewColumns();
 	}
 
-	function save(){
+	function save($unused=true){
 		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
 			$_SESSION['weBackupVars']['tablekeys'] = array();
 		}
@@ -170,7 +170,7 @@ class weTableAdv extends weTable{
 		//$this->fetchNewColumns();
 	}
 
-	function save(){
+	function save($unused=true){
 		global $DB_WE;
 		if(!(isset($_SESSION['weBackupVars']['tablekeys']) && is_array($_SESSION['weBackupVars']['tablekeys']))){
 			$_SESSION['weBackupVars']['tablekeys'] = array();
