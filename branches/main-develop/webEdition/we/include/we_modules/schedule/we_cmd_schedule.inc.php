@@ -23,12 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 switch($_REQUEST['we_cmd'][0]){
-//	case 'edit_schedule_ifthere':
-//	case 'edit_schedule':
-//		$mod='schedule';
-//		$INCLUDE = 'we_modules/show_frameset.php';
-//		break;
-
 	case 'add_schedule':
 	case 'del_schedule':
 	case 'add_schedcat':

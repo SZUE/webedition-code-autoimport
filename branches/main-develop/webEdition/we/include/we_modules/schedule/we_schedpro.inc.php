@@ -52,7 +52,7 @@ class we_schedpro{
 	var $active = 1;
 	var $doctypeAll = 0;
 
-	function we_schedpro($s = "", $nr=0){
+	function __construct($s = "", $nr=0){
 		if(is_array($s)){
 			$this->task = isset($s["task"]) ? $s["task"] : 1;
 			$this->type = isset($s["type"]) ? $s["type"] : 0;

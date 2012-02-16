@@ -435,11 +435,8 @@ function we_tag_field($attribs, $content){
 				}
 
 				if(isset($GLOBALS['lv']->ClassName) && $GLOBALS['lv']->ClassName == 'we_search_listview' && $GLOBALS['lv']->f('OID')){
-					if($tid){
-						$tail = '&amp;we_objectTID=' . $tid;
-					} else{
-						$tail = '';
-					}
+					$tail = ($tid ? '&amp;we_objectTID=' . $tid : '');
+
 					$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
 					if($GLOBALS['lv']->objectseourls){
 						$db = new DB_WE();

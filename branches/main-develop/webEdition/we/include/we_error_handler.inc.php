@@ -52,21 +52,18 @@ if(!defined('E_SQL')){
 	define('E_SQL', -1);
 }
 
-
 function we_error_setHandleAll(){
-$GLOBALS['we']['errorhandler'] = array(
-	'notice' => true,
-	'deprecated' => true,
-	'warning' => true,
-	'error' => true,
-	'display' => false,
-	'log' => true,
-	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
-	'shutdown' => 'we',
-);
-
+	$GLOBALS['we']['errorhandler'] = array(
+		'notice' => true,
+		'deprecated' => true,
+		'warning' => true,
+		'error' => true,
+		'display' => false,
+		'log' => true,
+		'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
+		'shutdown' => 'we',
+	);
 }
-
 
 function we_error_handler($in_webEdition = true){
 	// Get error types to be handled
@@ -126,9 +123,9 @@ function translate_error_type($type){
 		define('E_DEPRECATED', 8192);
 	}
 
-/*	if(!defined('E_USER_DEPRECATED')){
-		define('E_USER_DEPRECATED', 16384);
-	}*/
+	/* 	if(!defined('E_USER_DEPRECATED')){
+	  define('E_USER_DEPRECATED', 16384);
+	  } */
 
 	switch($type){
 		case E_ERROR:
@@ -277,10 +274,10 @@ function display_error_message($type, $message, $file, $line, $skipBT=false){
 	print $_detailedError;
 }
 
-function getVariableMax($var,$db=''){
+function getVariableMax($var, $db=''){
 	static $max = -1;
-	if($db==''){
-			$max = 1073741824 - 2048; //1MB
+	if($db == ''){
+		$max = 1073741824 - 2048; //1MB
 	}
 	if($max == -1){
 		if(isset($GLOBALS['DB_WE']) && $GLOBALS['DB_WE']->isConnected()){
@@ -310,7 +307,7 @@ function getVariableMax($var,$db=''){
 	}
 
 	if(strlen($ret) > $max){
-		$ret = substr($ret, 0, $max)."\n[...]";
+		$ret = substr($ret, 0, $max) . "\n[...]";
 	}
 	return $var . '="' . escape_sql_query($ret) . '"';
 }
@@ -346,13 +343,13 @@ function log_error_message($type, $message, $file, $_line, $skipBT=false){
 			Text="' . escape_sql_query($_text) . '",
 			Backtrace="' . escape_sql_query($_detailedError) . '"';
 		if(isset($GLOBALS['DB_WE'])){
-			$db=new DB_WE();
+			$db = new DB_WE();
 			if(!$db->query($_query)){
 				die('Cannot log error! Query failed: ' . $GLOBALS['DB_WE']->Error);
 			} else{
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
-					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var,$db) . ' WHERE ID=' . $id);
+					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var, $db) . ' WHERE ID=' . $id);
 				}
 			}
 		} else{
@@ -421,30 +418,23 @@ function error_handler($type, $message, $file, $line, $context){
 	if(error_reporting() == 0){
 		return;
 	}
-	if(!defined('E_DEPRECATED')){
-		define('E_DEPRECATED', 8192);
-	}
-
-	if(!defined('E_USER_DEPRECATED')){
-		define('E_USER_DEPRECATED', 16384);
-	}
 
 	switch($type){
 		case E_NOTICE:
 		case E_USER_NOTICE:
-			if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['notice']){
+			if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['notice']){
 				// Display error?
-				if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['display']){
+				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['log']){
+				if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler'])&&isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+				if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -454,19 +444,19 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
-			if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['warning']){
+			if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['warning']){
 				// Display error?
-				if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['display']){
+				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['log']){
+				if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line);
 				}
 
 				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler'])&&isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+				if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
 					mail_error_message($type, $message, $file, $line);
 				}
 			}
@@ -479,19 +469,19 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['error']){
+			if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['error']){
 				// Display error?
-				if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['display']){
+				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line, true);
 				}
 
 				// Log error?
-				if(!isset($GLOBALS['we']['errorhandler'])||$GLOBALS['we']['errorhandler']['log']){
+				if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line, true);
 				}
 
 				// Mail error?
-				if(isset($GLOBALS['we']['errorhandler'])&&isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+				if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
 					mail_error_message($type, $message, $file, $line, true);
 				}
 			}
@@ -499,8 +489,8 @@ function error_handler($type, $message, $file, $line, $context){
 			// Stop execution
 			die();
 			break;
-		case E_DEPRECATED:
-		case E_USER_DEPRECATED:
+		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
+		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
 			if($GLOBALS['we']['errorhandler']['deprecated']){
 				// Display error?
 				if($GLOBALS['we']['errorhandler']['display']){
@@ -525,7 +515,7 @@ function error_handler($type, $message, $file, $line, $context){
 }
 
 function shutdown_handler(){
-	if(isset($GLOBALS['we']['errorhandler'])&&$GLOBALS['we']['errorhandler']['shutdown'] != 'we'){
+	if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['shutdown'] != 'we'){
 		return;
 	}
 	$error = error_get_last();
