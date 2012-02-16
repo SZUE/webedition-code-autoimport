@@ -26,10 +26,13 @@ if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']
 	exit();
 }
 
-if(!isset($_SESSION))
+if(!isset($_SESSION)){
 	@session_start();
+	//for some reason this overwrites $GLOBALS['we']
+	we_error_setErrorHandler();
+}
 if(!isset($_SESSION["we"])){
-	$_SESSION['we']=array();
+	$_SESSION['we'] = array();
 }
 
 if(!isset($_SESSION["user"])){

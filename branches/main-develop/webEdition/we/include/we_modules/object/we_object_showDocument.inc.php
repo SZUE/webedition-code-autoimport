@@ -180,7 +180,9 @@ if(($_userID != 0 && $_userID != $_SESSION['user']['ID']) || (isset($_REQUEST['w
 if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !isset($GLOBALS['getDocContentVersioning'])){
 
 	// call session_start to init session, otherwise NO customer can exist
-	@session_start();
+	if(!isset($_SESSION)){
+		@session_start();
+	}
 
 	if($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj'])){
 

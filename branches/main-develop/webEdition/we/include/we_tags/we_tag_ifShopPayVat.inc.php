@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopPayVat($attribs, $content){
-	$namefrom = we_getTagAttribute("customerfrom", $attribs);
+	$namefrom = weTag_getAttribute("customerfrom", $attribs);
 	$weShopVatRule = weShopVatRule::getShopVatRule();
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];

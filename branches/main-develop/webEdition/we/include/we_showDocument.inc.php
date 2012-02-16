@@ -71,7 +71,9 @@ if(isset($_REQUEST['vers_we_obj'])){
 } else if($we_doc->documentCustomerFilter && !isset($GLOBALS['getDocContentVersioning'])){
 
 	// call session_start to init session, otherwise NO customer can exist
-	@session_start();
+	if(!isset($_SESSION)){
+		@session_start();
+	}
 
 	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc))){
 

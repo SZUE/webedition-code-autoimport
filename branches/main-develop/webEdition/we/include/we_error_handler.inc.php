@@ -37,19 +37,23 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc
  * VARIABLES
  * *********************************************************************** */
 
-$GLOBALS['we']['errorhandler'] = array(
-	'notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
-	'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
-	'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
-	'error' => defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true,
-	'display' => false,
-	'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
-	'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
-	'shutdown' => 'we',
-);
-
 if(!defined('E_SQL')){
 	define('E_SQL', -1);
+}
+
+we_error_setErrorHandler();
+
+function we_error_setErrorHandler(){
+	$GLOBALS['we']['errorhandler'] = array(
+		'notice' => defined('WE_ERROR_NOTICES') ? (WE_ERROR_NOTICES == 1 ? true : false) : false,
+		'deprecated' => defined('WE_ERROR_DEPRECATED') ? (WE_ERROR_DEPRECATED == 1 ? true : false) : false,
+		'warning' => defined('WE_ERROR_WARNINGS') ? (WE_ERROR_WARNINGS == 1 ? true : false) : false,
+		'error' => defined('WE_ERROR_ERRORS') ? (WE_ERROR_ERRORS == 1 ? true : false) : true,
+		'display' => false,
+		'log' => defined('WE_ERROR_LOG') ? (WE_ERROR_LOG == 1 ? true : false) : true,
+		'send' => (defined('WE_ERROR_MAIL') && defined('WE_ERROR_MAIL_ADDRESS')) ? (WE_ERROR_MAIL == 1 ? true : false) : false,
+		'shutdown' => 'we',
+	);
 }
 
 function we_error_setHandleAll(){
@@ -422,7 +426,7 @@ function error_handler($type, $message, $file, $line, $context){
 	switch($type){
 		case E_NOTICE:
 		case E_USER_NOTICE:
-			if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['notice']){
+			if(defined('WE_ERROR_NOTICES') && (WE_ERROR_NOTICES == 1)){
 				// Display error?
 				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);
@@ -444,14 +448,14 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
-			if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['warning']){
+			if(defined('WE_ERROR_WARNINGS') && (WE_ERROR_WARNINGS == 1)){
 				// Display error?
 				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);
 				}
 
 				// Log error?
-				if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
+				if(true || !isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['log']){
 					log_error_message($type, $message, $file, $line);
 				}
 
@@ -469,7 +473,7 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			if(!isset($GLOBALS['we']['errorhandler']) || $GLOBALS['we']['errorhandler']['error']){
+			if(defined('WE_ERROR_ERRORS') && (WE_ERROR_ERRORS == 1)){
 				// Display error?
 				if(isset($GLOBALS['we']['errorhandler']) && $GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line, true);
@@ -491,7 +495,7 @@ function error_handler($type, $message, $file, $line, $context){
 			break;
 		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
 		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
-			if($GLOBALS['we']['errorhandler']['deprecated']){
+			if(defined('WE_ERROR_DEPRECATED') && (WE_ERROR_DEPRECATED == 1)){
 				// Display error?
 				if($GLOBALS['we']['errorhandler']['display']){
 					display_error_message($type, $message, $file, $line);

@@ -78,6 +78,7 @@ class we_template extends we_document{
 			$this->OldPath = $this->Path;
 		}
 		$temp->resetElements();
+		$k = $v = '';
 		while(list($k, $v) = $temp->nextElement("txt")) {
 			$this->setElement($k, $temp->getElement($k), "txt");
 		}
@@ -245,7 +246,7 @@ class we_template extends we_document{
 		  } */
 
 		if(($foo = $tp->parseTags($code)) !== true){
-			$this->errMsg = str_replace('<we>','<we:',strip_tags(str_replace('<we:', '<we>', html_entity_decode($foo, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET'])),'<we>'));
+			$this->errMsg = str_replace('<we>', '<we:', strip_tags(str_replace('<we:', '<we>', html_entity_decode($foo, ENT_QUOTES, $GLOBALS['WE_BACKENDCHARSET'])), '<we>'));
 			return $foo;
 		}
 
@@ -449,9 +450,6 @@ class we_template extends we_document{
 	 * @param	none
 	 */
 	function readAllVariantFields($includedatefield=false){
-
-		include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_webEditionDocument.inc.php');
-
 		$variant_tags = array('input', 'link', 'textarea', 'img', 'select');
 		$templateCode = $this->getTemplateCode();
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
@@ -459,6 +457,7 @@ class we_template extends we_document{
 
 		$blocks = array();
 		$out = array();
+		$regs = array();
 
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
@@ -493,7 +492,7 @@ class we_template extends we_document{
 					for($i = 0; $i < sizeof($foo); $i++){
 						$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 					}
-
+					$att = array();
 					@eval('$att = array(' . $attribs . ');');
 
 					if(in_array($tagname, $variant_tags)){
@@ -510,7 +509,7 @@ class we_template extends we_document{
 							$spacer = "[\040|\n|\t|\r]*";
 							$selregs = array();
 							//FIXME: this regex is not correct [^name] will not match any of those chars
-							if(preg_match('|(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . $att['name'] . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>|i', $templateCode, $selregs)){
+							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . $att['name'] . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
 								$out[$name]['content'] = $selregs[2];
 							}
 						}
@@ -669,7 +668,7 @@ class we_template extends we_document{
 		$code = $this->getTemplateCode(false);
 
 		// find all we:master Tags
-		$masterTags = array();
+		$masterTags = $regs = array();
 
 		preg_match_all("|(<we:master([^>+]*)>)([\\s\\S]*?)</we:master>|", $code, $regs, PREG_SET_ORDER);
 
@@ -725,8 +724,8 @@ class we_template extends we_document{
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();
 		// go through all tags
+		$regs = array();
 		foreach($tags as $tag){
-			$regs = array();
 			// search for include tag
 			if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){ // include found
 				// get attributes of tag
@@ -737,6 +736,7 @@ class we_template extends we_document{
 				for($i = 0; $i < sizeof($foo); $i++){
 					$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
 				}
+				$att = array();
 				@eval('$att = array(' . $attribs . ');');
 				// if type-attribute is equal to "template"
 				if(isset($att["type"]) && $att["type"] == "template"){

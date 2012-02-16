@@ -29,6 +29,8 @@ function we_tag_sessionStart($attribs, $content){
 
 	if (!isset($_SESSION)){
 		@session_start();
+		//for some reason this overwrites $GLOBALS['we']
+		we_error_setErrorHandler();
 	}
 
 	if (!defined('CUSTOMER_TABLE')) {

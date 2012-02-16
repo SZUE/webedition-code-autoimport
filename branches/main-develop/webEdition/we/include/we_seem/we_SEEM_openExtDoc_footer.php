@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,49 +22,46 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-
-    include_once($_SERVER['DOCUMENT_ROOT']."/webEdition/we/include/we.inc.php");
-
-
-
-    we_html_tools::protect();
-    //	footer for a none webEdition-Document opened with webEdition
-    //	the back button is only activated when there are documents in
-    //	the navigation history
-
-    if(!session_id()){
-		session_start();
-	}
-
-    $_head = "";
-    $_body = "";
-
-    $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
-
-    $_backbutton = we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 
 
 
-	$_table = new we_html_table(	array(	"cellpadding" => 0,
-										"cellspacing" => 0,
-										"border"      => 0),
-										2,
-										2);
-	$_table->setColContent(0, 0, we_html_tools::getPixel(20,6));
-	$_table->setColContent(1, 1, $_backbutton);
+we_html_tools::protect();
+//	footer for a none webEdition-Document opened with webEdition
+//	the back button is only activated when there are documents in
+//	the navigation history
+
+if(!session_id()){
+	@session_start();
+}
+
+$_head = "";
+$_body = "";
+
+$_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
+
+$_backbutton = we_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
 
 
-    $_body = $_table->getHtml();
-    $_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
+
+$_table = new we_html_table(array("cellpadding" => 0,
+		"cellspacing" => 0,
+		"border" => 0),
+		2,
+		2);
+$_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
+$_table->setColContent(1, 1, $_backbutton);
 
 
-    $_body = we_html_element::htmlBody(	array(	"bgcolor"      => "white",
-    											"background"   => EDIT_IMAGE_DIR . "editfooterback.gif",
-    											"marginwidth"  => 0,
-    											"marginheight" => 0,
-    											"leftmargin"   => 0,
-    											"topmargin"    => 0),
-										$_body);
+$_body = $_table->getHtml();
+$_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
 
-	print we_html_element::htmlHtml("\n" . $_head . "\n" . $_body );
+
+$_body = we_html_element::htmlBody(array("bgcolor" => "white",
+		"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
+		"marginwidth" => 0,
+		"marginheight" => 0,
+		"leftmargin" => 0,
+		"topmargin" => 0), $_body);
+
+print we_html_element::htmlHtml("\n" . $_head . "\n" . $_body);

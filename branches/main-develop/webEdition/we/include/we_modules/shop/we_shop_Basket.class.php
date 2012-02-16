@@ -115,7 +115,7 @@ class we_shop_Basket{
 	function Add_Item($id, $quantity=1, $type='w', $variant='', $customFields=array()){
 
 		// check if this item is already in the shoppingCart
-		if($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields)){ // item already exists
+		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already exists
 			if($this->ShoppingItems[$key]['quantity'] + $quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] += $quantity;
 			} else{
