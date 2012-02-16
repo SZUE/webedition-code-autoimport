@@ -559,6 +559,8 @@ class we_updater{
 				$this->addCol(SCHEDULE_TABLE, "Type", "TINYINT(3) DEFAULT '0' NOT NULL");
 			if(!$this->isColExist(SCHEDULE_TABLE, "Active"))
 				$this->addCol(SCHEDULE_TABLE, "Active", "TINYINT(1) DEFAULT '1'");
+			if(!$this->isColExist(SCHEDULE_TABLE, "lockedUntil"))
+				$this->addCol(SCHEDULE_TABLE, "lockedUntil", "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP");
 
 			we_schedpro::check_and_convert_to_sched_pro();
 		}
@@ -929,6 +931,9 @@ class we_updater{
 				if(is_array($v)){
 					foreach($v as $tabkey){
 						if(!weDBUtil::isKeyExist($k, $tabkey)){
+							if(($key=weDBUtil::isKeyExistAtAll($k, $tabkey))){
+
+							}
 							weDBUtil::addKey($k, $tabkey);
 						}
 					}

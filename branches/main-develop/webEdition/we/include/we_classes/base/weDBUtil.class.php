@@ -29,9 +29,9 @@
  * Implements db operations
  */
 //FIXME: integrate into DB-class!
-class weDBUtil{
+abstract class weDBUtil{
 
-	function isColExist($tab, $col){
+	static function isColExist($tab, $col){
 		if($tab == '' || $col == ''){
 			return false;
 		}
@@ -40,7 +40,7 @@ class weDBUtil{
 		return ($DB_WE->next_record());
 	}
 
-	function isTabExist($tab){
+	static function isTabExist($tab){
 		if($tab == ''){
 			return false;
 		}
@@ -49,7 +49,7 @@ class weDBUtil{
 		return (bool) ($DB_WE->num_rows());
 	}
 
-	function addTable($tab, $cols, $keys=array()){
+	static function addTable($tab, $cols, $keys=array()){
 		global $DB_WE;
 
 		if(!is_array($cols))
@@ -77,22 +77,22 @@ class weDBUtil{
 		return $DB_WE->query("CREATE TABLE " . $DB_WE->escape($tab) . " (" . implode(",", $cols_sql) . ") ENGINE = MYISAM $charset_collation;") ? true : false;
 	}
 
-	function delTable($tab){
+	static function delTable($tab){
 		global $DB_WE;
 		$DB_WE->query("DROP TABLE IF EXISTS " . $DB_WE->escape($tab) . ";");
 	}
 
-	function addCol($tab, $col, $typ, $pos=""){
+	static function addCol($tab, $col, $typ, $pos=""){
 		global $DB_WE;
 		$DB_WE->query("ALTER TABLE " . $DB_WE->escape($tab) . " ADD $col $typ" . (($pos != "") ? " " . $pos : "") . ";");
 	}
 
-	function changeColTyp($tab, $col, $newtyp){
+	static function changeColTyp($tab, $col, $newtyp){
 		global $DB_WE;
 		$DB_WE->query("ALTER TABLE " . $DB_WE->escape($tab) . " CHANGE $col $col $newtyp;");
 	}
 
-	function getColTyp($tab, $col){
+	static function getColTyp($tab, $col){
 		global $DB_WE;
 		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '$col';");
 		if($DB_WE->next_record())
@@ -100,12 +100,12 @@ class weDBUtil{
 			return "";
 	}
 
-	function delCol($tab, $col){
+	static function delCol($tab, $col){
 		global $DB_WE;
 		$DB_WE->query("ALTER TABLE " . $DB_WE->escape($tab) . " DROP $col;");
 	}
 
-	function getTableCreateArray($tab){
+	static function getTableCreateArray($tab){
 		global $DB_WE;
 		$DB_WE->query("SHOW CREATE TABLE " . $DB_WE->escape($tab));
 		if($DB_WE->next_record()){
@@ -115,12 +115,12 @@ class weDBUtil{
 		}
 	}
 
-	function getTableKeyArray($tab){
+	static function getTableKeyArray($tab){
 		global $DB_WE;
 		$myarray = array();
-		$DB_WE->query("SHOW CREATE TABLE " . $DB_WE->escape($tab));
-		if($DB_WE->next_record()){
-			$zw = explode("\n", $DB_WE->f("Create Table"));
+		$create = f("SHOW CREATE TABLE " . $DB_WE->escape($tab), 'Create Table', $DB_WE);
+		if($create){
+			$zw = explode("\n", $create);
 			foreach($zw as $k => $v){
 				$vv = trim($v);
 				$posP = strpos($vv, 'PRIMARY KEY');
@@ -136,12 +136,28 @@ class weDBUtil{
 		}
 	}
 
-	function isKeyExist($tab, $key){
+	static function isKeyExistAtAll($tab, $key){
+		$keys = explode('(', $key);
 		global $DB_WE;
-		$DB_WE->query("SHOW CREATE TABLE " . $DB_WE->escape($tab));
-		if($DB_WE->next_record()){
-			$zw = explode("\n", $DB_WE->f("Create Table"));
-			foreach($zw as $k => $v){
+		$create = f("SHOW CREATE TABLE " . $DB_WE->escape($tab), 'Create Table', $DB_WE);
+		if($create && isset($keys[0])){
+			$key = trim($keys[0]);
+			$zw = explode("\n", $create);
+			foreach($zw as $v){
+				if(strpos($v, 'KEY ' . $key) !== FALSE){
+					return $key;
+				}
+			}
+		}
+		return false;
+	}
+
+	static function isKeyExist($tab, $key){
+		global $DB_WE;
+		$create = f("SHOW CREATE TABLE " . $DB_WE->escape($tab), 'Create Table', $DB_WE);
+		if($create){
+			$zw = explode("\n", $create);
+			foreach($zw as $v){
 				if(trim(rtrim($v, ',')) == $key)
 					return true;
 			}
@@ -149,9 +165,12 @@ class weDBUtil{
 		return false;
 	}
 
-	function addKey($tab, $key){
-		global $DB_WE;
-		$DB_WE->query("ALTER TABLE " . $DB_WE->escape($tab) . " ADD " . $key . ";");
+	static function addKey($tab, $key){
+		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' ADD ' . $key);
+	}
+
+	static function delKey($tab, $key){
+		$GLOBALS['DB_WE']->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' DROP INDEX ' . $key);
 	}
 
 }
