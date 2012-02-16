@@ -44,6 +44,7 @@ if(isset($_REQUEST["WE_BACKENDCHARSET"]) && $_REQUEST["WE_BACKENDCHARSET"] != ""
 
 .weSelect {
 border: #AAAAAA solid 1px;
+height: 24px;
 color: black;
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
