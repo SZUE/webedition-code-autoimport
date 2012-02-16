@@ -96,7 +96,7 @@ class weHyperlinkDialog extends weDialog{
 				$this->args["objHref"] = "";
 			} else if(substr($this->args["href"], 0, 7) == "mailto:"){
 				$this->args["type"] = "mail";
-				$this->args["mailHref"] = ereg_replace('^([^\?#]+).*$', '\1', substr($this->args["href"], 7));
+				$this->args["mailHref"] = preg_replace('|^([^\?#]+).*$|', '\1', substr($this->args["href"], 7));
 				$this->args["extHref"] = "";
 				$this->args["fileID"] = "";
 				$this->args["fileHref"] = "";
@@ -104,7 +104,7 @@ class weHyperlinkDialog extends weDialog{
 				$this->args["objHref"] = "";
 			} else{
 				$this->args["type"] = "ext";
-				$this->args["extHref"] = ereg_replace('^([^\?#]+).*$', '\1', ereg_replace('^/webEdition/', '', ereg_replace('^/webEdition/we_cmd.php[^"\'#]+(#.*)$', '\1', $this->args["href"])));
+				$this->args["extHref"] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^/webEdition/|', '', preg_replace('|^/webEdition/we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
 				$this->args["fileID"] = "";
 				$this->args["fileHref"] = "";
 				$this->args["mailHref"] = "";

@@ -389,71 +389,71 @@ class weBannerView extends weBannerBase{
 					switch (arguments[0]){
 						case "openSelector":
 							new jsWindow(url,"we_selector",-1,-1,<?php echo WINDOW_SELECTOR_WIDTH . "," . WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openCatselector":
-							new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
+						break;
+					case "openCatselector":
+						new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
+						break;
 						case "openDocselector":
 							new jsWindow(url,"we_docselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openDirselector":
-							new jsWindow(url,"we_dirselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . "," . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
-							break;
-						case "openBannerDirselector":
-							new jsWindow(url,"we_bannerselector",-1,-1,600,350,true,true,true);
-							break;
-						case "switchPage":
+						break;
+					case "openDirselector":
+						new jsWindow(url,"we_dirselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . "," . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
+						break;
+					case "openBannerDirselector":
+						new jsWindow(url,"we_bannerselector",-1,-1,600,350,true,true,true);
+						break;
+					case "switchPage":
+						document.we_form.ncmd.value=arguments[0];
+						document.we_form.page.value=arguments[1];
+						submitForm();
+						break;
+					case "add_cat":
+					case "del_cat":
+					case "del_all_cats":
+					case "add_file":
+					case "del_file":
+					case "del_all_files":
+					case "add_folder":
+					case "del_folder":
+					case "del_customer":
+					case "del_all_customers":
+					case "del_all_folders":
+					case "add_customer":
+						document.we_form.ncmd.value=arguments[0];
+						document.we_form.ncmdvalue.value=arguments[1];
+						submitForm();
+						break;
+					case "delete_stat":
+						if(confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")){
 							document.we_form.ncmd.value=arguments[0];
-							document.we_form.page.value=arguments[1];
 							submitForm();
-							break;
-						case "add_cat":
-						case "del_cat":
-						case "del_all_cats":
-						case "add_file":
-						case "del_file":
-						case "del_all_files":
-						case "add_folder":
-						case "del_folder":
-						case "del_customer":
-						case "del_all_customers":
-						case "del_all_folders":
-						case "add_customer":
-							document.we_form.ncmd.value=arguments[0];
-							document.we_form.ncmdvalue.value=arguments[1];
-							submitForm();
-							break;
-						case "delete_stat":
-							if(confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")){
-								document.we_form.ncmd.value=arguments[0];
-								submitForm();
-							}
-							break;
-						default:
-							for(var i = 0; i < arguments.length; i++){
-								args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-							}
-							eval('top.content.we_cmd('+args+')');
 						}
+						break;
+					default:
+						for(var i = 0; i < arguments.length; i++){
+							args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+						}
+						eval('top.content.we_cmd('+args+')');
 					}
+				}
 
-					function submitForm(){
-						var f = self.document.we_form;
-						if(arguments[0]) f.target = arguments[0];
-						else f.target = "edbody";
-						if(arguments[1]) f.action = arguments[1];
-						else f.action = "";
-						if(arguments[2]) f.method = arguments[2];
-						else f.method = "post";
+				function submitForm(){
+					var f = self.document.we_form;
+					if(arguments[0]) f.target = arguments[0];
+					else f.target = "edbody";
+					if(arguments[1]) f.action = arguments[1];
+					else f.action = "";
+					if(arguments[2]) f.method = arguments[2];
+					else f.method = "post";
 
-						f.submit();
-					}
-					function checkData(){
+					f.submit();
+				}
+				function checkData(){
 
-						return true;
-					}
+					return true;
+				}
 
-					self.focus();
+				self.focus();
 		</script>
 		<?php
 	}
@@ -807,13 +807,14 @@ class weBannerView extends weBannerBase{
 	function formTagName(){
 
 		$tagnames = array();
-		$query = "SELECT " . CONTENT_TABLE . ".Dat AS templateCode, " . LINK_TABLE . ".DID AS DID FROM " . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat like '%<we:banner %'  ";
+		$query = 'SELECT ' . CONTENT_TABLE . '.Dat AS templateCode, ' . LINK_TABLE . '.DID AS DID FROM ' . CONTENT_TABLE . "," . LINK_TABLE . " WHERE " . LINK_TABLE . ".DocumentTable='" . stripTblPrefix(TEMPLATES_TABLE) . "' AND " . LINK_TABLE . ".CID=" . CONTENT_TABLE . ".ID AND " . CONTENT_TABLE . ".Dat like '%<we:banner %'  ";
 		$this->db->query($query);
+		$foo = array();
 		while($this->db->next_record()) {
-			preg_match_all("|(<we:banner [^>]+>)|U", $this->db->f("templateCode"), $foo, PREG_SET_ORDER);
+			preg_match_all("|(<we:banner [^>]+>)|U", $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
 			for($i = 0; $i < sizeof($foo); $i++){
 				$wholeTag = $foo[$i][1];
-				$name = eregi_replace('.+name="([^"]+)".*', '\1', $wholeTag);
+				$name = preg_replace('|.+name="([^"]+)".*|i', '\1', $wholeTag);
 				if($name && (!in_array($name, $tagnames))){
 					array_push($tagnames, $name);
 				}

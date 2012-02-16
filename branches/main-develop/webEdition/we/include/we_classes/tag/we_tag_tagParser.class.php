@@ -51,34 +51,6 @@ class we_tag_tagParser{
 	  }
 	 */
 
-/*	public static function getNames($tags){
-		$names = array();
-		$ll = 0;
-		$l = 0;
-		$b = 0;
-		for($i = 0; $i < sizeof($tags); $i++){
-			if($ll == 0 && $l == 0 && $b == 0){
-				if(eregi('name ?= ?"([^"]+)"', $tags[$i], $regs)){
-					if(!in_array($regs[1], $names))
-						array_push($names, $regs[1]);
-				}
-			}
-			if(preg_match('/< ?we:(list|linklist) /i', $tags[$i])){
-				$ll++;
-			} else
-			if(preg_match('|< ?we:block |i', $tags[$i])){
-				$b++;
-			} else
-			if(preg_match('-< ?/ ?we:(list|linklist) -i', $tags[$i])){
-				$ll--;
-			} else
-			if(preg_match('|< ?/ ?we:block |i', $tags[$i])){
-				$b--;
-			}
-		}
-		return $names;
-	}
-*/
 	public function getAllTags(){
 		return $this->tags;
 	}

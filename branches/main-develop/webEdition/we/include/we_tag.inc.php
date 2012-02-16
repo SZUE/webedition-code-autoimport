@@ -315,15 +315,11 @@ function cutText($text, $max = 0){
 	$text = we_util::html2uml($text);
 	$htmlfree = we_util::html2uml($htmlfree);
 	$left = substr($htmlfree, 0, $max);
+	//FIXME: ereg
 	$left = ereg_replace('^(.+)[ \.,].*$', '\1', $left);
 	$lastword = ereg_replace('^.+[ \.,;\r\n](.+)$', '\1', $left);
 	$orgpos = @strpos($text, $lastword);
-	if($orgpos){
-		$foo = substr($text, 0, $orgpos + strlen($lastword));
-		$foo = strip_tags($foo);
-	} else{
-		$foo = $text;
-	}
+	$foo = ($orgpos ? strip_tags(substr($text, 0, $orgpos + strlen($lastword))) : $text);
 	$cutpos = $max;
 	while($orgpos && (strlen($foo) < $max)) {
 		$cutpos = $orgpos + strlen($lastword);
@@ -332,6 +328,7 @@ function cutText($text, $max = 0){
 		$foo = strip_tags($foo);
 	}
 	$text = substr($text, 0, $cutpos);
+	$regs = array();
 	if(preg_match('-^(.+)(<)(a|b|em|strong|b|i|u|div|span)([ >][^<]*)$-i', $text, $regs)){
 		$text = $regs[1] . $regs[2] . $regs[3] . $regs[4] . '</' . $regs[3] . '>';
 	} else

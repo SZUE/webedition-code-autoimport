@@ -44,7 +44,7 @@ class XML_Export {
 		$foo = (substr($foo,-1) == "/") ? $regs[2] : ($regs[2]."/");
 		preg_match("([^ >/]+) ?(.*)", $foo, $regs);
 		$tagname = $regs[1];
-		$attr = trim(ereg_replace("(.*)/$", "\\1", $regs[2]));
+		$attr = trim(preg_replace("(.*)/$", "\\1", $regs[2]));
 
 		if (!$endTag) {
 			$attribs = "";
@@ -52,7 +52,7 @@ class XML_Export {
 			for ($i = 0; $i < sizeof($foo); $i++) {
 				$attribs .= '"'.trim($foo[$i][1]).'"=>'.trim($foo[$i][2]).',';
 			}
-			$arrstr = "array(".ereg_replace('(.+),$', "\\1", $attribs).")";
+			$arrstr = "array(".preg_replace('(.+),$', "\\1", $attribs).")";
 			eval('$arr = '.$arrstr.';');
 
 			switch ($tagname) {

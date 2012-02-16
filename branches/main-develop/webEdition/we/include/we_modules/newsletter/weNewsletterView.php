@@ -2284,11 +2284,11 @@ class weNewsletterView{
 					$spacer = '[\040|\n|\t|\r]*';
 					parseInternalLinks($content, 0);
 
-					$content = eregi_replace('(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = eregi_replace('(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = eregi_replace('(<[^>]+background' . $spacer . '=' . $spacer . '[\'"]?)(/)', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = eregi_replace('(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
-					$content = eregi_replace('(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
+					$content = preg_replace('|(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
+					$content = preg_replace('|(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
+					$content = preg_replace('|(<[^>]+background' . $spacer . '=' . $spacer . '[\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
+					$content = preg_replace('|(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
+					$content = preg_replace('|(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\([\'"]?)(/)|i', '\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\2', $content);
 				}
 			} else{
 				$newplain = preg_replace('/<br */? *>/', "\n", $content);
@@ -2880,8 +2880,8 @@ class weNewsletterView{
 
 	function getCleanMail($mail){
 		$_match = array();
-		$_pattern = '[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}';
-		if(eregi($_pattern, $mail, $_match)){
+		$_pattern = '|[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}|i';
+		if(preg_match($_pattern, $mail, $_match)){
 			return ($_match[0]);
 		}
 		return '';

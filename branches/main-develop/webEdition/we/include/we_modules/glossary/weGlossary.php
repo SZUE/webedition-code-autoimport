@@ -377,6 +377,7 @@ class weGlossary extends weModelBase{
 		return strpos(htmlentities(clearPath(dirname($this->Path)) . '/'), '/' . $Text . '/') !== false;
 	}
 
+	//FIXME: some signs are broken due to utf-8
 	function escapeChars($Text){
 
 		$Text = quotemeta($Text); // escape . \ + * ? [ ^ ] ( $ )

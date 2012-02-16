@@ -2663,14 +2663,14 @@ class weNewsletterFrames extends weModuleFrames{
 				$content = str_replace('###LASTNAME###', $lastname, $content);
 				$content = str_replace('###CUSTOMERID###', $customerid, $content);
 				if($title){
-					$content = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content);
+					$content = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content);
 				}
 				$content = str_replace('###TITLE###', $title, $content);
 				$content_plain = str_replace('###FIRSTNAME###', $firstname, $contentF_plain);
 				$content_plain = str_replace('###LASTNAME###', $lastname, $content_plain);
 				$content_plain = str_replace('###CUSTOMERID###', $customerid, $content_plain);
 				if($title){
-					$content_plain = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content_plain);
+					$content_plain = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content_plain);
 				}
 				$content_plain = str_replace('###TITLE###', $title, $content_plain);
 			} else if($salutation && $lastname && ($salutation == $this->View->settings["male_salutation"]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
@@ -2679,14 +2679,14 @@ class weNewsletterFrames extends weModuleFrames{
 				$content = str_replace('###LASTNAME###', $lastname, $content);
 				$content = str_replace('###CUSTOMERID###', $customerid, $content);
 				if($title){
-					$content = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content);
+					$content = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content);
 				}
 				$content = str_replace('###TITLE###', $title, $content);
 				$content_plain = str_replace('###FIRSTNAME###', $firstname, $contentM_plain);
 				$content_plain = str_replace('###LASTNAME###', $lastname, $content_plain);
 				$content_plain = str_replace('###CUSTOMERID###', $customerid, $content_plain);
 				if($title){
-					$content_plain = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content_plain);
+					$content_plain = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content_plain);
 				}
 				$content_plain = str_replace('###TITLE###', $title, $content_plain);
 			} else if($title && $firstname && $lastname){
@@ -2694,24 +2694,24 @@ class weNewsletterFrames extends weModuleFrames{
 				$content = str_replace('###FIRSTNAME###', $firstname, $contentTFL);
 				$content = str_replace('###LASTNAME###', $lastname, $content);
 				$content = str_replace('###CUSTOMERID###', $customerid, $content);
-				$content = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content);
+				$content = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content);
 				$content = str_replace('###TITLE###', $title, $content);
 				$content_plain = str_replace('###FIRSTNAME###', $firstname, $contentTFL_plain);
 				$content_plain = str_replace('###LASTNAME###', $lastname, $content_plain);
 				$content_plain = str_replace('###CUSTOMERID###', $customerid, $content_plain);
-				$content_plain = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content_plain);
+				$content_plain = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content_plain);
 				$content_plain = str_replace('###TITLE###', $title, $content_plain);
 			} else if($title && $lastname){
 
 				$content = str_replace('###FIRSTNAME###', $firstname, $contentTL);
 				$content = str_replace('###LASTNAME###', $lastname, $content);
 				$content = str_replace('###CUSTOMERID###', $customerid, $content);
-				$content = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content);
+				$content = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content);
 				$content = str_replace('###TITLE###', $title, $content);
 				$content_plain = str_replace('###FIRSTNAME###', $firstname, $contentTL_plain);
 				$content_plain = str_replace('###LASTNAME###', $lastname, $content_plain);
 				$content_plain = str_replace('###CUSTOMERID###', $customerid, $content_plain);
-				$content_plain = eregi_replace('([^ ])###TITLE###', '\1 ' . $title, $content_plain);
+				$content_plain = preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $content_plain);
 				$content_plain = str_replace('###TITLE###', $title, $content_plain);
 			} else if($lastname && $firstname){
 

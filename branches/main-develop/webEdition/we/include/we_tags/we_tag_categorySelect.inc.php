@@ -108,7 +108,7 @@ function we_tag_categorySelect($attribs, $content){
 	} else{
 		foreach($valuesArray as $catPaths){
 			if(stripos($content, '<option>') !== false){
-				$content = preg_replace('/<option>' . quotemeta($catPaths) . '( ?[<\n\r\t])/i', '<option selected="selected">' . $catPaths . '\1', $content);
+				$content = preg_replace('/<option>' . preg_quote($catPaths) . '( ?[<\n\r\t])/i', '<option selected="selected">' . $catPaths . '\1', $content);
 			}
 			$content = str_replace('<option value="' . $catPaths . '">', '<option value="' . $catPaths . '" selected="selected">', $content);
 		}

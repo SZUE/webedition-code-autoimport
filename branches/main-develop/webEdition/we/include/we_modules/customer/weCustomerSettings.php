@@ -395,7 +395,7 @@ class weCustomerSettings {
 		}
 
 		$regex = array();
-		if (ereg($new, $date, $regex)) {
+		if (preg_match('|'.preg_quote($new).'|', $date, $regex)) {
 			asort($order);
 			$c = 1;
 			foreach ($order as $ok => $ov) {
