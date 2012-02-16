@@ -76,7 +76,7 @@ if(we_styleString && we_styleString.length){
 	we_classNames = new Array();
 	if(isGecko||isOpera ||isIE9){
 		for(var i=0;i<we_styleSheets.length;i++){
-			var r = we_styleSheets[i].cssRules;
+			var r = styleSheets[i].cssRules;
 			if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
 				for(var n=0;n<r.length;n++){
 					var s = r[n].style;
@@ -3874,7 +3874,7 @@ function weGetElementStyle(elementName,styleSheets){
 	// loop through all styles
 	for(var i=0;i<styleSheets.length;i++){
 		// get the rules
-		var r = (isGecko||isOpera) ? styleSheets[i].cssRules : styleSheets(i).rules;
+		var r = (isGecko||isOpera|isIE9) ? styleSheets[i].cssRules : styleSheets(i).rules;
 		// loop through all rules
 		for(var n=0;n<r.length;n++){
 			// get selector Text (.class or elemName)
