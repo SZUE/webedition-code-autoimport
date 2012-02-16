@@ -318,8 +318,6 @@ function we_tag_sessionField($attribs, $content){
 
 			$imgId = $_SESSION['webuser']['imgtmp'][$name]['id'];
 
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/we_document.inc.php');
-
 			$thumbnail = weTag_getAttribute('thumbnail', $attribs);
 			if($thumbnail != ''){
 				$attr['thumbnail'] = $thumbnail;

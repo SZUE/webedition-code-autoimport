@@ -83,8 +83,7 @@ function we_tag_var($attribs, $content){
 
 						if(substr($_glob_key, 0, 7) == "object_"){
 
-							$normVal = we_document::getFieldByVal(
-									$doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 7));
+							$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 7));
 						}
 
 						if($normVal != "")
@@ -96,8 +95,7 @@ function we_tag_var($attribs, $content){
 						foreach($doc->elements as $_glob_key => $_val){
 
 							if(substr($_glob_key, 0, 10) == "we_object_"){
-								$normVal = we_document::getFieldByVal(
-										$doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 10));
+								$normVal = we_document::getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 10));
 							}
 							if($normVal != "")
 								break;

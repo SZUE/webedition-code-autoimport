@@ -78,8 +78,7 @@ function we_tag_userInput($attribs, $content){
 
 	$content = "";
 
-	$content = we_document::getFieldByVal(
-			$orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
+	$content = we_document::getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 
 	if(!$editable && !$hidden && $type !== "img" && $type !== "binary" && $type !== "flashmovie" && $type !== "quicktime"){
 		$_hidden = getHtmlTag(

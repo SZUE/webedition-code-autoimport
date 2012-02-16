@@ -94,7 +94,7 @@ function we_tag_field($attribs, $content){
 
 	switch($type){
 		case 'binary' :
-			$t = we_document::getFieldByVal($GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
+			$t = we_document::getFieldByVal($GLOBALS['lv']->f($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 			if($only == '' || $only == 'name'){
 				$out = $t[0];
 			}
@@ -117,7 +117,7 @@ function we_tag_field($attribs, $content){
 			break;
 		case 'link' :
 			if($GLOBALS['lv']->ClassName){
-				$out = we_document::getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
+				$out = we_document::getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 				$href = (empty($href) ? $out : $href);
 				break;
 			}
@@ -150,8 +150,7 @@ function we_tag_field($attribs, $content){
 			if($idd == 0){
 				$out = '';
 			} else{
-				$out = we_document::getFieldByVal(
-						$idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f');
+				$out = we_document::getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
 			}
 			break;
 		case 'day' :
@@ -218,8 +217,7 @@ function we_tag_field($attribs, $content){
 
 			if(defined('SHOP_TABLE')){
 
-				$normVal = we_document::getFieldByVal(
-						$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
 				$out = weShopVats::getVatRateForSite($normVal);
 			}
@@ -247,8 +245,7 @@ function we_tag_field($attribs, $content){
 				if($type == 'select' && $usekey){
 					$testtype = 'text';
 				}
-				$normVal = we_document::getFieldByVal(
-						$GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
+				$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
 				if($name == 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
 					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))){
@@ -269,8 +266,7 @@ function we_tag_field($attribs, $content){
 						if($type == 'select' && $usekey){
 							$testtype = 'text';
 						}
-						$normVal = we_document::getFieldByVal(
-								$GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), '$GLOBALS[\'lv\']->f'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+						$normVal = we_document::getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 
 					if($normVal != ''){
@@ -283,8 +279,7 @@ function we_tag_field($attribs, $content){
 
 			if($name && $name != 'we_href'){
 				if($normVal == ''){
-					$altVal = we_document::getFieldByVal(
-							$GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, '$GLOBALS[\'lv\']->f'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+					$altVal = we_document::getFieldByVal($GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					if($altVal == '')
 						return '';
 

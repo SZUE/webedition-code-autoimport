@@ -909,7 +909,7 @@ class we_document extends we_root{
 		return f('SELECT ID FROM ' . escape_sql_query($this->Table) . " WHERE ParentID=" . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "ID", new DB_WE());
 	}
 
-	function getFieldByVal($val, $type, $attribs='', $pathOnly=false, $parentID=0, $path='', $db='', $classID='', $fn='$this->getElement'){
+	function getFieldByVal($val, $type, $attribs='', $pathOnly=false, $parentID=0, $path='', $db='', $classID='', $fn='this'){
 
 		$attribs = is_array($attribs) ? $attribs : array();
 		if(isset($attribs['_name_orig'])){
@@ -1207,24 +1207,33 @@ class we_document extends we_root{
 			return we_document::getHrefByArray($hrefArr);
 		}
 
-		return we_document::getFieldByVal(
-				$val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
+		return we_document::getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : ''));
 	}
 
-	function getHref($attribs, $db='', $fn='$this->getElement'){
+	private function getValFromSrc($fn,$name){
+		switch($fn){
+			default:
+			case 'this':
+				return $this->getElement($name);
+			case 'listview':
+				return $GLOBALS['lv']->f($name);
+		}
+	}
+
+	function getHref($attribs, $db='', $fn='this'){
 		if(!$db)
 			$db = new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . '_we_jkhdsf_int';
 		//FIXME: remove eval
-		eval('$int = ('.$fn.'($nint) == "") ? 0 : '.$fn.'($nint);');
+		$int=$this->getValFromSrc($fn,$nint);
+		$int = ($int == "") ? 0 : $int;
 		if($int){
 			$nintID = $n . '_we_jkhdsf_intID';
-			eval('$intID = '.$fn.'($nintID);');
+			$intID = $this->getValFromSrc($fn,$nintID);
 			return f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . intval($intID), 'Path', $db);
 		} else{
-			eval('$extPath = '.$fn.'($n);');
-			return $extPath;
+			return $this->getValFromSrc($fn,$n);
 		}
 	}
 
