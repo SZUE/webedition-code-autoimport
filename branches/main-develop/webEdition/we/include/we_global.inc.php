@@ -1610,11 +1610,14 @@ function t_e($type='warning'){
 			$type = E_USER_NOTICE;
 			break;
 		case 'deprecated':
+			$inc = true;
 			if(defined('E_USER_DEPRECATED')){ //not defined in php <5.3; write warning instead
-				$inc = true;
 				$type = E_USER_DEPRECATED;
-				break;
+			}else{
+				$data[]='DEPRECATED';
+				$type = E_USER_NOTICE;
 			}
+			break;
 		case 'warning':
 			$inc = true;
 		default:
