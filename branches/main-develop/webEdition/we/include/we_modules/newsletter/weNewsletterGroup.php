@@ -68,7 +68,7 @@ class weNewsletterGroup extends weNewsletterBase{
 
 		$this->aFilter = array();
 
-		$this->settings = $this->getSettings();
+		$this->settings = self::getSettings();
 
 		$this->Extern = isset($this->settings["global_mailing_list"]) ? $this->settings["global_mailing_list"] : "";
 
@@ -173,12 +173,12 @@ class weNewsletterGroup extends weNewsletterBase{
 		return $ret;
 	}
 
-	function getSettings(){
+	static function getSettings(){
 		$db = new DB_WE();
 		$ret = array();
-		$db->query("SELECT * FROM " . NEWSLETTER_PREFS_TABLE);
+		$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE);
 		while($db->next_record())
-			$ret[$db->f("pref_name")] = $db->f("pref_value");
+			$ret[$db->f('pref_name')] = $db->f("pref_value");
 		return $ret;
 	}
 

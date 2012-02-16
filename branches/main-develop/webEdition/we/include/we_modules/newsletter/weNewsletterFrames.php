@@ -495,7 +495,7 @@ class weNewsletterFrames extends weModuleFrames{
 	}
 
 	function getHTMLSettings(){
-		$settings = $this->View->getSettings();
+		$settings = weNewsletterView::getSettings();
 
 		$closeflag = false;
 
@@ -524,7 +524,7 @@ class weNewsletterFrames extends weModuleFrames{
 
 			if(!isset($settings[$text])){
 				$this->View->putSetting($text, (isset($defaults[$text]) ? $defaults[$text] : "0"));
-				$settings = $this->View->getSettings();
+				$settings = weNewsletterView::getSettings();
 			}
 
 			$table->setCol($c, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[' . $text . ']') . ":&nbsp;");
@@ -596,7 +596,7 @@ class weNewsletterFrames extends weModuleFrames{
 			if(!isset($settings[$radio])){
 
 				$this->View->putSetting($radio, (isset($defaults[$radio]) ? $defaults[$radio] : "1"));
-				$settings = $this->View->getSettings();
+				$settings = weNewsletterView::getSettings();
 			}
 			if(in_array($radio, $extra_radio_text)){
 				$radios_code.= we_forms::checkbox($settings[$radio], (($settings[$radio] > 0) ? true : false), $radio . "_check", g_l('modules_newsletter', '[' . $radio . "_check]"), false, "defaultfont", "if(document.we_form." . $radio . "_check.checked) document.we_form." . $radio . ".value=" . (isset($defaults[$radio . "_check"]) ? $defaults[$radio . "_check"] : "0") . "; else document.we_form." . $radio . ".value=0;");

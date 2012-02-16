@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,17 +22,17 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_tag_ifFemale($attribs, $content){
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]) return true;
+	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+		return true;
+	}
 	if(isset($GLOBALS["WE_SALUTATION"]) && $GLOBALS["WE_SALUTATION"]){
-		$femaleSalutation = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='female_salutation'","pref_value",$GLOBALS['DB_WE']);
-		if ($femaleSalutation == "") {
-			$femaleSalutation = g_l('modules_newsletter','[default][female]');
+		$femaleSalutation = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='female_salutation'", "pref_value", $GLOBALS['DB_WE']);
+		if($femaleSalutation == ""){
+			$femaleSalutation = g_l('modules_newsletter', '[default][female]');
 		}
-		if($GLOBALS["WE_SALUTATION"] == $femaleSalutation) return true;
-		else return false;
-	}else{
+		return ($GLOBALS["WE_SALUTATION"] == $femaleSalutation);
+	} else{
 		return false;
 	}
 }

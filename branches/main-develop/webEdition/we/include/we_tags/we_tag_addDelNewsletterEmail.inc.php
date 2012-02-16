@@ -22,7 +22,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 include_once $_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.php';
 
 function we_tag_addDelNewsletterEmail($attribs, $content){
@@ -32,8 +31,9 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 	$isUnsubscribe = isset($_REQUEST["we_unsubscribe_email__"]);
 	$doubleoptin = weTag_getAttribute("doubleoptin", $attribs, false, true);
 	$forcedoubleoptin = weTag_getAttribute("forcedoubleoptin", $attribs, false, true);
-	if($forcedoubleoptin)
+	if($forcedoubleoptin){
 		$doubleoptin = 1;
+	}
 	$customer = weTag_getAttribute("type", $attribs) == "customer" ? true : false;
 	$emailonly = weTag_getAttribute("type", $attribs) == "emailonly" ? true : false;
 	$fieldGroup = weTag_getAttribute("fieldGroup", $attribs);
@@ -42,43 +42,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 	$paths = array();
 	$db = new DB_WE();
 
-	$db->query("SELECT * FROM " . NEWSLETTER_PREFS_TABLE);
-	if($db->num_rows()){
-		while($db->next_record()) {
-			$_customerFieldPrefs[$db->f('pref_name')] = $db->f('pref_value');
-		}
-	} else{
-		$_domainName = str_replace("www.", "", $_SERVER['SERVER_NAME']);
-		$_customerFieldPrefs = array(
-			'black_list' => '',
-			'customer_email_field' => 'Kontakt_Email',
-			'customer_firstname_field' => 'Forename',
-			'customer_html_field' => 'Newsletter_HTMLNewsletter',
-			'customer_lastname_field' => 'Surname',
-			'customer_salutation_field' => 'Anrede_Anrede',
-			'customer_title_field' => 'Anrede_Titel',
-			'default_htmlmail' => '0',
-			'isEmbedImages' => '0',
-			'default_reply' => 'reply@' . $_domainName,
-			'default_sender' => 'mailer@' . $_domainName,
-			'female_salutation' => g_l('modules_newsletter', '[default][female]'),
-			'global_mailing_list' => '',
-			'log_sending' => '1',
-			'male_salutation' => g_l('modules_newsletter', '[default][male]'),
-			'reject_malformed' => '1',
-			'reject_not_verified' => '1',
-			'send_step' => '20',
-			'send_wait' => '0',
-			'test_account' => 'test@' . $_domainName,
-			'title_or_salutation' => '0',
-			'use_port' => '0',
-			'use_https_refer' => '0',
-			'additional_clp' => '0'
-		);
-		foreach($_customerFieldPrefs as $name => $value){
-			$db->query("INSERT INTO " . NEWSLETTER_PREFS_TABLE . "(pref_name,pref_value) VALUES('" . $db->escape($name) . "','" . $db->escape($value) . "');");
-		}
-	}
+	$_customerFieldPrefs = weNewsletterView::getSettings();
 
 	if(!$useListsArray){
 		if($customer){
@@ -138,7 +102,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 	/*	 * ******************************************************************************* */
 	if($isSubscribe){
 		$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_SUCCESS;
-		$err = 0;
+		$err = weNewsletterBase::STATUS_SUCCESS;
 		$f = getNewsletterFields($_REQUEST, isset($_REQUEST["confirmID"]) ? $_REQUEST["confirmID"] : "", $err, isset($_REQUEST["mail"]) ? $_REQUEST["mail"] : "");
 		// Setting Globals FOR WE-Tags
 		$GLOBALS["WE_NEWSLETTER_EMAIL"] = isset($f["subscribe_mail"]) ? $f["subscribe_mail"] : "";
@@ -169,16 +133,15 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 			$lists = "";
 			$emailExistsInOneOfTheLists = false;
 			if($customer){
-				$db = new DB_WE();
-				$__query = "SELECT * FROM " . CUSTOMER_TABLE . " WHERE " . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f["subscribe_mail"]) . "'";
-				$db->query($__query);
-				if($db->next_record()){
+				$__query = getHash("SELECT * FROM " . CUSTOMER_TABLE . " WHERE " . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f["subscribe_mail"]) . "'",$db);
+				if(count($__query)){
 					$emailExistsInOneOfTheLists = true;
 				}
 				foreach($abos as $cAbo){
-					$dbAbo = $db->f($cAbo);
-					if(!empty($dbAbo))
+					$dbAbo = isset($__query[$cAbo])?$__query[$cAbo]:'';
+					if(!empty($dbAbo)){
 						$emailExistsInOneOfTheLists = true;
+					}
 					$lists .= $cAbo . ",";
 				}
 			} else{
@@ -199,7 +162,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 										$emailExistsInOneOfTheLists = true; // E-Mail does not exists in one of the lists
 									}
 								} else{
-									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;	// FATAL ERROR
+									$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 									$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 									return;
 								}
@@ -216,13 +179,12 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				return;
 			}
 
-			$lists = rtrim($lists,',');
+			$lists = rtrim($lists, ',');
 
-			$db = new DB_WE();
-			$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) = LOWER('" . $db->escape($f["subscribe_mail"]) . "')");
+			$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) = LOWER('" . $db->escape($f["subscribe_mail"]) . "')");
 
 			$mailid = weTag_getAttribute("mailid", $attribs);
-			$expiredoubleoptin = weTag_getAttribute("expiredoubleoptin", $attribs, 1440) * 60;	// in secs
+			$expiredoubleoptin = weTag_getAttribute("expiredoubleoptin", $attribs, 1440) * 60; // in secs
 
 			if($mailid){
 
@@ -232,13 +194,10 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 				$db->query($q);
 
 				$id = weTag_getAttribute("id", $attribs);
-				$subject = weTag_getAttribute("subject", $attribs, "newsletter");
+				$subject = weTag_getAttribute("subject", $attribs, 'newsletter');
 				$from = weTag_getAttribute("from", $attribs, "newsletter@" . $_SERVER['SERVER_NAME']);
 
-				$use_https_refer = false;
-				$db->query("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='use_https_refer';");
-				if(!$db->next_record())
-					$use_https_refer = $db->f("use_https_refer");
+				$use_https_refer = f("SELECT pref_value FROM " . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='use_https_refer'",'pref_value',$db);
 				$protocol = ($use_https_refer ? "https://" : "http://");
 
 				$port = defined("HTTP_PORT") ? HTTP_PORT : ($use_https_refer ? 443 : 80);
@@ -291,6 +250,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 
 
 				$pattern = "/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/";
+				$placeholderfieldsmatches = array();
 				preg_match_all($pattern, $mailtext, $placeholderfieldsmatches);
 				$placeholderfields = $placeholderfieldsmatches[1];
 				unset($placeholderfieldsmatches);
@@ -462,7 +422,7 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 						$path = (substr($path, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
 
 						if(!@file_exists(dirname($path))){
-							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;	// FATAL ERROR
+							$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 							return;
 						}
@@ -503,12 +463,12 @@ function we_tag_addDelNewsletterEmail($attribs, $content){
 					if($emailwritten == 0){
 						$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 					}
-					$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
+					$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
 				} else{ //nicht in eine Liste eintragen sondern adminmail versenden
 					$adminmailid = weTag_getAttribute("adminmailid", $attribs);
 					$adminsubject = weTag_getAttribute("adminsubject", $attribs);
 					$adminemail = weTag_getAttribute("adminemail", $attribs);
-					$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
+					$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($f["subscribe_mail"]) . "'");
 					$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f["subscribe_mail"], $f["subscribe_mail"]);
 					$phpmail->setCharSet($charset);
 
@@ -562,7 +522,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 
 	$emailExists = false;
 
-	$db->query("DELETE FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($unsubscribe_mail) . "'");
+	$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE subscribe_mail ='" . $db->escape($unsubscribe_mail) . "'");
 
 	if($customer){
 		$__db = new DB_WE();
@@ -607,7 +567,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 			$path = (substr($path, 0, 1) == "/") ? ($_SERVER['DOCUMENT_ROOT'] . $path) : ($_SERVER['DOCUMENT_ROOT'] . "/" . $path);
 
 			if(!@file_exists(dirname($path))){
-				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR;	// FATAL ERROR
+				$GLOBALS["WE_WRITENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 				$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_ERROR; // FATAL ERROR
 				return false;
 			}
@@ -637,7 +597,7 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 	}
 
 	if(!$emailExists){
-		$GLOBALS["WE_REMOVENEWSLETTER_STATUS"] = weNewsletterBase::STATUS_EMAIL_EXISTS;
+		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = weNewsletterBase::STATUS_EMAIL_EXISTS;
 		return false;
 	}
 	return true;
@@ -645,35 +605,31 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 
 function getNewsletterFields($request, $confirmid, &$errorcode, $mail=""){
 
-	$errorcode = 0;
+	$errorcode = weNewsletterBase::STATUS_SUCCESS;
 	if($confirmid){
 		$_h = getHash("SELECT * FROM " . NEWSLETTER_CONFIRM_TABLE . " WHERE confirmID = '" . escape_sql_query($confirmid) . "' AND subscribe_mail='" . escape_sql_query($mail) . "'", new DB_WE());
 		if(empty($_h)){
 			$errorcode = weNewsletterBase::STATUS_CONFIR_FAILED;
 		}
 		return $_h;
-	} else{
-		$subscribe_mail = preg_replace("|[\r\n,]|", "", trim($request["we_subscribe_email__"]));
-		if(strlen($subscribe_mail) == 0){
-			$errorcode = 2;
-			return array();
-		}
-
-		if(!we_check_email($subscribe_mail)){
-			$errorcode = 2; // E-Mail ungueltig
-			return array();
-		}
-
-		$subscribe_html = (isset($request["we_subscribe_html__"]) ? $request["we_subscribe_html__"] : 0);
-
-		$subscribe_salutation = (isset($request["we_subscribe_salutation__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_salutation__"]) : '');
-
-		$subscribe_title = (isset($request["we_subscribe_title__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_title__"]) : '');
-
-		$subscribe_firstname = (isset($request["we_subscribe_firstname__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_firstname__"]) : '');
-
-		$subscribe_lastname = (isset($request["we_subscribe_lastname__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_lastname__"]) : '');
 	}
+
+	$subscribe_mail = preg_replace("|[\r\n,]|", "", trim($request["we_subscribe_email__"]));
+	if(strlen($subscribe_mail) == 0){
+		$errorcode = weNewsletterBase::STATUS_EMAIL_INVALID;
+		return array();
+	}
+
+	if(!we_check_email($subscribe_mail)){
+		$errorcode = weNewsletterBase::STATUS_EMAIL_INVALID; // E-Mail ungueltig
+		return array();
+	}
+
+	$subscribe_html = (isset($request["we_subscribe_html__"]) ? $request["we_subscribe_html__"] : 0);
+	$subscribe_salutation = (isset($request["we_subscribe_salutation__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_salutation__"]) : '');
+	$subscribe_title = (isset($request["we_subscribe_title__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_title__"]) : '');
+	$subscribe_firstname = (isset($request["we_subscribe_firstname__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_firstname__"]) : '');
+	$subscribe_lastname = (isset($request["we_subscribe_lastname__"]) ? preg_replace("|[\r\n,]|", "", $request["we_subscribe_lastname__"]) : '');
 
 	return array("subscribe_mail" => trim($subscribe_mail),
 		"subscribe_html" => trim($subscribe_html),

@@ -54,7 +54,7 @@ class weNewsletterView{
 
 		$this->frameset = WE_NEWSLETTER_MODULE_PATH . "edit_newsletter_frameset.php";
 
-		$this->settings = $this->getSettings();
+		$this->settings = self::getSettings();
 
 		if(defined("CUSTOMER_TABLE")){
 			$this->customers_fields = array();
@@ -2620,7 +2620,7 @@ class weNewsletterView{
 	/**
 	 * Static function - Settings
 	 */
-	function getSettings(){
+	static function getSettings(){
 		$db = new DB_WE();
 		$ret = array();
 		$_domainName = str_replace("www.", "", $_SERVER['SERVER_NAME']);
@@ -2651,7 +2651,7 @@ class weNewsletterView{
 			'use_base_href' => '1'
 		);
 
-		$db->query("SELECT * FROM " . NEWSLETTER_PREFS_TABLE);
+		$db->query('SELECT * FROM ' . NEWSLETTER_PREFS_TABLE);
 		while($db->next_record()) {
 			$ret[$db->f("pref_name")] = $db->f("pref_value");
 		}
