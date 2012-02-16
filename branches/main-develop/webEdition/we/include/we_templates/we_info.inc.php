@@ -77,14 +77,14 @@ if(defined("WE_VERSION_SUPP")){
 }
 
 $_table = new we_html_table(array(
-		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . "info/" . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:".$_widthTotal.'px'),
+		"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . "info/" . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px'),
 		8,
 		3);
 $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++, 0, array("colspan" => 3,
 	"style" => 'width: ' . $_widthTotal . 'px;height:110px;',
-	), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>');//<br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
+	), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>'); //<br /><div class="defaultfont small" style="text-align:center;">Open Source Content Management</div>');
 
 $_table->addRow(2);
 //	spaceholder
@@ -173,7 +173,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			1,
 			3);
 
-$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">'.we_button::create_button("login", "javascript:document.loginForm.submit();").'</button>';
+	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
 	if(defined("WE_SEEM") && !WE_SEEM){ //	deactivate See-Mode
 		$_modetable->setCol(0, 1, array("align" => "right",
 			"valign" => "bottom",
@@ -191,7 +191,7 @@ $loginButton = '<button type="submit" style="border: none; background-color: tra
 			<td>' . we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
 		</tr>
 		<tr>
-			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", '<acronym title="'.g_l('SEEM', "[start_mode_seem_acronym]").'">'.g_l('SEEM', "[start_mode_seem]").'</acronym>', true, "small") . '</td>
+			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', "[start_mode_seem]") . '</acronym>', true, "small") . '</td>
 		</tr>
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",
