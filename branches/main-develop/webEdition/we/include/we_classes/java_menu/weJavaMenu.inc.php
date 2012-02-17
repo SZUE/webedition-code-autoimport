@@ -64,11 +64,6 @@ class weJavaMenu{
 	}
 
 	function getJS(){
-		$portVar = (
-			($this->port == 80 && $this->protocol == "http") ||
-			($this->port == 443 && $this->protocol == "https") ||
-			(!$this->port)
-			) ? "" : ":" . $this->port;
 		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . '
 			<script  type="text/javascript"><!--
 				function menuaction(cmd) {
@@ -161,8 +156,7 @@ class weJavaMenu{
 
 		$menus = array();
 
-		$onCh = '
-			var si=this.selectedIndex;
+		$onCh = 'var si=this.selectedIndex;
 			if(this.options[si].value) {
 				menuaction(this.options[si].value);
 			}

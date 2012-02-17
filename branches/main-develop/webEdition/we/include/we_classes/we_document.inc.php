@@ -730,8 +730,9 @@ class we_document extends we_root{
 		/* version */
 		$version = new weVersions();
 
-		if(!parent::we_save($resave))
+		if(!parent::we_save($resave)){
 			return false;
+		}
 		$ret = $this->i_writeDocument();
 		$this->OldPath = $this->Path;
 		if(!$ret || ($this->errMsg != '')){

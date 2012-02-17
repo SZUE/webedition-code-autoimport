@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(isset($_REQUEST["wecmd0"])){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
 	$_REQUEST['we_cmd'][0] = $_REQUEST["wecmd0"];
 }
-foreach($_REQUEST['we_cmd'] as $cmdkey => &$cmdvalue){
+foreach($_REQUEST['we_cmd'] as &$cmdvalue){
 	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
 }
 
@@ -135,7 +135,7 @@ switch($_REQUEST['we_cmd'][0]){
 
 
 	default:
-
+		$regs = array();
 		if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
 			$dt = $regs[1];
 			print 'top.we_cmd("new","' . FILE_TABLE . '","","text/webedition","' . $dt . '");' . "\n";
@@ -145,15 +145,14 @@ switch($_REQUEST['we_cmd'][0]){
 			print 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");' . "\n";
 			break;
 		}
-		$str = "setTimeout(\"top.we_cmd(";
+		$str = '';
 		for($i = 0; $i < sizeof($_REQUEST['we_cmd']); $i++){
 
 			$val = str_replace(array('\'', '"'), array('\\\'', '\\"'), $_REQUEST['we_cmd'][$i]);
 
 			$str .= "'" . $val . "'" . (($i < (sizeof($_REQUEST['we_cmd']) - 1)) ? "," : "");
 		}
-		$str .= ")\",50);\n";
-		print $str;
+		print 'setTimeout("top.we_cmd(' . $str . ')",50);';
 }
 ?>
 </script>
