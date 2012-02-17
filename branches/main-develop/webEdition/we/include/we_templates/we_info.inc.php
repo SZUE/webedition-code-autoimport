@@ -175,20 +175,22 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 
 	$loginButton = '<button type="submit" style="border: none; background-color: transparent; margin: 0px; padding: 0px;">' . we_button::create_button("login", "javascript:document.loginForm.submit();") . '</button>';
 	if(defined("WE_SEEM") && !WE_SEEM){ //	deactivate See-Mode
+		$_modetable->setCol(0, 0, array(), we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
 		$_modetable->setCol(0, 1, array("align" => "right",
 			"valign" => "bottom",
 			"rowspan" => "2"), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
 	} else{ //	normal login
 		//	15th Mode
 		$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 5));
-		$_table->setCol($_actRow, 1, array("width" => $_middlePart,
-			"class" => "small"), ((defined("WE_SEEM") && !WE_SEEM) ? "" : g_l('SEEM', "[start_mode]")));
+		$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), ((defined("WE_SEEM") && !WE_SEEM) ? "" : g_l('SEEM', "[start_mode]")));
 		$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td>' . we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
+			<td>' . we_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')) .
+			'</td></tr><td>' .
+			we_forms::radiobutton("normal", getValueLoginMode("normal"), "mode", g_l('SEEM', "[start_mode_normal]"), true, "small") . '</td>
 		</tr>
 		<tr>
 			<td>' . we_forms::radiobutton("seem", getValueLoginMode("seem"), "mode", '<acronym title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', "[start_mode_seem]") . '</acronym>', true, "small") . '</td>
@@ -196,7 +198,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		</table>');
 		$_modetable->setCol(0, 1, array("align" => "right",
 			"valign" => "bottom",
-			"rowspan" => "2"), $loginButton);
+			"rowspan" => "3"), $loginButton);
 	}
 
 	//	16th

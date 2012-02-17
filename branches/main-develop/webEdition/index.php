@@ -42,11 +42,14 @@ $ignore_browser = isset($_REQUEST['ignore_browser']) && ($_REQUEST['ignore_brows
  * *************************************************************************** */
 
 function getValueLoginMode($val){
+	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : 'normal';
 	switch($val){
 		case 'seem' :
-			return (isset($_COOKIE['we_mode']) && $_COOKIE['we_mode'] == 'seem') ? ' checked="checked"' : '';
+			return ($mode == 'seem') ? ' checked="checked"' : '';
 		case 'normal' :// start normal mode
-			return (!isset($_COOKIE['we_mode']) || $_COOKIE['we_mode'] != 'seem') ? ' checked="checked"' : '';
+			return ($mode != 'seem') ? ' checked="checked"' : '';
+		case 'popup':
+			return (!isset($_COOKIE['we_popup']) || $_COOKIE['we_popup'] == 1);
 	}
 }
 
@@ -171,6 +174,7 @@ if(isset($GLOBALS['userLoginDenied'])){
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['password']) && isset($_POST['username'])){
 	$login = 2;
 	setcookie('we_mode', $_REQUEST['mode'], time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
+	setcookie('we_popup', (isset($_REQUEST['popup']) ? 1 : 0), time() + 2592000);
 } else if(isset($_POST['password']) && isset($_POST['username'])){
 	$login = 1;
 } else{
@@ -366,19 +370,19 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 	<tr>
 		<td style="background-color:#386AAB;"></td>
 		<td rowspan="2">' . $_loginTable . '</td>
-		<td valign="top" style="background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">'.we_html_element::htmlImg(array('src'=>'/webEdition/images/login/top_r.jpg')).'</td>
+		<td valign="top" style="background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/top_r.jpg')) . '</td>
 
 	</tr>
 	<tr>
 		<td  valign="bottom" style="background-color:#386AAB;"></td>
 
-		<td valign="bottom" style="height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">'.we_html_element::htmlImg(array('src'=>'/webEdition/images/login/bottom_r.jpg')).'</td>
+		<td valign="bottom" style="height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/bottom_r.jpg')) . '</td>
 
 	</tr>
 	<tr>
 		<td></td>
-		<td style="background-image:url(/webEdition/images/login/bottom.jpg);background-repeat:repeat-x;">'.we_html_element::htmlImg(array('src'=>'/webEdition/images/login/bottom_l.jpg')).'</td>
-		<td>'.we_html_element::htmlImg(array('src'=>'/webEdition/images/login/bottom_r2.jpg')).'</td>
+		<td style="background-image:url(/webEdition/images/login/bottom.jpg);background-repeat:repeat-x;">' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/bottom_l.jpg')) . '</td>
+		<td>' . we_html_element::htmlImg(array('src' => '/webEdition/images/login/bottom_r2.jpg')) . '</td>
 	</tr>
 
 </table>';
@@ -458,8 +462,10 @@ if(isset($_POST['checkLogin']) && !count($_COOKIE)){
 			}
 
 			$_body_javascript .= "win = new jsWindow('" . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(rand())) . "', -1, -1, aw, ah, true, true, true, true, '" . g_l('alert', "[popupLoginError]") . "', '/webEdition/index.php'); }";
-			header('HTTP/1.1 303 See Other');
-			header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
+			if(!isset($_REQUEST['popup'])){
+				header('HTTP/1.1 303 See Other');
+				header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
+			}
 			break;
 		case 1:
 			$DB_WE->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET UserTable="tblUser", Username="' . $_POST['username'] . '", IP="' . $_SERVER['REMOTE_ADDR'] . '"');
