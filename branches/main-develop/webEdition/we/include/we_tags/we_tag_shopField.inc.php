@@ -60,8 +60,8 @@ function we_tag_shopField($attribs, $content){
 			unset($tmpVal);
 		}
 	} else{
-		$savedVal = isset($GLOBALS[$shopname]) && isset($GLOBALS[$shopname]->CartFields[$name]) ? $GLOBALS[$shopname]->CartFields[$name] : '';
-		$isFieldForCheckBox = isset($GLOBALS[$shopname]->CartFields[$name]);
+		$savedVal = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->getCartField($name) : '';
+		$isFieldForCheckBox = $GLOBALS[$shopname]->hasCartField($name);
 	}
 
 	$atts = removeAttribs($attribs, array('name', 'reference', 'shopname', 'type', 'values', 'value', 'checked', 'mode'));

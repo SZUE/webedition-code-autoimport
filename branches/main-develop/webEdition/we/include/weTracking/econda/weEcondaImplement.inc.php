@@ -67,7 +67,7 @@ switch (true){
 		// login
 		$emos->emosLogin();
 		break;
-	case isset($_GLOBALS['weEconda']) && isset($_GLOBALS['weEconda']['emosBasket']):
+	case isset($GLOBALS['weEconda']) && isset($GLOBALS['weEconda']['emosBasket']):
 		// shoping basket
 		$emos->emosShopingBasket();
 		break;

@@ -198,7 +198,7 @@ emosECPageArray['var3']		= 'NULL';
 	}
 
 	function emosShopingBasket(){
-		$this->emosJsFooter .= $_GLOBALS['weEconda']['emosBasket'];
+		$this->emosJsFooter .= $GLOBALS['weEconda']['emosBasket'];
 	}
 
 

@@ -73,6 +73,15 @@ class we_shop_Basket{
 		return $this->CartFields;
 	}
 
+	function hasCartField($name){
+		return isset($this->CartFields[$name]);
+	}
+
+
+	function getCartField($name){
+		return isset($this->CartFields[$name])?$this->CartFields[$name]:'';
+	}
+
 	/**
 	 * returns the items in the shopping cart and all custom cart fields
 	 * former getProperties

@@ -44,7 +44,7 @@ function we_isVarSet($name, $type, $docAttr, $property = false, $formname = '', 
 			break;
 		case 'shopField' :
 			if (isset($GLOBALS[$shopname])) {
-				return isset($GLOBALS[$shopname]->CartFields[$name]);
+				return $GLOBALS[$shopname]->hasCartField($name);
 			}
 			break;
 		case 'sum' :
