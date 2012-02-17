@@ -10,10 +10,16 @@ way to fit your requirements.
 =================================================================== */
 
 .preload1 {
-	background: url(blank_over.gif);
+	background: url(over_l.gif);
 }
 .preload2 {
-	background: url(blank_overa.gif);
+	background: url(over_r.gif);
+}
+.preload3 {
+	background: url(over_click_l.gif);
+}
+.preload4 {
+	background: url(overa_click_r.gif);
 }
 
 #nav {
@@ -33,14 +39,19 @@ way to fit your requirements.
 	height: 32px;
 }
 
+#nav li.top div {
+	height:32px;
+}
+
 #nav li.top:hover {
-	background: url(blank_over.gif) no-repeat right top;
+	background: url(over_l.gif) no-repeat left top;
 	position: relative;
 	z-index: 200;
 }
 
-#nav li.top div {
-	height:32px;
+#nav li.top:hover div {
+	background: url(over_r.gif) no-repeat right top;
+height:32px;
 }
 
 #nav li.top div.click {
@@ -48,8 +59,13 @@ way to fit your requirements.
 }
 
 #nav li.top div.click:hover {
-	background: url(blank_overa.gif) no-repeat right top;
+	background: url(over_click_l.gif) no-repeat left top;
 	height:32px;
+}
+
+#nav li.top div.click:hover a.top_link {
+	background: url(over_click_r.gif) no-repeat right top;
+	height:32px; 
 }
 
 #nav li.top div a.top_link {
@@ -67,7 +83,6 @@ way to fit your requirements.
 
 #nav li.top:hover div a.top_link {
 	color: white;
-	text-decoration:underline;
 }
 
 #nav li.top div a.top_link span {
@@ -76,11 +91,6 @@ way to fit your requirements.
 	padding: 5px 24px 0 12px;
 	height: 16px;
 }
-
-#nav li.top div:hover a.top_link span {
-	text-decoration: underline;
-}
-
 
 /* Default list styling */
 

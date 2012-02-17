@@ -83,7 +83,8 @@ class weJavaMenu{
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
 		if(!$old){
-			$out = '<ul id="nav">';
+			$out = '<span class="preload1"></span>' . "\n" . '<span class="preload2"></span>' . "\n" . '<span class="preload3"></span>' . "\n" . '<span class="preload4"></span>' . "\n";
+			$out .= '<ul id="nav">';
 			$menus = array();
 
 			foreach($this->entries as $id => $e){
