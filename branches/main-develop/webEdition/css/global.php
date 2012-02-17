@@ -44,8 +44,8 @@ if(isset($_REQUEST["WE_BACKENDCHARSET"]) && $_REQUEST["WE_BACKENDCHARSET"] != ""
 
 .weSelect {
 border: #AAAAAA solid 1px;
-height: 24px;
 color: black;
+box-sizing: border-box;
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
 font-family: <?php print g_l('css', '[font_family]'); ?>;
 }
@@ -53,6 +53,7 @@ font-family: <?php print g_l('css', '[font_family]'); ?>;
 .wetextinput {
 color: black;
 border: #AAAAAA solid 1px;
+box-sizing: border-box;
 height: 20px;
 <?php print ($brDetect->isIE()) ? "" : "line-height: 18px;"; ?>
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
@@ -69,6 +70,7 @@ background-color: #EEEEEE;
 color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;
+box-sizing: border-box;
 height: 20px;
 <?php print ($brDetect->isIE()) ? "" : "line-height: 18px;"; ?>
 font-size: <?php print ($SYSTEM == "MAC") ? "11px" : (($SYSTEM == "X11") ? "13px" : "12px"); ?>;
