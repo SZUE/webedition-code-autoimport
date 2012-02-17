@@ -32,6 +32,12 @@ if(!defined('WE_ERROR_HANDLER_SET')){
 	we_error_handler();
 }
 
+if(isset($_REQUEST['PHPSESSID'])){
+	session_id($_REQUEST['PHPSESSID']);
+	unset($_REQUEST['PHPSESSID']);
+	unset($_GET['PHPSESSID']);
+	unset($_POST['PHPSESSID']);
+}
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateHttp.class.php');
 require_once(LIVEUPDATE_DIR . 'classes/liveUpdateResponse.class.php');

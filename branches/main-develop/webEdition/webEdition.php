@@ -1228,7 +1228,8 @@ echo 'new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie
 
 										if ( _currEditor && _currEditor.getEditorType() == "cockpit" ) {
 											if( confirm('<?php print g_l('alert', '[cockpit_reset_settings]'); ?>') ){
-												top.weEditorFrameController.getActiveDocumentReference().location='<?php print WEBEDITION_DIR; ?>we/include/home.inc.php?we_cmd[0]='+arguments[0];
+												//FIXME: currently this doesn't work
+												top.weEditorFrameController.getActiveDocumentReference().location='<?php print WEBEDITION_DIR; ?>we/include/we_widgets/cmd.php?we_cmd[0]='+arguments[0];
 												if((typeof treeData!="undefined") && treeData){
 													treeData.unselectnode();
 												}

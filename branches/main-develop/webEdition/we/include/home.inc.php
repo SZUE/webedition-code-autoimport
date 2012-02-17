@@ -57,11 +57,11 @@ if(we_hasPerm("CAN_SEE_QUICKSTART")){
 
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
 	$bResetProps = ($_REQUEST['we_cmd'][0] == "reset_home") ? true : false;
-
 	if(!$bResetProps && $iLayoutCols){
 
 		$aDatTblPref = getPref("cockpit_dat"); // array as saved in the prefs
-		$aDat = (!empty($aDatTblPref)) ? unserialize($aDatTblPref) : $aCfgProps; //
+		$aDat = (!empty($aDatTblPref)) ? @unserialize($aDatTblPref) : $aCfgProps; //
+		$aDat = $aDat ?$aDat :$aCfgProps;
 		$aTrf = array_pop($aDat);
 		if(sizeof($aDat) > $iLayoutCols){
 			while(sizeof($aDat) > $iLayoutCols) {

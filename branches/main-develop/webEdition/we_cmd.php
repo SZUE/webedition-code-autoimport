@@ -56,6 +56,7 @@ if(!$INCLUDE){
 		case 'import_files':
 			$INCLUDE = 'we_import_files.inc.php';
 			break;
+		case 'reset_home':
 		case 'mod_home':
 			$INCLUDE = 'we_modules/home.inc.php';
 			break;

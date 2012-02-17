@@ -59,7 +59,7 @@ class weNavigationItem{
 	var $customers;
 	var $items = array();
 
-	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "", $CurrentOnUrlPar='0', $CurrentOnAnker ='0'){
+	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = "", $CurrentOnUrlPar = '0', $CurrentOnAnker = '0'){
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
@@ -945,7 +945,7 @@ class weNavigationItems{
 		$GLOBALS['weNavigationObject'] = & $this;
 
 		$content = '';
-		if(isset($this->items['id' . $this->rootItem])){
+		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == __CLASS__)){
 
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
 				// if initialised by id => root item is on lvl0 -> therefore decrease depth

@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tools/navigation/class/weNavigationItems.class.php');
-
 function we_tag_navigationWrite($attribs, $content = ''){
 
 	$name = weTag_getAttribute("navigationname", $attribs, "default");
