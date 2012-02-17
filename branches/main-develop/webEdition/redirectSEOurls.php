@@ -34,6 +34,8 @@ $error404doc = (defined('ERROR_DOCUMENT_NO_OBJECTFILE') && ERROR_DOCUMENT_NO_OBJ
 
 $suppresserrorcode = (defined('SUPPRESS404CODE') && SUPPRESS404CODE);
 
+$hiddendirindex = false;
+$dirindexarray = array();
 if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES != '' && ( (defined('NAVIGATION_DIRECTORYINDEX_HIDE') && NAVIGATION_DIRECTORYINDEX_HIDE ) || (defined('WYSIWYGLINKS_DIRECTORYINDEX_HIDE') && WYSIWYGLINKS_DIRECTORYINDEX_HIDE ) || (defined('TAGLINKS_DIRECTORYINDEX_HIDE') && TAGLINKS_DIRECTORYINDEX_HIDE ))){
 	$dirindexarray = explode(',', NAVIGATION_DIRECTORYINDEX_NAMES);
 	$keys = array_keys($dirindexarray);
@@ -41,11 +43,9 @@ if(defined('NAVIGATION_DIRECTORYINDEX_NAMES') && NAVIGATION_DIRECTORYINDEX_NAMES
 		$dirindexarray[$key] = trim($dirindexarray[$key]);
 	}
 	$hiddendirindex = true;
-} else{
-	$hiddendirindex = false;
 }
 
-
+$path_parts = array();
 if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
 	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
 } elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] != '' && $_SERVER['REDIRECT_URL'] != '/webEdition/redirectSEOurls.php'){
@@ -68,7 +68,7 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/' && $path_parts['dirname'] != '\\') {
 
 		$display = $path_parts['dirname'] . DEFAULT_DYNAMIC_EXT;
-		$displayid = intval(f('SELECT ID FROM ' . FILE_TABLE . '" WHERE Path="' . $db->escape($display) . '" LIMIT 1', 'ID', $db));
+		$displayid = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $db->escape($display) . '" LIMIT 1', 'ID', $db));
 		$searchfor = $path_parts['basename'] . ($searchfor ? '/' . $searchfor : '');
 		if(!$displayid && $hiddendirindex){
 			//z79
@@ -84,11 +84,10 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			}
 		}
 		if($displayid){
+			$searchforInternal = $searchfor;
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 				$searchforInternal = urlencode($searchfor);
 				$searchforInternal = str_replace('%2F', '/', $searchforInternal);
-			} else{
-				$searchforInternal = $searchfor;
 			}
 
 			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Url="' . $db->escape($searchforInternal) . '" LIMIT 1', 'ID', $db));
@@ -117,11 +116,10 @@ if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 			}
 		}
 		if($displayid){
+			$searchforInternal = $searchfor;
 			if(defined('URLENCODE_OBJECTSEOURLS') && URLENCODE_OBJECTSEOURLS){
 				$searchforInternal = urlencode($searchfor);
 				$searchforInternal = str_replace('%2F', '/', $searchforInternal);
-			} else{
-				$searchforInternal = $searchfor;
 			}
 			$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Url='" . $db->escape($searchforInternal) . "' LIMIT 1", "ID", $db));
 			if($objectid){
