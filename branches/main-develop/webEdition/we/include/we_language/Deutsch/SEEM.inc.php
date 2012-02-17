@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'Sie haben nicht die erforderlichen Rechte diese Seite zu bearbeiten.',
 	'only_seem_mode_allowed'=>'Sie haben nicht die erforderlichen Rechte, um webEdition im normalen Modus zu starten.\nStattdessen wird der seeMode gestartet.',
 	'open_link_in_SEEM_edit_include'=>'Sie sind dabei den Inhalt des webEdition-Fensters zu verändern. Dabei wird dieses Fenster geschlossen.',
+	'popup'=>'im neuen Fenster starten',
 	'question_change_startdocument'=>'Sie haben nicht die erforderlichen Rechte, das Cockpit zu öffnen. Wollen Sie jetzt in den Einstellungen ein Startdokument festlegen?',
 	'start_mode'=>'Modus',
 	'start_mode_normal'=>'Normal',

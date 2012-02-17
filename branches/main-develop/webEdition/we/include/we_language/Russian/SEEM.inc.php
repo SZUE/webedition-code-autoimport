@@ -24,6 +24,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'У Вас нет полномочий редактировать данный документ',
 	'only_seem_mode_allowed'=>'У Вас нет полномочий для запуска webEdition в стандартном режиме.\nЗапускается суперлегкий режим.',
 	'open_link_in_SEEM_edit_include'=>'Вы собираетесь изменить содержание главного окна webEdition. При этом текущее окно закроется. Продолжить?',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'Для Вас не задан действующий стартовый документ.\nЗадать стартовый документ в диалоге настроек?',
 	'start_mode'=>'Режим',
 	'start_mode_normal'=>'стандартный',

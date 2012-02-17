@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'Vous ne disposez pas des droits nécessaires pour éditer cette page.',
 	'only_seem_mode_allowed'=>'Vous ne disposez pas des droits nécessaires, pour démarrer webEdition le Mode normal.\nEn remplacement le seeMode est démarré.',
 	'open_link_in_SEEM_edit_include'=>'Vous êtes en train de changer le contenu de la fenêtre-webEdtion. Cette fenêtre sera fermé. Poursuivre?',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'Pour le moment aucune page d`accueil valide est défini.\nVous voulez définir une page d`accueil dans les préférences maintenant.',
 	'start_mode'=>'Mode',
 	'start_mode_normal'=>'Normal',

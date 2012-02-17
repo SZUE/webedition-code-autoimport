@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'Nie masz wystarczających uprawnień do edycji tej strony.',
 	'only_seem_mode_allowed'=>'Nie masz wystarczających uprawnień, żeby uruchomić webEdition w trybie normalnym.\nZamiast tego uruchomi się tryb seeMode.',
 	'open_link_in_SEEM_edit_include'=>'Jesteś przy zmianie okna edycji webEdition. Okno zostanie przez to zamknięte.',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'W tej chwili nie ustalono żadnego prawidłowego dokumentu początkowego dla Ciebie.\nCzy chcesz teraz określić swój dokument początkowy w ustawieniach?.',
 	'start_mode'=>'Tryb',
 	'start_mode_normal'=>'Normalny',

@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'You do not have permission to edit this document.',
 	'only_seem_mode_allowed'=>'You do not have the required permissions to start webEdition in normal mode.\nStarting seeMode instead ...',
 	'open_link_in_SEEM_edit_include'=>'You are about to change the content of the webEdition main window. This window will be closed. Continue?',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'You have not the required permissions to open the Cockpit. Do you want to select a valid start document in the preferences dialogue now?',
 	'start_mode'=>'Mode',
 	'start_mode_normal'=>'Normal',

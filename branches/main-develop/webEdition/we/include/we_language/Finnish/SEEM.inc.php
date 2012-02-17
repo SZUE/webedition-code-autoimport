@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'Sinulla ei ole oikeuksia muokata tätä dokumenttia.',
 	'only_seem_mode_allowed'=>'Sinulla ei ole tarvittavia oikeuksia kirjautua webEdition -järjestelmään normaalitilassa.\nKirjaudutaan helppokäyttötilaan ...',
 	'open_link_in_SEEM_edit_include'=>'Olet aikeissa muuttaa webEdition -ikkunan sisältöä. Ikkuna suljetaan. Jatketaanko?',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'Aloitussivua ei ole määritetty.\nHaluatko määrittää aloitussivun Asetukset välilehdeltä?',
 	'start_mode'=>'Tila',
 	'start_mode_normal'=>'Normaali',

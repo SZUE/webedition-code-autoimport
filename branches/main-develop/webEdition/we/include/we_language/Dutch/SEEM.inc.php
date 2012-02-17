@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'U bent niet bevoegd om dit document te wijzigen.',
 	'only_seem_mode_allowed'=>'U heeft niet de juiste rechten om webEdition te starten in de normale modus.\nseeMode wordt opgestart ...',
 	'open_link_in_SEEM_edit_include'=>'U staat op het punt de content te wijzigen van het webEdition hoofd venster. Dit venster wordt gesloten. Doorgaan?',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'Geen geldig start document toegekend.\nWilt u nu een start document kiezen in het voorkeuren venster?',
 	'start_mode'=>'Modus',
 	'start_mode_normal'=>'Normaal',

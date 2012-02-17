@@ -23,6 +23,7 @@ $l_SEEM=array(
 	'no_permission_to_work_with_document'=>'Ud no tiene permiso para editar este documento.',
 	'only_seem_mode_allowed'=>'Ud no tiene los permisos requeridos para iniciar webEdition en modo normal.\nIniciando seeMode ...',
 	'open_link_in_SEEM_edit_include'=>'UD está a punto de cambiar el contenido de la ventana principal de webEdition. Esta ventana se cerrará. Continuar?',
+	'popup'=>'open in popup window',
 	'question_change_startdocument'=>'Ningún documento de inicio válido ha sido asignado.\nDesea Ud escoger ahora un documento de inicio en el diálogo Preferencias?',
 	'start_mode'=>'Modo',
 	'start_mode_normal'=>'Normal',
