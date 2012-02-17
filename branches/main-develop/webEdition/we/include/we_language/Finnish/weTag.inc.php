@@ -568,9 +568,6 @@ $l_weTag=array(
 	'list'=>array(
 		'description'=>'we:list -tagilla voit tehdä laajennettavia listoja. Tagien sisällä oleva tieto liitetään listaan.',
 	),
-	'makeMail'=>array(
-		'description'=>'Tämä tagi pitää olla ensimmäinen rivi jokaisessa sivupohjassa joka lähetetään we:sendMail:lla.',
-	),
 	'master'=>array(
 		'description'=>'',
 	),

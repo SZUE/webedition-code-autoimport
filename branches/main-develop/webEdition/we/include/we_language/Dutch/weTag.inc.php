@@ -568,9 +568,6 @@ $l_weTag=array(
 	'list'=>array(
 		'description'=>'De we:list tag geeft u de mogelijkheid om expandable lists te maken. Alles binnen de begin tag en de eind tag wordt ingevoerd (alle HTML en bijna alle we:tags) als u op de `plus` knop drukt in de Wijzig modus.',
 	),
-	'makeMail'=>array(
-		'description'=>'Deze tag moet geplaatst worden op de eerste regel van elk sjabloon om een webEdition document te genereren die verstuurd kan worden met &lt;we:sendMail/&gt;.',
-	),
 	'master'=>array(
 		'description'=>'',
 	),

@@ -568,9 +568,6 @@ $l_weTag=array(
 	'list'=>array(
 		'description'=>'Mit dem we:list-Tag kann man erweiterbare Listen erzeugen. Alles, was zwischen Start- und Endtag steht, wird im Bearbeitungsmodus durch einen Klick auf den Plus-Button angehängt, bzw. eingefügt. Dies können beliebiges HTML sowie fast alle we:tags sein.',
 	),
-	'makeMail'=>array(
-		'description'=>'Dieses Tag muss in jeder Vorlage in der ersten Zeile stehen, aus der ein webEdition-Dokument erzeugt wird, welches mit &lt;we:sendMail/&gt; versendet werden soll.',
-	),
 	'master'=>array(
 		'description'=>'Wird in einer Detailvorlage verwendet und fügt den umschlossenen Inhalt beim we:content Tag im Mastertemplate ein. Die Verknüpfung zu we:content wird über das Attribut "name" hergestellt. (we:master name="head" =&gt; we:content name="head").<br/><br/>Inhalt der Detailvorlage außerhalb des we:master Tags wird weiterhin beim we:content ohne Name eingesetzt.',
 	),

@@ -568,9 +568,6 @@ $l_weTag=array(
 	'list'=>array(
 		'description'=>'The we:list tag allows you to create expandable lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags) if you click the plus button in edit mode.',
 	),
-	'makeMail'=>array(
-		'description'=>'This tag must be in the first line of every template in order to generate a webEdition document that is to be sent by &lt;we:sendMail/&gt;.',
-	),
 	'master'=>array(
 		'description'=>'',
 	),
