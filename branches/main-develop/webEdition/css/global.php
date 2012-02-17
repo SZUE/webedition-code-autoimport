@@ -22,10 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 header("Content-Type: text/css");
-$show_stylesheet = true;
+$GLOBALS['show_stylesheet'] = true;
 
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/base/we_base_browserDetect.class.php');
+//FIXME: remove latter ones
 // Activate the webEdition error handler
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
 $brDetect = new we_base_browserDetect();
 

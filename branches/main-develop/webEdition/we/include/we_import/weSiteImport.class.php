@@ -265,13 +265,8 @@ class weSiteImport{
 	 * @return	array
 	 */
 	function _parseAttributes($attr){
-		$attribs = "";
-		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $foo, PREG_SET_ORDER);
-		for($i = 0; $i < sizeof($foo); $i++){
-			$attribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
-		}
-		eval('$arr = array(' . $attribs . ');');
-
+		$arr = array();
+		@eval('$arr = array(' . we_tag_tagParser::parseAttribs($attr) . ');');
 		return $arr;
 	}
 

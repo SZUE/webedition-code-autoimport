@@ -37,7 +37,7 @@ class weCustomerEI{
 	//  - format
 	//  - csv_
 
-	function exportCustomers($options=array()){
+	function exportCustomers($options = array()){
 		$code = "";
 		if($options["format"] == "gxml")
 			$code = weCustomerEI::exportXML($options);
@@ -49,7 +49,7 @@ class weCustomerEI{
 		}
 	}
 
-	function getDataset($type, $filename, $arrgs=array()){
+	function getDataset($type, $filename, $arrgs = array()){
 		if($type == "gxml"){
 			return weCustomerEI::getXMLDataset($filename, $arrgs["dataset"]);
 		}
@@ -58,7 +58,7 @@ class weCustomerEI{
 		}
 	}
 
-	function save2File($filename, $code="", $flags="ab"){
+	function save2File($filename, $code = "", $flags = "ab"){
 		$fp = fopen($filename, $flags);
 		if($fp){
 			fwrite($fp, $code);
@@ -74,7 +74,7 @@ class weCustomerEI{
 		return $customer->getFieldset();
 	}
 
-	function exportXML($options=array()){
+	function exportXML($options = array()){
 		global $_language;
 
 		if(isset($options["customers"]) && is_array($options["customers"])){
@@ -97,7 +97,7 @@ class weCustomerEI{
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
 								$value = "";
-								eval('$value=$customer->' . $k . ';');
+								$value = $customer->{$k};
 								if($value != "")
 									$value = ($options["cdata"] ? "<![CDATA[" . $value . "]]>" : htmlentities($value));
 								$customer_xml->addChild(new we_baseElement($k, true, null, $value));
@@ -156,7 +156,7 @@ class weCustomerEI{
 		return $nodes;
 	}
 
-	function exportCSV($options=array()){
+	function exportCSV($options = array()){
 		if(isset($options["customers"]) && is_array($options["customers"])){
 			$customer_csv = array();
 			$customer = new weCustomer();
@@ -169,7 +169,7 @@ class weCustomerEI{
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
 								$value = "";
-								eval('$value=$customer->' . $k . ';');
+								$value=$customer->{$k};
 								$customer_csv[$cid][] = $value;
 							}
 						}
@@ -363,7 +363,7 @@ class weCustomerEI{
 		return $ret;
 	}
 
-	function importCustomers($options=array()){
+	function importCustomers($options = array()){
 		$ret = false;
 		$xmlfile = isset($options["xmlfile"]) ? $options["xmlfile"] : "";
 		$field_mappings = isset($options["field_mappings"]) ? $options["field_mappings"] : array();
@@ -384,7 +384,7 @@ class weCustomerEI{
 			$node_name = $xp->nodeName($node);
 			$node_value = $xp->getData($node);
 			if(isset($fields[$node_name]))
-				$customer->{$fields[$node_name]} =$node_value;
+				$customer->{$fields[$node_name]} = $node_value;
 		}
 
 		$existid = f("SELECT ID FROM " . CUSTOMER_TABLE . " WHERE Username='" . $db->escape($customer->Username) . "' AND ID!=" . intval($customer->ID), "ID", $db);

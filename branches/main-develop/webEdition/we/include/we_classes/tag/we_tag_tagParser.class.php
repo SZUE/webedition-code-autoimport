@@ -28,13 +28,11 @@ class we_tag_tagParser{
 	private $tags = array();
 	private static $CloseTags = 0;
 	private static $AllKnownTags = 0;
-	//remove comment-attribute (should never be seen), and obsolete cachelifetime
-	private $removeAttribs = array('cachelifetime', 'comment');
 	public static $curFile = '';
 
 	//private $AppListviewItemsTags = array();
 
-	public function __construct($content='', $curFile=''){
+	public function __construct($content = '', $curFile = ''){
 		self::$curFile = $curFile;
 		//init Tags
 		if($content != ''){
@@ -92,7 +90,7 @@ class we_tag_tagParser{
 	 */
 	public static function getMetaTags($code){
 		$_tmpTags = array();
-		$_foo = array();
+		$foo = array();
 		$_rettags = array();
 
 		preg_match_all('%</?we:([[:alnum:]_]+)( *[[:alnum:]_]+ *= *"[^"]*")* */?>?%i', $code, $foo, PREG_SET_ORDER);
@@ -151,7 +149,7 @@ class we_tag_tagParser{
 		return $this->parseTags($code, ($postName == '' ? 0 : $postName), $ignore);
 	}
 
-	public function parseTags(&$code, $start=0, $ende=FALSE){
+	public function parseTags(&$code, $start = 0, $ende = FALSE){
 		if(is_string($start)){//old call
 			$start = 0;
 			$ende = FALSE;
@@ -258,23 +256,23 @@ class we_tag_tagParser{
 		return array(FALSE, FALSE);
 	}
 
-	/* 	function getNameAndAttribs($tag) {
-	  if (preg_match('/<we:([^ ]+) ([^>]+)>/i', $tag, $_regs)) {
-	  $_attribsString = $_regs[2];
-	  $_tmpAttribs = '';
-	  $_attribs = array();
-	  if (preg_match_all('/([^=]+)= *("[^"]*")/', $_attribsString, $foo, PREG_SET_ORDER)) {
-	  for ($i = 0; $i < sizeof($foo); $i++) {
-	  $_tmpAttribs .= '"' . trim($foo[$i][1]) . '"=>' . trim($foo[$i][2]) . ',';
-	  }
-	  eval("\$_attribs = array(" . preg_replace('/(.+),$/', "\$1", $_tmpAttribs) . ");");
-	  }
-	  return array(
-	  $_regs[1], $_attribs
-	  );
-	  }
-	  return null;
-	  } */
+	public static function parseAttribs($attr){
+		//remove comment-attribute (should never be seen), and obsolete cachelifetime
+		$removeAttribs = array('cachelifetime', 'comment');
+
+		$attribs = '';
+		$regs = array();
+		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $regs, PREG_SET_ORDER);
+
+		if(count($regs)){
+			foreach($regs as $f){
+				if(!in_array($f[1], $removeAttribs)){
+					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
+				}
+			}
+		}
+		return rtrim($attribs, ',');
+	}
 
 	private function parseTag(&$code, $ipos){
 		$tag = $this->tags[$ipos];
@@ -312,21 +310,7 @@ class we_tag_tagParser{
 			}
 		}
 
-		$attribs = '';
-		preg_match_all('/([^=]+)= *("[^"]*")/', $attr, $regs, PREG_SET_ORDER);
-
-		if(count($regs)){
-			foreach($regs as $f){
-				if(!in_array($f[1], $this->removeAttribs)){
-					$attribs .= '"' . trim($f[1]) . '"=>' . trim($f[2]) . ',';
-				}
-			}
-
-			@eval('$arr = array(' . rtrim($attribs, ',') . ');');
-		}
-		if(!isset($arr)){
-			$arr = array();
-		}
+		$attribs = self::parseAttribs($attr);
 
 		if(!function_exists('we_tag_' . $tagname)){
 			$ret = we_include_tag_file($tagname);
@@ -353,23 +337,21 @@ class we_tag_tagParser{
 					}
 				}
 			} else{
-		//FIXME: remove in 6.4
-		//if it is not a selfclosing tag (<we:xx/>),
-		//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
-		//NOTE: most custom tags don't have a wizzard file - so this tag must be selfclosing, or have a corresponding closing-tag!
-		if(!$selfclose && in_array($tagname,self::$AllKnownTags) && !in_array($tagname,self::$CloseTags)){
-			//for now we'll correct this error and keep parsing
-			$selfclose = true;
-			$content='';
-			unset($endeEndTagPos);
-			unset($endTagPos);
-			unset($endTagNo);
-			//don't break for now.
-			parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!'."\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
-		}else
-
-
-				return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
+				//FIXME: remove in 6.4
+				//if it is not a selfclosing tag (<we:xx/>),
+				//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
+				//NOTE: most custom tags don't have a wizzard file - so this tag must be selfclosing, or have a corresponding closing-tag!
+				if(!$selfclose && in_array($tagname, self::$AllKnownTags) && !in_array($tagname, self::$CloseTags)){
+					//for now we'll correct this error and keep parsing
+					$selfclose = true;
+					$content = '';
+					unset($endeEndTagPos);
+					unset($endTagPos);
+					unset($endTagNo);
+					//don't break for now.
+					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!' . "\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
+				}else
+					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname));
 			}
 		}
 		$attribs = str_replace('=>"\$', '=>"$', 'array(' . rtrim($attribs, ',') . ')'); // workarround Bug Nr 6318
@@ -386,11 +368,6 @@ class we_tag_tagParser{
 				$content .
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 		} else
-
-		/* 			if(in_array($tagname, $this->AppListviewItemsTags)){// for App-Tags of type listviewitems
-		  $code = $this->parseAppListviewItemsTags($tagname, $tag, $code, $attribs, $postName);
-		  $this->lastpos = 0;
-		  } else */
 		if(substr($tagname, 0, 2) == "if" && $tagname != "ifNoJavaScript"){
 			if(!isset($endeEndTagPos)){
 				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname));
@@ -413,7 +390,7 @@ class we_tag_tagParser{
 		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
 	}
 
-	public static function printTag($name, $attribs='', $content='', $cslash=false){
+	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs) : $attribs);
 		return 'we_tag(\'' . $name . '\'' .
 			($attr != '' ? ',' . $attr : ($content != '' ? ',array()' : '')) .

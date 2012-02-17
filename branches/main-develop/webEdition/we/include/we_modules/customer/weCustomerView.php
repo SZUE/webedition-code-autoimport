@@ -33,7 +33,7 @@ class weCustomerView{
 	var $customer;
 	var $settings;
 
-	function __construct($frameset='', $topframe='top.content'){
+	function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -63,7 +63,7 @@ class weCustomerView{
 	//------------------------------------------------
 
 
-	function getCommonHiddens($cmds=array()){
+	function getCommonHiddens($cmds = array()){
 		$out = $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : ''));
 		$out.=$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : ''));
 		$out.=$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''));
@@ -535,7 +535,7 @@ class weCustomerView{
 	' . $this->getJSSubmitFunction("customer_settings");
 	}
 
-	function getJSSubmitFunction($def_target='edbody', $def_method='post'){
+	function getJSSubmitFunction($def_target = 'edbody', $def_method = 'post'){
 		return '
 			function submitForm() {
 				var f = self.document.we_form;
@@ -617,7 +617,7 @@ class weCustomerView{
 
 					$tt = '';
 					$ttrow = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID) . ';', $this->db);
-					eval('$tt="' . $this->settings->treeTextFormat . '";');
+					$tt = $this->settings->treeTextFormat;
 					$tt = addslashes($tt != '' ? $tt : $this->customer->Text);
 					if($newone){
 						$js = '
@@ -1022,9 +1022,9 @@ class weCustomerView{
 				$varname = $val;
 				if($varname == 'LoginDenied'){
 					if(isset($_REQUEST[$varname])){
-						eval('$this->customer->' . $val . '="1";');
+						$this->customer->{$val} = "1";
 					} elseif(isset($_REQUEST['Username'])){
-						eval('$this->customer->' . $val . '="0";');
+						$this->customer->{$val} = "0";
 					}
 				} elseif(isset($_REQUEST[$varname])){
 					$this->customer->{$val} = $_REQUEST[$varname];
@@ -1178,7 +1178,7 @@ class weCustomerView{
 		$this->settings->save();
 	}
 
-	function new_array_splice(&$a, $start, $len=1){
+	function new_array_splice(&$a, $start, $len = 1){
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);
 		if($k !== false){
@@ -1189,7 +1189,7 @@ class weCustomerView{
 		}
 	}
 
-	function getSearchResults($keyword, $res_num=0){
+	function getSearchResults($keyword, $res_num = 0){
 		if(!$res_num){
 			$res_num = $this->settings->getMaxSearchResults();
 		}

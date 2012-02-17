@@ -75,7 +75,7 @@ class weCustomerEIWizard{
 		);
 	}
 
-	function getHTMLStep($mode, $step=0){
+	function getHTMLStep($mode, $step = 0){
 		switch($mode){
 			case "export":
 				switch($step){
@@ -365,7 +365,7 @@ class weCustomerEIWizard{
 		}
 	}
 
-	function getHiddens($options=array()){
+	function getHiddens($options = array()){
 
 		$hiddens = "";
 		if($options["art"] == "import"){
@@ -956,7 +956,7 @@ class weCustomerEIWizard{
 			return $this->getHTMLImportFooter($step);
 	}
 
-	function getHTMLExportFooter($step=1){
+	function getHTMLExportFooter($step = 1){
 		$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "575", "align" => "right"), 1, 2);
 
 		if($step == 1){
@@ -1012,7 +1012,7 @@ class weCustomerEIWizard{
 		);
 	}
 
-	function getHTMLImportFooter($step=1){
+	function getHTMLImportFooter($step = 1){
 		$content = new we_html_table(array("border" => "0", "cellpadding" => "0", "cellspacing" => "0", "width" => "575", "align" => "right"), 1, 2);
 
 		switch($step){
@@ -1181,7 +1181,8 @@ class weCustomerEIWizard{
 								$var = "filter_" . $field;
 								$varname = $var . "_" . $i;
 								if(isset($_REQUEST[$varname])){
-									eval('$' . $var . '[]=$_REQUEST["' . $varname . '"];');
+									${$var}[] = $_REQUEST[$varname];
+									//ex: eval('$' . $var . '[]=$_REQUEST["' . $varname . '"];');
 								}
 							}
 						}
@@ -1584,7 +1585,7 @@ class weCustomerEIWizard{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width="", $rootDirID=0, $table=FILE_TABLE, $Pathname="ParentPath", $Pathvalue="", $IDName="ParentID", $IDValue="", $cmd=""){
+	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 		$table = FILE_TABLE;
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
@@ -1682,7 +1683,7 @@ class weCustomerEIWizard{
 		return $js . $hiddens . $custs->get();
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname="Path", $Pathvalue = "/", $cmd = ""){
+	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = "0", $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		if($Pathvalue == ""){
 			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
 		}
@@ -1773,7 +1774,7 @@ class weCustomerEIWizard{
 			foreach($fields_names as $field){
 				$varname = "filter_" . $field . "_" . $i;
 				if(isset($_REQUEST[$varname])){
-					eval('$new["' . $field . '"]=$_REQUEST["' . $varname . '"];');
+					$new[$field] = $_REQUEST[$varname];
 				}
 			}
 			if($i != 0){

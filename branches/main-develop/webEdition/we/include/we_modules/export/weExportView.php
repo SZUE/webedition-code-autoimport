@@ -34,7 +34,7 @@ class weExportView{
 	var $editorBodyDoc;
 	var $editorBodyForm;
 
-	function __construct($frameset="", $topframe="top.content"){
+	function __construct($frameset = "", $topframe = "top.content"){
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -63,7 +63,7 @@ class weExportView{
 	//------------------------------------------------
 
 
-	function getCommonHiddens($cmds=array()){
+	function getCommonHiddens($cmds = array()){
 		$out = $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : ""));
 		$out.=$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
 		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
@@ -365,7 +365,7 @@ class weExportView{
 	' . $this->getJSSubmitFunction("cmd");
 	}
 
-	function getJSSubmitFunction($def_target="edbody", $def_method="post"){
+	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 			function submitForm() {
 				var f = self.document.we_form;
@@ -585,7 +585,7 @@ class weExportView{
 			foreach($this->export->persistent_slots as $key => $val){
 				$varname = $val;
 				if(isset($_REQUEST[$varname])){
-					eval('$this->export->' . $val . '="' . addslashes($_REQUEST[$varname]) . '";');
+					$this->export->{$val} = $_REQUEST[$varname];
 				}
 			}
 		}
@@ -596,7 +596,7 @@ class weExportView{
 			}
 	}
 
-	function new_array_splice(&$a, $start, $len=1){
+	function new_array_splice(&$a, $start, $len = 1){
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);
 		if($k !== false){

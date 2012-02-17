@@ -33,7 +33,7 @@ class weShopView{
 	var $topFrame;
 	var $raw;
 
-	function __construct($frameset="", $topframe="top.content"){
+	function __construct($frameset = "", $topframe = "top.content"){
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -59,7 +59,7 @@ class weShopView{
 	//------------------------------------------------
 
 
-	function getCommonHiddens($cmds=array()){
+	function getCommonHiddens($cmds = array()){
 		$out = $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : ""));
 		$out.=$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
 		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
@@ -218,7 +218,7 @@ class weShopView{
 	' . $this->getJSSubmitFunction("cmd");
 	}
 
-	function getJSSubmitFunction($def_target="edbody", $def_method="post"){
+	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return
 			'function submitForm() {
 				var f = self.document.we_form;
@@ -338,7 +338,7 @@ class weShopView{
 				$varname = $val;
 				if(isset($_REQUEST[$varname])){
 					//FIXME: remove eval
-					eval('$this->raw->' . $val . '="' . addslashes($_REQUEST[$varname]) . '";');
+					$this->raw->{$val} = $_REQUEST[$varname];
 				}
 			}
 		}
@@ -349,7 +349,7 @@ class weShopView{
 			}
 	}
 
-	function new_array_splice(&$a, $start, $len=1){
+	function new_array_splice(&$a, $start, $len = 1){
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);
 		if($k !== false){

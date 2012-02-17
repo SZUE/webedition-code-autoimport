@@ -1981,7 +1981,6 @@ class weNewsletterView{
 			foreach($this->newsletter->persistents as $val){
 				if(isset($_REQUEST[$val])){
 					$this->newsletter->$val = $_REQUEST[$val];
-//					eval('$this->newsletter->'.$val.'="'.addslashes($_REQUEST[$val]).'";');
 				}
 			}
 		}

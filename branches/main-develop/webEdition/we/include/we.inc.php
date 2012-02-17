@@ -170,7 +170,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 				$header = true;
 		}
 	} else{
-		$header = !((isset($show_stylesheet) && $show_stylesheet));
+		$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
 	}
 
 	if($header){

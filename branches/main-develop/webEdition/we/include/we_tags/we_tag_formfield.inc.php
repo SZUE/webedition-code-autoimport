@@ -118,9 +118,9 @@ function we_tag_formfield($attribs, $content){
 
 			foreach($ff as $f => $m){
 				$tbl .= '<td class=\"weEditmodeStyle\" style="color: black; font-size: 10px; font-family: Verdana, sans-serif"><nobr><b>' . $f . ':</b><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif">&nbsp;';
-				$val = arrayKeyExists('value', $m) ? $m['value'] : '';
+				$val = isset($m['value']) ? $m['value'] : '';
 
-				$default = arrayKeyExists('default', $m) ? makeArrayFromCSV($m['default']) : array();
+				$default = isset($m['default']) ? makeArrayFromCSV($m['default']) : array();
 
 				if($m['change'] == 1){
 					$valselect = "";
@@ -132,7 +132,7 @@ function we_tag_formfield($attribs, $content){
 						}
 						$valselect .= '</select>' . "\n";
 					}
-					if((!arrayKeyExists('value', $m)) && sizeof($default) == 1){
+					if((!isset($m['value'])) && sizeof($default) == 1){
 						$val = $default[0];
 					}
 					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7" border="0"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
@@ -235,7 +235,7 @@ function we_tag_formfield($attribs, $content){
 
 		if($type_sel == 'textarea'){
 			$tagEndTag = true;
-			if(arrayKeyExists('value', $ff)){
+			if(isset($ff['value'])){
 				$tagContent = htmlspecialchars($ff['value']['value']);
 			}
 			if(!array_key_exists('cols', $tagAtts)){

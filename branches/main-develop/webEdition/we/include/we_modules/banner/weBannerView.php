@@ -61,14 +61,14 @@ class weBannerView extends weBannerBase{
 		$out.=$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
 		foreach($this->banner->persistents as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
-				eval('$v=$this->banner->' . $p . ';');
+				$v = $this->banner->{$p};
 				$out.=$this->htmlHidden($this->uid . "_$p", $v);
 			}
 		}
 		return $out;
 	}
 
-	function htmlHidden($name, $value="", $id=""){
+	function htmlHidden($name, $value = "", $id = ""){
 		return '<input type="hidden" name="' . trim($name) . '" value="' . htmlspecialchars($value) . '"' . (empty($id) ? "" : ' id="' . $id . '"') . ' />';
 	}
 
@@ -389,71 +389,71 @@ class weBannerView extends weBannerBase{
 					switch (arguments[0]){
 						case "openSelector":
 							new jsWindow(url,"we_selector",-1,-1,<?php echo WINDOW_SELECTOR_WIDTH . "," . WINDOW_SELECTOR_HEIGHT; ?>,true,true,true,true);
-						break;
-					case "openCatselector":
-						new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
-						break;
+							break;
+						case "openCatselector":
+							new jsWindow(url,"we_catselector",-1,-1,<?php echo WINDOW_CATSELECTOR_WIDTH . "," . WINDOW_CATSELECTOR_HEIGHT; ?>,true,true,true,true);
+							break;
 						case "openDocselector":
 							new jsWindow(url,"we_docselector",-1,-1,<?php echo WINDOW_DOCSELECTOR_WIDTH . "," . WINDOW_DOCSELECTOR_HEIGHT; ?>,true,true,true,true);
-						break;
-					case "openDirselector":
-						new jsWindow(url,"we_dirselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . "," . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
-						break;
-					case "openBannerDirselector":
-						new jsWindow(url,"we_bannerselector",-1,-1,600,350,true,true,true);
-						break;
-					case "switchPage":
-						document.we_form.ncmd.value=arguments[0];
-						document.we_form.page.value=arguments[1];
-						submitForm();
-						break;
-					case "add_cat":
-					case "del_cat":
-					case "del_all_cats":
-					case "add_file":
-					case "del_file":
-					case "del_all_files":
-					case "add_folder":
-					case "del_folder":
-					case "del_customer":
-					case "del_all_customers":
-					case "del_all_folders":
-					case "add_customer":
-						document.we_form.ncmd.value=arguments[0];
-						document.we_form.ncmdvalue.value=arguments[1];
-						submitForm();
-						break;
-					case "delete_stat":
-						if(confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")){
+							break;
+						case "openDirselector":
+							new jsWindow(url,"we_dirselector",-1,-1,<?php echo WINDOW_DIRSELECTOR_WIDTH . "," . WINDOW_DIRSELECTOR_HEIGHT; ?>,true,true,true,true);
+							break;
+						case "openBannerDirselector":
+							new jsWindow(url,"we_bannerselector",-1,-1,600,350,true,true,true);
+							break;
+						case "switchPage":
 							document.we_form.ncmd.value=arguments[0];
+							document.we_form.page.value=arguments[1];
 							submitForm();
+							break;
+						case "add_cat":
+						case "del_cat":
+						case "del_all_cats":
+						case "add_file":
+						case "del_file":
+						case "del_all_files":
+						case "add_folder":
+						case "del_folder":
+						case "del_customer":
+						case "del_all_customers":
+						case "del_all_folders":
+						case "add_customer":
+							document.we_form.ncmd.value=arguments[0];
+							document.we_form.ncmdvalue.value=arguments[1];
+							submitForm();
+							break;
+						case "delete_stat":
+							if(confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")){
+								document.we_form.ncmd.value=arguments[0];
+								submitForm();
+							}
+							break;
+						default:
+							for(var i = 0; i < arguments.length; i++){
+								args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
+							}
+							eval('top.content.we_cmd('+args+')');
 						}
-						break;
-					default:
-						for(var i = 0; i < arguments.length; i++){
-							args += 'arguments['+i+']' + ((i < (arguments.length-1)) ? ',' : '');
-						}
-						eval('top.content.we_cmd('+args+')');
 					}
-				}
 
-				function submitForm(){
-					var f = self.document.we_form;
-					if(arguments[0]) f.target = arguments[0];
-					else f.target = "edbody";
-					if(arguments[1]) f.action = arguments[1];
-					else f.action = "";
-					if(arguments[2]) f.method = arguments[2];
-					else f.method = "post";
+					function submitForm(){
+						var f = self.document.we_form;
+						if(arguments[0]) f.target = arguments[0];
+						else f.target = "edbody";
+						if(arguments[1]) f.action = arguments[1];
+						else f.action = "";
+						if(arguments[2]) f.method = arguments[2];
+						else f.method = "post";
 
-					f.submit();
-				}
-				function checkData(){
+						f.submit();
+					}
+					function checkData(){
 
-					return true;
-				}
+						return true;
+					}
 
-				self.focus();
+					self.focus();
 		</script>
 		<?php
 	}
@@ -761,7 +761,7 @@ class weBannerView extends weBannerBase{
 			foreach($this->banner->persistents as $key => $val){
 				$varname = $this->uid . "_" . $val;
 				if(isset($_REQUEST[$varname])){
-					eval('$this->banner->' . $val . '="' . str_replace("\"", "\\\"", $_REQUEST[$varname]) . '";');
+					$this->banner->$val = $_REQUEST[$varname];
 				}
 			}
 		}
@@ -895,7 +895,7 @@ class weBannerView extends weBannerBase{
 		return $dt;
 	}
 
-	function formStat($class="middlefont"){
+	function formStat($class = "middlefont"){
 
 		$datefilterCheck = we_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner', '[datefilter]'), false, "defaultfont", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "')");
 		$datefilter = we_html_tools::getDateInput2("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
@@ -950,7 +950,7 @@ class weBannerView extends weBannerBase{
 		return $content . we_html_tools::getPixel(2, 10) . $table . we_html_tools::getPixel(2, 10) . "<br>" . $delbut;
 	}
 
-	function formBanner($leftsize=120){
+	function formBanner($leftsize = 120){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . $this->formBannerChooser(388, $this->uid . "_bannerID", $this->banner->bannerID, g_l('modules_banner', '[imagepath]'), "opener.we_cmd(\\'switchPage\\',\\'" . $this->page . "\\')") . '</td>
@@ -1023,7 +1023,7 @@ class weBannerView extends weBannerBase{
 		return $obj->get();
 	}
 
-	function formPath($leftsize=120){
+	function formPath($leftsize = 120){
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_banner', '[name]')) . '</td>
@@ -1054,7 +1054,7 @@ class weBannerView extends weBannerBase{
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formBannerChooser($width="", $IDName="bannerID", $IDValue="0", $title="", $cmd=""){
+	function formBannerChooser($width = "", $IDName = "bannerID", $IDValue = "0", $title = "", $cmd = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : "";
 		$Pathname = md5(uniqid(rand()));
@@ -1077,7 +1077,7 @@ class weBannerView extends weBannerBase{
 		return $yuiSuggest->getHTML();
 	}
 
-	function formDirChooser($width="", $table=FILE_TABLE, $idvalue, $idname, $title="", $cmd="", $acID=""){
+	function formDirChooser($width = "", $table = FILE_TABLE, $idvalue, $idname, $title = "", $cmd = "", $acID = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
 		$textname = md5(uniqid(rand()));

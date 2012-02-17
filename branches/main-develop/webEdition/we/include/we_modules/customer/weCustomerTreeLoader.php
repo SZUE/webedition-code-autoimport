@@ -24,7 +24,7 @@
  */
 class weCustomerTreeLoader{
 
-	function getItems($pid, $offset=0, $segment=500, $sort=""){
+	function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
 		$db = new DB_WE();
 		if($sort != "")
 			return weCustomerTreeLoader::getSortFromDB($pid, $sort, $offset, $segment);
@@ -32,7 +32,7 @@ class weCustomerTreeLoader{
 			return weCustomerTreeLoader::getItemsFromDB($pid, $offset, $segment);
 	}
 
-	function getItemsFromDB($ParentID=0, $offset=0, $segment=500, $elem="ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname", $addWhere="", $addOrderBy=""){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname", $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 		$table = CUSTOMER_TABLE;
 
@@ -95,7 +95,7 @@ class weCustomerTreeLoader{
 
 			$tt = "";
 			$ttrow = $db->Record;
-			eval('$tt="' . $settings->treeTextFormat . '";');
+			$tt = $settings->treeTextFormat;
 
 			$fileds = array();
 
@@ -129,7 +129,7 @@ class weCustomerTreeLoader{
 		return $items;
 	}
 
-	function getSortFromDB($pid, $sort, $offset=0, $segment=500){
+	function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 
 		include_once(WE_CUSTOMER_MODULE_DIR . "weCustomerSettings.php");
@@ -282,7 +282,7 @@ class weCustomerTreeLoader{
 				if($level == $levelcount){
 					$tt = "";
 					$ttrow = $db->Record;
-					eval('$tt="' . $settings->treeTextFormat . '";');
+					$tt = $settings->treeTextFormat;
 
 					if($first){
 						$prevoffset = $offset - $segment;

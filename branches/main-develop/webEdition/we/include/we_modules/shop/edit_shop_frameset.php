@@ -115,11 +115,11 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 
 			case "revenue_view":
 
-<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects   ?>
+<?php if(($resultD > 0) && (!empty($resultO))){ //docs and objects      ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=document";
-<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects   ?>
+<?php } elseif(($resultD < 1) && (!empty($resultO))){ // no docs but objects      ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=object&ViewClass=$classid";
-<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects   ?>
+<?php } elseif(($resultD > 0) && (empty($resultO))){ // docs but no objects      ?>
 					top.content.shop_properties.location="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_editorFramesetTop.php?typ=document";
 <?php } ?>
 
@@ -266,9 +266,11 @@ while($yearshop <= date("Y")) {
 <?php if(we_hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("</a>");
 
-<?php }
-if(we_hasPerm("EDIT_SHOP_ORDER")){ ?> // make the month in tree clickable
-							fr.write("<A HREF=\"javascript://\" onClick=\"doFolderClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
+	<?php
+}
+if(we_hasPerm("EDIT_SHOP_ORDER")){
+	?> // make the month in tree clickable
+								fr.write("<A HREF=\"javascript://\" onClick=\"doFolderClick("+nf[ai].name+",'"+nf[ai].contentType+"','"+nf[ai].table+"');return true;\">");
 
 <?php } ?>
 
@@ -389,22 +391,16 @@ while($DB_WE->next_record()) {
 	if($DB_WE->f("DateShipping") <= 0){
 		//FIXME: remove eval
 		eval('if(isset($l' . $DB_WE->f("mdate") . ')) {$l' . $DB_WE->f("mdate") . '++;} else { $l' . $DB_WE->f("mdate") . ' = 1;}');
-		//eval('$l'.$DB_WE->f("mdate")."++;");
 	}
 	//FIXME: remove eval
 	eval('if(isset($v' . $DB_WE->f("mdate") . ')) {$v' . $DB_WE->f("mdate") . '++;} else { $v' . $DB_WE->f("mdate") . ' = 1;}');
-	//eval('$v'.$DB_WE->f("mdate")."++;");
 }
 
 $year = (empty($_REQUEST["year"])) ? date("Y") : $_REQUEST["year"];
 //        unset($_SESSION["year"]);
 for($f = 12; $f > 0; $f--){
-	//FIXME: remove eval
-	eval('$r = (isset($v' . $f . $year . ') ? $v' . $f . $year . ' : ""); ');
-	//eval('$r = $v'.$f.$year.";");
-	//FIXME: remove eval
-	eval('$k = (isset($l' . $f . $year . ') ? $l' . $f . $year . ' : ""); ');
-	//eval('$k = $l'.$f.$year.";");
+	$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
+	$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
 	echo "menuDaten.add(new dirEntry('folder.gif',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
 } //'".$DB_WE->f("mdate")."'
 echo "top.yearshop = '$year';";

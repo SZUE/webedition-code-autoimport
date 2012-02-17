@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -10,7 +11,7 @@
  *
  * The GNU Lesser General Public License can be found at
  * http://www.gnu.org/licenses/lgpl-3.0.html.
- * A copy is found in the textfile 
+ * A copy is found in the textfile
  * webEdition/licenses/webEditionSDK/License.txt
  *
  *
@@ -19,7 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
 /**
  * @see we_ui_abstract_AbstractElement
  */
@@ -27,65 +27,60 @@ Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Base Class for div
- * 
+ *
  * @category   we
  * @package    we_ui
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_ui_layout_Div extends we_ui_abstract_AbstractElement
-{
+class we_ui_layout_Div extends we_ui_abstract_AbstractElement{
 	/*
 	 * string to hold the HTML of the div
 	 *
 	 * @var string
 	 */
-	protected $_divHTML='';
-	
+
+	protected $_divHTML = '';
+
 	/**
 	 * adds an element to the div.
 	 *
 	 * @param we_ui_abstract_AbstractElement $elem
 	 * @return void
 	 */
-	public function addElement($elem) 
-	{
+	public function addElement($elem){
 		$this->addCSSFiles($elem->getCSSFiles());
-		$this->addJSFiles($elem->getJSFiles());		
+		$this->addJSFiles($elem->getJSFiles());
 		$this->_divHTML .= $elem->getHTML();
 	}
-	
+
 	/**
 	 * adds HTML to the div.
 	 *
 	 * @param string $html
 	 * @return void
 	 */
-	public function addHTML($html) 
-	{
+	public function addHTML($html){
 		$this->_divHTML .= $html;
 	}
-	
+
 	/**
 	 * Renders and returns the HTML
 	 *
 	 * @return string
 	 */
-	protected function _renderHTML() {
-				
-		if ($this->getHidden()) {
+	protected function _renderHTML(){
+
+		if($this->getHidden()){
 			$this->_style .= "display:none;";
 		}
-		
-		return '<div' . 
-			$this->_getNonBooleanAttribs('id') . 
-			$this->_getComputedStyleAttrib() . 
-			$this->_getComputedClassAttrib() . 
+
+		return '<div' .
+			$this->_getNonBooleanAttribs('id') .
+			$this->_getComputedStyleAttrib() .
+			$this->_getComputedClassAttrib() .
 			'>' . $this->_divHTML .
 			'</div>';
 	}
-	
-	
-}
 
-?>
+}
