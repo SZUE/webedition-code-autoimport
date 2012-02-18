@@ -127,7 +127,7 @@ function we_tag_img($attribs, $content){
 		if ($showinputs) { //  only when wanted
 			$out .= "
 		        <tr>
-		            <td class=\"weEditmodeStyle\" align=\"center\" style=\"width: 180px;\">
+		            <td class=\"weEditmodeStyle\" align=\"center\" style=\"width: 180px;\" colspan=\"2\">
 		            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
                     <tr>
                         <td class=\"weEditmodeStyle\" style=\"color: black; font-size: 12px; font-family: " . $l_css["font_family"] . ";\">" . $l_we_class["alt_kurz"] . ":&nbsp;</td>
