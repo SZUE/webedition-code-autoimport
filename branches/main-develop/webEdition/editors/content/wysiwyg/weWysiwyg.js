@@ -76,7 +76,7 @@ if(we_styleString && we_styleString.length){
 	we_classNames = new Array();
 	if(isGecko||isOpera ||isIE9){
 		for(var i=0;i<we_styleSheets.length;i++){
-			var r = styleSheets[i].cssRules;
+			var r = we_styleSheets[i].cssRules;
 			if(! we_styleSheets[i].href || we_styleSheets[i].href.indexOf("/webEdition/") == -1 || we_styleSheets[i].href==self.location.href){
 				for(var n=0;n<r.length;n++){
 					var s = r[n].style;

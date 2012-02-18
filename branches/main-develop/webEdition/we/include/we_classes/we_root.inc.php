@@ -772,7 +772,7 @@ abstract class we_root extends we_class{
 			$this->ModDate = time();
 			$this->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : 0;
 		}
-		if(!we_class::we_save($resave)){
+		if(!parent::we_save($resave)){
 			return false;
 		}
 		$a = $this->i_saveContentDataInDB();

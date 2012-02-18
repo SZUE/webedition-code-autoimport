@@ -58,7 +58,6 @@ class we_objectFile extends we_document{
 	var $Url = '';
 	var $TriggerID = 0;
 
-
 	/* Constructor */
 
 	function __construct(){
@@ -150,8 +149,7 @@ class we_objectFile extends we_document{
 				$langkeys[] = $langkey;
 			}
 
-			$content = '
-			<table border="0" cellpadding="0" cellspacing="0">
+			$content = '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>
 						' . we_html_tools::getPixel(2, 4) . '</td>
@@ -257,10 +255,9 @@ class we_objectFile extends we_document{
 			$this->Templates = ',' . $this->Templates;
 	}
 
-	function setRootDirID($doit=false){
+	function setRootDirID($doit = false){
 		if($this->InWebEdition || $doit){
 			$foo = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, 'Path', $this->DB_WE);
-			$folder = new we_folder();
 			$folderID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $foo . '"', 'ID', $this->DB_WE);
 			$this->RootDirPath = $foo;
 			$this->rootDirID = $folderID;
@@ -278,7 +275,7 @@ class we_objectFile extends we_document{
 		$this->ParentID = $workspaceRootDirId;
 	}
 
-	function restoreDefaults($makeSameNewFlag=false){
+	function restoreDefaults($makeSameNewFlag = false){
 		$this->DefaultInit = true;
 		if(!$makeSameNewFlag){
 			$this->resetParentID();
@@ -292,8 +289,8 @@ class we_objectFile extends we_document{
 		$this->Charset = '';
 		$this->restoreWorkspaces();
 		$this->elements = array();
-		$this->DB_WE->query('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID);
-		if($this->DB_WE->next_record()){
+		$hash = getHash('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, $this->DB_WE);
+		if(count($hash)){
 			// fix - the class access permissions should not be applied
 			/* if($this->DB_WE->f("Users")){
 			  $this->Owners = $this->DB_WE->f("Users");
@@ -309,23 +306,18 @@ class we_objectFile extends we_document{
 			  $this->TriggerID = $this->DB_WE->f('DefaultTriggerID');
 			  }
 			 */
-			if($this->DB_WE->f('DefaultCategory')){
-				$this->Category = $this->DB_WE->f('DefaultCategory');
-			}
-			if($this->DB_WE->f('DefaultText')){
-				$text = $this->DB_WE->f('DefaultText');
+			$this->Category = $hash['DefaultCategory'] ? $hash['DefaultCategory'] : '';
+			if($hash['DefaultText']){
+				$text = $hash['DefaultText'];
+				$regs = array();
 				if(preg_match('/%unique([^%]*)%/', $text, $regs)){
-					if(!$regs[1]){
-						$anz = 16;
-					} else{
-						$anz = abs($regs[1]);
-					}
+					$anz = ($regs[1] ? abs($regs[1]) : 16);
 					$unique = substr(md5(uniqid(rand(), 1)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, $text);
 				}
 				if(strpos($text, '%ID%') !== false){
 					//FIXME: this is NOT safe!!! Insert entry, and update afterwards
-					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE, 'ID', new DB_WE()));
+					$id = 1 + intval(f('SELECT max(ID) as ID FROM ' . OBJECT_FILES_TABLE, 'ID', $this->DB_WE));
 					$text = str_replace('%ID%', '' . $id, $text);
 				}
 				if(strpos($text, '%d%') !== false){
@@ -361,8 +353,8 @@ class we_objectFile extends we_document{
 				$this->Text = $text;
 			}
 
-			if($this->DB_WE->f('DefaultValues')){
-				$vals = unserialize($this->DB_WE->f('DefaultValues'));
+			if($hash['DefaultValues']){
+				$vals = unserialize($hash['DefaultValues']);
 				if(isset($vals['WE_CSS_FOR_CLASS'])){
 					$this->CSS = $vals['WE_CSS_FOR_CLASS'];
 				}
@@ -645,11 +637,10 @@ class we_objectFile extends we_document{
 
 	function formClass(){
 		if($this->ID){
-			$content = '<span class="defaultfont">' . f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", "Text", $this->DB_WE) . "</span>";
+			return '<span class="defaultfont">' . f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", "Text", $this->DB_WE) . "</span>";
 		} else{
-			$content = $this->formSelect2("", 388, "TableID", OBJECT_TABLE, "ID", "Text", "", "WHERE IsFolder=0" . ($this->AllowedClasses ? " AND ID IN(" . $this->AllowedClasses . ")" : "") . " ORDER BY Path ", 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);");
+			return $this->formSelect2("", 388, "TableID", OBJECT_TABLE, "ID", "Text", "", "WHERE IsFolder=0" . ($this->AllowedClasses ? " AND ID IN(" . $this->AllowedClasses . ")" : "") . " ORDER BY Path ", 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);");
 		}
-		return $content;
 	}
 
 	function formClassId(){
@@ -678,7 +669,7 @@ class we_objectFile extends we_document{
 		return $order;
 	}
 
-	static function getSortedTableInfo($tableID, $contentOnly=false, $db='', $checkVariants=false){
+	static function getSortedTableInfo($tableID, $contentOnly = false, $db = '', $checkVariants = false){
 		if(!$tableID)
 			return array();
 		if(!$db)
@@ -730,7 +721,7 @@ class we_objectFile extends we_document{
 		return 0;
 	}
 
-	function getFieldHTML($name, $type, $attribs, $editable=true, $variant=false){
+	function getFieldHTML($name, $type, $attribs, $editable = true, $variant = false){
 		switch($type){
 			case 'input':
 				return $this->getInputFieldHTML($name, $attribs, $editable, $variant);
@@ -794,19 +785,18 @@ class we_objectFile extends we_document{
 				return strlen($this->getElement($name)) ? $this->getElement($name) : '';
 			case 'meta':
 				return $this->getElement($name);
-				break;
 		}
-
 
 		return $this->getElement($name);
 	}
 
-	function getFieldsHTML($editable, $asString=false){
+	function getFieldsHTML($editable, $asString = false){
 		$foo = getHash('SELECT strOrder,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . (int) $this->TableID, $this->DB_WE);
 
 		$dv = $foo['DefaultValues'] ? unserialize($foo['DefaultValues']) : array();
-		if(!is_array($dv))
+		if(!is_array($dv)){
 			$dv = array();
+		}
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID, true, $this->DB_WE);
 		$fields = array();
 		for($i = 0; $i < sizeof($tableInfo_sorted); $i++){
@@ -845,7 +835,7 @@ class we_objectFile extends we_document{
 		return $asString ? $c : $parts;
 	}
 
-	function getMetaFieldHTML($name, $attribs, $editable=true, $variant=false){
+	function getMetaFieldHTML($name, $attribs, $editable = true, $variant = false){
 		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]['meta']);
 
 		if($editable){
@@ -860,7 +850,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getObjectFieldHTML($ObjectID, $attribs, $editable=true){
+	function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
 		$db = new DB_WE();
 		$foo = getHash('SELECT Text,Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
@@ -960,7 +950,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getMultiObjectFieldHTML($name, $attribs, $editable=true){
+	function getMultiObjectFieldHTML($name, $attribs, $editable = true){
 		$db = new DB_WE();
 		$table = OBJECT_FILES_TABLE;
 		$temp = unserialize($this->getElement($name, "dat"));
@@ -1169,7 +1159,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getHrefFieldHTML($n, $attribs, $we_editmode=true){
+	function getHrefFieldHTML($n, $attribs, $we_editmode = true){
 		global $we_doc;
 		$type = isset($attribs["hreftype"]) ? $attribs["hreftype"] : '';
 		$directory = (isset($attribs["hrefdirectory"]) && $attribs["hrefdirectory"] == "true") ? true : false;
@@ -1214,7 +1204,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function htmlLinkInput($n, $attribs, $we_editmode=true, $headline=true){
+	function htmlLinkInput($n, $attribs, $we_editmode = true, $headline = true){
 		$attribs["name"] = $n;
 		$out = "";
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
@@ -1255,7 +1245,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getInputFieldHTML($name, $attribs, $editable=true, $variant=false){
+	function getInputFieldHTML($name, $attribs, $editable = true, $variant = false){
 
 		if($editable){
 
@@ -1270,7 +1260,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getCountryFieldHTML($name, $attribs, $editable=true, $variant=false){
+	function getCountryFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!Zend_Locale::hasCache()){
 			Zend_Locale::setCache(getWEZendCache());
 		}
@@ -1332,7 +1322,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getLanguageFieldHTML($name, $attribs, $editable=true, $variant=false){
+	function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
 
 		if($editable){
 			$frontendL = $GLOBALS["weFrontendLanguages"];
@@ -1367,7 +1357,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getCheckboxFieldHTML($name, $attribs, $editable=true){
+	function getCheckboxFieldHTML($name, $attribs, $editable = true){
 		if($editable){
 			$content = we_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 			return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? '<div class="objectDescription">' . $this->DefArray["checkbox_" . $name]['editdescription'] . '</div>' : '<br />' ) . $content;
@@ -1377,7 +1367,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getIntFieldHTML($name, $attribs, $editable=true, $variant=false){
+	function getIntFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 			$content = $this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 			if($variant){
@@ -1390,7 +1380,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getFloatFieldHTML($name, $attribs, $editable=true, $variant=false){
+	function getFloatFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 			$content = $this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onChange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 
@@ -1405,7 +1395,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getDateFieldHTML($name, $attribs, $editable=true){
+	function getDateFieldHTML($name, $attribs, $editable = true){
 		if($editable){
 			$d = abs($this->getElement($name));
 			$content = we_html_tools::getDateInput2("we_" . $this->Name . "_date[" . $name . "]", ($d ? $d : time()), true);
@@ -1417,7 +1407,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getTextareaHTML($name, $attribs, $editable=true, $variant=false){
+	function getTextareaHTML($name, $attribs, $editable = true, $variant = false){
 		if($editable){
 
 			if(isset($this->Charset)){ //	send charset which might be determined in template
@@ -1454,7 +1444,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getImageHTML($name, $attribs, $editable=true, $variant=false){
+	function getImageHTML($name, $attribs, $editable = true, $variant = false){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_imageDocument.inc.php");
 		$img = new we_imageDocument();
 		$id = $this->getElement($name);
@@ -1519,7 +1509,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getBinaryHTML($name, $attribs, $editable=true){
+	function getBinaryHTML($name, $attribs, $editable = true){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_otherDocument.inc.php");
 		$img = new we_otherDocument();
 		$id = $this->getElement($name);
@@ -1546,7 +1536,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getFlashmovieHTML($name, $attribs, $editable=true){
+	function getFlashmovieHTML($name, $attribs, $editable = true){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_flashDocument.inc.php");
 		$img = new we_flashDocument();
 		$id = $this->getElement($name);
@@ -1573,7 +1563,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function getQuicktimeHTML($name, $attribs, $editable=true){
+	function getQuicktimeHTML($name, $attribs, $editable = true){
 		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_classes/we_quicktimeDocument.inc.php");
 		$img = new we_quicktimeDocument();
 		$id = $this->getElement($name);
@@ -1602,16 +1592,14 @@ class we_objectFile extends we_document{
 
 	function getDefaultValueArray(){
 		if($this->TableID){
-			$foo = f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", "DefaultValues", $this->DB_WE);
-			if($foo){
-				return unserialize($foo);
-			} else{
-				return array();
-			}
+			$foo = f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . $this->TableID, "DefaultValues", $this->DB_WE);
+			return $foo ? unserialize($foo) : array();
 		}
+		t_e('error no tableID!', $this);
+		t_e('error', 'error no tableID!');
 	}
 
-	function getContentData($loadBinary=0){
+	function getContentData($loadBinary = 0){
 		if(!$this->TableID)
 			return;
 		$ID = $this->ObjectID;
@@ -1650,7 +1638,7 @@ class we_objectFile extends we_document{
 		return sizeof($ac);
 	}
 
-	function getPossibleWorkspaces($ClassWs, $all=false){
+	function getPossibleWorkspaces($ClassWs, $all = false){
 		if(!$ClassWs)
 			$ClassWs = f("SELECT Workspaces FROM " . OBJECT_TABLE . " WHERE ID='" . $this->TableID . "'", "Workspaces", $this->DB_WE);
 		$userWs = get_ws(FILE_TABLE);
@@ -1934,7 +1922,7 @@ class we_objectFile extends we_document{
 		return getAllowedClasses($this->DB_WE);
 	}
 
-	function getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, $mode=0){
+	function getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, $mode = 0){
 		for($i = 0; $i < sizeof($wsArr); $i++){
 			if($mode){
 				if($wsArr[$i] == $parentID){
@@ -2375,7 +2363,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function we_save($resave=0, $skipHook=0){
+	function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 
 		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
@@ -2390,8 +2378,6 @@ class we_objectFile extends we_document{
 			}
 		}
 		if($this->canHaveVariants()){
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
 			weShopVariants::correctModelFields($this);
 		}
 		if(!$this->TriggerID){
@@ -2415,13 +2401,8 @@ class we_objectFile extends we_document{
 
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if(!parent::we_save($resave, 1))
+			if((!parent::we_save($resave, 1)) || (!$this->ObjectID) || ($resave) || (!$this->we_republish())){
 				return false;
-			if(!$this->ObjectID)
-				return false;
-			if($resave){
-				if(!$this->we_republish())
-					return false;
 			}
 		}
 		$this->ModDate = time();
@@ -2430,15 +2411,19 @@ class we_objectFile extends we_document{
 
 		$this->setUrl();
 
-		if($resave == 0 && $this->ID){
-			we_history::insertIntoHistory($this);
+		if($resave == 0){
+			if($this->ID){
+				we_history::insertIntoHistory($this);
+			}
+			if($_resaveWeDocumentCustomerFilter){
+				$this->resaveWeDocumentCustomerFilter();
+			}
 		}
-		if($resave == 0 && $_resaveWeDocumentCustomerFilter){
-			$this->resaveWeDocumentCustomerFilter();
-		}
+
 		if(!$this->Published){
-			if(!we_root::we_save(1))
+			if(!we_root::we_save(1)){
 				return false;
+			}
 			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
 				we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 			}
@@ -2498,7 +2483,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function we_load($from=we_class::LOAD_MAID_DB){
+	function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				$sessDat = unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $this->ID . ' AND ClassName="' . $this->ClassName . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE));
@@ -2579,7 +2564,7 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	function we_publish($DoNotMark=false, $saveinMainDB=true, $skipHook=0){
+	function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
 		if($skipHook == 0){
 			$hook = new weHook('prePublish', '', array($this));
 			$ret = $hook->executeHook();
@@ -2617,7 +2602,7 @@ class we_objectFile extends we_document{
 		return $this->insertAtIndex();
 	}
 
-	function we_unpublish($skipHook=0){
+	function we_unpublish($skipHook = 0){
 		if(!$this->ID)
 			return false;
 		if(!$this->DB_WE->query("UPDATE " . $this->Table . " SET Published='0' WHERE ID='" . $this->ID . "'"))
@@ -2662,7 +2647,7 @@ class we_objectFile extends we_document{
 		return parent::we_delete();
 	}
 
-	function we_republish($rebuildMain=true){
+	function we_republish($rebuildMain = true){
 		if($this->Published){
 			return $this->we_publish(true, $rebuildMain);
 		} else{
@@ -2670,7 +2655,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_objectFileInit($makeSameNewFlag=false){
+	function i_objectFileInit($makeSameNewFlag = false){
 		if($this->ID){
 
 			$this->setRootDirID();
@@ -2780,7 +2765,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_getContentData($loadBinary=0){
+	function i_getContentData($loadBinary = 0){
 
 		if(!$this->TableID)
 			return;
@@ -2904,11 +2889,11 @@ class we_objectFile extends we_document{
 			return false;
 	}
 
-	function addCol($tab, $col, $typ, $pos=""){
+	function addCol($tab, $col, $typ, $pos = ""){
 		$this->DB_WE->query("ALTER TABLE $tab ADD $col $typ" . (($pos != "") ? " " . $pos : "") . ";");
 	}
 
-	function getContentDataFromTemporaryDocs($ObjectID, $loadBinary=0){
+	function getContentDataFromTemporaryDocs($ObjectID, $loadBinary = 0){
 		$DocumentObject = f("SELECT DocumentObject FROM " . TEMPORARY_DOC_TABLE . " WHERE DocumentID=" . intval($ObjectID) . " AND Active=1 AND  DocTable='tblObjectFiles'", 'DocumentObject', $this->DB_WE);
 		if($DocumentObject){
 			$DocumentObject = unserialize($DocumentObject);
@@ -2966,10 +2951,8 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		if($this->wasUpdate){
-			$data['ID']=intval($this->ObjectID);
-		}
-		$ret = $this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET ' . we_database_base::arraySetter($data));
+		$where = ($this->wasUpdate) ? ' WHERE ID=' . intval($this->ID) : '';
+		$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($ctable) . ' SET ' . we_database_base::arraySetter($data) . $where));
 		$this->ObjectID = ($this->wasUpdate ? $this->ObjectID : $this->DB_WE->getInsertId());
 		return $ret;
 	}
@@ -2986,7 +2969,7 @@ class we_objectFile extends we_document{
 		return $this->i_savePersistentSlotsToDB("Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,ObjectID,IsSearchable,Charset,Url,TriggerID");
 	}
 
-	function i_getDocument($includepath=""){
+	function i_getDocument($includepath = ""){
 
 		$glob = "";
 		foreach($GLOBALS as $k => $v){
@@ -3103,7 +3086,7 @@ class we_objectFile extends we_document{
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1)
 				$readers[] = $key;
 		}
-		return!we_users_util::isUserInUsers($_SESSION["user"]["ID"], $readers);
+		return !we_users_util::isUserInUsers($_SESSION["user"]["ID"], $readers);
 	}
 
 	/**
@@ -3147,9 +3130,8 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function initByID($we_ID, $we_Table=OBJECT_FILES_TABLE, $from=we_class::LOAD_MAID_DB){
+	function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
 		parent::initByID($we_ID, $we_Table, $from);
-
 		if(isset($this->elements['Charset'])){
 			$this->Charset = $this->elements['Charset']['dat'];
 			unset($this->elements['Charset']);
@@ -3162,11 +3144,7 @@ class we_objectFile extends we_document{
 	}
 
 	function initVariantDataFromDb(){
-
 		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-
-			include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_modules/shop/weShopVariants.inc.php');
-
 			if(!isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
 				// unserialize the variant data when loading the model
 				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);

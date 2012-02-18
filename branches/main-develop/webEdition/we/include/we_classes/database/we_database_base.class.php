@@ -497,7 +497,7 @@ abstract class we_database_base{
 			if(is_object($val)){
 				t_e('error','data error',$arr,$key);
 			}
-			$ret[] = '`' . $key . '`=' . (is_int($val) ? $val : '"' . escape_sql_query($val) . '"');
+			$ret[] = '`' . $key . '`=' . (is_numeric($val) ? $val : '"' . escape_sql_query($val) . '"');
 		}
 		return implode(',', $ret);
 	}

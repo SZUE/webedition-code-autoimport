@@ -78,10 +78,8 @@ class we_object extends we_document{
 		$we_responseText = g_l('weClass', "[response_save_ok]");
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
-		$db = new DB_WE();
-
 		if($this->OldPath && ($this->OldPath != $this->Path)){
-			$fID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $db->escape($this->OldPath) . "'", "ID", $this->DB_WE);
+			$fID = f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . $this->DB_WE->escape($this->OldPath) . "'", "ID", $this->DB_WE);
 			$pID = intval(f("SELECT ID FROM " . OBJECT_FILES_TABLE . " WHERE Path='" . str_replace("\\", "/", dirname($this->Path)) . "'", "ID", $this->DB_WE));
 			$cf = new we_class_folder();
 			$cf->initByID($fID, OBJECT_FILES_TABLE);
@@ -1340,7 +1338,7 @@ class we_object extends we_document{
 		$pid = $this->getElement($ObjectID, "dat");
 		if($editable){
 			$db = new DB_WE();
-			$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=$pid", "Path", $db);
+			$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=".$pid, 'Path', $db);
 			$textname = 'we_' . $this->Name . '_txt[' . $pid . '_path]';
 			$idname = 'we_' . $this->Name . "_input[" . $ObjectID . "default]";
 			$myid = $this->getElement($ObjectID . "default", "dat");
@@ -1382,7 +1380,7 @@ class we_object extends we_document{
 		$pid = $this->getElement($name . "class", "dat");
 
 		$db = new DB_WE();
-		$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=$pid", "Path", $db);
+		$classPath = f("SELECT Path FROM " . OBJECT_TABLE . " WHERE ID=".$pid, "Path", $db);
 		$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 		$idname = 'we_' . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]";
 		$myid = $this->getElement($name . "defaultvalue" . $f, "dat");

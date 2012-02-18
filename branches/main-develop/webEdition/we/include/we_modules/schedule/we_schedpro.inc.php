@@ -23,21 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_schedpro{
-	const DELETE=3;
-	const DOCTYPE=4;
-	const CATEGORY=5;
-	const DIR=6;
 
-	const TYPE_ONCE=0;
-	const TYPE_HOUR=1;
-	const TYPE_DAY=2;
-	const TYPE_WEEK=3;
-	const TYPE_MONTH=4;
-	const TYPE_YEAR=5;
-
-	const SCHEDULE_FROM=1;
-	const SCHEDULE_TO=2;
-
+	const DELETE = 3;
+	const DOCTYPE = 4;
+	const CATEGORY = 5;
+	const DIR = 6;
+	const TYPE_ONCE = 0;
+	const TYPE_HOUR = 1;
+	const TYPE_DAY = 2;
+	const TYPE_WEEK = 3;
+	const TYPE_MONTH = 4;
+	const TYPE_YEAR = 5;
+	const SCHEDULE_FROM = 1;
+	const SCHEDULE_TO = 2;
 
 	var $task = 1;
 	var $type = 0;
@@ -52,7 +50,7 @@ class we_schedpro{
 	var $active = 1;
 	var $doctypeAll = 0;
 
-	function __construct($s = "", $nr=0){
+	function __construct($s = "", $nr = 0){
 		if(is_array($s)){
 			$this->task = isset($s["task"]) ? $s["task"] : 1;
 			$this->type = isset($s["type"]) ? $s["type"] : 0;
@@ -142,7 +140,7 @@ class we_schedpro{
 ';
 	}
 
-	function getHTML($isobj=false){
+	function getHTML($isobj = false){
 		$taskpopup = '<select class="weSelect" name="we_schedule_task_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);if(self.we_hasExtraRow_' . $this->nr . ' || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){ setScrollTo();we_cmd(\'reload_editpage\');}">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>
@@ -483,7 +481,7 @@ class we_schedpro{
 
 		$scheddy = array();
 
-		$DB_WE->query("SELECT * FROM " . SCHEDULE_TABLE . " WHERE Schedpro IS NULL OR Schedpro=''");
+		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro IS NULL OR Schedpro=""');
 		while($DB_WE->next_record()) {
 			$s = array();
 
@@ -504,228 +502,193 @@ class we_schedpro{
 		}
 
 		foreach($scheddy as $s){
-			$DB_WE->query("UPDATE " . SCHEDULE_TABLE . " SET Schedpro='" . addslashes(serialize($s)) . "', Active=1, SerializedData='s:0:\"\";' WHERE DID=" . intval($s["did"]) . " AND Was=" . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="' . $DB_WE->escape('s:0:"";') . '" WHERE DID=' . intval($s["did"]) . " AND Was=" . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
 		}
 	}
 
-	function getNextTimestamp($s, $now=0){
+	function getNextTimestamp($s, $now = 0){
 		if(!$now){
 			$now = time();
 		}
 		switch($s["type"]){
 			case self::TYPE_ONCE:
 				return $s["time"];
-				break;
 			case self::TYPE_HOUR:
 				$nextTime = mktime(date("G", $now), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
-				if($nextTime > $now){
-					return $nextTime;
-				} else{
-					return $nextTime + 3600; // +1 h
-				}
-				break;
+				return ($nextTime > $now) ? $nextTime : $nextTime + 3600; // +1 h
 			case self::TYPE_DAY:
 				$nextTime = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
-				if($nextTime > $now){
-					return $nextTime;
-				} else{
-					return $nextTime + 86400; // + 1 Tag
-				}
-				break;
+				return ($nextTime > $now ? $nextTime : $nextTime + 86400); // + 1 Tag
 			case self::TYPE_WEEK:
 				$wdayNow = date("w", $now);
 				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
 				if($s["weekdays"][$wdayNow] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
-				} else{
-					$nextday = 0;
-					$found = false;
-					// naechst moeglicher Wochentag suchen
-					for($wd = $wdayNow + 1; $wd <= 6; $wd++){
+				}
+				$nextday = 0;
+				$found = false;
+				// naechst moeglicher Wochentag suchen
+				for($wd = $wdayNow + 1; $wd <= 6; $wd++){
+					$nextday++;
+					if($s["weekdays"][$wd]){
+						$found = true;
+						break;
+					}
+				}
+				if(!$found){
+					for($wd = 0; $wd <= $wdayNow; $wd++){
 						$nextday++;
 						if($s["weekdays"][$wd]){
 							$found = true;
 							break;
 						}
 					}
-					if(!$found){
-						for($wd = 0; $wd <= $wdayNow; $wd++){
-							$nextday++;
-							if($s["weekdays"][$wd]){
-								$found = true;
-								break;
-							}
-						}
-					}
-					if($found){
-						$nextdaystamp = $now + ($nextday * 86400);
-						$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $nextdaystamp)), date("j", $nextdaystamp), date("Y", $nextdaystamp));
-						return $timeSched;
-					}
 				}
-				break;
+				if($found){
+					$nextdaystamp = $now + ($nextday * 86400);
+					return mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $nextdaystamp)), date("j", $nextdaystamp), date("Y", $nextdaystamp));
+				}
+
+				return 0;
 			case self::TYPE_MONTH:
 				$dayNow = date("j", $now);
 				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
 				if($s["days"][$dayNow - 1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
-				} else{
-
-					$tomorrow = $now + 86400;
-					$dayTomorrow = date("j", $tomorrow);
-
-					$trys = 0;
-					while($s["days"][$dayTomorrow - 1] == 0 && $trys <= 365) {
-						$tomorrow += 86400;
-						$dayTomorrow = date("j", $tomorrow);
-						$trys++;
-					}
-					if($trys <= 365){
-						$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $tomorrow)), date("j", $tomorrow), date("Y", $tomorrow));
-						return $timeSched;
-					}
 				}
-				break;
+
+				$tomorrow = $now + 86400;
+				$dayTomorrow = date("j", $tomorrow);
+
+				$trys = 0;
+				while($s["days"][$dayTomorrow - 1] == 0 && $trys <= 365) {
+					$tomorrow += 86400;
+					$dayTomorrow = date("j", $tomorrow);
+					$trys++;
+				}
+				return ($trys <= 365) ?
+					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $tomorrow)), date("j", $tomorrow), date("Y", $tomorrow)) :
+					0;
 			case self::TYPE_YEAR:
 				$dayNow = date("j", $now);
 				$monthNow = intval(date("m", $now));
 				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
 				if($s["days"][$dayNow - 1] && $s["months"][$monthNow - 1] && ($timeSched > $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
-				} else{
+				}
 
-					$tomorrow = $now + 86400;
+				$tomorrow = $now + 86400;
+				$dayTomorrow = date("j", $tomorrow);
+				$monthTomorrow = intval(date("m", $tomorrow));
+
+				$trys = 0;
+				while(($s["days"][$dayTomorrow - 1] == 0 || $s["months"][$monthTomorrow - 1] == 0) && $trys <= 365) {
+					$tomorrow += 86400;
 					$dayTomorrow = date("j", $tomorrow);
 					$monthTomorrow = intval(date("m", $tomorrow));
-
-					$trys = 0;
-					while(($s["days"][$dayTomorrow - 1] == 0 || $s["months"][$monthTomorrow - 1] == 0) && $trys <= 365) {
-						$tomorrow += 86400;
-						$dayTomorrow = date("j", $tomorrow);
-						$monthTomorrow = intval(date("m", $tomorrow));
-						$trys++;
-					}
-					if($trys <= 365){
-						$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $tomorrow)), date("j", $tomorrow), date("Y", $tomorrow));
-						return $timeSched;
-					}
+					$trys++;
 				}
-				break;
+				return ($trys <= 365) ?
+					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $tomorrow)), date("j", $tomorrow), date("Y", $tomorrow)) :
+					0;
 		}
-		return 0;
 	}
 
-	function getPrevTimestamp($s, $now=0){
+	function getPrevTimestamp($s, $now = 0){
 		if(!$now){
 			$now = time();
 		}
 		switch($s["type"]){
 			case self::TYPE_ONCE:
 				return $s["time"];
-				break;
 			case self::TYPE_HOUR:
 				$nextTime = mktime(date("G", $now), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
-				if($nextTime < $now){
-					return $nextTime;
-				} else{
-					return $nextTime - 3600; // +1 h
-				}
-				break;
+				return ($nextTime < $now ? $nextTime : $nextTime - 3600); // +1 h
 			case self::TYPE_DAY:
 				$nextTime = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, date("m", $now), date("j", $now), date("Y", $now));
-				if($nextTime < $now){
-					return $nextTime;
-				} else{
-					return $nextTime - 86400; // + 1 Tag
-				}
-				break;
+				return ($nextTime < $now ? $nextTime : $nextTime - 86400); // + 1 Tag
 			case self::TYPE_WEEK:
 				$wdayNow = date("w", $now);
 				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
 				if($s["weekdays"][$wdayNow] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
-				} else{
-					$lastday = 0;
-					$found = false;
-					// naechst moeglicher Wochentag suchen
-					for($wd = $wdayNow - 1; $wd >= 0; $wd--){
+				}
+				$lastday = 0;
+				$found = false;
+				// naechst moeglicher Wochentag suchen
+				for($wd = $wdayNow - 1; $wd >= 0; $wd--){
+					$lastday++;
+					if($s["weekdays"][$wd]){
+						$found = true;
+						break;
+					}
+				}
+				if(!$found){
+					for($wd = 6; $wd >= $wdayNow; $wd--){
 						$lastday++;
 						if($s["weekdays"][$wd]){
 							$found = true;
 							break;
 						}
 					}
-					if(!$found){
-						for($wd = 6; $wd >= $wdayNow; $wd--){
-							$lastday++;
-							if($s["weekdays"][$wd]){
-								$found = true;
-								break;
-							}
-						}
-					}
-					if($found){
-						$lasttimestamp = $now - ($lastday * 86400);
-						$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $lasttimestamp)), date("j", $lasttimestamp), date("Y", $lasttimestamp));
-						return $timeSched;
-					}
 				}
-				break;
+				if($found){
+					$lasttimestamp = $now - ($lastday * 86400);
+					$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $lasttimestamp)), date("j", $lasttimestamp), date("Y", $lasttimestamp));
+					return $timeSched;
+				}
+
+				return 0;
 			case self::TYPE_MONTH:
 				$dayNow = date("j", $now);
 				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
 				if($s["days"][$dayNow - 1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
-				} else{
-
-					$yesterday = $now - 86400;
-					$dayYesterday = date("j", $yesterday);
-
-					$trys = 0;
-					while($s["days"][$dayYesterday - 1] == 0 && $trys <= 365) {
-						$yesterday -= 86400;
-						$dayYesterday = date("j", $yesterday);
-						$trys++;
-					}
-					if($trys <= 365){
-						$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $yesterday)), date("j", $yesterday), date("Y", $yesterday));
-						return $timeSched;
-					}
 				}
-				break;
+
+				$yesterday = $now - 86400;
+				$dayYesterday = date("j", $yesterday);
+
+				$trys = 0;
+				while($s["days"][$dayYesterday - 1] == 0 && $trys <= 365) {
+					$yesterday -= 86400;
+					$dayYesterday = date("j", $yesterday);
+					$trys++;
+				}
+				return ($trys <= 365) ?
+					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $yesterday)), date("j", $yesterday), date("Y", $yesterday)) :
+					0;
+
 			case self::TYPE_YEAR:
 				$dayNow = date("j", $now);
 				$monthNow = intval(date("m", $now));
 				$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $now)), date("j", $now), date("Y", $now)); // zeit fuer heutigen tag
 				if($s["days"][$dayNow - 1] && $s["months"][$monthNow - 1] && ($timeSched < $now)){ // wenn am heutigen Tag was geschehen soll, checken ob Ereignis noch offen, wenn ja dann speichern
 					return $timeSched;
-				} else{
+				}
 
-					$yesterday = $now - 86400;
+				$yesterday = $now - 86400;
+				$dayYesterday = date("j", $yesterday);
+				$monthYesterday = intval(date("m", $yesterday));
+
+				$trys = 0;
+				while(($s["days"][$dayYesterday - 1] == 0 || $s["months"][$monthYesterday - 1] == 0) && $trys <= 365) {
+					$yesterday -= 86400;
 					$dayYesterday = date("j", $yesterday);
 					$monthYesterday = intval(date("m", $yesterday));
-
-					$trys = 0;
-					while(($s["days"][$dayYesterday - 1] == 0 || $s["months"][$monthYesterday - 1] == 0) && $trys <= 365) {
-						$yesterday -= 86400;
-						$dayYesterday = date("j", $yesterday);
-						$monthYesterday = intval(date("m", $yesterday));
-						$trys++;
-					}
-					if($trys <= 365){
-						$timeSched = mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $yesterday)), date("j", $yesterday), date("Y", $yesterday));
-						return $timeSched;
-					}
+					$trys++;
 				}
-				break;
+				return ($trys <= 365) ?
+					mktime(date("G", $s["time"]), date("i", $s["time"]), 0, intval(date("m", $yesterday)), date("j", $yesterday), date("Y", $yesterday)) :
+					0;
 		}
-		return 0;
 	}
 
 }
 
 function weCmpSchedLast($a, $b){
-	if($a["lasttime"] == $b["lasttime"])
+	if($a["lasttime"] == $b["lasttime"]){
 		return 0;
+	}
 	return ($a["lasttime"] < $b["lasttime"]) ? -1 : 1;
 }
