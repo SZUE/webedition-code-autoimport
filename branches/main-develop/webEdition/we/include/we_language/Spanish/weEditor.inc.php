@@ -60,7 +60,7 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'El nombre de archivo entrado no es permitido!',
 		'we_filename_notValid'=>'Nombre de archivo no válido\nLos carácteres válidos son alpha-númericos, mayúsculas y minúsculas, así como también subrayados, guión y punto (a-z, A-Z, 0-9, _, -, .)',
 	),
-	'object'=>array(
+	'objectFile'=>array(
 		'autoschedule'=>'El objeto %s será publicado automáticamente en %s!',
 		'filename_empty'=>'Ningún nombre ha sido entrado para este objeto',
 		'response_not_published'=>'El objeto ` %s ` no fue publicado!',

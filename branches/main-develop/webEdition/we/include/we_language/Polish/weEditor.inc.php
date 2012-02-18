@@ -60,7 +60,7 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Wprowadzona nazwa pliku jest niedozwolona!',
 		'we_filename_notValid'=>'Wprowadzona nazwa pliku jest nieprawidłowa!\nDozwolone znaki to litery od a do z (wielkie lub małe) , cyfry, znak podkrelenia (_), minus (-) oraz kropka (.).',
 	),
-	'object'=>array(
+	'objectFile'=>array(
 		'autoschedule'=>'Obiekt opublikowano automatycznie dn. %s!',
 		'filename_empty'=>'Nie wprowadzono nazwy dla obiektu!',
 		'response_not_published'=>'Nie opublikowano obiektu `%s` !',

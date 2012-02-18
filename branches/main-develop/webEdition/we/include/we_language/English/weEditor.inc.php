@@ -60,7 +60,7 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'The file name you have entered is not allowed!',
 		'we_filename_notValid'=>'Invalid file name\nValid characters are alpha-numeric, upper and lower case, as well as underscore, hyphen and dot (a-z, A-Z, 0-9, _, -, .)',
 	),
-	'object'=>array(
+	'objectFile'=>array(
 		'autoschedule'=>'The object will be published automatically on %s.',
 		'filename_empty'=>'No name entered for this object!',
 		'response_not_published'=>'The object `%s` is not published!',
