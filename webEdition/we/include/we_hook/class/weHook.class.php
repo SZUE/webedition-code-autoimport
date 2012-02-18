@@ -57,7 +57,7 @@ class weHook {
 				return ($this->errStr=='');
 			}
 		}
-		return;
+		return true;
 	}
 	
 	/**
