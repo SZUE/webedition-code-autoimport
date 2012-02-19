@@ -22,8 +22,6 @@
  * @package    webEdition_class
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
-
 class we_docTypes extends we_class{
 	/*
 	 * Variables
@@ -65,7 +63,7 @@ class we_docTypes extends we_class{
 		$this->Extension = (defined("DEFAULT_STATIC_EXT") ? DEFAULT_STATIC_EXT : ".html");
 	}
 
-	function we_save($resave=0){
+	function we_save($resave = 0){
 		$idArr = makeArrayFromCSV($this->Templates);
 		$newIdArr = array();
 		if(sizeof($idArr)){
@@ -302,7 +300,7 @@ class we_docTypes extends we_class{
 	 * @desc   returns HTML-Code for a doctype select-box without doctypes given in $array
 	 * @return string
 	 */
-	function formDocTypes2($arrHide=array()){
+	function formDocTypes2($arrHide = array()){
 		$vals = array();
 		$q = getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
@@ -318,7 +316,7 @@ class we_docTypes extends we_class{
 		return $this->htmlSelect("DocTypes", $vals, "8", $this->ID, false, 'style="width:328px" onChange="we_cmd(\'change_docType\',this.options[this.selectedIndex].value)"');
 	}
 
-	function formDocTypes3($headline, $langkey, $derDT=0){
+	function formDocTypes3($headline, $langkey, $derDT = 0){
 		$vals = array();
 		$q = getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
@@ -331,7 +329,7 @@ class we_docTypes extends we_class{
 		return we_html_tools::htmlFormElementTable($this->htmlSelect("we_" . $this->Name . "_LangDocType[" . $langkey . "]", $vals, "1", $derDT, false, ($langkey == $this->Language ? ' disabled="disabled" ' : '') . 'style="width:328px" onChange=""'), $headline, "left", "defaultfont");
 	}
 
-	function formDirChooser($width=100){
+	function formDirChooser($width = 100){
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$textname = 'we_' . $this->Name . '_ParentPath';
@@ -355,7 +353,7 @@ class we_docTypes extends we_class{
 		return $yuiSuggest->getHTML();
 	}
 
-	function formExtension($width=100){
+	function formExtension($width = 100){
 		$ct = new we_base_ContentTypes();
 		$exts = $ct->getExtension('text/webedition');
 		return $this->htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', "[extension]"));
@@ -363,7 +361,7 @@ class we_docTypes extends we_class{
 
 	/* creates the Template PopupMenue */
 
-	function formTemplatePopup($width=100){
+	function formTemplatePopup($width = 100){
 		$tlist = "";
 		if($this->TemplateID != "")
 			$tlist = $this->TemplateID;
@@ -379,7 +377,7 @@ class we_docTypes extends we_class{
 	}
 
 	// return DocumentType HTML
-	function formDocTypeDropDown($selected=-1, $width=200, $onChange=""){
+	function formDocTypeDropDown($selected = -1, $width = 200, $onChange = ""){
 		$this->DocType = $selected;
 		return $this->formSelect2(
 				"", // element type
@@ -434,7 +432,7 @@ class we_docTypes extends we_class{
 		return we_forms::checkbox(1, $v ? true : false, "check_" . $n, g_l('weClass', "[IsSearchable]"), false, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, $v);
 	}
 
-	function formSubDir($width=100){
+	function formSubDir($width = 100){
 		$vals = array();
 		for($i = 0; $i < sizeof(g_l('weClass', "[subdir]")); $i++){
 			$vals[(string) $i] = g_l('weClass', "[subdir][" . $i . ']');

@@ -24,7 +24,7 @@
  */
 we_html_tools::htmlTop();
 print STYLESHEET;
-print we_html_element::cssElement('div#rss,div#rss *{color:black;font-size:' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';font-family:' . g_l('css', '[font_family]') . ';}');
+print we_html_element::cssElement('div#rss,div#rss *{color:black;font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';font-family:' . g_l('css', '[font_family]') . ';}');
 print '</head><body bgcolor="#F1F5FF">';
 
 $rss = new XML_RSS($_SESSION["prefs"]["cockpit_rss_feed_url"], $GLOBALS['WE_BACKENDCHARSET']);

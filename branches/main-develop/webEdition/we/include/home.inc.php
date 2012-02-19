@@ -23,7 +23,6 @@
  */
 include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_widgets/cfg.inc.php");
 //make sure we know which browser is used
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 
 we_html_tools::protect();
 we_html_tools::htmlTop();
@@ -40,7 +39,7 @@ print we_html_element::cssElement('
 .rssDiv, .rssDiv *{
 	background-color: transparent;
 	color: black;
-	font-size: ' . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ';
+	font-size: ' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';
 	font-family: ' . g_l('css', '[font_family]') . ' ! important;
 }
 

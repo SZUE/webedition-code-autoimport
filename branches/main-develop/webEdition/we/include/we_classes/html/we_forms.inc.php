@@ -22,13 +22,12 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * Class we_forms
  *
  * Provides functions for creating html tags used in forms.
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
-
 abstract class we_forms{
 
 	/**
@@ -43,7 +42,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid=false, $class="defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0, $html=""){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $html = ""){
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid ? uniqid($name . "_") : $name);
 
@@ -76,7 +75,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0){
+	static function checkboxWithHidden($checked, $name, $text, $uniqid = false, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0){
 		$onClick = "this.form.elements['$name'].value=this.checked ? 1 : 0;" . $onClick;
 		return '<input type="hidden" name="' . $name . '" value="' . ($checked ? 1 : 0) . '" />' . self::checkbox(1, $checked, "_" . $name, $text, $uniqid, $class, $onClick, $disabled, $description, $type, $width);
 	}
@@ -93,7 +92,7 @@ abstract class we_forms{
 	 *
 	 * @return     string
 	 */
-	static function radiobutton($value, $checked, $name, $text, $uniqid=true, $class="defaultfont", $onClick="", $disabled=false, $description="", $type=0, $width=0, $onMouseUp="", $extra_content=""){
+	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0, $onMouseUp = "", $extra_content = ""){
 		// Check if we have to create a uniqe id
 		if($uniqid){
 			$_id = $name . "_" . uniqid(rand());
@@ -134,7 +133,7 @@ abstract class we_forms{
 	 * @param string $charset
 	 *
 	 */
-	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr=true, $path="", $hidestylemenu=false, $forceinwebedition=false, $xml=false, $removeFirstParagraph=true, $charset="", $showSpell=true, $isFrontendEdit=false){
+	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr = true, $path = "", $hidestylemenu = false, $forceinwebedition = false, $xml = false, $removeFirstParagraph = true, $charset = "", $showSpell = true, $isFrontendEdit = false){
 		if($charset == ""){
 			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement("Charset")){
 				$charset = $GLOBALS['we_doc']->getElement("Charset");
@@ -309,4 +308,5 @@ abstract class we_forms{
 
 		return $text;
 	}
+
 }

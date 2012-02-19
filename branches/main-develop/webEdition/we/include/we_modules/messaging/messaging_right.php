@@ -33,11 +33,11 @@ if(!preg_match('|^([a-f0-9]){32}$|i', $_REQUEST['we_transaction'])){
 ?>
 </head>
 
-<?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if(we_base_browserDetect::isGecko()){ ?>
 	<frameset cols="*" framespacing="0" border="0" frameborder="NO">
 		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>
 	</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
+<?php } else if(we_base_browserDetect::isSafari()){ ?>
 	<frameset cols="1,*" framespacing="0" border="0" frameborder="NO">
 		<frame src="<?php print HTML_DIR ?>safariResize.html" name="bm_resize" scrolling="no" noresize/>
 		<frame src="<?php print WE_MESSAGING_MODULE_PATH ?>messaging_work.php?we_transaction=<?php echo $_REQUEST['we_transaction'] ?>" name="msg_work" scrolling="no" noresize/>

@@ -45,7 +45,7 @@ class doclistView {
 		//FIXME: use we_browserDetect-class!!!
 		$IE6 = false;
 		//workaround for z-index ans selects in ie6
-		if (($GLOBALS ['BROWSER'] == "IE")) {
+		if ((we_base_browserDetect::isIE())) {
 			$foo = explode ( ";", $_SERVER["HTTP_USER_AGENT"] );
 			$version = abs ( preg_replace ( '/[^0-9\\.]/', '', $foo [1] ) );
 			if ($version < 7) {
@@ -331,7 +331,7 @@ class doclistView {
         var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
         var scrollContent = document.getElementById("scrollContent_doclist");
 
-        var height = ' . ($GLOBALS ['BROWSER'] == "IE" ? 200 : 180) . ';
+        var height = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
         if((h - height)>0) {
           scrollContent.style.height=h - height;
         }
@@ -1526,7 +1526,7 @@ class doclistView {
 
 			$out .= $rightContent;
 
-			$out .= '</div>' . (($GLOBALS ["BROWSER"] == "IE") ? we_html_element::htmlBr() : '');
+			$out .= '</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if ($i < (count ( $content ) - 1) && (! isset ( $c ["noline"] ))) {
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';

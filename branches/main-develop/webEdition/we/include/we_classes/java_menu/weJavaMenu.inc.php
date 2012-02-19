@@ -22,8 +22,6 @@
  * @package    webEdition_javamenu
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
-
 class weJavaMenu{
 
 	var $entries;
@@ -35,11 +33,11 @@ class weJavaMenu{
 	var $port = "";
 	var $prename = "";
 
-	function __construct($entries, $SERVER_NAME, $lcmdFrame="top.load", $protocol="http", $port="", $width=200, $height=30, $prename=""){
+	function __construct($entries, $SERVER_NAME, $lcmdFrame = "top.load", $protocol = "http", $port = "", $width = 200, $height = 30, $prename = ""){
 		$this->prename = $prename;
 		if($entries){
 			$this->entries = $entries;
-			if($GLOBALS["BROWSER"] == "NN6"){
+			if(we_base_browserDetect::isGecko()){
 				$_SESSION[$prename . "menuentries"] = $this->entries;
 			}
 		} else if(isset($_SESSION[$prename . "menuentries"])){
@@ -59,7 +57,7 @@ class weJavaMenu{
 		print $this->getCode();
 	}
 
-	function getCode($old=true){
+	function getCode($old = true){
 		return $this->getJS() . $this->getHTML($old);
 	}
 
@@ -73,7 +71,7 @@ class weJavaMenu{
 			</script>';
 	}
 
-	function getHTML($old=true){
+	function getHTML($old = true){
 		$showAltMenu = (isset($_SESSION['weShowAltMenu']) && $_SESSION['weShowAltMenu']) || (isset($_REQUEST["showAltMenu"]) && $_REQUEST["showAltMenu"]);
 		$_SESSION['weShowAltMenu'] = $showAltMenu;
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
@@ -146,9 +144,9 @@ class weJavaMenu{
 					$m["cmd"] = "#";
 				}
 				if(isset($m["enabled"]) && $m["enabled"]){
-					$out .= '<param name="entry'.$i.'" value="'.$id.','.$m["parent"].','.$m["cmd"].','.$mtext.','.( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0").'">';
-				}else{
-					$out .= '<param name="entry'.$i.'" value="'.$id.','.$m["parent"].',0,'.$mtext.',0"/>';
+					$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',' . $m["cmd"] . ',' . $mtext . ',' . ( (isset($m["enabled"]) && $m["enabled"] ) ? $m["enabled"] : "0") . '">';
+				} else{
+					$out .= '<param name="entry' . $i . '" value="' . $id . ',' . $m["parent"] . ',0,' . $mtext . ',0"/>';
 				}
 				$i++;
 			}
@@ -184,13 +182,13 @@ class weJavaMenu{
 			$foo = $menus[$i]["code"];
 			$this->h_pOption($this->entries, $foo, $menus[$i]["id"], "");
 			$foo .= "</select>\n";
-			$out .= '<td>' . (($GLOBALS["BROWSER"] != "NN") ? (we_html_tools::getPixel(2, 3) . '<br>') : '') . $foo . '</td>' . (($i < (sizeof($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
+			$out .= '<td>' . ((we_html_tools::getPixel(2, 3) . '<br>')) . $foo . '</td>' . (($i < (sizeof($menus) - 1)) ? '<td>&nbsp;&nbsp;</td>' : '');
 		}
 		$out .= '
 					</tr>
 				</table>
 			</div>
-			' . ($GLOBALS["BROWSER"] == "NN6" ? '
+			' . (we_base_browserDetect::isGecko() ? '
 			<script type="text/javascript">
 
 			// BUGFIX #1831,
@@ -255,7 +253,7 @@ class weJavaMenu{
 					$newAst = $newAst . "&nbsp;&nbsp;";
 					$this->h_pOption($men, $opt, $id, $newAst);
 				} else if($mtext){
-					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . (($GLOBALS['BROWSER'] == "NN" && $e["enabled"] == 0) ? "(" : "") . $mtext . (($GLOBALS['BROWSER'] == "NN" && $e["enabled"] == 0) ? ")" : "") . "\n";
+					$opt .= '<option' . (($e["enabled"] == 0) ? (' value="" style="{color:\'grey\'}" disabled') : (' value="' . $e["cmd"] . '"')) . '>&nbsp;&nbsp;' . $newAst . $mtext;
 				} else{
 					$opt .= '<option value="" disabled>&nbsp;&nbsp;' . $newAst . "--------\n";
 				}

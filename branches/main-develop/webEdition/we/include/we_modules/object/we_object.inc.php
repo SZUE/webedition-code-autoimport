@@ -342,7 +342,6 @@ class we_object extends we_document{
 							} else if(isset($this->elements[$info["name"] . "variant"])){
 								unset($this->elements[$info["name"] . "variant"]);
 							}
-							t_e('e');
 							if(isset($this->elements[$info["name"] . "count"])){
 								for($f = 0; $f <= $this->elements[$info["name"] . "count"]["dat"]; ++$f){
 

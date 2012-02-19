@@ -46,7 +46,7 @@ $l_param['upload_url'] = getServerUrl(true) . WE_SPELLCHECKER_MODULE_PATH . 'weS
 
 
 // ----------------------
-if($SYSTEM == 'MAC' && $GLOBALS['BROWSER'] == 'NN6'){
+if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	$l_param['scid'] = session_id();
 	$_tmp_dir = WE_SPELLCHECKER_MODULE_DIR . '/tmp';
 	if(!is_dir($_tmp_dir)){

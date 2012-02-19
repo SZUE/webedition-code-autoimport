@@ -131,7 +131,6 @@ if(in_array('customer', $GLOBALS['_we_active_integrated_modules'])){
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/define_styles.inc.php');
-	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 	include_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_available_modules.inc.php');
 	//FIXME: needed by liveupdate, calls old protect directly
 	include_once ($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_perms.inc.php");

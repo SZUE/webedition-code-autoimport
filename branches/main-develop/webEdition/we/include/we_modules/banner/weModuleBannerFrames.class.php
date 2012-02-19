@@ -249,7 +249,7 @@ class weModuleBannerFrames{
 					function getHTMLResize(){
 						?>
 						</head>
-		<?php if(($GLOBALS["BROWSER"] == "NN6") || (we_base_browserDetect::isOpera())){ ?>
+		<?php if((we_base_browserDetect::isGecko()) || (we_base_browserDetect::isOpera())){ ?>
 							<frameset cols="170,*" border="1" id="resizeframeid">
 								<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/" . $this->frameset; ?>?pnt=left" name="left" scrolling="no"/>
 								<frame src="<?php print WEBEDITION_DIR . "we/include/we_modules/".$this->frameset; ?>?pnt=right" name="right"/>
@@ -303,7 +303,7 @@ class weModuleBannerFrames{
 														function getHTMLRight(){
 															?>
 															</head>
-															<?php if(($GLOBALS["BROWSER"] == "NN6") || we_base_browserDetect::isOpera()){ ?>
+															<?php if((we_base_browserDetect::isGecko()) || we_base_browserDetect::isOpera()){ ?>
 																<frameset cols="*" framespacing="0" border="0" frameborder="NO">
 																	<frame src="<?php
 													print WEBEDITION_DIR . "we/include/we_modules/";

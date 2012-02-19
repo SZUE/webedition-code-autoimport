@@ -95,7 +95,7 @@ class weCustomerTreeLoader{
 
 			$tt = "";
 			$ttrow = $db->Record;
-			$tt = $settings->treeTextFormat;
+			eval('$tt = "'.$settings->treeTextFormat.'";');
 
 			$fileds = array();
 
@@ -282,7 +282,7 @@ class weCustomerTreeLoader{
 				if($level == $levelcount){
 					$tt = "";
 					$ttrow = $db->Record;
-					$tt = $settings->treeTextFormat;
+					eval('$tt = "'.$settings->treeTextFormat.'";');
 
 					if($first){
 						$prevoffset = $offset - $segment;

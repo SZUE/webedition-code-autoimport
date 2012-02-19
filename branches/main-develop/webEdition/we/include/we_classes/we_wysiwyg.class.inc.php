@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //make sure we know which browser is used
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 
 class we_wysiwyg{
 
@@ -53,7 +52,7 @@ class we_wysiwyg{
 	var $showSpell = true;
 	var $isFrontendEdit = false;
 
-	function __construct($name, $width, $height, $value="", $propstring="", $bgcol="", $fullscreen="", $className="", $fontnames="", $outsideWE=false, $xml=false, $removeFirstParagraph=true, $inlineedit=true, $baseHref="", $charset="", $cssClasses="", $Language="", $test="", $spell=true, $isFrontendEdit=false){
+	function __construct($name, $width, $height, $value = "", $propstring = "", $bgcol = "", $fullscreen = "", $className = "", $fontnames = "", $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = "", $charset = "", $cssClasses = "", $Language = "", $test = "", $spell = true, $isFrontendEdit = false){
 
 		$this->propstring = $propstring ? "," . $propstring . "," : "";
 		$this->name = $name;
@@ -221,7 +220,7 @@ function tinyMCEchanged(inst){
 						border: 0px;
 						color: #000000;
 						cursor: default;
-						font-size: ' . (($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")) . ';
+						font-size: ' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';
 						font-family: ' . g_l('css', '[font_family]') . ';
 						font-weight: normal;
 						margin: 0px;
@@ -952,7 +951,7 @@ tinyMCE.init({
 
 				$min_w = 0;
 				$row_w = 0;
-				$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">'.we_html_tools::getPixel($this->width, 2).'</td></tr>';
+				$pixelrow = '<tr><td background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">' . we_html_tools::getPixel($this->width, 2) . '</td></tr>';
 				$linerow = '<tr><td ><div class="tbButtonsHR" class="tbButtonWysiwygDefaultStyle"></div></td></tr>';
 				$out = '<script  type="text/javascript">var weLastPopupMenu = null; var wefoo = "' . $this->ref . 'edit"; wePopupMenuArray[wefoo] = new Array();</script><table id="' . $this->ref . 'edit_table" border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '" class="tbButtonWysiwygDefaultStyle"><tr><td  background="' . IMAGE_DIR . 'backgrounds/aquaBackground.gif" class="tbButtonWysiwygDefaultStyle tbButtonWysiwygBackground">';
 				for($r = 0; $r < sizeof($rows); $r++){
@@ -1015,7 +1014,7 @@ class we_wysiwygToolbarElement{
 	var $classname = "we_wysiwygToolbarElement";
 	var $showMe = false;
 
-	function we_wysiwygToolbarElement($editor, $cmd, $width, $height=""){
+	function we_wysiwygToolbarElement($editor, $cmd, $width, $height = ""){
 		$this->editor = $editor;
 		$this->width = $width;
 		$this->height = $height;
@@ -1037,7 +1036,7 @@ class we_wysiwygToolbarSeparator extends we_wysiwygToolbarElement{
 
 	var $classname = "we_wysiwygToolbarSeparator";
 
-	function we_wysiwygToolbarSeparator($editor, $width=3, $height=22){
+	function we_wysiwygToolbarSeparator($editor, $width = 3, $height = 22){
 		$this->we_wysiwygToolbarElement($editor, "", $width, $height);
 	}
 
@@ -1057,7 +1056,7 @@ class we_wysiwygToolbarButton extends we_wysiwygToolbarElement{
 	var $tooltiptext = "";
 	var $imgSrc = "";
 
-	function __construct($editor, $cmd, $imgSrc, $tooltiptext="", $width=25, $height=22){
+	function __construct($editor, $cmd, $imgSrc, $tooltiptext = "", $width = 25, $height = 22){
 		$this->we_wysiwygToolbarElement($editor, $cmd, $width, $height);
 		$this->tooltiptext = $tooltiptext;
 		$this->imgSrc = $imgSrc;
@@ -1140,7 +1139,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 	var $title = "";
 	var $vals = array();
 
-	function __construct($editor, $cmd, $title, $vals, $width=0, $height=20){
+	function __construct($editor, $cmd, $title, $vals, $width = 0, $height = 20){
 		$this->we_wysiwygToolbarElement($editor, $cmd, $width, $height);
 		$this->title = $title;
 		$this->vals = $vals;
@@ -1174,7 +1173,7 @@ class we_wysiwygToolbarSelect extends we_wysiwygToolbarElement{
 		<td width="' . ($this->width - 20) . '" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);"  class="tbButtonWysiwygDefaultStyle"><input value="' . htmlspecialchars($this->title) . '" type="text" name="' . $this->editor->ref . '_seli_' . $this->cmd . '" id="' . $this->editor->ref . '_seli_' . $this->cmd . '" readonly="readonly" style="cursor:pointer;height:16px;width:' . ($this->width - 30) . 'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" /></td>
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="' . IMAGE_DIR . 'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
-</table><iframe src="'.HTML_DIR.'blank.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
+</table><iframe src="' . HTML_DIR . 'blank.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
 			$out .= '<script  type="text/javascript">wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
 			foreach($this->vals as $val => $txt){
 				$out .= 'wePopupMenuArray[wefoo]["' . $this->cmd . '"]["' . $val . '"]="' . $txt . '";	' . "\n";

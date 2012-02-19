@@ -30,12 +30,13 @@
  */
 //fIXME: this should be abstract - but liveupdate currently fails with this
 class we_button{
-	const HEIGHT=22;
-	const WIDTH=100;
-	const WE_IMAGE_BUTTON_IDENTIFY='image:';
-	const WE_FORM_BUTTON_IDENTIFY='form:';
-	const WE_SUBMIT_BUTTON_IDENTIFY='submit:';
-	const WE_JS_BUTTON_IDENTIFY='javascript:';
+
+	const HEIGHT = 22;
+	const WIDTH = 100;
+	const WE_IMAGE_BUTTON_IDENTIFY = 'image:';
+	const WE_FORM_BUTTON_IDENTIFY = 'form:';
+	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
+	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
 
 	/**
 	 * Gets the HTML Code for the button.
@@ -54,13 +55,13 @@ class we_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($value, $id, $cmd='', $width=self::WIDTH, $title='', $disabled=false, $margin='', $padding='', $key='', $float='', $display='', $important=true, $isFormButton=false, $cssInline=false){
+	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $cssInline = false){
 		return '<table ' . ($title ? ' title="' . htmlspecialchars($title) . '"' : '') .
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
 			'"' . we_button::getInlineStyleByParam($width, '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . htmlspecialchars($cmd) . ';}">' .
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
-			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') .'">' . $value . '</td>' .
+			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
 			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
 			'</tr></table>';
 	}
@@ -77,11 +78,11 @@ class we_button{
 	 * @param string $extrastyle
 	 * @param boolean $important
 	 */
-	static function getInlineStyleByParam($width='', $height='', $float='', $margin='', $padding='', $display='', $extrastyle='', $important=true, $clear=''){
+	static function getInlineStyleByParam($width = '', $height = '', $float = '', $margin = '', $padding = '', $display = '', $extrastyle = '', $important = true, $clear = ''){
 
 		$_imp = $important ? ' ! important' : '';
 
-		$_style = 'border-style:none; padding:0px;border-spacing:0px;'.($width ? "width:$width" . 'px' . $_imp . ';' : '') .
+		$_style = 'border-style:none; padding:0px;border-spacing:0px;' . ($width ? "width:$width" . 'px' . $_imp . ';' : '') .
 			($height ? "height:$height" . 'px' . $_imp . ';' : '') .
 			($float ? "float:$float$_imp;" : '') .
 			($clear ? "clear:$clear$_imp;" : '') .
@@ -149,7 +150,7 @@ class we_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = "", $target = "", $disabled = false, $uniqid = true, $suffix = "", $opensDialog=false){
+	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = "", $target = "", $disabled = false, $uniqid = true, $suffix = "", $opensDialog = false){
 
 		$cmd = "";
 		// Initialize variable for Form:Submit behaviour
@@ -346,11 +347,7 @@ class we_button{
 		if($align == "")
 			$attr["align"] = "right";
 		//	button order depends on OS
-		if(we_base_browserDetect::isMAC()){
-			$_order = array("no_button", "cancel_button", "yes_button");
-		} else{
-			$_order = array("yes_button", "no_button", "cancel_button");
-		}
+		$_order = (we_base_browserDetect::isMAC() ? array("no_button", "cancel_button", "yes_button") : array("yes_button", "no_button", "cancel_button"));
 
 		//	Existing buttons are added to array
 		for($_i = 0; $_i < sizeof($_order); $_i++){

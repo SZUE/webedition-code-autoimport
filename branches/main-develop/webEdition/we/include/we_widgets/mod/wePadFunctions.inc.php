@@ -164,7 +164,6 @@ function getNoteList($_sql, $bDate, $bDisplay){
 }
 
 function getCSS(){
-	global $SYSTEM;
 	$_css = "
 	body{
 		background-color:transparent;
@@ -196,7 +195,7 @@ function getCSS(){
 		height:18px;
 		vertical-align:middle;
 		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
+		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	.wetextinputselected{
@@ -205,7 +204,7 @@ function getCSS(){
 		background-color:#DCE6F2;
 		height:18px;
 		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
+		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	.wetextarea{
@@ -213,7 +212,7 @@ function getCSS(){
 		border:#AAAAAA solid 1px;
 		height:80px;
 		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
+		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	.wetextareaselected{
@@ -222,7 +221,7 @@ function getCSS(){
 		background-color:#DCE6F2;
 		height:80px;
 		" . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . (($SYSTEM == "MAC") ? "10px" : (($SYSTEM == "X11") ? "12px" : "11px")) . ";
+		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
 		font-family:" . g_l('css', '[font_family]') . ";
 	}
 	select{

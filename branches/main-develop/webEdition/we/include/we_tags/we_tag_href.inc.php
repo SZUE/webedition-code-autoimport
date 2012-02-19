@@ -75,7 +75,7 @@ function we_tag_href($attribs, $content){
 
 		$trashbut = we_button::create_button(
 				"image:btn_function_trash", "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ""), true);
-		$span = '<span style="color: black;font-size:' . (($GLOBALS["SYSTEM"] == "MAC") ? "11px" : (($GLOBALS["SYSTEM"] == "X11") ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
+		$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
 	}
 
 	if($type == "all"){

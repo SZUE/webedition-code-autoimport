@@ -24,7 +24,6 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 //make sure we know which browser is used
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_browser_check.inc.php');
 we_html_tools::protect();
 $dialog = new weSpecialCharDialog();
 $dialog->initByHttp();

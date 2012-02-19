@@ -24,7 +24,6 @@
 //
 //	---> Includes
 //
-include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_tag.inc.php");
 
 we_html_tools::protect();

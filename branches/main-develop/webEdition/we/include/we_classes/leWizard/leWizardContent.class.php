@@ -41,24 +41,11 @@ class leWizardContent{
 	}
 
 	function getCSS(){
+		$FontSizeH1 = (we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px");
+		$LineHeightH1 = (we_base_browserDetect::isMAC()) ? "17px" : ((we_base_browserDetect::isUNIX()) ? "19px" : "18px");
 
-
-		if(stripos($_SERVER["HTTP_USER_AGENT"], "X11") !== false){
-
-			$System = "X11";
-		} else if(stripos($_SERVER["HTTP_USER_AGENT"], "Win") !== false){
-			$System = "WIN";
-		} else if(stripos($_SERVER["HTTP_USER_AGENT"], "Mac") !== false){
-			$System = "MAC";
-		} else{
-			$System = "UNKNOWN";
-		}
-
-		$FontSizeH1 = ($System == "MAC") ? "11px" : (($System == "X11") ? "13px" : "12px");
-		$LineHeightH1 = ($System == "MAC") ? "17px" : (($System == "X11") ? "19px" : "18px");
-
-		$FontSize = ($System == "MAC") ? "9px" : (($System == "X11") ? "11px" : "10px");
-		$LineHeight = ($System == "MAC") ? "15px" : (($System == "X11") ? "17px" : "16px");
+		$FontSize = (we_base_browserDetect::isMAC()) ? "9px" : ((we_base_browserDetect::isUNIX()) ? "11px" : "10px");
+		$LineHeight = (we_base_browserDetect::isMAC()) ? "15px" : ((we_base_browserDetect::isUNIX()) ? "17px" : "16px");
 
 		$IMAGE_DIR = IMAGE_DIR;
 

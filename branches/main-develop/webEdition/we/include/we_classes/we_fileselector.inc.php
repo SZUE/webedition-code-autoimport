@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileselector{
-	const FRAMESET=0;
-	const HEADER=1;
-	const FOOTER=2;
-	const BODY=3;
-	const CMD=4;
 
+	const FRAMESET = 0;
+	const HEADER = 1;
+	const FOOTER = 2;
+	const BODY = 3;
+	const CMD = 4;
 
 	var $dir = 0;
 	var $id = 0;
@@ -50,10 +50,9 @@ class we_fileselector{
 	var $rootDirID = 0;
 	var $filter = "";
 	var $col2js;
+	protected $title = '';
 
-	protected $title='';
-
-	function __construct($id, $table = FILE_TABLE, $JSIDName="", $JSTextName="", $JSCommand="", $order="", $sessionID="", $rootDirID=0, $filter=""){
+	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $rootDirID = 0, $filter = ""){
 
 		if(!isset($_SESSION["we_fs_lastDir"])){
 			$_SESSION["we_fs_lastDir"] = array();
@@ -122,7 +121,7 @@ class we_fileselector{
 		);
 	}
 
-	function isIDInFolder($ID, $folderID, $db=""){
+	function isIDInFolder($ID, $folderID, $db = ""){
 		if($folderID == $ID)
 			return true;
 		if(!$db)
@@ -155,7 +154,7 @@ class we_fileselector{
 		return $this->db->f($key);
 	}
 
-	function printHTML($what=we_fileselector::FRAMESET){
+	function printHTML($what = we_fileselector::FRAMESET){
 		switch($what){
 			case we_fileselector::HEADER:
 				$this->printHeaderHTML();
@@ -229,7 +228,6 @@ class we_fileselector{
 	}
 
 	function printFramesetHTML(){
-		include_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_browser_check.inc.php");
 		we_html_tools::htmlTop($this->title);
 		print we_html_element::jsScript(JS_DIR . "keyListener.js") .
 			we_html_element::jsElement("var weSelectorWindow = true;");

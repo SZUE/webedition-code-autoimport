@@ -415,7 +415,7 @@ echo "top.yearshop = '$year';";
 </script>
 
 </head>
-<?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if(we_base_browserDetect::isGecko()){ ?>
 	<frameset rows="28,38,*,<?php print ($_SESSION["prefs"]["debug_normal"] != 0) ? 100 : 0; ?>" border="0" frameborder="1" onLoad="start();">
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_header.php" name="shop_header" scrolling=no noresize/>
 		<frame src="<?php print WE_SHOP_MODULE_PATH; ?>edit_shop_iconbarHeader.php" name="shop_header_icons" scrolling=no noresize/>

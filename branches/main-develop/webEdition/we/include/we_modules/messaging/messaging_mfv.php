@@ -28,12 +28,12 @@ we_html_tools::htmlTop();
 print STYLESHEET;
 ?>
 </head>
-<?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if(we_base_browserDetect::isGecko()){ ?>
 	<frameset rows="180,*" framespacing="0" border="1" frameborder="1">
 		<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_messages_overview" scrolling="auto"/>
 		<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_msg_view"/>
 	</frameset>
-<?php } else if($GLOBALS["BROWSER"] == "SAFARI"){ ?>
+<?php } else if(we_base_browserDetect::isSafari()){ ?>
 	<frameset rows="180,1,*" framespacing="0" border="0" frameborder="0" id="msg_resize_frameset">
 		<frame src="<?php echo HTML_DIR ?>white_inc.html" name="messaging_messages_overview" scrolling="auto"/>
 		<frame src="safariHResize.html" name="messaging_separator"/>

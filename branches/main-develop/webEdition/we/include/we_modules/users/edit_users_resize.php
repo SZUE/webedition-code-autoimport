@@ -27,7 +27,7 @@ we_html_tools::htmlTop();
 ?>
 </head>
 
-<?php if($GLOBALS["BROWSER"] == "NN6"){ ?>
+<?php if(we_base_browserDetect::isGecko()){ ?>
 	<frameset cols="170,*" border="1" id="resizeframeid">
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_left.php" name="user_left" scrolling="no"/>
 		<frame src="<?php print WE_USERS_MODULE_PATH; ?>edit_users_right.php" name="user_right"/>

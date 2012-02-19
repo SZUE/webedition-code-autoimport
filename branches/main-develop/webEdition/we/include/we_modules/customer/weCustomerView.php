@@ -616,8 +616,9 @@ class weCustomerView{
 					$this->customer->save();
 
 					$tt = '';
-					$ttrow = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID) . ';', $this->db);
-					$tt = $this->settings->treeTextFormat;
+					$ttrow = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), $this->db);
+					//FIXME: needed, because format is php code
+					eval('$tt="'.$this->settings->treeTextFormat.'";');
 					$tt = addslashes($tt != '' ? $tt : $this->customer->Text);
 					if($newone){
 						$js = '

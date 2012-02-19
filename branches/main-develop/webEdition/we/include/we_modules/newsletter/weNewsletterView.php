@@ -925,7 +925,7 @@ class weNewsletterView{
 				new jsWindow("' . HTML_DIR . 'white.html",wname,-1,-1,width,height,true,true,true,true);
 
 
-				' . ((($GLOBALS["SYSTEM"] == "MAC") && (we_base_browserDetect::isIE())) ? '
+				' . (((we_base_browserDetect::isMAC()) && (we_base_browserDetect::isIE())) ? '
 							setTimeout("submitForm(\'"+wname+"\');", 250);
 							setTimeout("document.we_form.pnt.value=old;", 350);
 				' : '

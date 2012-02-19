@@ -47,15 +47,9 @@ class weCustomerFrames extends weModuleFrames{
 		$frameset = new we_html_frameset(array("framespacing" => "0", "border" => "0", "frameborder" => "no"));
 		$noframeset = new we_baseElement("noframes");
 
-		if($GLOBALS["BROWSER"] == "NN"){
-			$frameset->setAttributes(array("cols" => '220,*'));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left", "noresize" => null));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right", "noresize" => null));
-		} else{
-			$frameset->setAttributes(array("cols" => '220,*', "border" => "1", "frameborder" => "yes"));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left"));
-			$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
-		}
+		$frameset->setAttributes(array("cols" => '220,*', "border" => "1", "frameborder" => "yes"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=left", "name" => "left"));
+		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : ''), "name" => "right"));
 
 		// set and return html code
 		$body = $frameset->getHtml() . "\n" . $noframeset->getHTML();

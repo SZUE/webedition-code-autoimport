@@ -29,10 +29,10 @@ class weCustomerTree extends weTree{
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
 		$styles = array();
-		$styles[] = '.item {color: black; font-size: ' . ($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
+		$styles[] = '.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
 		$styles[] = '.item a { text-decoration:none;}';
 
-		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . ($GLOBALS["BROWSER"] == "NN" && ($GLOBALS["SYSTEM"] == "WIN") ? "10px" : (($GLOBALS["SYSTEM"] == "X11") ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
+		$styles[] = '.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}';
 		$styles[] = '.group a { text-decoration:none;}';
 
 		$this->setStyles($styles);

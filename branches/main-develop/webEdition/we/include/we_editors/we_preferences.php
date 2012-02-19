@@ -2549,7 +2549,7 @@ $_we_active_integrated_modules = array(
  * @return         void
  */
 function save_all_values(){
-	global $DB_WE, $SYSTEM;
+	global $DB_WE;
 
 	// First, read all needed files
 	$GLOBALS['config_files'] = array();
