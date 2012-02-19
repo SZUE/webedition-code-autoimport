@@ -2647,7 +2647,7 @@ function g_l($name, $specific, $omitErrors=false){
 			if(!$omitErrors){
 				trigger_error('Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !', E_USER_WARNING);
 			}
-			return false;
+			return '';
 		}
 	}
 	if(!$omitErrors){
