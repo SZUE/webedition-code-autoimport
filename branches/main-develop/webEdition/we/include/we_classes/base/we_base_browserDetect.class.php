@@ -211,7 +211,7 @@ class we_base_browserDetect{
 
 	static function inst(){
 		static $ref = 0;
-		if($ref == 0){
+		if(!is_object($ref)){
 			$ref = new self();
 		}
 		return $ref;
