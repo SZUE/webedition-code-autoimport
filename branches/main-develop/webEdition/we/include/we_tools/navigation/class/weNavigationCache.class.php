@@ -80,7 +80,7 @@ class weNavigationCache{
 		$_content = serialize($currentRulesStorage);
 		unset($currentRulesStorage);
 
-		weFile::save(self::CACHEDIR . 'rules.php', $_content);
+		weFile::save($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'rules.php', $_content);
 	}
 
 	static function cacheNavigation($id){
@@ -90,11 +90,11 @@ class weNavigationCache{
 	}
 
 	static function delCacheNavigationEntry($id){
-		weFile::delete(self::CACHEDIR . 'navigation_' . $id . '.php');
+		weFile::delete($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'navigation_' . $id . '.php');
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		weFile::save(self::CACHEDIR . 'navigation_' . $id . '.php', serialize($_naviItemes->items));
+		weFile::save($_SERVER['DOCUMENT_ROOT'] .self::CACHEDIR . 'navigation_' . $id . '.php', serialize($_naviItemes->items));
 	}
 
 	static function getCacheFromFile($parentid){

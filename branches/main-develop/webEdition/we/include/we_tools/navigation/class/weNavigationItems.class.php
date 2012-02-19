@@ -945,7 +945,7 @@ class weNavigationItems{
 		$GLOBALS['weNavigationObject'] = & $this;
 
 		$content = '';
-		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == __CLASS__)){
+		if(isset($this->items['id' . $this->rootItem]) && (get_class($this->items['id' . $this->rootItem]) == 'weNavigationItem')){
 
 			if($this->items['id' . $this->rootItem]->type == 'folder' && $depth !== false){
 				// if initialised by id => root item is on lvl0 -> therefore decrease depth
